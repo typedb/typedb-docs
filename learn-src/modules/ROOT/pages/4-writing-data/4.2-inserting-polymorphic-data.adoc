@@ -8,6 +8,7 @@ In the previous lesson, we saw how we could use `match` clauses in Insert querie
 ----
 insert
 $spring-sale isa promotion,
+    has code "SPR24",
     has name "Spring Sale 2024",
     has start-timestamp 2024-03-15T00:00:00,
     has end-timestamp 2024-03-31T23:59:59;
@@ -19,7 +20,7 @@ However, we have not yet assigned any books to this sale. This sale is a pretty 
 [,typeql]
 ----
 match
-$spring-sale isa promotion, has name "Spring Sale 2024";
+$spring-sale isa promotion, has code "SPR24";
 $book isa book;
 insert
 (promotion: $spring-sale, included: $book) isa promotion-inclusion,
@@ -34,6 +35,7 @@ By matching books using the supertype `book`, this query will add all books to t
 ====
 Write three new Insert queries. The first should create a new promotion with the following details:
 
+* The code "SFF24".
 * The name "Sci-Fi & Fantasy Festival 2024".
 * The start date (inclusive) 19th April 2024.
 * The end date (exclusive) 27th April 2024.
@@ -47,6 +49,7 @@ The second should match any book with a `genre` attribute with the value `"scien
 ----
 insert
 $sff-festival isa promotion,
+    has code "SFF24",
     has name "Sci-Fi & Fantasy Festival 2024",
     has start-timestamp 2024-04-19T00:00:00,
     has end-timestamp 2024-04-26T23:59:59;
@@ -55,7 +58,7 @@ image:learn::studio-icons/run.png[] *_Run_*
 [,typeql]
 ----
 match
-$sff-festival isa promotion, has name "Sci-Fi & Fantasy Festival 2024";
+$sff-festival isa promotion, has code "SFF24";
 $book isa book, has genre "science fiction";
 insert
 (promotion: $sff-festival, included: $book) isa promotion-inclusion,
@@ -65,7 +68,7 @@ image:learn::studio-icons/run.png[] *_Run_*
 [,typeql]
 ----
 match
-$sff-festival isa promotion, has name "Sci-Fi & Fantasy Festival 2024";
+$sff-festival isa promotion, has code "SFF24";
 $book isa book, has genre "fantasy";
 insert
 (promotion: $sff-festival, included: $book) isa promotion-inclusion,
@@ -85,7 +88,8 @@ match
 $user-13 isa user, has id "u0013";
 $frankenstein isa book, has isbn-13 "9780486282114";
 insert
-$review isa review, has score 8;
+$review isa review, has id "r0034",
+    has score 8;
 ($review, $frankenstein) isa rating;
 ($review, $user-13) isa action-execution,
     has timestamp 2024-03-19T03:32:00.073;
@@ -132,7 +136,7 @@ _Frankenstein_ is often considered to be one of the earliest works of science fi
 [,typeql]
 ----
 match
-$sff-festival isa promotion, has name "Sci-Fi & Fantasy Festival 2024";
+$sff-festival isa promotion, has code "SFF24";
 $frankenstein isa book, has isbn-13 "9780486282114";
 insert
 ($sff-festival, $frankenstein) isa promotion-inclusion,

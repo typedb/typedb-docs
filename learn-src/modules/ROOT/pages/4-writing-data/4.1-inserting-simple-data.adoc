@@ -37,6 +37,7 @@ In the remainder of Lesson 4, we will be using inserted data in later queries. I
 ====
 Insert a new `promotion` entity with the following attributes:
 
+* A `code` attribute with value `"SPR24"`.
 * A `name` with value `"Spring Sale 2024"`.
 * A `start-timestamp` with value `2024-03-15T00:00:00`.
 * An `end-timestamp` with value `2024-03-31T23:59:59`.
@@ -48,6 +49,7 @@ Insert a new `promotion` entity with the following attributes:
 ----
 insert
 $spring-sale isa promotion,
+    has code "SPR24",
     has name "Spring Sale 2024",
     has start-timestamp 2024-03-15T00:00:00,
     has end-timestamp 2024-03-31T23:59:59;
