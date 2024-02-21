@@ -1,15 +1,17 @@
 // tag::import[]
+use std::error::Error;
+
 use typedb_driver::{
     concept::{Attribute, Concept, Transitivity, Value, ValueType},
     transaction::{
         concept::api::{EntityTypeAPI, ThingAPI, ThingTypeAPI},
         logic::api::RuleAPI,
     },
-    Connection, DatabaseManager, Error, Options, Promise, Session, SessionType, TransactionType,
+    Connection, DatabaseManager, Options, Promise, Session, SessionType, TransactionType,
 };
 // end::import[]
 
-fn main() -> Result<(), Error> {
+fn main() -> Result<(), Box<dyn Error>> {
     const DB_NAME: &str = "sample_db";
     const SERVER_ADDR: &str = "127.0.0.1:1729";
 
@@ -275,8 +277,7 @@ fn main() -> Result<(), Error> {
                     .concept()
                     .get_entity_type("entity".to_owned())
                     .resolve()?
-                    .ok_or("No root entity")
-                    .unwrap()
+                    .ok_or("No root entity")?
                     .get_subtypes(&transaction, Transitivity::Explicit)?;
                 for entity in entities {
                     let mut e = entity?;
@@ -298,20 +299,15 @@ fn main() -> Result<(), Error> {
             let session = Session::new(db, SessionType::Schema)?;
             {
                 let transaction = session.transaction(TransactionType::Write)?;
-                let user = transaction
-                    .concept()
-                    .get_entity_type("user".to_owned())
-                    .resolve()?
-                    .ok_or("No root entity")
-                    .unwrap();
+                let user =
+                    transaction.concept().get_entity_type("user".to_owned()).resolve()?.ok_or("No root entity")?;
                 let mut admin = transaction.concept().put_entity_type("admin".to_owned()).resolve()?;
                 drop(admin.set_supertype(&transaction, user).resolve());
                 let entities = transaction
                     .concept()
                     .get_entity_type("entity".to_owned())
                     .resolve()?
-                    .ok_or("No root entity")
-                    .unwrap()
+                    .ok_or("No root entity")?
                     .get_subtypes(&transaction, Transitivity::Transitive)?;
                 for subtype in entities {
                     println!("{}", subtype?.label);
@@ -329,7 +325,7 @@ fn main() -> Result<(), Error> {
             let session = Session::new(db, SessionType::Schema)?;
             {
                 let transaction = session.transaction(TransactionType::Write)?;
-                let r = transaction.logic().get_rule("users".to_owned()).resolve()?.ok_or("Rule not found.").unwrap();
+                let r = transaction.logic().get_rule("users".to_owned()).resolve()?.ok_or("Rule not found.")?;
                 println!("Rule label: {}", r.label);
                 println!("  Condition: {}", r.when.to_string());
                 println!("  Conclusion: {}", r.then.to_string());
