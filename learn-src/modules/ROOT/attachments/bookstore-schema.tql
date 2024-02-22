@@ -24,7 +24,6 @@ book sub entity,
     owns title,
     owns page-count,
     owns genre,
-    owns stock,
     owns price,
     plays contribution:work,
     plays publishing:published,
@@ -33,9 +32,11 @@ book sub entity,
     plays rating:rated,
     plays recommendation:recommended;
 
-hardback sub book;
+hardback sub book,
+    owns stock;
 
-paperback sub book;
+paperback sub book,
+    owns stock;
 
 ebook sub book;
 
