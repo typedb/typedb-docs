@@ -1,1 +1,64 @@
 = Lesson 4.5: Data validation
+
+== Valid and invalid data
+
+In xref:learn::3-reading-data/3.5-query-validation.adoc[Lesson 3.5], we saw that TypeDB validates all read queries against the schema to ensure semantic correctness. Likewise, all write queries are also validated to ensure data integrity. We've already seen an example of an invalid query in xref:learn::4-writing-data/4.2-inserting-polymorphic-data.adoc[Lesson 4.2]
+
+[,typeql]
+----
+match
+$us isa country, has name "United States";
+insert
+$ga isa state, has name "Georgia";
+($us, $ga) isa locating;
+----
+image:learn::studio-icons/run.png[] *_Try running_*
+
+In this case, the query was invalid because TypeDB cannot infer the roles that `$us` and `$ga` should play, but there are many reasons a query can be invalid. Try running each of the following ones to see what happens.
+
+[,typeql]
+----
+match
+$odyssey isa book, has isbn "9780393634563";
+insert
+$odyssey has stock 20;
+----
+image:learn::studio-icons/run.png[] *_Try running_*
+
+[,typeql]
+----
+match
+$book isa book, has $isbn;
+$isbn "9781489962287" isa isbn;
+delete
+$book has $isbn;
+----
+image:learn::studio-icons/run.png[] *_Try running_*
+
+[,typeql]
+----
+match
+$order-28 isa order, has id "o0028";
+$paid "paid" isa status;
+delete
+$order-28 has $paid;
+insert
+$order-28 has status "sent";
+----
+image:learn::studio-icons/run.png[] *_Try running_*
+
+.Exercise
+[caption=""]
+====
+Examine the three queries above and the error messages returned to determine the reason why each one is not semantically sound.
+
+.Answer
+[%collapsible]
+=====
+* The first query attempts to give a stock level to an ebook, but ebooks do not have stock levels. In the current schema, only `paperback` and `hardback` own `stock`.
+* The second query attempts to delete a book's ISBN-13, but all books must have an ISBN-13. In the schema, `isbn-13` is a key attribute of `book`.
+* The third query attempts to change the status of order "o0028" to "sent", but this is not a permitted value for the status. In the schema, the value of `status` has a regex constraint applied.
+=====
+====
+
+We'll see how we can use the schema to constrain inserted data in xref:learn::5-defining-schemas/5-defining-schemas.adoc[Lesson 5], and then explore how TypeDB validates data against the schema in Lesson 7.1 (coming soon).
