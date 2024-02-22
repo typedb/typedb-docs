@@ -25,9 +25,8 @@ Studio::
 --
 Studio controls transactions automatically when you run a query.
 
-You can select a transaction type for queries with a `write`/`read` selector in the top toolbar:
-image:manual::icons/transaction-write.png[transaction type selector].
-For the transaction type selector to be active, you need to connect Studio to TypeDB
+Use the Transaction type switch at the top toolbar to select the type of transaction to use to send a query.
+For the selector to be active, you need to connect Studio to TypeDB server
 and select a database from a drop-down list in the top toolbar.
 --
 
@@ -109,6 +108,7 @@ An open transaction can be <<_close_a_transaction,closed>>, <<_commit_a_transact
 == Close a transaction
 
 Closing transaction doesn't save any changes made within the transaction.
+To persist changes, you need to <<_commit_a_transaction,commit>> the transaction.
 
 To close a transaction, follow the steps below:
 
@@ -143,7 +143,7 @@ To programmatically close a transaction, use xref:drivers::overview.adoc[TypeDB 
 Rust::
 +
 --
-A transaction is automatically closed when the variable containing it is dropped from memory.
+A transaction is automatically closed when the transaction's variable is dropped from memory.
 
 To explicitly close a transaction,
 use the xref:drivers::rust/api-reference.adoc#_struct_Transaction_force_close__[force_close] method:
@@ -199,7 +199,7 @@ transaction.close();
 C++::
 +
 --
-A transaction is automatically closed when the variable containing it is dropped from memory.
+A transaction is automatically closed when the transaction's variable is dropped from memory.
 
 To explicitly close a transaction,
 use the xref:drivers::cpp/api-reference.adoc#_void_TypeDBTransactionclose[close] method:
@@ -314,18 +314,20 @@ transaction.commit();
 
 == Transaction management
 
+Avoid long-running transactions, which can result in conflicts and resource contention.
+A good principle to follow is for logically coherent queries to be grouped into a transaction.
+
 TypeDB transactions use snapshot isolation and optimistic concurrency control to support concurrent,
 lock-free read/write transactions.
 For more information, see the xref:home::acid.adoc[ACID guarantees] page.
+
+=== Transaction timeout
 
 TypeDB transactions have a duration limit.
 By default, it’s 5 minutes.
 The default value can be changed with Client options.
 //Transaction time limit is intended to encourage short-lived transactions,
 //prevent memory leaks caused by transactions that will not be completed and terminate unresponsive transactions.
-
-Avoid long-running transactions, which can result in conflicts and resource contention.
-A good principle to follow is for logically coherent queries to be grouped into a transaction.
 
 == Query types and sessions/transactions
 

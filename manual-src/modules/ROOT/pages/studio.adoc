@@ -51,8 +51,7 @@ click on the open folder icon (image:home::studio-icons/project.png[]) in the to
 [#_connect_to_typedb]
 === Connect to TypeDB
 
-Click btn:[Connect to TypeDB] on the right side of the top toolbar,
-select TypeDB edition below, and follow the instructions:
+Select TypeDB edition below, and follow the instructions:
 
 // tag::connect_studio[]
 [tabs]
@@ -62,19 +61,24 @@ Cloud::
 --
 image::home::studio-connect-cloud.png[TypeDB Studio connect window, role=right, width = 50%, link=self]
 
+// tag::connect_cloud_studio[]
+. Click btn:[Connect to TypeDB] on the right side of the top toolbar.
 . Switch the `Server` field drop-down to `TypeDB Cloud`.
 . Click btn:[Manage Cloud Addresses] button.
 . Add address and port for at least one server from your TypeDB Cloud deployment. Close the Address management window.
-. Fill in the `Username` (default: `admin`) and `Password` (default: `password`) fields.
-. Turn on the `Enable TLS` option and leave the `CA Certificate` field empty.
+. Fill in the `Username` and `Password` fields with valid user credentials.
+. Turn on the `Enable TLS` option and leave the `CA Certificate` field empty. +
 _For self-hosted deployments, encryption parameters may vary._
 . Click `Connect`.
+// end::connect_cloud_studio[]
 
+// tag::first_login_studio[]
 [NOTE]
 =====
 On your first login you will be asked to change the password for the `admin` account.
 A TypeDB Cloud deployment will refuse queries until the password is changed from its default value.
 =====
+// end::first_login_studio[]
 --
 
 Core::
@@ -82,7 +86,12 @@ Core::
 --
 image::home::studio-connect-core.png[TypeDB Studio connect window, role=right, width = 50%, link=self]
 
-Enter TypeDB Core server address (e.g., `localhost:1729`) and click btn:[Connect].
+// tag::connect_core_studio[]
+. Click btn:[Connect to TypeDB] on the right side of the top toolbar.
+. Make sure the `TypeDB Core` option is selected in the `Server` field.
+. Enter the address and port of the server to connect to (e.g., `localhost:1729`).
+. Click btn:[Connect].
+// end::connect_core_studio[]
 --
 ====
 // end::connect_studio[]
@@ -128,6 +137,7 @@ and move it from the hidden folder.
 [#_run_a_query]
 === Run a query
 
+.Studio text editor with a query and log output of running the query
 image::drivers::studio/project-schema-committed.png[Commit the Transaction,role="right",width = 50%,link=self]
 
 Select a session type (image:manual::icons/session-data.png[])
@@ -173,30 +183,79 @@ image::drivers::studio/studio-transaction-controls.png[Transaction controls, lin
 
 //From left to right (numbered respectively to the numbers on the above screenshot):
 
-. xref:manual::connecting/session.adoc[Session] type (image:manual::icons/session-data.png[]) switch --
-selects a session type to use for queries.
-. xref:manual::connecting/transaction.adoc[Transaction] type (image:manual::icons/transaction-read.png[]) switch --
-selects a transaction type to use for queries.
-. btn:[snapshot] button -- enables snapshot feature that encapsulates a transaction in a snapshot of a database's data
+.The top Toolbar controls
+[cols="^.^1,^.^3,^.^3,.^8"]
+|===
+| # | Name | Icon / Visual ^.^| Action description
+
+| 1
+| xref:manual::connecting/session.adoc[Session type] switch
+| image:manual::icons/session-data.png[]
+| Select a xref:manual::connecting/session.adoc[session type] to use for queries.
+
+| 2
+| xref:manual::connecting/transaction.adoc[Transaction type] switch
+| image:manual::icons/transaction-read.png[]
+| Select a xref:manual::connecting/transaction.adoc[transaction type] to use for queries
+
+| 3
+| btn:[snapshot] button
+| image:manual::icons/snapshot.png[]
+| Enable snapshot feature that encapsulates a transaction in a snapshot of a database's data
 until the transaction is committed or closed.
 Write transactions are always snapshoted.
 May be enabled or disabled for read transactions.
-. btn:[infer] button -- enable xref:learn::8-reasoning-over-data/8-reasoning-over-data.adoc[inferring data] by rules.
+
+| 4
+| btn:[infer] button
+| image:manual::icons/infer.png[]
+| Enable xref:learn::8-reasoning-over-data/8-reasoning-over-data.adoc[inferring data] by rules.
 Only available for `read` transactions.
-. btn:[explain] button -- enable xref:learn::8-reasoning-over-data/8-reasoning-over-data.adoc[explanations] mechanics.
-Only available for `read` transactions with *snapshot* and *infer* enabled.
-//#todo Adjust link to explanation.adoc
-. btn:[Transaction status] (image:home::studio-icons/activity.png[]) indicator -- transaction activity indicator.
-Green if there is a transaction opened by TypeDB Studio at this moment.
-Gray if there is no opened transaction.
+
+| 5
+| btn:[explain] button
+| image:manual::icons/explain.png[]
+| Enable xref:learn::8-reasoning-over-data/8-reasoning-over-data.adoc[explanations] mechanics.
+
+| 6
+| btn:[Transaction status] indicator
+| image:home::studio-icons/activity.png[]
+| Transaction activity indicator. +
+Green if there is a transaction opened by TypeDB Studio at this moment. +
+Gray if there is no opened transaction. +
 Rotating animation -- TypeDB Studio processing the query or the results (including additional API calls).
-. btn:[Close transaction] (image:home::studio-icons/close.png[]) button -- close active transaction without committing the results.
-. btn:[Rollback transaction] (image:home::studio-icons/revert.png[]) button -- revert the transaction results without closing it.
-. btn:[Commit transaction] (image:home::studio-icons/commit.png[]) button -- commit the changes and close the transaction.
-. btn:[Run Query] (image:home::studio-icons/run.png[]) button -- run query or queries in the active tab of the *Text editor* panel.
+
+| 7
+| btn:[Close transaction] button
+| image:home::studio-icons/close.png[]
+| Close active transaction without committing the results.
+
+| 8
+| btn:[Rollback transaction] button
+| image:home::studio-icons/revert.png[]
+| Revert the transaction results without closing it.
+
+| 9
+| btn:[Commit transaction] button
+| image:home::studio-icons/commit.png[]
+| Commit the changes and close the transaction.
+
+| 10
+| btn:[Run Query] button
+| image:home::studio-icons/run.png[]
+| Run query or queries in the active tab of the *Text editor* panel.
 It will open a transaction (with the session type and transaction type specified in the *Toolbar* on the left)
 and execute the TypeQL code against the selected database.
-. btn:[Stop Signal] (image:home::studio-icons/signal.png[]) button -- stop query execution after the next result.
+
+| 11
+| btn:[Stop Signal] button
+| image:home::studio-icons/signal.png[]
+| Stop query execution after the next result.
+
+|===
+
+
+
 
 [#_inference]
 == Inference
@@ -212,7 +271,7 @@ and transaction type being set to `read`.
 
 As a result of running a query with inference, you can get additional results via inference.
 If there are any inferred instances of data returned from a Get query,
-they will be highlighted with green lining in the Graph Visualizer.
+they will be highlighted with green color in the Graph Visualizer.
 See an example on the image to the right.
 
 [#_explanation]
@@ -228,8 +287,8 @@ If the btn:[explain] button is inactive, double-check that Studio is connected t
 a database is selected with a drop-down list in the toolbar,
 and the btn:[infer] and btn:[snapshot] buttons are *on*.
 
-To see an explanation of an inferred result, find it in Graph Visualizer (should be highlighted in green) and
-double-click on it.
+To see an explanation, find an inferred result in Graph Visualizer (should be highlighted in green)
+on the Graph tab and double-click on the highlighted result.
 If there is an explanation for the inferred result, it spawns in visualization as new concepts.
 If there is no additional explanation available for the selected result,
 or all explanations have already been spawned, a pop-up notification appears.
@@ -248,19 +307,25 @@ While connected to TypeDB, the button changes its label to server's address.
 image::drivers::studio/databases-interface-iam-database.png[Database Manager with IAM database, role=right, width=50%, link=self]
 
 Creating and deleting databases can be done via the Manage Database window.
-To open this window, make sure TypeDB Studio is connected to TypeDB and click on the database button
-(image:home::studio-icons/database.png[]) in the top toolbar.
+// tag::db_manager[]
+To open the Manage Database window, make sure TypeDB Studio is connected to TypeDB server
+and click on the database button (image:home::studio-icons/database.png[]) in the top toolbar.
+// end::db_manager[]
 
 To create a new database:
 
+// tag::create_db_studio[]
 . Enter the name for the new database
 . Push btn:[Create].
+// end::create_db_studio[]
 
 To delete a database:
 
-. Open the btn:[Manage Databases] window by clicking on the database button (image:home::studio-icons/database.png[]) in the top toolbar.
-. Select a database to delete from a list of databases and click the Delete button on the right.
-. Confirm deletion by typing in the name of the databsae to delete and then clicking the btn:[Delete] button.
+// tag::delete_db_studio[]
+. Select a database to delete from a list of databases and click the trashcan icon on its right.
+. Confirm deletion by typing in the name of the database to delete and then clicking the btn:[Delete] button.
+// end::delete_db_studio[]
+//#todo Add the icon's image
 --
 
 [#_types_browser_capabilities]
@@ -270,7 +335,7 @@ image::drivers::studio/type-browser.png[Type browser, role=right framed, width=5
 
 Type Browser panel gives you a full overview of the type hierarchy for the currently selected database.
 
-In an empty database, there are only three root types shown in the panel.
+In an empty database, there are only three xref:typeql::schema/overview.adoc#_types[root types] shown in the panel.
 
 In a database with a schema,
 all types displayed in the exact hierarchy they were created (subtypes inside their supertypes).
@@ -283,7 +348,7 @@ You can export all type definitions of a schema by clicking the btn:[Export Sche
 button on the top of the *Type Browser* panel.
 Exporting rules is not supported by this button yet.
 
-It creates a new tab with inserted TypeQL code that creates the exact schema that is in the current database.
+The button creates a new tab with inserted TypeQL Define query that creates the schema of the database.
 
 [#_type_editor]
 == Type Editor
@@ -293,43 +358,39 @@ It creates a new tab with inserted TypeQL code that creates the exact schema tha
 --
 image::drivers::studio/type-editor.png[Type editor, role=right framed, width = 50%, link=self]
 
-Type Editor window gives you a full overview of the selected type: its label, parent, owned attributes, played roles,
-owners (for attributes), related roles (for relations), subtypes, and whether it's an abstract type.
-
-Given a `schema` session and `write` transaction selected in the top toolbar,
-Type Editor can be used to modify most of these parameters.
-You can rename a type, change its supertype, change whether it's an abstract type, add or remove owned attributes,
-related roles, played roles, as well as just delete a type or export its full definition.
-
-Type Editor is a powerful instrument that combines easy to use GUI with API calls that can modify schema directly,
+Type Editor is a powerful instrument that combines easy to use GUI with API calls that can modify schema types directly,
 without TypeQL queries.
 With Type Editor, it's much easier to rename a type or change type hierarchy by changing a supertype of a type.
 And it works even for types that already have data inserted for them.
---
 
-=== Rename a type
+Type Editor window gives you a full overview of the selected type: its label, parent, owned attributes, played roles,
+owners (for attributes), related roles (for relations), subtypes, and whether it's an abstract type.
+
+Type Editor can rename a type, change its supertype, change whether it's an abstract type,
+add or remove owned attributes, related roles, played roles,
+as well as just delete a type or export its full definition.
 
 For the Type Editor be able to modify a schema,
 make sure to switch to the `schema` session and `write` transaction in the top toolbar.
+--
+
+=== Rename a type
 
 To rename a type, open the Type Editor window by double-clicking on the selected type in the Type Browser.
 At the very top, click on the pencil icon immediately right from the type name.
 Edit the name in the Label field and press the btn:[Rename] button to save the changes.
 //#todo Add the pencil icon
 
-You can also do the same by right-clicking on the type in the Type browser panel and choosing the Rename Type option.
+You can also do the same by right-clicking on the type in the Type Browser panel and choosing the Rename Type option.
 
-Both ways require you to commit the changes by the btn:[Commit] (image:home::studio-icons/commit.png[])
-button at the top toolbar.
+Both Type Editor and Type Browser require you to commit the changes by the btn:[Commit]
+(image:home::studio-icons/commit.png[]) button at the top toolbar.
 
 Renaming a type in any of these two ways updates the relevant type references in the schema and does not lead
 to loosing existing data.
 All existing instances of the type will be available under the new type label.
 
 === Delete a type
-
-For the Type Editor be able to modify a schema,
-make sure to switch to the `schema` session and `write` transaction in the top toolbar.
 
 To delete a type, open the Type Editor window by double-clicking on the selected type in the Type Browser.
 At the very bottom, click the btn:[Delete] button and then the btn:[Confirm] button.
@@ -338,8 +399,8 @@ At the very bottom, click the btn:[Delete] button and then the btn:[Confirm] but
 You can also do the same by right-clicking on the type in the Type browser panel and choosing the Delete option,
 then clicking the btn:[Confirm] button.
 
-Both ways require you to commit the changes by the btn:[Commit] (image:home::studio-icons/commit.png[])
-button at the top toolbar.
+Both Type Editor and Type Browser require you to commit the changes by the btn:[Commit]
+(image:home::studio-icons/commit.png[]) button at the top toolbar.
 
 In some cases, the btn:[Delete] option and button can be unavailable.
 That means there are some conditions that prevent you from deleting this type.
@@ -407,4 +468,3 @@ Default value: *On*.
 | 2.11.1
 | 2.11.1 to 2.11.2
 |===
-

@@ -54,14 +54,15 @@ Use command line arguments to set connection parameters:
 Cloud::
 +
 --
-.TypeDB Cloud connection
+// tag::connect_cloud_console[]
+.Connect to TypeDB Cloud
 [,bash]
 ----
 typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
 ----
 
 You will be prompted for a password.
-
+// end::connect_cloud_console[]
 // tag::cloud-psw[]
 [NOTE]
 =====
@@ -75,21 +76,21 @@ A TypeDB Cloud deployment will refuse queries until the password is changed from
 Core::
 +
 --
-.TypeDB Core connection
+// tag::connect_core_console[]
+.Connect to TypeDB Core
 [,bash]
 ----
 typedb console --core=<server-address>
 ----
 
-By default, TypeDB Console connects to a local TypeDB Core server with the `localhost:1729` address.
 The `--core` argument is used to set the TypeDB Core server IP address and port to connect to,
 for example, `10.0.0.5:1729`.
+// end::connect_core_console[]
 --
 ====
 
 As a result, you get a welcome message from TypeDB Console followed by a command line prompt.
 
-[,bash]
 ----
 Welcome to TypeDB Console. You are now in TypeDB Wonderland!
 Copyright (C) 2022 Vaticle
@@ -97,7 +98,7 @@ Copyright (C) 2022 Vaticle
 >
 ----
 
-See full list of available CLI arguments in the <<_command_line_arguments>> section below.
+See full list of available CLI arguments in the <<_command_line_arguments>> reference section below.
 
 [#_REPL]
 == Interactive mode
@@ -123,7 +124,7 @@ For a full list of commands on the Server level, see the <<_server_level_command
 Transaction level is the second level of interaction, i.e., *second-level REPL*.
 You can control a transaction and send queries in the transaction.
 
-For a full list of commands on the Transaction level, see the <<_transaction_level>> section.
+For a full list of commands on the Transaction level, see the <<_transaction_level>> reference section.
 
 [NOTE]
 ====
@@ -155,45 +156,43 @@ The asterisk (`*`) is used to notify that the current transaction has uncommitte
 
 . Run Console in the interactive mode and <<_connect_to_typedb,connect>> it to TypeDB:
 +
-[,bash]
 ----
 typedb console
 ----
 
-. Create a database:
+. Now, run the following command to create a database:
 +
-[,bash]
 ----
-database create typedb
+database create sample_db
 ----
 
-. Define a schema by opening a `schema` session and `write` transaction to the `typedb` database, sending a query,
-and committing changes.
-You can do that by sending the following three commands one at a time:
+. To define a schema, run the `transaction` command to open a `schema` session and `write` transaction to the database.
+This command opens a Transaction level REPL.
+Use it to send the Define query, and commit changes:
 +
-[,bash]
 ----
-> transaction typedb schema write
-typedb::schema::write> define person sub entity;
-typedb::schema::write*> commit
+transaction sample_db schema write
+sample_db::schema::write> define person sub entity;
+sample_db::schema::write*> commit
 ----
 +
-In <<_transaction_level,Transaction level>> of REPL, the CLI prompt changes to include database name, session type,
-and transaction type.
+The <<_transaction_level,Transaction level>> of REPL is announced by the CLI prompt change to include database name,
+session type, and transaction type.
 +
-To send the query in the second command, you need to push btn:[Enter] *twice*.
+To send a query in the Transaction level, push btn:[Enter] *twice*,
+as a single push of the btn:[Enter] is recognized as a line break in the query.
 
 . Insert data with `data` session and `write` transaction:
 +
-[,bash]
 ----
-> transaction typedb data write
-typedb::data::write> insert $p isa person;
-typedb::data::write*> commit
+transaction sample_db data write
+sample_db::data::write> insert $p isa person;
+sample_db::data::write*> commit
 ----
 
-The above example creates a database with the name `typedb`,
-defines a schema with the `person` type, then inserts an instance of the `person` type into the database.
+The above example creates a database with the name `sample_db`,
+defines a simple schema with the single `person` type,
+then inserts a single instance of the type into the database.
 
 == Non-interactive mode
 
@@ -213,12 +212,12 @@ Run the following command in a terminal to start TypeDB and execute queries:
 
 [,bash]
 ----
-typedb console --command="database create typedb" \
+typedb console --command="database create sample_db" \
 --command="database list" \
---command="transaction typedb schema write" \
+--command="transaction sample_db schema write" \
 --command="define person sub entity;" \
 --command="commit" \
---command="transaction typedb data write" \
+--command="transaction sample_db data write" \
 --command='insert $p isa person;' \
 --command="commit"
 ----
@@ -227,16 +226,16 @@ The resulting output should look like this:
 
 .Output
 ----
-+ database create typedb
-Database 'typedb' created
++ database create sample_db
+Database 'sample_db' created
 + database list
-typedb
-+ transaction typedb schema write
+sample_db
++ transaction sample_db schema write
 ++ define person sub entity;
 Concepts have been defined
 ++ commit
 Transaction changes committed
-+ transaction typedb data write
++ transaction sample_db data write
 ++ insert $p isa person;
 { $p iid 0x826e80017fffffffffffffff isa person; }
 answers: 1, total (with concept details) duration: 56 ms
@@ -260,7 +259,7 @@ For example, see the <<_script_example>> section below.
 [#_script_example]
 === Example
 
-Prepare the following script file and save it to a local file:
+Prepare the following script and save it to a local file:
 
 .script.txt
 ----
@@ -281,10 +280,10 @@ Use the following command to execute the script:
 
 .Run script.txt
 ----
-typedb console --script=script.txt
+typedb console --script=PATH/script.txt
 ----
 
-Where `script.txt` is the path to the file.
+Where `PATH/script.txt` is the path to the file and the filename.
 
 You will see the following output:
 
