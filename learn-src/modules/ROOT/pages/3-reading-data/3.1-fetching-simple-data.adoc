@@ -226,7 +226,7 @@ $user: attribute;
 
 == Projections
 
-Looking at the list of each book's attributes in the previous result, we can see that we've retrieved attributes of six types: `isbn-13`, `isbn-10`, `title`, `page-count`, `price`, and `stock`. By modifying the `fetch` clause, we can choose to retrieve only specific attributes.
+Looking at the list of each book's attributes in the previous result, we can see that we've retrieved attributes of six types: `isbn-13`, `isbn-10`, `title`, `genre`, page-count`, `price`, and `stock`. By modifying the `fetch` clause, we can choose to retrieve only specific attributes.
 
 [,typeql]
 ----
