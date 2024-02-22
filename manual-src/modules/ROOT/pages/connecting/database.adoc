@@ -20,7 +20,7 @@ Studio::
 +
 --
 . Open Studio's Database manager window by clicking on the database icon image:home::studio-icons/database.png[] in the top toolbar.
-. Type in a name for a new database in the text field at the bottom of the window and click btn:[Create].
+include::manual::studio.adoc[tag=create_db_studio]
 
 The newly created database should appear in the drop-down selector of the top toolbar.
 --
@@ -99,7 +99,7 @@ C++::
 include::manual::partial$cpp-manual-code.cpp[tags=create-db]
 ----
 
-Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
+Where `driver` is an instance of a driver, connected to TypeDB, and `dbName` is the name of the database.
 --
 ====
 
@@ -113,9 +113,8 @@ Studio::
 +
 --
 . Open Studio's Database manager window by clicking on the database icon image:home::studio-icons/database.png[] in the top toolbar.
-. In the list of databases, locate the database you want to delete and click on the Trashcan icon in its row.
-. To confirm its deletion, type in the name of the database in the text field of the confirmation dialog and click btn:[Delete].
-//#todo Add the icon's image
+include::manual::studio.adoc[tag=delete_db_studio]
+
 --
 
 Console::
