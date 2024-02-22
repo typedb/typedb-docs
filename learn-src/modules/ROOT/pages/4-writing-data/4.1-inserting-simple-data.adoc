@@ -129,7 +129,7 @@ So far, the Insert queries we've seen have only created entirely new entities, r
 [,typeql]
 ----
 match
-$book isa paperback, has isbn-13 "9780486282114";
+$book isa book, has isbn-13 "9780486282114";
 insert
 $book has stock 20;
 ----
