@@ -1,1 +1,85 @@
 = Lesson 1: Why TypeDB
+
+SQL has reigned databases for over 30 years, presenting us with all the usual symptoms of link:https://en.wikipedia.org/wiki/Vendor_lock-in#Technology_lock-in[technological lock-in]. But the fast advances of modern declarative programming models, focusing on user intent, maintainability, and business logic, in parallel with the rise of distributed and multi-threaded systems make it harder and harder to continue piling layers of abstractions on the relational model. TypeDB addresses these shortcomings by re-thinking database foundations: it comes with a new polymorphic query language, a new logic engine, and a new query execution model.
+
+== Modern language
+
+While SQL is a declarative language, it requires users to write their query declarations in terms of certain low-level operations to manipulate tables. Consider, for example, the following toy query, which queries for books orders, returning order numbers and (file or print) formats of the books in that order.
+
+[,sql]
+----
+SELECT o.Number AS orderNumber, 
+    CASE 
+        WHEN b.type = "ebook" THEN e.FileFormat
+        ELSE p.PrintFormat
+    END AS bookFormat
+FROM OrderedItems i
+    INNER JOIN Orders o ON o.ID=i.OrderId
+    INNER JOIN BookIds b ON b.ID=i.BookId 
+    LEFT OUTER JOIN EBooks e ON e.ID=b.ID
+    LEFT OUTER JOIN PrintBooks p on p.ID=b.ID; 
+----
+The query uses a sequence of `JOIN` instructions (and a `WHEN - THEN - ELSE` clause) that are to-be-performed on our tables. This borders on an imperative 'instruction-by-instruction' coding style, and allows subtle errors to propagate in unexpected (and 'undeclared') ways. This style does not focus on the **intent** of the query, and is similarly found in many other database languages.
+
+TypeDB takes a different approach: it focuses on intent at every step of the query. Intent can, in particular, describe the type of data, the relations between data, and the ownership of data. In TypeQL, TypeDB's query language, the above query could take the following form.
+[,typeql]
+----
+match
+    $o isa order, has order_number $n;
+    (order: $o, item: $b) isa ordered_item;
+    { $f isa file_format; } or { $f isa print_format; };
+    $b has $f; 
+fetch {
+    orderNumber: $n;
+    bookFormat: $f;
+}
+----
+Notice how the TypeQL query can directly express the intent of our earlier SQL query: no sequences of operations need to be specify—in fact, the statements specifying the query's intent can be given in any order. Under the hood, the high-level, fully declarative approach of TypeQL's language is powered by an expressive type system. This is why we also refer to TypeQL as a _type-theoretic_ query language!
+
+To summarize, the design of TypeQL is based on four pillar, closely reflecting recent advances in programming models.
+
+* *Fully declarative*: TypeQL allows users to directly express their intent with a query.
+* *Safe*: The robust type system on which TypeQL is built can alert the user about subtle errors before they happen.
+* *Expressive*: Polymorphism is natively baked into the type system, untangling otherwise unnecessarily complex database tasks.
+* *Maintainable*: Combining type-theoretic schemas with generic declarative querying, we ensure long-term maintainability of applications.
+
+
+== Programmable database
+
+While a modern declarative query language is the core pillar to our ambition of building 'fully programmable database applications', this has to be accompanied with further components addressing, in particular, the business logic and behaviour of applications, continuous application upgrades, and native integrations with existing systems.
+
+=== Database logic
+
+=== Schema continuity
+
+=== Stateful objects
+
+
+== Resilient architecture
+
+Building TypeDB from first principles
+
+=== Native concurrency
+
+Once a query has been written, of course, we still have to execute it. TypeDB takes care of several steps in this process, based on an execution model tailored to modern concurrency needs. The model is broadly structured as follows.
+
+* TypeDB batches individual queries into so-called *transactions*. To enable concurrent transactions, TypeDB uses snapshot isolation, meaning a user can freely operate on their data throughout the duration of a transaction without worrying about data races. Transactions can then be committed in order to be persisted in the database, and which point data integrity will be verified and invalid transactions rejected.
+
+* Transactions themselves are organized by so-called *sessions*, which determine what type of transactions can be performed. For the duration of a session, communication between the user and the database is upheld. Sessions enable detailed control over concurrent states: for examples, they allow 'data read' transaction
+
+With TypeDB session-transaction model in mind, within each transaction TypeDB executes the following:
+
+. Queries by the user are first *type-checked*, i.e. validated against the databases schema.
+. A *query plan* is drawn up, deciding on data traversal and parallelization of traversal.
+. TypeDB's *inference engine*, based on a concurrent actor model, augments stored answers with results inferred from user-defined rules. We will get to this point next!
+. Add any point in this process, results to queries are *streamed* to the user.
+
+=== Modern security 
+
+* In-flight encryption
+* User authentication
+* ACID guarantees
+
+
+
+
