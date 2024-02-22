@@ -390,17 +390,17 @@ $book: title, page-count;
 
 Try *running* image:learn::studio-icons/run.png[] these two queries. You should get the same results.
 
-In the first version, we used a single compound *statement* in the `match` clause, whereas in the second version, we instead used two atomic statements. If atomic statements concern the same variable (in this case `$book`), we can always concatenate them using commas, and vice versa.
+In the first version, we used a single composite *statement* in the `match` clause, whereas in the second version, we instead used two simple statements. If simple statements concern the same variable (in this case `$book`), we can always concatenate them using commas to form a composite statement, and vice versa.
 
 .Exercise
 [caption=""]
 ====
-Write a query to retrieve the `page-count` and `price` attributes of the paperback with title `"Great Discoveries in Medicine"`. Write the query once using a compound statement, and again using atomic statements.
+Write a query to retrieve the `page-count` and `price` attributes of the paperback with title `"Great Discoveries in Medicine"`. Write the query once using a composite statement, and again using simple statements.
 
 .Sample solution
 [%collapsible]
 =====
-With a compound statement:
+With a composite statement:
 
 [,typeql]
 ----
@@ -410,7 +410,7 @@ fetch
 $book: page-count, price;
 ----
 
-With atomic statements:
+With simple statements:
 
 [,typeql]
 ----
