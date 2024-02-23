@@ -204,6 +204,31 @@ with TypeDB.core_driver("localhost:1729") as driver:
                 print(subtype.get_label().name)
             tx.commit()
     # end::types-api[]
+
+    with driver.session(DB_NAME, SessionType.SCHEMA) as session:
+        with session.transaction(TransactionType.WRITE) as tx:
+            # tag::get_type[]
+            user = tx.concepts.get_entity_type("user").resolve()
+            # end::get_type[]
+            # tag::add_type[]
+            admin = tx.concepts.put_entity_type("admin").resolve()
+            # end::add_type[]
+            # tag::set_supertype[]
+            admin.set_supertype(tx, user)
+            # end::set_supertype[]
+            # tag::get_instances[]
+            users = tx.concepts.get_entity_type("user").resolve().get_instances(tx)
+            # end::get_instances[]
+            for user in users:
+                # tag::get_has[]
+                attributes = user.get_has(tx)
+                # end::get_has[]
+            # tag::create[]
+            new_user = tx.concepts.get_entity_type("user").resolve().create(tx).resolve()
+            # end::create[]
+            # tag::delete_user[]
+            new_user.delete(tx)
+            # end::delete_user[]
     # tag::rules-api[]
     with driver.session(DB_NAME, SessionType.SCHEMA) as session:
         with session.transaction(TransactionType.WRITE) as tx:
@@ -219,6 +244,25 @@ with TypeDB.core_driver("localhost:1729") as driver:
             new_rule.delete(tx).resolve()
             tx.commit()
     # end::rules-api[]
+    with driver.session(DB_NAME, SessionType.SCHEMA) as session:
+        with session.transaction(TransactionType.WRITE) as tx:
+            rules = tx.logic.get_rules()
+            for rule in rules:
+                print("Rule label:", rule.label)
+                print("  Condition:", rule.when)
+                print("  Conclusion:", rule.then)
+            # tag::put_rule[]
+            new_rule = tx.logic.put_rule("Employee",
+                                         "{$u isa user, has email $e; $e contains '@vaticle.com';}",
+                                         "$u has name 'Employee'").resolve()
+            # end::put_rule[]
+            # tag::get_rule[]
+            rule = tx.logic.get_rule("Employee").resolve()
+            # end::get_rule[]
+            print(rule.label)
+            # tag::delete_rule[]
+            new_rule.delete(tx).resolve()
+            # end::delete_rule[]
     # tag::data-api[]
     with driver.session(DB_NAME, SessionType.DATA) as session:
         with session.transaction(TransactionType.WRITE) as tx:
