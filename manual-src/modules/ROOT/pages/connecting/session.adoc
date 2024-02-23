@@ -62,7 +62,7 @@ Python::
 .Open a session
 [,python,indent=0]
 ----
-session = driver.session(DB_NAME, SessionType.SCHEMA)
+include::manual::partial$python-manual-code.py[tag=session_open]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -139,9 +139,9 @@ Use a https://peps.python.org/pep-0343/[context manager] to close a session when
 or use the xref:drivers::python/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
 
 .Close a session
-[,python]
+[,python,indent=0]
 ----
-session.close()
+include::manual::partial$python-manual-code.py[tag=session_close]
 ----
 --
 
