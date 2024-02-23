@@ -513,5 +513,63 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
         // end::explain-get[]
     }
+
+    {
+        let db = databases.get(DB_NAME)?;
+        let options = Options::new().infer(true).explain(true);
+        {
+            let session = Session::new(db, SessionType::Data)?;
+            {
+                let tx = session.transaction_with_options(TransactionType::Read, options)?;
+                let get_query = "
+                                match
+                                $u isa user, has email $e, has name $n;
+                                $e contains 'Alice';
+                                get
+                                $u, $n;
+                                ";
+                // tag::explainables[]
+                let response = tx.query().get(get_query)?;
+                // end::explainables[]
+                for (i, cmap) in response.enumerate() {
+                    let ncmap = cmap.clone();
+                    let name_concept = ncmap?.get("n").unwrap().clone();
+                    let name = match name_concept {
+                        Concept::Attribute(Attribute { value: Value::String(value), .. }) => value,
+                        _ => unreachable!(),
+                    };
+                    println!("Name #{}: {}", (i + 1).to_string(), name);
+                    let explainable_relations = cmap?.explainables.relations;
+                    // tag::explain[]
+                    for (var, explainable) in explainable_relations {
+                    // end::explain[]
+                        println!("{}", var);
+                        println!("{}", explainable.conjunction);
+                        // tag::explain[]
+                        let explain_iterator = tx.query().explain(&explainable)?;
+                        // end::explain[]
+                        // tag::explanation[]
+                        for explanation in explain_iterator {
+                            let exp = explanation?;
+                            println!("Rule: {}", exp.rule.label);
+                            println!("Condition: {}", exp.rule.when.to_string());
+                            println!("Conclusion: {}", exp.rule.then.to_string());
+                            println!("Variable mapping:");
+                            for qvar in exp.variable_mapping.keys() {
+                                println!(
+                                    "Query variable {} maps to the rule variable {}",
+                                    *qvar,
+                                    exp.variable_mapping.get(qvar).unwrap().concat().to_string()
+                                );
+                            }
+                        }
+                        // tag::explanation[]
+                    // tag::explain[]
+                    }
+                    // end::explain[]
+                }
+            }
+        }
+    }
     Ok({})
 }
