@@ -1,0 +1,147 @@
+= Lesson 4.2: Inserting polymorphic data
+
+== Inferring types
+
+In the previous lesson, we saw how we could use `match` clauses in Insert queries in order to have new data reference existing data. In this lesson, we'll see how we can use that strategy to perform *polymorphic inserts*. We have already created a new `promotion` entity for the Spring Sale with this query from a previous exercise.
+
+[,typeql]
+----
+insert
+$spring-sale isa promotion,
+    has code "SPR24",
+    has name "Spring Sale 2024",
+    has start-timestamp 2024-03-15T00:00:00,
+    has end-timestamp 2024-03-31T23:59:59;
+----
+image:learn::studio-icons/close.png[] *_Do not run_*
+
+However, we have not yet assigned any books to this sale. This sale is a pretty big one, so we're going to assign every book in the store to it with a 10% discount.
+
+[,typeql]
+----
+match
+$spring-sale isa promotion, has code "SPR24";
+$book isa book;
+insert
+(promotion: $spring-sale, included: $book) isa promotion-inclusion,
+    has discount 0.10;
+----
+image:learn::studio-icons/run.png[]image:learn::studio-icons/commit.png[] *_Run and commit_*
+
+By matching books using the supertype `book`, this query will add all books to the promotion, regardless of whether they are paperbacks, hardbacks, or ebooks. In this case, TypeDB is using *type inference* to resolve the inheritance polymorphism in the write query. We can just as easily use interface or parametric polymorphism in data writes!
+
+.Exercise
+[caption=""]
+====
+Write three new Insert queries. The first should create a new promotion with the following details:
+
+* The code "SFF24".
+* The name "Sci-Fi & Fantasy Festival 2024".
+* The start date (inclusive) 19th April 2024.
+* The end date (exclusive) 27th April 2024.
+
+The second should match any book with a `genre` attribute with the value `"science fiction"` and add it to the promotion with a 15% discount. The third should match any book with the genre `"fantasy"` and add it with a 20% discount.
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+insert
+$sff-festival isa promotion,
+    has code "SFF24",
+    has name "Sci-Fi & Fantasy Festival 2024",
+    has start-timestamp 2024-04-19T00:00:00,
+    has end-timestamp 2024-04-26T23:59:59;
+----
+image:learn::studio-icons/run.png[] *_Run_*
+[,typeql]
+----
+match
+$sff-festival isa promotion, has code "SFF24";
+$book isa book, has genre "science fiction";
+insert
+(promotion: $sff-festival, included: $book) isa promotion-inclusion,
+    has discount 0.15;
+----
+image:learn::studio-icons/run.png[] *_Run_*
+[,typeql]
+----
+match
+$sff-festival isa promotion, has code "SFF24";
+$book isa book, has genre "fantasy";
+insert
+(promotion: $sff-festival, included: $book) isa promotion-inclusion,
+    has discount 0.20;
+----
+image:learn::studio-icons/run.png[]image:learn::studio-icons/commit.png[] *_Run and commit_*
+=====
+====
+
+== Inferring roles
+
+In addition to inferring types of referenced data, TypeDB is able to infer the roles of roleplayers when inserting new relations. This allows us to write significantly more concise Insert queries. For example, in the following query, we insert `rating` and `action-execution` relations without specifying roles!
+
+[,typeql]
+----
+match
+$user-13 isa user, has id "u0013";
+$frankenstein isa book, has isbn-13 "9780486282114";
+insert
+$review isa review, has id "r0034",
+    has score 8;
+($review, $frankenstein) isa rating;
+($review, $user-13) isa action-execution,
+    has timestamp 2024-03-19T03:32:00.073;
+----
+image:learn::studio-icons/run.png[]image:learn::studio-icons/commit.png[] *_Run and commit_*
+
+For this query, TypeDB is able to infer that `$review` plays the `review` role and `$frankenstein` plays the `rated` role in rating. This is because:
+
+* `rating` has roles `rating:review` and `rating:rated`.
+* `$review` is of type `review`.
+* `review` plays `rating:review` but not `rating:rated`.
+* `$frankenstein` is of type `book`.
+* `book` plays `rating:rated` but not `rating:review`.
+
+These constraints mean that TypeDB can infer the roles of `$review` and `$frankenstein` unambiguously, as they could not play any other roles. The same applies to the `action-execution` relation. Conversely, if one or more of the roleplayers _can_ play multiple roles, then TypeDB is unable to infer them and throws an exception. Consider the following query, for instance.
+
+[,typeql]
+----
+match
+$us isa country, has name "United States";
+insert
+$ga isa state, has name "Georgia";
+($us, $ga) isa locating;
+----
+image:learn::studio-icons/run.png[] *_Try running_*
+
+The types `country` and `state` can play both `location:location` and `location:located`, so any of the following four combinations of roles would be valid:
+
+* `(location: $us, located: $ga) isa locating;`
+* `(located: $us, location: $ga) isa locating;`
+* `(location: $us, location: $ga) isa locating;`
+* `(located: $us, located: $ga) isa locating;`
+
+It is obvious to us that the first statement is the correct one, but TypeDB cannot determine this unambiguously, so we would have to specify the roles when inserting this particular `locating` relation.
+
+.Exercise
+[caption=""]
+====
+_Frankenstein_ is often considered to be one of the earliest works of science fiction, but is instead listed under the "horror" genre in the bookstore database. As a result, it wasn't added to the Sci-Fi & Fantasy Festival promotion by our previous query. Insert a new relation to explicitly add it to the promotion with a 15% discount, and use *role inference* to avoid specifying any necessary roles.
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$sff-festival isa promotion, has code "SFF24";
+$frankenstein isa book, has isbn-13 "9780486282114";
+insert
+($sff-festival, $frankenstein) isa promotion-inclusion,
+    has discount 0.15;
+----
+image:learn::studio-icons/run.png[]image:learn::studio-icons/commit.png[] *_Run and commit_*
+=====
+====

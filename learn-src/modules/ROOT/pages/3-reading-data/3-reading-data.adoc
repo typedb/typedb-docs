@@ -1,0 +1,23 @@
+= Lesson 3: Reading data
+
+In this lesson, we'll learn how to read pre-inserted data in the sample database using *Fetch queries*. We'll begin by seeing how we can retrieve *entities* and *relations* in a similar way to how we do with relational databases. We'll then see how we can retrieve data in unique ways using TypeDB: by writing declarative *polymorphic* queries, by leveraging *rule inference*, and by retrieving *types* from the schema. Finally, we'll look at a few examples of *type inference* at work by seeing how TypeDB validates queries.
+
+== Recommended prerequisites
+
+* You should complete xref:learn::2-environment-setup/2-environment-setup.adoc[Lesson 2] before starting this lesson.
+
+== TypeQL keywords introduced
+
+* `match`
+* `fetch`
+* `attribute`
+* `isa`
+* `has`
+* `entity`
+* `relation`
+* `isa!`
+* `sub`
+* `sub!`
+* `owns`
+* `relates`
+* `plays`
