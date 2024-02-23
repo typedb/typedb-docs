@@ -2,10 +2,7 @@ package org.example;
 // tag::import[]
 import com.vaticle.typedb.common.collection.Pair;
 import com.vaticle.typedb.driver.TypeDB;
-import com.vaticle.typedb.driver.api.TypeDBDriver;
-import com.vaticle.typedb.driver.api.TypeDBOptions;
-import com.vaticle.typedb.driver.api.TypeDBSession;
-import com.vaticle.typedb.driver.api.TypeDBTransaction;
+import com.vaticle.typedb.driver.api.*;
 import com.vaticle.typedb.driver.api.answer.ConceptMap;
 import com.vaticle.typedb.driver.api.concept.Concept;
 import com.vaticle.typedb.driver.api.concept.thing.Entity;
@@ -15,7 +12,6 @@ import com.vaticle.typedb.driver.api.concept.type.ThingType;
 import com.vaticle.typedb.driver.api.concept.value.Value;
 import com.vaticle.typedb.driver.api.logic.Explanation;
 import com.vaticle.typedb.driver.api.logic.Rule;
-import com.vaticle.typedb.driver.jni.Transaction;
 import com.vaticle.typeql.lang.TypeQL;
 import com.vaticle.typeql.lang.pattern.Pattern;
 import java.util.Collections;
@@ -45,6 +41,40 @@ public class Main {
         // end::create-db[]
         if (driver.databases().contains(DB_NAME)) {
             System.out.println("Database setup complete.");
+        }
+
+        try {
+            // tag::connect_core[]
+            TypeDBDriver coreDriver = TypeDB.coreDriver("127.0.0.1:1729");
+            // end::connect_core[]
+            try {
+                // tag::connect_cloud[]
+                TypeDBCredential TypeDBCredential;
+                TypeDBDriver cloudDriver = TypeDB.cloudDriver("127.0.0.1:1729", new TypeDBCredential("admin", "password", true ));
+                // end::connect_cloud[]
+            } catch (Exception ignored) {
+
+            }
+            // tag::session_open[]
+            TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.SCHEMA);
+            // end::session_open[]
+            // tag::tx_open[]
+            TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE);
+            // end::tx_open[]
+            // tag::tx_close[]
+            tx.close();
+            // end::tx_close[]
+            if (tx.isOpen()) {
+                // tag::tx_commit[]
+                tx.commit();
+                // end::tx_commit[]
+            }
+            ;
+            // tag::session_close[]
+            session.close();
+            // end::session_close[]
+        } finally {
+
         }
         // tag::define[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.SCHEMA)) {
@@ -228,6 +258,38 @@ public class Main {
             }
         }
         // end::types-api[]
+        try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.SCHEMA)) {
+            try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
+                // tag::get_type[]
+                EntityType userType = tx.concepts().getEntityType("user").resolve();
+                // end::get_type[]
+                // tag::add_type[]
+                EntityType admin = tx.concepts().putEntityType("admin").resolve();
+                // end::add_type[]
+                // tag::set_supertype[]
+                admin.setSupertype(tx, userType).resolve();
+                // end::set_supertype[]
+
+                // tag::get_instances[]
+                Stream<? extends Entity> users = userType.getInstances(tx);
+                // end::get_instances[]
+                Set<ThingType.Annotation> annotations = Collections.emptySet();
+                users.forEach(user -> {
+                    System.out.println("User");
+                    // tag::get_has[]
+                    user.getHas(tx, annotations).forEach(attribute ->
+                        System.out.println(attribute.getType().getLabel().toString()+ ": " + attribute.getValue().toString()));
+                    // end::get_has[]
+                });
+                // tag::create[]
+                Entity new_user = tx.concepts().getEntityType("user").resolve().create(tx).resolve();
+                // end::create[]
+                // tag::delete_user[]
+                new_user.delete(tx).resolve();
+                // end::delete_user[]
+            }
+        }
+
         // tag::rules-api[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.SCHEMA)) {
             try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
@@ -244,6 +306,28 @@ public class Main {
             }
         }
         // end::rules-api[]
+        try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.SCHEMA)) {
+            try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
+                // tag::get_rule[]
+                Rule oldRule = tx.logic().getRule("users").resolve();
+                // end::get_rule[]
+                System.out.println("Rule label: " + oldRule.getLabel());
+                System.out.println("  Condition: " + oldRule.getWhen().toString());
+                System.out.println("  Conclusion: " + oldRule.getThen().toString());
+                Pattern condition = TypeQL.parsePattern("{$u isa user, has email $e; $e contains '@vaticle.com';}");
+                Pattern conclusion = TypeQL.parsePattern("$u has name 'Employee'");
+                // tag::put_rule[]
+                Rule newRule = tx.logic().putRule("Employee", condition, conclusion).resolve();
+                // end::put_rule[]
+                // tag::get_rules[]
+                tx.logic().getRules().forEach(result -> System.out.println(result.getLabel()));
+                // end::get_rules[]
+                // tag::delete_rule[]
+                newRule.delete(tx).resolve();
+                // end::delete_rule[]
+            }
+        }
+
         // tag::data-api[]
         try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA)) {
             try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
@@ -292,6 +376,45 @@ public class Main {
             }
         }
         // end::explain-get[]
+        try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA)) {
+            TypeDBOptions options = new TypeDBOptions().infer(true).explain(true);
+            try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.READ, options)) {
+                String getQuery = """
+                                    match
+                                    $u isa user, has email $e, has name $n;
+                                    $e contains 'Alice';
+                                    get
+                                    $u, $n;
+                                    """;
+                int[] ctr = new int[1];
+                // tag::explainables[]
+                Stream<ConceptMap> response = tx.query().get(getQuery);
+                // end::explainables[]
+                response.forEach(result -> {
+                    String name = result.get("n").asAttribute().getValue().toString();
+                    System.out.println("Email #" + (++ctr[0]) + ": " + name);
+                    Stream<Pair<String, ConceptMap.Explainable>> explainable_relations = result.explainables().relations();
+                    // tag::explain[]
+                    explainable_relations.forEach(explainable -> {
+                        Stream<Explanation> explain_iterator = tx.query().explain(explainable.second());
+                    // end::explain[]
+                        System.out.println("Explainable variable:" + explainable.first());
+                        System.out.println("Explainable part of the query:" + explainable.second().conjunction());
+
+                        // tag::explanation[]
+                        explain_iterator.forEach(explanation -> {
+                            System.out.println("Rule: " + explanation.rule().getLabel());
+                            System.out.println("  Condition: " + explanation.rule().getWhen().toString());
+                            System.out.println("  Conclusion: " + explanation.rule().getThen().toString());
+                            explanation.queryVariables().forEach(var ->
+                                System.out.println("Query variable " + var + "maps to the rule variable " + explanation.queryVariableMapping(var)));
+                        });
+                        // end::explanation[]
+                    });
+                });
+            }
+        }
         driver.close();
     }
 }
+
