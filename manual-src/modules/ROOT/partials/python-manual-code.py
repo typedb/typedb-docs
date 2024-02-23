@@ -246,11 +246,13 @@ with TypeDB.core_driver("localhost:1729") as driver:
     # end::rules-api[]
     with driver.session(DB_NAME, SessionType.SCHEMA) as session:
         with session.transaction(TransactionType.WRITE) as tx:
+            # tag::get_rules[]
             rules = tx.logic.get_rules()
             for rule in rules:
                 print("Rule label:", rule.label)
                 print("  Condition:", rule.when)
                 print("  Conclusion:", rule.then)
+            # end::get_rules[]
             # tag::put_rule[]
             new_rule = tx.logic.put_rule("Employee",
                                          "{$u isa user, has email $e; $e contains '@vaticle.com';}",

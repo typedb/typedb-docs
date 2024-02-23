@@ -2,10 +2,12 @@
 use std::error::Error;
 
 use typedb_driver::{
-    concept::{Attribute, Concept, Transitivity, Value, ValueType}, transaction::{
+    concept::{Attribute, Concept, Transitivity, Value, ValueType},
+    transaction::{
         concept::api::{EntityTypeAPI, ThingAPI, ThingTypeAPI},
         logic::api::RuleAPI,
-    }, Connection, Credential, DatabaseManager, Options, Promise, Session, SessionType, TransactionType
+    },
+    Connection, Credential, DatabaseManager, Options, Promise, Session, SessionType, TransactionType,
 };
 // end::import[]
 
@@ -39,7 +41,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         println!("Database setup complete");
     }
     {
-        let _ = || -> Result<(),Box<dyn Error>> {
+        let _ = || -> Result<(), Box<dyn Error>> {
             // tag::connect_core[]
             let driver = Connection::new_core("127.0.0.1:1729")?;
             // end::connect_core[]
@@ -55,7 +57,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             // tag::tx_close[]
             tx.force_close();
             // end::tx_close[]
-            if tx.is_open(){
+            if tx.is_open() {
                 // tag::tx_commit[]
                 let _ = tx.commit();
                 // end::tx_commit[]
@@ -324,8 +326,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             let session = Session::new(db, SessionType::Schema)?;
             {
                 let tx = session.transaction(TransactionType::Write)?;
-                let user =
-                    tx.concept().get_entity_type("user".to_owned()).resolve()?.ok_or("No root entity")?;
+                let user = tx.concept().get_entity_type("user".to_owned()).resolve()?.ok_or("No root entity")?;
                 let mut admin = tx.concept().put_entity_type("admin".to_owned()).resolve()?;
                 drop(admin.set_supertype(&tx, user).resolve());
                 let entities = tx
@@ -342,7 +343,39 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
         // end::types-api[]
     }
-
+    {
+        let db = databases.get(DB_NAME)?;
+        {
+            let session = Session::new(db, SessionType::Schema)?;
+            {
+                let tx = session.transaction(TransactionType::Write)?;
+                // tag::get_type[]
+                let user = tx.concept().get_entity_type("user".to_owned()).resolve()?.unwrap();
+                // end::get_type[]
+                // tag::add_type[]
+                let mut admin = tx.concept().put_entity_type("admin".to_owned()).resolve()?;
+                // end::add_type[]
+                // tag::set_supertype[]
+                drop(admin.set_supertype(&tx, user.clone()).resolve());
+                // end::set_supertype[]
+                // tag::get_instances[]
+                let users = user.get_instances(&tx, Transitivity::Transitive)?;
+                // end::get_instances[]
+                for user in users {
+                    // tag::get_has[]
+                    let attributes = user?.get_has(&tx, vec![], vec![])?;
+                    // end::get_has[]
+                }
+                // tag::create[]
+                let new_user =
+                    tx.concept().get_entity_type("user".to_owned()).resolve()?.unwrap().create(&tx).resolve();
+                // end::create[]
+                // tag::delete_user[]
+                let _ = new_user?.delete(&tx);
+                // end::delete_user[]
+            }
+        }
+    }
     {
         // tag::rules-api[]
         let db = databases.get(DB_NAME)?;
@@ -357,8 +390,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 let condition = typeql::parse_pattern("{$u isa user, has email $e; $e contains '@vaticle.com';}")?
                     .into_conjunction();
                 let conclusion = typeql::parse_pattern("$u has name 'Employee'")?.into_statement();
-                let mut new_rule =
-                    tx.logic().put_rule("Employee".to_string(), condition, conclusion).resolve()?;
+                let mut new_rule = tx.logic().put_rule("Employee".to_string(), condition, conclusion).resolve()?;
                 let rules = tx.logic().get_rules()?;
                 for rule in rules {
                     println!("{}", rule?.label);
@@ -369,7 +401,36 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
         // end::rules-api[]
     }
-
+    {
+        let db = databases.get(DB_NAME)?;
+        {
+            let session = Session::new(db, SessionType::Schema)?;
+            {
+                let tx = session.transaction(TransactionType::Write)?;
+                // tag::get_rule[]
+                let r = tx.logic().get_rule("users".to_owned()).resolve()?.ok_or("Rule not found.")?;
+                // end::get_rule[]
+                println!("Rule label: {}", r.label);
+                println!("  Condition: {}", r.when.to_string());
+                println!("  Conclusion: {}", r.then.to_string());
+                // tag::put_rule[]
+                let condition = typeql::parse_pattern("{$u isa user, has email $e; $e contains '@vaticle.com';}")?
+                    .into_conjunction();
+                let conclusion = typeql::parse_pattern("$u has name 'Employee'")?.into_statement();
+                let mut new_rule = tx.logic().put_rule("Employee".to_string(), condition, conclusion).resolve()?;
+                // end::put_rule[]
+                // tag::get_rules[]
+                let rules = tx.logic().get_rules()?;
+                for rule in rules {
+                    println!("{}", rule?.label);
+                }
+                // end::get_rules[]
+                // tag::delete_rule[]
+                let _ = new_rule.delete(&tx).resolve();
+                // end::delete_rule[]
+            }
+        }
+    }
     {
         // tag::data-api[]
         let db = databases.get(DB_NAME)?;
@@ -395,13 +456,8 @@ fn main() -> Result<(), Box<dyn Error>> {
                         println!("  {}: {}", attribute.type_.label, value)
                     }
                 }
-                let new_user = tx
-                    .concept()
-                    .get_entity_type("user".to_owned())
-                    .resolve()?
-                    .unwrap()
-                    .create(&tx)
-                    .resolve()?;
+                let new_user =
+                    tx.concept().get_entity_type("user".to_owned()).resolve()?.unwrap().create(&tx).resolve()?;
                 let _ = new_user.delete(&tx).resolve();
             }
         }
