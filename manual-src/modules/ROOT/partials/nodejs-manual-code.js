@@ -27,6 +27,34 @@ async function main() {
     if (driver.databases.contains(DB_NAME)) {
         console.log("Database setup complete.");
     }
+
+    // tag::connect_core[]
+    let coreDriver = await TypeDB.coreDriver("127.0.0.1:1729")
+    // end::connect_core[]
+    try {
+        // tag::connect_cloud[]
+        let cloudDriver = await TypeDB.cloudDriver("127.0.0.1:1729", new TypeDBCredential("admin","password"));
+        // end::connect_cloud[]
+    }
+    catch(err) {}
+    // tag::session_open[]
+    session = await driver.session(DB_NAME, SessionType.SCHEMA);
+    // end::session_open[]
+    // tag::tx_open[]
+    tx = await session.transaction(TransactionType.WRITE);
+    // end::tx_open[]
+    // tag::tx_close[]
+    await tx.close()
+    // end::tx_close[]
+    if (tx.isOpen()) {
+        // tag::tx_commit[]
+        tx.commit()
+        // end::tx_commit[]
+    }
+    // tag::session_close[]
+    await session.close()
+    // end::session_close[]
+
     // tag::define[]
     try {
         session = await driver.session(DB_NAME, SessionType.SCHEMA);
