@@ -70,7 +70,7 @@ courier sub company,
 
 == Defining abstract types
 
-Abstract types cannot be directly instantiated, much like abstract classes in OOP. An abstract type can only be instantiated via its subtypes. To make a type abstract, we use the `abstract` keyword. The following Define query makes the existing types `book` and `company` abstract.
+Abstract types cannot be directly instantiated, much like abstract classes in OOP. An abstract type can only be instantiated via its subtypes. To make a type abstract, we use an `abstract` statement. The following Define query makes the existing types `book` and `company` abstract.
 
 [,typeql]
 ----
