@@ -3,6 +3,8 @@
 :tabs-sync-option:
 
 An Insert query is used to insert data into a TypeDB database.
+An `insert` clause is executed once per every result matched by the `match` clause of the same query.
+If the `match` clause is omitted, then the `insert` clause is executed exactly once.
 
 This page assumes you've already followed instructions from the xref:manual::defining/overview.adoc[] section.
 Here, you'll see how to insert data in a database using Studio, Console, or one of the drivers.
@@ -150,21 +152,7 @@ include::manual::partial$cpp-manual-code.cpp[tags=insert]
 
 == Response interpretation
 
-An Insert query returns all concepts that got inserted into the database.
-
-An `insert` clause is executed once per every result matched by the `match` clause of the same Insert query.
-If the `match` clause is omitted, then the `insert` clause is executed exactly once.
-
-You can check the response of an Insert query to see what was inserted.
-The response is a Stream/Iterator with a ConceptMap object for every execution of the `insert` clause.
-A ConceptMap object maps every variable from a query to a particular concept in a database.
-
-Alternatively, you can estimate the number of inserts in an Insert query with a `match` clause
-by running a dedicated Fetch or Get query with the same `match` clause in the same transaction.
-Read queries can be used in a `write` transaction, and `write` transactions are snapshoted,
-preventing data changes committed in other transactions from influencing the results.
-
-=== Check the response
+An Insert query returns all concepts that got inserted into the database as a stream of ConceptMap objects.
 
 Let's say we send the following Insert query with a `match` clause:
 
@@ -177,6 +165,21 @@ insert
 $new-u isa user, has name "Charlie", has email "charlie@vaticle.com";
 $f($u,$new-u) isa friendship;
 ----
+
+With the data inserted earlier on this page, we should match only one such user with the name "Bob".
+That leads to inserting one new user and one relevant relation.
+If multiple matches are made by the match clause, then the insert clause runs for each of them.
+
+To check the number of times an Insert query gets executed, you can either <<_check_the_response,check its response>>
+or <<_estimate_the_number_of_inserts_with_a_read_query,send a read query>> with the same matching pattern.
+
+[#_check_the_response]
+//=== The response
+
+//You can check the response of an Insert query to see what was inserted.
+The response is a Stream/Iterator of ConceptMap objects.
+One ConceptMap object for every execution of the `insert` clause.
+A ConceptMap object maps every variable from the insert clause of the query to a concept in a database.
 
 The easiest way to check the response for the query is to use a TypeDB client: Studio or Console.
 Send the above match-insert query the same way as the <<_how_to_send_an_insert_query,previous query>>.
@@ -193,8 +196,12 @@ Both Studio and Console should produce similar results:
 ----
 
 To process the response of an Insert query programmatically,
-we need to collect the response and iterate through it with a xref:drivers::overview.adoc[TypeDB driver].
-The number of iterations is equal to the number of the `insert` clause executions.
+you need to collect the response and iterate through it with a xref:drivers::overview.adoc[TypeDB driver].
+The number of iterations is equal to the number of the `insert` clause executions and every iteration returns
+a ConceptMap object with inserted data.
+
+Let's see an example of programmatically processing the response,
+where we commit the transaction only if the number of inserts meets our expectation.
 
 .Process Insert query response
 [tabs]
@@ -277,11 +284,13 @@ include::manual::partial$cpp-manual-code.cpp[tags=match-insert]
 --
 ====
 
-The example above checks the response of an insert query and commits the changes only if the number of
-inserts is equal to the expected number (`1`).
-Otherwise, it closes the transaction without committing the changes.
+[#_estimate_the_number_of_inserts_with_a_read_query]
+== Estimation with a read query
 
-=== Estimate the number of inserts with a read query
+You can estimate the number of inserts made by an Insert query with a `match` clause
+by running a preliminary Fetch or Get query with the same `match` clause in the same transaction.
+Read queries can be used in a `write` transaction, and `write` transactions are snapshoted.
+Snapshot isolation prevents other transactions from influencing the results.
 
 The most direct approach is to send an aggregated Get query to count the number of matches.
 
@@ -294,6 +303,7 @@ get; count;
 
 The response should be a single number.
 
+//#todo Consider adding driver API example of processing aggregated response (value)
 //#todo Consider adding advanced topics, like batch loading
 
 == Learn more

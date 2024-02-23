@@ -376,31 +376,30 @@ make sure to switch to the `schema` session and `write` transaction in the top t
 
 === Rename a type
 
-To rename a type, open the Type Editor window by double-clicking on the selected type in the Type Browser.
-At the very top, click on the pencil icon immediately right from the type name.
-Edit the name in the Label field and press the btn:[Rename] button to save the changes.
+To rename a type:
+
+. Open the Type Editor window by double-clicking on the selected type in the Type Browser.
+. At the very top, click on the pencil icon immediately right from the type name.
+. Edit the name in the Label field and press the btn:[Rename] button to save the changes.
+. Commit the transaction by the btn:[Commit] (image:home::studio-icons/commit.png[]) button at the top toolbar.
 //#todo Add the pencil icon
 
 You can also do the same by right-clicking on the type in the Type Browser panel and choosing the Rename Type option.
 
-Both Type Editor and Type Browser require you to commit the changes by the btn:[Commit]
-(image:home::studio-icons/commit.png[]) button at the top toolbar.
-
 Renaming a type in any of these two ways updates the relevant type references in the schema and does not lead
 to loosing existing data.
-All existing instances of the type will be available under the new type label.
+All existing instances of the type will be available under the new label.
 
 === Delete a type
 
-To delete a type, open the Type Editor window by double-clicking on the selected type in the Type Browser.
-At the very bottom, click the btn:[Delete] button and then the btn:[Confirm] button.
-//Commit the transaction with the btn:[Commit] button (image:home::studio-icons/commit.png[]) at the top toolbar.
+To delete a type:
+
+. Open the Type Editor window by double-clicking on the selected type in the Type Browser.
+. At the very bottom, click the btn:[Delete] button and then the btn:[Confirm] button.
+. Commit the transaction by the btn:[Commit] (image:home::studio-icons/commit.png[]) button at the top toolbar.
 
 You can also do the same by right-clicking on the type in the Type browser panel and choosing the Delete option,
 then clicking the btn:[Confirm] button.
-
-Both Type Editor and Type Browser require you to commit the changes by the btn:[Commit]
-(image:home::studio-icons/commit.png[]) button at the top toolbar.
 
 In some cases, the btn:[Delete] option and button can be unavailable.
 That means there are some conditions that prevent you from deleting this type.

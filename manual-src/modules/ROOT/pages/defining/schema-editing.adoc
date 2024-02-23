@@ -21,7 +21,9 @@ These methods can vary from driver to driver due to language-specific details.
 
 === Example
 
-See below an example of schema manipulation using driver API methods.
+See below an example of schema manipulation using driver API methods: creating an attribute type (`tag`),
+retrieving the `entity` root type, getting all subtypes of a type,
+traversing all subtypes to assign ownership of the new attribute type, and committing the transaction.
 
 :code-caption: Driver API schema modification
 [tabs]
@@ -86,9 +88,6 @@ include::manual::partial$cpp-manual-code.cpp[tags=types-editing]
 For more details about these and other API methods, see the xref:drivers::cpp/api-reference.adoc[API reference].
 --
 ====
-
-The above example adds an attribute type `tag` of a String value type and adds ownership over it for
-all non-abstract entity types that directly subtype the root `entity` type.
 
 == Learn more
 
