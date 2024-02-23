@@ -45,9 +45,9 @@ Python::
 +
 --
 .Example
-[,python]
+[,python,indent=0]
 ----
-user = transaction.concepts.get_entity_type("user").resolve()
+include::manual::partial$python-manual-code.py[tag=get_type]
 ----
 For more information,
 see the xref:drivers::python/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -128,9 +128,9 @@ Python::
 +
 --
 .Example
-[,python]
+[,python,indent=0]
 ----
-admin = transaction.concepts.put_entity_type("admin").resolve()
+include::manual::partial$python-manual-code.py[tag=add_type]
 ----
 For more information,
 see the xref:drivers::python/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -205,9 +205,9 @@ Python::
 +
 --
 .Example
-[,python]
+[,python,indent=0]
 ----
-admin.set_supertype(transaction, user)
+include::manual::partial$python-manual-code.py[tag=set_supertype]
 ----
 For more information on methods, available for manipulating Type objects,
 see the xref:drivers::python/api-reference.adoc#_schema_header[Schema class] methods.
@@ -351,9 +351,9 @@ Python::
 +
 --
 .Example
-[,python]
+[,python,indent=0]
 ----
-new_rule = transaction.logic.get_rule("Employee").resolve():
+include::manual::partial$python-manual-code.py[tag=get_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -559,9 +559,9 @@ Python::
 +
 --
 .Example
-[,python]
+[,python,indent=0]
 ----
-new_rule = transaction.logic.put_rule("Employee", "{$u isa user, has email $e; $e contains '@vaticle.com';}", "$u has name 'Employee'").resolve()
+include::manual::partial$python-manual-code.py[tag=put_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -654,9 +654,9 @@ Python::
 +
 --
 .Example
-[,python]
+[,python,indent=0]
 ----
-new_rule.delete(transaction).resolve()
+include::manual::partial$python-manual-code.py[tag=delete_rule]
 ----
 
 The above example deletes the type, which type object is stored in the variable, from the schema of a database.

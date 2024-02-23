@@ -52,9 +52,9 @@ Python::
 +
 --
 .Example
-[,python]
+[,python,indent=0]
 ----
-users = transaction.concepts.get_entity_type("user").resolve().get_instances(transaction)
+include::manual::partial$python-manual-code.py[tag=get_instances]
 ----
 For more information,
 see the xref:drivers::python/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -123,9 +123,9 @@ Python::
 +
 --
 .Example
-[,python]
+[,python,indent=0]
 ----
-attributes = user.get_has(transaction)
+include::manual::partial$python-manual-code.py[tag=get_has]
 ----
 For more information,
 see the xref:drivers::python/api-reference.adoc#_data_header[Data class] methods.
@@ -191,9 +191,9 @@ Python::
 +
 --
 .Example
-[,python]
+[,python,indent=0]
 ----
-new_user = transaction.concepts.get_entity_type("user").resolve().create(transaction)
+include::manual::partial$python-manual-code.py[tag=create]
 ----
 For more information,
 see the xref:drivers::python/api-reference.adoc#_EntityType[EntityType class] methods.
@@ -261,9 +261,9 @@ Python::
 +
 --
 .Example
-[,python]
+[,python,indent=0]
 ----
-new_user.delete(transaction)
+include::manual::partial$python-manual-code.py[tag=delete_user]
 ----
 For more information,
 see the xref:drivers::python/api-reference.adoc#_EntityType[EntityType class] methods.
