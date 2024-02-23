@@ -36,11 +36,9 @@ Python::
 +
 --
 .Example
-[,python]
+[,python,indent=0]
 ----
-response = transaction.query.get(get_query)
-for ConceptMap in response:
-    explainable_relations = ConceptMap.explainables().relations()
+include::manual::partial$python-manual-code.py[tag=explainables]
 ----
 For more information,
 see the xref:drivers::python/api-reference.adoc#_Explainables[Explainables] and
@@ -124,10 +122,9 @@ Python::
 +
 --
 .Example
-[,python]
+[,python,indent=0]
 ----
-for explainable in explainable_relations:
-    explain_iterator = transaction.query.explain(explainable_relations[explainable])
+include::manual::partial$python-manual-code.py[tag=explain]
 ----
 For more information, see the
 xref:drivers::python/api-reference.adoc#_QueryManager_explain__explainable_ConceptMap_Explainable__options_TypeDBOptions__None[Explain query]
@@ -218,15 +215,9 @@ Python::
 +
 --
 .Example
-[,python]
+[,python,indent=0]
 ----
-for explanation in explain_iterator:
-    print("Rule: ", explanation.rule().label)
-    print("Condition: ", explanation.condition())
-    print("Conclusion: ", explanation.conclusion())
-    print("Variable mapping: ")
-    for var in explanation.query_variables():
-        print(f"  Query variable {var} maps to the rule variable {explanation.query_variable_mapping(var)}")
+include::manual::partial$python-manual-code.py[tag=explanation]
 ----
 For more information,
 see the xref:drivers::python/api-reference.adoc#_Explanation[Explanation class] methods.
