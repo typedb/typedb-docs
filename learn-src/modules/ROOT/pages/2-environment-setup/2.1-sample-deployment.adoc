@@ -1,0 +1,35 @@
+= Lesson 2.1: Sample deployment
+
+== Deploy sample database
+
+Throughout this course, we will be using a sample database for an online bookstore. Follow these instructions to deploy a *TypeDB Core server* preloaded with the sample database.
+
+. Install and run https://docs.docker.com/get-docker/[Docker].
+. Pull the Docker image for the sample database:
++
+[,bash]
+----
+docker image pull vaticle/typedb-sample-data:1.0.0
+----
+. Start the Docker image:
++
+[,bash]
+----
+docker run -p 1730:1729 vaticle/typedb-sample-data:1.0.0
+----
+
+The server can be connected to using port `1730`.
+
+[NOTE]
+====
+The default port used by TypeDB servers is `1729`. We use `1730` for this learning course so as not to conflict with any other local deployments.
+====
+
+== Install TypeDB Studio
+
+To connect to a TypeDB server and run queries, we need to use a *TypeDB client*. This course is focused around using *TypeDB Studio*, an IDE for managing and developing with TypeDB. To install TypeDB Studio, follow the instructions on the xref:home::install/studio.adoc[Studio installation page]. A brief tutorial covering the Studio features necessary to complete this course is included in xref:learn::2-environment-setup/2.2-using-typedb-studio.adoc[Lesson 2.2].
+
+[NOTE]
+====
+The queries featured in this learning course can be run from any TypeDB client, bit it is strongly recommended to use TypeDB Studio. If you are comfortable using TypeDB Console or the TypeDB Drivers, please visit the xref:home::install/console.adoc[Console installation page] or xref:drivers::overview.adoc[Driver overview] for installation instructions.
+====
