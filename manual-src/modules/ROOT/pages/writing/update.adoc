@@ -4,6 +4,8 @@
 
 An Update query is used to update data in a TypeDB database by matching existing data, deleting some of it,
 and then inserting some other data instead.
+A `delete` and `insert` clauses are executed once per every result
+matched by the `match` clause of the same Update query.
 
 This page assumes you've already followed instructions from the xref:manual::writing/delete.adoc[] page.
 Here, you'll see how to update data in a database using Studio, Console, or one of the drivers.
@@ -155,7 +157,7 @@ include::manual::partial$cpp-manual-code.cpp[tags=update]
 
 == Response interpretation
 
-An Update query returns all concepts that got inserted into the database.
+An Update query returns all concepts that got *inserted* into the database.
 
 Both `delete` and `insert` clauses are executed once per every result
 matched by the `match` clause of the same Update query.
@@ -168,11 +170,6 @@ The query will continue its execution.
 You can check the response of an Update query to see what was inserted.
 The response is a Stream/Iterator with a ConceptMap object for every execution of the `insert` clause.
 A ConceptMap object maps every variable from a query to a particular concept in a database.
-
-Alternatively, you can estimate the number of inserts in an Update query with a `match` clause
-by running a dedicated Fetch or Get query with the same `match` clause in the same transaction.
-Read queries can be used in a `write` transaction, and `write` transactions are snapshoted,
-providing isolation from changes made by other transactions.
 
 === Check the response
 
@@ -199,7 +196,12 @@ The example above checks the response of an Update query and commits the changes
 inserts is equal to the expected number (`1`).
 Otherwise, it closes the transaction without committing the changes.
 
-=== Estimate the number of inserts with a read query
+== Estimation with a read query
+
+You can estimate the number of inserts in an Update query with a `match` clause
+by running a dedicated Fetch or Get query with the same `match` clause in the same transaction.
+Read queries can be used in a `write` transaction, and `write` transactions are snapshoted,
+providing isolation from changes made by other transactions.
 
 To estimate the number of inserts in an Update query,
 use the same `write` transaction to send any type of a read query with the same `match` clause, as the Update query.
@@ -213,7 +215,9 @@ $u isa user, has name "Bob", has email $e;
 get; count;
 ----
 
-The response should be a single number.
+The response is a single number.
+The aggregated number of matched results is equal to the number of times the `delete` and `insert` clauses
+of a Delete query with the same `match` clause in the same `write` transaction will be executed.
 
 == Learn more
 

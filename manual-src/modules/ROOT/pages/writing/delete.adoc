@@ -3,6 +3,7 @@
 :tabs-sync-option:
 
 A Delete query is used to delete data from a TypeDB database.
+A `delete` clause is executed once per every result matched by the `match` clause of the same Delete query.
 
 This page assumes you've already followed instructions from the xref:manual::writing/insert.adoc[] page.
 Here, you'll see how to delete data from a database using Studio, Console, or one of the drivers.
@@ -156,14 +157,12 @@ include::manual::partial$cpp-manual-code.cpp[tags=delete]
 A Delete query returns a Promise of an empty response.
 This promise can be resolved when the query is finished executing, but it doesn't contain any useful information.
 
-A `delete` clause is executed once per every result matched by the `match` clause of the same Delete query.
+== Estimation with a read query
 
-You can estimate the number of deletes in a Delete query
-by running a dedicated Fetch or Get query with the same `match` clause in the same transaction.
+You can estimate what gets deletes in a Delete query
+by running a preliminary Fetch or Get query with the same `match` clause in the same transaction.
 Read queries can be used in a `write` transaction, and `write` transactions are snapshoted,
 preventing data changes committed in other transactions from influencing the results.
-
-=== Estimate the number of deletes with a read query
 
 You can send any type of read query,
 but the most direct approach is to send an aggregated Get query to count the number of matches.
@@ -179,9 +178,9 @@ $f($u1,$u2) isa friendship;
 get; count;
 ----
 
-The response should be a single number.
-The number of matched results is equal to the number of times the `delete` clause of a delete query with the same
-`match` clause in the same `write` transaction will be executed.
+The response is a single value of a `long` value type.
+The aggregated number of matched results is equal to the number of times the `delete` clause of a Delete query
+with the same `match` clause in the same `write` transaction will be executed.
 Every execution of a `delete` clause tries to delete the data specified by a pattern.
 If the data is deleted already by previous execution of the `delete` clause in the same query,
 no additional data is deleted and no error is produced.
