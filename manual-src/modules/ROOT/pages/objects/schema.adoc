@@ -32,9 +32,9 @@ Rust::
 +
 --
 .Example
-[,rust]
+[,rust,indent=0]
 ----
-let user = transaction.concept().get_entity_type("user".to_owned()).resolve()?.ok_or("No user type.").unwrap();
+include::manual::partial$rust-manual-code.rs[tag=get_type]
 ----
 
 For more information,
@@ -116,9 +116,9 @@ Rust::
 +
 --
 .Example
-[,rust]
+[,rust,indent=0]
 ----
-let mut admin = transaction.concept().put_entity_type("admin".to_owned()).resolve()?;
+include::manual::partial$python-manual-code.py[tag=add_type]
 ----
 For more information,
 see the xref:drivers::rust/api-reference.adoc#_struct_ConceptManager[ConceptManager class] methods.
@@ -193,9 +193,9 @@ Rust::
 +
 --
 .Example
-[,rust]
+[,rust,indent=0]
 ----
-drop(admin.set_supertype(&transaction, user).resolve());
+include::manual::partial$rust-manual-code.rs[tag=set_supertype]
 ----
 For more information on methods, available for manipulating Type objects,
 see the xref:drivers::rust/api-reference.adoc#_schema_header[Schema class] methods.
@@ -334,9 +334,9 @@ Rust::
 +
 --
 .Example
-[,rust]
+[,rust,indent=0]
 ----
-let new_rule = transaction.logic().get_rule("Employee".to_owned()).resolve()?.ok_or("Rule not found.").unwrap()
+include::manual::partial$rust-manual-code.rs[tag=get_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -426,14 +426,9 @@ Rust::
 +
 --
 .Example
-[,rust]
+[,rust,indent=0]
 ----
-let rules = transaction.logic().get_rules()?;
-for rule in rules {
-    println!("Rule label: {}", rule?.label);
-    println!("  Condition: {}", rule?.when.to_string());
-    println!("  Conclusion: {}", rule?.then.to_string());
-}
+include::manual::partial$rust-manual-code.rs[tag=get_rules]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -450,11 +445,7 @@ Python::
 .Example
 [,python]
 ----
-rules = transaction.logic.get_rules()
-for rule in rules:
-    print("Rule label:", rule.label)
-    print("  Condition:", rule.when)
-    print("  Conclusion:", rule.then)
+include::manual::partial$python-manual-code.py[tag=get_rules]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -540,11 +531,9 @@ Rust::
 +
 --
 .Example
-[,rust]
+[,rust,indent=0]
 ----
-let condition = typeql::parse_pattern("{$u isa user, has email $e; $e contains '@vaticle.com';}")?.into_conjunction();
-let conclusion = typeql::parse_pattern("$u has name 'Employee'")?.into_statement();
-let mut new_rule = transaction.logic().put_rule("Employee".to_string(), condition, conclusion).resolve()?;
+include::manual::partial$rust-manual-code.rs[tag=put_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -636,9 +625,9 @@ Rust::
 +
 --
 .Example
-[,rust]
+[,rust,indent=0]
 ----
-let _ = new_rule.delete(&transaction).resolve();
+include::manual::partial$rust-manual-code.rs[tag=delete_rule]
 ----
 The above example deletes the type, which type object is stored in the variable, from the schema of a database.
 You need to commit transaction to persist the changes.
