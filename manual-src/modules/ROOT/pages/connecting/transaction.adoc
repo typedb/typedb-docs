@@ -65,9 +65,9 @@ Python::
 +
 --
 .Open a transaction
-[,python]
+[,python,indent=0]
 ----
-transaction = session.transaction(TransactionType.WRITE)
+include::manual::partial$python-manual-code.py[tag=tx_open]
 ----
 --
 
@@ -163,9 +163,9 @@ or use the xref:drivers::python/api-reference.adoc#_TypeDBTransaction_close__[cl
 to explicitly close a transaction:
 
 .Close a transaction
-[,python]
+[,python,indent=0]
 ----
-transaction.close()
+include::manual::partial$python-manual-code.py[tag=tx_close]
 ----
 --
 
@@ -269,9 +269,9 @@ Python::
 To commit a transaction, use the xref:drivers::python/api-reference.adoc#_TypeDBTransaction_commit__[commit] method:
 
 .Commit a transaction
-[,python]
+[,python,indent=0]
 ----
-transaction.commit()
+include::manual::partial$python-manual-code.py[tag=tx_commit]
 ----
 --
 
