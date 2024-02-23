@@ -21,7 +21,7 @@ you need to get a stateful object that represents the type in the database.
 To get a type object from a TypeDB database,
 you can use a TypeQL Get query or one of the driver API methods.
 
-==== Get the type by its label
+==== Get a type object by its label
 
 Use type's label to retrieve the type object.
 For example, to get a stateful object of the `user` entity type, use:
@@ -92,7 +92,9 @@ see the xref:drivers::cpp/api-reference.adoc#_ConceptManager[ConceptManager clas
 
 ==== Query for types
 
-Send a xref:typeql::data/get.adoc[Get query] that returns type concept(s).
+xref:manual::reading/get.adoc#_how_to_send_a_get_query[Send a Get query] with a pattern to retrieve types
+and process the response to get type objects.
+For example, to get all entity types, send the following Get query:
 
 .Example of a Get query for entity types
 [,typeql]
@@ -102,14 +104,11 @@ $x sub entity;
 get $x;
 ----
 
-The above example retrieves all entity types in a database (as subtypes of the `entity` root type).
-For instructions on how to send a Get query and process the response, see the
-xref:manual::reading/get.adoc#_how_to_send_a_get_query[Get query] page.
-
 === Add a type
 
 To add a new type into the schema of a database,
-use a TypeQL xref:typeql::schema/define.adoc[Define query] or one of the put type methods:
+use a TypeQL xref:typeql::schema/define.adoc[Define query] or one of the put type methods.
+For example, to add an entity type with the label `admin` by using put type method, use the following code:
 
 [tabs]
 ====
@@ -178,7 +177,15 @@ see the xref:drivers::cpp/api-reference.adoc#_ConceptManager[ConceptManager clas
 === Type manipulation
 
 A stateful type object has many useful methods to manipulate the type or traverse the type hierarchy of a schema:
-get/set label, get/set supertype, get subtypes, get ownerships, get roles played, etc.
+
+* get/set label,
+* get/set supertype,
+* get subtypes,
+* get ownerships,
+* get roles played,
+* etc.
+
+For example, see how to change a supertype for the `admin` type we added previously:
 
 [tabs]
 ====
@@ -246,8 +253,9 @@ see the xref:drivers::python/api-reference.adoc#_schema_header[Schema class] met
 [#_example_of_type_manipulation]
 === Full example
 
-See below a comprehensive example of types manipulation:
-retrieving a type by its label, adding type, changing supertype, and retrieving all subtypes of a type.
+See below a more comprehensive example of type objects manipulation.
+In this example we retrieve the `user` type object, create the `admin` type and set `user` as a supertype for `admin`.
+Then we retrieve all subtypes of the `entity` root types (effectively all entity types) and print their labels.
 
 [tabs]
 ====
@@ -298,8 +306,6 @@ include::manual::partial$cpp-manual-code.cpp[tags=types-api]
 --
 ====
 
-The above example set the `user` type as the supertype to the `admin` type, making `admin` a subtype of `user`.
-
 For an additional example of programmatic type manipulations,
 see the xref:manual::defining/schema-editing.adoc#_modify_with_driver_api[Schema editing] page.
 
@@ -317,9 +323,10 @@ you need to get a stateful object that represents the rule in the database.
 Rules can be defined with a TypeQL query (see xref:typeql::schema/define.adoc[]), but they can't be retrieved with one.
 To get a rule object from a TypeDB database, you need to use the Logic class methods of a driver API.
 
-==== Get rule by label
+==== Get a rule object by its label
 
-Retrieve a rule by its label:
+Use rule's label to retrieve the rule object.
+For example, to get a stateful object of the rule with the label `Employee`, use:
 
 [tabs]
 ====
@@ -411,7 +418,7 @@ method in driver API reference.
 
 ==== Get all rules
 
-Retrieve all rules in a schema:
+Use get rules method to retrieve all rules in a schema:
 
 [tabs]
 ====
@@ -725,6 +732,10 @@ xref:drivers::cpp/api-reference.adoc#_Rule[Rule class] methods.
 See below a comprehensive example of rules manipulation:
 retrieving all rules, printing label, condition (when) and conclusion(then), adding a new rule,
 retrieving a rule by its label, and deleting a rule.
+
+See below a more comprehensive example of rule objects manipulation.
+In this example we retrieve the `users` rule object and print its label, condition, and conclusion.
+Then we add a new rule `Employee` and retrieve all rules to print their labels.
 
 [tabs]
 ====

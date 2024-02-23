@@ -9,11 +9,16 @@ in a database using one of the TypeDB drivers.
 == Get data
 
 To manipulate data with driver API methods,
-you need to get a stateful object that represents an instance  in the database.
+you need to get a stateful object that represents a data instance in the database.
 
-=== Query data
+To get a data object from a TypeDB database,
+you can use a TypeQL Get query or one of the driver API methods.
 
-Send a xref:typeql::data/get.adoc[Get query] that returns data concept(s).
+=== Query for data objects
+
+xref:manual::reading/get.adoc#_how_to_send_a_get_query[Send a Get query] with a pattern to retrieve data
+and process the response to get data objects.
+For example, to get all instances of the `user` type, send the following Get query:
 
 .Example of a Get query
 [,typeql]
@@ -23,14 +28,10 @@ $u isa user;
 get $u;
 ----
 
-The above example retrieves all data instances of the `user` type.
-For instructions on how to send a Get query and process the response, see the
-xref:manual::reading/get.adoc#_how_to_send_a_get_query[Get query] page.
-
 === Get all instances of a type
 
-Use type's label to retrieve the type object.
-For example, to get a stateful object of the `user` entity type, use:
+Use a type object to retrieve all data objects of that type.
+For example, let's get a stateful object of the `user` entity type, and then get all instances of data as data objects:
 
 [tabs]
 ====
@@ -96,10 +97,12 @@ see the xref:drivers::cpp/api-reference.adoc#_ConceptManager[ConceptManager clas
 --
 ====
 
-=== Traverse between data objects
+=== Traverse data objects
 
-A data class has methods to traverse between data objects by retrieving all owned attributes,
+The Data class has methods to traverse data objects by retrieving all owned attributes,
 all relations played in and respective roles.
+For example, let's get data objects of all attributes owned by the instance,
+represented by the data object in the `user` variable:
 
 [tabs]
 ====
@@ -304,6 +307,12 @@ see the xref:drivers::cpp/api-reference.adoc#_EntityType[EntityType class] metho
 ====
 
 == Full example
+
+See below a comprehensive example of programmatic data manipulation.
+In this example we
+retrieve the `user` type, get all its instances, iterate through every user,
+retrieve all owned attributes for every user, and print values of these attributes.
+Then we add a new instance of the `user` entity type.
 
 [tabs]
 ====
