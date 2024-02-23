@@ -48,9 +48,9 @@ Rust::
 +
 --
 .Open a session
-[,rust]
+[,rust,indent=0]
 ----
-let session = Session::new(databases.get(DB_NAME)?, SessionType::Schema)?;
+include::manual::partial$rust-manual-code.rs[tag=session_open]
 ----
 
 Where `DB_NAME` is the name of the database.
@@ -126,9 +126,9 @@ To explicitly close a session,
 use the xref:drivers::rust/api-reference.adoc#_struct_Session_force_close__[force_close] method:
 
 .Close a session
-[,rust]
+[,rust,indent=0]
 ----
-session.force_close();
+include::manual::partial$rust-manual-code.rs[tag=session_close]
 ----
 --
 
