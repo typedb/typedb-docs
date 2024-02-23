@@ -55,9 +55,9 @@ Rust::
 +
 --
 .Open a transaction
-[,rust]
+[,rust,indent=0]
 ----
-let transaction = session.transaction(TransactionType::Write)?;
+include::manual::partial$rust-manual-code.rs[tag=tx_open]
 ----
 --
 
@@ -149,9 +149,9 @@ To explicitly close a transaction,
 use the xref:drivers::rust/api-reference.adoc#_struct_Transaction_force_close__[force_close] method:
 
 .Close a transaction
-[,rust]
+[,rust,indent=0]
 ----
-transaction.force_close()
+include::manual::partial$rust-manual-code.rs[tag=tx_close]
 ----
 --
 
@@ -259,7 +259,7 @@ use the xref:drivers::rust/api-reference.adoc#_struct_Transaction_commit__[commi
 .Commit a transaction
 [,rust]
 ----
-transaction.commit();
+include::manual::partial$rust-manual-code.rs[tag=tx_commit]
 ----
 --
 

@@ -54,9 +54,9 @@ Rust::
 +
 --
 .Connect to TypeDB Core
-[,rust]
+[,rust,indent=0]
 ----
-let driver = Connection::new_core("127.0.0.1:1729");
+include::manual::partial$rust-manual-code.rs[tag=connect_core]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -167,7 +167,7 @@ Rust::
 .Connect to TypeDB Cloud
 [,rust]
 ----
-let driver = Connection::new_cloud(&["127.0.0.1:1729"], Credential::with_tls("admin", "password", None).unwrap());
+include::manual::partial$rust-manual-code.rs[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.

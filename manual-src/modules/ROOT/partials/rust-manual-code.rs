@@ -2,12 +2,10 @@
 use std::error::Error;
 
 use typedb_driver::{
-    concept::{Attribute, Concept, Transitivity, Value, ValueType},
-    transaction::{
+    concept::{Attribute, Concept, Transitivity, Value, ValueType}, transaction::{
         concept::api::{EntityTypeAPI, ThingAPI, ThingTypeAPI},
         logic::api::RuleAPI,
-    },
-    Connection, DatabaseManager, Options, Promise, Session, SessionType, TransactionType,
+    }, Connection, Credential, DatabaseManager, Options, Promise, Session, SessionType, TransactionType
 };
 // end::import[]
 
@@ -40,14 +38,41 @@ fn main() -> Result<(), Box<dyn Error>> {
     if databases.contains(DB_NAME)? {
         println!("Database setup complete");
     }
-
+    {
+        let _ = || -> Result<(),Box<dyn Error>> {
+            // tag::connect_core[]
+            let driver = Connection::new_core("127.0.0.1:1729")?;
+            // end::connect_core[]
+            // tag::connect_cloud[]
+            let driver = Connection::new_cloud(&["127.0.0.1:1729"], Credential::with_tls("admin", "password", None)?)?;
+            // end::connect_cloud[]
+            // tag::session_open[]
+            let session = Session::new(databases.get(DB_NAME)?, SessionType::Schema)?;
+            // end::session_open[]
+            // tag::tx_open[]
+            let tx = session.transaction(TransactionType::Write)?;
+            // end::tx_open[]
+            // tag::tx_close[]
+            tx.force_close();
+            // end::tx_close[]
+            if tx.is_open(){
+                // tag::tx_commit[]
+                let _ = tx.commit();
+                // end::tx_commit[]
+            }
+            // tag::session_close[]
+            let _ = session.force_close();
+            // end::session_close[]
+            Ok({})
+        };
+    }
     {
         // tag::define[]
         let db = databases.get(DB_NAME)?;
         {
             let session = Session::new(db, SessionType::Schema)?;
             {
-                let transaction = session.transaction(TransactionType::Write)?;
+                let tx = session.transaction(TransactionType::Write)?;
                 let define_query = "
                                     define
                                     email sub attribute, value string;
@@ -59,8 +84,8 @@ fn main() -> Result<(), Box<dyn Error>> {
                                         plays friendship:friend;
                                     admin sub user;
                                     ";
-                transaction.query().define(define_query).resolve()?;
-                transaction.commit().resolve()?;
+                tx.query().define(define_query).resolve()?;
+                tx.commit().resolve()?;
             }
         }
         // end::define[]
@@ -72,10 +97,10 @@ fn main() -> Result<(), Box<dyn Error>> {
         {
             let session = Session::new(db, SessionType::Schema)?;
             {
-                let transaction = session.transaction(TransactionType::Write)?;
+                let tx = session.transaction(TransactionType::Write)?;
                 let undefine_query = "undefine admin sub user;";
-                transaction.query().undefine(undefine_query).resolve()?;
-                transaction.commit().resolve()?;
+                tx.query().undefine(undefine_query).resolve()?;
+                tx.commit().resolve()?;
             }
         }
         // end::undefine[]
@@ -87,15 +112,15 @@ fn main() -> Result<(), Box<dyn Error>> {
         {
             let session = Session::new(db, SessionType::Data)?;
             {
-                let transaction = session.transaction(TransactionType::Write)?;
+                let tx = session.transaction(TransactionType::Write)?;
                 let insert_query = "
                                     insert
                                     $user1 isa user, has name 'Alice', has email 'alice@vaticle.com';
                                     $user2 isa user, has name 'Bob', has email 'bob@vaticle.com';
                                     $friendship (friend:$user1, friend: $user2) isa friendship;
                                     ";
-                let _ = transaction.query().insert(insert_query)?;
-                transaction.commit().resolve()?;
+                let _ = tx.query().insert(insert_query)?;
+                tx.commit().resolve()?;
             }
         }
         // end::insert[]
@@ -107,7 +132,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         {
             let session = Session::new(db, SessionType::Data)?;
             {
-                let transaction = session.transaction(TransactionType::Write)?;
+                let tx = session.transaction(TransactionType::Write)?;
                 let match_insert_query = "
                                         match
                                         $u isa user, has name 'Bob';
@@ -115,11 +140,11 @@ fn main() -> Result<(), Box<dyn Error>> {
                                         $new-u isa user, has name 'Charlie', has email 'charlie@vaticle.com';
                                         $f($u,$new-u) isa friendship;
                                         ";
-                let response_count = transaction.query().insert(match_insert_query)?.count();
+                let response_count = tx.query().insert(match_insert_query)?.count();
                 if response_count == 1 {
-                    transaction.commit().resolve()?;
+                    tx.commit().resolve()?;
                 } else {
-                    transaction.force_close();
+                    tx.force_close();
                 }
             }
         }
@@ -132,7 +157,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         {
             let session = Session::new(db, SessionType::Data)?;
             {
-                let transaction = session.transaction(TransactionType::Write)?;
+                let tx = session.transaction(TransactionType::Write)?;
                 let delete_query = "
                                     match
                                     $u isa user, has name 'Charlie';
@@ -140,8 +165,8 @@ fn main() -> Result<(), Box<dyn Error>> {
                                     delete
                                     $f isa friendship;
                                     ";
-                let _ = transaction.query().delete(delete_query).resolve();
-                transaction.commit().resolve()?;
+                let _ = tx.query().delete(delete_query).resolve();
+                tx.commit().resolve()?;
             }
         }
         // end::delete[]
@@ -153,7 +178,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         {
             let session = Session::new(db, SessionType::Data)?;
             {
-                let transaction = session.transaction(TransactionType::Write)?;
+                let tx = session.transaction(TransactionType::Write)?;
                 let update_query = "
                                     match
                                     $u isa user, has name 'Charlie', has email $e;
@@ -162,11 +187,11 @@ fn main() -> Result<(), Box<dyn Error>> {
                                     insert
                                     $u has email 'charles@vaticle.com';
                                     ";
-                let response_count = transaction.query().update(update_query)?.count();
+                let response_count = tx.query().update(update_query)?.count();
                 if response_count == 1 {
-                    transaction.commit().resolve()?;
+                    tx.commit().resolve()?;
                 } else {
-                    transaction.force_close();
+                    tx.force_close();
                 }
             }
         }
@@ -179,14 +204,14 @@ fn main() -> Result<(), Box<dyn Error>> {
         {
             let session = Session::new(db, SessionType::Data)?;
             {
-                let transaction = session.transaction(TransactionType::Read)?;
+                let tx = session.transaction(TransactionType::Read)?;
                 let fetch_query = "
                                     match
                                     $u isa user;
                                     fetch
                                     $u: name, email;
                                     ";
-                let response = transaction.query().fetch(fetch_query)?;
+                let response = tx.query().fetch(fetch_query)?;
                 for (i, json) in response.enumerate() {
                     println!("User #{}: {}", (i + 1).to_string(), json.unwrap().to_string())
                 }
@@ -201,14 +226,14 @@ fn main() -> Result<(), Box<dyn Error>> {
         {
             let session = Session::new(db, SessionType::Data)?;
             {
-                let transaction = session.transaction(TransactionType::Read)?;
+                let tx = session.transaction(TransactionType::Read)?;
                 let get_query = "
                                 match
                                 $u isa user, has email $e;
                                 get
                                 $e;
                                 ";
-                let response = transaction.query().get(get_query)?;
+                let response = tx.query().get(get_query)?;
                 for (i, cm) in response.enumerate() {
                     let email_concept = cm.unwrap().get("e").unwrap().clone();
                     let email = match email_concept {
@@ -228,7 +253,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         {
             let session = Session::new(db, SessionType::Schema)?;
             {
-                let transaction = session.transaction(TransactionType::Write)?;
+                let tx = session.transaction(TransactionType::Write)?;
                 let define_query = "
                                     define
                                     rule users:
@@ -238,8 +263,8 @@ fn main() -> Result<(), Box<dyn Error>> {
                                         $u has name 'User';
                                     };
                                     ";
-                transaction.query().define(define_query).resolve()?;
-                transaction.commit().resolve()?;
+                tx.query().define(define_query).resolve()?;
+                tx.commit().resolve()?;
             }
         }
         // end::infer-rule[]
@@ -249,14 +274,14 @@ fn main() -> Result<(), Box<dyn Error>> {
         {
             let session = Session::new(db, SessionType::Data)?;
             {
-                let transaction = session.transaction_with_options(TransactionType::Read, options)?;
+                let tx = session.transaction_with_options(TransactionType::Read, options)?;
                 let fetch_query = "
                                     match
                                     $u isa user;
                                     fetch
                                     $u: name, email;
                                     ";
-                let response = transaction.query().fetch(fetch_query)?;
+                let response = tx.query().fetch(fetch_query)?;
                 for (i, json) in response.enumerate() {
                     println!("User #{}: {}", (i + 1).to_string(), json.unwrap().to_string())
                 }
@@ -271,22 +296,22 @@ fn main() -> Result<(), Box<dyn Error>> {
         {
             let session = Session::new(db, SessionType::Schema)?;
             {
-                let transaction = session.transaction(TransactionType::Write)?;
-                let tag = &transaction.concept().put_attribute_type("tag".to_owned(), ValueType::String).resolve()?;
-                let entities = transaction
+                let tx = session.transaction(TransactionType::Write)?;
+                let tag = &tx.concept().put_attribute_type("tag".to_owned(), ValueType::String).resolve()?;
+                let entities = tx
                     .concept()
                     .get_entity_type("entity".to_owned())
                     .resolve()?
                     .ok_or("No root entity")?
-                    .get_subtypes(&transaction, Transitivity::Explicit)?;
+                    .get_subtypes(&tx, Transitivity::Explicit)?;
                 for entity in entities {
                     let mut e = entity?;
                     println!("{}", e.label);
                     if !(e.is_abstract()) {
-                        let _ = e.set_owns(&transaction, tag.clone(), None, vec![]);
+                        let _ = e.set_owns(&tx, tag.clone(), None, vec![]);
                     }
                 }
-                let _ = transaction.commit().resolve();
+                let _ = tx.commit().resolve();
             }
         }
         // end::types-editing[]
@@ -298,21 +323,21 @@ fn main() -> Result<(), Box<dyn Error>> {
         {
             let session = Session::new(db, SessionType::Schema)?;
             {
-                let transaction = session.transaction(TransactionType::Write)?;
+                let tx = session.transaction(TransactionType::Write)?;
                 let user =
-                    transaction.concept().get_entity_type("user".to_owned()).resolve()?.ok_or("No root entity")?;
-                let mut admin = transaction.concept().put_entity_type("admin".to_owned()).resolve()?;
-                drop(admin.set_supertype(&transaction, user).resolve());
-                let entities = transaction
+                    tx.concept().get_entity_type("user".to_owned()).resolve()?.ok_or("No root entity")?;
+                let mut admin = tx.concept().put_entity_type("admin".to_owned()).resolve()?;
+                drop(admin.set_supertype(&tx, user).resolve());
+                let entities = tx
                     .concept()
                     .get_entity_type("entity".to_owned())
                     .resolve()?
                     .ok_or("No root entity")?
-                    .get_subtypes(&transaction, Transitivity::Transitive)?;
+                    .get_subtypes(&tx, Transitivity::Transitive)?;
                 for subtype in entities {
                     println!("{}", subtype?.label);
                 }
-                let _ = transaction.commit().resolve();
+                let _ = tx.commit().resolve();
             }
         }
         // end::types-api[]
@@ -324,8 +349,8 @@ fn main() -> Result<(), Box<dyn Error>> {
         {
             let session = Session::new(db, SessionType::Schema)?;
             {
-                let transaction = session.transaction(TransactionType::Write)?;
-                let r = transaction.logic().get_rule("users".to_owned()).resolve()?.ok_or("Rule not found.")?;
+                let tx = session.transaction(TransactionType::Write)?;
+                let r = tx.logic().get_rule("users".to_owned()).resolve()?.ok_or("Rule not found.")?;
                 println!("Rule label: {}", r.label);
                 println!("  Condition: {}", r.when.to_string());
                 println!("  Conclusion: {}", r.then.to_string());
@@ -333,13 +358,13 @@ fn main() -> Result<(), Box<dyn Error>> {
                     .into_conjunction();
                 let conclusion = typeql::parse_pattern("$u has name 'Employee'")?.into_statement();
                 let mut new_rule =
-                    transaction.logic().put_rule("Employee".to_string(), condition, conclusion).resolve()?;
-                let rules = transaction.logic().get_rules()?;
+                    tx.logic().put_rule("Employee".to_string(), condition, conclusion).resolve()?;
+                let rules = tx.logic().get_rules()?;
                 for rule in rules {
                     println!("{}", rule?.label);
                 }
-                let _ = new_rule.delete(&transaction).resolve();
-                let _ = transaction.commit().resolve();
+                let _ = new_rule.delete(&tx).resolve();
+                let _ = tx.commit().resolve();
             }
         }
         // end::rules-api[]
@@ -351,13 +376,13 @@ fn main() -> Result<(), Box<dyn Error>> {
         {
             let session = Session::new(db, SessionType::Data)?;
             {
-                let transaction = session.transaction(TransactionType::Write)?;
-                let user_type = transaction.concept().get_entity_type("user".to_owned()).resolve()?.unwrap();
-                let users = user_type.get_instances(&transaction, Transitivity::Transitive)?;
+                let tx = session.transaction(TransactionType::Write)?;
+                let user_type = tx.concept().get_entity_type("user".to_owned()).resolve()?.unwrap();
+                let users = user_type.get_instances(&tx, Transitivity::Transitive)?;
                 for user in users {
                     let user = user?;
                     println!("User:");
-                    let attributes = user.get_has(&transaction, vec![], vec![])?;
+                    let attributes = user.get_has(&tx, vec![], vec![])?;
                     for attribute in attributes {
                         let attribute = attribute?;
                         let value = match attribute.value {
@@ -370,14 +395,14 @@ fn main() -> Result<(), Box<dyn Error>> {
                         println!("  {}: {}", attribute.type_.label, value)
                     }
                 }
-                let new_user = transaction
+                let new_user = tx
                     .concept()
                     .get_entity_type("user".to_owned())
                     .resolve()?
                     .unwrap()
-                    .create(&transaction)
+                    .create(&tx)
                     .resolve()?;
-                let _ = new_user.delete(&transaction).resolve();
+                let _ = new_user.delete(&tx).resolve();
             }
         }
         // end::data-api[]
@@ -390,7 +415,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         {
             let session = Session::new(db, SessionType::Data)?;
             {
-                let transaction = session.transaction_with_options(TransactionType::Read, options)?;
+                let tx = session.transaction_with_options(TransactionType::Read, options)?;
                 let get_query = "
                                 match
                                 $u isa user, has email $e, has name $n;
@@ -398,7 +423,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                                 get
                                 $u, $n;
                                 ";
-                let response = transaction.query().get(get_query)?;
+                let response = tx.query().get(get_query)?;
                 for (i, cmap) in response.enumerate() {
                     let ncmap = cmap.clone();
                     let name_concept = ncmap?.get("n").unwrap().clone();
@@ -411,7 +436,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                     for (var, explainable) in explainable_relations {
                         println!("{}", var);
                         println!("{}", explainable.conjunction);
-                        let explain_iterator = transaction.query().explain(&explainable)?;
+                        let explain_iterator = tx.query().explain(&explainable)?;
                         for explanation in explain_iterator {
                             let exp = explanation?;
                             println!("Rule: {}", exp.rule.label);
