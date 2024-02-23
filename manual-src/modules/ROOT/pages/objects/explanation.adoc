@@ -12,7 +12,7 @@ This page assumes you've already followed instructions from the xref:manual::rea
 To get an explanation on infered data, you need to infer some data with a Get query.
 If the `explain` transaction option is enabled,
 the response to the query includes an Explainables object as a part of every ConceptMap.
-We will use the Explainables object <<_explain_query_,later>> to get explanations.
+We will use the Explainables object <<_explain_query,later>> to get explanations.
 
 [tabs]
 ====
@@ -95,10 +95,13 @@ xref:drivers::nodejs/api-reference.adoc#_Explainable[Explainable] classes.
 --
 ====
 
-[#_explain_query_]
+[#_explain_query]
 == Explain query
 
-To get explanation(s), use an explain query, that takes an explainable object as an argument:
+An Explain query is a special type of query that can be sent with driver API to get explanations.
+It is the only type of query that doesn't use TypeQL.
+Instead, it uses an explainable object as an argument.
+See an example below.
 
 [tabs]
 ====
@@ -288,6 +291,16 @@ see the xref:drivers::cpp/api-reference.adoc#_Explanation[Explanation class] met
 ====
 
 == Full example
+
+See below a comprehensive example of using explanation of inferred results.
+In this example we get all names of a user, matched by its email containing substring `alice`.
+There should be only one such user in the database so far, and it should have only one name,
+but according to the `users` rule, it should have an additional infered name: 'User`.
+So, we turn on inference, retrieve both names, and proceed to retrieve explainables for both names.
+Since only one name is infered, we can only have one explainable.
+So we iterate through explainables and send an Explain query to retrieve an explanation.
+We then print the information from the explanation object, including rule label, condition, conclusion,
+and variable mapping between the query and the rule.
 
 [tabs]
 ====
