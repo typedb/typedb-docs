@@ -433,7 +433,7 @@ This is more than enough information for TypeDB to infer the type of `$order`, w
 }
 ----
 
-In this case, only a single return type is possible: `order`, as it is the only type in the schema that fulfils the above constraints. But if multiple types can fulfil the interface constraints, then they will all be valid return types for the variable in the query. Consider instead the following pattern.
+In this case, only a single return type is possible: `order`, as it is the only type in the schema that fulfils the above constraints. But if multiple types can fulfil the interface constraints, then they will all be valid return types for the variable in the query. Consider instead the following query.
 
 [,typeql]
 ----
@@ -526,7 +526,7 @@ $entity-1: attribute;
 $entity-2: attribute;
 ----
 
-In this pattern we have omitted the roles that the two entities play! In general, we can omit roles in a relation tuple if we do not care what they are. This is particularly useful for parametric queries, but has some other powerful use cases that we will explore in Lesson 7.2 (coming soon).
+In this query we have omitted the roles that the two entities play! In general, we can omit roles in a relation tuple if we do not care what they are. This is particularly useful for parametric queries, but has some other powerful use cases that we will explore in Lesson 7.2 (coming soon).
 
 [NOTE]
 ====
@@ -560,7 +560,7 @@ $entity-3: attribute;
 
 == Combining types of polymorphism
 
-Many useful polymorphic patterns combine more than one form of polymorphism. For example, the next query involves all three types of polymorphism.
+Many useful polymorphic queries combine more than one form of polymorphism. For example, the next query involves all three types of polymorphism.
 
 [,typeql]
 ----
