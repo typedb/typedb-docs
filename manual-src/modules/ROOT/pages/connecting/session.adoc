@@ -72,9 +72,9 @@ Java::
 +
 --
 .Open a session
-[,java]
+[,java,indent=0]
 ----
-TypeDBSession session = driver.session("sample_db", TypeDBSession.Type.SCHEMA);
+include::manual::partial$java-manual-code.java[tag=session_open]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -84,9 +84,9 @@ Node.js::
 +
 --
 .Open a session
-[,js]
+[,js,indent=0]
 ----
-let session = await driver.session("sample_db", SessionType.SCHEMA);
+include::manual::partial$nodejs-manual-code.js[tag=session_open]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -153,9 +153,9 @@ to close a session when it's longer needed, or use the
 xref:drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
 
 .Close a session
-[,java]
+[,java,indent=0]
 ----
-session.close();
+include::manual::partial$java-manual-code.java[tag=session_close]
 ----
 --
 
@@ -165,9 +165,9 @@ Node.js::
 Use the xref:drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
 
 .Close a session
-[,js]
+[,js,indent=0]
 ----
-session.close();
+include::manual::partial$nodejs-manual-code.js[tag=session_close]
 ----
 --
 

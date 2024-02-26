@@ -78,9 +78,9 @@ Java::
 +
 --
 .Connect to TypeDB Core
-[,java]
+[,java,indent=0]
 ----
-TypeDBDriver driver = TypeDB.coreDriver("127.0.0.1:1729");
+include::manual::partial$java-manual-code.java[tag=connect_core]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -90,9 +90,9 @@ Node.js::
 +
 --
 .Connect to TypeDB Core
-[,js]
+[,js,indent=0]
 ----
-const driver = await TypeDB.coreDriver("127.0.0.1:1729");
+include::manual::partial$nodejs-manual-code.js[tag=connect_core]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -189,9 +189,9 @@ Java::
 +
 --
 .Connect to TypeDB Cloud
-[,java]
+[,java,indent=0]
 ----
-TypeDBDriver driver = TypeDB.cloudDriver("127.0.0.1:1729", new TypeDBCredential("admin", "password", true ));
+include::manual::partial$java-manual-code.java[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -201,9 +201,9 @@ Node.js::
 +
 --
 .Connect to TypeDB Cloud
-[,js]
+[,js,indent=0]
 ----
-const driver = await TypeDB.cloudDriver("127.0.0.1:1729", new TypeDBCredential("admin","password"));
+include::manual::partial$nodejs-manual-code.js[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.

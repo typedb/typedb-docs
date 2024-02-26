@@ -57,9 +57,9 @@ Java::
 +
 --
 .Example
-[,java]
+[,java,indent=0]
 ----
-EntityType user = transaction.concepts().getEntityType("user").resolve();
+include::manual::partial$java-manual-code.java[tag=get_type]
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -69,9 +69,9 @@ Node.js::
 +
 --
 .Example
-[,js]
+[,js,indent=0]
 ----
-let user = await transaction.concepts.getEntityType("user");
+include::manual::partial$nodejs-manual-code.js[tag=get_type]
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -140,9 +140,9 @@ Java::
 +
 --
 .Example
-[,java]
+[,java,indent=0]
 ----
-EntityType admin = transaction.concepts().putEntityType("admin").resolve();
+include::manual::partial$java-manual-code.java[tag=add_type]
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -152,9 +152,9 @@ Node.js::
 +
 --
 .Example
-[,js]
+[,js,indent=0]
 ----
-let admin = await transaction.concepts.putEntityType("admin");
+include::manual::partial$nodejs-manual-code.js[tag=add_type]
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -217,9 +217,9 @@ Java::
 +
 --
 .Example
-[,java]
+[,java,indent=0]
 ----
-admin.set_supertype(transaction, user)
+include::manual::partial$java-manual-code.java[tag=set_supertype]
 ----
 For more information on methods, available for manipulating Type objects,
 see the xref:drivers::java/api-reference.adoc#_schema_header[Schema class] methods.
@@ -229,9 +229,9 @@ Node.js::
 +
 --
 .Example
-[,python]
+[,js,indent=0]
 ----
-admin.set_supertype(transaction, user)
+include::manual::partial$nodejs-manual-code.js[tag=set_supertype]
 ----
 For more information on methods, available for manipulating Type objects,
 see the xref:drivers::python/api-reference.adoc#_schema_header[Schema class] methods.
@@ -241,7 +241,7 @@ C++::
 +
 --
 .Example
-[,python]
+[,cpp]
 ----
 admin.set_supertype(transaction, user)
 ----
@@ -368,9 +368,9 @@ Java::
 +
 --
 .Example
-[,java]
+[,java,indent=0]
 ----
-Rule oldRule = transaction.logic().getRule("Employee").resolve();
+include::manual::partial$java-manual-code.java[tag=get_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -385,9 +385,9 @@ Node.js::
 +
 --
 .Example
-[,python]
+[,js,indent=0]
 ----
-let new_rule = await transaction.logic.getRule("Employee")
+include::manual::partial$nodejs-manual-code.js[tag=get_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -460,13 +460,9 @@ Java::
 +
 --
 .Example
-[,java]
+[,java,indent=0]
 ----
-transaction.logic().getRules().forEach(result -> {
-    System.out.println("Rule label: " + result.getLabel());
-    System.out.println("  Condition: " + result.getWhen().toString());
-    System.out.println("  Conclusion: " + result.getThen().toString());
-});
+include::manual::partial$java-manual-code.java[tag=get_rules]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -481,13 +477,9 @@ Node.js::
 +
 --
 .Example
-[,js]
+[,js,indent=0]
 ----
-await transaction.logic.getRules().forEach(rule => {
-    console.log("Rule label: " + rule.label);
-    console.log("  Condition: " + rule.when);
-    console.log("  Conclusion: " + rule.then);
-});
+include::manual::partial$nodejs-manual-code.js[tag=get_rules]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -565,11 +557,9 @@ Java::
 +
 --
 .Example
-[,java]
+[,java,indent=0]
 ----
-Pattern condition = TypeQL.parsePattern("{$u isa user, has email $e; $e contains '@vaticle.com';}");
-Pattern conclusion = TypeQL.parsePattern("$u has name 'Employee'");
-Rule newRule = transaction.logic().putRule("Employee", condition, conclusion).resolve();
+include::manual::partial$java-manual-code.java[tag=put_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -584,9 +574,9 @@ Node.js::
 +
 --
 .Example
-[,js]
+[,js,indent=0]
 ----
-let new_rule = await transaction.logic.putRule("Employee","{$u isa user, has email $e; $e contains '@vaticle.com';}","$u has name 'Employee'");
+include::manual::partial$nodejs-manual-code.js[tag=put_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -662,9 +652,9 @@ Java::
 +
 --
 .Example
-[,java]
+[,java,indent=0]
 ----
-newRule.delete(Transaction).resolve();
+include::manual::partial$java-manual-code.java[tag=delete_rule]
 ----
 
 The above example deletes the type, which type object is stored in the variable, from the schema of a database.
@@ -681,9 +671,9 @@ Node.js::
 +
 --
 .Example
-[,js]
+[,js,indent=0]
 ----
-await new_rule.delete(transaction);
+include::manual::partial$nodejs-manual-code.js[tag=delete_rule]
 ----
 
 The above example deletes the type, which type object is stored in the variable, from the schema of a database.

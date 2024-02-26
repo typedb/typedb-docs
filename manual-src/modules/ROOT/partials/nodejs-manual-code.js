@@ -29,7 +29,7 @@ async function main() {
     }
 
     // tag::connect_core[]
-    let coreDriver = await TypeDB.coreDriver("127.0.0.1:1729")
+    let coreDriver = await TypeDB.coreDriver("127.0.0.1:1729");
     // end::connect_core[]
     try {
         // tag::connect_cloud[]
@@ -38,10 +38,10 @@ async function main() {
     }
     catch(err) {}
     // tag::session_open[]
-    session = await driver.session(DB_NAME, SessionType.SCHEMA);
+    let session = await driver.session(DB_NAME, SessionType.SCHEMA);
     // end::session_open[]
     // tag::tx_open[]
-    tx = await session.transaction(TransactionType.WRITE);
+    let tx = await session.transaction(TransactionType.WRITE);
     // end::tx_open[]
     // tag::tx_close[]
     await tx.close()
@@ -52,7 +52,7 @@ async function main() {
         // end::tx_commit[]
     }
     // tag::session_close[]
-    await session.close()
+    await session.close();
     // end::session_close[]
 
     // tag::define[]
@@ -288,6 +288,43 @@ async function main() {
     }
     finally {await session?.close();}
     // end::types-api[]
+
+    try {
+        session = await driver.session(DB_NAME, SessionType.SCHEMA);
+        try {
+            tx = await session.transaction(TransactionType.WRITE);
+            // tag::get_type[]
+            let userType = await tx.concepts.getEntityType("user");
+            // end::get_type[]
+            // tag::add_type[]
+            let adminType = await tx.concepts.putEntityType("admin");
+            // end::add_type[]
+            // tag::set_supertype[]
+            await adminType.setSupertype(tx, userType);
+            // end::set_supertype[]
+            // tag::get_instances[]
+            let users = userType.getInstances(tx);
+            // end::get_instances[]
+            for await (const user of users) {
+                // tag::get_has[]
+                let attributes = user.getHas(tx);
+                // end::get_has[]
+                console.log("User:");
+                for await (const attribute of attributes) {
+                    console.log(" " + attribute.type.label.toString() + ": " + attribute.value.toString());
+                }
+            }
+            // tag::create[]
+            let newUser = await (await tx.concepts.getEntityType("user")).create(tx);
+            // end::create[]
+            // tag::delete_user[]
+            await newUser.delete(tx);
+            // end::delete_user[]
+        }
+        finally {if (tx.isOpen()) {await tx.close()};}
+    }
+    finally {await session?.close();}
+
     // tag::rules-api[]
     try {
         session = await driver.session(DB_NAME, SessionType.SCHEMA);
@@ -307,6 +344,33 @@ async function main() {
     }
     finally {await session?.close();}
     // end::rules-api[]
+
+    try {
+        session = await driver.session(DB_NAME, SessionType.SCHEMA);
+        try {
+            tx = await session.transaction(TransactionType.WRITE);
+            // tag::get_rules[]
+            let rules = await tx.logic.getRules();
+            for await (const rule of rules) {
+                console.log("Rule label: " + rule.label);
+                console.log("  Condition: " + rule.when);
+                console.log("  Conclusion: " + rule.then);
+            }
+            // end::get_rules[]
+            // tag::put_rule[]
+            let new_rule = await tx.logic.putRule("Employee","{$u isa user, has email $e; $e contains '@vaticle.com';}","$u has name 'Employee'");
+            // end::put_rule[]
+            // tag::get_rule[]
+            let oldRule = (await tx.logic.getRule("users")).label;
+            // end::get_rule[]
+            // tag::delete_rule[]
+            await new_rule.delete(tx);
+            // end::delete_rule[]
+        }
+        finally {if (tx.isOpen()) {await tx.close()};}
+    }
+    finally {await session?.close();}
+
     // tag::data-api[]
     try {
         session = await driver.session(DB_NAME, SessionType.DATA);
@@ -366,6 +430,48 @@ async function main() {
     }
     finally {await session?.close();}
     // end::explain-get[]
+
+    try {
+        session = await driver.session(DB_NAME, SessionType.DATA);
+        try {
+            let options = new TypeDBOptions();
+            options.infer = true;
+            options.explain = true;
+            tx = await session.transaction(TransactionType.READ, options);
+            const get_query = `
+                                match
+                                $u isa user, has email $e, has name $n;
+                                $e contains 'Alice';
+                                get
+                                $u, $n;
+                                `;
+            // tag::explainables[]
+            let response = await tx.query.get(get_query).collect();
+            for(let i = 0; i < response.length; i++) {
+                let explainable_relations = await response[i].explainables.relations;
+            // end::explainables[]
+                console.log("Name #" + (i + 1) + ": " + response[i].get("n").value);
+                // tag::explain[]
+                for await (const explainable of explainable_relations) {
+                    explain_iterator = tx.query.explain(explainable);
+                // end::explain[]
+                    console.log("Explainable part of the query: " + explainable.conjunction())
+                    // tag::explanation[]
+                    for (explanation of explain_iterator) {
+                        console.log("Rule: " + explanation.rule.label)
+                        console.log("Condition: " + explanation.condition.toString())
+                        console.log("Conclusion " + explanation.conclusion.toString())
+                        for (qvar of explanation.variableMapping.keys()) {
+                            console.log("Query variable " + qvar + " maps to the rule variable " + explanation.variableMapping.get(qvar))
+                        }
+                    // end::explanation[]
+                    }
+                }
+            }
+        }
+        finally {if (tx.isOpen()) {await tx.close()};}
+    }
+    finally {await session?.close();}
 };
 
 main();

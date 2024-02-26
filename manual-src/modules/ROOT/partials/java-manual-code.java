@@ -49,7 +49,6 @@ public class Main {
             // end::connect_core[]
             try {
                 // tag::connect_cloud[]
-                TypeDBCredential TypeDBCredential;
                 TypeDBDriver cloudDriver = TypeDB.cloudDriver("127.0.0.1:1729", new TypeDBCredential("admin", "password", true ));
                 // end::connect_cloud[]
             } catch (Exception ignored) {
@@ -314,9 +313,9 @@ public class Main {
                 System.out.println("Rule label: " + oldRule.getLabel());
                 System.out.println("  Condition: " + oldRule.getWhen().toString());
                 System.out.println("  Conclusion: " + oldRule.getThen().toString());
+                // tag::put_rule[]
                 Pattern condition = TypeQL.parsePattern("{$u isa user, has email $e; $e contains '@vaticle.com';}");
                 Pattern conclusion = TypeQL.parsePattern("$u has name 'Employee'");
-                // tag::put_rule[]
                 Rule newRule = tx.logic().putRule("Employee", condition, conclusion).resolve();
                 // end::put_rule[]
                 // tag::get_rules[]
