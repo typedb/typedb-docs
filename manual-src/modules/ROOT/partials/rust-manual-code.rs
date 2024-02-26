@@ -532,7 +532,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 let response = tx.query().get(get_query)?;
                 for (i, cmap) in response.enumerate() {
                     let explainable_relations = cmap?.explainables.relations;
-                // end::explainables[]
+                    // end::explainables[]
                     let ncmap = cmap.clone();
                     let name_concept = ncmap?.get("n").unwrap().clone();
                     let name = match name_concept {
@@ -543,7 +543,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
                     // tag::explain[]
                     for (var, explainable) in explainable_relations {
-                    // end::explain[]
+                        // end::explain[]
                         println!("{}", var);
                         println!("{}", explainable.conjunction);
                         // tag::explain[]
@@ -565,7 +565,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                             }
                         }
                         // end::explanation[]
-                    // tag::explain[]
+                        // tag::explain[]
                     }
                     // end::explain[]
                 }
