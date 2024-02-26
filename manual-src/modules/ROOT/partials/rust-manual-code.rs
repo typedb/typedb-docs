@@ -371,7 +371,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                     tx.concept().get_entity_type("user".to_owned()).resolve()?.unwrap().create(&tx).resolve()?;
                 // end::create[]
                 // tag::delete_user[]
-                let _ = new_user.delete(&tx);
+                let _ = new_user.delete(&tx).resolve();
                 // end::delete_user[]
             }
         }
@@ -566,7 +566,9 @@ fn main() -> Result<(), Box<dyn Error>> {
                         // tag::explain[]
                     }
                     // end::explain[]
+                // tag::explainables[]
                 }
+                // end::explainables[]
             }
         }
     }

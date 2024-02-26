@@ -464,10 +464,14 @@ async function main() {
                         for (qvar of explanation.variableMapping.keys()) {
                             console.log("Query variable " + qvar + " maps to the rule variable " + explanation.variableMapping.get(qvar))
                         }
-                    // end::explanation[]
                     }
+                    // end::explanation[]
+                // tag::explain[]
                 }
+                // end::explain[]
+            // tag::explainables[]
             }
+            // end::explainables[]
         }
         finally {if (tx.isOpen()) {await tx.close()};}
     }

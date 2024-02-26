@@ -472,8 +472,12 @@ int main() {
                         }
                     }
                     // end::explanation[]
+                // tag::explain[]
                 }
+                // end::explain[]
+            // tag::explainables[]
             }
+            // end::explainables[]
         }
     }
     return 0;
