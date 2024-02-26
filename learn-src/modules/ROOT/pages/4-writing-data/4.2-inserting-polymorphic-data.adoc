@@ -110,8 +110,8 @@ These constraints mean that TypeDB can infer the roles of `$review` and `$franke
 ----
 match
 $us isa country, has name "United States";
-insert
 $ga isa state, has name "Georgia";
+insert
 ($us, $ga) isa locating;
 ----
 image:learn::studio-icons/run.png[] *_Try running_*
