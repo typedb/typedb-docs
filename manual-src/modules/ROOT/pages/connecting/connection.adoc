@@ -1,0 +1,241 @@
+= Connect to server
+:tabs-sync-option:
+:experimental:
+
+TypeDB uses a gRPC-based protocol for external communications, including queries.
+TypeDB clients, like Studio and Console, as well as language-specific drivers with native APIs,
+have been developed to implement this protocol.
+
+This guide covers connecting to
+<<_connect_to_typedb_cloud,TypeDB Cloud>> or
+<<_connect_to_typedb_core,TypeDB Core>> servers with Studio, Console, or one of the drivers.
+
+////
+TypeDB accepts connections via gRPC based
+https://github.com/vaticle/typedb-protocol[TypeDB RPC protocol,window=_blank].
+It is implemented by TypeDB drivers and TypeDB clients.
+
+All released clients and drivers support connection to both TypeDB Cloud and TypeDB Core.
+////
+
+//To connect to TypeDB, you can use any TypeDB client or driver.
+//Select a client/driver, make sure it's installed,
+//and see below a practical guide on how to connect to TypeDB Core and TypeDB Cloud.
+
+[#_connect_to_typedb_core]
+== Connect to TypeDB Core
+
+A network connection to TypeDB Core requires the address and port of the server to connect to.
+
+[tabs]
+====
+Studio::
++
+--
+Run Studio and follow instructions below:
+
+include::manual::studio.adoc[tag=connect_core_studio]
+--
+
+Console::
++
+--
+Run Console using the `--core` argument to set the address and port to connect to:
+
+include::manual::console.adoc[tag=connect_core_console]
+--
+====
+
+For programmatic access, use one of the TypeDB xref:drivers::overview.adoc[drivers] via native API:
+
+[tabs]
+====
+Rust::
++
+--
+.Connect to TypeDB Core
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tag=connect_core]
+----
+
+Where `127.0.0.1:1729` is the address and port to connect to.
+--
+
+Python::
++
+--
+.Connect to TypeDB Core
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tag=connect_core]
+----
+//include::manual::partial$python-manual-code.py[tags=driver]
+Where `127.0.0.1:1729` is the address and port to connect to.
+--
+
+Java::
++
+--
+.Connect to TypeDB Core
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tag=connect_core]
+----
+
+Where `127.0.0.1:1729` is the address and port to connect to.
+--
+
+Node.js::
++
+--
+.Connect to TypeDB Core
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tag=connect_core]
+----
+
+Where `127.0.0.1:1729` is the address and port to connect to.
+--
+
+C++::
++
+--
+.Connect to TypeDB Core
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tag=connect_core]
+----
+
+Where `127.0.0.1:1729` is the address and port to connect to.
+--
+====
+
+After connecting to TypeDB Core, see how to xref:connecting/database.adoc[create a database] and manage
+xref:connecting/session.adoc[sessions] and
+xref:connecting/transaction.adoc[transactions].
+
+[#_connect_to_typedb_cloud]
+== Connect to TypeDB Cloud
+
+A network connection to a TypeDB Cloud cluster requires address and port of at least one server in the cluster,
+as well as username and password of a user.
+
+For your first connection, use the following default user credentials:
+
+* Username: `admin`
+* Password: `password`
+
+[IMPORTANT]
+=====
+Make sure to xref:manual::configuring/users.adoc#_first_login[change the password]
+for the `admin` account on your first login.
+A TypeDB Cloud deployment will deny all other operations until the password is changed from its default value.
+=====
+
+[tabs]
+====
+Studio::
++
+--
+Run Studio and follow instructions below:
+
+include::manual::studio.adoc[tag=connect_cloud_studio]
+
+include::manual::studio.adoc[tag=first_login_studio]
+--
+
+Console::
++
+--
+Run TypeDB Console using the `--cloud` argument to set a list of addresses and ports to connect to:
+
+include::manual::console.adoc[tag=connect_cloud_console]
+
+include::manual::console.adoc[tag=cloud-psw]
+--
+====
+
+For programmatic access, use one of the TypeDB xref:drivers::overview.adoc[drivers] via native API:
+
+.Drivers
+[tabs]
+====
+Rust::
++
+--
+.Connect to TypeDB Cloud
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tag=connect_cloud]
+----
+
+Where `127.0.0.1:1729` is the address and port to connect to.
+--
+
+Python::
++
+--
+.Connect to TypeDB Cloud
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tag=connect_cloud]
+----
+
+Where `127.0.0.1:1729` is the address and port to connect to.
+--
+
+Java::
++
+--
+.Connect to TypeDB Cloud
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tag=connect_cloud]
+----
+
+Where `127.0.0.1:1729` is the address and port to connect to.
+--
+
+Node.js::
++
+--
+.Connect to TypeDB Cloud
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tag=connect_cloud]
+----
+
+Where `127.0.0.1:1729` is the address and port to connect to.
+--
+
+C++::
++
+--
+.Connect to TypeDB Cloud
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tag=connect_cloud]
+----
+
+Where `127.0.0.1:1729` is the address and port to connect to.
+--
+====
+
+== Learn more
+
+[cols-2]
+--
+.xref:manual::connecting/database.adoc[]
+[.clickable]
+****
+See how to create a new database in TypeDB.
+
+****
+
+.xref:manual::connecting/session.adoc[]
+[.clickable]
+****
+See how to manage sessions in TypeDB.
+****
+--

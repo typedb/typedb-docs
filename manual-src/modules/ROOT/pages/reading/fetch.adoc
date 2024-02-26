@@ -1,0 +1,209 @@
+= Fetch query
+:experimental:
+:tabs-sync-option:
+
+A Fetch query is used to retrieve values and types from a TypeDB database.
+
+This page assumes you've already followed instructions from the xref:manual::writing/overview.adoc[] section.
+Here, you'll see how to retrieve data from a database and project it as a JSON using Studio,
+Console, or one of the drivers.
+
+== How to send a Fetch query
+
+The easiest way to send a Fetch query is to use Studio or Console:
+
+[tabs]
+====
+Studio::
++
+--
+Follow the xref:manual::studio.adoc#_prepare_a_query[Studio manual]
+to connect to TypeDB and select a project folder.
+Then use the steps below:
+
+. Use a drop-down list in the top toolbar to select a database.
+. Switch to `data` session and `read` transaction types.
+. Open a new tab and insert or type in an Insert query, for example:
++
+.TypeQL Fetch query
+[,typeql]
+----
+match
+$u isa user;
+fetch
+$u: name, email;
+----
+. Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
+. Commit the changes by clicking the btn:[Commit query] button (image:home::studio-icons/commit.png[Commit]).
+--
+
+Console::
++
+--
+. Open a `data` session and `read` transaction to the selected database (e.g., `sample_db`):
++
+[,bash]
+----
+transaction sample_db data read
+----
+. Send the Fetch query:
++
+[,bash]
+----
+match
+$u isa user;
+fetch
+$u: name, email;
+----
++
+Push btn:[Enter] twice to send the query.
+. Commit the changes:
++
+[,bash]
+----
+commit
+----
+--
+====
+
+The resulted JSONs should look like this:
+
+[,json]
+----
+{
+    "u": {
+        "email": [ { "value": "alice@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
+        "name": [ { "value": "Alice", "type": { "label": "name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+{
+    "u": {
+        "email": [ { "value": "the-bob@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
+        "name": [ { "value": "Bob", "type": { "label": "name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+{
+    "u": {
+        "email": [ { "value": "charlie@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
+        "name": [ { "value": "Charlie", "type": { "label": "name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+----
+
+To send a Fetch query programmatically, use xref:drivers::overview.adoc[drivers]:
+
+//#todo Check the code
+//#todo Add the response processing
+[tabs]
+====
+Rust::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `read` transaction, and use the
+xref:drivers::rust/api-reference.adoc#_struct_QueryManager_fetch__[`transaction.query.fetch()`]
+method:
+
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::manual::partial$rust-manual-code.rs[tags=fetch]
+----
+--
+
+Python::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `read` transaction, and use the
+xref:drivers::python/api-reference.adoc#_QueryManager_fetch__query_str{scores}options_TypeDBOptions__None[`transaction.query.fetch()`]
+method:
+
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tags=fetch]
+----
+--
+
+Java::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `read` transaction, and use the
+xref:drivers::java/api-reference.adoc#_QueryManager_fetch__com_vaticle_typeql_lang_query_TypeQLFetch[`transaction.query.fetch()`]
+method:
+
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tags=fetch]
+----
+--
+
+Node.js::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `read` transaction, and use the
+xref:drivers::nodejs/api-reference.adoc#_QueryManager_fetch{scores}query_string__options_TypeDBOptions[`transaction.query.fetch()`]
+method:
+
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tags=fetch]
+----
+--
+
+C++::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `read` transaction, and use the
+xref:drivers::cpp/api-reference.adoc#_JSONIterable_TypeDBQueryManagerfetch_const_stdstring_query_const_Options_options_Options_const[`transaction.query.fetch()`]
+method:
+
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tags=options,indent=8]
+include::manual::partial$cpp-manual-code.cpp[tags=fetch]
+----
+--
+====
+
+== Response interpretation
+
+A Fetch query returns all fetched values projected in JSON objects.
+
+The response is a Stream/Iterator with a JSON object for every solution of a `match` clause pattern.
+A concept can't be returned directly, but a value or a type can be projected into the resulting JSON.
+To return full concepts, see the xref:manual::reading/get.adoc[] page.
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::data/fetch.adoc[]
+[.clickable]
+****
+Learn more about Fetch queries in TypeQL: syntax, behaviour, and query examples.
+****
+
+.xref:manual::writing/overview.adoc[]
+[.clickable]
+****
+Learn how to write some new data to a database to read.
+****
+
+.xref:learn::3-reading-data/3-reading-data.adoc[]
+[.clickable]
+****
+Check out the Reading data section of our TypeDB Learning course.
+****
+--

@@ -1,0 +1,239 @@
+= Lesson 5.2: Defining type hierarchies
+
+== Defining entity type hierarchies
+
+To define type hierarchies, we use the same Define queries as when defining individual types. The following query shows how we can define a hierarchy of book types.
+
+[,typeql]
+----
+define
+book sub entity;
+paperback sub book;
+hardback sub book;
+ebook sub book;
+----
+
+To make one type a subtype of another, we simply replace the root type with the intended *supertype* in the `sub` statement that defines that type. When defined in a type hierarchy, subtypes will *inherit* all the owned attributes and played roles of their supertypes. Consider the following Define query where we assign a number of ownerships and roles to `book`.
+
+[,typeql]
+----
+define
+book owns title,
+    owns page-count,
+    owns genre,
+    owns price,
+    plays publishing:published,
+    plays order-line:item,
+    plays rating:rated,
+    plays promotion-inclusion:included;
+title sub attribute, value string;
+page-count sub attribute, value long;
+genre sub attribute, value string;
+----
+
+`paperback`, `hardback`, and `ebook` will inherit all of these capabilities from `book` without having to explicitly declare this to be the case. This will even apply to new subtypes of `book` defined in the future! If we want capabilities that only apply to certain subtypes, then we can declare them directly on those types only.
+
+[,typeql]
+----
+define
+paperback owns stock;
+hardback owns stock;
+stock sub attribute, value long;
+----
+
+This allows paperbacks and hardbacks to have stock levels, but not ebooks.
+
+.Exercise
+[caption=""]
+====
+Write a query to define an entity type `company` with two subtypes `publisher` and `courier`, and define the following capabilities:
+
+* All companies can own attributes of the existing type `name`.
+* Publishers can also play the existing role `publishing:publisher`.
+* Couriers can also play the existing role `delivery:deliverer`.
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+define
+company sub entity,
+    owns name;
+publisher sub company,
+    plays publishing:publisher;
+courier sub company,
+    plays delivery:deliverer;
+----
+=====
+====
+
+== Defining abstract types
+
+Abstract types cannot be directly instantiated, much like abstract classes in OOP. An abstract type can only be instantiated via its subtypes. To make a type abstract, we use an `abstract` statement. The following Define query makes the existing types `book` and `company` abstract.
+
+[,typeql]
+----
+define
+book abstract;
+company abstract;
+----
+
+Now `book` can only be instantiated through `paperback`, `hardback`, or `ebook`, and `company` can only be instantiated through `publisher` or `courier`.
+
+.Exercise
+[caption=""]
+====
+Write a query to define an abstract entity type `place` with three subtypes, `country`, `state`, and `city`, and define the following capabilities:
+
+* All places can own attributes of the existing type `name`.
+* All places can play the existing role `locating:location`.
+* All places can play the existing role `locating:located`.
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+define
+place sub entity,
+    abstract,
+    owns name,
+    plays locating:location,
+    plays locating:located;
+country sub place;
+state sub place;
+city sub place;
+----
+=====
+====
+
+== Defining relation type hierarchies
+
+Relation type hierarchies are defined in the same way as entity type hierarchies. When defined in a hierarchy, subtypes of a relation type inherit all its roles. The following Define query defines a relation type `contribution` and three subtypes.
+
+[,typeql]
+----
+define
+contribution sub relation,
+    relates work,
+    relates contributor;
+authoring sub contribution;
+editing sub contribution;
+illustrating sub contribution;
+----
+
+Here, `authoring`, `editing`, and `illustrating` inherit the roles `work` and `contributor` from `contribution`. This would allow instantiation of the following relation types:
+
+* `contribution` with roles `contribution:work` and `contribution:contributor`
+* `authoring` with roles `contribution:work` and `contribution:contributor`
+* `editing` with roles `contribution:work` and `contribution:contributor`
+* `illustrating` with roles `contribution:work` and `contribution:contributor`
+
+We could also define new roles on a specific subtype using the `relates` keyword on that subtype, in the same way we can define capabilities on specific subtypes using the `owns` and `plays` keywords on them. A new role can be made to *override* an existing role of a parent relation using the `as` keyword. In the following query, the roles `author`, `editor`, and `illustrator` override the inherited `contributor` role.
+
+[,typeql]
+----
+define
+authorship relates author as contributor;
+editing relates editor as contributor;
+illustration relates illustrator as contributor;
+----
+
+This would instead allow instantiation of the following relation types:
+
+* `contribution` with roles `contribution:work` and `contribution:contributor`
+* `authoring` with roles `contribution:work` and `authoring:author`
+* `editing` with roles `contribution:work` and `editing:editor`
+* `illustrating` with roles `contribution:work` and `illustrating:illustrator`
+
+.Exercise
+[caption=""]
+====
+Write a query to define the following new roleplayers:
+
+* The existing type `book` playing `contribution:work`.
+* The existing type `contributor` playing `contribution:contributor` and its three subtypes.
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+define
+book plays contrubution:work;
+contributor plays contribution:contributor;
+contributor plays authoring:author;
+contributor plays editing:editor;
+contributor plays illustrating:illustrator;
+----
+=====
+====
+
+With this schema, it is no longer possible to instantiate `authoring`, `editing`, and `illustrating` with the `contribution:contributor` role. However, it is still possible to query them via that role, as the overriding roles `authoring:author`, `editing:editor`, and `illustrating:illustrator` are considered to be its *subtypes*. The `match` clause of the following Fetch query would match instances of `contributor`, `authoring`, `editing`, and `illustrating`, and contributor names would be returned for all contributor roles.
+
+[,typeql]
+----
+match
+(work: $book, contributor: $contributor) isa contribution;
+fetch
+$book: title;
+$contributor: $name;
+----
+
+.Exercise
+[caption=""]
+====
+Modify the above Fetch query to retrieve only author names instead of all contributor names.
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+(work: $book, author: $contributor) isa authoring;
+fetch
+$book: title;
+$contributor: $name;
+----
+=====
+
+Now instead modify it to retrieve only names of contributors who have made miscellaneous contributions (i.e. those in direct instances of `contribution` and not its subtypes).
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+(work: $book, contributor: $contributor) isa! contribution;
+fetch
+$book: title;
+$contributor: name;
+----
+
+Notice we have used the `isa!` keyword.
+=====
+====
+
+== Defining attribute type hierarchies
+
+In order to define subtypes of a given attribute type, the supertype must be *abstract*. This is to prevent potential ambiguities in the interpretation of queries. In the following Define query, we define an attribute type `isbn` with two subtypes.
+
+[,typeql]
+----
+define
+isbn sub attribute,
+    abstract,
+    value string;
+isbn-13 sub isbn;
+isbn-10 sub isbn;
+----
+
+Value types of attribute types are inherited by their subtypes. In this case, `isbn-13` and `isbn-10` inherit the `string` value type.
+
+[NOTE]
+====
+In TypeDB 2.x, all attribute types in a hierarchy must have the same value type, as specified in the definition of the supertype. In TypeDB 3.0, it will be possible to create abstract attribute types that do not have a value type, and to assign different value types to their subtypes.
+====

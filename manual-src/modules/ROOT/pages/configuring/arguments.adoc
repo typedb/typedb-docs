@@ -1,0 +1,63 @@
+= Command line arguments
+
+[#_command_line_arguments]
+Use command line arguments to override any option in the configuration file.
+
+For example, the configuration file sets the server address as the following:
+
+[,yaml]
+----
+server:
+  address: 0.0.0.0:1729
+----
+
+If we want to use port `1730` instead of `1729`, we can either update the configuration file or override it from the
+command line using the following command:
+
+[,bash]
+----
+typedb server --server.address 0.0.0.0:1730
+----
+
+Use the same approach to set a completely new section of the configuration that isn't presented in the file yet.
+For example, to define a new logger subsection to print out all query plans,
+we could do the following to set the package `com.vaticle.typedb.core.traversal` to output on a more verbose level:
+
+[,bash]
+----
+typedb server  \
+  --server.address 0.0.0.0:1730  \
+  --log.logger.traversal.filter com.vaticle.typedb.core.traversal  \
+  --log.logger.traversal.level debug \
+  --log.logger.traversal.output "[ file, stdout ]"
+----
+
+Use command line arguments with the command `typedb server` to configure the server upon its launch.
+The command line arguments will override any relevant settings from the config file.
+
+All arguments must:
+
+* start with the double dash prefix `--`,
+* be separated from their value (if any) by:
+** equals sign (`=`),
+** or whitespace.
+
+Some arguments are exclusive to the command line interface:
+
+* `--help`: print out the help menu and exit.
+* `--version`: print out the version of the server and exit.
+* `--config /path/to/external/typedb-config.yml`: use the specified configuration file.
+
+Additional arguments are derived from the configuration `.yaml` file.
+Any value from the config file can be overridden by a command line argument.
+
+== Getting help
+
+For all available commands via the command line use the `--help` argument to get a reference:
+
+[,bash]
+----
+typedb server --help
+----
+
+This will list out how to use specific command line arguments as well as options derived from the configuration file.

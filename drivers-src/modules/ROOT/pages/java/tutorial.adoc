@@ -9,8 +9,8 @@ read data, apply pagination and inference, and add additional data.
 
 == Prerequisites
 
-Deploy https://cloud.typedb.com/[TypeDB Cloud], or xref:home::install.adoc#_core[install] and
-xref:home::install.adoc#_run_typedb_core[run] TypeDB Core.
+Deploy https://cloud.typedb.com/[TypeDB Cloud], or xref:home::install/core.adoc[install] and
+run TypeDB Core.
 
 xref:drivers::java/overview.adoc#_install_java[Install] the Java driver.
 
@@ -27,7 +27,7 @@ or change the default database name in the source code if necessary.
 
 See the full source code of the sample app below:
 
-include::typedb::partial$sample-app-java.adoc[]
+include::drivers::partial$tutorials/sample-app-java.adoc[]
 
 [#_additional_files]
 == Additional files
@@ -120,7 +120,7 @@ We commit the transaction again and re-using the same data session to open a `re
 
 With the new read transaction, we test the resulted database by retrieving the number of users in it.
 
-For more information on server connections, sessions, and transactions, see the xref:typedb::connecting/overview.adoc[]
+For more information on server connections, sessions, and transactions, see the xref:manual::connecting/overview.adoc[]
 page.
 
 === Request #1: User listing
@@ -194,15 +194,17 @@ having to specify what kind of action `$va` it should be.
 
 A `get` clause filters response to only contain the matched `path` attributes (`$fp`).
 
+////
 [NOTE]
 ====
 According to the xref:typedb::tutorials/iam-schema.adoc[IAM schema],
 we need two relations to connect users to files: `permission` and `access`.
 ====
+////
 
 === Request #3: Inference
 
-We start with opening a new transaction with the xref:typedb::developing/infer.adoc[inference] option enabled.
+We start with opening a new transaction with the xref:manual::reading/infer.adoc[inference] option enabled.
 
 Then we send a query to get Kevin's files, but this time we specify the access action to be `view_file`,
 since the permission for this access wasn't inserted in the <<_schema_and_initial_data,sample dataset>>
@@ -280,8 +282,8 @@ We still get only `path` (`$fp`), but now we add sorting and pagination: we set 
 [NOTE]
 ====
 Note that Kevin has been assigned only `modify_file` access, and the `view_file` access is being inferred by a
-xref:typedb::basics/inference.adoc#_rules[rule].
-To use xref:typedb::developing/infer.adoc[inference] in this query,
+xref:learn::5-defining-schemas/5.4-defining-rules.adoc[rule].
+To use xref:learn::3-reading-data/3.3-fetching-inferred-data.adoc[inference] in this query,
 we modify TypeDB options and send the modified set of options to the transaction call.
 ====
 

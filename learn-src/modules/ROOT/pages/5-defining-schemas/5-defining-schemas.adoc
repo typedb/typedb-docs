@@ -1,0 +1,20 @@
+= Lesson 5: Defining schemas
+
+In this lesson, we'll learn how to define entity, relation, and attribute types using *Define queries*. We'll start by defining individual *types* and their interfaces, namely *ownership interfaces* for attributes and *role interfaces* for relations. We'll then see how we can define *type hierarchies* for entities, relations, and attributes. We'll also see how we can apply different kinds of *value constraints* to attributes and define *rules* to infer new data. Finally, we'll see how TypeDB validates changes to the schema to ensure it stays in a consistent state.
+
+== Recommended prerequisites
+
+* You should complete xref:learn::4-writing-data/4-writing-data.adoc[Lesson 4] before starting this lesson.
+
+== TypeQL keywords introduced
+
+* `define`
+* `value`
+* `abstract`
+* `as`
+* `@key`
+* `@unique`
+* `regex`
+* `rule`
+* `when`
+* `then`

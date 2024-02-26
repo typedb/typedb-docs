@@ -1,0 +1,220 @@
+= Define query
+:tabs-sync-option:
+:experimental:
+:scores: __
+
+A Define query is used to define the schema of a database.
+
+This page assumes you've already followed instructions from the xref:connecting/overview.adoc[] section pages.
+Here, you'll see how to use a Define query to define types and rules in a database schema using Studio,
+Console, or one of the drivers.
+For an alternative way of changing your schema, see the xref:manual::defining/schema-editing.adoc[] page.
+
+[#_how_to_send_a_define_query]
+== How to send a Define query
+
+The easiest way to send a Define query is to use Studio or Console:
+
+[tabs]
+====
+Studio::
++
+--
+Follow the xref:manual::studio.adoc#_prepare_a_query[Studio manual]
+to connect to TypeDB and select a project folder.
+Then use the steps below:
+
+//Follow the instructions from the xref:connecting/connection.adoc[] page to connect to TypeDB:
+//page to connect Studio to TypeDB and select a project folder, then:
+
+. Use a drop-down list in the top toolbar to select a database.
+. Switch to `schema` session and `write` transaction types.
+. Open a new tab and insert or type in a Define query, for example:
++
+.TypeQL Define query
+[,typeql]
+----
+define
+
+email sub attribute, value string;
+name sub attribute, value string;
+friendship sub relation, relates friend;
+user sub entity,
+    owns email @key,
+    owns name,
+    plays friendship:friend;
+admin sub user;
+----
+. Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
+. Commit the changes by clicking the btn:[Commit query] button (image:home::studio-icons/commit.png[Commit]).
+--
+
+Console::
++
+--
+Follow the xref:manual::connecting/connection.adoc[] guide to connect to TypeDB.
+Then use the steps below:
+
+. Open a `schema` session and `write` transaction to the selected database (e.g., `sample_db`):
++
+[,bash]
+----
+transaction sample_db schema write
+----
+. Send the Define query:
++
+[,typeql]
+----
+define
+email sub attribute, value string;
+name sub attribute, value string;
+friendship sub relation, relates friend;
+user sub entity,
+    owns email @key,
+    owns name,
+    plays friendship:friend;
+admin sub user;
+----
++
+Push btn:[Enter] twice to send the query.
+. Commit the changes:
++
+[,bash]
+----
+commit
+----
+--
+====
+
+To send a Define query programmatically, use xref:drivers::overview.adoc[drivers]:
+
+[tabs]
+====
+Rust::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::rust/api-reference.adoc#_struct_QueryManager_define__[`transaction.query().define()`]
+method:
+
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::manual::partial$rust-manual-code.rs[tags=define]
+----
+--
+
+Python::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::python/api-reference.adoc#_QueryManager_define{scores}query_str__options_TypeDBOptions[`transaction.query.define()`]
+method:
+
+[,python, indent=0]
+----
+include::manual::partial$python-manual-code.py[tags=define]
+----
+--
+
+Java::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::java/api-reference.adoc#_QueryManager_define__com_vaticle_typeql_lang_query_TypeQLDefine[`transaction.query.define()`]
+method:
+
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tags=define]
+----
+--
+
+Node.js::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::nodejs/api-reference.adoc#_QueryManager_define{scores}query_string__options_TypeDBOptions[`transaction.query.define()`]
+method:
+
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tags=define]
+----
+--
+
+C++::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::cpp/api-reference.adoc#_VoidFuture_TypeDBQueryManagerdefine_const_stdstring_query_const_Options_options_Options_const[`transaction.query.define()`]
+method:
+
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tags=options,indent=8]
+include::manual::partial$cpp-manual-code.cpp[tags=define]
+----
+--
+====
+
+== Response interpretation
+
+A Define query returns a Promise of an empty response.
+This promise can be resolved when the query is finished executing, but it doesn't contain any useful information.
+
+////
+[#_schema_example]
+== Schema example
+
+See below an example of a schema with five types defined.
+Send it in a Define query to the same database, using the <<_how_to_send_a_define_query>> section above.
+
+.Schema example
+[,typeql]
+----
+define
+
+email sub attribute, value string;
+name sub attribute, value string;
+friendship sub relation, relates friend;
+user sub entity,
+    owns email @key,
+    owns name,
+    plays friendship:friend;
+admin sub user;
+----
+////
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::schema/define.adoc[]
+[.clickable]
+****
+Learn more about Define queries in TypeQL: syntax, behaviour, and query examples.
+****
+
+.xref:manual::writing/overview.adoc[]
+[.clickable]
+****
+Learn how to write some data to a database with the schema you just defined.
+****
+
+.xref:learn::5-defining-schemas/5-defining-schemas.adoc[]
+[.clickable]
+****
+Check out the Defining schemas section of our TypeDB Learning course.
+****
+--

@@ -1,0 +1,227 @@
+= Inference
+:experimental:
+:tabs-sync-option:
+
+Rule-based inference can derive new facts from matching patterns in the existing data.
+It can be used in read transactions only, so no new facts get to be persisted in the database.
+
+This page assumes you've already followed instructions from the xref:manual::reading/get.adoc[] page.
+Here, you'll see how to retrieve inferred data from a database using Studio, Console, or one of the drivers.
+
+== How to define a rule
+
+Inference uses rules defined in the schema of a database.
+Since our schema from the
+xref:manual::defining/define.adoc[] page has no rules in it, let's add a new rule to the schema first:
+
+.Simple rule example
+[,typeql]
+----
+rule users:
+when {
+    $u isa user;
+} then {
+    $u has name "User";
+};
+----
+
+Add the `define` keyword at the beginning and send it as a Define query.
+See xref:manual::defining/define.adoc#_how_to_send_a_define_query[How to send a Define query] for exact instructions.
+
+[#_how_to_send_a_query_with_inference]
+== How to send a query with inference
+
+Inference can be enabled as a transaction option for any `read` transaction.
+
+The easiest way to send a read query with inference is to use Studio or Console:
+
+[tabs]
+====
+Studio::
++
+--
+Follow the xref:manual::studio.adoc#_prepare_a_query[Studio manual]
+to connect to TypeDB and select a project folder.
+Then use the steps below:
+
+. Use a drop-down list in the top toolbar to select a database.
+. Switch to `data` session and `read` transaction types.
+. Open a new tab and insert or type in an Insert query, for example:
++
+.TypeQL Fetch query
+[,typeql]
+----
+match
+$u isa user;
+fetch
+$u: name;
+----
+. Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
+--
+
+Console::
++
+--
+. Open a `data` session and `read` transaction to the selected database (e.g., `sample_db`):
++
+[,bash]
+----
+transaction sample_db data read
+----
+. Send the Fetch query:
++
+[,bash]
+----
+match
+$u isa user;
+fetch
+$u: name;
+----
++
+Push btn:[Enter] twice to send the query.
+--
+====
+
+The resulted Log output should look like this:
+
+.Results example
+[,js]
+----
+{
+    "u": {
+        "name": [
+            { "value": "Alice", "type": { "label": "name", "root": "attribute", "value_type": "string" } },
+            { "value": "User", "type": { "label": "name", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+{
+    "u": {
+        "name": [
+            { "value": "Bob", "type": { "label": "name", "root": "attribute", "value_type": "string" } },
+            { "value": "User", "type": { "label": "name", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+{
+    "u": {
+        "name": [
+            { "value": "Charlie", "type": { "label": "name", "root": "attribute", "value_type": "string" } },
+            { "value": "User", "type": { "label": "name", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+----
+
+To send a fetch query with inference programmatically, use xref:drivers::overview.adoc[drivers]:
+
+[tabs]
+====
+Rust::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+Open a `read` transaction, and use the
+xref:drivers::rust/api-reference.adoc#_struct_QueryManager_fetch__[`transaction.query().fetch()`] or
+xref:drivers::rust/api-reference.adoc#_struct_QueryManager_get__[`transaction.query().get()`]
+method to retrieve data with inference:
+
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::manual::partial$rust-manual-code.rs[tags=infer-fetch]
+----
+--
+
+Python::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+Open a `read` transaction, and use the
+xref:drivers::python/api-reference.adoc#_QueryManager_fetch{scores}query_str__options_TypeDBOptions__None[`transaction.query.fetch()`] or
+xref:drivers::python/api-reference.adoc#_QueryManager_get{scores}query_str__options_TypeDBOptions__None[`transaction.query.get()`]
+method to retrieve data with inference:
+
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tags=infer-fetch]
+----
+--
+
+Java::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+Open a `read` transaction, and use the
+xref:drivers::java/api-reference.adoc#_QueryManager_fetch__com_vaticle_typeql_lang_query_TypeQLFetch[`transaction.query().fetch()`] or
+xref:drivers::java/api-reference.adoc#_QueryManager_get__com_vaticle_typeql_lang_query_TypeQLGet__TypeDBOptions[`transaction.query().get()`]
+method to retrieve data with inference:
+
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tags=infer-fetch]
+----
+--
+
+Node.js::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+Open a `read` transaction, and use the
+xref:drivers::nodejs/api-reference.adoc#_QueryManager_fetch__query_string__options_TypeDBOptions[`transaction.query.fetch()`] or
+xref:drivers::nodejs/api-reference.adoc#_QueryManager_get__query_string__options_TypeDBOptions[`transaction.query.get()`]
+method to retrieve data with inference:
+
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tags=infer-fetch]
+----
+--
+
+C++::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+Open a `read` transaction, and use the
+xref:drivers::cpp/api-reference.adoc#_JSONIterable_TypeDBQueryManagerfetch_const_stdstring_query_const_Options_options_Options_const[`transaction.query.fetch()`] or
+xref:drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerget_const_stdstring_query_const_Options_options_Options_const[`transaction.query.get()`]
+method to retrieve data with inference:
+
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tags=infer-fetch]
+----
+--
+====
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::data/get.adoc[]
+[.clickable]
+****
+Learn more about Get queries in TypeQL: syntax, behaviour, and query examples.
+****
+
+.xref:typeql::data/fetch.adoc[]
+[.clickable]
+****
+Learn more about Fetch queries in TypeQL: syntax, behaviour, and query examples.
+****
+
+.xref:learn::3-reading-data/3-reading-data.adoc[]
+[.clickable]
+****
+Check out the Reading data section of our TypeDB Learning course.
+****
+//#todo Update the link to the Learn category for inference
+--

@@ -1,0 +1,47 @@
+= Lesson 5.3: Defining constraints
+
+== Constraining attribute values
+
+The values of string attribute types can be constrained with a `regex` statement, which specifies a https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/regex/Pattern.html[Java regex pattern] string that is validated against when instantiating the attribute type. In the following example, we require that the value of `status` instances must be one of "paid", "dispatched", "delivered", "returned", or "canceled".
+
+[,typeql]
+----
+define
+status sub attribute,
+    value string,
+    regex "^(paid|dispatched|delivered|returned|canceled)$";
+order owns status;
+----
+
+Regex constraints apply directly to attributes, regardless of the owning type. In this example, if another entity or relation type owned `status`, it would also be restricted to the preset values.
+
+[NOTE]
+====
+The `regex` constraint is the only attribute value constraint in TypeDB 2.x. TypeDB 3.0 will feature other value constraints, such as ranges for numeric values and enums.
+====
+
+== Constraining attribute ownerships
+
+TypeQL provides syntax for defining key and unique constraints on attribute ownerships via *annotations*. An annotation is an additional constraint applied to a statement, denoted by an `@` prefix. The following example defines five such constraints.
+
+[,typeql]
+----
+define
+id sub attribute, value string;
+book owns isbn-13 @key,
+    owns isbn-10 @unique;
+user owns id @key;
+order owns id @key;
+review owns id @key;
+----
+
+When applied to an ownership statement in a Define query, the `@key` and `@unique` annotations apply a key or unique constraint respectively to that ownership. This is different to `regex` statements, which apply to the attribute itself.
+
+A *key constraint* requires that instances of the owner type own exactly one instance of the attribute type, and that it must be uniquely owned by the owner type. In the example above, every instance of `book` must own exactly one instance of `isbn-13`, and no two instances of `book` can own the same instance of `isbn-13`.
+
+A *unique constraint* requires only that instances of the attribute type are uniquely owned by the owner type. In the example above, no two instances of `book` can own the same instance of `isbn-10`, but an instance of `book` can own any number of instances of `isbn-10` (including none).
+
+[IMPORTANT]
+====
+Ownership annotations apply to the _specific ownerships_ they are defined on rather than to the attribute in general. In the example above, key constraints are applied to the ownership of `id` by `user`, `order`, and `review`. This means that, while two instances of `user` (or two of `order`, or two of `review`) could not own the same instance of `id`, it is perfectly permissible for an instance of `user` and an instance of `order` to own the same instance of `id`.
+====

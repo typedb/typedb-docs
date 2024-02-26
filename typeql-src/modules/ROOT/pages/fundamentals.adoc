@@ -114,7 +114,7 @@ image::thing-era-role-rule.png[Types hierarchy]
 
 // #todo Redraw the diagram. Without the Thing. Consider using PlantUML
 
-include::typedb::partial$thing-warning.adoc[]
+include::typeql::partial$thing-warning.adoc[]
 // end::thing_type_basics[]
 
 [#_entity_types]
@@ -480,7 +480,7 @@ Rules are a part of a schema and define embedded logic.
 
 The reasoning engine uses rules as a set of logic to infer new data.
 
-Rules can dramatically shorten complex queries, perform xref:typedb::developing/infer.adoc#_explain_query[explainable]
+Rules can dramatically shorten complex queries, perform explainable
 knowledge discovery, and implement business logic at the database level.
 
 A rule consists of a *condition* and a *conclusion*.
@@ -514,7 +514,7 @@ when {
 
 The conclusion can be used to create a single virtual instance of data: a relation or ownership of an attribute.
 
-Queries use rules for xref:typedb:ROOT:developing/infer.adoc[Inferring new data] only in read transactions and only if
+Queries use rules for xref:manual::reading/infer.adoc[Inferring new data] only in read transactions and only if
 the inference option is *enabled*.
 
 // end::rules_basics[]
@@ -535,7 +535,7 @@ rule add-view-permission: when {
 };
 ----
 
-See the xref:typedb::tutorials/iam-schema.adoc#_add_view_permission_rule_explanation[explanation].
+//See the xref:typedb::tutorials/iam-schema.adoc#_add_view_permission_rule_explanation[explanation].
 ====
 
 We can use xref:data/match.adoc#_computation[computation] operations and functions in the condition pattern.
@@ -555,7 +555,7 @@ For more information on how to create rules in a schema, see the xref:typeql::sc
 [#_data]
 == Data
 
-Every piece of data stored in a TypeDB database must be an instance of a <<_types,type>>
+Every piece of data stored in a TypeDB database must be an instance of a type
 xref:typeql::schema/type-definitions.adoc[defined] in the schema of the database.
 
 In other words, to insert data into a TypeDB database, we must use the types defined in the schema of the database.

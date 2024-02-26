@@ -1,0 +1,241 @@
+= Get query
+:experimental:
+:tabs-sync-option:
+
+A Get query is used to retrieve concepts from a TypeDB database.
+//#todo Add a link to the Concept term definition
+
+This page assumes you've already followed instructions from the xref:manual::writing/overview.adoc[] section.
+Here, you'll see how to retrieve data from a database using Studio, Console, or one of the drivers.
+
+[#_how_to_send_a_get_query]
+== How to send a Get query
+
+The easiest way to send a Get query is to use Studio or Console:
+
+[tabs]
+====
+Studio::
++
+--
+Follow the xref:manual::studio.adoc#_prepare_a_query[Studio manual]
+to connect to TypeDB and select a project folder.
+Then use the steps below:
+
+. Use a drop-down list in the top toolbar to select a database.
+. Switch to `data` session and `read` transaction types.
+. Open a new tab and insert or type in an Insert query, for example:
++
+.TypeQL Get query
+[,typeql]
+----
+match
+$u isa user, has email $e;
+get
+$u, $e;
+----
+. Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
+. Commit the changes by clicking the btn:[Commit query] button (image:home::studio-icons/commit.png[Commit]).
+--
+
+Console::
++
+--
+. Open a `data` session and `read` transaction to the selected database (e.g., `sample_db`):
++
+[,bash]
+----
+transaction sample_db data read
+----
+. Send the Get query:
++
+[,bash]
+----
+match
+$u isa user, has email $e;
+get
+$u, $e;
+----
++
+Push btn:[Enter] twice to send the query.
+. Commit the changes:
++
+[,bash]
+----
+commit
+----
+--
+====
+
+The resulted Log output should look like this:
+
+[,js]
+----
+{
+    $e alice@vaticle.com isa email;
+    $u iid 0x826e80018000000000000000 isa user;
+}
+{
+    $e the-bob@vaticle.com isa email;
+    $u iid 0x826e80018000000000000001 isa user;
+}
+{
+    $e charlie@vaticle.com isa email;
+    $u iid 0x826e80018000000000000002 isa user;
+}
+----
+
+To send a Get query programmatically, use xref:drivers::overview.adoc[drivers]:
+
+[tabs]
+====
+Rust::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `read` transaction, and use the
+xref:drivers::rust/api-reference.adoc#_struct_QueryManager_get__[`transaction.query().get()`]
+method:
+
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::manual::partial$rust-manual-code.rs[tags=get]
+----
+--
+
+Python::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `read` transaction, and use the
+xref:drivers::python/api-reference.adoc#_QueryManager_get{scores}query_str__options_TypeDBOptions__None[`transaction.query.get()`]
+method:
+
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tags=get]
+----
+--
+
+Java::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `read` transaction, and use the
+xref:drivers::java/api-reference.adoc#_QueryManager_get__com_vaticle_typeql_lang_query_TypeQLGet[`transaction.query().get()`]
+method:
+
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tags=get]
+----
+--
+
+Node.js::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `read` transaction, and use the
+xref:drivers::nodejs/api-reference.adoc#_QueryManager_get{scores}query_string__options_TypeDBOptions[`transaction.query.get()`]
+method:
+
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tags=get]
+----
+--
+
+C++::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `read` transaction, and use the
+xref:drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerget_const_stdstring_query_const_Options_options_Options_const[`transaction.query.get()`]
+method:
+
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tags=options,indent=8]
+include::manual::partial$cpp-manual-code.cpp[tags=get]
+----
+--
+====
+
+== Response interpretation
+
+A Get query returns all concept that were matched by the `match` clause and filtered by the `get` clause.
+
+The response is a Stream/Iterator with a ConceptMap object for every solution of a `match` clause pattern.
+A concept is returned as a special object with methods relevant to its type.
+
+There are modifiers that can be applied to a Get query that can change its output format:
+
+* Grouping returns a Stream/Iterator of ConceptMapGroup objects.
+* Aggregation returns Promise of a Value.
+* Grouping and aggregation return a Stream/Iterator of ValueGroup object.
+
+See the respective drivers API reference for relevant methods to work with these objects:
+
+// tag::drivers-api[]
+[cols-3]
+--
+.image:home::rust.png[width=30] xref:drivers::rust/api-reference.adoc[Rust]
+[.clickable]
+****
+
+****
+
+.image:home::python.png[width=30] xref:drivers::python/api-reference.adoc[Python]
+[.clickable]
+****
+
+****
+
+.image:home::java.png[width=30] xref:drivers::java/api-reference.adoc[Java]
+[.clickable]
+****
+
+****
+
+.image:home::nodejs.png[width=30] xref:drivers::nodejs/api-reference.adoc[Node.js]
+[.clickable]
+****
+
+****
+
+.image:home::cpp.png[width=30] xref:drivers::cpp/api-reference.adoc[C++]
+[.clickable]
+****
+
+****
+--
+// end::drivers-api[]
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::data/get.adoc[]
+[.clickable]
+****
+Learn more about Get queries in TypeQL: syntax, behaviour, and query examples.
+****
+
+.xref:manual::writing/overview.adoc[]
+[.clickable]
+****
+Learn how to write some new data to a database to read.
+****
+
+.xref:learn::3-reading-data/3-reading-data.adoc[]
+[.clickable]
+****
+Check out the Reading data section of our TypeDB Learning course.
+****
+--

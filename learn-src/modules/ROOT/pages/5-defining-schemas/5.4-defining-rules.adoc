@@ -1,0 +1,101 @@
+= Lesson 5.4: Defining rules
+
+== Rule structure
+
+In xref:learn::3-reading-data/3.3-fetching-inferred-data.adoc[Lesson 3.3], we saw how we could use *rule inference* to generate new data based on *rules*. In this lesson, we'll see how we can go about defining these rules. Rules are defined using the same Define queries used to define types, as types and rules together form the schema. The syntactic structure used to define a rule has three parts: a *rule label*, a *condition*, and a *conclusion*, as demonstrated in the following template.
+
+[,typeql]
+----
+rule rule-label:
+    when {
+        # condition
+    } then {
+        # conclusion
+    };
+----
+
+The beginning of a rule definition is denoted with the `rule` keyword followed by the rule label, which uniquely identifies it, analogous to a type label. The condition is contained in a *block* preceded by the `when` keyword. This is followed by the conclusion, which is contained in a block preceded by the `then` keyword. In TypeQL, blocks are delimited by braces and contain *patterns*, which comprise any number of consecutive statements. In xref:learn::3-reading-data/3.5-query-validation.adoc[Lesson 3.5], we briefly saw another kind of block, a `not` block. The `when` and `then` blocks can only be used as parts of rules and must always be used in pairs. With this in mind, let's review the rule we encountered previously.
+
+[,typeql]
+----
+define
+rule transitive-location:
+    when {
+        (location: $parent-place, located: $child-place) isa locating;
+        (location: $child-place, located: $x) isa locating;
+    } then {
+        (location: $parent-place, located: $x) isa locating;
+    };
+----
+
+In this rule, the label is `transitive-location`, the condition pattern consists of two statements, and the conclusion pattern is a single statement. Functionally, a rule is very similar to an Insert query. Compare the above rule to the following query.
+
+[,typeql]
+----
+match
+(location: $parent-place, located: $child-place) isa! locating;
+(location: $child-place, located: $x) isa locating;
+insert
+(location: $parent-place, located: $x) isa indirect-locating;
+----
+
+The key differences are that an Insert query must be manually run, and the data is written to the disk. In contrast, after committing a rule to a schema, it is applied automatically at query-time and the data it generates is held only in memory and erased when the transaction is closed. In this sense, rules function very similar to views in relational databases, though with a number of distinct advantages as discussed in xref:learn::3-reading-data/3.3-fetching-inferred-data.adoc[Lesson 3.3].
+
+The conclusion of a rule must conform to certain requirements:
+
+* The conclusion must consist of a single simple statement.
+* The conclusion must generate either a single new relation or a single new attribute.
+* Every variable used in the conclusion must also appear in the condition.
+
+== Inferring new relations
+
+The rule `transitive-location` generates a single new `locating` relation.
+
+[,typeql]
+----
+define
+rule transitive-location:
+    when {
+        (location: $parent-place, located: $child-place) isa locating;
+        (location: $child-place, located: $x) isa locating;
+    } then {
+        (location: $parent-place, located: $x) isa locating;
+    };
+----
+
+All the roleplayers of the new relation must already exist in the data and be represented by variables in the rule's condition. This particular rule makes `locating` relations https://en.wikipedia.org/wiki/Transitive_relation[transitive] by leveraging interface polymorphism, regardless of the types of the roleplayers.
+
+== Inferring new attributes
+
+The rule `review-verified-by-purchase` generates a single new `verified` attribute with value `true`.
+
+[,typeql]
+----
+define
+rule review-verified-by-purchase:
+    when {
+        ($order, $product) isa order-line;
+        ($review, $product) isa rating;
+        ($user, $order) isa action-execution, has timestamp $order-time;
+        ($user, $review) isa action-execution, has timestamp $review-time;
+        $review-time > $order-time;
+    } then {
+        $review has verified true;
+    };
+----
+
+The owner of the new attribute must already exist in the data and be represented by a variable in the rule's condition. This rule checks if a user who reviewed a book has previously bought it, and then marks the review as verified if so. In fact, this rule does not specify the type of `$product`, so would even work for reviews of things other than books! We also have a second rule that checks if reviews are verified, and marks them as unverified if not.
+
+[,typeql]
+----
+define
+rule review-unverified:
+    when {
+        $review isa review;
+        not { $review has verified true; };
+    } then {
+        $review has verified false;
+    };
+----
+
+The combination of these two rules ensures that every review always has exactly one `verified` attribute. We never have to insert these attributes because they are _always_ derived by rule inference. These are a few simple ways we can define rules. We will explore more complex cases of rule inference in Lesson 10 (coming soon).

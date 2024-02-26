@@ -1,0 +1,166 @@
+= TypeDB Manual
+:keywords: typedb, guides, how, installation, tutorial
+:pageTitle: Guides overview
+:summary: How to guides and tutorials
+
+Welcome to the TypeDB Manual.
+Here you'll find practice oriented guides on TypeDB operations and configuration, as well as Studio and Console manuals.
+See the full selection of our guides below.
+
+== Clients
+
+[cols-2]
+--
+.xref:manual::studio.adoc[]
+[.clickable]
+****
+An IDE that facilitates the development process for TypeDB databases.
+****
+
+.xref:manual::console.adoc[]
+[.clickable]
+****
+A powerful CLI client for TypeDB.
+****
+--
+////
+[cols-1]
+--
+.xref:drivers::overview.adoc[Drivers]
+[.clickable]
+****
+xref:drivers::rust/overview.adoc[Rust] |
+xref:drivers::python/overview.adoc[Python] |
+xref:drivers::java/overview.adoc[Java] |
+xref:drivers::nodejs/overview.adoc[Node.js] |
+xref:drivers::cpp/overview.adoc[C++]
+****
+--
+////
+
+== Drivers
+
+For TypeDB drivers documentation, see the xref:drivers::overview.adoc[Drivers] category.
+
+== Basic guides
+
+[cols-2]
+--
+.xref:manual::connecting/overview.adoc[]
+[.clickable]
+****
+* xref:manual::connecting/connection.adoc[]
+* xref:manual::connecting/database.adoc[]
+* xref:manual::connecting/session.adoc[]
+* xref:manual::connecting/transaction.adoc[]
+****
+
+.xref:manual::defining/overview.adoc[]
+[.clickable]
+****
+* xref:manual::defining/define.adoc[]
+* xref:manual::defining/undefine.adoc[]
+* xref:manual::defining/schema-editing.adoc[]
+****
+
+.xref:manual::writing/overview.adoc[]
+[.clickable]
+****
+* xref:manual::writing/insert.adoc[]
+* xref:manual::writing/delete.adoc[]
+* xref:manual::writing/update.adoc[]
+****
+
+.xref:manual::reading/overview.adoc[]
+[.clickable]
+****
+* xref:manual::reading/fetch.adoc[]
+* xref:manual::reading/get.adoc[]
+* xref:manual::reading/infer.adoc[]
+****
+////
+.xref:manual::defining/overview.adoc[Programming concepts]
+[.clickable]
+****
+* xref:manual::defining/overview.adoc[Types]
+* xref:manual::defining/overview.adoc[Things]
+* xref:manual::defining/overview.adoc[Explanations]
+****
+////
+--
+
+== Configuring server
+
+[cols-3]
+--
+.xref:manual::configuring/config.adoc[Config file]
+[.clickable]
+****
+TypeDB configuration via config file parameters.
+****
+
+.xref:manual::configuring/arguments.adoc[CLI arguments]
+[.clickable]
+****
+TypeDB configuration via CLI arguments.
+****
+
+.xref:manual::configuring/logs.adoc[Logs]
+[.clickable]
+****
+Logs configuration and storage.
+****
+
+.xref:manual::configuring/export.adoc[Export and Import]
+[.clickable]
+****
+Exporting and importing databases in TypeDB.
+****
+
+.xref:manual::configuring/upgrades.adoc[Upgrades]
+[.clickable]
+****
+Upgrading TypeDB version.
+****
+
+.xref:manual::configuring/users.adoc[Users]
+[.clickable]
+****
+User management operations.
+****
+--
+
+== Programming concepts
+
+include::objects/overview.adoc[tags=nav-blocks]
+
+////
+== Migrating to TypeDB
+
+[cols-2]
+--
+.xref:manual::studio.adoc[From CSV/XML/JSON]
+[.clickable]
+****
+
+****
+
+.xref:manual::console.adoc[From SQL]
+[.clickable]
+****
+
+****
+
+.xref:manual::studio.adoc[From Neo4J]
+[.clickable]
+****
+
+****
+
+.xref:manual::console.adoc[From MongoDB]
+[.clickable]
+****
+
+****
+--
+////

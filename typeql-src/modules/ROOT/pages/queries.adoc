@@ -21,7 +21,7 @@ xref:typeql::data/match.adoc[] page.
 
 |xref:typeql::schema/type-definitions.adoc[Define]
 |1
-|xref:typeql::schema/type-definitions.adoc#_define_clause[Define]
+|xref:typeql::schema/define.adoc#_define_clause[Define]
 |`define`
 |Yes
 
@@ -581,7 +581,7 @@ The above query returns a Stream/Iterator of ConceptMaps of `$p`, `$fn` and thei
 Concepts have methods to process them according to their root type.
 
 For more information on Get queries, see the xref:typeql::data/get.adoc[] page.
-For information on driver API, see the releavant language for driver API reference:
+For information on driver API, see the relevant language for driver API reference:
 xref:drivers::rust/api-reference.adoc[Rust],
 xref:drivers::python/api-reference.adoc[Python],
 xref:drivers::java/api-reference.adoc[Java], and
@@ -599,4 +599,6 @@ xref:typeql::data/update.adoc[],
 xref:typeql::data/fetch.adoc[], and
 xref:typeql::data/get.adoc[] pages.
 
-For more information about practical aspects of using TypeDB, see the xref:typedb::overview.adoc[TypeDB Documentation].
+To learn more about TypeQL queries and how to use them, see the xref:learn::course-overview.adoc[Learn] section.
+
+For more information about practical aspects of using TypeDB, see the xref:manual::overview.adoc[TypeDB manual].

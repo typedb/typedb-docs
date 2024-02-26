@@ -1,0 +1,474 @@
+== Requirements
+:!example-caption:
+:tabs-sync-option:
+
+* `kubectl` installed and *configured* for your Kubernetes deployment.
+  You can use https://minikube.sigs.k8s.io/docs/start/[minikube] for local testing.
+* `helm` installed.
+
+[#_initial_setup]
+== Initial Setup
+
+First, create a secret to access TypeDB Cloud image on Docker Hub:
+
+[,bash]
+----
+kubectl create secret docker-registry private-docker-hub --docker-server=https://index.docker.io/v2/ \
+--docker-username=USERNAME --docker-password='PASSWORD' --docker-email=EMAIL
+----
+
+You can use an
+https://hub.docker.com/settings/security?generateToken=true[access token,window=_blank] instead of password.
+
+Next, add the Vaticle Helm repo:
+
+[,bash]
+----
+helm repo add vaticle https://repo.vaticle.com/repository/helm/
+----
+
+== Encryption setup (optional)
+//*Create in-flight encryption certificates (optional)*
+
+This step is necessary if you wish to deploy TypeDB Cloud with in-flight encryption support.
+There are two certificates that need to be configured: external certificate (TLS) and internal certificate (Curve).
+The certificates need to be generated and then added to Kubernetes Secrets.
+
+An external certificate can either be obtained from trusted third party providers such as
+https://www.cloudflare.com/[CloudFlare] or https://letsencrypt.org/[letsencrypt.org].
+Alternatively, it is also possible to generate it manually with a tool we provide with TypeDB Cloud
+in the `tool` directory:
+
+[,bash]
+----
+java -jar encryption-gen.jar --ca-common-name=<x500-common-name> --hostname=<external-hostname>,<internal-hostname>
+----
+
+_Please note that an external certificate is always bound to URL address, not IP address._
+
+Ensure the external certificate (`<external-hostname>` in the command above) is bound to `\*.<helm-release-name>`.
+For example, for a Helm release named `typedb-cloud`, the certificate needs to be bound to `*.typedb-cloud`.
+
+The `encryption-gen.jar` generates three directories:
+
+* `internal-ca` and `external-ca` -- The CA keypairs stored only in case you want to sign more certificates in the future.
+* *<external-hostname>* -- A directory with certificates to be stored on all servers in the cluster.
+
+All files from the directory
+named after external domain shall be copied to the proper directory on every server in a cluster.
+By default, they are stored in `/server/conf/encryption` inside the TypeDB Cloud main directory.
+For example, `typedb-cloud-all-mac-x86_64-2.25.12/server/conf/encryption`.
+The path to each file is configured in the `encryption` section of the TypeDB Cloud config file.
+
+Once the external and internal certificates are all generated, we can upload it to Kubernetes Secrets.
+Navigate into the directory with cluster certificates and run:
+
+[,bash]
+----
+kubectl create secret generic ext-grpc \
+  --from-file ext-grpc-certificate.pem \
+  --from-file ext-grpc-private-key.pem \
+  --from-file ext-grpc-root-ca.pem
+kubectl create secret generic int-grpc \
+    --from-file int-grpc-certificate.pem \
+    --from-file int-grpc-private-key.pem \
+    --from-file int-grpc-root-ca.pem
+kubectl create secret generic int-zmq \
+  --from-file int-zmq-private-key \
+  --from-file int-zmq-public-key
+----
+
+== Deploying a cluster via K8s
+
+There are three alternative deployment modes that you can choose from:
+
+* <<_deploying_a_private_cluster,Private Cluster>> -- For applications (clients) that are located within the same Kubernetes network as the cluster.
+* <<_deploying_a_public_cluster,Public Cluster>> -- To access the cluster from outside the Kubernetes network.
+* <<_deploying_a_public_cluster_minikube,Public Cluster (Minikube)>> -- To deploy a development cluster on your local machine.
+
+[#_deploying_a_private_cluster]
+=== Deploying a Private Cluster
+
+This deployment mode is preferred if your application is located within the same Kubernetes network as the cluster.
+In order to deploy in this mode, ensure that the `exposed` flag is set to `false`.
+
+.In-flight encryption
+[tabs]
+====
+Without encryption::
++
+--
+Deploy:
+
+[,bash]
+----
+helm install typedb-cloud vaticle/typedb-cloud --set "exposed=false,encrypted=false"
+----
+--
+
+With encryption::
++
+--
+
+To enable in-flight encryption for your private cluster, make sure the `encrypted` flag is set to `true`:
+
+[,bash]
+----
+helm install typedb-cloud vaticle/typedb-cloud --set "exposed=false,encrypted=true" \
+--set servers=3,cpu=1,storage.persistent=false,storage.size=1Gi,exposed=true,domain=localhost-ext --set encryption.enable=true --set encryption.enable=true,encryption.externalGRPC.secretName=ext-grpc,encryption.externalGRPC.content.privateKeyName=ext-grpc-private-key.pem,encryption.externalGRPC.content.certificateName=ext-grpc-certificate.pem,encryption.externalGRPC.content.rootCAName=ext-grpc-root-ca.pem \
+--set encryption.internalGRPC.secretName=int-grpc,encryption.internalGRPC.content.privateKeyName=int-grpc-private-key.pem,encryption.internalGRPC.content.certificateName=int-grpc-certificate.pem,encryption.internalGRPC.content.rootCAName=int-grpc-root-ca.pem \
+--set encryption.internalZMQ.secretName=int-zmq,encryption.internalZMQ.content.privateKeyName=int-zmq-private-key,encryption.internalZMQ.content.publicKeyName=int-zmq-public-key
+----
+--
+====
+
+The servers will be accessible via the internal hostname within the Kubernetes network,
+i.e.,
+`typedb-cloud-0.typedb-cloud`,
+`typedb-cloud-1.typedb-cloud`, and
+`typedb-cloud-2.typedb-cloud`.
+
+[#_deploying_a_public_cluster]
+=== Deploying a Public Cluster
+
+This deployment mode is preferred if you need to access the cluster from outside the Kubernetes network.
+For example,
+if you need to access the cluster from TypeDB Studio or TypeDB Console running on your local machine.
+
+Deploying a public cluster can be done by setting the `exposed` flag to `true`.
+
+Technically, the servers are made public by binding each one to a `LoadBalancer` instance which is assigned a public
+IP/hostname. The IP/hostname assignments are done automatically by the cloud provider that the Kubernetes platform is
+running on.
+
+.In-flight encryption
+[tabs]
+====
+Without encryption::
++
+--
+Deploy:
+
+[,bash]
+----
+helm install typedb-cloud vaticle/typedb-cloud --set "exposed=true"
+----
+
+Once the deployment has been completed,
+the servers can be accessible via public IPs/hostnames assigned to the Kubernetes `LoadBalancer` services.
+The addresses can be obtained with this command:
+
+[,bash]
+----
+kubectl get svc -l external-ip-for=typedb-cloud \
+-o='custom-columns=NAME:.metadata.name,IP OR HOSTNAME:.status.loadBalancer.ingress[0].*'
+----
+--
+
+With encryption::
++
+--
+To enable in-flight encryption, the servers must be assigned URL addresses.
+This restriction comes from the fact that external certificates must be bound to a domain name, and not an IP address.
+
+Given a "domain name" and a "Helm release name", the address structure of the servers will follow the specified format:
+
+[,bash]
+----
+<helm-release-name>-{0..n}.<domain-name>
+----
+
+The format must be taken into account when generating the external certificate of all servers such that they're properly
+bound to the address.
+For example, you can generate an external certificate using wildcard, i.e.,
+`*.<helm-release-name>.<domain-name>`, that can be shared by all servers.
+
+Once the domain name and external certificate have been configured accordingly,
+we can proceed to perform the deployment.
+Ensure that the `encrypted` flag is set to `true` and the `domain` flag set accordingly.
+
+[,bash]
+----
+helm install typedb-cloud vaticle/typedb-cloud --set "exposed=true,encrypted=true,domain=<domain-name>" \
+--set servers=3,cpu=1,storage.persistent=false,storage.size=1Gi,exposed=true,domain=localhost-ext --set encryption.enable=true --set encryption.enable=true,encryption.externalGRPC.secretName=ext-grpc,encryption.externalGRPC.content.privateKeyName=ext-grpc-private-key.pem,encryption.externalGRPC.content.certificateName=ext-grpc-certificate.pem,encryption.externalGRPC.content.rootCAName=ext-grpc-root-ca.pem \
+--set encryption.internalGRPC.secretName=int-grpc,encryption.internalGRPC.content.privateKeyName=int-grpc-private-key.pem,encryption.internalGRPC.content.certificateName=int-grpc-certificate.pem,encryption.internalGRPC.content.rootCAName=int-grpc-root-ca.pem \
+--set encryption.internalZMQ.secretName=int-zmq,encryption.internalZMQ.content.privateKeyName=int-zmq-private-key,encryption.internalZMQ.content.publicKeyName=int-zmq-public-key
+----
+
+After the deployment has been completed, we need to configure these URL addresses to correctly point to the servers.
+This can be done by configuring the `A record` (for IPs) or `CNAME record` (for hostnames) of all the servers in your
+trusted DNS provider:
+
+[,bash]
+----
+typedb-cloud-0.typedb-cloud.example.com => <public IP/hostname of typedb-cloud-0 service>
+typedb-cloud-1.typedb-cloud.example.com => <public IP/hostname of typedb-cloud-1 service>
+typedb-cloud-2.typedb-cloud.example.com => <public IP/hostname of typedb-cloud-2 service>
+----
+--
+====
+
+[#_deploying_a_public_cluster_minikube]
+=== Deploying a Public Cluster with Minikube
+
+_Please note that in-flight encryption cannot be enabled in this configuration._
+
+This deployment mode is primarily intended for development purposes as it runs a K8s cluster locally.
+
+////
+Certain adjustments will be made compared to other deployment modes:
+
+* Minikube only has a single K8s node, so `singlePodPerNode` needs to be set to `false`
+* Minikube's K8s node only has as much CPUs as the local machine:
+`kubectl get node/minikube -o=jsonpath='{.status.allocatable.cpu}'`.
+Therefore, for deploying a cluster with three servers of TypeDB Cloud to a node with 8 vCPUs,
+the `cpu` can be set to `2` at maximum.
+* Storage size probably needs to be tweaked from default value of `100Gi` (or fully disabled persistent)
+  as total storage required is `storage.size` multiplied by `replicas`.
+  In our example, the total storage requirement is 30Gi.
+////
+
+Ensure to have https://minikube.sigs.k8s.io/[Minikube] installed and running.
+
+Deploy, adjusting the parameters for CPU and storage to run on a local machine:
+
+[,bash]
+----
+helm install typedb-cloud vaticle/typedb-cloud --set image.pullPolicy=Always,servers=3,singlePodPerNode=false,cpu=1,storage.persistent=false,storage.size=1Gi,exposed=true,javaopts=-Xmx4G --set encryption.enable=false
+----
+
+////
+[,bash]
+----
+helm install vaticle/typedb-cloud --generate-name \
+--set "cpu=2,replicas=3,singlePodPerNode=false,storage.persistent=true,storage.size=10Gi,exposed=true"
+----
+////
+
+Once the deployment has been completed, enable tunneling from another terminal:
+
+[,bash]
+----
+minikube tunnel
+----
+
+== K8s cluster status check
+
+To check the status of a cluster:
+
+[,bash]
+----
+kubectl describe sts typedb-cloud
+----
+
+It should show `Pods Status` field as `Running` for all the nodes after a few minutes
+after deploying a TypeDB Cloud cluster.
+
+You can connect to a pod:
+
+[,bash]
+----
+kubectl exec --stdin --tty typedb-cloud-0 -- /bin/bash
+----
+
+== K8s cluster removal
+
+To stop and remove a K8s cluster from Kubernetes, use the `helm uninstall` with the helm release name:
+
+[,bash]
+----
+helm uninstall typedb-cloud
+----
+
+== K8s troubleshooting
+
+To see pod details for the `typedb-cloud-0` pod:
+
+[,bash]
+----
+kubectl describe pod typedb-cloud-0
+----
+
+The following are the common error scenarios and how to troubleshoot them.
+
+=== All pods are stuck in `ErrImagePull` or `ImagePullBackOff` state
+
+This means the secret to pull the image from Docker Hub has not been created.
+Make sure you've followed <<_initial_setup,Initial Setup>> instructions and verify that the pull secret is present by
+executing `kubectl get secret/private-docker-hub`. Correct state looks like this:
+
+[,bash]
+----
+ $ kubectl get secret/private-docker-hub
+ NAME                 TYPE                             DATA   AGE
+ private-docker-hub   kubernetes.io/dockerconfigjson   1      11d
+----
+
+=== One or more pods of TypeDB Cloud are stuck in `Pending` state
+
+This might mean pods requested more resources than available.
+To check if that's the case, run on a stuck pod (e.g. `typedb-cloud-0`):
+
+[,bash]
+----
+`kubectl describe pod/typedb-cloud-0`
+----
+
+Error message similar to
+`0/1 nodes are available: 1 Insufficient cpu.` or
+`0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.`
+indicates that `cpu` or `storage.size` <<_helm_configuration_reference,settings>> need to be decreased.
+
+=== One or more pods of TypeDB Cloud are stuck in `CrashLoopBackOff` state
+
+This might indicate any misconfiguration of TypeDB Cloud.
+Please check the logs:
+
+[,bash]
+----
+kubectl logs pod/typedb-cloud-0
+----
+
+[#_helm_configuration_reference]
+== Helm configuration reference
+
+Configurable settings for Helm package include:
+
+[cols="^2,^1,3"]
+|===
+| Key | Default value ^| Description
+
+| `name`
+| `null`
+| Used for naming deployed objects. When not provided, the Helm release name will be used instead.
+
+| `image.repository`
+| `vaticle/typedb-cloud`
+| The docker hub organization and repository from which to pull an appropriate image.
+
+| `image.tag`
+| `2.25.9`
+| The version of TypeDB Cloud to use.
+
+| `image.pullPolicy`
+| `IfNotPresent`
+| Image pulling policy. +
+For more information, see the
+https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy[image pull policy]
+in Kubernetes documentation.
+
+| `image.pullSecret`
+| -
+| The name of a secret containing a container image registry key used to authenticate against the image repository.
+
+| `exposed`
+| `false`
+| Whether TypeDB Cloud supports connections via public IP/hostname (outside of Kubernetes network).
+
+| `serviceAnnotations`
+| `null`
+| Kubernetes annotations to be added to the Kubernetes services responsible for directing traffic
+to the TypeDB Cloud pods.
+
+| `tolerations`
+| `[]`
+//#todo Check the default value
+a| Kubernetes tolerations of taints on nodes. +
+For more information, see the
+https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/[tolerations]
+in Kubernetes documentation.
+
+.Example
+[,yaml]
+----
+[key: "typedb-cloud-only"
+    operator: "Exists"
+    effect: "NoSchedule"]`
+----
+
+| `nodeAffinities`
+| `{}`
+| Kubernetes node affinities. +
+For more information, see the
+https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#node-affinity[node affinities]
+in Kubernetes documentation.
+
+| `podAffinities`
+| `{}`
+| Kubernetes pod affinities. +
+For more information, see the
+https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#an-example-of-a-pod-that-uses-pod-affinity[pod affinities]
+in Kubernetes documentation.
+
+| `podAntiAffinities`
+| `{}`
+| Kubernetes pod anti-affinities. +
+For more information, see the
+https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#an-example-of-a-pod-that-uses-pod-affinity[pod affinities]
+in Kubernetes documentation.
+
+| `singlePodPerNode`
+| `true`
+| Whether a pod should share nodes with other TypeDB Cloud instances from the same Helm installation.
+
+_Warning: changing this to false and making no anti-affinities of your own will allow Kubernetes
+to place multiple cluster servers on the same node, negating the high-availability guarantees of TypeDB Cloud._
+
+| `podLabels`
+| `{}`
+| Kubernetes pod labels. +
+For more information, see the
+https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#syntax-and-character-set[pod labels]
+in Kubernetes documentation.
+
+| `servers`
+| `3`
+| Number of TypeDB Cloud servers to run.
+
+| `resources`
+| `{}`
+| Kubernetes resources specification. +
+For more information, see the
+https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#resource-requests-and-limits-of-pod-and-container[resource requests and limits]
+in Kubernetes documentation.
+
+| `storage.size`
+| `100Gi`
+| How much disk space should be allocated for each TypeDB Cloud server.
+
+| `storage.persistent`
+| `true`
+| Whether TypeDB Cloud should use a persistent volume to store data.
+
+| `encryption.enabled`
+| `false`
+| Whether TypeDB Cloud uses an in-flight encryption.
+
+| `encryption.externalGRPC`
+|
+| Encryption settings for client-server communications.
+
+| `encryption.internalGRPC`
+|
+| Encryption settings for cluster management, e.g., creating a database on all replicas.
+
+| `encryption.internalZMQ`
+|
+| Encryption settings for data replication.
+
+| `authentication.password.​disallowDefault`
+| `false`
+| Check whether the `admin` account has the default password.
+
+| `logstash.enabled`
+| `false`
+| Whether TypeDB Cloud pushes logs into Logstash
+
+| `logstash.uri`
+| `""`
+| Hostname and port of a Logstash daemon accepting log records
+|===
+
+= Current Limitations
+
+TypeDB Cloud doesn't support dynamic reconfiguration of server count without restarting all the servers.

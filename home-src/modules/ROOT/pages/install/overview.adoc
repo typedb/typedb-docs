@@ -1,0 +1,76 @@
+= Installation
+:keywords: setup, install, deploy, typedb, core, cloud, enterprise, download, server, linux, mac, windows, docker, arm, arm64, x86, x86_64, client, driver, studio, console
+:page-aliases: typedb::installation.adoc, home::install.adoc
+:pageTitle: Installation
+:summary: Install and run TypeDB server or client for Linux, macOS, Windows, or Cloud.
+
+include::home::overview.adoc[tag=rust-rewrite]
+
+== Deploy TypeDB
+
+TypeDB is available in two editions: Cloud and Core.
+
+[cols-2]
+--
+.link:https://cloud.typedb.com/[TypeDB Cloud]
+[.clickable]
+****
+Create a new production-ready deployment of TypeDB Cloud with advanced security and high-availability features.
+****
+
+.xref:home::install/core.adoc[TypeDB Core]
+[.clickable]
+****
+Install a 100% open source version of TypeDB with everything developers need to start building on TypeDB.
+****
+--
+
+== TypeDB clients
+
+There are three types of clients available for TypeDB: Studio, Console, and language-specific drivers.
+
+[cols-2]
+--
+.xref:home::install/studio.adoc[Studio]
+[.clickable]
+****
+Install an IDE that facilitates the development process for TypeDB databases.
+****
+
+.xref:home::install/console.adoc[Console]
+[.clickable]
+****
+Install a powerful CLI tool with interactive(REPL) and non-interactive (script) modes.
+****
+--
+
+== Drivers
+
+[cols-3]
+--
+.image:home::rust.png[,width=30]   xref:drivers::rust/overview.adoc[Rust]
+[.clickable]
+****
+
+****
+.image:home::python.png[,width=30]   xref:drivers::python/overview.adoc[Python]
+[.clickable]
+****
+
+****
+.image:home::java.png[,width=30]   xref:drivers::java/overview.adoc[Java]
+[.clickable]
+****
+
+****
+.image:home::nodejs.png[,width=30]   xref:drivers::nodejs/overview.adoc[Node.js]
+[.clickable]
+****
+
+****
+.image:home::cpp.png[,width=30]   xref:drivers::cpp/overview.adoc[C++]
+[.clickable]
+****
+
+****
+--

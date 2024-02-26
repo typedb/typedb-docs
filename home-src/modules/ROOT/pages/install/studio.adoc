@@ -1,0 +1,145 @@
+= TypeDB Studio installation guide
+
+TypeDB Studio is a standalone IDE for TypeDB.
+If you are unsure of the exact version you need,
+check the <<_version_compatibility,compatibility table>> below.
+
+[cols-3]
+--
+.link:https://github.com/vaticle/typedb-studio[GitHub,window=_blank]
+[.clickable]
+****
+See source code and release notes.
+****
+
+.link:https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%5Etypedb-studio&sort=-version[Downloads]
+[.clickable]
+****
+See downloadable packages.
+****
+
+.xref:manual::studio.adoc[TypeDB Studio Manual]
+[.clickable]
+****
+See documentation.
+****
+--
+
+[#_studio_install]
+== Install
+
+For installation instructions, follow the steps below for your OS:
+
+[tabs]
+====
+macOS::
++
+--
+. Download the latest package for your systems architecture:
+https://github.com/vaticle/typedb-studio/releases/download/2.26.0/typedb-studio-mac-x86_64-2.26.0.dmg[x86/x64] |
+https://github.com/vaticle/typedb-studio/releases/download/2.26.0/typedb-studio-mac-arm64-2.26.0.dmg[arm64]. +
+For other versions, see the
+https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%5Etypedb-studio&sort=-version[Downloads repository] page.
+. Open the downloaded `.dmg` file and accept the license agreement.
+. Drag and drop TypeDB Studio executable to the Applications folder.
+
+Alternatively, you can use Brew to install TypeDB Studio:
+
+[,bash]
+----
+brew tap vaticle/tap
+brew install --cask vaticle/tap/typedb-studio
+----
+--
+
+Linux::
++
+--
+. Download the latest package for your systems architecture:
+https://github.com/vaticle/typedb-studio/releases/download/2.26.0/typedb-studio-linux-x86_64-2.26.0.tar.gz[x86/x64] |
+https://github.com/vaticle/typedb-studio/releases/download/2.26.0/typedb-studio-linux-arm64-2.26.0.tar.gz[arm64]. +
+For other versions, see the
+https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%5Etypedb-studio&sort=-version[Downloads repository] page.
+. Extract the archive with TypeDB Studio into a new directory, for example:
++
+[,bash,subs=attributes+]
+----
+mkdir /opt/typedb-studio
+tar -xzf ~/Downloads/typedb-studio-linux-x86_64-{latest-version}.tar.gz -C /opt/typedb-studio
+----
+
+. Add a symlink to the TypeDB Studio executable in the `/usr/local/bin` directory, for example:
++
+[,bash,subs=attributes+]
+----
+ln -s /opt/typedb-studio/typedb-studio-linux-x86_64-{latest-version}/typedb-studio /usr/local/bin/typedb-studio
+----
+--
+
+Windows::
++
+--
+. Download the latest installer:
+https://github.com/vaticle/typedb-studio/releases/download/2.26.0/typedb-studio-windows-x86_64-2.26.0.exe[x86/x64]. +
+For other versions, see the
+https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%5Etypedb-studio&sort=-version[Downloads repository] page.
+. Run the downloaded `.exe` file and follow the installation wizard.
+--
+====
+
+== Run
+
+To launch TypeDB Studio, locate its executable/binary file and run it.
+
+For more information on how to use TypeDB Studio, see the xref:manual::studio.adoc[] manual.
+
+[#_version_compatibility]
+== Version Compatibility
+
+[cols="^.^2,^.^1,^.^2,^.^2"]
+|===
+| TypeDB Studio +
+(release notes)
+| Protocol encoding version
+| TypeDB Core
+| TypeDB Cloud
+
+| https://github.com/vaticle/typedb-studio/releases/tag/2.26.0[2.26.0]
+| 3
+| 2.26.3
+| 2.26.0
+
+| https://github.com/vaticle/typedb-studio/releases/tag/2.25.11[2.25.11]
+| 3
+| 2.25.7
+| 2.25.7
+
+| https://github.com/vaticle/typedb-studio/releases/tag/2.24.15[2.24.15]
+| 2
+| 2.24.17
+| 2.24.17
+
+| 2.18.0 to 2.21.2
+| 1
+| 2.18.0 to 2.23.0
+| 2.18.0 to 2.23.0
+
+| 2.14.1 to 2.17.0
+| N/A
+| 2.14.1 to 2.17.0
+| 2.14.1 to 2.17.0
+|===
+
+.See older versions
+[%collapsible]
+====
+[cols="^.^2,^.^1,^.^2,^.^2"]
+|===
+| TypeDB Studio | Protocol encoding version | TypeDB Core | TypeDB Cloud
+
+| 2.11.0
+| N/A
+| 2.11.1
+| 2.11.1 to 2.11.2
+|===
+====

@@ -1,0 +1,243 @@
+= Update query
+:experimental:
+:tabs-sync-option:
+
+An Update query is used to update data in a TypeDB database by matching existing data, deleting some of it,
+and then inserting some other data instead.
+A `delete` and `insert` clauses are executed once per every result
+matched by the `match` clause of the same Update query.
+
+This page assumes you've already followed instructions from the xref:manual::writing/delete.adoc[] page.
+Here, you'll see how to update data in a database using Studio, Console, or one of the drivers.
+
+[#_how_to_send_an_update_query]
+== How to send an Update query
+
+The easiest way to send an Update query is to use Studio or Console:
+
+[tabs]
+====
+Studio::
++
+--
+Follow the xref:manual::studio.adoc#_prepare_a_query[Studio manual]
+to connect to TypeDB and select a project folder.
+Then use the steps below:
+
+. Use a drop-down list in the top toolbar to select a database.
+. Switch to `data` session and `write` transaction types.
+. Open a new tab and insert or type in an Update query, for example:
++
+.TypeQL Update query
+[,typeql]
+----
+match
+$u isa user, has name 'Charlie', has email $e;
+delete
+$u has $e;
+insert
+$u has email 'charles@vaticle.com';
+----
+. Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
+. Commit the changes by clicking the btn:[Commit query] button (image:home::studio-icons/commit.png[Commit]).
+--
+
+Console::
++
+--
+. Open a `data` session and `write` transaction to the selected database (e.g., `sample_db`):
++
+[,bash]
+----
+transaction sample_db data write
+----
+. Send the Update query:
++
+[,bash]
+----
+match
+$u isa user, has name 'Charlie', has email $e;
+delete
+$u has $e;
+insert
+$u has email 'charles@vaticle.com';
+----
++
+Push btn:[Enter] twice to send the query.
+. Commit the changes:
++
+[,bash]
+----
+commit
+----
+--
+====
+
+To send an Update query programmatically, use xref:drivers::overview.adoc[drivers]:
+
+[tabs]
+====
+Rust::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::rust/api-reference.adoc#_struct_QueryManager_update__[`transaction.query().delete()`]
+method:
+
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::manual::partial$rust-manual-code.rs[tags=update]
+----
+--
+
+Python::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::python/api-reference.adoc#_QueryManager_update{scores}query_str__options_TypeDBOptions__None[`transaction.query.delete()`]
+method:
+
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tags=update]
+----
+--
+
+Java::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::java/api-reference.adoc#_QueryManager_update__com_vaticle_typeql_lang_query_TypeQLUpdate[`transaction.query().delete()`]
+method:
+
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tags=update]
+----
+--
+
+Node.js::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::nodejs/api-reference.adoc#_QueryManager_update{scores}query_string__options_TypeDBOptions[`transaction.query.delete()`]
+method:
+
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tags=update]
+----
+--
+
+C++::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerupdate_const_stdstring_query_const_Options_Options_const[`transaction.query.delete()`]
+method:
+
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tags=options]
+include::manual::partial$cpp-manual-code.cpp[tags=update]
+----
+--
+====
+
+== Response interpretation
+
+An Update query returns all concepts that got *inserted* into the database.
+
+Both `delete` and `insert` clauses are executed once per every result
+matched by the `match` clause of the same Update query.
+
+The `delete` clause of an Update query is executed the same number of times as the `insert` clause,
+but if a concept specified for deletion is no longer present in a database for any reason,
+that would not produce an error.
+The query will continue its execution.
+
+You can check the response of an Update query to see what was inserted.
+The response is a Stream/Iterator with a ConceptMap object for every execution of the `insert` clause.
+A ConceptMap object maps every variable from a query to a particular concept in a database.
+
+=== Check the response
+
+The easiest way to check the response for the query is to use a TypeDB client: Studio or Console.
+For more information on how to send the above Update query,
+see above the <<_how_to_send_an_update_query>> section.
+
+Both Studio and Console should produce similar results:
+
+[,typeql]
+----
+{
+    $e the-bob@vaticle.com isa email;
+    $u iid 0x826e80018000000000000001 isa user;
+    $_0 the-bob@vaticle.com isa email;
+}
+----
+
+To process the response of an Update query programmatically,
+we need to collect the response and iterate through it.
+See the code to check the response for the number of inserts above, in the <<_how_to_send_an_update_query>> section.
+
+The example above checks the response of an Update query and commits the changes only if the number of
+inserts is equal to the expected number (`1`).
+Otherwise, it closes the transaction without committing the changes.
+
+== Estimation with a read query
+
+You can estimate the number of inserts in an Update query with a `match` clause
+by running a dedicated Fetch or Get query with the same `match` clause in the same transaction.
+Read queries can be used in a `write` transaction, and `write` transactions are snapshoted,
+providing isolation from changes made by other transactions.
+
+To estimate the number of inserts in an Update query,
+use the same `write` transaction to send any type of a read query with the same `match` clause, as the Update query.
+The most direct approach is to send an aggregated Get query to count the number of matches.
+
+.Checking the number of matched results
+[,typeql]
+----
+match
+$u isa user, has name "Bob", has email $e;
+get; count;
+----
+
+The response is a single number.
+The aggregated number of matched results is equal to the number of times the `delete` and `insert` clauses
+of a Delete query with the same `match` clause in the same `write` transaction will be executed.
+
+== Learn more
+
+[cols-2]
+--
+.More about an xref:typeql::data/update.adoc[]
+[.clickable]
+****
+Learn more about Update queries in TypeQL: syntax, behaviour, and query examples.
+****
+
+.xref:manual::reading/overview.adoc[]
+[.clickable]
+****
+Learn how to read data from a TypeDB database.
+****
+
+.xref:learn::4-writing-data/4-writing-data.adoc[]
+[.clickable]
+****
+Check out the Writing data section of our TypeDB Learning course.
+****
+--

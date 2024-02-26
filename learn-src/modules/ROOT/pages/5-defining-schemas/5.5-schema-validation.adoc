@@ -1,0 +1,151 @@
+= Lesson 5.5: Schema validation
+
+== Type validation
+
+In order to maintain integrity, the schema is validated to ensure internal consistency upon each change. Some of the checks that take place during validation are:
+
+* When a new type is defined:
+** The type has a single supertype.
+** If the type is a relation type: it has at least one role.
+** If the type is an attribute type: it has a value type defined or inherited.
+** If the type is an attribute type: its supertype is abstract.
+* When a new role is defined:
+** The relation type does not already inherit the role from a supertype.
+* When a new roleplayer is defined:
+** The roleplayer does not already inherit the roleplaying capability from a supertype.
+* When a new attribute owner is defined:
+** The owner does not already inherit the ownership capability from a supertype.
+** If the attribute type is abstract: the owner is also abstract.
+
+There are also more complex checks that take place, some of which we will encounter in Lesson 9 (coming soon).
+
+.Exercise
+[caption=""]
+====
+For the following schema, identify any errors that would cause validation checks to fail. You can assume the Define query contains the entire schema and there are no existing types already defined.
+
+[,typeql]
+----
+define
+person sub entity,
+    owns first-name,
+    owns last-name,
+    plays employment:employee;
+company sub entity,
+    owns name,
+    plays employment:employer;
+employment sub relation,
+    abstract,
+    relates employee,
+    relates employer,
+    owns start-date,
+    owns end-date;
+full-time-employment sub employment,
+    relates employee,
+    relates employer,
+    owns salary;
+part-time-employment sub employment,
+    relates employee,
+    relates employer,
+    owns hourly-rate;
+name sub attribute, abstract, value string;
+first-name sub name;
+last-name sub name;
+start-date sub attribute, value datetime;
+end-date sub attribute, value datetime;
+pay sub attribute, value long;
+salary sub pay;
+hourly-rate sub pay;
+----
+
+.Answers
+[%collapsible]
+=====
+* The entity type `company` is not abstract and so cannot own the abstract attribute type `name`.
+* The relation types `full-time-employment` and `part-time-employement` inherit the roles `employee` and `employer` from their supertype `employment` and so cannot redeclare them.
+* The attribute type `pay` is not abstract and so cannot have subtypes.
+=====
+
+Modify the schema to correct these errors.
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+define
+person sub entity,
+    owns first-name,
+    owns last-name,
+    plays employment:employee;
+company sub entity,
+    owns company-name,
+    plays employment:employer;
+employment sub relation,
+    abstract,
+    relates employee,
+    relates employer,
+    owns start-date,
+    owns end-date;
+full-time-employment sub employment,
+    owns salary;
+part-time-employment sub employment,
+    owns hourly-rate;
+name sub attribute, abstract, value string;
+first-name sub name;
+last-name sub name;
+company-name sub name;
+start-date sub attribute, value datetime;
+end-date sub attribute, value datetime;
+pay sub attribute, abstract, value long;
+salary sub pay;
+hourly-rate sub pay;
+----
+=====
+====
+
+== Rule validation
+
+When defined, rules are also validated against the schema. Particularly, the condition and conclusion patterns undergo the same data validation process that the `match` and `insert` clauses of Insert queries do. Consider the following _invalid_ Insert queries that we encountered in xref:learn::4-writing-data/4.5-data-validation.adoc[Lesson 4.5].
+
+[,typeql]
+----
+match
+$us isa country, has name "United States";
+$ga isa state, has name "Georgia";
+insert
+($us, $ga) isa locating;
+----
+
+[,typeql]
+----
+match
+$odyssey isa book, has isbn "9780393634563";
+insert
+$odyssey has stock 20;
+----
+
+We could convert these queries into the following rules, which are structurally sound, even if they don't do anything particularly useful.
+
+[,typeql]
+----
+rule georgia-is-in-united-states:
+    when {
+        $us isa country, has name "United States";
+        $ga isa state, has name "Georgia";
+    } then {
+        ($us, $ga) isa locating;
+    };
+----
+
+[,typeql]
+----
+rule odyssey-has-stock-20:
+    when {
+        $odyssey isa book, has isbn "9780393634563";
+    } then {
+        $odyssey has stock 20;
+    };
+----
+
+However, both of these rules would fail validation for the same reasons the Insert queries do. In the first example, TypeDB is unable to infer the roles for the `locating` relation as they are ambiguous. In the second, `book` does not own `stock`, making the attribute ownership illegal.

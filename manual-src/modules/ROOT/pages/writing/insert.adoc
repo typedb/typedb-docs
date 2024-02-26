@@ -1,0 +1,330 @@
+= Insert query
+:experimental:
+:tabs-sync-option:
+
+An Insert query is used to insert data into a TypeDB database.
+An `insert` clause is executed once per every result matched by the `match` clause of the same query.
+If the `match` clause is omitted, then the `insert` clause is executed exactly once.
+
+This page assumes you've already followed instructions from the xref:manual::defining/overview.adoc[] section.
+Here, you'll see how to insert data in a database using Studio, Console, or one of the drivers.
+
+[#_how_to_send_an_insert_query]
+== How to send an Insert query
+
+The easiest way to send an Insert query is to use Studio or Console:
+
+[tabs]
+====
+Studio::
++
+--
+Follow the xref:manual::studio.adoc#_prepare_a_query[Studio manual]
+to connect to TypeDB and select a project folder.
+Then use the steps below:
+
+. Use a drop-down list in the top toolbar to select a database.
+. Switch to `data` session and `write` transaction types.
+. Open a new tab and insert or type in an Insert query, for example:
++
+.TypeQL Insert query
+[,typeql]
+----
+insert
+$user1 isa user, has name "Alice", has email "alice@vaticle.com";
+$user2 isa user, has name "Bob", has email "bob@vaticle.com";
+$friendship (friend:$user1, friend: $user2) isa friendship;
+----
+. Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
+. Commit the changes by clicking the btn:[Commit query] button (image:home::studio-icons/commit.png[Commit]).
+--
+
+Console::
++
+--
+. Open a `data` session and `write` transaction to the selected database (e.g., `sample_db`):
++
+[,bash]
+----
+transaction sample_db data write
+----
+. Send the Insert query:
++
+[,typeql]
+----
+insert
+$user1 isa user, has name "Alice", has email "alice@vaticle.com";
+$user2 isa user, has name "Bob", has email "bob@vaticle.com";
+$friendship (friend:$user1, friend: $user2) isa friendship;
+----
++
+Push btn:[Enter] twice to send the query.
+. Commit the changes:
++
+[,bash]
+----
+commit
+----
+--
+====
+
+To send an Insert query programmatically, use xref:drivers::overview.adoc[drivers]:
+
+[tabs]
+====
+Rust::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::rust/api-reference.adoc#_struct_QueryManager_insert__[`transaction.query().insert()`]
+method:
+
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::manual::partial$rust-manual-code.rs[tags=insert]
+----
+--
+
+Python::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::python/api-reference.adoc#_QueryManager_insert{scores}query_str__options_TypeDBOptions__None[`transaction.query.insert()`]
+method:
+
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tags=insert]
+----
+--
+
+Java::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::java/api-reference.adoc#_QueryManager_insert__java_lang_String[`transaction.query().insert()`]
+method:
+
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tags=insert]
+----
+--
+
+Node.js::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::nodejs/api-reference.adoc#_QueryManager_insert{scores}query_string__options_TypeDBOptions[`transaction.query.insert()`]
+method:
+
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tags=insert]
+----
+--
+
+C++::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerinsert_const_stdstring_query_const_Options_options_Options_const[`transaction.query.insert()`]
+method:
+
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tags=options]
+include::manual::partial$cpp-manual-code.cpp[tags=insert]
+----
+--
+====
+
+== Response interpretation
+
+An Insert query returns all concepts that got inserted into the database as a stream of ConceptMap objects.
+
+Let's say we send the following Insert query with a `match` clause:
+
+.Match-insert query example
+[,typeql]
+----
+match
+$u isa user, has name "Bob";
+insert
+$new-u isa user, has name "Charlie", has email "charlie@vaticle.com";
+$f($u,$new-u) isa friendship;
+----
+
+With the data inserted earlier on this page, we should match only one such user with the name "Bob".
+That leads to inserting one new user and one relevant relation.
+If multiple matches are made by the match clause, then the insert clause runs for each of them.
+
+To check the number of times an Insert query gets executed, you can either <<_check_the_response,check its response>>
+or <<_estimate_the_number_of_inserts_with_a_read_query,send a read query>> with the same matching pattern.
+
+[#_check_the_response]
+//=== The response
+
+//You can check the response of an Insert query to see what was inserted.
+The response is a Stream/Iterator of ConceptMap objects.
+One ConceptMap object for every execution of the `insert` clause.
+A ConceptMap object maps every variable from the insert clause of the query to a concept in a database.
+
+The easiest way to check the response for the query is to use a TypeDB client: Studio or Console.
+Send the above match-insert query the same way as the <<_how_to_send_an_insert_query,previous query>>.
+
+Both Studio and Console should produce similar results:
+
+[,typeql]
+----
+{
+    $bob iid 0x826e80018000000000000004 isa user;
+    $f iid 0x847080017fffffffffffffff (friend: iid 0x826e80018000000000000002, friend: iid 0x826e80018000000000000004) isa friendship;
+    $alice iid 0x826e80018000000000000002 isa user;
+}
+----
+
+To process the response of an Insert query programmatically,
+you need to collect the response and iterate through it with a xref:drivers::overview.adoc[TypeDB driver].
+The number of iterations is equal to the number of the `insert` clause executions and every iteration returns
+a ConceptMap object with inserted data.
+
+Let's see an example of programmatically processing the response,
+where we commit the transaction only if the number of inserts meets our expectation.
+
+.Process Insert query response
+[tabs]
+====
+Rust::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::rust/api-reference.adoc#_struct_QueryManager_insert__[`transaction.query().insert()`]
+method:
+
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::manual::partial$rust-manual-code.rs[tags=match-insert]
+----
+--
+
+Python::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::python/api-reference.adoc#_QueryManager_insert{scores}query_str__options_TypeDBOptions__None[`transaction.query.insert()`]
+method:
+
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tags=match-insert]
+----
+--
+
+Java::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::java/api-reference.adoc#_QueryManager_insert__java_lang_String[`transaction.query().insert()`]
+method:
+
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tags=match-insert]
+----
+--
+
+Node.js::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::nodejs/api-reference.adoc#_QueryManager_insert{scores}query_string__options_TypeDBOptions[`transaction.query.insert()`]
+method:
+
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tags=match-insert]
+----
+--
+
+C++::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerinsert_const_stdstring_query_const_Options_options_Options_const[`transaction.query.insert()`]
+method:
+
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tags=options]
+include::manual::partial$cpp-manual-code.cpp[tags=match-insert]
+----
+--
+====
+
+[#_estimate_the_number_of_inserts_with_a_read_query]
+== Estimation with a read query
+
+You can estimate the number of inserts made by an Insert query with a `match` clause
+by running a preliminary Fetch or Get query with the same `match` clause in the same transaction.
+Read queries can be used in a `write` transaction, and `write` transactions are snapshoted.
+Snapshot isolation prevents other transactions from influencing the results.
+
+The most direct approach is to send an aggregated Get query to count the number of matches.
+
+.Checking the number of matched results
+[,typeql]
+----
+match $bob isa user, has email "bob@vaticle.com";
+get; count;
+----
+
+The response should be a single number.
+
+//#todo Consider adding driver API example of processing aggregated response (value)
+//#todo Consider adding advanced topics, like batch loading
+
+== Learn more
+
+[cols-2]
+--
+.More about an xref:typeql::data/insert.adoc[]
+[.clickable]
+****
+Learn more about Insert queries in TypeQL: syntax, behaviour, and query examples.
+****
+
+.xref:manual::writing/delete.adoc[]
+[.clickable]
+****
+Learn how to delete data from a database.
+****
+
+.xref:learn::4-writing-data/4-writing-data.adoc[]
+[.clickable]
+****
+Check out the Writing data section of our TypeDB Learning course.
+****
+--

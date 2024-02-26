@@ -11,9 +11,6 @@
 
 TypeDB Console is distributed with both TypeDB Core and TypeDB Cloud.
 
-Make sure to download an archive with keyword `all` in its name: xref:typedb:resources:releases.adoc[Download]
-TypeDB and find TypeDB Console in the same archive.
-
 [NOTE]
 ====
 There is also a *server-only* version available for download from the
@@ -52,7 +49,7 @@ include::partial$all-versions.adoc[]
 ====
 
 == TypeDB drivers
-// tag::drivers-download[]
+
 [tabs]
 ====
 Rust::
@@ -63,7 +60,7 @@ project/application.
 
 To download TypeDB Rust driver, you can use any of the following options:
 
-- `cargo add typedb-driver`
+- `cargo add typedb-driver` or `cargo add typedb-driver -F sync`
 - https://crates.io/crates/typedb-driver/[,window=_blank]
 
 For more information on the driver versions, check the
@@ -117,5 +114,5 @@ xref:drivers:ROOT:nodejs/overview.adoc#_version_compatibility[version compatibil
 https://github.com/vaticle/typedb-driver/releases[release notes,window=_blank].
 --
 ====
-// end::drivers-download[]
+
 // end::clients-download[]

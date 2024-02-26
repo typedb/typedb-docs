@@ -1,0 +1,268 @@
+= Create a database
+
+TypeDB stores data in isolated databases, each comprising a schema and data.
+//xref:typeql::schema/overview.adoc[schema] and xref:typeql::data/overview.adoc[data].
+These databases operate independently, ensuring that one database cannot affect another.
+Nevertheless, a TypeDB client can connect to and interact with multiple databases concurrently.
+
+This guide covers creating a database, as well as other database management operations, like listing
+and deleting databases with Studio, Console, or one of the drivers.
+Make sure to follow the instructions on the xref:manual::connecting/connection.adoc[]
+page to connect to TypeDB before proceeding.
+
+== Create a new database
+
+To create a new database, follow the steps below:
+
+[tabs]
+====
+Studio::
++
+--
+. Open Studio's Database manager window by clicking on the database icon image:home::studio-icons/database.png[] in the top toolbar.
+include::manual::studio.adoc[tag=create_db_studio]
+
+The newly created database should appear in the drop-down selector of the top toolbar.
+--
+
+Console::
++
+--
+Connect with Console and run the following command:
+
+[,bash]
+----
+database create sample_db
+----
+
+Where `sample_db` is the name of the database.
+--
+====
+
+To create a new database programmatically, use xref:drivers::overview.adoc[drivers]:
+
+[tabs]
+====
+Rust::
++
+--
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tags=databases]
+include::manual::partial$rust-manual-code.rs[tags=create-db]
+----
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
+--
+
+Python::
++
+--
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tags=create-db]
+----
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
+--
+
+Java::
++
+--
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tags=create-db]
+----
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
+--
+
+Node.js::
++
+--
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tags=create-db]
+----
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
+--
+
+C++::
++
+--
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tags=create-db]
+----
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
+--
+====
+
+== Delete
+
+To delete a database with all its data and schema, follow the steps below:
+
+[tabs]
+====
+Studio::
++
+--
+. Open Studio's Database manager window by clicking on the database icon image:home::studio-icons/database.png[] in the top toolbar.
+include::manual::studio.adoc[tag=delete_db_studio]
+
+--
+
+Console::
++
+--
+[,bash]
+----
+database delete sample_db
+----
+
+Where `sample_db` is the name of the database.
+--
+====
+
+To delete a database programmatically, use xref:drivers::overview.adoc[drivers]:
+
+[tabs]
+====
+Rust::
++
+--
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tags=databases, indent=8]
+include::manual::partial$rust-manual-code.rs[tags=delete-db]
+----
+--
+
+Python::
++
+--
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tags=delete-db]
+----
+--
+
+Java::
++
+--
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tags=delete-db]
+----
+--
+
+Node.js::
++
+--
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tags=delete-db]
+----
+--
+
+C++::
++
+--
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tags=delete-db]
+----
+--
+====
+
+== List databases
+
+To retrieve a full list of databases on a server, follow the steps below:
+
+[tabs]
+====
+Studio::
++
+--
+. Open Studio's Database manager window by clicking on the database icon image:home::studio-icons/database.png[] in the top toolbar.
+. Open the drop-down list in the top toolbar next to the database icon image:home::studio-icons/database.png[].
+--
+
+Console::
++
+--
+[,bash]
+----
+database list
+----
+--
+====
+
+To get a list of databases programmatically, use xref:drivers::overview.adoc[drivers]:
+
+[tabs]
+====
+Rust::
++
+--
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tags=list-db]
+----
+--
+
+Python::
++
+--
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tags=list-db]
+----
+--
+
+Java::
++
+--
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tags=list-db]
+----
+--
+
+Node.js::
++
+--
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tags=list-db]
+----
+--
+
+C++::
++
+--
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tags=list-db]
+----
+--
+====
+
+== Learn more
+
+[cols-2]
+--
+.xref:manual::connecting/session.adoc[]
+[.clickable]
+****
+See how to manage sessions in TypeDB.
+****
+
+.xref:manual::connecting/transaction.adoc[]
+[.clickable]
+****
+See how to manage transactions in TypeDB.
+****
+--
