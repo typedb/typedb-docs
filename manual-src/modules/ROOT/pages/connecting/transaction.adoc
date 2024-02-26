@@ -75,9 +75,9 @@ Java::
 +
 --
 .Open a transaction
-[,java]
+[,java,indent=0]
 ----
-TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.WRITE);
+include::manual::partial$java-manual-code.java[tag=tx_open]
 ----
 --
 
@@ -85,9 +85,9 @@ Node.js::
 +
 --
 .Open a transaction
-[,js]
+[,js,indent=0]
 ----
-transaction = await session.transaction(TransactionType.WRITE);
+include::manual::partial$nodejs-manual-code.js[tag=tx_open]
 ----
 --
 
@@ -177,9 +177,9 @@ to close a transaction when it's longer needed, or use the
 xref:drivers::java/api-reference.adoc#_TypeDBTransaction_close__[close] method to explicitly close a transaction:
 
 .Close a transaction
-[,java]
+[,java,indent=0]
 ----
-transaction.close()
+include::manual::partial$java-manual-code.java[tag=tx_close]
 ----
 --
 
@@ -190,9 +190,9 @@ Use the xref:drivers::nodejs/api-reference.adoc#_TypeDBTransaction_close__[close
 to explicitly close a transaction:
 
 .Close a transaction
-[,js]
+[,js,indent=0]
 ----
-transaction.close();
+include::manual::partial$nodejs-manual-code.js[tag=tx_close]
 ----
 --
 
@@ -281,9 +281,9 @@ Java::
 To commit a transaction, use the xref:drivers::java/api-reference.adoc#_TypeDBTransaction_commit__[commit] method:
 
 .Commit a transaction
-[,java]
+[,java,indent=0]
 ----
-transaction.commit();
+include::manual::partial$java-manual-code.java[tag=tx_commit]
 ----
 --
 
@@ -293,9 +293,9 @@ Node.js::
 To commit a transaction, use the xref:drivers::nodejs/api-reference.adoc#_TypeDBTransaction_commit__[commit]:
 
 .Commit a transaction
-[,js]
+[,js,indent=0]
 ----
-transaction.commit();
+include::manual::partial$nodejs-manual-code.js[tag=tx_commit]
 ----
 --
 

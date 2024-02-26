@@ -39,9 +39,9 @@ Rust::
 +
 --
 .Example
-[,rust]
+[,rust,indent=0]
 ----
-let users = transaction.concept().get_entity_type("user".to_owned()).resolve()?.unwrap().get_instances(&transaction,Transitivity::Transitive)?;
+include::manual::partial$rust-manual-code.rs[tag=get_instances]
 ----
 
 For more information,
@@ -64,9 +64,9 @@ Java::
 +
 --
 .Example
-[,java]
+[,java,indent=0]
 ----
-List<? extends Entity> users = transaction.concepts().getEntityType("user").resolve().getInstances(Transaction).toList();
+include::manual::partial$java-manual-code.java[tag=get_instances]
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -76,9 +76,9 @@ Node.js::
 +
 --
 .Example
-[,js]
+[,js,indent=0]
 ----
-let users = await (await transaction.concepts.getEntityType("user")).getInstances(transaction).collect();
+include::manual::partial$nodejs-manual-code.js[tag=get_instances]
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -110,9 +110,9 @@ Rust::
 +
 --
 .Example
-[,rust]
+[,rust,indent=0]
 ----
-let attributes = user.get_has(&transaction, vec![], vec![])?;
+include::manual::partial$rust-manual-code.rs[tag=get_has]
 ----
 
 For more information,
@@ -135,9 +135,9 @@ Java::
 +
 --
 .Example
-[,java]
+[,java,indent=0]
 ----
-List<? extends Attribute> attributes = user.getHas(Transaction, annotations).toList();
+include::manual::partial$java-manual-code.java[tag=get_has]
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_data_header[Data class] methods.
@@ -147,9 +147,9 @@ Node.js::
 +
 --
 .Example
-[,js]
+[,js,indent=0]
 ----
-let attributes = user.getHas(transaction);
+include::manual::partial$nodejs-manual-code.js[tag=get_has]
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_data_header[Data class] methods.
@@ -178,9 +178,9 @@ Rust::
 +
 --
 .Example
-[,rust]
+[,rust,indent=0]
 ----
-let new_user = transaction.concept().get_entity_type("user".to_owned()).resolve()?.unwrap().create(&transaction).resolve()?;
+include::manual::partial$rust-manual-code.rs[tag=create]
 ----
 
 For more information,
@@ -203,9 +203,9 @@ Java::
 +
 --
 .Example
-[,java]
+[,java,indent=0]
 ----
-Entity new_user = transaction.concepts().getEntityType("user").resolve().create(Transaction).resolve();
+include::manual::partial$java-manual-code.java[tag=create]
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_EntityType[EntityType class] methods.
@@ -215,9 +215,9 @@ Node.js::
 +
 --
 .Example
-[,js]
+[,js,indent=0]
 ----
-let newUser = await (await transaction.concepts.getEntityType("user")).create(transaction);
+include::manual::partial$nodejs-manual-code.js[tag=create]
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_EntityType[EntityType class] methods.
@@ -248,9 +248,9 @@ Rust::
 +
 --
 .Example
-[,rust]
+[,rust,indent=0]
 ----
-let _ = new_user.delete(&transaction).resolve();
+include::manual::partial$rust-manual-code.rs[tag=delete_user]
 ----
 
 For more information,
@@ -273,9 +273,9 @@ Java::
 +
 --
 .Example
-[,java]
+[,java,indent=0]
 ----
-new_user.delete(Transaction).resolve();
+include::manual::partial$java-manual-code.java[tag=delete_user]
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_EntityType[EntityType class] methods.
@@ -285,9 +285,9 @@ Node.js::
 +
 --
 .Example
-[,js]
+[,js,indent=0]
 ----
-await newUser.delete(transaction);
+include::manual::partial$nodejs-manual-code.js[tag=delete_user]
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_EntityType[EntityType class] methods.
