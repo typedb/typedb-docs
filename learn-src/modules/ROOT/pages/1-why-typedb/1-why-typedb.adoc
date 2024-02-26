@@ -2,7 +2,7 @@
 
 Relational databases have reigned database systems for over 40 years. But the fast advances of modern declarative programming models, which focus on user intent, maintainability, and business logic, in parallel with the rise of distributed and multi-threaded systems make it harder and harder to continue piling layers of abstractions on the relational model. TypeDB tackles this issue by re-thinking databases from first principles: TypeDB comes with a new polymorphic type system and query language, a new logic engine, and a new query execution model.
 
-== Modern language
+== Modern query language
 
 While SQL is a declarative language, it requires users to write their query declarations in terms of certain low-level operations to manipulate tables. Consider, for example, the following simple query, which queries for folder locations of media files, that could be either image or video files, and returns the folder's name and the (image or video) formats of the files in the folder.
 
@@ -26,14 +26,13 @@ TypeDB takes a different approach: it focuses on intent at every step of the que
 [,typeql]
 ----
 match
-    $folder isa folder, has folder_name $name;
-    (location: $folder, file: $media) isa file_location;
-    { $ext isa image_format; } or { $ext isa video_format; };
-    $media isa media_file, has $ext; 
-fetch {
-    folder_name: $name;
-    file_format: $ext;
-}
+$folder isa folder, has folder_name $name;
+(location: $folder, file: $media) isa file_location;
+{ $ext isa image_format; } or { $ext isa video_format; };
+$media isa media_file, has $ext; 
+fetch
+folder_name: $name;
+file_format: $ext;
 ----
 Notice how the TypeQL query captures the intent of our earlier SQL query simply by stating each variable's intended function. No sequences of operations are needed—in fact, the above statements can be given in any order. Under the hood, this high-level, fully declarative approach of TypeQL's language is powered by a robust type system and a type inference engine. This is why we also refer to TypeQL as a _type-theoretic_ query language!
 
@@ -76,7 +75,7 @@ Continuous integration is an important concern for most modern application archi
 [,typeql]
 ----
 define
-    audio_file sub media_file, owns audio_format;
+audio_file sub media_file, owns audio_format;
 ----
 
 This query will extend our type hierarchy: say that previously only `image_file` and `video_file` were a kind of `media_file`, then the query now adds a new `audio_file` type as another kind of `media_file` to our media store database (more precisely, we say `audio_file` is a _subtype_ of `media_file`). 
@@ -120,7 +119,7 @@ The programmatic way of interacting with a TypeDB database extends all the way d
 [,typeql]
 ----
 insert
-    $new_audio isa audio_file, has audio_format "png";
+$new_audio isa audio_file, has audio_format "png";
 ----
 
 The very same data insert can be achieved by manipulating data objects directly from your program code. For example, the above query could take the following form using TypeDB's Python driver.
