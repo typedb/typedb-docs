@@ -5,6 +5,7 @@ import com.vaticle.typedb.driver.TypeDB;
 import com.vaticle.typedb.driver.api.*;
 import com.vaticle.typedb.driver.api.answer.ConceptMap;
 import com.vaticle.typedb.driver.api.concept.Concept;
+import com.vaticle.typedb.driver.api.concept.thing.Attribute;
 import com.vaticle.typedb.driver.api.concept.thing.Entity;
 import com.vaticle.typedb.driver.api.concept.type.AttributeType;
 import com.vaticle.typedb.driver.api.concept.type.EntityType;
@@ -278,9 +279,11 @@ public class Main {
                 users.forEach(user -> {
                     System.out.println("User");
                     // tag::get_has[]
-                    user.getHas(tx, annotations).forEach(attribute ->
-                        System.out.println(attribute.getType().getLabel().toString()+ ": " + attribute.getValue().toString()));
+                    Stream<? extends Attribute> attributes = user.getHas(tx, annotations);
                     // end::get_has[]
+                    attributes.forEach(attribute ->
+                        System.out.println(attribute.getType().getLabel().toString()+ ": " + attribute.getValue().toString())
+                    );
                 });
                 // tag::create[]
                 Entity new_user = tx.concepts().getEntityType("user").resolve().create(tx).resolve();
@@ -339,8 +342,10 @@ public class Main {
                 EntityType userType = tx.concepts().getEntityType("user").resolve();
                 userType.getInstances(tx).forEach(user -> {
                     System.out.println("User");
-                    user.getHas(tx, annotations).forEach(attribute ->
-                        System.out.println(attribute.getType().getLabel().toString()+ ": " + attribute.getValue().toString()));
+                    Stream<? extends Attribute> attributes = user.getHas(tx, annotations);
+                    attributes.forEach(attribute ->
+                        System.out.println(attribute.getType().getLabel().toString()+ ": " + attribute.getValue().toString())
+                    );
                 });
                 Entity new_user = tx.concepts().getEntityType("user").resolve().create(tx).resolve();
                 new_user.delete(tx).resolve();
@@ -393,11 +398,13 @@ public class Main {
                 int[] ctr = new int[1];
                 // tag::explainables[]
                 Stream<ConceptMap> response = tx.query().get(getQuery);
-                // end::explainables[]
                 response.forEach(result -> {
+                // end::explainables[]
                     String name = result.get("n").asAttribute().getValue().toString();
                     System.out.println("Email #" + (++ctr[0]) + ": " + name);
+                    // tag::explainables[]
                     Stream<Pair<String, ConceptMap.Explainable>> explainable_relations = result.explainables().relations();
+                    // end::explainables[]
                     // tag::explain[]
                     explainable_relations.forEach(explainable -> {
                         Stream<Explanation> explain_iterator = tx.query().explain(explainable.second());
@@ -414,8 +421,12 @@ public class Main {
                                 System.out.println("Query variable " + var + "maps to the rule variable " + explanation.queryVariableMapping(var)));
                         });
                         // end::explanation[]
+                    // tag::explain[]
                     });
+                    // end::explain[]
+                // tag::explainables[]
                 });
+                // end::explainables[]
             }
         }
         driver.close();
