@@ -210,7 +210,7 @@ match
 (work: $book, contributor: $contributor) isa! contribution;
 fetch
 $book: title;
-$contributor: $name;
+$contributor: name;
 ----
 
 Notice we have used the `isa!` keyword.

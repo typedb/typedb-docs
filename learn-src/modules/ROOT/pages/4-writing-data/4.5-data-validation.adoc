@@ -8,8 +8,8 @@ In xref:learn::3-reading-data/3.5-query-validation.adoc[Lesson 3.5], we saw that
 ----
 match
 $us isa country, has name "United States";
-insert
 $ga isa state, has name "Georgia";
+insert
 ($us, $ga) isa locating;
 ----
 image:learn::studio-icons/run.png[] *_Try running_*
