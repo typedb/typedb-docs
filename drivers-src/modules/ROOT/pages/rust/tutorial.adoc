@@ -226,8 +226,8 @@ We still get only `path` (`$fp`), but now we add sorting and pagination: we set 
 [NOTE]
 ====
 Note that Kevin has been assigned only `modify_file` access, and the `view_file` access is being inferred by a
-xref:learn::8-reasoning-over-data/8.1-defining-rules.adoc[rule].
-To use xref:learn::8-reasoning-over-data/8.2-querying-derived-data.adoc[inference] in this query,
+xref:learn::5-defining-schemas/5.4-defining-rules.adoc[rule].
+To use xref:learn::3-reading-data/3.3-fetching-inferred-data.adoc[inference] in this query,
 we modify TypeDB options and send the modified set of options to the transaction call.
 ====
 
