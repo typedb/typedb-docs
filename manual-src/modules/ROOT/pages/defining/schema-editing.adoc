@@ -1,0 +1,119 @@
+= Schema editing
+:experimental:
+
+This page assumes you've already followed instructions from the xref:connecting/overview.adoc[] section pages.
+Here, you'll see how to modify an existing schema without TypeQL queries.
+For a Define query, see the xref:manual::defining/define.adoc[] page.
+
+There are two ways of modifying the schema of a database without TypeQL Define/Undefine queries:
+with Studio's <<_modify_with_type_editor,Type Editor>> and with <<_modify_with_driver_api,driver API>> methods.
+
+[#_modify_with_type_editor]
+== Modify with Type Editor
+
+include::manual::studio.adoc[tag=type-editor]
+
+[#_modify_with_driver_api]
+== Modify with driver API
+
+Driver API has methods can be used to work with schema types and rules.
+These methods can vary from driver to driver due to language-specific details.
+
+=== Example
+
+See below an example of schema manipulation using driver API methods: creating an attribute type (`tag`),
+retrieving the `entity` root type, getting all subtypes of a type,
+traversing all subtypes to assign ownership of the new attribute type, and committing the transaction.
+
+:code-caption: Driver API schema modification
+[tabs]
+====
+Rust::
++
+--
+.{code-caption}
+[,rust, indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tags=types-editing]
+----
+
+For more details about these and other API methods, see the xref:drivers::rust/api-reference.adoc[API reference].
+--
+
+Python::
++
+--
+.{code-caption}
+[,python, indent=0]
+----
+include::manual::partial$python-manual-code.py[tags=types-editing]
+----
+
+For more details about these and other API methods, see the xref:drivers::python/api-reference.adoc[API reference].
+--
+
+Java::
++
+--
+.{code-caption}
+[,java, indent=0]
+----
+include::manual::partial$java-manual-code.java[tags=types-editing]
+----
+
+For more details about these and other API methods, see the xref:drivers::java/api-reference.adoc[API reference].
+--
+
+Node.js::
++
+--
+.{code-caption}
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tags=types-editing]
+----
+
+For more details about these and other API methods, see the xref:drivers::nodejs/api-reference.adoc[API reference].
+--
+
+C++::
++
+--
+.{code-caption}
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tags=types-editing]
+----
+
+For more details about these and other API methods, see the xref:drivers::cpp/api-reference.adoc[API reference].
+--
+====
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::schema/define.adoc[]
+[.clickable]
+****
+Learn more about Define queries in TypeQL: syntax, behaviour, and query examples.
+****
+
+.xref:manual::writing/overview.adoc[]
+[.clickable]
+****
+Learn how to write some data to a database with the schema you just defined.
+****
+
+.xref:learn::5-defining-schemas/5-defining-schemas.adoc[]
+[.clickable]
+****
+Check out the Defining schemas section of our TypeDB Learning course.
+****
+
+.xref:drivers::overview.adoc[TypeDB drivers]
+[.clickable]
+****
+Learn more about existing TypeDB drivers for various programming languages/frameworks.
+****
+--

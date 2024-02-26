@@ -1,0 +1,129 @@
+= Logs
+
+The `log` section of the xref:manual::configuring/config.adoc[configuration file] contains the logging options.
+
+There are three subsections:
+
+* <<_output,`output`>>
+* <<_logger,`logger`>>
+* <<_debugger,`debugger`>>
+
+[#_output]
+== Output
+
+`output` subsection defines destinations to write logs to.
+
+* User-defined output channel name
+
+** `type` -- it's either `file` or `stdout`.
+** `base-dir` (`directory` prior to version `2.21.0`) -- filepath, relative to the server binary.
+   Only available for `type: file`.
+** `file-size-limit` (`file-size-cap` prior to version `2.21.0`)  -- maximum size of a log file.
+   If the log file reaches the limit, a new file in the same directory
+   will be started. This is similar to the `maxsize` config option in logrotate. Only available for `type: file`.
+** `archive-grouping` -- configures the rollover and naming policy of archives produced by the logger. +
+   Possible value variants are as follows:
+
+*** `minute` or `minutes`
+//yyyyMMdd-HHmm - internal filename format of a log archive
+*** `hour` or `hours`
+*** `day` or `days`
+*** `week` or `weeks`
+//yyyy-ww
+*** `month` or `months`
+*** `year` or `years`
+
+// Filename template:
+// typedb + fileDateFormat(outputType.archiveGrouping()) + .0.log.gz
+// For example, `typedb_202306.0.log.gz`.
+
+** `archive-age-limit` -- configures how long archive files are kept. +
+   Old archives are only deleted when new ones are produced. +
+   If the value is set to *zero*, then the age is unlimited (old logs are not deleted).
+   Otherwise, the value should be a *positive integer*, followed by a whitespace and one of the following values for
+   units:
+
+*** `minute` or `minutes`
+*** `hour` or `hours`
+*** `day` or `days`
+*** `week` or `weeks`
+*** `month` or `months`
+*** `year` or `years`
+
+** `archives-size-limit` (`archives-size-cap` prior to version `2.21.0`) --
+   maximum size of all log files. If the total size of all log files in the directory reaches
+   the limit, the oldest one gets removed. Only available for `type: file`. +
+   If the value is set to *zero*, then the total size is unlimited (older logs are not deleted to preserve total size
+   limitation of the log archives).
+   Otherwise, the value should be a *positive integer*, followed by one of the following values for units:
+
+*** `kb`
+*** `mb`
+*** `gb`
+
+[#_logger]
+== Logger
+
+`logger` subsection configures logging for modules in TypeDB, along with a log level and output targets
+(referencing outputs by name defined under the outputs section).
+
+////
+* `filter` -- a filter by TypeDB component. Possible values include the following:
+** `com.vaticle.typedb.core`
+** `com.vaticle.typedb.core.database`
+** `com.vaticle.typedb.core.reasoner.planner`
+** `com.vaticle.typedb.core.reasoner.common.ReasonerPerfCounters`
+////
+* `output` -- destination of the log output. Input format is a list of output channels, each of which must be defined
+  in the <<_output,output>> subsection.
+
+* `level` -- verbosity level. +
+  One of the following values can be used:
+
+** `warn`
+** `info`
+** `debug`
+
+[NOTE]
+====
+On `debug` level the server will periodically log database storage properties.
+====
+
+//#todo Add documentation on verbosity levels differences
+
+[#_debugger]
+== Debugger
+
+`debugger` subsection configures TypeDB-specific debuggers.
+
+Possible values for the `type` field are the following:
+
+* `reasoner-tracer`
+* `reasoner-perf-counters`
+
+////
+.Performance counter config example
+[%collapsible]
+====
+[,yaml]
+----
+log:
+  ...
+  logger:
+    ...
+    reasoner-perf-counters:
+      filter: com.vaticle.typedb.core.reasoner.common.ReasonerPerfCounters
+      level: debug
+      output: [ stdout ]
+  ...
+  debugger:
+    reasoner-tracer:
+      enable: false
+      type: reasoner-tracer
+      output: file
+    reasoner-perf-counters:
+      enable: true
+      type: reasoner-perf-counters
+----
+====
+////

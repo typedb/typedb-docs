@@ -7,7 +7,7 @@ A get query retrieves concepts from a TypeDB database that you can further proce
 xref:drivers::overview.adoc#_driver_api[driver API].
 
 Get queries do not modify data, so they can be used in both read and write transactions.
-In read transactions, Get queries can use rule-based xref:typedb::basics/inference.adoc[inference].
+In read transactions, Get queries can use rule-based xref:manual::reading/infer.adoc[inference].
 
 [#_behavior]
 == Behavior
@@ -558,7 +558,7 @@ in a database.
 _Why not filter for just the `$cft` variable instead?_
 
 That can drastically alter the returned results as the returned results are deduplicated by design. See the
-xref:typeql:ROOT:data/match.adoc#_solutions[Basic patterns] page for more information on the number of results
+xref:typeql::data/match.adoc#_match_clause_results[Basic patterns] page for more information on the number of results
 for pattern matching.
 
 For example, let's say we have ten people with the name `Bob` and age `31` in our database.
@@ -566,10 +566,10 @@ Five of them have `certified-fortune-teller` with the value `false`, one has it 
 and the rest don't have an ownership of the attribute.
 
 [#_answers_example2_dataset]
-.See how to load such a dataset in a database
+.See how to load such a dataset into a database
 [%collapsible]
 ====
-In xref:typedb:ROOT:connecting/studio.adoc[TypeDB Studio], we can paste the following TypeQL in the text editor
+In xref:manual::studio.adoc[TypeDB Studio], we can paste the following TypeQL in the text editor
 and send all the queries by a single click in a data/write mode.
 Make sure to commit the changes.
 

@@ -1,0 +1,271 @@
+= Lesson 5.1: Defining individual types
+
+== The Define query
+
+In TypeDB, all databases have a schema that provides semantic integrity guarantees for inserted data and enables the resolution of polymorphic queries. A schema is created using *Define queries*, which are each composed of a single `define` clause. We'll start with the syntax for defining entity types, then look at relation types and attribute types.
+
+== Defining entities
+
+The following is an example of a Define query that defines four new entity types.
+
+[,typeql]
+----
+define
+user sub entity;
+contributor sub entity;
+address sub entity;
+promotion sub entity;
+----
+
+When used in a Define query, a `sub` statement defines a new type. The subject of each statement is the new *type label*, and the object is one of the three *root types*: `entity`, `relation`, or `attribute`, indicating which kind of type is being defined.
+
+When `sub` statements are used in a Define query, they are *data definition statements*. This is in contrast to when used in other kinds of query, as we saw in xref:learn::3-reading-data/3.4-fetching-schema-types.adoc[Lesson 3.4], in which they are *data manipulation statements*. Define queries comprise only data definition statements, and so cannot contain any variables. The only permitted terms are keywords and type labels.
+
+[NOTE]
+====
+The sample database already has the complete bookstore schema defined and data inserted. If you would like to try running any of the Define queries featured in this section, then you should do so using a new database. See xref:learn::2-environment-setup/2.2-using-typedb-studio.adoc[Lesson 2.2] for instructions create a new database. Define queries must be *run* image:studio-icons/run.png[] using a *schema* session and *write* transaction. After running any queries, remember to *commit* image:studio-icons/commit.png[] the changes or *close* image:studio-icons/close.png[] the transaction. If you are using TypeDB Studio, you should see any committed changes to the schema reflected in the *type browser*.
+====
+
+.Exercise
+[caption=""]
+====
+Write a query to define three new entity types: `order`, `review`, and `publication`.
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+define
+order sub entity;
+review sub entity;
+publication sub entity;
+----
+=====
+====
+
+== Defining relations
+
+The syntax for defining new relation types is the same as that used to define entity types, but each relation type must be defined alongside at least one *role*. The following query defines three new relation types along with their roles.
+
+[,typeql]
+----
+define
+rating sub relation,
+    relates review,
+    relates rated;
+order-line sub relation,
+    relates order,
+    relates item;
+publishing sub relation,
+    relates publisher,
+    relates published,
+    relates publication;
+----
+
+When used in a Define query, the `relates` keyword defines a new role for a relation type. This query defines the following relation types:
+
+* `rating` with roles `rating:review` and `rating:rated`.
+* `order-line` with roles `order-line:order` and `order-line:item`.
+* `publishing` with roles `publishing:publisher`, `publishing:published`, and `publishing:publication`.
+
+In this case, `rating` and `order-line` are binary relation types, while `publishing` is a ternary relation type. There is no limit to the number of roles that can be defined for a relation type using the `relates` keyword.
+
+[NOTE]
+====
+TypeDB 2.x does not include syntax for specifying the cardinality of roles. When instantiating a relation, all roles can be played any number of times. Syntax for restricting role cardinalities will be included in TypeDB 3.0.
+====
+
+.Exercise
+[caption=""]
+====
+Write a query to define three new relation types and their roles:
+
+* `locating` with roles `locating:location` and `locating:located`.
+* `delivery` with roles `delivery:deliverer`, `delivery:delivered`, and `delivery:destination`.
+* `promotion-inclusion` with roles `promotion-inclusion:promotion` and `promotion-inclusion:included`.
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+define
+locating sub relation,
+    relates location,
+    relates located;
+delivery sub relation,
+    relates deliverer,
+    relates delivered,
+    relates destination;
+promotion-inclusion sub relation,
+    relates promotion,
+    relates included;
+----
+=====
+====
+
+Once relation types and their roles have been defined, we can declare which types play roles.
+
+[,typeql]
+----
+define
+review plays rating:review;
+order plays order-line:order;
+publication plays publishing:publication;
+promotion plays promotion-inclusion:promotion;
+----
+
+When used in a Define query, the `plays` keyword defines a new roleplayer for a relation's role (i.e. a new implementer of a role interface).
+
+.Exercise
+[caption=""]
+====
+Write a query to define five new roleplayers:
+
+* `order` playing `delivery:delivered`.
+* `address` playing `delivery:destination`.
+* `address`, `user`, and `publication` playing `locating:located`.
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+define
+order plays delivery:delivered;
+address plays delivery:destination,
+    plays locating:located;
+user plays locating:located;
+publication plays locating:located;
+----
+=====
+====
+
+== Defining attributes
+
+Whereas relations must be defined with roles, attributes must be defined with *value types*. The following query defines five new attribute types.
+
+[,typeql]
+----
+define
+verified sub attribute, value boolean;
+quantity sub attribute, value long;
+price sub attribute, value double;
+name sub attribute, value string;
+birth-date sub attribute, value datetime;
+----
+
+When used in a Define query, the `value` keyword defines the value type of an attribute type. When the attribute type is later instantiated, its values must be of the specified value type. There are currently five value types in TypeDB:
+
+* `boolean`
+* `long` (64-bit signed integer)
+* `double` (64-bit floating-point number)
+* `string` (variable length UTF-8 encoded string up to 64 kB)
+* `datetime` (millisecond-precision timestamp without timezone)
+
+More value types will be added in future updates.
+
+.Exercise
+[caption=""]
+====
+Write a query to define seven new attribute types:
+
+* Integer attribute types `year` and `score`.
+* Float attribute type `discount`.
+* String attribute types `code` and `street`.
+* Datetime attribute types `start-timestamp` and `end-timestamp`
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+define
+year sub attribute, value long;
+score sub attribute, value long;
+discount sub attribute, value double;
+code sub attribute, value string;
+street sub attribute, value string;
+start-timestamp sub attribute, value datetime;
+end-timestamp sub attribute, value datetime;
+----
+=====
+====
+
+With attribute types defined, we can now declare which types own which attributes.
+
+[,typeql]
+----
+define
+user owns name,
+    owns birth-date;
+contributor owns name;
+promotion owns name;
+review owns verified;
+order-line owns quantity,
+    owns price;
+----
+
+When used in a Define query, the `owns` keyword defines a new attribute owner (i.e. a new implementer of an ownership interface). The syntax is the same for declaring entity types (like `user`) and relation types (like `order-line`) as owners.
+
+.Exercise
+[caption=""]
+====
+Write a query to define seven new ownerships:
+
+* `address` owning `street`.
+* `publication` owning `year`.
+* `review` owning `score`.
+* `promotion` owning `code`, `start-timestamp`, and `end-timestamp`.
+* `promotion-inclusion` owning `discount`.
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+define
+address owns street;
+publication owns year;
+review owns owns score;
+promotion owns code,
+    owns start-timestamp,
+    owns end-timestamp;
+promotion-inclusion owns discount;
+----
+=====
+====
+
+.Exercise
+[caption=""]
+====
+Write a query to define:
+
+* A new entity type `login`, with ownership of a new boolean attribute type `success`.
+* A new relation type `action-execution`, with the following properties:
+** A role `action` played by `login` and the existing entity types `order` and `review`.
+** A role `executor` played by existing entity type `user`.
+** Ownership of a new datetime attribute type `timestamp`.
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+define
+login sub entity,
+    owns success,
+    plays action-execution:action;
+action-execution sub relation,
+    relates action,
+    relates executor,
+    owns timestamp;
+order plays action-execution:action;
+review plays action-execution:action;
+user plays action-execution:executor;
+success sub attribute, value boolean;
+timestamp sub attribute, value datetime;
+----
+=====
+====

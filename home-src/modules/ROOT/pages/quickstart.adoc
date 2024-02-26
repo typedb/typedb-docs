@@ -19,17 +19,22 @@ To start TypeDB, select the TypeDB edition below and follow the instructions.
 Cloud::
 +
 --
-include::home::install.adoc[tag=cloud-run]
+// tag::cloud-run[]
+Log in to https://cloud.typedb.com/[TypeDB Cloud,window=_blank] and create a new deployment on the Deployments page.
+// end::cloud-run[]
 
-include::home::install.adoc[tag=self-hosted-run]
+// tag::self-hosted-run[]
+For self-hosted TypeDB Cloud installation and setup,
+see the xref:install/cloud-self-hosted.adoc[Self-hosted deployment] page.
+// end::self-hosted-run[]
 --
 
 Core::
 +
 --
-TypeDB Core needs to be xref:home::install.adoc#_core[installed] first.
+TypeDB Core needs to be xref:home::install/core.adoc[installed] first.
 
-include::home::install.adoc[tag=core-run]
+include::home::install/core.adoc[tag=core-run]
 --
 ====
 
@@ -37,49 +42,16 @@ include::home::install.adoc[tag=core-run]
 == Connect with TypeDB Studio
 // tag::run_studio[]
 TypeDB Studio is a standalone TypeDB Client with GUI that needs to be
-xref:home::install.adoc#_studio[installed] and launched separately from a TypeDB server.
+xref:home::install/studio.adoc[installed] and launched separately from a TypeDB server.
 
 Find the TypeDB Studio binary and run it.
 Click btn:[Connect to TypeDB] on the right side of the top toolbar.
 // end::run_studio[]
-//image::quickstart-studio.png[TypeDB Studio, width = 75%, link=self]
-// tag::connect_studio[]
-[tabs]
-====
-Cloud::
-+
---
-image::home::studio-connect-cloud.png[TypeDB Studio connect window, width = 75%, link=self]
-
-. Switch the `Server` field drop-down to `TypeDB Cloud`.
-. Click btn:[Manage Cloud Addresses] button and add address and port for every server
-from your TypeDB Cloud deployment.
-Close the Address management window.
-. Fill in the `Username` (default: `admin`) and `Password` (default: `password`) fields.
-. Turn on the `Enable TLS` option and leave the `CA Certificate` field empty.
-_For self-hosted deployments, encryption parameters may vary._
-. Click `Connect`.
-
-[NOTE]
-=====
-On your first login you will be asked to change the password for the `admin` account.
-A TypeDB Cloud deployment will refuse queries until the password is changed from its default value.
-=====
---
-
-Core::
-+
---
-image::home::studio-connect-core.png[TypeDB Studio connect window, width = 75%, link=self]
-
-Enter TypeDB Core server address (e.g., `localhost:1729`) and click btn:[Connect].
---
-====
-// end::connect_studio[]
+include::manual::studio.adoc[tag=connect_studio]
 
 == Select a project folder
 
-Select a xref:typedb:ROOT:connecting/studio.adoc#_select_a_project_directory[project directory]
+Select a xref:manual::studio.adoc#_select_a_project_directory[project directory]
 to store project files by clicking either:
 
 * btn:[Open Project] in the *Project* panel; or
@@ -199,7 +171,7 @@ get $p, $a;
 
 The above xref:typeql::data/get.adoc[Get] query returns concepts from a database as a ConceptMap
 that can be used programmatically with a xref:drivers::overview.adoc#_typedb_drivers[Driver API] to process the result.
-The following image is a graph visualization produced by xref:typedb:ROOT:connecting/studio.adoc[TypeDB Studio].
+The following image is a graph visualization produced by xref:manual::studio.adoc[TypeDB Studio].
 
 image::quickstart-get-example.png[Quickstart Get query example, role=framed, width = 75%, link=self]
 
@@ -234,7 +206,7 @@ that looks as the following:
 [#_insert_email_for_kevin]
 === Insert a new email for Kevin
 
-To xref:typedb::developing/write.adoc#_insert[insert] a new email (`kevin@gmail.com`) for every person with a full name
+To xref:typeql::data/insert.adoc[insert] a new email (`kevin@gmail.com`) for every person with a full name
 that contains "Kevin":
 
 [,typeql]
@@ -250,7 +222,7 @@ Now Kevin has more than one email.
 [#_update_email_for_kevin]
 === Update the email for Kevin
 
-To xref:typedb::developing/write.adoc#_update_query[update] the email from `kevin@gmail.com` to `kevin2@gmail.com`
+To xref:typeql::data/update.adoc[update] the email from `kevin@gmail.com` to `kevin2@gmail.com`
 for every person with a full name that contains "Kevin":
 
 [,typeql]
@@ -276,7 +248,7 @@ The query above does the following:
 [#_delete_email_from_kevin]
 === Delete ownership over the email for Kevin
 
-To xref:typedb::developing/write.adoc#_delete_query[delete] the ownership of the email `kevin2@gmail.com`
+To xref:typeql::data/delete.adoc[delete] the ownership of the email `kevin2@gmail.com`
 for every person with a full name that contains "Kevin":
 
 [,typeql]
@@ -293,8 +265,8 @@ $p has $e;
 
 == Repeat with TypeDB Console
 
-xref:typedb:ROOT:connecting/console.adoc[TypeDB Console] is usually distributed with TypeDB.
-You can find it with the TypeDB or xref:home::install.adoc#_console[install] it separately.
+xref:manual::console.adoc[TypeDB Console] is usually distributed with TypeDB.
+You can find it with the TypeDB or xref:home::install/console.adoc[install] it separately.
 
 [#_console_run]
 [#_console_connect]
@@ -313,7 +285,7 @@ typedb console --cloud=<server-address> --username=<username> --password --tls-e
 
 You will be prompted for a password.
 
-include::typedb::connecting/console.adoc[tags=cloud-psw]
+include::manual::console.adoc[tags=cloud-psw]
 --
 
 Core::
@@ -398,19 +370,18 @@ Repeat the <<_query_examples>> from TypeDB Studio in TypeDB Console.
 After completing this guide, we recommend the following order of topics to continue exploring TypeDB:
 
 . Explore more interesting queries with the xref:home::25-queries.adoc[] page.
-. Browse the Basics of TypeDB section for essential information of how TypeDB works:
-xref:typedb::basics/data-model.adoc[],
-xref:typedb::basics/query-language.adoc[], and
-xref:typedb::basics/polymorphic-patterns.adoc[];
-. Discover how to xref:typedb:ROOT:connecting/overview.adoc[connect] to TypeDB, manage transactions, and
-define a xref:typedb::developing/defining-schema.adoc[schema] of a database;
-. Find out more about xref:typedb::developing/write.adoc[writing] and
-xref:typedb::developing/read.adoc[reading] data from a TypeDB
-database and how to interpret a xref:typedb::developing/response.adoc[response] to a query;
+. Learn more about TypeQL schemas, patterns, and queries in our xref:learn::course-overview.adoc[TypeDB Learning course].
+. Go straight to practice with our xref:manual::overview.adoc[TypeDB manual]:
+* xref:manual::connecting/overview.adoc[]
+* xref:manual::defining/overview.adoc[]
+* xref:manual::writing/overview.adoc[]
+* xref:manual::reading/overview.adoc[]
 . Learn how to create an application with TypeDB, using any of the
-   xref:drivers:ROOT:overview.adoc#_typedb_drivers[TypeDB Drivers]:
-    - xref:drivers:ROOT:rust/overview.adoc[Rust Driver]
-    - xref:drivers:ROOT:python/overview.adoc[Python driver];
-    - xref:drivers:ROOT:nodejs/overview.adoc[Node.js driver];
-    - xref:drivers:ROOT:java/overview.adoc[Java driver].
+xref:drivers::overview.adoc[TypeDB Drivers]:
+* xref:drivers:ROOT:rust/overview.adoc[]
+* xref:drivers:ROOT:python/overview.adoc[]
+* xref:drivers:ROOT:java/overview.adoc[]
+* xref:drivers:ROOT:nodejs/overview.adoc[]
+* xref:drivers::cpp/overview.adoc[]
+
 //. (Optional) Explore the xref:typedb::tutorials/sample-app.adoc[Sample application] written in Java, Python, or Node.js.

@@ -1,0 +1,181 @@
+= Lesson 4.3: Deleting data
+
+== The Delete query
+
+To delete data from the database, we use a *Delete query*. Delete queries always consist of a `match` clause followed by a `delete` clause. The way we write Delete queries depends on if we want to delete an entity, relation, or attribute. To begin with, we'll look at an example of an attribute.
+
+== Deleting attributes
+
+It turns out that _Fundamentals of Data Engineering_ has been mistakenly assigned the genre "children's fiction" (in addition to "nonfiction" and "technology"). We should probably change that before there are too many upset children, which we'll do with the following Delete query. To run a Delete query, use a *data* session and *write* transaction, *run* image:learn::studio-icons/run.png[] the query, and *commit* image:learn::studio-icons/commit.png[] the transaction.
+
+[,typeql]
+----
+match
+$fundamentals isa book, has isbn "9781098108274";
+$childrens "children's fiction" isa genre;
+delete
+$fundamentals has $childrens;
+----
+image:learn::studio-icons/run.png[]image:learn::studio-icons/commit.png[] *_Run and commit_*
+
+To begin with, we've matched the book entity by its ISBN in the `match` clause. Then, we've matched the genre attribute by its value. Finally, we've deleted the entity's ownership of the attribute. In TypeQL, Delete queries delete data per statement rather than per variable, so the `has` statement in the `delete` clause only deletes the attribute ownership, not the entity itself.
+
+== Deleting relations
+
+Next, we'll see how to delete relations. The courier that is supposed to be delivering order "o0033" has notified us that they will be unable to fulfill the order and are cancelling the pickup. Until we are able to arrange an alternative courier, we should record this fact in the database by deleting the `delivery` relation that the order plays a role in, which we do with the following query.
+
+[,typeql]
+----
+match
+$order-33 isa order, has id "o0033";
+$delivery-33 ($order-33) isa delivery;
+delete
+$delivery-33 isa delivery;
+----
+image:learn::studio-icons/run.png[]image:learn::studio-icons/commit.png[] *_Run and commit_*
+
+Similar to the previous example, we've begun by matching the order by its order ID. Next, we've matched the `delivery` relation in which it plays a role. We've omitted the role and let TypeDB infer it. Role inference means we'll match any delivery in which `$order-33` plays any role, but in this case only one such relation exists, in which `$order-33` plays `delivery:delivered`. We've also omitted the roleplayers we aren't interested in from the tuple: the courier and the address. We don't need to know them to identify or delete the relation!
+
+Finally, the `delete` clause deletes the relation. In Insert queries, we use `isa` statements to create entities and relations, and `has` statements to create their attributes. Likewise in Delete queries, we use `isa` statements to delete entities and relations, and `has` statements to delete their attributes.
+
+.Exercise
+[caption=""]
+====
+In xref:learn::4-writing-data/4.2-inserting-polymorphic-data.adoc[Lesson 4.2], we added all books to the Spring Sale 2024. However, we'd like to remove _The Complete Calvin and Hobbes_ as it is a special edition, and so shouldn't be included in the sale. Remove it from the sale by deleting the relevant `promotion-inclusion` relation. As per good practice, make sure to identify it by ISBN.
+
+.Hint 1
+[%collapsible]
+=====
+To get the correct ISBN, you can use the following query.
+[,typeql]
+----
+match
+$calvin-hobbes isa book, has title "The Complete Calvin and Hobbes";
+fetch
+$calvin-hobbes: isbn;
+----
+=====
+
+.Hint 2
+[%collapsible]
+=====
+To delete the book from only this particular sale, you will need to match the relation by _both_ roleplayers.
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$spring-sale isa promotion, has code "SPR24";
+$calvin-hobbes isa book, has isbn "9780740748479";
+$inclusion ($spring-sale, $calvin-hobbes) isa promotion-inclusion;
+delete
+$inclusion isa promotion-inclusion;
+----
+image:learn::studio-icons/run.png[]image:learn::studio-icons/commit.png[] *_Run and commit_*
+=====
+====
+
+== Deleting entities
+
+Last, we'll see how to delete entities. A user has decided to delete a review they made of the book. In the following queries, we perform their request. First of all, we need to retrieve the ID of the review to be deleted.
+
+[,typeql]
+----
+match
+$book isa book, has isbn "9781859840665";
+$user-9 isa user, has id "u0009";
+$review isa review;
+($review, $book) isa rating;
+($review, $user) isa action-execution;
+fetch
+$review: id;
+----
+[,json]
+----
+{
+    "review": {
+        "id": [ { "value": "r0004", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
+        "type": { "label": "review", "root": "entity" }
+    }
+}
+----
+
+Now that we know the review's ID, we can go ahead and delete it. We start by deleting any relations that the review plays a role in.
+
+[,typeql]
+----
+match
+$review-4 isa review, has id "r0004";
+$relation ($review-4) isa relation;
+delete
+$relation isa relation;
+----
+image:learn::studio-icons/run.png[] *_Run_*
+
+Here, we delete the relations by using the same query structure as we used to delete the `delivery` relation earlier, but we're using a *parametric statement* to delete _all_ relations rather than just deliveries. Once that's done, we can delete the review itself.
+
+[,typeql]
+----
+match
+$review-4 isa review, has id "r0004";
+delete
+$review-4 isa review;
+----
+image:learn::studio-icons/run.png[]image:learn::studio-icons/commit.png[] *_Run and commit_*
+
+When deleting an entity, it's important to also delete any relations it plays a role in. If we don't, then those relations would be left behind without the entity as a roleplayer. A relation is only deleted automatically if _all_ of its roleplayers are deleted.
+
+[IMPORTANT]
+====
+TypeDB 2.x does not support SQL-style cascading deletes. When a roleplayer in a relation is deleted, the relation must also be deleted manually. TypeDB 3.0 will include functionalities for relations to be automatically deleted when any roleplayer is deleted.
+====
+
+[NOTE]
+====
+The method we've used to delete this entity relies on the fact that the review has a unique ID we can retrieve and then match on. If this were not the case, properly deleting it might be significantly harder. For this reason, it's good to ensure that any entity types that might be regularly deleted have *key attributes* that we can use. We'll explore this further in xref:learn::5-defining-schemas/5-defining-schemas.adoc[Lesson 5].
+====
+
+.Exercise
+[caption=""]
+====
+We will no longer be stocking _Pet Semetary_. Delete it from the database. Remember to delete all the relations it plays a role in first.
+
+.Hint
+[%collapsible]
+=====
+To get the correct ISBN, you can use the following query.
+[,typeql]
+----
+match
+$pet-sematary isa book, has title "Pet Sematary";
+fetch
+$pet-sematary: isbn;
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$pet-sematary isa book, has isbn "9780451162076";
+$relation ($pet-sematary) isa relation;
+delete
+$relation isa relation;
+----
+image:learn::studio-icons/run.png[] *_Run_*
+
+[,typeql]
+----
+match
+$pet-sematary isa book, has isbn "9780451162076";
+delete
+$pet-sematary isa book;
+----
+image:learn::studio-icons/run.png[]image:learn::studio-icons/commit.png[] *_Run and commit_*
+=====
+====

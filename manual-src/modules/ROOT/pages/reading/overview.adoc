@@ -1,0 +1,28 @@
+= Reading data
+
+To retrieve any data from a TypeDB database, you need to use `data` session and `write` transaction.
+All data queries are validated against the schema of a database.
+
+There are only two types of operations that can retrieve data in a database,
+but you can enable inference for any of them:
+
+[cols-3]
+--
+.xref:manual::reading/fetch.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:manual::reading/get.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:manual::reading/infer.adoc[]
+[.clickable]
+****
+
+****
+--

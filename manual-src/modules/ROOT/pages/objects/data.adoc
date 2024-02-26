@@ -1,0 +1,395 @@
+= Data objects
+
+Driver APIs provide a set of methods to programmatically manipulate data in a TypeDB database.
+
+This page assumes you've already followed instructions from the xref:manual::writing/insert.adoc[] page.
+Here, you'll see how to use driver API methods and stateful objects to programmatically manipulate data
+in a database using one of the TypeDB drivers.
+
+== Get data
+
+To manipulate data with driver API methods,
+you need to get a stateful object that represents a data instance in the database.
+
+To get a data object from a TypeDB database,
+you can use a TypeQL Get query or one of the driver API methods.
+
+=== Query for data objects
+
+xref:manual::reading/get.adoc#_how_to_send_a_get_query[Send a Get query] with a pattern to retrieve data
+and process the response to get data objects.
+For example, to get all instances of the `user` type, send the following Get query:
+
+.Example of a Get query
+[,typeql]
+----
+match
+$u isa user;
+get $u;
+----
+
+=== Get all instances of a type
+
+Use a type object to retrieve all data objects of that type.
+For example, let's get a stateful object of the `user` entity type, and then get all instances of data as data objects:
+
+[tabs]
+====
+Rust::
++
+--
+.Example
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tag=get_instances]
+----
+
+For more information,
+see the xref:drivers::rust/api-reference.adoc#_struct_ConceptManager[ConceptManager class] methods.
+--
+
+Python::
++
+--
+.Example
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tag=get_instances]
+----
+For more information,
+see the xref:drivers::python/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
+--
+
+Java::
++
+--
+.Example
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tag=get_instances]
+----
+For more information,
+see the xref:drivers::java/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
+--
+
+Node.js::
++
+--
+.Example
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tag=get_instances]
+----
+For more information,
+see the xref:drivers::nodejs/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
+--
+
+C++::
++
+--
+.Example
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tag=get_instances]
+----
+For more information,
+see the xref:drivers::cpp/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
+--
+====
+
+=== Traverse data objects
+
+The Data class has methods to traverse data objects by retrieving all owned attributes,
+all relations played in and respective roles.
+For example, let's get data objects of all attributes owned by the instance,
+represented by the data object in the `user` variable:
+
+[tabs]
+====
+Rust::
++
+--
+.Example
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tag=get_has]
+----
+
+For more information,
+see the xref:drivers::rust/api-reference.adoc#_data_header[Data class] methods.
+--
+
+Python::
++
+--
+.Example
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tag=get_has]
+----
+For more information,
+see the xref:drivers::python/api-reference.adoc#_data_header[Data class] methods.
+--
+
+Java::
++
+--
+.Example
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tag=get_has]
+----
+For more information,
+see the xref:drivers::java/api-reference.adoc#_data_header[Data class] methods.
+--
+
+Node.js::
++
+--
+.Example
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tag=get_has]
+----
+For more information,
+see the xref:drivers::nodejs/api-reference.adoc#_data_header[Data class] methods.
+--
+
+C++::
++
+--
+.Example
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tag=get_has]
+----
+For more information,
+see the xref:drivers::cpp/api-reference.adoc#_data_header[Data class] methods.
+--
+====
+
+== Add data
+
+To add a new instance of a type, use the create method of a type object:
+
+[tabs]
+====
+Rust::
++
+--
+.Example
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tag=create]
+----
+
+For more information,
+see the xref:drivers::rust/api-reference.adoc#_struct_EntityType[EntityType class] methods.
+--
+
+Python::
++
+--
+.Example
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tag=create]
+----
+For more information,
+see the xref:drivers::python/api-reference.adoc#_EntityType[EntityType class] methods.
+--
+
+Java::
++
+--
+.Example
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tag=create]
+----
+For more information,
+see the xref:drivers::java/api-reference.adoc#_EntityType[EntityType class] methods.
+--
+
+Node.js::
++
+--
+.Example
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tag=create]
+----
+For more information,
+see the xref:drivers::nodejs/api-reference.adoc#_EntityType[EntityType class] methods.
+--
+
+C++::
++
+--
+.Example
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tag=create]
+----
+For more information,
+see the xref:drivers::cpp/api-reference.adoc#_EntityType[EntityType class] methods.
+--
+====
+
+== Data manipulation
+
+Data object has a limited number of methods to manipulate data: you can delete the data instance and
+assign/unassign ownership of an attribute.
+For relations, you can add or remove players for their roles.
+
+[tabs]
+====
+Rust::
++
+--
+.Example
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tag=delete_user]
+----
+
+For more information,
+see the xref:drivers::rust/api-reference.adoc#_struct_EntityType[EntityType class] methods.
+--
+
+Python::
++
+--
+.Example
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tag=delete_user]
+----
+For more information,
+see the xref:drivers::python/api-reference.adoc#_EntityType[EntityType class] methods.
+--
+
+Java::
++
+--
+.Example
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tag=delete_user]
+----
+For more information,
+see the xref:drivers::java/api-reference.adoc#_EntityType[EntityType class] methods.
+--
+
+Node.js::
++
+--
+.Example
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tag=delete_user]
+----
+For more information,
+see the xref:drivers::nodejs/api-reference.adoc#_EntityType[EntityType class] methods.
+--
+
+C++::
++
+--
+.Example
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tag=delete_user]
+----
+For more information,
+see the xref:drivers::cpp/api-reference.adoc#_EntityType[EntityType class] methods.
+--
+====
+
+== Full example
+
+See below a comprehensive example of programmatic data manipulation.
+In this example we
+retrieve the `user` type, get all its instances, iterate through every user,
+retrieve all owned attributes for every user, and print values of these attributes.
+Then we add a new instance of the `user` entity type.
+
+[tabs]
+====
+Rust::
++
+--
+.Example
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::manual::partial$rust-manual-code.rs[tags=data-api]
+----
+
+For more information,
+see the xref:drivers::rust/api-reference.adoc#_data_header[Data class] methods.
+--
+
+Python::
++
+--
+.Example
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tags=data-api]
+----
+For more information,
+see the xref:drivers::python/api-reference.adoc#_data_header[Data class] methods.
+--
+
+Java::
++
+--
+.Example
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tags=data-api]
+----
+For more information,
+see the xref:drivers::java/api-reference.adoc#_data_header[Data class] methods.
+--
+
+Node.js::
++
+--
+.Example
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tags=data-api]
+----
+For more information,
+see the xref:drivers::nodejs/api-reference.adoc#_data_header[Data class] methods.
+--
+
+C++::
++
+--
+.Example
+[,cpp]
+----
+include::manual::partial$cpp-manual-code.cpp[tags=data-api]
+----
+For more information,
+see the xref:drivers::cpp/api-reference.adoc#_data_header[Data class] methods.
+--
+====
+
+== Learn more
+
+[cols-1]
+--
+.xref:drivers::overview.adoc[]
+[.clickable]
+****
+Learn more about TypeDB drivers: list of available drivers, installation guides, API reference.
+****
+--
+
+For more information about driver API methods, see the API reference of the relevant driver:
+
+include::manual::reading/get.adoc[tags=drivers-api]

@@ -1,0 +1,613 @@
+#
+# Copyright (C) 2024 Vaticle
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+# country
+insert $country isa country; $country has name "United States";
+# state
+match $country isa country; $country has name "United States"; insert $state isa state; $state has name "California"; (location: $country, located: $state) isa locating;
+# state
+match $country isa country; $country has name "United States"; insert $state isa state; $state has name "Texas"; (location: $country, located: $state) isa locating;
+# state
+match $country isa country; $country has name "United States"; insert $state isa state; $state has name "New York"; (location: $country, located: $state) isa locating;
+# state
+match $country isa country; $country has name "United States"; insert $state isa state; $state has name "New Jersey"; (location: $country, located: $state) isa locating;
+# state
+match $country isa country; $country has name "United States"; insert $state isa state; $state has name "Washington"; (location: $country, located: $state) isa locating;
+# state
+match $country isa country; $country has name "United States"; insert $state isa state; $state has name "Massachusetts"; (location: $country, located: $state) isa locating;
+# state
+match $country isa country; $country has name "United States"; insert $state isa state; $state has name "New Mexico"; (location: $country, located: $state) isa locating;
+# state
+match $country isa country; $country has name "United States"; insert $state isa state; $state has name "Missouri"; (location: $country, located: $state) isa locating;
+# city
+match $state isa state; $state has name "California"; insert $city isa city; $city has name "Sacramento"; (location: $state, located: $city) isa locating;
+# city
+match $state isa state; $state has name "California"; insert $city isa city; $city has name "Los Angeles"; (location: $state, located: $city) isa locating;
+# city
+match $state isa state; $state has name "California"; insert $city isa city; $city has name "San Francisco"; (location: $state, located: $city) isa locating;
+# city
+match $state isa state; $state has name "California"; insert $city isa city; $city has name "Sevastopol"; (location: $state, located: $city) isa locating;
+# city
+match $state isa state; $state has name "Texas"; insert $city isa city; $city has name "Austin"; (location: $state, located: $city) isa locating;
+# city
+match $state isa state; $state has name "New York"; insert $city isa city; $city has name "Albany"; (location: $state, located: $city) isa locating;
+# city
+match $state isa state; $state has name "New York"; insert $city isa city; $city has name "New York City"; (location: $state, located: $city) isa locating;
+# city
+match $state isa state; $state has name "New Jersey"; insert $city isa city; $city has name "Trenton"; (location: $state, located: $city) isa locating;
+# city
+match $state isa state; $state has name "New Jersey"; insert $city isa city; $city has name "Newark"; (location: $state, located: $city) isa locating;
+# city
+match $state isa state; $state has name "Washington"; insert $city isa city; $city has name "Seattle"; (location: $state, located: $city) isa locating;
+# city
+match $state isa state; $state has name "Massachusetts"; insert $city isa city; $city has name "Boston"; (location: $state, located: $city) isa locating;
+# city
+match $state isa state; $state has name "New Mexico"; insert $city isa city; $city has name "Santa Fe"; (location: $state, located: $city) isa locating;
+# city
+match $state isa state; $state has name "New Mexico"; insert $city isa city; $city has name "Albuquerque"; (location: $state, located: $city) isa locating;
+# city
+match $state isa state; $state has name "Missouri"; insert $city isa city; $city has name "Kansas City"; (location: $state, located: $city) isa locating;
+# country
+insert $country isa country; $country has name "United Kingdom";
+# city
+match $country isa country; $country has name "United Kingdom"; insert $city isa city; $city has name "London"; (location: $country, located: $city) isa locating;
+# city
+match $country isa country; $country has name "United Kingdom"; insert $city isa city; $city has name "Bristol"; (location: $country, located: $city) isa locating;
+# city
+match $country isa country; $country has name "United Kingdom"; insert $city isa city; $city has name "Liverpool"; (location: $country, located: $city) isa locating;
+# country
+insert $country isa country; $country has name "Canada";
+# state
+match $country isa country; $country has name "Canada"; insert $state isa state; $state has name "Ontario"; (location: $country, located: $state) isa locating;
+# state
+match $country isa country; $country has name "Canada"; insert $state isa state; $state has name "Quebec"; (location: $country, located: $state) isa locating;
+# city
+match $state isa state; $state has name "Ontario"; insert $city isa city; $city has name "Toronto"; (location: $state, located: $city) isa locating;
+# city
+match $state isa state; $state has name "Quebec"; insert $city isa city; $city has name "Quebec City"; (location: $state, located: $city) isa locating;
+# city
+match $state isa state; $state has name "Quebec"; insert $city isa city; $city has name "Montreal"; (location: $state, located: $city) isa locating;
+# book
+insert $book isa paperback; $book has isbn-13 "9780195153446"; $book has title "Classical Mythology"; $book has page-count 820; $book has price 34.98; $book has genre "nonfiction"; $book has genre "history"; $book has isbn-10 "0195153448"; $book has stock 12;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Morford, Mark P. O."; }; insert $contributor isa $contributor-type; $contributor has name "Morford, Mark P. O.";
+match $book isa paperback; $book has isbn-13 "9780195153446"; $contributor isa contributor; $contributor has name "Morford, Mark P. O."; insert (work: $book, author: $contributor) isa authoring;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Lenardon, Robert J."; }; insert $contributor isa $contributor-type; $contributor has name "Lenardon, Robert J.";
+match $book isa paperback; $book has isbn-13 "9780195153446"; $contributor isa contributor; $contributor has name "Lenardon, Robert J."; insert (work: $book, author: $contributor) isa authoring;
+match $publisher-type type publisher; not { $publisher isa $publisher-type; $publisher has name "Oxford University Press"; }; insert $publisher isa $publisher-type; $publisher has name "Oxford University Press";
+match $book isa paperback; $book has isbn-13 "9780195153446"; $publisher isa publisher; $publisher has name "Oxford University Press"; $city isa city; $city has name "New York City"; insert $publication isa publication; $publication has year 2002; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;
+# book
+insert $book isa hardback; $book has isbn-13 "9780679425601"; $book has title "Under the Black Flag: The Romance and the Reality of Life Among the Pirates"; $book has page-count 296; $book has price 34.73; $book has genre "nonfiction"; $book has genre "history"; $book has isbn-10 "0679425608"; $book has stock 13;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Cordingly, David"; }; insert $contributor isa $contributor-type; $contributor has name "Cordingly, David";
+match $book isa hardback; $book has isbn-13 "9780679425601"; $contributor isa contributor; $contributor has name "Cordingly, David"; insert (work: $book, author: $contributor) isa authoring;
+match $publisher-type type publisher; not { $publisher isa $publisher-type; $publisher has name "Random House"; }; insert $publisher isa $publisher-type; $publisher has name "Random House";
+match $book isa hardback; $book has isbn-13 "9780679425601"; $publisher isa publisher; $publisher has name "Random House"; $city isa city; $city has name "New York City"; insert $publication isa publication; $publication has year 1996; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;
+# book
+insert $book isa paperback; $book has isbn-13 "9780393045215"; $book has title "The Mummies of Urumchi"; $book has page-count 240; $book has price 21.60; $book has genre "nonfiction"; $book has genre "history"; $book has isbn-10 "0393045218"; $book has stock 1;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Barber, Elizabeth Wayland"; }; insert $contributor isa $contributor-type; $contributor has name "Barber, Elizabeth Wayland";
+match $book isa paperback; $book has isbn-13 "9780393045215"; $contributor isa contributor; $contributor has name "Barber, Elizabeth Wayland"; insert (work: $book, author: $contributor) isa authoring;
+match $publisher-type type publisher; not { $publisher isa $publisher-type; $publisher has name "W.W. Norton & Company"; }; insert $publisher isa $publisher-type; $publisher has name "W.W. Norton & Company";
+match $book isa paperback; $book has isbn-13 "9780393045215"; $publisher isa publisher; $publisher has name "W.W. Norton & Company"; $city isa city; $city has name "New York City"; insert $publication isa publication; $publication has year 1999; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;
+# book
+insert $book isa paperback; $book has isbn-13 "9798691153570"; $book has title "Business Secrets of The Pharoahs"; $book has page-count 260; $book has price 11.99; $book has genre "nonfiction"; $book has genre "business"; $book has stock 8;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Crorigan, Mark"; }; insert $contributor isa $contributor-type; $contributor has name "Crorigan, Mark";
+match $book isa paperback; $book has isbn-13 "9798691153570"; $contributor isa contributor; $contributor has name "Crorigan, Mark"; insert (work: $book, author: $contributor) isa authoring;
+match $publisher-type type publisher; not { $publisher isa $publisher-type; $publisher has name "British London Publishing"; }; insert $publisher isa $publisher-type; $publisher has name "British London Publishing";
+match $book isa paperback; $book has isbn-13 "9798691153570"; $publisher isa publisher; $publisher has name "British London Publishing"; $city isa city; $city has name "London"; insert $publication isa publication; $publication has year 2020; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;
+# book
+insert $book isa paperback; $book has isbn-13 "9780446310789"; $book has title "To Kill a Mockingbird"; $book has page-count 281; $book has price 21.64; $book has genre "fiction"; $book has genre "historical fiction"; $book has isbn-10 "0446310786"; $book has stock 16;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Harper Lee"; }; insert $contributor isa $contributor-type; $contributor has name "Harper Lee";
+match $book isa paperback; $book has isbn-13 "9780446310789"; $contributor isa contributor; $contributor has name "Harper Lee"; insert (work: $book, author: $contributor) isa authoring;
+match $publisher-type type publisher; not { $publisher isa $publisher-type; $publisher has name "Grand Central Publishing"; }; insert $publisher isa $publisher-type; $publisher has name "Grand Central Publishing";
+match $book isa paperback; $book has isbn-13 "9780446310789"; $publisher isa publisher; $publisher has name "Grand Central Publishing"; $city isa city; $city has name "New York City"; insert $publication isa publication; $publication has year 1988; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;
+# book
+insert $book isa paperback; $book has isbn-13 "9780553212150"; $book has title "Pride and Prejudice"; $book has page-count 295; $book has price 17.99; $book has genre "fiction"; $book has genre "historical fiction"; $book has isbn-10 "055321215X"; $book has stock 15;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Austen, Jane"; }; insert $contributor isa $contributor-type; $contributor has name "Austen, Jane";
+match $book isa paperback; $book has isbn-13 "9780553212150"; $contributor isa contributor; $contributor has name "Austen, Jane"; insert (work: $book, author: $contributor) isa authoring;
+match $publisher-type type publisher; not { $publisher isa $publisher-type; $publisher has name "Bantam Classics"; }; insert $publisher isa $publisher-type; $publisher has name "Bantam Classics";
+match $book isa paperback; $book has isbn-13 "9780553212150"; $publisher isa publisher; $publisher has name "Bantam Classics"; $city isa city; $city has name "New York City"; insert $publication isa publication; $publication has year 1983; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;
+# book
+insert $book isa ebook; $book has isbn-13 "9783319398778"; $book has title "Physical Principles of Electron Microscopy: An Introduction to TEM, SEM, and AEM"; $book has page-count 196; $book has price 19.50; $book has genre "nonfiction"; $book has genre "technology";
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Egerton, R.F."; }; insert $contributor isa $contributor-type; $contributor has name "Egerton, R.F.";
+match $book isa ebook; $book has isbn-13 "9783319398778"; $contributor isa contributor; $contributor has name "Egerton, R.F."; insert (work: $book, author: $contributor) isa authoring;
+match $publisher-type type publisher; not { $publisher isa $publisher-type; $publisher has name "Springer"; }; insert $publisher isa $publisher-type; $publisher has name "Springer";
+match $book isa ebook; $book has isbn-13 "9783319398778"; $publisher isa publisher; $publisher has name "Springer"; $city isa city; $city has name "London"; insert $publication isa publication; $publication has year 2016; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;
+# book
+insert $book isa hardback; $book has isbn-13 "9780387881355"; $book has title "Electron Backscatter Diffraction in Materials Science"; $book has page-count 425; $book has price 230.37; $book has genre "nonfiction"; $book has genre "technology"; $book has isbn-10 "0387881352"; $book has stock 9;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Schwartz, Adam J."; }; insert $contributor isa $contributor-type; $contributor has name "Schwartz, Adam J.";
+match $book isa hardback; $book has isbn-13 "9780387881355"; $contributor isa contributor; $contributor has name "Schwartz, Adam J."; insert (work: $book, editor: $contributor) isa editing;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Kumar, Mukul"; }; insert $contributor isa $contributor-type; $contributor has name "Kumar, Mukul";
+match $book isa hardback; $book has isbn-13 "9780387881355"; $contributor isa contributor; $contributor has name "Kumar, Mukul"; insert (work: $book, editor: $contributor) isa editing;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Adams, Brent L."; }; insert $contributor isa $contributor-type; $contributor has name "Adams, Brent L.";
+match $book isa hardback; $book has isbn-13 "9780387881355"; $contributor isa contributor; $contributor has name "Adams, Brent L."; insert (work: $book, editor: $contributor) isa editing;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Field, David P."; }; insert $contributor isa $contributor-type; $contributor has name "Field, David P.";
+match $book isa hardback; $book has isbn-13 "9780387881355"; $contributor isa contributor; $contributor has name "Field, David P."; insert (work: $book, editor: $contributor) isa editing;
+match $publisher-type type publisher; not { $publisher isa $publisher-type; $publisher has name "Springer"; }; insert $publisher isa $publisher-type; $publisher has name "Springer";
+match $book isa hardback; $book has isbn-13 "9780387881355"; $publisher isa publisher; $publisher has name "Springer"; $city isa city; $city has name "New York City"; insert $publication isa publication; $publication has year 2009; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;
+# book
+insert $book isa paperback; $book has isbn-13 "9781489962287"; $book has title "Interpretation of Electron Diffraction Patterns"; $book has page-count 199; $book has price 47.17; $book has genre "nonfiction"; $book has genre "technology"; $book has isbn-10 "148996228X"; $book has stock 15;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Andrews, Kenneth William"; }; insert $contributor isa $contributor-type; $contributor has name "Andrews, Kenneth William";
+match $book isa paperback; $book has isbn-13 "9781489962287"; $contributor isa contributor; $contributor has name "Andrews, Kenneth William"; insert (work: $book, author: $contributor) isa authoring;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Dyson, David John"; }; insert $contributor isa $contributor-type; $contributor has name "Dyson, David John";
+match $book isa paperback; $book has isbn-13 "9781489962287"; $contributor isa contributor; $contributor has name "Dyson, David John"; insert (work: $book, author: $contributor) isa authoring;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Keown, Samuel Robert"; }; insert $contributor isa $contributor-type; $contributor has name "Keown, Samuel Robert";
+match $book isa paperback; $book has isbn-13 "9781489962287"; $contributor isa contributor; $contributor has name "Keown, Samuel Robert"; insert (work: $book, author: $contributor) isa authoring;
+match $publisher-type type publisher; not { $publisher isa $publisher-type; $publisher has name "Springer"; }; insert $publisher isa $publisher-type; $publisher has name "Springer";
+match $book isa paperback; $book has isbn-13 "9781489962287"; $publisher isa publisher; $publisher has name "Springer"; $city isa city; $city has name "New York City"; insert $publication isa publication; $publication has year 1967; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;
+# book
+insert $book isa paperback; $book has isbn-13 "9780500026557"; $book has title "Hokusai's Fuji"; $book has page-count 416; $book has price 24.47; $book has genre "nonfiction"; $book has genre "art"; $book has isbn-10 "0500026556"; $book has stock 11;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Wada, Kyoko"; }; insert $contributor isa $contributor-type; $contributor has name "Wada, Kyoko";
+match $book isa paperback; $book has isbn-13 "9780500026557"; $contributor isa contributor; $contributor has name "Wada, Kyoko"; insert (work: $book, author: $contributor) isa authoring;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Katsushika, Hokusai"; }; insert $contributor isa $contributor-type; $contributor has name "Katsushika, Hokusai";
+match $book isa paperback; $book has isbn-13 "9780500026557"; $contributor isa contributor; $contributor has name "Katsushika, Hokusai"; insert (work: $book, illustrator: $contributor) isa illustrating;
+match $publisher-type type publisher; not { $publisher isa $publisher-type; $publisher has name "Thames & Hudson"; }; insert $publisher isa $publisher-type; $publisher has name "Thames & Hudson";
+match $book isa paperback; $book has isbn-13 "9780500026557"; $publisher isa publisher; $publisher has name "Thames & Hudson"; $city isa city; $city has name "London"; insert $publication isa publication; $publication has year 2024; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;
+# book
+insert $book isa paperback; $book has isbn-13 "9780500291221"; $book has title "Great Discoveries in Medicine"; $book has page-count 352; $book has price 12.05; $book has genre "nonfiction"; $book has genre "history"; $book has isbn-10 "0500291225"; $book has stock 18;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Bynum, William"; }; insert $contributor isa $contributor-type; $contributor has name "Bynum, William";
+match $book isa paperback; $book has isbn-13 "9780500291221"; $contributor isa contributor; $contributor has name "Bynum, William"; insert (work: $book, editor: $contributor) isa editing;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Bynum, Helen"; }; insert $contributor isa $contributor-type; $contributor has name "Bynum, Helen";
+match $book isa paperback; $book has isbn-13 "9780500291221"; $contributor isa contributor; $contributor has name "Bynum, Helen"; insert (work: $book, editor: $contributor) isa editing;
+match $publisher-type type publisher; not { $publisher isa $publisher-type; $publisher has name "Thames & Hudson"; }; insert $publisher isa $publisher-type; $publisher has name "Thames & Hudson";
+match $book isa paperback; $book has isbn-13 "9780500291221"; $publisher isa publisher; $publisher has name "Thames & Hudson"; $city isa city; $city has name "London"; insert $publication isa publication; $publication has year 2023; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;
+# book
+insert $book isa hardback; $book has isbn-13 "9780740748479"; $book has title "The Complete Calvin and Hobbes"; $book has page-count 1451; $book has price 128.71; $book has genre "fiction"; $book has genre "comics"; $book has isbn-10 "0740748475"; $book has stock 6;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Watterson, Bill"; }; insert $contributor isa $contributor-type; $contributor has name "Watterson, Bill";
+match $book isa hardback; $book has isbn-13 "9780740748479"; $contributor isa contributor; $contributor has name "Watterson, Bill"; insert (work: $book, author: $contributor) isa authoring;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Watterson, Bill"; }; insert $contributor isa $contributor-type; $contributor has name "Watterson, Bill";
+match $book isa hardback; $book has isbn-13 "9780740748479"; $contributor isa contributor; $contributor has name "Watterson, Bill"; insert (work: $book, illustrator: $contributor) isa illustrating;
+match $publisher-type type publisher; not { $publisher isa $publisher-type; $publisher has name "Andrews McMeel Publishing"; }; insert $publisher isa $publisher-type; $publisher has name "Andrews McMeel Publishing";
+match $book isa hardback; $book has isbn-13 "9780740748479"; $publisher isa publisher; $publisher has name "Andrews McMeel Publishing"; $city isa city; $city has name "Kansas City"; insert $publication isa publication; $publication has year 2005; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;
+# book
+insert $book isa ebook; $book has isbn-13 "9780375801679"; $book has title "The Iron Giant"; $book has page-count 79; $book has price 33.97; $book has genre "fiction"; $book has genre "children's fiction"; $book has isbn-10 "0375801677";
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Hughes, Ted"; }; insert $contributor isa $contributor-type; $contributor has name "Hughes, Ted";
+match $book isa ebook; $book has isbn-13 "9780375801679"; $contributor isa contributor; $contributor has name "Hughes, Ted"; insert (work: $book, author: $contributor) isa authoring;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Davidson, Andrew"; }; insert $contributor isa $contributor-type; $contributor has name "Davidson, Andrew";
+match $book isa ebook; $book has isbn-13 "9780375801679"; $contributor isa contributor; $contributor has name "Davidson, Andrew"; insert (work: $book, illustrator: $contributor) isa illustrating;
+match $publisher-type type publisher; not { $publisher isa $publisher-type; $publisher has name "Knopf Books for Young Readers"; }; insert $publisher isa $publisher-type; $publisher has name "Knopf Books for Young Readers";
+match $book isa ebook; $book has isbn-13 "9780375801679"; $publisher isa publisher; $publisher has name "Knopf Books for Young Readers"; $city isa city; $city has name "New York City"; insert $publication isa publication; $publication has year 1999; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;
+# book
+insert $book isa paperback; $book has isbn-13 "9781859840665"; $book has title "The Motorcycle Diaries: A Journey Around South America"; $book has page-count 160; $book has price 14.52; $book has genre "nonfiction"; $book has genre "biography"; $book has isbn-10 "1859840663"; $book has stock 4;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Guevara, Ernesto"; }; insert $contributor isa $contributor-type; $contributor has name "Guevara, Ernesto";
+match $book isa paperback; $book has isbn-13 "9781859840665"; $contributor isa contributor; $contributor has name "Guevara, Ernesto"; insert (work: $book, author: $contributor) isa authoring;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Wright, Ann"; }; insert $contributor isa $contributor-type; $contributor has name "Wright, Ann";
+match $book isa paperback; $book has isbn-13 "9781859840665"; $contributor isa contributor; $contributor has name "Wright, Ann"; insert (work: $book, contributor: $contributor) isa contribution;
+match $publisher-type type publisher; not { $publisher isa $publisher-type; $publisher has name "Verso"; }; insert $publisher isa $publisher-type; $publisher has name "Verso";
+match $book isa paperback; $book has isbn-13 "9781859840665"; $publisher isa publisher; $publisher has name "Verso"; $city isa city; $city has name "London"; insert $publication isa publication; $publication has year 1996; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;
+# book
+insert $book isa paperback; $book has isbn-13 "9780671461492"; $book has title "The Hitchhiker's Guide to the Galaxy"; $book has page-count 215; $book has price 91.47; $book has genre "fiction"; $book has genre "science fiction"; $book has isbn-10 "0671461494"; $book has stock 9;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Adams, Douglas"; }; insert $contributor isa $contributor-type; $contributor has name "Adams, Douglas";
+match $book isa paperback; $book has isbn-13 "9780671461492"; $contributor isa contributor; $contributor has name "Adams, Douglas"; insert (work: $book, author: $contributor) isa authoring;
+match $publisher-type type publisher; not { $publisher isa $publisher-type; $publisher has name "Pocket"; }; insert $publisher isa $publisher-type; $publisher has name "Pocket";
+match $book isa paperback; $book has isbn-13 "9780671461492"; $publisher isa publisher; $publisher has name "Pocket"; $city isa city; $city has name "New York City"; insert $publication isa publication; $publication has year 1982; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;
+# book
+insert $book isa paperback; $book has isbn-13 "9780060929794"; $book has title "One Hundred Years of Solitude"; $book has page-count 458; $book has price 6.12; $book has genre "fiction"; $book has genre "historical fiction"; $book has isbn-10 "0060929790"; $book has stock 4;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Garcia Marquez, Gabriel"; }; insert $contributor isa $contributor-type; $contributor has name "Garcia Marquez, Gabriel";
+match $book isa paperback; $book has isbn-13 "9780060929794"; $contributor isa contributor; $contributor has name "Garcia Marquez, Gabriel"; insert (work: $book, author: $contributor) isa authoring;
+match $publisher-type type publisher; not { $publisher isa $publisher-type; $publisher has name "Perennial"; }; insert $publisher isa $publisher-type; $publisher has name "Perennial";
+match $book isa paperback; $book has isbn-13 "9780060929794"; $publisher isa publisher; $publisher has name "Perennial"; $city isa city; $city has name "New York City"; insert $publication isa publication; $publication has year 1998; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;
+# book
+insert $book isa ebook; $book has isbn-13 "9781098108274"; $book has title "Fundamentals of Data Engineering"; $book has page-count 450; $book has price 47.99; $book has genre "nonfiction"; $book has genre "technology"; $book has genre "children's fiction"; $book has isbn-10 "1098108272";
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Reis, Joe"; }; insert $contributor isa $contributor-type; $contributor has name "Reis, Joe";
+match $book isa ebook; $book has isbn-13 "9781098108274"; $contributor isa contributor; $contributor has name "Reis, Joe"; insert (work: $book, author: $contributor) isa authoring;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Housley, Matt"; }; insert $contributor isa $contributor-type; $contributor has name "Housley, Matt";
+match $book isa ebook; $book has isbn-13 "9781098108274"; $contributor isa contributor; $contributor has name "Housley, Matt"; insert (work: $book, author: $contributor) isa authoring;
+match $publisher-type type publisher; not { $publisher isa $publisher-type; $publisher has name "O'Reilly Media"; }; insert $publisher isa $publisher-type; $publisher has name "O'Reilly Media";
+match $book isa ebook; $book has isbn-13 "9781098108274"; $publisher isa publisher; $publisher has name "O'Reilly Media"; $city isa city; $city has name "Sevastopol"; insert $publication isa publication; $publication has year 2022; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;
+# book
+insert $book isa ebook; $book has isbn-13 "9780393634563"; $book has title "The Odyssey"; $book has page-count 656; $book has price 13.99; $book has genre "fiction"; $book has genre "classics"; $book has isbn-10 "0393634566";
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Homer"; }; insert $contributor isa $contributor-type; $contributor has name "Homer";
+match $book isa ebook; $book has isbn-13 "9780393634563"; $contributor isa contributor; $contributor has name "Homer"; insert (work: $book, author: $contributor) isa authoring;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Wilson, Emily"; }; insert $contributor isa $contributor-type; $contributor has name "Wilson, Emily";
+match $book isa ebook; $book has isbn-13 "9780393634563"; $contributor isa contributor; $contributor has name "Wilson, Emily"; insert (work: $book, contributor: $contributor) isa contribution;
+match $publisher-type type publisher; not { $publisher isa $publisher-type; $publisher has name "W.W. Norton & Company"; }; insert $publisher isa $publisher-type; $publisher has name "W.W. Norton & Company";
+match $book isa ebook; $book has isbn-13 "9780393634563"; $publisher isa publisher; $publisher has name "W.W. Norton & Company"; $city isa city; $city has name "New York City"; insert $publication isa publication; $publication has year 2017; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;
+# book
+insert $book isa ebook; $book has isbn-13 "9780575104419"; $book has title "Dune"; $book has page-count 624; $book has price 5.49; $book has genre "fiction"; $book has genre "science fiction"; $book has isbn-10 "0575104414";
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "Herbert, Frank"; }; insert $contributor isa $contributor-type; $contributor has name "Herbert, Frank";
+match $book isa ebook; $book has isbn-13 "9780575104419"; $contributor isa contributor; $contributor has name "Herbert, Frank"; insert (work: $book, author: $contributor) isa authoring;
+match $publisher-type type publisher; not { $publisher isa $publisher-type; $publisher has name "Hachette Book Group"; }; insert $publisher isa $publisher-type; $publisher has name "Hachette Book Group";
+match $book isa ebook; $book has isbn-13 "9780575104419"; $publisher isa publisher; $publisher has name "Hachette Book Group"; $city isa city; $city has name "New York City"; insert $publication isa publication; $publication has year 2010; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;
+# book
+insert $book isa ebook; $book has isbn-13 "9780008627843"; $book has title "The Hobbit"; $book has page-count 310; $book has price 16.99; $book has genre "fiction"; $book has genre "fantasy"; $book has isbn-10 "0008627843";
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "J.R.R. Tolkein"; }; insert $contributor isa $contributor-type; $contributor has name "J.R.R. Tolkein";
+match $book isa ebook; $book has isbn-13 "9780008627843"; $contributor isa contributor; $contributor has name "J.R.R. Tolkein"; insert (work: $book, author: $contributor) isa authoring;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "J.R.R. Tolkein"; }; insert $contributor isa $contributor-type; $contributor has name "J.R.R. Tolkein";
+match $book isa ebook; $book has isbn-13 "9780008627843"; $contributor isa contributor; $contributor has name "J.R.R. Tolkein"; insert (work: $book, illustrator: $contributor) isa illustrating;
+match $publisher-type type publisher; not { $publisher isa $publisher-type; $publisher has name "Harper Collins"; }; insert $publisher isa $publisher-type; $publisher has name "Harper Collins";
+match $book isa ebook; $book has isbn-13 "9780008627843"; $publisher isa publisher; $publisher has name "Harper Collins"; $city isa city; $city has name "New York City"; insert $publication isa publication; $publication has year 2023; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;
+# user
+match $city isa city; $city has name "San Francisco"; insert $user isa user; $user has id "u0001"; $user has name "Kevin Morrison"; $user has birth-date 1995-10-29; (location: $city, located: $user) isa locating;
+# user
+match $city isa city; $city has name "Austin"; insert $user isa user; $user has id "u0002"; $user has name "Cameron Osborne"; $user has birth-date 1954-11-11; (location: $city, located: $user) isa locating;
+# user
+match $city isa city; $city has name "Newark"; insert $user isa user; $user has id "u0003"; $user has name "Keyla Pineda"; $user has birth-date 1977-06-20; (location: $city, located: $user) isa locating;
+# user
+match $city isa city; $city has name "Seattle"; insert $user isa user; $user has id "u0004"; $user has name "Lorenzo Nixon"; $user has birth-date 1985-08-15; (location: $city, located: $user) isa locating;
+# user
+match $city isa city; $city has name "Boston"; insert $user isa user; $user has id "u0005"; $user has name "Xavier Martinez"; $user has birth-date 1985-01-03; (location: $city, located: $user) isa locating;
+# user
+match $city isa city; $city has name "Santa Fe"; insert $user isa user; $user has id "u0006"; $user has name "Giovanni Beard"; $user has birth-date 1992-11-01; (location: $city, located: $user) isa locating;
+# user
+match $city isa city; $city has name "Toronto"; insert $user isa user; $user has id "u0007"; $user has name "Skyler Townsend"; $user has birth-date 1971-04-24; (location: $city, located: $user) isa locating;
+# user
+match $city isa city; $city has name "Bristol"; insert $user isa user; $user has id "u0008"; $user has name "Alia Hartman"; $user has birth-date 1962-10-08; (location: $city, located: $user) isa locating;
+# user
+match $city isa city; $city has name "Montreal"; insert $user isa user; $user has id "u0009"; $user has name "Isaac Winters"; $user has birth-date 1984-08-03; (location: $city, located: $user) isa locating;
+# user
+match $city isa city; $city has name "Liverpool"; insert $user isa user; $user has id "u0010"; $user has name "Madison Everett"; $user has birth-date 1981-02-10; (location: $city, located: $user) isa locating;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "UPS"; }; insert $courier isa $courier-type; $courier has name "UPS";
+match $city isa city; $city has name "San Francisco"; not { $address isa address; $address has street "14 South Street"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "14 South Street"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0001"; $courier isa courier; $courier has name "UPS"; $city isa city; $city has name "San Francisco"; $address isa address; $address has street "14 South Street"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0001"; $order has status "canceled"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2022-08-03T19:51:24.324; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0001"; $book isa book; $book has isbn-13 "9780393634563"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 2;
+match $order isa order; $order has id "o0001"; $book isa book; $book has isbn-13 "9780500291221"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "FedEx"; }; insert $courier isa $courier-type; $courier has name "FedEx";
+match $city isa city; $city has name "San Francisco"; not { $address isa address; $address has street "14 South Street"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "14 South Street"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0001"; $courier isa courier; $courier has name "FedEx"; $city isa city; $city has name "San Francisco"; $address isa address; $address has street "14 South Street"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0002"; $order has status "dispatched"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2021-04-27T05:02:39.672; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0002"; $book isa book; $book has isbn-13 "9780575104419"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "UPS"; }; insert $courier isa $courier-type; $courier has name "UPS";
+match $city isa city; $city has name "San Francisco"; not { $address isa address; $address has street "14 South Street"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "14 South Street"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0001"; $courier isa courier; $courier has name "UPS"; $city isa city; $city has name "San Francisco"; $address isa address; $address has street "14 South Street"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0003"; $order has status "returned"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2020-11-25T04:56:09.945; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0003"; $book isa book; $book has isbn-13 "9781489962287"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "DHL"; }; insert $courier isa $courier-type; $courier has name "DHL";
+match $city isa city; $city has name "Austin"; not { $address isa address; $address has street "55 Park Road"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "55 Park Road"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0002"; $courier isa courier; $courier has name "DHL"; $city isa city; $city has name "Austin"; $address isa address; $address has street "55 Park Road"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0004"; $order has status "paid"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2023-12-17T08:33:51.241; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0004"; $book isa book; $book has isbn-13 "9780679425601"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "FedEx"; }; insert $courier isa $courier-type; $courier has name "FedEx";
+match $city isa city; $city has name "Austin"; not { $address isa address; $address has street "55 Park Road"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "55 Park Road"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0002"; $courier isa courier; $courier has name "FedEx"; $city isa city; $city has name "Austin"; $address isa address; $address has street "55 Park Road"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0005"; $order has status "canceled"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2022-08-16T21:41:44.938; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0005"; $book isa book; $book has isbn-13 "9783319398778"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 2;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "FedEx"; }; insert $courier isa $courier-type; $courier has name "FedEx";
+match $city isa city; $city has name "Austin"; not { $address isa address; $address has street "55 Park Road"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "55 Park Road"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0002"; $courier isa courier; $courier has name "FedEx"; $city isa city; $city has name "Austin"; $address isa address; $address has street "55 Park Road"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0006"; $order has status "paid"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2020-08-19T20:21:54.194; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0006"; $book isa book; $book has isbn-13 "9780740748479"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 2;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "DHL"; }; insert $courier isa $courier-type; $courier has name "DHL";
+match $city isa city; $city has name "Austin"; not { $address isa address; $address has street "55 Park Road"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "55 Park Road"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0002"; $courier isa courier; $courier has name "DHL"; $city isa city; $city has name "Austin"; $address isa address; $address has street "55 Park Road"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0007"; $order has status "paid"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2022-02-23T07:23:50.174; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0007"; $book isa book; $book has isbn-13 "9780387881355"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "UPS"; }; insert $courier isa $courier-type; $courier has name "UPS";
+match $city isa city; $city has name "Newark"; not { $address isa address; $address has street "23 Grove Road"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "23 Grove Road"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0003"; $courier isa courier; $courier has name "UPS"; $city isa city; $city has name "Newark"; $address isa address; $address has street "23 Grove Road"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0008"; $order has status "paid"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2021-12-08T01:52:36.649; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0008"; $book isa book; $book has isbn-13 "9780500291221"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+match $order isa order; $order has id "o0008"; $book isa book; $book has isbn-13 "9781859840665"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "UPS"; }; insert $courier isa $courier-type; $courier has name "UPS";
+match $city isa city; $city has name "Seattle"; not { $address isa address; $address has street "9735 Queensway"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "9735 Queensway"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0004"; $courier isa courier; $courier has name "UPS"; $city isa city; $city has name "Seattle"; $address isa address; $address has street "9735 Queensway"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0009"; $order has status "paid"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2021-10-27T18:07:25.093; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0009"; $book isa book; $book has isbn-13 "9780393634563"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+match $order isa order; $order has id "o0009"; $book isa book; $book has isbn-13 "9780008627843"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+match $order isa order; $order has id "o0009"; $book isa book; $book has isbn-13 "9780393045215"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "UPS"; }; insert $courier isa $courier-type; $courier has name "UPS";
+match $city isa city; $city has name "Seattle"; not { $address isa address; $address has street "9735 Queensway"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "9735 Queensway"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0004"; $courier isa courier; $courier has name "UPS"; $city isa city; $city has name "Seattle"; $address isa address; $address has street "9735 Queensway"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0010"; $order has status "paid"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2020-04-06T22:07:30.215; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0010"; $book isa book; $book has isbn-13 "9780740748479"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "DHL"; }; insert $courier isa $courier-type; $courier has name "DHL";
+match $city isa city; $city has name "Boston"; not { $address isa address; $address has street "64 Fremont Street"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "64 Fremont Street"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0005"; $courier isa courier; $courier has name "DHL"; $city isa city; $city has name "Boston"; $address isa address; $address has street "64 Fremont Street"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0011"; $order has status "paid"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2023-10-04T08:04:14.073; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0011"; $book isa book; $book has isbn-13 "9780679425601"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 2;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "FedEx"; }; insert $courier isa $courier-type; $courier has name "FedEx";
+match $city isa city; $city has name "Santa Fe"; not { $address isa address; $address has street "9227 Lincoln Street"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "9227 Lincoln Street"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0006"; $courier isa courier; $courier has name "FedEx"; $city isa city; $city has name "Santa Fe"; $address isa address; $address has street "9227 Lincoln Street"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0012"; $order has status "delivered"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2021-01-17T14:02:38.103; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0012"; $book isa book; $book has isbn-13 "9780500026557"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 3;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "FedEx"; }; insert $courier isa $courier-type; $courier has name "FedEx";
+match $city isa city; $city has name "Santa Fe"; not { $address isa address; $address has street "9227 Lincoln Street"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "9227 Lincoln Street"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0006"; $courier isa courier; $courier has name "FedEx"; $city isa city; $city has name "Santa Fe"; $address isa address; $address has street "9227 Lincoln Street"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0013"; $order has status "delivered"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2023-10-06T22:43:13.989; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0013"; $book isa book; $book has isbn-13 "9780375801679"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+match $order isa order; $order has id "o0013"; $book isa book; $book has isbn-13 "9783319398778"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "FedEx"; }; insert $courier isa $courier-type; $courier has name "FedEx";
+match $city isa city; $city has name "Santa Fe"; not { $address isa address; $address has street "9227 Lincoln Street"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "9227 Lincoln Street"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0006"; $courier isa courier; $courier has name "FedEx"; $city isa city; $city has name "Santa Fe"; $address isa address; $address has street "9227 Lincoln Street"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0014"; $order has status "dispatched"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2022-02-20T14:42:11.013; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0014"; $book isa book; $book has isbn-13 "9780679425601"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 2;
+match $order isa order; $order has id "o0014"; $book isa book; $book has isbn-13 "9780553212150"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "DHL"; }; insert $courier isa $courier-type; $courier has name "DHL";
+match $city isa city; $city has name "Toronto"; not { $address isa address; $address has street "464 Pilgrim Lane"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "464 Pilgrim Lane"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0007"; $courier isa courier; $courier has name "DHL"; $city isa city; $city has name "Toronto"; $address isa address; $address has street "464 Pilgrim Lane"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0015"; $order has status "returned"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2022-11-12T12:53:42.256; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0015"; $book isa book; $book has isbn-13 "9780060929794"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "FedEx"; }; insert $courier isa $courier-type; $courier has name "FedEx";
+match $city isa city; $city has name "Toronto"; not { $address isa address; $address has street "464 Pilgrim Lane"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "464 Pilgrim Lane"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0007"; $courier isa courier; $courier has name "FedEx"; $city isa city; $city has name "Toronto"; $address isa address; $address has street "464 Pilgrim Lane"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0016"; $order has status "paid"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2020-06-24T01:34:17.138; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0016"; $book isa book; $book has isbn-13 "9780446310789"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+match $order isa order; $order has id "o0016"; $book isa book; $book has isbn-13 "9780393634563"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "DHL"; }; insert $courier isa $courier-type; $courier has name "DHL";
+match $city isa city; $city has name "Bristol"; not { $address isa address; $address has street "75 Fairway Court"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "75 Fairway Court"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0008"; $courier isa courier; $courier has name "DHL"; $city isa city; $city has name "Bristol"; $address isa address; $address has street "75 Fairway Court"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0017"; $order has status "delivered"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2022-11-12T18:57:40.874; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0017"; $book isa book; $book has isbn-13 "9780387881355"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+match $order isa order; $order has id "o0017"; $book isa book; $book has isbn-13 "9780060929794"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "DHL"; }; insert $courier isa $courier-type; $courier has name "DHL";
+match $city isa city; $city has name "Bristol"; not { $address isa address; $address has street "75 Fairway Court"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "75 Fairway Court"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0008"; $courier isa courier; $courier has name "DHL"; $city isa city; $city has name "Bristol"; $address isa address; $address has street "75 Fairway Court"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0018"; $order has status "dispatched"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2022-07-24T13:53:41.082; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0018"; $book isa book; $book has isbn-13 "9780008627843"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "UPS"; }; insert $courier isa $courier-type; $courier has name "UPS";
+match $city isa city; $city has name "Montreal"; not { $address isa address; $address has street "86 East Drive"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "86 East Drive"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0009"; $courier isa courier; $courier has name "UPS"; $city isa city; $city has name "Montreal"; $address isa address; $address has street "86 East Drive"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0019"; $order has status "canceled"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2022-03-08T07:40:28.387; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0019"; $book isa book; $book has isbn-13 "9780195153446"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "UPS"; }; insert $courier isa $courier-type; $courier has name "UPS";
+match $city isa city; $city has name "Montreal"; not { $address isa address; $address has street "86 East Drive"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "86 East Drive"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0009"; $courier isa courier; $courier has name "UPS"; $city isa city; $city has name "Montreal"; $address isa address; $address has street "86 East Drive"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0020"; $order has status "returned"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2023-12-19T13:49:42.726; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0020"; $book isa book; $book has isbn-13 "9780575104419"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "FedEx"; }; insert $courier isa $courier-type; $courier has name "FedEx";
+match $city isa city; $city has name "Montreal"; not { $address isa address; $address has street "86 East Drive"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "86 East Drive"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0009"; $courier isa courier; $courier has name "FedEx"; $city isa city; $city has name "Montreal"; $address isa address; $address has street "86 East Drive"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0021"; $order has status "dispatched"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2020-05-23T05:28:33.906; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0021"; $book isa book; $book has isbn-13 "9780679425601"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 2;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "UPS"; }; insert $courier isa $courier-type; $courier has name "UPS";
+match $city isa city; $city has name "Liverpool"; not { $address isa address; $address has street "75 Selby Street"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "75 Selby Street"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0010"; $courier isa courier; $courier has name "UPS"; $city isa city; $city has name "Liverpool"; $address isa address; $address has street "75 Selby Street"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0022"; $order has status "canceled"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2020-08-11T09:53:29.051; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0022"; $book isa book; $book has isbn-13 "9780060929794"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+match $order isa order; $order has id "o0022"; $book isa book; $book has isbn-13 "9780393634563"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "DHL"; }; insert $courier isa $courier-type; $courier has name "DHL";
+match $city isa city; $city has name "Liverpool"; not { $address isa address; $address has street "75 Selby Street"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "75 Selby Street"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0010"; $courier isa courier; $courier has name "DHL"; $city isa city; $city has name "Liverpool"; $address isa address; $address has street "75 Selby Street"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0023"; $order has status "canceled"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2020-12-05T00:25:43.427; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0023"; $book isa book; $book has isbn-13 "9781859840665"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+match $order isa order; $order has id "o0023"; $book isa book; $book has isbn-13 "9783319398778"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "UPS"; }; insert $courier isa $courier-type; $courier has name "UPS";
+match $city isa city; $city has name "Liverpool"; not { $address isa address; $address has street "75 Selby Street"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "75 Selby Street"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0010"; $courier isa courier; $courier has name "UPS"; $city isa city; $city has name "Liverpool"; $address isa address; $address has street "75 Selby Street"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0024"; $order has status "paid"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2020-12-25T00:52:43.541; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0024"; $book isa book; $book has isbn-13 "9780500291221"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "UPS"; }; insert $courier isa $courier-type; $courier has name "UPS";
+match $city isa city; $city has name "Sacramento"; not { $address isa address; $address has street "786 Lake View Street"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "786 Lake View Street"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0005"; $courier isa courier; $courier has name "UPS"; $city isa city; $city has name "Sacramento"; $address isa address; $address has street "786 Lake View Street"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0025"; $order has status "paid"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2020-10-21T06:55:19.286; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0025"; $book isa book; $book has isbn-13 "9780008627843"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "FedEx"; }; insert $courier isa $courier-type; $courier has name "FedEx";
+match $city isa city; $city has name "Sacramento"; not { $address isa address; $address has street "786 Lake View Street"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "786 Lake View Street"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0005"; $courier isa courier; $courier has name "FedEx"; $city isa city; $city has name "Sacramento"; $address isa address; $address has street "786 Lake View Street"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0026"; $order has status "paid"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2023-11-03T00:17:58.463; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0026"; $book isa book; $book has isbn-13 "9780553212150"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "UPS"; }; insert $courier isa $courier-type; $courier has name "UPS";
+match $city isa city; $city has name "Sacramento"; not { $address isa address; $address has street "786 Lake View Street"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "786 Lake View Street"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0005"; $courier isa courier; $courier has name "UPS"; $city isa city; $city has name "Sacramento"; $address isa address; $address has street "786 Lake View Street"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0027"; $order has status "delivered"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2022-02-28T04:17:54.019; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0027"; $book isa book; $book has isbn-13 "9798691153570"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "UPS"; }; insert $courier isa $courier-type; $courier has name "UPS";
+match $city isa city; $city has name "New York City"; not { $address isa address; $address has street "8503 Second Street"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "8503 Second Street"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0003"; $courier isa courier; $courier has name "UPS"; $city isa city; $city has name "New York City"; $address isa address; $address has street "8503 Second Street"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0028"; $order has status "paid"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2022-09-11T11:36:58.869; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0028"; $book isa book; $book has isbn-13 "9780679425601"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 2;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "DHL"; }; insert $courier isa $courier-type; $courier has name "DHL";
+match $city isa city; $city has name "New York City"; not { $address isa address; $address has street "8503 Second Street"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "8503 Second Street"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0003"; $courier isa courier; $courier has name "DHL"; $city isa city; $city has name "New York City"; $address isa address; $address has street "8503 Second Street"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0029"; $order has status "canceled"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2023-12-21T14:40:27.381; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0029"; $book isa book; $book has isbn-13 "9780679425601"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "UPS"; }; insert $courier isa $courier-type; $courier has name "UPS";
+match $city isa city; $city has name "Kansas City"; not { $address isa address; $address has street "826 Vermont Avenue"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "826 Vermont Avenue"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0004"; $courier isa courier; $courier has name "UPS"; $city isa city; $city has name "Kansas City"; $address isa address; $address has street "826 Vermont Avenue"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0030"; $order has status "dispatched"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2023-10-10T00:08:09.277; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0030"; $book isa book; $book has isbn-13 "9780393634563"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "FedEx"; }; insert $courier isa $courier-type; $courier has name "FedEx";
+match $city isa city; $city has name "Los Angeles"; not { $address isa address; $address has street "984 Williams Street"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "984 Williams Street"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0001"; $courier isa courier; $courier has name "FedEx"; $city isa city; $city has name "Los Angeles"; $address isa address; $address has street "984 Williams Street"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0031"; $order has status "delivered"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2020-06-25T19:02:02.276; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0031"; $book isa book; $book has isbn-13 "9780500291221"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "FedEx"; }; insert $courier isa $courier-type; $courier has name "FedEx";
+match $city isa city; $city has name "Los Angeles"; not { $address isa address; $address has street "984 Williams Street"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "984 Williams Street"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0001"; $courier isa courier; $courier has name "FedEx"; $city isa city; $city has name "Los Angeles"; $address isa address; $address has street "984 Williams Street"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0032"; $order has status "canceled"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2022-07-18T04:18:07.489; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0032"; $book isa book; $book has isbn-13 "9780553212150"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+match $order isa order; $order has id "o0032"; $book isa book; $book has isbn-13 "9780446310789"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "FedEx"; }; insert $courier isa $courier-type; $courier has name "FedEx";
+match $city isa city; $city has name "Quebec City"; not { $address isa address; $address has street "20 Ridge Lane"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "20 Ridge Lane"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0007"; $courier isa courier; $courier has name "FedEx"; $city isa city; $city has name "Quebec City"; $address isa address; $address has street "20 Ridge Lane"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0033"; $order has status "paid"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2021-09-24T02:19:25.855; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0033"; $book isa book; $book has isbn-13 "9780387881355"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "UPS"; }; insert $courier isa $courier-type; $courier has name "UPS";
+match $city isa city; $city has name "Quebec City"; not { $address isa address; $address has street "20 Ridge Lane"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "20 Ridge Lane"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0007"; $courier isa courier; $courier has name "UPS"; $city isa city; $city has name "Quebec City"; $address isa address; $address has street "20 Ridge Lane"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0034"; $order has status "returned"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2020-09-30T15:30:21.861; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0034"; $book isa book; $book has isbn-13 "9780500291221"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+match $order isa order; $order has id "o0034"; $book isa book; $book has isbn-13 "9780500026557"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "FedEx"; }; insert $courier isa $courier-type; $courier has name "FedEx";
+match $city isa city; $city has name "Quebec City"; not { $address isa address; $address has street "20 Ridge Lane"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "20 Ridge Lane"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0007"; $courier isa courier; $courier has name "FedEx"; $city isa city; $city has name "Quebec City"; $address isa address; $address has street "20 Ridge Lane"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0035"; $order has status "paid"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2020-12-16T13:02:19.343; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0035"; $book isa book; $book has isbn-13 "9780500291221"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "DHL"; }; insert $courier isa $courier-type; $courier has name "DHL";
+match $city isa city; $city has name "Quebec City"; not { $address isa address; $address has street "20 Ridge Lane"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "20 Ridge Lane"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0007"; $courier isa courier; $courier has name "DHL"; $city isa city; $city has name "Quebec City"; $address isa address; $address has street "20 Ridge Lane"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0036"; $order has status "dispatched"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2023-11-03T02:51:05.202; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0036"; $book isa book; $book has isbn-13 "9780446310789"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 2;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "FedEx"; }; insert $courier isa $courier-type; $courier has name "FedEx";
+match $city isa city; $city has name "Albany"; not { $address isa address; $address has street "112 Church Street"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "112 Church Street"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0003"; $courier isa courier; $courier has name "FedEx"; $city isa city; $city has name "Albany"; $address isa address; $address has street "112 Church Street"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0037"; $order has status "paid"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2020-02-13T17:33:18.459; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0037"; $book isa book; $book has isbn-13 "9780387881355"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# order
+match $courier-type type courier; not { $courier isa $courier-type; $courier has name "FedEx"; }; insert $courier isa $courier-type; $courier has name "FedEx";
+match $city isa city; $city has name "Albany"; not { $address isa address; $address has street "112 Church Street"; (location: $city, located: $address) isa locating; }; insert $address isa address; $address has street "112 Church Street"; (location: $city, located: $address) isa locating;
+match $user isa user; $user has id "u0003"; $courier isa courier; $courier has name "FedEx"; $city isa city; $city has name "Albany"; $address isa address; $address has street "112 Church Street"; (location: $city, located: $address) isa locating; insert $order isa order; $order has id "o0038"; $order has status "dispatched"; $execution (action: $order, executor: $user) isa action-execution; $execution has timestamp 2020-06-08T08:37:49.170; (delivered: $order, deliverer: $courier, destination: $address) isa delivery;
+match $order isa order; $order has id "o0038"; $book isa book; $book has isbn-13 "9780060929794"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+match $order isa order; $order has id "o0038"; $book isa book; $book has isbn-13 "9780575104419"; insert $line (order: $order, item: $book) isa order-line; $line has quantity 1;
+# review
+match $book isa book; $book has isbn-13 "9780195153446"; $user isa user; $user has id "u0009"; insert $review isa review; $review has id "r0001"; $review has score 4; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2023-04-12T03:04:52.884;
+# review
+match $book isa book; $book has isbn-13 "9783319398778"; $user isa user; $user has id "u0001"; insert $review isa review; $review has id "r0002"; $review has score 5; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2023-11-07T03:31:25.262;
+# review
+match $book isa book; $book has isbn-13 "9780740748479"; $user isa user; $user has id "u0009"; insert $review isa review; $review has id "r0003"; $review has score 5; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2021-10-05T03:12:29.387;
+# review
+match $book isa book; $book has isbn-13 "9781859840665"; $user isa user; $user has id "u0009"; insert $review isa review; $review has id "r0004"; $review has score 5; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2021-02-20T15:09:36.415;
+# review
+match $book isa book; $book has isbn-13 "9783319398778"; $user isa user; $user has id "u0009"; insert $review isa review; $review has id "r0005"; $review has score 6; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2023-11-30T10:53:31.510;
+# review
+match $book isa book; $book has isbn-13 "9780500291221"; $user isa user; $user has id "u0001"; insert $review isa review; $review has id "r0006"; $review has score 6; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2021-01-11T22:47:57.325;
+# review
+match $book isa book; $book has isbn-13 "9780500026557"; $user isa user; $user has id "u0008"; insert $review isa review; $review has id "r0007"; $review has score 6; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2021-05-20T04:53:24.596;
+# review
+match $book isa book; $book has isbn-13 "9780679425601"; $user isa user; $user has id "u0005"; insert $review isa review; $review has id "r0008"; $review has score 6; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2020-02-17T01:04:14.133;
+# review
+match $book isa book; $book has isbn-13 "9780671461492"; $user isa user; $user has id "u0006"; insert $review isa review; $review has id "r0009"; $review has score 6; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2020-08-11T05:51:09.889;
+# review
+match $book isa book; $book has isbn-13 "9781098108274"; $user isa user; $user has id "u0010"; insert $review isa review; $review has id "r0010"; $review has score 7; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2023-09-17T01:36:05.694;
+# review
+match $book isa book; $book has isbn-13 "9780008627843"; $user isa user; $user has id "u0007"; insert $review isa review; $review has id "r0011"; $review has score 7; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2020-12-14T06:18:34.922;
+# review
+match $book isa book; $book has isbn-13 "9780195153446"; $user isa user; $user has id "u0001"; insert $review isa review; $review has id "r0012"; $review has score 7; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2023-07-20T18:14:54.885;
+# review
+match $book isa book; $book has isbn-13 "9780060929794"; $user isa user; $user has id "u0005"; insert $review isa review; $review has id "r0013"; $review has score 7; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2021-05-17T18:16:21.067;
+# review
+match $book isa book; $book has isbn-13 "9780446310789"; $user isa user; $user has id "u0004"; insert $review isa review; $review has id "r0014"; $review has score 7; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2022-07-13T12:03:10.656;
+# review
+match $book isa book; $book has isbn-13 "9781859840665"; $user isa user; $user has id "u0003"; insert $review isa review; $review has id "r0015"; $review has score 7; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2022-12-27T10:03:02.492;
+# review
+match $book isa book; $book has isbn-13 "9780740748479"; $user isa user; $user has id "u0007"; insert $review isa review; $review has id "r0016"; $review has score 7; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2023-10-23T02:43:44.155;
+# review
+match $book isa book; $book has isbn-13 "9780060929794"; $user isa user; $user has id "u0003"; insert $review isa review; $review has id "r0017"; $review has score 7; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2020-10-15T12:29:03.103;
+# review
+match $book isa book; $book has isbn-13 "9798691153570"; $user isa user; $user has id "u0009"; insert $review isa review; $review has id "r0018"; $review has score 8; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2020-01-20T19:08:40.331;
+# review
+match $book isa book; $book has isbn-13 "9780008627843"; $user isa user; $user has id "u0008"; insert $review isa review; $review has id "r0019"; $review has score 8; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2022-04-13T15:07:56.061;
+# review
+match $book isa book; $book has isbn-13 "9780446310789"; $user isa user; $user has id "u0007"; insert $review isa review; $review has id "r0020"; $review has score 8; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2022-11-04T21:45:39.303;
+# review
+match $book isa book; $book has isbn-13 "9783319398778"; $user isa user; $user has id "u0001"; insert $review isa review; $review has id "r0021"; $review has score 8; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2022-12-28T21:51:07.531;
+# review
+match $book isa book; $book has isbn-13 "9780393045215"; $user isa user; $user has id "u0001"; insert $review isa review; $review has id "r0022"; $review has score 8; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2023-08-12T06:29:22.808;
+# review
+match $book isa book; $book has isbn-13 "9780575104419"; $user isa user; $user has id "u0004"; insert $review isa review; $review has id "r0023"; $review has score 8; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2020-08-09T00:33:42.582;
+# review
+match $book isa book; $book has isbn-13 "9781098108274"; $user isa user; $user has id "u0007"; insert $review isa review; $review has id "r0024"; $review has score 8; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2021-02-25T20:49:32.715;
+# review
+match $book isa book; $book has isbn-13 "9780393045215"; $user isa user; $user has id "u0002"; insert $review isa review; $review has id "r0025"; $review has score 9; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2022-02-05T13:57:36.432;
+# review
+match $book isa book; $book has isbn-13 "9780195153446"; $user isa user; $user has id "u0008"; insert $review isa review; $review has id "r0026"; $review has score 9; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2023-02-04T13:49:09.751;
+# review
+match $book isa book; $book has isbn-13 "9780500291221"; $user isa user; $user has id "u0005"; insert $review isa review; $review has id "r0027"; $review has score 9; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2023-11-14T00:31:58.884;
+# review
+match $book isa book; $book has isbn-13 "9780740748479"; $user isa user; $user has id "u0006"; insert $review isa review; $review has id "r0028"; $review has score 9; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2020-06-03T03:22:44.030;
+# review
+match $book isa book; $book has isbn-13 "9780008627843"; $user isa user; $user has id "u0003"; insert $review isa review; $review has id "r0029"; $review has score 9; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2021-01-27T07:52:23.072;
+# review
+match $book isa book; $book has isbn-13 "9798691153570"; $user isa user; $user has id "u0001"; insert $review isa review; $review has id "r0030"; $review has score 9; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2021-01-07T21:43:46.960;
+# review
+match $book isa book; $book has isbn-13 "9780446310789"; $user isa user; $user has id "u0003"; insert $review isa review; $review has id "r0031"; $review has score 10; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2022-06-23T00:59:38.238;
+# review
+match $book isa book; $book has isbn-13 "9780195153446"; $user isa user; $user has id "u0004"; insert $review isa review; $review has id "r0032"; $review has score 10; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2023-02-16T11:45:16.133;
+# review
+match $book isa book; $book has isbn-13 "9780393634563"; $user isa user; $user has id "u0006"; insert $review isa review; $review has id "r0033"; $review has score 10; (review: $review, rated: $book) isa rating; $execution (action: $review, executor: $user) isa action-execution; $execution has timestamp 2022-06-16T09:18:59.899;
+# login
+match $user isa user; $user has id "u0003"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2020-02-18T18:19:10.385;
+# login
+match $user isa user; $user has id "u0005"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2021-06-17T07:15:48.188;
+# login
+match $user isa user; $user has id "u0002"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2023-11-02T04:38:01.403;
+# login
+match $user isa user; $user has id "u0003"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2020-03-14T09:35:26.758;
+# login
+match $user isa user; $user has id "u0006"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2023-05-21T11:05:15.455;
+# login
+match $user isa user; $user has id "u0006"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2020-07-14T00:26:46.922;
+# login
+match $user isa user; $user has id "u0002"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2021-06-10T15:05:11.815;
+# login
+match $user isa user; $user has id "u0008"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2020-09-20T22:09:50.719;
+# login
+match $user isa user; $user has id "u0009"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2021-07-14T05:15:29.348;
+# login
+match $user isa user; $user has id "u0004"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2022-08-21T20:05:30.773;
+# login
+match $user isa user; $user has id "u0005"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2020-12-15T19:29:00.223;
+# login
+match $user isa user; $user has id "u0008"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2022-09-20T04:27:45.769;
+# login
+match $user isa user; $user has id "u0002"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2023-04-18T12:17:40.022;
+# login
+match $user isa user; $user has id "u0007"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2020-01-09T12:33:56.595;
+# login
+match $user isa user; $user has id "u0004"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2020-12-09T11:18:55.773;
+# login
+match $user isa user; $user has id "u0002"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2020-01-03T08:19:34.348;
+# login
+match $user isa user; $user has id "u0009"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2021-03-03T13:55:18.289;
+# login
+match $user isa user; $user has id "u0005"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2021-09-04T13:40:34.413;
+# login
+match $user isa user; $user has id "u0002"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2023-06-19T20:08:10.126;
+# login
+match $user isa user; $user has id "u0006"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2023-10-15T04:35:42.306;
+# login
+match $user isa user; $user has id "u0009"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2023-12-14T06:30:31.711;
+# login
+match $user isa user; $user has id "u0008"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2023-11-02T14:19:09.763;
+# login
+match $user isa user; $user has id "u0009"; insert $login isa login; $login has success false; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2021-01-12T15:25:56.010;
+# login
+match $user isa user; $user has id "u0001"; insert $login isa login; $login has success false; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2020-11-24T21:25:00.369;
+# login
+match $user isa user; $user has id "u0004"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2020-05-28T20:44:18.744;
+# login
+match $user isa user; $user has id "u0007"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2022-04-04T13:29:45.338;
+# login
+match $user isa user; $user has id "u0003"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2022-07-21T21:27:09.458;
+# login
+match $user isa user; $user has id "u0007"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2022-03-07T05:28:22.808;
+# login
+match $user isa user; $user has id "u0004"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2023-07-24T07:50:12.449;
+# login
+match $user isa user; $user has id "u0003"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2020-07-02T07:40:05.891;
+# login
+match $user isa user; $user has id "u0005"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2020-12-21T21:11:14.625;
+# login
+match $user isa user; $user has id "u0006"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2020-12-28T16:48:18.789;
+# login
+match $user isa user; $user has id "u0009"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2023-01-21T22:33:42.979;
+# login
+match $user isa user; $user has id "u0004"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2023-10-15T15:16:45.487;
+# login
+match $user isa user; $user has id "u0005"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2022-01-02T01:10:22.003;
+# login
+match $user isa user; $user has id "u0010"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2020-03-03T13:43:14.993;
+# login
+match $user isa user; $user has id "u0002"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2021-08-07T10:38:06.620;
+# login
+match $user isa user; $user has id "u0001"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2022-09-15T10:16:01.534;
+# login
+match $user isa user; $user has id "u0004"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2022-02-07T16:22:12.857;
+# login
+match $user isa user; $user has id "u0004"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2022-05-17T12:16:30.352;
+# promotion
+insert $promotion isa promotion; $promotion has code "HOL23"; $promotion has name "Holiday Sale 2023"; $promotion has start-timestamp 2023-12-01T00:00:00; $promotion has end-timestamp 2023-12-31T23:59:59;
+match $book isa book; $book has isbn-13 "9780575104419"; $promotion isa promotion; $promotion has name "Holiday Sale 2023"; insert $inclusion (promotion: $promotion, included: $book) isa promotion-inclusion; $inclusion has discount 0.25;
+match $book isa book; $book has isbn-13 "9780060929794"; $promotion isa promotion; $promotion has name "Holiday Sale 2023"; insert $inclusion (promotion: $promotion, included: $book) isa promotion-inclusion; $inclusion has discount 0.25;
+match $book isa book; $book has isbn-13 "9780375801679"; $promotion isa promotion; $promotion has name "Holiday Sale 2023"; insert $inclusion (promotion: $promotion, included: $book) isa promotion-inclusion; $inclusion has discount 0.25;
+match $book isa book; $book has isbn-13 "9780008627843"; $promotion isa promotion; $promotion has name "Holiday Sale 2023"; insert $inclusion (promotion: $promotion, included: $book) isa promotion-inclusion; $inclusion has discount 0.25;
+match $book isa book; $book has isbn-13 "9780500026557"; $promotion isa promotion; $promotion has name "Holiday Sale 2023"; insert $inclusion (promotion: $promotion, included: $book) isa promotion-inclusion; $inclusion has discount 0.25;
+# book
+insert $book isa paperback; $book has isbn-13 "9780451162076"; $book has title "Pet Sematary"; $book has page-count 374; $book has price 93.22; $book has genre "fiction"; $book has genre "horror"; $book has isbn-10 "0451162072"; $book has stock 1;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "King, Stephen"; }; insert $contributor isa $contributor-type; $contributor has name "King, Stephen";
+match $book isa paperback; $book has isbn-13 "9780451162076"; $contributor isa contributor; $contributor has name "King, Stephen"; insert (work: $book, author: $contributor) isa authoring;
+match $publisher-type type publisher; not { $publisher isa $publisher-type; $publisher has name "Signet"; }; insert $publisher isa $publisher-type; $publisher has name "Signet";
+match $book isa paperback; $book has isbn-13 "9780451162076"; $publisher isa publisher; $publisher has name "Signet"; $city isa city; $city has name "New York City"; insert $publication isa publication; $publication has year 1984; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;

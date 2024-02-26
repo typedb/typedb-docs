@@ -1,0 +1,209 @@
+= Delete query
+:experimental:
+:tabs-sync-option:
+
+A Delete query is used to delete data from a TypeDB database.
+A `delete` clause is executed once per every result matched by the `match` clause of the same Delete query.
+
+This page assumes you've already followed instructions from the xref:manual::writing/insert.adoc[] page.
+Here, you'll see how to delete data from a database using Studio, Console, or one of the drivers.
+
+== How to send a Delete query
+
+The easiest way to send a Delete query is to use Studio or Console:
+
+[tabs]
+====
+Studio::
++
+--
+Follow the xref:manual::studio.adoc#_prepare_a_query[Studio manual]
+to connect to TypeDB and select a project folder.
+Then use the steps below:
+
+. Use a drop-down list in the top toolbar to select a database.
+. Switch to `data` session and `write` transaction types.
+. Open a new tab and insert or type in a Delete query, for example:
++
+.TypeQL Delete query
+[,typeql]
+----
+match
+$u1 isa user, has name "Bob";
+$u2 isa user, has name "Charlie";
+$f($u1,$u2) isa friendship;
+delete
+$f isa friendship;
+----
+. Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
+. Commit the changes by clicking the btn:[Commit query] button (image:home::studio-icons/commit.png[Commit]).
+--
+
+Console::
++
+--
+. Open a `data` session and `write` transaction to the selected database (e.g., `sample_db`):
++
+[,bash]
+----
+transaction sample_db data write
+----
+. Send the Delete query:
++
+[,bash]
+----
+match
+$u1 isa user, has name "Bob";
+$u2 isa user, has name "Charlie";
+$f($u1,$u2) isa friendship;
+delete
+$f isa friendship;
+----
++
+Push btn:[Enter] twice to send the query.
+. Commit the changes:
++
+[,bash]
+----
+commit
+----
+--
+====
+
+To send a Delete query programmatically, use xref:drivers::overview.adoc[drivers]:
+
+//#todo Check all the code
+[tabs]
+====
+Rust::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::rust/api-reference.adoc#_struct_QueryManager_delete__[`transaction.query().delete()`]
+method:
+
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tags=delete]
+----
+--
+
+Python::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::python/api-reference.adoc#_QueryManager_delete{scores}query_str__options_TypeDBOptions__None[`transaction.query.delete()`]
+method:
+
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tags=delete]
+----
+--
+
+Java::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::java/api-reference.adoc#_QueryManager_delete__java_lang_String[`transaction.query().delete()`]
+method:
+
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tags=delete]
+----
+--
+
+Node.js::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::nodejs/api-reference.adoc#_QueryManager_delete__query_string__options_TypeDBOptions[`transaction.query.delete()`]
+method:
+
+[,js, indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tags=delete]
+----
+--
+
+C++::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::cpp/api-reference.adoc#_VoidFuture_TypeDBQueryManagermatchDelete_const_stdstring_query_const_Options_options_Options_const[`transaction.query.delete()`]
+method:
+
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tags=options]
+include::manual::partial$cpp-manual-code.cpp[tags=delete]
+----
+--
+====
+
+== Response interpretation
+
+A Delete query returns a Promise of an empty response.
+This promise can be resolved when the query is finished executing, but it doesn't contain any useful information.
+
+== Estimation with a read query
+
+You can estimate what gets deletes in a Delete query
+by running a preliminary Fetch or Get query with the same `match` clause in the same transaction.
+Read queries can be used in a `write` transaction, and `write` transactions are snapshoted,
+preventing data changes committed in other transactions from influencing the results.
+
+You can send any type of read query,
+but the most direct approach is to send an aggregated Get query to count the number of matches.
+The `match` clause should be exactly the same as in the Delete query you are trying to estimate.
+
+.Checking the number of matched results
+[,typeql]
+----
+match
+$u1 isa user, has name "Bob";
+$u2 isa user, has name "Charlie";
+$f($u1,$u2) isa friendship;
+get; count;
+----
+
+The response is a single value of a `long` value type.
+The aggregated number of matched results is equal to the number of times the `delete` clause of a Delete query
+with the same `match` clause in the same `write` transaction will be executed.
+Every execution of a `delete` clause tries to delete the data specified by a pattern.
+If the data is deleted already by previous execution of the `delete` clause in the same query,
+no additional data is deleted and no error is produced.
+
+== Learn more
+
+[cols-2]
+--
+.More about a xref:typeql::data/delete.adoc[]
+[.clickable]
+****
+Learn more about Delete queries in TypeQL: syntax, behaviour, and query examples.
+****
+
+.xref:manual::writing/update.adoc[]
+[.clickable]
+****
+Learn how to update or replace data from a database with a single query.
+****
+
+.xref:learn::4-writing-data/4-writing-data.adoc[]
+[.clickable]
+****
+Check out the Writing data section of our TypeDB Learning course.
+****
+--

@@ -1,0 +1,114 @@
+= Configuring server
+
+There are two ways to configure a TypeDB server: in a xref:manual::configuring/config.adoc[config file]
+or with xref:manual::configuring/arguments.adoc[command line arguments].
+
+Command line arguments can be used with the command that starts a TypeDB server (`typedb server`)
+and they have a higher priority over config file.
+
+For more information, see the relevant pages:
+
+[cols-2]
+--
+.xref:manual::configuring/config.adoc[]
+[.clickable]
+****
+TypeDB config file documentation: config location, applying changes, cluster configuration, config example.
+****
+
+.xref:manual::configuring/arguments.adoc[]
+[.clickable]
+****
+TypeDB command line arguments documentation: overriding config parameters and special commands.
+****
+--
+
+== Maintenance
+
+[cols-2]
+--
+.xref:manual::configuring/logs.adoc[Logs]
+[.clickable]
+****
+Gathering and storing logs configuration.
+****
+
+.xref:manual::configuring/export.adoc[Export and Import]
+[.clickable]
+****
+Exporting and importing schema and data of a database in TypeDB.
+****
+
+.xref:manual::configuring/upgrades.adoc[Upgrades]
+[.clickable]
+****
+Upgrading TypeDB server's version.
+****
+
+.xref:manual::configuring/users.adoc[Users]
+[.clickable]
+****
+User management operations.
+****
+--
+
+
+== Host machine requirements
+
+The minimum host machine configuration for running a single TypeDB database is 4 (v)CPUs, 10 GB memory, with SSD.
+
+The recommended starting configuration is 8 (v)CPUs, 16 GB memory, and SSD. Bulk loading is scaled effectively by
+adding more CPU cores.
+
+The following is the breakdown of TypeDB memory requirements:
+
+* The JVM memory: is configurable when booting the server with `JAVAOPTS="-Xmx4g"` typedb server. This gives the JVM *4 GB*
+of memory. Defaults to *25%* of system memory on most machines.
+* Storage layer baseline consumption: approximately *2 GB*.
+* Storage layer caches: this is about *2x* cache size per database. If the *data and index caches* sum up to *1 GB*,
+the memory requirement is *2 GB* in working memory.
+* Memory per CPU: approximately *0.5 GB* additional per (v)CPU under a full load.
+
+We can estimate the amount of memory the server will need to run a single database with the following equation:
+
+////
+[stem]
+++++
+"required memory" = "JVM memory" + "2 GB" + (2 xx "configured db-caches in GB") + ("0.5 GB" xx "Number of CPUs")
+++++
+////
+
+`required memory = JVM memory + 2 GB + (2 × configured db-caches in GB) + (0.5 GB × CPUs)`
+
+For example, on a 4 CPU machine, with the default 1 GB of per-database storage caches, and the JVM using 4 GB of RAM,
+the default requirement for memory would be: `4 GB + 2 GB + (2 × 1 GB) + (0.5 GB × 4)` = *10 GB*.
+
+Each additional database will consume an additional amount at least equal to the cache requirements (in this example,
+an additional 2 GB of memory for each database).
+
+=== Open file limit
+
+To support large data volumes, it is important to check the open file limit the operating system imposes. Some Unix
+distributions default to `1024` open file descriptors. This can be checked with the following command:
+
+[,bash]
+----
+ulimit -n
+----
+
+We recommend this is increased to at least `50 000`.
+
+== Diagnostics
+
+TypeDB optionally reports anonymous diagnostics to guide the development and optimisation of TypeDB.
+This data includes unexpected errors and occasional system status updates for number and size of databases,
+and number of transactions executed per hour.
+
+To disable error and diagnostic reporting set the `diagnostics.reporting.enabled` to `false` in the config file:
+
+[,yaml]
+----
+diagnostics:
+  reporting:
+    enable: false
+----

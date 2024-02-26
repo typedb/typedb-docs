@@ -1,0 +1,159 @@
+= Config file
+
+[#_configuration_file]
+TypeDB uses a config file with a specific YAML format.
+See the xref:manual::configuring/config.adoc[] for examples.
+
+TypeDB config file usually has the following top level sections:
+
+* `server`
+* `storage`
+* `log`
+* `diagnostics`
+* `vaticle-factory`
+
+[IMPORTANT]
+====
+For any change in TypeDB config file to take effect, restart the TypeDB server.
+====
+
+[#_the_default_location_of_the_config_file]
+== Config file location
+
+TypeDB ships with a default configuration file.
+The location of this file varies based on how TypeDB has been installed.
+
+For a manual download, find the configuration file in the `server/conf` directory inside the unzipped folder.
+
+For Homebrew, check the following directory (replace the `+{version-number}+` placeholder with the exact
+version installed):
+
+----
+/usr/local/Cellar/typedb/{version-number}/libexec/server/conf/config.yml
+----
+
+For APT, check the following directory:
+
+----
+/opt/typedb/core/server/conf/config.yml
+----
+
+== TypeDB Cloud cluster configuration
+
+Every server in a cluster has its own config file that contains a list of known servers in the cluster.
+A server in a cluster will not accept connections from servers that are not on the list.
+
+[NOTE]
+====
+Changes to the server configuration require a server restart to take effect.
+====
+
+[#_sample_configuration]
+=== Config file example
+
+Here is an example of TypeDB config file:
+
+[,yaml]
+----
+server:
+  address: 0.0.0.0:1729
+
+storage:
+  data: server/data
+  database-cache:
+    # configure storage-layer data and index cache per database
+    # for large datasets, it is more important to have a large index cache than a large data cache
+    data: 500mb
+    index: 500mb
+
+log:
+  output:
+    stdout:
+      type: stdout
+    file:
+      type: file
+      base-dir: server/logs
+      file-size-limit: 50mb
+      archive-grouping: month
+      archive-age-limit: 1 year
+      archives-size-limit: 1gb
+
+  logger:
+    default:
+      level: warn
+      output: [ stdout, file ]
+    typedb:
+      filter: com.vaticle.typedb.core
+      level: info
+      output: [ stdout, file ]
+    storage:
+      filter: com.vaticle.typedb.core.database
+      level: info # on 'debug' the server will periodically log database storage properties
+      output: [ stdout, file ]
+  debugger:
+    reasoner-tracer:
+      enable: false
+      type: reasoner-tracer
+      output: file
+    reasoner-perf-counters:
+      enable: false
+      type: reasoner-perf-counters
+
+diagnostics:
+  reporting:
+    enable: true
+
+vaticle-factory:
+  enable: false
+----
+
+[#_server]
+=== Server
+
+The `server` section of the configuration file contains network and RPC options.
+
+* `address`: the address to listen for TypeDB Clients connections via `gRPC`.
++
+Use the `0.0.0.0` IP address to listen to all connections and `localhost` for connections from the local machine.
+
+[#_storage_configuration]
+=== Storage
+
+The `storage` section of the configuration file contains the storage layer options.
+
+* `data`: the location to write user data to. Defaults to within the server distribution under server/data.
+* `database-cache`: *per-database* configuration for storage-level caching
+** `data`: cache for often-used data.
+** `index`: cache for data indexes.
+
+[IMPORTANT]
+====
+For production use, it is recommended that the `server.data` is set to a path outside of the `$TYPEDB_HOME`
+(directory with TypeDB server files). This helps to make the process of upgrading TypeDB easier.
+====
+
+If the index cache is too small relative to the dataset, we may find severely degraded performance. We recommend
+allocating at least *2%* of a database size equivalent to the index cache. For example, with *100 GB* of
+on-disk data in a database, allocate at least *2 GB* of index cache. Allocating more can improve performance.
+
+Additionally, we recommend the sum of data and index caches equal to about *20%* of the total memory of the server.
+
+[#_log]
+=== Log
+
+See the xref:manual::configuring/logs.adoc[] page.
+
+=== Diagnostics
+
+TypeDB optionally reports anonymous diagnostics to guide the development and optimisation of TypeDB.
+This data includes unexpected errors and occasional system status updates for number and size of databases,
+and number of transactions executed per hour.
+
+To disable error and diagnostic reporting set the `diagnostics.reporting.enabled` to `false` in the config file:
+
+[,yaml]
+----
+diagnostics:
+  reporting:
+    enable: false
+----

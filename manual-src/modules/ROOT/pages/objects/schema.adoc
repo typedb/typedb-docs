@@ -1,0 +1,777 @@
+= Schema objects
+
+Driver APIs provide a set of methods to programmatically manipulate <<_types,types>> and
+<<_rules,rules>> in the schema of a TypeDB database.
+
+This page assumes you've already followed instructions from the xref:manual::defining/define.adoc[] page.
+Here, you'll see how to use driver API methods and stateful objects to programmatically manipulate types and rules
+in a database schema using one of the TypeDB drivers.
+
+[#_types]
+== Types
+
+A type object has many useful methods to traverse the type hierarchy, find related types,
+and manipulate types definitions/properties.
+To manipulate a type with driver API methods,
+you need to get a stateful object that represents the type in the database.
+
+[#_get_query]
+=== Get a type
+
+To get a type object from a TypeDB database,
+you can use a TypeQL Get query or one of the driver API methods.
+
+==== Get a type object by its label
+
+Use type's label to retrieve the type object.
+For example, to get a stateful object of the `user` entity type, use:
+
+[tabs]
+====
+Rust::
++
+--
+.Example
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tag=get_type]
+----
+
+For more information,
+see the xref:drivers::rust/api-reference.adoc#_struct_ConceptManager[ConceptManager class] methods.
+--
+
+Python::
++
+--
+.Example
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tag=get_type]
+----
+For more information,
+see the xref:drivers::python/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
+--
+
+Java::
++
+--
+.Example
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tag=get_type]
+----
+For more information,
+see the xref:drivers::java/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
+--
+
+Node.js::
++
+--
+.Example
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tag=get_type]
+----
+For more information,
+see the xref:drivers::nodejs/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
+--
+
+C++::
++
+--
+.Example
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tag=get_type]
+----
+For more information,
+see the xref:drivers::cpp/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
+--
+====
+
+==== Query for types
+
+xref:manual::reading/get.adoc#_how_to_send_a_get_query[Send a Get query] with a pattern to retrieve types
+and process the response to get type objects.
+For example, to get all entity types, send the following Get query:
+
+.Example of a Get query for entity types
+[,typeql]
+----
+match
+$x sub entity;
+get $x;
+----
+
+=== Add a type
+
+To add a new type into the schema of a database,
+use a TypeQL xref:typeql::schema/define.adoc[Define query] or one of the put type methods.
+For example, to add an entity type with the label `admin` by using put type method, use the following code:
+
+[tabs]
+====
+Rust::
++
+--
+.Example
+[,rust,indent=0]
+----
+include::manual::partial$python-manual-code.py[tag=add_type]
+----
+For more information,
+see the xref:drivers::rust/api-reference.adoc#_struct_ConceptManager[ConceptManager class] methods.
+--
+
+Python::
++
+--
+.Example
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tag=add_type]
+----
+For more information,
+see the xref:drivers::python/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
+--
+
+Java::
++
+--
+.Example
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tag=add_type]
+----
+For more information,
+see the xref:drivers::java/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
+--
+
+Node.js::
++
+--
+.Example
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tag=add_type]
+----
+For more information,
+see the xref:drivers::nodejs/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
+--
+
+C++::
++
+--
+.Example
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tag=add_type]
+----
+For more information,
+see the xref:drivers::cpp/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
+--
+====
+
+[#_type_object_methods]
+=== Type manipulation
+
+A stateful type object has many useful methods to manipulate the type or traverse the type hierarchy of a schema:
+
+* get/set label,
+* get/set supertype,
+* get subtypes,
+* get ownerships,
+* get roles played,
+* etc.
+
+For example, see how to change a supertype for the `admin` type we added previously:
+
+[tabs]
+====
+Rust::
++
+--
+.Example
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tag=set_supertype]
+----
+For more information on methods, available for manipulating Type objects,
+see the xref:drivers::rust/api-reference.adoc#_schema_header[Schema class] methods.
+--
+
+Python::
++
+--
+.Example
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tag=set_supertype]
+----
+For more information on methods, available for manipulating Type objects,
+see the xref:drivers::python/api-reference.adoc#_schema_header[Schema class] methods.
+--
+
+Java::
++
+--
+.Example
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tag=set_supertype]
+----
+For more information on methods, available for manipulating Type objects,
+see the xref:drivers::java/api-reference.adoc#_schema_header[Schema class] methods.
+--
+
+Node.js::
++
+--
+.Example
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tag=set_supertype]
+----
+For more information on methods, available for manipulating Type objects,
+see the xref:drivers::python/api-reference.adoc#_schema_header[Schema class] methods.
+--
+
+C++::
++
+--
+.Example
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tag=set_supertype]
+----
+For more information on methods, available for manipulating Type objects,
+see the xref:drivers::python/api-reference.adoc#_schema_header[Schema class] methods.
+--
+====
+
+[#_example_of_type_manipulation]
+=== Full example
+
+See below a more comprehensive example of type objects manipulation.
+In this example we retrieve the `user` type object, create the `admin` type and set `user` as a supertype for `admin`.
+Then we retrieve all subtypes of the `entity` root types (effectively all entity types) and print their labels.
+
+[tabs]
+====
+Rust::
++
+--
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::manual::partial$rust-manual-code.rs[tags=types-api]
+----
+--
+
+Python::
++
+--
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tags=types-api]
+----
+--
+
+Java::
++
+--
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tags=types-api]
+----
+--
+
+Node.js::
++
+--
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tags=types-api]
+----
+--
+
+C++::
++
+--
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tags=types-api]
+----
+--
+====
+
+For an additional example of programmatic type manipulations,
+see the xref:manual::defining/schema-editing.adoc#_modify_with_driver_api[Schema editing] page.
+
+[#_rules]
+== Rules
+
+A rule object has `label`, `when`, and `then` properties and just a few methods.
+
+To manipulate a rule with driver API methods,
+you need to get a stateful object that represents the rule in the database.
+
+[#_get_a_rule_object]
+=== Get a rule
+
+Rules can be defined with a TypeQL query (see xref:typeql::schema/define.adoc[]), but they can't be retrieved with one.
+To get a rule object from a TypeDB database, you need to use the Logic class methods of a driver API.
+
+==== Get a rule object by its label
+
+Use rule's label to retrieve the rule object.
+For example, to get a stateful object of the rule with the label `Employee`, use:
+
+[tabs]
+====
+Rust::
++
+--
+.Example
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tag=get_rule]
+----
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::rust/api-reference.adoc#_struct_LogicManager_get_rule__label_String[get_rule()]
+method in driver API reference.
+++++
+--
+
+Python::
++
+--
+.Example
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tag=get_rule]
+----
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::python/api-reference.adoc#_LogicManager_get_rule__label_str[get_rule()]
+method in driver API reference.
+++++
+--
+
+Java::
++
+--
+.Example
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tag=get_rule]
+----
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::java/api-reference.adoc#_LogicManager_getRule__java_lang_String[getRule()]
+method in driver API reference.
+++++
+--
+
+Node.js::
++
+--
+.Example
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tag=get_rule]
+----
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::nodejs/api-reference.adoc#_LogicManager_getRule__label_string[get_rule()]
+method in driver API reference.
+++++
+--
+
+C++::
++
+--
+.Example
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tag=get_rule]
+----
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::cpp/api-reference.adoc#_OptionalRuleFuture_TypeDBLogicManagergetRule_const_stdstring_label_const[getRule()]
+method in driver API reference.
+++++
+--
+====
+
+==== Get all rules
+
+Use get rules method to retrieve all rules in a schema:
+
+[tabs]
+====
+Rust::
++
+--
+.Example
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tag=get_rules]
+----
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::rust/api-reference.adoc#_struct_LogicManager_get_rules__[get_rules()]
+method in driver API reference.
+++++
+--
+
+Python::
++
+--
+.Example
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tag=get_rules]
+----
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::python/api-reference.adoc#_LogicManager_get_rules__[get_rules()]
+method in driver API reference.
+++++
+--
+
+Java::
++
+--
+.Example
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tag=get_rules]
+----
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::java/api-reference.adoc#_LogicManager_getRules__[getRules()]
+method in driver API reference.
+++++
+--
+
+Node.js::
++
+--
+.Example
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tag=get_rules]
+----
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::nodejs/api-reference.adoc#_LogicManager_getRules__[getRules()]
+method in driver API reference.
+++++
+--
+
+C++::
++
+--
+.Example
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tag=get_rules]
+----
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::cpp/api-reference.adoc#_RuleIterable_TypeDBLogicManagergetRules_const[getRules()]
+method in driver API reference.
+++++
+--
+====
+
+=== Add a rule
+
+Use the following methods to add a rule to the schema of a database:
+
+[tabs]
+====
+Rust::
++
+--
+.Example
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tag=put_rule]
+----
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::rust/api-reference.adoc#_struct_LogicManager_put_rule__label_String__when_Conjunction__then_Statement[put_rule()]
+method in driver API reference.
+++++
+--
+
+Python::
++
+--
+.Example
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tag=put_rule]
+----
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::python/api-reference.adoc#_LogicManager_put_rule__label_str__when_str__then_str[put_rule()]
+method in driver API reference.
+++++
+--
+
+Java::
++
+--
+.Example
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tag=put_rule]
+----
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::java/api-reference.adoc#_LogicManager_putRule__java_lang_String__com_vaticle_typeql_lang_pattern_Pattern__com_vaticle_typeql_lang_pattern_Pattern[putRule()]
+method in driver API reference.
+++++
+--
+
+Node.js::
++
+--
+.Example
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tag=put_rule]
+----
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::nodejs/api-reference.adoc#_LogicManager_putRule__label_string__when_string__then_string[putRule()]
+method in driver API reference.
+++++
+--
+
+C++::
++
+--
+.Example
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tag=put_rule]
+----
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information, see the
+xref:drivers::cpp/api-reference.adoc#_RuleFuture_TypeDBLogicManagerputRule_const_stdstring_label_const_stdstring_when_const_stdstring_then_const[putRule()]
+method in driver API reference.
+++++
+--
+====
+
+=== Rule manipulation
+
+A stateful rule object has just a few methods: get/set label, delete, and is_deleted.
+
+[tabs]
+====
+Rust::
++
+--
+.Example
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tag=delete_rule]
+----
+The above example deletes the type, which type object is stored in the variable, from the schema of a database.
+You need to commit transaction to persist the changes.
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information on methods, available for manipulating Rule objects, see the
+xref:drivers::rust/api-reference.adoc#_struct_Rule[Rule class] methods.
+++++
+--
+
+Python::
++
+--
+.Example
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tag=delete_rule]
+----
+
+The above example deletes the type, which type object is stored in the variable, from the schema of a database.
+You need to commit transaction to persist the changes.
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information on methods, available for manipulating Rule objects, see the
+xref:drivers::python/api-reference.adoc#_Rule[Rule class] methods.
+++++
+--
+
+Java::
++
+--
+.Example
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tag=delete_rule]
+----
+
+The above example deletes the type, which type object is stored in the variable, from the schema of a database.
+You need to commit transaction to persist the changes.
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information on methods, available for manipulating Rule objects, see the
+xref:drivers::java/api-reference.adoc#_Rule[Rule class] methods.
+++++
+--
+
+Node.js::
++
+--
+.Example
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tag=delete_rule]
+----
+
+The above example deletes the type, which type object is stored in the variable, from the schema of a database.
+You need to commit transaction to persist the changes.
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information on methods, available for manipulating Rule objects, see the
+xref:drivers::nodejs/api-reference.adoc#_Rule[Rule class] methods.
+++++
+--
+
+C++::
++
+--
+.Example
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tag=delete_rule]
+----
+
+The above example deletes the type, which type object is stored in the variable, from the schema of a database.
+You need to commit transaction to persist the changes.
+
+[subs="macros, post_replacements, replacements"]
+++++
+For more information on methods, available for manipulating Rule objects, see the
+xref:drivers::cpp/api-reference.adoc#_Rule[Rule class] methods.
+++++
+--
+====
+
+=== Full example
+
+See below a comprehensive example of rules manipulation:
+retrieving all rules, printing label, condition (when) and conclusion(then), adding a new rule,
+retrieving a rule by its label, and deleting a rule.
+
+See below a more comprehensive example of rule objects manipulation.
+In this example we retrieve the `users` rule object and print its label, condition, and conclusion.
+Then we add a new rule `Employee` and retrieve all rules to print their labels.
+
+[tabs]
+====
+Rust::
++
+--
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tags=rules-api]
+----
+--
+
+Python::
++
+--
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tags=rules-api]
+----
+--
+
+Java::
++
+--
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tags=rules-api]
+----
+--
+
+Node.js::
++
+--
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tags=rules-api]
+----
+--
+
+C++::
++
+--
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tags=rules-api]
+----
+--
+====
+
+== Learn more
+
+[cols-1]
+--
+.xref:drivers::overview.adoc[]
+[.clickable]
+****
+Learn more about TypeDB drivers: list of available drivers, installation guides, API reference.
+****
+--
+
+For more information about driver API methods, see the API reference of the relevant driver:
+
+include::manual::reading/get.adoc[tags=drivers-api]
+
+

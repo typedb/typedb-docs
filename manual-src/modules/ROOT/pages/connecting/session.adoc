@@ -1,0 +1,224 @@
+= Open a session
+:tabs-sync-option:
+:experimental:
+
+A session represents an active connection to a specific database on a TypeDB server,
+and it can be of two types: `schema` and `data`.
+The `schema` session type is specifically employed for xref:typeql::schema/define.adoc[Define] and
+xref:typeql::schema/undefine.adoc[Undefine] queries.
+
+This guide covers session control and best practices with Studio, Console, or one of the drivers.
+Both Studio and Console provide automated session control, so you don't need to open and close sessions manually.
+To open a session, you need to choose a session type and an existing database.
+
+Make sure to create a new database
+using instructions from the xref:manual::connecting/database.adoc[] page.
+
+== Open a new session
+
+To open a session to a database, you need to have a connection to the server and know the name of the database.
+
+[tabs]
+====
+Studio::
++
+--
+Studio controls transactions automatically when you run a query.
+
+Use the Session type switch at the top toolbar to select the type of session to use to send a query.
+For the selector to be active, you need to connect Studio to TypeDB server
+and select a database from a drop-down list in the top toolbar.
+--
+
+Console::
++
+--
+Console controls sessions automatically.
+
+You choose a session type when you open a xref:manual::connecting/transaction.adoc[transaction].
+--
+====
+
+xref:drivers::overview.adoc[TypeDB drivers]
+provide manual session control via native API:
+
+[tabs]
+====
+Rust::
++
+--
+.Open a session
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tag=databases,indent=12]
+include::manual::partial$rust-manual-code.rs[tag=session_open]
+----
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
+--
+
+Python::
++
+--
+.Open a session
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tag=session_open]
+----
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
+--
+
+Java::
++
+--
+.Open a session
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tag=session_open]
+----
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
+--
+
+Node.js::
++
+--
+.Open a session
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tag=session_open]
+----
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
+--
+
+C++::
++
+--
+.Open a session
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tag=session_open]
+----
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
+--
+====
+
+After connecting to a server and opening a
+session, see how to xref:connecting/transaction.adoc[open a transaction].
+
+[#_close_a_session]
+== Close a session
+
+Both Studio and Console manage sessions automatically.
+
+For manual session control, use xref:drivers::overview.adoc[TypeDB drivers]:
+
+[tabs]
+====
+Rust::
++
+--
+A session is automatically closed when the variable containing it is dropped from memory.
+
+To explicitly close a session,
+use the xref:drivers::rust/api-reference.adoc#_struct_Session_force_close__[force_close] method:
+
+.Close a session
+[,rust,indent=0]
+----
+include::manual::partial$rust-manual-code.rs[tag=session_close]
+----
+--
+
+Python::
++
+--
+Use a https://peps.python.org/pep-0343/[context manager] to close a session when it's longer needed,
+or use the xref:drivers::python/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
+
+.Close a session
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tag=session_close]
+----
+--
+
+Java::
++
+--
+Use the https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html[Try with resources] statement
+to close a session when it's longer needed, or use the
+xref:drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
+
+.Close a session
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tag=session_close]
+----
+--
+
+Node.js::
++
+--
+Use the xref:drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
+
+.Close a session
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tag=session_close]
+----
+--
+
+C++::
++
+--
+A session is automatically closed when the variable containing it is dropped from memory.
+
+To explicitly close a session,
+use the xref:drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method:
+
+.Close a session
+[,cpp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tag=session_close]
+----
+--
+====
+
+== Session management
+//best practices?
+//A good principle to follow is for logically coherent transactions to be grouped into a session.
+//Avoid long-running sessions because of possible network failures.
+
+=== Session timeout
+
+Any TypeDB Client automatically exchanges internal signals with TypeDB server to keep a session alive when it’s open.
+If a TypeDB server doesn't receive this signal for a period of time bigger than the timeout (default: 30 seconds)
+it forcibly closes the session due to inactivity.
+
+=== Schema session blocks
+
+Only one *Schema session* can be open at any time.
+An open Schema session *blocks* all attempt to open a `write` transaction in any `data` session.
+For more information on these limitations, see the
+xref:home::acid.adoc#_schema_integrity[Schema integrity enforcement] section on the xref:home::acid.adoc[] page.
+
+== Learn more
+
+[cols-2]
+--
+.xref:manual::connecting/transaction.adoc[]
+[.clickable]
+****
+See how to manage transactions in TypeDB.
+****
+
+.xref:manual::defining/overview.adoc[]
+[.clickable]
+****
+See how to define a schema for your database.
+****
+--
