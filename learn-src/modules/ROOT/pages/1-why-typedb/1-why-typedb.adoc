@@ -1,6 +1,6 @@
 = Lesson 1: Why TypeDB
 
-Relational databases have reigned database systems for over 40 years. But the fast advances of modern declarative programming models, which focus on user intent, maintainability, and business logic, in parallel with the rise of distributed and multi-threaded systems make it harder and harder to continue piling layers of abstractions on the relational model. TypeDB tackles this issue by re-thinking databases from scratch: TypeDB comes with a new polymorphic type system and query language, a new logic engine, and a new query execution model.
+Relational databases have reigned database systems for over 40 years. But the fast advances of modern declarative programming models, which focus on user intent, maintainability, and business logic, in parallel with the rise of distributed and multi-threaded systems make it harder and harder to continue piling layers of abstractions on the relational model. TypeDB tackles this issue by re-thinking databases from first principles: TypeDB comes with a new polymorphic type system and query language, a new logic engine, and a new query execution model.
 
 == Modern language
 
@@ -20,9 +20,9 @@ FROM OrderedItems i
     INNER JOIN orders o ON o.ID=i.order_id
     INNER JOIN print_books b on b.ID=i.item_id
 ----
-The query uses a sequence of `JOIN` (and a `UNION') instructions that are to-be-performed on our tables. This borders on an imperative 'instruction-by-instruction' coding style, and allows subtle errors to propagate in unexpected (and 'undeclared') ways. This style does not focus on the **intent** of the query, which makes it harder to read and to maintain.
+The query uses a sequence of `JOIN` and a `UNION` operations that are to-be-performed on our tables. While the above query is still relatively simple, this 'operation-by-operation' coding style can lead to lengthy and hard-to-maintain queries, which allows subtle errors to propagate in unexpected and 'undeclared' ways. This operation-focused approach to writing queries (which is also found across many other database languages) does not focus on the **intent** of the query.
 
-TypeDB takes a different approach: it focuses on intent at every step of the query. A query's intent, in particular, includes the _types_ of data, the _relations_ between data, and literal _attributes_ of data it queries. In **TypeQL**, TypeDB's query language, the above SQL query could take the following form.
+TypeDB takes a different approach: it focuses on intent at every step of the query. A query's intent, in particular, includes the _types_ of data it queries, the _relations_ between data, and literal _attributes_ of data. In **TypeQL**, TypeDB's query language, the above SQL query could take the following form.
 [,typeql]
 ----
 match
@@ -35,24 +35,24 @@ fetch {
     book_format: $f;
 }
 ----
-Notice how the TypeQL query captures the intent of our earlier SQL query, simply by stating each variable's intended function. No sequences of operations are needed anymore—in fact, the above statements can be given in any order. Under the hood, this high-level, fully declarative approach of TypeQL's language is powered by an expressive type system, and this is why we also refer to TypeQL as a _type-theoretic_ query language!
+Notice how the TypeQL query captures the intent of our earlier SQL query simply by stating each variable's intended function. No sequences of operations are needed anymore—in fact, the above statements can be given in any order. Under the hood, this high-level, fully declarative approach of TypeQL's language is powered by a robust type system and a type inference engine. This is why we also refer to TypeQL as a _type-theoretic_ query language!
 
-The design of TypeQL is based on four main pillars, which we'll learn about in this lecture course. They closely reflect fundamental advances in modern high-level programming models.
+The design of TypeQL is based on four main pillars, which we'll learn about in this lecture course. (They closely reflect fundamental advances in modern high-level programming models over the past decades.)
 
-* *Fully declarative*: TypeQL allows users to directly express the intent of their query, without the need to specify sequences of instructions.
-* *Safe*: Users work within the type system of TypeDB, which will alert the user about subtle errors before they happen, and ensure the semantic integrity of their data.
-* *Expressive*: TypeDB's type system is flexible and adaptable. For example, polymorphism is a native feature of TypeDB's type system, which allows us to simplify many unnecessarily complex database tasks.
-* *Maintainable*: The type system and declarative query language, together, ensure the long-term maintainability of our database application. For example, queries can automatically adapt to schema changes, as we will see shortly.
+* *Fully declarative*: TypeQL allows users to directly express the intent of their query, without the need to specify sequences of operations.
+* *Safe*: Users work within the type system of TypeDB, which alerts users about subtle errors before they happen, and ensures the high-level semantic integrity of their data at all times.
+* *Expressive*: TypeDB's type system is flexible and adaptable—*polymorphism* is a native feature of TypeDB's type system and so are logical *rules*, which allow us to untangle otherwise complex database tasks into a handful of simple declarations.
+* *Maintainable*: The type system and declarative query language, together, strongly simplify the long-term maintenance of database applications. For example, queries can automatically adapt to schema changes, as we will see shortly!
 
 
 == Programmable databases
 
-In order to allow users to craft 'fully programmable database applications' TypeDB comprises several key components that build on its modern declarative type system and language. These components address, in particular, the business logic and behavior of applications, continuous application upgrades, and native integration with existing languages.
+In order to allow users to craft 'fully programmable database applications' TypeDB comprises several key components that build on its modern type system and declarative language. These components address, in particular, the business logic and behavior of applications, continuous application upgrades, and native integration with existing languages.
 
 
 === Database logic
 
-Materialization of data is a core feature of many database applications. TypeDB takes this one step further, by providing a powerful inference engine that can conditionally materialize data when needed. Conditions for materialization are declaratively defined by so-called *rules*, which naturally fit into TypeDBs type system. For example, the following rule states that any books (whether a print book or else) which has a weight greater than 2024g will be have its `delivery_status` marked as `"unavailable"`.
+Materialization of data is a core feature of many database applications. TypeDB takes this one step further, by providing a powerful inference engine that can conditionally materialize data when needed. Conditions for materialization are declaratively defined by so-called *rules*, which naturally fit into TypeDBs type system. For example, the following rule states that any book (whether a print book or else) which has a weight greater than 2024g will have its `delivery_status` marked as `"unavailable"`.
 
 [,typeql]
 ----
@@ -79,9 +79,9 @@ define
     audiobook sub book, owns file_format;
 ----
 
-This query may be used to extend our type hierarchy: if previously, only `print_book` and `ebook` were subtypes of `book`, then the query adds `audiobook` as another kind of book in our bookstore database. 
+This query will extend our type hierarchy: say that previously only `print_book` and `ebook` were kinds of `book`, the query now adds `audiobook` as another kind of book (or, more precisely, another _subtype_ of book) in our bookstore database. 
 
-What does this mean for our earlier query? Well, let's revisit what the `match` clause of that query was stating:
+What does this mean for our earlier query? Well, let's revisit the `match` clause of that query:
 
 [,typeql]
 ----
@@ -91,12 +91,14 @@ $o isa order, has order_number $n;
 $b isa book, has $f;
 ----
 
-Notice that the query, in fact, states nothing about the _kinds_ of books `$b` we are considering here—it simply states `$b isa book`. So, since audio books are books, and since audio books have file formats, audio books will automatically be considered by the above query—no query refactoring is needed! (In fact, we could even simplify the query further using attribute polymorphism, making `file_format` and `print_format` subtypes of a single `format` attribute type.) To summarize: by letting declarative queries adapt to schema changes, TypeDB manages to avoid a large class of pitfalls that we'd usually encounter when making structural changes to our database.
+Notice that the query, in fact, states nothing about the _kinds_ of books `$b` we are considering here—it simply states `$b isa book`. So, since audio books are books, and since audio books have file formats, audio books will automatically be considered by the above query—no query refactoring is needed! (In fact, we could even simplify the query further using attribute polymorphism, making `file_format` and `print_format` subtypes of a single `format` attribute super-type.) 
+
+To summarize: by letting declarative queries adapt to schema changes, TypeDB manages to avoid a large class of pitfalls that we'd usually encounter when making structural changes to our database.
 
 === Programmatic migrations
 
-Queries, like the `define` clause above, provide a high-level declarative approach to database operations. TypeDB also provides access to a programmatic, more object and method-centric, layer of such operations. This gives advanced control to developers and can be used to work in a programming language of their choice. For example, the above creation of a new `audiobook` type could be alternatively achieved with the following Python code (using TypeDB's Python driver):
-
+Queries, like the `define` clause above, provide a high-level declarative approach to database operations. TypeDB also provides access to a programmatic, more object and method-centric, layer of such operations. This gives advanced control to developers and can be used to work in a programming language of their choice. For example, the above creation of a new `audiobook` type could be alternatively achieved with the following Python code using TypeDB's Python driver
+(below, the `transaction` variable represents some transaction object for our database, but we'll gloss over this details for now.)
 [,python]
 ----
 book = transaction.concepts.get_entity_type("book").resolve()
@@ -105,7 +107,7 @@ audio_book = transaction.concepts.put_entity_type("audio_book").resolve()
 audio_book.set_supertype(transaction, book)
 audio_book.set_owns(transaction,file_format)
 ----
-(here, `transaction` represents a transaction object for our database, but we'll gloss over the details for now.) Refactoring our schema, e.g. changing the label `audiobook` to `audio_book`, then becomes as easy as the following call:
+Using the programmatic route, refactoring the details of our schema also becomes easy: for example, changing the label `audiobook` to `audio_book`, can be achieved with the following call.
 
 [,python]
 ----
@@ -115,14 +117,14 @@ audiobook.set_label("audio_book");
 
 === Stateful data objects
 
-The object-centric way of interacting with a TypeDB database extends all the way down to the data-level. In fact, here, TypeDB introduces a new _stateful data object_ paradigm. For example, consider the following simple `insert` query which creates a new e-book object with file format `"tql"`:
+The programmatic way of interacting with a TypeDB database extends all the way down to the data-level. In fact, here, TypeDB introduces a new _stateful data object_ paradigm. As a quick example of this, consider the following basic `insert` query which creates a new e-book object with file format `"tql"`.
 [,typeql]
 ----
 insert
     $new_ebook isa ebook, has file_format "tql";
 ----
 
-The very same data insert can be achieved by manipulating data objects directly from your program code. For example, the above query could take the following form using TypeDB's Python driver:
+The very same data insert can be achieved by manipulating data objects directly from your program code. For example, the above query could take the following form using TypeDB's Python driver.
 
 [,python]
 ----
@@ -140,24 +142,24 @@ The rise of distributed computing has brought many incredible advances, and well
 
 === Native concurrency
 
-Once a query has been written, of course, we still have to execute it. TypeDB takes care of several steps in this process, based on a custom execution model. While we will touch on all aspects of this model in more detail in the lessons of this course, let us give a brief overview of the main ideas at play.
+Once a query has been written, of course, we still have to execute it. TypeDB takes care of several steps in this process, based on a custom execution model. While we will touch on all aspects of this model in more detail in the lessons of this course, but let us give a brief overview of the main ideas at play.
 
 * TypeDB batches individual queries into so-called *transactions*. To enable concurrent transactions, TypeDB uses snapshot isolation, meaning a user can freely operate on their data throughout the duration of a transaction without worrying about data races. Transactions can then be committed in order to be persisted in the database, at which point data integrity will be verified and invalid transactions rejected.
 
 * Transactions themselves are organized by so-called *sessions*, which determine what type of transactions can be performed (such as 'reads' or 'writes'). For the duration of a session, communication between the user and the database is upheld. Sessions enable tighter control over concurrent operations: for example, for 'data read' sessions, transactions can always be run in parallel.
 
-With TypeDB session-transaction model in mind, within each transaction the execution of queries by TypeDB may further involve the following steps:
+With TypeDB's session-transaction model in mind, within each transaction the execution of queries by TypeDB may further involve the following steps:
 
 . Queries by the user are first *type-checked*, i.e. validated against the database's schema by TypeDB's type inference engine.
 . A *query plan* is drawn up, deciding on the order and parallelization of data traversals.
 . TypeDB's *inference engine*, based on a concurrent https://en.wikipedia.org/wiki/Actor_model[actor model], augments stored data with data materialized based on user-defined rules.
-. Add any point in this process, results to queries are *streamed* to the user.
+. The results to queries fetch from the database are *streamed* to make them available to the user as soon as possible.
 
 === Modern security
 
 To round things up, let us also briefly point to the security features that TypeDB implements. This will not feature prominently in later lessons, but we mention them here for good measure.
 
-* **In-flight encryption**: The cloud version of TypeDB supports encryption, to keep your data safe from prying eyes.
+* **In-flight encryption**: TypeDB Cloud supports modern encryption, to keep your data safe from prying eyes.
 
 * **User and role management**: Not all users will have the same privileges in your organization and the same will apply for your database application: using sessions types such restrictions can be effectively imposed.
 
@@ -166,4 +168,4 @@ To round things up, let us also briefly point to the security features that Type
 
 == Summary and outlook
 
-In this introductory lesson, we have gotten a birdseye view of the the TypeDB landscape. In particular, we've learned how, as a modern database, TypeDB roots in a novel declarative and type-centric programming model, that focusses on user intent, maintainability, and direct implementation of business logic. The result is a 'high-level programmable database'. In the next lessons, starting more basic database operations and working our way up to advanced querying technique, we will explore these aspects of TypeDB in much more depth!
+In this lesson, we have gave a birdseye view on the the TypeDB landscape. In particular, we've learned how TypeDB roots in a novel declarative and type-centric programming model, that focusses on user intent, maintainability, and direct implementation of business logic. The result is a 'high-level programmable database' that makes many common engineering tasks as simple as they should be. Now, in the next lessons, we will dive a bit deeper into the matter: starting more basic database operations and working our way up to advanced querying technique, we will explore TypeDB in much more depth!
