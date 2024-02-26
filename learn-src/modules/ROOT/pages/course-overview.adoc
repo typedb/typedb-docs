@@ -1,1 +1,51 @@
 = Course overview
+
+Welcome to the TypeDB learning course. This course is designed as an end-to-end learning experience for TypeDB and TypeQL. Through the lens of a sample bookstore database, you'll learn how to read data, write data, and build schemas while taking advantage of TypeDB's unique features as the polymorphic database.
+
+This course is intended for:
+
+* Users who are completely new to TypeDB.
+* Users who have used TypeDB a bit and want to solidify their understanding.
+* Users who have used TypeDB a lot and want to recap the fundamentals.
+
+You will not need any prior knowledge of TypeDB in order to complete this course.
+
+This course is arranged into several lessons covering key topics. The lessons are mostly self-contained but intended to be followed in order. Each lesson lists recommended prerequisites.
+
+[cols-3]
+--
+.xref:learn::1-why-typedb/1-why-typedb.adoc[]
+
+[.clickable]
+****
+Introduction to the unique features that sets TypeDB apart from other databases and the design philosophy behind them.
+****
+
+.xref:learn::2-environment-setup/2-environment-setup.adoc[]
+
+[.clickable]
+****
+Easy guide to setting up and using the sample environment needed to run the queries featured in examples and exercises.
+****
+
+.xref:learn::3-reading-data/3-reading-data.adoc[]
+
+[.clickable]
+****
+Learn how to read data from TypeDB, including declarative polymorphic querying, rule inference, and retrieving types from the schema.
+****
+
+.xref:learn::4-writing-data/4-writing-data.adoc[]
+
+[.clickable]
+****
+Learn how to write data to TypeDB, covering insert, delete, and update operations, including polymorphic data writes.
+****
+
+.xref:learn::5-defining-schemas/5-defining-schemas.adoc[]
+
+[.clickable]
+****
+Learn how to define schemas for TypeDB, including type hierarchies, interfaces between types, value constraints, and inference rules.
+****
+--
