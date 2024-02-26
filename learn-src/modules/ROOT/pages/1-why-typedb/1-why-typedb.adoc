@@ -4,38 +4,38 @@ Relational databases have reigned database systems for over 40 years. But the fa
 
 == Modern language
 
-While SQL is a declarative language, it requires users to write their query declarations in terms of certain low-level operations to manipulate tables. Consider, for example, the following toy query, which queries for orders of books, that could be either print books or e-books, and returns the order's number and the (file or print) formats of the books in the order.
+While SQL is a declarative language, it requires users to write their query declarations in terms of certain low-level operations to manipulate tables. Consider, for example, the following simple query, which queries for folder locations of media files, that could be either image or video files, and returns the folder's name and the (image or video) formats of the files in the folder.
 
 [,sql]
 ----
-SELECT o.number AS order_number,
-       b.file_format AS book_format
-FROM OrderedItems i
-    INNER JOIN orders o ON o.ID=i.order_id
-    INNER JOIN e_books b ON e.ID=i.item_id
+SELECT folder.name AS folder_name,
+       media.image_format AS file_format
+FROM file_locations loc
+    INNER JOIN folders folder ON folder.ID=loc.location_id
+    INNER JOIN image_files media ON media.ID=loc.file_id
 UNION
-SELECT o.number AS order_number,
-       b.print_format AS book_format
-FROM OrderedItems i
-    INNER JOIN orders o ON o.ID=i.order_id
-    INNER JOIN print_books b on b.ID=i.item_id
+SELECT folder.name AS folder_name,
+       media.video_format AS file_format
+FROM file_locations loc
+    INNER JOIN folders folder ON folder.ID=loc.location_id
+    INNER JOIN video_files media ON media.ID=loc.file_id
 ----
-The query uses a sequence of `JOIN` and a `UNION` operations that are to-be-performed on our tables. While the above query is still relatively simple, this 'operation-by-operation' coding style can lead to lengthy and hard-to-maintain queries, which allows subtle errors to propagate in unexpected and 'undeclared' ways. This operation-focused approach to writing queries (which is also found across many other database languages) does not focus on the **intent** of the query.
+The query uses a sequence of `JOIN` and a `UNION` operations that are to-be-performed on our tables. While the above query is still pretty simplistic, the 'operation-by-operation' coding style can lead to lengthy, repetitive, and hard-to-maintain queries, which allows subtle errors to propagate in unexpected and 'undeclared' ways. This operation-focused approach to writing queries (which is also found across many other database languages) does not focus on the **intent** of the query.
 
 TypeDB takes a different approach: it focuses on intent at every step of the query. A query's intent, in particular, includes the _types_ of data it queries, the _relations_ between data, and literal _attributes_ of data. In **TypeQL**, TypeDB's query language, the above SQL query could take the following form.
 [,typeql]
 ----
 match
-    $o isa order, has order_number $n;
-    (order: $o, item: $b) isa ordered_item;
-    { $f isa file_format; } or { $f isa print_format; };
-    $b isa book, has $f; 
+    $folder isa folder, has folder_name $name;
+    (location: $folder, file: $media) isa file_location;
+    { $ext isa image_format; } or { $ext isa video_format; };
+    $media isa media_file, has $ext; 
 fetch {
-    order_number: $n;
-    book_format: $f;
+    folder_name: $name;
+    file_format: $ext;
 }
 ----
-Notice how the TypeQL query captures the intent of our earlier SQL query simply by stating each variable's intended function. No sequences of operations are needed anymore—in fact, the above statements can be given in any order. Under the hood, this high-level, fully declarative approach of TypeQL's language is powered by a robust type system and a type inference engine. This is why we also refer to TypeQL as a _type-theoretic_ query language!
+Notice how the TypeQL query captures the intent of our earlier SQL query simply by stating each variable's intended function. No sequences of operations are needed—in fact, the above statements can be given in any order. Under the hood, this high-level, fully declarative approach of TypeQL's language is powered by a robust type system and a type inference engine. This is why we also refer to TypeQL as a _type-theoretic_ query language!
 
 The design of TypeQL is based on four main pillars, which we'll learn about in this lecture course. (They closely reflect fundamental advances in modern high-level programming models over the past decades.)
 
@@ -52,15 +52,15 @@ In order to allow users to craft 'fully programmable database applications' Type
 
 === Database logic
 
-Materialization of data is a core feature of many database applications. TypeDB takes this one step further, by providing a powerful inference engine that can conditionally materialize data when needed. Conditions for materialization are declaratively defined by so-called *rules*, which naturally fit into TypeDBs type system. For example, the following rule states that any book (whether a print book or else) which has a weight greater than 2024g will have its `delivery_status` marked as `"unavailable"`.
+Materialization of data is a core feature of many database applications. TypeDB takes this one step further, by providing a powerful inference engine that can conditionally materialize data when needed. Conditions for materialization are declaratively defined by so-called *rules*, which naturally fit into TypeDBs type system. For example, the following rule states that any media file (whether an image, video, or something else) which has a file_size greater than 1GB g will have its `download_status` marked as `"unavailable"`.
 
 [,typeql]
 ----
-define rule disable_delivery_of_heavy_books:
+define rule disable_download_of_big_files:
 when {
-    $b isa book;
-    $b has weight_in_grams > 2024;
-} then { $b has delivery_status "unavailable"; }
+    $m isa media_file;
+    $m has size_in_KB > 1000000;
+} then { $m has download_status "unavailable"; }
 ----
 Notice how for the definition of rules the same declarative language is used that we previously saw in our TypeQL query. Rules can be used to augment query results in real-time, and can be applied in **parallel** (and **recursively**) with other rules—TypeDB's inference engine will automatically figure out in which order rules should be applied.
 
@@ -71,66 +71,65 @@ The "automatic part" will change in 3.0
 
 === Schema continuity
 
-Continuous integration is an important concern for most modern application architectures. TypeDB's approach accounts for this process, and makes structural updates to the database particularly easy. One aspect of this concern are database schema modifications. Continuing our earlier example, consider the following query which defines a new type `audiobook` as a subtype of `book`, and states that the type will own the `file_format` attribute.
+Continuous integration is an important concern for most modern application architectures. TypeDB's approach accounts for this process, and makes structural updates to the database particularly easy. One aspect of this concern are database schema modifications. Continuing our earlier example, consider the following query which defines a new type `audio_file` as a subtype of `media_file`, and gives it ownership of an `audio_format` attribute which collects the file formats of audio files in our database.
 
 [,typeql]
 ----
 define
-    audiobook sub book, owns file_format;
+    audio_file sub media_file, owns audio_format;
 ----
 
-This query will extend our type hierarchy: say that previously only `print_book` and `ebook` were kinds of `book`, the query now adds `audiobook` as another kind of book (or, more precisely, another _subtype_ of book) in our bookstore database. 
+This query will extend our type hierarchy: say that previously only `image_file` and `video_file` were a kind of `media_file`, then the query now adds a new `audio_file` type as another kind of `media_file` to our media store database (more precisely, we say `audio_file` is a _subtype_ of `media_file`). 
 
-What does this mean for our earlier query? Well, let's revisit the `match` clause of that query:
+What does this mean for our earlier query? Well, let's revisit the `match` clause of that query and rewrite it slightly to be of the following simpler form.
 
 [,typeql]
 ----
-$o isa order, has order_number $n;
-(order: $o, item: $b) isa ordered_item;
-{ $f isa file_format; } or { $f isa print_format; };
-$b isa book, has $f;
+$folder isa folder, has folder_name $name;
+(location: $folder, file: $media) isa file_location;
+$media isa media_file, has file_format $ext; 
 ----
 
-Notice that the query, in fact, states nothing about the _kinds_ of books `$b` we are considering here—it simply states `$b isa book`. So, since audio books are books, and since audio books have file formats, audio books will automatically be considered by the above query—no query refactoring is needed! (In fact, we could even simplify the query further using attribute polymorphism, making `file_format` and `print_format` subtypes of a single `format` attribute super-type.) 
+Here, `file_format` is now a joint super-attribute of `audio_format`, `video_format`, and `audio_format`. Notice how the resulting query is, in fact, completely agnostic to what the _kinds_ of media files we are considering: it simply states `$media isa media_file, has file_format $ext;`. So, since audio files are in particular media files, and since audio files have audio formats which are file formats, audio files will automatically be considered by the above query—no query refactoring is needed, even if we write the query before introducing the additional `audio_file` type. 
 
 To summarize: by letting declarative queries adapt to schema changes, TypeDB manages to avoid a large class of pitfalls that we'd usually encounter when making structural changes to our database.
 
 === Programmatic migrations
 
-Queries, like the `define` clause above, provide a high-level declarative approach to database operations. TypeDB also provides access to a programmatic, more object and method-centric, layer of such operations. This gives advanced control to developers and can be used to work in a programming language of their choice. For example, the above creation of a new `audiobook` type could be alternatively achieved with the following Python code using TypeDB's Python driver
+Queries, like the `define` clause above, provide a high-level declarative approach to database operations. TypeDB also provides access to a programmatic, more object and method-centric, layer of such operations. This gives advanced control to developers and can be used to work in a programming language of their choice. For example, the above creation of a new `audio_file` type could be alternatively achieved with the following Python code using TypeDB's Python driver
 (below, the `transaction` variable represents some transaction object for our database, but we'll gloss over this details for now.)
 [,python]
 ----
-book = transaction.concepts.get_entity_type("book").resolve()
-file_format = transaction.concepts.get_attribute_type("file_format").resolve()
-audio_book = transaction.concepts.put_entity_type("audio_book").resolve()
-audio_book.set_supertype(transaction, book)
-audio_book.set_owns(transaction,file_format)
+media_file = transaction.concepts.get_entity_type("media_file").resolve()
+audio_format = transaction.concepts.get_attribute_type("audio_format").resolve()
+audio_file = transaction.concepts.put_entity_type("audio_file").resolve()
+audio_file.set_supertype(transaction, media_file)
+audio_file.set_owns(transaction,audio_format)
 ----
-Using the programmatic route, refactoring the details of our schema also becomes easy: for example, changing the label `audiobook` to `audio_book`, can be achieved with the following call.
+Using the programmatic route, refactoring the details of our schema also becomes easy: for example, changing the label `audio_file` to `raw_audio_file`, can be achieved with the following call.
 
 [,python]
 ----
-audiobook.set_label("audio_book");
+audio_file.set_label("raw_audio_file");
 ----
 
 
 === Stateful data objects
 
-The programmatic way of interacting with a TypeDB database extends all the way down to the data-level. In fact, here, TypeDB introduces a new _stateful data object_ paradigm. As a quick example of this, consider the following basic `insert` query which creates a new e-book object with file format `"tql"`.
+The programmatic way of interacting with a TypeDB database extends all the way down to the data-level. In fact, here, TypeDB introduces a new _stateful data object_ paradigm. As a quick example of this, consider the following basic `insert` query which creates a new `audio_file` object with file format `"mp3"`.
 [,typeql]
 ----
 insert
-    $new_ebook isa ebook, has file_format "tql";
+    $new_audio isa audio_file, has audio_format "png";
 ----
 
 The very same data insert can be achieved by manipulating data objects directly from your program code. For example, the above query could take the following form using TypeDB's Python driver.
 
 [,python]
 ----
-new_ebook = book.create(transaction)
-tql_format = file_format.put(transaction, "tql")
-new_ebook.set_has(transaction, tql_format)
+new_audio = media_file.create(transaction)
+mp3_format = audio_format.put(transaction, "mp3")
+new_audio.set_has(transaction, mp3_format)
 ----
 
 There are, of course, many further operations that TypeDB's data objects support—the above  merely provides a first taste!
