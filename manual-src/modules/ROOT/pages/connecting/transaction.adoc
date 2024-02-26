@@ -95,9 +95,9 @@ C++::
 +
 --
 .Open a transaction
-[,cpp]
+[,cpp,indent=0]
 ----
-auto transaction = session.transaction(TypeDB::TransactionType::WRITE, options);
+include::manual::partial$cpp-manual-code.cpp[tag=tx_open]
 ----
 --
 ====
@@ -205,9 +205,9 @@ To explicitly close a transaction,
 use the xref:drivers::cpp/api-reference.adoc#_void_TypeDBTransactionclose[close] method:
 
 .Close a transaction
-[,cpp]
+[,cpp,indent=0]
 ----
-transaction.close();
+include::manual::partial$cpp-manual-code.cpp[tag=tx_close]
 ----
 --
 ====
@@ -257,7 +257,7 @@ To commit a transaction,
 use the xref:drivers::rust/api-reference.adoc#_struct_Transaction_commit__[commit] method:
 
 .Commit a transaction
-[,rust]
+[,rust,indent=0]
 ----
 include::manual::partial$rust-manual-code.rs[tag=tx_commit]
 ----
@@ -305,9 +305,9 @@ C++::
 To commit a transaction, use the xref:drivers::cpp/api-reference.adoc#_void_TypeDBTransactioncommit[commit] method:
 
 .Commit a transaction
-[,cpp]
+[,cpp,indent=0]
 ----
-transaction.commit();
+include::manual::partial$cpp-manual-code.cpp[tag=tx_commit]
 ----
 --
 ====

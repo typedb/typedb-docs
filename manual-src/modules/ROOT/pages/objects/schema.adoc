@@ -81,9 +81,9 @@ C++::
 +
 --
 .Example
-[,cpp]
+[,cpp,indent=0]
 ----
-auto user = transaction.concepts.getEntityType("user").get();
+include::manual::partial$cpp-manual-code.cpp[tag=get_type]
 ----
 For more information,
 see the xref:drivers::cpp/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -164,9 +164,9 @@ C++::
 +
 --
 .Example
-[,cpp]
+[,cpp,indent=0]
 ----
-auto admin = transaction.concepts.putEntityType("admin").get();
+include::manual::partial$cpp-manual-code.cpp[tag=add_type]
 ----
 For more information,
 see the xref:drivers::cpp/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -241,9 +241,9 @@ C++::
 +
 --
 .Example
-[,cpp]
+[,cpp,indent=0]
 ----
-admin.set_supertype(transaction, user)
+include::manual::partial$cpp-manual-code.cpp[tag=set_supertype]
 ----
 For more information on methods, available for manipulating Type objects,
 see the xref:drivers::python/api-reference.adoc#_schema_header[Schema class] methods.
@@ -402,9 +402,9 @@ C++::
 +
 --
 .Example
-[,python]
+[,cpp,indent=0]
 ----
-auto new_rule = transaction.logic.getRule("Employee").get().value()
+include::manual::partial$cpp-manual-code.cpp[tag=get_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -494,14 +494,9 @@ C++::
 +
 --
 .Example
-[,cpp]
+[,cpp,indent=0]
 ----
-auto rules = transaction.logic.getRules();
-for (auto& rule : rules) {
-    std::cout << rule.label() << std::endl;
-    std::cout << rule.when() << std::endl;
-    std::cout << rule.then() << std::endl;
-}
+include::manual::partial$cpp-manual-code.cpp[tag=get_rules]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -591,9 +586,9 @@ C++::
 +
 --
 .Example
-[,cpp]
+[,cpp,indent=0]
 ----
-new_rule = transaction.logic.put_rule("Employee", "{$u isa user, has email $e; $e contains '@vaticle.com';}", "$u has name 'Employee'").resolve()
+include::manual::partial$cpp-manual-code.cpp[tag=put_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -690,9 +685,9 @@ C++::
 +
 --
 .Example
-[,cpp]
+[,cpp,indent=0]
 ----
-(void) new_rule.get().deleteRule(transaction).get();
+include::manual::partial$cpp-manual-code.cpp[tag=delete_rule]
 ----
 
 The above example deletes the type, which type object is stored in the variable, from the schema of a database.

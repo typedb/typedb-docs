@@ -33,6 +33,38 @@ int main() {
         return 2;
     }
 
+    {
+    // tag::connect_core[]
+    TypeDB::Driver driver = TypeDB::Driver::coreDriver("127.0.0.1:1729");
+    // end::connect_core[]
+    try {
+        // tag::connect_cloud[]
+        TypeDB::Driver driver = TypeDB::Driver::cloudDriver({"127.0.0.1:1729"}, TypeDB::Credential("admin", "password", true));
+        // end::connect_cloud[]
+    }
+    catch (TypeDB::DriverException e ) {
+        //std::cout << "Caught TypeDB::DriverException: " << e.code() << "\n" << e.message()  << std::endl;
+        //return 2;
+    }
+    // tag::session_open[]
+    TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
+    // end::session_open[]
+    // tag::tx_open[]
+    TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
+    // end::tx_open[]
+    // tag::tx_close[]
+    tx.close();
+    // end::tx_close[]
+    if (tx.isOpen()) {
+        // tag::tx_commit[]
+        tx.commit();
+        // end::tx_commit[]
+    };
+    // tag::session_close[]
+    session.close();
+    // end::session_close[]
+    }
+
     {   // tag::define[]
         TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
         {
@@ -245,9 +277,9 @@ int main() {
         TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
         {
             TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
-            std::unique_ptr<TypeDB::EntityType> user = tx.concepts.getEntityType("user").get();
-            std::unique_ptr<TypeDB::EntityType> admin = tx.concepts.putEntityType("admin").get();
-            admin.get()->setSupertype(tx, user.get()).wait();
+            std::unique_ptr<TypeDB::EntityType> userType = tx.concepts.getEntityType("user").get();
+            std::unique_ptr<TypeDB::EntityType> adminType = tx.concepts.putEntityType("admin").get();
+            adminType.get()->setSupertype(tx, userType.get()).wait();
             TypeDB::ConceptIterable<TypeDB::EntityType> entities = tx.concepts.getRootEntityType().get()->getSubtypes(tx, TypeDB::Transitivity::TRANSITIVE);
             for (std::unique_ptr<TypeDB::EntityType>& entity : entities) {
                 std::cout << entity.get()->getLabel() << std::endl;
@@ -255,6 +287,40 @@ int main() {
             tx.commit();
         }
         // end::types-api[]
+    }
+
+    {
+        TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
+        {
+            TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
+            // tag::get_type[]
+            std::unique_ptr<TypeDB::EntityType> userType = tx.concepts.getEntityType("user").get();
+            // end::get_type[]
+            // tag::add_type[]
+            std::unique_ptr<TypeDB::EntityType> adminType = tx.concepts.putEntityType("admin").get();
+            // end::add_type[]
+            // tag::set_supertype[]
+            adminType.get()->setSupertype(tx, userType.get()).wait();
+            // end::set_supertype[]
+            // tag::get_instances[]
+            TypeDB::ConceptIterable<TypeDB::Entity> users = userType -> getInstances(tx);
+            // end::get_instances[]
+            for (std::unique_ptr<TypeDB::Entity>& user : users) {
+                // tag::get_has[]
+                TypeDB::ConceptIterable<TypeDB::Attribute> attributes = user.get()->getHas(tx);
+                // end::get_has[]
+                std::cout << "User: " << std::endl;
+                for (std::unique_ptr<TypeDB::Attribute>& attribute : attributes) {
+                    std::cout << "  " << attribute.get()->getType().get()->getLabel() << ": " << attribute.get()->getValue().get()->asString() << std::endl;
+                }
+            }
+            // tag::create[]
+            std::unique_ptr<TypeDB::Entity> newUser = tx.concepts.getEntityType("user").get().get()->create(tx).get();
+            // end::create[]
+            // tag::delete_user[]
+            newUser.get()->deleteThing(tx).get();
+            // end::delete_user[]
+        }
     }
 
     {
@@ -274,6 +340,31 @@ int main() {
             tx.commit();
         }
         // end::rules-api[]
+    }
+
+    {
+        TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
+        {
+            TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
+            // tag::get_rules[]
+            TypeDB::RuleIterable rules = tx.logic.getRules();
+            for (TypeDB::Rule& rule : rules) {
+                std::cout << rule.label() << std::endl;
+                std::cout << rule.when() << std::endl;
+                std::cout << rule.then() << std::endl;
+            }
+            // end::get_rules[]
+            // tag::put_rule[]
+            TypeDB::Rule newRule = tx.logic.putRule("Employee", "{$u isa user, has email $e; $e contains '@vaticle.com';}","$u has name 'Employee'").get();
+            // end::put_rule[]
+            // tag::get_rule[]
+            TypeDB::Rule oldRule = tx.logic.getRule("Employee").get().value();
+            // end::get_rule[]
+            std::cout << oldRule.label() << std::endl;
+            // tag::delete_rule[]
+            newRule.deleteRule(tx).get();
+            // end::delete_rule[]
+        }
     }
 
     {
@@ -335,6 +426,54 @@ int main() {
             }
         }
         // end::explain-get[]
+    }
+
+    {
+        TypeDB::Options inferOptions;
+        inferOptions.infer(true);
+        inferOptions.explain(true);
+        TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::DATA, inferOptions);
+        {
+            TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::READ, inferOptions);
+            std::string getQuery = R"(
+                                    match
+                                    $u isa user, has email $e, has name $n;
+                                    $e contains 'Alice';
+                                    get
+                                    $u, $n;
+                                    )";
+            // tag::explainables[]
+            TypeDB::ConceptMapIterable results = tx.query.get(getQuery);
+            // end::explainables[]
+            int16_t i = 0;
+            // tag::explainables[]
+            for (TypeDB::ConceptMap& cm : results) {
+            // end::explainables[]
+                i += 1;
+                std::cout << "Name #" << std::to_string(i) << ": " << cm.get("n")->asAttribute()->getValue()->asString() << std::endl;
+                // tag::explainables[]
+                TypeDB::StringIterable explainableRelations = cm.explainables().relations();
+                // end::explainables[]
+                // tag::explain[]
+                for (std::string& explainable : explainableRelations) {
+                    TypeDB::ExplanationIterable explainIterator = tx.query.explain(cm.explainables().relation(explainable));
+                // end::explain[]
+                    std::cout << "Explained variable " << explainable << std::endl;
+                    std::cout << "Explainable part of the query " << cm.explainables().relation(explainable).conjunction() << std::endl;
+                    // tag::explanation[]
+                    for (TypeDB::Explanation& explanation : explainIterator) {
+                        std::cout << "Rule: " << explanation.rule().label() << std::endl;
+                        std::cout << "Condition: " << explanation.rule().when() << std::endl;
+                        std::cout << "Conclusion: " << explanation.rule().then() << std::endl;
+                        std::cout << "Variable mapping: " << std::endl;
+                        for (std::string& var : explanation.queryVariables()) {
+                            std::cout << "Query variable " << var << " maps to the rule variable " << explanation.queryVariableMapping(var)[1] << std::endl;
+                        }
+                    }
+                    // end::explanation[]
+                }
+            }
+        }
     }
     return 0;
 }
