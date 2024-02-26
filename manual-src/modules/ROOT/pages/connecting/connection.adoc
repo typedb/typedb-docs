@@ -102,9 +102,9 @@ C++::
 +
 --
 .Connect to TypeDB Core
-[,cpp]
+[,cpp,indent=0]
 ----
-TypeDB::Driver driver = TypeDB::Driver::coreDriver("127.0.0.1:1729");
+include::manual::partial$cpp-manual-code.cpp[tag=connect_core]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -165,7 +165,7 @@ Rust::
 +
 --
 .Connect to TypeDB Cloud
-[,rust]
+[,rust,indent=0]
 ----
 include::manual::partial$rust-manual-code.rs[tag=connect_cloud]
 ----
@@ -213,9 +213,9 @@ C++::
 +
 --
 .Connect to TypeDB Cloud
-[,cpp]
+[,cpp,indent=0]
 ----
-TypeDB::Driver driver = TypeDB::Driver::cloudDriver({"127.0.0.1:1729"}, TypeDB::Credential("admin", "password", true));
+include::manual::partial$cpp-manual-code.cpp[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.

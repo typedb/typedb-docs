@@ -96,9 +96,9 @@ C++::
 +
 --
 .Open a session
-[,cpp]
+[,cpp,indent=0]
 ----
-auto session = driver.session("sample_db", TypeDB::SessionType::SCHEMA, options);
+include::manual::partial$cpp-manual-code.cpp[tag=session_open]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -180,9 +180,9 @@ To explicitly close a session,
 use the xref:drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method:
 
 .Close a session
-[,cpp]
+[,cpp,indent=0]
 ----
-session.close();
+include::manual::partial$cpp-manual-code.cpp[tag=session_close]
 ----
 --
 ====

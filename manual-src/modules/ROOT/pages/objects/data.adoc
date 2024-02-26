@@ -88,9 +88,9 @@ C++::
 +
 --
 .Example
-[,cpp]
+[,cpp,indent=0]
 ----
-auto users = transaction.concepts.getEntityType("user").get().get()->getInstances(transaction);
+include::manual::partial$cpp-manual-code.cpp[tag=get_instances]
 ----
 For more information,
 see the xref:drivers::cpp/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -159,9 +159,9 @@ C++::
 +
 --
 .Example
-[,cpp]
+[,cpp,indent=0]
 ----
-auto attributes = user.get()->getHas(transaction);
+include::manual::partial$cpp-manual-code.cpp[tag=get_has]
 ----
 For more information,
 see the xref:drivers::cpp/api-reference.adoc#_data_header[Data class] methods.
@@ -227,9 +227,9 @@ C++::
 +
 --
 .Example
-[,cpp]
+[,cpp,indent=0]
 ----
-auto newUser = transaction.concepts.getEntityType("user").get().get()->create(transaction).get();
+include::manual::partial$cpp-manual-code.cpp[tag=create]
 ----
 For more information,
 see the xref:drivers::cpp/api-reference.adoc#_EntityType[EntityType class] methods.
@@ -297,9 +297,9 @@ C++::
 +
 --
 .Example
-[,cpp]
+[,cpp,indent=0]
 ----
-newUser.get()->deleteThing(transaction).get();
+include::manual::partial$cpp-manual-code.cpp[tag=delete_user]
 ----
 For more information,
 see the xref:drivers::cpp/api-reference.adoc#_EntityType[EntityType class] methods.
