@@ -1,1 +1,84 @@
 = Lesson 2.2: Using TypeDB Studio
+
+== About TypeDB Studio
+
+TypeDB Studio is a cross-platform IDE for developing with TypeDB. With Studio, you can do everything necessary to get started with TypeDB: manage databases, build schemas, execute queries, and explore results. We'll be using Studio to begin with in this course, and later move on to TypeDB's native language drivers. In this lesson, we'll get a brief overview of the features we need for this course. A complete introduction to all of TypeDB Studio's features can be found on the xref:manual::studio.adoc[Studio page] of the TypeDB Manual.
+
+== The Studio interface
+
+When you start TypeDB Studio, you should see the following interface.
+
+image::studio-screenshots/1-landing-page-labelled.png[role=framed, width = 75%, link=self]
+
+There are four key elements:
+
+1. *Toolbar*: Across the top edge of the interface, you'll see a toolbar with several controls. We'll explore this once we've finished setting up.
+2. *Project panel*: On the upper left side of the interface you'll see the Project panel, used to manage project files.
+3. *Type Browser panel*: On the lower left side of the interface you'll see the Type Browser panel, used to manage database schemas.
+4. *Text editor*: The main space is occupied by the text editor, used to write and execute queries.
+
+== Setting up
+
+To begin with, we'll need to open a project. Click the *Open Project* button in the Project panel to open the project directory window.
+
+image::studio-screenshots/2-open-project.png[role=framed, width = 75%, link=self]
+
+Choose a directory in which to save your project files and click the *Open* button. You should now see a file tree in the Project panel.
+
+Next, we'll connect to the server. Click the *Connect to TypeDB* button in the Type Browser panel to open the server connection window.
+
+image::studio-screenshots/3-open-connection.png[role=framed, width = 75%, link=self]
+
+Select `TypeDB` from the Server dropdown, enter `localhost:1730` into the Address box, then click the *Connect* button. If Studio connects successfully, you should see the address displayed on the top-right of the toolbar. If Studio fails to connect, ensure that the Docker image we started in xref:learn::2-environment-setup/2.1-sample-deployment.adoc[Lesson 2.1] is running and available at the expected address.
+
+After connecting to the server, the button in the Type Browser panel will update to read *Select Database*. Click on it to open the database selection window.
+
+image::studio-screenshots/4-open-session.png[role=framed, width = 75%, link=self]
+
+The dropdown menu will display a list of databases on the server. Select the `bookstore` sample database and click the *Close* button. The Type Browser should update to show the list of types in the sample database.
+
+image::studio-screenshots/5-end-state.png[role=framed, width = 75%, link=self]
+
+We're now ready to begin running queries.
+
+== Executing queries
+
+To begin with, let's review the controls on the toolbar.
+
+image::studio-screenshots/6-toolbar.png[role=framed, width = 75%, link=self]
+
+The following controls will be important throughout this course:
+
+* image:learn::studio-icons/database.png[]: Use this button to open the *database manager*. From there, you can create and delete databases. The dropdown menu next to this button is the *database selector*, which you can use to open sessions to different databases.
+
+* image:learn::studio-icons/session-toggle.png[]: Use these buttons to toggle between *schema* and *data* sessions. The course material will tell you when to switch session types. For now, switch to a data session.
+* image:learn::studio-icons/transaction-toggle.png[]: Use these buttons to toggle between *write* and *read* transactions. The course material will tell you when to switch transaction types. For now, switch to a read transaction.
+* image:learn::studio-icons/infer.png[]: Use this button to toggle *rule inference* on and off. For now, make sure it's switched off, otherwise you may get back unexpected query results. We'll explore rule inference in xref:learn::3-reading-data/3.3-fetching-inferred-data.adoc[Lesson 3.3].
+* image:learn::studio-icons/close.png[]: Use this button to *close* an open write transaction without committing the changes to the database.
+* image:learn::studio-icons/commit.png[]: Use this button to *commit* an open write transaction.
+* image:learn::studio-icons/run.png[]: Use this button to *run* the query displayed in the text editor. If the transaction toggle is set to "write", this will open a transaction which must then be closed or committed.
+
+Let's try running a query. To start off, image:learn::studio-icons/new-window.png[] *open* a new window in the text editor and paste in the following query.
+
+[,typeql]
+----
+match
+$book isa paperback, has isbn-13 "9780446310789";
+fetch
+$book: title, page-count;
+----
+
+Ensure the session toggle is set to a *data* session and the transaction toggle is set to a *read* query, then image:learn::studio-icons/run.png[] *run* the query. You should see the following result.
+
+[,json]
+----
+{
+    "book": {
+        "page-count": [ { "value": 281, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
+        "title": [ { "value": "To Kill a Mockingbird", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+----
+
+If you see this result, you've set up everything correctly and are ready to begin learning how to read data in xref:learn::3-reading-data/3-reading-data.adoc[Lesson 3].
