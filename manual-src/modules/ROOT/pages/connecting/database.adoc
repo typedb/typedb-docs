@@ -69,9 +69,6 @@ Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is
 Java::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then:
-
 [,java,indent=0]
 ----
 include::manual::partial$java-manual-code.java[tags=create-db]
@@ -99,7 +96,7 @@ C++::
 include::manual::partial$cpp-manual-code.cpp[tags=create-db]
 ----
 
-Where `driver` is an instance of a driver, connected to TypeDB, and `dbName` is the name of the database.
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
 --
 ====
 
@@ -138,7 +135,7 @@ Rust::
 --
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tags=databases]
+include::manual::partial$rust-manual-code.rs[tags=databases, indent=8]
 include::manual::partial$rust-manual-code.rs[tags=delete-db]
 ----
 --

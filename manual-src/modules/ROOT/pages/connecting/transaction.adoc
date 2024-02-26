@@ -97,6 +97,7 @@ C++::
 .Open a transaction
 [,cpp,indent=0]
 ----
+include::manual::partial$cpp-manual-code.cpp[tag=options]
 include::manual::partial$cpp-manual-code.cpp[tag=tx_open]
 ----
 --
@@ -290,7 +291,7 @@ include::manual::partial$java-manual-code.java[tag=tx_commit]
 Node.js::
 +
 --
-To commit a transaction, use the xref:drivers::nodejs/api-reference.adoc#_TypeDBTransaction_commit__[commit]:
+To commit a transaction, use the xref:drivers::nodejs/api-reference.adoc#_TypeDBTransaction_commit__[commit] method:
 
 .Commit a transaction
 [,js,indent=0]

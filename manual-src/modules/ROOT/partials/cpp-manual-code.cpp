@@ -3,7 +3,7 @@
 #include <typedb_driver.hpp>
 // end::import[]
 int main() {
-    std::string dbName = "manual_db";
+    std::string DB_NAME = "manual_db";
     // tag::options[]
     TypeDB::Options options;
     // end::options[]
@@ -16,15 +16,15 @@ int main() {
             std::cout << db.name() << std::endl;
         }
         // end::list-db[]
-        // tag::delete-db[]
-        if (driver.databases.contains(dbName)) {
-            driver.databases.get(dbName).deleteDatabase();
+        if (driver.databases.contains(DB_NAME)) {
+            // tag::delete-db[]
+            driver.databases.get(DB_NAME).deleteDatabase();
+            // end::delete-db[]
         }
-        // end::delete-db[]
         // tag::create-db[]
-        driver.databases.create(dbName);
+        driver.databases.create(DB_NAME);
         // end::create-db[]
-        if (driver.databases.contains(dbName)) {
+        if (driver.databases.contains(DB_NAME)) {
             std::cout << "Database setup complete." << std::endl;
         }
     }
@@ -47,7 +47,7 @@ int main() {
         //return 2;
     }
     // tag::session_open[]
-    TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
+    TypeDB::Session session = driver.session(DB_NAME, TypeDB::SessionType::SCHEMA, options);
     // end::session_open[]
     // tag::tx_open[]
     TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
@@ -66,7 +66,7 @@ int main() {
     }
 
     {   // tag::define[]
-        TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
+        TypeDB::Session session = driver.session(DB_NAME, TypeDB::SessionType::SCHEMA, options);
         {
             TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
             std::string defineQuery = R"(
@@ -87,7 +87,7 @@ int main() {
     }
 
     {   // tag::undefine[]
-        TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
+        TypeDB::Session session = driver.session(DB_NAME, TypeDB::SessionType::SCHEMA, options);
         {
             TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
             std::string undefineQuery = "undefine admin sub user;";
@@ -98,7 +98,7 @@ int main() {
     }
 
     {   // tag::insert[]
-        TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::DATA, options);
+        TypeDB::Session session = driver.session(DB_NAME, TypeDB::SessionType::DATA, options);
         {
             TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
             std::string insertQuery = R"(
@@ -114,7 +114,7 @@ int main() {
     }
 
     {   // tag::match-insert[]
-        TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::DATA, options);
+        TypeDB::Session session = driver.session(DB_NAME, TypeDB::SessionType::DATA, options);
         {
             TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
             std::string matchInsertQuery = R"(
@@ -137,7 +137,7 @@ int main() {
     }
 
     {   // tag::delete[]
-        TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::DATA, options);
+        TypeDB::Session session = driver.session(DB_NAME, TypeDB::SessionType::DATA, options);
         {
             TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
             std::string deleteQuery = R"(
@@ -154,7 +154,7 @@ int main() {
     }
 
     {   // tag::update[]
-        TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::DATA, options);
+        TypeDB::Session session = driver.session(DB_NAME, TypeDB::SessionType::DATA, options);
         {
             TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
             std::string updateQuery = R"(
@@ -178,7 +178,7 @@ int main() {
     }
 
     {   // tag::fetch[]
-        TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::DATA, options);
+        TypeDB::Session session = driver.session(DB_NAME, TypeDB::SessionType::DATA, options);
         {
             TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::READ, options);
             std::string fetchQuery = R"(
@@ -197,7 +197,7 @@ int main() {
     }
 
     {   // tag::get[]
-        TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::DATA, options);
+        TypeDB::Session session = driver.session(DB_NAME, TypeDB::SessionType::DATA, options);
         {
             TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::READ, options);
             std::string getQuery = R"(
@@ -217,7 +217,7 @@ int main() {
     }
 
     {   // tag::infer-rule[]
-        TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
+        TypeDB::Session session = driver.session(DB_NAME, TypeDB::SessionType::SCHEMA, options);
         {
             TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
             std::string defineQuery = R"(
@@ -236,7 +236,7 @@ int main() {
         // tag::infer-fetch[]
         TypeDB::Options inferOptions;
         inferOptions.infer(true);
-        TypeDB::Session session2 = driver.session(dbName, TypeDB::SessionType::DATA, inferOptions);
+        TypeDB::Session session2 = driver.session(DB_NAME, TypeDB::SessionType::DATA, inferOptions);
         {
             TypeDB::Transaction tx2 = session.transaction(TypeDB::TransactionType::READ, inferOptions);
             std::string fetchQuery = R"(
@@ -256,7 +256,7 @@ int main() {
 
     {
         // tag::types-editing[]
-        TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
+        TypeDB::Session session = driver.session(DB_NAME, TypeDB::SessionType::SCHEMA, options);
         {
             TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
             std::unique_ptr<TypeDB::AttributeType> tag = tx.concepts.putAttributeType("tag", TypeDB::ValueType::STRING).get();
@@ -274,7 +274,7 @@ int main() {
 
     {
         // tag::types-api[]
-        TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
+        TypeDB::Session session = driver.session(DB_NAME, TypeDB::SessionType::SCHEMA, options);
         {
             TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
             std::unique_ptr<TypeDB::EntityType> userType = tx.concepts.getEntityType("user").get();
@@ -290,7 +290,7 @@ int main() {
     }
 
     {
-        TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
+        TypeDB::Session session = driver.session(DB_NAME, TypeDB::SessionType::SCHEMA, options);
         {
             TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
             // tag::get_type[]
@@ -325,7 +325,7 @@ int main() {
 
     {
         // tag::rules-api[]
-        TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
+        TypeDB::Session session = driver.session(DB_NAME, TypeDB::SessionType::SCHEMA, options);
         {
             TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
             TypeDB::RuleIterable rules = tx.logic.getRules();
@@ -335,7 +335,8 @@ int main() {
                 std::cout << rule.then() << std::endl;
             }
             TypeDB::Rule newRule = tx.logic.putRule("Employee", "{$u isa user, has email $e; $e contains '@vaticle.com';}","$u has name 'Employee'").get();
-            std::cout << tx.logic.getRule("Employee").get().value().label() << std::endl;
+            TypeDB::Rule oldRule = tx.logic.getRule("users").get().value();
+            std::cout << oldRule.label() << std::endl;
             newRule.deleteRule(tx).get();
             tx.commit();
         }
@@ -343,7 +344,7 @@ int main() {
     }
 
     {
-        TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
+        TypeDB::Session session = driver.session(DB_NAME, TypeDB::SessionType::SCHEMA, options);
         {
             TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
             // tag::get_rules[]
@@ -358,7 +359,7 @@ int main() {
             TypeDB::Rule newRule = tx.logic.putRule("Employee", "{$u isa user, has email $e; $e contains '@vaticle.com';}","$u has name 'Employee'").get();
             // end::put_rule[]
             // tag::get_rule[]
-            TypeDB::Rule oldRule = tx.logic.getRule("Employee").get().value();
+            TypeDB::Rule oldRule = tx.logic.getRule("users").get().value();
             // end::get_rule[]
             std::cout << oldRule.label() << std::endl;
             // tag::delete_rule[]
@@ -369,7 +370,7 @@ int main() {
 
     {
         // tag::data-api[]
-        TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::DATA, options);
+        TypeDB::Session session = driver.session(DB_NAME, TypeDB::SessionType::DATA, options);
         {
             TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
             std::unique_ptr<TypeDB::EntityType> userType = tx.concepts.getEntityType("user").get();
@@ -393,7 +394,7 @@ int main() {
         TypeDB::Options inferOptions;
         inferOptions.infer(true);
         inferOptions.explain(true);
-        TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::DATA, inferOptions);
+        TypeDB::Session session = driver.session(DB_NAME, TypeDB::SessionType::DATA, inferOptions);
         {
             TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::READ, inferOptions);
             std::string getQuery = R"(
@@ -432,7 +433,7 @@ int main() {
         TypeDB::Options inferOptions;
         inferOptions.infer(true);
         inferOptions.explain(true);
-        TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::DATA, inferOptions);
+        TypeDB::Session session = driver.session(DB_NAME, TypeDB::SessionType::DATA, inferOptions);
         {
             TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::READ, inferOptions);
             std::string getQuery = R"(

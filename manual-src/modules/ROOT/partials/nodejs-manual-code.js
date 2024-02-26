@@ -331,13 +331,13 @@ async function main() {
         try {
             tx = await session.transaction(TransactionType.WRITE);
             for await (const rule of tx.logic.getRules()) {
-                console.log("Rule label: " + rule.label);
-                console.log("  Condition: " + rule.when);
-                console.log("  Conclusion: " + rule.then);
+                console.log(rule.label);
+                console.log(rule.when);
+                console.log(rule.then);
             }
-            let new_rule = await tx.logic.putRule("Employee","{$u isa user, has email $e; $e contains '@vaticle.com';}","$u has name 'Employee'");
-            console.log((await tx.logic.getRule("Employee")).label);
-            await new_rule.delete(tx);
+            let newRule = await tx.logic.putRule("Employee","{$u isa user, has email $e; $e contains '@vaticle.com';}","$u has name 'Employee'");
+            console.log((await tx.logic.getRule("users")).label);
+            await newRule.delete(tx);
             await tx.commit();
         }
         finally {if (tx.isOpen()) {await tx.close()};}
@@ -352,19 +352,19 @@ async function main() {
             // tag::get_rules[]
             let rules = await tx.logic.getRules();
             for await (const rule of rules) {
-                console.log("Rule label: " + rule.label);
-                console.log("  Condition: " + rule.when);
-                console.log("  Conclusion: " + rule.then);
+                console.log(rule.label);
+                console.log(rule.when);
+                console.log(rule.then);
             }
             // end::get_rules[]
             // tag::put_rule[]
-            let new_rule = await tx.logic.putRule("Employee","{$u isa user, has email $e; $e contains '@vaticle.com';}","$u has name 'Employee'");
+            let newRule = await tx.logic.putRule("Employee","{$u isa user, has email $e; $e contains '@vaticle.com';}","$u has name 'Employee'");
             // end::put_rule[]
             // tag::get_rule[]
             let oldRule = (await tx.logic.getRule("users")).label;
             // end::get_rule[]
             // tag::delete_rule[]
-            await new_rule.delete(tx);
+            await newRule.delete(tx);
             // end::delete_rule[]
         }
         finally {if (tx.isOpen()) {await tx.close()};}
