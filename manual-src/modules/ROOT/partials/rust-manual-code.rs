@@ -530,8 +530,9 @@ fn main() -> Result<(), Box<dyn Error>> {
                                 ";
                 // tag::explainables[]
                 let response = tx.query().get(get_query)?;
-                // end::explainables[]
                 for (i, cmap) in response.enumerate() {
+                    let explainable_relations = cmap?.explainables.relations;
+                // end::explainables[]
                     let ncmap = cmap.clone();
                     let name_concept = ncmap?.get("n").unwrap().clone();
                     let name = match name_concept {
@@ -539,7 +540,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                         _ => unreachable!(),
                     };
                     println!("Name #{}: {}", (i + 1).to_string(), name);
-                    let explainable_relations = cmap?.explainables.relations;
+
                     // tag::explain[]
                     for (var, explainable) in explainable_relations {
                     // end::explain[]
@@ -563,7 +564,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                                 );
                             }
                         }
-                        // tag::explanation[]
+                        // end::explanation[]
                     // tag::explain[]
                     }
                     // end::explain[]

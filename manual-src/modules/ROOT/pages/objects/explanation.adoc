@@ -20,11 +20,9 @@ Rust::
 +
 --
 .Example
-[,rust]
+[,rust,indent=0]
 ----
-let response = transaction.query().get(get_query)?;
-for (i, cmap) in response.enumerate() {
-    let explainable_relations = cmap?.explainables.relations;
+include::manual::partial$rust-manual-code.rs[tag=explainables]
 ----
 
 For more information,
@@ -49,11 +47,9 @@ Java::
 +
 --
 .Example
-[,java]
+[,java,indent=0]
 ----
-transaction.query().get(getQuery).forEach(result -> {
-    Stream<Pair<String, ConceptMap.Explainable>> explainable_relations = result.explainables().relations();
-});
+include::manual::partial$java-manual-code.java[tag=explainables]
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_ConceptMap_Explainables[Explainables] and
@@ -64,12 +60,9 @@ Node.js::
 +
 --
 .Example
-[,js]
+[,js,indent=0]
 ----
-let response = await transaction.query.get(get_query).collect();
-    for(let i = 0; i < response.length; i++) {
-        let explainable_relations = await response[i].explainables.relations;
-    }
+include::manual::partial$nodejs-manual-code.js[tag=explainables]
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_Explainables[Explainables] and
@@ -107,10 +100,9 @@ Rust::
 +
 --
 .Example
-[,rust]
+[,rust,indent=0]
 ----
-for (var, explainable) in explainable_relations {
-    let explain_ierator = transaction.query().explain(&explainable)?;
+include::manual::partial$rust-manual-code.rs[tag=explain]
 ----
 For more information, see the
 xref:drivers::rust/api-reference.adoc#_struct_QueryManager_explain__[Explain query]
@@ -136,11 +128,9 @@ Java::
 +
 --
 .Example
-[,java]
+[,java,indent=0]
 ----
-explainable_relations.forEach(explainable -> {
-    Stream<Explanation> explain_iterator = transaction.query().explain(explainable.second());
-});
+include::manual::partial$java-manual-code.java[tag=explain]
 ----
 For more information, see the
 xref:drivers::java/api-reference.adoc#_QueryManager_explain__ConceptMap_Explainable[Explain query]
@@ -152,11 +142,9 @@ Node.js::
 +
 --
 .Example
-[,js]
+[,js,indent=0]
 ----
-explainable_relations.forEach(explainable => {
-    explain_iterator = transaction.query.explain(explainable);
-});
+include::manual::partial$nodejs-manual-code.js[tag=explain]
 ----
 For more information, see the
 xref:drivers::nodejs/api-reference.adoc#_QueryManager_explain__explainable_Explainable__options_TypeDBOptions[Explain query]
@@ -193,18 +181,9 @@ Rust::
 +
 --
 .Example
-[,rust]
+[,rust,indent=0]
 ----
-for explanation in explain_ierator {
-    let exp = explanation?;
-    println!("Rule: {}",exp.rule.label);
-    println!("Condition: {}",exp.rule.when.to_string());
-    println!("Conclusion: {}",exp.rule.then.to_string());
-    println!("Variable mapping:");
-    for qvar in exp.variable_mapping.keys() {
-        println!("  Query variable {} maps to the rule variable {}", *qvar, exp.variable_mapping.get(qvar).unwrap().concat().to_string());
-    }
-}
+include::manual::partial$rust-manual-code.rs[tag=explanation]
 ----
 
 For more information,
@@ -227,15 +206,9 @@ Java::
 +
 --
 .Example
-[,java]
+[,java,indent=0]
 ----
-explain_iterator.forEach(explanation -> {
-    System.out.println("Rule: " + explanation.rule().getLabel());
-    System.out.println("  Condition: " + explanation.rule().getWhen().toString());
-    System.out.println("  Conclusion: " + explanation.rule().getThen().toString());
-    explanation.queryVariables().forEach(var ->
-        System.out.println("Query variable " + var + "maps to the rule variable " + explanation.queryVariableMapping(var)));
-});
+include::manual::partial$java-manual-code.java[tag=explanation]
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_Explanation[Explanation class] methods.
@@ -245,16 +218,9 @@ Node.js::
 +
 --
 .Example
-[,js]
+[,js,indent=0]
 ----
-for (explanation of explain_iterator) {
-    console.log("Rule: " + explanation.rule.label)
-    console.log("Condition: " + explanation.condition.toString())
-    console.log("Conclusion " + explanation.conclusion.toString())
-    for (qvar of explanation.variableMapping.keys()) {
-        console.log("Query variable " + qvar + " maps to the rule variable " + explanation.variableMapping.get(qvar))
-    }
-}
+include::manual::partial$nodejs-manual-code.js[tag=explanation]
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_Explanation[Explanation class] methods.
