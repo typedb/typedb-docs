@@ -29,11 +29,11 @@ fn main() -> Result<(), Box<dyn Error>> {
         println!("{}", db.name());
     }
     // end::list-db[]
-    // tag::delete-db[]
     if databases.contains(DB_NAME)? {
+        // tag::delete-db[]
         let _ = databases.get(DB_NAME)?.delete();
+        // end::delete-db[]
     }
-    // end::delete-db[]
     // tag::create-db[]
     let _ = databases.create(DB_NAME);
     // end::create-db[]
@@ -326,9 +326,9 @@ fn main() -> Result<(), Box<dyn Error>> {
             let session = Session::new(db, SessionType::Schema)?;
             {
                 let tx = session.transaction(TransactionType::Write)?;
-                let user = tx.concept().get_entity_type("user".to_owned()).resolve()?.ok_or("No root entity")?;
-                let mut admin = tx.concept().put_entity_type("admin".to_owned()).resolve()?;
-                drop(admin.set_supertype(&tx, user).resolve());
+                let user_type = tx.concept().get_entity_type("user".to_owned()).resolve()?.ok_or("No root entity")?;
+                let mut admin_type = tx.concept().put_entity_type("admin".to_owned()).resolve()?;
+                drop(admin_type.set_supertype(&tx, user_type).resolve());
                 let entities = tx
                     .concept()
                     .get_entity_type("entity".to_owned())
@@ -350,16 +350,16 @@ fn main() -> Result<(), Box<dyn Error>> {
             {
                 let tx = session.transaction(TransactionType::Write)?;
                 // tag::get_type[]
-                let user = tx.concept().get_entity_type("user".to_owned()).resolve()?.unwrap();
+                let user_type = tx.concept().get_entity_type("user".to_owned()).resolve()?.unwrap();
                 // end::get_type[]
                 // tag::add_type[]
-                let mut admin = tx.concept().put_entity_type("admin".to_owned()).resolve()?;
+                let mut admin_type = tx.concept().put_entity_type("admin".to_owned()).resolve()?;
                 // end::add_type[]
                 // tag::set_supertype[]
-                drop(admin.set_supertype(&tx, user.clone()).resolve());
+                drop(admin_type.set_supertype(&tx, user_type.clone()).resolve());
                 // end::set_supertype[]
                 // tag::get_instances[]
-                let users = user.get_instances(&tx, Transitivity::Transitive)?;
+                let users = user_type.get_instances(&tx, Transitivity::Transitive)?;
                 // end::get_instances[]
                 for user in users {
                     // tag::get_has[]
@@ -368,10 +368,10 @@ fn main() -> Result<(), Box<dyn Error>> {
                 }
                 // tag::create[]
                 let new_user =
-                    tx.concept().get_entity_type("user".to_owned()).resolve()?.unwrap().create(&tx).resolve();
+                    tx.concept().get_entity_type("user".to_owned()).resolve()?.unwrap().create(&tx).resolve()?;
                 // end::create[]
                 // tag::delete_user[]
-                let _ = new_user?.delete(&tx);
+                let _ = new_user.delete(&tx);
                 // end::delete_user[]
             }
         }
@@ -383,19 +383,18 @@ fn main() -> Result<(), Box<dyn Error>> {
             let session = Session::new(db, SessionType::Schema)?;
             {
                 let tx = session.transaction(TransactionType::Write)?;
-                let r = tx.logic().get_rule("users".to_owned()).resolve()?.ok_or("Rule not found.")?;
-                println!("Rule label: {}", r.label);
-                println!("  Condition: {}", r.when.to_string());
-                println!("  Conclusion: {}", r.then.to_string());
+                let rules = tx.logic().get_rules()?;
+                for rule in rules {
+                    println!("{}", rule.clone()?.label);
+                    println!("{}", rule.clone()?.when.to_string());
+                    println!("{}", rule.clone()?.then.to_string());
+                }
                 let condition = typeql::parse_pattern("{$u isa user, has email $e; $e contains '@vaticle.com';}")?
                     .into_conjunction();
                 let conclusion = typeql::parse_pattern("$u has name 'Employee'")?.into_statement();
                 let mut new_rule = tx.logic().put_rule("Employee".to_string(), condition, conclusion).resolve()?;
-                let rules = tx.logic().get_rules()?;
-                for rule in rules {
-                    println!("{}", rule?.label);
-                }
                 let _ = new_rule.delete(&tx).resolve();
+                let old_rule = tx.logic().get_rule("users".to_owned()).resolve()?.ok_or("Rule not found.")?;
                 let _ = tx.commit().resolve();
             }
         }
@@ -408,11 +407,8 @@ fn main() -> Result<(), Box<dyn Error>> {
             {
                 let tx = session.transaction(TransactionType::Write)?;
                 // tag::get_rule[]
-                let r = tx.logic().get_rule("users".to_owned()).resolve()?.ok_or("Rule not found.")?;
+                let old_rule = tx.logic().get_rule("users".to_owned()).resolve()?.ok_or("Rule not found.")?;
                 // end::get_rule[]
-                println!("Rule label: {}", r.label);
-                println!("  Condition: {}", r.when.to_string());
-                println!("  Conclusion: {}", r.then.to_string());
                 // tag::put_rule[]
                 let condition = typeql::parse_pattern("{$u isa user, has email $e; $e contains '@vaticle.com';}")?
                     .into_conjunction();
@@ -422,7 +418,9 @@ fn main() -> Result<(), Box<dyn Error>> {
                 // tag::get_rules[]
                 let rules = tx.logic().get_rules()?;
                 for rule in rules {
-                    println!("{}", rule?.label);
+                    println!("{}", rule.clone()?.label);
+                    println!("{}", rule.clone()?.when.to_string());
+                    println!("{}", rule.clone()?.then.to_string());
                 }
                 // end::get_rules[]
                 // tag::delete_rule[]
@@ -531,10 +529,10 @@ fn main() -> Result<(), Box<dyn Error>> {
                 // tag::explainables[]
                 let response = tx.query().get(get_query)?;
                 for (i, cmap) in response.enumerate() {
-                    let explainable_relations = cmap?.explainables.relations;
+                    let explainable_relations = cmap.clone()?.explainables.relations;
                     // end::explainables[]
-                    let ncmap = cmap.clone();
-                    let name_concept = ncmap?.get("n").unwrap().clone();
+                    let ncmap = cmap.clone()?;
+                    let name_concept = ncmap.get("n").unwrap().clone();
                     let name = match name_concept {
                         Concept::Attribute(Attribute { value: Value::String(value), .. }) => value,
                         _ => unreachable!(),

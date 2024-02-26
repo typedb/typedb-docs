@@ -50,10 +50,11 @@ Rust::
 .Open a session
 [,rust,indent=0]
 ----
+include::manual::partial$rust-manual-code.rs[tag=databases,indent=12]
 include::manual::partial$rust-manual-code.rs[tag=session_open]
 ----
 
-Where `DB_NAME` is the name of the database.
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
 --
 
 Python::
