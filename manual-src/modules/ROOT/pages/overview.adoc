@@ -7,7 +7,7 @@ Welcome to the TypeDB Manual.
 Here you'll find practice oriented guides on TypeDB operations and configuration, as well as Studio and Console manuals.
 See the full selection of our guides below.
 
-== Clients
+== Standalone clients
 
 [cols-2]
 --
@@ -42,51 +42,56 @@ xref:drivers::cpp/overview.adoc[C++]
 
 For TypeDB drivers documentation, see the xref:drivers::overview.adoc[Drivers] category.
 
-== Basic guides
+== Using TypeDB
 
 [cols-2]
 --
 .xref:manual::connecting/overview.adoc[]
 [.clickable]
 ****
-* xref:manual::connecting/connection.adoc[]
-* xref:manual::connecting/database.adoc[]
-* xref:manual::connecting/session.adoc[]
-* xref:manual::connecting/transaction.adoc[]
+Connect to a TypeDB server and create a new database.
+// Network connection to TypeDB Core or Cloud, as well as database, session and transaction management.
+// * xref:manual::connecting/connection.adoc[]
+// * xref:manual::connecting/database.adoc[]
+// * xref:manual::connecting/session.adoc[]
+// * xref:manual::connecting/transaction.adoc[]
 ****
 
 .xref:manual::defining/overview.adoc[]
 [.clickable]
 ****
-* xref:manual::defining/define.adoc[]
-* xref:manual::defining/undefine.adoc[]
-* xref:manual::defining/schema-editing.adoc[]
+Set and modify the schema of a database with a TypeQL query or driver API call.
+// * xref:manual::defining/define.adoc[]
+// * xref:manual::defining/undefine.adoc[]
+// * xref:manual::defining/schema-editing.adoc[]
 ****
 
 .xref:manual::writing/overview.adoc[]
 [.clickable]
 ****
-* xref:manual::writing/insert.adoc[]
-* xref:manual::writing/delete.adoc[]
-* xref:manual::writing/update.adoc[]
+Insert, delete, or update (replace) data in a TypeDB database with TypeQL queries.
+// * xref:manual::writing/insert.adoc[]
+// * xref:manual::writing/delete.adoc[]
+// * xref:manual::writing/update.adoc[]
 ****
 
 .xref:manual::reading/overview.adoc[]
 [.clickable]
 ****
-* xref:manual::reading/fetch.adoc[]
-* xref:manual::reading/get.adoc[]
-* xref:manual::reading/infer.adoc[]
+Retrieve data as JSONs or stateful objects with TypeQL queries.
+// * xref:manual::reading/fetch.adoc[]
+// * xref:manual::reading/get.adoc[]
+// * xref:manual::reading/infer.adoc[]
 ****
-////
-.xref:manual::defining/overview.adoc[Programming concepts]
+
+.xref:manual::objects/overview.adoc[]
 [.clickable]
 ****
-* xref:manual::defining/overview.adoc[Types]
-* xref:manual::defining/overview.adoc[Things]
-* xref:manual::defining/overview.adoc[Explanations]
+Use stateful objects to alter data and schema, as well as explain inferred data.
+// * xref:manual::objects/schema.adoc[]
+// * xref:manual::objects/data.adoc[]
+// * xref:manual::objects/explanation.adoc[]
 ****
-////
 --
 
 == Configuring server
@@ -129,10 +134,6 @@ Upgrading TypeDB version.
 User management operations.
 ****
 --
-
-== Programming concepts
-
-include::objects/overview.adoc[tags=nav-blocks]
 
 ////
 == Migrating to TypeDB
