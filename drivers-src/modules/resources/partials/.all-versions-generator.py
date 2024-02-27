@@ -21,6 +21,10 @@ def get_versions(url):
     for json_element in json_data:
         count += 1
         # print(json_element["tag_name"] + ": " + json_element["name"])
+        if "rc" in json_element["name"]:
+            print(str(count) + ": version " + json_element["tag_name"]
+                  + " IGNORED: skipping a release candidate version.")
+            continue
         if ("TypeDB" in json_element["name"]) \
                 and ("TypeDB Workbase" not in json_element["name"]) \
                 and ("alpha" not in json_element["name"]):
