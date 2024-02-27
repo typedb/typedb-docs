@@ -1,13 +1,15 @@
 = Programming objects
 //Programming concepts / Stateful objects / Stateful programming
 
-TypeDB can retrieve data by projecting values to JSON objects.
-Alternatively, you can get stateful objects from TypeDB either in response to a Get query or via API methods.
+//TypeDB can retrieve data by projecting values to JSON objects.
 
-See below practical guides on how to use API methods to interact with types, rules, and data from a TypeDB database
-without TypeQL queries.
+You can use ORM-like objects to manipulate schema and data of a TypeDB databases
+and process explanations of inferred data.
+//To get these stateful objects, you can use either TypeQL Get query or driver API methods.
 
-Make sure to xref:home::install/overview.adoc[install] one of the TypeDB drivers before proceeding.
+See below practical guides on how to use stateful schema objects, stateful data objects, and explanation objects.
+
+Make sure to xref:home::install/overview.adoc#_typedb_drivers[install] one of the TypeDB drivers before proceeding.
 
 // tag::nav-blocks[]
 [cols-2]
