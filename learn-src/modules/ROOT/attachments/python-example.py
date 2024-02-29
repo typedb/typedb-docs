@@ -2,8 +2,6 @@ from typedb.api.connection.driver import TypeDBDriver
 from typedb.api.connection.database import Database
 from typedb.api.user.user import User
 
-DATABASE = "bookstore"
-
 # 6.1 managing users and databases
 
 from typedb.driver import TypeDB
@@ -106,6 +104,30 @@ def print_database_details(driver: TypeDBDriver) -> None:
 
 
 # 6.2 sessions and transactions
+
+from typedb.driver import SessionType
+
+DATABASE = "database-name"
+
+with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        # code goes here
+        pass
+
+from typedb.driver import TransactionType
+
+with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
+            # code goes here
+            pass
+
+with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.WRITE) as transaction:
+            # code goes here
+
+            transaction.commit()
 
 # 6.3 executing queries
 
