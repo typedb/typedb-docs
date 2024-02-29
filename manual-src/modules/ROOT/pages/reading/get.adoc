@@ -35,7 +35,6 @@ get
 $u, $e;
 ----
 . Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
-. Commit the changes by clicking the btn:[Commit query] button (image:home::studio-icons/commit.png[Commit]).
 --
 
 Console::
@@ -58,11 +57,11 @@ $u, $e;
 ----
 +
 Push btn:[Enter] twice to send the query.
-. Commit the changes:
+. Close the transaction:
 +
 [,bash]
 ----
-commit
+close
 ----
 --
 ====
@@ -93,10 +92,15 @@ Rust::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
-open a `read` transaction, and use the
-xref:drivers::rust/api-reference.adoc#_struct_QueryManager_get__[`transaction.query().get()`]
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a data session to the selected database,
+open a read transaction, and use the
+xref:drivers::rust/api-reference.adoc#_struct_QueryManager_get__[transaction.query().get()]
 method:
+++++
 
 [,rust,indent=0]
 ----
@@ -109,10 +113,15 @@ Python::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
-open a `read` transaction, and use the
-xref:drivers::python/api-reference.adoc#_QueryManager_get{scores}query_str__options_TypeDBOptions__None[`transaction.query.get()`]
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a data session to the selected database,
+open a read transaction, and use the
+xref:drivers::python/api-reference.adoc#_QueryManager_get__query_str__options_TypeDBOptions__None[transaction.query.get()]
 method:
+++++
 
 [,python,indent=0]
 ----
@@ -124,10 +133,15 @@ Java::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
-open a `read` transaction, and use the
-xref:drivers::java/api-reference.adoc#_QueryManager_get__com_vaticle_typeql_lang_query_TypeQLGet[`transaction.query().get()`]
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a data session to the selected database,
+open a read transaction, and use the
+xref:drivers::java/api-reference.adoc#_QueryManager_get__com_vaticle_typeql_lang_query_TypeQLGet[transaction.query().get()]
 method:
+++++
 
 [,java,indent=0]
 ----
@@ -139,10 +153,15 @@ Node.js::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
-open a `read` transaction, and use the
-xref:drivers::nodejs/api-reference.adoc#_QueryManager_get{scores}query_string__options_TypeDBOptions[`transaction.query.get()`]
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a data session to the selected database,
+open a read transaction, and use the
+xref:drivers::nodejs/api-reference.adoc#_QueryManager_get__query_string__options_TypeDBOptions[transaction.query.get()]
 method:
+++++
 
 [,js,indent=0]
 ----
@@ -154,10 +173,15 @@ C++::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
-open a `read` transaction, and use the
-xref:drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerget_const_stdstring_query_const_Options_options_Options_const[`transaction.query.get()`]
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a data session to the selected database,
+open a read transaction, and use the
+xref:drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerget_const_stdstring_query_const_Options_options_Options_const[transaction.query.get()]
 method:
+++++
 
 [,cpp,indent=0]
 ----

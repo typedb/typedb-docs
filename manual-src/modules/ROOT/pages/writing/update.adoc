@@ -81,10 +81,15 @@ Rust::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
-open a `write` transaction, and use the
-xref:drivers::rust/api-reference.adoc#_struct_QueryManager_update__[`transaction.query().delete()`]
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a data session to the selected database,
+open a write transaction, and use the
+xref:drivers::rust/api-reference.adoc#_struct_QueryManager_update__[transaction.query().delete()]
 method:
+++++
 
 [,rust,indent=0]
 ----
@@ -97,10 +102,15 @@ Python::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
-open a `write` transaction, and use the
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a data session to the selected database,
+open a write transaction, and use the
 xref:drivers::python/api-reference.adoc#_QueryManager_update{scores}query_str__options_TypeDBOptions__None[`transaction.query.delete()`]
 method:
+++++
 
 [,python,indent=0]
 ----
@@ -112,10 +122,15 @@ Java::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
-open a `write` transaction, and use the
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a data session to the selected database,
+open a write transaction, and use the
 xref:drivers::java/api-reference.adoc#_QueryManager_update__com_vaticle_typeql_lang_query_TypeQLUpdate[`transaction.query().delete()`]
 method:
+++++
 
 [,java,indent=0]
 ----
@@ -127,10 +142,15 @@ Node.js::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
-open a `write` transaction, and use the
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a data session to the selected database,
+open a write transaction, and use the
 xref:drivers::nodejs/api-reference.adoc#_QueryManager_update{scores}query_string__options_TypeDBOptions[`transaction.query.delete()`]
 method:
+++++
 
 [,js,indent=0]
 ----
@@ -142,10 +162,15 @@ C++::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `data` session to the selected database,
-open a `write` transaction, and use the
-xref:drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerupdate_const_stdstring_query_const_Options_Options_const[`transaction.query.delete()`]
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a data session to the selected database,
+open a write transaction, and use the
+xref:drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerupdate___const_stdstring__query__const_Options___Options_____const[`transaction.query.delete()`]
 method:
+++++
 
 [,cpp,indent=0]
 ----

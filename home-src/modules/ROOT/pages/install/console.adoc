@@ -42,8 +42,8 @@ macOS::
 +
 --
 . Download the latest package for your systems architecture:
-https://github.com/vaticle/typedb-console/releases/download/2.26.5/typedb-console-mac-x86_64.zip[x86/x64] |
-https://github.com/vaticle/typedb-console/releases/download/2.26.5/typedb-console-mac-arm64.zip[arm64]. +
+https://repo.typedb.com/public/public-release/raw/names/typedb-console-mac-x86_64/versions/2.26.6/typedb-console-mac-x86_64-2.26.6.zip[x86/x64] |
+https://repo.typedb.com/public/public-release/raw/names/typedb-console-mac-arm64/versions/2.26.6/typedb-console-mac-arm64-2.26.6.zip[arm64]. +
 For other versions, see the
 https://cloudsmith.io/~typedb/repos/public-release/packages/?q=format%3Araw+name%3A%5Etypedb-console-mac&sort=-version[Downloads repository] page.
 . Extract the archive into a new directory:
@@ -65,8 +65,8 @@ Linux::
 +
 --
 . Download the latest package for your systems architecture:
-https://github.com/vaticle/typedb-console/releases/download/2.26.5/typedb-console-linux-x86_64.tar.gz[x86/x64] |
-https://github.com/vaticle/typedb-console/releases/download/2.26.5/typedb-console-linux-arm64.tar.gz[arm64]. +
+https://repo.typedb.com/public/public-release/raw/names/typedb-console-linux-x86_64/versions/2.26.6/typedb-console-linux-x86_64-2.26.6.tar.gz[x86/x64] |
+https://repo.typedb.com/public/public-release/raw/names/typedb-console-linux-arm64/versions/2.26.6/typedb-console-linux-arm64-2.26.6.tar.gz[arm64]. +
 For other versions, see the
 https://cloudsmith.io/~typedb/repos/public-release/packages/?q=format%3Araw+name%3A%5Etypedb-console-linux&sort=-version[Downloads repository] page.
 . Extract the archive into a new directory:
@@ -89,7 +89,7 @@ Windows::
 +
 --
 . Download the latest package for your systems architecture:
-https://github.com/vaticle/typedb-console/releases/download/2.26.5/typedb-console-windows-x86_64.zip[x86/x64]. +
+https://repo.typedb.com/public/public-release/raw/names/typedb-console-windows-x86_64/versions/2.26.6/typedb-console-windows-x86_64-2.26.6.zip[x86/x64]. +
 For other versions, see the
 https://cloudsmith.io/~typedb/repos/public-release/packages/?q=format%3Araw+name%3A%5Etypedb-console-win&sort=-version[Downloads repository] page.
 
@@ -121,7 +121,7 @@ To run TypeDB Console:
 typedb console
 ----
 
-To learn how to use TypeDB Console, see the xref:manual::console.adoc[] page.
+For more information on how to use TypeDB Console, see the xref:manual::console.adoc[] page.
 
 [#_version_compatibility]
 == Version Compatibility
@@ -130,10 +130,10 @@ To learn how to use TypeDB Console, see the xref:manual::console.adoc[] page.
 |===
 | TypeDB Console | Protocol encoding version | TypeDB Core | TypeDB Cloud
 
-| https://github.com/vaticle/typedb-console/releases/tag/2.26.5[2.26.5]
+| https://github.com/vaticle/typedb-console/releases/tag/2.26.6[2.26.6]
 | 3
-| 2.26.3
-| 2.26.0
+| 2.26.6
+| 2.26.6
 
 | https://github.com/vaticle/typedb-console/releases/tag/2.25.7[2.25.7]
 | 3

@@ -60,6 +60,9 @@ def get_versions(url):
     response = requests.get(f"{url}?per_page=100")
     releases = response.json()
     for release in releases:
+        if "rc" in release["name"]:
+            print("Version " + release["tag_name"] + " IGNORED: skipping a release candidate version.")
+            continue
         if "TypeDB" in release["name"]:
             print("Version " + release["tag_name"] + " will be processed.")
             result.append(get_release_data(release))
