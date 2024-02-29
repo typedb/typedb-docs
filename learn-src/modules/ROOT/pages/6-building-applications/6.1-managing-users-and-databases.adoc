@@ -1,3 +1,6 @@
+// This version should be removed following the change to Cloud.
+// The version for after the change is below.
+// Ensure all changes are propagated to both versions.
 = Lesson 6.1: Managing databases
 
 == Connecting to the server
@@ -16,7 +19,7 @@ with TypeDB.core_driver(ADDRESS) as driver:
     # code goes here
 ----
 
-The driver object `driver` should be instantiated using a https://peps.python.org/pep-0343/[context manager]. This is essential to ensure that the driver's destructor is called regardless of how the program terminates, which will free the resources on the server. We then conduct all application operations within the scope of the context manager.
+The driver object `driver` takes one argument, the *server address*, and should be instantiated using a https://peps.python.org/pep-0343/[context manager]. This is essential to ensure that the driver's destructor is called regardless of how the program terminates, which will free the resources on the server. We then conduct all application operations within the scope of the context manager.
 
 [WARNING]
 ====
@@ -124,6 +127,7 @@ def print_database_details(driver: TypeDBDriver) -> None:
 
 
 
+// Version for after the change to Cloud.
 // = Lesson 6.1: Managing users and databases
 //
 // == Connecting to the server
@@ -147,7 +151,7 @@ def print_database_details(driver: TypeDBDriver) -> None:
 //     # code goes here
 // ----
 //
-// The driver object `driver` should be instantiated using a https://peps.python.org/pep-0343/[context manager]. This is essential to ensure that the driver's destructor is called regardless of how the program terminates, which will free the resources on the server. We then conduct all application operations within the scope of the context manager.
+// The driver object `driver` takes two arguments, the *server address* and a *credential object*, and should be instantiated using a https://peps.python.org/pep-0343/[context manager]. This is essential to ensure that the driver's destructor is called regardless of how the program terminates, which will free the resources on the server. We then conduct all application operations within the scope of the context manager.
 //
 // [WARNING]
 // ====

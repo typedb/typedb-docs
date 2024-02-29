@@ -16,6 +16,10 @@ password = input("Enter password: ")
 credential = TypeDBCredential(USERNAME, password, tls_enabled=True)
 
 with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+    # code goes here
+    pass
+
+with TypeDB.cloud_driver(ADDRESS, credential) as driver:
     # Creates a new user with the specified username and password.
     driver.users.create("username", "password")
 
