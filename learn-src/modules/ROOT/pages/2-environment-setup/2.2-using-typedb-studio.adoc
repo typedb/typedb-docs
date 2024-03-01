@@ -19,17 +19,23 @@ There are four key elements:
 
 == Setting up
 
+=== Open a project
+
 To begin with, we'll need to open a project. Click the *Open Project* button in the Project panel to open the project directory window.
 
 image::studio-screenshots/2-open-project.png[role=framed, width = 75%, link=self]
 
 Choose a directory in which to save your project files and click the *Open* button. You should now see a file tree in the Project panel.
 
+=== Connect to the server
+
 Next, we'll connect to the server. Click the *Connect to TypeDB* button in the Type Browser panel to open the server connection window.
 
 image::studio-screenshots/3-open-connection.png[role=framed, width = 75%, link=self]
 
 Select `TypeDB` from the Server dropdown, enter `localhost:1730` into the Address box, then click the *Connect* button. If Studio connects successfully, you should see the address displayed on the top-right of the toolbar. If Studio fails to connect, ensure that the Docker image we started in xref:learn::2-environment-setup/2.1-sample-deployment.adoc[Lesson 2.1] is running and available at the expected address.
+
+=== Select a database
 
 After connecting to the server, the button in the Type Browser panel will update to read *Select Database*. Click on it to open the database selection window.
 
@@ -43,22 +49,55 @@ We're now ready to begin running queries.
 
 == Executing queries
 
+=== Overview of controls
+
 To begin with, let's review the controls on the toolbar.
 
 image::studio-screenshots/6-toolbar.png[role=framed, width = 75%, link=self]
 
 The following controls will be important throughout this course:
 
-* image:learn::studio-icons/database.png[]: Use this button to open the *database manager*. From there, you can create and delete databases. The dropdown menu next to this button is the *database selector*, which you can use to open sessions to different databases.
+.Main toolbar controls in Studio
+[cols="^.^3,^.^4,.^10"]
+|===
+| Name | Control | Description
 
-* image:learn::studio-icons/session-toggle.png[]: Use these buttons to toggle between *schema* and *data* sessions. The course material will tell you when to switch session types. For now, switch to a data session.
-* image:learn::studio-icons/transaction-toggle.png[]: Use these buttons to toggle between *write* and *read* transactions. The course material will tell you when to switch transaction types. For now, switch to a read transaction.
-* image:learn::studio-icons/infer.png[]: Use this button to toggle *rule inference* on and off. For now, make sure it's switched off, otherwise you may get back unexpected query results. We'll explore rule inference in xref:learn::3-reading-data/3.3-fetching-inferred-data.adoc[Lesson 3.3].
-* image:learn::studio-icons/close.png[]: Use this button to *close* an open write transaction without committing the changes to the database.
-* image:learn::studio-icons/commit.png[]: Use this button to *commit* an open write transaction.
-* image:learn::studio-icons/run.png[]: Use this button to *run* the query displayed in the text editor. If the transaction toggle is set to "write", this will open a transaction which must then be closed or committed.
+| Database manager
+| image:learn::studio-icons/database.png[]
+| Use this button to open the *database manager*. From there, you can create and delete databases.
 
-Let's try running a query. To start off, image:learn::studio-icons/new-window.png[] *open* a new window in the text editor and paste in the following query.
+| Database selector
+| image:learn::studio-icons/db-selector.png[]
+| Use this dropdown menu to select a database to work with. All sessions will be opened for the selected database.
+
+| Session switch
+| image:learn::studio-icons/session-toggle.png[]
+| Use these buttons to toggle between *schema* and *data* sessions. The course material will tell you when to switch session types. For now, switch to a data session.
+
+| Transaction switch
+| image:learn::studio-icons/transaction-toggle.png[]
+| Use these buttons to toggle between *write* and *read* transactions. The course material will tell you when to switch transaction types. For now, switch to a read transaction.
+
+| Infer button
+| image:learn::studio-icons/infer.png[]
+| Use this button to toggle *rule inference* on and off. For now, make sure it's switched off, otherwise you may get back unexpected query results. We'll explore rule inference in xref:learn::3-reading-data/3.3-fetching-inferred-data.adoc[Lesson 3.3].
+
+| Close transaction
+| image:learn::studio-icons/close.png[]
+| Use this button to *close* an open write transaction without committing the changes to the database.
+
+| Commit transaction
+| image:learn::studio-icons/commit.png[]
+| Use this button to *commit* an open write transaction, i.e. make the changes of the transaction permanent in the database.
+
+| Run Query
+| image:learn::studio-icons/run.png[]
+| Use this button to *run* the query displayed in the text editor. If the transaction toggle is set to "write", this will open a transaction which must then be closed or committed.
+|===
+
+=== Running a query
+
+Let's try running a query. To start off, image:learn::studio-icons/new.png[] *open* a new window in the text editor and paste in the following query.
 
 [,typeql]
 ----
