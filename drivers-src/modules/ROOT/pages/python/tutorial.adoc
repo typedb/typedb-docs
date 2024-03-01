@@ -1,7 +1,7 @@
 = Python driver tutorial
 :keywords: typedb, typeql, tutorial, python, quickstart, start, sample, example, application, app
 :pageTitle: Python driver tutorial
-:summary: A simple example with an application using TypeDB Python driver.
+:summary: A sample application using TypeDB Python driver.
 :tabs-sync-option:
 
 In this tutorial, we'll use a sample application to showcase how to create a new database,
@@ -18,50 +18,103 @@ For the driver installation instructions, see the xref:drivers::python/overview.
 
 == Program structure
 
+111
+
+.Example
+[,python,indent=0]
+----
+include::manual::partial$python-manual-code.py[tag=get_instances]
+----
+
+[,python,indent=0]
+----
+
+include::manual::partial$python-manual-code.py[tag=get_instances]
+----
 
 == TypeDB connection
 
+111
+
+[,python]
+----
+111
+----
 
 == Creating a database
 
+111
+
+[,python]
+----
+include::drivers::partial$tutorials/tutorial-python.py[tag=create_new_db]
+----
 
 == Defining a schema
 
+[,python]
+----
+include::drivers::partial$tutorials/tutorial-python.py[tag=db-schema-setup]
+----
 
 == Loading initial data
 
+[,python]
+----
+include::drivers::partial$tutorials/tutorial-python.py[tag=db-dataset-setup]
+----
 
 == Testing a database
 
+[,python]
+----
+include::drivers::partial$tutorials/tutorial-python.py[tag=test-db]
+----
 
 == Fetch query example
 
+[,python]
+----
+include::drivers::partial$tutorials/tutorial-python.py[tag=fetch]
+----
 
 == Insert query example with matching
 
+[,python]
+----
+include::drivers::partial$tutorials/tutorial-python.py[tag=insert]
+----
 
 == Get query example
 
+[,python]
+----
+include::drivers::partial$tutorials/tutorial-python.py[tag=get]
+----
 
 == Inference example
 
+111
 
 == Update query example
 
+[,python]
+----
+include::drivers::partial$tutorials/tutorial-python.py[tag=update]
+----
 
 == Delete query example
 
+[,python]
+----
+include::drivers::partial$tutorials/tutorial-python.py[tag=delete]
+----
+
+//== Source code
+
+//See the full source code of the sample app below:
 
 
-
-
-
-
-== Source code
-
-See the full source code of the sample app below:
-
-include::drivers::partial$tutorials/sample-app-python.adoc[]
 
 [#_additional_files]
 == Additional files
