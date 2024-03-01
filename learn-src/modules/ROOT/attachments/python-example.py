@@ -1,5 +1,7 @@
+from typing import Iterator
 from typedb.api.connection.driver import TypeDBDriver
 from typedb.api.connection.database import Database
+from typedb.api.connection.transaction import TypeDBTransaction
 from typedb.api.user.user import User
 
 # 6.1 managing users and databases
@@ -130,5 +132,153 @@ with TypeDB.cloud_driver(ADDRESS, credential) as driver:
             transaction.commit()
 
 # 6.3 executing queries
+
+from typedb.driver import TypeDB, SessionType, TransactionType
+
+DATABASE = "bookstore"
+
+with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
+            results: Iterator[dict] = transaction.query.fetch("""
+                match
+                $book isa book;
+                fetch
+                $book: title, page-count;
+            """)
+
+            for result in results:
+                print(result)
+
+with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
+            results: list[dict] = list(transaction.query.fetch("""
+                match
+                $book isa book;
+                fetch
+                $book: title, page-count;
+            """))
+
+for result in results:
+    print(result)
+
+with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.WRITE) as transaction:
+            transaction.query.insert("""
+                insert
+                $new-user isa user,
+                    has id "u0014",
+                    has name "Jaiden Hurst",
+                    has birth-date 1950-03-03;
+            """)
+
+            transaction.commit()
+
+with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.WRITE) as transaction:
+            transaction.query.delete("""
+                match
+                $retracted-review isa review, has id "r0001";
+                $relation ($retracted-review) isa relation;
+                delete
+                $relation isa relation;
+            """)
+
+            transaction.query.delete("""
+                match
+                $retracted-review isa review, has id "r0001";
+                delete
+                $retracted-review isa review;
+            """)
+
+            transaction.commit()
+
+with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.WRITE) as transaction:
+            transaction.query.update("""
+                match
+                $dispatched-order isa order, has id "o0008";
+                $paid "paid" isa status;
+                delete
+                $dispatched-order has $paid;
+                insert
+                $dispatched-order has status "dispatched";
+            """)
+
+            transaction.commit()
+
+
+def create_user(transaction: TypeDBTransaction, id: str, name: str, birth_date: str) -> None:
+    transaction.query.insert(f"""
+        insert
+        $new-user isa user,
+            has id "{id}",
+            has name "{name}",
+            has birth-date {birth_date};
+    """)
+
+
+def delete_review(transaction: TypeDBTransaction, id: str) -> None:
+    transaction.query.delete(f"""
+        match
+        $retracted-review isa review, has id "{id}";
+        $relation ($retracted-review) isa relation;
+        delete
+        $relation isa relation;
+    """)
+
+    transaction.query.delete(f"""
+        match
+        $retracted-review isa review, has id "{id}";
+        delete
+        $retracted-review isa review;
+    """)
+
+
+def update_order_status(transaction: TypeDBTransaction, id: str, status_old: str, status_new: str) -> None:
+    transaction.query.update(f"""
+        match
+        $dispatched-order isa order, has id "{id}";
+        $status-old "{status_old}" isa status;
+        delete
+        $dispatched-order has $status-old;
+        insert
+        $dispatched-order has status "{status_new}";
+    """)
+
+
+DATABASE = "social-network"
+
+with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+    driver.databases.create(DATABASE)
+
+    with driver.session(DATABASE, SessionType.SCHEMA) as session:
+        with session.transaction(TransactionType.WRITE) as transaction:
+            transaction.query.define("""
+                define
+                person sub entity,
+                    owns first-name,
+                    owns last-name,
+                    owns birth-date,
+                    plays friendship:friend,
+                    plays relationship:partner,
+                    plays marriage:spouse;
+                friendship sub relation,
+                    relates friend;
+                relationship sub relation,
+                    relates partner;
+                marriage sub relationship,
+                    relates spouse as partner;
+                name sub attribute, abstract, value string;
+                first-name sub name;
+                last-name sub name;
+                birth-date sub attribute, value datetime;
+            """)
+
+            transaction.commit()
 
 # 6.4 processing results
