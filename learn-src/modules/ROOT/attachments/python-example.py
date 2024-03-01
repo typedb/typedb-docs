@@ -282,3 +282,103 @@ with TypeDB.cloud_driver(ADDRESS, credential) as driver:
             transaction.commit()
 
 # 6.4 processing results
+
+from typedb.driver import TypeDB, SessionType, TransactionType
+
+DATABASE = "bookstore"
+
+with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
+            results: Iterator[dict] = transaction.query.fetch("""
+                match
+                $book isa hardback;
+                fetch
+                $book: title, genre, page-count;
+            """)
+
+            for result in results:
+                print(result)
+
+                print(result.keys())
+
+                print(result["book"].keys())
+
+                for title in result["book"]["title"]:
+                    print(f"""Title: {title["value"]}""")
+
+                for genre in result["book"]["genre"]:
+                    print(f"""Genre: {genre["value"]}""")
+
+                for page_count in result["book"]["page-count"]:
+                    print(f"""Page count: {page_count["value"]}""")
+
+                print()
+
+
+def print_hardback_isbns(transaction: TypeDBTransaction) -> None:
+    results = transaction.query.fetch("""
+        match
+        $book isa hardback;
+        fetch
+        $book: title, isbn;
+    """)
+
+    for result in results:
+        for title in result["book"]["title"]:
+            print(f"""Title: {title["value"]}""")
+
+        for isbn in result["book"]["isbn"]:
+            print(f"""{isbn["type"]["label"].upper()}: {isbn["value"]}""")
+
+        print()
+
+
+def get_orders_of_book(transaction: TypeDBTransaction, isbn: str) -> Iterator[tuple[str, int]]:
+    results = transaction.query.fetch(f"""
+        match
+        $book isa book, has isbn "{isbn}";
+        $line (order: $order, item: $book) isa order-line;
+        fetch
+        $order: id;
+        $line: quantity;
+    """)
+
+    for result in results:
+        order_id = result["order"]["id"][0]["value"]
+        quantity = result["line"]["quantity"][0]["value"]
+
+        yield order_id, quantity
+
+
+with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
+            orders = get_orders_of_book(transaction, "9780446310789")
+
+            for order in orders:
+                print(order)
+
+
+def get_books_in_genre(transaction: TypeDBTransaction, genre: str) -> Iterator[tuple[str, str]]:
+    results = transaction.query.fetch(f"""
+        match
+        $book isa book, has genre "{genre}";
+        fetch
+        $book: isbn-13, title;
+    """)
+
+    for result in results:
+        isbn_13 = result["book"]["isbn-13"][0]["value"]
+        title = result["book"]["title"][0]["value"]
+
+        yield isbn_13, title
+
+
+with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
+            scifis = get_books_in_genre(transaction, "science fiction")
+
+            for book in scifis:
+                print(book)
