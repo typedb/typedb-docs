@@ -4,24 +4,58 @@
 :summary: A simple example with an application using TypeDB Python driver.
 :tabs-sync-option:
 
-In this tutorial, we'll use a sample application to showcase how to define a schema, insert initial data,
-read data, apply pagination and inference, and add additional data.
+In this tutorial, we'll use a sample application to showcase how to create a new database,
+define a schema, insert initial data, and perform multiple queries on the inserted data.
 
-== Prerequisites
+== Setup
 
-Deploy https://cloud.typedb.com/[TypeDB Cloud], or xref:home::install/core.adoc[install] and
-run TypeDB Core.
+To run this sample application, you'll need:
 
-xref:drivers::python/overview.adoc#_install_python[Install] the Python driver.
+. TypeDB: either a https://cloud.typedb.com/[TypeDB Cloud] deployment or a TypeDB Core server.
+For TypeDB Core installation instructions, see the xref:home::install/core.adoc[] page.
+. Python and TypeDB Python driver.
+For the driver installation instructions, see the xref:drivers::python/overview.adoc[] page.
 
-[WARNING]
-====
-Running the sample app will result in a deletion of a database named `iam` if it exists already on the server.
-////
-Make sure to create a backup copy of all your data from such a database,
-or change the default database name in the source code if necessary.
-////
-====
+== Program structure
+
+
+== TypeDB connection
+
+
+== Creating a database
+
+
+== Defining a schema
+
+
+== Loading initial data
+
+
+== Testing a database
+
+
+== Fetch query example
+
+
+== Insert query example with matching
+
+
+== Get query example
+
+
+== Inference example
+
+
+== Update query example
+
+
+== Delete query example
+
+
+
+
+
+
 
 == Source code
 
