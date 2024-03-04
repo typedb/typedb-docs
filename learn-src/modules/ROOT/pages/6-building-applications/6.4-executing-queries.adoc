@@ -1,4 +1,4 @@
-= Lesson 6.3: Executing queries
+= Lesson 6.4: Executing queries
 
 == Data read queries
 
@@ -17,8 +17,6 @@ Fetch queries should be run using a *data session* and *read transaction*. Queri
 // Remove after change to Cloud.
 [,python]
 ----
-from typedb.driver import TypeDB, SessionType, TransactionType
-
 ADDRESS = "localhost:1730"
 DATABASE = "bookstore"
 
@@ -42,8 +40,6 @@ Try running this code snippet against the sample database. You should see the re
 // Add after change to Cloud.
 // [,python]
 // ----
-// from typedb.driver import TypeDB, SessionType, TransactionType
-//
 // DATABASE = "bookstore"
 //
 // with TypeDB.cloud_driver(ADDRESS, credential) as driver:
@@ -60,7 +56,7 @@ Try running this code snippet against the sample database. You should see the re
 //                 print(result)
 // ----
 //
-// Try running this code snippet against the sample database. Remember to provide necessary the server address and credential object as shown in xref:learn::6-building-applications/6.1-managing-users-and-databases.adoc[Lesson 6.1]. You should see the results printed out in the same JSON format that TypeDB Studio displayed them in xref:learn::3-reading-data/3.2-fetching-polymorphic-data.adoc[Lesson 3.2].
+// Try running this code snippet against the sample database. Remember to provide necessary the server address and credential object as shown in xref:learn::6-building-applications/6.2-managing-users-and-databases.adoc[Lesson 6.2]. You should see the results printed out in the same JSON format that TypeDB Studio displayed them in xref:learn::3-reading-data/3.2-fetching-polymorphic-data.adoc[Lesson 3.2].
 
 One important thing to note is that the `results` object is an *iterator*. This is because TypeDB returns the results of queries in a https://en.wikipedia.org/wiki/Stream_processing[stream] that is evaluated https://en.wikipedia.org/wiki/Lazy_evaluation[lazily] and responds https://en.wikipedia.org/wiki/Elasticity_(system_resource)[elastically] to consumption by the client. As a result, results cannot be accessed outside the scope of the transaction's context manager, because the iterator is terminated when the transaction object is destroyed. In order to be accessed outside the transaction's scope, the iterator must first be cast to a *sequence*, such as a list. The casting operation forces the stream to be fully resolved before the program can continue execution.
 
@@ -98,7 +94,7 @@ for result in results:
 //     print(result)
 // ----
 
-We will examine the result set more closely in xref:learn::6-building-applications/6.4-processing-results.adoc[Lesson 6.4].
+We will examine the result set more closely in xref:learn::6-building-applications/6.5-processing-results.adoc[Lesson 6.5].
 
 == Data write queries
 

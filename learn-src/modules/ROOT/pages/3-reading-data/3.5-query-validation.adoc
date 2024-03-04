@@ -2,7 +2,7 @@
 
 == Valid and invalid queries
 
-TypeQL's composability provides a natural syntax for building queries, but not all queries are valid. Try *running* image:learn::studio-icons/run.png[] the following queries. Only the first one will be successfully executed.
+TypeQL's composability provides a natural syntax for building queries, but not all queries are valid. Try *running* image:learn::studio-icons/run-query.png[] the following queries. Only the first one will be successfully executed.
 
 [,typeql]
 ----
@@ -37,7 +37,7 @@ $book: isbn-13;
 $country: name;
 ----
 
-The second query is invalid because users do not have ISBN attributes. The third is invalid because books do not have locations. TypeDB validates queries against the *schema*, which sets out which types are able to own each attribute and play each role in relations. This enables the database to determine which queries are semantically sound, and extends to queries of arbitrary complexity, for instance the following query. Try *running* image:learn::studio-icons/run.png[] it to see if it is valid.
+The second query is invalid because users do not have ISBN attributes. The third is invalid because books do not have locations. TypeDB validates queries against the *schema*, which sets out which types are able to own each attribute and play each role in relations. This enables the database to determine which queries are semantically sound, and extends to queries of arbitrary complexity, for instance the following query. Try *running* image:learn::studio-icons/run-query.png[] it to see if it is valid.
 
 [,typeql]
 ----

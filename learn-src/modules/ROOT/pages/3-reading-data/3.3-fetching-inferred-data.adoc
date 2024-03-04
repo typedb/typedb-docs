@@ -2,7 +2,7 @@
 
 == Rule inference
 
-Try *running* image:learn::studio-icons/run.png[] the following query, which retrieves a particular user's location.
+Try *running* image:learn::studio-icons/run-query.png[] the following query, which retrieves a particular user's location.
 
 [,typeql]
 ----
@@ -23,7 +23,7 @@ $place: name;
 }
 ----
 
-As we can see from the results, the user is located in Newark. Now, toggle on the *infer* option and *run* image:learn::studio-icons/run.png[] the query again.
+As we can see from the results, the user is located in Newark. Now, toggle on the *infer* option and *run* image:learn::studio-icons/run-query.png[] the query again.
 
 [NOTE]
 ====
@@ -197,12 +197,12 @@ $book: title;
 }
 ----
 
-Try *running* image:learn::studio-icons/run.png[] this query, once with the *infer* option toggled on and once with it off. If rule inference is switched off, we retrieve no results whatsoever! That is because we don't have any users recorded as being located in the US in our data. Instead, they are recorded as being located in cities, with the cities recorded as being located in states, and the states recorded as being located in the US. The means the above query will only work with rule inference switched on.
+Try *running* image:learn::studio-icons/run-query.png[] this query, once with the *infer* option toggled on and once with it off. If rule inference is switched off, we retrieve no results whatsoever! That is because we don't have any users recorded as being located in the US in our data. Instead, they are recorded as being located in cities, with the cities recorded as being located in states, and the states recorded as being located in the US. The means the above query will only work with rule inference switched on.
 
 .Exercise
 [caption=""]
 ====
-Write a query to retrieve the names of cities located in the United States. *Run* image:learn::studio-icons/run.png[] it once with rule inference switched off, and again with it switched on.
+Write a query to retrieve the names of cities located in the United States. *Run* image:learn::studio-icons/run-query.png[] it once with rule inference switched off, and again with it switched on.
 
 .Hint
 [%collapsible]

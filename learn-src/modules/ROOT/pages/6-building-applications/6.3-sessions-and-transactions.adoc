@@ -1,4 +1,4 @@
-= Lesson 6.2: Sessions and transactions
+= Lesson 6.3: Sessions and transactions
 
 == Opening sessions
 
@@ -7,8 +7,6 @@ With a connection established to the server via a driver object, we can now open
 // Remove after change to Cloud.
 [,python]
 ----
-from typedb.driver import SessionType
-
 DATABASE = "database-name"
 
 with TypeDB.core_driver(ADDRESS) as driver:
@@ -19,8 +17,6 @@ with TypeDB.core_driver(ADDRESS) as driver:
 // Add after change to Cloud.
 // [,python]
 // ----
-// from typedb.driver import SessionType
-//
 // DATABASE = "database-name"
 //
 // with TypeDB.cloud_driver(ADDRESS, credential) as driver:
@@ -39,8 +35,6 @@ Within the scope of a session, we can open transactions by instantiating a *tran
 // Remove after change to Cloud.
 [,python]
 ----
-from typedb.driver import TransactionType
-
 with TypeDB.core_driver(ADDRESS) as driver:
     with driver.session(DATABASE, SessionType.DATA) as session:
         with session.transaction(TransactionType.READ) as transaction:
@@ -50,8 +44,6 @@ with TypeDB.core_driver(ADDRESS) as driver:
 // Add after change to Cloud.
 // [,python]
 // ----
-// from typedb.driver import TransactionType
-//
 // with TypeDB.cloud_driver(ADDRESS, credential) as driver:
 //     with driver.session(DATABASE, SessionType.DATA) as session:
 //         with session.transaction(TransactionType.READ) as transaction:
@@ -60,7 +52,7 @@ with TypeDB.core_driver(ADDRESS) as driver:
 
 The transaction object takes one argument, the *transaction type*, and should be instantiated using a context manager. There are two types of transaction, *read transactions* and *write transactions*, denoted by the `READ` and `WRITE` values of the `TransactionType` enum. Read transactions are used to retrieve data, while write transactions are used to modify data. This is in line with the principle of https://en.wikipedia.org/wiki/Command%E2%80%93query_separation[command-query separation], and leads to three different combinations of session and transaction types.
 
-[cols="3",caption="",options="header"]
+[cols="^.^,^.^,^.^",caption="",options="header"]
 |===
 |`SessionType` |`TransactionType` |Purpose
 |`DATA` | `READ` | Retrieving data.
