@@ -1,8 +1,17 @@
 # tag::code[]
-from typedb.driver import TypeDB, SessionType, TransactionType, TypeDBOptions
+from typedb.driver import TypeDB, SessionType, TransactionType, TypeDBOptions, TypeDBCredential
+from enum import Enum
 
 DB_NAME = "sample_app_db"
 SERVER_ADDR = "127.0.0.1:1729"
+
+
+class Edition(Enum):
+    Cloud = 1
+    Core = 2
+
+
+TYPEDB_EDITION = Edition.Core
 
 
 # tag::create_new_db[]
@@ -92,7 +101,8 @@ def fetch_all_users(driver, db_name) -> list:
         with data_session.transaction(TransactionType.READ) as read_tx:
             users = list(read_tx.query.fetch("match $u isa user; fetch $u: full-name, email;"))
             for i, JSON in enumerate(users, start=0):
-                print(f"User #{i + 1} — Full-name:", JSON['u']['full-name'][0]['value'])
+                print(f"User #{i + 1} — Full-name:", JSON['u']['full-name'][0]['value'],
+                      "E-mail:", JSON['u']['email'][0]['value'])
             return users
 # end::fetch[]
 
@@ -198,9 +208,19 @@ def delete_file(driver, db_name, path):
 # end::delete[]
 
 
+# tag::connection[]
+def connect_to_typedb(edition, addr, username='admin', password='password'):
+    if edition is Edition.Core:
+        return TypeDB.core_driver(addr)
+    if edition is Edition.Cloud:
+        credentials = TypeDBCredential(username, password, tls_enabled=True)
+        return TypeDB.cloud_driver(addr, credentials)
+# end::connection[]
+
+
 # tag::main[]
 def main():
-    with TypeDB.core_driver(SERVER_ADDR) as driver:
+    with connect_to_typedb(TYPEDB_EDITION, SERVER_ADDR) as driver:
         if not db_setup(driver, DB_NAME, db_reset=False):
             print("Terminating...")
             exit()

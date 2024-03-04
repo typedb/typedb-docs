@@ -4,8 +4,17 @@
 :summary: A sample application using TypeDB Python driver.
 :tabs-sync-option:
 
-In this tutorial, we'll use a sample application to showcase how to create a new database,
-define a schema, insert initial data, and perform multiple queries on the inserted data.
+In this tutorial, we'll build a sample application with the Python driver capable of basic interaction with TypeDB:
+
+* Connect to a TypeDB server (Core or Cloud),
+* Delete/create a database,
+* Manage sessions and transactions,
+* Define a schema,
+* Insert data,
+* Query data with or without inference.
+
+Follow the steps below or see the
+https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/python/sample.py[full source code,window=_blank].
 
 == Setup
 
@@ -13,314 +22,242 @@ To run this sample application, you'll need:
 
 . TypeDB: either a https://cloud.typedb.com/[TypeDB Cloud] deployment or a TypeDB Core server.
 For TypeDB Core installation instructions, see the xref:home::install/core.adoc[] page.
-. Python and TypeDB Python driver.
+. Python and https://pypi.org/project/typedb-driver/[TypeDB Python driver].
 For the driver installation instructions, see the xref:drivers::python/overview.adoc[] page.
 
 == Program structure
 
-111
+The main workflow of this sample application includes establishing a connection to TypeDB,
+database setup, and querying.
 
 .Example
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tag=get_instances]
+include::drivers::partial$tutorials/python/sample.py[tag=main]
 ----
 
-[,python,indent=0]
-----
-
-include::manual::partial$python-manual-code.py[tag=get_instances]
-----
+The entire `main()` function code is executed in the context of the network connection
+established by the `connect_to_typedb()` function.
+The network connection is represented by the `driver` object that is returned by the function.
 
 == TypeDB connection
 
-111
+The `connect_to_typedb()` function takes `edition` and `addr` as mandatory parameters.
 
 [,python]
 ----
-111
+include::drivers::partial$tutorials/python/sample.py[tag=connection]
 ----
 
-== Creating a database
+The `edition` is expected to be a Enum for selecting a TypeDB edition.
+Depending on the TypeDB edition selected, this function initializes either a TypeDB Core or TypeDB Cloud connection.
+Both require server address, passed in the `addr` parameter.
 
-111
+TypeDB Cloud connection requires `credentials` object of type `TypeDBCredential`
+that is initialized with a username and password.
+For our sample application,
+we have the default credentials for the `admin` account provided as default values for the optional parameters.
+
+== Database setup
+
+To set up a TypeDB database, we need to create a database on the TypeDB server,
+define its schema and load initial data into it.
+Additionally, we test it to make sure that the setup process is completed successfully.
 
 [,python]
 ----
-include::drivers::partial$tutorials/tutorial-python.py[tag=create_new_db]
+include::drivers::partial$tutorials/python/sample.py[tag=db-setup]
 ----
 
-== Defining a schema
+=== Creating a database
+
+For this sample application we create a new database of the default name `sample_app_db`
+in the `create_new_database()` function.
+But first, we check whether a database with such a name already exists.
 
 [,python]
 ----
-include::drivers::partial$tutorials/tutorial-python.py[tag=db-schema-setup]
+include::drivers::partial$tutorials/python/sample.py[tag=create_new_db]
 ----
 
-== Loading initial data
+If there is no such database, we just create a new database.
+But if there is one, we ask user's confirmation on how to proceed.
+
+By default, the `db_reset` is set to False (the default behavior).
+In combination with a pre-existing database,
+that leads to requesting the user's input on whether to replace the existing database with a new one.
+
+If a user gives confirmation for the replacement, we delete the existing database (with all of its schema and data)
+by restarting the `create_new_database` function with the `db_reset` parameter set to True.
+
+If a user doesn't want to delete the existing database,
+we proceed further without modification of the existing database.
+This will most likely lead to failing the database setup phase that comes next,
+but it prevents us from loosing existing data.
+
+=== Defining a schema
+
+After our database is created (or user decided to re-use an existing database with the same name),
+we use a xref:typeql::schema/define.adoc[Define query] to define a schema for that database.
+See the `db_schema_setup()` function:
 
 [,python]
 ----
-include::drivers::partial$tutorials/tutorial-python.py[tag=db-dataset-setup]
+include::drivers::partial$tutorials/python/sample.py[tag=db-schema-setup]
 ----
 
-== Testing a database
+The schema for the sample application is stored in the file
+https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/attachments/iam-schema.tql[iam-schema.tql,window=_blank],
+so we read the file first.
 
-[,python]
-----
-include::drivers::partial$tutorials/tutorial-python.py[tag=test-db]
-----
-
-== Fetch query example
-
-[,python]
-----
-include::drivers::partial$tutorials/tutorial-python.py[tag=fetch]
-----
-
-== Insert query example with matching
-
-[,python]
-----
-include::drivers::partial$tutorials/tutorial-python.py[tag=insert]
-----
-
-== Get query example
-
-[,python]
-----
-include::drivers::partial$tutorials/tutorial-python.py[tag=get]
-----
-
-== Inference example
-
-111
-
-== Update query example
-
-[,python]
-----
-include::drivers::partial$tutorials/tutorial-python.py[tag=update]
-----
-
-== Delete query example
-
-[,python]
-----
-include::drivers::partial$tutorials/tutorial-python.py[tag=delete]
-----
-
-//== Source code
-
-//See the full source code of the sample app below:
-
-
-
-[#_additional_files]
-== Additional files
-
-[#_schema_and_initial_data]
-=== Schema and initial data
-
-For running the sample application, use the following
-https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-schema.tql[schema,window=_blank]
-and
-https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-data-single-query.tql[insert query,window=_blank]
-for the sample dataset insertion.
-
-== Building and running
-
-Place all the files in the same folder and run:
-
-[,bash]
-----
-python .\sample.py
-----
-
-[#_explanation]
-== Explanation
-
-This section is for comments and explanation of the sample application implementation details.
-
-=== Database setup
-
-First of all, we connect to a TypeDB Core server by initializing a driver instance.
-
-We proceed to check whether a database named `iam` exists on the server already.
-We delete such a database if it exists to prevent any possible schema or data conflicts.
-Then we create a new database with the name `iam`.
-
-We open a `schema` session to this database, open a `write` transaction, read the `iam-schema.tql` file,
-and send its contents as a xref:typeql::schema/type-definitions.adoc[Define query].
-Next, we commit the transaction to persist the resulted schema.
-
-After that we open a `data` session, a `write` transaction, read the `iam-data-single-query.tql` file,
-and send its contents as an xref:typeql::data/insert.adoc[Insert query].
-We commit the transaction again and re-using the same data session to open a `read` transaction.
-
-With the new read transaction, we test the resulted database by retrieving the number of users in it.
-
-For more information on server connections, sessions, and transactions, see the xref:manual::connecting/overview.adoc[]
-page.
-
-=== Request #1: User listing
-
-We open a `data` session that will be re-used for multiple requests, open a `read` transaction,
-and send a simple TypeQL query to get all users with `full-name` and `email` attributes.
-
+.See the full schema listing
+[%collapsible]
+====
 [,typeql]
 ----
-match
-$u isa user,
-    has full-name $n,
-    has email $e;
-get;
+include::drivers::attachment$iam-schema.tql[lines=17..]
+----
+====
+
+We use a session object passed as a parameter to open a transaction.
+Then we send the contents of the file as a TypeQL Define query and commit the changes made by the transaction.
+
+=== Loading initial data
+
+With a schema defined, we can load initial data into our database with an xref:typeql::data/insert.adoc[Insert query].
+See the `db_dataset_setup()` function:
+
+[,python]
+----
+include::drivers::partial$tutorials/python/sample.py[tag=db-dataset-setup]
 ----
 
-We iterate through results to print every user and the total count of users.
+We do it the very same way: read the file
+https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/attachments/iam-data-single-query.tql[iam-data-single-query.tql,window=_blank]
+and send it as a single query, and then commit the changes.
 
-[discrete]
-==== Query explanation
-
-This is a xref:typeql::data/get.adoc[Get query] that includes `match` and `get` clauses.
-
-We go through all entities of the `user` type that have a `full-name` attribute and `email` attribute.
-
-A `get` clause with no variables and just a semicolon means,
-that we are retrieving concepts for all variables from the preceding `match` clause pattern in every result.
-
-=== Request #2: Files
-
-We open a new read transaction in the same data session and send a TypeQL query to get paths of all filenames that
-user with the `full-name` of `Kevin Morrison` has access to.
-
+.See the full Insert query listing
+[%collapsible]
+====
 [,typeql]
 ----
-match
-$u isa user, has full-name 'Kevin Morrison';
-$p($u, $pa) isa permission;
-$o isa object, has path $fp;
-$pa($o, $va) isa access;
-get $fp;
+include::drivers::attachment$iam-data-single-query.tql[lines=17..]
 ----
-
-We iterate through results to print every file and the total count of files.
-
-[discrete]
-==== Query explanation
-
-This is a xref:typeql::data/get.adoc[Get query] that includes `match` and `get` clauses.
-//#todo Replace with Fetch!
-
-A `match` clause pattern looks for a `user` (variable `$u`) with attribute `full-name` of value `Kevin Morrison` assigned,
-a `permission` relation (`$p`) in between this user `$u` and potential access `$pa`.
-Additionally, we state that an `object` (`$o`) with a path `$fp` should be a part of `$pa` `access` relation, without
-having to specify what kind of action `$va` it should be.
-
-A `get` clause filters response to only contain the matched `path` attributes (`$fp`).
-
-////
-[NOTE]
-====
-According to the xref:typedb::tutorials/iam-schema.adoc[IAM schema],
-we need two relations to connect users to files: `permission` and `access`.
-====
-////
-
-=== Request #3: Inference
-
-We start with opening a new transaction with the xref:manual::reading/infer.adoc[inference] option enabled.
-
-Then we send a query to get Kevin's files, but this time we specify the access action to be `view_file`,
-since the permission for this access wasn't inserted in the <<_schema_and_initial_data,sample dataset>>
-and must be inferred by the `add-view-permission` rule.
-We also add xref:typeql::data/get.adoc#_sort_the_results[sort],
-xref:typeql::data/get.adoc#_offset_the_results[offset] and
-xref:typeql::data/get.adoc#_limit_the_results[limit] modifiers to the query to manage pagination.
-This request consists of two queries splitting the results between queries.
-
-.Query 1
-[,typeql]
-----
-match
-$u isa user, has full-name 'Kevin Morrison';
-$p($u, $pa) isa permission;
-$o isa object, has path $fp;
-$pa($o, $va) isa access;
-$va isa action, has name 'view_file';
-get $fp;
-sort $fp asc;
-offset 0;
-limit 5;
-----
-
-And then, we repeat the query with different offset to get the rest of results.
-
-.Query 2
-[,typeql]
-----
-match
-$u isa user, has full-name 'Kevin Morrison';
-$p($u, $pa) isa permission;
-$o isa object, has path $fp;
-$pa($o, $va) isa access;
-$va isa action, has name 'view_file';
-get $fp;
-sort $fp asc;
-offset 5;
-limit 5;
-----
-
-[discrete]
-==== Query explanation
-
-We update the previous query to set the type of action (`$va`) to the `view_file` value.
-We still get only `path` (`$fp`), but now we add sorting and pagination: we set offset and limit for the results.
-
-[NOTE]
-====
-Note that Kevin has been assigned only `modify_file` access, and the `view_file` access is being inferred by a
-xref:learn::5-defining-schemas/5.4-defining-rules.adoc[rule].
-To use xref:learn::3-reading-data/3.3-fetching-inferred-data.adoc[inference] in this query,
-we modify TypeDB options and send the modified set of options to the transaction call.
 ====
 
-=== Request #4: Add a new file
+=== Testing a database
 
-To be able to insert new data, we open a write transaction this time.
-Then we generate a filename from current time and date and insert an instance of the `file` type that owns the
-attribute of type `path` and value of the generated filename.
+With the schema defined and data loaded, we test our database to make sure it's ready.
 
-[,typeql]
+[,python]
 ----
-insert $f isa file, has path 'logs/2023-12-19-19-11-36.log';
+include::drivers::partial$tutorials/python/sample.py[tag=test-db]
 ----
 
-After that we do another query to match the new file we just inserted and add a relation of the `access` type with it:
+To test the database, we send a query to count the number of users in the database.
 
-[,typeql]
+== Querying
+
+After database setup is complete, we proceed with querying our database with different types of queries:
+
+. <<_fetch,Fetch query>> -- to get attribute values in JSONs
+. <<_insert,Insert query>> -- to add new data
+. <<_get,Get query>> -- to get stateful objects
+. <<_get_infer,Get query with inference>> -- to get stateful objects with inference
+. <<_update,Update query>> -- to replace data
+. <<_delete,Delete query>> -- to delete data
+
+Every query is implemented as a function that includes visualisation of the query response
+and returns some meaningful data.
+
+[#_fetch]
+=== Fetch query
+
+The main way to retrieve data from a TypeDB database is to use fetching to get values of attributes,
+matched by a pattern.
+
+Let's use a xref:typeql::data/fetch.adoc[Fetch query] to fetch names and emails for all users in the database:
+
+[,python]
 ----
-match
-$f isa file, has path 'logs/2023-12-19-19-11-36.log';
-$vav isa action, has name 'view_file';
-insert
-($vav, $f) isa access;
+include::drivers::partial$tutorials/python/sample.py[tag=fetch]
 ----
 
-[discrete]
-==== Query explanation
+We collect response in a list and store it in the `users` variable that is returned by the function.
+We iterate through the list and print the results from every JSON in the list.
 
-The first query inserts a file entity that owns a `path` attribute with the value of a generated filename.
+Since we know that there is only one name and one email every time, we can print only the first element every time.
+In general case, there can be multiple attributes of the same type owned,
+so we need to consider iterating through all returned values returned for every attribute in every JSON.
+That can be done as in the following example:
 
-With the second query, we look for a `file` entity that has the attribute `path` with the value we generated before.
-And we find an `action`, that has a `name` attribute with the value of `view_file`.
-Finally, we insert an `access` relation between the `file` and the `action`.
+.Printing JSON for any number of attributes fetched
+[,python]
+----
+for i, JSON in enumerate(users, start=0):
+    print(f"User #{i + 1} —", end="")
+    for result in JSON['u']['full-name']:
+        print(f" Full-name:", result['value'], end="")
+    for result in JSON['u']['email']:
+        print(f" E-mail:", result['value'], end="")
+    print()
+----
 
-After both requests are done, we commit the write transaction to persist new information.
+[#_insert]
+=== Insert query
 
-[NOTE]
-====
-Note that we create the `file` first.
-If we try to insert an `access` to a nonexistent `file` our query will run but will not insert any new data (relation)
-because its `match` clause will find no matches in a database.
-====
+Let's insert a new user with `full-name` and `email` attributes to the database.
+
+[,python]
+----
+include::drivers::partial$tutorials/python/sample.py[tag=insert]
+----
+
+We collect the response of the xref:typeql::data/insert.adoc[Insert query] as a list
+and use it to print the inserted data after we commit the transaction.
+
+We iterate through the response, retrieve attribute values and print them for every return result.
+Since the Insert query has no `match` clause, the `insert` clause is executed exactly once.
+But the Insert query always returns a list of ConceptMap objects, where every ConceptMap represents an inserted result.
+
+[#_get]
+=== Get query example
+
+Let's retrieve all files available for a user with a `get_files_by_user()` function.
+It can be used with or without inference enabled.
+
+[,python]
+----
+include::drivers::partial$tutorials/python/sample.py[tag=get]
+----
+
+We call the function without enabling the inference and expect it to return no results, as the query pattern
+matches only files available for `view_file` action, and there are no such files initially in the database.
+
+The `get_files_by_user()` function checks
+that there is only one user matched with the name provided by an input parameter.
+It then executes the query and iterates through the list of results to print a value of every matched `path` attribute.
+
+[#_get_infer]
+=== Inference example
+
+To get query results with inference, we set the `infer` parameter of the TypeDB transaction options to True.
+We use the same `get_files_by_user()` function, but set the `inference` parameter to True when we call it again.
+The `add-view-permission` should provide us with some results this time,
+thanks to the `add-view-permission` rule in the schema.
+
+[#_update]
+=== Update query example
+
+[,python]
+----
+include::drivers::partial$tutorials/python/sample.py[tag=update]
+----
+
+[#_delete]
+=== Delete query example
+
+[,python]
+----
+include::drivers::partial$tutorials/python/sample.py[tag=delete]
+----
