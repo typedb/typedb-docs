@@ -2,21 +2,17 @@
 :keywords: typedb, typeql, tutorial, python, quickstart, start, sample, example, application, app
 :pageTitle: Python driver tutorial
 :summary: A sample application using TypeDB Python driver.
-:tabs-sync-option:
 
 In this tutorial, we'll build a sample application with the Python driver capable of basic interaction with TypeDB:
 
 * Connect to a TypeDB server (Core or Cloud),
-* Delete/create a database,
-* Manage sessions and transactions,
-* Define a schema,
-* Insert data,
-* Query data with or without inference.
+* Manage databases, sessions, and transactions,
+* Send different types of queries.
 
 Follow the steps below or see the
 https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/python/sample.py[full source code,window=_blank].
 
-== Setup
+== Environment setup
 
 To run this sample application, you'll need:
 
@@ -24,6 +20,8 @@ To run this sample application, you'll need:
 For TypeDB Core installation instructions, see the xref:home::install/core.adoc[] page.
 . Python and https://pypi.org/project/typedb-driver/[TypeDB Python driver].
 For the driver installation instructions, see the xref:drivers::python/overview.adoc[] page.
+
+//#todo Consider adding virtualenv step-by-step guide
 
 == Program structure
 
@@ -53,15 +51,16 @@ The `edition` is expected to be a Enum for selecting a TypeDB edition.
 Depending on the TypeDB edition selected, this function initializes either a TypeDB Core or TypeDB Cloud connection.
 Both require server address, passed in the `addr` parameter.
 
-TypeDB Cloud connection requires `credentials` object of type `TypeDBCredential`
+TypeDB Cloud connection also requires an object of the `TypeDBCredential` class
 that is initialized with a username and password.
 For our sample application,
-we have the default credentials for the `admin` account provided as default values for the optional parameters.
+we have the default credentials for the `admin` account
+provided as default values for the function's optional parameters.
 
 == Database setup
 
-To set up a TypeDB database, we need to create a database on the TypeDB server,
-define its schema and load initial data into it.
+To set up a TypeDB database, we need to <<_creating_a_database,create a database>> on the TypeDB server,
+<<_defining_a_schema,define its schema>> and <<_loading_initial_data,load initial data>> into it.
 Additionally, we test it to make sure that the setup process is completed successfully.
 
 [,python]
@@ -69,6 +68,7 @@ Additionally, we test it to make sure that the setup process is completed succes
 include::drivers::partial$tutorials/python/sample.py[tag=db-setup]
 ----
 
+[#_creating_a_database]
 === Creating a database
 
 For this sample application we create a new database of the default name `sample_app_db`
@@ -83,6 +83,11 @@ include::drivers::partial$tutorials/python/sample.py[tag=create_new_db]
 If there is no such database, we just create a new database.
 But if there is one, we ask user's confirmation on how to proceed.
 
+[NOTE]
+====
+Avoid deleting an existing database without confirmation from a user to prevent loss of the existing data.
+====
+
 By default, the `db_reset` is set to False (the default behavior).
 In combination with a pre-existing database,
 that leads to requesting the user's input on whether to replace the existing database with a new one.
@@ -92,9 +97,10 @@ by restarting the `create_new_database` function with the `db_reset` parameter s
 
 If a user doesn't want to delete the existing database,
 we proceed further without modification of the existing database.
-This will most likely lead to failing the database setup phase that comes next,
-but it prevents us from loosing existing data.
+This will most likely lead to failing the database testing after the setup phase that comes next,
+but it prevents user from losing the existing data completely.
 
+[#_defining_a_schema]
 === Defining a schema
 
 After our database is created (or user decided to re-use an existing database with the same name),
@@ -122,6 +128,7 @@ include::drivers::attachment$iam-schema.tql[lines=17..]
 We use a session object passed as a parameter to open a transaction.
 Then we send the contents of the file as a TypeQL Define query and commit the changes made by the transaction.
 
+[#_loading_initial_data]
 === Loading initial data
 
 With a schema defined, we can load initial data into our database with an xref:typeql::data/insert.adoc[Insert query].
@@ -156,7 +163,7 @@ include::drivers::partial$tutorials/python/sample.py[tag=test-db]
 
 To test the database, we send a query to count the number of users in the database.
 
-== Querying
+== Query examples
 
 After database setup is complete, we proceed with querying our database with different types of queries:
 
@@ -221,7 +228,7 @@ Since the Insert query has no `match` clause, the `insert` clause is executed ex
 But the Insert query always returns a list of ConceptMap objects, where every ConceptMap represents an inserted result.
 
 [#_get]
-=== Get query example
+=== Get query
 
 Let's retrieve all files available for a user with a `get_files_by_user()` function.
 It can be used with or without inference enabled.
@@ -239,25 +246,59 @@ that there is only one user matched with the name provided by an input parameter
 It then executes the query and iterates through the list of results to print a value of every matched `path` attribute.
 
 [#_get_infer]
-=== Inference example
+=== Get query with inference
 
-To get query results with inference, we set the `infer` parameter of the TypeDB transaction options to True.
+To get query results with inferred data, let's enable the `infer` parameter of the TypeDB transaction options.
 We use the same `get_files_by_user()` function, but set the `inference` parameter to True when we call it again.
-The `add-view-permission` should provide us with some results this time,
-thanks to the `add-view-permission` rule in the schema.
+The `add-view-permission` provides us with some inferred results this time.
 
 [#_update]
-=== Update query example
+=== Update query
+
+Let's replace a path for one of the files with a new path.
+We can do that by deleting ownership of the old path attribute from the file entity
+and assigning it with ownership of the new path attribute with the xref:typeql::data/update.adoc[Update query]:
 
 [,python]
 ----
 include::drivers::partial$tutorials/python/sample.py[tag=update]
 ----
 
+We collect the response of the Update query in a list and check the length of the list to determine
+the number of times the `delete` and `insert` clauses are executed.
+We then commit the changes only if the number meets our expectation.
+
 [#_delete]
-=== Delete query example
+=== Delete query
+
+Finally, let's delete the same file we update the path for.
+First, we match the file in a Get (or Fetch) query to check how many files get matched to prevent unplanned deletes.
+If the number (and any other relevant parameters) of deletes is as expected,
+we proceed with a xref:typeql::data/delete.adoc[Delete query] with the same match clause.
+
+By using the same `write` transaction we employ snapshot isolation
+to prevent any other transactions from changing the expected results.
+If any other transaction makes a conflicting change before we commit this transaction,
+then our transaction fails upon a commit.
 
 [,python]
 ----
 include::drivers::partial$tutorials/python/sample.py[tag=delete]
 ----
+
+== Learn more
+
+[cols-2]
+--
+.link:https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/python/sample.py[Source code,window=_blank]
+[.clickable]
+****
+The full source code of this sample application.
+****
+
+.xref:drivers::python/api-reference.adoc[]
+[.clickable]
+****
+The full API reference for the TypeDB Python driver.
+****
+--
