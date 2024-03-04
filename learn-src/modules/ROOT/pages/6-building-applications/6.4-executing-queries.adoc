@@ -17,8 +17,6 @@ Fetch queries should be run using a *data session* and *read transaction*. Queri
 // Remove after change to Cloud.
 [,python]
 ----
-from typedb.driver import TypeDB, SessionType, TransactionType
-
 ADDRESS = "localhost:1730"
 DATABASE = "bookstore"
 
@@ -42,8 +40,6 @@ Try running this code snippet against the sample database. You should see the re
 // Add after change to Cloud.
 // [,python]
 // ----
-// from typedb.driver import TypeDB, SessionType, TransactionType
-//
 // DATABASE = "bookstore"
 //
 // with TypeDB.cloud_driver(ADDRESS, credential) as driver:

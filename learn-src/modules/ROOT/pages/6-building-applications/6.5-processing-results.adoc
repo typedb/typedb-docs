@@ -15,8 +15,6 @@ $book: title, genre, page-count;
 // Remove after change to Cloud
 [,python]
 ----
-from typedb.driver import TypeDB, SessionType, TransactionType
-
 ADDRESS = "localhost:1730"
 DATABASE = "bookstore"
 
@@ -37,8 +35,6 @@ with TypeDB.core_driver(ADDRESS) as driver:
 // Add after change to Cloud.
 // [,python]
 // ----
-// from typedb.driver import TypeDB, SessionType, TransactionType
-//
 // DATABASE = "bookstore"
 //
 // with TypeDB.cloud_driver(ADDRESS, credential) as driver:

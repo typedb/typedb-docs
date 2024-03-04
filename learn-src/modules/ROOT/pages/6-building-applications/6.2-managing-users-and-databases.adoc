@@ -11,8 +11,6 @@ To connect to the server, we must instantiate a *driver object*, as illustrated 
 
 [,python]
 ----
-from typedb.driver import TypeDB
-
 ADDRESS = "localhost:1730"
 
 with TypeDB.core_driver(ADDRESS) as driver:
@@ -138,9 +136,6 @@ def print_database_details(driver: TypeDBDriver) -> None:
 //
 // [,python]
 // ----
-// from typedb.driver import TypeDB
-// from typedb.api.connection.credential import TypeDBCredential
-//
 // ADDRESS = "address"
 // USERNAME = "username"
 //
