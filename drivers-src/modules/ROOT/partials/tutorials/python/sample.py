@@ -1,7 +1,9 @@
 # tag::code[]
+# tag::import[]
 from typedb.driver import TypeDB, SessionType, TransactionType, TypeDBOptions, TypeDBCredential
 from enum import Enum
-
+# end::import[]
+# tag::constants[]
 DB_NAME = "sample_app_db"
 SERVER_ADDR = "127.0.0.1:1729"
 
@@ -12,6 +14,7 @@ class Edition(Enum):
 
 
 TYPEDB_EDITION = Edition.Core
+# end::constants[]
 
 
 # tag::create_new_db[]
