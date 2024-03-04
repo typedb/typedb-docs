@@ -10,7 +10,7 @@ In this tutorial, we'll build a sample application with the Java driver capable 
 * Send different types of queries.
 
 Follow the steps below or see the
-https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/java/src/main/java/org/example2/main.java[full source code,window=_blank].
+https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/java/src/main/java/org/example2/Main.java[full source code,window=_blank].
 
 == Environment setup
 
@@ -30,7 +30,7 @@ database setup, and querying.
 
 [,java,indent=0]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/main.java[tag=main]
+include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=main]
 ----
 
 The entire `main()` function code is executed in the context of the network connection
@@ -43,7 +43,7 @@ The `connectToTypedb()` function takes `edition` and `addr` as input parameters.
 
 [,java]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/main.java[tag=connection]
+include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=connection]
 ----
 
 The `edition` is expected to be a Enum for selecting a TypeDB edition.
@@ -70,7 +70,7 @@ Additionally, we test it to make sure that the setup process is completed succes
 
 [,java]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/main.java[tag=db-setup]
+include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=db-setup]
 ----
 
 [#_creating_a_database]
@@ -82,7 +82,7 @@ But first, we check whether a database with such a name already exists.
 
 [,java]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/main.java[tag=create_new_db]
+include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=create_new_db]
 ----
 
 If there is no such database, we just create a new database.
@@ -114,7 +114,7 @@ See the `dbSchemaSetup()` function:
 
 [,java]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/main.java[tag=db-schema-setup]
+include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=db-schema-setup]
 ----
 
 The schema for the sample application is stored in the file
@@ -141,7 +141,7 @@ See the `dbDatasetSetup()` function:
 
 [,java]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/main.java[tag=db-dataset-setup]
+include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=db-dataset-setup]
 ----
 
 We do it the very same way: read the file
@@ -163,7 +163,7 @@ With the schema defined and data loaded, we test our database to make sure it's 
 
 [,java]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/main.java[tag=test-db]
+include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=test-db]
 ----
 
 To test the database, we send a query to count the number of users in the database.
@@ -176,7 +176,7 @@ After database setup is complete, we proceed with querying our database with dif
 //
 // [,java,indent=0]
 // ----
-// include::drivers::partial$tutorials/java/src/main/java/org/example2/main.java[tag=queries]
+// include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=queries]
 // ----
 //
 // The queries are as follows:
@@ -201,7 +201,7 @@ Let's use a xref:typeql::data/fetch.adoc[Fetch query] to fetch names and emails 
 
 [,java]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/main.java[tag=fetch]
+include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=fetch]
 ----
 
 We get the response as a stream of results, containing JSON.
@@ -216,7 +216,7 @@ Let's insert a new user with a `full-name` and `email` attributes to the databas
 
 [,java]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/main.java[tag=insert]
+include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=insert]
 ----
 
 The Insert query returns a stream of ConceptMaps: one for every `insert` clause execution.
@@ -235,7 +235,7 @@ It can be used with or without inference enabled.
 
 [,java]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/main.java[tag=get]
+include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=get]
 ----
 
 We call the function with the inference disabled (false) and expect it to return no results, as the query pattern
@@ -268,7 +268,7 @@ and assigning it with ownership of the new path attribute with the xref:typeql::
 
 [,java]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/main.java[tag=update]
+include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=update]
 ----
 
 We collect the response of the Update query and check the length of it to determine
@@ -290,7 +290,7 @@ then our transaction fails upon a commit.
 
 [,java]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/main.java[tag=delete]
+include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=delete]
 ----
 
 == Learn more
