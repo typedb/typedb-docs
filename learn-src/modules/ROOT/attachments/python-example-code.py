@@ -1,13 +1,15 @@
+# 6.1 driver setup
+
+from typedb.driver import TypeDB, SessionType, TransactionType
+from typedb.api.connection.credential import TypeDBCredential
+
 from typing import Iterator
 from typedb.api.connection.driver import TypeDBDriver
-from typedb.api.connection.database import Database
 from typedb.api.connection.transaction import TypeDBTransaction
 from typedb.api.user.user import User
+from typedb.api.connection.database import Database
 
-# 6.1 managing users and databases
-
-from typedb.driver import TypeDB
-from typedb.api.connection.credential import TypeDBCredential
+# 6.2 managing users and databases
 
 ADDRESS = "localhost:1730"
 USERNAME = "username"
@@ -105,9 +107,7 @@ def print_database_details(driver: TypeDBDriver) -> None:
         print(database.schema())
 
 
-# 6.2 sessions and transactions
-
-from typedb.driver import SessionType
+# 6.3 sessions and transactions
 
 DATABASE = "database-name"
 
@@ -115,8 +115,6 @@ with TypeDB.cloud_driver(ADDRESS, credential) as driver:
     with driver.session(DATABASE, SessionType.DATA) as session:
         # code goes here
         pass
-
-from typedb.driver import TransactionType
 
 with TypeDB.cloud_driver(ADDRESS, credential) as driver:
     with driver.session(DATABASE, SessionType.DATA) as session:
@@ -131,9 +129,7 @@ with TypeDB.cloud_driver(ADDRESS, credential) as driver:
 
             transaction.commit()
 
-# 6.3 executing queries
-
-from typedb.driver import TypeDB, SessionType, TransactionType
+# 6.4 executing queries
 
 DATABASE = "bookstore"
 
@@ -281,9 +277,7 @@ with TypeDB.cloud_driver(ADDRESS, credential) as driver:
 
             transaction.commit()
 
-# 6.4 processing results
-
-from typedb.driver import TypeDB, SessionType, TransactionType
+# 6.5 processing results
 
 DATABASE = "bookstore"
 

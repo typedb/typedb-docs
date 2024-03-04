@@ -1,7 +1,7 @@
 // This version should be removed following the change to Cloud.
 // The version for after the change is below.
 // Ensure all changes are propagated to both versions.
-= Lesson 6.1: Managing databases
+= Lesson 6.2: Managing databases
 
 == Connecting to the server
 
@@ -11,8 +11,6 @@ To connect to the server, we must instantiate a *driver object*, as illustrated 
 
 [,python]
 ----
-from typedb.driver import TypeDB
-
 ADDRESS = "localhost:1730"
 
 with TypeDB.core_driver(ADDRESS) as driver:
@@ -32,7 +30,7 @@ There are three key ways we can use a driver object:
 * Manage databases.
 * Open sessions.
 
-We'll cover managing databases in this lesson, and then see how to open sessions in xref:learn::6-building-applications/6.2-sessions-and-transactions.adoc[Lesson 6.2].
+We'll cover managing databases in this lesson, and then see how to open sessions in xref:learn::6-building-applications/6.3-sessions-and-transactions.adoc[Lesson 6.3].
 
 [NOTE]
 ====
@@ -128,7 +126,7 @@ def print_database_details(driver: TypeDBDriver) -> None:
 
 
 // Version for after the change to Cloud.
-// = Lesson 6.1: Managing users and databases
+// = Lesson 6.2: Managing users and databases
 //
 // == Connecting to the server
 //
@@ -138,9 +136,6 @@ def print_database_details(driver: TypeDBDriver) -> None:
 //
 // [,python]
 // ----
-// from typedb.driver import TypeDB
-// from typedb.api.connection.credential import TypeDBCredential
-//
 // ADDRESS = "address"
 // USERNAME = "username"
 //
@@ -174,7 +169,7 @@ def print_database_details(driver: TypeDBDriver) -> None:
 // * Manage databases.
 // * Open sessions.
 //
-// We'll cover managing users and databases in this lesson, and then see how to open sessions in xref:learn::6-building-applications/6.2-sessions-and-transactions.adoc[Lesson 6.2]. The credentials used to instantiate the driver object affect the controls that are available to it. Some controls are only available when using an admin's credentials.
+// We'll cover managing users and databases in this lesson, and then see how to open sessions in xref:learn::6-building-applications/6.3-sessions-and-transactions.adoc[Lesson 6.3]. The credentials used to instantiate the driver object affect the controls that are available to it. Some controls are only available when using an admin's credentials.
 //
 // [NOTE]
 // ====

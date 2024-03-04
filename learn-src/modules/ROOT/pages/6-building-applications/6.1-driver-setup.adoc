@@ -1,0 +1,31 @@
+= Lesson 6.1: Driver setup
+
+== Installation
+
+Ensure you have the latest stable version of https://www.python.org/downloads/[Python installed], and run the following command to install the official TypeDB Python driver package:
+
+[,bash]
+----
+pip install typedb-driver
+----
+
+== Imports
+
+The following classes must be imported in order to use the Python driver in any codebase.
+
+[,python]
+----
+from typedb.driver import TypeDB, SessionType, TransactionType
+from typedb.api.connection.credential import TypeDBCredential
+----
+
+Additionally, we'll be using the following classes for type hints in this learning course. They should be imported to run the examples and exercises featured.
+
+[,python]
+----
+from typing import Iterator
+from typedb.api.connection.driver import TypeDBDriver
+from typedb.api.connection.transaction import TypeDBTransaction
+from typedb.api.user.user import User
+from typedb.api.connection.database import Database
+----

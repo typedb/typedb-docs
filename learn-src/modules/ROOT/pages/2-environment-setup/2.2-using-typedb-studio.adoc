@@ -57,47 +57,48 @@ image::studio-screenshots/6-toolbar.png[role=framed, width = 75%, link=self]
 
 The following controls will be important throughout this course:
 
-.Main toolbar controls in Studio
 [cols="^.^3,^.^4,.^10"]
 |===
-| Name | Control | Description
+| Name | Control ^.^| Description
 
 | Database manager
-| image:learn::studio-icons/database.png[]
+| image:learn::studio-icons/database-manager.png[]
 | Use this button to open the *database manager*. From there, you can create and delete databases.
 
 | Database selector
-| image:learn::studio-icons/db-selector.png[]
-| Use this dropdown menu to select a database to work with. All sessions will be opened for the selected database.
+| image:learn::studio-icons/database-selector.png[]
+| Use this dropdown menu to select a database to work with. Unless the course material says otherwise, we'll be working with the `bookstore` database.
 
 | Session switch
-| image:learn::studio-icons/session-toggle.png[]
+| image:learn::studio-icons/session-switch.png[]
 | Use these buttons to toggle between *schema* and *data* sessions. The course material will tell you when to switch session types. For now, switch to a data session.
 
 | Transaction switch
-| image:learn::studio-icons/transaction-toggle.png[]
+| image:learn::studio-icons/transaction-switch.png[]
 | Use these buttons to toggle between *write* and *read* transactions. The course material will tell you when to switch transaction types. For now, switch to a read transaction.
 
-| Infer button
-| image:learn::studio-icons/infer.png[]
+| Inference toggle
+| image:learn::studio-icons/inference-toggle.png[]
 | Use this button to toggle *rule inference* on and off. For now, make sure it's switched off, otherwise you may get back unexpected query results. We'll explore rule inference in xref:learn::3-reading-data/3.3-fetching-inferred-data.adoc[Lesson 3.3].
 
 | Close transaction
-| image:learn::studio-icons/close.png[]
+| image:learn::studio-icons/close-transaction.png[]
 | Use this button to *close* an open write transaction without committing the changes to the database.
 
 | Commit transaction
-| image:learn::studio-icons/commit.png[]
-| Use this button to *commit* an open write transaction, i.e. make the changes of the transaction permanent in the database.
+| image:learn::studio-icons/commit-transaction.png[]
+| Use this button to *commit* an open write transaction, persisting the changes made.
 
-| Run Query
-| image:learn::studio-icons/run.png[]
+| Run query
+| image:learn::studio-icons/run-query.png[]
 | Use this button to *run* the query displayed in the text editor. If the transaction toggle is set to "write", this will open a transaction which must then be closed or committed.
 |===
 
-=== Running a query
+The remaining toolbar controls will not be necessary for the majority of this course. A full overview of all controls can be found on the  xref:manual::studio.adoc[Studio page] of the TypeDB Manual.
 
-Let's try running a query. To start off, image:learn::studio-icons/new.png[] *open* a new window in the text editor and paste in the following query.
+=== Running a test query
+
+Let's try running a query. To start off, image:learn::studio-icons/new-file.png[] *open* a new window in the text editor and paste in the following query.
 
 [,typeql]
 ----
@@ -107,7 +108,7 @@ fetch
 $book: title, page-count;
 ----
 
-Ensure the session toggle is set to a *data* session and the transaction toggle is set to a *read* query, then image:learn::studio-icons/run.png[] *run* the query. You should see the following result.
+Ensure the session toggle is set to a *data* session and the transaction toggle is set to a *read* query, then image:learn::studio-icons/run-query.png[] *run* the query. You should see the following result.
 
 [,json]
 ----
