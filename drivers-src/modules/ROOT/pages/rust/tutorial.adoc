@@ -279,7 +279,7 @@ We then commit the changes only if the number meets our expectation.
 [#_delete]
 === Delete query
 
-Finally, let's delete the same file we update the path for.
+Finally, let's delete the same file we updated the path for.
 First, we match the file in a Get (or Fetch) query to check how many files get matched to prevent unplanned deletes.
 If the number (or any other relevant parameters) of matched results is as expected,
 we proceed with a xref:typeql::data/delete.adoc[Delete query] with the same match clause.
