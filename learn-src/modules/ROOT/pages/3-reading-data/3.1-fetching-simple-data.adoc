@@ -24,7 +24,7 @@ This TypeQL query comprises two *clauses*: a `match` clause and a `fetch` clause
 
 The `match` clause is equivalent to a *selection* in SQL. It identifies what entity types (tables) we wish to retrieve data from. It can also specify further constraints that the retrieved data must meet, as we'll see shortly. The `fetch` clause is equivalent to a *projection* in SQL. It specifies what attributes (columns) we would like to retrieve for the entities (rows) identified. In this case, we've chosen to retrieve _all_ attributes using the `attribute` keyword.
 
-Using a *data* session and *read* transaction, *run* image:learn::studio-icons/run.png[] this query. You should see the following result.
+Using a *data* session and *read* transaction, *run* image:learn::studio-icons/run-query.png[] this query. You should see the following result.
 
 [,json]
 ----
@@ -236,7 +236,7 @@ fetch
 $book: title, page-count;
 ----
 
-If we *run* image:learn::studio-icons/run.png[] this query, we see the following result:
+If we *run* image:learn::studio-icons/run-query.png[] this query, we see the following result:
 
 [,json]
 ----
@@ -388,7 +388,7 @@ fetch
 $book: title, page-count;
 ----
 
-Try *running* image:learn::studio-icons/run.png[] these two queries. You should get the same results.
+Try *running* image:learn::studio-icons/run-query.png[] these two queries. You should get the same results.
 
 In the first version, we used a single composite *statement* in the `match` clause, whereas in the second version, we instead used two simple statements. If simple statements concern the same variable (in this case `$book`), we can always concatenate them using commas to form a composite statement, and vice versa.
 

@@ -12,7 +12,7 @@ $ga isa state, has name "Georgia";
 insert
 ($us, $ga) isa locating;
 ----
-image:learn::studio-icons/run.png[] *_Try running_*
+image:learn::studio-icons/run-query.png[] *_Try running_*
 
 In this case, the query was invalid because TypeDB cannot infer the roles that `$us` and `$ga` should play, but there are many reasons a query can be invalid. Try running each of the following ones to see what happens.
 
@@ -23,7 +23,7 @@ $odyssey isa book, has isbn "9780393634563";
 insert
 $odyssey has stock 20;
 ----
-image:learn::studio-icons/run.png[] *_Try running_*
+image:learn::studio-icons/run-query.png[] *_Try running_*
 
 [,typeql]
 ----
@@ -33,7 +33,7 @@ $isbn "9781489962287" isa isbn;
 delete
 $book has $isbn;
 ----
-image:learn::studio-icons/run.png[] *_Try running_*
+image:learn::studio-icons/run-query.png[] *_Try running_*
 
 [,typeql]
 ----
@@ -45,7 +45,7 @@ $order-28 has $paid;
 insert
 $order-28 has status "sent";
 ----
-image:learn::studio-icons/run.png[] *_Try running_*
+image:learn::studio-icons/run-query.png[] *_Try running_*
 
 .Exercise
 [caption=""]
