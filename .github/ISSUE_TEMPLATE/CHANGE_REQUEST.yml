@@ -1,0 +1,29 @@
+# https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-githubs-form-schema
+name: Change Request Form
+description: Report incorrect or missing content in docs, or another website issue
+labels:
+  - 'status: triage'
+
+body:
+  - type: textarea
+    id: issue-description
+    attributes:
+      label: Description of issue
+      description: |
+        Briefly describe the issue that you encountered.
+    validations:
+      required: true
+  - type: input
+    id: article
+    attributes:
+      label: Affected docs article
+      description: |
+        On which docs article did you find the problem?
+      placeholder: "https://www.typedb.com/docs/"
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Suggested solution
+      description: >
+        Let us know if you have specific ideas on how we can fix the issue.
