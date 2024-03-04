@@ -52,7 +52,7 @@ with TypeDB.core_driver(ADDRESS) as driver:
 
 The transaction object takes one argument, the *transaction type*, and should be instantiated using a context manager. There are two types of transaction, *read transactions* and *write transactions*, denoted by the `READ` and `WRITE` values of the `TransactionType` enum. Read transactions are used to retrieve data, while write transactions are used to modify data. This is in line with the principle of https://en.wikipedia.org/wiki/Command%E2%80%93query_separation[command-query separation], and leads to three different combinations of session and transaction types.
 
-[cols="3",caption="",options="header"]
+[cols="^.^,^.^,^.^",caption="",options="header"]
 |===
 |`SessionType` |`TransactionType` |Purpose
 |`DATA` | `READ` | Retrieving data.
