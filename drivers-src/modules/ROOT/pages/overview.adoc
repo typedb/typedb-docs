@@ -15,17 +15,132 @@ A TypeDB Driver is a library that implements *TypeDB Driver RPC* protocol and pr
 TypeDB Drivers are available for some of the most popular programming languages:
 
 [#_driver_api]
-* xref:drivers::rust/overview.adoc[Rust] (xref:rust/api-reference.adoc[API reference])
-* xref:drivers::python/overview.adoc[Python] (xref:python/api-reference.adoc[API reference])
-* xref:drivers::java/overview.adoc[Java] (xref:java/api-reference.adoc[API reference])
-* xref:drivers::nodejs/overview.adoc[Node.js] (xref:nodejs/api-reference.adoc[API reference])
+== Rust driver
+
+[cols-3]
+--
+.xref:drivers::rust/overview.adoc[Overview]
+[.clickable]
+****
+Basic information, Installation instructions, and version compatibility.
+****
+
+.xref:drivers::rust/tutorial.adoc[Tutorial]
+[.clickable]
+****
+The sample application tutorial for the Rust driver.
+****
+
+.xref:drivers::rust/api-reference.adoc[API reference]
+[.clickable]
+****
+The full API reference for the TypeDB Rust driver.
+****
+--
+
+== Python driver
+
+[cols-3]
+--
+.xref:drivers::python/overview.adoc[Overview]
+[.clickable]
+****
+Basic information, Installation instructions, and version compatibility.
+****
+
+.xref:drivers::python/tutorial.adoc[Tutorial]
+[.clickable]
+****
+The sample application tutorial for the Python driver.
+****
+
+.xref:drivers::python/api-reference.adoc[API reference]
+[.clickable]
+****
+The full API reference for the TypeDB Python driver.
+****
+--
+
+== Java driver
+
+[cols-3]
+--
+.xref:drivers::java/overview.adoc[Overview]
+[.clickable]
+****
+Basic information, Installation instructions, and version compatibility.
+****
+
+.xref:drivers::java/tutorial.adoc[Tutorial]
+[.clickable]
+****
+The sample application tutorial for the Java driver.
+****
+
+.xref:drivers::java/api-reference.adoc[API reference]
+[.clickable]
+****
+The full API reference for the TypeDB Java driver.
+****
+--
+
+== Node.js driver
+
+[cols-3]
+--
+.xref:drivers::nodejs/overview.adoc[Overview]
+[.clickable]
+****
+Basic information, Installation instructions, and version compatibility.
+****
+
+.xref:drivers::nodejs/tutorial.adoc[Tutorial]
+[.clickable]
+****
+The sample application tutorial for the Node.js driver.
+****
+
+.xref:drivers::nodejs/api-reference.adoc[API reference]
+[.clickable]
+****
+The full API reference for the TypeDB Node.js driver.
+****
+--
+
+== C++ driver
+
+[cols-3]
+--
+.xref:drivers::cpp/overview.adoc[Overview]
+[.clickable]
+****
+Basic information, Installation instructions, and version compatibility.
+****
+
+.xref:drivers::cpp/tutorial.adoc[Tutorial]
+[.clickable]
+****
+The sample application tutorial for the C++ driver.
+****
+
+.xref:drivers::cpp/api-reference.adoc[API reference]
+[.clickable]
+****
+The full API reference for the TypeDB C++ driver.
+****
+--
+
+// * xref:drivers::rust/overview.adoc[Rust] (xref:rust/api-reference.adoc[API reference])
+// * xref:drivers::python/overview.adoc[Python] (xref:python/api-reference.adoc[API reference])
+// * xref:drivers::java/overview.adoc[Java] (xref:java/api-reference.adoc[API reference])
+// * xref:drivers::nodejs/overview.adoc[Node.js] (xref:nodejs/api-reference.adoc[API reference])
 
 //We also have some community projects for xref:other-languages.adoc[other languages].
 //and provide support for creating a xref:new-driver.adoc[new driver].
 
-We recommend instantiating a single TypeDB Driver per application.
+// We recommend instantiating a single TypeDB Driver per application.
 
-== Architecture of a TypeDB Driver
+== TypeDB driver architecture
 
 TypeDB Drivers share a common architecture and capabilities.
 The key components have to do with providing an API, opening and managing connections, sessions, and transactions,
