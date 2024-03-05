@@ -34,7 +34,7 @@ pip install typedb-driver
 == Program structure
 
 The main workflow of this sample application includes establishing a connection to TypeDB,
-database setup, and querying.
+performing a new database setup, and querying.
 
 .Example
 [,python,indent=0]
@@ -173,7 +173,15 @@ To test the database, we send a query to count the number of users in the databa
 
 == Query examples
 
-After database setup is complete, we proceed with querying our database with different types of queries:
+After database setup is complete, we proceed with querying our database with different types of queries in the
+`queries()` function:
+
+[,rust,indent=0]
+----
+include::drivers::partial$tutorials/rust/src/main.rs[tag=queries]
+----
+
+The queries are as follows:
 
 . <<_fetch,Fetch query>> -- to get attribute values in JSONs
 . <<_insert,Insert query>> -- to add new data
