@@ -142,7 +142,7 @@ The full API reference for the TypeDB C++ driver.
 
 == TypeDB driver architecture
 
-TypeDB Drivers share a common architecture and capabilities.
+TypeDB drivers share a common architecture and capabilities.
 The key components have to do with providing an API, opening and managing connections, sessions, and transactions,
 as well as validating and sending queries, processing responses.
 
@@ -164,5 +164,5 @@ database, execute queries, and process responses.
 [NOTE]
 ====
 As of version `2.24.x` the Java, Python,
-and C drivers are re-implemented as wrappers on top of the Rust driver via an FFI interface.
+and C/C++ drivers are re-implemented as wrappers on top of the Rust driver via an FFI interface.
 ====
