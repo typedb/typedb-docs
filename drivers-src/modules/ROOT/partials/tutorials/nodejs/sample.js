@@ -243,7 +243,6 @@ async function dbSetup(driver, dbName, dbReset=false) {
         console.log("Database creation failed. Terminating...");
         return false;
     }
-    let dataLoaded;
     if (newDatabase) {
         try {
             let session = await driver.session(dbName, SessionType.SCHEMA);
@@ -251,15 +250,15 @@ async function dbSetup(driver, dbName, dbReset=false) {
             await session.close();
             session = await driver.session(dbName, SessionType.DATA);
             await dbDatasetSetup(session);
-            dataLoaded = true;
-        } catch (error) { console.error(error); }
+            await session.close();
+        } catch (error) { console.error(error); };
     }
-    if (dataLoaded || !newDatabase) {
-        try {
-            let session = await driver.session(dbName, SessionType.DATA);
-            return await testInitialDatabase(session)
-        } catch (error) { console.error(error); }
-    }
+    try {
+        let session = await driver.session(dbName, SessionType.DATA);
+        let result = await testInitialDatabase(session)
+        await session.close();
+        return result
+    } catch (error) { console.error(error); };
 }
 // end::db-setup[]
 // tag::db-schema-setup[]
