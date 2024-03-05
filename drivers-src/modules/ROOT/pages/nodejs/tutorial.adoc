@@ -56,12 +56,7 @@ that is initialized with a username and password.
 For our sample application, we have the default credentials for the `admin` account set in the code of the
 `connectToTypedb` function.
 
-[NOTE]
-====
-Remember to change the default password for the default `admin` account first.
-Otherwise, TypeDB Cloud blocks all operations by this account
-until you xref:manual::configuring/users.adoc#_first_login[change the password].
-====
+include::partial$tutorials/change-psw.adoc[]
 
 == Database setup
 
@@ -165,13 +160,12 @@ include::drivers::partial$tutorials/iam-data-single-query.tql[lines=17..]
 === Testing a database
 
 With the schema defined and data loaded, we test our database to make sure it's ready.
+To test the database, we send a query to count the number of users in the database.
 
 [,js,indent=0]
 ----
 include::drivers::partial$tutorials/nodejs/sample.js[tag=test-db]
 ----
-
-To test the database, we send a query to count the number of users in the database.
 
 == Query examples
 
@@ -180,7 +174,7 @@ After database setup is complete, we proceed with querying our database with dif
 
 [,js,indent=0]
 ----
-include::drivers::partial$tutorials/rust/src/main.rs[tag=queries]
+include::drivers::partial$tutorials/nodejs/sample.js[tag=queries]
 ----
 
 The queries are as follows:

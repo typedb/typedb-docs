@@ -55,12 +55,7 @@ that is initialized with a username and password.
 For our sample application, we have the default credentials for the `admin` account set in the code of the
 `connectToTypedb` function.
 
-[NOTE]
-====
-Remember to change the default password for the default `admin` account first.
-Otherwise, TypeDB Cloud blocks all operations by this account,
-until you xref:manual::configuring/users.adoc#_first_login[change the password].
-====
+include::partial$tutorials/change-psw.adoc[]
 
 == Database setup
 
@@ -108,7 +103,7 @@ but it prevents user from losing the existing data completely.
 [#_defining_a_schema]
 === Defining a schema
 
-After our database is created (or user decided to re-use an existing database with the same name),
+After the new database is created,
 we use a xref:typeql::schema/define.adoc[Define query] to define a schema for that database.
 See the `dbSchemaSetup()` function:
 
@@ -118,7 +113,7 @@ include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[ta
 ----
 
 The schema for the sample application is stored in the file
-https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/attachments/iam-schema.tql[iam-schema.tql,window=_blank],
+https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[iam-schema.tql,window=_blank],
 so we read the file first.
 
 .See the full schema listing
@@ -145,7 +140,7 @@ include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[ta
 ----
 
 We do it the very same way: read the file
-https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/attachments/iam-data-single-query.tql[iam-data-single-query.tql,window=_blank],
+https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/iam-data-single-query.tql[iam-data-single-query.tql,window=_blank],
 send it as a single query, and then commit the changes.
 
 .See the full Insert query listing
@@ -160,13 +155,12 @@ include::drivers::partial$tutorials/iam-data-single-query.tql[lines=17..]
 === Testing a database
 
 With the schema defined and data loaded, we test our database to make sure it's ready.
+To test the database, we send a query to count the number of users in the database.
 
 [,java]
 ----
 include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=test-db]
 ----
-
-To test the database, we send a query to count the number of users in the database.
 
 == Query examples
 
