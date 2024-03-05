@@ -136,8 +136,8 @@ Then we send the contents of the file as a TypeQL Define query and commit the ch
 [#_loading_initial_data]
 === Loading initial data
 
-With a schema defined, we can load initial data into our database with an xref:typeql::data/insert.adoc[Insert query].
-See the `dbDatasetSetup()` function:
+With the schema defined, we can load initial data into our database with the xref:typeql::data/insert.adoc[Insert query]
+in the `dbDatasetSetup()` function:
 
 [,java]
 ----
@@ -230,7 +230,7 @@ But the Insert query always returns a list of ConceptMap objects, where every Co
 [#_get]
 === Get query
 
-Let's retrieve all files available for a user with a `get_files_by_user()` function.
+Let's retrieve all files available for a user with a `getFilesByUser()` function.
 It can be used with or without inference enabled.
 
 [,java]
