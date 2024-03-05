@@ -221,44 +221,50 @@ def connect_to_typedb(edition, addr, username='admin', password='password'):
 # end::connection[]
 
 
+# tag::queries[]
+def queries(driver, db_name):
+    print("\nRequest 1 of 6: Fetch all users as JSON objects with full names and emails")
+    users = fetch_all_users(driver, DB_NAME)
+    assert len(users) == 3
+
+    new_name = "Jack Keeper"
+    new_email = "jk@vaticle.com"
+    print(f"\nRequest 2 of 6: Add a new user with the full-name {new_name} and email {new_email}")
+    insert_new_user(driver, DB_NAME, new_name, new_email)
+
+    name = "Kevin Morrison"
+    print(f"\nRequest 3 of 6: Find all files that the user {name} has access to view (no inference)")
+    files = get_files_by_user(driver, DB_NAME, name)
+    assert files is not None
+    assert len(files) == 0
+
+    print(f"\nRequest 4 of 6: Find all files that the user {name} has access to view (with inference)")
+    files = get_files_by_user(driver, DB_NAME, name, inference=True)
+    assert files is not None
+    assert len(files) == 10
+
+    old_path = 'lzfkn.java'
+    new_path = 'lzfkn2.java'
+    print(f"\nRequest 5 of 6: Update the path of a file from {old_path} to {new_path}")
+    updated_files = update_filepath(driver, DB_NAME, old_path, new_path)
+    assert updated_files is not None
+    assert len(updated_files) == 1
+
+    path = 'lzfkn2.java'
+    print(f"\nRequest 6 of 6: Delete the file with path {path}")
+    deleted = delete_file(driver, DB_NAME, path)
+    assert deleted
+# end::queries[]
+
+
 # tag::main[]
 def main():
     with connect_to_typedb(TYPEDB_EDITION, SERVER_ADDR) as driver:
-        if not db_setup(driver, DB_NAME, db_reset=False):
+        if db_setup(driver, DB_NAME, db_reset=False):
+            queries(driver, DB_NAME)
+        else:
             print("Terminating...")
             exit()
-
-        print("\nRequest 1 of 6: Fetch all users as JSON objects with full names and emails")
-        users = fetch_all_users(driver, DB_NAME)
-        assert len(users) == 3
-
-        new_name = "Jack Keeper"
-        new_email = "jk@vaticle.com"
-        print(f"\nRequest 2 of 6: Add a new user with the full-name {new_name} and email {new_email}")
-        insert_new_user(driver, DB_NAME, new_name, new_email)
-
-        name = "Kevin Morrison"
-        print(f"\nRequest 3 of 6: Find all files that the user {name} has access to view (no inference)")
-        files = get_files_by_user(driver, DB_NAME, name)
-        assert files is not None
-        assert len(files) == 0
-
-        print(f"\nRequest 4 of 6: Find all files that the user {name} has access to view (with inference)")
-        files = get_files_by_user(driver, DB_NAME, name, inference=True)
-        assert files is not None
-        assert len(files) == 10
-
-        old_path = 'lzfkn.java'
-        new_path = 'lzfkn2.java'
-        print(f"\nRequest 5 of 6: Update the path of a file from {old_path} to {new_path}")
-        updated_files = update_filepath(driver, DB_NAME, old_path, new_path)
-        assert updated_files is not None
-        assert len(updated_files) == 1
-
-        path = 'lzfkn2.java'
-        print(f"\nRequest 6 of 6: Delete the file with path {path}")
-        deleted = delete_file(driver, DB_NAME, path)
-        assert deleted
 # end::main[]
 
 
