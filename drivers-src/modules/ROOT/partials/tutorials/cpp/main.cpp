@@ -12,7 +12,7 @@ enum edition { core, cloud };
 edition TYPEDB_EDITION = edition::core;
 // end::constants[]
 // tag::create_new_db[]
-bool createNewDatabase(TypeDB::Driver& driver, const std::string& dbName, bool dbReset = false) {
+bool tryCreateDatabase(TypeDB::Driver& driver, const std::string& dbName, bool dbReset = false) {
     if (driver.databases.contains(dbName)) {
         if (dbReset) {
             std::cout << "Replacing an existing database...";
@@ -25,7 +25,7 @@ bool createNewDatabase(TypeDB::Driver& driver, const std::string& dbName, bool d
             std::cout << "Found a pre-existing database. Do you want to replace it? (Y/N) ";
             std::cin >> answer;
             if (answer == "Y" || answer == "y") {
-                return createNewDatabase(driver, dbName, true);
+                return tryCreateDatabase(driver, dbName, true);
             } else {
                 std::cout << "Reusing an existing database." << std::endl;
                 return false;
@@ -96,13 +96,13 @@ bool testInitialDatabase(TypeDB::Session& dataSession) {
 // tag::db-setup[]
 bool dbSetup(TypeDB::Driver& driver, const std::string& dbName, bool dbReset = false) {
     std::cout << "Setting up the database: " << dbName << std::endl;
-    bool newDatabase = createNewDatabase(driver, dbName, dbReset);
+    bool isNew = tryCreateDatabase(driver, dbName, dbReset);
     if (!driver.databases.contains(dbName)) {
         std::cout << "Database creation failed. Terminating..." << std::endl;
         exit(EXIT_FAILURE);
     }
     TypeDB::Options options;
-    if (newDatabase) {
+    if (isNew) {
         {
             TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
             dbSchemaSetup(session);
