@@ -33,44 +33,47 @@ public class Main {
         try (TypeDBDriver driver = connectToTypedb(TYPEDB_EDITION, SERVER_ADDR)) {
             if (dbSetup(driver, DB_NAME, false)) {
                 System.out.println("Setup complete.");
+                queries(driver, DB_NAME);
             } else {
                 System.out.println("Setup failed.");
             }
-
-            System.out.println("Request 1 of 6: Fetch all users as JSON objects with full names and emails");
-            List<JSON> users = fetchAllUsers(driver);
-
-            String name = "Jack Keeper";
-            String email = "jk@vaticle.com";
-            String secondRequestMessage = String.format("Request 2 of 6: Request 2 of 6: Add a new user with the full-name \"%s\" and email \"%s\"", name, email);
-            System.out.println(secondRequestMessage);
-            List<ConceptMap> newUser = insertNewUser(driver, name, email);
-            // getFilesByUser, updateFilePath, deleteFile
-
-            String nameKevin = "Kevin Morrison";
-            String thirdRequestMessage = String.format("Request 3 of 6: Find all files that the user \"%s\" has access to view (no inference)", nameKevin);
-            System.out.println(thirdRequestMessage);
-            List<ConceptMap> no_files = getFilesByUser(driver, nameKevin, false);
-
-            String fourthRequestMessage = String.format("Request 4 of 6: Find all files that the user \"%s\" has access to view (with inference)", nameKevin);
-            System.out.println(fourthRequestMessage);
-            List<ConceptMap> files = getFilesByUser(driver, nameKevin, true);
-
-            String old_path = "lzfkn.java";
-            String new_path = "lzfkn2.java";
-            String fifthRequestMessage = String.format("Request 5 of 6: Update the path of a file from \"%s\" to \"%s\"", old_path, new_path);
-            System.out.println(fifthRequestMessage);
-            List<ConceptMap> updated_files = updateFilePath(driver, old_path, new_path);
-
-            String sixthRequestMessage = String.format("Request 6 of 6: Delete the file with path \"%s\"", new_path);
-            System.out.println(sixthRequestMessage);
-            boolean deleted = deleteFile(driver, new_path);
-
         } catch (TypeDBDriverException e) {
             e.printStackTrace();
         }
     }
     // end::main[]
+    // tag::queries[]
+    private static void queries(TypeDBDriver driver, String dbName) {
+        System.out.println("Request 1 of 6: Fetch all users as JSON objects with full names and emails");
+        List<JSON> users = fetchAllUsers(driver, dbName);
+
+        String name = "Jack Keeper";
+        String email = "jk@vaticle.com";
+        String secondRequestMessage = String.format("Request 2 of 6: Request 2 of 6: Add a new user with the full-name \"%s\" and email \"%s\"", name, email);
+        System.out.println(secondRequestMessage);
+        List<ConceptMap> newUser = insertNewUser(driver, dbName, name, email);
+        // getFilesByUser, updateFilePath, deleteFile
+
+        String nameKevin = "Kevin Morrison";
+        String thirdRequestMessage = String.format("Request 3 of 6: Find all files that the user \"%s\" has access to view (no inference)", nameKevin);
+        System.out.println(thirdRequestMessage);
+        List<ConceptMap> no_files = getFilesByUser(driver, dbName, nameKevin, false);
+
+        String fourthRequestMessage = String.format("Request 4 of 6: Find all files that the user \"%s\" has access to view (with inference)", nameKevin);
+        System.out.println(fourthRequestMessage);
+        List<ConceptMap> files = getFilesByUser(driver, dbName, nameKevin, true);
+
+        String old_path = "lzfkn.java";
+        String new_path = "lzfkn2.java";
+        String fifthRequestMessage = String.format("Request 5 of 6: Update the path of a file from \"%s\" to \"%s\"", old_path, new_path);
+        System.out.println(fifthRequestMessage);
+        List<ConceptMap> updated_files = updateFilePath(driver, dbName, old_path, new_path);
+
+        String sixthRequestMessage = String.format("Request 6 of 6: Delete the file with path \"%s\"", new_path);
+        System.out.println(sixthRequestMessage);
+        boolean deleted = deleteFile(driver, dbName, new_path);
+    }
+    // end::queries[]
     // tag::connection[]
     private static TypeDBDriver connectToTypedb(Edition edition, String addr) {
         if (edition == Edition.CORE) {
@@ -83,8 +86,8 @@ public class Main {
     }
     // end::connection[]
     // tag::fetch[]
-    private static List<JSON> fetchAllUsers(TypeDBDriver driver) {
-        try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA)) {
+    private static List<JSON> fetchAllUsers(TypeDBDriver driver, String dbName) {
+        try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.DATA)) {
             try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.READ)) {
                 String query = "match $u isa user; fetch $u: full-name, email;";
                 List<JSON> answers = tx.query().fetch(query).toList();
@@ -95,8 +98,8 @@ public class Main {
     }
     // end::fetch[]
     // tag::insert[]
-    public static List<ConceptMap> insertNewUser(TypeDBDriver driver, String name, String email) {
-        try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA)) {
+    public static List<ConceptMap> insertNewUser(TypeDBDriver driver, String dbName, String name, String email) {
+        try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.DATA)) {
             try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
                 String query = String.format(
                         "insert $p isa person, has full-name $fn, has email $e; $fn \"%s\"; $e \"%s\";", name, email);
@@ -113,10 +116,10 @@ public class Main {
     }
     // end::insert[]
     // tag::get[]
-    public static List<ConceptMap> getFilesByUser(TypeDBDriver driver, String name, boolean inference) {
+    public static List<ConceptMap> getFilesByUser(TypeDBDriver driver, String dbName, String name, boolean inference) {
         List<ConceptMap> filePaths = new ArrayList<>();
         TypeDBOptions options = new TypeDBOptions().infer(inference);
-        try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA);
+        try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.DATA);
              TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.READ, options)) {
 
             String userQuery = String.format("match $u isa user, has full-name '%s'; get;", name);
@@ -152,9 +155,9 @@ public class Main {
     }
     // end::get[]
     // tag::update[]
-    public static List<ConceptMap> updateFilePath(TypeDBDriver driver, String oldPath, String newPath) {
+    public static List<ConceptMap> updateFilePath(TypeDBDriver driver, String dbName, String oldPath, String newPath) {
         List<ConceptMap> response = new ArrayList<>();
-        try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA);
+        try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.DATA);
              TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
             String query = String.format("""
                                         match
@@ -180,8 +183,8 @@ public class Main {
     }
     // end::update[]
     // tag::delete[]
-    public static boolean deleteFile(TypeDBDriver driver, String path) {
-        try (TypeDBSession session = driver.session(DB_NAME, TypeDBSession.Type.DATA);
+    public static boolean deleteFile(TypeDBDriver driver, String dbName, String path) {
+        try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.DATA);
              TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
 
             String query = String.format("match $f isa file, has path '%s'; get;", path);

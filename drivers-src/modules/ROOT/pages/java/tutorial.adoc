@@ -164,16 +164,15 @@ include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[ta
 
 == Query examples
 
-After database setup is complete, we proceed with querying our database with different types of queries:
-// in the
-// `queries()` function:
-//
-// [,java,indent=0]
-// ----
-// include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=queries]
-// ----
-//
-// The queries are as follows:
+After database setup is complete, we proceed with querying our database with different types of queries in the
+`queries()` function:
+
+[,java,indent=0]
+----
+include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=queries]
+----
+
+The queries are as follows:
 
 . <<_fetch,Fetch query>> -- to get attribute values as JSON
 . <<_insert,Insert query>> -- to add new data
