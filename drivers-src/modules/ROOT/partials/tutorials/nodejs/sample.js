@@ -238,12 +238,12 @@ async function delete_file(driver, dbName, path) {
 // tag::db-setup[]
 async function dbSetup(driver, dbName, dbReset=false) {
     console.log(`Setting up the database: ${dbName}`);
-    let newDatabase = await createNewDatabase(driver, dbName, dbReset);
+    let isNew = await tryCreateDatabase(driver, dbName, dbReset);
     if (!driver.databases.contains(dbName)) {
         console.log("Database creation failed. Terminating...");
         return false;
     }
-    if (newDatabase) {
+    if (isNew) {
         try {
             let session = await driver.session(dbName, SessionType.SCHEMA);
             await dbSchemaSetup(session);
@@ -326,7 +326,7 @@ async function testInitialDatabase(dataSession) {
 }
 // end::test-db[]
 // tag::create_new_db[]
-async function createNewDatabase(driver, dbName, reset=false) {
+async function tryCreateDatabase(driver, dbName, reset=false) {
     try {
         if (await driver.databases.contains(dbName)) {
             if (reset) {
@@ -338,7 +338,7 @@ async function createNewDatabase(driver, dbName, reset=false) {
             } else { // reset = false
                 const input = prompt("Found a pre-existing database. Do you want to replace it? (Y/N) ");
                 if (input.toLowerCase() == "y") {
-                    return await createNewDatabase(driver, dbName, true);
+                    return await tryCreateDatabase(driver, dbName, true);
                 } else {
                     console.log("Reusing an existing database.");
                     return false;
