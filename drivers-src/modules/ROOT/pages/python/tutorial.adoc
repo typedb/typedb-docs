@@ -31,12 +31,33 @@ pip install typedb-driver
 
 //#todo Consider adding virtualenv step-by-step guide
 
+== Imported modules
+
+To be able to use the TypeDB Python driver API in the Sample application, use the following import statements:
+
+[,python,indent=0]
+----
+include::drivers::partial$tutorials/python/sample.py[tag=import]
+----
+
+== Default values
+
+We store default values as constants in the source code:
+
+[,python,indent=0]
+----
+include::drivers::partial$tutorials/python/sample.py[tag=constants]
+----
+
+Where `DB_NAME` -- the name of the database to use;
+`SERVER_ADDR` -- address of the TypeDB server to connect to;
+`TYPEDB_EDITION` -- TypeDB Core or Cloud edition selector.
+
 == Program structure
 
 The main workflow of this sample application includes establishing a connection to TypeDB,
 performing a new database setup, and querying.
 
-.Example
 [,python,indent=0]
 ----
 include::drivers::partial$tutorials/python/sample.py[tag=main]
@@ -82,7 +103,7 @@ include::drivers::partial$tutorials/python/sample.py[tag=db-setup]
 === Creating a database
 
 For this sample application we create a new database of the default name `sample_app_db`
-in the `create_new_database()` function.
+in the `try_create_database()` function.
 But first, we check whether a database with such a name already exists.
 
 [,python]
@@ -98,12 +119,12 @@ But if there is one, we ask user's confirmation on how to proceed.
 Avoid deleting an existing database without confirmation from a user to prevent loss of the existing data.
 ====
 
-By default, the `db_reset` is set to False (the default behavior).
+By default, the `db_reset` is set to `False` (the default behavior).
 In combination with a pre-existing database,
 that leads to requesting the user's input on whether to replace the existing database with a new one.
 
 If a user gives confirmation for the replacement, we delete the existing database (with all of its schema and data)
-by restarting the `create_new_database` function with the `db_reset` parameter set to True.
+by restarting the `try_create_database()` function with the `db_reset` parameter set to `True`.
 
 If a user doesn't want to delete the existing database,
 we proceed further without modification of the existing database.
@@ -126,7 +147,7 @@ The schema for the sample application is stored in the file
 https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[iam-schema.tql,window=_blank],
 so we read the file first.
 
-.See the full schema listing
+.See the full schema
 [%collapsible]
 ====
 [,typeql]
@@ -153,7 +174,7 @@ We do it the very same way: read the file
 https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/iam-data-single-query.tql[iam-data-single-query.tql,window=_blank]
 and send it as a single query, and then commit the changes.
 
-.See the full Insert query listing
+.See the full Insert query
 [%collapsible]
 ====
 [,typeql]
@@ -179,7 +200,7 @@ After database setup is complete, we proceed with querying our database with dif
 
 [,python,indent=0]
 ----
-include::drivers::partial$tutorials/rust/src/main.rs[tag=queries]
+include::drivers::partial$tutorials/python/sample.py[tag=queries]
 ----
 
 The queries are as follows:
@@ -266,7 +287,7 @@ It then executes the query and iterates through the list of results to print a v
 === Get query with inference
 
 To get query results with inferred data, let's enable the `infer` parameter of the TypeDB transaction options.
-We use the same `get_files_by_user()` function, but set the `inference` parameter to True when we call it again.
+We use the same `get_files_by_user()` function, but set the `inference` parameter to `True` when we call it again.
 The `add-view-permission` provides us with some inferred results this time.
 
 [#_update]

@@ -1,6 +1,6 @@
 // tag::code[]
 // tag::import[]
-use std::{error::Error, fs};
+use std::{error::Error, fs, io};
 
 use typedb_driver::{
     answer::{ConceptMap, JSON},
@@ -64,6 +64,7 @@ fn insert_new_user(
         result.push(concept_map);
     }
     if result.len() > 0 {
+        let _ = tx.commit().resolve();
         Ok(result)
     } else {
         Err(Box::new(TypeDBError::Other("Error: No users found in a database.".to_string())))
@@ -244,18 +245,45 @@ fn connect_to_typedb(edition: &Edition, addr: &str) -> Result<Connection, typedb
 }
 // end::connection[]
 // tag::create_new_db[]
-fn create_new_database(driver: &Connection, db_name: String) -> Result<(), TypeDBError> {
+fn try_create_database(driver: &Connection, db_name: String, db_reset: bool) -> Result<bool, TypeDBError> {
     let databases = DatabaseManager::new(driver.to_owned());
     if databases.contains(&db_name)? {
-        print!("Found an existing database. Replacing...");
-        databases.get(&db_name)?.delete()?;
+        if db_reset {
+            print!("Replacing an existing database...");
+            databases.get(&db_name)?.delete()?;
+            let result = databases.create(&db_name);
+
+            match result {
+                Ok(_) => {
+                    println!("OK");
+                    return Ok(true);
+                }
+                Err(x) => return Err(x),
+            };
+        } else {
+            let mut answer = String::new();
+            print!("Found a pre-existing database. Do you want to replace it? (Y/N) ");
+            io::Write::flush(&mut io::stdout()).unwrap();
+            io::stdin().read_line(&mut answer).expect("Failed to read a line");
+            if answer.trim().to_lowercase() == "y" {
+                return try_create_database(driver, db_name, true);
+            } else {
+                println!("Reusing an existing database.");
+                return Ok(false);
+            }
+        }
     } else {
-        print!("Creating new database...")
+        // No such database found on the server
+        print!("Creating a new database...");
+        let result = databases.create(&db_name);
+        match result {
+            Ok(_) => {
+                println!("OK");
+                return Ok(false);
+            }
+            Err(x) => return Err(x),
+        };
     }
-    let result = databases.create(&db_name);
-    assert!(databases.contains(&db_name)?, "Error creating a database.");
-    println!("OK");
-    return result;
 }
 // end::create_new_db[]
 // tag::db-schema-setup[]
@@ -304,7 +332,7 @@ fn test_initial_database(data_session: &Session) -> Result<bool, Box<dyn Error>>
 // tag::db-setup[]
 pub fn db_setup(driver: Connection, db_name: String) -> Result<(), Box<dyn Error>> {
     println!("Setting up the database: {}", &db_name);
-    let _ = create_new_database(&driver, db_name.clone());
+    let is_new = try_create_database(&driver, db_name.clone(), false);
     {
         let databases = DatabaseManager::new(driver.clone());
         {
@@ -313,8 +341,10 @@ pub fn db_setup(driver: Connection, db_name: String) -> Result<(), Box<dyn Error
         }
         {
             let data_session = Session::new(databases.get(&db_name)?, SessionType::Data)?;
-            db_dataset_setup(&data_session, "iam-data-single-query.tql".to_string())?;
-            if test_initial_database(&data_session)? == true {
+            if is_new? {
+                db_dataset_setup(&data_session, "iam-data-single-query.tql".to_string())?;
+            }
+            if test_initial_database(&data_session)? {
                 Ok(())
             } else {
                 Err(Box::new(TypeDBError::Other("Test failed. Terminating...".to_string())))

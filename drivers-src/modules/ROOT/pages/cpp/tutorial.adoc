@@ -22,6 +22,27 @@ For TypeDB Core installation instructions, see the xref:home::install/core.adoc[
 For the driver installation instructions, see the xref:drivers::cpp/overview.adoc[] page.
 
 //#todo Consider adding virtualenv step-by-step guide
+== Includes
+
+To be able to use the TypeDB C++ driver API in the Sample application, use the following include statements:
+
+[,python,indent=0]
+----
+include::drivers::partial$tutorials/cpp/main.cpp[tag=import]
+----
+
+== Default values
+
+We store default values as constants in the source code:
+
+[,python,indent=0]
+----
+include::drivers::partial$tutorials/cpp/main.cpp[tag=constants]
+----
+
+Where `DB_NAME` -- the name of the database to use;
+`SERVER_ADDR` -- address of the TypeDB server to connect to;
+`TYPEDB_EDITION` -- TypeDB Core or Cloud edition selector.
 
 == Program structure
 
@@ -72,7 +93,7 @@ include::drivers::partial$tutorials/cpp/main.cpp[tag=db-setup]
 === Creating a database
 
 For this sample application we create a new database of the default name `sample_app_db`
-in the `createNewDatabase()` function.
+in the `tryCreateDatabase()` function.
 But first, we check whether a database with such a name already exists.
 
 [,cpp]
@@ -88,12 +109,12 @@ But if there is one, we ask user's confirmation on how to proceed.
 Avoid deleting an existing database without confirmation from a user to prevent loss of the existing data.
 ====
 
-By default, the `dbReset` is set to False (the default behavior).
+By default, the `dbReset` is set to `false` (the default behavior).
 In combination with a pre-existing database,
 that leads to requesting the user's input on whether to replace the existing database with a new one.
 
 If a user gives confirmation for the replacement, we delete the existing database (with all of its schema and data)
-by restarting the `createNewDatabase` function with the `dbReset` parameter set to true.
+by restarting the `tryCreateDatabase()` function with the `dbReset` parameter set to `true`.
 
 If a user doesn't want to delete the existing database,
 we proceed further without modification of the existing database.
@@ -116,7 +137,7 @@ The schema for the sample application is stored in the file
 https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[iam-schema.tql,window=_blank],
 so we read the file first.
 
-.See the full schema listing
+.See the full schema
 [%collapsible]
 ====
 [,typeql]
@@ -143,7 +164,7 @@ We do it the very same way: read the file
 https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/iam-data-single-query.tql[iam-data-single-query.tql,window=_blank],
 send it as a single query, and then commit the changes.
 
-.See the full Insert query listing
+.See the full Insert query
 [%collapsible]
 ====
 [,typeql]
@@ -235,7 +256,7 @@ It can be used with or without inference enabled.
 include::drivers::partial$tutorials/cpp/main.cpp[tag=get]
 ----
 
-We call the function with the inference disabled (false) and expect it to return no results, as the query pattern
+We call the function with the inference disabled (`false`) and expect it to return no results, as the query pattern
 matches only files available for `view_file` action, and there are no such files initially in the database.
 
 The `getFilesByUser()` function checks
@@ -253,7 +274,7 @@ rather than collect and store the results first.
 === Get query with inference
 
 To get query results with inferred data, let's enable the `infer` parameter of the TypeDB transaction options.
-We use the same `getFilesByUser()` function, but set the `inference` parameter to true when we call it again.
+We use the same `getFilesByUser()` function, but set the `inference` parameter to `true` when we call it again.
 The `add-view-permission` rule provides us with some inferred results this time.
 
 [#_update]
