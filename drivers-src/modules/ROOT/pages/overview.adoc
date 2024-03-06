@@ -1,18 +1,18 @@
-= TypeDB Drivers overview
-:Summary: TypeDB Driver overview.
+= TypeDB drivers overview
+:Summary: TypeDB drivers overview.
 :page-aliases: clients::overview.adoc
 :keywords: typedb, driver, api, RPC, library, FFI
-:pageTitle: TypeDB Drivers overview
+:pageTitle: Drivers overview
 
 TypeDB accepts client connections via gRPC based
-https://github.com/vaticle/typedb-protocol[TypeDB Driver RPC,window=_blank] protocol.
+https://github.com/vaticle/typedb-protocol[TypeDB driver RPC,window=_blank] protocol.
 
 To build an application capable of connecting to TypeDB, we can use one of the
-existing libraries implementing it, called TypeDB Drivers, or we can implement it ourselves as a new driver.
+existing libraries implementing it, called TypeDB drivers, or we can implement it ourselves as a new driver.
 
 [#_typedb_drivers]
-A TypeDB Driver is a library that implements *TypeDB Driver RPC* protocol and provides a language-specific native API.
-TypeDB Drivers are available for some of the most popular programming languages:
+A TypeDB driver is a library that implements *TypeDB driver RPC* protocol and provides a language-specific native API.
+TypeDB drivers are available for some of the most popular programming languages: Rust, Python, Java, Node.js, and C++.
 
 [#_driver_api]
 == Rust driver
@@ -130,6 +130,11 @@ The full API reference for the TypeDB C++ driver.
 ****
 --
 
+== C driver
+
+For TypeDB C driver documentation,
+see the https://github.com/vaticle/typedb-driver/blob/development/c/README.md[Readme file] in the GitHub repository.
+
 // * xref:drivers::rust/overview.adoc[Rust] (xref:rust/api-reference.adoc[API reference])
 // * xref:drivers::python/overview.adoc[Python] (xref:python/api-reference.adoc[API reference])
 // * xref:drivers::java/overview.adoc[Java] (xref:java/api-reference.adoc[API reference])
@@ -138,7 +143,7 @@ The full API reference for the TypeDB C++ driver.
 //We also have some community projects for xref:other-languages.adoc[other languages].
 //and provide support for creating a xref:new-driver.adoc[new driver].
 
-// We recommend instantiating a single TypeDB Driver per application.
+// We recommend instantiating a single TypeDB driver per application.
 
 == TypeDB driver architecture
 
@@ -146,9 +151,9 @@ TypeDB drivers share a common architecture and capabilities.
 The key components have to do with providing an API, opening and managing connections, sessions, and transactions,
 as well as validating and sending queries, processing responses.
 
-The following diagram illustrates the structure of a typical TypeDB Driver.
+The following diagram illustrates the structure of a typical TypeDB driver.
 
-image::client-structure.png[Structure of a TypeDB Dirver, role=framed, width = 75%, link=self]
+image::client-structure.png[Structure of a TypeDB driver, role=framed, width = 75%, link=self]
 
 ////
 .See the dependency graph
@@ -158,7 +163,7 @@ image::package-structure.png[]
 ====
 ////
 
-Simply put, the main components of any TypeDB Driver are the classes and methods to establish a connection to a TypeDB
+Simply put, the main components of any TypeDB driver are the classes and methods to establish a connection to a TypeDB
 database, execute queries, and process responses.
 
 [NOTE]
