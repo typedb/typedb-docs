@@ -41,7 +41,7 @@ The network connection is represented by the `driver` object that is returned by
 
 The `connectToTypedb()` function takes `edition` and `addr` as input parameters.
 
-[,java]
+[,java,indent=0]
 ----
 include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=connection]
 ----
@@ -63,7 +63,7 @@ To set up a TypeDB database, we need to <<_creating_a_database,create a database
 <<_defining_a_schema,define its schema>> and <<_loading_initial_data,load initial data>> into it.
 Additionally, we test it to make sure that the setup process is completed successfully.
 
-[,java]
+[,java,indent=0]
 ----
 include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=db-setup]
 ----
@@ -75,7 +75,7 @@ For this sample application we create a new database of the default name `sample
 in the `createNewDatabase()` function.
 But first, we check whether a database with such a name already exists.
 
-[,java]
+[,java,indent=0]
 ----
 include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=create_new_db]
 ----
@@ -107,7 +107,7 @@ After the new database is created,
 we use a xref:typeql::schema/define.adoc[Define query] to define a schema for that database.
 See the `dbSchemaSetup()` function:
 
-[,java]
+[,java,indent=0]
 ----
 include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=db-schema-setup]
 ----
@@ -134,7 +134,7 @@ Then we send the contents of the file as a TypeQL Define query and commit the ch
 With the schema defined, we can load initial data into our database with the xref:typeql::data/insert.adoc[Insert query]
 in the `dbDatasetSetup()` function:
 
-[,java]
+[,java,indent=0]
 ----
 include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=db-dataset-setup]
 ----
@@ -157,7 +157,7 @@ include::drivers::partial$tutorials/iam-data-single-query.tql[lines=17..]
 With the schema defined and data loaded, we test our database to make sure it's ready.
 To test the database, we send a query to count the number of users in the database.
 
-[,java]
+[,java,indent=0]
 ----
 include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=test-db]
 ----
@@ -192,7 +192,7 @@ matched by a pattern.
 
 Let's use a xref:typeql::data/fetch.adoc[Fetch query] to fetch names and emails for all users in the database:
 
-[,java]
+[,java,indent=0]
 ----
 include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=fetch]
 ----
@@ -207,7 +207,7 @@ We create a `answers` variable to store the list of JSONs and iterate through it
 
 Let's insert a new user with a `full-name` and `email` attributes to the database.
 
-[,java]
+[,java,indent=0]
 ----
 include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=insert]
 ----
@@ -226,7 +226,7 @@ But the Insert query always returns a list of ConceptMap objects, where every Co
 Let's retrieve all files available for a user with a `getFilesByUser()` function.
 It can be used with or without inference enabled.
 
-[,java]
+[,java,indent=0]
 ----
 include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=get]
 ----
@@ -259,7 +259,7 @@ Let's replace a path for one of the files with a new path.
 We can do that by deleting ownership of the old path attribute from the file entity
 and assigning it with ownership of the new path attribute with the xref:typeql::data/update.adoc[Update query]:
 
-[,java]
+[,java,indent=0]
 ----
 include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=update]
 ----
@@ -281,7 +281,7 @@ to prevent any other transactions from changing the expected results.
 If any other transaction makes a conflicting change before we commit this transaction,
 then our transaction fails upon a commit.
 
-[,java]
+[,java,indent=0]
 ----
 include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=delete]
 ----

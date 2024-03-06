@@ -329,3 +329,4 @@ int main() {
     exit(EXIT_FAILURE);
 }
 // end::main[]
+// end::code[]

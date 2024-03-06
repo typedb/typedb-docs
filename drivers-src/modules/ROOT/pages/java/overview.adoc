@@ -33,12 +33,11 @@ Add the code below to the `pom.xml` file in the Maven project.
 
 [IMPORTANT]
 ====
-Be sure to replace the `\{version}` placeholder tag with the version of the Java driver you want to install.
+Replace the `\{version}` placeholder tag with the version of the Java driver you want to install.
 ====
 
 [,xml]
 ----
-
 <repositories>
     <repository>
         <id>repo.typedb.com</id>
@@ -54,9 +53,11 @@ Be sure to replace the `\{version}` placeholder tag with the version of the Java
 </dependencies>
 ----
 
-For other build systems: see the
-https://cloudsmith.io/~typedb/repos/public-release/packages/detail/maven/typedb-driver/latest/a=noarch;xg=com.vaticle.typedb/#install[setup]
+For more information, see the
+https://cloudsmith.io/~typedb/repos/public-release/packages/detail/maven/typedb-driver/latest/a=noarch;xg=com.vaticle.typedb/#install[build systems setup]
 page.
+
+To use the TypeQL library, see the xref:drivers::java/query-builder.adoc[] page for installation instructions.
 
 === Add logging config
 
@@ -68,18 +69,15 @@ As it is quite verbose, you can use the following steps to set the minimum log l
 
 [,xml]
 ----
-
 <configuration>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
-
     <root level="ERROR">
         <appender-ref ref="STDOUT"/>
     </root>
-
 </configuration>
 ----
 
