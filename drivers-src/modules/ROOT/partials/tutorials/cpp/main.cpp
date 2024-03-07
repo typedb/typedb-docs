@@ -10,6 +10,8 @@ const std::string DB_NAME = "sample_app_db";
 const std::string SERVER_ADDR = "127.0.0.1:1729";
 enum edition { core, cloud };
 edition TYPEDB_EDITION = edition::core;
+const std::string CLOUD_USERNAME = "admin";
+const std::string CLOUD_PASSWORD = "password";
 // end::constants[]
 // tag::create_new_db[]
 bool tryCreateDatabase(TypeDB::Driver& driver, const std::string& dbName, bool dbReset = false) {
@@ -305,11 +307,11 @@ void queries(TypeDB::Driver& driver, const std::string& dbName) {
 // tag::connection[]
 TypeDB::Driver connectToTypedb(const edition typedb_edition,
                                 const std::string& addr,
-                                const std::string& username="admin",
-                                const std::string& password="password",
+                                const std::string& username=CLOUD_USERNAME,
+                                const std::string& password=CLOUD_PASSWORD,
                                 const bool encryption = true) {
-    if (typedb_edition == edition::core) { return TypeDB::Driver::coreDriver("127.0.0.1:1729"); };
-    if (typedb_edition == edition::cloud) { return TypeDB::Driver::cloudDriver({"127.0.0.1:1729"}, TypeDB::Credential(username, password, encryption));; };
+    if (typedb_edition == edition::core) { return TypeDB::Driver::coreDriver(addr); };
+    if (typedb_edition == edition::cloud) { return TypeDB::Driver::cloudDriver({addr}, TypeDB::Credential(username, password, encryption));; };
     exit(EXIT_FAILURE);
 }
 // end::connection[]

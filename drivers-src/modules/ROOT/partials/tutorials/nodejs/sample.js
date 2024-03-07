@@ -12,6 +12,8 @@ const DB_NAME = "sample_app_db";
 const SERVER_ADDR = "127.0.0.1:1729";
 let dbReset = false;
 let typedbEdition = "core"; // "cloud"
+const CLOUD_USERNAME = "admin";
+const CLOUD_PASSWORD = "password";
 // end::constants[]
 // tag::main[]
 async function main() {
@@ -31,7 +33,7 @@ async function main() {
 };
 // end::main[]
 // tag::connection[]
-async function connectToTypedb(edition, addr, username = "admin", password = "password") {
+async function connectToTypedb(edition, addr, username = CLOUD_USERNAME, password = CLOUD_PASSWORD) {
     if (edition == "core") {
         return await TypeDB.coreDriver(addr);
     }

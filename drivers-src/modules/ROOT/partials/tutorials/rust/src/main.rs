@@ -19,6 +19,8 @@ enum Edition {
 }
 
 static TYPEDB_EDITION: Edition = Edition::Core;
+static CLOUD_USERNAME: &str = "admin";
+static CLOUD_PASSWORD: &str = "password";
 // end::constants[]
 // tag::fetch[]
 fn fetch_all_users(driver: Connection, db_name: String) -> Result<Vec<JSON>, Box<dyn Error>> {
@@ -240,7 +242,9 @@ fn queries(driver: Connection, db_name: String) -> Result<(), Box<dyn Error>> {
 fn connect_to_typedb(edition: &Edition, addr: &str) -> Result<Connection, typedb_driver::Error> {
     match edition {
         Edition::Core => return Connection::new_core(addr),
-        Edition::Cloud => return Connection::new_cloud(&[addr], Credential::with_tls("admin", "password", None)?),
+        Edition::Cloud => {
+            return Connection::new_cloud(&[addr], Credential::with_tls(CLOUD_USERNAME, CLOUD_PASSWORD, None)?)
+        }
     };
 }
 // end::connection[]
