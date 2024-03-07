@@ -62,17 +62,18 @@ For other versions, see the
 https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%5Etypedb-studio&sort=-version[Downloads repository] page.
 . Extract the archive with TypeDB Studio into a new directory, for example:
 +
-[,bash,subs=attributes+]
+[,bash]
 ----
 mkdir /opt/typedb-studio
-tar -xzf ~/Downloads/typedb-studio-linux-x86_64-{latest-version}.tar.gz -C /opt/typedb-studio
+tar -xzf ~/Downloads/<filename>.tar.gz -C /opt/typedb-studio
 ----
-
++
+Where `<filename>` is the name of the archive.
 . Add a symlink to the TypeDB Studio executable in the `/usr/local/bin` directory, for example:
 +
-[,bash,subs=attributes+]
+[,bash]
 ----
-ln -s /opt/typedb-studio/typedb-studio-linux-x86_64-{latest-version}/typedb-studio /usr/local/bin/typedb-studio
+ln -s /opt/typedb-studio/<filename>/typedb-studio /usr/local/bin/typedb-studio
 ----
 --
 

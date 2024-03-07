@@ -5,17 +5,18 @@
 
 . Extract the archive with TypeDB into a new directory:
 +
-[,shell,subs=attributes+]
+[,shell]
 ----
 mkdir "C:\Program Files\TypeDB"
-tar xvf "C:\Users\username\Downloads\typedb-all-windows-{latest-version}.zip" -C "C:\Program Files\TypeDB"
+tar xvf "C:\Users\username\Downloads\<filename>.zip" -C "C:\Program Files\TypeDB"
 ----
-
++
+Where `<filename>` is the name of the archive.
 . Update the `PATH` environment variable:
 +
-[,shell,subs=attributes+]
+[,shell]
 ----
-setx /M PATH "%path%;C:\Program Files\TypeDB\typedb-all-windows-{latest-version}"
+setx /M PATH "%path%;C:\Program Files\TypeDB\<filename>"
 ----
 
 Restart the terminal window for the changes to environment variables to take effect.

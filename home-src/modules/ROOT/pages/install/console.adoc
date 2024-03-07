@@ -48,16 +48,18 @@ For other versions, see the
 https://cloudsmith.io/~typedb/repos/public-release/packages/?q=format%3Araw+name%3A%5Etypedb-console-mac&sort=-version[Downloads repository] page.
 . Extract the archive into a new directory:
 +
-[,bash,subs=attributes+]
+[,bash]
 ----
 sudo mkdir /opt/typedb-console
-unzip ~/Downloads/typedb-console-mac-x86_64.zip -d /opt/typedb-console
+unzip ~/Downloads/<filename>.zip -d /opt/typedb-console
 ----
++
+Where `<filename>` is the name of the archive.
 . Add a symlink to the TypeDB Console executable in the `/usr/local/bin` directory:
 +
-[,bash,subs=attributes+]
+[,bash]
 ----
-ln -s /opt/typedb-console/typedb-console-mac-x86_64/typedb /usr/local/bin/typedb
+ln -s /opt/typedb-console/<filename>/typedb /usr/local/bin/typedb
 ----
 --
 
@@ -71,17 +73,18 @@ For other versions, see the
 https://cloudsmith.io/~typedb/repos/public-release/packages/?q=format%3Araw+name%3A%5Etypedb-console-linux&sort=-version[Downloads repository] page.
 . Extract the archive into a new directory:
 +
-[,bash,subs=attributes+]
+[,bash]
 ----
 mkdir /opt/typedb-console
-tar -xzf ~/Downloads/typedb-console-linux-x86_64.tar.gz -C /opt/typedb-console
+tar -xzf ~/Downloads/<filename>.tar.gz -C /opt/typedb-console
 ----
-
++
+Where `<filename>` is the name of the archive.
 . Add a symlink to the TypeDB executable in the `/usr/local/bin` directory:
 +
 [,bash,subs=attributes+]
 ----
-ln -s /opt/typedb-console/typedb-console-linux-x86_64/typedb /usr/local/bin/typedb
+ln -s /opt/typedb-console/<filename>/typedb /usr/local/bin/typedb
 ----
 --
 
@@ -95,17 +98,18 @@ https://cloudsmith.io/~typedb/repos/public-release/packages/?q=format%3Araw+name
 
 . Extract the archive into a new directory:
 +
-[,shell,subs=attributes+]
+[,shell]
 ----
 mkdir "C:\Program Files\TypeDB Console"
-tar xvf "C:\Users\username\Downloads\typedb-console-windows-x86_64.zip" -C "C:\Program Files\TypeDB Console"
+tar xvf "C:\Users\username\Downloads\<filename>.zip" -C "C:\Program Files\TypeDB Console"
 ----
-
++
+Where `<filename>` is the name of the archive.
 . Update the `PATH` environment variable:
 +
-[,shell,subs=attributes+]
+[,shell]
 ----
-setx /M PATH "%path%;C:\Program Files\TypeDB Console\typedb-console-windows-x86_64"
+setx /M PATH "%path%;C:\Program Files\TypeDB Console\<filename>"
 ----
 
 Restart the terminal window for the changes to environment variables to take effect.
