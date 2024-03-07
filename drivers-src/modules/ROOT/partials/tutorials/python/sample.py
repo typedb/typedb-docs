@@ -16,6 +16,8 @@ class Edition(Enum):
 DB_NAME = "sample_app_db"
 SERVER_ADDR = "127.0.0.1:1729"
 TYPEDB_EDITION = Edition.Core
+CLOUD_USERNAME = "admin"
+CLOUD_PASSWORD = "password"
 # end::constants[]
 
 
@@ -214,7 +216,7 @@ def delete_file(driver, db_name, path):
 
 
 # tag::connection[]
-def connect_to_typedb(edition, addr, username='admin', password='password'):
+def connect_to_typedb(edition, addr, username=CLOUD_USERNAME, password=CLOUD_PASSWORD):
     if edition is Edition.Core:
         return TypeDB.core_driver(addr)
     if edition is Edition.Cloud:

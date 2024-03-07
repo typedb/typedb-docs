@@ -51,7 +51,8 @@ include::drivers::partial$tutorials/python/sample.py[tag=constants]
 
 Where `DB_NAME` -- the name of the database to use;
 `SERVER_ADDR` -- address of the TypeDB server to connect to;
-`TYPEDB_EDITION` -- TypeDB Core or Cloud edition selector.
+`TYPEDB_EDITION` -- TypeDB Core or Cloud edition selector;
+`CLOUD_USERNAME`/`CLOUD_PASSWORD` -- credentials to connect to TypeDB Cloud.
 
 == Program structure
 
@@ -152,7 +153,7 @@ so we read the file first.
 ====
 [,typeql]
 ----
-include::drivers::attachment$iam-schema.tql[lines=17..]
+include::drivers::partial$tutorials/iam-schema.tql[lines=17..]
 ----
 ====
 
@@ -179,7 +180,7 @@ and send it as a single query, and then commit the changes.
 ====
 [,typeql]
 ----
-include::drivers::attachment$iam-data-single-query.tql[lines=17..]
+include::drivers::partial$tutorials/iam-data-single-query.tql[lines=17..]
 ----
 ====
 

@@ -27,7 +27,7 @@ For the driver installation instructions, see the xref:drivers::nodejs/overview.
 
 To be able to use the TypeDB Node.js driver API in the Sample application, use the following import statements:
 
-[,python,indent=0]
+[,js,indent=0]
 ----
 include::drivers::partial$tutorials/nodejs/sample.js[tag=import]
 ----
@@ -36,14 +36,15 @@ include::drivers::partial$tutorials/nodejs/sample.js[tag=import]
 
 We store default values as constants in the source code:
 
-[,python,indent=0]
+[,js,indent=0]
 ----
 include::drivers::partial$tutorials/nodejs/sample.js[tag=constants]
 ----
 
 Where `DB_NAME` -- the name of the database to use;
 `SERVER_ADDR` -- address of the TypeDB server to connect to;
-`TYPEDB_EDITION` -- TypeDB Core or Cloud edition selector.
+`TYPEDB_EDITION` -- TypeDB Core or Cloud edition selector;
+`CLOUD_USERNAME`/`CLOUD_PASSWORD` -- credentials to connect to TypeDB Cloud.
 
 == Program structure
 
