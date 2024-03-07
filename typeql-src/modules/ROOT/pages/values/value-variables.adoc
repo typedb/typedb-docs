@@ -1,5 +1,7 @@
 = Value variables
 
+== Usage
+
 Value variables are used in patterns with xref:typeql::values/arithmetic.adoc[arithmetics] or
 xref:typeql::values/functions.adoc[other built-in functions] to represent primitive values in statements.
 Value variables are never persisted into a database and can be used only within the scope of a query or a rule.
@@ -10,6 +12,8 @@ Value variables can store a value of any xref:typeql::values/value-types.adoc[va
 
 Labels used for value variables can't intersect with variables from concept variables
 To address a value variable in a query, use the variable's label with a question mark as a prefix.
+
+== Examples
 
 To assign a value for a value variable, use the equal sign (`=`) operator:
 
@@ -29,3 +33,5 @@ $f isa file, has size-kb $kb;
 ?mb = $kb / 1024;
 insert $f has size-mb ?mb;
 ----
+
+For more examples, see the xref:values/arithmetic.adoc[] page.
