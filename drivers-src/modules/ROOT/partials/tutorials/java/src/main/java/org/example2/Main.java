@@ -27,6 +27,8 @@ public class Main {
     }
 
     private static final Edition TYPEDB_EDITION = Edition.CORE;
+    private static final String CLOUD_USERNAME = "admin";
+    private static final String CLOUD_PASSWORD = "password";
     // end::constants[]
     // tag::main[]
     public static void main(String[] args) {
@@ -79,7 +81,7 @@ public class Main {
             return TypeDB.coreDriver(addr);
         };
         if (edition == Edition.CLOUD) {
-            return TypeDB.cloudDriver("127.0.0.1:1729", new TypeDBCredential("admin", "password", true ));
+            return TypeDB.cloudDriver(addr, new TypeDBCredential(CLOUD_USERNAME, CLOUD_PASSWORD, true ));
         };
         return null;
     }

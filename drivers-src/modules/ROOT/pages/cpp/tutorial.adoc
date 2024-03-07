@@ -26,7 +26,7 @@ For the driver installation instructions, see the xref:drivers::cpp/overview.ado
 
 To be able to use the TypeDB C++ driver API in the Sample application, use the following include statements:
 
-[,python,indent=0]
+[,cpp,indent=0]
 ----
 include::drivers::partial$tutorials/cpp/main.cpp[tag=import]
 ----
@@ -35,14 +35,15 @@ include::drivers::partial$tutorials/cpp/main.cpp[tag=import]
 
 We store default values as constants in the source code:
 
-[,python,indent=0]
+[,cpp,indent=0]
 ----
 include::drivers::partial$tutorials/cpp/main.cpp[tag=constants]
 ----
 
 Where `DB_NAME` -- the name of the database to use;
 `SERVER_ADDR` -- address of the TypeDB server to connect to;
-`TYPEDB_EDITION` -- TypeDB Core or Cloud edition selector.
+`TYPEDB_EDITION` -- TypeDB Core or Cloud edition selector;
+`CLOUD_USERNAME`/`CLOUD_PASSWORD` -- credentials to connect to TypeDB Cloud.
 
 == Program structure
 

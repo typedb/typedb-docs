@@ -51,7 +51,8 @@ include::drivers::partial$tutorials/rust/src/main.rs[tag=constants]
 
 Where `DB_NAME` -- the name of the database to use;
 `SERVER_ADDR` -- address of the TypeDB server to connect to;
-`TYPEDB_EDITION` -- TypeDB Core or Cloud edition selector.
+`TYPEDB_EDITION` -- TypeDB Core or Cloud edition selector;
+`CLOUD_USERNAME`/`CLOUD_PASSWORD` -- credentials to connect to TypeDB Cloud.
 
 == Program structure
 
