@@ -26,17 +26,18 @@ https://en.wikipedia.org/wiki/Rosetta_(software)[Rosetta].
 
 . Extract the archive with TypeDB into a new directory:
 +
-[,bash,subs=attributes+]
+[,bash]
 ----
 sudo mkdir /opt/typedb
-unzip ~/Downloads/typedb-all-mac-{latest-version}.zip -d /opt/typedb
+unzip ~/Downloads/<filename>.zip -d /opt/typedb
 ----
-
++
+Where `<filename>` is the name of the archive.
 . Add a symlink to the TypeDB executable in the `/usr/local/bin` directory:
 +
-[,bash,subs=attributes+]
+[,bash]
 ----
-ln -s /opt/typedb/typedb-all-mac-{latest-version}/typedb /usr/local/bin/typedb
+ln -s /opt/typedb/<filename>/typedb /usr/local/bin/typedb
 ----
 
 // end::manual-install[]
