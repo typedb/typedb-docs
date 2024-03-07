@@ -49,17 +49,18 @@ https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_bl
 
 . Extract the archive with TypeDB into a new directory:
 +
-[,bash,subs=attributes+]
+[,bash]
 ----
 mkdir /opt/typedb
-tar -xzf ~/Downloads/typedb-all-linux-{latest-version}.tar.gz -C /opt/typedb
+tar -xzf ~/Downloads/<filename>.tar.gz -C /opt/typedb
 ----
-
++
+Where `<filename>` is the name of the archive.
 . Add a symlink to the TypeDB executable in the `/usr/local/bin` directory:
 +
-[,bash,subs=attributes+]
+[,bash]
 ----
-ln -s /opt/typedb/typedb-all-linux-{latest-version}/typedb /usr/local/bin/typedb
+ln -s /opt/typedb/<filename>/typedb /usr/local/bin/typedb
 ----
 
 // end::manual-install[]
