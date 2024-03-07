@@ -1,21 +1,47 @@
-= Other built-in functions
+= Built-in functions
 
-Built-in functions are usually invoked with adjacent parentheses that contain arguments to apply the function.
-Those arguments are separated by a comma as a separator.
-The following built-in functions are available in TypeDB:
+Unlike arithmetic operations, built-in functions use values provided as input arguments to return the resulted value.
+The value taken as arguments can be provided in the form of concept variables, value variable, or literal values.
 
-//#todo Reimplement the links to examples
-// tag::functions[]
-* `min` -- the minimum of the arguments.
-See xref:typeql::data/examples.adoc#_using_minimum_function[example].
-* `max` -- the maximum of the arguments.
-See xref:typeql::data/examples.adoc#_using_maximum_function[example].
-* `floor` -- the floor function (rounding down).
-See xref:typeql::data/examples.adoc#_using_floor_function[example].
-* `ceil` -- the ceiling function (rounding up).
-See xref:typeql::data/examples.adoc#_using_ceiling_function[example].
-* `round` -- the default (half-way up) rounding function.
-See xref:typeql::data/examples.adoc#_using_rounding_function[example].
-* `abs` -- the modulus (or absolute value) function.
-See xref:typeql::data/examples.adoc#_using_absolute_value_function[example].
-// end::functions[]
+== Min / Max functions
+
+Use the `max()` function to find the maximum value out of all provided input arguments,
+or the `min()` to find the minimum.
+
+.Example
+[,typeql]
+----
+?maximum = max(100, $x, ?a);
+----
+
+== Ceil / Floor
+
+Use the `ceil()` function to round up the input value, or the `floor()` to round down.
+
+.Example
+[,typeql]
+----
+?int = floor(100.7);
+----
+
+== Round function
+
+Use the `round()` function to round the input value up to a closest integer (half-way up).
+
+.Example
+[,typeql]
+----
+?int = round(100.7);
+----
+
+== Abs function
+
+Use the `abs()` function to produce an absolute value of the input value.
+
+.Example
+[,typeql]
+----
+?x = abs($s - 1000);
+----
+
+The above example bound the `?x` value variable to the absolute value of subtraction of `1000` from the value of `$s`.
