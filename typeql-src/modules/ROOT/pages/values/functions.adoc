@@ -1,2 +1,21 @@
 = Other built-in functions
 
+Built-in functions are usually invoked with adjacent parentheses that contain arguments to apply the function.
+Those arguments are separated by a comma as a separator.
+The following built-in functions are available in TypeDB:
+
+//#todo Reimplement the links to examples
+// tag::functions[]
+* `min` -- the minimum of the arguments.
+See xref:typeql::data/examples.adoc#_using_minimum_function[example].
+* `max` -- the maximum of the arguments.
+See xref:typeql::data/examples.adoc#_using_maximum_function[example].
+* `floor` -- the floor function (rounding down).
+See xref:typeql::data/examples.adoc#_using_floor_function[example].
+* `ceil` -- the ceiling function (rounding up).
+See xref:typeql::data/examples.adoc#_using_ceiling_function[example].
+* `round` -- the default (half-way up) rounding function.
+See xref:typeql::data/examples.adoc#_using_rounding_function[example].
+* `abs` -- the modulus (or absolute value) function.
+See xref:typeql::data/examples.adoc#_using_absolute_value_function[example].
+// end::functions[]
