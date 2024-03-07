@@ -9,13 +9,18 @@ Primitive values used in TypeQL patterns can be of one of the following value ty
 * `double` -- a double-precision floating point number, including a decimal point
 * `string` -- a string enclosed in double `"` or single `'` quotes
 * `boolean` -- a `true` or `false`
-* `datetime` -- A date or date-time in one of the following formats:
- ** `yyyy-mm-dd`
- ** `yyyy-mm-ddThh:mm`
- ** `yyyy-mm-ddThh:mm:ss`
- ** `yyyy-mm-ddThh:mm:ss.f`
- ** `yyyy-mm-ddThh:mm:ss.ff`
- ** `yyyy-mm-ddThh:mm:ss.fff`
+* `datetime` -- A date or date-time in one of the supported formats.
++
+.See the list of available date-time formats
+[%collapsible]
+====
+* `yyyy-mm-dd`
+* `yyyy-mm-ddThh:mm`
+* `yyyy-mm-ddThh:mm:ss`
+* `yyyy-mm-ddThh:mm:ss.f`
+* `yyyy-mm-ddThh:mm:ss.ff`
+* `yyyy-mm-ddThh:mm:ss.fff`
+====
 // end::value_types[]
 
 An attribute type always has a value type defined in a schema or inherited from a parent type.
