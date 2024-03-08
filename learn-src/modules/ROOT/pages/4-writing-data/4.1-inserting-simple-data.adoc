@@ -58,6 +58,18 @@ image:learn::studio-icons/run-query.png[]image:learn::studio-icons/commit-transa
 =====
 ====
 
+[NOTE]
+====
+Datetime literals can be represented in any of the following formats:
+
+* `yyyy-mm-dd`
+* `yyyy-mm-ddThh:mm`
+* `yyyy-mm-ddThh:mm:ss`
+* `yyyy-mm-ddThh:mm:ss.fff`
+
+All datetimes are stored at millisecond precision, with missing digits filled by zeroes.
+====
+
 == Inserting multiple objects
 
 An Insert query can insert any number of entities and relations. In the following query, we insert four new entities: a paperback, a contributor, a publisher, and a publication event, along with two new relations between them: an `authoring` relation and a `publishing` relation.

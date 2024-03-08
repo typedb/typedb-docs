@@ -8,7 +8,7 @@ Try *running* image:learn::studio-icons/run-query.png[] the following query, whi
 ----
 match
 $user isa user, has id "u0003";
-($located: $user, location: $place) isa locating;
+(located: $user, location: $place) isa locating;
 fetch
 $place: name;
 ----

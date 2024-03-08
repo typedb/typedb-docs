@@ -1,0 +1,209 @@
+= Lesson 7.2: Relation patterns
+
+== Overview
+
+We initially learned how to use TypeQL's tuple syntax to represent relations in xref:learn::3-reading-data/3.1-fetching-simple-data.adoc[Lesson 3.1]. In this lesson, we will cover the many flexible ways that TypeQL allows us to format relation tuples to represent different kinds of relations.
+
+== N-ary relations
+
+*Binary* and *ternary* relations (those with two or three roleplayers) can be represented using a tuple with two or three elements respectively.
+
+[,typeql]
+----
+(role-1: $a, role-2: $b) isa binary-relation;
+----
+
+[,typeql]
+----
+(role-1: $a, role-2: $b, role-3: $c) isa ternary-relation;
+----
+
+We have seen examples of these in the bookstore schema, for instance `order-line` and `delivery` relations.
+
+[,typeql]
+----
+(order: $order, item: $book) isa order-line;
+----
+
+[,typeql]
+----
+(deliverer: $courier, delivered: $order, destination: $address) isa delivery;
+----
+
+This can be naturally extended to represent relations with any number of roleplayers, known as *n-ary* relations, by using a tuple with n elements.
+
+[,typeql]
+----
+(role-1: $a, role-2: $b, role-3: $c, role-4: $d, ...) isa n-ary-relation;
+----
+
+We can also represent relations with only a single roleplayer, known as *unary* relations, though doing so is only useful in very niche cases.
+
+[,typeql]
+----
+(role-1: $a) isa unary-relation;
+----
+
+Nullary relations, those with zero roleplayers, are not permitted in TypeDB.
+
+== Partial relation tuples
+
+The tuple syntax can also be used to match relations with only a partial number of roleplayers specified. By default, the tuple representation of a relation represents a relation with _at least_ the roleplayers described. Let's consider the previous example of a `delivery` relation again.
+
+[,typeql]
+----
+(deliverer: $courier, delivered: $order, destination: $address) isa delivery;
+----
+
+In theory, this statement would actually match relations that have roleplayers other than `$courier`, `$order`, and `$address`, as long as the relations have those roleplayers at a minimum. We can use this property to represent relations *partially*, by omitting roleplayers that we are not interested in. Consider the following query, which retrieves a list of orders and their assigned couriers.
+
+[,typeql]
+----
+match
+$order isa order;
+$courier isa courier;
+(deliverer: $courier, delivered: $order, destination: $address) isa delivery;
+fetch
+$order: id;
+$courier: name;
+----
+
+For this query, we do not actually need the `destination` roleplayer at all, so we can simply omit it instead.
+
+[,typeql]
+----
+match
+$order isa order;
+$courier isa courier;
+(deliverer: $courier, delivered: $order) isa delivery;
+fetch
+$order: id;
+$courier: name;
+----
+
+Functionally, there is a slight difference in semantics. The first form of the query, where we include the destination, will only match instances of `delivery` where there is a roleplayer of `destination`, while the second form can match instances where there is no `destination` roleplayer at all. However, if we always instantiate `delivery` relations with exactly one of each roleplayer, then these two queries will have identical results.
+
+Partial relations are essential to certain queries. For instance, we encountered the following query in xref:learn::4-writing-data/4.3-deleting-data.adoc[Lesson 4.3], which deletes all relations in which a given review is a roleplayer.
+
+[,typeql]
+----
+match
+$review-4 isa review, has id "r0004";
+$relation ($review-4) isa relation;
+delete
+$relation isa relation;
+----
+
+The partial representation can be as minimal as required. If we do not care about any of the roleplayers, we could skip out the tuple entirely! The following query retrieves the timestamps of any `action-execution` relations, regardless of their roleplayers. Essentially, it lists the times of all system actions performed by anyone.
+
+[,typeql]
+----
+match
+$execution isa action-execution;
+fetch
+$execution: timestamp;
+----
+
+.Exercise
+[caption=""]
+====
+Write a Fetch query to retrieve the titles of all books that have been ordered at least once and have also been included in at least one promotion, without using more than a single variable.
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$book isa book;
+(item: $book) isa order-line;
+(item: $book) isa promotion-inclusion;
+fetch
+$book: title;
+----
+=====
+====
+
+== Inferred types and roles
+
+In the previous Delete query example, the partial relation tuple omitted the role played by `$review-4`.
+
+[,typeql]
+----
+$relation ($review-4) isa relation;
+----
+
+We have also seen examples in previous lessons where we omit types and roles from relation tuples and allow TypeDB to infer them. Some such statements are shown here.
+
+[,typeql]
+----
+($review, $frankenstein) isa rating;
+----
+
+[,typeql]
+----
+($book, $review);
+----
+
+[,typeql]
+----
+($user, action: $review);
+----
+
+As we can see from these examples, there are two ways in which we can make use of type inference when representing relations, sometimes in combination. The first is to infer one or more *roles* in the relation, and the second is to infer its *type*.
+
+=== Inferring roles
+
+To allow TypeDB to infer roles, we omit the roles from the tuple representation and list only the roleplayers.
+
+[,typeql]
+----
+($a, $b) isa example-relation;
+----
+
+Practically, this statement will match any `example-relation` in which `$a` and `$b` both play roles, regardless of what those roles are. Consider the following Fetch query in the context of the bookstore schema.
+
+[,typeql]
+----
+match
+$ca isa state, has name "California";
+$related-place isa place;
+($ca, $related-place) isa locating;
+fetch
+$related-place: name;
+----
+
+This query returns the names of places that are associated with California, either because they are located in California (like Sacramento) or because California is located in them (like the US). In the first case, `$ca` will be playing `locating:location` and `$related-place` will be playing `locating:located`, and in the second case the roles will be reversed. In this case, we have omitted both roles from the tuple, but it is also possible to mix explicitly stated and inferred roles within a single relation tuple as needed, as we have seen above.
+
+=== Inferring relation types
+
+To allow TypeDB to infer the type of the relation, we simply omit the `isa` statement following the tuple representation.
+
+[,typeql]
+----
+(role-1: $a, role-2: $b);
+----
+
+Practically, this statement will match any relation with the supplied role names. Here we must recall the difference between _role names_ and _role labels_. A role name includes only the name of the role itself, for instance `publisher`, while a role label also includes the name of the parent relation, for instance `publishing:publisher`. Because we use role names rather than labels in relation tuples, omitting the relation's type as above will allow TypeDB to match any relation which uses the same role names, even if their labels are different. The following query retrieves the attributes of any relation in which `$book` plays a role with name `item`.
+
+[,typeql]
+----
+match
+$book isa book, has isbn "9780500026557";
+$including-book (item: $book);
+fetch
+$including-book: attribute;
+----
+
+Namely, the query would match instances of both `order-line` and `promotion-inclusion` for `$including-book`, and return their attributes.
