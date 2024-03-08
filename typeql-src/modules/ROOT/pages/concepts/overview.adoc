@@ -1,6 +1,8 @@
 = Concepts overview
 
-TypeQL can be used for polymorphic queries with patterns containing concept variables and value variables.
+TypeQL can be used for polymorphic queries with patterns containing
+xref:typeql::concepts/concept-variables.adoc[concept variables] and
+xref:typeql::values/value-variables.adoc[value variables].
 By default, a concept variable can represent any type or data instance in a database.
 To limit the set of possible concepts represented by a concept variable,
 add constraints with TypeQL keywords, like `sub`, `isa`, `has`.
@@ -28,7 +30,7 @@ but the variable to the left of it is considered to be a data instance instead o
 .xref:typeql::concepts/types.adoc[]
 [.clickable]
 ****
-Schema types, root types, and subtyping.
+Root types and type hierarchy, abstract types.
 ****
 
 .xref:typeql::concepts/data-instances.adoc[]
