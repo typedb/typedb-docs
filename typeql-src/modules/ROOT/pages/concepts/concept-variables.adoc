@@ -17,47 +17,30 @@ xref:typeql::values/functions.adoc[built-in functions] can be applied only to at
 
 == Examples
 
-=== Attributes of an entity
+Let's use `has` keyword to retrieve all attributes that owned by anything.
 
-Given the schema from the xref:typeql::concepts/types.adoc#_example[Types page example],
-let's see a simple example of how to insert some data with an Insert query:
-
-.Inserting data example
-[,typeql]
-----
-include::home::attachment$quickstart-data.tql[lines=1]
-----
-
-To retrieve this data, we can use a Fetch query to get a JSON with attribute values:
-
-.Fetching values example
+.Fetching attributes
 [,typeql]
 ----
 match
-$x isa person;
-fetch $x: id, full-name, email;
+$x has $a;
+fetch
+$a;
 ----
-
-Note that the `match` clause matches all entities of the `person` type
-and the `fetch` clause then projects into a JSON values of attributes owned by every matched person.
 
 The resulted JSON should look like this:
 
-[,json]
+[,typeql]
 ----
-{
-    "x": {
-        "email": [ { "value": "masako.holley@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
-        "full-name": [ { "value": "Masako Holley", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } ],
-        "id": [ { "value": 1, "type": { "label": "id", "root": "attribute", "value_type": "long" } } ],
-        "type": { "label": "person", "root": "entity" }
-    }
-}
+{ "a": { "value": "Masako Holley", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } }
+{ "a": { "value": "masako.holley@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } }
+{ "a": { "value": 1, "type": { "label": "id", "root": "attribute", "value_type": "long" } } }
 ----
 
 === Variablizing types
 
-We can replace any type in a pattern with a concept variable and then retrieve such a variable to get the type:
+We can replace any type in a pattern with a concept variable and then retrieve such a variable to get the type
+(or rather all possible types):
 
 .Fetching types example
 [,typeql]
@@ -67,6 +50,11 @@ $x isa person, has $a;
 $a isa! $type;
 fetch $type;
 ----
+
+Here we are matching all entities (`$x`) of the `person` type and all attributes that they have (`$a`).
+But then we match and fetch only the exact type of every attribute.
+
+The resulted JSON should look like this:
 
 [,json]
 ----

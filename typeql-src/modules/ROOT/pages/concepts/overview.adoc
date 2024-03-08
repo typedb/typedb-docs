@@ -7,6 +7,7 @@ By default, a concept variable can represent any type or data instance in a data
 To limit the set of possible concepts represented by a concept variable,
 add constraints with TypeQL keywords, like `sub`, `isa`, `has`.
 
+////
 .See an example
 [%collapsible]
 ====
@@ -24,6 +25,7 @@ get $x;
 The same approach can be used with the `isa` keyword,
 but the variable to the left of it is considered to be a data instance instead of a type.
 ====
+////
 
 [cols-3]
 --

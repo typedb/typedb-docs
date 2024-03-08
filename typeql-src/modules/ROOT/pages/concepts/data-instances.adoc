@@ -54,21 +54,18 @@ A relation with a role without a roleplayer represents an incomplete data state.
 For any N-ary relation (a relation with N roles), we recommend to follow to the principle
 that the logical sense of the relation is maintained when considering N-1 relations contained within it.
 
-== Matching data
+== Example
 
-To match data
-Attributes can be uniquely addressed by their type and value.
+Given the schema from the xref:typeql::concepts/types.adoc#_example[Types page example],
+let's see a simple example of how to insert some data with an Insert query:
 
+.Inserting data example
+[,typeql]
+----
+include::home::attachment$quickstart-data.tql[lines=1]
+----
 
-Relations and entities, on the other hand, don't have their own values, and rely on owning attributes
-and playing roles in relations to be addressed.
-
-
-
-
-
-
-For example, let's insert multiple users
+To retrieve this data, we can use a Fetch query to get a JSON with attribute values:
 
 .Fetching values example
 [,typeql]
@@ -78,23 +75,19 @@ $x isa person;
 fetch $x: id, full-name, email;
 ----
 
-The same approach can be used with the `isa` keyword,
-but the variable to the left of it is considered to be a data instance instead of a type.
+Note that the `match` clause matches all entities of the `person` type
+and the `fetch` clause then projects into a JSON values of attributes owned by every matched person.
 
+The resulted JSON should look like this:
 
-
-
-
-Once inserted, an existing data can be matched by a data query
-
-
-
-
-
-
-can retrieve data instances from a database
-
-TypeQL query manipulate literal values, value variables, and concept variables.
-
-== Example
-
+[,json]
+----
+{
+    "x": {
+        "email": [ { "value": "masako.holley@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
+        "full-name": [ { "value": "Masako Holley", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } ],
+        "id": [ { "value": 1, "type": { "label": "id", "root": "attribute", "value_type": "long" } } ],
+        "type": { "label": "person", "root": "entity" }
+    }
+}
+----
