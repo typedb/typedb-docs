@@ -6,10 +6,9 @@ to construct queries to the database.
 == Type hierarchy
 
 Types are defined in the schema of a database, and their definitions are written in TypeQL.
-Types from the schema are used to design data queries to the database.
-
-Types in a schema are modeled with the use of the
+Types from the schema are used to design data queries to the database and are modeled with the use of the
 xref:learn::5-defining-schemas/5.1-defining-individual-types.adoc[PERA model].
+Type definitions can be used in Define and Undefine queries and can't use any variables.
 
 To create new types in a schema, subtype one of the existing types.
 A subtype inherits all definitions of its supertype.
