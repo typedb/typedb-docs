@@ -191,7 +191,7 @@ To determine the actual return types of query results, we can look at the `type`
 
 == Polymorphism in TypeDB
 
-To begin leveraging declarative polymorphism in our queries, we'll first need to review the three fundamental types of polymorphism that TypeDB implements:
+To begin leveraging declarative polymorphism in our queries, we'll first need to review the three fundamental types of polymorphism that TypeDB implements.
 
 Inheritance polymorphism:: Allows us to define type hierarchies in the schema and then query those hierarchies declaratively.
 Interface polymorphism:: Allows us to define interfaces that can be implemented independently in the schema and then query those interfaces declaratively.
@@ -526,7 +526,7 @@ $entity-1: attribute;
 $entity-2: attribute;
 ----
 
-In this query we have omitted the roles that the two entities play! In general, we can omit roles in a relation tuple if we do not care what they are. This is particularly useful for parametric queries, but has some other powerful use cases that we will explore in Lesson 7.2 (coming soon).
+In this query we have omitted the roles that the two entities play! In general, we can omit roles in a relation tuple if we do not care what they are. This is particularly useful for parametric queries, and we will explore this feature more fully in xref:learn::7-understanding-query-patterns/7.2-relation-patterns.adoc[Lesson 7.2].
 
 [NOTE]
 ====

@@ -23,7 +23,7 @@ match
 $spring-sale isa promotion, has code "SPR24";
 $book isa book;
 insert
-(promotion: $spring-sale, included: $book) isa promotion-inclusion,
+(promotion: $spring-sale, item: $book) isa promotion-inclusion,
     has discount 0.10;
 ----
 image:learn::studio-icons/run-query.png[]image:learn::studio-icons/commit-transaction.png[] *_Run and commit_*
@@ -61,7 +61,7 @@ match
 $sff-festival isa promotion, has code "SFF24";
 $book isa book, has genre "science fiction";
 insert
-(promotion: $sff-festival, included: $book) isa promotion-inclusion,
+(promotion: $sff-festival, item: $book) isa promotion-inclusion,
     has discount 0.15;
 ----
 image:learn::studio-icons/run-query.png[] *_Run_*
@@ -71,7 +71,7 @@ match
 $sff-festival isa promotion, has code "SFF24";
 $book isa book, has genre "fantasy";
 insert
-(promotion: $sff-festival, included: $book) isa promotion-inclusion,
+(promotion: $sff-festival, item: $book) isa promotion-inclusion,
     has discount 0.20;
 ----
 image:learn::studio-icons/run-query.png[]image:learn::studio-icons/commit-transaction.png[] *_Run and commit_*

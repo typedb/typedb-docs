@@ -54,10 +54,10 @@ The transaction object takes one argument, the *transaction type*, and should be
 
 [cols="^.^,^.^,^.^",caption="",options="header"]
 |===
-|`SessionType` |`TransactionType` |Purpose
-|`DATA` | `READ` | Retrieving data.
-|`DATA` | `WRITE` | Modifying data.
-|`SCHEMA` | `WRITE` | Modifying the schema.
+| `SessionType` | `TransactionType` | Purpose
+| `DATA` | `READ` | Retrieving data.
+| `DATA` | `WRITE` | Modifying data.
+| `SCHEMA` | `WRITE` | Modifying the schema.
 |===
 
 [WARNING]

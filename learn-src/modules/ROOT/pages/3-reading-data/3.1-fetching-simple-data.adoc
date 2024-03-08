@@ -196,7 +196,7 @@ Using a *data* session and *read* transaction, *run* image:learn::studio-icons/r
 
 All Fetch queries return results in JSON format.
 
-In the `match` clause of the query, we declared a single *variable*: `$book`. In TypeQL, variables are declared using the `$` prefix. We also specified the *type* of `$book` to be `paperback` using the `isa` keyword. We can see that each JSON object returned represents an instance of `paperback` and contains a list of all that book's attributes.
+In the `match` clause of the query, we declared a single *variable*: `$book`. In TypeQL, variables are declared using a `$` prefix. We also specified the *type* of `$book` to be `paperback` using the `isa` keyword. We can see that each JSON object returned represents an instance of `paperback` and contains a list of all that book's attributes.
 
 .Exercise
 [caption=""]
@@ -236,7 +236,7 @@ fetch
 $book: title, page-count;
 ----
 
-If we *run* image:learn::studio-icons/run-query.png[] this query, we see the following result:
+If we *run* image:learn::studio-icons/run-query.png[] this query, we see the following result.
 
 [,json]
 ----
