@@ -16,32 +16,43 @@ Introduction for the near-natural fully declarative query language of TypeDB.
 
 [cols-2]
 --
-.xref:typeql::schema/overview.adoc[Schema queries]
+.xref:typeql::schema/overview.adoc[Schema]
 [.clickable]
 ****
-* xref:typeql::schema/define.adoc[]
-** xref:typeql::schema/type-definitions.adoc[]
-** xref:typeql::schema/rule-definitions.adoc[]
-* xref:typeql::schema/undefine.adoc[]
+Schema definition TypeQL queries.
 ****
 
-.xref:typeql::data/overview.adoc[Data queries]
+.xref:typeql::data/overview.adoc[Data]
 [.clickable]
 ****
-* xref:typeql::data/insert.adoc[]
-* xref:typeql::data/delete.adoc[]
-* xref:typeql::data/update.adoc[]
-* xref:typeql::data/fetch.adoc[]
-* xref:typeql::data/get.adoc[]
-* xref:typeql::data/examples.adoc[]
+Data manipulation TypeQL queries.
 ****
 --
+
+== Variables
+
+[cols-2]
+--
+.xref:typeql::concepts/overview.adoc[Concepts]
+[.clickable]
+****
+Concepts, concept variables, types, and data instances.
+****
+
+.xref:typeql::values/overview.adoc[Values]
+[.clickable]
+****
+Values, value-types, value variables, comparators, arithmetic, functions.
+****
+--
+
+== Terminology
 
 [cols-1]
 --
 .xref:typeql::keywords.adoc[]
 [.clickable]
 ****
-A glossary of TypeQL keywords used in clauses, schema statements, and data statements.
+A list of TypeQL keywords used in clauses, schema statements, and data statements.
 ****
 --
