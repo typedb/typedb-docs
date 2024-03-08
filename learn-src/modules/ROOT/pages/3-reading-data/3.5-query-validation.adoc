@@ -42,18 +42,18 @@ The second query is invalid because users do not have ISBN attributes. The third
 [,typeql]
 ----
 match
-(located: $user, location: $user-location) isa locating;
+(located: $user, location: $user-city) isa locating;
 (action: $order, executor: $user) isa action-execution;
 (delivered: $order, destination: $destination) isa delivery;
-(located: $destination, location: $destination-location) isa locating;
-$user-location isa city;
-$destination-location isa city;
-not { $destination-location is $user-location; };
+(located: $destination, location: $destination-city) isa locating;
+$user-city isa city;
+$destination-city isa city;
+not { $destination-city is $user-city; };
 fetch
 $order: id;
 ----
 
-We will explore exactly how TypeDB validates queries in Lesson 7.1 (coming soon).
+We will explore exactly how TypeDB validates queries in xref:learn::7-understanding-query-patterns/7.1-patterns-as-constraints.adoc[Lesson 7.1].
 
 .Exercise
 [caption=""]
@@ -63,7 +63,6 @@ Determine what the above query is asking for.
 .Answer
 [%collapsible]
 =====
-It retrieves the IDs of orders that have a destination other than the location of the user that placed the order. Perhaps these orders are gifts! This query uses two keywords we haven't introduced yet: `not` and `is`. We will learn about these keywords in Lesson 7.3 (coming soon).
+It retrieves the IDs of orders being sent to a city other than the city of the user that placed the order. Perhaps these orders are gifts! This query uses two keywords we haven't introduced yet: `not` and `is`. We will learn about these keywords in xref:learn::7-understanding-query-patterns/7.3-logical-operators.adoc[Lesson 7.3].
 =====
-
 ====

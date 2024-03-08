@@ -83,7 +83,7 @@ Write a query to define three new relation types and their roles:
 
 * `locating` with roles `locating:location` and `locating:located`.
 * `delivery` with roles `delivery:deliverer`, `delivery:delivered`, and `delivery:destination`.
-* `promotion-inclusion` with roles `promotion-inclusion:promotion` and `promotion-inclusion:included`.
+* `promotion-inclusion` with roles `promotion-inclusion:promotion` and `promotion-inclusion:item`.
 
 .Sample solution
 [%collapsible]
@@ -100,7 +100,7 @@ delivery sub relation,
     relates destination;
 promotion-inclusion sub relation,
     relates promotion,
-    relates included;
+    relates item;
 ----
 =====
 ====

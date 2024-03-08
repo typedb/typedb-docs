@@ -600,11 +600,11 @@ match $user isa user; $user has id "u0004"; insert $login isa login; $login has 
 match $user isa user; $user has id "u0004"; insert $login isa login; $login has success true; $execution (action: $login, executor: $user) isa action-execution; $execution has timestamp 2022-05-17T12:16:30.352;
 # promotion
 insert $promotion isa promotion; $promotion has code "HOL23"; $promotion has name "Holiday Sale 2023"; $promotion has start-timestamp 2023-12-01T00:00:00; $promotion has end-timestamp 2023-12-31T23:59:59;
-match $book isa book; $book has isbn-13 "9780575104419"; $promotion isa promotion; $promotion has name "Holiday Sale 2023"; insert $inclusion (promotion: $promotion, included: $book) isa promotion-inclusion; $inclusion has discount 0.25;
-match $book isa book; $book has isbn-13 "9780060929794"; $promotion isa promotion; $promotion has name "Holiday Sale 2023"; insert $inclusion (promotion: $promotion, included: $book) isa promotion-inclusion; $inclusion has discount 0.25;
-match $book isa book; $book has isbn-13 "9780375801679"; $promotion isa promotion; $promotion has name "Holiday Sale 2023"; insert $inclusion (promotion: $promotion, included: $book) isa promotion-inclusion; $inclusion has discount 0.25;
-match $book isa book; $book has isbn-13 "9780008627843"; $promotion isa promotion; $promotion has name "Holiday Sale 2023"; insert $inclusion (promotion: $promotion, included: $book) isa promotion-inclusion; $inclusion has discount 0.25;
-match $book isa book; $book has isbn-13 "9780500026557"; $promotion isa promotion; $promotion has name "Holiday Sale 2023"; insert $inclusion (promotion: $promotion, included: $book) isa promotion-inclusion; $inclusion has discount 0.25;
+match $book isa book; $book has isbn-13 "9780575104419"; $promotion isa promotion; $promotion has name "Holiday Sale 2023"; insert $inclusion (promotion: $promotion, item: $book) isa promotion-inclusion; $inclusion has discount 0.25;
+match $book isa book; $book has isbn-13 "9780060929794"; $promotion isa promotion; $promotion has name "Holiday Sale 2023"; insert $inclusion (promotion: $promotion, item: $book) isa promotion-inclusion; $inclusion has discount 0.25;
+match $book isa book; $book has isbn-13 "9780375801679"; $promotion isa promotion; $promotion has name "Holiday Sale 2023"; insert $inclusion (promotion: $promotion, item: $book) isa promotion-inclusion; $inclusion has discount 0.25;
+match $book isa book; $book has isbn-13 "9780008627843"; $promotion isa promotion; $promotion has name "Holiday Sale 2023"; insert $inclusion (promotion: $promotion, item: $book) isa promotion-inclusion; $inclusion has discount 0.25;
+match $book isa book; $book has isbn-13 "9780500026557"; $promotion isa promotion; $promotion has name "Holiday Sale 2023"; insert $inclusion (promotion: $promotion, item: $book) isa promotion-inclusion; $inclusion has discount 0.25;
 # book
 insert $book isa paperback; $book has isbn-13 "9780451162076"; $book has title "Pet Sematary"; $book has page-count 374; $book has price 93.22; $book has genre "fiction"; $book has genre "horror"; $book has isbn-10 "0451162072"; $book has stock 1;
 match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "King, Stephen"; }; insert $contributor isa $contributor-type; $contributor has name "King, Stephen";
