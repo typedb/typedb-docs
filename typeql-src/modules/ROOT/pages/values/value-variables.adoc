@@ -3,7 +3,7 @@
 == Usage
 
 Value variables are used in patterns with xref:typeql::values/arithmetic.adoc[arithmetics] or
-xref:typeql::values/functions.adoc[other built-in functions] to represent primitive values in statements.
+xref:typeql::values/functions.adoc[built-in functions] to represent values in statements.
 Value variables are never persisted into a database and can be used only within the scope of a query or a rule.
 
 To persist a value of a value variable, you can save it into a database by using an attribute type
