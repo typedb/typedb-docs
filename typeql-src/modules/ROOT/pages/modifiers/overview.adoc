@@ -1,0 +1,30 @@
+= Modifiers overview
+
+Modifiers let us process the results of a query.
+By using modifiers, you can change ordering, number of results, or even the output format.
+
+Modifiers always go at the end of a query (after all clauses).
+Sorting and pagination are quite often used together.
+
+Aggregation can be done only with a Get query and is incompatible with other modifiers.
+
+[cols-2]
+--
+.xref:typeql::modifiers/sorting.adoc[]
+[.clickable]
+****
+By sorting, we can change the order in which results are returned.
+****
+
+.xref:typeql::modifiers/pagination.adoc[]
+[.clickable]
+****
+Get a subset of results by limiting the range of returned answers.
+****
+
+.xref:typeql::modifiers/aggregation.adoc[]
+[.clickable]
+****
+Process query results on a server to return aggregated values, or group results by similar values of a variable.
+****
+--
