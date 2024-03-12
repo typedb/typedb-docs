@@ -1,26 +1,24 @@
 = Sorting
 
+This page covers sorting of TypeQL query results.
+
 == Usage
 
-This page covers sorting query results by using the `sort` keyword in a TypeQL query.
+By default, a TypeDB server streams query results without a specific order,
+ensuring fast retrieval as solutions are sent as they're found.
 
-Be default, query results are streamed by a TypeDB server in no particular guaranteed order.
-This is the fastest way to retrieve results,
-as they are being sent as soon as a new solution for the pattern used in a query found.
+To impose a specific order, you can use the `sort` keyword followed by one or multiple comma-separated query variables.
+But this requires the server to find all results to make sure they are properly sorted before sending any.
 
-You can use a query modifier to sort them by one or multiple of the query variables.
-That way, TypeDB server will need to collect all results first to guarantee the correct order.
+You can specify ascending (asc) or descending (desc) order for each variable sorted by.
+The ascending order is assumed by default.
 
-To sort query results, use the `sort` keyword, followed by a variable.
-You can sort by multiple variables by providing them as a comma-separated list.
-Each variable can have an optional sorting order: `asc` for ascending or `desc` for descending.
-By default, the ascending order is assumed to be ascending.
+Sorting is crucial for result reproducibility.
+Without it, the order of query results isn't guaranteed in any way
+and can be different every time you send the same query to the same database.
 
-Sorting of the results can be important, for example, to preserver reproducibility of the result.
-Without sorting, there are no guarantees for the ordering of the query results.
-
-Sorting is often used in combination with pagination.
-In this case, sorting goes before pagination in TypeQL query syntax.
+Sorting is commonly used alongside pagination.
+In this case, sorting precedes pagination in TypeQL query syntax.
 For example, see the xref:typeql::modifiers/pagination.adoc[] page.
 
 == Examples
