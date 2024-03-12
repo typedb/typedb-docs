@@ -1,1 +1,326 @@
 = Lesson 8.3: Aggregations
+
+== Aggregating over results
+
+We have seen how we can use subqueries to group results. In this lesson, we will see how we can use them to aggregate over results. Let's consider this query from xref:learn::8-structuring-query-results/8.2-subqueries.adoc[Lesson 8.2], which lists all books and any promotions they are in.
+
+[,typeql]
+----
+match
+$book isa book;
+fetch
+$book: title;
+promotions: {
+    match
+    $promotion isa promotion;
+    ($book, $promotion) isa promotion-inclusion;
+    fetch
+    $promotion: name;
+};
+----
+
+Suppose that we only want to count the promotions each book is in rather than listing them all out by name. To do so, we can use an *aggregation*, as in the following query.
+
+[,typeql]
+----
+match
+$book isa book;
+fetch
+$book: title;
+promotions: {
+    match
+    $promotion isa promotion;
+    ($book, $promotion) isa promotion-inclusion;
+    get;
+    count;
+};
+----
+
+An aggregation is done by using a *Get query* as a subquery. We will explore Get queries fully in Lesson 11 (coming soon), where they will be used for stateful object retrieval. For now, we will only consider the aspects needed for aggregations when used as subqueries.
+
+A Get query consists of a `match` clause followed by a `get` clause. In this case, the `get` clause is empty, denoted by the immediately following `;` delimiter. We have then appended an *aggregator* to the query, in this case the `count` aggregator. This causes the subquery to return the number of results matched by the `match` clause, rather than the results themselves. If we *run* image:learn::studio-icons/run-query.png[] this query, then we can see that the `promotions` field of each result contains an object representing a value. This field is in the same format as those of the *value variables* we learned to retrieve in xref:learn::7-understanding-query-patterns/7.5-value-expressions.adoc[Lesson 7.5].
+
+.Exercise
+[caption=""]
+====
+Write a Fetch query to retrieve a list of publishers. For each publisher, retrieve their name and the number of books they have published.
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$publisher isa publisher;
+fetch
+$publisher: name;
+books: {
+    match
+    $book isa book;
+    ($book, $publisher) isa publishing;
+    get;
+    count;
+};
+----
+=====
+====
+
+== Aggregators
+
+We have seen an example of the `count` aggregator, and now we will explore examples of some of the others. The table below lists the aggregators available in TypeQL.
+
+[cols="^.^,^.^,^.^",caption="",options="header"]
+|===
+| Aggregator | Name | Takes argument
+| `count` | Count | No
+| `sum` | Sum | Yes
+| `max` | Maximum | Yes
+| `min` | Minimum | Yes
+| `mean` | Mean | Yes
+| `median` | Median | Yes
+| `std` | Standard deviation | Yes
+|===
+
+[NOTE]
+====
+The `std` aggregator returns the sample standard deviation as obtained by https://en.wikipedia.org/wiki/Bessel's_correction[Bessel's correction].
+====
+
+Unlike the `count` aggregator, the other aggregators all take a variable as an argument. Let's see an example. In the following query, we retrieve the average review score for each book.
+
+[,typeql]
+----
+match
+$book isa book;
+fetch
+$book: title;
+average-score: {
+    match
+    $review isa review, has score $score;
+    ($book, $review) isa rating;
+    get;
+    mean $score;
+};
+----
+
+Whereas the `count` aggregator returns the number of results matched regardless of their content, the other aggregators require a specified numeric value to operate over. Here, we have supplied the `$score` attribute as the argument to the `mean` aggregator, indicating that we want the average of its values. The argument can be either a concept variable representing an attribute, or a value variable, as we learned about in xref:learn::7-understanding-query-patterns/7.5-value-expressions.adoc[Lesson 7.5]. In the next example, we use the `sum` aggregator over the value variable `?line-total` to get the grand total for each order in the database.
+
+[,typeql]
+----
+match
+$order isa order;
+fetch
+order-total: {
+    match
+    $book isa book, has price $retail-price;
+    ($order, $book) isa order-line,
+        has quantity $quantity;
+    ?line-total = $quantity * $retail-price;
+    get;
+    sum ?line-total;
+};
+----
+
+== Filtering unique values
+
+By default, aggregators in a Get query operate over the matches returned by the `match` clause. It is important to understand the affect this has on the aggregations returned. Consider the following query, which is intended to retrieve the number of users that have ordered each book.
+
+[,typeql]
+----
+match
+$book isa book, has isbn-13 $isbn;
+fetch
+$isbn;
+buyers: {
+    match
+    $user isa user;
+    $order isa order;
+    ($user, $order) isa action-execution;
+    ($book, $order) isa order-line;
+    get;
+    count;
+};
+----
+
+Let's examine one of the results, corresponding to the book _Great Discoveries in Medicine_. The results tell us it has had six buyers.
+
+[,json]
+----
+{
+    "buyers": { "value": 6, "value_type": "long" },
+    "isbn": { "value": "9780500291221", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } }
+}
+----
+
+Now let's use the following query to retrieve the IDs of orders containing this book and the IDs of the users that placed those orders.
+
+[,typeql]
+----
+match
+$book isa book, has isbn-13 "9780500291221";
+$order isa order, has id $order-id;
+$user isa user, has id $user-id;
+($user, $order) isa action-execution;
+($book, $order) isa order-line;
+fetch
+$order-id;
+$user-id;
+
+----
+
+[,json]
+----
+{
+    "order-id": { "value": "o0008", "value_type": "string", "type": { "label": "id", "root": "attribute" } },
+    "user-id": { "value": "u0003", "value_type": "string", "type": { "label": "id", "root": "attribute" } }
+}
+{
+    "order-id": { "value": "o0001", "value_type": "string", "type": { "label": "id", "root": "attribute" } },
+    "user-id": { "value": "u0001", "value_type": "string", "type": { "label": "id", "root": "attribute" } }
+}
+{
+    "order-id": { "value": "o0031", "value_type": "string", "type": { "label": "id", "root": "attribute" } },
+    "user-id": { "value": "u0001", "value_type": "string", "type": { "label": "id", "root": "attribute" } }
+}
+{
+    "order-id": { "value": "o0035", "value_type": "string", "type": { "label": "id", "root": "attribute" } },
+    "user-id": { "value": "u0007", "value_type": "string", "type": { "label": "id", "root": "attribute" } }
+}
+{
+    "order-id": { "value": "o0034", "value_type": "string", "type": { "label": "id", "root": "attribute" } },
+    "user-id": { "value": "u0007", "value_type": "string", "type": { "label": "id", "root": "attribute" } }
+}
+{
+    "order-id": { "value": "o0024", "value_type": "string", "type": { "label": "id", "root": "attribute" } },
+    "user-id": { "value": "u0010", "value_type": "string", "type": { "label": "id", "root": "attribute" } }
+}
+----
+
+We get six results back. However, if we examine them, we see that user "u0001" placed both orders "o0001" and "o0031", and that user "u0007" placed both orders "o0034" and "o0035". So while there are six orders of this book, only four users have ordered it. To understand why the aggregation gave the wrong value, we must examine the pattern in the `match` clause of the subquery.
+
+[,typeql]
+----
+$user isa user;
+$order isa order;
+($user, $order) isa action-execution;
+($book, $order) isa order-line;
+----
+
+If the book in question has been ordered by the same user multiple times, then this pattern will match the user once per order because it contains the `$order` variable, which differs between the matches. We saw in xref:learn::8-structuring-query-results/8.1-fetching-attributes.adoc[Lesson 8.1] that Fetch queries return one result per unique combination of variables retrieved. The same applies to the Get queries we use for aggregations, except that one result is instead returned per unique combination of variables _matched_.
+
+If we want to retrieve only the unique set of users, we can filter the matches before aggregating by modifying the get query. In the following query, we add a filter to return only the unique set of users matched in the results, by adding the filtering variable `$user` to the `get` clause.
+
+[,typeql]
+----
+match
+$book isa book, has isbn-13 $isbn;
+fetch
+$isbn;
+buyers: {
+    match
+    $user isa user;
+    $order isa order;
+    ($user, $order) isa action-execution;
+    ($book, $order) isa order-line;
+    get $user;
+    count;
+};
+----
+
+If we run this new query, we see that the correct number of buyers is now returned for this book.
+
+[,json]
+----
+{
+    "buyers": { "value": 4, "value_type": "long" },
+    "isbn": { "value": "9780500291221", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } }
+}
+----
+
+[IMPORTANT]
+====
+In order for a variable to be used as the argument of an aggregator, either the `get` clause must be empty (unfiltered), or the variable must be included in it.
+====
+
+[NOTE]
+====
+To filter on multiple variables, aggregating over the set of results in which each tuple of them is unique, we can separate them by commas in the `get` clause, as follows.
+
+[,typeql]
+----
+get $user, $order;
+----
+
+Filtering _all_ variables in the `match` clause is the same as not filtering at all, and will produce the same results as an empty `get` clause!
+====
+
+.Exercise
+[caption=""]
+====
+Write a Fetch query to retrieve a list of users. For each user, retrieve:
+
+* Their user ID.
+* The median retail price of books they have ordered.
+* The retail price of the cheapest book they have ordered.
+* The retail price of the most expensive book they have ordered.
+
+Ensure that each book only counts once towards the median, even if they have ordered it multiple times.
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$user isa user, has id $id;
+fetch
+$id;
+median-price: {
+    match
+    $book isa book, has price $price;
+    $order isa order;
+    ($book, $order) isa order-line;
+    ($user, $order) isa action-execution;
+    get $book, $price; median $price;
+};
+min-price: {
+    match
+    $book isa book, has price $price;
+    $order isa order;
+    ($book, $order) isa order-line;
+    ($user, $order) isa action-execution;
+    get; min $price;
+};
+max-price: {
+    match
+    $book isa book, has price $price;
+    $order isa order;
+    ($book, $order) isa order-line;
+    ($user, $order) isa action-execution;
+    get; max $price;
+};
+----
+=====
+====
