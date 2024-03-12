@@ -1,10 +1,11 @@
 = isa!
 
 The `isa` keyword is used in TypeQL statements to specify a direct type for a data instance.
+For specifying type or supertype of a data instance, see the xref:typeql::statements/isa.adoc[] statement instead.
 
 == Syntax
 
-The most common syntax construction is:
+The syntax of a simple statement with the `isa!` keyword:
 
 .Syntax
 [,typeql]
@@ -15,10 +16,123 @@ The most common syntax construction is:
 Where `data-instance` can be a concept variable representing a data instance, a literal value representing an attribute,
 or both; `type` can be a type label or a concept variable representing a type.
 
+== Usage
 
-== Type manipulation example
+TypeQL statements with the `isa!` keyword can be used in data queries to set a type constraint for data instances.
 
+== Examples
+
+=== Simple example
+
+To match all data instances of the `person` type specifically:
+
+.isa! statement example
+[,typeql]
+----
 match
-$x isa! $type, has full-name "Bob";
-insert
-$y isa $type, has full-name "Just-like-Bob";
+$p isa! person;
+fetch $p: full-name;
+----
+
+.Output example
+[,json]
+----
+{
+    "p": {
+        "full-name": [ { "value": "Kevin Morrison", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "person", "root": "entity" }
+    }
+}
+{
+    "p": {
+        "full-name": [ { "value": "Masako Holley", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "person", "root": "entity" }
+    }
+}
+{
+    "p": {
+        "full-name": [ { "value": "Pearle Goodman", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "person", "root": "entity" }
+    }
+}
+----
+
+=== Complex example
+
+We can use the `isa` keyword in a complex statement with other keywords, for example,
+xref:typeql::statements/has.adoc[has].
+
+Let's see how to match every data instance of the `person` type that have ownership of at least one attribute of the
+`full-name` type.
+
+.Complex example
+[,typeql]
+----
+match
+$p isa person, has full-name $f;
+fetch $f;
+----
+
+.Output example
+[,json]
+----
+{ "f": { "value": "Kevin Morrison", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } }
+{ "f": { "value": "Masako Holley", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } }
+{ "f": { "value": "Pearle Goodman", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } }
+----
+
+=== Type variablization example
+
+The `isa` keyword can be used with a concept-variable instead of a type label to the right.
+That sets a constraint on the concept variable to be of any valid, according to the rest of the pattern, type.
+
+.Type variablization example
+[,typeql]
+----
+match
+$p isa $type, has full-name $f;
+fetch $type;
+----
+
+.Output example
+[,json]
+----
+{ "type": { "label": "entity", "root": "entity" } }
+{ "type": { "label": "subject", "root": "entity" } }
+{ "type": { "label": "user", "root": "entity" } }
+{ "type": { "label": "person", "root": "entity" } }
+{ "type": { "label": "thing", "root": "thing" } }
+----
+
+In the above example, we fetch the `$type` concept variable that represents not a data instance, but the type of `$p`.
+As a result of this query, we get all the types of all matched `$p`, as well as all their supertypes.
+To get only direct types, and no supertypes, use the xref:typeql::statements/isa-em.adoc[isa!] keyword instead of `isa`.
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::statements/isa-em.adoc[]
+[.clickable]
+****
+Learn more about `isa!` statement in TypeQL.
+****
+
+.xref:typeql::statements/has.adoc[]
+[.clickable]
+****
+Learn more about `has` statement in TypeQL.
+****
+
+.xref:typeql::concepts/types.adoc[]
+[.clickable]
+****
+Learn about types in TypeQL.
+****
+
+.xref:typeql::concepts/data-instances.adoc[]
+[.clickable]
+****
+Learn about data instances in TypeQL.
+****
+--

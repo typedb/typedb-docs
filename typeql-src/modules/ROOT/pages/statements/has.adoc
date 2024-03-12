@@ -1,4 +1,44 @@
 = has
 
+The `has` keyword is used in TypeQL statements to specify an owner for an attribute.
 
+For specifying only a direct type of a data instance, see the xref:typeql::statements/isa-em.adoc[] statement instead.
 
+== Syntax
+
+The syntax of a simple statement with the `has` keyword:
+
+.Syntax
+[,typeql]
+----
+<data-instance> has <attribute>
+----
+
+Where `data-instance` can be a concept variable representing a data instance, a literal value representing an attribute,
+or both;
+`attribute` can be a concept variable representing an attribute or a literal value preceded by an attribute type.
+
+== Usage
+
+TypeQL statements with the `has` keyword can be used in data queries
+to set a constraint of owning a particular attribute.
+
+== Examples
+
+=== Simple example
+
+To match a particular person by the full-name it owns and return an email it owns:
+
+.has statement example
+[,typeql]
+----
+match
+$p isa person, has full-name "Kevin Morrison", has email $e;
+fetch $e;
+----
+
+.Output example
+[,json]
+----
+{ "e": { "value": "kevin.morrison@typedb.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } }
+----

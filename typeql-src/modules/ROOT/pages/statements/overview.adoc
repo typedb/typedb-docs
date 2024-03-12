@@ -1,0 +1,144 @@
+= Statements overview
+
+== Simple statements
+
+[cols-3]
+--
+.xref:typeql::statements/isa.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/isa-em.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/is.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/has.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/sub.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/sub-em.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/type.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/abstract.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/owns.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/value.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/regex.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/key.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/unique.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/relates.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/plays.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/as.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/rule.adoc[]
+[.clickable]
+****
+
+****
+--
+
+// * isa
+// * isa!
+// * is
+// * has
+// * sub
+// * sub!
+// * type
+// * abstract
+// * owns
+// * value
+// * regex
+// * @key
+// * @unique
+// * relates
+// * plays
+// * as
+// * rule (when/then)
+
+== Complex statements
+
+Multiple simple statements with the same subject can be combined to a complex statement,
+consisting of a single subject, and multiple comma-separated pairs of predicates and objects.
+
+.Complex statement example
+[,typeql]
+----
+$p isa person, has full-name "Bob", has email "bob@gmail.com";
+----
+
+The above example combines simple statements from the previous example
+and achieves the same result without repeating the subject (`$p`).
+
+Note that the patterns above use the same schema that is used in the xref:home::quickstart.adoc[] guide.
+That schema defines types, used in the patterns: `person`, `full-name`, and `email`.
+

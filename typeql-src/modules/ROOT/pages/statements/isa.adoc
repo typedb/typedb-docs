@@ -5,7 +5,7 @@ For specifying only a direct type of a data instance, see the xref:typeql::state
 
 == Syntax
 
-The syntax of a simple statement with an `isa` keyword:
+The syntax of a simple statement with the `isa` keyword:
 
 .Syntax
 [,typeql]
@@ -28,9 +28,19 @@ its behavior is the same as the xref:typeql::statements/isa-em.adoc[isa!] keywor
 
 == Examples
 
+To run the examples below, you can use a database with the following schema and data loaded:
+
+* link:https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[iam-schema.tql]
+-- A TypeQL Define query for the sample IAM schema.
+* link:https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-data-single-query.tql[iam-data-single-query.tql]
+-- A TypeQL Insert query for the sample IAM data.
+
+// * xref:drivers::partial$tutorials/iam-schema.tql[iam-schema.tql] -- TypeQL Define query for the sample IAM schema
+// * xref:drivers::partial$tutorials/iam-schema.tql[iam-data-single-query.tql] -- TypeQL Insert query for the sample IAM data
+
 === Simple example
 
-To match all data instances of the `person` type:
+To match all data instances of the `person` type (or any of its subtypes):
 
 .isa statement example
 [,typeql]
