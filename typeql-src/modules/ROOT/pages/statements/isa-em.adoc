@@ -1,0 +1,24 @@
+= isa!
+
+The `isa` keyword is used in TypeQL statements to specify a direct type for a data instance.
+
+== Syntax
+
+The most common syntax construction is:
+
+.Syntax
+[,typeql]
+----
+<data-instance> isa! <type>
+----
+
+Where `data-instance` can be a concept variable representing a data instance, a literal value representing an attribute,
+or both; `type` can be a type label or a concept variable representing a type.
+
+
+== Type manipulation example
+
+match
+$x isa! $type, has full-name "Bob";
+insert
+$y isa $type, has full-name "Just-like-Bob";
