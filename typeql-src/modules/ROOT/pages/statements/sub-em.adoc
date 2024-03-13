@@ -36,7 +36,7 @@ include::typeql::statements/isa.adoc[tag=example-schema-data]
 
 === Define query example
 
-To define a new type being a subtype of another typ, place the new type's label before the `sub` keyword,
+To define a new type being a subtype of another typ, place the new type's label before the `sub!` keyword,
 and the parent type label after:
 
 .Define query example
@@ -75,10 +75,10 @@ To get the exact type only, use the xref:typeql::statements/type.adoc[] statemen
 
 [cols-2]
 --
-.xref:typeql::statements/sub-em.adoc[]
+.xref:typeql::statements/sub.adoc[]
 [.clickable]
 ****
-Learn more about `sub!` statement in TypeQL.
+Learn more about `sub` statement in TypeQL.
 ****
 
 .xref:typeql::statements/type.adoc[]
@@ -91,11 +91,5 @@ Learn more about `type` statement in TypeQL.
 [.clickable]
 ****
 Learn about types in TypeQL.
-****
-
-.xref:typeql::concepts/data-instances.adoc[]
-[.clickable]
-****
-Learn about data instances in TypeQL.
 ****
 --

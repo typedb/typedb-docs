@@ -5,20 +5,19 @@ For specifying only a direct type, see the xref:typeql::statements/isa-em.adoc[]
 
 == Syntax
 
-The syntax of a simple statement with the `isa` keyword:
+The syntax of an `isa` statement includes:
+
+* subject -- a concenpt-variable representing a data instance
+* predicate -- the `isa` keyword
+* object -- a type label or a concept variable representing a type
 
 .Syntax
 [,typeql]
 ----
-<data-instance> isa <type>;
+<concept variable> isa <type>;
 ----
 
-Where `data-instance` can be
-a concept variable representing a data instance or
-a concept variable with literal value for an attribute;
-`type` can be a type label or a concept variable representing a type.
-
-== Usage
+== Behaviour
 
 TypeQL statements with the `isa` keyword are used in data queries and rules.
 
@@ -30,8 +29,6 @@ the `isa` keyword uses all subtypes of the provided type via type inference.
 However, when used in an `insert` clause pattern, the `isa` keyword doesn't use subtypes and
 its behavior is the same as the xref:typeql::statements/isa-em.adoc[isa!] keyword.
 
-== Examples
-
 // tag::example-schema-data[]
 To run the examples below, you can use a database with the IAM
 link:https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[schema]
@@ -39,8 +36,21 @@ and
 link:https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-data-single-query.tql[sample data]
 loaded.
 // end::example-schema-data[]
-// * xref:drivers::partial$tutorials/iam-schema.tql[iam-schema.tql] -- TypeQL Define query for the sample IAM schema
-// * xref:drivers::partial$tutorials/iam-schema.tql[iam-data-single-query.tql] -- TypeQL Insert query for the sample IAM data
+
+== In a match pattern
+
+In a `match` clause pattern an isa statement can be used to match data instance of a selected type
+or any of its subtype (via type inference).
+
+
+
+
+== In a delete pattern
+
+
+== In an insert pattern
+
+
 
 === Simple statement example
 
@@ -57,102 +67,18 @@ $p isa path;
 fetch $p;
 ----
 
+.See output
+[%collapsible]
+====
 .Output example
 [,json]
 ----
 { "p": { "value": "LICENSE", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
 { "p": { "value": "zlckt.ts", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
 { "p": { "value": "README.md", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
-{ "p": { "value": "axidw.java", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
-{ "p": { "value": "iopvu.java", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
-{ "p": { "value": "lzfkn.java", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
-{ "p": { "value": "psukg.java", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
-{ "p": { "value": "zewhb.java", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
-{ "p": { "value": "lzfkn2.java", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
-{ "p": { "value": "budget_2021-08-01.xlsx", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
-{ "p": { "value": "budget_2022-05-01.xlsx", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
 ----
+====
 
-=== Complex example
-
-You can use the `isa` keyword in a complex statement with other keywords, for example,
-xref:typeql::statements/has.adoc[has].
-A simple or complex statement can be a part of a bigger pattern in a query.
-
-For example, let's see how to match every object that a particular user has permission
-access to perform the `modify_file` action.
-To specify the user, you can set a constraint on it having a particular `full-name` attribute.
-Finally, let's set output to be all attributes of every matched file in a JSON.
-
-.Complex example
-[,typeql]
-----
-match
-$u isa user, has full-name 'Kevin Morrison';
-$va isa action, has name 'modify_file';
-$o isa object;
-$pa($o, $va) isa access;
-$p($u, $pa) isa permission;
-fetch
-$o as file: attribute as file-attributes;
-----
-
-In the above example we fetch all attributes of the `$o` variable,
-that is constrained to be an instance of the `object` type or any of its subtypes.
-The subtypes are the important part here, because we don't have any instances of the `object` type in our database,
-but only of its subtype -- `file`.
-
-.Output example
-[,json]
-----
-{
-    "file": {
-        "file-attributes": [
-            { "value": "iopvu.java", "type": { "label": "path", "root": "attribute", "value_type": "string" } },
-            { "value": 55, "type": { "label": "size-kb", "root": "attribute", "value_type": "long" } }
-        ],
-        "type": { "label": "file", "root": "entity" }
-    }
-}
-----
-
-Notice the type of the object returned to be `file`, which is a subtype of the `object` type we queried for.
-To get only the direct type, and no supertypes, use the xref:typeql::statements/isa-em.adoc[isa!]
-keyword instead of `isa`.
-
-=== Type variablization example
-
-The `isa` keyword can be used with a concept-variable instead of a type label to the right.
-That sets a constraint on the concept variable to be of any valid, according to the rest of the pattern, type.
-
-.Type variablization example
-[,typeql]
-----
-match
-$p isa $type, has full-name $f;
-fetch $type;
-----
-
-.Output example
-[,json]
-----
-{ "type": { "label": "entity", "root": "entity" } }
-{ "type": { "label": "subject", "root": "entity" } }
-{ "type": { "label": "user", "root": "entity" } }
-{ "type": { "label": "person", "root": "entity" } }
-{ "type": { "label": "thing", "root": "thing" } }
-----
-
-In the above example, we fetch the `$type` variable that represents the type of `$p`.
-As a result of this query, we get a all the types of every matched `$p`, as well as all their supertypes.
-
-In the
-link:https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[schema]
-we are using for this example, our direct type is `person`, which is a subtype of the `user` type,
-that has the `subject` as its supertype, and then the `entity` root type, and the common supertype of all types:
-the `thing`.
-
-include::typeql::partial$thing-warning.adoc[]
 
 == Learn more
 
