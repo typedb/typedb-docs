@@ -122,7 +122,17 @@ fetch $type;
 
 In the above example, we fetch the `$type` concept variable that represents not a data instance, but the type of `$p`.
 As a result of this query, we get all the types of all matched `$p`, as well as all their supertypes.
-To get only direct types, and no supertypes, use the xref:typeql::statements/isa-em.adoc[isa!] keyword instead of `isa`.
+
+In the
+link:https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[schema]
+we are using for this example, our direct type is `person`, which is a subtype of the `user` type,
+that has the `subject` as its supertype, and then the `entity` root type, and the common supertype of all types:
+the `thing`.
+
+include::typeql::partial$thing-warning.adoc[]
+
+To get only the direct type, and no supertypes, use the xref:typeql::statements/isa-em.adoc[isa!]
+keyword instead of `isa`.
 
 == Learn more
 
