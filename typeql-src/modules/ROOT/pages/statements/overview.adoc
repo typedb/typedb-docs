@@ -1,6 +1,52 @@
 = Statements overview
 
+A TypeQL statement is a building block of a pattern that can be a pattern by itself.
+Statements in TypeQL are always end with a semicolon.
+By default, a conjunction combines all statements in a pattern.
+There is a specific syntax to use for a disjunction or negation.
+//# todo Add links to disjunction and negation
+
 == Simple statements
+
+A simple statement is the smallest complete TypeQL block that can be used in a pattern or query.
+
+Most statements have three parts: *Subject Predicate Object*.
+Where the predicate is a TypeQL keyword.
+
+Some notable exceptions are: annotations (xref:typeql::statements/key.adoc[key]
+and xref:typeql::statements/unique.adoc[unique]),
+xref:typeql::statements/abstract.adoc[abstract],
+xref:typeql::statements/value.adoc[value], and
+xref:typeql::statements/rule.adoc[rules].
+//as - is it a statement?
+
+== Complex statements
+
+Multiple simple statements with the same subject can be combined into a complex statement.
+A complex statement starts with a single subject, and multiple comma-separated simple statements with subject omitted.
+
+.See an example
+[%collapsible]
+====
+.Complex statement example
+[,typeql]
+----
+$p isa person, has full-name "Kevin Morrison", has email $e;
+----
+
+The above example combines simple xref:typeql::statements/isa.adoc[] and xref:typeql::statements/has.adoc[] statements
+to the same result without repeating the subject (`$p`):
+
+.Equal simple statements example
+[,typeql]
+----
+$p isa person;
+$p has full-name "Kevin Morrison";
+$p has email $e;
+----
+====
+
+== Keywords / Predicates
 
 [cols-3]
 --
@@ -124,21 +170,3 @@
 // * plays
 // * as
 // * rule (when/then)
-
-== Complex statements
-
-Multiple simple statements with the same subject can be combined to a complex statement,
-consisting of a single subject, and multiple comma-separated pairs of predicates and objects.
-
-.Complex statement example
-[,typeql]
-----
-$p isa person, has full-name "Bob", has email "bob@gmail.com";
-----
-
-The above example combines simple statements from the previous example
-and achieves the same result without repeating the subject (`$p`).
-
-Note that the patterns above use the same schema that is used in the xref:home::quickstart.adoc[] guide.
-That schema defines types, used in the patterns: `person`, `full-name`, and `email`.
-

@@ -1,0 +1,101 @@
+= sub!
+
+The `sub!` keyword statement is used in TypeQL for defining and matching direct subtypes in a schema or pattern respectively.
+For specifying a direct type or subtype only, see the xref:typeql::statements/type.adoc[] or
+xref:typeql::statements/sub-em.adoc[] statements instead.
+
+== Syntax
+
+The syntax of a simple statement with the `sub!` keyword:
+
+.Syntax
+[,typeql]
+----
+<subtype> sub! <parent type>;
+----
+
+Where `subtype` and `parent type` can be either a type label or a concept-variable representing a type.
+
+== Usage
+
+TypeQL statements with the `sub!` keyword are used in any kind of query.
+
+Since in Define/Undefine queries you can't use variables,
+both subject and object can only be type labels in a schema statement.
+So a statement with the `sub!` keyword is used to define (declare) one type (preceding subject) as a subtype
+of another type (succeeding object).
+Exactly the same way as the `sub` statement (without the exclamation mark).
+
+In a data query pattern a `sub!` keyword can be used only in a `match` clause or condition of a rule.
+Both subject and object of a `sub!` keyword statement can be concept variables, or one of them can be a type label.
+The `sub!` keyword adds a constraint on a subject being a direct subtype of the type used as an object.
+
+== Examples
+
+include::typeql::statements/isa.adoc[tag=example-schema-data]
+
+=== Define query example
+
+To define a new type being a subtype of another typ, place the new type's label before the `sub` keyword,
+and the parent type label after:
+
+.Define query example
+[,typeql]
+----
+define
+png sub! file;
+----
+
+=== Matching pattern example
+
+Let's fetch all direct subtypes of the `subject` entity type:
+
+.Fetching subtypes
+[,typeql]
+----
+match
+$type sub! subject;
+fetch $type;
+----
+
+.Output example
+[,json]
+----
+{ "type": { "label": "user", "root": "entity" } }
+{ "type": { "label": "user-group", "root": "entity" } }
+----
+
+The result includes two direct subtypes of the `subject` type, but not their nested subtypes, and not the type itself.
+
+To get not only direct subtypes, but also nested subtypes and the type itself,
+use the xref:typeql::statements/sub-em.adoc[] statement instead.
+To get the exact type only, use the xref:typeql::statements/type.adoc[] statement instead.
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::statements/sub-em.adoc[]
+[.clickable]
+****
+Learn more about `sub!` statement in TypeQL.
+****
+
+.xref:typeql::statements/type.adoc[]
+[.clickable]
+****
+Learn more about `type` statement in TypeQL.
+****
+
+.xref:typeql::concepts/types.adoc[]
+[.clickable]
+****
+Learn about types in TypeQL.
+****
+
+.xref:typeql::concepts/data-instances.adoc[]
+[.clickable]
+****
+Learn about data instances in TypeQL.
+****
+--

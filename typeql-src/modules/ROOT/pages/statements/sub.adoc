@@ -1,0 +1,102 @@
+= sub
+
+The `sub` keyword statement is used in TypeQL for defining and matching subtypes in a schema or pattern respectively.
+For specifying a direct type or subtype only, see the xref:typeql::statements/type.adoc[] or
+xref:typeql::statements/sub-em.adoc[] statements instead.
+
+== Syntax
+
+The syntax of a simple statement with the `sub` keyword:
+
+.Syntax
+[,typeql]
+----
+<subtype> sub <parent type>;
+----
+
+Where `subtype` and `parent type` can be either a type label or a concept-variable representing a type.
+
+== Usage
+
+TypeQL statements with the `sub` keyword are used in any kind of query.
+
+Since in Define/Undefine queries you can't use variables,
+both subject and object can only be type labels in a schema statement.
+So a statement with the `sub` keyword is used to define (declare) one type (preceding subject) as a subtype
+of another type (succeeding object).
+
+In a data query pattern a `sub` statement can be used only in a `match` clause or condition of a rule.
+Both subject and object of a `sub` statement can be concept variables, or one of them can be a type label.
+The `sub` keyword adds a constraint on a subject being an exact type, a direct subtype,
+or indirect subtype (via type inference) of the type used as an object.
+
+== Examples
+
+include::typeql::statements/isa.adoc[tag=example-schema-data]
+
+=== Define query example
+
+To define a new type being a subtype of another typ, place the new type's label before the `sub` keyword,
+and the parent type label after:
+
+.Define query example
+[,typeql]
+----
+define
+pdf sub file;
+----
+
+=== Matching pattern example
+
+Let's fetch all subtypes of the `user-group` entity type:
+
+.Fetching subtypes
+[,typeql]
+----
+match
+$type sub user-group;
+fetch $type;
+----
+
+.Output example
+[,json]
+----
+{ "type": { "label": "business-unit", "root": "entity" } }
+{ "type": { "label": "user-group", "root": "entity" } }
+{ "type": { "label": "user-role", "root": "entity" } }
+{ "type": { "label": "user-account", "root": "entity" } }
+----
+
+The result includes three subtypes of the `user-group` type and the type itself.
+
+To get only direct subtypes only, use the xref:typeql::statements/sub-em.adoc[] statement instead.
+To get the exact type only, use the xref:typeql::statements/type.adoc[] statement instead.
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::statements/sub-em.adoc[]
+[.clickable]
+****
+Learn more about `sub!` statement in TypeQL.
+****
+
+.xref:typeql::statements/type.adoc[]
+[.clickable]
+****
+Learn more about `type` statement in TypeQL.
+****
+
+.xref:typeql::concepts/types.adoc[]
+[.clickable]
+****
+Learn about types in TypeQL.
+****
+
+.xref:typeql::concepts/data-instances.adoc[]
+[.clickable]
+****
+Learn about data instances in TypeQL.
+****
+--
