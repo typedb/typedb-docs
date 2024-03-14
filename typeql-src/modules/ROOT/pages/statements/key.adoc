@@ -1,14 +1,14 @@
 = key
 
-The `key` keyword is an annotation, that can be used with an
+The `@key` keyword is an annotation, that can be used with an
 xref:typeql::statements/owns.adoc[owns statement] to specify, that the selected attribute type serves as a key for the subject type.
 
 == Syntax
 
-The syntax of a `key` statement includes:
+The syntax of a `@key` statement includes:
 
 * xref:typeql::statements/owns.adoc[owns statement]
-* the `key` keyword preceded by the `@` sign
+* the `@key` keyword
 
 .Syntax
 [,typeql]
@@ -18,9 +18,9 @@ The syntax of a `key` statement includes:
 
 == Behaviour
 
-TypeQL statements with the `key` keyword can be used only in Define queries.
+TypeQL statements with the `@key` keyword can be used only in Define queries.
 
-The `key` keyword adds a xref:typeql::statements/unique.adoc[unique annotation] constraint,
+The `@key` keyword adds a xref:typeql::statements/unique.adoc[unique annotation] constraint,
 as well as a cadinality constraint of exactly one.
 
 Cardinality constraint of exactly one means, that a data instance of the subject type must have exactly one (no less and no more)
