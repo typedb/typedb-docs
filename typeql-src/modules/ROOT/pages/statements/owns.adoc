@@ -13,8 +13,10 @@ The syntax of a `owns` statement includes:
 .Syntax
 [,typeql]
 ----
-<type> owns <attribute-type>;
+<type> owns <attribute-type> [as <overridden-type>];
 ----
+
+An optional <<_usage_with_override,override>> can be added at the end.
 
 == Behaviour
 
@@ -44,6 +46,27 @@ To remove the ability to own attributes of the `name` type, but keep the `pdf` t
 ----
 undefine
 pdf owns name;
+----
+
+[#_usage_with_override]
+== Usage with override
+
+By default, a subtype inherits all attribute types that were defined as owned for its supertype.
+To override an inherited attribute type ownership, use the `as` keyword when defining an ownership.
+The overridden attribute type must be a subtype of the inherited attribute type.
+
+Let's see an example, of a schema, where the `name` attribute type gets overridden by the `full-name` attribute:
+
+.Override owned attribute type example
+[,typeql]
+----
+define
+
+name sub attribute, abstract, value string;
+full-name sub name;
+
+person sub entity, abstract, owns name;
+user sub person, owns full-name as name;
 ----
 
 == Learn more
