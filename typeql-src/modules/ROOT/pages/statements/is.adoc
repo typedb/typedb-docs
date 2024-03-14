@@ -12,22 +12,15 @@ The syntax of a simple statement with the `is` keyword:
 <concept-variable> is <concept-variable>;
 ----
 
-== Usage
+== Behavior
 
 TypeQL statements with the `is` keyword are used in data queries
 to set an equality constraint for any two concept variables.
+That makes two concept variables equal both by type and value, so we could replace one of the variables with another.
 
-It can be used for simplifying patterns or combining two different patterns into a single one.
-Most of the time it's used with negation to exclude some results, for example, see the negation example below.
+Let's match different concept variables that are set to be equal and fetch values of the same attribute type:
 
-== Examples
-
-=== Simple example
-
-Let's match different concept variables that are set to be equal and fetch values of one attribute from each variable
-to see whether they match.
-
-.is statement example
+.Example
 [,typeql]
 ----
 match
@@ -41,95 +34,45 @@ fetch $f1 as first; $f2 as second;
 [,json]
 ----
 {
-    "E-mail": { "value": "pearle.goodman@typedb.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } },
-    "Name": { "value": "Pearle Goodman", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } }
-}
-{
-    "E-mail": { "value": "masako.holley@typedb.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } },
-    "Name": { "value": "Masako Holley", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } }
-}
-{
-    "E-mail": { "value": "kevin.morrison@typedb.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } },
-    "Name": { "value": "Kevin Morrison", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } }
+    "first": { "value": "Kevin Morrison", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } },
+    "second": { "value": "Kevin Morrison", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } }
 }
 ----
+
+It can be used for simplifying patterns or combining two different patterns into a single one.
 
 === Negation example
 
-Most of the time, one can replace `is` statement
+Most common use of an `is` statement is to exclude some results.
 
-Quite often the `is` keyword can be removed from the pattern by renaming some variables.
+For example, let's find all users that have similar emails.
+To do that, match two data instances of the `user` type, both having the same `email` attribute.
+But to exclude the results where the same entity matches both concept variables,
+add a negated `is` statement with these variables.
 
-
-in a complex statement with other keywords, for example,
-xref:typeql::statements/has.adoc[has].
-
-Let's see how to match every data instance of the `person` type that have ownership of at least one attribute of the
-`full-name` type.
-
-.Complex example
+.Negation example
 [,typeql]
 ----
 match
-$p isa person, has full-name $f;
-fetch $f;
+$u1 isa user, has email $e;
+$u2 isa user, has email $e;
+not {$u1 is $u2;};
+fetch
+$e;
 ----
 
-.Output example
-[,json]
-----
-{ "f": { "value": "Kevin Morrison", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } }
-{ "f": { "value": "Masako Holley", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } }
-{ "f": { "value": "Pearle Goodman", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } }
-----
-
-=== Type variablization example
-
-The `isa` keyword can be used with a concept-variable instead of a type label to the right.
-That sets a constraint on the concept variable to be of any valid, according to the rest of the pattern, type.
-
-.Type variablization example
-[,typeql]
-----
-match
-$p isa $type, has full-name $f;
-fetch $type;
-----
-
-.Output example
-[,json]
-----
-{ "type": { "label": "entity", "root": "entity" } }
-{ "type": { "label": "subject", "root": "entity" } }
-{ "type": { "label": "user", "root": "entity" } }
-{ "type": { "label": "person", "root": "entity" } }
-{ "type": { "label": "thing", "root": "thing" } }
-----
-
-In the above example, we fetch the `$type` concept variable that represents not a data instance, but the type of `$p`.
-As a result of this query, we get all the types of all matched `$p`, as well as all their supertypes.
-To get only direct types, and no supertypes, use the xref:typeql::statements/isa-em.adoc[isa!] keyword instead of `isa`.
+In our IAM database
+link:https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-data-single-query.tql[sample dataset]
+that query returns no results.
 
 == Learn more
 
 [cols-2]
 --
-.xref:typeql::statements/isa-em.adoc[]
+.xref:typeql::statements/isa.adoc[]
 [.clickable]
 ****
-Learn more about `isa!` statement in TypeQL.
-****
-
-.xref:typeql::statements/has.adoc[]
-[.clickable]
-****
-Learn more about `has` statement in TypeQL.
-****
-
-.xref:typeql::concepts/types.adoc[]
-[.clickable]
-****
-Learn about types in TypeQL.
+Learn more about `isa` statement in TypeQL.
 ****
 
 .xref:typeql::concepts/data-instances.adoc[]

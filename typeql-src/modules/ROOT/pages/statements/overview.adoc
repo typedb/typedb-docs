@@ -1,6 +1,6 @@
 = Statements overview
 
-A TypeQL statement is a building block of a pattern that can be a pattern by itself.
+A TypeQL statement is a building block of a TypeQL pattern.
 Statements in TypeQL are always end with a semicolon.
 By default, a conjunction combines all statements in a pattern.
 There is a specific syntax to use for a disjunction or negation.
@@ -8,9 +8,9 @@ There is a specific syntax to use for a disjunction or negation.
 
 == Simple statements
 
-A simple statement is the smallest complete TypeQL block that can be used in a pattern or query.
+A simple statement is the smallest complete TypeQL block that can be used as a pattern in a query.
 
-Most statements have three parts: *Subject Predicate Object*.
+Most simple statements have three parts: *Subject Predicate Object*.
 Where the predicate is a TypeQL keyword.
 
 Some notable exceptions are: annotations (xref:typeql::statements/key.adoc[key]
@@ -20,15 +20,15 @@ xref:typeql::statements/value.adoc[value], and
 xref:typeql::statements/rule.adoc[rules].
 //as - is it a statement?
 
-== Complex statements
+== Composite statements
 
-Multiple simple statements with the same subject can be combined into a complex statement.
-A complex statement starts with a single subject, and multiple comma-separated simple statements with subject omitted.
+Multiple simple statements with the same subject can be combined into a composite statement.
+A composite statement starts with a single subject, and multiple comma-separated simple statements with subject omitted.
 
 .See an example
 [%collapsible]
 ====
-.Complex statement example
+.Composite statement example
 [,typeql]
 ----
 $p isa person, has full-name "Kevin Morrison", has email $e;
@@ -45,6 +45,10 @@ $p has full-name "Kevin Morrison";
 $p has email $e;
 ----
 ====
+
+The xref:typeql::statements/role-assignment.adoc[role assignment] and
+xref:typeql::statements/value-assignment.adoc[value assignment] statements do not require a comma
+when added in a composite statement, as they are used without any additional keyword.
 
 == Keywords / Predicates
 
