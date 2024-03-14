@@ -13,8 +13,12 @@ The syntax of a `owns` statement includes:
 .Syntax
 [,typeql]
 ----
-<type> owns <attribute-type> [as <overridden-type>];
+<type> owns <attribute-type> [<annotation>] [as <overridden-type>];
 ----
+
+For more information about annotations, see the
+xref:typeql::statements/key.adoc[] and
+xref:typeql::statements/unique.adoc[] pages.
 
 An optional <<_usage_with_override,override>> can be added at the end.
 
