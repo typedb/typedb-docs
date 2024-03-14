@@ -13,12 +13,13 @@ A simple statement is the smallest complete TypeQL block that can be used as a p
 Most simple statements have three parts: *Subject Predicate Object*.
 Where the predicate is a TypeQL keyword.
 
-Some notable exceptions are: annotations (xref:typeql::statements/key.adoc[key]
-and xref:typeql::statements/unique.adoc[unique]),
+Some notable exceptions are: assignments (xref:typeql::statements/role-assignment.adoc[role] and
+xref:typeql::statements/value-assignment.adoc[value]),
+annotations (xref:typeql::statements/key.adoc[key] and
+xref:typeql::statements/unique.adoc[unique]),
 xref:typeql::statements/abstract.adoc[abstract],
 xref:typeql::statements/value.adoc[value], and
 xref:typeql::statements/rule.adoc[rules].
-//as - is it a statement?
 
 == Composite statements
 
@@ -50,7 +51,8 @@ The xref:typeql::statements/role-assignment.adoc[role assignment] and
 xref:typeql::statements/value-assignment.adoc[value assignment] statements do not require a comma
 when added in a composite statement, as they are used without any additional keyword.
 
-== Keywords / Predicates
+== Statement types (by a predicate)
+// == Keywords / Predicates
 
 [cols-3]
 --
@@ -174,3 +176,20 @@ when added in a composite statement, as they are used without any additional key
 // * plays
 // * as
 // * rule (when/then)
+
+== Statements without a predicate
+
+[cols-3]
+--
+.xref:typeql::statements/value-assignment.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/role-assignment.adoc[]
+[.clickable]
+****
+
+****
+--

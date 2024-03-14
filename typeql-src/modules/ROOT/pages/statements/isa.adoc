@@ -1,14 +1,14 @@
-= isa
+= isa / isa!
 
 The `isa` keyword is used to specify a type for data instances, taking into account type inference.
-For specifying only a direct type, see the xref:typeql::statements/isa-em.adoc[] statement instead.
+For specifying only a direct type with no subtypes, use the `isa!` keyword instead.
 
 == Syntax
 
-The syntax of an `isa` statement includes:
+The syntax of an `isa` or `isa!` statement includes:
 
-* subject -- a concenpt-variable representing a data instance
-* predicate -- the `isa` keyword
+* subject -- a concept variable representing a data instance
+* predicate -- the `isa`/`isa!` keyword
 * object -- a type label or a concept variable representing a type
 
 .Syntax
@@ -19,15 +19,11 @@ The syntax of an `isa` statement includes:
 
 == Behaviour
 
-TypeQL statements with the `isa` keyword are used in data queries and rules.
+TypeQL statements with the `isa` and `isa!` keyword are used in data queries and rules.
 
 The `isa` keyword adds a constraint of a type (including subtypes) to data instances, represented by a concept variable.
-
-When used in a `match` or `delete` clause pattern,
-the `isa` keyword uses all subtypes of the provided type via type inference.
-
-However, when used in an `insert` clause pattern, the `isa` keyword doesn't use subtypes and
-its behavior is the same as the xref:typeql::statements/isa-em.adoc[isa!] keyword.
+The `isa!` keyword adds a constraint of an exact type (without any subtypes) to data instances,
+represented by a concept variable.
 
 // tag::example-schema-data[]
 To run the examples below, you can use a database with the IAM
@@ -37,65 +33,157 @@ link:https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT
 loaded.
 // end::example-schema-data[]
 
-== In a match pattern
+== Usage in a match pattern
 
 In a `match` clause pattern an isa statement can be used to match data instance of a selected type
 or any of its subtype (via type inference).
 
+For example, let's match and fetch all data instances of type `full-name` from a database:
 
-
-
-== In a delete pattern
-
-
-== In an insert pattern
-
-
-
-=== Simple statement example
-
-To match all data instances of the `path` attribute type (or any of its subtypes),
-use the simple `isa` statement with a concept variable on the left from the keyword
-and the `path` attribute type label on the right.
-We then can fetch value of every matched attribute directly with a `fetch` clause:
-
-.isa statement example
+.Match isa direct type example
 [,typeql]
 ----
 match
-$p isa path;
-fetch $p;
+$name isa full-name;
+fetch $name;
 ----
 
-.See output
+.See example output
 [%collapsible]
 ====
 .Output example
 [,json]
 ----
-{ "p": { "value": "LICENSE", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
-{ "p": { "value": "zlckt.ts", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
-{ "p": { "value": "README.md", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
+{ "name": { "value": "Masako Holley", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } }
+{ "name": { "value": "Kevin Morrison", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } }
+{ "name": { "value": "Pearle Goodman", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } }
 ----
 ====
 
+Now let's match all attributes in a database by using an `isa` statement with the `attribute` root type:
+
+.Match isa supertype example
+[,typeql]
+----
+match
+$attr isa attribute;
+fetch $attr;
+----
+
+.See example output
+[%collapsible]
+====
+.Output example (partial)
+[,json]
+----
+{ "attr": { "value": 1705, "type": { "label": "size-kb", "root": "attribute", "value_type": "long" } } }
+{ "attr": { "value": "kevin.morrison@typedb.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } }
+----
+====
+
+If you switch the `isa` keyword to the `isa!` you get no results,
+because there can be no data instances for the abstract root type, and subtypes are ignored by the `isa!`:
+
+.Match isa! supertype example
+[,typeql]
+----
+match
+$attr isa! attribute;
+fetch $attr;
+----
+
+== In an insert pattern
+
+To insert a data instance to a database, you need to use an `isa` statement in an `insert` clause.
+The object must be the exact type of the instance you are inserting.
+In this case, the `isa` keyword has no difference from the `isa!` keyword.
+
+For example, the simple `isa` statement can be used to insert a data instance of a type:
+
+.Insert isa example
+[,typeql]
+----
+insert
+$p isa person;
+----
+
+Alternatively, you can combine multiple simple statements into a composite statement:
+
+.Insert isa composite example
+[,typeql]
+----
+insert
+$p isa person, has full-name "Bob Fake";
+----
+
+When inserting an attribute, provide a value:
+
+.Insert attribute with value assignment example
+[,typeql]
+----
+insert
+$f "John Smith" isa full-name;
+----
+
+For more information about the value assignment syntax, see the xref:typeql::statements/value-assignment.adoc[] page.
+
+When inserting a relation, provide role players for every role:
+
+.Insert relation with role assignment example
+[,typeql]
+----
+match
+$p isa person, has full-name "Bob Fake";
+insert
+$per(subject: $p) isa permission;
+----
+
+For more information about the role assignment syntax, see the xref:typeql::statements/role-assignment.adoc[] page.
+
+== In a delete pattern
+
+To delete a data instance from a database, you need to match it to a concept variable with a `match` clause,
+and then use the concept variable with an `isa` statement in a `delete` clause of the same query.
+For deleting, you can use the exact type of the data instance or any of its supertypes, including a root type.
+
+Let's delete
+
+.Delete isa with an exact type example
+[,typeql]
+----
+match
+$p isa person, has full-name "Bob Fake";
+delete
+$p isa person;
+----
+
+Using `isa!` in a `delete` clause requires us specify the exact type of the data instance to delete.
+So, using any of its supertypes, including a root type, should fail:
+
+.Delete isa! with a supertype example
+[,typeql]
+----
+match
+$f "John Smith" isa full-name;
+delete
+$f isa! attribute;
+----
+
+To use a supertype, switch back to the `isa` keyword:
+
+.Delete isa with a supertype example
+[,typeql]
+----
+match
+$f "John Smith" isa full-name;
+delete
+$f isa attribute;
+----
 
 == Learn more
 
 [cols-2]
 --
-.xref:typeql::statements/isa-em.adoc[]
-[.clickable]
-****
-Learn more about `isa!` statement in TypeQL.
-****
-
-.xref:typeql::statements/has.adoc[]
-[.clickable]
-****
-Learn more about `has` statement in TypeQL.
-****
-
 .xref:typeql::concepts/types.adoc[]
 [.clickable]
 ****

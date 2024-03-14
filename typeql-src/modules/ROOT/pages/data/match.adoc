@@ -147,10 +147,10 @@ The above example consists of three simple statements about the same subject, re
 * It has an attribute of type `email` and value `bob@gmail.com`;
 
 [#_complex_statement]
-Multiple simple statements with the same subject can be combined to a complex statement,
+Multiple simple statements with the same subject can be combined to a composite statement,
 consisting of a single subject, and multiple comma-separated pairs of predicates and objects.
 
-.Complex statement example
+.Composite statement example
 [,typeql]
 ----
 $p isa person, has full-name "Bob", has email "bob@gmail.com";
