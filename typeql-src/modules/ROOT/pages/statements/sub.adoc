@@ -15,7 +15,7 @@ The syntax of a `sub` or `sub!` statement includes:
 .Syntax
 [,typeql]
 ----
-<subtype> sub <parent type>;
+<subtype> sub <parent-type>;
 ----
 
 == Behavior
@@ -34,7 +34,7 @@ include::typeql::statements/isa.adoc[tag=example-schema-data]
 
 == Usage in a schema definition
 
-Since in Define/Undefine queries you can't use variables,
+Since in Define and Undefine queries you can't use variables,
 both subject and object can only be type labels in a schema statement.
 So a statement with the `sub` keyword is used to define (declare) one type (preceding subject) as a subtype
 of another type (succeeding object).
