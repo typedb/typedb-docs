@@ -112,7 +112,7 @@ $book: title, genre;
 
 Each result contains one JSON object, in the `book` field. Each of these objects represents a data instance matched by `$book`. Within this object, we have the type of the data instance in the `type` field, and a field for each attribute type in its projection, namely `title` and `genre`. The projected attribute fields are lists, which contain one item for each attribute of that type owned by the `$book` data instance.
 
-We can see that each book has one title and two genres, but these lists could both contain any number of titles and genres if more existed in the data. Similarly, if a book did not own any instances of a retrieved attribute type, we would get back an empty list. As a result, fetching attributes via their owners matches the attributes optionally. If a particular attribute type in the `fetch` clause is absent in the data, it will not prevent the owner from being matched and returned.
+We can see that each book has one title and two genres, but these lists could both contain any number of titles and genres if more existed in the data. Similarly, if a book did not own any instances of a retrieved attribute type, we would get back an empty list. As a result, fetching attributes via their owners matches the attributes *optionally*. If a particular attribute type in the `fetch` clause is absent in the data, it will not prevent the owner from being matched and returned.
 
 == Direct retrieval
 
@@ -159,7 +159,7 @@ $genre;
 
 This output format is significantly different to the previous one. Each result now contains two JSON objects. This is to be expected, as the results of Fetch queries contain one object per variable in the `fetch` clause, and we now have two variables there. We are also no longer retrieving the type of `$book` as it is no longer present in the `fetch` clause. Other than this one difference, the information we are getting back is the same, but organised in an alternate manner.
 
-The biggest difference is that there are now six results returned instead of three. Examining them, we can see that each book's title is returned once with each of the two book's genres. When retrieving attributes directly, they are not grouped by owner, so exactly one result is returned per unique combination of attributes. This also means that these attributes are no longer optional. Because they are now part of the `match` clause, ownership of them is a constraint that _must_ be satisfied, as we explored in xref:learn::7-understanding-query-patterns/7.1-patterns-as-constraints.adoc[Lesson 7.1].
+The biggest difference is that there are now six results returned instead of three. Examining them, we can see that each book's title is returned once with each of the two book's genres. When retrieving attributes directly, they are not grouped by owner, so exactly one result is returned per unique combination of attributes. This also means that these attributes are no longer optional. Because they are now part of the `match` clause, ownership of them is a *constraint* that _must_ be satisfied, as we explored in xref:learn::7-understanding-query-patterns/7.1-patterns-as-constraints.adoc[Lesson 7.1].
 
 == Comparing methods
 
@@ -203,7 +203,7 @@ $book: isbn;
 ----
 =====
 
-Write a Fetch query to retrieve the ISBNs of all books in the database, without grouping by book.
+Write another Fetch query to retrieve the ISBNs of all books in the database, without grouping by book.
 
 .Sample solution
 [%collapsible]

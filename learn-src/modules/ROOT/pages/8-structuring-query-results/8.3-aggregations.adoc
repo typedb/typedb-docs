@@ -110,7 +110,7 @@ $book: title;
 average-score: {
     match
     $review isa review, has score $score;
-    ($book, $review) isa rating;
+    ($review, $book) isa rating;
     get;
     mean $score;
 };
@@ -121,8 +121,9 @@ Whereas the `count` modifier returns the number of results matched regardless of
 [,typeql]
 ----
 match
-$order isa order;
+$order isa order, has id $id;
 fetch
+$id;
 order-total: {
     match
     $book isa book, has price $retail-price;

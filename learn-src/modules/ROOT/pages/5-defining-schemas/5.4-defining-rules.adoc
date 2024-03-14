@@ -39,7 +39,7 @@ insert
 (location: $parent-place, located: $x) isa indirect-locating;
 ----
 
-The key differences are that an Insert query must be manually run, and the data is written to the disk. In contrast, after committing a rule to a schema, it is applied automatically at query-time and the data it generates is held only in memory and erased when the transaction is closed. In this sense, rules function very similar to views in relational databases, though with a number of distinct advantages as discussed in xref:learn::3-reading-data/3.3-fetching-inferred-data.adoc[Lesson 3.3].
+The key differences are that an Insert query must be manually run, and the data is written to the disk. In contrast, after committing a rule to a schema, it is applied automatically at query-time and the data it generates is held only in memory and erased when the transaction is closed. In this sense, rules function very similar to views in relational databases.
 
 The conclusion of a rule must conform to certain requirements:
 
@@ -74,10 +74,10 @@ The rule `review-verified-by-purchase` generates a single new `verified` attribu
 define
 rule review-verified-by-purchase:
     when {
-        ($order, $product) isa order-line;
         ($review, $product) isa rating;
-        ($user, $order) isa action-execution, has timestamp $order-time;
+        ($order, $product) isa order-line;
         ($user, $review) isa action-execution, has timestamp $review-time;
+        ($user, $order) isa action-execution, has timestamp $order-time;
         $review-time > $order-time;
     } then {
         $review has verified true;
