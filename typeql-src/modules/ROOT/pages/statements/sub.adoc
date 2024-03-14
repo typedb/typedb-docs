@@ -1,12 +1,16 @@
-= sub
+= sub / sub!
 
-The `sub` keyword statement is used in TypeQL for defining and matching subtypes in a schema or pattern respectively.
-For specifying a direct type or subtype only, see the xref:typeql::statements/type.adoc[] or
-xref:typeql::statements/sub-em.adoc[] statements instead.
+The `sub` keyword is used in TypeQL to specify a parent type for a subtype.
+For specifying only a direct subtype in a pattern, with no type inference,
+use the `sub!` keyword instead.
 
 == Syntax
 
-The syntax of a simple statement with the `sub` keyword:
+The syntax of a `sub` or `sub!` statement includes:
+
+* subject -- a subtype
+* predicate -- the `sub`/`sub!` keyword
+* object -- a parent type
 
 .Syntax
 [,typeql]
@@ -14,30 +18,28 @@ The syntax of a simple statement with the `sub` keyword:
 <subtype> sub <parent type>;
 ----
 
-Where `subtype` and `parent type` can be either a type label or a concept-variable representing a type.
+== Behavior
 
-== Usage
+TypeQL statements with the `sub` keyword can be used in any kind of query.
 
-TypeQL statements with the `sub` keyword are used in any kind of query.
+The `sub` keyword adds a constraint for subject to be a type that is a subtype of the object.
+
+In schema queries (Define and Undefine), the `sub` and `sub!` keywords don't have any difference,
+as they are both can be used to define (or undefine) a new type by subtyping an existing type.
+
+In data queries, the `sub` and `sub!` keywords can be used only in a `match` clause to match either
+all existing subtypes or only direct subtypes of a given type respectively.
+
+include::typeql::statements/isa.adoc[tag=example-schema-data]
+
+== Usage in a schema definition
 
 Since in Define/Undefine queries you can't use variables,
 both subject and object can only be type labels in a schema statement.
 So a statement with the `sub` keyword is used to define (declare) one type (preceding subject) as a subtype
 of another type (succeeding object).
 
-In a data query pattern a `sub` statement can be used only in a `match` clause or condition of a rule.
-Both subject and object of a `sub` statement can be concept variables, or one of them can be a type label.
-The `sub` keyword adds a constraint on a subject being an exact type, a direct subtype,
-or indirect subtype (via type inference) of the type used as an object.
-
-== Examples
-
-include::typeql::statements/isa.adoc[tag=example-schema-data]
-
-=== Define query example
-
-To define a new type being a subtype of another typ, place the new type's label before the `sub` keyword,
-and the parent type label after:
+For example, to define a new type `pdf` as a subtype of an existing `file` type, use:
 
 .Define query example
 [,typeql]
@@ -46,42 +48,63 @@ define
 pdf sub file;
 ----
 
-=== Matching pattern example
+== Usage in a match pattern
 
-Let's fetch all subtypes of the `user-group` entity type:
+In a data query pattern a `sub` statement can be used only in a `match` clause or condition of a rule.
+Both subject and object of a `sub` statement can be concept variables, or one of them can be a type label.
+The `sub` keyword adds a constraint on a subject being an exact type, a direct subtype,
+or indirect subtype (via type inference) of the type used as an object.
 
-.Fetching subtypes
+For example, to match all subtypes of a `subject` entity type, use:
+
+.Fetching all subtypes example
 [,typeql]
 ----
 match
-$type sub user-group;
-fetch $type;
+$subtype sub subject;
+fetch
+$subtype;
 ----
 
+.See example output
+[%collapsible]
+====
 .Output example
 [,json]
 ----
+{ "type": { "label": "user", "root": "entity" } }
 { "type": { "label": "business-unit", "root": "entity" } }
-{ "type": { "label": "user-group", "root": "entity" } }
 { "type": { "label": "user-role", "root": "entity" } }
 { "type": { "label": "user-account", "root": "entity" } }
+{ "type": { "label": "person", "root": "entity" } }
+{ "type": { "label": "user-group", "root": "entity" } }
+{ "type": { "label": "subject", "root": "entity" } }
+----
+====
+
+.Fetching direct subtypes example
+[,typeql]
+----
+match
+$type sub! subject;
+fetch $type;
 ----
 
-The result includes three subtypes of the `user-group` type and the type itself.
-
-To get only direct subtypes only, use the xref:typeql::statements/sub-em.adoc[] statement instead.
-To get the exact type only, use the xref:typeql::statements/type.adoc[] statement instead.
+.See example output
+[%collapsible]
+====
+.Output example
+[,json]
+----
+{ "type": { "label": "user", "root": "entity" } }
+{ "type": { "label": "user-group", "root": "entity" } }
+----
+====
 
 == Learn more
 
 [cols-2]
 --
-.xref:typeql::statements/sub-em.adoc[]
-[.clickable]
-****
-Learn more about `sub!` statement in TypeQL.
-****
-
 .xref:typeql::statements/type.adoc[]
 [.clickable]
 ****

@@ -1,12 +1,14 @@
 = type
 
-The `type` keyword statement is used in TypeQL for defining and matching direct subtypes in a schema or pattern respectively.
-For specifying a direct type or subtype only, see the xref:typeql::statements/type.adoc[] or
-xref:typeql::statements/sub-em.adoc[] statements instead.
+The `type` keyword is used in TypeQL for matching a type by its label.
 
 == Syntax
 
-The syntax of a simple statement with the `type` keyword:
+The syntax of a `type` statement includes:
+
+* subject -- a concept variable
+* predicate -- the `type` keyword
+* object -- a type label
 
 .Syntax
 [,typeql]
@@ -14,25 +16,34 @@ The syntax of a simple statement with the `type` keyword:
 <concept-variable> type <type label>;
 ----
 
-== Usage
+== Behavior
 
-TypeQL statements with the `type` keyword are used in data queries to match an exact type by its label.
-
-== Examples
+TypeQL statements with the `type` keyword are used in `match` clauses.
+The `type` keyword adds a constraint for a concept variable to be of a specified type.
 
 include::typeql::statements/isa.adoc[tag=example-schema-data]
 
-=== Matching pattern example
+=== Using in a match pattern
 
 Let's fetch the `user` entity type:
 
-.Fetching subtypes
+.Fetch type example
 [,typeql]
 ----
 match
 $u type user;
 fetch $u;
 ----
+
+.See example output
+[%collapsible]
+====
+.Output example
+[,json]
+----
+{ "u": { "label": "user", "root": "entity" } }
+----
+====
 
 == Learn more
 
@@ -42,12 +53,6 @@ fetch $u;
 [.clickable]
 ****
 Learn more about `sub` statement in TypeQL.
-****
-
-.xref:typeql::statements/type.adoc[]
-[.clickable]
-****
-Learn more about `type` statement in TypeQL.
 ****
 
 .xref:typeql::concepts/types.adoc[]
