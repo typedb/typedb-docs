@@ -1,2 +1,249 @@
 = Lesson 9.1: Rules as views
 // = Lesson 10.1: Rules as views
+
+== Abstracting complex patterns
+
+In xref:learn::5-defining-schemas/5.4-defining-rules.adoc[Lesson 5.4], we learned how to define *rules* for TypeDB's *rule inference* engine to infer new relations and attributes. In this lesson, we'll learn how to design rules that capture *domain logic*, in this case for the domain of an online bookstore. To begin with, let's consider a piece of domain logic expressed in natural language.
+
+[quote]
+____
+A review is verified if: the review is for a book that has been previously bought by the user who made the review.
+____
+
+This could be easily translated into TypeQL, allowing us to query for reviews that are verified as follows.
+
+[,typeql]
+----
+match
+($review, $book) isa rating;
+($order, $book) isa order-line;
+($user, $review) isa action-execution, has timestamp $review-time;
+($user, $order) isa action-execution, has timestamp $order-time;
+$review-time > $order-time;
+fetch
+$review: id;
+----
+
+Now let's consider how we might apply this domain logic. Suppose we want to query for the average review score of each book, as we did in xref:learn::8-structuring-query-results/8.3-aggregations.adoc[Lesson 8.3], except this time we only want to include verified reviews in the average.
+
+[,typeql]
+----
+match
+$book isa book;
+fetch
+$book: title;
+average-verified-score: {
+    match
+    $review isa review, has score $score;
+    ($review, $book) isa rating;
+    ($order, $book) isa order-line;
+    ($user, $review) isa action-execution, has timestamp $review-time;
+    ($user, $order) isa action-execution, has timestamp $order-time;
+    $review-time > $order-time;
+    get $score;
+    mean $score;
+};
+----
+
+The addition of the verification check makes the query significantly more complicated, and it's not straightforward to read through. As queries become larger and retrieve more complex data patterns, they can become harder to maintain. This is a good use case for rule inference, which can significantly simplify queries. For this particular case, we'll use the following rule.
+
+[,typeql]
+----
+rule review-verified-by-purchase:
+    when {
+        ($review, $product) isa rating;
+        ($order, $product) isa order-line;
+        ($user, $review) isa action-execution, has timestamp $review-time;
+        ($user, $order) isa action-execution, has timestamp $order-time;
+        $review-time > $order-time;
+    } then {
+        $review has verified true;
+    };
+----
+
+If we compare this rule to the natural language expression of the domain logic above, we find they match perfectly. This rule captures the domain logic of review verification using https://en.wikipedia.org/wiki/First-order_logic[predicate logic], which allows it to be faithfully encoded in the database. TypeDB's rule inference will now generate the statement in the *conclusion* at query-time wherever the constraints in the *condition* are satisfied in the data. This allows us to substitute the condition for the conclusion in any queries, as https://en.wikipedia.org/wiki/Modus_ponens[the former implies the latter]. Doing so for our previous query, it is now far more readable and maintainable.
+
+[,typeql]
+----
+match
+$book isa book;
+fetch
+$book: title;
+average-verified-score: {
+    match
+    $review isa review,
+        has verified true,
+        has score $score;
+    get;
+    mean $score;
+};
+----
+
+Using the rule to generate `verified` attributes also comes with a further benefit. We might have many different queries in which we check if a review is verified. If the conditions for review verification change, we would have to modify every query in which the conditions are described. By describing them in a rule instead, we would only have to modify them in that rule, and the results of all the queries that leverage it will update automatically to reflect this.
+
+Using rule inference to abstract a complex query pattern into a more easily queried form is one of the most common use cases for rules in TypeDB. In principle this process is no different from using a https://en.wikipedia.org/wiki/View_(SQL)[view] in a relational database.
+
+.Exercise
+[caption=""]
+====
+Write a Fetch query that lists users. For each user, retrieve their user ID and the number of validated reviews they have written. Write the query once without making use of rule inference, and again using the above rule. Other than the ordering of results, the queries should give identical outputs.
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+Without rule inference:
+
+[,typeql]
+----
+match
+$user isa user, has id $id;
+fetch
+$id;
+verified-reviews: {
+    match
+    ($review, $book) isa rating;
+    ($order, $book) isa order-line;
+    ($user, $review) isa action-execution, has timestamp $review-time;
+    ($user, $order) isa action-execution, has timestamp $order-time;
+    $review-time > $order-time;
+    get $review;
+    count;
+};
+----
+
+With rule inference:
+
+[,typeql]
+----
+match
+$user isa user, has id $id;
+fetch
+$id;
+verified-reviews: {
+    match
+    $review isa review, has verified true;
+    ($user, $review) isa action-execution;
+    get;
+    count;
+};
+----
+=====
+====
+
+== Ensuring logical equivalence
+
+It is important to note that the above query expresses something slightly different to the original. It checks if `$review` owns a `verified` attribute with value `true`, but this attribute could also exist on disk or have been inserted by another rule with a different condition. While the condition of a rule implies its conclusion, https://en.wikipedia.org/wiki/Affirming_the_consequent[the latter does _not_ imply the former]. In order for the two to be https://en.wikipedia.org/wiki/Logical_biconditional[logically equivalent], we need to ensure that we do not ever manually insert an instance of `verified` owned by an instance of `review`, nor generate one with another rule. As long as we keep to these restrictions, the two cases will be logically equivalent and the rule's condition and conclusion will be completely interchangeable in patterns.
+
+Another thing to note is that, while we generate the verification values of `true` with this rule, we are not generating the values of `false`! Currently, we could query for unverified views with the first of the following queries, but we could not do the same with the second.
+
+[,typeql]
+----
+match
+$review isa review;
+not { $review has verified true; };
+fetch
+$review: id;
+----
+
+[,typeql]
+----
+match
+$review isa review, has verified false;
+fetch
+$review: id;
+----
+
+Luckily, we can use the same approach we have taken before, and use a rule as a view to make the two query patterns equivalent.
+
+[,typeql]
+----
+rule review-unverified:
+    when {
+        $review isa review;
+        not { $review has verified true; };
+    } then {
+        $review has verified false;
+    };
+----
+
+Now, as long as we continue not to insert or generate instances of `verified`, the two above queries will generate identical results. This allows us to easily constrain reviews as verified or unverified in any other query by matching a single attribute.
+
+== Ensuring data consistency
+
+Much like views, rules can be a powerful tool for ensuring data consistency. Let's review a query we previously encountered in xref:learn::7-understanding-query-patterns/7.5-value-expressions.adoc[Lesson 7.5], which calculates and inserts a line total for a given order.
+
+[,typeql]
+----
+match
+$order isa order, has id "o0014";
+$book isa book, has price $retail-price;
+$line ($order, $book) isa order-line,
+    has quantity $quantity;
+?line-total = $quantity * $retail-price;
+insert
+$line has price ?line-total;
+----
+
+The issue with this approach is that if the price of the book or the quantity ordered are updated, then this line total will be incorrect. This means that whenever one of these two values changes, we'll need to check and update any affected line totals. Instead of manually inserting and updating line totals, we can delegate this to a rule, which will generate the line totals dynamically whenever they are queried for.
+
+[,typeql]
+----
+rule order-line-total:
+    when {
+        $book isa book, has price $retail-price;
+        $line ($book) isa order-line, has quantity $quantity;
+        ?line-total = $quantity * $retail-price;
+    } then {
+        $line has price ?line-total;
+    };
+----
+
+Now with this rule in place, the line totals will always reflect the most recent data available. As with the previous rules, we should be sure not to also manually insert line totals. Rule inference will not generate data that already exists, so if a manually inserted line total is up-to-date then the rule will have no effect. But if the manually inserted total is outdated, then this rule will generate a new one with a different value, and the order line will have two totals!
+
+.Exercise
+[caption=""]
+====
+Write a Fetch query that lists orders. For each order, retrieve the order ID, and the grand total by making use of the above rule. Sort the results by order ID.
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$order isa order, has id $id;
+fetch
+$id;
+order-total: {
+    match
+    ($order) isa order-line, has price $line-total;
+    get;
+    sum $line-total;
+};
+sort $id;
+----
+=====
+====
+
