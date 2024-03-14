@@ -14,7 +14,7 @@ The syntax of an `isa` or `isa!` statement includes:
 .Syntax
 [,typeql]
 ----
-<concept variable> isa <type>;
+<concept-variable> isa <type>;
 ----
 
 == Behaviour
@@ -95,19 +95,7 @@ fetch $attr;
 == Usage in an insert pattern
 
 To insert a data instance to a database, you need to use an `isa` statement in an `insert` clause.
-The object must be the exact type of the instance you are inserting.
-In this case, the `isa` keyword has no difference from the `isa!` keyword.
-
-For example, the simple `isa` statement can be used to insert a data instance of a type:
-
-.Insert isa example
-[,typeql]
-----
-insert
-$p isa person;
-----
-
-Alternatively, you can combine multiple simple statements into a composite statement:
+For example:
 
 .Insert isa composite example
 [,typeql]
@@ -116,7 +104,10 @@ insert
 $p isa person, has full-name "Bob Fake";
 ----
 
-When inserting an attribute, provide a value:
+The object must be the exact type of the instance you are inserting.
+In an `insert` clause, the `isa` keyword has no difference from the `isa!` keyword.
+
+When inserting an attribute, you can provide a value with a xref:typeql::statements/value-assignment.adoc[] syntax:
 
 .Insert attribute with value assignment example
 [,typeql]
@@ -125,9 +116,8 @@ insert
 $f "John Smith" isa full-name;
 ----
 
-For more information about the value assignment syntax, see the xref:typeql::statements/value-assignment.adoc[] page.
-
-When inserting a relation, provide role players for every role:
+When inserting a relation,
+you can provide role players for every role with a xref:typeql::statements/role-assignment.adoc[] syntax:
 
 .Insert relation with role assignment example
 [,typeql]
@@ -137,8 +127,6 @@ $p isa person, has full-name "Bob Fake";
 insert
 $per(subject: $p) isa permission;
 ----
-
-For more information about the role assignment syntax, see the xref:typeql::statements/role-assignment.adoc[] page.
 
 [#_in_a_delete_pattern]
 == Usage in a delete pattern

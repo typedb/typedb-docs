@@ -51,18 +51,11 @@ The xref:typeql::statements/role-assignment.adoc[role assignment] and
 xref:typeql::statements/value-assignment.adoc[value assignment] statements do not require a comma
 when added in a composite statement, as they are used without any additional keyword.
 
-== Statement types (by a predicate)
-// == Keywords / Predicates
+== Statement types
 
 [cols-3]
 --
 .xref:typeql::statements/isa.adoc[]
-[.clickable]
-****
-
-****
-
-.xref:typeql::statements/isa-em.adoc[]
 [.clickable]
 ****
 
@@ -122,18 +115,6 @@ when added in a composite statement, as they are used without any additional key
 
 ****
 
-.xref:typeql::statements/key.adoc[]
-[.clickable]
-****
-
-****
-
-.xref:typeql::statements/unique.adoc[]
-[.clickable]
-****
-
-****
-
 .xref:typeql::statements/relates.adoc[]
 [.clickable]
 ****
@@ -177,9 +158,26 @@ when added in a composite statement, as they are used without any additional key
 // * as
 // * rule (when/then)
 
-== Statements without a predicate
+=== Annotation statements
 
-[cols-3]
+[cols-2]
+--
+.xref:typeql::statements/unique.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/key.adoc[]
+[.clickable]
+****
+
+****
+--
+
+=== Assignment statements
+
+[cols-2]
 --
 .xref:typeql::statements/value-assignment.adoc[]
 [.clickable]
