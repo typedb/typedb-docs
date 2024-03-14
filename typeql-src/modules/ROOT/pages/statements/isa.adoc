@@ -92,7 +92,7 @@ $attr isa! attribute;
 fetch $attr;
 ----
 
-== In an insert pattern
+== Usage in an insert pattern
 
 To insert a data instance to a database, you need to use an `isa` statement in an `insert` clause.
 The object must be the exact type of the instance you are inserting.
@@ -141,7 +141,7 @@ $per(subject: $p) isa permission;
 For more information about the role assignment syntax, see the xref:typeql::statements/role-assignment.adoc[] page.
 
 [#_in_a_delete_pattern]
-== In a delete pattern
+== Usage in a delete pattern
 
 To delete a data instance from a database, you need to match it to a concept variable with a `match` clause,
 and then use the concept variable with an `isa` statement in a `delete` clause of the same query.
