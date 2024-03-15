@@ -1,0 +1,219 @@
+= Lesson 8.1: Fetching attributes
+
+== Retrieval syntax
+
+Fetch queries allow us to retrieve attributes, as we learned in xref:learn::3-reading-data/3.1-fetching-simple-data.adoc[Lesson 3.1], and schema types, as we learned in xref:learn::3-reading-data/3.4-fetching-schema-types.adoc[Lesson 3.4]. We have also seen queries that retrieve value variables, like this one from xref:learn::7-understanding-query-patterns/7.5-value-expressions.adoc[Lesson 7.5].
+
+[,typeql]
+----
+match
+$order isa order, has id "o0014";
+$book isa book, has price $retail-price;
+($order, $book) isa order-line,
+    has quantity $quantity;
+?line-total = $quantity * $retail-price;
+fetch
+?line-total;
+----
+
+In previous queries, we have retrieved attributes from the entities or relations that own them, using the following syntax.
+
+[,typeql]
+----
+fetch
+$owner: attribute-type;
+----
+
+But we can also retrieve them directly, in the same way we do value variables.
+
+[,typeql]
+----
+fetch
+$attribute;
+----
+
+Let's modify the previous query to retrieve the order price along with the line total in each of these two ways. First, by retrieving the price via the book.
+
+[,typeql]
+----
+match
+$order isa order, has id "o0014";
+$book isa book, has price $retail-price;
+($order, $book) isa order-line,
+    has quantity $quantity;
+?line-total = $quantity * $retail-price;
+fetch
+$order: price;
+?line-total;
+----
+
+Second, by retrieving the price directly.
+
+[,typeql]
+----
+match
+$order isa order, has id "o0014";
+$book isa book, has price $retail-price;
+($order, $book) isa order-line,
+    has quantity $quantity;
+?line-total = $quantity * $retail-price;
+fetch
+$retail-price;
+?line-total;
+----
+
+Try *running* image:learn::studio-icons/run-query.png[] these queries to see the difference. In addition to having two different output formats, these queries act differently on the data. In this lesson, we'll examine the difference between these two methods and learn when to apply each one.
+
+== Retrieval via the owner
+
+Let's start with a simple example, in which we retrieve the titles and genres of hardback books.
+
+[,typeql]
+----
+match
+$book isa hardback;
+fetch
+$book: title, genre;
+----
+
+[,json]
+----
+{
+    "book": {
+        "genre": [
+            { "value": "comics", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "fiction", "value_type": "string", "type": { "label": "genre", "root": "attribute" } }
+        ],
+        "title": [ { "value": "The Complete Calvin and Hobbes", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "hardback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "genre": [
+            { "value": "history", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "nonfiction", "value_type": "string", "type": { "label": "genre", "root": "attribute" } }
+        ],
+        "title": [ { "value": "Under the Black Flag: The Romance and the Reality of Life Among the Pirates", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "hardback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "genre": [
+            { "value": "nonfiction", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+            { "value": "technology", "value_type": "string", "type": { "label": "genre", "root": "attribute" } }
+        ],
+        "title": [ { "value": "Electron Backscatter Diffraction in Materials Science", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "hardback", "root": "entity" }
+    }
+}
+----
+
+Each result contains one JSON object, in the `book` field. Each of these objects represents a data instance matched by `$book`. Within this object, we have the type of the data instance in the `type` field, and a field for each attribute type in its projection, namely `title` and `genre`. The projected attribute fields are lists, which contain one item for each attribute of that type owned by the `$book` data instance.
+
+We can see that each book has one title and two genres, but these lists could both contain any number of titles and genres if more existed in the data. Similarly, if a book did not own any instances of a retrieved attribute type, we would get back an empty list. As a result, fetching attributes via their owners matches the attributes *optionally*. If a particular attribute type in the `fetch` clause is absent in the data, it will not prevent the owner from being matched and returned.
+
+== Direct retrieval
+
+Now let's try retrieving the attributes directly. To do so, we'll need to modify the `match` clause to declare variables for them.
+
+[,typeql]
+----
+match
+$book isa hardback,
+    has title $title,
+    has genre $genre;
+fetch
+$title;
+$genre;
+----
+
+[,json]
+----
+{
+    "genre": { "value": "history", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+    "title": { "value": "Under the Black Flag: The Romance and the Reality of Life Among the Pirates", "value_type": "string", "type": { "label": "title", "root": "attribute" } }
+}
+{
+    "genre": { "value": "nonfiction", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+    "title": { "value": "Under the Black Flag: The Romance and the Reality of Life Among the Pirates", "value_type": "string", "type": { "label": "title", "root": "attribute" } }
+}
+{
+    "genre": { "value": "nonfiction", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+    "title": { "value": "Electron Backscatter Diffraction in Materials Science", "value_type": "string", "type": { "label": "title", "root": "attribute" } }
+}
+{
+    "genre": { "value": "technology", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+    "title": { "value": "Electron Backscatter Diffraction in Materials Science", "value_type": "string", "type": { "label": "title", "root": "attribute" } }
+}
+{
+    "genre": { "value": "comics", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+    "title": { "value": "The Complete Calvin and Hobbes", "value_type": "string", "type": { "label": "title", "root": "attribute" } }
+}
+{
+    "genre": { "value": "fiction", "value_type": "string", "type": { "label": "genre", "root": "attribute" } },
+    "title": { "value": "The Complete Calvin and Hobbes", "value_type": "string", "type": { "label": "title", "root": "attribute" } }
+}
+----
+
+This output format is significantly different to the previous one. Each result now contains two JSON objects. This is to be expected, as the results of Fetch queries contain one object per variable in the `fetch` clause, and we now have two variables there. We are also no longer retrieving the type of `$book` as it is no longer present in the `fetch` clause. Other than this one difference, the information we are getting back is the same, but organised in an alternate manner.
+
+The biggest difference is that there are now six results returned instead of three. Examining them, we can see that each book's title is returned once with each of the two book's genres. When retrieving attributes directly, they are not grouped by owner, so exactly one result is returned per unique combination of attributes. This also means that these attributes are no longer optional. Because they are now part of the `match` clause, ownership of them is a *constraint* that _must_ be satisfied, as we explored in xref:learn::7-understanding-query-patterns/7.1-patterns-as-constraints.adoc[Lesson 7.1].
+
+== Comparing methods
+
+These two methods of attribute retrieval have different properties, which makes them suited to different queries. Retrieving attributes via the owner:
+
+* Returns attributes grouped into results by owner.
+* Matches attributes optionally.
+
+Meanwhile, retrieving attributes directly:
+
+* Returns one attribute per result.
+* Matches attributes as a required constraint.
+
+For most use cases, it is preferable to retrieve attributes via the owner. In some cases, it might be preferable to retrieve them directly, for instance if we specifically want to retrieve attributes in ungrouped combinations, or if we can be sure that each owner will own exactly one attribute (if leveraging a xref:learn::5-defining-schemas/5.3-defining-constraints.adoc[key constraint], for example).
+
+.Exercise
+[caption=""]
+====
+Write a Fetch query to retrieve the ISBNs of all books in the database (both ISBN-13s and ISBN-10s), grouped by book.
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$book isa book;
+fetch
+$book: isbn;
+----
+=====
+
+Write another Fetch query to retrieve the ISBNs of all books in the database, without grouping by book.
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$book isa book, has isbn $isbn;
+fetch
+$isbn;
+----
+=====
+====
