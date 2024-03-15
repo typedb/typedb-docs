@@ -1,0 +1,124 @@
+= Define query
+:Summary: Define schema types and rules with TypeQL.
+:keywords: typeql, schema, model, define, modify, extend, type, rule, annotations
+:pageTitle: Define query
+
+A Define query extends the schema of a database with new schema statements.
+
+Define queries can be used only in a schema session and write transaction.
+For more information on the limitations of a schema session, see the
+xref:home::acid.adoc#_schema_integrity[Schema integrity enforcement].
+
+For a guide on how to open a session to TypeDB,
+see the xref:manual::connecting/overview.adoc[] section of TypeDB Manual.
+
+== Syntax
+
+// tag::syntax[]
+A Define query consists of a single `define` clause and always starts with the `define` keyword.
+
+Define queries are written in TypeQL with the following syntax:
+
+[,typeql]
+----
+define <schema_definitions>
+----
+
+Where `<schema_definitions>` are valid TypeQL schema-specific statements:
+xref:typeql::statements/sub.adoc[],
+xref:typeql::statements/abstract.adoc[],
+xref:typeql::statements/owns.adoc[],
+xref:typeql::statements/value.adoc[],
+xref:typeql::statements/regex.adoc[],
+xref:typeql::statements/relates.adoc[],
+xref:typeql::statements/plays.adoc[],
+xref:typeql::statements/rule.adoc[],
+and annotations: xref:typeql::statements/key.adoc[] and xref:typeql::statements/unique.adoc[].
+// end::syntax[]
+
+// For more information on defining rules, see the xref:schema/rule-definitions.adoc[] page.
+// For more information on defining types, ownerships, and roleplayers,
+// see below and the xref:typeql::schema/type-definitions.adoc[].
+
+== Behavior
+
+// tag::behavior[]
+A Define query adds schema statements to an existing schema.
+These statements can add new types and rules,
+or they can add new properties to existing types and replace existing rules.
+Define queries can't change schema statements already existing in a schema, except for
+xref:typeql::statements/overview.adoc#_annotation_statements[annotations] and
+xref:statements/rule.adoc[rules].
+
+Define queries are idempotent, meaning they can be applied multiple times
+without changing the result of the initial application.
+
+A Define query must produce a consistent and valid schema in a database,
+otherwise it will not pass validation.
+
+Define query returns a Promise of an empty response.
+// end::behavior[]
+
+A `define` clause is used in a Define query to specify schema statements for new or updated types and rules.
+Schema statements in a `define` clause can't use any variables or values, except for xref:statements/rule.adoc[rules].
+
+include::typeql::partial$iam-database-links.adoc[]
+
+== Usage to define new types
+
+To define a new type, subtype an existing type with a xref:typeql::statements/sub.adoc[sub] statement.
+Use xref:typeql::statements/owns.adoc[owns] statements to assign an ability to own attribute types.
+
+For roles on relations, use xref:typeql::statements/relates.adoc[relates] and
+xref:typeql::statements/plays.adoc[plays] statements.
+
+Simple statements about the same subject can be combined in a
+xref:typeql::statements/overview.adoc#_composite_statements[composite statement].
+
+.Defining types example
+[,typeql]
+----
+define
+
+credential sub attribute, value string;
+email sub attribute, value string;
+full-name sub attribute, value string;
+review-date sub attribute, value datetime;
+
+subject sub entity,
+    abstract,
+    owns credential,
+    plays permission:subject;
+user sub subject, abstract;
+person sub user,
+    owns email,
+    owns full-name;
+
+permission sub relation,
+    owns review-date,
+    relates subject;
+----
+
+The above example defines four attribute types, three entity types, and a single relation type.
+
+== Usage to define a rule
+
+Use a xref:typeql::statements/rule.adoc[rule] statement to define a new rule or replace an existing one:
+
+.Defining a rule example
+[,typeql]
+----
+define
+
+rule add-view-permission: when {
+    $modify isa action, has name "modify_file";
+    $view isa action, has name "view_file";
+    $ac_modify (object: $obj, action: $modify) isa access;
+    $ac_view (object: $obj, action: $view) isa access;
+    (subject: $subj, access: $ac_modify) isa permission;
+} then {
+    (subject: $subj, access: $ac_view) isa permission;
+};
+----
+
+

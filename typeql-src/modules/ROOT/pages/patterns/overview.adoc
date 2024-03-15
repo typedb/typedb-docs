@@ -1,0 +1,53 @@
+= Patterns overview
+
+TypeQL uses fully-declarative and <<_composable_patterns,composable patterns>> for queries.
+
+In data queries, patterns are used to specify constraints on concepts to be retrieved or processed.
+
+In schema queries, we use schema related patterns without any variables to define or undefine type definitions.
+
+== Pattern blocks
+
+[cols-2]
+--
+.xref:typeql::patterns/conjunction.adoc[]
+[.clickable]
+****
+Combine statements in a pattern with conjunction.
+****
+
+.xref:typeql::patterns/disjunction.adoc[]
+[.clickable]
+****
+Create alternative branches in a pattern with disjunction.
+****
+
+.xref:typeql::patterns/negation.adoc[]
+[.clickable]
+****
+Exclude results with negated pattern blocks.
+****
+--
+
+[#_composable_patterns]
+== Composable patterns
+
+A pattern is a set of statements combined by an implicit xref:typeql::patterns/conjunction.adoc[conjunction].
+Hence, you can combine two patterns by joining their statements together in a new pattern.
+
+For example, in the following pattern
+the `$u` variable is specified to be a user with a `full-name` attribute, which value is equal to `Kevin Morrison`,
+the `$f` variable is a file with a `path` equal to `zlckt.ts`.
+Finally, there are two relations that specify a connection between the `$u` and the `$f`.
+
+.Composable pattern example
+[,typeql]
+----
+$u isa user, has full-name "Kevin Morrison";
+$f isa file, has path "zlckt.ts";
+$acc ($f, $act) isa access;
+$per ($u, $acc) isa permission;
+----
+
+For more information on how to use patterns in queries to retrieve or modify data,
+see the xref:typeql::queries/overview.adoc[] page.
