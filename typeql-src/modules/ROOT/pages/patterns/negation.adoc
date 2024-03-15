@@ -95,34 +95,6 @@ Learn more about disjunction in TypeQL.
 .xref:typeql::statements/overview.adoc[]
 [.clickable]
 ****
-Learn more statements in TypeQL patterns.
+Learn more about statements in TypeQL patterns.
 ****
 --
-
-
-
-
-
-
-
-
-To use negation, employ the following syntax:
-
-`not {<negated_pattern>};`
-
-See an example below.
-
-.Negation example
-[,typeql]
-----
-$p isa person, as full-name $fn;
-not {$fn contains "Kevin";};
-----
-
-We can use multiple statements inside a negation block.
-
-At least one variable in a negation block must be bound to a statement outside of negation.
-This ensures that set-difference operations are performed on sets that are not disjointed.
-Variables declared in negation blocks are local to the block they are defined in.
-
-Rules conditions with negation can't contradict themselves (to prevent infinite recursion).
