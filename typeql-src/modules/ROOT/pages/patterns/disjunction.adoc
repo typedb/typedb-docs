@@ -1,0 +1,181 @@
+= Disjunction
+
+Disjunction pattern block is used for creating branches of logic,
+so that not every branch must be matched at the same time.
+
+== Syntax
+
+The syntax of a disjunction block:
+
+.Syntax
+[,typeql]
+----
+{ <pattern> } or { <pattern> } [or { <pattern> }];
+----
+
+Where each `<pattern>` can be any valid pattern with at least one variable bound outside the disjunction.
+
+== Behaviour
+
+Disjunctions can be used in a `match` clause or a condition of a rule to create alternative constraints.
+Matching one of the branches is enough for the solution to be returned.
+//#todo expand disjunction behaviour with detailed explanation
+
+include::typeql::statements/isa.adoc[tag=example-schema-data]
+
+== Usage in a match clause
+
+=== Get all data
+
+One of the uses of a disjunction is to retrieve instances of different types.
+As a simple and one of the most common examples,
+let's retrieve all data from a database by using a disjunction with all three root types:
+
+.Data retrieval example
+[,typeql]
+----
+match
+$s isa $t;
+{$t type entity;} or {$t type relation;} or {$t type attribute;};
+get $s;
+----
+
+The above query returns all data instances from a database as stateful objects.
+
+=== Multiple statements in a branch
+
+Let's retrieve entities that can be of either `person` or `file` entity type and fetch their attributes, either
+a `full-name` or a `path` respectively:
+
+.Disjunction example
+[,typeql]
+----
+match
+$x isa $type;
+{$type type person; $x has full-name $name;} or {$type type file; $x has path $name;};
+fetch
+$name;
+----
+
+.See example output
+[%collapsible]
+====
+.Output example (partial)
+[,json]
+----
+{ "name": { "value": "Kevin Morrison", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } }
+{ "name": { "value": "Masako Holley", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } }
+{ "name": { "value": "Pearle Goodman", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } }
+{ "name": { "value": "axidw.java", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
+{ "name": { "value": "budget_2021-08-01.xlsx", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
+{ "name": { "value": "README.md", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
+----
+====
+
+== Usage in a rule condition
+
+Disjunction can be used in a rule condition in the same way as it can be used in a `match` clause.
+
+Let's create a rule to add the `validity` attribute with the value `true` to a `permission`
+if at least one of the following conditions is met:
+
+* the permission has `review-date` attribute with value bigger than 25th of December 2022;
+* the permission has no `review-date` attribute.
+
+.Disjunction in a rule example
+[,typeql]
+----
+define
+rule permission-validity: when {
+    $permission isa permission;
+    { $permission has review-date $date;
+      $date > 2022-12-25T00:00:00.000; }
+    or
+    { not { $permission has review-date $date; }; };
+} then {
+    $permission has validity true;
+};
+----
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::patterns/conjunction.adoc[]
+[.clickable]
+****
+Learn more about conjunction in TypeQL.
+****
+
+.xref:typeql::patterns/negation.adoc[]
+[.clickable]
+****
+Learn more about negation in TypeQL.
+****
+
+.xref:typeql::statements/overview.adoc[]
+[.clickable]
+****
+Learn more statements in TypeQL patterns.
+****
+--
+
+
+
+
+
+
+
+
+To use negation, employ the following syntax:
+
+`not {<negated_pattern>};`
+
+See an example below.
+
+.Negation example
+[,typeql]
+----
+$p isa person, as full-name $fn;
+not {$fn contains "Kevin";};
+----
+
+We can use multiple statements inside a negation block.
+
+At least one variable in a negation block must be bound to a statement outside of negation.
+This ensures that set-difference operations are performed on sets that are not disjointed.
+Variables declared in negation blocks are local to the block they are defined in.
+
+Rules conditions with negation can't contradict themselves (to prevent infinite recursion).
+
+
+
+
+
+
+Use disjunction to add some variability to possible solutions.
+To satisfy a match, at least one statement must be matched.
+
+To use disjunction, employ the following syntax:
+
+`{<pattern1>} or {<pattern2>};`
+
+See an example below.
+
+.Disjunction example
+[,typeql]
+----
+$p isa $t;
+{$t type person;} or {$t type file;};
+----
+
+We can use multiple statements inside a disjunctive branch.
+Variables that are used only in a disjunctive block will not be returned in results of a `match` clause.
+See an example below.
+
+.Disjunction example with extra variables
+[,typeql]
+----
+$p isa $t;
+{$t type person; $p has full-name $f;} or {$t type file; $p has path $path;};
+----
