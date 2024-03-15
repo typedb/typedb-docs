@@ -1,0 +1,183 @@
+= Statements overview
+
+A TypeQL statement is a building block of a TypeQL pattern.
+Statements in TypeQL are always end with a semicolon.
+By default, a conjunction combines all statements in a pattern.
+There is a specific syntax to use for a disjunction or negation.
+//# todo Add links to disjunction and negation
+
+== Simple statements
+
+A simple statement is the smallest complete TypeQL block that can be used as a pattern in a query.
+
+Most simple statements have three parts: *Subject Predicate Object*.
+Where the predicate is a TypeQL keyword.
+
+Some notable exceptions are: assignments (xref:typeql::statements/role-assignment.adoc[role] and
+xref:typeql::statements/value-assignment.adoc[value]),
+annotations (xref:typeql::statements/key.adoc[key] and
+xref:typeql::statements/unique.adoc[unique]),
+xref:typeql::statements/abstract.adoc[abstract],
+xref:typeql::statements/value.adoc[value], and
+xref:typeql::statements/rule.adoc[rules].
+
+[#_composite_statements]
+== Composite statements
+
+Multiple simple statements with the same subject can be combined into a composite statement.
+A composite statement starts with a single subject, and multiple comma-separated simple statements with subject omitted.
+
+.See an example
+[%collapsible]
+====
+.Composite statement example
+[,typeql]
+----
+$p isa person, has full-name "Kevin Morrison", has email $e;
+----
+
+The above example combines simple xref:typeql::statements/isa.adoc[] and xref:typeql::statements/has.adoc[] statements
+to the same result without repeating the subject (`$p`):
+
+.Equal simple statements example
+[,typeql]
+----
+$p isa person;
+$p has full-name "Kevin Morrison";
+$p has email $e;
+----
+====
+
+The xref:typeql::statements/role-assignment.adoc[role assignment] and
+xref:typeql::statements/value-assignment.adoc[value assignment] statements do not require a comma
+when added in a composite statement, as they are used without any additional keyword.
+
+== Statement types
+
+[cols-3]
+--
+.xref:typeql::statements/isa.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/is.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/has.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/sub.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/type.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/abstract.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/owns.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/value.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/regex.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/relates.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/plays.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/rule.adoc[]
+[.clickable]
+****
+
+****
+--
+
+// * isa
+// * isa!
+// * is
+// * has
+// * sub
+// * sub!
+// * type
+// * abstract
+// * owns
+// * value
+// * regex
+// * @key
+// * @unique
+// * relates
+// * plays
+// * as
+// * rule (when/then)
+
+[#_annotation_statements]
+=== Annotation statements
+
+[cols-2]
+--
+.xref:typeql::statements/unique.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/key.adoc[]
+[.clickable]
+****
+
+****
+--
+
+=== Assignment statements
+
+[cols-2]
+--
+.xref:typeql::statements/value-assignment.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:typeql::statements/role-assignment.adoc[]
+[.clickable]
+****
+
+****
+--

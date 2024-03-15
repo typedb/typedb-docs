@@ -1,0 +1,96 @@
+= Conjunction
+
+Conjunction is the default operation between all statements and blocks of statements in a TypeQL pattern.
+
+== Syntax
+
+Since conjunction is the default, there is no specific syntax to apply conjunction.
+Conjunction applied implicitly for all statements by default, as opposed to
+xref:typeql::patterns/negation.adoc[negation] and xref:typeql::patterns/disjunction.adoc[disjunction].
+For simplicity, you can think of a semicolon as a conjunction operator.
+
+The syntax of a conjunction block:
+
+.Syntax
+[,typeql]
+----
+<pattern>; [<pattern>;]
+----
+
+Where each `<pattern>` can be any valid pattern with at least one variable bound outside the disjunction.
+
+== Behaviour
+
+Conjunction is used in all TypeQL patterns.
+Only if all statements in a conjunction are equal to `True`, the whole pattern is equal to `True`.
+If any statement in a conjunction is equal to `False`, then the whole pattern is `False`.
+//#todo expand disjunction behaviour with detailed explanation
+
+The ordering of statements in a conjunction is irrelevant, as every statement is equaly important for the whole pattern.
+
+include::typeql::partial$iam-database-links.adoc[]
+
+== Usage in a match clause
+
+Let's fetch a `path` attribute for every file that a user with full-name "Kevin Morrison" has a permission to modify.
+There are multiple statements we need to combine with a conjunction for them all to be matched by every solution:
+
+// .Conjunction example
+// [,typeql]
+// ----
+// match
+// $p isa person, has full-name $name;
+// $name contains "kevin";
+// $p has email $email;
+// fetch
+// $email;
+// ----
+
+.Conjunction example
+[,typeql]
+----
+match
+$user isa user, has full-name 'Kevin Morrison';
+($user, $access) isa permission;
+$obj isa object, has path $path;
+$access($obj, $act) isa access;
+$act isa action, has name 'modify_file';
+fetch $path;
+----
+
+In the above example, all statements in a `match` clause must be equal to `True` for the solution to be found.
+
+.See example output
+[%collapsible]
+====
+.Output example (partial)
+[,json]
+----
+{ "path": { "value": "iopvu.java", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
+{ "path": { "value": "README.md", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
+{ "path": { "value": "budget_2021-08-01.xlsx", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
+----
+====
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::patterns/disjunction.adoc[]
+[.clickable]
+****
+Learn more about disjunction in TypeQL.
+****
+
+.xref:typeql::patterns/negation.adoc[]
+[.clickable]
+****
+Learn more about negation in TypeQL.
+****
+
+.xref:typeql::statements/overview.adoc[]
+[.clickable]
+****
+Learn more about statements in TypeQL patterns.
+****
+--

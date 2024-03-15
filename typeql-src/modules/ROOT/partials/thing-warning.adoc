@@ -1,17 +1,4 @@
 [WARNING]
 ====
-The `thing` internal type will be deprecated in one of the upcoming versions and deleted in TypeDB version `3.0`.
-
-Consider using `entity`, `attribute`, or `relation` built-in types instead.
-
-For example:
-
-.Data retrieval example
-[,typeql]
-----
-match
-$s isa $t;
-{$t type entity;} or {$t type relation;} or {$t type attribute;};
-get $s;
-----
+The `thing` built-in type is deprecated and will be deleted in TypeDB version `3.0`.
 ====
