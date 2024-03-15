@@ -1,0 +1,187 @@
+= Lesson 8.2: Subqueries
+
+== Grouping results
+
+In the previous lesson, we saw how we can modify our query to retrieve attributes individually or grouped by owner. In this lesson, we will explore how we can group results in a generalised way using *subqueries*.
+
+In xref:learn::7-understanding-query-patterns/7.6-solution-set-semantics.adoc[Lesson 7.6], we encountered the following Fetch query, which was intended to list all books and the promotions they are in, but instead lists only books that are in promotions.
+
+[,typeql]
+----
+match
+$book isa book;
+$promotion isa promotion;
+($book, $promotion) isa promotion-inclusion;
+fetch
+$book: title;
+$promotion: name;
+----
+
+In order to retrieve the correct results, we can use a subquery as follows.
+
+[,typeql]
+----
+match
+$book isa book;
+fetch
+$book: title;
+promotions: {
+    match
+    $promotion isa promotion;
+    ($book, $promotion) isa promotion-inclusion;
+    fetch
+    $promotion: name;
+};
+----
+
+To construct a subquery, we place it inside a *block* inside the `fetch` clause, preceded by a *subquery label* and `:` delimiter, and followed by a `;` delimiter.
+
+[,typeql]
+----
+match
+# parent query match clause
+fetch
+# parent query fetch clause
+subquery-label: {
+    # subquery
+};
+----
+
+[NOTE]
+====
+A subquery label can be any string that could be used as a type label. To use a label that is not normally permitted, for instance a reserved keyword or a string containing whitespace, we can enclose it in quotes.
+====
+
+If we *run* image:learn::studio-icons/run-query.png[] the query above, then we will see it gives the intended results! Let's examine the subquery to see how this works.
+
+[,typeql]
+----
+match
+$promotion isa promotion;
+($book, $promotion) isa promotion-inclusion;
+fetch
+$promotion: name;
+----
+
+The subquery functions exactly like a regular query, except that variables are shared with the *parent query*, in this case just `$book`. The constraints that apply to the parent query also apply to the subquery, but the reverse is not true. That means that the subquery will only return promotions that the associated book is in, but the book does not need to be in a promotion to be matched by the parent query. All subqueries must share at least one variable with the parent query.
+
+For each result of the parent query, the results of the subquery are returned in a list field identified by the subquery label.
+
+.Exercise
+[caption=""]
+====
+Write a Fetch query to retrieve a list of books along with any contributors to those books. Ensure the following information is retrieved:
+
+* Titles of books.
+* Names of contributors.
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$book isa book;
+fetch
+$book: title;
+contributors: {
+    match
+    $contributor isa contributor;
+    ($book, $contributor) isa contribution;
+    fetch
+    $contributor: name;
+};
+----
+=====
+====
+
+== Nesting subqueries
+
+In the same way the `fetch` clause of a query can contain a subquery, the subquery itself can contain further nested subqueries. Let's see an example. In the following, we list all publishers, any books they have published, and any promotions those books are in.
+
+[,typeql]
+----
+match
+$publisher isa publisher;
+fetch
+$publisher: name;
+books: {
+    match
+    $book isa book;
+    ($book, $publisher) isa publishing;
+    fetch
+    $book: title;
+    promotions: {
+        match
+        $promotion isa promotion;
+        ($book, $promotion) isa promotion-inclusion;
+        fetch
+        $promotion: name;
+    };
+};
+----
+
+In effect, we have added a level of grouping to the previous query for books and promotions, now grouping the books by publisher. In general, if we want to introduce a new level of grouping to our query results, we can do so by using the query that retrieved those results as a subquery, and query for the groups in the parent query. There is no limit to the depth that subqueries can be nested, though performance can become a concern for very deep nesting.
+
+.Exercise
+[caption=""]
+====
+Write a Fetch query to retrieve a list of users, any orders they have placed, and any books in those orders. Ensure the following information is retrieved:
+
+* IDs of users.
+* IDs of orders.
+* ISBN-13s of books.
+* The quantities of books ordered.
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$user isa user, has id $user-id;
+fetch
+$user-id;
+orders: {
+    match
+    $order isa order, has id $order-id;
+    ($user, $order) isa action-execution;
+    fetch
+    $order-id;
+    books: {
+        match
+        $book isa book, has isbn-13 $isbn;
+        ($order, $book) isa order-line,
+            has quantity $quantity;
+        fetch
+        $isbn;
+        $quantity;
+    };
+};
+----
+
+Because none of the attributes we are retrieving should be multivalued, we can safely retrieve them directly rather than by owner, as explained in xref:learn::8-structuring-query-results/8.1-fetching-attributes.adoc[Lesson 8.1]. This is not essential to the solution!
+=====
+====

@@ -189,10 +189,10 @@ success sub attribute, value boolean;
 
 rule review-verified-by-purchase:
     when {
-        ($order, $product) isa order-line;
         ($review, $product) isa rating;
-        ($user, $order) isa action-execution, has timestamp $order-time;
+        ($order, $product) isa order-line;
         ($user, $review) isa action-execution, has timestamp $review-time;
+        ($user, $order) isa action-execution, has timestamp $order-time;
         $review-time > $order-time;
     } then {
         $review has verified true;

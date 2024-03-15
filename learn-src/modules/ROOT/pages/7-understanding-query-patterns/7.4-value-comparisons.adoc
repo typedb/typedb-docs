@@ -157,7 +157,6 @@ The ordering operators are also valid for strings, and function according to the
 * If they are different lengths but there is no index at which they differ, then the lesser string is the shorter one.
 ====
 
-
 == String matching operators
 
 TypeQL includes two operators for string matching, denoted by the keywords `contains` and `like`. The `contains` operator checks if one string contains another in a case-insensitive manner, while the `like` operator can be used to match strings through https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/regex/Pattern.html[Java regex patterns]. Unlike the equality and ordering operators, the string matching operators can only be used to compare attribute values to string literals; they cannot be used to compare the values of two attributes.

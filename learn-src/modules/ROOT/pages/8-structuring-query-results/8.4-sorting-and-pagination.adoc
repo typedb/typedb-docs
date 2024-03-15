@@ -1,0 +1,505 @@
+= Lesson 8.4: Sorting and pagination
+
+== Sorting
+
+The results of any query can be sorted by appending the `sort` modifier to the query. As we learned in xref:learn::8-structuring-query-results/8.3-aggregations.adoc[Lesson 8.3], *modifiers* are appended to queries to modify the results returned in some manner. The following query retrieves the list of every book's title and page count, and sorts by page count in ascending order.
+
+[,typeql]
+----
+match
+$book isa book, has page-count $count;
+fetch
+$book: title, page-count;
+sort $count;
+----
+
+[,json]
+----
+{
+    "book": {
+        "page-count": [ { "value": 79, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "The Iron Giant", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 160, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "The Motorcycle Diaries: A Journey Around South America", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 196, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Physical Principles of Electron Microscopy: An Introduction to TEM, SEM, and AEM", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 199, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Interpretation of Electron Diffraction Patterns", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 215, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "The Hitchhiker's Guide to the Galaxy", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 240, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "The Mummies of Urumchi", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 260, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Business Secrets of The Pharoahs", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 281, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "To Kill a Mockingbird", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 295, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Pride and Prejudice", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 296, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Under the Black Flag: The Romance and the Reality of Life Among the Pirates", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "hardback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 310, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "The Hobbit", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 352, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Great Discoveries in Medicine", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 374, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Pet Sematary", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 416, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Hokusai's Fuji", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 425, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Electron Backscatter Diffraction in Materials Science", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "hardback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 450, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Fundamentals of Data Engineering", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 458, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "One Hundred Years of Solitude", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 624, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Dune", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 656, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "The Odyssey", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 820, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Classical Mythology", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 1451, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "The Complete Calvin and Hobbes", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "hardback", "root": "entity" }
+    }
+}
+----
+
+The `sort` modifier takes a variable as an argument, denoting the variable to sort on. As with the aggregation modifiers, the variable can be either a *concept variable* representing an attribute, or a *value variable*. In this case, we've used the concept variable `page-count`. The results are sorted in ascending order. In order to sort in descending order, we can add append the keyword `desc` to the modifier as follows.
+
+[,typeql]
+----
+match
+$book isa book, has page-count $count;
+fetch
+$book: title, page-count;
+sort $count desc;
+----
+
+[,json]
+----
+{
+    "book": {
+        "page-count": [ { "value": 1451, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "The Complete Calvin and Hobbes", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "hardback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 820, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Classical Mythology", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 656, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "The Odyssey", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 624, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Dune", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 458, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "One Hundred Years of Solitude", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 450, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Fundamentals of Data Engineering", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 425, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Electron Backscatter Diffraction in Materials Science", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "hardback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 416, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Hokusai's Fuji", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 374, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Pet Sematary", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 352, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Great Discoveries in Medicine", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 310, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "The Hobbit", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 296, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Under the Black Flag: The Romance and the Reality of Life Among the Pirates", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "hardback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 295, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Pride and Prejudice", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 281, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "To Kill a Mockingbird", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 260, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Business Secrets of The Pharoahs", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 240, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "The Mummies of Urumchi", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 215, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "The Hitchhiker's Guide to the Galaxy", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 199, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Interpretation of Electron Diffraction Patterns", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 196, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Physical Principles of Electron Microscopy: An Introduction to TEM, SEM, and AEM", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 160, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "The Motorcycle Diaries: A Journey Around South America", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 79, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "The Iron Giant", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+----
+
+Though sorting is always in ascending order by default, we can specify this explicitly using the keyword `asc` in the same way as `desc`.
+
+[NOTE]
+====
+The ordering of strings is determined according to the https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#compareTo(java.lang.String)[Java string specification]:
+
+* If two strings have the same length and the characters at each index are the same, then they are equal.
+* If they have different characters at one or more index positions, then the lesser string is the one with the lower https://en.wikipedia.org/wiki/List_of_Unicode_characters[Unicode value] at the first of those indices.
+* If they are different lengths but there is no index at which they differ, then the lesser string is the shorter one.
+====
+
+.Exercise
+[caption=""]
+====
+Write a Fetch query to retrieve a list of book titles along with the names of any contributors to those books. Ensure that the results are sorted first by book title and then contributor name, both in ascending alphabetical order. You can assume that each book has exactly one title and that each contributor has exactly one name.
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Hint
+[%collapsible]
+=====
+You will need to use a subquery to retrieve the contributors, and use `sort` modifiers on both the parent query and the subquery.
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$book isa book, has title $title;
+fetch
+$title;
+contributors: {
+    match
+    $contributor isa contributor, has name $name;
+    ($book, $contributor) isa contribution;
+    fetch
+    $name;
+    sort $name;
+};
+sort $title;
+----
+=====
+====
+
+== Pagination
+
+We can paginate the sorted results of any query by appending the `limit` and `offset` modifiers. In the following example, we add a `limit` modifier to the previous query to retrieve only the first three books with the lowest page counts.
+
+[,typeql]
+----
+match
+$book isa book, has page-count $count;
+fetch
+$book: title, page-count;
+sort $count;
+limit 3;
+----
+
+[,json]
+----
+{
+    "book": {
+        "page-count": [ { "value": 79, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "The Iron Giant", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 160, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "The Motorcycle Diaries: A Journey Around South America", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 196, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Physical Principles of Electron Microscopy: An Introduction to TEM, SEM, and AEM", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+----
+
+In the next example, we also add an `offset` modifier to retrieve the three books with the next lowest page counts.
+
+[,typeql]
+----
+match
+$book isa book, has page-count $count;
+fetch
+$book: title, page-count;
+sort $count;
+offset 3;
+limit 3;
+----
+
+[,json]
+----
+{
+    "book": {
+        "page-count": [ { "value": 199, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "Interpretation of Electron Diffraction Patterns", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 215, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "The Hitchhiker's Guide to the Galaxy", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "page-count": [ { "value": 240, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } } ],
+        "title": [ { "value": "The Mummies of Urumchi", "type": { "label": "title", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+----
+
+Compare these results to those of the previous non-paginated query to see the difference.
+
+The `limit` and `offset` modifiers both take a literal integer as an argument, indicating the number of results to retrieve and skip respectively. When both are used, the `offset` modifier comes before the `limit` modifier. These modifiers can also be used in a query without first sorting, though in which case the selection of results received will appear fairly random and may change when the query is re-run. Appending only a `limit` modifier to a query with many results can be a quick way to view a small random selection for debugging purposes.
+
+[IMPORTANT]
+====
+The `sort`, `limit`, and `offset` modifiers can all be used individually or in any combination. When two or more are used together, those present must appear in the following order:
+
+1. `sort`
+2. `offset`
+3. `limit`
+====
+
+.Exercise
+[caption=""]
+====
+Write a Fetch query to retrieve the titles of the five most recently published books in the database.
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$book isa book;
+$publication isa publication, has year $year;
+($book, $publication) isa publishing;
+fetch
+$book: title;
+sort $year desc;
+limit 5;
+----
+=====
+====
