@@ -16,33 +16,81 @@ Introduction for the near-natural fully declarative query language of TypeDB.
 
 [cols-2]
 --
-.xref:typeql::schema/overview.adoc[Schema]
+.xref:typeql::queries/define.adoc[]
 [.clickable]
 ****
-Schema definition TypeQL queries.
+A Define query to add types and rules to a schema.
 ****
 
-.xref:typeql::data/overview.adoc[Data]
+.xref:typeql::queries/undefine.adoc[]
 [.clickable]
 ****
-Data manipulation TypeQL queries.
+An Unefine query to delete types and rules to a schema.
+****
+
+.xref:typeql::queries/insert.adoc[]
+[.clickable]
+****
+An Insert query to add data into a database.
+****
+
+.xref:typeql::queries/delete.adoc[]
+[.clickable]
+****
+A Delete query to delete data from a database.
+****
+
+.xref:typeql::queries/update.adoc[]
+[.clickable]
+****
+An Update query to replace data in a database.
+****
+
+.xref:typeql::queries/fetch.adoc[]
+[.clickable]
+****
+A Fetch query to fetch values and types from a database.
+****
+
+.xref:typeql::queries/get.adoc[]
+[.clickable]
+****
+A Get query to get data and types as stateful objects from a database.
 ****
 --
 
-== Variables
+== TypeQL building blocks
 
 [cols-2]
 --
-.xref:typeql::concepts/overview.adoc[Concepts]
+.xref:typeql::patterns/overview.adoc[]
 [.clickable]
 ****
-Concepts, concept variables, types, and data instances.
+Conjunction, Disjunction, Negation.
 ****
 
-.xref:typeql::values/overview.adoc[Values]
+.xref:typeql::statements/overview.adoc[]
 [.clickable]
 ****
-Values, value-types, value variables, comparators, arithmetic, functions.
+isa, has, sub, owns, abstract, relates, annotations, etc.
+****
+
+.xref:typeql::modifiers/overview.adoc[]
+[.clickable]
+****
+Sorting, pagination, aggregation, grouping.
+****
+
+.xref:typeql::concepts/overview.adoc[]
+[.clickable]
+****
+Types, data instances, concept variables.
+****
+
+.xref:typeql::values/overview.adoc[]
+[.clickable]
+****
+Value-types, value variables, comparators, arithmetic, functions.
 ****
 --
 
