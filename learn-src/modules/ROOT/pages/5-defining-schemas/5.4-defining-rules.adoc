@@ -98,4 +98,5 @@ rule review-unverified:
     };
 ----
 
-The combination of these two rules ensures that every review always has exactly one `verified` attribute. We never have to insert these attributes because they are _always_ derived by rule inference. These are a few simple ways we can define rules. We will explore more complex cases of rule inference in Lesson 10 (coming soon).
+The combination of these two rules ensures that every review always has exactly one `verified` attribute. We never have to insert these attributes because they are _always_ derived by rule inference. These are a few simple ways we can define rules. We will explore more complex cases of rule inference in xref:learn::10-using-inference/10-using-inference.adoc[Lesson 9].
+// The combination of these two rules ensures that every review always has exactly one `verified` attribute. We never have to insert these attributes because they are _always_ derived by rule inference. These are a few simple ways we can define rules. We will explore more complex cases of rule inference in xref:learn::10-using-inference/10-using-inference.adoc[Lesson 10].

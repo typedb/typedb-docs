@@ -22,7 +22,7 @@ This query does not in fact achieve the desired result. The third statement in t
 ($book, $promotion) isa promotion-inclusion;
 ----
 
-Because the constraints in a pattern must be simultaneously satisfied, this means that if a book is not in _any_ promotion, then it will not be returned. This query does not actually list books and the promotions they are in, rather it lists only books that are in promotions. We'll see how we can retrieve all books _plus_ any promotions they are in by using *subqueries* in Lesson 8.2 (coming soon).
+Because the constraints in a pattern must be simultaneously satisfied, this means that if a book is not in _any_ promotion, then it will not be returned. This query does not actually list books and the promotions they are in, rather it lists only books that are in promotions. We'll see how we can retrieve all books _plus_ any promotions they are in by using *subqueries* in xref:learn::8-structuring-query-results/8.2-subqueries.adoc[Lesson 8.2].
 
 When composing a query pattern from individual statements, it is important to remember that each constraint must be satisfied individually in order for the whole pattern to be satisfied simultaneously. If we do not bear this in mind, we can run into issues like this where our intent does not match the query we have written.
 
