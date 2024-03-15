@@ -30,7 +30,7 @@ as they are both can be used to define (or undefine) a new type by subtyping an 
 In data queries, the `sub` and `sub!` keywords can be used only in a `match` clause to match either
 all existing subtypes or only direct subtypes of a given type respectively.
 
-include::typeql::statements/isa.adoc[tag=example-schema-data]
+include::typeql::partial$iam-database-links.adoc[]
 
 == Usage in a schema definition
 

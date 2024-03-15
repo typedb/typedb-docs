@@ -25,13 +25,7 @@ The `isa` keyword adds a constraint of a type (including subtypes) to data insta
 The `isa!` keyword adds a constraint of an exact type (without any subtypes) to data instances,
 represented by a concept variable.
 
-// tag::example-schema-data[]
-To run the examples below, you can use a database with the IAM
-link:https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[schema]
-and
-link:https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-data-single-query.tql[sample data]
-loaded.
-// end::example-schema-data[]
+include::typeql::partial$iam-database-links.adoc[]
 
 == Usage in a match pattern
 
