@@ -21,13 +21,13 @@ xref:typeql::data/match.adoc[] page.
 
 |xref:typeql::schema/type-definitions.adoc[Define]
 |1
-|xref:typeql::schema/define.adoc#_define_clause[Define]
+|xref:typeql::queries/define.adoc#_syntax[Define]
 |`define`
 |Yes
 
-|xref:typeql::schema/undefine.adoc[Undefine]
+|xref:typeql::queries/undefine.adoc[Undefine]
 |1
-|xref:typeql::schema/undefine.adoc#_undefine_clause[Undefine]
+|xref:typeql::queries/undefine.adoc#_syntax[Undefine]
 |`undefine`
 |Yes
 
@@ -99,13 +99,13 @@ TypeQL queries use
 Define::
 +
 --
-include::typeql::schema/define.adoc[tag=syntax]
+include::typeql::queries/define.adoc[tag=syntax]
 --
 
 Undefine::
 +
 --
-include::typeql::schema/undefine.adoc[tag=syntax]
+include::typeql::queries/undefine.adoc[tag=syntax]
 --
 
 Insert::
@@ -278,7 +278,7 @@ user owns credential;
 file sub entity;
 ----
 
-For more information about undefining types and rules in a schema, see the xref:typeql::schema/undefine.adoc[] page.
+For more information about undefining types and rules in a schema, see the xref:typeql::queries/undefine.adoc[] page.
 --
 
 Insert::
@@ -462,7 +462,7 @@ user owns credential;
 file sub entity;
 ----
 
-For more information about undefining types and rules in a schema, see the xref:typeql::schema/undefine.adoc[] page.
+For more information about undefining types and rules in a schema, see the xref:typeql::queries/undefine.adoc[] page.
 
 [#_insert_query]
 === Insert query
@@ -592,7 +592,7 @@ xref:drivers::nodejs/api-reference.adoc[Node.js].
 
 To find out more about the queries, see the
 xref:typeql::schema/type-definitions.adoc[Define query],
-xref:typeql::schema/undefine.adoc[Undefine query],
+xref:typeql::queries/undefine.adoc[Undefine query],
 xref:typeql::queries/insert.adoc[],
 xref:typeql::queries/delete.adoc[],
 xref:typeql::queries/update.adoc[],

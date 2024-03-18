@@ -4,8 +4,8 @@
 
 A session represents an active connection to a specific database on a TypeDB server,
 and it can be of two types: `schema` and `data`.
-The `schema` session type is specifically employed for xref:typeql::schema/define.adoc[Define] and
-xref:typeql::schema/undefine.adoc[Undefine] queries.
+The `schema` session type is specifically employed for xref:typeql::queries/define.adoc[Define] and
+xref:typeql::queries/undefine.adoc[Undefine] queries.
 
 This guide covers session control and best practices with Studio, Console, or one of the drivers.
 Both Studio and Console provide automated session control, so you don't need to open and close sessions manually.

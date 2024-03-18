@@ -12,6 +12,7 @@ xref:home::acid.adoc#_schema_integrity[Schema integrity enforcement].
 For a guide on how to open a session to TypeDB,
 see the xref:manual::connecting/overview.adoc[] section of TypeDB Manual.
 
+[#_syntax]
 == Syntax
 
 // tag::syntax[]
@@ -51,6 +52,7 @@ Undefine queries are validated with TypeQL syntax.
 A database's schema is validated after applying a given query to validate its consistency.
 Undefining a type also undefines all ownerships of attribute types and all roles it could play.
 
+[#_undefine_a_type_with_a_subtype]
 A deleted type must exist in a schema and have neither subtypes nor instances of data.
 If any subtypes or instances of that type exist in a database,
 they need to be removed prior to removing the type or in the same query.
