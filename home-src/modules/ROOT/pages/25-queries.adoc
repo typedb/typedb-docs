@@ -282,15 +282,15 @@ match $x has id $id;
 get $x, $id;
 ----
 
-The above xref:typeql::data/get.adoc[Get] query can't retrieve any instances of `id` type
+The above xref:typeql::queries/get.adoc[Get] query can't retrieve any instances of `id` type
 because it is an abstract type.
 Instead, it returns instances of all its subtypes, see the visualization below.
 
 image::typedb-in-25-queries/abstract.png[Abstract type, role=framed, width = 75%, link=self]
 
-We use the xref:typeql::data/get.adoc[Get] query type, because it returns all concepts from a database as a ConceptMap,
+We use the xref:typeql::queries/get.adoc[Get] query type, because it returns all concepts from a database as a ConceptMap,
 so that TypeDB Studio can build a graph visualization of the response (see above),
-while xref:typeql::data/fetch.adoc[Fetch] returns only values in a JSON.
+while xref:typeql::queries/fetch.adoc[Fetch] returns only values in a JSON.
 
 [#_parametric_polymorphism]
 == #{counter:query}: Parametric polymorphism
@@ -315,7 +315,7 @@ match $x isa! $t;
 get $x, $t;
 ----
 
-The above xref:typeql::data/get.adoc[Get] query returns pairs of `$x` and `$t` concepts,
+The above xref:typeql::queries/get.adoc[Get] query returns pairs of `$x` and `$t` concepts,
 where `$x` should be an instance of data and `$t` should be its type.
 Note how the type in the `isa!` statement is variablized.
 Effectively this query returns all data from a database
@@ -338,7 +338,7 @@ match $x isa entity;
 get $x;
 ----
 
-The xref:typeql::data/get.adoc[Get] query above matches `$x` by its type.
+The xref:typeql::queries/get.adoc[Get] query above matches `$x` by its type.
 The type must be the `entity` type or any of its subtypes.
 This query should return all entities in a database.
 Since `entity` is a root type, it's an <<_abstract,abstract>> type and can't be directly instantiated.
@@ -625,7 +625,7 @@ users: {
 The query above matches all files with a path fitting the RegEx `^docs/.*$`
 (any string, starting with the `docs/` substring) and fetches their path (`$p`).
 
-It also has `users` xref:typeql::data/fetch.adoc#_subqueries[subquery] that fetches usernames of all users,
+It also has `users` xref:typeql::queries/fetch.adoc#_subqueries[subquery] that fetches usernames of all users,
 that have a permission to access the matched file.
 
 .Result example
@@ -678,7 +678,7 @@ _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 TypeDB reasoning engine can perform rule-based inference when you read data.
 To use inference, we need to xref:typeql:ROOT:schema/type-definitions.adoc[Define] rules in the schema,
 open a `read` transaction with the `infer` option xref:manual::reading/infer.adoc[enabled],
-and send a xref:typeql:ROOT:data/get.adoc[Get] or xref:typeql::data/fetch.adoc[Fetch] query.
+and send a xref:typeql:ROOT:data/get.adoc[Get] or xref:typeql::queries/fetch.adoc[Fetch] query.
 
 .Schema with a rule
 [,typeql]

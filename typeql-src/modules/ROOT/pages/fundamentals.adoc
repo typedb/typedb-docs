@@ -569,7 +569,7 @@ For more information about reading and writing data, see the following pages:
 ** xref:typeql::data/delete.adoc[]
 ** xref:typeql::data/update.adoc[]
 * Reading data:
-** xref:typeql::data/get.adoc[]
+** xref:typeql::queries/get.adoc[]
 
 [#_data_example]
 === Example
@@ -617,7 +617,7 @@ That creates an entity and assigns an ownership of three attributes of different
 If any of the attributes with the given value didn't exist prior to this query -- TypeDB will create an instance of an
 attribute with the required value automatically.
 
-Now, to read that data, we can use the xref:typeql::data/get.adoc[Get] query:
+Now, to read that data, we can use the xref:typeql::queries/get.adoc[Get] query:
 
 [,typeql]
 ----

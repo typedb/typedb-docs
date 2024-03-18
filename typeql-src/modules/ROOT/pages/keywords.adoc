@@ -21,8 +21,8 @@ Starts an `undefine` clause of a xref:typeql::schema/undefine.adoc[]
 Starts a `match` clause that can be used in an xref:typeql::data/insert.adoc[Insert],
 xref:typeql::data/delete.adoc[Delete],
 xref:typeql::data/update.adoc[Update],
-xref:typeql::data/fetch.adoc[Fetch], or
-xref:typeql::data/get.adoc[Get] query.
+xref:typeql::queries/fetch.adoc[Fetch], or
+xref:typeql::queries/get.adoc[Get] query.
 
 `insert`::
 Starts an `insert` clause of an xref:typeql::data/insert.adoc[].
@@ -31,10 +31,10 @@ Starts an `insert` clause of an xref:typeql::data/insert.adoc[].
 Starts a `delete` clause of a xref:typeql::data/delete.adoc[].
 
 `fetch`::
-Starts a `fetch` clause of a xref:typeql::data/fetch.adoc[].
+Starts a `fetch` clause of a xref:typeql::queries/fetch.adoc[].
 
 `get`::
-Starts a `get` clause of a xref:typeql::data/get.adoc[].
+Starts a `get` clause of a xref:typeql::queries/get.adoc[].
 
 == Schema statements
 
@@ -124,15 +124,15 @@ See an xref:typeql::data/examples.adoc#_owners_of_a_specific_attribute_by_type_a
 
 `offset`::
 Offset the result of a query by the specified number of results.
-See an xref:typeql::data/get.adoc#_offset_the_results[example].
+See an xref:typeql::queries/get.adoc#_offset_the_results[example].
 
 `limit`::
 Limit the result of a query by the specified number of results.
-See an xref:typeql::data/get.adoc#_limit_the_results[example].
+See an xref:typeql::queries/get.adoc#_limit_the_results[example].
 
 `sort`::
 Sort the results of a query.
-See an xref:typeql::data/get.adoc#_sort_the_results[example].
+See an xref:typeql::queries/get.adoc#_sort_the_results[example].
 
 === Logic
 
@@ -176,32 +176,32 @@ See an xref:typeql::data/examples.adoc#_value_containing[example].
 
 `group`::
 Group results by a given variable.
-See an xref:typeql::data/get.adoc#_grouping[example].
+See an xref:typeql::queries/get.adoc#_grouping[example].
 
 `count`::
 Count the number of results.
-See an xref:typeql::data/get.adoc#_count[example].
+See an xref:typeql::queries/get.adoc#_count[example].
 
 `max`::
 Find maximum value of a given variable.
-See an xref:typeql::data/get.adoc#_maximum[example].
+See an xref:typeql::queries/get.adoc#_maximum[example].
 
 `min`::
 Find minimum value a given variable.
-See an xref:typeql::data/get.adoc#_minimum[example].
+See an xref:typeql::queries/get.adoc#_minimum[example].
 
 `mean`::
 Find average value a given variable.
-See an xref:typeql::data/get.adoc#_mean[example].
+See an xref:typeql::queries/get.adoc#_mean[example].
 
 `median`::
 Find median value a given variable.
-See an xref:typeql::data/get.adoc#_median[example].
+See an xref:typeql::queries/get.adoc#_median[example].
 
 `std`::
 Find standard deviation a given variable.
-See an xref:typeql::data/get.adoc#_standard_deviation[example].
+See an xref:typeql::queries/get.adoc#_standard_deviation[example].
 
 `sum`::
 Find sum of values for a given variable.
-See an xref:typeql::data/get.adoc#_sum[example].
+See an xref:typeql::queries/get.adoc#_sum[example].

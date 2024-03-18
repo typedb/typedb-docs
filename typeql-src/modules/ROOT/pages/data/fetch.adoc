@@ -148,7 +148,7 @@ See the <<_customize_output>> example below.
 === Subqueries
 
 A Fetch query can include a subquery in a `fetch` clause: another Fetch query or a Get query with
-xref:typeql::data/get.adoc#_aggregation[aggregation] (to return a value).
+xref:typeql::queries/get.adoc#_aggregation[aggregation] (to return a value).
 A subquery consists of label, colon, and a TypeQL query string surrounded by curly brackets.
 
 The label determines the key that will be used to introduce results of the subquery into the JSON output.
@@ -193,7 +193,7 @@ Since both persons own the very same attribute,
 it will be returned only once, reducing the total number of results.
 
 For more examples of filtering matched results,
-see the xref:typeql::data/get.adoc#_results_example_2[Get query] page.
+see the xref:typeql::queries/get.adoc#_results_example_2[Get query] page.
 
 [#_modifiers]
 == Modifiers
@@ -406,8 +406,8 @@ Note that instead of `f` we have `file` key and instead of `attribute` -- `all-a
 
 === Using Get queries as subqueries
 
-You can use xref:typeql::data/get.adoc[Get] queries as subqueries as long as you use
-xref:typeql::data/get.adoc#_aggregation[aggregation] to get a value.
+You can use xref:typeql::queries/get.adoc[Get] queries as subqueries as long as you use
+xref:typeql::queries/get.adoc#_aggregation[aggregation] to get a value.
 
 .Example of using a Get subquery
 [,typeql]
