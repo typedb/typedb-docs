@@ -163,7 +163,7 @@ Then we send the contents of the file as a TypeQL Define query and commit the ch
 [#_loading_initial_data]
 === Loading initial data
 
-With the schema defined, we can load initial data into our database with the xref:typeql::data/insert.adoc[Insert query]
+With the schema defined, we can load initial data into our database with the xref:typeql::queries/insert.adoc[Insert query]
 in the `db_dataset_setup()` function:
 
 [,python]
@@ -259,7 +259,7 @@ Let's insert a new user with `full-name` and `email` attributes to the database.
 include::drivers::partial$tutorials/python/sample.py[tag=insert]
 ----
 
-We collect the response of the xref:typeql::data/insert.adoc[Insert query] as a list
+We collect the response of the xref:typeql::queries/insert.adoc[Insert query] as a list
 and use it to print the inserted data after we commit the transaction.
 
 We iterate through the response, retrieve attribute values and print them for every return result.

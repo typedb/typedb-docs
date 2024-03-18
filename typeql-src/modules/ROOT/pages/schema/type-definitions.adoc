@@ -209,7 +209,7 @@ By default, an instance of a type can have ownership of multiple attributes of t
 with different values.
 
 By having multiple attributes of the same type we're effectively creating a
-xref:typeql::data/insert.adoc#_multivalued_attributes[multivalued attribute]
+xref:typeql::queries/insert.adoc#_multivalued_attributes[multivalued attribute]
 (as if having an attribute with multiple values).
 
 Use the <<_key_attribute,Key attribute annotation>>
@@ -301,7 +301,7 @@ object sub entity, plays access:object;
 ----
 
 The above examples define the `object` type as being able to play the role `object` in the `access` relation type.
-With this definition in a schema, we can now xref:typeql::data/insert.adoc[insert]
+With this definition in a schema, we can now xref:typeql::queries/insert.adoc[insert]
 data into our database about a relation of type `access` with the role `object` played by a given instance
 of an entity type `object`.
 

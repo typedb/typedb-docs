@@ -33,13 +33,13 @@ xref:typeql::data/match.adoc[] page.
 
 5.+| Data queries
 
-.2+|xref:typeql::data/insert.adoc[Insert]
+.2+|xref:typeql::queries/insert.adoc[Insert]
 .2+|1-2
 
 |xref:typeql::data/match.adoc[Match]
 |`match`
 |*No*
-|xref:typeql::data/insert.adoc#_insert_clause[Insert]
+|xref:typeql::queries/insert.adoc#_insert_clause[Insert]
 |`insert`
 |Yes
 
@@ -62,7 +62,7 @@ xref:typeql::data/match.adoc[] page.
 |xref:typeql::data/delete.adoc#_delete_clause[Delete]
 |`delete`
 |Yes
-|xref:typeql::data/insert.adoc#_insert_clause[Insert]
+|xref:typeql::queries/insert.adoc#_insert_clause[Insert]
 |`insert`
 |Yes
 
@@ -111,7 +111,7 @@ include::typeql::schema/undefine.adoc[tag=syntax]
 Insert::
 +
 --
-include::typeql::data/insert.adoc[tag=syntax]
+include::typeql::queries/insert.adoc[tag=syntax]
 --
 
 Delete::
@@ -187,7 +187,7 @@ $p isa person,
     has email "kevin.morrison@vaticle.com";
 ----
 
-The above example contains three xref:typeql::data/insert.adoc[insert] queries without a match clause.
+The above example contains three xref:typeql::queries/insert.adoc[insert] queries without a match clause.
 
 To rewrite it as a single query we need to remove the second and third `insert` keyword and change variables, so that
 they are not overlapping (otherwise, we will insert a single person entity with three full-names and three emails):
@@ -308,7 +308,7 @@ $p has email "bob@gmail.com";
 
 The above query finds a person entity having `id` = `100` and `full-name` = `Bob`,
 then it inserts for every such person an ownership of `email` = `bob@gmail.com`.
-For more information about Insert queries, see the xref:typeql::data/insert.adoc[] page.
+For more information about Insert queries, see the xref:typeql::queries/insert.adoc[] page.
 --
 
 Delete::
@@ -491,7 +491,7 @@ $p has email "bob@gmail.com";
 
 The above query finds a person entity having `id` = `100` and `full-name` = `Bob`,
 then it inserts for every such person an ownership of `email` = `bob@gmail.com`.
-For more information about Insert queries, see the xref:typeql::data/insert.adoc[] page.
+For more information about Insert queries, see the xref:typeql::queries/insert.adoc[] page.
 
 [#_delete_query]
 === Delete query
@@ -593,7 +593,7 @@ xref:drivers::nodejs/api-reference.adoc[Node.js].
 To find out more about the queries, see the
 xref:typeql::schema/type-definitions.adoc[Define query],
 xref:typeql::schema/undefine.adoc[Undefine query],
-xref:typeql::data/insert.adoc[],
+xref:typeql::queries/insert.adoc[],
 xref:typeql::data/delete.adoc[],
 xref:typeql::data/update.adoc[],
 xref:typeql::queries/fetch.adoc[], and

@@ -158,7 +158,7 @@ Then we send the contents of the file as a TypeQL Define query and commit the ch
 [#_loading_initial_data]
 === Loading initial data
 
-With the schema defined, we can load initial data into our database with the xref:typeql::data/insert.adoc[Insert query]
+With the schema defined, we can load initial data into our database with the xref:typeql::queries/insert.adoc[Insert query]
 in the `dbDatasetSetup()` function:
 
 [,js,indent=0]
