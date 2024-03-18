@@ -224,7 +224,7 @@ Now Kevin has more than one email.
 [#_update_email_for_kevin]
 === Update the email for Kevin
 
-To xref:typeql::data/update.adoc[update] the email from `kevin@gmail.com` to `kevin2@gmail.com`
+To xref:typeql::queries/update.adoc[update] the email from `kevin@gmail.com` to `kevin2@gmail.com`
 for every person with a full name that contains "Kevin":
 
 [,typeql]
@@ -250,7 +250,7 @@ The query above does the following:
 [#_delete_email_from_kevin]
 === Delete ownership over the email for Kevin
 
-To xref:typeql::data/delete.adoc[delete] the ownership of the email `kevin2@gmail.com`
+To xref:typeql::queries/delete.adoc[delete] the ownership of the email `kevin2@gmail.com`
 for every person with a full name that contains "Kevin":
 
 [,typeql]

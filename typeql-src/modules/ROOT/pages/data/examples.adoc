@@ -806,7 +806,7 @@ For all matched results the query deletes the exact ownership of the `email` ins
 by the `$p`. The `person` instance in `$p` and the `email` instance in `$e` continue to exist in the database. Only the
 ownership between them gets deleted.
 
-For more information on how to delete data please see the xref:typeql::data/delete.adoc[] page.
+For more information on how to delete data please see the xref:typeql::queries/delete.adoc[] page.
 
 === Update query
 
@@ -844,7 +844,7 @@ attribute instance can be owned only once by the same owner. Hence, all previous
 be deleted and only one inserted.
 ====
 
-For more information on how to use the Update query see the xref:typeql::data/update.adoc[] page.
+For more information on how to use the Update query see the xref:typeql::queries/update.adoc[] page.
 
 === Complex pattern query example
 
