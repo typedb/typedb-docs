@@ -267,7 +267,7 @@ For more information on using subtypes, see <<_inheritance_polymorphism,query>> 
 == #{counter:query}: Abstract types
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
-xref:typeql:ROOT:fundamentals.adoc#_abstract_types[Abstract types] can't be instantiated
+xref:typeql::statements/abstract.adoc[Abstract types] can't be instantiated
 (no data can be inserted for the abstract type), but can be subtyped.
 
 In schema from <<_schema,query #1>> we defined `id` as an abstract type to subtype it with many different attributes,
@@ -368,7 +368,7 @@ The same approach could be used with playing a role in a relationship.
 == #{counter:query}: Inheritance
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
-xref:typeql:ROOT:fundamentals.adoc#_inheritance[Inheritance] lets subtypes use roles and attributes,
+Inheritance lets subtypes use roles and attributes,
 defined for their supertype (direct or nested).
 
 Like in the following example:

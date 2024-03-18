@@ -612,7 +612,7 @@ we'll get only two results in response because we will only get
 instance of the same type with the `false` value.
 
 The initial five instances of `person` type all have ownership over the
-xref:typeql:ROOT:fundamentals.adoc#_attribute_types[same instance] of the `certified-fortune-teller` attribute type
+same attribute of the `certified-fortune-teller` attribute type
 with the value `false`.
 
 To get all the results, we add the `person` type instances to the results because those are unique.
