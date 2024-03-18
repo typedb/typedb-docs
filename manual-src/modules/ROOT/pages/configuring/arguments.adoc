@@ -14,18 +14,18 @@ server:
 If we want to use port `1730` instead of `1729`, we can either update the configuration file or override it from the
 command line using the following command:
 
-[,bash]
+[source,console]
 ----
-typedb server --server.address 0.0.0.0:1730
+$ typedb server --server.address 0.0.0.0:1730
 ----
 
 Use the same approach to set a completely new section of the configuration that isn't presented in the file yet.
 For example, to define a new logger subsection to print out all query plans,
 we could do the following to set the package `com.vaticle.typedb.core.traversal` to output on a more verbose level:
 
-[,bash]
+[source,console]
 ----
-typedb server  \
+$ typedb server  \
   --server.address 0.0.0.0:1730  \
   --log.logger.traversal.filter com.vaticle.typedb.core.traversal  \
   --log.logger.traversal.level debug \
@@ -55,9 +55,9 @@ Any value from the config file can be overridden by a command line argument.
 
 For all available commands via the command line use the `--help` argument to get a reference:
 
-[,bash]
+[source,console]
 ----
-typedb server --help
+$ typedb server --help
 ----
 
 This will list out how to use specific command line arguments as well as options derived from the configuration file.

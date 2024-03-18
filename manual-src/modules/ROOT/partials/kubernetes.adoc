@@ -11,9 +11,9 @@
 
 First, create a secret to access TypeDB Cloud image on Docker Hub:
 
-[,bash]
+[source,console]
 ----
-kubectl create secret docker-registry private-docker-hub --docker-server=https://index.docker.io/v2/ \
+$ kubectl create secret docker-registry private-docker-hub --docker-server=https://index.docker.io/v2/ \
 --docker-username=USERNAME --docker-password='PASSWORD' --docker-email=EMAIL
 ----
 
@@ -22,9 +22,9 @@ https://hub.docker.com/settings/security?generateToken=true[access token,window=
 
 Next, add the Vaticle Helm repo:
 
-[,bash]
+[source,console]
 ----
-helm repo add vaticle https://repo.vaticle.com/repository/helm/
+$ helm repo add vaticle https://repo.vaticle.com/repository/helm/
 ----
 
 == Encryption setup (optional)
@@ -39,9 +39,9 @@ https://www.cloudflare.com/[CloudFlare] or https://letsencrypt.org/[letsencrypt.
 Alternatively, it is also possible to generate it manually with a tool we provide with TypeDB Cloud
 in the `tool` directory:
 
-[,bash]
+[source,console]
 ----
-java -jar encryption-gen.jar --ca-common-name=<x500-common-name> --hostname=<external-hostname>,<internal-hostname>
+$ java -jar encryption-gen.jar --ca-common-name=<x500-common-name> --hostname=<external-hostname>,<internal-hostname>
 ----
 
 _Please note that an external certificate is always bound to URL address, not IP address._
@@ -63,17 +63,17 @@ The path to each file is configured in the `encryption` section of the TypeDB Cl
 Once the external and internal certificates are all generated, we can upload it to Kubernetes Secrets.
 Navigate into the directory with cluster certificates and run:
 
-[,bash]
+[source,console]
 ----
-kubectl create secret generic ext-grpc \
+$ kubectl create secret generic ext-grpc \
   --from-file ext-grpc-certificate.pem \
   --from-file ext-grpc-private-key.pem \
   --from-file ext-grpc-root-ca.pem
-kubectl create secret generic int-grpc \
+$ kubectl create secret generic int-grpc \
     --from-file int-grpc-certificate.pem \
     --from-file int-grpc-private-key.pem \
     --from-file int-grpc-root-ca.pem
-kubectl create secret generic int-zmq \
+$ kubectl create secret generic int-zmq \
   --from-file int-zmq-private-key \
   --from-file int-zmq-public-key
 ----
@@ -100,9 +100,9 @@ Without encryption::
 --
 Deploy:
 
-[,bash]
+[source,console]
 ----
-helm install typedb-cloud vaticle/typedb-cloud --set "exposed=false,encrypted=false"
+$ helm install typedb-cloud vaticle/typedb-cloud --set "exposed=false,encrypted=false"
 ----
 --
 
@@ -112,9 +112,9 @@ With encryption::
 
 To enable in-flight encryption for your private cluster, make sure the `encrypted` flag is set to `true`:
 
-[,bash]
+[source,console]
 ----
-helm install typedb-cloud vaticle/typedb-cloud --set "exposed=false,encrypted=true" \
+$ helm install typedb-cloud vaticle/typedb-cloud --set "exposed=false,encrypted=true" \
 --set servers=3,cpu=1,storage.persistent=false,storage.size=1Gi,exposed=true,domain=localhost-ext --set encryption.enable=true --set encryption.enable=true,encryption.externalGRPC.secretName=ext-grpc,encryption.externalGRPC.content.privateKeyName=ext-grpc-private-key.pem,encryption.externalGRPC.content.certificateName=ext-grpc-certificate.pem,encryption.externalGRPC.content.rootCAName=ext-grpc-root-ca.pem \
 --set encryption.internalGRPC.secretName=int-grpc,encryption.internalGRPC.content.privateKeyName=int-grpc-private-key.pem,encryption.internalGRPC.content.certificateName=int-grpc-certificate.pem,encryption.internalGRPC.content.rootCAName=int-grpc-root-ca.pem \
 --set encryption.internalZMQ.secretName=int-zmq,encryption.internalZMQ.content.privateKeyName=int-zmq-private-key,encryption.internalZMQ.content.publicKeyName=int-zmq-public-key
@@ -149,18 +149,18 @@ Without encryption::
 --
 Deploy:
 
-[,bash]
+[source,console]
 ----
-helm install typedb-cloud vaticle/typedb-cloud --set "exposed=true"
+$ helm install typedb-cloud vaticle/typedb-cloud --set "exposed=true"
 ----
 
 Once the deployment has been completed,
 the servers can be accessible via public IPs/hostnames assigned to the Kubernetes `LoadBalancer` services.
 The addresses can be obtained with this command:
 
-[,bash]
+[source,console]
 ----
-kubectl get svc -l external-ip-for=typedb-cloud \
+$ kubectl get svc -l external-ip-for=typedb-cloud \
 -o='custom-columns=NAME:.metadata.name,IP OR HOSTNAME:.status.loadBalancer.ingress[0].*'
 ----
 --
@@ -187,9 +187,9 @@ Once the domain name and external certificate have been configured accordingly,
 we can proceed to perform the deployment.
 Ensure that the `encrypted` flag is set to `true` and the `domain` flag set accordingly.
 
-[,bash]
+[source,console]
 ----
-helm install typedb-cloud vaticle/typedb-cloud --set "exposed=true,encrypted=true,domain=<domain-name>" \
+$ helm install typedb-cloud vaticle/typedb-cloud --set "exposed=true,encrypted=true,domain=<domain-name>" \
 --set servers=3,cpu=1,storage.persistent=false,storage.size=1Gi,exposed=true,domain=localhost-ext --set encryption.enable=true --set encryption.enable=true,encryption.externalGRPC.secretName=ext-grpc,encryption.externalGRPC.content.privateKeyName=ext-grpc-private-key.pem,encryption.externalGRPC.content.certificateName=ext-grpc-certificate.pem,encryption.externalGRPC.content.rootCAName=ext-grpc-root-ca.pem \
 --set encryption.internalGRPC.secretName=int-grpc,encryption.internalGRPC.content.privateKeyName=int-grpc-private-key.pem,encryption.internalGRPC.content.certificateName=int-grpc-certificate.pem,encryption.internalGRPC.content.rootCAName=int-grpc-root-ca.pem \
 --set encryption.internalZMQ.secretName=int-zmq,encryption.internalZMQ.content.privateKeyName=int-zmq-private-key,encryption.internalZMQ.content.publicKeyName=int-zmq-public-key
@@ -232,33 +232,33 @@ Ensure to have https://minikube.sigs.k8s.io/[Minikube] installed and running.
 
 Deploy, adjusting the parameters for CPU and storage to run on a local machine:
 
-[,bash]
+[source,console]
 ----
-helm install typedb-cloud vaticle/typedb-cloud --set image.pullPolicy=Always,servers=3,singlePodPerNode=false,cpu=1,storage.persistent=false,storage.size=1Gi,exposed=true,javaopts=-Xmx4G --set encryption.enable=false
+$ helm install typedb-cloud vaticle/typedb-cloud --set image.pullPolicy=Always,servers=3,singlePodPerNode=false,cpu=1,storage.persistent=false,storage.size=1Gi,exposed=true,javaopts=-Xmx4G --set encryption.enable=false
 ----
 
 ////
-[,bash]
+[source,console]
 ----
-helm install vaticle/typedb-cloud --generate-name \
+$ helm install vaticle/typedb-cloud --generate-name \
 --set "cpu=2,replicas=3,singlePodPerNode=false,storage.persistent=true,storage.size=10Gi,exposed=true"
 ----
 ////
 
 Once the deployment has been completed, enable tunneling from another terminal:
 
-[,bash]
+[source,console]
 ----
-minikube tunnel
+$ minikube tunnel
 ----
 
 == K8s cluster status check
 
 To check the status of a cluster:
 
-[,bash]
+[source,console]
 ----
-kubectl describe sts typedb-cloud
+$ kubectl describe sts typedb-cloud
 ----
 
 It should show `Pods Status` field as `Running` for all the nodes after a few minutes
@@ -266,27 +266,27 @@ after deploying a TypeDB Cloud cluster.
 
 You can connect to a pod:
 
-[,bash]
+[source,console]
 ----
-kubectl exec --stdin --tty typedb-cloud-0 -- /bin/bash
+$ kubectl exec --stdin --tty typedb-cloud-0 -- /bin/bash
 ----
 
 == K8s cluster removal
 
 To stop and remove a K8s cluster from Kubernetes, use the `helm uninstall` with the helm release name:
 
-[,bash]
+[source,console]
 ----
-helm uninstall typedb-cloud
+$ helm uninstall typedb-cloud
 ----
 
 == K8s troubleshooting
 
 To see pod details for the `typedb-cloud-0` pod:
 
-[,bash]
+[source,console]
 ----
-kubectl describe pod typedb-cloud-0
+$ kubectl describe pod typedb-cloud-0
 ----
 
 The following are the common error scenarios and how to troubleshoot them.
@@ -309,9 +309,9 @@ executing `kubectl get secret/private-docker-hub`. Correct state looks like this
 This might mean pods requested more resources than available.
 To check if that's the case, run on a stuck pod (e.g. `typedb-cloud-0`):
 
-[,bash]
+[source,console]
 ----
-`kubectl describe pod/typedb-cloud-0`
+$ kubectl describe pod/typedb-cloud-0
 ----
 
 Error message similar to
@@ -324,9 +324,9 @@ indicates that `cpu` or `storage.size` <<_helm_configuration_reference,settings>
 This might indicate any misconfiguration of TypeDB Cloud.
 Please check the logs:
 
-[,bash]
+[source,console]
 ----
-kubectl logs pod/typedb-cloud-0
+$ kubectl logs pod/typedb-cloud-0
 ----
 
 [#_helm_configuration_reference]

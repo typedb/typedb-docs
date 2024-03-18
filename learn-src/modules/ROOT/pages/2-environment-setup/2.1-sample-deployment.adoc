@@ -7,15 +7,15 @@ Throughout this course, we will be using a sample database for an online booksto
 . Install and run https://docs.docker.com/get-docker/[Docker].
 . Pull the Docker image for the sample database:
 +
-[,bash]
+[source,console]
 ----
-docker image pull vaticle/typedb-sample-data:1.0.0
+$ docker image pull vaticle/typedb-sample-data:1.0.0
 ----
 . Start the Docker image:
 +
-[,bash]
+[source,console]
 ----
-docker run -p 1730:1729 vaticle/typedb-sample-data:1.0.0
+$ docker run -p 1730:1729 vaticle/typedb-sample-data:1.0.0
 ----
 
 The server can be connected to using port `1730`.

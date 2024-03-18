@@ -10,9 +10,9 @@ it from https://github.com/vaticle/typedb/tags[source code,window=_blank] with B
 // tag::install[]
 To pull the latest TypeDB Docker image:
 
-[,bash]
+[source,console]
 ----
-docker pull vaticle/typedb:latest
+$ docker pull vaticle/typedb:latest
 ----
 
 You can replace `latest` with a version number to get a specific version of TypeDB Core.
@@ -23,9 +23,9 @@ To check the list of available versions, see the xref:manual:resources:releases.
 // tag::run[]
 To create and run a new Docker container with TypeDB Core server:
 
-[,bash]
+[source,console]
 ----
-docker run --name typedb -d -v typedb-data:/opt/ -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
+$ docker run --name typedb -d -v typedb-data:/opt/ -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
 ----
 // end::run[]
 // tag::run-info[]
@@ -39,17 +39,17 @@ architecture.
 // tag::stop[]
 To stop a running Docker container:
 
-[,bash]
+[source,console]
 ----
-docker stop typedb
+$ docker stop typedb
 ----
 // end::stop[]
 
 // tag::start[]
 To start an existing Docker container again:
 
-[,bash]
+[source,console]
 ----
-docker start typedb
+$ docker start typedb
 ----
 // end::start[]

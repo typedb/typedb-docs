@@ -62,7 +62,7 @@ Alternatively, we can remove some parts of type definition, like an ownership of
 == Examples
 
 The following examples use a database with the
-https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-schema.tql[IAM schema]
+https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[IAM schema]
 for Undefine queries.
 
 === Undefine a type
@@ -79,7 +79,7 @@ user-role sub user-group;
 ----
 
 The above example undefines four types from the
-https://github.com/vaticle/typedb-docs/blob/master/typedb-src/modules/ROOT/attachments/iam-schema.tql[IAM schema].
+https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[IAM schema].
 
 Note that `operation-set` is not a direct subtype of the `entity` root type.
 

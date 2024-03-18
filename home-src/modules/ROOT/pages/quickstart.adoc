@@ -280,9 +280,9 @@ Cloud::
 +
 --
 .TypeDB Cloud connection
-[,bash]
+[source,console]
 ----
-typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
+$ typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
 ----
 
 You will be prompted for a password.
@@ -294,9 +294,9 @@ Core::
 +
 --
 .TypeDB Core connection
-[,bash]
+[source,console]
 ----
-typedb console
+$ typedb console
 ----
 
 By default, TypeDB Console connects to your local TypeDB Core installation with the `localhost:1729` address.

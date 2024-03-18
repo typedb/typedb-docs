@@ -58,9 +58,9 @@ Cloud::
 --
 // tag::connect_cloud_console[]
 .Connect to TypeDB Cloud
-[,bash]
+[source,console]
 ----
-typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
+$ typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
 ----
 
 You will be prompted for a password.
@@ -80,9 +80,9 @@ Core::
 --
 // tag::connect_core_console[]
 .Connect to TypeDB Core
-[,bash]
+[source,console]
 ----
-typedb console --core=<server-address>
+$ typedb console --core=<server-address>
 ----
 
 The `--core` argument is used to set the TypeDB Core server IP address and port to connect to,
@@ -158,8 +158,9 @@ The asterisk (`*`) is used to notify that the current transaction has uncommitte
 
 . Run Console in the interactive mode and <<_connect_to_typedb,connect>> it to TypeDB:
 +
+[source,console]
 ----
-typedb console
+$ typedb console
 ----
 
 . Now, run the following command to create a database:
@@ -174,8 +175,8 @@ Use it to send the Define query, and commit changes:
 +
 ----
 transaction sample_db schema write
-sample_db::schema::write> define person sub entity;
-sample_db::schema::write*> commit
+define person sub entity;
+commit
 ----
 +
 The <<_transaction_level,Transaction level>> of REPL is announced by the CLI prompt change to include database name,
@@ -188,8 +189,8 @@ as a single push of the btn:[Enter] is recognized as a line break in the query.
 +
 ----
 transaction sample_db data write
-sample_db::data::write> insert $p isa person;
-sample_db::data::write*> commit
+insert $p isa person;
+commit
 ----
 
 The above example creates a database with the name `sample_db`,
@@ -201,20 +202,21 @@ then inserts a single instance of the type into the database.
 You can run Console commands using the `--command` argument:
 
 [,bash]
+[source,console]
 ----
-typedb console --command=<command1> --command=<command2>
+$ typedb console --command=<command1> --command=<command2>
 ----
 
 [#_command_argument_example]
-=== Example
 
 The following example achieves the same results as the <<_interactive_mode_example,one in the interactive mode>>
 via the command line arguments.
 Run the following command in a terminal to start TypeDB and execute queries:
 
 [,bash]
+[source,console]
 ----
-typedb console --command="database create sample_db" \
+$ typedb console --command="database create sample_db" \
 --command="database list" \
 --command="transaction sample_db schema write" \
 --command="define person sub entity;" \
@@ -250,69 +252,107 @@ Transaction changes committed
 You can create a script file that contains the list of commands to run,
 then invoke Console with the `--script` argument, specifying a path to the script file:
 
-[,bash]
+[source,console]
 ----
-typedb console --script=<script-file-path>
+$ typedb console --script=<script-file-path>
 ----
 
-Each line in the script is interpreted as one command, so multiline queries are not available in this mode.
-For example, see the <<_script_example>> section below.
+[NOTE]
+====
+Each line in the script file is interpreted as one command, so multiline queries are not available in this mode.
+You can overcome this limitation, by using calling a TypeQL query from a file with the `source` keyword.
+For example, see the <<_load_a_query_from_a_file>> section below.
+====
 
 [#_script_example]
-=== Example
-
 Prepare the following script and save it to a local file:
 
 .script.txt
 ----
 database create test
 transaction test schema write
-    define person sub entity;
+    define person sub entity, owns name; name sub attribute, value string;
     commit
 transaction test data write
-    insert $x isa person;
+    insert $x isa person, has name "Bob";
     commit
 transaction test data read
-    match $x isa person; get;
+    match $x isa person, has name $f; fetch $f;
     close
 database delete test
 ----
 
-Use the following command to execute the script:
+Execute the script with TypeDB Console:
 
 .Run script.txt
+[source,console]
 ----
-typedb console --script=PATH/script.txt
+$ typedb console --script=PATH/script.txt
 ----
 
 Where `PATH/script.txt` is the path to the file and the filename.
-
-You will see the following output:
+The result should look similar to the following:
 
 .Output
 ----
 + database create test
 Database 'test' created
 + transaction test schema write
-++ define person sub entity;
+++ define person sub entity, owns name; name sub attribute, value string;
 Concepts have been defined
+
 ++ commit
 Transaction changes committed
 + transaction test data write
-++ insert $x isa person;
-{ $x iid 0x966e80017fffffffffffffff isa person; }
-answers: 1, duration: 87 ms
+++ insert $x isa person, has name "Bob";
+{
+    $_0 Bob isa name;
+    $x iid 0x826e80017fffffffffffffff isa person;
+}
+
+answers: 1, total duration: 15 ms
+
 ++ commit
 Transaction changes committed
 + transaction test data read
-++ match $x isa person; get;
-{ $x iid 0x966e80018000000000000000 isa person; }
-answers: 1, duration: 25 ms
+++ match $x isa person, has name $f; fetch $f;
+{ "f": { "value": "Bob", "type": { "label": "name", "root": "attribute", "value_type": "string" } } }
+
+answers: 1, total duration: 10 ms
+
 ++ close
-Transaction closed without committing changes
+Transaction closed
 + database delete test
 Database 'test' deleted
 ----
+
+[#_load_a_query_from_a_file]
+=== Load a query from a file
+
+It's quite often, that you have your query nicely prepared in a separate file.
+Instead of copying it to the script and removing all line breaks, you can link the file with your query by using
+the `source` command:
+
+.Loading a TypeQL query from a file
+----
+database create iam_sample_db
+transaction iam_sample_db schema write
+    source iam-schema.tql
+    commit
+transaction iam_sample_db data write
+    source iam-data.tql
+    commit
+transaction iam_sample_db data read
+    match $p isa person; fetch $p as person: attribute;
+    close
+database delete iam_sample_db
+----
+
+You can use the
+https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[iam-schema.tql,window=_blank]
+and
+https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-data.tql[iam-data.tql,window=_blank]
+files for the above example.
 
 == Troubleshooting
 
@@ -336,9 +376,9 @@ Linux::
 Use `locale -a` to list all installed locales, and use `export` to set the environment.
 For example, to use `en_US.UTF-8` run:
 
-[,bash]
+[source,console]
 ----
-bash export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8
+$ bash export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8
 ----
 --
 
@@ -348,9 +388,9 @@ macOS::
 Use `locale -a` to list all installed locales, and use `export` to set the environment.
 For example, to use `en_US.UTF-8` run:
 
-[,bash]
+[source,console]
 ----
-bash export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8
+$ bash export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8
 ----
 --
 
