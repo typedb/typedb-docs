@@ -1,10 +1,10 @@
 // tag::install-homebrew[]
 To install TypeDB via `brew`:
 
-[,bash]
+[source,console]
 ----
-brew tap vaticle/tap
-brew install vaticle/tap/typedb
+$ brew tap vaticle/tap
+$ brew install vaticle/tap/typedb
 ----
 // end::install-homebrew[]
 
@@ -15,9 +15,9 @@ https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_bl
 +
 To check the Java SDK version:
 +
-[,bash]
+[source,console]
 ----
-/usr/libexec/java_home -V
+$ /usr/libexec/java_home -V
 ----
 +
 TypeDB runs natively on both `arm64` and `x86_64` architectures.
@@ -26,27 +26,27 @@ https://en.wikipedia.org/wiki/Rosetta_(software)[Rosetta].
 
 . Extract the archive with TypeDB into a new directory:
 +
-[,bash]
+[source,console]
 ----
-sudo mkdir /opt/typedb
-unzip ~/Downloads/<filename>.zip -d /opt/typedb
+$ sudo mkdir /opt/typedb
+$ unzip ~/Downloads/<filename>.zip -d /opt/typedb
 ----
 +
 Where `<filename>` is the name of the archive.
 . Add a symlink to the TypeDB executable in the `/usr/local/bin` directory:
 +
-[,bash]
+[source,console]
 ----
-ln -s /opt/typedb/<filename>/typedb /usr/local/bin/typedb
+$ ln -s /opt/typedb/<filename>/typedb /usr/local/bin/typedb
 ----
 
 // end::manual-install[]
 
 // tag::start[]
 
-[,bash]
+[source,console]
 ----
-typedb server
+$ typedb server
 ----
 
 // end::start[]

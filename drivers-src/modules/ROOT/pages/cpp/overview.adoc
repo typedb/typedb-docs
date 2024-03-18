@@ -128,9 +128,9 @@ dyld[72868]: Library not loaded: bazel-out/darwin-opt/bin/cpp/libtypedb-driver-c
 
 Use the following command to set the path for your TypeDB C++ driver library to the `lib` directory inside your project:
 
-[,bash]
+[source,console]
 ----
-export DYLD_LIBRARY_PATH=./lib
+$ export DYLD_LIBRARY_PATH=./lib
 ----
 
 == Learn more
