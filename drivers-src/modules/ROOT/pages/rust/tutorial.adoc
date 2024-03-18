@@ -25,9 +25,9 @@ For the driver installation instructions, see the xref:drivers::rust/overview.ad
 The Sample application below is synchronous for simplicity,
 so make sure to add `sync` feature either in the `Cargo.toml` or via the following command:
 
-[,bash]
+[source,console]
 ----
-cargo add typedb-driver -F sync
+$ cargo add typedb-driver -F sync
 ----
 
 //#todo Consider adding virtualenv step-by-step guide

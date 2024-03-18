@@ -43,18 +43,18 @@ To install TypeDB Rust driver, select `sync` or `async` and follow the instructi
 async::
 +
 --
-[,bash]
+[source,console]
 ----
-cargo add typedb-driver
+$ cargo add typedb-driver
 ----
 --
 
 sync::
 +
 --
-[,bash]
+[source,console]
 ----
-cargo add typedb-driver -F sync
+$ cargo add typedb-driver -F sync
 ----
 --
 ====
