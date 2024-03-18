@@ -206,7 +206,6 @@ typedb console --command=<command1> --command=<command2>
 ----
 
 [#_command_argument_example]
-=== Example
 
 The following example achieves the same results as the <<_interactive_mode_example,one in the interactive mode>>
 via the command line arguments.
@@ -255,25 +254,27 @@ then invoke Console with the `--script` argument, specifying a path to the scrip
 typedb console --script=<script-file-path>
 ----
 
-Each line in the script is interpreted as one command, so multiline queries are not available in this mode.
-For example, see the <<_script_example>> section below.
+[NOTE]
+====
+Each line in the script file is interpreted as one command, so multiline queries are not available in this mode.
+You can overcome this limitation, by using calling a TypeQL query from a file with the `source` keyword.
+For example, see the <<_load_a_query_from_a_file>> section below.
+====
 
 [#_script_example]
-=== Example
-
 Prepare the following script and save it to a local file:
 
 .script.txt
 ----
 database create test
 transaction test schema write
-    define person sub entity;
+    define person sub entity, owns name; name sub attribute, value string;
     commit
 transaction test data write
-    insert $x isa person;
+    insert $x isa person, has name "Bob";
     commit
 transaction test data read
-    match $x isa person; get;
+    match $x isa person, has name $f; fetch $f;
     close
 database delete test
 ----
@@ -287,32 +288,68 @@ typedb console --script=PATH/script.txt
 
 Where `PATH/script.txt` is the path to the file and the filename.
 
-You will see the following output:
+You will see the following or similar output:
 
 .Output
 ----
 + database create test
 Database 'test' created
 + transaction test schema write
-++ define person sub entity;
+++ define person sub entity, owns name; name sub attribute, value string;
 Concepts have been defined
+
 ++ commit
 Transaction changes committed
 + transaction test data write
-++ insert $x isa person;
-{ $x iid 0x966e80017fffffffffffffff isa person; }
-answers: 1, duration: 87 ms
+++ insert $x isa person, has name "Bob";
+{
+    $_0 Bob isa name;
+    $x iid 0x826e80017fffffffffffffff isa person;
+}
+
+answers: 1, total duration: 15 ms
+
 ++ commit
 Transaction changes committed
 + transaction test data read
-++ match $x isa person; get;
-{ $x iid 0x966e80018000000000000000 isa person; }
-answers: 1, duration: 25 ms
+++ match $x isa person, has name $f; fetch $f;
+{ "f": { "value": "Bob", "type": { "label": "name", "root": "attribute", "value_type": "string" } } }
+
+answers: 1, total duration: 10 ms
+
 ++ close
-Transaction closed without committing changes
+Transaction closed
 + database delete test
 Database 'test' deleted
 ----
+
+[#_load_a_query_from_a_file]
+=== Load a query from a file
+
+It's quite often, that you have your query nicely prepared in a separate file.
+Instead of copying it to the script and removing all line breaks, you can link the file with your query by using
+the `source` command:
+
+.Loading a TypeQL query from a file
+----
+database create iam_sample_db
+transaction iam_sample_db schema write
+    source iam-schema.tql
+    commit
+transaction iam_sample_db data write
+    source iam-data.tql
+    commit
+transaction iam_sample_db data read
+    match $p isa person; fetch $p as person: attribute;
+    close
+database delete iam_sample_db
+----
+
+You can use the
+https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[iam-schema.tql,window=_blank]
+and
+https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-data.tql[iam-data.tql,window=_blank]
+files for the above example.
 
 == Troubleshooting
 
