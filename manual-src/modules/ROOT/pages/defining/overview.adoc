@@ -1,6 +1,12 @@
 = Defining schema
 
-include::typeql::schema/overview.adoc[tag=schema-intro]
+// tag::schema-intro[]
+A schema is like a blueprint of a database that contains all user-defined
+xref:typeql::concepts/types.adoc[types] and rules used in a database.
+All queries are validated with the TypeQL syntax and a type system of a schema.
+Every piece of data inserted in a TypeDB database as an instance of a type.
+Rules are used for reasoning.
+// end::schema-intro[]
 
 See below practical guides on how to define a schema of a TypeDB database.
 
