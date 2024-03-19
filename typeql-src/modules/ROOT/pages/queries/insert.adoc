@@ -72,9 +72,7 @@ Inserting an ownership of an attribute that doesn't exist in a database yet (wit
 implicitly inserts such an attribute.
 // end::insert_clause[]
 
-=== Inserting instances
-
-To insert an entity, attribute, or relation, you need to use the following `isa` pattern in an `insert` clause:
+To insert an entity, attribute, or relation, you need to use an `isa` statement in an `insert` clause:
 
 .Inserting an instance of a type syntax
 [,typeql]
@@ -82,92 +80,8 @@ To insert an entity, attribute, or relation, you need to use the following `isa`
 <variable> isa <type>;
 ----
 
-Where `<variable>` (e.g., `$x`) -- the query variable that represents the instance to insert;
+Where `<variable>` (e.g., `$x`) -- the concept variable that represents the instance to insert;
 `<type>` (e.g., `person`) -- the type of the inserted instance.
-
-Inserting an attribute requires setting both type and value of a new attribute.
-You can specify the value as a separate statement
-(with an equal xref:typeql::values/comparators.adoc[comparator]) or in the same statement
-(by providing a value directly after a variable, using a whitespace as a separator).
-Alternatively,
-you can insert an attribute implicitly by assigning an ownership of non-existent attribute of a valid type.
-
-Inserting a relation requires setting at least one of its role player references.
-
-[Note]
-====
-Existence of a relation often implies the existence of its role players for all its roles.
-Inserting a relation without a role player for a role can create an incomplete data state.
-Like a `marriage` relation with only one known spouse.
-====
-
-See an <<_inserting_data_with_no_matching,example>> of inserting instances of data below.
-
-=== Inserting ownerships
-
-To insert an ownership of an attribute, you need to match or insert both the attribute and its future owner
-and then use the following pattern in a `insert` clause of the same query:
-
-.Inserting ownership syntax
-[,typeql]
-----
-<owner-variable> has <attribute-variable>;
-----
-
-With this pattern, ownership of the attribute, represented by `attribute-variable`, assigned to `owner-variable`.
-If the attribute with the attribute doesn't exist, yet it is created/inserted implicitly by this query.
-
-Attributes are immutable.
-Rather than changing a value of an owned attribute,
-you can delete an ownership of it
-and replace with an ownership of another attribute with a different value.
-
-See an <<_inserting_attributes,example>> of inserting ownership of an attribute below.
-
-=== Adding role players to a relation
-
-include::typeql::partial$iam-database-links.adoc[]
-
-To add a role player reference to a relation, match or insert both the relation and the instance of data that
-will play a role in it and then use the following pattern in a `insert` clause of the same query:
-
-.Inserting a role player for a relation syntax
-[,typeql]
-----
-<relation-variable> (<role>:<instance-variable>);
-----
-
-Where `<relation-variable>` -- a query variable of the relation to modify;
-`<role>` -- an optional specification of a role of a role player to add;
-`<instance-variable>` -- a query variable of a role player instance.
-
-With this pattern, information that an existing instance plays a role in a specified relation is added.
-You can omit the role in a pattern if its unambiguous which role the referenced instance can play in the relation.
-
-For example, to insert a new role player reference for an existing relation:
-
-.Adding a role player
-[,typeql]
-----
-match
-$p1 isa subject, has full-name "Pearle Goodman";
-$p2 isa subject, has full-name "Masako Holley";
-$o isa object, has path "zewhb.java";
-$obj-ownership (owner: $p1, owner: $p2, object: $o) isa object-ownership;
-$p3 isa subject, has full-name "Kevin Morrison";
-insert
-$obj-ownership (owner: $p3);
-----
-
-The above query:
-
-. Finds the `person` entity (`$p1`) by its `full-name` attribute `Pearle Goodman`.
-. Finds the `person` entity (`$p2`) by its `full-name` attribute `Masako Holley`.
-. Finds the `object` entity (`$o`) by its `path` attribute `zewhb.java`.
-. Finds the `object-ownership` relation (`$obj-ownership`) which relates `$p1` (as `owner`) and `$p2` (as
-  `owner`) to `$o` (as `object`).
-. Finds the `person` entity (`$p3`) by its `full-name` attribute `Kevin Morrison`.
-. Adds `$p3` as a role player for the `owner` role of the `$obj-ownership` relation.
 
 [#_inserting_data_with_no_matching]
 == Usage without matching
@@ -176,7 +90,7 @@ include::typeql::partial$iam-database-links.adoc[]
 
 To insert new data with no connection to existing database data, we can use an Insert query without a `match` clause:
 
-.Insert with no match example
+.Insert example
 [,typeql]
 ----
 insert $p isa person, has full-name "Bob";
@@ -192,6 +106,9 @@ If there is no such attribute in a database, then it will be created by this que
 == Usage with matching
 
 include::typeql::partial$iam-database-links.adoc[]
+
+To insert new data connected to existing data in a database,
+use a `match` clause in an Insert query to match the existing data from a database first:
 
 .Match insert example
 [,typeql]
@@ -244,6 +161,20 @@ The above query inserts a `person` entity with the following attributes:
 == Inserting attributes
 
 include::typeql::partial$iam-database-links.adoc[]
+
+
+
+
+
+Inserting an attribute requires setting both type and value of a new attribute.
+You can specify the value as a separate statement
+(with an equal xref:typeql::values/comparators.adoc[comparator]) or in the same statement
+(by providing a value directly after a variable, using a whitespace as a separator).
+Alternatively,
+you can insert an attribute implicitly by assigning an ownership of non-existent attribute of a valid type.
+
+
+
 
 You can insert an attribute explicitly.
 Use a variable followed by a value and `isa` pattern with an attribute type to insert an attribute.
@@ -346,9 +277,43 @@ See the illustration of the resulted data from xref:manual::studio.adoc[] below.
 image::john-6-attributes.png[John with 4 emails, role=framed, width = 75%, link=self]
 ////
 
+=== Inserting ownerships
+
+To insert an ownership of an attribute, you need to match or insert both the attribute and its future owner
+and then use the following pattern in a `insert` clause of the same query:
+
+.Inserting ownership syntax
+[,typeql]
+----
+<owner-variable> has <attribute-variable>;
+----
+
+With this pattern, ownership of the attribute, represented by `attribute-variable`, assigned to `owner-variable`.
+If the attribute with the attribute doesn't exist, yet it is created/inserted implicitly by this query.
+
+Attributes are immutable.
+Rather than changing a value of an owned attribute,
+you can delete an ownership of it
+and replace with an ownership of another attribute with a different value.
+
+See an <<_inserting_attributes,example>> of inserting ownership of an attribute below.
+
 == Inserting relations
 
 include::typeql::partial$iam-database-links.adoc[]
+
+
+Inserting a relation requires setting at least one of its role player references.
+
+[Note]
+====
+Existence of a relation often implies the existence of its role players for all its roles.
+Inserting a relation without a role player for a role can create an incomplete data state.
+Like a `marriage` relation with only one known spouse.
+====
+
+
+
 
 Use an optional variable followed by parenthesis with role players references with or without role types.
 After the parenthesis, use an `isa` pattern with a relation type.
@@ -429,3 +394,48 @@ In short, it creates the `permission` that lets `Pearle Goodman` to modify the `
 
 The relation of `access` type now plays the role of `access` in the inserted relation of the `permission` type.
 ////
+
+=== Adding role players to a relation
+
+include::typeql::partial$iam-database-links.adoc[]
+
+To add a role player reference to a relation, match or insert both the relation and the instance of data that
+will play a role in it and then use the following pattern in a `insert` clause of the same query:
+
+.Inserting a role player for a relation syntax
+[,typeql]
+----
+<relation-variable> (<role>:<instance-variable>);
+----
+
+Where `<relation-variable>` -- a query variable of the relation to modify;
+`<role>` -- an optional specification of a role of a role player to add;
+`<instance-variable>` -- a query variable of a role player instance.
+
+With this pattern, information that an existing instance plays a role in a specified relation is added.
+You can omit the role in a pattern if its unambiguous which role the referenced instance can play in the relation.
+
+For example, to insert a new role player reference for an existing relation:
+
+.Adding a role player
+[,typeql]
+----
+match
+$p1 isa subject, has full-name "Pearle Goodman";
+$p2 isa subject, has full-name "Masako Holley";
+$o isa object, has path "zewhb.java";
+$obj-ownership (owner: $p1, owner: $p2, object: $o) isa object-ownership;
+$p3 isa subject, has full-name "Kevin Morrison";
+insert
+$obj-ownership (owner: $p3);
+----
+
+The above query:
+
+. Finds the `person` entity (`$p1`) by its `full-name` attribute `Pearle Goodman`.
+. Finds the `person` entity (`$p2`) by its `full-name` attribute `Masako Holley`.
+. Finds the `object` entity (`$o`) by its `path` attribute `zewhb.java`.
+. Finds the `object-ownership` relation (`$obj-ownership`) which relates `$p1` (as `owner`) and `$p2` (as
+  `owner`) to `$o` (as `object`).
+. Finds the `person` entity (`$p3`) by its `full-name` attribute `Kevin Morrison`.
+. Adds `$p3` as a role player for the `owner` role of the `$obj-ownership` relation.
