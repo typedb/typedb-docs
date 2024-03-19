@@ -342,12 +342,15 @@ Database 'test' deleted
 To run a TypeQL query stored in a file, use the `source <filename>` command.
 This command is available from the <<_transaction_level>> REPL:
 
-.Interactive mode usage example
+.Interactive mode source usage example
 ----
 transaction sample_db schema write
-source iam-schema.tql
+source schema.tql
 commit
 ----
+
+The `schema.tql` file should be located in the working directory, when you run TypeDB Console,
+and contain a valid Define query.
 
 === Script using query files examples
 
