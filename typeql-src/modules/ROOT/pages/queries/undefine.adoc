@@ -6,12 +6,11 @@
 
 An Undefine query removes type and rule definition from a schema.
 
-Undefine queries can be used only in a schema session and write transaction.
-For more information on the limitations of a schema session, see the
+For more information on the limitations of schema manipulation, see the
 xref:home::acid.adoc#_schema_integrity[Schema integrity enforcement].
 
-For a guide on how to open a session to TypeDB,
-see the xref:manual::connecting/overview.adoc[] section of TypeDB Manual.
+For a practical guide on how to send an Undefine query to TypeDB,
+see the xref:manual::defining/undefine.adoc[] page of TypeDB Manual.
 
 [#_syntax]
 == Syntax

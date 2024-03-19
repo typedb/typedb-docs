@@ -6,12 +6,11 @@
 
 A Define query extends the schema of a database with new schema statements.
 
-Define queries can be used only in a schema session and write transaction.
-For more information on the limitations of a schema session, see the
+For more information on the limitations of schema manipulations, see the
 xref:home::acid.adoc#_schema_integrity[Schema integrity enforcement].
 
-For a guide on how to open a session to TypeDB,
-see the xref:manual::connecting/overview.adoc[] section of TypeDB Manual.
+For a practical guide on how to send a Define query to TypeDB,
+see the xref:manual::defining/define.adoc[] page of TypeDB Manual.
 
 [#_syntax]
 == Syntax
