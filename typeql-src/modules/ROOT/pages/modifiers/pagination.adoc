@@ -2,7 +2,7 @@
 
 This page covers pagination of TypeQL query results.
 
-== Usage
+== Behavior
 
 Pagination in TypeQL queries makes it possible to return a range of results, rather than retrieving all results at once.
 By <<_limit_the_results,limiting>> the query to return the first `x` results,
@@ -15,6 +15,8 @@ Pagination relies on sorting to traverse the full set of results.
 
 [#_offset_the_results]
 === Offset the results
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Use the `offset` keyword followed by the number of results to skip.
 
@@ -34,6 +36,8 @@ skips the first two results, and returns the rest of results.
 [#_limit_the_results]
 === Limit the number of results
 
+include::typeql::partial$iam-database-links.adoc[]
+
 Use the `limit` keyword followed by the number of results to return.
 
 .Limit example
@@ -48,7 +52,9 @@ limit 2;
 The above example has no `sort` modifier,
 so it returns only two almost random names owned by entities of the `person` type.
 
-== Example
+== Usage
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Combine `offset` and `limit` to paginate the results of a query.
 By knowing the limit amount, we can use offset to get the full set of results in batches.

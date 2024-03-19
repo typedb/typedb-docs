@@ -2,7 +2,7 @@
 
 This page covers grouping of TypeQL Get query results.
 
-== Usage
+== Behavior
 
 A Get query without aggregation or grouping returns a stream of ConceptMaps,
 each representing a matched solution for the query pattern.
@@ -11,9 +11,9 @@ Each group contains all results with the selected variable having the same value
 
 Grouping can be used alongside aggregation to return an aggregated value for every group.
 
-== Examples
+== Usage
 
-=== Simple example
+include::typeql::partial$iam-database-links.adoc[]
 
 Let's match all `person` entities that have a `full-name` and `email` attributes, retrieve them all,
 and group by the instance of entity.
@@ -47,7 +47,9 @@ iid 0x826e800a8000000000000003 isa person => {
 }
 ----
 
-=== Grouping and using polymorphism
+== Usage with polymorphism
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Now let's query for any attributes of any person, grouped by the person entity.
 
@@ -79,7 +81,9 @@ iid 0x826e800a8000000000000003 isa person => {
 }
 ----
 
-=== Grouping and using aggregation
+== Usage with aggregation
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Now let's see how many people own every attribute by grouping the same query by the `$a` variable
 and counting the results in every group.

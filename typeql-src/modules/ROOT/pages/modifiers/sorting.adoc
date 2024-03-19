@@ -2,7 +2,7 @@
 
 This page covers sorting of TypeQL query results.
 
-== Usage
+== Behavior
 
 By default, a TypeDB server streams query results without a specific order,
 ensuring fast retrieval as solutions are sent as they're found.
@@ -21,7 +21,9 @@ Sorting is commonly used alongside pagination.
 In this case, sorting precedes pagination in TypeQL query syntax.
 For example, see the xref:typeql::modifiers/pagination.adoc[] page.
 
-== Examples
+== Usage
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Let's see an example of sorting results of a Get query:
 
