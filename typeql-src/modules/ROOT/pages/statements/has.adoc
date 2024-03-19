@@ -23,6 +23,8 @@ to set a constraint of owning a particular attribute.
 
 == Usage in a match pattern
 
+include::typeql::partial$iam-database-links.adoc[]
+
 To match a particular person by the value of the full-name it owns and return an email it owns:
 
 .has statement example
@@ -45,6 +47,8 @@ fetch $e;
 
 == Usage in an insert pattern
 
+include::typeql::partial$iam-database-links.adoc[]
+
 Let's insert a new email for an existing person:
 
 .Insert has example
@@ -59,6 +63,8 @@ $p has email "m.kevin@gmail.com";
 By inserting ownership of an attribute that doesn't exist in the database yet, we implicitly create such an attribute.
 
 == Usage in a delete pattern
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Let's delete an ownership of the new email from the same person:
 

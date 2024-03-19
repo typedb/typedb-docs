@@ -30,9 +30,9 @@ the `sub` and `sub!` keywords don't have any difference.
 the `sub` and `sub!` keywords are used to match either all existing subtypes or only direct subtypes
 of a given type respectively.
 
-include::typeql::partial$iam-database-links.adoc[]
-
 == Usage in a schema definition
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Since in Define and Undefine queries you can't use variables,
 both subject and object can only be type labels in a schema statement.
@@ -49,6 +49,8 @@ pdf sub file;
 ----
 
 == Usage in a match pattern
+
+include::typeql::partial$iam-database-links.adoc[]
 
 In a data query pattern a `sub` statement can be used only in a `match` clause or condition of a rule.
 Both subject and object of a `sub` statement can be concept variables, or one of them can be a type label.

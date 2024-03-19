@@ -14,6 +14,8 @@ The following operators are supported for comparing values: `==`, `!=`, `>`, `>=
 
 == Equality operator
 
+include::typeql::partial$iam-database-links.adoc[]
+
 Use the double equal sign (`==`) to declare equality between two values.
 
 For example, let's find all files with a `size` attribute of value equal to `100`:
@@ -39,6 +41,8 @@ but we recommend using `==` for equality instead.
 
 == Inequality operator
 
+include::typeql::partial$iam-database-links.adoc[]
+
 Use the exclamation mark with a single equal sign (`!=`) to declare inequality between two values.
 
 For example, to find sizes for all files, that have `filepath` attribute of any value except the `README.md`:
@@ -55,6 +59,8 @@ get $size;
 ----
 
 == Greater than / Less than operators
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Use the greater than sign (`>`) to declare the value/variable on the left from it as strictly greater
 than the one on the right from it.

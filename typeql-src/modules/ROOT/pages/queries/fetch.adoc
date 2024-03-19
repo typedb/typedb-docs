@@ -109,6 +109,8 @@ Every instance in the JSON output has its type, root type, and value (if applica
 [#_fetch_an_attribute]
 === Fetch an attribute
 
+include::typeql::partial$iam-database-links.adoc[]
+
 To fetch an attribute, use the following query:
 
 .Example of fetching an attribute
@@ -130,6 +132,8 @@ The above query matches files with their `path` attributes and then fetches the 
 
 [#_fetch_a_type_or_a_value_variable]
 === Fetch a type or a value variable
+
+include::typeql::partial$iam-database-links.adoc[]
 
 You can fetch a value of a value variable or a type from a schema of a database:
 
@@ -162,6 +166,8 @@ Note, that the `size` has no type because it is a value from a value variable an
 the `type` has no value because it is a type of a concept.
 
 == Fetching owned attributes
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Not every type can have a value to fetch.
 Fetch always needs a value to project into JSON.
@@ -209,6 +215,8 @@ and then fetches all attributes for every file.
 
 [#_relabeling]
 == Customizing output by relabeling
+
+include::typeql::partial$iam-database-links.adoc[]
 
 A `fetch` clause support relabeling of variables and attribute types.
 You can assign a new label which will be used for JSON output.
@@ -275,6 +283,8 @@ but many nested levels can break technical limitations of gRPC messaging.
 
 [#_grouping_results]
 === Grouping results
+
+include::typeql::partial$iam-database-links.adoc[]
 
 One might want to group query results to reduce the size of a response or simplify further processing.
 In a fetch query that can be achieved by utilizing <<_subqueries,subqueries>>.
@@ -360,6 +370,8 @@ The order of key/value pairs in JSON is not guaranteed.
 
 == Using Get queries as subqueries
 
+include::typeql::partial$iam-database-links.adoc[]
+
 You can use xref:typeql::queries/get.adoc[Get] queries as subqueries as long as you use
 xref:typeql::queries/get.adoc#_aggregation[aggregation] to get a value.
 
@@ -397,6 +409,8 @@ Hence, the value in "try-subquery" key has no type.
 [#_number_of_results]
 == Number of results
 
+include::typeql::partial$iam-database-links.adoc[]
+
 A Fetch query can return fewer results, than it was matched by its `match` clause.
 Excluding the usage of <<_modifiers,modifiers>>, that can happen due to natural deduplication of results.
 See an example below.
@@ -424,6 +438,8 @@ see the xref:typeql::queries/get.adoc[Get query] page.
 
 [#_modifiers]
 == Modifiers
+
+include::typeql::partial$iam-database-links.adoc[]
 
 In a Fetch query, modifiers can change the number and order of results.
 
@@ -510,6 +526,8 @@ to get more deterministic and predictable results.
 
 == Using inference
 
+include::typeql::partial$iam-database-links.adoc[]
+
 We can use Fetch query to infer new facts.
 For example, we can use the `add-view-permission` rule from the
 https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[IAM schema,window=_blank]
@@ -540,6 +558,8 @@ Try the same query with disabled inference to see no matched results.
 
 [#_complex_example]
 == Complex example
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Let's try a bigger example with a little bit of everything:
 

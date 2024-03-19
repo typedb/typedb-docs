@@ -71,9 +71,9 @@ Since version `2.22.0` of TypeDB a Delete query doesn't fail (throw an error)
 if its `delete` clause tries to delete previously deleted or non-existent data.
 ====
 
-include::typeql::partial$iam-database-links.adoc[]
-
 == Deleting data instances
+
+include::typeql::partial$iam-database-links.adoc[]
 
 To delete an entity, attribute, or relation, you need to match them with a `match` clause and then
 use the following pattern in a `delete` clause of the same query:
@@ -95,6 +95,8 @@ Deleting a relation will result in all instances that played roles in the relati
 to no longer play that role in the deleted relation.
 
 == Deleting ownerships
+
+include::typeql::partial$iam-database-links.adoc[]
 
 To delete an ownership of an attribute, match both the attribute and its owner and then use the following pattern
 in a `delete` clause of the same query:
@@ -138,6 +140,9 @@ only its ownership of `$fn`.
 
 [#_orphaned_attributes]
 === Orphaned attributes
+
+include::typeql::partial$iam-database-links.adoc[]
+
 If an attribute is not owned by any other instance, then such an attribute is called orphaned.
 Orphaned attributes are not deleted automatically, but quite often, they are
 You can easily delete all of them from a database with the following query.
@@ -153,6 +158,8 @@ $a isa attribute;
 ----
 
 == Deleting a relation
+
+include::typeql::partial$iam-database-links.adoc[]
 
 To delete a relation, match it in a database and then use a `delete` clause with an `isa` pattern:
 
@@ -180,6 +187,8 @@ We didn't specify all roles of a `permission` relation, e.g., the `object` role.
 ====
 
 == Deleting role players from a relation
+
+include::typeql::partial$iam-database-links.adoc[]
 
 To delete a role player from a relation, match both the relation and the instance of data that plays a role
 and then use the following pattern in a `delete` clause of the same query:
@@ -211,7 +220,6 @@ Like a `marriage` relation with only one known spouse.
 Since relations must have at least one role player to exist,
 all relations without a role player are implicitly deleted at commit.
 ====
-
 
 For example, to delete a role player reference from a relation,
 match it in a database and then use a `delete` clause without an `isa` pattern,
@@ -245,6 +253,8 @@ because we don't want any `$pe` relations to be deleted, only modified by deleti
 [#_simple_example]
 == Deleting an instance of data
 
+include::typeql::partial$iam-database-links.adoc[]
+
 Instances of data (entities, attributes, and relations) can be deleted by matching them first,
 then using a `delete` clause with the `isa` pattern.
 
@@ -262,6 +272,8 @@ In the above query, `match` clause finds a `person` entity that has the `email` 
 Then, it removes the matched entity from a database.
 
 === Deleting with the use of a supertype
+
+include::typeql::partial$iam-database-links.adoc[]
 
 One can delete an instance by using not only its exact type in the `delete` clause pattern,
 but also any of its supertypes.

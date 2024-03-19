@@ -6,8 +6,8 @@
 
 An Undefine query removes type and rule definition from a schema.
 
-For more information on the limitations of schema manipulation, see the
-xref:home::acid.adoc#_schema_integrity[Schema integrity enforcement].
+// For more information on the limitations of schema manipulation, see the
+// xref:home::acid.adoc#_schema_integrity[Schema integrity enforcement].
 
 For a practical guide on how to send an Undefine query to TypeDB,
 see the xref:manual::defining/undefine.adoc[] page of TypeDB Manual.
@@ -70,9 +70,9 @@ It can be a direct supertype, or indirect one, up to a root type.
 
 Alternatively, we can remove some parts of type definition, like an ownership of an attribute type, or a role to play.
 
-include::typeql::partial$iam-database-links.adoc[]
-
 == Usage to undefine new types
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Use a schema statement to delete from a schema in an Undefine query:
 
@@ -89,6 +89,8 @@ The above example deletes from a schema the attribute type `number` and ownershi
 entity type `database`.
 
 == Usage to undefine a rule
+
+include::typeql::partial$iam-database-links.adoc[]
 
 To delete a rule, use the `rule` keyword with rule's label:
 

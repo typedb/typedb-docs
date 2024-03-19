@@ -72,8 +72,6 @@ Inserting an ownership of an attribute that doesn't exist in a database yet (wit
 implicitly inserts such an attribute.
 // end::insert_clause[]
 
-include::typeql::partial$iam-database-links.adoc[]
-
 === Inserting instances
 
 To insert an entity, attribute, or relation, you need to use the following `isa` pattern in an `insert` clause:
@@ -128,6 +126,8 @@ See an <<_inserting_attributes,example>> of inserting ownership of an attribute 
 
 === Adding role players to a relation
 
+include::typeql::partial$iam-database-links.adoc[]
+
 To add a role player reference to a relation, match or insert both the relation and the instance of data that
 will play a role in it and then use the following pattern in a `insert` clause of the same query:
 
@@ -172,6 +172,8 @@ The above query:
 [#_inserting_data_with_no_matching]
 == Usage without matching
 
+include::typeql::partial$iam-database-links.adoc[]
+
 To insert new data with no connection to existing database data, we can use an Insert query without a `match` clause:
 
 .Insert with no match example
@@ -188,6 +190,8 @@ If there is no such attribute in a database, then it will be created by this que
 ====
 
 == Usage with matching
+
+include::typeql::partial$iam-database-links.adoc[]
 
 .Match insert example
 [,typeql]
@@ -207,6 +211,8 @@ email attribute.
 
 [#_insert_entity_example]
 == Inserting entities
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Use a variable followed by an `isa` pattern with an entity type to insert an entity.
 Entity insertion statement with `isa` is usually combined with statements to assign attribute ownership
@@ -236,6 +242,8 @@ The above query inserts a `person` entity with the following attributes:
 
 [#_inserting_attributes]
 == Inserting attributes
+
+include::typeql::partial$iam-database-links.adoc[]
 
 You can insert an attribute explicitly.
 Use a variable followed by a value and `isa` pattern with an attribute type to insert an attribute.
@@ -339,6 +347,8 @@ image::john-6-attributes.png[John with 4 emails, role=framed, width = 75%, link=
 ////
 
 == Inserting relations
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Use an optional variable followed by parenthesis with role players references with or without role types.
 After the parenthesis, use an `isa` pattern with a relation type.

@@ -21,16 +21,21 @@ Where each `<pattern>` can be any valid pattern with at least one variable bound
 
 == Behavior
 
-Conjunction is used in all TypeQL patterns.
-Only if all statements in a conjunction are equal to `True`, the whole pattern is equal to `True`.
-If any statement in a conjunction is equal to `False`, then the whole pattern is `False`.
+Conjunction is used in all TypeQL patterns by default.
+It is implicitly applied between all statements separated with a semicolon.
+
+To match a pattern, a solution must contain concepts/values for all variables used in it,
+such as when variables are substituted with these values/concepts, the pattern becomes equal to True.
+
+Hence, all statements in a pattern must be True for the pattern itself to be True.
+If any statement in a conjunction is False, then the whole pattern is False.
 //#todo expand disjunction behavior with detailed explanation
 
 The ordering of statements in a conjunction is irrelevant, as every statement is equaly important for the whole pattern.
 
-include::typeql::partial$iam-database-links.adoc[]
-
 == Usage in a match clause
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Let's fetch a `path` attribute for every file that a user with full-name "Kevin Morrison" has a permission to modify.
 There are multiple statements we need to combine with a conjunction for them all to be matched by every solution:
@@ -58,7 +63,7 @@ $act isa action, has name 'modify_file';
 fetch $path;
 ----
 
-In the above example, all statements in a `match` clause must be equal to `True` for the solution to be found.
+In the above example, all statements in a `match` clause must be True for the solution to be found.
 
 .See example output
 [%collapsible]

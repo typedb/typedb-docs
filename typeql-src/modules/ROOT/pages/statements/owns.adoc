@@ -31,6 +31,8 @@ the object attribute type to the schema.
 
 == Usage in a schema definition
 
+include::typeql::partial$iam-database-links.adoc[]
+
 Since in Define and Undefine queries you can't use variables,
 both subject and object can only be type labels.
 
@@ -54,6 +56,8 @@ pdf owns name;
 
 [#_usage_with_override]
 == Usage with override
+
+include::typeql::partial$iam-database-links.adoc[]
 
 By default, a subtype inherits all attribute types that were defined as owned for its supertype.
 To override an inherited attribute type ownership, use the `as` keyword when defining an ownership.

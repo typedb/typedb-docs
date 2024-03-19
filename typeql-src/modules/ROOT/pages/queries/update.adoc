@@ -70,8 +70,6 @@ include::typeql::queries/delete.adoc[tags=delete_clause]
 
 include::typeql::queries/insert.adoc[tags=insert_clause]
 
-include::typeql::partial$iam-database-links.adoc[]
-
 == Inserting after deleting
 
 There are a few minor unique aspects for the Update query due to the fact of both deleting and inserting
@@ -89,6 +87,8 @@ For example, deleting an entity and then trying to insert ownership of an attrib
 You can insert a new concept instead of a deleted one with either the same variable or a new one.
 
 == Replacing ownership
+
+include::typeql::partial$iam-database-links.adoc[]
 
 In many cases, the desired effect is to change the value of an owned attribute.
 We can't change the value of an attribute as attributes are immutable, but we can change the owned attribute.
@@ -137,6 +137,8 @@ for some of its attribute ownerships.
 [#_delete_attribute]
 == Replacing attributes
 
+include::typeql::partial$iam-database-links.adoc[]
+
 Sometimes you need to delete a matched attribute completely, not only ownership of that attribute.
 Deleting an attribute deletes ownership of it from all its owners.
 We can insert a new attribute instead of a deleted one without a problem,
@@ -166,6 +168,8 @@ which is owned by the matched entities,
 and any `full-name` attributes which contained the substring `inappropriate word` will no longer exist.
 
 == Updating a relation's role player
+
+include::typeql::partial$iam-database-links.adoc[]
 
 To replace a role player, we combine the steps for deleting a role player with extending the relation:
 

@@ -26,6 +26,8 @@ to be valid strings according to the object regular expression.
 
 == Usage in a schema definition
 
+include::typeql::partial$iam-database-links.adoc[]
+
 Since in Define queries you can't use variables, the subject of a `regex` statement can only be
 an attribute type label.
 

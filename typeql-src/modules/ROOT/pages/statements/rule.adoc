@@ -29,6 +29,8 @@ The `rule` keyword adds a new rule to a schema, or updates an existing rule with
 
 == Usage in a schema definition
 
+include::typeql::partial$iam-database-links.adoc[]
+
 Usually, Define and Undefine queries you can't use variables.
 But rules use patterns for matching data in their condition and conclusion.
 

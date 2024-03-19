@@ -6,8 +6,8 @@
 
 A Define query extends the schema of a database with new schema statements.
 
-For more information on the limitations of schema manipulations, see the
-xref:home::acid.adoc#_schema_integrity[Schema integrity enforcement].
+// For more information on the limitations of schema manipulations, see the
+// xref:home::acid.adoc#_schema_integrity[Schema integrity enforcement].
 
 For a practical guide on how to send a Define query to TypeDB,
 see the xref:manual::defining/define.adoc[] page of TypeDB Manual.
@@ -63,8 +63,6 @@ Define query returns a Promise of an empty response.
 A `define` clause is used in a Define query to specify schema statements for new or updated types and rules.
 Schema statements in a `define` clause can't use any variables or values, except for xref:statements/rule.adoc[rules].
 
-include::typeql::partial$iam-database-links.adoc[]
-
 == Usage to define types
 
 To define a new type, subtype an existing type with a xref:typeql::statements/sub.adoc[sub] statement.
@@ -103,6 +101,8 @@ permission sub relation,
 The above example defines four attribute types, three entity types, and a single relation type.
 
 == Usage to define rules
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Use a xref:typeql::statements/rule.adoc[rule] statement to define a new rule or replace an existing one:
 
