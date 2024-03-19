@@ -510,9 +510,6 @@ So the TypeDB query processor will explore all possible solutions: each consisti
 and one `file` entity.
 There are only `3 * 10 = 30` possible combinations of `person` and `file` entities, so we will get *30* results.
 
-See the xref:data/match.adoc#_patterns_overview[Patterns overview] section of the Matching patterns page for
-more information.
-
 [#_results_example_2]
 === Variables filtering
 
@@ -556,8 +553,7 @@ in a database.
 _Why not filter for just the `$cft` variable instead?_
 
 That can drastically alter the returned results as the returned results are deduplicated by design. See the
-xref:typeql::data/match.adoc#_match_clause_results[Basic patterns] page for more information on the number of results
-for pattern matching.
+<<_number_of_results>> section above for more information on the number of results for a Get query.
 
 For example, let's say we have ten people with the name `Bob` and age `31` in our database.
 Five of them have `certified-fortune-teller` with the value `false`, one has it as `true`,
