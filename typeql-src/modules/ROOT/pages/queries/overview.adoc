@@ -2,10 +2,12 @@
 :Summary: TypeQL queries section overview.
 :keywords: typeql, typedb, queries, schema, data, overview
 :pageTitle: Queries overview
+:page-aliases: typeql::data/overview.adoc, typeql::schema/overview.adoc, typeql::queries.adoc
 
 A TypeQL query uses from one to three clauses with fully declarative patterns
 to manipulate the schema or data of a database.
 
+[#_schema_queries]
 == Schema queries
 
 //Schema queries are done in a `schema` session with a `write` transaction.
@@ -26,6 +28,7 @@ Delete types and rules from a schema.
 ****
 --
 
+[#_data_queries]
 == Data queries
 
 //Data queries are usually done in a `data` sessions with a `read` or `write` transaction.
