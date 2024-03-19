@@ -197,6 +197,7 @@ The above example creates a database with the name `sample_db`,
 defines a simple schema with the single `person` type,
 then inserts a single instance of the type into the database.
 
+[#_non_interactive_mode]
 == Non-interactive mode
 
 You can run Console commands using the `--command` argument:
@@ -226,8 +227,9 @@ $ typedb console --command="database create sample_db" \
 --command="commit"
 ----
 
-The resulting output should look like this:
-
+.See the output
+[%collapsible]
+====
 .Output
 ----
 + database create sample_db
@@ -246,11 +248,15 @@ answers: 1, total (with concept details) duration: 56 ms
 ++ commit
 Transaction changes committed
 ----
+====
 
 == Scripting
 
-You can create a script file that contains the list of commands to run,
-then invoke Console with the `--script` argument, specifying a path to the script file:
+You can create a script file that contains the list of commands to run.
+These are the very same commands that are used in the <<_REPL>> or <<_non_interactive_mode>>.
+For the full list of commands, see the <<_references>> below.
+
+To use a script file with commands, run Console with the `--script` argument and a path to the script file:
 
 [source,console]
 ----
@@ -260,12 +266,13 @@ $ typedb console --script=<script-file-path>
 [NOTE]
 ====
 Each line in the script file is interpreted as one command, so multiline queries are not available in this mode.
-You can overcome this limitation, by using calling a TypeQL query from a file with the `source` keyword.
-For example, see the <<_load_a_query_from_a_file>> section below.
+You can overcome this limitation, by calling a TypeQL query from a file with the `source` command.
+For example, see the <<_run_a_query_from_a_file>> section below.
 ====
 
 [#_script_example]
-Prepare the following script and save it to a local file:
+Prepare the script to run and save it to a local file.
+For example, let's try the following `script.txt` file:
 
 .script.txt
 ----
@@ -291,8 +298,10 @@ $ typedb console --script=PATH/script.txt
 ----
 
 Where `PATH/script.txt` is the path to the file and the filename.
-The result should look similar to the following:
 
+.See the output
+[%collapsible]
+====
 .Output
 ----
 + database create test
@@ -325,15 +334,39 @@ Transaction closed
 + database delete test
 Database 'test' deleted
 ----
+====
 
-[#_load_a_query_from_a_file]
-=== Load a query from a file
+[#_run_a_query_from_a_file]
+== Run a query from a file
 
-It's quite often, that you have your query nicely prepared in a separate file.
-Instead of copying it to the script and removing all line breaks, you can link the file with your query by using
-the `source` command:
+To run a TypeQL query stored in a file, use the `source <filename>` command.
+This command is available from the <<_transaction_level>> REPL:
 
-.Loading a TypeQL query from a file
+.Interactive mode usage example
+----
+transaction sample_db schema write
+source iam-schema.tql
+commit
+----
+
+=== Script using query files examples
+
+To overcome the limitation of a script file for one command per line,
+you can store multiline queries in a dedicated files and run them with the <<_run_a_query_from_a_file,source>> command.
+
+For example, let's use the following script file to:
+
+* Create the `iam_sample_db` database
+* Load the schema form the
+https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[iam-schema.tql,window=_blank]
+file in a schema session
+* Load data from the
+https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-data.tql[iam-data.tql,window=_blank]
+file in a data session
+* Fetch some data
+* Delete the database
+
+.Script file
 ----
 database create iam_sample_db
 transaction iam_sample_db schema write
@@ -348,11 +381,80 @@ transaction iam_sample_db data read
 database delete iam_sample_db
 ----
 
-You can use the
-https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[iam-schema.tql,window=_blank]
-and
-https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-data.tql[iam-data.tql,window=_blank]
-files for the above example.
+.See the iam-schema.tql
+[%collapsible]
+====
+.iam-schema.tql
+[,typeql]
+----
+include::drivers::partial$tutorials/iam-schema.tql[lines=17..]
+----
+====
+
+.See the iam-data.tql
+[%collapsible]
+====
+.iam-data.tql
+[,typeql]
+----
+include::drivers::partial$tutorials/iam-data.tql[lines=17..]
+----
+====
+
+.See the output
+[%collapsible]
+====
+.Output
+----
++ database create iam_sample_db
+Database 'iam_sample_db' created
++ transaction iam_sample_db schema write
+++ source iam-schema.tql
+Concepts have been defined
+++ commit
+Transaction changes committed
++ transaction iam_sample_db data write
+++ source iam-data.tql
+++ commit
+Transaction changes committed
++ transaction iam_sample_db data read
+++ match $p isa person; fetch $p as person: attribute;
+{
+    "person": {
+        "attribute": [
+            { "value": "kevin.morrison@typedb.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } },
+            { "value": "Kevin Morrison", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "person", "root": "entity" }
+    }
+}
+{
+    "person": {
+        "attribute": [
+            { "value": "masako.holley@typedb.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } },
+            { "value": "Masako Holley", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "person", "root": "entity" }
+    }
+}
+{
+    "person": {
+        "attribute": [
+            { "value": "pearle.goodman@typedb.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } },
+            { "value": "Pearle Goodman", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "person", "root": "entity" }
+    }
+}
+
+answers: 3, total duration: 27 ms
+
+++ close
+Transaction closed
++ database delete iam_sample_db
+Database 'iam_sample_db' deleted
+----
+====
 
 == Troubleshooting
 
@@ -406,6 +508,7 @@ terminal (e.g., `chcp 936` for Chinese text).
 Most systems also allow us to set the system-wide locale.
 However, this impacts the appearance of other applications.
 
+[#_references]
 == References
 
 [#_command_line_arguments]
