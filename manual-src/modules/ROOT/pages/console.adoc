@@ -352,19 +352,20 @@ commit
 === Script using query files examples
 
 To overcome the limitation of a script file for one command per line,
-you can store multiline queries in a dedicated files and run them with the <<_run_a_query_from_a_file,source>> command.
+you can store multiple multiline queries in a separate file
+and run them with the <<_run_a_query_from_a_file,source>> command.
 
 For example, let's use the following script file to:
 
 * Create the `iam_sample_db` database
-* Load the schema form the
+* Load the IAM schema form the
 https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[iam-schema.tql,window=_blank]
 file in a schema session
-* Load data from the
+* Load sample data from the
 https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-data.tql[iam-data.tql,window=_blank]
 file in a data session
-* Fetch some data
-* Delete the database
+* Run a Fetch query
+* Delete the database to reset the environment
 
 .Script file
 ----
@@ -400,6 +401,10 @@ include::drivers::partial$tutorials/iam-schema.tql[lines=17..]
 include::drivers::partial$tutorials/iam-data.tql[lines=17..]
 ----
 ====
+
+Make sure you have the above script file and `tql` files saved to the working directory.
+Run the script with TypeDB Console using the `--script` argument,
+as you did before in the <<_script_example,script example>>.
 
 .See the output
 [%collapsible]
