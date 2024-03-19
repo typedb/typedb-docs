@@ -65,7 +65,7 @@ Schema statements in a `define` clause can't use any variables or values, except
 
 include::typeql::partial$iam-database-links.adoc[]
 
-== Usage to define new types
+== Usage to define types
 
 To define a new type, subtype an existing type with a xref:typeql::statements/sub.adoc[sub] statement.
 Use xref:typeql::statements/owns.adoc[owns] statements to assign an ability to own attribute types.
@@ -102,7 +102,7 @@ permission sub relation,
 
 The above example defines four attribute types, three entity types, and a single relation type.
 
-== Usage to define a rule
+== Usage to define rules
 
 Use a xref:typeql::statements/rule.adoc[rule] statement to define a new rule or replace an existing one:
 
