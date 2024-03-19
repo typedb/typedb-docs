@@ -6,9 +6,9 @@ The `relates` keyword is used in TypeQL schema to define a role of a relation ty
 
 The syntax of a `relates` statement includes:
 
-* subject -- type label of a relation type
-* predicate -- the `relates` keyword
-* object -- type label of a role
+* Subject -- type label of a relation type
+* Predicate -- the `relates` keyword
+* Object -- type label of a role
 
 .Syntax
 [,typeql]
@@ -18,7 +18,7 @@ The syntax of a `relates` statement includes:
 
 An optional <<_usage_with_override,override>> can be added at the end.
 
-== Behaviour
+== Behavior
 
 TypeQL statements with the `relates` keyword can be used only in Define and Undefine queries.
 

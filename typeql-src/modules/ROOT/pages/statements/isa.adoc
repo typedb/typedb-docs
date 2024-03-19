@@ -7,9 +7,9 @@ For specifying only a direct type with no subtypes, use the `isa!` keyword inste
 
 The syntax of an `isa` or `isa!` statement includes:
 
-* subject -- a concept variable representing a data instance
-* predicate -- the `isa`/`isa!` keyword
-* object -- a type label or a concept variable representing a type
+* Subject -- a concept variable representing a data instance
+* Predicate -- the `isa`/`isa!` keyword
+* Object -- a type label or concept variable representing a type
 
 .Syntax
 [,typeql]
@@ -17,13 +17,13 @@ The syntax of an `isa` or `isa!` statement includes:
 <concept-variable> isa <type>;
 ----
 
-== Behaviour
+== Behavior
 
 TypeQL statements with the `isa` and `isa!` keyword are used in data queries and rules.
 
-The `isa` keyword adds a constraint of a type (including subtypes) to data instances, represented by a concept variable.
-The `isa!` keyword adds a constraint of an exact type (without any subtypes) to data instances,
+The `isa` keyword adds a constraint of a type, including all subtypes, to data instances,
 represented by a concept variable.
+The `isa!` keyword does the same, but excludes the subtypes.
 
 include::typeql::partial$iam-database-links.adoc[]
 

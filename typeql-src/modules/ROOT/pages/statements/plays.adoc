@@ -6,9 +6,9 @@ The `plays` keyword is used in TypeQL schema to define a valid player of a role 
 
 The syntax of a `plays` statement includes:
 
-* subject -- type label of a type to play the role
-* predicate -- the `plays` keyword
-* object -- scoped type label of a role
+* Subject -- type label of a type to play the role
+* Predicate -- the `plays` keyword
+* Object -- scoped type label of a role
 
 .Syntax
 [,typeql]
@@ -18,7 +18,7 @@ The syntax of a `plays` statement includes:
 
 An optional <<_usage_with_override,override>> can be added at the end.
 
-== Behaviour
+== Behavior
 
 TypeQL statements with the `plays` keyword can be used only in Define and Undefine queries.
 

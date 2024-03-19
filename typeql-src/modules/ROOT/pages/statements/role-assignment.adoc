@@ -6,8 +6,8 @@ Role assignment doesn't use any specific keyword, but it uses parentheses to ass
 
 The syntax of a role assignment statement includes:
 
-* subject -- concept variable
-* object -- parentheses with comma separated list of:
+* Subject -- concept variable
+* Object -- parentheses with comma separated list of:
 ** role label and concept variable, separated by a colon
 
 .Syntax
@@ -21,7 +21,7 @@ If no role provided for a player, its role is inferred via its type and schema.
 
 There can be any number of players per role and at least one role specified in a role assignment statement.
 
-== Behaviour
+== Behavior
 
 TypeQL role assignment statements can be used only in data queries and rules.
 

@@ -6,9 +6,9 @@ The `has` keyword is used in TypeQL patterns to specify an owner for an attribut
 
 The syntax of a `has` statement includes:
 
-* subject -- a concept variable representing a data instance
-* predicate -- the `has` keyword
-* object -- an attribute represented by an optional attribute type with a concept variable or literal value
+* Subject -- a concept variable representing a data instance
+* Predicate -- the `has` keyword
+* Object -- an attribute represented by an optional attribute type with a concept variable or literal value
 
 .Syntax
 [,typeql]
@@ -16,7 +16,7 @@ The syntax of a `has` statement includes:
 <data-instance> has <attribute>;
 ----
 
-== Behaviour
+== Behavior
 
 TypeQL statements with the `has` keyword can be used in data queries
 to set a constraint of owning a particular attribute.

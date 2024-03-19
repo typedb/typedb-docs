@@ -6,9 +6,9 @@ The `owns` keyword is used in TypeQL schema to define an owner type for an attri
 
 The syntax of a `owns` statement includes:
 
-* subject -- type label of the owner type
-* predicate -- the `owns` keyword
-* object -- type label of an attribute type
+* Subject -- type label of the owner type
+* Predicate -- the `owns` keyword
+* Object -- type label of an attribute type
 
 .Syntax
 [,typeql]
@@ -22,7 +22,7 @@ xref:typeql::statements/unique.adoc[] pages.
 
 An optional <<_usage_with_override,override>> can be added at the end.
 
-== Behaviour
+== Behavior
 
 TypeQL statements with the `owns` keyword can be used only in Define and Undefine queries.
 

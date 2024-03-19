@@ -19,12 +19,12 @@ The syntax of a conjunction block:
 
 Where each `<pattern>` can be any valid pattern with at least one variable bound outside the disjunction.
 
-== Behaviour
+== Behavior
 
 Conjunction is used in all TypeQL patterns.
 Only if all statements in a conjunction are equal to `True`, the whole pattern is equal to `True`.
 If any statement in a conjunction is equal to `False`, then the whole pattern is `False`.
-//#todo expand disjunction behaviour with detailed explanation
+//#todo expand disjunction behavior with detailed explanation
 
 The ordering of statements in a conjunction is irrelevant, as every statement is equaly important for the whole pattern.
 

@@ -1,4 +1,4 @@
-= unique
+= @unique
 
 The `@unique` keyword is an annotation, that can be used with an
 xref:typeql::statements/owns.adoc[owns statement] to specify, that the selected attribute type must be uniquely owned by data instances of a given type.
@@ -16,7 +16,7 @@ The syntax of a `@unique` statement includes:
 <type> owns <attribute-type> @unique;
 ----
 
-== Behaviour
+== Behavior
 
 TypeQL statements with the `@unique` keyword can be used only in Define queries.
 

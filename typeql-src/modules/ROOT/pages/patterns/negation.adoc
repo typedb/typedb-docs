@@ -14,11 +14,11 @@ not { <negated-pattern> };
 
 Where `<negated-pattern>` can be any valid pattern with at least one variable bound outside the negation.
 
-== Behaviour
+== Behavior
 
 Negations can be used in a `match` clause or a condition of a rule
 to set a constraint of not matching the negated pattern.
-//#todo expand negation behaviour with detailed explanation
+//#todo expand negation behavior with detailed explanation
 
 We understand pattern negation in terms of computation of *set differences*.
 The set-difference semantics is different to the perhaps familiar semantics of Negation-as-Failure of Prolog.
