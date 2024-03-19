@@ -107,7 +107,7 @@ get $x;
 === Add a type
 
 To add a new type into the schema of a database,
-use a TypeQL xref:typeql::schema/define.adoc[Define query] or one of the put type methods.
+use a TypeQL xref:typeql::queries/define.adoc[Define query] or one of the put type methods.
 For example, to add an entity type with the label `admin` by using put type method, use the following code:
 
 [tabs]
@@ -320,7 +320,7 @@ you need to get a stateful object that represents the rule in the database.
 [#_get_a_rule_object]
 === Get a rule
 
-Rules can be defined with a TypeQL query (see xref:typeql::schema/define.adoc[]), but they can't be retrieved with one.
+Rules can be defined with a TypeQL query (see xref:typeql::queries/define.adoc[]), but they can't be retrieved with one.
 To get a rule object from a TypeDB database, you need to use the Logic class methods of a driver API.
 
 ==== Get a rule object by its label
