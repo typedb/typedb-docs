@@ -45,10 +45,7 @@ that is connected to existing data through relations, ownerships, values, types,
 You can use a declarative and composable TypeQL pattern in a `match` clause and TypeDB will find data that matches
 the pattern.
 
-
 A `match` clause is optional in an Insert query.
-
-//For more information on a `match` clause, see the xref:data/match.adoc[] page.
 
 For more information on patterns and statements used in a `match` clause, see the
 xref:typeql::patterns/overview.adoc[Patterns] and xref:typeql::statements/overview.adoc[Statements] sections.
@@ -121,7 +118,8 @@ email attribute.
 
 include::typeql::partial$iam-database-links.adoc[]
 
-Use a concept variable followed by an `isa` statement with an entity type (label or variable) to insert an entity.
+To insert an entity, use a concept variable followed by an xref:typeql::statements/isa.adoc[isa]
+statement with the entity's type (label or variable).
 The `isa` is usually combined with statements to assign attribute ownerships or roles in relations.
 You can use the same concept variable in multiple statements to insert more about the entity
 or combine statements into a xref:typeql::statements/overview.adoc#_composite_statements[composite statement].
