@@ -16,9 +16,7 @@ see the xref:manual::writing/update.adoc[] page of TypeDB Manual.
 An Update query consists of a
 <<_match_clause,match>>,
 <<_delete_clause,delete>>, and
-<<_insert_clause,insert>> clauses.
-
-Updates queries are written in TypeQL with the following syntax:
+<<_insert_clause,insert>> clauses:
 
 [,typeql]
 ----
@@ -26,26 +24,16 @@ match <pattern>
 delete <pattern>
 insert <pattern>
 ----
-
-Both `delete` and `insert` clauses patterns can use variables from a preceding `match` clause pattern and
-must have at least one concept variable from a `match` clause of the same query.
 // end::syntax[]
 
 == Behavior
 
-An Update query deletes concepts and then inserts new concepts to a database.
+An Update query deletes concepts and then inserts new concepts, ownerships, or role player assignments to a database.
 
-After matching existing data with a `match` clause,
-use a `delete` clause with another TypeQL pattern to specify exact data to delete,
-finally, use an `insert` clause with yet another pattern to insert new data instead.
-
-//A `match` clause uses a pattern to match existing data to be changed.
-//A `delete` clause uses a pattern to specify data that should be removed.
-//A `insert` clause uses a pattern to specify data that should be inserted.
-
+While a `match` clause pattern is used to match existing data from a database,
+the `delete` clause of the same query is used to select the exact data to delete,
+finally the `insert` clause is used to insert new data to a database.
 Both `delete` and `insert` clauses are executed once per result of a preceding `match` clause.
-In particular, if there is no match in a database for a `match` clause of an Update query,
-then there will be no deletions and no insertions.
 
 An Update query returns a lazy Stream/Iterator of ConceptMap with the inserted data.
 Inserted data must not violate a schema of a database.
@@ -53,9 +41,12 @@ Inserted data must not violate a schema of a database.
 [#_match_clause]
 == Match clause
 
-A `match` clause is mandatory in an Update query.
+A `match` clause in an Update query matches existing concepts in a database to provide context for deleting and
+inserting data specified by the `delete` and `insert` clause pattern respectively.
 You can use a declarative and composable TypeQL pattern in a `match` clause and TypeDB will find data that matches
 specified pattern.
+
+A `match` clause is mandatory in an Update query.
 
 For more information on patterns and statements used in a `match` clause, see the
 xref:typeql::patterns/overview.adoc[Patterns] and xref:typeql::statements/overview.adoc[Statements] sections.
