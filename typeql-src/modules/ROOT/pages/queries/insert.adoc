@@ -4,49 +4,49 @@
 :pageTitle: Insert query
 :page-aliases: typeql::data/insert.adoc
 
-An Insert query adds data to a database.
-You can insert an instance of a type, assign ownership of an attribute, or assign a new role player for a relation.
+An Insert query is used to insert new data into a database.
+You can insert an instance of a type, assign <<_inserting_ownerships,ownership of an attribute>>,
+or <<_adding_role_players_to_a_relation,add a new role player>> for a relation.
 
 For a practical guide on how to send an Insert query to TypeDB,
-see the xref:manual::writing/insert.adoc[] page of TypeDB Manual.
+see the xref:manual::writing/insert.adoc[] page of the TypeDB Manual.
 
 == Syntax
 
 // tag::syntax[]
 An Insert query consists of an optional
 <<_match_clause,match>> clause and an
-<<_insert_clause,insert>> clause.
-
-Insert queries are written in TypeQL with the following syntax:
+<<_insert_clause,insert>> clause:
 
 [,typeql]
 ----
 [match <pattern>]
 insert <pattern>
 ----
-
-An `insert` clause pattern uses variables from a preceding `match` clause pattern.
 // end::syntax[]
 
 [#_behavior]
 == Behavior
 
 An Insert query inserts new data into a TypeDB database using TypeQL patterns.
-Inserted data must not violate a schema of a database.
+Inserted data must not violate the schema of a database.
 
 This is the only type of data query that can be used without a `match` clause.
-A `match` clause in an Insert query matches existing concepts in a database to provide context for inserting new data
-that is connected to existing data through relations, ownerships, values, types, etc.
-
 An `insert` clause is executed once per every result of preceding `match` clause.
-An Insert query returns a lazy Stream/Iterator of ConceptMap with the inserted data.
+If there is no `match` clause in an Insert query, then the `insert` clause is executed exactly once.
+
+An Insert query returns a lazy Stream/Iterator of ConceptMap objects with the inserted data.
 
 [#_match_clause]
 == Match clause
 
-A `match` clause is optional in an Insert query.
+A `match` clause in an Insert query matches existing concepts in a database to provide context for inserting new data
+that is connected to existing data through relations, ownerships, values, types, etc.
 You can use a declarative and composable TypeQL pattern in a `match` clause and TypeDB will find data that matches
 the pattern.
+
+
+A `match` clause is optional in an Insert query.
 
 //For more information on a `match` clause, see the xref:data/match.adoc[] page.
 
@@ -143,8 +143,7 @@ to add constraints that make it much easier to uniquely address instances of thi
 [,typeql]
 ----
 insert
-$p isa person,
-    has full-name "John Parkson";
+$p isa person, has full-name "John Parkson";
 ----
 
 The above query inserts a `person` entity with the following attributes:
@@ -190,6 +189,7 @@ The above query inserts a `file` entity and assigns it an ownership of `path` at
 with the value of `new-file.txt`.
 If there is no such attribute in a database, it is inserted implicitly as a result of assigning the ownership.
 
+[#_inserting_ownerships]
 == Inserting ownerships
 
 Attributes are immutable.
@@ -292,6 +292,7 @@ In the above example we match an operation with the `view_file` name
 and insert a file with the `new-relation.txt` path to insert a relation of the `access` type
 between them with roles `object` and `action` played by the file and operation respectively.
 
+[#_adding_role_players_to_a_relation]
 == Adding role players to a relation
 
 include::typeql::partial$iam-database-links.adoc[]
@@ -318,7 +319,7 @@ $a (object: $f);
 
 A role in a relation can be played more than once (by multiple role players).
 
-.Relation with multiple role players for a role
+.Multiple players for a role
 [,typeql]
 ----
 match
@@ -337,7 +338,9 @@ The above query:
 . Inserts an `object-ownership` relation (`$obj-ownership`) which relates `$p1` (as `owner`) and `$p2` (as
   `owner`) to `$o` (as `object`).
 
-In short, it makes `Pearle Goodman` and `Masako Holley` owners of the `zewhb.java` file.
+In short, it makes `Pearle Goodman` and `Masako Holley` both play the same role in the same relation.
+
+// owners of the `zewhb.java` file.
 
 ////
 == Relations as role players
