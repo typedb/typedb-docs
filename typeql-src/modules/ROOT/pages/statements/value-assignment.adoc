@@ -29,7 +29,7 @@ xref:typeql::statements/isa.adoc[isa statement].
 
 include::typeql::partial$iam-database-links.adoc[]
 
-For example, let's find all attribute of any type in a database with the value of the `Kevin Morrison` string:
+For example, let's find all attributes of any type in a database with the value equal to the `Kevin Morrison` string:
 
 .Value assignment query example
 [,typeql]
@@ -48,6 +48,20 @@ fetch $a;
 { "a": { "value": "Kevin Morrison", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } }
 ----
 ====
+
+== Usage in an insert pattern
+
+include::typeql::partial$iam-database-links.adoc[]
+
+To explicitly insert an attribute, use a value assignment to set its value,
+and an xref:typeql::statements/isa.adoc[isa] statement to set its type:
+
+.Inserting attribute example
+[,typeql]
+----
+insert
+$a "Bob" isa full-name;
+----
 
 == Learn more
 
