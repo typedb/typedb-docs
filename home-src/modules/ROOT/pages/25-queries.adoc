@@ -86,7 +86,7 @@ $p isa person, has name "Charlie";
 $u1 isa user,
     has name "Bob",
     has username "bob_93",
-    has email "bob@vaticle.com";
+    has email "bob@typedb.com";
 $u2 isa user, has username "al-capucino";
 $f1 isa file, has path "README.md";
 $f2 isa file,
@@ -250,7 +250,7 @@ fetch $x;
 This query matches only the person that owns the attribute with type `name` and value `Bob`
 and all their owned attributes (`$x`), excluding the name `Bob`.
 Then the `fetch` clause retrieves all matched attributes (`$x`).
-For the data from <<_data,query #2>> it should return username `bob_93` and email `bob@vaticle.com`.
+For the data from <<_data,query #2>> it should return username `bob_93` and email `bob@typedb.com`.
 
 For the `match` clause pattern we included five simple statements.
 All five of them must be met for the matching.
@@ -393,7 +393,7 @@ The result should look like the following JSON:
 {
     "Bob": {
         "attribute": [
-            { "value": "bob@vaticle.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } },
+            { "value": "bob@typedb.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } },
             { "value": "Bob", "value_type": "string", "type": { "label": "name", "root": "attribute" } },
             { "value": "bob_93", "value_type": "string", "type": { "label": "username", "root": "attribute" } }
         ],
@@ -557,7 +557,7 @@ $u1 isa user;
 $u2 isa user, has username "Bob";
 $u3 isa user,
     has username "Totally-not-Bob",
-    has email "bob@vaticle.com";
+    has email "bob@typedb.com";
 ----
 
 The above query fails as it violates the following annotation constraints:

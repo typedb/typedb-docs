@@ -55,6 +55,9 @@ xref:typeql::patterns/overview.adoc[Patterns] and xref:typeql::statements/overvi
 A `delete` clause is used in a query to specify exact data to be deleted from a database.
 Deleted data should be matched first in a preceding `match` clause.
 This clause is executed exactly once for every result matched by the preceding `match` clause of the same query.
+
+Deleting data doesn't affect the set of matched results from the `match` clause of the same query:
+all matching is done by the time of the first delete.
 // end::delete_clause[]
 
 [NOTE]

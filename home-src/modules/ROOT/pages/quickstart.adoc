@@ -152,7 +152,7 @@ the above xref:typeql::queries/fetch.adoc[Fetch] query returns a JSON object sim
 ----
 {
     "p": {
-        "email": [ { "value": "kevin.morrison@vaticle.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } } ],
+        "email": [ { "value": "kevin.morrison@typedb.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } } ],
         "full-name": [ { "value": "Kevin Morrison", "value_type": "string", "type": { "label": "full-name", "root": "attribute" } } ],
         "type": { "label": "person", "root": "entity" }
     }
@@ -199,7 +199,7 @@ that looks as the following:
 ----
 {
     "person": {
-        "E-mail address": [ { "value": "kevin.morrison@vaticle.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } } ],
+        "E-mail address": [ { "value": "kevin.morrison@typedb.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } } ],
         "type": { "label": "person", "root": "entity" }
     }
 }

@@ -48,7 +48,7 @@ async function queries(driver, dbName) {
     let users = await fetchAllUsers(driver, dbName);
 
     let new_name = "Jack Keeper";
-    let new_email = "jk@vaticle.com";
+    let new_email = "jk@typedb.com";
     console.log(`\nRequest 2 of 6: Add a new user with the full-name ${new_name} and email ${new_email}`);
     await insertNewUser(driver, dbName, new_name, new_email);
 

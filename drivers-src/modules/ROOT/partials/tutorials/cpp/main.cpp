@@ -283,7 +283,7 @@ void queries(TypeDB::Driver& driver, const std::string& dbName) {
     std::vector<TypeDB::JSON> users = fetchAllUsers(driver, dbName);
 
     std::string newName = "Jack Keeper";
-    std::string newEmail = "jk@vaticle.com";
+    std::string newEmail = "jk@typedb.com";
     std::cout << "\nRequest 2 of 6: Add a new user with the full-name " << newName << " and email " << newEmail << std::endl;
     insertNewUser(driver, dbName, newName, newEmail);
 

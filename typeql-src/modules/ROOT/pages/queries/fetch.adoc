@@ -356,7 +356,7 @@ See an example of the partial output below.
     "user": {
         "all-attributes": [
             { "value": "Kevin Morrison", "value_type": "string", "type": { "label": "full-name", "root": "attribute" } },
-            { "value": "kevin.morrison@vaticle.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } }
+            { "value": "kevin.morrison@typedb.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } }
         ],
         "type": { "label": "person", "root": "entity" }
     }
@@ -398,7 +398,7 @@ Hence, the value in "try-subquery" key has no type.
     "p": {
         "attribute": [
             { "value": "Kevin Morrison", "value_type": "string", "type": { "label": "full-name", "root": "attribute" } },
-            { "value": "kevin.morrison@vaticle.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } }
+            { "value": "kevin.morrison@typedb.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } }
         ],
         "type": { "label": "person", "root": "entity" }
     },
@@ -608,7 +608,7 @@ The result is a stream/iterator of JSON objects. See an example of such JSON obj
         "type": { "label": "file", "root": "entity" }
     },
     "user": {
-        "email": [ { "value": "pearle.goodman@vaticle.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } } ],
+        "email": [ { "value": "pearle.goodman@typedb.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } } ],
         "full-name": [ { "value": "Pearle Goodman", "value_type": "string", "type": { "label": "full-name", "root": "attribute" } } ],
         "type": { "label": "person", "root": "entity" }
     }

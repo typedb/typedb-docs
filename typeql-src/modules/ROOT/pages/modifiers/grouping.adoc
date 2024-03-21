@@ -38,11 +38,11 @@ iid 0x826e800a8000000000000003 isa person => {
     {
         $n Jacky isa full-name;
         $p iid 0x826e800a8000000000000003 isa person;
-        $e jk@vaticle.com isa email;
+        $e jk@typedb.com isa email;
     }    {
         $p iid 0x826e800a8000000000000003 isa person;
         $n Jack Keeper isa full-name;
-        $e jk@vaticle.com isa email;
+        $e jk@typedb.com isa email;
     }
 }
 ----
@@ -75,7 +75,7 @@ iid 0x826e800a8000000000000003 isa person => {
         $a Jack Keeper isa full-name;
         $p iid 0x826e800a8000000000000003 isa person;
     }    {
-        $a jk@vaticle.com isa email;
+        $a jk@typedb.com isa email;
         $p iid 0x826e800a8000000000000003 isa person;
     }
 }
@@ -110,7 +110,7 @@ Jack Keeper isa full-name => Optional[1]
 Pearle Goodman isa full-name => Optional[1]
 Jacky isa full-name => Optional[1]
 Masako Holley isa full-name => Optional[1]
-jk@vaticle.com isa email => Optional[1]
+jk@typedb.com isa email => Optional[1]
 Kevin Morrison isa full-name => Optional[1]
 ----
 

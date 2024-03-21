@@ -73,8 +73,8 @@ with TypeDB.core_driver("localhost:1729") as driver:
         with session.transaction(TransactionType.WRITE) as tx:
             insert_query = """
                             insert
-                            $user1 isa user, has name "Alice", has email "alice@vaticle.com";
-                            $user2 isa user, has name "Bob", has email "bob@vaticle.com";
+                            $user1 isa user, has name "Alice", has email "alice@typedb.com";
+                            $user2 isa user, has name "Bob", has email "bob@typedb.com";
                             $friendship (friend:$user1, friend: $user2) isa friendship;
                             """
             response = list(tx.query.insert(insert_query))
@@ -87,7 +87,7 @@ with TypeDB.core_driver("localhost:1729") as driver:
                                     match
                                     $u isa user, has name "Bob";
                                     insert
-                                    $new-u isa user, has name "Charlie", has email "charlie@vaticle.com";
+                                    $new-u isa user, has name "Charlie", has email "charlie@typedb.com";
                                     $f($u,$new-u) isa friendship;
                                     """
             response = list(tx.query.insert(match_insert_query))
@@ -118,7 +118,7 @@ with TypeDB.core_driver("localhost:1729") as driver:
                             delete
                             $u has $e;
                             insert
-                            $u has email "charles@vaticle.com";
+                            $u has email "charles@typedb.com";
                             """
             response = list(tx.query.update(update_query))
             if len(response) == 1:
@@ -238,7 +238,7 @@ with TypeDB.core_driver("localhost:1729") as driver:
                 print(rule.when)
                 print(rule.then)
             new_rule = tx.logic.put_rule("Employee",
-                                         "{$u isa user, has email $e; $e contains '@vaticle.com';}",
+                                         "{$u isa user, has email $e; $e contains '@typedb.com';}",
                                          "$u has name 'Employee'").resolve()
             new_rule.delete(tx).resolve()
             old_rule = tx.logic.get_rule("users").resolve()
@@ -256,7 +256,7 @@ with TypeDB.core_driver("localhost:1729") as driver:
             # end::get_rules[]
             # tag::put_rule[]
             new_rule = tx.logic.put_rule("Employee",
-                                         "{$u isa user, has email $e; $e contains '@vaticle.com';}",
+                                         "{$u isa user, has email $e; $e contains '@typedb.com';}",
                                          "$u has name 'Employee'").resolve()
             # end::put_rule[]
             # tag::get_rule[]
