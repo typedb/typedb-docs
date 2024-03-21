@@ -4,50 +4,46 @@
 :pageTitle: Delete query
 :page-aliases: typeql::data/delete.adoc
 
-A Delete query deletes data from a database.
+A Delete query is used to delete data from a database.
 You can delete a data instance, ownership of an attribute, or a role player reference of a relation.
+
+For a practical guide on how to send a Delete query to TypeDB,
+see the xref:manual::writing/delete.adoc[] page of TypeDB Manual.
 
 == Syntax
 
 // tag::syntax[]
 A Delete query consists of a
-<<_match_clause,match>> and a
-<<_delete_clause,delete>> clause.
-
-Delete queries are written in TypeQL with the following syntax:
+<<_match_clause,match>> clause and a
+<<_delete_clause,delete>> clause:
 
 [,typeql]
 ----
 match <pattern>
 delete <pattern>
 ----
-
-A `delete` clause pattern uses variables from a preceding `match` clause pattern.
 // end::syntax[]
 
 [#_behavior]
 == Behavior
 
-A Delete query deletes specified attributes, entities, relations, ownerships, and roleplayer references.
-//#todo Check whether we call ownerships, etc. concepts
+A Delete query deletes specified concepts, ownerships, and role player assignments from a database.
 
 While a `match` clause pattern is used to match existing data from a database,
-the `delete` clause pattern of the same query is used to specify the exact data to delete.
-
+the `delete` clause pattern of the same query is used to select the exact data to delete.
 A `delete` clause is executed once per every result of a preceding `match` clause.
-In particular, if there is no match in a database for a `match` clause of a Delete query,
-then there will be no deletions.
 
 A Delete query returns a Promise of an empty response.
 
 [#_match_clause]
 == Match clause
 
-A `match` clause is mandatory in a Delete query.
+A `match` clause in a Delete query matches existing concepts in a database to provide context for deleting data
+specified by the `delete` clause pattern.
 You can use a declarative and composable TypeQL pattern in a `match` clause and TypeDB will find data that matches
 specified pattern.
 
-//For more information on a `match` clause, see the xref:data/match.adoc[] page.
+A `match` clause is mandatory in a Delete query.
 
 For more information on patterns and statements used in a `match` clause, see the
 xref:typeql::patterns/overview.adoc[Patterns] and xref:typeql::statements/overview.adoc[Statements] sections.
@@ -56,62 +52,112 @@ xref:typeql::patterns/overview.adoc[Patterns] and xref:typeql::statements/overvi
 == Delete clause
 
 // tag::delete_clause[]
-A `delete` clause is used in a query to specify exact data to remove from a database.
+A `delete` clause is used in a query to specify exact data to be deleted from a database.
 Deleted data should be matched first in a preceding `match` clause.
+This clause is executed exactly once for every result matched by the preceding `match` clause of the same query.
 
-A `delete` clause is executed exactly once for every result matched by a preceding `match` clause of the same query.
+Deleting data doesn't affect the set of matched results from the `match` clause of the same query:
+all matching is done by the time of the first delete.
 // end::delete_clause[]
 
-[WARNING]
+[NOTE]
 ====
 Since version `2.22.0` of TypeDB a Delete query doesn't fail (throw an error)
 if its `delete` clause tries to delete previously deleted or non-existent data.
 ====
 
-include::typeql::partial$iam-database-links.adoc[]
+To <<_deleting_data_instances,delete a data instance>>, you need to use an
+xref:typeql::statements/isa.adoc[isa] statement in an `insert` clause.
+To delete ownership of an attribute, use a xref:typeql::statements/has.adoc[has] statement.
+Role players can be deleted with a
+xref:typeql::statements/role-assignment.adoc[role assignment] statement.
+For example, see the <<_deleting_role_players_from_a_relation>> section below.
 
+[#_deleting_data_instances]
 == Deleting data instances
 
-To delete an entity, attribute, or relation, you need to match them with a `match` clause and then
-use the following pattern in a `delete` clause of the same query:
+include::typeql::partial$iam-database-links.adoc[]
 
-.Deleting an instance of a type syntax
+To delete an entity, attribute, or relation,
+match it in a `match` clause, then
+use the matched concept variable in an `isa` statement with the type or supertype of the data instance.
+
+Deleting an attribute will result in all owners of the attribute to lose ownership of it:
+
+.Deleting an attribute
 [,typeql]
 ----
-<variable> isa <type>;
+match
+$email "admin@jp.com" isa email;
+delete
+$email isa email;
 ----
 
-Where `<variable>` (e.g., `$x`) -- a query variable of a matched instance to delete;
-`<type>` (e.g., `person`) -- type or supertype of the deleted instance.
+When a data instance is deleted,
+all assignments of roles played and attribute ownerships are also deleted.
+The relations, where the roles were played, and attribute, that were owned,
+stay in a database, unless deleted explicitly with an `isa` statement.
 
-With this pattern, the instance of data is removed completely,
-including all roles played and attributes owned by the deleted instance.
+.Deleting an entity
+[,typeql]
+----
+match
+$p isa person, has email "john.parkson@gmail.com";
+delete
+$p isa person;
+----
 
-Deleting an attribute will result in all owners of such attribute to lose ownership of it.
+In the above query, `match` clause finds a `person` entity that has the `email` attribute with the value of
+`john.parkson@gmail.com`.
+Then, it removes the matched entity from a database.
+
 Deleting a relation will result in all instances that played roles in the relation
 to no longer play that role in the deleted relation.
 
-== Deleting ownerships
-
-To delete an ownership of an attribute, match both the attribute and its owner and then use the following pattern
-in a `delete` clause of the same query:
-
-.Deleting ownership syntax
+.Deleting a relation
 [,typeql]
 ----
-<owner-variable> has <attribute-variable>;
+match
+$p isa person, has full-name "Pearle Goodman";
+$pe (subject: $p) isa permission;
+delete
+$pe isa permission;
 ----
 
-With this pattern, an attribute itself is not removed,
-but rather an ownership of that attribute by that owner is removed.
+The above query does the following:
 
-Attributes are immutable.
-Rather than changing the value of an owned attribute,
-you can delete an ownership of it and replace with an ownership of another attribute with different value.
+. Finds the `subject` entity (`$p`), with `full-name` attribute value of `Pearle Goodman`.
+. Finds all `permission` relations (`$pe`) relating the `subject` entity `$p` (as the `subject` role).
+. Deletes all matched permissions `$pe`.
 
-For example, to delete ownership of an attribute by any instance,
-match both the owner and the attribute and then use a `delete`
-clause with a `has` pattern:
+In short, it removes all permissions for `Pearle Goodman`.
+Notice that we didn't specify all roles of a `permission` relation, e.g., the `object` role.
+
+=== Deleting with the use of a supertype
+
+include::typeql::partial$iam-database-links.adoc[]
+
+A data instance can be deleted by using not only its exact type in a `delete` clause pattern,
+but also any of its supertypes.
+It can be especially useful in polymorphic queries.
+
+.Deleting an attribute by its supertype
+[,typeql]
+----
+match
+$fn == "Bob";
+delete
+$fn isa attribute;
+----
+
+The above query matches and deletes all attributes with the value of `Bob`, regardless of their type.
+
+== Deleting ownerships
+
+include::typeql::partial$iam-database-links.adoc[]
+
+To delete an ownership of an attribute, match both the attribute and its owner and use a
+xref:typeql::statements/has.adoc[] pattern in the `delete` clause of the same query:
 
 .Deleting ownership
 [,typeql]
@@ -123,21 +169,25 @@ delete
 $p has $fn;
 ----
 
-The above query finds all `person` entities (`$p`) that have a `full-name` attribute (`$fn`)
+The above query finds all data instances (`$p`) that have a `full-name` attribute (`$fn`)
 whose value is equal to `Bob`.
 For every matched pair of `$p` and `$fn` it deletes an ownership of `$fn` by `$p`.
 
 [NOTE]
 ====
-We are not using `isa person` statement in the `delete` clause above because we don't want `$p` to be deleted,
-only its ownership of `$fn`.
+We are not using an xref:typeql::statements/isa.adoc[] statement in the `delete` clause above
+because we don't want neither owner nor attribute to be deleted.
+Only ownership of one by another.
 ====
 
 [#_orphaned_attributes]
 === Orphaned attributes
-If an attribute is not owned by any other instance, then such an attribute is called orphaned.
-Orphaned attributes are not deleted automatically, but quite often, they are
-You can easily delete all of them from a database with the following query.
+
+include::typeql::partial$iam-database-links.adoc[]
+
+If an attribute is not owned by any other data instance, then such an attribute is called orphaned.
+Orphaned attributes are not deleted automatically, but quite often they are useless.
+You can delete all orphaned attributes from a database with the following query:
 
 .Deleting orphaned attributes
 [,typeql]
@@ -149,7 +199,10 @@ delete
 $a isa attribute;
 ----
 
+////
 == Deleting a relation
+
+include::typeql::partial$iam-database-links.adoc[]
 
 To delete a relation, match it in a database and then use a `delete` clause with an `isa` pattern:
 
@@ -175,50 +228,23 @@ In short, it removes all permissions for `Pearle Goodman`.
 ====
 We didn't specify all roles of a `permission` relation, e.g., the `object` role.
 ====
+////
 
+[#_deleting_role_players_from_a_relation]
 == Deleting role players from a relation
 
-To delete a role player from a relation, match both the relation and the instance of data that plays a role
-and then use the following pattern in a `delete` clause of the same query:
+include::typeql::partial$iam-database-links.adoc[]
 
-.Deleting a role player from a relation syntax
-[,typeql]
-----
-<relation-variable> (<role>:<instance-variable>);
-----
-
-Where `<relation-variable>` -- a query variable of the relation to modify;
-`<role>` -- an optional specification of a role of a role player to remove;
-`<instance-variable>` -- a query variable of a role player instance.
-
-With this pattern, an instance that plays a role in a relation is not removed,
-but rather the information of that role player is removed from a relation.
-
-We can omit the role in a pattern if its unambiguous, which role the referenced instance can play in the relation.
-
-[NOTE]
-====
-Existence of a relation often implies the existence of all of its role players.
-Deleting a role player reference from a relation can create an incomplete data state.
-Like a `marriage` relation with only one known spouse.
-====
-
-[WARNING]
-====
-Since relations must have at least one role player to exist,
-all relations without a role player are implicitly deleted at commit.
-====
-
-
-For example, to delete a role player reference from a relation,
-match it in a database and then use a `delete` clause without an `isa` pattern,
-specifying just the relation variable and the role player reference in parentheses:
+To delete a role player from a relation, match both the relation and data instance
+that needs to stop playing a role in it, then use xref:typeql::statements/role-assignment.adoc[] statement in the
+`delete` clause of the same query.
+For example:
 
 .Deleting a role player reference
 [,typeql]
 ----
 match
-$p isa subject, has full-name "Pearle Goodman";
+$p isa person, has full-name "Pearle Goodman";
 $pe (subject: $p) isa permission;
 delete
 $pe ($p);
@@ -226,53 +252,50 @@ $pe ($p);
 
 The above query does the following:
 
-. Finds the `subject` entity (`$p`), with `full-name` attribute value of `Pearle Goodman`.
-. Finds all `permission` relations (`$pe`) relating the `subject` entity `$p` (as the `subject` role).
+. Finds the `person` entity (`$p`), with the `full-name` attribute of the `Pearle Goodman` value.
+. Finds all `permission` relations (`$pe`) relating the `$p` (as the `subject` role).
 . From every matched relation `$pe` deletes the reference to the `$p`.
 
-In short, it removes `Pearle Goodman` as the `subject` from all of its `permission` relations.
+In short, it removes `Pearle Goodman` as the `subject` role player from all of its `permission` relations.
 However, the relations are not deleted, and any other role player references are left intact.
+
+With this query, an instance that plays the role in the relation is not removed,
+but rather the information of that role player is removed from the relation.
+
+We can omit the role in a pattern if its unambiguous, which role the data instance can play in the relation.
 
 [NOTE]
 ====
-We are not using `isa permission` statement in the `delete` clause above
-because we don't want any `$pe` relations to be deleted, only modified by deleting a role player reference from them.
+Existence of a relation often implies the existence of all its role players.
+Deleting a role player reference from a relation can create an incomplete data state.
+Like a `marriage` relation with only one known spouse.
 ====
 
-[#_simple_example]
-== Deleting an instance of data
+[WARNING]
+====
+Since relations must have at least one role player to exist,
+all relations without a role player are implicitly deleted at committing.
+====
 
-Instances of data (entities, attributes, and relations) can be deleted by matching them first,
-then using a `delete` clause with the `isa` pattern.
+[NOTE]
+====
+We are not using an xref:typeql::statements/isa.adoc[] statement in the `delete` clause
+because we don't want any data instances to be deleted.
+====
 
-.Deleting example
-[,typeql]
-----
-match
-$p isa person, has email "john.parkson@gmail.com";
-delete
-$p isa person;
-----
+== Learn more
 
-In the above query, `match` clause finds a `person` entity that has the `email` attribute with the value of
-`john.parkson@gmail.com`.
-Then, it removes the matched entity from a database.
+[cols-2]
+--
+.xref:learn::4-writing-data/4.3-deleting-data.adoc[]
+[.clickable]
+****
+Learn more about deleting data from a database in the TypeDB Learning course.
+****
 
-=== Deleting with the use of a supertype
-
-One can delete an instance by using not only its exact type in the `delete` clause pattern,
-but also any of its supertypes.
-It can be especially useful with matching using inheritance polymorphism.
-
-.Deleting an attribute by its supertype
-[,typeql]
-----
-match
-$fn == "Bob";
-delete
-$fn isa attribute;
-----
-
-In the above example we are matching all concepts of any type with the value of `Bob`.
-Since only attributes can have a value, all matched concepts are instances of attribute types.
-So we can delete all of them be using their common supertype, in this case -- root type `attribute`.
+.xref:manual::writing/delete.adoc[]
+[.clickable]
+****
+See how to send a Delete query to TypeDB.
+****
+--

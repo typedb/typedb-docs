@@ -20,7 +20,7 @@ rule <rule-label>: when {
 };
 ----
 
-== Behaviour
+== Behavior
 
 TypeQL statements with the `rule` keyword can be used only in Define queries.
 To undefine a rule, use the `rule` keyword, followed by the rule's label, and a semicolon.
@@ -28,6 +28,8 @@ To undefine a rule, use the `rule` keyword, followed by the rule's label, and a 
 The `rule` keyword adds a new rule to a schema, or updates an existing rule with the same label.
 
 == Usage in a schema definition
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Usually, Define and Undefine queries you can't use variables.
 But rules use patterns for matching data in their condition and conclusion.
@@ -69,21 +71,27 @@ rule add-view-permission;
 
 [cols-2]
 --
-.xref:typeql::statements/has.adoc[]
+.xref:learn::5-defining-schemas/5.4-defining-rules.adoc[]
 [.clickable]
 ****
-Learn more about `has` statement in TypeQL.
+Learn more about defining rules in a schema.
 ****
 
-.xref:typeql::statements/isa.adoc[]
+.xref:learn::5-defining-schemas/5.5-schema-validation.adoc[]
 [.clickable]
 ****
-Learn more about `isa` statement in TypeQL.
+Learn more about schema validation, including rule validation.
+****
+
+.xref:learn::10-using-inference/10-using-inference.adoc[]
+[.clickable]
+****
+Learn more about inference in TypeDB.
 ****
 
 .xref:manual::reading/infer.adoc[]
 [.clickable]
 ****
-Learn more about how to use rule-based inference.
+See how to use rule-based inference in queries.
 ****
 --

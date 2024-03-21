@@ -14,16 +14,16 @@ The syntax of a simple statement with the `type` keyword:
 
 The `abstract` keyword doesn't use any object, so after the keyword always follows either a comma, or a semicolon.
 
-== Behaviour
+== Behavior
 
 TypeQL statements with the `abstract` keyword are used in Define queries to define (declare) that the type is abstract.
 
 An abstract type can't be used to insert a data instance
 but can be used to create a subtype or to query (for its subtypes).
 
-include::typeql::partial$iam-database-links.adoc[]
-
 == Usage in a schema definition
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Since in Define queries you can't use variables, the `abstract` keyword can be used only with a type label.
 It can be a part of a composite statement.

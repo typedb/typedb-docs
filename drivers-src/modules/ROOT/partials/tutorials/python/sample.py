@@ -232,7 +232,7 @@ def queries(driver, db_name):
     assert len(users) == 3
 
     new_name = "Jack Keeper"
-    new_email = "jk@vaticle.com"
+    new_email = "jk@typedb.com"
     print(f"\nRequest 2 of 6: Add a new user with the full-name {new_name} and email {new_email}")
     insert_new_user(driver, DB_NAME, new_name, new_email)
 

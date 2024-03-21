@@ -2,7 +2,7 @@
 
 TypeQL data queries use pattern matching to manipulate data instances in a database.
 
-== Types of data instances
+== Behavior
 
 A data instance can be inserted into a database only as an instance of a
 xref:typeql::concepts/types.adoc[type] from the schema of the database.
@@ -54,7 +54,7 @@ A relation with a role without a roleplayer represents an incomplete data state.
 For any N-ary relation (a relation with N roles), we recommend to follow to the principle
 that the logical sense of the relation is maintained when considering N-1 relations contained within it.
 
-== Example
+== Usage in an Insert query
 
 Given the schema from the xref:typeql::concepts/types.adoc#_example[Types page example],
 let's see a simple example of how to insert some data with an Insert query:
@@ -65,14 +65,17 @@ let's see a simple example of how to insert some data with an Insert query:
 include::home::attachment$quickstart-data.tql[lines=1]
 ----
 
-To retrieve this data, we can use a Fetch query to get a JSON with attribute values:
+== Usage in a Fetch query
+
+To retrieve this data, we can use a Fetch query to get a JSON with attributes values:
 
 .Fetching values example
 [,typeql]
 ----
 match
 $x isa person;
-fetch $x: id, full-name, email;
+fetch
+$x: id, full-name, email;
 ----
 
 Note that the `match` clause matches all entities of the `person` type
@@ -84,7 +87,7 @@ The resulted JSON should look like this:
 ----
 {
     "x": {
-        "email": [ { "value": "masako.holley@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
+        "email": [ { "value": "masako.holley@typedb.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
         "full-name": [ { "value": "Masako Holley", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } ],
         "id": [ { "value": 1, "type": { "label": "id", "root": "attribute", "value_type": "long" } } ],
         "type": { "label": "person", "root": "entity" }

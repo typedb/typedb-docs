@@ -7,9 +7,9 @@ values for attributes of a given type.
 
 The syntax of a `regex` statement includes:
 
-* subject -- attribute type label
-* predicate -- the `regex` keyword
-* object -- a regular expression to set possible values
+* Subject -- attribute type label
+* Predicate -- the `regex` keyword
+* Object -- a regular expression to set possible values
 
 .Syntax
 [,typeql]
@@ -17,7 +17,7 @@ The syntax of a `regex` statement includes:
 <attribute-type> regex <regular-expression>;
 ----
 
-== Behaviour
+== Behavior
 
 TypeQL statements with the `regex` keyword can be used only in Define queries.
 
@@ -25,6 +25,8 @@ The `regex` keyword adds a constraint on values of attributes of a given attribu
 to be valid strings according to the object regular expression.
 
 == Usage in a schema definition
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Since in Define queries you can't use variables, the subject of a `regex` statement can only be
 an attribute type label.

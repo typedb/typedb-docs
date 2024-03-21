@@ -71,15 +71,15 @@ The resulted Log output should look like this:
 [,js]
 ----
 {
-    $e alice@vaticle.com isa email;
+    $e alice@typedb.com isa email;
     $u iid 0x826e80018000000000000000 isa user;
 }
 {
-    $e the-bob@vaticle.com isa email;
+    $e the-bob@typedb.com isa email;
     $u iid 0x826e80018000000000000001 isa user;
 }
 {
-    $e charlie@vaticle.com isa email;
+    $e charlie@typedb.com isa email;
     $u iid 0x826e80018000000000000002 isa user;
 }
 ----

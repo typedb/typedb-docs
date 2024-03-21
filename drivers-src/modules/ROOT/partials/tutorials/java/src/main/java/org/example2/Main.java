@@ -50,7 +50,7 @@ public class Main {
         List<JSON> users = fetchAllUsers(driver, dbName);
 
         String name = "Jack Keeper";
-        String email = "jk@vaticle.com";
+        String email = "jk@typedb.com";
         String secondRequestMessage = String.format("Request 2 of 6: Request 2 of 6: Add a new user with the full-name \"%s\" and email \"%s\"", name, email);
         System.out.println(secondRequestMessage);
         List<ConceptMap> newUser = insertNewUser(driver, dbName, name, email);
