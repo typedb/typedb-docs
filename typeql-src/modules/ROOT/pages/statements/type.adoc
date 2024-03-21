@@ -6,9 +6,9 @@ The `type` keyword is used in TypeQL for matching a type by its label.
 
 The syntax of a `type` statement includes:
 
-* subject -- a concept variable
-* predicate -- the `type` keyword
-* object -- a type label
+* Subject -- a concept variable
+* Predicate -- the `type` keyword
+* Object -- a type label
 
 .Syntax
 [,typeql]
@@ -21,9 +21,9 @@ The syntax of a `type` statement includes:
 TypeQL statements with the `type` keyword are used in `match` clauses.
 The `type` keyword adds a constraint for a concept variable to be of a specified type.
 
-include::typeql::partial$iam-database-links.adoc[]
+== Usage in a match pattern
 
-=== Using in a match pattern
+include::typeql::partial$iam-database-links.adoc[]
 
 Let's fetch the `user` entity type:
 

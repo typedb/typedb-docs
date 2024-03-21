@@ -54,11 +54,40 @@ subject sub entity, abstract;
 ----
 
 [#_example]
-== Example
+== Usage in a Define query
 
-See the following Define query example, representing a simple schema of a database for users:
+Let's define a simple schema for users:
 
+.Define query example
 [,typeql]
 ----
 include::home::attachment$quickstart-schema.tql[]
+----
+
+== Usage in a Fetch query
+
+Now let's fetch all types from the database:
+
+.Fetch query example
+[,typeql]
+----
+match
+$x sub! $y;
+fetch
+$x;
+----
+
+This simple pattern lets us match all types from a database:
+
+.Output
+[,json]
+----
+{ "x": { "label": "user", "root": "entity" } }
+{ "x": { "label": "entity", "root": "entity" } }
+{ "x": { "label": "attribute", "root": "attribute", "value_type": "object" } }
+{ "x": { "label": "relation", "root": "relation" } }
+{ "x": { "label": "person", "root": "entity" } }
+{ "x": { "label": "email", "root": "attribute", "value_type": "string" } }
+{ "x": { "label": "full-name", "root": "attribute", "value_type": "string" } }
+{ "x": { "label": "id", "root": "attribute", "value_type": "long" } }
 ----

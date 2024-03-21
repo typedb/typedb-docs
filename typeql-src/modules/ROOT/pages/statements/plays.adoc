@@ -6,9 +6,9 @@ The `plays` keyword is used in TypeQL schema to define a valid player of a role 
 
 The syntax of a `plays` statement includes:
 
-* subject -- type label of a type to play the role
-* predicate -- the `plays` keyword
-* object -- scoped type label of a role
+* Subject -- type label of a type to play the role
+* Predicate -- the `plays` keyword
+* Object -- scoped type label of a role
 
 .Syntax
 [,typeql]
@@ -18,13 +18,15 @@ The syntax of a `plays` statement includes:
 
 An optional <<_usage_with_override,override>> can be added at the end.
 
-== Behaviour
+== Behavior
 
 TypeQL statements with the `plays` keyword can be used only in Define and Undefine queries.
 
 The `plays` keyword adds an ability to play a role to a schema.
 
 == Usage in a schema definition
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Since in Define and Undefine queries you can't use variables,
 both subject and object can only be type labels.
@@ -50,6 +52,8 @@ subject plays permission:subject;
 
 [#_usage_with_override]
 == Usage with override
+
+include::typeql::partial$iam-database-links.adoc[]
 
 By default, a subtype of a relation type inherits all roles that were defined for its supertype.
 To override an inherited role, use the `as` keyword.

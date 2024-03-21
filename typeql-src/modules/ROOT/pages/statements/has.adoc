@@ -6,9 +6,9 @@ The `has` keyword is used in TypeQL patterns to specify an owner for an attribut
 
 The syntax of a `has` statement includes:
 
-* subject -- a concept variable representing a data instance
-* predicate -- the `has` keyword
-* object -- an attribute represented by an optional attribute type with a concept variable or literal value
+* Subject -- a concept variable representing a data instance
+* Predicate -- the `has` keyword
+* Object -- an attribute represented by an optional attribute type with a concept variable or literal value
 
 .Syntax
 [,typeql]
@@ -16,12 +16,14 @@ The syntax of a `has` statement includes:
 <data-instance> has <attribute>;
 ----
 
-== Behaviour
+== Behavior
 
 TypeQL statements with the `has` keyword can be used in data queries
 to set a constraint of owning a particular attribute.
 
 == Usage in a match pattern
+
+include::typeql::partial$iam-database-links.adoc[]
 
 To match a particular person by the value of the full-name it owns and return an email it owns:
 
@@ -45,6 +47,8 @@ fetch $e;
 
 == Usage in an insert pattern
 
+include::typeql::partial$iam-database-links.adoc[]
+
 Let's insert a new email for an existing person:
 
 .Insert has example
@@ -59,6 +63,8 @@ $p has email "m.kevin@gmail.com";
 By inserting ownership of an attribute that doesn't exist in the database yet, we implicitly create such an attribute.
 
 == Usage in a delete pattern
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Let's delete an ownership of the new email from the same person:
 

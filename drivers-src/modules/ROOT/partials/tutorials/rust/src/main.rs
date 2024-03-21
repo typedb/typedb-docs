@@ -206,7 +206,7 @@ fn queries(driver: Connection, db_name: String) -> Result<(), Box<dyn Error>> {
     assert!(users?.len() == 3);
 
     let new_name = "Jack Keeper";
-    let new_email = "jk@vaticle.com";
+    let new_email = "jk@typedb.com";
     println!("Request 2 of 6: Add a new user with the full-name {} and email {}", new_name, new_email);
     let new_user = insert_new_user(driver.clone(), db_name.clone(), new_name, new_email);
     assert!(new_user?.len() == 1);

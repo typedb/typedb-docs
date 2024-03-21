@@ -31,8 +31,8 @@ Then use the steps below:
 [,typeql]
 ----
 insert
-$user1 isa user, has name "Alice", has email "alice@vaticle.com";
-$user2 isa user, has name "Bob", has email "bob@vaticle.com";
+$user1 isa user, has name "Alice", has email "alice@typedb.com";
+$user2 isa user, has name "Bob", has email "bob@typedb.com";
 $friendship (friend:$user1, friend: $user2) isa friendship;
 ----
 . Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
@@ -53,8 +53,8 @@ transaction sample_db data write
 [,typeql]
 ----
 insert
-$user1 isa user, has name "Alice", has email "alice@vaticle.com";
-$user2 isa user, has name "Bob", has email "bob@vaticle.com";
+$user1 isa user, has name "Alice", has email "alice@typedb.com";
+$user2 isa user, has name "Bob", has email "bob@typedb.com";
 $friendship (friend:$user1, friend: $user2) isa friendship;
 ----
 +
@@ -187,7 +187,7 @@ Let's say we send the following Insert query with a `match` clause:
 match
 $u isa user, has name "Bob";
 insert
-$new-u isa user, has name "Charlie", has email "charlie@vaticle.com";
+$new-u isa user, has name "Charlie", has email "charlie@typedb.com";
 $f($u,$new-u) isa friendship;
 ----
 
@@ -347,7 +347,7 @@ The most direct approach is to send an aggregated Get query to count the number 
 .Checking the number of matched results
 [,typeql]
 ----
-match $bob isa user, has email "bob@vaticle.com";
+match $bob isa user, has email "bob@typedb.com";
 get; count;
 ----
 
