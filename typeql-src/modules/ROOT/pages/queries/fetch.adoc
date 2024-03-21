@@ -15,32 +15,8 @@ Fetch queries can use rule-based xref:manual::reading/infer.adoc[inference].
 // tag::syntax[]
 A Fetch query consists of a
 <<_match_clause,match>> and a
-<<_fetch_clause,fetch>> clauses,
-followed by optional <<_modifiers,modifiers>>.
+<<_fetch_clause,fetch>> clauses:
 
-Fetch queries are written in TypeQL with the following syntax:
-////
-.Fetch query syntax
-[,typeql]
-----
-"match", <pattern>
-"fetch", ( <variable>, ["as", <label>] [ ":", <attribute-type>, ["as", <label>] {"," <attribute-type> ["as", <label>]} ] | <subquery-label>, ":", (<fetch_query> | <get_aggregate_query>), ";")+
-----
-
-//EBNF notation
-.Fetch query syntax
-[,typeql]
-----
-"match", <pattern>
-"fetch", (
-           <attribute-variable>, ["as", <label>], ";"
-         | <variable>          , ["as", <label>], ":", <attribute-type>, ["as", <label>], {"," <attribute-type> ["as", <label>]}, ";"
-         | (<subquery-label>                    , ":", (<fetch_query> | <get_aggregate_query>), ";"
-         )+
-----
-////
-
-.Fetch query syntax
 [,typeql]
 ----
 match <pattern>
@@ -49,45 +25,50 @@ fetch {
   | <variable> [as <label>] : (<attribute-type> [as <label>]), ...
   | <subquery-label>        : {<fetch_query> | <get_aggregate_query>}
   }; ...
-[<modifiers>]
 ----
-
-Variables mentioned in a `fetch` clause must be bound (set) in a `match` clause of the same query.
 // end::syntax[]
 
 == Behavior
 
-A Fetch query projects concepts matched from a database to values formatted as JSON objects.
+A Fetch query retrieves concepts from a database and projects them to values of a JSON object.
 
-Types, attributes, value-variables, or subqueries with aggregation are projected directly into JSON.
-Entities and relations don't have values to project, so instead of projecting them directly,
-we can extract values of attributes owned by them.
+A `match` clause is used to match data by a pattern, while a `fetch` clause is used to format the returned JSON.
 
-A Fetch query returns a lazy stream/iterator of results.
-Every returned result is a valid JSON object.
+Types and values can be projected directly into a JSON.
+Entities and relations don't have a value to project.
+Instead of using them directly, we can project values of attributes owned by them.
+
 The number of query results returned is equal or
 <<_number_of_results,less>> than the number of matched results by a `match` clause.
 In particular, if there are no matches in the preceding `match` clause, then there are no results returned.
 //#todo Add description of lazy streaming and a link to it
 
 [#_match_clause]
-== Match clause
+=== Match clause
+
+A `match` clause in a Fetch query matches existing concepts in a database to project their values
+or values of attributes they own.
+You can use a declarative and composable TypeQL pattern in a `match` clause and TypeDB will find data that matches
+specified pattern.
 
 A `match` clause is mandatory in a Fetch query.
-You can use a declarative and composable TypeQL pattern in a `match` clause and TypeDB will find data that matches
-the pattern.
 
 For more information on patterns and statements used in a `match` clause, see the
 xref:typeql::patterns/overview.adoc[Patterns] and xref:typeql::statements/overview.adoc[Statements] sections.
 
 [#_fetch_clause]
-== Fetch clause
+=== Fetch clause
 
 A `fetch` clause is used in a Fetch query
-to specify a projection of values from matched database concepts to an output of JSON objects.
+to specify a projection of values (and types) from matched database concepts to an output of JSON objects.
+
+A `fetch` clause can project values directly from specified variables,
+project owned attributes of specified types,
+or project JSONs returned by subqueries.
+
 
 This clause is executed exactly once for every result matched by the preceding `match` clause of the same query.
-A `fetch` clause produces a valid JSON object for every matched result,
+A `fetch` clause produces a JSON object for every matched result,
 but <<_number_of_results,deduplicates>> the results.
 
 Following the `fetch` keyword are one or multiple variables or subqueries, separated by semicolons.

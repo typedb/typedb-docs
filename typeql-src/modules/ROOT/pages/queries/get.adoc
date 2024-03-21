@@ -25,8 +25,6 @@ A Get query consists of a
 match <pattern>
 get [<variable> [, <variable>]];
 ----
-
-A Get query can include multiple xref:typeql::modifiers/overview.adoc[modifiers] at the end.
 // end::syntax[]
 
 [#_behavior]
@@ -65,7 +63,7 @@ See the table below for a complete list of response formats:
 |===
 
 [#_match_clause]
-== Match clause
+=== Match clause
 
 A `match` clause in a Get query matches existing concepts in a database to retrieve them as objects.
 You can use a declarative and composable TypeQL pattern in a `match` clause and TypeDB will find data that matches
@@ -77,7 +75,7 @@ For more information on patterns and statements used in a `match` clause, see th
 xref:typeql::patterns/overview.adoc[Patterns] and xref:typeql::statements/overview.adoc[Statements] sections.
 
 [#_get_clause]
-== Get clause
+=== Get clause
 
 A `get` clause is used in a Get query to select variables
 (xref:typeql::concepts/concept-variables.adoc[concept variables] and
@@ -92,8 +90,7 @@ not listed in a `get` clause can effectively add such a variable to the `get` cl
 [#_conceptmap]
 === ConceptMap
 
-Iterate on a non-empty response from a Get query to get a ConceptMap object.
-There is exactly one ConceptMap returned for every matched solution retrieved by a Get query.
+There is exactly one ConceptMap returned for every matched result of a Get query.
 
 A ConceptMap object maps a query variable to a Concept object.
 To retrieve a concept object from a ConceptMap, use the driver API `ConceptMap.get(variable)` method,
