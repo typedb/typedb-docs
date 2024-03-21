@@ -56,35 +56,34 @@ xref:typeql::patterns/overview.adoc[Patterns] and xref:typeql::statements/overvi
 
 include::typeql::queries/delete.adoc[tags=delete_clause]
 
+For more information and examples, see the xref:typeql::queries/delete.adoc[] page.
+
 [#_insert_clause]
 == Insert clause
 
 include::typeql::queries/insert.adoc[tags=insert_clause]
 
+For more information and examples, see the xref:typeql::queries/insert.adoc[] page.
+
 == Inserting after deleting
 
-There are a few minor unique aspects for the Update query due to the fact of both deleting and inserting
-happening in the same query.
+The `insert` clause is executed after the `delete` clause of the same query and uses the same matched result
+from the `match` clause.
 
-By deleting an attribute, we implicitly delete ownership of it from all its owners.
-Note that deleting data doesn't affect matched results because `match` clause is executed first.
-Even if we delete some data that is used in a preceding `match` clause that will not affect
-the set of matched results.
-See the <<_delete_attribute,example>> below, where deleting an attribute doesn't block us from replacing it
-with another attribute for all its owners.
-
-If we delete a concept used in the subsequent `insert` of the same query, it will produce an error.
+If we try to delete a concept that is used in the subsequent `insert` clause of the same query,
+that creates an error.
 For example, deleting an entity and then trying to insert ownership of an attribute to that deleted entity.
 You can insert a new concept instead of a deleted one with either the same variable or a new one.
+
+Inserted data doesn't have to be a direct replacement for the data deleted by the same query.
 
 == Replacing ownership
 
 include::typeql::partial$iam-database-links.adoc[]
 
 In many cases, the desired effect is to change the value of an owned attribute.
-We can't change the value of an attribute as attributes are immutable, but we can change the owned attribute.
-To update an attribute owned by an entity, its ownership must first be removed.
-Then, the same owner can be assigned ownership of an attribute with a different value.
+Attributes are immutable, and we can't change a value of an attribute.
+But we can replace ownership: delete ownership of the old attribute and add a new one.
 
 .Replacing ownership
 [,typeql]
@@ -96,19 +95,15 @@ $p isa person,
 delete
 $p has $email;
 insert
-$p has email "m.holley@vaticle.com";
+$p has email "m.holley@typedb.com";
 ----
 
 The above query does the following:
 
 . Matches all `person` entities (`$p`) that have the `full-name` attribute with the value of `Masako Holley`
 amd have some `$email` of type `email`.
-. Deletes from `$p` ownership of its current `email` attribute.
-. Makes `$p` the owner of the `email` attribute with the value of `m.holley@vaticle.com`.
-
-If there is an existing `email` attribute with the value of `m.holley@vaticle.com`,
-the matching `person` entities will now own it.
-Otherwise, a new attribute will be created implicitly and owned by the matching `person` entities.
+. Deletes from `$p` ownership of its matched `email` attribute.
+. Makes `$p` the owner of the `email` attribute with the value of `m.holley@typedb.com`.
 
 If there are more than one `$email` found for `Masako Holley` person,
 than there will be more than one result for the `match` clause.
@@ -117,8 +112,8 @@ Inserting multiple ownerships of the same attribute for the same owner produces 
 
 [NOTE]
 ====
-The old `email` attribute with the value of `masako.holley@vaticle.com` will still exist,
-but it will no longer be owned by the `Masako Holley` person.
+The old `email` attribute with the value of `masako.holley@typedb.com` will still exist,
+but it will no longer be owned by the person entity.
 ====
 
 If you want to narrow down the matched results to a single unique entity,
@@ -130,7 +125,6 @@ for some of its attribute ownerships.
 
 include::typeql::partial$iam-database-links.adoc[]
 
-Sometimes you need to delete a matched attribute completely, not only ownership of that attribute.
 Deleting an attribute deletes ownership of it from all its owners.
 We can insert a new attribute instead of a deleted one without a problem,
 because we match all data with a `match` clause pattern before we start deleting and inserting.
@@ -154,9 +148,10 @@ The above query:
 . Removes these `full-name` attributes that contain the substring from a database.
 . Makes `$p` the owner of the `full-name` attribute with the value of `deleted`.
 
-After running the above query, there will be a single `full-name` attribute with a value of `deleted`,
-which is owned by the matched entities,
-and any `full-name` attributes which contained the substring `inappropriate word` will no longer exist.
+Assuming there are some matches,
+after running the above query, there will be a single `full-name` attribute with a value of `deleted`,
+which is owned by the matched entities.
+Any `full-name` attributes which contained the substring `inappropriate word` will no longer exist in the database.
 
 == Updating a relation's role player
 
@@ -196,3 +191,21 @@ become permissions with the `view_file` access.
 
 After running the above query, all matched `access` relations `$ac_write` with `$a_write` as `action` still
 exist but no longer play a role in the matched `permission` relations.
+
+== Learn more
+
+[cols-2]
+--
+.xref:learn::4-writing-data/4.4-updating-data.adoc[]
+[.clickable]
+****
+Learn more about updating/replacing data in a database in the TypeDB Learning course.
+****
+
+.xref:manual::writing/update.adoc[]
+[.clickable]
+****
+See how to send an Update query to TypeDB.
+****
+--
+
