@@ -1,7 +1,7 @@
-= Disjunction
+= Logical OR (Disjunction)
 
-Disjunction pattern block is used for creating branches of logic,
-so that not every branch must be matched at the same time.
+A disjunction pattern block is used to create branches of logic,
+so that not every branch must be True at the same time.
 
 == Syntax
 
@@ -15,15 +15,15 @@ The syntax of a disjunction block:
 
 Where each `<pattern>` can be any valid pattern with at least one variable bound outside the disjunction.
 
-== Behaviour
+== Behavior
 
 Disjunctions can be used in a `match` clause or a condition of a rule to create alternative constraints.
 Matching one of the branches is enough for the solution to be returned.
-//#todo expand disjunction behaviour with detailed explanation
-
-include::typeql::partial$iam-database-links.adoc[]
+//#todo expand disjunction behavior with detailed explanation
 
 == Usage in a match clause
+
+include::typeql::partial$iam-database-links.adoc[]
 
 === Get all data
 
@@ -73,6 +73,8 @@ $name;
 ====
 
 == Usage in a rule condition
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Disjunction can be used in a rule condition in the same way as it can be used in a `match` clause.
 

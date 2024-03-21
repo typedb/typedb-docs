@@ -6,12 +6,11 @@
 
 A Define query extends the schema of a database with new schema statements.
 
-Define queries can be used only in a schema session and write transaction.
-For more information on the limitations of a schema session, see the
-xref:home::acid.adoc#_schema_integrity[Schema integrity enforcement].
+// For more information on the limitations of schema manipulations, see the
+// xref:home::acid.adoc#_schema_integrity[Schema integrity enforcement].
 
-For a guide on how to open a session to TypeDB,
-see the xref:manual::connecting/overview.adoc[] section of TypeDB Manual.
+For a practical guide on how to send a Define query to TypeDB,
+see the xref:manual::defining/define.adoc[] page of TypeDB Manual.
 
 [#_syntax]
 == Syntax
@@ -64,9 +63,7 @@ Define query returns a Promise of an empty response.
 A `define` clause is used in a Define query to specify schema statements for new or updated types and rules.
 Schema statements in a `define` clause can't use any variables or values, except for xref:statements/rule.adoc[rules].
 
-include::typeql::partial$iam-database-links.adoc[]
-
-== Usage to define new types
+== Usage to define types
 
 To define a new type, subtype an existing type with a xref:typeql::statements/sub.adoc[sub] statement.
 Use xref:typeql::statements/owns.adoc[owns] statements to assign an ability to own attribute types.
@@ -103,7 +100,9 @@ permission sub relation,
 
 The above example defines four attribute types, three entity types, and a single relation type.
 
-== Usage to define a rule
+== Usage to define rules
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Use a xref:typeql::statements/rule.adoc[rule] statement to define a new rule or replace an existing one:
 
@@ -123,4 +122,19 @@ rule add-view-permission: when {
 };
 ----
 
+== Learn more
 
+[cols-2]
+--
+.xref:learn::5-defining-schemas/5-defining-schemas.adoc[]
+[.clickable]
+****
+Learn more about defining a schema in the TypeDB Learning course.
+****
+
+.xref:manual::defining/define.adoc[]
+[.clickable]
+****
+See how to send a Define query to TypeDB.
+****
+--

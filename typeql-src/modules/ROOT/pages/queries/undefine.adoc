@@ -6,12 +6,11 @@
 
 An Undefine query removes type and rule definition from a schema.
 
-Undefine queries can be used only in a schema session and write transaction.
-For more information on the limitations of a schema session, see the
-xref:home::acid.adoc#_schema_integrity[Schema integrity enforcement].
+// For more information on the limitations of schema manipulation, see the
+// xref:home::acid.adoc#_schema_integrity[Schema integrity enforcement].
 
-For a guide on how to open a session to TypeDB,
-see the xref:manual::connecting/overview.adoc[] section of TypeDB Manual.
+For a practical guide on how to send an Undefine query to TypeDB,
+see the xref:manual::defining/undefine.adoc[] page of TypeDB Manual.
 
 [#_syntax]
 == Syntax
@@ -71,9 +70,9 @@ It can be a direct supertype, or indirect one, up to a root type.
 
 Alternatively, we can remove some parts of type definition, like an ownership of an attribute type, or a role to play.
 
-include::typeql::partial$iam-database-links.adoc[]
-
 == Usage to undefine new types
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Use a schema statement to delete from a schema in an Undefine query:
 
@@ -91,6 +90,8 @@ entity type `database`.
 
 == Usage to undefine a rule
 
+include::typeql::partial$iam-database-links.adoc[]
+
 To delete a rule, use the `rule` keyword with rule's label:
 
 .Undefine a rule example
@@ -100,3 +101,20 @@ undefine
 
 rule add-view-permission;
 ----
+
+== Learn more
+
+[cols-2]
+--
+.xref:learn::5-defining-schemas/5-defining-schemas.adoc[]
+[.clickable]
+****
+Learn more about defining a schema in the TypeDB Learning course.
+****
+
+.xref:manual::defining/undefine.adoc[]
+[.clickable]
+****
+See how to send an Undefine query to TypeDB.
+****
+--

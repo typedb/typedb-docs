@@ -8,9 +8,9 @@ use the `sub!` keyword instead.
 
 The syntax of a `sub` or `sub!` statement includes:
 
-* subject -- a subtype
-* predicate -- the `sub`/`sub!` keyword
-* object -- a parent type
+* Subject -- a subtype
+* Predicate -- the `sub`/`sub!` keyword
+* Object -- a parent type
 
 .Syntax
 [,typeql]
@@ -22,17 +22,17 @@ The syntax of a `sub` or `sub!` statement includes:
 
 TypeQL statements with the `sub` keyword can be used in any kind of query.
 
-The `sub` keyword adds a constraint for subject to be a type that is a subtype of the object.
+The `sub` keyword adds a constraint for subject to be a type that is a subtype of the object:
 
-In schema queries (Define and Undefine), the `sub` and `sub!` keywords don't have any difference,
-as they are both can be used to define (or undefine) a new type by subtyping an existing type.
-
-In data queries, the `sub` and `sub!` keywords can be used only in a `match` clause to match either
-all existing subtypes or only direct subtypes of a given type respectively.
-
-include::typeql::partial$iam-database-links.adoc[]
+* In xref:typeql::queries/overview.adoc#_schema_queries[schema queries] --
+the `sub` and `sub!` keywords don't have any difference.
+* In xref:typeql::queries/overview.adoc#_data_queries[data queries] --
+the `sub` and `sub!` keywords are used to match either all existing subtypes or only direct subtypes
+of a given type respectively.
 
 == Usage in a schema definition
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Since in Define and Undefine queries you can't use variables,
 both subject and object can only be type labels in a schema statement.
@@ -49,6 +49,8 @@ pdf sub file;
 ----
 
 == Usage in a match pattern
+
+include::typeql::partial$iam-database-links.adoc[]
 
 In a data query pattern a `sub` statement can be used only in a `match` clause or condition of a rule.
 Both subject and object of a `sub` statement can be concept variables, or one of them can be a type label.

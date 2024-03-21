@@ -2,14 +2,9 @@
 
 This page covers an aggregation of TypeQL Get query results.
 
-== Usage
+== Syntax
 
-A Get query without aggregation or grouping returns a stream of ConceptMaps
-to represent every matched solution for its pattern.
-With aggregation, the query performs calculation on the collection of ConceptMaps and returns a single value.
-Aggregation can be used alongside grouping and in subqueries, which affects the output.
-
-TypeDB supports the following types of aggregation:
+TypeQL supports the following types of aggregation:
 
 * `count` -- Get the total number of results returned.
 * `sum`-- Get the *sum* of the `long` or `double` values of the specified variable.
@@ -19,10 +14,19 @@ TypeDB supports the following types of aggregation:
 * `median` -- Get the median value among the `long` or `double` values of the matched variable.
 * `std` -- Get the *sample standard deviation* value among the `long` or `double` values of the matched variable.
 
-== Examples
+They are used at the end of a query.
+
+== Behavior
+
+A Get query without aggregation or grouping returns a stream of ConceptMaps
+to represent every matched solution for its pattern.
+With aggregation, the query performs calculation on the collection of ConceptMaps and returns a single value.
+Aggregation can be used alongside grouping and in subqueries, which affects the output.
 
 [#_count]
-=== Counting results
+== Usage for counting results
+
+include::typeql::partial$iam-database-links.adoc[]
 
 For any Get query, to count the number of results returned,
 add the `count` keyword at the end of the query with a semicolon.
@@ -41,7 +45,9 @@ Changing the variables in the `get` clause of a query can lead to changing the n
 due to deduplication (the same result can't be returned twice).
 See the next example below.
 
-=== Aggregating numeric values
+== Usage for numeric values
+
+include::typeql::partial$iam-database-links.adoc[]
 
 For `long` or `double` values represented by a value variable or by a concept variable mapped to an attribute,
 we can use aggregation to compute an output based on all returned values.

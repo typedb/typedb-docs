@@ -1,6 +1,6 @@
-= Negation
+= Logical NOT (Negation)
 
-Negation pattern block is used to exclude some concepts from a result.
+A negation pattern block is used to exclude some concepts from a result.
 
 == Syntax
 
@@ -14,18 +14,18 @@ not { <negated-pattern> };
 
 Where `<negated-pattern>` can be any valid pattern with at least one variable bound outside the negation.
 
-== Behaviour
+== Behavior
 
 Negations can be used in a `match` clause or a condition of a rule
 to set a constraint of not matching the negated pattern.
-//#todo expand negation behaviour with detailed explanation
+//#todo expand negation behavior with detailed explanation
 
 We understand pattern negation in terms of computation of *set differences*.
 The set-difference semantics is different to the perhaps familiar semantics of Negation-as-Failure of Prolog.
 
-include::typeql::partial$iam-database-links.adoc[]
-
 == Usage in a match clause
+
+include::typeql::partial$iam-database-links.adoc[]
 
 The most direct approach to using negation is to specify a pattern for all results that need to be excluded.
 
@@ -57,6 +57,8 @@ $u as "Not Kevin": full-name;
 ====
 
 == Usage in a rule condition
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Negation can be used in a rule condition in the same way as it can be used in a `match` clause.
 

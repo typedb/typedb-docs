@@ -1,9 +1,19 @@
 = Concept variables
 
-== Usage
+== Syntax
+
+A concept variable is used in TypeQL as dollar sign (`$`) followed by the variable's label:
+
+[,typeql]
+----
+$<variable-label>
+----
+
+== Behavior
 
 Concept variables in TypeQL represent unknown xref:typeql::concepts/types.adoc[types] and
 xref:typeql::concepts/data-instances.adoc[data instances] in data query patterns.
+
 When solving a pattern, each solution consists of variable/concept pairs for every query variable.
 Substituting variables with respective concepts from a solution should ensure that the pattern equals True.
 
@@ -15,7 +25,7 @@ Some TypeQL statements can imply type restrictions on a concept variable via typ
 xref:typeql::values/comparators.adoc[comparators],
 xref:typeql::values/functions.adoc[built-in functions] can be applied only to attributes.
 
-== Examples
+== Usage in a query
 
 Let's use `has` keyword to retrieve all attributes that owned by anything.
 
@@ -33,11 +43,11 @@ The resulted JSON should look like this:
 [,typeql]
 ----
 { "a": { "value": "Masako Holley", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } }
-{ "a": { "value": "masako.holley@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } }
+{ "a": { "value": "masako.holley@typedb.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } }
 { "a": { "value": 1, "type": { "label": "id", "root": "attribute", "value_type": "long" } } }
 ----
 
-=== Variablizing types
+== Usage with variablized types
 
 We can replace any type in a pattern with a concept variable and then retrieve such a variable to get the type
 (or rather all possible types):

@@ -111,8 +111,8 @@ public class Main {
             try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
                 String insertQuery = """
                                     insert
-                                    $user1 isa user, has name "Alice", has email "alice@vaticle.com";
-                                    $user2 isa user, has name "Bob", has email "bob@vaticle.com";
+                                    $user1 isa user, has name "Alice", has email "alice@typedb.com";
+                                    $user2 isa user, has name "Bob", has email "bob@typedb.com";
                                     $friendship (friend:$user1, friend: $user2) isa friendship;
                                     """;
                 tx.query().insert(insertQuery);
@@ -127,7 +127,7 @@ public class Main {
                                         match
                                         $u isa user, has name "Bob";
                                         insert
-                                        $new-u isa user, has name "Charlie", has email "charlie@vaticle.com";
+                                        $new-u isa user, has name "Charlie", has email "charlie@typedb.com";
                                         $f($u,$new-u) isa friendship;
                                         """;
                 long response_count = tx.query().insert(matchInsertQuery).count();
@@ -163,7 +163,7 @@ public class Main {
                                     delete
                                     $u has $e;
                                     insert
-                                    $u has email "charles@vaticle.com";
+                                    $u has email "charles@typedb.com";
                                     """;
                 long response_count = tx.query().update(updateQuery).count();
                 if (response_count == 1) {
@@ -302,7 +302,7 @@ public class Main {
                     System.out.println(result.getWhen().toString());
                     System.out.println(result.getThen().toString());
                 });
-                Pattern condition = TypeQL.parsePattern("{$u isa user, has email $e; $e contains '@vaticle.com';}");
+                Pattern condition = TypeQL.parsePattern("{$u isa user, has email $e; $e contains '@typedb.com';}");
                 Pattern conclusion = TypeQL.parsePattern("$u has name 'Employee'");
                 Rule newRule = tx.logic().putRule("Employee", condition, conclusion).resolve();
                 Rule oldRule = tx.logic().getRule("users").resolve();
@@ -318,7 +318,7 @@ public class Main {
                 Rule oldRule = tx.logic().getRule("users").resolve();
                 // end::get_rule[]
                 // tag::put_rule[]
-                Pattern condition = TypeQL.parsePattern("{$u isa user, has email $e; $e contains '@vaticle.com';}");
+                Pattern condition = TypeQL.parsePattern("{$u isa user, has email $e; $e contains '@typedb.com';}");
                 Pattern conclusion = TypeQL.parsePattern("$u has name 'Employee'");
                 Rule newRule = tx.logic().putRule("Employee", condition, conclusion).resolve();
                 // end::put_rule[]

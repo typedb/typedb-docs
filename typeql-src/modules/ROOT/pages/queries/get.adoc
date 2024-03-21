@@ -7,6 +7,8 @@
 A get query retrieves concepts from a TypeDB database that you can further process with the
 xref:drivers::overview.adoc#_driver_api[driver API].
 
+For a practical guide on how to send a Get query to TypeDB,
+see the xref:manual::reading/get.adoc[] page of TypeDB Manual.
 Get queries can use rule-based xref:manual::reading/infer.adoc[inference].
 
 == Syntax
@@ -86,6 +88,8 @@ Further processing of a Concept is done via methods of the driver API.
 [#_number_of_results]
 === Number of results
 
+include::typeql::partial$iam-database-links.adoc[]
+
 A Get query can return fewer results, than answers matched by its `match` clause.
 That is due to natural deduplication of results.
 See an example below.
@@ -112,6 +116,8 @@ For more examples of filtering matched results, see the <<_results_example_1>> a
 
 [#_modifiers]
 == Modifiers
+
+include::typeql::partial$iam-database-links.adoc[]
 
 There are multiple types of modifiers that can be used in a Get query to change its output:
 
@@ -227,6 +233,8 @@ to get more deterministic and predictable results.
 [#_grouping]
 === Grouping
 
+include::typeql::partial$iam-database-links.adoc[]
+
 We use the `group` function, optionally followed by another aggregate function, to group the results by the
 specified matched variable.
 
@@ -285,6 +293,8 @@ To avoid that, we need to sort not only by `$o-fp`, but also by the `$x-n` varia
 
 [#_aggregation]
 === Aggregation
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Aggregation performs a calculation on a set of values and returns a single value.
 
@@ -412,10 +422,10 @@ get $f, $s;
 std $s;
 ----
 
-== Examples
-
 [#_simple_example]
-=== Simple Get query example
+== Simple Get query example
+
+include::typeql::partial$iam-database-links.adoc[]
 
 A simple Get query example:
 
@@ -440,7 +450,9 @@ The response is a stream/iterator of ConceptMap.
 Every ConceptMap bounds the variable `$e` to an attribute of the `email` type, that matches the pattern.
 
 [#_complex_get_query_example]
-=== Complex Get query example
+== Complex Get query example
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Let's try a bit more complex pattern with some modifiers:
 
@@ -478,6 +490,8 @@ The response is the number of results for every `$o-fp`: number of pairs `$x-n` 
 [#_results_example_1]
 === Permutations
 
+include::typeql::partial$iam-database-links.adoc[]
+
 If there are multiple variables returned in every result,
 then results of a query include all permutations of answers.
 
@@ -513,6 +527,8 @@ There are only `3 * 10 = 30` possible combinations of `person` and `file` entiti
 
 [#_results_example_2]
 === Variables filtering
+
+include::typeql::partial$iam-database-links.adoc[]
 
 For the following example, consider the following database schema:
 

@@ -11,7 +11,8 @@ to manipulate the schema or data of a database.
 == Schema queries
 
 //Schema queries are done in a `schema` session with a `write` transaction.
-Schema queries are used to define and undefine type definitions and rules in a schema.
+Schema queries represent a DDL part of TypeQL:
+they are used to define and undefine types and rules in a schema.
 
 [cols-2]
 --
@@ -32,7 +33,8 @@ Delete types and rules from a schema.
 == Data queries
 
 //Data queries are usually done in a `data` sessions with a `read` or `write` transaction.
-Data queries use pattern matching to manipulate data in a database.
+Data queries represent DML part of TypeQL:
+they are used to manipulate data in a database with pattern matching.
 
 [cols-2]
 --

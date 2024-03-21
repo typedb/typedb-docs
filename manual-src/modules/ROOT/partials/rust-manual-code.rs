@@ -117,8 +117,8 @@ fn main() -> Result<(), Box<dyn Error>> {
                 let tx = session.transaction(TransactionType::Write)?;
                 let insert_query = "
                                     insert
-                                    $user1 isa user, has name 'Alice', has email 'alice@vaticle.com';
-                                    $user2 isa user, has name 'Bob', has email 'bob@vaticle.com';
+                                    $user1 isa user, has name 'Alice', has email 'alice@typedb.com';
+                                    $user2 isa user, has name 'Bob', has email 'bob@typedb.com';
                                     $friendship (friend:$user1, friend: $user2) isa friendship;
                                     ";
                 let _ = tx.query().insert(insert_query)?;
@@ -139,7 +139,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                                         match
                                         $u isa user, has name 'Bob';
                                         insert
-                                        $new-u isa user, has name 'Charlie', has email 'charlie@vaticle.com';
+                                        $new-u isa user, has name 'Charlie', has email 'charlie@typedb.com';
                                         $f($u,$new-u) isa friendship;
                                         ";
                 let response_count = tx.query().insert(match_insert_query)?.count();
@@ -187,7 +187,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                                     delete
                                     $u has $e;
                                     insert
-                                    $u has email 'charles@vaticle.com';
+                                    $u has email 'charles@typedb.com';
                                     ";
                 let response_count = tx.query().update(update_query)?.count();
                 if response_count == 1 {
@@ -389,7 +389,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                     println!("{}", rule.clone()?.when.to_string());
                     println!("{}", rule.clone()?.then.to_string());
                 }
-                let condition = typeql::parse_pattern("{$u isa user, has email $e; $e contains '@vaticle.com';}")?
+                let condition = typeql::parse_pattern("{$u isa user, has email $e; $e contains '@typedb.com';}")?
                     .into_conjunction();
                 let conclusion = typeql::parse_pattern("$u has name 'Employee'")?.into_statement();
                 let mut new_rule = tx.logic().put_rule("Employee".to_string(), condition, conclusion).resolve()?;
@@ -410,7 +410,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 let old_rule = tx.logic().get_rule("users".to_owned()).resolve()?.ok_or("Rule not found.")?;
                 // end::get_rule[]
                 // tag::put_rule[]
-                let condition = typeql::parse_pattern("{$u isa user, has email $e; $e contains '@vaticle.com';}")?
+                let condition = typeql::parse_pattern("{$u isa user, has email $e; $e contains '@typedb.com';}")?
                     .into_conjunction();
                 let conclusion = typeql::parse_pattern("$u has name 'Employee'")?.into_statement();
                 let mut new_rule = tx.logic().put_rule("Employee".to_string(), condition, conclusion).resolve()?;

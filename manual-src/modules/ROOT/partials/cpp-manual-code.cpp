@@ -103,8 +103,8 @@ int main() {
             TypeDB::Transaction tx = session.transaction(TypeDB::TransactionType::WRITE, options);
             std::string insertQuery = R"(
                                     insert
-                                    $user1 isa user, has name "Alice", has email "alice@vaticle.com";
-                                    $user2 isa user, has name "Bob", has email "bob@vaticle.com";
+                                    $user1 isa user, has name "Alice", has email "alice@typedb.com";
+                                    $user2 isa user, has name "Bob", has email "bob@typedb.com";
                                     $friendship (friend:$user1, friend: $user2) isa friendship;
                                     )";
             TypeDB::ConceptMapIterable result = tx.query.insert(insertQuery);
@@ -121,7 +121,7 @@ int main() {
                                             match
                                             $u isa user, has name "Bob";
                                             insert
-                                            $new-u isa user, has name "Charlie", has email "charlie@vaticle.com";
+                                            $new-u isa user, has name "Charlie", has email "charlie@typedb.com";
                                             $f($u,$new-u) isa friendship;
                                             )";
             TypeDB::ConceptMapIterable result = tx.query.insert(matchInsertQuery);
@@ -163,7 +163,7 @@ int main() {
                                         delete
                                         $u has $e;
                                         insert
-                                        $u has email "charles@vaticle.com";
+                                        $u has email "charles@typedb.com";
                                         )";
             TypeDB::ConceptMapIterable result = tx.query.update(updateQuery);
             int16_t i = 0;
@@ -334,7 +334,7 @@ int main() {
                 std::cout << rule.when() << std::endl;
                 std::cout << rule.then() << std::endl;
             }
-            TypeDB::Rule newRule = tx.logic.putRule("Employee", "{$u isa user, has email $e; $e contains '@vaticle.com';}","$u has name 'Employee'").get();
+            TypeDB::Rule newRule = tx.logic.putRule("Employee", "{$u isa user, has email $e; $e contains '@typedb.com';}","$u has name 'Employee'").get();
             TypeDB::Rule oldRule = tx.logic.getRule("users").get().value();
             std::cout << oldRule.label() << std::endl;
             newRule.deleteRule(tx).get();
@@ -356,7 +356,7 @@ int main() {
             }
             // end::get_rules[]
             // tag::put_rule[]
-            TypeDB::Rule newRule = tx.logic.putRule("Employee", "{$u isa user, has email $e; $e contains '@vaticle.com';}","$u has name 'Employee'").get();
+            TypeDB::Rule newRule = tx.logic.putRule("Employee", "{$u isa user, has email $e; $e contains '@typedb.com';}","$u has name 'Employee'").get();
             // end::put_rule[]
             // tag::get_rule[]
             TypeDB::Rule oldRule = tx.logic.getRule("users").get().value();

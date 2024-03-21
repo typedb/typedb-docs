@@ -6,9 +6,9 @@ The `is` keyword statement is used in TypeQL patterns to specify equality betwee
 
 The syntax of an `is` statement includes:
 
-* subject -- a concept variable
-* predicate -- the `is` keyword
-* object -- another concept variable
+* Subject -- a concept variable
+* Predicate -- the `is` keyword
+* Object -- another concept variable
 
 .Syntax
 [,typeql]
@@ -22,9 +22,9 @@ TypeQL statements with the `is` keyword are used in data queries
 to set an equality constraint for any two concept variables.
 That makes two concept variables equal both by type and value, so we could replace one of the variables with another.
 
-include::typeql::partial$iam-database-links.adoc[]
-
 == Usage for equality
+
+include::typeql::partial$iam-database-links.adoc[]
 
 Let's match different concept variables that are set to be equal and fetch values of the same attribute type:
 
@@ -50,6 +50,8 @@ fetch $f1 as first; $f2 as second;
 It can be used for simplifying patterns or combining two different patterns into a single one.
 
 == Usage with negation
+
+include::typeql::partial$iam-database-links.adoc[]
 
 The most common use of an `is` statement is to exclude some results.
 

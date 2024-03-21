@@ -1,6 +1,6 @@
 = Value types
 
-== Usage
+== Behavior
 
 Primitive values used in TypeQL patterns can be of one of the following value types:
 
@@ -28,7 +28,7 @@ The value type limits literal values that can be stored in instances of an attri
 For example, when we define the `full-name` attribute type to have a value type of `string`,
 we can't create an attribute of the `full-name` type with a value of a different value type, like `boolean` or `long`.
 
-== Examples
+== Usage
 
 A Define query and its schema statements is used to define value types for attribute types.
 
