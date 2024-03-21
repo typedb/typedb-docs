@@ -165,3 +165,102 @@ def get_related_entities(transaction: TypeDBTransaction, entity: Entity) -> Iter
             else:
                 yield player.as_entity()
 
+
+# 11.2 operating on objects
+
+with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.WRITE) as transaction:
+            book_type: EntityType
+            contribution_type: RelationType
+            page_count_type: AttributeType
+
+            book: Entity = book_type.create(transaction).resolve()
+            contribution: Relation = contribution_type.create(transaction).resolve()
+            page_count: Attribute = page_count_type.put(transaction, 200).resolve()
+
+            transaction.commit()
+
+
+def decrement_stock(transaction: TypeDBTransaction, book: Entity) -> None:
+    stock_type = transaction.concepts.get_attribute_type("stock").resolve()
+    stock_old = next(book.get_has(transaction, stock_type))
+
+    if stock_old.get_value() == 0:
+        raise ValueError("Already out of stock.")
+    else:
+        stock_new = stock_type.put(transaction, stock_old.get_value() - 1).resolve()
+        book.unset_has(transaction, stock_old).resolve()
+        book.set_has(transaction, stock_new).resolve()
+
+
+def create_promotion(
+        transaction: TypeDBTransaction,
+        code_value: str,
+        name_value: str,
+        start_timestamp_value: datetime,
+        end_timestamp_value: datetime
+) -> Entity:
+    promotion_type = transaction.concepts.get_entity_type("promotion").resolve()
+    code_type = transaction.concepts.get_attribute_type("code").resolve()
+    name_type = transaction.concepts.get_attribute_type("name").resolve()
+    start_timestamp_type = transaction.concepts.get_attribute_type("start-timestamp").resolve()
+    end_timestamp_type = transaction.concepts.get_attribute_type("end-timestamp").resolve()
+    promotion = promotion_type.create(transaction).resolve()
+    code = code_type.put(transaction, code_value).resolve()
+    name = name_type.put(transaction, name_value).resolve()
+    start_timestamp = start_timestamp_type.put(transaction, start_timestamp_value).resolve()
+    end_timestamp = end_timestamp_type.put(transaction, end_timestamp_value).resolve()
+    promotion.set_has(transaction, code).resolve()
+    promotion.set_has(transaction, name).resolve()
+    promotion.set_has(transaction, start_timestamp).resolve()
+    promotion.set_has(transaction, end_timestamp).resolve()
+    return promotion
+
+
+def add_to_promotion(transaction: TypeDBTransaction, book: Entity, promotion: Entity, discount_value: float) -> None:
+    inclusion_type = transaction.concepts.get_relation_type("promotion-inclusion").resolve()
+    item_role = inclusion_type.get_relates(transaction, "item").resolve()
+    promotion_role = inclusion_type.get_relates(transaction, "promotion").resolve()
+    discount_type = transaction.concepts.get_attribute_type("discount").resolve()
+    inclusion = inclusion_type.create(transaction).resolve()
+    inclusion.add_player(transaction, item_role, book).resolve()
+    inclusion.add_player(transaction, promotion_role, promotion).resolve()
+    discount = discount_type.put(transaction, discount_value).resolve()
+    inclusion.set_has(transaction, discount)
+
+
+def remove_from_promotion(transaction: TypeDBTransaction, book: Entity, promotion: Entity) -> None:
+    inclusion_type = transaction.concepts.get_relation_type("promotion-inclusion").resolve()
+    item_role = inclusion_type.get_relates(transaction, "item").resolve()
+    promotion_role = inclusion_type.get_relates(transaction, "promotion").resolve()
+    inclusions = book.get_relations(transaction, item_role)
+
+    for inclusion in inclusions:
+        promotion_players = inclusion.get_players_by_role_type(transaction, promotion_role)
+
+        for player in promotion_players:
+            if player == promotion:
+                inclusion.delete(transaction).resolve()
+                break
+
+
+def create_review(transaction: TypeDBTransaction, user: Entity, book: Entity, score_value: int) -> Entity:
+    review_type = transaction.concepts.get_entity_type("review").resolve()
+    action_execution_type = transaction.concepts.get_relation_type("action-execution").resolve()
+    rating_type = transaction.concepts.get_relation_type("rating").resolve()
+    score_type = transaction.concepts.get_attribute_type("score").resolve()
+    action_role = action_execution_type.get_relates(transaction, "action").resolve()
+    executor_role = action_execution_type.get_relates(transaction, "executor").resolve()
+    review_role = rating_type.get_relates(transaction, "review").resolve()
+    rated_role = rating_type.get_relates(transaction, "rated").resolve()
+    review = review_type.create(transaction).resolve()
+    action_execution = action_execution_type.create(transaction).resolve()
+    action_execution.add_player(transaction, executor_role, user).resolve()
+    action_execution.add_player(transaction, action_role, review).resolve()
+    rating = rating_type.create(transaction).resolve()
+    rating.add_player(transaction, review_role, review).resolve()
+    rating.add_player(transaction, rated_role, book).resolve()
+    score = score_type.put(transaction, score_value).resolve()
+    review.set_has(transaction, score).resolve()
+    return review
