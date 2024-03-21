@@ -18,14 +18,15 @@ Get queries can use rule-based xref:manual::reading/infer.adoc[inference].
 // tag::syntax[]
 A Get query consists of a
 <<_match_clause,match>> and a
-<<_get_clause,get>> clauses,
-followed by optional <<_modifiers,modifiers>>.
+<<_get_clause,get>> clauses:
 
 [,typeql]
 ----
 match <pattern>
 get [<variable> [, <variable>]];
 ----
+
+A Get query can include multiple xref:typeql::modifiers/overview.adoc[modifiers] at the end.
 // end::syntax[]
 
 [#_behavior]
@@ -131,7 +132,7 @@ But after filtering, the attribute is returned only once.
 //For more examples of filtering matched results, see the <<_results_example_1>> and <<_results_example_2>>.
 
 [#_simple_example]
-== Simple Get query example
+== Usage of a Get query
 
 include::typeql::partial$iam-database-links.adoc[]
 
@@ -158,12 +159,13 @@ The response is a stream/iterator of ConceptMap.
 Every ConceptMap bounds the variable `$e` to an attribute of the `email` type, that matches the pattern.
 
 [#_complex_get_query_example]
-== Complex Get query example
+== Usage of a Get query with modifiers
 
 include::typeql::partial$iam-database-links.adoc[]
 
-Let's try a bit more complex pattern with some modifiers:
+For the next example, let's try a bit more complex pattern and some modifiers:
 
+.Complex Get query example
 [,typeql]
 ----
 match
@@ -196,7 +198,7 @@ The results are sorted and grouped by the `$o-fp` and aggregated with the `count
 The response is the number of results for every `$o-fp`: number of pairs `$x-n` and `$act-n`.
 
 [#_results_example_1]
-=== Permutations
+== Permutations
 
 include::typeql::partial$iam-database-links.adoc[]
 
@@ -227,12 +229,16 @@ How many results are we expecting to retrieve from a database?
 Spoiler: **13** is the wrong answer here.
 ====
 
-As the example above doesn't have any <<_modifiers,modifiers>>, <<_aggregation,aggregation>>, or <<_grouping,grouping>>,
-the number of results will depend on the number of matched solutions for the pattern in the `match` clause.
-So the TypeDB query processor will explore all possible solutions: each consisting of one `person` entity
-and one `file` entity.
+As the example above doesn't have any xref:typeql::modifiers/overview.adoc[modifiers]
+(including aggregation and grouping) the number of results is equal to the number of matched solutions
+for the pattern in the `match` clause.
+Each solution consists of one `person` entity and one `file` entity.
 There are only `3 * 10 = 30` possible combinations of `person` and `file` entities, so we will get *30* results.
 
+For more explanation and examples, see the
+xref:learn::7-understanding-query-patterns/7.6-solution-set-semantics.adoc[] page in the TypeDB Learning course.
+
+////
 [#_results_example_2]
 === Variables filtering
 
@@ -342,3 +348,33 @@ different instances nonetheless.
 
 To try the get queries in that example, we need to load the <<_results_example_2,schema>> and
 the <<_answers_example2_dataset,dataset>> provided above into a TypeDB database first.
+////
+
+== Learn more
+
+[cols-2]
+--
+.xref:learn::7-understanding-query-patterns/7-understanding-query-patterns.adoc[]
+[.clickable]
+****
+Learn more about query patterns in the TypeDB Learning course.
+****
+
+.xref:manual::reading/get.adoc[]
+[.clickable]
+****
+See how to send a Get query to TypeDB.
+****
+
+.xref:manual::objects/schema.adoc[]
+[.clickable]
+****
+See how to manipulate Schema stateful objects with driver API.
+****
+
+.xref:manual::objects/data.adoc[]
+[.clickable]
+****
+See how to manipulate Data stateful objects with driver API.
+****
+--
