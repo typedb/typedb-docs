@@ -38,7 +38,7 @@ If there is no `match` clause in an Insert query, then the `insert` clause is ex
 An Insert query returns a lazy Stream/Iterator of ConceptMap objects with the inserted data.
 
 [#_match_clause]
-== Match clause
+=== Match clause
 
 A `match` clause in an Insert query matches existing concepts in a database to provide context for inserting new data
 that is connected to existing data through relations, ownerships, values, types, etc.
@@ -51,7 +51,7 @@ For more information on patterns and statements used in a `match` clause, see th
 xref:typeql::patterns/overview.adoc[Patterns] and xref:typeql::statements/overview.adoc[Statements] sections.
 
 [#_insert_clause]
-== Insert clause
+=== Insert clause
 
 // tag::insert_clause[]
 An `insert` clause is used in a query to specify new data to be inserted into a database.
