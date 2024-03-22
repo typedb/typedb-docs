@@ -1,6 +1,23 @@
-import datetime
-from typedb.api.concept.type.role_type import RoleType
+# 11 manipulating stateful objects
+
+from typedb.driver import TypeDB, SessionType, TransactionType
 from typedb.api.connection.credential import TypeDBCredential
+
+from typing import Iterator
+from typedb.api.connection.transaction import TypeDBTransaction
+from typedb.api.answer.concept_map import ConceptMap
+from typedb.api.concept.thing.entity import Entity
+from typedb.api.concept.thing.relation import Relation
+from typedb.api.concept.thing.attribute import Attribute
+from typedb.api.concept.thing.thing import Thing
+from typedb.api.concept.type.entity_type import EntityType
+from typedb.api.concept.type.relation_type import RelationType
+from typedb.api.concept.type.attribute_type import AttributeType
+from typedb.api.concept.type.role_type import RoleType
+
+# not shown
+
+import datetime
 
 ADDRESS = "localhost:1730"
 USERNAME = "username"
@@ -9,20 +26,6 @@ DATABASE = "bookstore"
 password = input("Enter password: ")
 credential = TypeDBCredential(USERNAME, password, tls_enabled=True)
 
-# 11 manipulating stateful objects
-
-from typedb.driver import TypeDB, SessionType, TransactionType
-
-from typing import Iterator
-from typedb.api.connection.transaction import TypeDBTransaction
-from typedb.api.answer.concept_map import ConceptMap
-from typedb.api.concept.thing.entity import Entity
-from typedb.api.concept.thing.relation import Relation
-from typedb.api.concept.thing.attribute import Attribute
-from typedb.api.concept.type.entity_type import EntityType
-from typedb.api.concept.type.relation_type import RelationType
-from typedb.api.concept.type.attribute_type import AttributeType
-from typedb.api.concept.thing.thing import Thing
 
 # 11.1 retrieving objects
 
