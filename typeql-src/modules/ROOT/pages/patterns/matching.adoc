@@ -27,7 +27,7 @@ match
 A `match` clause is used to find all existing concepts in a database that satisfy a pattern.
 By default, statements in a pattern are combined with an implicit xref:typeql::patterns/conjunction.adoc[]
 or logical `AND` operation.
-That makes the order of statements irrelevant, as they all must be tru to find a match.
+That makes the order of statements irrelevant, as they all must be true to find a match.
 
 Patterns are composable,
 meaning you can combine two patterns by joining their statements together in a new pattern.
