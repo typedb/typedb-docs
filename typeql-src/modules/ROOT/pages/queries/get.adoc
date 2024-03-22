@@ -4,8 +4,10 @@
 :pageTitle: Get query
 :page-aliases: typeql::data/get.adoc
 
-A get query retrieves concepts from a TypeDB database that you can further process with the
-xref:drivers::overview.adoc#_driver_api[driver API].
+A Get query retrieves concepts as stateful objects from a TypeDB database that you can further process with the
+xref:drivers::overview.adoc#_driver_api[driver API] methods.
+For example, see the xref:manual::objects/data.adoc[data objects] and
+xref:manual::objects/schema.adoc[schema objects] pages.
 
 For a practical guide on how to send a Get query to TypeDB,
 see the xref:manual::reading/get.adoc[] page of TypeDB Manual.
@@ -16,127 +18,53 @@ Get queries can use rule-based xref:manual::reading/infer.adoc[inference].
 // tag::syntax[]
 A Get query consists of a
 <<_match_clause,match>> and a
-<<_get_clause,get>> clauses,
-followed by optional <<_modifiers,modifiers>>.
-
-Get queries are written in TypeQL with the following syntax:
+<<_get_clause,get>> clauses:
 
 [,typeql]
 ----
 match <pattern>
-get <variable> [, <variable>];
-[sort <variable> [asc|desc];]
-[offset <value>;]
-[limit <value>;]
-[group <variable>;]
-[count; | (sum|max|min|mean|median|std) <variable>;]
+get [<variable> [, <variable>]];
 ----
-
-Variables mentioned in a `get` clause must be bound (set) in a `match` clause of the same query.
 // end::syntax[]
 
 [#_behavior]
 == Behavior
 
-A Get query projects concepts matched from a database to language-specific programmatic objects
-that can be used via the driver API methods.
+A Get query retrieves xref:typeql::concepts/overview.adoc[concepts] from a database.
 
-A simple Get query returns a lazy stream/iterator of ConceptMap objects.
-For every matched result, ConceptMap maps every query variable, mentioned in a `get` clause,
-to a concept matched from a database.
-A concept can be either a type or an instance of a type.
+A `match` clause is used to match data by a pattern, while a `get` clause is used to filter the returned variables.
 
-A Get query with <<_aggregation,aggregation>>, <<_grouping,grouping>>, or both has a different type of output.
-See the table in the <<_modifiers, Modifiers>> section.
-//#todo Change to generic Modifiers section in TypeQL?
+A Get query projects concepts matched from a database to language-specific programmatic stateful objects
+that can be used via driver API methods.
+The output of a Get query is a lazy stream/iterator of ConceptMap objects, unless it's used with
+xref:typeql::modifiers/aggregation.adoc[aggregation], xref:typeql::modifiers/grouping.adoc[grouping], or both.
+See the <<_response>> section below.
 
 [#_match_clause]
-== Match clause
+=== Match clause
+
+A `match` clause in a Get query matches existing concepts in a database to retrieve them as objects.
+You can use a declarative and composable TypeQL pattern in a `match` clause and TypeDB will find data that matches
+specified pattern.
 
 A `match` clause is mandatory in a Get query.
-You can use a declarative and composable TypeQL pattern in a `match` clause and TypeDB will find data that matches
-the pattern.
 
 For more information on patterns and statements used in a `match` clause, see the
 xref:typeql::patterns/overview.adoc[Patterns] and xref:typeql::statements/overview.adoc[Statements] sections.
 
 [#_get_clause]
-== Get clause
+=== Get clause
 
-A `get` clause is used in a Get query to select variables (concept variables and value variables)
-to include in every result of the output.
+A `get` clause is used in a Get query to select variables
+(xref:typeql::concepts/concept-variables.adoc[concept variables] and
+xref:typeql::values/value-variables.adoc[value variables])
+to include in the output.
+An empty `get` clause (`get;`) includes all variables, used in the preceding `match` clause.
 
-This clause is executed exactly once for every result matched by the preceding `match` clause of the same query.
-Unless aggregation or grouping is used, `get` clause produces a ConceptMap for every matched result,
-but <<_number_of_results,deduplicates>> the results.
+[#_response]
+=== Response format
 
-Following the `get` keyword are one or multiple variables, separated by commas, and a semicolon at the end.
-Every variable mentioned in a `get` clause adds a respective mapping of the variable to a concept in every ConceptMap
-of the output.
-
-The `get;` clause is used to get all variables mentioned in a `match` clause pattern of a query.
-
-=== ConceptMap
-
-To get a ConceptMap simply iterate on a stream or iterator returned in a response to a Get query.
-
-To retrieve a database concept from a ConceptMap, use the driver API `ConceptMap.get(variable)` method,
-that takes input of variable label and returns a Concept.
-Further processing of a Concept is done via methods of the driver API.
-//#todo Add an example in all 4 languages (with tabs) - from sending a query to getting a value out of an attribute
-
-[#_number_of_results]
-=== Number of results
-
-include::typeql::partial$iam-database-links.adoc[]
-
-A Get query can return fewer results, than answers matched by its `match` clause.
-That is due to natural deduplication of results.
-See an example below.
-
-.Example of a get clause reducing the number of results
-[,typeql]
-----
-match
-$p isa person, has full-name $n;
-get $n;
-----
-
-In the above example `match` clause matches all `person` type instances that own a `name` attribute.
-The `get` clause then returns those attributes.
-
-What happens if two persons have the same name?
-In TypeDB database that is stored, as two entities own the same attribute (instance of the `name` attribute type).
-The `match` clause finds all pairs of a person entity and its owned attribute.
-But `get` clause returns only the attributes.
-Since both persons own the very same attribute,
-it will be returned only once, reducing the total number of results.
-
-For more examples of filtering matched results, see the <<_results_example_1>> and <<_results_example_2>>.
-
-[#_modifiers]
-== Modifiers
-
-include::typeql::partial$iam-database-links.adoc[]
-
-There are multiple types of modifiers that can be used in a Get query to change its output:
-
-* <<_sort_the_results>>
-* <<_offset_the_results>>
-* <<_limit_the_results>>
-* <<_grouping>>
-* <<_aggregation>>
-** <<_count>>
-** <<_sum>>
-** <<_maximum>>
-** <<_minimum>>
-** <<_mean>>
-** <<_median>>
-** <<_standard_deviation>>
-
-Grouping modifier or aggregation functions can drastically change a query output, including its format.
-See the table below.
-
+.Response format
 [#_table_output_types]
 [cols="^.^1,^.^4,^.^4"]
 |===
@@ -159,277 +87,41 @@ See the table below.
 | Stream/Iterator of *ValueGroup*
 |===
 
-[#_sort_the_results]
-=== Sort the results
+// .Response format
+// [#_table_output_types2]
+// [cols="^.^3,^.^3,^.^3"]
+// |===
+// | | *No aggregation* | *With aggregation*
+//
+// | *No grouping*
+// | Stream/Iterator of *ConceptMap*
+// | *Promise* of *Value*
+//
+// | *With grouping*
+// | Stream/Iterator of *ConceptMapGroup*
+// | Stream/Iterator of *ValueGroup*
+// |===
 
-.Sort modifier syntax
-[,typeql]
-----
-sort <variable> [asc|desc] [,<variable> [asc|desc]];
-----
+A Get query returns solutions matched by the `match` clause and filtered by the `get` clause,
+optionally processed by xref:typeql::modifiers/overview.adoc[modifiers].
+A `get` clause returns exactly one ConceptMap for every solution matched by its preceding `match` clause.
+The results are in set semantics, meaning that there are no duplicates.
 
-Use the `sort` keyword followed by a variable to sort the results.
-A second argument is optional and determines the sorting order: `asc` (ascending, by default) or `desc` (descending).
-
-.Sort example
-[,typeql]
-----
-match
-$p isa person, has full-name $n;
-get $n;
-sort $n;
-----
-
-This query returns sorted `full-name` attributes owned by `person` entities.
-
-To sort by multiple variables, add additional variables with a comma separator.
-
-[#_offset_the_results]
-=== Offset the results
-
-Use the `offset` keyword followed by the number to offset the results.
-This is commonly used with the `limit` keyword to return a desired range of results for pagination.
-Don't forget to <<_sort_the_results,sort>> the results to ensure more deterministic and predictable results.
-
-.Example
-[,typeql]
-----
-match
-$p isa person, has full-name $n;
-get $n;
-sort $n;
-offset 6;
-limit 10;
-----
-
-The above example sorts the `full-name` attributes of all `person` entities in ascending order,
-skips the first six results, and returns up to the next ten.
-
-[#_limit_the_results]
-=== Limit the number of results
-
-.Limit modifier syntax
-[,typeql]
-----
-limit <value>;
-----
-
-Use the `limit` keyword followed by a positive integer to limit the number of results (answers) returned.
-
-.Example
-[,typeql]
-----
-match
-$p isa person;
-get $p;
-limit 1;
-----
-
-The above example returns only one single (and random) instance of type `person`.
-
-We recommend using the `limit` with the <<_sort_the_results,sorting aggregation>>
-to get more deterministic and predictable results.
-
-[#_grouping]
-=== Grouping
-
-include::typeql::partial$iam-database-links.adoc[]
-
-We use the `group` function, optionally followed by another aggregate function, to group the results by the
-specified matched variable.
-
-The output format is a lazy stream/iterator of ConceptMapGroup objects,
-that have `owner` and `ConceptMaps` methods/fields.
-
-.Example
-[,typeql]
-----
-match
-$x isa person, has full-name $x-n;
-$pe ($x, $y) isa permission;
-$y (object: $o, action: $act) isa access;
-$act has name $act-n;
-$o has path $o-fp;
-get $x-n, $act-n, $o-fp;
-sort $o-fp;
-limit 3;
-group $o-fp;
-----
-
-The above example returns the `full-name` attributes of all `person` entities, the `path` attributes of the `object` entities
-in any `access` relations that are part of the `permission` relation with the `person` entities, and the `name`
-attribute of the `action` entity in those `access` relations. The results are then sorted by the `path` attribute in
-ascending order, limited by only the first three results, and grouped by `path` variable values.
-
-The following or similar result can be obtained by running the query above without inference on the TypeDB server with
-the IAM schema and dataset from the xref:home::quickstart.adoc[Quickstart guide].
-
-.Result example
-[,typeql]
-----
-"LICENSE" isa path => {
-    {
-        $act-n "modify_file" isa name;
-        $x-n "Pearle Goodman" isa full-name;
-        $o-fp "LICENSE" isa path;
-    }    {
-        $act-n "modify_file" isa name;
-        $x-n "Kevin Morrison" isa full-name;
-        $o-fp "LICENSE" isa path;
-    }
-}
-"README.md" isa path => {
-    {
-        $act-n "modify_file" isa name;
-        $x-n "Pearle Goodman" isa full-name;
-        $o-fp "README.md" isa path;
-    }
-}
-----
-
-There can be a difference in the `full-name` attribute returned for the `README.md` path group because
-the file with path `README.md` is owned by multiple persons, and we are not sorting by the `full-name`.
-To avoid that, we need to sort not only by `$o-fp`, but also by the `$x-n` variable: `sort $o-fp, $x-n;`
-
-[#_aggregation]
-=== Aggregation
-
-include::typeql::partial$iam-database-links.adoc[]
-
-Aggregation performs a calculation on a set of values and returns a single value.
-
-TypeDB supports the following types of aggregation:
-
-* <<_count>>
-* <<_sum>>
-* <<_maximum>>
-* <<_minimum>>
-* <<_mean>>
-* <<_median>>
-* <<_standard_deviation>>
-
-To perform aggregation in TypeDB, we add an aggregation function at the end of a Get query.
-Aggregation function uses data returned by a preceding `get` clause to perform aggregation
-and return an aggregated result.
-
-[#_count]
-==== Count
-
-Use the count keyword to get the total number of the results returned.
-
-.Example
-[,typeql]
-----
-match
-$o isa object, has path $fp;
-get $o, $fp;
-count;
-----
-
-The `count` function counts the number of query results. See the <<_number_of_results>> section.
-
-For a more complex example, see the <<_complex_get_query_example>>.
-
-[#_sum]
-==== Sum
-
-Use the `sum` keyword to get the sum of the specified `long` or `double` values of the matched variable.
-
-.Example
-[,typeql]
-----
-match
-$f isa file, has size-kb $s;
-get $f, $s;
-sum $s;
-----
-
-[WARNING]
-====
-Omitting the variable `$f` in the `get` clause of the above query will result in missing all duplicated values
-of `$s` from the aggregation.
-For more information, see the <<_number_of_results>> section.
-====
-
-[#_maximum]
-==== Maximum
-
-Use the `max` keyword to get the maximum value among the specified `long` or `double` values of the matched variable.
-
-.Example
-[,typeql]
-----
-match
-$f isa file, has size-kb $s;
-get $f, $s;
-max $s;
-----
-
-[#_minimum]
-==== Minimum
-
-Use the `min` keyword to get the minimum value among the specified `long` or `double` values of the matched variable.
-
-.Example
-[,typeql]
-----
-match
-$f isa file, has size-kb $s;
-get $f, $s;
-min $s;
-----
-
-[#_mean]
-==== Mean
-
-Use the `mean` keyword to get the average value of the specified `long` or `double` values of the matched variable.
-
-.Example
-[,typeql]
-----
-match
-$f isa file, has size-kb $s;
-get $f, $s;
-mean $s;
-----
-
-[#_median]
-==== Median
-
-Use the `median` keyword to get the median value among the specified `long` or `double` values of the matched variable.
-
-.Example
-[,typeql]
-----
-match
-$f isa file, has size-kb $s;
-get $f, $s;
-median $s;
-----
-
-[#_standard_deviation]
-==== Standard deviation
-
-Use the `std` keyword to get the standard deviation value among the specified `long` or `double` values of the matched
-variable.
-
-.Example
-[,typeql]
-----
-match
-$f isa file, has size-kb $s;
-get $f, $s;
-std $s;
-----
+A ConceptMap object maps query variables to concept objects.
+To retrieve a concept object from a ConceptMap, use the driver API `ConceptMap.get(variable)` method,
+that takes input of variable's label.
+Further processing of a concept object is done via methods of the driver API.
+For examples on how to work with schema and data concepts,
+see the xref:manual::objects/schema.adoc[] and xref:manual::objects/data.adoc[] pages.
 
 [#_simple_example]
-== Simple Get query example
+== Usage of a Get query
 
 include::typeql::partial$iam-database-links.adoc[]
 
 A simple Get query example:
 
-.Simple example
+.Get example
 [,typeql]
 ----
 match
@@ -450,12 +142,13 @@ The response is a stream/iterator of ConceptMap.
 Every ConceptMap bounds the variable `$e` to an attribute of the `email` type, that matches the pattern.
 
 [#_complex_get_query_example]
-== Complex Get query example
+== Usage of a Get query with modifiers
 
 include::typeql::partial$iam-database-links.adoc[]
 
-Let's try a bit more complex pattern with some modifiers:
+For the next example, let's try a bit more complex pattern and some modifiers:
 
+.Complex Get query example
 [,typeql]
 ----
 match
@@ -487,8 +180,59 @@ The results are sorted and grouped by the `$o-fp` and aggregated with the `count
 
 The response is the number of results for every `$o-fp`: number of pairs `$x-n` and `$act-n`.
 
+[#_number_of_results]
+== Number of results
+
+include::typeql::partial$iam-database-links.adoc[]
+
+A Get query can return fewer results, than matched by its `match` clause,
+due to filtering with a `get` clause or using modifiers.
+
+[#_get_clause_filtering]
+=== Get clause filtering
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Filtering variables with a `get` clause can reduce the number of results.
+Due to set semantics, some results might lose their uniqueness and made redundant.
+Let's see the following example with matching entities of the `person` type that have a `full-name` attribute:
+
+.Get clause filter example
+[,typeql]
+----
+match
+$p isa person, has full-name $n;
+get $n;
+----
+
+The `match` clause returns pairs of `person` and its `full-name`.
+The `get` clause then returns only the `full-name` attributes.
+
+If multiple entities have the same attribute,
+that is represented in a database as ownership of the very same single attribute.
+Since we filter the results to have only the `$n` variable, the results include such a name, but only once.
+Regardless of how many entities `$p` own it.
+To prevent such deduplication, in this example,
+you can extend the results to include the `$p` variable into every result, since every entity is unique.
+The results then will include pairs of `$p` and `$n`.
+
+=== Using modifiers
+
+Applying xref:typeql::modifiers/overview.adoc[modifiers] can have a drastic effect on the format and number
+of results returned by a Get query.
+See the <<_table_output_types2,table above>> for output formats depending on the usage of
+xref:typeql::modifiers/grouping.adoc[grouping]
+and xref:typeql::modifiers/aggregation.adoc[aggregation].
+
+Usage of the xref:typeql::modifiers/pagination.adoc#_limit_the_results[limit] modifier directly sets a limitation
+for the number of results.
+
+Combination of <<_get_clause_filtering>> and xref:typeql::modifiers/sorting.adoc[] can produce
+somewhat unpredictable results, if sorting is done by a variable, that is not included in the `get` clause.
+
+////
 [#_results_example_1]
-=== Permutations
+== Permutations
 
 include::typeql::partial$iam-database-links.adoc[]
 
@@ -497,34 +241,34 @@ then results of a query include all permutations of answers.
 
 To illustrate that behavior, let's
 see what happens if we have *three* `person` entities
-and *ten* `file` entities in a database with the IAM schema and
-send the following get query:
+matched by two different variables:
 
-//#todo Replace the example to exclude the disjoint match pattern
-//it can be a relation like $f($x,$y) isa friendship
-//or an attribute ownership, like $x has $y
 .Permutations example
 [,typeql]
 ----
 match
 $x isa person;
-$f isa file;
-get $x, $f;
+$y isa person;
+get $x, $y;
+count;
 ----
+
+The xref:typeql::modifiers/aggregation.adoc#_count[count modifier] is added to get the number of results,
+rather than the results themselves.
 
 How many results are we expecting to retrieve from a database?
 
-[NOTE]
-====
-Spoiler: **13** is the wrong answer here.
-====
+Given that there are three data instances of the person type, the matched results include all
+solutions for the pattern in the `match` clause, including all permutations.
+We can match the same person twice by both `$x` and `$y`.
+So, for every `$x` there are three concepts in `$y` and vice versa.
+That means the query counts nine results.
 
-As the example above doesn't have any <<_modifiers,modifiers>>, <<_aggregation,aggregation>>, or <<_grouping,grouping>>,
-the number of results will depend on the number of matched solutions for the pattern in the `match` clause.
-So the TypeDB query processor will explore all possible solutions: each consisting of one `person` entity
-and one `file` entity.
-There are only `3 * 10 = 30` possible combinations of `person` and `file` entities, so we will get *30* results.
+For more explanation and examples, see the
+xref:learn::7-understanding-query-patterns/7.6-solution-set-semantics.adoc[] page in the TypeDB Learning course.
+////
 
+////
 [#_results_example_2]
 === Variables filtering
 
@@ -634,3 +378,33 @@ different instances nonetheless.
 
 To try the get queries in that example, we need to load the <<_results_example_2,schema>> and
 the <<_answers_example2_dataset,dataset>> provided above into a TypeDB database first.
+////
+
+== Learn more
+
+[cols-2]
+--
+.xref:learn::7-understanding-query-patterns/7-understanding-query-patterns.adoc[]
+[.clickable]
+****
+Learn more about query patterns in the TypeDB Learning course.
+****
+
+.xref:manual::reading/get.adoc[]
+[.clickable]
+****
+See how to send a Get query to TypeDB.
+****
+
+.xref:manual::objects/schema.adoc[]
+[.clickable]
+****
+See how to manipulate Schema stateful objects with driver API.
+****
+
+.xref:manual::objects/data.adoc[]
+[.clickable]
+****
+See how to manipulate Data stateful objects with driver API.
+****
+--
