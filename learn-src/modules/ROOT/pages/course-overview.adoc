@@ -2,6 +2,8 @@
 
 == Introduction
 
+Welcome to the TypeDB learning course!
+
 This course is designed as an end-to-end learning experience for TypeDB and TypeQL. Through the lens of a sample bookstore database, you'll learn how to read data, write data, and build schemas while taking advantage of TypeDB's unique features as the polymorphic database.
 
 This course is intended for:
@@ -14,7 +16,7 @@ You will not need any prior knowledge of TypeDB in order to complete this course
 
 == Course content
 
-This course is arranged into several lessons covering key topics. The lessons are mostly self-contained but intended to be followed in order. Each lesson lists recommended prerequisites.
+This course is arranged into several lessons covering key topics. The lessons are mostly self-contained but intended to be followed in order. Each lesson includes an overview of the content, and lists any recommended prerequisites.
 
 [cols-3]
 --
@@ -70,5 +72,11 @@ Learn how to structure query results in the optimal manner, covering result grou
 [.clickable]
 ****
 Learn how to use rule inference to abstract complex patterns into simple forms, and capture complex logic with combinations of rules.
+****
+
+.xref:learn::11-manipulating-stateful-objects/11-manipulating-stateful-objects.adoc[]
+[.clickable]
+****
+Learn how to use retrieve data instances and schema types from the database as stateful objects and perform operations on them.
 ****
 --
