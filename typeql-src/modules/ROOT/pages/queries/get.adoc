@@ -87,20 +87,20 @@ An empty `get` clause (`get;`) includes all variables, used in the preceding `ma
 | Stream/Iterator of *ValueGroup*
 |===
 
-.Response format
-[#_table_output_types2]
-[cols="^.^3,^.^3,^.^3"]
-|===
-| | *No aggregation* | *With aggregation*
-
-| *No grouping*
-| Stream/Iterator of *ConceptMap*
-| *Promise* of *Value*
-
-| *With grouping*
-| Stream/Iterator of *ConceptMapGroup*
-| Stream/Iterator of *ValueGroup*
-|===
+// .Response format
+// [#_table_output_types2]
+// [cols="^.^3,^.^3,^.^3"]
+// |===
+// | | *No aggregation* | *With aggregation*
+//
+// | *No grouping*
+// | Stream/Iterator of *ConceptMap*
+// | *Promise* of *Value*
+//
+// | *With grouping*
+// | Stream/Iterator of *ConceptMapGroup*
+// | Stream/Iterator of *ValueGroup*
+// |===
 
 A Get query returns solutions matched by the `match` clause and filtered by the `get` clause,
 optionally processed by xref:typeql::modifiers/overview.adoc[modifiers].
@@ -114,52 +114,6 @@ Further processing of a concept object is done via methods of the driver API.
 For examples on how to work with schema and data concepts,
 see the xref:manual::objects/schema.adoc[] and xref:manual::objects/data.adoc[] pages.
 
-[#_number_of_results]
-== Number of results
-
-include::typeql::partial$iam-database-links.adoc[]
-
-A Get query can return fewer results, than matched by its `match` clause,
-due to filtering with a `get` clause or using modifiers.
-
-[#_get_clause_filtering]
-=== Get clause filtering
-
-Filtering variables with a `get` clause can reduce the number of results.
-Due to set semantics, some results might lose their uniqueness and made redundant.
-Let's see the following example with matching entities of the `person` type that have a `full-name` attribute:
-
-.Get clause filter example
-[,typeql]
-----
-match
-$p isa person, has full-name $n;
-get $n;
-----
-
-The `match` clause returns pairs of `person` and its `full-name`.
-The `get` clause then returns only the `name` attributes.
-
-If multiple entities have the same attribute,
-that is represented in a database as ownership of the very same single attribute.
-Since we filter the results to have only the `$n` variable, the results include such a name, but only once.
-To prevent such deduplication, in this example, you can extend the results to include `$p` variable,
-because it's unique for every matched result.
-
-=== Using modifiers
-
-Applying xref:typeql::modifiers/overview.adoc[modifiers] can have a drastic effect on the format and number
-of results returned by a Get query.
-See the <<_table_output_types2,table above>> for output formats depending on the usage of
-xref:typeql::modifiers/grouping.adoc[grouping]
-and xref:typeql::modifiers/aggregation.adoc[aggregation].
-
-Usage of the xref:typeql::modifiers/pagination.adoc#_limit_the_results[limit] modifier directly sets a limitation
-for the number of results.
-
-Combination of <<_get_clause_filtering>> and xref:typeql::modifiers/sorting.adoc[] can produce
-somewhat unpredictable results, if sorting is done by a variable, that is not included in the `get` clause.
-
 [#_simple_example]
 == Usage of a Get query
 
@@ -167,7 +121,7 @@ include::typeql::partial$iam-database-links.adoc[]
 
 A simple Get query example:
 
-.Simple example
+.Get example
 [,typeql]
 ----
 match
@@ -225,6 +179,56 @@ The `get` clause then filters the matched answers from the `match` clause to get
 The results are sorted and grouped by the `$o-fp` and aggregated with the `count` function.
 
 The response is the number of results for every `$o-fp`: number of pairs `$x-n` and `$act-n`.
+
+[#_number_of_results]
+== Number of results
+
+include::typeql::partial$iam-database-links.adoc[]
+
+A Get query can return fewer results, than matched by its `match` clause,
+due to filtering with a `get` clause or using modifiers.
+
+[#_get_clause_filtering]
+=== Get clause filtering
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Filtering variables with a `get` clause can reduce the number of results.
+Due to set semantics, some results might lose their uniqueness and made redundant.
+Let's see the following example with matching entities of the `person` type that have a `full-name` attribute:
+
+.Get clause filter example
+[,typeql]
+----
+match
+$p isa person, has full-name $n;
+get $n;
+----
+
+The `match` clause returns pairs of `person` and its `full-name`.
+The `get` clause then returns only the `full-name` attributes.
+
+If multiple entities have the same attribute,
+that is represented in a database as ownership of the very same single attribute.
+Since we filter the results to have only the `$n` variable, the results include such a name, but only once.
+Regardless of how many entities `$p` own it.
+To prevent such deduplication, in this example,
+you can extend the results to include the `$p` variable into every result, since every entity is unique.
+The results then will include pairs of `$p` and `$n`.
+
+=== Using modifiers
+
+Applying xref:typeql::modifiers/overview.adoc[modifiers] can have a drastic effect on the format and number
+of results returned by a Get query.
+See the <<_table_output_types2,table above>> for output formats depending on the usage of
+xref:typeql::modifiers/grouping.adoc[grouping]
+and xref:typeql::modifiers/aggregation.adoc[aggregation].
+
+Usage of the xref:typeql::modifiers/pagination.adoc#_limit_the_results[limit] modifier directly sets a limitation
+for the number of results.
+
+Combination of <<_get_clause_filtering>> and xref:typeql::modifiers/sorting.adoc[] can produce
+somewhat unpredictable results, if sorting is done by a variable, that is not included in the `get` clause.
 
 ////
 [#_results_example_1]

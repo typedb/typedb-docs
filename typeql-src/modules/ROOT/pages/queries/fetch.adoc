@@ -24,7 +24,7 @@ fetch {
     <variable> [as <label>]
   | <variable> [as <label>] : (<attribute-type> [as <label>]), ...
   | <subquery-label>        : {<fetch_query> | <get_aggregate_query>}
-  }; ...
+}; ...
 ----
 // end::syntax[]
 
@@ -34,14 +34,18 @@ A Fetch query retrieves concepts from a database and projects them to values of 
 
 A `match` clause is used to match data by a pattern, while a `fetch` clause is used to format the returned JSON.
 
-Types and values can be projected directly into a JSON.
+Only values and types can be projected directly into a JSON.
 Entities and relations don't have a value to project.
 Instead of using them directly, we can project values of attributes owned by them.
 
-The number of query results returned is equal or
-<<_number_of_results,less>> than the number of matched results by a `match` clause.
-In particular, if there are no matches in the preceding `match` clause, then there are no results returned.
-//#todo Add description of lazy streaming and a link to it
+A subquery can be used to add results of another Fetch query or aggregated Get query to the result.
+
+The output of a Fetch query is a lazy stream/iterator of JSON objects.
+The number of query results can be less than the number of solutions of its `match` clause due to set semantics
+if not all query variables are projected into results.
+
+You can use xref:typeql::modifiers/sorting.adoc[sorting] and
+xref:typeql::modifiers/pagination.adoc[pagination] with a Fetch query.
 
 [#_match_clause]
 === Match clause
@@ -59,42 +63,40 @@ xref:typeql::patterns/overview.adoc[Patterns] and xref:typeql::statements/overvi
 [#_fetch_clause]
 === Fetch clause
 
-A `fetch` clause is used in a Fetch query
-to specify a projection of values (and types) from matched database concepts to an output of JSON objects.
+A `fetch` clause is used in a Fetch query to specify the format of the returned JSON objects and
+projection of values (and types) from matched database concepts to the JSON.
 
-A `fetch` clause can project values directly from specified variables,
-project owned attributes of specified types,
-or project JSONs returned by subqueries.
+In a `fetch` clause you specify top level projections to JSON, separating them with a semicolon.
+Projected variables and attribute types are used as keys in the resulted JSON,
+but you can customize that with <<_customize_output,output customization>>.
 
+There are three types of projections that you can use in a Fetch query:
 
-This clause is executed exactly once for every result matched by the preceding `match` clause of the same query.
-A `fetch` clause produces a JSON object for every matched result,
-but <<_number_of_results,deduplicates>> the results.
+* <<_direct_projection,Direct projection>> -- use a concept variable with either a type object or attribute.
+* <<_ownership_projection,Ownership projection>> -- use a concept variable, colon,
+and attribute types that can be owned by an object in the variable.
+* <<_subqueries,Subquery>> -- use another Fetch query or aggregated Get query.
 
-Following the `fetch` keyword are one or multiple variables or subqueries, separated by semicolons.
-Every variable or subquery mentioned in a `fetch` clause adds a top-level key to the resulting JSON objects.
+A `fetch` clause is executed exactly once for every result matched by the preceding `match` clause of the same query.
+But it can <<_number_of_results,return fewer results>>,
+than matched by the `match` clause if not all variables are projected.
 
-== Fetching values and types directly
+[#_direct_projection]
+== Using direct projection
 
-Types, attributes, and value-variables can be projected directly into JSON
-by using their variable in a `fetch` clause.
+Types and values can be projected directly into a JSON.
 
-.Fetching values directly syntax
-[,typeql]
-----
-fetch <variable>; ...
-----
-
-Every instance in the JSON output has its type, root type, and value (if applicable).
-
-[#_fetch_an_attribute]
-=== Fetch an attribute
+[#_fetch_an_value]
+=== Fetch a value
 
 include::typeql::partial$iam-database-links.adoc[]
 
-To fetch an attribute, use the following query:
+To fetch a value, you can either fetch a xref:typeql::concepts/concept-variables.adoc[concept variable]
+with an attribute, or fetch a xref:typeql::values/value-variables.adoc[value variable].
 
-.Example of fetching an attribute
+For example, let's match all files that own a `path` attribute and fetch all `path` attributes:
+
+.Fetching a value
 [,typeql]
 ----
 match
@@ -103,72 +105,99 @@ fetch
 $p;
 ----
 
-The above query matches files with their `path` attributes and then fetches the `path` attribute.
-
-.Result example
+.Output example (partial)
 [,json]
 ----
-{ "p": { "value": "README.md", "value_type": "string", "type": { "label": "path", "root": "attribute" } } }
+{ "p": { "value": "psukg.java", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
+{ "p": { "value": "budget_2021-08-01.xlsx", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
+{ "p": { "value": "README.md", "type": { "label": "path", "root": "attribute", "value_type": "string" } } }
 ----
 
 [#_fetch_a_type_or_a_value_variable]
-=== Fetch a type or a value variable
+=== Fetch a type
 
 include::typeql::partial$iam-database-links.adoc[]
 
-You can fetch a value of a value variable or a type from a schema of a database:
+To fetch a type from a database, use a concept variable that is matched to a type.
+If you use xref:typeql::statements/isa.adoc[isa] or xref:typeql::statements/sub.adoc[sub] statement,
+make sure to use it with an exclamation mark to get only the exact type, and no supertypes via type inference.
 
-.Example of fetching value variable and type
+.Fetching type example
 [,typeql]
 ----
 match
-$x has attribute "iopvu.java", has size-kb $s;
+$x has attribute "iopvu.java";
 $x isa! $type;
-?size = round( ( $s + 2222 ) / 1024 );
 fetch
 $type;
-?size;
 ----
 
 The above query matches any instance of data (`$x`) that has `name` of `iopvu.java` and any `size-kb` (`$s`).
 The variable `$type` is assigned to be equal to the type of `$x`.
 Finally, we bound the value variable `?size` to some value, based on the value of the `$s`.
 
-.Result example
+.Output example
 [,json]
 ----
-{
-    "size": { "value": 2, "value_type": "long" },
-    "type": { "label": "file", "root": "entity" }
-}
+{ "type": { "label": "file", "root": "entity" } }
 ----
 
-Note, that the `size` has no type because it is a value from a value variable and
-the `type` has no value because it is a type of a concept.
-
-== Fetching owned attributes
+[#_ownership_projection]
+== Using ownership projection
 
 include::typeql::partial$iam-database-links.adoc[]
 
-Not every type can have a value to fetch.
-Fetch always needs a value to project into JSON.
-Hence, entities and relations can be used as variables in a `fetch` clause only by
-extracting attributes that they have.
+Entities and relations can be used in a `fetch` clause only by extracting values of attributes they own.
 
-To extract owned attributes, we use a variable followed by a colon and a list of comma-separated attribute-types.
-Every attribute type mentioned in this way adds a JSON subsection with the list of instances of that attribute type
-owned by the matched concept from a variable.
+You can project all attributes owned by a data instance, filtered by an attribute type.
+To do that, use the concept variable, matched in a preceding `match` clause,
+in a `fetch` clause followed by a colon and attribute type label.
+You can use multiple types to filter by listing them with a comma as a separator.
 
-.Fetching values of owned attributes syntax
+Let's see how to fetch all attributes owned by every `person` entity of type `full-name` and `email`.
+First, we match every person entity, then we use the concept variable we matched them with in a `fetch` clause
+and specify attribute types to fetch:
+
+.Fetching owned attributes
 [,typeql]
 ----
-fetch (<variable> : <attribute-type>, ... ;) ...
+match
+$p isa person;
+fetch
+$p: full-name, email;
 ----
 
-[#_fetch_all_attributes_owned]
-For example:
+The above query example should produce a set of JSON objects with a similar format: the `p` as top-level key,
+with `full-name`, `email`, and `type` keys inside.
 
-.Example of fetching all attributes of every file
+.Output example (partial)
+[,json]
+----
+{
+    "p": {
+        "email": [ { "value": "kevin.morrison@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
+        "full-name": [ { "value": "Kevin Morrison", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "person", "root": "entity" }
+    }
+}
+----
+
+[IMPORTANT]
+====
+Fetching owned attributes by their type returns a list of owned attributes.
+This list can contain any number of attributes.
+Even if there are no attributes of selected type, the empty list is returned for the respective key.
+====
+
+[NOTE]
+=====
+To fetch all attributes owned by a data instance, use the `attribute` root type for projection.
+As a common supertype, it will project all possible attribute types.
+
+.See example
+[%collapsible]
+====
+.Fetching all attributes
 [,typeql]
 ----
 match
@@ -177,10 +206,10 @@ fetch
 $f: attribute;
 ----
 
-The above query matches all files (even those that do not have any attributes)
+The above query example matches all files (even those that do not have any attributes)
 and then fetches all attributes for every file.
 
-.Result example
+.Output example (partial)
 [,json]
 ----
 {
@@ -193,28 +222,64 @@ and then fetches all attributes for every file.
     }
 }
 ----
+====
+=====
 
 [#_relabeling]
-== Customizing output by relabeling
+[#_customize_output]
+== Using output customization
 
 include::typeql::partial$iam-database-links.adoc[]
 
-A `fetch` clause support relabeling of variables and attribute types.
-You can assign a new label which will be used for JSON output.
-
-To relabel a variable or an attribute type, add the `as` keyword followed by a new label.
+A Fetch query supports output customization (or relabeling) of the top level keys in the resulting JSON.
+<<_subqueries,Subqueries>> always use labels set in the query for their output.
+To customize a key for a <<_direct_projection,direct projection>> or <<_ownership_projection,ownership projection>>,
+use the `as` keyword after the concept variable in a `fetch` clause.
 By surrounding a new label in double quotes, you can use whitespaces in it.
 
-.Relabeling syntax
+For example, if we want to fetch all attributes of entities matched by the variable `$f`,
+relabeling `f` to `file`:
+
+.Direct projection output customization example
 [,typeql]
 ----
-fetch (<variable> as <label> : <attribute-type> as <label>, ... ;) ...
+match
+$f isa file;
+fetch
+$f as file: attribute;
 ----
 
-[#_customize_output]
-For example:
+.Output example (partial)
+[,json]
+----
+{
+    "file": {
+        "attribute": [
+            { "value": 758, "type": { "label": "size-kb", "root": "attribute", "value_type": "long" } },
+            { "value": "budget_2022-05-01.xlsx", "type": { "label": "path", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "file", "root": "entity" }
+    }
+}
+{
+    "file": {
+        "attribute": [ { "value": "LICENSE", "type": { "label": "path", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "file", "root": "entity" }
+    }
+}
+----
 
-.Example of output customization
+=== Ownership projection customization
+
+include::typeql::partial$iam-database-links.adoc[]
+
+You can also customize (relabel) keys for attribute types used in <<_ownership_projection,ownership projection>>
+by using the same keyword `as` after the attribute type.
+
+For example, if we want to fetch all attributes of entities matched by the variable `$f`,
+relabeling the `f` key to `file`, and the `attribute` key to the `all attributes` string:
+
+.Relabeling attribute type example
 [,typeql]
 ----
 match
@@ -223,53 +288,103 @@ fetch
 $f as file: attribute as "all attributes";
 ----
 
-The above query is equal to the previous one, but it uses relabeling to customize keys of the JSON objects.
+The above query is equal to the previous one, but it uses the `all attribute string` for the key of attributes.
 
-.Result example
+.Output example (partial)
 [,json]
 ----
 {
     "file": {
         "all attributes": [
-            { "value": 55, "value_type": "long", "type": { "label": "size-kb", "root": "attribute" } },
-            { "value": "iopvu.java", "value_type": "string", "type": { "label": "path", "root": "attribute" } }
+            { "value": 758, "type": { "label": "size-kb", "root": "attribute", "value_type": "long" } },
+            { "value": "budget_2022-05-01.xlsx", "type": { "label": "path", "root": "attribute", "value_type": "string" } }
         ],
+        "type": { "label": "file", "root": "entity" }
+    }
+}
+{
+    "file": {
+        "all attributes": [ { "value": "LICENSE", "type": { "label": "path", "root": "attribute", "value_type": "string" } } ],
         "type": { "label": "file", "root": "entity" }
     }
 }
 ----
 
-Note that instead of `f` we have `file` key and instead of `attribute` -- `all-attributes`.
-
 [#_subqueries]
-== Subqueries
+== Using subqueries
 
-A Fetch query can include a subquery in a `fetch` clause: another Fetch query or a Get query with
-xref:typeql::queries/get.adoc#_aggregation[aggregation] (to return a value).
+include::typeql::partial$iam-database-links.adoc[]
+
+A Fetch query can include a subquery in a `fetch` clause.
+A subquery is another Fetch query that returns a JSON for the key or a
+xref:typeql::queries/get.adoc[Get query] with
+xref:typeql::modifiers/aggregation.adoc[aggregation] that returns a value.
 A subquery consists of label, colon, and a TypeQL query string surrounded by curly brackets.
 
 The label determines the key that will be used to introduce results of the subquery into the JSON output.
 
-.Subquery syntax
+For example, let's match every file, and use a subquery to find its size in megabytes:
+
+.Subquery example (partial)
 [,typeql]
 ----
-fetch <subquery-label> : {(<fetch_query> | <get_aggregate_query>)};
+match
+$f isa file;
+fetch
+$f as file: path as filename, size-kb;
+file-size:{
+        match
+        $f has size-kb $sk;
+        ?sm = round( $sk / 1024 );
+        fetch
+        ?sm as size-mb;
+};
 ----
 
+Some files don't have a `size-kb` attribute.
+Without a subquery, matching this attribute in the top level `match` clause to calculate size in megabytes,
+would result in skipping the files without size, as they would not match a pattern.
+By adding a subquery, we can return all files.
+If a file doesn't have a `size-kb` attribute, the subquery returns an empty list:
+
+.Output example
+[,json]
+----
+{
+    "file": {
+        "filename": [ { "value": "budget_2022-05-01.xlsx", "type": { "label": "path", "root": "attribute", "value_type": "string" } } ],
+        "size-kb": [ { "value": 758, "type": { "label": "size-kb", "root": "attribute", "value_type": "long" } } ],
+        "type": { "label": "file", "root": "entity" }
+    },
+    "file-size": [ { "size-mb": { "value": 1, "value_type": "long" } } ]
+}
+{
+    "file": {
+        "filename": [ { "value": "LICENSE", "type": { "label": "path", "root": "attribute", "value_type": "string" } } ],
+        "size-kb": [  ],
+        "type": { "label": "file", "root": "entity" }
+    },
+    "file-size": [  ]
+}
+----
+
+[NOTE]
+====
 A subquery shares variables with its parent query.
 At least one variable from a parent query must be used in a subquery.
+====
 
 The number of nested subqueries is not limited,
-but many nested levels can break technical limitations of gRPC messaging.
+but using a big number of nested levels can break technical limitations of gRPC messaging.
 
 [#_grouping_results]
 === Grouping results
 
 include::typeql::partial$iam-database-links.adoc[]
 
-One might want to group query results to reduce the size of a response or simplify further processing.
-In a fetch query that can be achieved by utilizing <<_subqueries,subqueries>>.
-For example, see below how to group the results from <<_complex_example,previous example>> by user.
+Subqueries can be used to group query results, reduce the size of a response, or simplify further processing.
+For example, let's find all files that a user has a permission to access with the `modify_file` action.
+To group the results, let's iterate through users on the parent query and use subquery to find files:
 
 .Grouping by user example
 [,typeql]
@@ -277,67 +392,83 @@ For example, see below how to group the results from <<_complex_example,previous
 match
 $u isa user;
 fetch
-$u as user: attribute as all-attributes;
+$u as user: attribute as "User attributes";
 permited-files:{
     match
-    $o isa object;
-    $va isa action, has name "view_file";
-    $pa($o, $va) isa access;
+    $f isa file;
+    $va isa action, has name "modify_file";
+    $pa($f, $va) isa access;
     $p($u, $pa) isa permission;
     fetch
-    $o as object: attribute as all-attributes;
-    convert-size: {
-        match
-        $o has size-kb $sk;
-        ?sm = round( $sk / 1024 );
-        fetch
-        ?sm as size-mb; }; };
+    $f as file: attribute as "File attributes";
+};
 ----
 
 The above query matches all users at first.
-Then it fetches all attributes for every user and runs a subquery for a subsection labeled as `permitted-files`.
+Then it fetches all attributes for every user and runs the subquery for the subsection labeled as `permitted-files`.
 
-This subquery matches all objects that participate in an `access` relation with action named `view_file` that
+This subquery matches all files that participate in an `access` relation with action named `modify_file` that
 play a role in a `permission` relation with the user matched by the parent query.
-Then it fetches all attributes for such objects and runs another subquery.
-
-The second subquery matches all objects that have `size-kb` attribute and converts its value into some new value
-with arithmetic.
-Then it fetches the converted value as `size-mb`.
+Then it fetches all attributes for such files.
 
 The resulting JSON objects have a predictable structure of keys, that was set by the `fetch` clauses, using
-<<_relabeling,relabeling>>:
+<<_customize_output,relabeling>>:
 
 * user
-** all-attributes
+** User attributes
 * permitted-files
-** object
-*** all-attributes
-** convert-size
+** file
+*** file-attributes
 
-See an example of the partial output below.
-
-.Result example
+.Output example (partial)
 [,json]
 ----
 {
+    "permited-files": [  ],
+    "user": {
+        "User attributes": [
+            { "value": "masako.holley@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } },
+            { "value": "Masako Holley", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "person", "root": "entity" }
+    }
+}
+{
     "permited-files": [
         {
-            "convert-size": [ { "size-mb": { "value": 1, "value_type": "long" } } ],
-            "object": {
-                "all-attributes": [
-                    { "value": 758, "value_type": "long", "type": { "label": "size-kb", "root": "attribute" } },
-                    { "value": "budget_2022-05-01.xlsx", "value_type": "string", "type": { "label": "path", "root": "attribute" } }
+            "file": {
+                "File attributes": [
+                    { "value": 70, "type": { "label": "size-kb", "root": "attribute", "value_type": "long" } },
+                    { "value": "lzfkn.java", "type": { "label": "path", "root": "attribute", "value_type": "string" } }
                 ],
                 "type": { "label": "file", "root": "entity" }
             }
         },
-...
+        ...
+        {
+            "file": {
+                "File attributes": [
+                    { "value": 55, "type": { "label": "size-kb", "root": "attribute", "value_type": "long" } },
+                    { "value": "iopvu.java", "type": { "label": "path", "root": "attribute", "value_type": "string" } }
+                ],
+                "type": { "label": "file", "root": "entity" }
+            }
+        }
     ],
     "user": {
-        "all-attributes": [
-            { "value": "Kevin Morrison", "value_type": "string", "type": { "label": "full-name", "root": "attribute" } },
-            { "value": "kevin.morrison@typedb.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } }
+        "User attributes": [
+            { "value": "kevin.morrison@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } },
+            { "value": "Kevin Morrison", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "person", "root": "entity" }
+    }
+}
+{
+    "permited-files": [  ],
+    "user": {
+        "User attributes": [
+            { "value": "pearle.goodman@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } },
+            { "value": "Pearle Goodman", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } }
         ],
         "type": { "label": "person", "root": "entity" }
     }
@@ -346,10 +477,11 @@ See an example of the partial output below.
 
 [NOTE]
 ====
-The order of key/value pairs in JSON is not guaranteed.
+The order of key/value pairs in a JSON is not guaranteed.
 ====
 
-== Using Get queries as subqueries
+////
+=== Using Get queries as subqueries
 
 include::typeql::partial$iam-database-links.adoc[]
 
@@ -386,125 +518,9 @@ Hence, the value in "try-subquery" key has no type.
     "try-subquery": { "value": 1, "value_type": "long" }
 }
 ----
+////
 
-[#_number_of_results]
-== Number of results
-
-include::typeql::partial$iam-database-links.adoc[]
-
-A Fetch query can return fewer results, than it was matched by its `match` clause.
-Excluding the usage of <<_modifiers,modifiers>>, that can happen due to natural deduplication of results.
-See an example below.
-
-.Example of a fetch clause reducing the number of results
-[,typeql]
-----
-match
-$p isa person, has name $n;
-fetch $n;
-----
-
-In the above example `match` clause matches all `person` type instances that own a `name` attribute.
-The `fetch` clause then returns values of those `name` attributes.
-
-What happens if two persons have the same name?
-In TypeDB database that is stored, as two entities own the same attribute (instance of the `name` attribute type).
-The `match` clause finds all pairs of a person entity and its owned attribute.
-But `fetch` clause returns only the values of attributes.
-Since both persons own the very same attribute,
-it will be returned only once, reducing the total number of results.
-
-For more examples of filtering matched results,
-see the xref:typeql::queries/get.adoc[Get query] page.
-
-[#_modifiers]
-== Modifiers
-
-include::typeql::partial$iam-database-links.adoc[]
-
-In a Fetch query, modifiers can change the number and order of results.
-
-The following modifiers can be used at the end of a Fetch query:
-<<_sort_the_results,sort>>,
-<<_offset_the_results,offset>>, and
-<<_limit_the_results,limit>>.
-
-They can be used to add pagination for the query results.
-
-[#_sort_the_results]
-=== Sort the results
-
-.Sort modifier syntax
-[,typeql]
-----
-sort <variable> [asc|desc] [,<variable> [asc|desc]];
-----
-
-Use the `sort` keyword followed by a variable to sort the results.
-A second argument is optional and determines the sorting order: `asc` (ascending, by default) or `desc` (descending).
-
-.Sort example
-[,typeql]
-----
-match
-$p isa person, has full-name $n;
-fetch $n;
-sort $n asc;
-----
-
-This query returns sorted values of all `full-name` attributes owned by `person` entities.
-
-To sort by multiple variables, add additional variables with a comma separator.
-
-[#_offset_the_results]
-=== Offset the results
-
-.Offset modifier syntax
-[,typeql]
-----
-offset <value>;
-----
-
-Use the `offset` keyword followed by the number to offset the results.
-This is commonly used with the `limit` keyword to return a desired range of results for pagination.
-Don't forget to use <<_sort_the_results,sort>> the results to ensure more deterministic and predictable results.
-
-.Offset example
-[,typeql]
-----
-match $p isa person, has full-name $n;
-fetch $n;
-sort $n;
-offset 6;
-limit 10;
-----
-
-The above example sorts the `full-name` attributes of all `person` entities in ascending order,
-skips the first six results, and returns up to the next ten.
-
-[#_limit_the_results]
-=== Limit the results
-
-.Limit modifier syntax
-[,typeql]
-----
-limit <value>;
-----
-
-Use the `limit` keyword followed by a positive integer to limit the number of results (answers) returned.
-
-.Limit example
-[,typeql]
-----
-match
-$p isa person, has full-name $n;
-fetch $n;
-limit 1;
-----
-
-We recommend using the `limit` with the <<_sort_the_results,sorting aggregation>>
-to get more deterministic and predictable results.
-
+////
 == Using inference
 
 include::typeql::partial$iam-database-links.adoc[]
@@ -536,7 +552,49 @@ xref:manual::reading/infer.adoc#_how_to_send_a_query_with_inference[enabled].
 ----
 
 Try the same query with disabled inference to see no matched results.
+////
 
+[#_number_of_results]
+== Number of results
+
+include::typeql::partial$iam-database-links.adoc[]
+
+A Fetch query can return fewer results, than it was matched by its `match` clause.
+Due to set semantics, if fetch clause projects not every variable from the `match` clause,
+some results might lose their uniqueness and made redundant.
+
+Let's try to match all entities of the `person` type that have an `full-name` attribute,
+and then project the `full-name` attribute only:
+
+.Number of results example
+[,typeql]
+----
+match
+$p isa person, has full-name $n;
+fetch $n;
+----
+
+.Output example
+[,json]
+----
+{ "n": { "value": "Masako Holley", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } }
+{ "n": { "value": "Kevin Morrison", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } }
+{ "n": { "value": "Pearle Goodman", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } }
+----
+
+The `match` clause returns pairs of `person` and its `full-name`.
+The `fetch` clause then returns only the `full-name` attributes projected into a JSON.
+
+If multiple entities have the same attribute,
+that is represented in a database as ownership of the very same single attribute.
+Since we filter the results to have only the `$n` variable, the results include such a name, but only once.
+Regardless of how many entities `$p` own it.
+
+To prevent such deduplication, in this example,
+you can extend the results to include the `$p` variable into the projection, since every entity is unique.
+The results then will include pairs of `$p` and `$n`.
+
+////
 [#_complex_example]
 == Complex example
 
@@ -605,4 +663,21 @@ For example: `$u isa user, has full-name $fn;` would exclude all users that do n
 At the same time, matching `$u usa user;` and then fetching `$u: full-name;` will return even those users
 that do not own any `full-name` attributes.
 The corresponding value would contain an empty list of values in this case.
+////
 
+== Learn more
+
+[cols-2]
+--
+.xref:learn::7-understanding-query-patterns/7-understanding-query-patterns.adoc[]
+[.clickable]
+****
+Learn more about query patterns in the TypeDB Learning course.
+****
+
+.xref:manual::reading/fetch.adoc[]
+[.clickable]
+****
+See how to send a Fetch query to TypeDB.
+****
+--
