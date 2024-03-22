@@ -30,15 +30,9 @@ fetch {
 
 == Behavior
 
-A Fetch query retrieves concepts from a database and projects them to values of a JSON object.
+A Fetch query retrieves concepts from a database and projects values and types to a JSON object.
 
 A `match` clause is used to match data by a pattern, while a `fetch` clause is used to format the returned JSON.
-
-Only values and types can be projected directly into a JSON.
-Entities and relations don't have a value to project.
-Instead of using them directly, we can project values of attributes owned by them.
-
-A subquery can be used to add results of another Fetch query or aggregated Get query to the result.
 
 The output of a Fetch query is a lazy stream/iterator of JSON objects.
 The number of query results can be less than the number of solutions of its `match` clause due to set semantics
