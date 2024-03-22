@@ -36,7 +36,7 @@ A `delete` clause is executed once per every result of a preceding `match` claus
 A Delete query returns a Promise of an empty response.
 
 [#_match_clause]
-== Match clause
+=== Match clause
 
 A `match` clause in a Delete query matches existing concepts in a database to provide context for deleting data
 specified by the `delete` clause pattern.
@@ -49,7 +49,7 @@ For more information on patterns and statements used in a `match` clause, see th
 xref:typeql::patterns/overview.adoc[Patterns] and xref:typeql::statements/overview.adoc[Statements] sections.
 
 [#_delete_clause]
-== Delete clause
+=== Delete clause
 
 // tag::delete_clause[]
 A `delete` clause is used in a query to specify exact data to be deleted from a database.
