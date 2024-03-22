@@ -33,6 +33,11 @@ As a DDL, TypeQL lets us define a xref:typeql::queries/overview.adoc#_schema_que
 
 As a DML, TypeQL lets us query (read&write) xref:typeql::queries/overview.adoc#_data_queries[data] of a database.
 
+== Full unicode support
+
+TypeQL has full support for UTF-8 encoding.
+All labels are valid unicode identifiers, not starting with the underscore character (`_`).
+
 == Syntax and grammar
 
 The complete set of the TypeQL grammar can be seen in the *ANTLR v.4* specification file:
