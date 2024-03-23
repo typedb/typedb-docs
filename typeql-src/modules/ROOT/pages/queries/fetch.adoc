@@ -112,9 +112,9 @@ $p;
 
 include::typeql::partial$iam-database-links.adoc[]
 
-To fetch a type from a database, use a concept variable that is matched to a type.
-If you use xref:typeql::statements/isa.adoc[isa] or xref:typeql::statements/sub.adoc[sub] statement,
-make sure to use it with an exclamation mark to get only the exact type, and no supertypes via type inference.
+To fetch a type from a database, use a concept variable that is matched to a type by an
+xref:typeql::statements/isa.adoc[isa] or xref:typeql::statements/sub.adoc[sub] statement.
+Make sure to use an exclamation mark (`isa!`/`sub!`) to get only the exact type, and no supertypes via type inference.
 
 .Fetching type example
 [,typeql]
