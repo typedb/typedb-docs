@@ -146,7 +146,7 @@ Entities and relations can be used in a `fetch` clause only by extracting values
 You can project all attributes owned by a data instance, filtered by an attribute type.
 To do that, use the concept variable, matched in a preceding `match` clause,
 in a `fetch` clause followed by a colon and attribute type label.
-You can use multiple types to filter by listing them with a comma as a separator.
+You can use multiple types by listing them with a comma as a separator.
 
 Let's see how to fetch all attributes owned by every `person` entity of type `full-name` and `email`.
 First, we match every person entity, then we use the concept variable we matched them with in a `fetch` clause
