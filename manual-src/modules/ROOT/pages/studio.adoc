@@ -433,21 +433,28 @@ Default value: *On*.
 [#_version_compatibility]
 == Version Compatibility
 
+// tag::latest-compatibility[]
 [cols="^.^2,^.^1,^.^2,^.^2"]
 |===
-| TypeDB Studio | Protocol encoding version | TypeDB Core | TypeDB Cloud
+| TypeDB Studio +
+(release notes) | Protocol encoding version | TypeDB Core | TypeDB Cloud
 
-| 2.26.0
+| https://github.com/vaticle/typedb-studio/releases/tag/2.27.0-rc0[2.27.0-rc0]
 | 3
-| 2.26.3
-| 2.26.0
+| 2.27.0
+| 2.27.0
 
-| 2.25.11
+| https://github.com/vaticle/typedb-studio/releases/tag/2.26.6[2.26.6]
+| 3
+| 2.26.6
+| 2.26.6
+
+| https://github.com/vaticle/typedb-studio/releases/tag/2.25.11[2.25.11]
 | 3
 | 2.25.7
 | 2.25.7
 
-| 2.24.15
+| https://github.com/vaticle/typedb-studio/releases/tag/2.24.15[2.24.15]
 | 2
 | 2.24.17
 | 2.24.17
@@ -461,9 +468,20 @@ Default value: *On*.
 | N/A
 | 2.14.1 to 2.17.0
 | 2.14.1 to 2.17.0
+|===
+// end::latest-compatibility[]
+// tag::older-compatibility[]
+.See older versions
+[%collapsible]
+====
+[cols="^.^2,^.^1,^.^2,^.^2"]
+|===
+| TypeDB Studio | Protocol encoding version | TypeDB Core | TypeDB Cloud
 
 | 2.11.0
 | N/A
 | 2.11.1
 | 2.11.1 to 2.11.2
 |===
+====
+// end::older-compatibility[]
