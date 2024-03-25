@@ -1,4 +1,5 @@
 = TypeDB Cloud Self-hosted
+:page-aliases: typedb::managing/self-hosted-deployment.adoc, typedb::admin/enterprise-deployment.adoc
 :experimental:
 
 This page is an installation guide for a self-hosted deployment of TypeDB Cloud.
@@ -43,41 +44,41 @@ Make sure to use `docker login` first, to get correct authentication.
 
 To pull the TypeDB Cloud Docker image, run:
 
-[,bash]
+[source,console]
 ----
-docker pull vaticle/typedb-cloud:latest
+$ docker pull vaticle/typedb-cloud:latest
 ----
 
 Use `docker run` to create a new container with the downloaded image.
 By default, a TypeDB Cloud server is expected to be running on port `1729`.
 To ensure that data is preserved even when the container is killed or restarted, use a Docker volume:
 
-[,bash]
+[source,console]
 ----
-docker run --name typedb -d -v $(pwd)/db/:/opt/ -p 1729:1729 vaticle/typedb-cloud:latest
+$ docker run --name typedb -d -v $(pwd)/db/:/opt/ -p 1729:1729 vaticle/typedb-cloud:latest
 ----
 
 ==== Start and Stop TypeDB Cloud in Docker
 
 To start the Docker container:
 
-[,bash]
+[source,console]
 ----
-docker start typedb
+$ docker start typedb
 ----
 
 To check the containers running:
 
-[,bash]
+[source,console]
 ----
-docker ps
+$ docker ps
 ----
 
 To stop the Docker container:
 
-[,bash]
+[source,console]
 ----
-docker stop typedb
+$ docker stop typedb
 ----
 
 [#_manual_download_and_installation]
@@ -98,9 +99,9 @@ To start TypeDB Cloud manually:
 1. Navigate into the directory with unpacked files of TypeDB Cloud.
 2. Run:
 +
-[,bash]
+[source,console]
 ----
-./typedb server
+$ ./typedb server
 ----
 
 Now TypeDB Cloud should show a welcome screen with its version, address, and bootup time.
@@ -116,16 +117,16 @@ xref:drivers:ROOT:overview.adoc[TypeDB Client].
 
 You can use xref:manual:ROOT:console.adoc[TypeDB Console] from your TypeDB Cloud directory:
 
-[,bash]
+[source,console]
 ----
-./typedb console --cloud 127.0.0.1:1729 --username admin --password
+$ ./typedb console --cloud 127.0.0.1:1729 --username admin --password
 ----
 
 To run TypeDB Console from a Docker container, run:
 
-[,bash]
+[source,console]
 ----
-docker exec -ti typedb-cloud bash -c '/opt/typedb-cloud-all-linux-x86_64/typedb console --cloud 127.0.0.1:1729 --username admin --password'
+$ docker exec -ti typedb-cloud bash -c '/opt/typedb-cloud-all-linux-x86_64/typedb console --cloud 127.0.0.1:1729 --username admin --password'
 ----
 
 [#_deploying_manually]
@@ -171,9 +172,9 @@ The first machine with the IP address of `10.0.0.1`.
 
 To run TypeDB server #1:
 
-[,bash]
+[source,console]
 ----
-./typedb server \
+$ ./typedb server \
     --server.address=10.0.0.1:1729 \
     --server.internal-address.zeromq=10.0.0.1:1730 \
     --server.internal-address.grpc=10.0.0.1:1731 \
@@ -195,9 +196,9 @@ The first machine with the IP address of `10.0.0.2`.
 
 To run TypeDB server #2:
 
-[,bash]
+[source,console]
 ----
-./typedb server \
+$ ./typedb server \
     --server.address=10.0.0.2:1729 \
     --server.internal-address.zeromq=10.0.0.2:1730 \
     --server.internal-address.grpc=10.0.0.2:1731 \
@@ -219,9 +220,9 @@ The first machine with the IP address of `10.0.0.3`.
 
 To run TypeDB server #3:
 
-[,bash]
+[source,console]
 ----
-./typedb server \
+$ ./typedb server \
     --server.address=10.0.0.3:1729 \
     --server.internal-address.zeromq=10.0.0.3:1730 \
     --server.internal-address.grpc=10.0.0.3:1731 \
@@ -249,9 +250,9 @@ TypeDB Cloud also supports using different IP addresses for client and server co
 The relevant external hostname should be passed as arguments using the `--server.address` and
 `--server.peers` flags as below.
 
-[,bash]
+[source,console]
 ----
-./typedb server \
+$ ./typedb server \
     --server.address=external-host-1:1729 \
     --server.internal-address.zeromq=10.0.0.1:1730 \
     --server.internal-address.grpc=10.0.0.1:1731 \

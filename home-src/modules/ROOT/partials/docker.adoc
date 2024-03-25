@@ -10,9 +10,9 @@ it from https://github.com/vaticle/typedb/tags[source code,window=_blank] with B
 // tag::install[]
 To pull the latest TypeDB Docker image:
 
-[,bash]
+[source,console]
 ----
-docker pull vaticle/typedb:latest
+$ docker pull vaticle/typedb:latest
 ----
 
 You can replace `latest` with a version number to get a specific version of TypeDB Core.
@@ -20,26 +20,36 @@ To check the list of available versions, see the xref:manual:resources:releases.
 
 // end::install[]
 
-// tag::start[]
-To run a Docker container:
-[,bash]
-----
-docker run --name typedb -d -v typedb-data:/opt/typedb-all-linux/server/data/ -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
-----
+// tag::run[]
+To create and run a new Docker container with TypeDB Core server:
 
-The following parameters should be noted:
-
-* `typedb` -- the name of the container,
-* `typedb-data` -- the name of the volume to persist data.
+[source,console]
+----
+$ docker run --name typedb -d -v typedb-data:/opt/ -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
+----
+// end::run[]
+// tag::run-info[]
+Where `typedb` -- the name of the container; `typedb-data` -- the name of the volume to persist data.
 
 The `--platform linux/amd64` parameter is required to run the TypeDB container on macOS with the `arm64`
 architecture.
 //Support for `linux/arm64` will be released in a future version of TypeDB.
-// end::start[]
+// end::run-info[]
 
 // tag::stop[]
-[,bash]
+To stop a running Docker container:
+
+[source,console]
 ----
-docker stop typedb
+$ docker stop typedb
 ----
 // end::stop[]
+
+// tag::start[]
+To start an existing Docker container again:
+
+[source,console]
+----
+$ docker start typedb
+----
+// end::start[]

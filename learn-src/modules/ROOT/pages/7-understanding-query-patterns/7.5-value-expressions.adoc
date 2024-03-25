@@ -1,0 +1,176 @@
+= Lesson 7.5: Value expressions
+
+== Value variables
+
+=== Declaration
+
+TypeQL allows the use of value expressions in queries through *value variables*. The following Fetch query shows how we might fetch the line totals for a particular order.
+
+[,typeql]
+----
+match
+$order isa order, has id "o0014";
+$book isa book, has price $retail-price;
+($order, $book) isa order-line,
+    has quantity $quantity;
+?line-total = $quantity * $retail-price;
+fetch
+?line-total;
+----
+
+Value variables are declared using a `?` prefix, like `?line-total` in this example. They are distinct from *concept variables*, which are declared with a `$` prefix as we saw in xref:learn::3-reading-data/3.1-fetching-simple-data.adoc[Lesson 3.1]. Concept variables represent specific data instances or types within the databases, while value variables represent temporary values that exist only within the scope of a query.
+
+=== Writing values
+
+In addition to retrieving value variables in Fetch queries, we can also use them for data writes. In the following query, we modify the previous example to write the line total as an attribute to the order line instead of retrieving it.
+
+[,typeql]
+----
+match
+$order isa order, has id "o0014";
+$book isa book, has price $retail-price;
+$line ($order, $book) isa order-line,
+    has quantity $quantity;
+?line-total = $quantity * $retail-price;
+insert
+$line has price ?line-total;
+----
+
+Unlike concept variables, value variables do not have schema types, only value types. If we use a write query to insert a value variable as an attribute, we must declare the attribute type, the same way we do when inserting a literal value as an attribute. If we changed the insert clause in the above query to the following, the query would not be valid.
+
+[,typeql]
+----
+...
+insert
+$line has ?line-total;
+----
+
+=== Assignment
+
+Value variables are defined using the assignment operator `=`, as we have done above, and can hold values of any value type. The assigned value is described by a *value expression*, which can take any of the following forms:
+
+* A concept variable, representing an attribute's value:
++
+--
+[,typeql]
+----
+?value = $attribute;
+----
+--
+* A previously defined value variable:
++
+--
+[,typeql]
+----
+?value = ?other-value;
+----
+--
+* A literal value:
++
+--
+[,typeql]
+----
+?value = "literal";
+----
+--
+* Any combination of the above, using certain value operations:
++
+--
+[,typeql]
+----
+?value = max($a + 100, ?c) / $d;
+----
+--
+
+We will explore the different value operations, along with the value types they are valid for, in the remainder of this lesson.
+
+[NOTE]
+====
+In TypeDB 2.x, the only supported operations are on longs and doubles. Datetime, string, and boolean operations will be available in TypeDB 3.0.
+====
+
+== Arithmetic operations
+
+TypeQL's arithmetic operators and functions can be used to operate on longs and doubles. The *arithmetic operators* are summarised in the following table.
+
+[cols="^.^,^.^,^.^",caption="",options="header"]
+|===
+| Operator | Name | Precedence
+| `(\...)` | Parentheses | 1
+| `^` | Exponentiation operator | 2
+| `*` | Multiplication operator | 3
+| `/` | Division operator | 4
+| `%` | Modulo operator | 5
+| `+` | Addition operator | 6
+| `-` | Subtraction operator | 7
+|===
+
+When resolving an arithmetic expression, the https://en.wikipedia.org/wiki/Order_of_operations[order of operations] is determined by their precedence. The *arithmetic functions* are summarised in the following table.
+
+[cols="^.^,^.^,^.^",caption="",options="header"]
+|===
+| Function | Name | Usage
+| `min(\...)` | Minimum function | Returns the minimum of comma-separated arguments.
+| `max(\...)` | Maximum function | Returns the maximum of comma-separated arguments.
+| `round(\...)` | Rounding function | Rounds the argument to the nearest integer.
+| `floor(\...)` | Floor function | Rounds the argument to the nearest lesser integer.
+| `ceil(\...)` | Ceiling function | Rounds the argument to the nearest greater integer.
+| `abs(\...)` | Modulus function | Returns the https://en.wikipedia.org/wiki/Absolute_value[absolute value] of the argument.
+|===
+
+.Exercise
+[caption=""]
+====
+Write a Fetch query to retrieve the titles of books included in the Holiday Sale 2023, along with their retail and discounted prices. The entity representing this sale has the code "HOL23". Ensure that the discounted prices are rounded to the nearest cent (within the tolerance of double precision).
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$sale isa promotion, has code "HOL23";
+$included-book isa book,
+    has title $title,
+    has price $retail-price;
+($sale, $included-book) isa promotion-inclusion,
+    has discount $discount;
+?discounted-price = round(100 * $retail-price * (1 - $discount)) / 100;
+fetch
+$title;
+$retail-price;
+?discounted-price;
+----
+=====
+
+Write an Update query to decrease the stock of _Pride and Prejudice_ by one in a single query. The entity representing this book has the ISBN-13 "9780553212150". Ensure that the stock does not drop below zero.
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$pride-prejudice isa book,
+    has isbn "9780553212150",
+    has stock $current-stock;
+$current-stock > 0;
+?new-stock = $current-stock - 1;
+delete
+$pride-prejudice has $current-stock;
+insert
+$pride-prejudice has stock ?new-stock;
+----
+=====
+====

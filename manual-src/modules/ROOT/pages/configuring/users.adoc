@@ -12,9 +12,9 @@ You can use TypeDB Console or TypeDB driver API for user management.
 
 Assuming TypeDB Console is xref:home::install/console.adoc[installed], to connect to TypeDB Cloud:
 
-[,bash]
+[source,console]
 ----
-typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
+$ typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
 ----
 
 For more information on how to use TypeDB Console, see the xref:manual::console.adoc[] page.

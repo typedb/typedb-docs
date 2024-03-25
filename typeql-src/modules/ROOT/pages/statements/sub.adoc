@@ -1,0 +1,121 @@
+= sub / sub!
+
+The `sub` keyword is used in TypeQL to specify a parent type for a subtype.
+For specifying only a direct subtype in a pattern, with no type inference,
+use the `sub!` keyword instead.
+
+== Syntax
+
+The syntax of a `sub` or `sub!` statement includes:
+
+* Subject -- a subtype
+* Predicate -- the `sub`/`sub!` keyword
+* Object -- a parent type
+
+.Syntax
+[,typeql]
+----
+<subtype> sub <parent-type>;
+----
+
+== Behavior
+
+TypeQL statements with the `sub` keyword can be used in any kind of query.
+
+The `sub` keyword adds a constraint for subject to be a type that is a subtype of the object:
+
+* In xref:typeql::queries/overview.adoc#_schema_queries[schema queries] --
+the `sub` and `sub!` keywords don't have any difference.
+* In xref:typeql::queries/overview.adoc#_data_queries[data queries] --
+the `sub` and `sub!` keywords are used to match either all existing subtypes or only direct subtypes
+of a given type respectively.
+
+== Usage in a schema definition
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Since in Define and Undefine queries you can't use variables,
+both subject and object can only be type labels in a schema statement.
+So a statement with the `sub` keyword is used to define (declare) one type (preceding subject) as a subtype
+of another type (succeeding object).
+
+For example, to define a new type `pdf` as a subtype of an existing `file` type, use:
+
+.Define query example
+[,typeql]
+----
+define
+pdf sub file;
+----
+
+== Usage in a match pattern
+
+include::typeql::partial$iam-database-links.adoc[]
+
+In a data query pattern a `sub` statement can be used only in a `match` clause or condition of a rule.
+Both subject and object of a `sub` statement can be concept variables, or one of them can be a type label.
+The `sub` keyword adds a constraint on a subject being an exact type, a direct subtype,
+or indirect subtype (via type inference) of the type used as an object.
+
+For example, to match all subtypes of a `subject` entity type, use:
+
+.Fetching all subtypes example
+[,typeql]
+----
+match
+$subtype sub subject;
+fetch
+$subtype;
+----
+
+.See example output
+[%collapsible]
+====
+.Output example
+[,json]
+----
+{ "type": { "label": "user", "root": "entity" } }
+{ "type": { "label": "business-unit", "root": "entity" } }
+{ "type": { "label": "user-role", "root": "entity" } }
+{ "type": { "label": "user-account", "root": "entity" } }
+{ "type": { "label": "person", "root": "entity" } }
+{ "type": { "label": "user-group", "root": "entity" } }
+{ "type": { "label": "subject", "root": "entity" } }
+----
+====
+
+.Fetching direct subtypes example
+[,typeql]
+----
+match
+$type sub! subject;
+fetch $type;
+----
+
+.See example output
+[%collapsible]
+====
+.Output example
+[,json]
+----
+{ "type": { "label": "user", "root": "entity" } }
+{ "type": { "label": "user-group", "root": "entity" } }
+----
+====
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::statements/type.adoc[]
+[.clickable]
+****
+Learn more about `type` statement in TypeQL.
+****
+
+.xref:typeql::concepts/types.adoc[]
+[.clickable]
+****
+Learn about types in TypeQL.
+****
+--

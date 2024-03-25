@@ -1,0 +1,132 @@
+= Grouping
+
+This page covers grouping of TypeQL Get query results.
+
+== Behavior
+
+A Get query without aggregation or grouping returns a stream of ConceptMaps,
+each representing a matched solution for the query pattern.
+With grouping, the results of the same query are divided into groups based on a specified variable.
+Each group contains all results with the selected variable having the same value or concept.
+
+Grouping can be used alongside aggregation to return an aggregated value for every group.
+
+== Usage
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Let's match all `person` entities that have a `full-name` and `email` attributes, retrieve them all,
+and group by the instance of entity.
+If any person has more than one attribute of the `full-name` or `email` types, they are placed in its respective group.
+The grouped results are easier to navigate and process this way.
+
+.Simple example
+[,typeql]
+----
+match
+$p isa person, has full-name $n, has email $e;
+get;
+group $p;
+----
+
+TypeDB Studio produces the following or similar textual output:
+
+.Output example
+[,typeql]
+----
+iid 0x826e800a8000000000000003 isa person => {
+    {
+        $n Jacky isa full-name;
+        $p iid 0x826e800a8000000000000003 isa person;
+        $e jk@typedb.com isa email;
+    }    {
+        $p iid 0x826e800a8000000000000003 isa person;
+        $n Jack Keeper isa full-name;
+        $e jk@typedb.com isa email;
+    }
+}
+----
+
+== Usage with polymorphism
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Now let's query for any attributes of any person, grouped by the person entity.
+
+.Grouping a polymorphic query example
+[,typeql]
+----
+match
+$p isa person, has $a;
+get;
+group $p;
+----
+
+TypeDB Studio produces the following or similar textual output:
+
+.Output example
+[,typeql]
+----
+iid 0x826e800a8000000000000003 isa person => {
+    {
+        $a Jacky isa full-name;
+        $p iid 0x826e800a8000000000000003 isa person;
+    }    {
+        $a Jack Keeper isa full-name;
+        $p iid 0x826e800a8000000000000003 isa person;
+    }    {
+        $a jk@typedb.com isa email;
+        $p iid 0x826e800a8000000000000003 isa person;
+    }
+}
+----
+
+== Usage with aggregation
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Now let's see how many people own every attribute by grouping the same query by the `$a` variable
+and counting the results in every group.
+
+.Grouping and aggregation example
+[,typeql]
+----
+match
+$p isa person, has $a;
+get;
+group $a;
+count;
+----
+
+TypeDB Studio produces the following or similar textual output:
+
+.Output example
+[,typeql]
+----
+kevin.morrison@typedb.com isa email => Optional[1]
+pearle.goodman@typedb.com isa email => Optional[1]
+masako.holley@typedb.com isa email => Optional[1]
+Jack Keeper isa full-name => Optional[1]
+Pearle Goodman isa full-name => Optional[1]
+Jacky isa full-name => Optional[1]
+Masako Holley isa full-name => Optional[1]
+jk@typedb.com isa email => Optional[1]
+Kevin Morrison isa full-name => Optional[1]
+----
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::modifiers/aggregation.adoc[]
+[.clickable]
+****
+Learn more about results aggregation in TypeQL.
+****
+
+.xref:typeql::queries/get.adoc[]
+[.clickable]
+****
+Learn more about Get queries in TypeQL.
+****
+--

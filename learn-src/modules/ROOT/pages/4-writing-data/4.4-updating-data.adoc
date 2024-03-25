@@ -12,7 +12,7 @@ $dispatched "dispatched" isa status;
 delete
 $order-38 has $dispatched;
 ----
-image:learn::studio-icons/close.png[] *_Do not run_*
+image:learn::studio-icons/close-transaction.png[] *_Do not run_*
 
 [,typeql]
 ----
@@ -21,7 +21,7 @@ $order-38 isa order, has id "o0038";
 insert
 $order-38 has status "delivered";
 ----
-image:learn::studio-icons/close.png[] *_Do not run_*
+image:learn::studio-icons/close-transaction.png[] *_Do not run_*
 
 When run one after the other, they replace the existing order status "dispatched" with "delivered". We can do this more efficiently using an Update query.
 
@@ -35,7 +35,7 @@ $order-38 has $dispatched;
 insert
 $order-38 has status "delivered";
 ----
-image:learn::studio-icons/run.png[]image:learn::studio-icons/commit.png[] *_Run and commit_*
+image:learn::studio-icons/run-query.png[]image:learn::studio-icons/commit-transaction.png[] *_Run and commit_*
 
 In addition to being more efficient and easier for readers to interpret, Update queries are sometimes a necessity if we're replacing the attribute we're matching on. In the following query, we match every book that has the genre "art", and replace it with the genre "art and design". Functionally, this represents a rename of the genre without changing the books in it. If we were to try this with a Delete query followed by an Insert query, then the Insert query would have nothing to match on!
 
@@ -49,7 +49,7 @@ $book has $art;
 insert
 $book has genre "art and design";
 ----
-image:learn::studio-icons/run.png[]image:learn::studio-icons/commit.png[] *_Run and commit_*
+image:learn::studio-icons/run-query.png[]image:learn::studio-icons/commit-transaction.png[] *_Run and commit_*
 
 .Exercise
 [caption=""]
@@ -82,9 +82,8 @@ $pride-prejudice has $stock;
 insert
 $pride-prejudice has stock 14;
 ----
-image:learn::studio-icons/run.png[]image:learn::studio-icons/commit.png[] *_Run and commit_*
+image:learn::studio-icons/run-query.png[]image:learn::studio-icons/commit-transaction.png[] *_Run and commit_*
 =====
 
-Of course, having to retrieve the current stock value before updating it is a bit inconvenient. We'll learn how to use *arithmetic operations* to automatically decrement it in a single query in Lesson 7 (coming soon).
+Of course, having to retrieve the current stock value before updating it is a bit inconvenient. We'll learn how to use *arithmetic operations* to automatically decrement it in a single query in xref:learn::7-understanding-query-patterns/7.5-value-expressions.adoc[Lesson 7.5].
 ====
-

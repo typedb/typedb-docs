@@ -1,0 +1,54 @@
+= Arithmetic
+
+== Expressions
+
+Arithmetic expressions can be used to set a value of a value variable based on other values used in a query.
+To use arithmetic operations, start a statement with a value variable and an equal sign, followed by an expression.
+
+[#_expression]
+An expression describes a computation of a value in a query.
+It can be used only in a `match` clause or a `condition` of a rule
+and can contain any combination of the following elements:
+
+* a xref:typeql::concepts/concept-variables.adoc[concept variable] representing an attribute (e.g., `$size-kb`),
+* a xref:typeql::values/value-variables.adoc[value variable] (e.g., `?sum`),
+* a literal value (e.g., `4`),
+* an xref:typeql::values/arithmetic.adoc[arithmetic operation] (e.g., `+`),
+* or a xref:typeql::values/functions.adoc[built-in function] (e.g., `max()`).
+
+.Expression example
+[,typeql]
+----
+?x = $s + 1;
+----
+
+In the above example, the value variable `?x` is bound to the value of the attribute in `$s` added `1`.
+
+[#_operations]
+== Operations
+
+TypeQL includes the following arithmetic operations for values, presented in the order of operations in an expression:
+
+//#todo reimplement the links to examples
+// tag::arithmetics[]
+1. `()` -- parentheses.
+2. `^` -- exponentiation (power).
+3. `*` -- multiplication.
+4. `/` -- division.
+5. `%` -- https://en.wikipedia.org/wiki/Modulo[modulo,window=_blank] (the remainder of a division).
+6. `+` -- addition.
+7. `-` -- subtraction.
+// end::arithmetics[]
+
+.Arithmetic example
+[,typeql]
+----
+?gb = (($s + ?o)/ 1024) / 1024;
+----
+
+In the above example, the value variable `?gb` is bound to the result of a complex arithmetic expression.
+The expression takes the value of concept variable `$s`, adds it to a value of value variable `?o`,
+then divides the result by `1024`, and finally divides the result by `1024` again.
+
+Arithmetic operations are often used in a combination with xref:typeql::values/comparators.adoc[comparators] and
+xref:learn::5-defining-schemas/5.4-defining-rules.adoc[rules].

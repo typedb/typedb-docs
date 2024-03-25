@@ -1,5 +1,5 @@
 = Rust driver
-:page-aliases: clients::rust-driver.adoc, clients::rust-driver/overview.adoc
+:page-aliases: clients::rust-driver.adoc, clients::rust-driver/overview.adoc, clients::rust/rust-overview.adoc
 :Summary: Overview for TypeDB Rust driver.
 :keywords: typedb, client, driver, rust
 :pageTitle: TypeDB Rust driver
@@ -43,18 +43,18 @@ To install TypeDB Rust driver, select `sync` or `async` and follow the instructi
 async::
 +
 --
-[,bash]
+[source,console]
 ----
-cargo add typedb-driver
+$ cargo add typedb-driver
 ----
 --
 
 sync::
 +
 --
-[,bash]
+[source,console]
 ----
-cargo add typedb-driver -F sync
+$ cargo add typedb-driver -F sync
 ----
 --
 ====

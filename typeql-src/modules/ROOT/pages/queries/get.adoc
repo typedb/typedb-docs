@@ -1,0 +1,413 @@
+= Get query
+:Summary: Reading data from a TypeDB database with a Get query.
+:keywords: typeql, query, get, read, retrieve, concepts
+:pageTitle: Get query
+:page-aliases: typeql::data/get.adoc
+
+A Get query retrieves concepts as stateful objects from a TypeDB database that you can further process with the
+xref:drivers::overview.adoc#_driver_api[driver API] methods.
+For example, see the xref:manual::objects/data.adoc[data objects] and
+xref:manual::objects/schema.adoc[schema objects] pages.
+
+For a practical guide on how to send a Get query to TypeDB,
+see the xref:manual::reading/get.adoc[] page of TypeDB Manual.
+Get queries can use rule-based xref:manual::reading/infer.adoc[inference].
+
+== Syntax
+
+// tag::syntax[]
+A Get query consists of a
+<<_match_clause,match>> and a
+<<_get_clause,get>> clauses:
+
+[,typeql]
+----
+match <pattern>
+get [<variable> [, <variable>]];
+----
+// end::syntax[]
+
+[#_behavior]
+== Behavior
+
+A Get query retrieves xref:typeql::concepts/overview.adoc[concepts] from a database.
+
+A `match` clause is used to match data by a pattern, while a `get` clause is used to filter the returned variables.
+
+A Get query projects concepts matched from a database to language-specific programmatic stateful objects
+that can be used via driver API methods.
+The output of a Get query is a lazy stream/iterator of ConceptMap objects, unless it's used with
+xref:typeql::modifiers/aggregation.adoc[aggregation], xref:typeql::modifiers/grouping.adoc[grouping], or both.
+See the <<_response>> section below.
+
+You can use xref:typeql::modifiers/sorting.adoc[sorting] and
+xref:typeql::modifiers/pagination.adoc[pagination] with a Get query.
+
+[#_match_clause]
+=== Match clause
+
+A `match` clause in a Get query matches existing concepts in a database to retrieve them as objects.
+You can use a declarative and composable TypeQL pattern in a `match` clause and TypeDB will find data that matches
+specified pattern.
+
+A `match` clause is mandatory in a Get query.
+
+For more information on patterns and statements used in a `match` clause, see the
+xref:typeql::patterns/overview.adoc[Patterns] and xref:typeql::statements/overview.adoc[Statements] sections.
+
+[#_get_clause]
+=== Get clause
+
+A `get` clause is used in a Get query to select variables
+(xref:typeql::concepts/concept-variables.adoc[concept variables] and
+xref:typeql::values/value-variables.adoc[value variables])
+to include in the output.
+An empty `get` clause (`get;`) includes all variables, used in the preceding `match` clause.
+
+[#_response]
+=== Response format
+
+.Response format
+[#_table_output_types]
+[cols="^.^1,^.^4,^.^4"]
+|===
+| *#* | *Query* | *Response format*
+
+| 1
+| Get query
+| Stream/Iterator of *ConceptMap*
+
+| 2
+| Get query with aggregation
+| *Promise* of *Value*
+
+| 3
+| Get query with grouping
+| Stream/Iterator of *ConceptMapGroup*
+
+| 4
+| Get query with grouping and aggregation
+| Stream/Iterator of *ValueGroup*
+|===
+
+// .Response format
+// [#_table_output_types2]
+// [cols="^.^3,^.^3,^.^3"]
+// |===
+// | | *No aggregation* | *With aggregation*
+//
+// | *No grouping*
+// | Stream/Iterator of *ConceptMap*
+// | *Promise* of *Value*
+//
+// | *With grouping*
+// | Stream/Iterator of *ConceptMapGroup*
+// | Stream/Iterator of *ValueGroup*
+// |===
+
+A Get query returns solutions matched by the `match` clause and filtered by the `get` clause,
+optionally processed by xref:typeql::modifiers/overview.adoc[modifiers].
+A `get` clause returns exactly one ConceptMap for every solution matched by its preceding `match` clause.
+The results are in set semantics, meaning that there are no duplicates.
+
+A ConceptMap object maps query variables to concept objects.
+To retrieve a concept object from a ConceptMap, use the driver API `ConceptMap.get(variable)` method,
+that takes input of variable's label.
+Further processing of a concept object is done via methods of the driver API.
+For examples on how to work with schema and data concepts,
+see the xref:manual::objects/schema.adoc[] and xref:manual::objects/data.adoc[] pages.
+
+[#_simple_example]
+== Usage of a Get query
+
+include::typeql::partial$iam-database-links.adoc[]
+
+A simple Get query example:
+
+.Get example
+[,typeql]
+----
+match
+$p isa person,
+    has full-name "Kevin Morrison",
+    has email $e;
+get $e;
+----
+
+The above query uses only two variables: `$p` and `$e`.
+The `full-name` attribute is not bound to a variable in this query.
+
+The example above matches person (`$p`) with ownership of the `full-name` attribute with a value of `Kevin Morrison` and
+the `email` attribute (`$e`) with any value.
+The `get` clause then filters the results to retrieve only the `email` (`$e`) attributes.
+
+The response is a stream/iterator of ConceptMap.
+Every ConceptMap bounds the variable `$e` to an attribute of the `email` type, that matches the pattern.
+
+[#_complex_get_query_example]
+== Usage of a Get query with modifiers
+
+include::typeql::partial$iam-database-links.adoc[]
+
+For the next example, let's try a bit more complex pattern and some modifiers:
+
+.Complex Get query example
+[,typeql]
+----
+match
+$pe ($x, $y) isa permission;
+$x isa person, has full-name $x-n;
+$x-n contains "Kevin";
+$y (object: $o, action: $act) isa access;
+$act has name $act-n;
+$o has path $o-fp;
+get $x-n, $act-n, $o-fp;
+sort $o-fp;
+group $o-fp;
+count;
+----
+
+The example above uses a `match` clause to find data that matches the following conditions:
+
+. `permission` relation (`$pe`) of `$x` and `$y` variables.
+. `$x` is `person` entity that has an attribute `$x-n` with the type `full-name`.
+. The value of `$x-n` should contain the substring `Kevin`.
+. The `$y` is a `access` type relation of `$o` a role of object and `$act` as action.
+. `$act` has an attribute `$act-n` with the type `name`.
+. `$o` has an attribute `$o-fp` with the value `path`.
+
+The `get` clause then filters the matched answers from the `match` clause to get only the concepts for the
+`$x-n`, `$act-n`, `$o-fp` variables.
+
+The results are sorted and grouped by the `$o-fp` and aggregated with the `count` function.
+
+The response is the number of results for every `$o-fp`: number of pairs `$x-n` and `$act-n`.
+
+[#_number_of_results]
+== Number of results
+
+include::typeql::partial$iam-database-links.adoc[]
+
+A Get query can return fewer results, than matched by its `match` clause,
+due to filtering with a `get` clause or using modifiers.
+
+[#_get_clause_filtering]
+=== Get clause filtering
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Filtering variables with a `get` clause can reduce the number of results.
+Due to set semantics, some results might lose their uniqueness and made redundant.
+Let's see the following example with matching entities of the `person` type that have a `full-name` attribute:
+
+.Get clause filter example
+[,typeql]
+----
+match
+$p isa person, has full-name $n;
+get $n;
+----
+
+The `match` clause returns pairs of `person` and its `full-name`.
+The `get` clause then returns only the `full-name` attributes.
+
+If multiple entities have the same attribute,
+that is represented in a database as ownership of the very same single attribute.
+Since we filter the results to have only the `$n` variable, the results include such a name, but only once.
+Regardless of how many entities `$p` own it.
+To prevent such deduplication, in this example,
+you can extend the results to include the `$p` variable into every result, since every entity is unique.
+The results then will include pairs of `$p` and `$n`.
+
+=== Using modifiers
+
+Applying xref:typeql::modifiers/overview.adoc[modifiers] can have a drastic effect on the format and number
+of results returned by a Get query.
+See the <<_table_output_types,table above>> for output formats depending on the usage of
+xref:typeql::modifiers/grouping.adoc[grouping]
+and xref:typeql::modifiers/aggregation.adoc[aggregation].
+
+Usage of the xref:typeql::modifiers/pagination.adoc#_limit_the_results[limit] modifier directly sets a limitation
+for the number of results.
+
+Combination of <<_get_clause_filtering>> and xref:typeql::modifiers/sorting.adoc[] can produce
+somewhat unpredictable results, if sorting is done by a variable, that is not included in the `get` clause.
+
+////
+[#_results_example_1]
+== Permutations
+
+include::typeql::partial$iam-database-links.adoc[]
+
+If there are multiple variables returned in every result,
+then results of a query include all permutations of answers.
+
+To illustrate that behavior, let's
+see what happens if we have *three* `person` entities
+matched by two different variables:
+
+.Permutations example
+[,typeql]
+----
+match
+$x isa person;
+$y isa person;
+get $x, $y;
+count;
+----
+
+The xref:typeql::modifiers/aggregation.adoc#_count[count modifier] is added to get the number of results,
+rather than the results themselves.
+
+How many results are we expecting to retrieve from a database?
+
+Given that there are three data instances of the person type, the matched results include all
+solutions for the pattern in the `match` clause, including all permutations.
+We can match the same person twice by both `$x` and `$y`.
+So, for every `$x` there are three concepts in `$y` and vice versa.
+That means the query counts nine results.
+
+For more explanation and examples, see the
+xref:learn::7-understanding-query-patterns/7.6-solution-set-semantics.adoc[] page in the TypeDB Learning course.
+////
+
+////
+[#_results_example_2]
+=== Variables filtering
+
+include::typeql::partial$iam-database-links.adoc[]
+
+For the following example, consider the following database schema:
+
+[,typeql]
+----
+define
+
+name sub attribute, value string;
+age sub attribute, value long;
+certified-fortune-teller sub attribute, value boolean;
+
+person sub entity,
+    owns name,
+    owns age,
+    owns certified-fortune-teller;
+----
+
+Let's explore the following query:
+
+[,typeql]
+----
+match
+$p isa person,
+    has name `Bob`,
+    has age 31,
+    has certified-fortune-teller $cft;
+get $p, $cft;
+----
+
+The above query will find every `person` entity that has ownership over the instance of the attribute type `name` with
+the value of `Bob`, ownership of the `age` with the value of `31`, and the ownership of the `certified-fortune-teller`
+attribute with any value.
+
+With the `get` clause, we filter the results to get the `person` instances and the corresponding
+`certified-fortune-teller` attribute (represented by the `$cft` variable in the pattern) for every matched result
+in a database.
+
+[#_explanation_of_filter]
+_Why not filter for just the `$cft` variable instead?_
+
+That can drastically alter the returned results as the returned results are deduplicated by design. See the
+<<_number_of_results>> section above for more information on the number of results for a Get query.
+
+For example, let's say we have ten people with the name `Bob` and age `31` in our database.
+Five of them have `certified-fortune-teller` with the value `false`, one has it as `true`,
+and the rest don't have an ownership of the attribute.
+
+[#_answers_example2_dataset]
+.See how to load such a dataset into a database
+[%collapsible]
+====
+In xref:manual::studio.adoc[TypeDB Studio], we can paste the following TypeQL in the text editor
+and send all the queries by a single click in a data/write mode.
+Make sure to commit the changes.
+
+[,typeql]
+----
+# These are the 5 instances of people with name Bob, age 31 and not cretified fortune tellers
+insert $p isa person, has name "Bob", has age 31, has certified-fortune-teller false;
+insert $p isa person, has name "Bob", has age 31, has certified-fortune-teller false;
+insert $p isa person, has name "Bob", has age 31, has certified-fortune-teller false;
+insert $p isa person, has name "Bob", has age 31, has certified-fortune-teller false;
+insert $p isa person, has name "Bob", has name "Bobby", has age 31, has certified-fortune-teller false;
+
+# This is the one and only instance of a person with name Bob, age 31 and a cretified fortune teller
+insert $p isa person, has name "Bob", has age 31, has certified-fortune-teller true;
+
+# These are the 4 instances of people with name Bob, age 31. No ownership of the boolean attribute
+insert $p isa person, has name "Bob", has age 31;
+insert $p isa person, has name "Bob", has name "Robert Jr.", has age 31;
+insert $p isa person, has name "Bob", has age 31;
+insert $p isa person, has name "Bob", has age 31;
+
+# These are some random people, that doesn't meet pattern (Name: Bob and Age: 31)
+insert $p isa person, has name "Bob", has age 20;
+insert $p isa person, has name "Alex", has age 78, has certified-fortune-teller false;
+insert $p isa person, has name "Alice", has age 31, has certified-fortune-teller true;
+insert $p isa person;
+----
+
+To insert this dataset with any xref:drivers::overview.adoc[other] client --
+make sure to send every line, except from comments, as a separate insert query.
+
+For more information on an Insert query, see the xref:typeql::queries/insert.adoc[] page.
+====
+
+Those Bobs that don't have the attribute ownership won't be matched by the `match` clause at all.
+So we expect to get *six* results from the original Get query:
+five `person` instances owning the attribute with value `false` and one with `true`.
+
+If we remove the `$p` variable and use `get $cft;` clause instead,
+we'll get only two results in response because we will only get
+`certified-fortune-teller` instances, and there are only two of those: an instance with the `true` value and another
+instance of the same type with the `false` value.
+
+The initial five instances of `person` type all have ownership over the
+same attribute of the `certified-fortune-teller` attribute type
+with the value `false`.
+
+To get all the results, we add the `person` type instances to the results because those are unique.
+Even if some of them might have the exact same set of owned attributes, instances of the `person` type are
+different instances nonetheless.
+
+To try the get queries in that example, we need to load the <<_results_example_2,schema>> and
+the <<_answers_example2_dataset,dataset>> provided above into a TypeDB database first.
+////
+
+== Learn more
+
+[cols-2]
+--
+.xref:learn::7-understanding-query-patterns/7-understanding-query-patterns.adoc[]
+[.clickable]
+****
+Learn more about query patterns in the TypeDB Learning course.
+****
+
+.xref:manual::reading/get.adoc[]
+[.clickable]
+****
+See how to send a Get query to TypeDB.
+****
+
+.xref:manual::objects/schema.adoc[]
+[.clickable]
+****
+See how to manipulate Schema stateful objects with driver API.
+****
+
+.xref:manual::objects/data.adoc[]
+[.clickable]
+****
+See how to manipulate Data stateful objects with driver API.
+****
+--

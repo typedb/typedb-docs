@@ -1,0 +1,96 @@
+= Data instances
+
+TypeQL data queries use pattern matching to manipulate data instances in a database.
+
+== Behavior
+
+A data instance can be inserted into a database only as an instance of a
+xref:typeql::concepts/types.adoc[type] from the schema of the database.
+
+To retrieve data from a database with TypeQL, match it with a pattern in a `match` clause of a query.
+To match a data instance, we can use its type, as well as other information regarding this particular instance.
+
+All data instances can be split into three major categories,
+that originate from different xref:typeql::concepts/types.adoc[root types]
+and differ in capabilities: attributes, entities, and relations.
+
+=== Entities
+
+An entity is a data instance of an entity type (any subtype of the `entity` root type).
+Entities represent independently existing objects in our data model.
+Entity types represent the classification of objects in our data model.
+
+For example, an instance of the `user` type represents a single user.
+What is the difference between multiple instances of the same type?
+Since users are all entities of the same type and don't have a value of their own,
+we can assign them with an ownership of an attribute, like a `username`.
+Now we can address every user by its property -- the username it owns.
+
+=== Attributes
+
+An attribute is a data instance of an attribute type.
+An attribute type represents some property, so an attribute represents a particular value of such property.
+There can't be more than one attribute of the same type with the same value,
+so an attribute can be uniquely addressed by its type and value.
+The value of an attribute must be of the correct xref:typeql::values/value-types.adoc[Value type]
+that is set for its attribute type in the schema.
+
+An attribute can be owned by another data instance if such an ability is defined for their respective types
+by the schema of a database.
+The same attribute can be owned by any number of data instances, unless there is a constraint in the schema
+in the form of annotation: unique or key.
+//#todo Add link to annotations
+A data instance can own any number of attributes of the same type, as long as it's not restricted by the key annotation.
+//#todo Add link to the key annotation
+
+=== Relations
+
+A relation is a data instance of a relation type.
+Relation types represent potential relations between types, where other types play roles.
+Relations represent an existing connection, where each role should be played by at least one data instance.
+
+The relation type determines the set of roles a relation has.
+A relation with a role without a roleplayer represents an incomplete data state.
+For any N-ary relation (a relation with N roles), we recommend to follow to the principle
+that the logical sense of the relation is maintained when considering N-1 relations contained within it.
+
+== Usage in an Insert query
+
+Given the schema from the xref:typeql::concepts/types.adoc#_example[Types page example],
+let's see a simple example of how to insert some data with an Insert query:
+
+.Inserting data example
+[,typeql]
+----
+include::home::attachment$quickstart-data.tql[lines=1]
+----
+
+== Usage in a Fetch query
+
+To retrieve this data, we can use a Fetch query to get a JSON with attributes values:
+
+.Fetching values example
+[,typeql]
+----
+match
+$x isa person;
+fetch
+$x: id, full-name, email;
+----
+
+Note that the `match` clause matches all entities of the `person` type
+and the `fetch` clause then projects into a JSON values of attributes owned by every matched person.
+
+The resulted JSON should look like this:
+
+[,json]
+----
+{
+    "x": {
+        "email": [ { "value": "masako.holley@typedb.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
+        "full-name": [ { "value": "Masako Holley", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } ],
+        "id": [ { "value": 1, "type": { "label": "id", "root": "attribute", "value_type": "long" } } ],
+        "type": { "label": "person", "root": "entity" }
+    }
+}
+----

@@ -27,7 +27,7 @@ book sub entity,
     owns price,
     plays contribution:work,
     plays publishing:published,
-    plays promotion-inclusion:included,
+    plays promotion-inclusion:item,
     plays order-line:item,
     plays rating:rated,
     plays recommendation:recommended;
@@ -132,7 +132,7 @@ publishing sub relation,
 
 promotion-inclusion sub relation,
     relates promotion,
-    relates included,
+    relates item,
     owns discount;
 
 order-line sub relation,
@@ -189,10 +189,10 @@ success sub attribute, value boolean;
 
 rule review-verified-by-purchase:
     when {
-        ($order, $product) isa order-line;
         ($review, $product) isa rating;
-        ($user, $order) isa action-execution, has timestamp $order-time;
+        ($order, $product) isa order-line;
         ($user, $review) isa action-execution, has timestamp $review-time;
+        ($user, $order) isa action-execution, has timestamp $order-time;
         $review-time > $order-time;
     } then {
         $review has verified true;
@@ -292,7 +292,7 @@ rule order-line-total-discounted-price:
                 has end-timestamp >= $order-time;
         };
         $item has price $retail-price;
-        ?discounted-price = $retail-price * (1 - $best-discount);
+        ?discounted-price = round(100 * $retail-price * (1 - $best-discount)) / 100;
         $line has quantity $quantity;
         ?line-total = $quantity * ?discounted-price;
     } then {

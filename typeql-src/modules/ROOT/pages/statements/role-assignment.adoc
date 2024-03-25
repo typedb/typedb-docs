@@ -1,0 +1,75 @@
+= role assignment
+
+Role assignment doesn't use any specific keyword, but it uses parentheses to assign players to roles in a relation.
+
+== Syntax
+
+The syntax of a role assignment statement includes:
+
+* Subject -- concept variable
+* Object -- parentheses with comma separated list of:
+** role label and concept variable, separated by a colon
+
+.Syntax
+[,typeql]
+----
+<concept-variable> ( [<role>:]<concept-variable> [,[<role>:]<concept-variable>] )
+----
+
+The role is optional.
+If no role provided for a player, its role is inferred via its type and schema.
+
+There can be any number of players per role and at least one role specified in a role assignment statement.
+
+== Behavior
+
+TypeQL role assignment statements can be used only in data queries and rules.
+
+Since only relations can have roles, the subject concept variable is implicitly bound to the `relation` type.
+You can specify the type of the concept variable by bounding it explicitly with an
+xref:typeql::statements/isa.adoc[isa statement].
+
+== Usage in a match pattern
+
+include::typeql::partial$iam-database-links.adoc[]
+
+For example, let's find all relations for a user with full-name of `Kevin Morrison`:
+
+.Role assignment query example
+[,typeql]
+----
+match
+$rel ($person) isa! $type;
+$person isa person, has full-name "Kevin Morrison";
+fetch
+$type;
+----
+
+.See example output
+[%collapsible]
+====
+.Output example
+[,json]
+----
+{ "type": { "label": "permission", "root": "relation" } }
+----
+====
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::statements/type.adoc[]
+[.clickable]
+****
+Learn more about `type` statement in TypeQL.
+****
+
+.xref:typeql::concepts/types.adoc[]
+[.clickable]
+****
+Learn about types in TypeQL.
+****
+--
+
+

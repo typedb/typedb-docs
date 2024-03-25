@@ -71,21 +71,21 @@ The resulted JSONs should look like this:
 ----
 {
     "u": {
-        "email": [ { "value": "alice@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
+        "email": [ { "value": "alice@typedb.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
         "name": [ { "value": "Alice", "type": { "label": "name", "root": "attribute", "value_type": "string" } } ],
         "type": { "label": "user", "root": "entity" }
     }
 }
 {
     "u": {
-        "email": [ { "value": "the-bob@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
+        "email": [ { "value": "the-bob@typedb.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
         "name": [ { "value": "Bob", "type": { "label": "name", "root": "attribute", "value_type": "string" } } ],
         "type": { "label": "user", "root": "entity" }
     }
 }
 {
     "u": {
-        "email": [ { "value": "charlie@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
+        "email": [ { "value": "charlie@typedb.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
         "name": [ { "value": "Charlie", "type": { "label": "name", "root": "attribute", "value_type": "string" } } ],
         "type": { "label": "user", "root": "entity" }
     }
@@ -213,7 +213,7 @@ To return full concepts, see the xref:manual::reading/get.adoc[] page.
 
 [cols-2]
 --
-.xref:typeql::data/fetch.adoc[]
+.xref:typeql::queries/fetch.adoc[]
 [.clickable]
 ****
 Learn more about Fetch queries in TypeQL: syntax, behaviour, and query examples.

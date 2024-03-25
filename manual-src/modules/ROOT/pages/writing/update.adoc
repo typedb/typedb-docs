@@ -36,7 +36,7 @@ $u isa user, has name 'Charlie', has email $e;
 delete
 $u has $e;
 insert
-$u has email 'charles@vaticle.com';
+$u has email 'charles@typedb.com';
 ----
 . Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
 . Commit the changes by clicking the btn:[Commit query] button (image:home::studio-icons/commit.png[Commit]).
@@ -60,7 +60,7 @@ $u isa user, has name 'Charlie', has email $e;
 delete
 $u has $e;
 insert
-$u has email 'charles@vaticle.com';
+$u has email 'charles@typedb.com';
 ----
 +
 Push btn:[Enter] twice to send the query.
@@ -207,9 +207,9 @@ Both Studio and Console should produce similar results:
 [,typeql]
 ----
 {
-    $e the-bob@vaticle.com isa email;
+    $e the-bob@typedb.com isa email;
     $u iid 0x826e80018000000000000001 isa user;
-    $_0 the-bob@vaticle.com isa email;
+    $_0 the-bob@typedb.com isa email;
 }
 ----
 
@@ -248,7 +248,7 @@ of a Delete query with the same `match` clause in the same `write` transaction w
 
 [cols-2]
 --
-.More about an xref:typeql::data/update.adoc[]
+.More about an xref:typeql::queries/update.adoc[]
 [.clickable]
 ****
 Learn more about Update queries in TypeQL: syntax, behaviour, and query examples.

@@ -84,7 +84,7 @@ $book: isbn, title;
 $action-type;                # new line
 ----
 
-If we *run* image:learn::studio-icons/run.png[] this new query, we now also retrieve the type of `$action`!
+If we *run* image:learn::studio-icons/run-query.png[] this new query, we now also retrieve the type of `$action`!
 
 [,json]
 ----
@@ -300,7 +300,7 @@ fetch
 $book-type;
 ----
 
-Try *running* image:learn::studio-icons/run.png[] this query. You should see the following result.
+Try *running* image:learn::studio-icons/run-query.png[] this query. You should see the following result.
 
 [,json]
 ----
@@ -527,7 +527,7 @@ $role;
 { "role": { "label": "recommendation:recommended", "root": "relation:role" } }
 { "role": { "label": "order-line:item", "root": "relation:role" } }
 { "role": { "label": "contribution:work", "root": "relation:role" } }
-{ "role": { "label": "promotion-inclusion:included", "root": "relation:role" } }
+{ "role": { "label": "promotion-inclusion:item", "root": "relation:role" } }
 ----
 
 

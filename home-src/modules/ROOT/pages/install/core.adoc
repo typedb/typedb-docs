@@ -1,9 +1,11 @@
 = TypeDB Core installation guide
 :tabs-sync-option:
+:experimental:
 // Goal – Install TypeDB Core
 
-This page is an installation guide for TypeDB Core.
-TypeDB Core can be installed in multiple ways: using <<_docker,Docker>>, via <<_package,package manager>>, or by
+TypeDB Core can be installed in multiple ways:
+using <<_docker,Docker>> image,
+via <<_package,package manager>>, or by
 <<_manual,manual installation>>.
 
 For self-hosted TypeDB Cloud installation and setup,
@@ -13,6 +15,16 @@ see the xref:home::install/cloud-self-hosted.adoc[Self-hosted deployment] page.
 == Docker
 
 include::home::partial$docker.adoc[tag=install]
+
+=== Run
+
+include::home::partial$docker.adoc[tags=run]
+
+include::home::partial$docker.adoc[tags=run-info]
+
+include::home::partial$docker.adoc[tag=stop]
+
+include::home::partial$docker.adoc[tag=start]
 
 [#_package]
 == Package manager
@@ -38,7 +50,19 @@ No package manager option is available for Windows. See the <<_manual>> section 
 --
 ====
 
-//To learn how to run TypeDB Core, see the xref:home::quickstart.adoc[] guide.
+=== Run
+
+// tag::core-run[]
+To start a local TypeDB Core server:
+
+[source,console]
+----
+$ typedb server
+----
+// end::core-run[]
+// tag::core-stop[]
+To stop a local TypeDB server, close the terminal where it runs or press kbd:[Ctrl+C].
+// end::core-stop[]
 
 [#_manual]
 == Manual install
@@ -75,45 +99,11 @@ include::home::partial$win.adoc[tag=manual-install]
 --
 ====
 
-////
-[#_run_typedb_core]
-== Run TypeDB Core
+=== Run
 
-=== Start
-
-// tag::core-run[]
-To start a local TypeDB Core server:
-
-[,bash]
-----
-typedb server
-----
-
-To run TypeDB Core in a new Docker container:
-
-[,bash]
-----
-docker run --name typedb -d -v typedb-data:/opt/ -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
-----
-// end::core-run[]
-
-[NOTE]
-====
-To learn how to use TypeDB, see the xref:home::quickstart.adoc[] guide,
-xref:home::25-queries.adoc[] page, and the xref:learn::course-overview.adoc[Learn] category.
-====
-
-=== Stop
-
-To stop a local TypeDB server, close the terminal with it or press kbd:[Ctrl+C].
-
-For a Docker container:
-
-include::home::partial$docker.adoc[tag=stop]
-////
+include::home::install/core.adoc[tags="core-run,core-stop"]
 
 == Learn more
-
 
 [cols-2]
 --

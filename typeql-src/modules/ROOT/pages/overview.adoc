@@ -16,32 +16,91 @@ Introduction for the near-natural fully declarative query language of TypeDB.
 
 [cols-2]
 --
-.xref:typeql::schema/overview.adoc[Schema queries]
+.xref:typeql::queries/define.adoc[]
 [.clickable]
 ****
-* xref:typeql::schema/define.adoc[]
-** xref:typeql::schema/type-definitions.adoc[]
-** xref:typeql::schema/rule-definitions.adoc[]
-* xref:typeql::schema/undefine.adoc[]
+A Define query to add types and rules to a schema.
 ****
 
-.xref:typeql::data/overview.adoc[Data queries]
+.xref:typeql::queries/undefine.adoc[]
 [.clickable]
 ****
-* xref:typeql::data/insert.adoc[]
-* xref:typeql::data/delete.adoc[]
-* xref:typeql::data/update.adoc[]
-* xref:typeql::data/fetch.adoc[]
-* xref:typeql::data/get.adoc[]
-* xref:typeql::data/examples.adoc[]
+An Unefine query to delete types and rules to a schema.
+****
+
+.xref:typeql::queries/insert.adoc[]
+[.clickable]
+****
+An Insert query to add data into a database.
+****
+
+.xref:typeql::queries/delete.adoc[]
+[.clickable]
+****
+A Delete query to delete data from a database.
+****
+
+.xref:typeql::queries/update.adoc[]
+[.clickable]
+****
+An Update query to replace data in a database.
+****
+
+.xref:typeql::queries/fetch.adoc[]
+[.clickable]
+****
+A Fetch query to fetch values and types from a database.
+****
+
+.xref:typeql::queries/get.adoc[]
+[.clickable]
+****
+A Get query to get data and types as stateful objects from a database.
 ****
 --
+
+== TypeQL building blocks
+
+[cols-2]
+--
+.xref:typeql::patterns/overview.adoc[Patterns]
+[.clickable]
+****
+Conjunction, Disjunction, Negation, and Matching patterns.
+****
+
+.xref:typeql::statements/overview.adoc[Statements]
+[.clickable]
+****
+isa, has, sub, owns, abstract, relates, annotations, etc.
+****
+
+.xref:typeql::modifiers/overview.adoc[Modifiers]
+[.clickable]
+****
+Sorting, pagination, aggregation, grouping.
+****
+
+.xref:typeql::concepts/overview.adoc[Concepts]
+[.clickable]
+****
+Types, data instances, concept variables.
+****
+
+.xref:typeql::values/overview.adoc[Values]
+[.clickable]
+****
+Value-types, value variables, comparators, arithmetic, functions.
+****
+--
+
+== Terminology
 
 [cols-1]
 --
 .xref:typeql::keywords.adoc[]
 [.clickable]
 ****
-A glossary of TypeQL keywords used in clauses, schema statements, and data statements.
+A list of TypeQL keywords used in clauses, schema statements, and data statements.
 ****
 --

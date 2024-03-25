@@ -1,0 +1,69 @@
+= regex
+
+The `regex` keyword is used in TypeQL schema to define the regular expression to restrict possible
+values for attributes of a given type.
+
+== Syntax
+
+The syntax of a `regex` statement includes:
+
+* Subject -- attribute type label
+* Predicate -- the `regex` keyword
+* Object -- a regular expression to set possible values
+
+.Syntax
+[,typeql]
+----
+<attribute-type> regex <regular-expression>;
+----
+
+== Behavior
+
+TypeQL statements with the `regex` keyword can be used only in Define queries.
+
+The `regex` keyword adds a constraint on values of attributes of a given attribute type
+to be valid strings according to the object regular expression.
+
+== Usage in a schema definition
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Since in Define queries you can't use variables, the subject of a `regex` statement can only be
+an attribute type label.
+
+For example, to define a new attribute type `visibility` with a value type of `string`,
+and values to be limited to `public`, `private`, or `closed`, use:
+
+.Define query regex example
+[,typeql]
+----
+define
+visibility sub attribute, value string, regex "^(public|private|closed)$";
+----
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::statements/type.adoc[]
+[.clickable]
+****
+Learn more about `type` statement in TypeQL.
+****
+
+.xref:typeql::concepts/types.adoc[]
+[.clickable]
+****
+Learn about types in TypeQL.
+****
+--
+
+
+
+.Regular expression value restriction
+[,typeql]
+----
+define
+
+visibility sub attribute, value string, regex "^(public|private|closed)$";
+----

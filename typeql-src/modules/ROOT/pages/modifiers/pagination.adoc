@@ -1,0 +1,106 @@
+= Pagination
+
+This page covers pagination of TypeQL query results.
+
+== Behavior
+
+Pagination in TypeQL queries makes it possible to return a range of results, rather than retrieving all results at once.
+By <<_limit_the_results,limiting>> the query to return the first `x` results,
+processing them, and then sending subsequent queries with an <<_offset_the_results,offset>>, incremented by `x`,
+you can iterate through the entire result set in manageable batches.
+
+xref:typeql::modifiers/sorting.adoc[Sorting] the results is strongly advised, but is not mandatory.
+Without sorting, the ordering of results is not guaranteed and can be unpredictable.
+Pagination relies on sorting to traverse the full set of results.
+
+[#_offset_the_results]
+=== Offset the results
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Use the `offset` keyword followed by the number of results to skip.
+
+.Offset example
+[,typeql]
+----
+match
+$p isa person, has full-name $n;
+get $n;
+sort $n;
+offset 2;
+----
+
+The above example sorts the `full-name` attributes of all `person` entities in ascending order (as default),
+skips the first two results, and returns the rest of results.
+
+[#_limit_the_results]
+=== Limit the number of results
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Use the `limit` keyword followed by the number of results to return.
+
+.Limit example
+[,typeql]
+----
+match
+$p isa person, has full-name $n;
+get $n;
+limit 2;
+----
+
+The above example has no `sort` modifier,
+so it returns only two almost random names owned by entities of the `person` type.
+
+== Usage
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Combine `offset` and `limit` to paginate the results of a query.
+By knowing the limit amount, we can use offset to get the full set of results in batches.
+Make sure to also use sorting, as otherwise you can't guarantee the continuity of results between queries.
+
+.Pagination example query 1
+[,typeql]
+----
+match
+$p isa person, has full-name $n;
+get $n;
+sort $n;
+limit 2;
+----
+
+The above query returns the first two results.
+
+.Pagination example query 2
+[,typeql]
+----
+match
+$p isa person, has full-name $n;
+get $n;
+sort $n;
+offset 2;
+limit 2;
+----
+
+The second query returns the next two results (skips two and returns another two).
+
+By continuing to increase the `offset` value by the `limit` value we can traverse the results.
+When we receive fewer results than set by the `limit` value, it should be a signal that we got all possible results.
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::modifiers/sorting.adoc[]
+[.clickable]
+****
+Learn about sorting results in TypeQL.
+****
+
+.xref:typeql::modifiers/aggregation.adoc[]
+[.clickable]
+****
+Learn about aggregation of query results in TypeQL.
+****
+--

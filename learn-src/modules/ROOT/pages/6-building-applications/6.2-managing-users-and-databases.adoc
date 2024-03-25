@@ -1,0 +1,371 @@
+// This version should be removed following the change to Cloud.
+// The version for after the change is below.
+// Ensure all changes are propagated to both versions.
+= Lesson 6.2: Managing databases
+
+== Connecting to the server
+
+With TypeDB Studio, we were able to connect to the server automatically by providing the address, username, and password. Afterward, Studio managed the connection, session, and transactions for us. When working with the native language drivers, we must manage these ourselves.
+
+To connect to the server, we must instantiate a *driver object*, as illustrated in the following code snippet.
+
+[,python]
+----
+ADDRESS = "localhost:1730"
+
+with TypeDB.core_driver(ADDRESS) as driver:
+    # code goes here
+----
+
+The driver object `driver` takes one argument, the *server address*, and should be instantiated using a https://peps.python.org/pep-0343/[context manager]. This is essential to ensure that the driver's destructor is called regardless of how the program terminates, which will free the resources on the server. We then conduct all application operations within the scope of the context manager.
+
+[WARNING]
+====
+If destructors are not properly called when using the TypeDB Driver APIs, it is possible to temporarily deadlock transactions in some niche cases. To avoid this, ensure that you always take appropriate measures to ensure that destructors are called regardless of application termination state.
+====
+
+There are three key ways we can use a driver object:
+
+* Manage users.
+* Manage databases.
+* Open sessions.
+
+We'll cover managing databases in this lesson, and then see how to open sessions in xref:learn::6-building-applications/6.3-sessions-and-transactions.adoc[Lesson 6.3].
+
+[NOTE]
+====
+User management features are only available on TypeDB Cloud deployments, and will not be covered in this course. Instructions can be found on the xref:manual::configuring/users.adoc[user management page] of the TypeDB manual.
+====
+
+== Managing databases
+
+Database management controls can be accessed through the `databases` property of a driver object. The following code snippet shows some of its methods.
+
+[,python]
+----
+with TypeDB.core_driver(ADDRESS) as driver:
+    # Creates a new database with the specified name.
+    driver.databases.create("database-name")
+
+    # Checks if a database with the specified name exists.
+    database_exists: bool = driver.databases.contains("database-name")
+
+    # Retrieves a database object by specified name.
+    specific_database: Database = driver.databases.get("database-name")
+
+    # Retrieves a list of database objects for every database.
+    all_databases: list[Database] = driver.databases.all()
+----
+
+Some of the methods of database objects are shown in the following code snippet.
+
+[,python]
+----
+with TypeDB.core_driver(ADDRESS) as driver:
+    database: Database
+
+    # Retrieves the name of a given database.
+    name: str = database.name
+
+    # Retrieves the schema of a given database.
+    schema: str = database.schema()
+
+    # Deletes a given database.
+    database.delete()
+----
+
+// Add after switch to Cloud
+// [NOTE]
+// ====
+// In TypeDB 3.0, database management controls will only be available to admins.
+// ====
+
+.Exercise
+[caption=""]
+====
+Write a function to create a new database, replacing any existing database with the same name. The function should have the following signature.
+
+[,python]
+----
+force_create_database(driver: TypeDBDriver, database_name: str) -> None
+----
+
+.Sample solution
+[%collapsible]
+=====
+[,python]
+----
+def force_create_database(driver: TypeDBDriver, database_name: str) -> None:
+    if driver.databases.contains(database_name):
+        driver.databases.get(database_name).delete()
+
+    driver.databases.create(database_name)
+----
+=====
+
+Write a function to print every database's name and schema. The function should have the following signature.
+
+[,python]
+----
+print_database_details(driver: TypeDBDriver) -> None
+----
+
+.Sample solution
+[%collapsible]
+=====
+[,python]
+----
+def print_database_details(driver: TypeDBDriver) -> None:
+    for database in driver.databases.all():
+        print(database.name)
+        print(database.schema())
+----
+=====
+====
+
+
+
+// Version for after the change to Cloud.
+// = Lesson 6.2: Managing users and databases
+//
+// == Connecting to the server
+//
+// With TypeDB Studio, we were able to connect to the server automatically by providing the address, username, and password. Afterward, Studio managed the connection, session, and transactions for us. When working with the native language drivers, we must manage these ourselves.
+//
+// To connect to the server, we must instantiate a *driver object*, as illustrated in the following code snippet.
+//
+// [,python]
+// ----
+// ADDRESS = "address"
+// USERNAME = "username"
+//
+// password = input("Enter password: ")
+// credential = TypeDBCredential(USERNAME, password, tls_enabled=True)
+//
+// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+//     # code goes here
+// ----
+//
+// The driver object `driver` takes two arguments, the *server address* and a *credential object*, and should be instantiated using a https://peps.python.org/pep-0343/[context manager]. This is essential to ensure that the driver's destructor is called regardless of how the program terminates, which will free the resources on the server. We then conduct all application operations within the scope of the context manager.
+//
+// [WARNING]
+// ====
+// If destructors are not properly called when using the TypeDB Driver APIs, it is possible to temporarily deadlock transactions in some niche cases. To avoid this, ensure that you always take appropriate measures to ensure that destructors are called regardless of application termination state.
+// ====
+//
+// [NOTE]
+// ====
+// If you are using a TypeDB Core server, you should instead instantiate a driver using the following snippet.
+// [,python]
+// ----
+// with TypeDB.core_driver(ADDRESS) as driver:
+//     # code goes here
+// ----
+// ====
+//
+// There are three key ways we can use a driver object:
+//
+// * Manage users.
+// * Manage databases.
+// * Open sessions.
+//
+// We'll cover managing users and databases in this lesson, and then see how to open sessions in xref:learn::6-building-applications/6.3-sessions-and-transactions.adoc[Lesson 6.3]. The credentials used to instantiate the driver object affect the controls that are available to it. Some controls are only available when using an admin's credentials.
+//
+// [NOTE]
+// ====
+// User management features are only available on TypeDB Cloud deployments.
+// ====
+//
+// == Managing users
+//
+// When using an admin's credentials, we can access user management controls through the `users` property of a driver object. The following code snippet shows some of its methods.
+//
+// [,python]
+// ----
+// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+//     # Creates a new user with the specified username and password.
+//     driver.users.create("username", "password")
+//
+//     # Checks if a user with the specified username exists.
+//     user_exists: bool = driver.users.contains("username")
+//
+//     # Retrieves a user object by specified username.
+//     specific_user: User = driver.users.get("username")
+//
+//     # Retrieves a list of user objects for every user.
+//     all_users: list[User] = driver.users.all()
+//
+//     # Deletes a user with the specified username.
+//     driver.users.delete("username")
+// ----
+//
+// The `users` property is not accessible to standard users. For both admins and standard users, it is always possible to retrieve the user object corresponding to the current user.
+//
+// [,python]
+// ----
+// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+//     # Retrieves a user object corresponding to the current user,
+//     # according to the credentials provided to the driver object.
+//     current_user: User = driver.user()
+// ----
+//
+// Some of the methods of user objects are shown in the following code snippet.
+//
+//
+// [,python]
+// ----
+// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+//     user: User
+//
+//     # Retrieves the username of a given user.
+//     username: str = user.username()
+//     # Updates the password of a given user.
+//     user.password_update("old-password", "new-password")
+// ----
+//
+//
+// .Exercise
+// [caption=""]
+// ====
+// Write a function to create a new user, but raise a `ValueError` if a user with that name already exists. The function should have the following signature.
+//
+// [,python]
+// ----
+// create_new_user(driver: TypeDBDriver, username: str, password: str) -> None
+// ----
+//
+// .Sample solution
+// [%collapsible]
+// =====
+// [,python]
+// ----
+// def create_new_user(driver: TypeDBDriver, username: str, password: str) -> None:
+//     if driver.users.contains(username):
+//         raise ValueError(f"User already exists with username: {username}")
+//     else:
+//         driver.users.create(username, password)
+// ----
+// =====
+//
+// Write a function to update the current user's password. The function should have the following signature.
+// [,python]
+// ----
+// update_current_user_password(driver: TypeDBDriver, password_old: str, password_new: str) -> None
+// ----
+//
+//
+// .Sample solution
+// [%collapsible]
+// =====
+// [,python]
+// ----
+// def update_current_user_password(driver: TypeDBDriver, password_old: str, password_new: str) -> None:
+//     current_user = driver.user()
+//     current_user.password_update(password_old, password_new)
+// ----
+// =====
+//
+// Write a function to print every user's username. The function should have the following signature.
+//
+// [,python]
+// ----
+// print_usernames(driver: TypeDBDriver) -> None
+// ----
+//
+// .Sample solution
+// [%collapsible]
+// =====
+// [,python]
+// ----
+// def print_usernames(driver: TypeDBDriver) -> None:
+//     for user in driver.users.all():
+//         print(user.username())
+// ----
+// =====
+// ====
+//
+// == Managing databases
+//
+// Database management controls can be accessed through the `databases` property of a driver object. This functionality is available to both admins and standard users. The following code snippet shows some of its methods.
+//
+// [,python]
+// ----
+// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+//     # Creates a new database with the specified name.
+//     driver.databases.create("database-name")
+//
+//     # Checks if a database with the specified name exists.
+//     database_exists: bool = driver.databases.contains("database-name")
+//
+//     # Retrieves a database object by specified name.
+//     specific_database: Database = driver.databases.get("database-name")
+//
+//     # Retrieves a list of database objects for every database.
+//     all_databases: list[Database] = driver.databases.all()
+// ----
+//
+// Some of the methods of database objects are shown in the following code snippet.
+//
+// [,python]
+// ----
+// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+//     database: Database
+//
+//     # Retrieves the name of a given database.
+//     name: str = database.name
+//
+//     # Retrieves the schema of a given database.
+//     schema: str = database.schema()
+//
+//     # Deletes a given database.
+//     database.delete()
+// ----
+//
+// // Add after switch to Cloud
+// // [NOTE]
+// // ====
+// // In TypeDB 3.0, database management controls will only be available to admins.
+// // ====
+//
+// .Exercise
+// [caption=""]
+// ====
+// Write a function to create a new database, replacing any existing database with the same name. The function should have the following signature.
+//
+// [,python]
+// ----
+// force_create_database(driver: TypeDBDriver, database_name: str) -> None
+// ----
+//
+// .Sample solution
+// [%collapsible]
+// =====
+// [,python]
+// ----
+// def force_create_database(driver: TypeDBDriver, database_name: str) -> None:
+//     if driver.databases.contains(database_name):
+//         driver.databases.get(database_name).delete()
+//
+//     driver.databases.create(database_name)
+// ----
+// =====
+//
+// Write a function to print every database's name and schema. The function should have the following signature.
+//
+// [,python]
+// ----
+// print_database_details(driver: TypeDBDriver) -> None
+// ----
+//
+// .Sample solution
+// [%collapsible]
+// =====
+// [,python]
+// ----
+// def print_database_details(driver: TypeDBDriver) -> None:
+//     for database in driver.databases.all():
+//         print(database.name)
+//         print(database.schema())
+// ----
+// =====
+// ====

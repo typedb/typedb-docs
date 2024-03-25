@@ -71,15 +71,15 @@ The resulted Log output should look like this:
 [,js]
 ----
 {
-    $e alice@vaticle.com isa email;
+    $e alice@typedb.com isa email;
     $u iid 0x826e80018000000000000000 isa user;
 }
 {
-    $e the-bob@vaticle.com isa email;
+    $e the-bob@typedb.com isa email;
     $u iid 0x826e80018000000000000001 isa user;
 }
 {
-    $e charlie@vaticle.com isa email;
+    $e charlie@typedb.com isa email;
     $u iid 0x826e80018000000000000002 isa user;
 }
 ----
@@ -202,7 +202,7 @@ There are modifiers that can be applied to a Get query that can change its outpu
 
 * Grouping returns a Stream/Iterator of ConceptMapGroup objects.
 * Aggregation returns Promise of a Value.
-* Grouping and aggregation return a Stream/Iterator of ValueGroup object.
+* Grouping with aggregation returns a Stream/Iterator of ValueGroup object.
 
 See the respective drivers API reference for relevant methods to work with these objects:
 
@@ -245,7 +245,7 @@ See the respective drivers API reference for relevant methods to work with these
 
 [cols-2]
 --
-.xref:typeql::data/get.adoc[]
+.xref:typeql::queries/get.adoc[]
 [.clickable]
 ****
 Learn more about Get queries in TypeQL: syntax, behaviour, and query examples.

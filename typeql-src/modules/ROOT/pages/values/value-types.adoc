@@ -1,0 +1,59 @@
+= Value types
+
+== Behavior
+
+Primitive values used in TypeQL patterns can be of one of the following value types:
+
+// tag::value_types[]
+* `long` -- a 64-bit signed integer number
+* `double` -- a double-precision floating point number, including a decimal point
+* `string` -- a string enclosed in double `"` or single `'` quotes
+* `boolean` -- a `true` or `false`
+* `datetime` -- A date or date-time in one of the supported formats.
++
+.See the list of available date-time formats
+[%collapsible]
+====
+* `yyyy-mm-dd`
+* `yyyy-mm-ddThh:mm`
+* `yyyy-mm-ddThh:mm:ss`
+* `yyyy-mm-ddThh:mm:ss.f`
+* `yyyy-mm-ddThh:mm:ss.ff`
+* `yyyy-mm-ddThh:mm:ss.fff`
+====
+// end::value_types[]
+
+An attribute type always has a value type defined in a schema or inherited from a parent type.
+The value type limits literal values that can be stored in instances of an attribute type.
+For example, when we define the `full-name` attribute type to have a value type of `string`,
+we can't create an attribute of the `full-name` type with a value of a different value type, like `boolean` or `long`.
+
+== Usage
+
+A Define query and its schema statements is used to define value types for attribute types.
+
+.Define query example
+[,typeql]
+----
+define
+
+full-name sub attribute, value string;
+review-date sub attribute, value datetime;
+size-kb sub attribute, value long;
+percentage sub attribute, value double;
+validity sub attribute, value boolean;
+----
+
+Data queries (like insert) are validated to prevent type violations, including value types.
+The type of an attribute defines the value type of its possible values.
+
+.Insert query example
+[,typeql]
+----
+insert
+$f "Masako Holley" isa full-name;
+$d 2023-11-07T03:31:25.262 isa review-date;
+$s 100 isa size-kb;
+$c 32.5 isa percentage;
+$v true isa validity;
+----

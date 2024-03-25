@@ -61,12 +61,13 @@ permission sub relation,
     relates object;
 ----
 
-The above query xref:typeql:ROOT:schema/type-definitions.adoc[defines]
-seven attribute types, three entity types, and a relation type.
+The above xref:typeql::queries/define.adoc[Define query] defines seven attribute
+xref:typeql::concepts/types.adoc[types],
+three entity types, and a relation type.
 
 Note the `user` type, that owns `email` and `username` attribute types.
 
-To try extending the schema, see the <<_extend_schema>> section.
+To extend the schema, see the <<_extend_schema>> section.
 
 [#_data]
 == #{counter:query}: Data insertion
@@ -85,7 +86,7 @@ $p isa person, has name "Charlie";
 $u1 isa user,
     has name "Bob",
     has username "bob_93",
-    has email "bob@vaticle.com";
+    has email "bob@typedb.com";
 $u2 isa user, has username "al-capucino";
 $f1 isa file, has path "README.md";
 $f2 isa file,
@@ -95,7 +96,7 @@ $p1(subject:$u1, object:$f1) isa permission, has updated 2023-10-27T12:04:36;
 $p2(subject:$u2, object:$f2) isa permission;
 ----
 
-The above query xref:typeql:ROOT:data/insert.adoc[inserts] one instance of the `person` type,
+The above query xref:typeql::queries/insert.adoc[inserts] one instance of the `person` type,
 two `user` entities,
 two `file` entities,
 two relations of the `permission` type,
@@ -121,7 +122,7 @@ fetch
 $u: username;
 ----
 
-The above xref:typeql:ROOT:data/fetch.adoc[Fetch] query matches the `file` entity by the `path` attribute
+The above xref:typeql::queries/fetch.adoc[Fetch] query matches the `file` entity by the `path` attribute
 it has ownership of.
 Then it finds all users (`$u`) that participate in a relation of a `permission` type with the file.
 Finally, it fetches values of `username` type attributes owned by such users.
@@ -147,7 +148,7 @@ _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 A schema of a TypeDB database can be extended at any time without the need to rewrite existing queries.
 The easiest way to extend the schema is to add a new type, add an ownership of an attribute type, add a role, or
-add an ability to play a new role with a xref:typeql:ROOT:schema/type-definitions.adoc[Define] query.
+add an ability to play a new role with a xref:typeql::queries/define.adoc[Define] query.
 
 Let's add a new subtype and a new role to our schema:
 
@@ -194,7 +195,7 @@ insert
 The above query matches the file with path `README.md` and all users, that are not in a `permission` relation.
 Then it inserts such a relation for every matched `user` and `file`.
 
-The xref:typeql:ROOT:data/insert.adoc[Insert] query type is the only one that can be used without a `match` clause.
+The xref:typeql::queries/insert.adoc[Insert] query type is the only one that can be used without a `match` clause.
 See <<_data,query #2>>.
 
 == #{counter:query}: Data deletion
@@ -231,7 +232,7 @@ Variables indicate unknowns that should be used somewhere else in the pattern or
 Every matched result is a solution for the `match` clause pattern:
 it includes a single concept (a type or an instance of a type) for every variable.
 
-For a xref:typeql:ROOT:data/fetch.adoc[Fetch] query we use a `match` clause
+For a xref:typeql::queries/fetch.adoc[Fetch] query we use a `match` clause
 to declare a pattern for the data we are looking for and a `fetch` clause to retrieve values.
 
 .Composable pattern example
@@ -249,7 +250,7 @@ fetch $x;
 This query matches only the person that owns the attribute with type `name` and value `Bob`
 and all their owned attributes (`$x`), excluding the name `Bob`.
 Then the `fetch` clause retrieves all matched attributes (`$x`).
-For the data from <<_data,query #2>> it should return username `bob_93` and email `bob@vaticle.com`.
+For the data from <<_data,query #2>> it should return username `bob_93` and email `bob@typedb.com`.
 
 For the `match` clause pattern we included five simple statements.
 All five of them must be met for the matching.
@@ -267,7 +268,7 @@ For more information on using subtypes, see <<_inheritance_polymorphism,query>> 
 == #{counter:query}: Abstract types
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
-xref:typeql:ROOT:fundamentals.adoc#_abstract_types[Abstract types] can't be instantiated
+xref:typeql::statements/abstract.adoc[Abstract types] can't be instantiated
 (no data can be inserted for the abstract type), but can be subtyped.
 
 In schema from <<_schema,query #1>> we defined `id` as an abstract type to subtype it with many different attributes,
@@ -282,15 +283,15 @@ match $x has id $id;
 get $x, $id;
 ----
 
-The above xref:typeql::data/get.adoc[Get] query can't retrieve any instances of `id` type
+The above xref:typeql::queries/get.adoc[Get] query can't retrieve any instances of `id` type
 because it is an abstract type.
 Instead, it returns instances of all its subtypes, see the visualization below.
 
 image::typedb-in-25-queries/abstract.png[Abstract type, role=framed, width = 75%, link=self]
 
-We use the xref:typeql::data/get.adoc[Get] query type, because it returns all concepts from a database as a ConceptMap,
+We use the xref:typeql::queries/get.adoc[Get] query type, because it returns all concepts from a database as a ConceptMap,
 so that TypeDB Studio can build a graph visualization of the response (see above),
-while xref:typeql::data/fetch.adoc[Fetch] returns only values in a JSON.
+while xref:typeql::queries/fetch.adoc[Fetch] returns only values in a JSON.
 
 [#_parametric_polymorphism]
 == #{counter:query}: Parametric polymorphism
@@ -315,7 +316,7 @@ match $x isa! $t;
 get $x, $t;
 ----
 
-The above xref:typeql::data/get.adoc[Get] query returns pairs of `$x` and `$t` concepts,
+The above xref:typeql::queries/get.adoc[Get] query returns pairs of `$x` and `$t` concepts,
 where `$x` should be an instance of data and `$t` should be its type.
 Note how the type in the `isa!` statement is variablized.
 Effectively this query returns all data from a database
@@ -338,7 +339,7 @@ match $x isa entity;
 get $x;
 ----
 
-The xref:typeql::data/get.adoc[Get] query above matches `$x` by its type.
+The xref:typeql::queries/get.adoc[Get] query above matches `$x` by its type.
 The type must be the `entity` type or any of its subtypes.
 This query should return all entities in a database.
 Since `entity` is a root type, it's an <<_abstract,abstract>> type and can't be directly instantiated.
@@ -368,7 +369,7 @@ The same approach could be used with playing a role in a relationship.
 == #{counter:query}: Inheritance
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
-xref:typeql:ROOT:fundamentals.adoc#_inheritance[Inheritance] lets subtypes use roles and attributes,
+Inheritance lets subtypes use roles and attributes,
 defined for their supertype (direct or nested).
 
 Like in the following example:
@@ -392,7 +393,7 @@ The result should look like the following JSON:
 {
     "Bob": {
         "attribute": [
-            { "value": "bob@vaticle.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } },
+            { "value": "bob@typedb.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } },
             { "value": "Bob", "value_type": "string", "type": { "label": "name", "root": "attribute" } },
             { "value": "bob_93", "value_type": "string", "type": { "label": "username", "root": "attribute" } }
         ],
@@ -542,7 +543,7 @@ all instances of the owner type must have exactly one (no less and no more) inst
 
 Consider the schema from the <<_data,query #2>>.
 
-In the schema we xref:typeql:ROOT:schema/type-definitions.adoc[defined]
+In the schema we xref:typeql::queries/define.adoc[defined]
 the `username` type to be a key for the `user` type,
 and the `email` to be unique, when owned by the `user` type.
 
@@ -556,7 +557,7 @@ $u1 isa user;
 $u2 isa user, has username "Bob";
 $u3 isa user,
     has username "Totally-not-Bob",
-    has email "bob@vaticle.com";
+    has email "bob@typedb.com";
 ----
 
 The above query fails as it violates the following annotation constraints:
@@ -625,7 +626,7 @@ users: {
 The query above matches all files with a path fitting the RegEx `^docs/.*$`
 (any string, starting with the `docs/` substring) and fetches their path (`$p`).
 
-It also has `users` xref:typeql::data/fetch.adoc#_subqueries[subquery] that fetches usernames of all users,
+It also has `users` xref:typeql::queries/fetch.adoc#_subqueries[subquery] that fetches usernames of all users,
 that have a permission to access the matched file.
 
 .Result example
@@ -649,7 +650,7 @@ _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 Arithmetic expressions let you perform basic math operations on any value in a `match` clause.
 
-See the list of available xref:typeql::data/match.adoc#_arithmetic_operations[arithmetic operations].
+See the list of available xref:typeql::values/arithmetic.adoc#_operations[arithmetic operations].
 
 Let's insert a few files with different sizes, that are calculated:
 
@@ -676,9 +677,9 @@ image::typedb-in-25-queries/math.png[Arithmetics, role=framed, width = 75%, link
 _Run this query after <<_schema,query #1>> and <<_data,query #2>>._
 
 TypeDB reasoning engine can perform rule-based inference when you read data.
-To use inference, we need to xref:typeql:ROOT:schema/type-definitions.adoc[Define] rules in the schema,
+To use inference, we need to xref:typeql::queries/define.adoc[Define] rules in the schema,
 open a `read` transaction with the `infer` option xref:manual::reading/infer.adoc[enabled],
-and send a xref:typeql:ROOT:data/get.adoc[Get] or xref:typeql::data/fetch.adoc[Fetch] query.
+and send a xref:typeql::queries/get.adoc[Get] or xref:typeql::queries/fetch.adoc[Fetch] query.
 
 .Schema with a rule
 [,typeql]
@@ -845,8 +846,8 @@ Then the transitivity, implemented by
 the `transitive-group-memmbership` rule, will make `user` into a member of all groups: from Group A to Group E.
 ////
 
-For more information on rule inference, see the xref:typeql:ROOT:schema/rule-definitions.adoc[] page
-in xref:typeql:ROOT:overview.adoc[TypeQL documentation].
+For more information on rule inference, see the xref:learn::10-using-inference/10-using-inference.adoc[] section
+of the TypeDB Learning course.
 
 == #{counter:query}: Inserting transitive relations
 _Run this query after <<_schema,query #1>>, <<_data,query #2>>, and query <<_transitivity>>._

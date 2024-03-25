@@ -1,0 +1,83 @@
+= value assignment
+
+Value assignment doesn't use any specific keyword, but it assigns a value to a concept variable
+that represents an attribute.
+
+== Syntax
+
+The syntax of a value assignment statement includes:
+
+* concept variable
+* value
+
+.Syntax
+[,typeql]
+----
+<concept-variable> <value>;
+----
+
+== Behavior
+
+TypeQL value assignment statements can be used only in a match clause or rule condition.
+
+Since only attributes can have a value,
+value assignment syntax implicitly bounds the concept variable to the `attribute` type.
+You can specify the type of the concept variable by bounding it explicitly with an
+xref:typeql::statements/isa.adoc[isa statement].
+
+== Usage in a match pattern
+
+include::typeql::partial$iam-database-links.adoc[]
+
+For example, let's find all attributes of any type in a database with the value equal to the `Kevin Morrison` string:
+
+.Value assignment query example
+[,typeql]
+----
+match
+$a "Kevin Morrison";
+fetch $a;
+----
+
+.See example output
+[%collapsible]
+====
+.Output example
+[,json]
+----
+{ "a": { "value": "Kevin Morrison", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } }
+----
+====
+
+== Usage in an insert pattern
+
+include::typeql::partial$iam-database-links.adoc[]
+
+To explicitly insert an attribute, use a value assignment to set its value,
+and an xref:typeql::statements/isa.adoc[isa] statement to set its type:
+
+.Inserting attribute example
+[,typeql]
+----
+insert
+$a "Bob" isa full-name;
+----
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::statements/type.adoc[]
+[.clickable]
+****
+Learn more about `type` statement in TypeQL.
+****
+
+.xref:typeql::concepts/types.adoc[]
+[.clickable]
+****
+Learn about types in TypeQL.
+****
+--
+
+

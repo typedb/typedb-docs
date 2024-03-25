@@ -1,6 +1,7 @@
 = Documentation overview
 :keywords: typedb, typeql, clients, documentation, overview
 :pageTitle: Documentation overview
+:page-aliases: typedb::overview.adoc
 :summary: A birds-eye view of all documentation for TypeDB, TypeQL, and TypeDB Clients
 
 Welcome to the TypeDB, TypeQL and TypeDB Clients technical documentation.
@@ -86,9 +87,9 @@ See how to define a schema for a database.
 ****
 --
 
-== TypeDB Manual
+== TypeDB manual
 
-TypeDB Manual consists of practice-oriented guides for configuring environment and developing with TypeDB.
+TypeDB manual consists of practice-oriented guides for configuring environment and developing with TypeDB.
 
 [cols-2]
 --
@@ -197,25 +198,59 @@ Coming soon.
 
 TypeQL is a modern, beautiful and elegant type-theoretic query language, supporting polymorphic queries.
 
-[cols-3]
+[cols-1]
 --
 .xref:typeql::introduction.adoc[]
 [.clickable]
 ****
-A high-level description of TypeQL.
-****
-
-.xref:typeql::schema/overview.adoc[Schema]
-[.clickable]
-****
-TypeQL as a Data definition language to define a database schema.
-****
-
-.xref:typeql::data/overview.adoc[Data]
-[.clickable]
-****
-Data queries to read and modify data in a TypeDB database.
+A high-level description of TypeQL query language and its features.
 ****
 --
-//* xref:typeql::grammar.adoc[].
-//Keywords
+
+[cols-3]
+--
+.xref:typeql::queries/overview.adoc[Queries]
+[.clickable]
+****
+TypeQL queries to define schema and manipulate data.
+****
+
+.xref:typeql::patterns/overview.adoc[Patterns]
+[.clickable]
+****
+TypeQL patterns used in queries.
+****
+
+.xref:typeql::statements/overview.adoc[Statements]
+[.clickable]
+****
+TypeQL statements used in patterns.
+****
+
+.xref:typeql::modifiers/overview.adoc[Modifiers]
+[.clickable]
+****
+TypeQL modifiers used with queries.
+****
+
+.xref:typeql::concepts/overview.adoc[Concepts]
+[.clickable]
+****
+TypeQL concepts stored in a database.
+****
+
+.xref:typeql::values/overview.adoc[Values]
+[.clickable]
+****
+Values and value variables used in TypeQL.
+****
+--
+
+[cols-1]
+--
+.xref:typeql::keywords.adoc[]
+[.clickable]
+****
+TypeQL keywords and terminology glossary.
+****
+--

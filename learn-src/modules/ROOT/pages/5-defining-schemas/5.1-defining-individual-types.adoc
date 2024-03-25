@@ -23,7 +23,7 @@ When `sub` statements are used in a Define query, they are *data definition stat
 
 [NOTE]
 ====
-The sample database already has the complete bookstore schema defined and data inserted. If you would like to try running any of the Define queries featured in this section, then you should do so using a new database. See xref:learn::2-environment-setup/2.2-using-typedb-studio.adoc[Lesson 2.2] for instructions create a new database. Define queries must be *run* image:studio-icons/run.png[] using a *schema* session and *write* transaction. After running any queries, remember to *commit* image:studio-icons/commit.png[] the changes or *close* image:studio-icons/close.png[] the transaction. If you are using TypeDB Studio, you should see any committed changes to the schema reflected in the *type browser*.
+The sample database already has the complete bookstore schema defined and data inserted. If you would like to try running any of the Define queries featured in this section, then you should do so using a new database. See xref:learn::2-environment-setup/2.2-using-typedb-studio.adoc[Lesson 2.2] for instructions create a new database. Define queries must be *run* image:studio-icons/run-query.png[] using a *schema* session and *write* transaction. After running any queries, remember to *commit* image:studio-icons/commit-transaction.png[] the changes or *close* image:studio-icons/close-transaction.png[] the transaction. If you are using TypeDB Studio, you should see any committed changes to the schema reflected in the *type browser*.
 ====
 
 .Exercise
@@ -83,7 +83,7 @@ Write a query to define three new relation types and their roles:
 
 * `locating` with roles `locating:location` and `locating:located`.
 * `delivery` with roles `delivery:deliverer`, `delivery:delivered`, and `delivery:destination`.
-* `promotion-inclusion` with roles `promotion-inclusion:promotion` and `promotion-inclusion:included`.
+* `promotion-inclusion` with roles `promotion-inclusion:promotion` and `promotion-inclusion:item`.
 
 .Sample solution
 [%collapsible]
@@ -100,7 +100,7 @@ delivery sub relation,
     relates destination;
 promotion-inclusion sub relation,
     relates promotion,
-    relates included;
+    relates item;
 ----
 =====
 ====

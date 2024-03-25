@@ -1,0 +1,297 @@
+= Lesson 7.4: Value comparisons
+
+== Comparison operators
+
+TypeQL provides several operators for comparing the values of attributes and literals in patterns.
+
+Equality operators:: `==`, `!=`
+Ordering operators:: `>`, `>=`, `<`, `\<=`
+String matching operators:: `contains`, `like`
+
+We have already seen a few examples of them in previous lessons.
+
+== Equality operators
+
+The equality operators are valid for comparing values of all value types. We can compare the values of attributes either to those of literals or to those of each other. In the following Fetch query, we retrieve a list of books that were published in a city other than New York.
+
+[,typeql]
+----
+match
+$book isa book;
+($book, $publication) isa publishing;
+($publication, $city) isa locating;
+$city isa city, has name != "New York City";
+fetch
+$book: isbn-13;
+----
+
+In this next query, we retrieve pairs of books that were published in the same year.
+
+[,typeql]
+----
+match
+$book-1 isa book;
+$book-2 isa book;
+($book-1, $publication-1) isa publishing;
+($book-2, $publication-2) isa publishing;
+$publication-1 isa publication, has year $year-1;
+$publication-2 isa publication, has year $year-2;
+not { $book-1 is $book-2; };
+$year-1 == $year-2;
+fetch
+$book-1: isbn-13;
+$book-2: isbn-13;
+----
+
+.Exercise
+[caption=""]
+====
+Write a Fetch query to retrieve the IDs of users that are based outside the US. The entity representing the US has the name "United States".
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Hint
+[%collapsible]
+=====
+Enabling rule inference to leverage the rule `transitive-location` will make this significantly easier.
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$user isa user;
+$country isa country, has name != "United States";
+($user, $country) isa locating;
+fetch
+$user: id;
+----
+
+This query must be run with rule inference switched on.
+=====
+====
+
+== Ordering operators
+
+The ordering operators can be used to compare longs, doubles, and datetimes. We have already seen an example of their use in xref:learn::7-understanding-query-patterns/7.3-logical-operators.adoc[Lesson 7.3], where we retrieved a list of books that a user has eiter ordered or reviewed with a score of seven or higher.
+
+[,typeql]
+----
+match
+$user isa user, has id "u0008";
+$liked-book isa book;
+{
+    ($user, $order) isa action-execution;
+    ($order, $liked-book) isa order-line;
+} or {
+    ($user, $review) isa action-execution;
+    ($review, $liked-book) isa rating;
+    $review has score >= 7;
+};
+fetch
+$liked-book: isbn-13;
+----
+
+In this next query we retrieve a list of books that have a retail price under $15.
+
+[,typeql]
+----
+match
+$book isa book, has price <= 15.00;
+fetch
+$book: isbn-13, title, price;
+----
+
+.Exercise
+[caption=""]
+====
+Write a Fetch query to retrieve the IDs of orders that were placed during the Holiday Sale 2023. The entity representing this sale has the code "HOL23".
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$holiday-order isa order;
+($holiday-order) isa action-execution,
+    has timestamp $order-time;
+$holiday-sale isa promotion,
+    has code "HOL23",
+    has start-timestamp <= $order-time,
+    has end-timestamp >= $order-time;
+fetch
+$holiday-order: id;
+----
+=====
+====
+
+[NOTE]
+====
+The ordering operators are also valid for strings, and function according to the https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#compareTo(java.lang.String)[Java string specification]:
+
+* If two strings have the same length and the characters at each index are the same, then they are equal.
+* If they have different characters at one or more index positions, then the lesser string is the one with the lower https://en.wikipedia.org/wiki/List_of_Unicode_characters[Unicode value] at the first of those indices.
+* If they are different lengths but there is no index at which they differ, then the lesser string is the shorter one.
+====
+
+== String matching operators
+
+TypeQL includes two operators for string matching, denoted by the keywords `contains` and `like`. The `contains` operator checks if one string contains another in a case-insensitive manner, while the `like` operator can be used to match strings through https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/regex/Pattern.html[Java regex patterns]. Unlike the equality and ordering operators, the string matching operators can only be used to compare attribute values to string literals; they cannot be used to compare the values of two attributes.
+
+The following query uses the `contains` operator to retrieve a list of books with both "electron" and "diffraction" in the title.
+
+[,typeql]
+----
+match
+$book isa book, has title $title;
+$title contains "electron";
+$title contains "diffraction";
+fetch
+$book: title;
+----
+
+[,json]
+----
+{
+    "book": {
+        "title": [ { "value": "Interpretation of Electron Diffraction Patterns", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "Electron Backscatter Diffraction in Materials Science", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "hardback", "root": "entity" }
+    }
+}
+----
+
+[WARNING]
+====
+For non-Latin characters, the case insensitivity of the `contains` operator can result in https://en.wikipedia.org/wiki/Dotted_and_dotless_I_in_computing[unexpected behaviour].
+====
+
+Meanwhile, the following query uses the `like` operator to retrieve a list of books whose titles start with "the".
+
+[,typeql]
+----
+match
+$book isa book, has title like "(?i)^the\s.*";
+fetch
+$book: title;
+----
+
+[,json]
+----
+{
+    "book": {
+        "title": [ { "value": "The Hobbit", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "The Iron Giant", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "The Complete Calvin and Hobbes", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "hardback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "The Odyssey", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "The Mummies of Urumchi", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "The Motorcycle Diaries: A Journey Around South America", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "title": [ { "value": "The Hitchhiker's Guide to the Galaxy", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+----
+
+.Exercise
+[caption=""]
+====
+Write a Fetch query to retrieve the titles of books that contain "the" in a position other than the start.
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$book isa book, has title like "(?i).+\sthe\s.*";
+fetch
+$book: title;
+----
+=====
+
+Write a Fetch query to retrieve the ISBN-13s of all books that are included in an order that has a status of "paid", "dispatched", or "delivered", without using a disjunction.
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$book isa book;
+$order isa order;
+($book, $order) isa order-line;
+$order has status like "^(paid|dispatched|delivered)$";
+fetch
+$book: isbn-13;
+----
+=====
+====

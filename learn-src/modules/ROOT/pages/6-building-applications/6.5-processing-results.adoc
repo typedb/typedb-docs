@@ -1,0 +1,334 @@
+= Lesson 6.5: Processing results
+
+== The structure of results
+
+In this lesson, we'll be looking at how we can process the results of queries to produce the data structures we need. We'll start with the following query.
+
+[,typeql]
+----
+match
+$book isa hardback;
+fetch
+$book: title, genre, page-count;
+----
+
+// Remove after change to Cloud
+[,python]
+----
+ADDRESS = "localhost:1730"
+DATABASE = "bookstore"
+
+with TypeDB.core_driver(ADDRESS) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
+            results: Iterator[dict] = transaction.query.fetch("""
+                match
+                $book isa hardback;
+                fetch
+                $book: title, genre, page-count;
+            """)
+
+            for result in results:
+                print(result)
+----
+
+// Add after change to Cloud.
+// [,python]
+// ----
+// DATABASE = "bookstore"
+//
+// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+//     with driver.session(DATABASE, SessionType.DATA) as session:
+//         with session.transaction(TransactionType.READ) as transaction:
+//             results: Iterator[dict] = transaction.query.fetch("""
+//                 match
+//                 $book isa hardback;
+//                 fetch
+//                 $book: title, genre, page-count;
+//             """)
+//
+//             for result in results:
+//                 print(result)
+// ----
+
+If we run this code snippet, then we get the following output.
+
+[,python]
+----
+{'book': {'genre': [{'type': {'root': 'attribute', 'value_type': 'string', 'label': 'genre'}, 'value': 'comics'}, {'type': {'label': 'genre', 'value_type': 'string', 'root': 'attribute'}, 'value': 'fiction'}], 'type': {'root': 'entity', 'label': 'hardback'}, 'page-count': [{'type': {'value_type': 'long', 'label': 'page-count', 'root': 'attribute'}, 'value': 1451}], 'title': [{'value': 'The Complete Calvin and Hobbes', 'type': {'label': 'title', 'root': 'attribute', 'value_type': 'string'}}]}}
+{'book': {'genre': [{'type': {'root': 'attribute', 'label': 'genre', 'value_type': 'string'}, 'value': 'history'}, {'type': {'label': 'genre', 'root': 'attribute', 'value_type': 'string'}, 'value': 'nonfiction'}], 'page-count': [{'type': {'label': 'page-count', 'value_type': 'long', 'root': 'attribute'}, 'value': 296}], 'type': {'root': 'entity', 'label': 'hardback'}, 'title': [{'type': {'value_type': 'string', 'label': 'title', 'root': 'attribute'}, 'value': 'Under the Black Flag: The Romance and the Reality of Life Among the Pirates'}]}}
+{'book': {'genre': [{'type': {'value_type': 'string', 'root': 'attribute', 'label': 'genre'}, 'value': 'nonfiction'}, {'type': {'label': 'genre', 'value_type': 'string', 'root': 'attribute'}, 'value': 'technology'}], 'type': {'root': 'entity', 'label': 'hardback'}, 'title': [{'value': 'Electron Backscatter Diffraction in Materials Science', 'type': {'root': 'attribute', 'value_type': 'string', 'label': 'title'}}], 'page-count': [{'type': {'root': 'attribute', 'label': 'page-count', 'value_type': 'long'}, 'value': 425}]}}
+----
+
+Each output line is a result in the format of a *dictionary*. The keys of the dictionary are names of the variables in the `fetch` clause that we retrieved the attributes of. In this case, we only fetched the attributes of `$book` so the only key is `book`.
+
+[,python]
+----
+for result in results:
+    print(result.keys())
+----
+
+[,python]
+----
+dict_keys(['book'])
+dict_keys(['book'])
+dict_keys(['book'])
+----
+
+For each result, the value of `result["book"]` is another dictionary. The keys of these nested dictionaries are the names of the attributes that we fetched of `book`, in addition to a `type` field as we saw in xref:learn::3-reading-data/3.2-fetching-polymorphic-data.adoc[Lesson 3.2].
+
+[,python]
+----
+for result in results:
+    print(result["book"].keys())
+----
+
+[,python]
+----
+dict_keys(['type', 'genre', 'page-count', 'title'])
+dict_keys(['type', 'genre', 'page-count', 'title'])
+dict_keys(['title', 'genre', 'page-count', 'type'])
+----
+
+The values of `result["book"]["title"]`, `result["book"]["genre"]`, and `result["book"]["page-count"]` are *lists*, each containing a dictionary representing a retrieved attribute of `$book`. These have `value` fields containing the value of the attribute, in addition to `type` fields. If we print out each `value` field, we can clearly see the results of the query.
+
+[,python]
+----
+for result in results:
+    for title in result["book"]["title"]:
+        print(f"""Title: {title["value"]}""")
+
+    for genre in result["book"]["genre"]:
+        print(f"""Genre: {genre["value"]}""")
+
+    for page_count in result["book"]["page-count"]:
+        print(f"""Page count: {page_count["value"]}""")
+
+    print()
+----
+----
+Title: The Complete Calvin and Hobbes
+Genre: comics
+Genre: fiction
+Page count: 1451
+
+Title: Under the Black Flag: The Romance and the Reality of Life Among the Pirates
+Genre: history
+Genre: nonfiction
+Page count: 296
+
+Title: Electron Backscatter Diffraction in Materials Science
+Genre: nonfiction
+Genre: technology
+Page count: 425
+
+----
+
+We can see that each book in the result set has one title and page count (as would be expected), in addition to two genres.
+
+.Exercise
+[caption=""]
+====
+Write a function that prints the title and ISBNs of every hardback. For each ISBN printed, make sure to specify if it is an ISBN-13 or an ISBN-10. The function should have the following signature.
+
+[,python]
+----
+print_hardback_isbns(transaction: TypeDBTransaction) -> None
+----
+
+.Hint
+[%collapsible]
+=====
+The type of ISBN can be accessed via the `label` field of the `type` field of the returned dictionary representing the ISBN, for example:
+[,python]
+----
+for result in results:
+    for isbn in result["book"]["isbn"]:
+        print(isbn["type"]["label"])
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,python]
+----
+def print_hardback_isbns(transaction: TypeDBTransaction) -> None:
+    results = transaction.query.fetch("""
+        match
+        $book isa hardback;
+        fetch
+        $book: title, isbn;
+    """)
+
+    for result in results:
+        for title in result["book"]["title"]:
+            print(f"""Title: {title["value"]}""")
+
+        for isbn in result["book"]["isbn"]:
+            print(f"""{isbn["type"]["label"].upper()}: {isbn["value"]}""")
+
+        print()
+----
+=====
+====
+
+== Yielding results
+
+By accessing the result dictionaries in this way, we can structure the results of a query as needed for further processing. The following code snippet shows a function that retrieves the IDs of orders that include a book, specified by ISBN, and the quantity ordered. The order ID and quantity are *yielded* as a tuple that we can further operate on elsewhere in our application.
+
+[,python]
+----
+def get_orders_of_book(transaction: TypeDBTransaction, isbn: str) -> Iterator[tuple[str, int]]:
+    results = transaction.query.fetch(f"""
+        match
+        $book isa book, has isbn "{isbn}";
+        $line (order: $order, item: $book) isa order-line;
+        fetch
+        $order: id;
+        $line: quantity;
+    """)
+
+    for result in results:
+        order_id = result["order"]["id"][0]["value"]
+        quantity = result["line"]["quantity"][0]["value"]
+
+        yield order_id, quantity
+----
+
+We make sure to return an *iterator* by using the `yield` keyword rather than the `return` keyword. This will allow us to begin processing individual results as soon as they are each returned by the server rather than having to wait for the last one to be found. The following code snippet shows how we might call this function, and we can see it prints the results in the desired format.
+
+// Remove after change to Cloud.
+[,python]
+----
+with TypeDB.core_driver(ADDRESS) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
+            orders = get_orders_of_book(transaction, "9780446310789")
+
+            for order in orders:
+                print(order)
+----
+
+
+// Add after change to Cloud.
+// [,python]
+// ----
+// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+//     with driver.session(DATABASE, SessionType.DATA) as session:
+//         with session.transaction(TransactionType.READ) as transaction:
+//             orders = get_orders_of_book(transaction, "9780446310789")
+//
+//             for order in orders:
+//                 print(order)
+// ----
+
+[,python]
+----
+('o0016', 1)
+('o0032', 1)
+('o0036', 2)
+----
+
+.Exercise
+[caption=""]
+====
+Write a function that yields the ISBN-13s and titles of books in a specified genre as tuples. You can assume that each book has exactly one ISBN-13 and one title. The function should have the following signature.
+
+[,python]
+----
+get_books_in_genre(transaction: TypeDBTransaction, genre: str) -> Iterator[tuple[str, str]]
+----
+
+You should ensure the following test case produces the result given for the sample database. Additional results may be produced if you have inserted data.
+
+// Remove after change to Cloud.
+[,python]
+----
+with TypeDB.core_driver(ADDRESS) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
+            scifis = get_books_in_genre(transaction, "science fiction")
+
+            for book in scifis:
+                print(book)
+----
+
+// Add after change to Cloud.
+// [,python]
+// ----
+// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+//     with driver.session(DATABASE, SessionType.DATA) as session:
+//         with session.transaction(TransactionType.READ) as transaction:
+//             scifis = get_books_in_genre(transaction, "science fiction")
+//
+//             for book in scifis:
+//                 print(book)
+// ----
+
+[,python]
+----
+('9780575104419', 'Dune')
+('9780671461492', "The Hitchhiker's Guide to the Galaxy")
+----
+
+.Sample solution
+[%collapsible]
+=====
+[,python]
+----
+def get_books_in_genre(transaction: TypeDBTransaction, genre: str) -> Iterator[tuple[str, str]]:
+    results = transaction.query.fetch(f"""
+        match
+        $book isa book, has genre "{genre}";
+        fetch
+        $book: isbn-13, title;
+    """)
+
+    for result in results:
+        isbn_13 = result["book"]["isbn-13"][0]["value"]
+        title = result["book"]["title"][0]["value"]
+
+        yield isbn_13, title
+----
+=====
+====
+
+.Exercise
+[caption=""]
+====
+Write a sample app that allows an employee of the bookstore to query books via a CLI. The app should allow employees to look up books by specific ISBNs, and to search for books based on one or more of the following fields in combination:
+
+* Format.
+* Genres.
+* Contributor names.
+* Publisher name.
+* Publication year.
+
+Whether looked up directly by ISBN or as part of a search, the following details should be displayed for each book returned:
+
+* All attributes of the book.
+* The names of any contributors to the book.
+* The name of the book's publisher.
+* The book's year of publication.
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,python]
+----
+include::learn::attachment$python-sample-app.py[lines=18..]
+----
+=====
+====

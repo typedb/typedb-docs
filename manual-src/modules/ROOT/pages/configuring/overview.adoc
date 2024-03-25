@@ -91,9 +91,9 @@ an additional 2 GB of memory for each database).
 To support large data volumes, it is important to check the open file limit the operating system imposes. Some Unix
 distributions default to `1024` open file descriptors. This can be checked with the following command:
 
-[,bash]
+[source,console]
 ----
-ulimit -n
+$ ulimit -n
 ----
 
 We recommend this is increased to at least `50 000`.

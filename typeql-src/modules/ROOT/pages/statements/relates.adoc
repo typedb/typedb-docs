@@ -1,0 +1,86 @@
+= relates
+
+The `relates` keyword is used in TypeQL schema to define a role of a relation type.
+
+== Syntax
+
+The syntax of a `relates` statement includes:
+
+* Subject -- type label of a relation type
+* Predicate -- the `relates` keyword
+* Object -- type label of a role
+
+.Syntax
+[,typeql]
+----
+<relation-type> relates <role> [as overridden-type];
+----
+
+An optional <<_usage_with_override,override>> can be added at the end.
+
+== Behavior
+
+TypeQL statements with the `relates` keyword can be used only in Define and Undefine queries.
+
+The `relates` keyword adds a new role to a relation type.
+
+== Usage in a schema definition
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Since in Define and Undefine queries you can't use variables,
+both subject and object can only be type labels.
+
+For example, to define a new role `subject` for the `premission` relation type, use:
+
+.Define role query example
+[,typeql]
+----
+define
+permission relates subject;
+----
+
+To remove the new role, use:
+
+.Undefine query example
+[,typeql]
+----
+undefine
+permission relates subject;
+----
+
+[#_usage_with_override]
+== Usage with override
+
+By default, a subtype of a relation type inherits all roles that were defined for its supertype.
+To override an inherited role, use the `as` keyword.
+
+Let's see an example, of a schema, where the `owned` role of the `ownership` relation type gets overridden by
+the `object` role:
+
+.Override owned attribute type example
+[,typeql]
+----
+define
+
+object-ownership sub ownership,
+    owns ownership-type,
+    relates object as owned;
+----
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::statements/type.adoc[]
+[.clickable]
+****
+Learn more about `type` statement in TypeQL.
+****
+
+.xref:typeql::concepts/types.adoc[]
+[.clickable]
+****
+Learn about types in TypeQL.
+****
+--

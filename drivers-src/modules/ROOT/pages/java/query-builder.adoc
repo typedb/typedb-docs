@@ -6,14 +6,14 @@
 
 The Java query builder library can be used to programmatically construct TypeQL queries with native Java code.
 
-To use TypeQL, we first add it as a dependency to our `pom.xml`.
+To use TypeQL, add it as a dependency to the `pom.xml`.
 
-The latest version of `typeql-lang` can be found in the
+The latest version of the `typeql-lang` can be found in the
 https://cloudsmith.io/~typedb/repos/public-release/packages/detail/maven/typeql-lang/latest/a=noarch;xg=com.vaticle.typeql/#versions[Vaticle's public Maven repository,window=_blank].
 
 [IMPORTANT]
 ====
-Don't forget to replace the `\{version}` placeholder with an exact version of the library.
+Replace the `\{version}` placeholder with the exact version of the library.
 ====
 
 [,xml]
@@ -40,12 +40,11 @@ Then we import `TypeQL`.
 import com.vaticle.typeql.lang.TypeQL;
 ----
 
-We are now ready to construct TypeQL queries, using the methods available on the `TypeQL` class.
+We are now ready to construct TypeQL queries, using the methods available for the `TypeQL` class.
 
 == Examples
 
 Using the Java query builder library is quite simple as it produces a TypeQL string.
-
 See the examples below.
 
 //1
@@ -101,7 +100,7 @@ TypeQLGet getQuery = TypeQL.match(
 ----
 
 //3
-=== Example {counter:example}: A get query with value variables
+=== Example {counter:example}: Value variables
 
 [,java]
 ----

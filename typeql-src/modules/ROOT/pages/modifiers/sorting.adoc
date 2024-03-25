@@ -1,0 +1,79 @@
+= Sorting
+
+This page covers sorting of TypeQL query results.
+
+== Behavior
+
+By default, a TypeDB server streams query results without a specific order,
+ensuring fast retrieval as solutions are sent as they're found.
+
+To impose a specific order, you can use the `sort` keyword followed by one or multiple comma-separated query variables.
+But this requires the server to find all results to make sure they are properly sorted before sending any.
+
+You can specify ascending (asc) or descending (desc) order for each variable sorted by.
+The ascending order is assumed by default.
+
+Sorting is crucial for result reproducibility.
+Without it, the order of query results isn't guaranteed in any way
+and can be different every time you send the same query to the same database.
+
+Sorting is commonly used alongside pagination.
+In this case, sorting precedes pagination in TypeQL query syntax.
+For example, see the xref:typeql::modifiers/pagination.adoc[] page.
+
+== Usage in a Fetch query
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Let's see an example of sorting results of a Fetch query:
+
+.Fetch query sorting example
+[,typeql]
+----
+match
+$p isa person, has full-name $n;
+fetch
+$p: full-name;
+sort $n asc;
+----
+
+The above Fetch query returns sorted `full-name` attributes owned by entities of the `person` type.
+Notice that there is no `$n` variable in the `fetch` clause of this query.
+Sorting is performed on the results of the `match` clause,
+so `fetch` clause determines only what data is projected into JSONs.
+In this case, we are projecting all attributes of the `full-name` type owned by the `$p` already.
+Adding `$n` to the `fetch` clause is possible, but redundant in this case.
+
+== Usage in a Get query
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Here is an example of a Get query with sorting the results in descending order:
+
+.Get query sorting example
+[,typeql]
+----
+match
+$p isa person, has full-name $n;
+get $n;
+sort $n desc;
+----
+
+The above Get query returns stateful objects for sorted `full-name` attributes owned by entities of the `person` type.
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::modifiers/pagination.adoc[]
+[.clickable]
+****
+Learn about result pagination in TypeQL.
+****
+
+.xref:typeql::modifiers/aggregation.adoc[]
+[.clickable]
+****
+Learn about aggregation of query results in TypeQL.
+****
+--

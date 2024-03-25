@@ -1,0 +1,152 @@
+= Matching patterns
+:Summary: Matching data with patterns
+:page-aliases: typeql::data/basic-patterns.adoc, typedb::basics/patterns.adoc, typeql::data/match.adoc
+:keywords: typeql, typedb, query, match, matching, data, pattern, statement, variable, solution, concept, value
+:pageTitle: Matching patterns
+:!table-caption:
+
+A `match` clause is used by all data queries to seek data and types in a TypeDB database based on a provided pattern.
+It can be used only as a part of a xref:queries/overview.adoc#_data_queries[data query]
+with another clause to specify how to use the matched data.
+
+== Syntax
+
+A `match` clause start with the `match` keyword, followed by a pattern.
+A pattern consists of one or multiple statements.
+Each statement ends with a semicolon.
+
+[,typeql]
+----
+match
+<statement>;
+[<statement>;]
+----
+
+== Behavior
+
+A `match` clause is used to find all existing concepts in a database that satisfy a pattern.
+By default, statements in a pattern are combined with an implicit xref:typeql::patterns/conjunction.adoc[]
+or logical `AND` operation.
+That makes the order of statements irrelevant, as they all must be true to find a match.
+
+Patterns are composable,
+meaning you can combine two patterns by joining their statements together in a new pattern.
+
+=== Constraints statements
+
+Every statement in TypeQL sets constraints to its subject.
+
+To match a specific concept, use statements to set enough constraints for a concept variable to distinguish the concept
+from all others.
+For example, to match an attribute of the `full-name` type with the value of `Kevin Morrison`,
+you can use the following pattern in a `match` clause:
+
+.Matching example
+[,typeql]
+----
+$name isa full-name;
+$name == "Kevin Morrison";
+----
+
+The above pattern consists of two simple statements that can be combined in a comma-separated
+xref:typeql::statements/overview.adoc#_composite_statements[composite statement] that produces the same effect.
+
+It may be easier to find a specific entity using its attributes, if there is the
+xref:typeql::statements/unique.adoc[unique] or xref:typeql::statements/key.adoc[key] annotation set in the schema.
+
+[#_solution]
+You can think of matching a pattern as solving a system of equations,
+where every single statement in a pattern is an equation.
+TypeDB solves the system and returns all its solutions, including permutations.
+
+[#_match_clause_results]
+== Matched results
+
+A `match` clause returns a *set of matched results*.
+Every matched result is a <<_solution,solution>> for a given pattern,
+that contains an exact value for every xref:typeql::values/value-variables.adoc[value variable]
+and exact concept for every xref:typeql::concepts/concept-variables.adoc[concept variable].
+
+When you substitute variables in a pattern with values and concepts from a solution, it becomes a True statement.
+
+The number of results found (and returned) can be zero (no solutions found), one, or multiple.
+Due to set semantics of results, there can be no duplicates.
+
+Consider the following example:
+
+.Pattern example
+[,typeql]
+----
+$p isa person, has full-name $n;
+----
+
+The above example contains a pattern for an instance of `person` type having a `full-name` attribute.
+If there is a person with no `full-name` attributes in a database, then such a person will not be matched.
+If there is a person with two `full-name` attributes, then such a person will be matched in two results: one for each
+`full-name`.
+
+[IMPORTANT]
+====
+A `match` clause returns all possible <<_solution,solutions>> for a given pattern, including all possible permutations.
+====
+
+Data queries use results of a `match` clause to retrieve or process the matched data.
+
+=== Permutations
+
+A `match` clause returns all possible solutions for the given pattern based on the data and schema of a database.
+That includes all permutations of results between variables.
+
+For example, let's match two different variables to all entities of the `person` type:
+
+.Pattern example
+[,typeql]
+----
+$p1 isa person;
+$p2 isa person;
+----
+
+Given that we have a total of three entities of the `person` type in the database,
+the result should be nine pairs of tto entities each (one per every matched variable).
+See the table representation of the results below:
+
+[cols="^.^3,^.^3,^.^3,^.^3"]
+|===
+
+| `$p1` \ `$p2`
+| Person 1
+| Person 2
+| Person 3
+
+| Person 1
+| *11*
+| 12
+| 13
+
+| Person 2
+| 21
+| *22*
+| 23
+
+| Person 3
+| 31
+| 32
+| *33*
+|===
+
+== Learn more
+
+[cols-2]
+--
+.xref:learn::7-understanding-query-patterns/7-understanding-query-patterns.adoc[]
+[.clickable]
+****
+Learn more about query patterns in the TypeDB Learning course.
+****
+
+.xref:typeql::queries/overview.adoc[]
+[.clickable]
+****
+TypeQL queries overview.
+****
+--

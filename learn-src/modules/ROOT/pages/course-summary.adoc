@@ -1,28 +1,39 @@
-= Course summary
+= The TypeDB learning course
 
-For now, that concludes this course. More lessons will be added in the near future covering the following topics:
+== Summary
 
-* Understanding query patterns
-* Structuring query results
-* Modeling schemas
-* Using inference
-* Manipulating stateful objects
-* Advanced Modeling
-* Streaming results
-* Concurrent writes
-* Designing scalable rules
-* Programmatic schema migrations
+Congratulations on completing the TypeDB learning course!
 
-In the meantime, try out the other learning resources available.
+You should have learned everything you need to get developing with TypeDB, including how to:
+
+* Read and write data polymorphically.
+* Define polymorphic schemas.
+* Build applications on the TypeDB Drivers.
+* Compose different query patterns.
+* Structure the results of queries.
+* Build rules to infer new data.
+* Retrieve data as stateful objects.
+
+As with any technology, you will continue learning as you use TypeDB, and you can always return to this course to recap the fundamentals. There are also plenty of other resources available, some of which are listed below.
+
+Good luck on your TypeDB journey!
+
+== Further learning
 
 [cols-3]
 --
-.https://typedb.com/learn[Learning Centre]
+.https://typedb.com/lectures[Lectures]
 
 [.clickable]
 ****
-Fundamentals articles and live lectures covering the core type-theoretic principles on which TypeDB and TypeQL were built.
+Live lectures covering the motivations and type-theoretic principles on which TypeDB and TypeQL were built.
 ****
+
+// .https://typedb.com/papers[Papers]
+// [.clickable]
+// ****
+// Academic papers on the theory of TypeDB and TypeQL, and on applications across engineering disciplines.
+// ****
 
 .https://typedb.com/philosophy[Philosophy]
 [.clickable]
@@ -33,6 +44,54 @@ Introduction to the motivation behind TypeDB and the philosophy incorporated int
 .https://typedb.com/blog[Blog]
 [.clickable]
 ****
-Articles from the TypeDB team and contributors from across the community, talking about a variety of topics.
+Articles from the TypeDB team and contributors from across the community, voicing opinions on a variety of topics.
+****
+--
+
+== Documentation
+
+[cols-3]
+--
+.xref:manual::overview.adoc[TypeDB Manual]
+
+[.clickable]
+****
+Practice-oriented guides on using TypeDB, including the TypeDB Studio and TypeDB Console manuals.
+****
+
+.xref:drivers::overview.adoc[TypeDB Drivers]
+[.clickable]
+****
+Installation guides, tutorials, and API references for the official TypeDB Drivers in all supported languages.
+****
+
+.xref:typeql::overview.adoc[TypeQL Reference]
+[.clickable]
+****
+Complete language reference for TypeQL, covering all query types, pattern elements, and keywords.
+****
+--
+
+== Support
+
+[cols-3]
+--
+.https://typedb.com/discord[Discord]
+
+[.clickable]
+****
+Join the TypeDB Discord server to chat with the TypeDB team and likeminded developers from around the world.
+****
+
+.https://forum.typedb.com[Forum]
+[.clickable]
+****
+Collaborate with other users on projects, and find solutions to commonly experienced problems.
+****
+
+.https://typedb.com/support[Enterprise]
+[.clickable]
+****
+Explore the options for priority support, tailored to the needs of your business.
 ****
 --

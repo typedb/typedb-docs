@@ -1,0 +1,70 @@
+= Queries overview
+:Summary: TypeQL queries section overview.
+:keywords: typeql, typedb, queries, schema, data, overview
+:pageTitle: Queries overview
+:page-aliases: typeql::data/overview.adoc, typeql::schema/overview.adoc, typeql::queries.adoc
+
+A TypeQL query uses from one to three clauses with fully declarative patterns
+to manipulate the schema or data of a database.
+
+[#_schema_queries]
+== Schema queries
+
+//Schema queries are done in a `schema` session with a `write` transaction.
+Schema queries represent a DDL part of TypeQL:
+they are used to define and undefine types and rules in a schema.
+
+[cols-2]
+--
+.xref:typeql::queries/define.adoc[]
+[.clickable]
+****
+Define new types and rules in a schema.
+****
+
+.xref:typeql::queries/undefine.adoc[]
+[.clickable]
+****
+Delete types and rules from a schema.
+****
+--
+
+[#_data_queries]
+== Data queries
+
+//Data queries are usually done in a `data` sessions with a `read` or `write` transaction.
+Data queries represent DML part of TypeQL:
+they are used to manipulate data in a database with pattern matching.
+
+[cols-2]
+--
+.xref:typeql::queries/insert.adoc[]
+[.clickable]
+****
+Insert new data into a database.
+****
+
+.xref:typeql::queries/delete.adoc[]
+[.clickable]
+****
+Delete existing data from a database.
+****
+
+.xref:typeql::queries/update.adoc[]
+[.clickable]
+****
+Replace existing data in a database.
+****
+
+.xref:typeql::queries/fetch.adoc[]
+[.clickable]
+****
+Fetch values and types as JSONs.
+****
+
+.xref:typeql::queries/get.adoc[]
+[.clickable]
+****
+Get concepts from a database as ConceptMaps or aggregated values.
+****
+--

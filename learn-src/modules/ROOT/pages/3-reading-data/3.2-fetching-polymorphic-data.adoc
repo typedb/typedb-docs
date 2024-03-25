@@ -36,7 +36,7 @@ fetch
 $book: title, page-count;
 ----
 
-We have just changed the type of `$book` from `paperback` to `book`. Now if we *run* image:learn::studio-icons/run.png[] this query, the results include paperbacks, hardbacks, and ebooks!
+We have just changed the type of `$book` from `paperback` to `book`. Now if we *run* image:learn::studio-icons/run-query.png[] this query, the results include paperbacks, hardbacks, and ebooks!
 
 [,json]
 ----
@@ -191,7 +191,7 @@ To determine the actual return types of query results, we can look at the `type`
 
 == Polymorphism in TypeDB
 
-To begin leveraging declarative polymorphism in our queries, we'll first need to review the three fundamental types of polymorphism that TypeDB implements:
+To begin leveraging declarative polymorphism in our queries, we'll first need to review the three fundamental types of polymorphism that TypeDB implements.
 
 Inheritance polymorphism:: Allows us to define type hierarchies in the schema and then query those hierarchies declaratively.
 Interface polymorphism:: Allows us to define interfaces that can be implemented independently in the schema and then query those interfaces declaratively.
@@ -397,7 +397,7 @@ In this query, we specify the type of `$book` to be `paperback` and the type of 
 * The type of `$order` must play the role of `order` in `order-line`.
 * The type of `$order` must own the attribute `id`.
 
-This is more than enough information for TypeDB to infer the type of `$order`, which we can see by *running* image:learn::studio-icons/run.png[] this query.
+This is more than enough information for TypeDB to infer the type of `$order`, which we can see by *running* image:learn::studio-icons/run-query.png[] this query.
 
 [,json]
 ----
@@ -444,7 +444,7 @@ fetch
 $x: attribute;
 ----
 
-In this case, `$x` can be resolved to any type that both plays `located` in `locating`. Essentially, this query will return the attributes of anything located in Kansas City regardless of what it is. If we *run* image:learn::studio-icons/run.png[] this query, we see that we return instances of `publication` and `address`!
+In this case, `$x` can be resolved to any type that both plays `located` in `locating`. Essentially, this query will return the attributes of anything located in Kansas City regardless of what it is. If we *run* image:learn::studio-icons/run-query.png[] this query, we see that we return instances of `publication` and `address`!
 
 [,json]
 ----
@@ -490,7 +490,7 @@ $action: attribute;
 ----
 =====
 
-Based on the results of *running* image:learn::studio-icons/run.png[] this query, what types of system actions exist in the schema?
+Based on the results of *running* image:learn::studio-icons/run-query.png[] this query, what types of system actions exist in the schema?
 
 .Answer
 [%collapsible]
@@ -526,7 +526,7 @@ $entity-1: attribute;
 $entity-2: attribute;
 ----
 
-In this query we have omitted the roles that the two entities play! In general, we can omit roles in a relation tuple if we do not care what they are. This is particularly useful for parametric queries, but has some other powerful use cases that we will explore in Lesson 7.2 (coming soon).
+In this query we have omitted the roles that the two entities play! In general, we can omit roles in a relation tuple if we do not care what they are. This is particularly useful for parametric queries, and we will explore this feature more fully in xref:learn::7-understanding-query-patterns/7.2-relation-patterns.adoc[Lesson 7.2].
 
 [NOTE]
 ====

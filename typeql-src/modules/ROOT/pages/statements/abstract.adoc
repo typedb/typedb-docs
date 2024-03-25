@@ -1,0 +1,63 @@
+= abstract
+
+The `abstract` keyword is used in TypeQL to define a type as an abstract type.
+
+== Syntax
+
+The syntax of a simple statement with the `type` keyword:
+
+.Syntax
+[,typeql]
+----
+<type label> abstract;
+----
+
+The `abstract` keyword doesn't use any object, so after the keyword always follows either a comma, or a semicolon.
+
+== Behavior
+
+TypeQL statements with the `abstract` keyword are used in Define queries to define (declare) that the type is abstract.
+
+An abstract type can't be used to insert a data instance
+but can be used to create a subtype or to query (for its subtypes).
+
+== Usage in a schema definition
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Since in Define queries you can't use variables, the `abstract` keyword can be used only with a type label.
+It can be a part of a composite statement.
+
+For example, to define a new *abstract* attribute type `id` as a subtype of the `attribute` root type,
+and then the `email` non-abstract (concrete) type as a subtype of the `id`, use:
+
+.Define an abstract type example
+[,typeql]
+----
+define
+id sub attribute, abstract, value string;
+email sub id, value string;
+----
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::statements/sub.adoc[]
+[.clickable]
+****
+Learn more about `sub` statement in TypeQL.
+****
+
+.xref:typeql::statements/type.adoc[]
+[.clickable]
+****
+Learn more about `type` statement in TypeQL.
+****
+
+.xref:typeql::concepts/types.adoc[]
+[.clickable]
+****
+Learn more about types in TypeQL.
+****
+--

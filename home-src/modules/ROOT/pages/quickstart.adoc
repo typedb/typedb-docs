@@ -35,6 +35,8 @@ Core::
 TypeDB Core needs to be xref:home::install/core.adoc[installed] first.
 
 include::home::install/core.adoc[tag=core-run]
+
+include::home::partial$docker.adoc[tags=run]
 --
 ====
 
@@ -143,14 +145,14 @@ fetch $p: full-name, email;
 ----
 
 For every person in a database,
-the above xref:typeql::data/fetch.adoc[Fetch] query returns a JSON object similar to the following example:
+the above xref:typeql::queries/fetch.adoc[Fetch] query returns a JSON object similar to the following example:
 
 .Result example
 [,js]
 ----
 {
     "p": {
-        "email": [ { "value": "kevin.morrison@vaticle.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } } ],
+        "email": [ { "value": "kevin.morrison@typedb.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } } ],
         "full-name": [ { "value": "Kevin Morrison", "value_type": "string", "type": { "label": "full-name", "root": "attribute" } } ],
         "type": { "label": "person", "root": "entity" }
     }
@@ -160,7 +162,7 @@ the above xref:typeql::data/fetch.adoc[Fetch] query returns a JSON object simila
 [#_get_query_all_instances_and_attributes]
 === Get all instances of a type and their attributes
 
-To xref:typeql::data/get.adoc[get] all instances of a `person` type with all attributes owned:
+To xref:typeql::queries/get.adoc[get] all instances of a `person` type with all attributes owned:
 
 [,typeql]
 ----
@@ -169,7 +171,7 @@ $p isa person, has $a;
 get $p, $a;
 ----
 
-The above xref:typeql::data/get.adoc[Get] query returns concepts from a database as a ConceptMap
+The above xref:typeql::queries/get.adoc[Get] query returns concepts from a database as a ConceptMap
 that can be used programmatically with a xref:drivers::overview.adoc#_typedb_drivers[Driver API] to process the result.
 The following image is a graph visualization produced by xref:manual::studio.adoc[TypeDB Studio].
 
@@ -178,7 +180,7 @@ image::quickstart-get-example.png[Quickstart Get query example, role=framed, wid
 [#_fetch_all_emails_of_kevin]
 === Fetch all emails of Kevin
 
-To xref:typeql::data/fetch.adoc[fetch] all emails
+To xref:typeql::queries/fetch.adoc[fetch] all emails
 owned by every person with a full name that contains substring `Kevin`:
 
 [,typeql]
@@ -197,7 +199,7 @@ that looks as the following:
 ----
 {
     "person": {
-        "E-mail address": [ { "value": "kevin.morrison@vaticle.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } } ],
+        "E-mail address": [ { "value": "kevin.morrison@typedb.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } } ],
         "type": { "label": "person", "root": "entity" }
     }
 }
@@ -206,7 +208,7 @@ that looks as the following:
 [#_insert_email_for_kevin]
 === Insert a new email for Kevin
 
-To xref:typeql::data/insert.adoc[insert] a new email (`kevin@gmail.com`) for every person with a full name
+To xref:typeql::queries/insert.adoc[insert] a new email (`kevin@gmail.com`) for every person with a full name
 that contains "Kevin":
 
 [,typeql]
@@ -222,7 +224,7 @@ Now Kevin has more than one email.
 [#_update_email_for_kevin]
 === Update the email for Kevin
 
-To xref:typeql::data/update.adoc[update] the email from `kevin@gmail.com` to `kevin2@gmail.com`
+To xref:typeql::queries/update.adoc[update] the email from `kevin@gmail.com` to `kevin2@gmail.com`
 for every person with a full name that contains "Kevin":
 
 [,typeql]
@@ -248,7 +250,7 @@ The query above does the following:
 [#_delete_email_from_kevin]
 === Delete ownership over the email for Kevin
 
-To xref:typeql::data/delete.adoc[delete] the ownership of the email `kevin2@gmail.com`
+To xref:typeql::queries/delete.adoc[delete] the ownership of the email `kevin2@gmail.com`
 for every person with a full name that contains "Kevin":
 
 [,typeql]
@@ -278,9 +280,9 @@ Cloud::
 +
 --
 .TypeDB Cloud connection
-[,bash]
+[source,console]
 ----
-typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
+$ typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
 ----
 
 You will be prompted for a password.
@@ -292,9 +294,9 @@ Core::
 +
 --
 .TypeDB Core connection
-[,bash]
+[source,console]
 ----
-typedb console
+$ typedb console
 ----
 
 By default, TypeDB Console connects to your local TypeDB Core installation with the `localhost:1729` address.

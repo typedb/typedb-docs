@@ -1,0 +1,89 @@
+= plays
+
+The `plays` keyword is used in TypeQL schema to define a valid player of a role in a relation type.
+
+== Syntax
+
+The syntax of a `plays` statement includes:
+
+* Subject -- type label of a type to play the role
+* Predicate -- the `plays` keyword
+* Object -- scoped type label of a role
+
+.Syntax
+[,typeql]
+----
+<type> plays <relation-type:role> [as overridden-type];
+----
+
+An optional <<_usage_with_override,override>> can be added at the end.
+
+== Behavior
+
+TypeQL statements with the `plays` keyword can be used only in Define and Undefine queries.
+
+The `plays` keyword adds an ability to play a role to a schema.
+
+== Usage in a schema definition
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Since in Define and Undefine queries you can't use variables,
+both subject and object can only be type labels.
+The object is always a scoped type label that consists of a relation type and a role separated by a colon.
+
+For example, to define the `subject` type to be able to play the `subject` role in the `premission` relation type, use:
+
+.Define role query example
+[,typeql]
+----
+define
+subject plays permission:subject;
+----
+
+To remove the new role, use:
+
+.Undefine query example
+[,typeql]
+----
+undefine
+subject plays permission:subject;
+----
+
+[#_usage_with_override]
+== Usage with override
+
+include::typeql::partial$iam-database-links.adoc[]
+
+By default, a subtype of a relation type inherits all roles that were defined for its supertype.
+To override an inherited role, use the `as` keyword.
+The overridden new role must be a subtype of the inherited role.
+//#todo Show how to subtype a role
+
+Let's see an example, of a schema, where the `owned` role of the `ownership` relation type gets overridden by
+the `object` role:
+
+.Override owned attribute type example
+[,typeql]
+----
+define
+subject plays permission:manager as subject;
+----
+//#todo Improve example for reproducability
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::statements/type.adoc[]
+[.clickable]
+****
+Learn more about `type` statement in TypeQL.
+****
+
+.xref:typeql::concepts/types.adoc[]
+[.clickable]
+****
+Learn about types in TypeQL.
+****
+--

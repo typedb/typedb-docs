@@ -1,0 +1,182 @@
+= Lesson 7.6: Solution set semantics
+
+== Simultaneous constraints
+
+In xref:learn::7-understanding-query-patterns/7.1-patterns-as-constraints.adoc[Lesson 7.1], we learned how patterns in TypeQL queries are resolved as a set of simultaneous constraints. With that in mind, let's consider the following Fetch query, which is intended to list books and the promotions they are in.
+
+[,typeql]
+----
+match
+$book isa book;
+$promotion isa promotion;
+($book, $promotion) isa promotion-inclusion;
+fetch
+$book: title;
+$promotion: name;
+----
+
+This query does not in fact achieve the desired result. The third statement in the `match` clause specifies that `$book` is in a `promotion-inclusion`.
+
+[,typeql]
+----
+($book, $promotion) isa promotion-inclusion;
+----
+
+Because the constraints in a pattern must be simultaneously satisfied, this means that if a book is not in _any_ promotion, then it will not be returned. This query does not actually list books and the promotions they are in, rather it lists only books that are in promotions. We'll see how we can retrieve all books _plus_ any promotions they are in by using *subqueries* in xref:learn::8-structuring-query-results/8.2-subqueries.adoc[Lesson 8.2].
+
+When composing a query pattern from individual statements, it is important to remember that each constraint must be satisfied individually in order for the whole pattern to be satisfied simultaneously. If we do not bear this in mind, we can run into issues like this where our intent does not match the query we have written.
+
+== Constraint dependencies
+
+Another important aspect of a pattern is the *dependencies* between its constraints, and how they affect the result set. If two statements in a pattern share a variable, then there is a dependency between them. Let's consider the statements in the `match` clause of the previous query:
+
+. {empty}
++
+[,typeql]
+----
+$book isa book;
+----
+. {empty}
++
+[,typeql]
+----
+$promotion isa promotion;
+----
+. {empty}
++
+[,typeql]
+----
+($book, $promotion) isa promotion-inclusion;
+----
+
+We can see that statement (1) and (3) are interdependent because they share `$book`, and that (2) and (3) are also interdependent because they share `$promotion`. This in turn means that (1) and (2) are also interdependent as they share a mutual dependency. In short, all the statements in the pattern are interdependent. Now, what if we remove statement (3)?
+
+[,typeql]
+----
+match
+$book isa book;
+$promotion isa promotion;
+fetch
+$book: title;
+$promotion: name;
+----
+
+Without statement (3), statements (1) and (2) are now completely independent. When a query pattern can be split into independent sub-patterns, as we could with this one, then there is no constraint that links the sub-patterns. TypeDB then resolves each sub-pattern against the schema independently, and _all possible combinations_ of data matching each sub-pattern are returned. In this particular example, the first sub-pattern would match every book once, the second sub-pattern would match every promotion once, and then every possible combination of book and promotion would be returned, even if nothing relates them. This behaviour is roughly equivalent to a cross join in SQL.
+
+If a query pattern is incorrectly constructed, leading to multiple independent sub-patterns, queries can have significantly more results than intended. For this reason, it is important to ensure that dependencies between statements in query patterns are correctly constrained to achieve the intended purpose of the query. As a general rule, almost all queries should have fully interdependent patterns. We will see an example of how this applies to write queries later in this lesson.
+
+== Permutations of variables
+
+If a query pattern can match multiple data instances for multiple variables, then one result will be returned for each permutation of these data instances. Consider the following Fetch query, which retrieves pairs of books that have been ordered together.
+
+[,typeql]
+----
+match
+$book-1 isa book;
+$book-2 isa book;
+($book-1, $shared-order) isa order-line;
+($book-2, $shared-order) isa order-line;
+not { $book-1 is $book-2; };
+fetch
+$book-1: title;
+$book-2: title;
+----
+
+If we run this query, every pair of books will be returned _twice_. Let's examine a couple of the results.
+
+[,json]
+----
+{
+    "book-1": {
+        "title": [ { "value": "The Odyssey", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    },
+    "book-2": {
+        "title": [ { "value": "One Hundred Years of Solitude", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book-1": {
+        "title": [ { "value": "One Hundred Years of Solitude", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "paperback", "root": "entity" }
+    },
+    "book-2": {
+        "title": [ { "value": "The Odyssey", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+----
+
+These two results represent the same pair of books, but _The Odyssey_ is matched as `$book-1` in one of them and as `$book-2` in the other, and vice versa for _One Hundred Years of Solitude_. This occurs because the constraints on `$book-1` and `$book-2` are completely symmetrical, so they can each be resolved to the same set of data instances.
+
+In many cases, this kind of result duplication can be avoided by leveraging *key attributes*. We saw how we can define them in xref:learn::5-defining-schemas/5.3-defining-constraints.adoc[Lesson 5.3]. Books own key attributes of type `isbn-13`. If we modify our query to ensure state that the ISBN-13 of `$book-1` must be greater than the ISBN-13 of `$book-2`, then each pair of books will only be returned once.
+
+[,typeql]
+----
+match
+$book-1 isa book, has isbn-13 $isbn-1;
+$book-2 isa book, has isbn-13 $isbn-2;
+($book-1, $shared-order) isa order-line;
+($book-2, $shared-order) isa order-line;
+$isbn-1 > $isbn-2;
+fetch
+$book-1: title;
+$book-2: title;
+----
+
+Because all books must have exactly one ISBN-13, and no two books can have the same one, then the ordering constraint will always be satisfied only once for each pair of duplicated results. This guarantees that the results will not be duplicated, without otherwise modifying the results. We can even omit the negated identity statement, as the ordering constraint ensures it must necessarily be satisfied.
+
+[NOTE]
+====
+This strategy could also work by leveraging any non-key attribute, as long as the entities (or relations) each own exactly one instance of the attribute, and no two own the same instance. Using a key attribute is best practice as doing so guarantees that these conditions will be met.
+====
+
+== Effects on data writes
+
+So far in this lesson, we have only examined the effects of solution set semantics on data reads, but it is also important to consider how they affect data writes. Let's consider an example. In the following Insert query, we add every book in the Holiday Sale 2023 to an order.
+
+[,typeql]
+----
+match
+$order isa order, has id "o0039";
+$book isa book;
+$promotion isa promotion, has code "HOL23";
+($book, $promotion) isa promotion-inclusion;
+insert
+($order, $book) isa order-line,
+    has quantity 1;
+----
+
+Let's remove the constraint featuring the `promotion-inclusion` relation, as we did in one of the previous queries.
+
+[,typeql]
+----
+match
+$order isa order, has id "o0039";
+$book isa book;
+$promotion isa promotion, has code "HOL23";
+insert
+($order, $book) isa order-line,
+    has quantity 1;
+----
+
+Now the constraint on `$book` is independent of the constraints on `$promotion`. This query will now add one of _every_ book to the order, regardless of whether it is in the promotion or not. Here we can see how not using a fully interdependent query pattern can lead to unintended results.
+
+[NOTE]
+====
+It's important to note that the constraints on `$order` are independent of the other variable constraints in the `match` clause, even in the correct version of the query. To verify if this behaviour is intended, we should consider the pattern in the `match` clause together with that in the `insert` clause. If we do, we see that the `insert` clause establishes the necessary dependency to produce a fully interdependent pattern (in the correct version of the query).
+====
+
+When designing write queries, a good way to check that they will function as intended is to check the data that will be matched in the `match` clause with a read query. For the query above, we could use the following query to check the ISBNs of books that will be added to the order:
+
+[,typeql]
+----
+match
+$order isa order, has id "o0039";
+$book isa book;
+$promotion isa promotion, has code "HOL23";
+($book, $promotion) isa promotion-inclusion;
+fetch
+$book: isbn-13;
+----

@@ -1,5 +1,5 @@
 = Python driver
-:page-aliases: clients::python-driver.adoc, clients::python-driver/overview.adoc
+:page-aliases: clients::python-driver.adoc, clients::python-driver/overview.adoc, clients::python/python-install.adoc, client-api::python.adoc
 :Summary: Overview for TypeDB Python driver.
 :keywords: typedb, client, driver, python
 :pageTitle: TypeDB Python driver
@@ -38,17 +38,17 @@ For Linux: the minimum version of `glibc` is `2.25.0`.
 
 To install TypeDB Python driver:
 
-[,bash]
+[source,console]
 ----
-pip install typedb-driver
+$ pip install typedb-driver
 ----
 
 .See the command for older versions (<2.24.0)
 [%collapsible]
 ====
-[,bash]
+[source,console]
 ----
-pip install typedb-client
+$ pip install typedb-client
 ----
 ====
 

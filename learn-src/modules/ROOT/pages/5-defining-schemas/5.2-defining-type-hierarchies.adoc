@@ -25,7 +25,7 @@ book owns title,
     plays publishing:published,
     plays order-line:item,
     plays rating:rated,
-    plays promotion-inclusion:included;
+    plays promotion-inclusion:item;
 title sub attribute, value string;
 page-count sub attribute, value long;
 genre sub attribute, value string;
@@ -135,9 +135,9 @@ We could also define new roles on a specific subtype using the `relates` keyword
 [,typeql]
 ----
 define
-authorship relates author as contributor;
+authoring relates author as contributor;
 editing relates editor as contributor;
-illustration relates illustrator as contributor;
+illustrating relates illustrator as contributor;
 ----
 
 This would instead allow instantiation of the following relation types:

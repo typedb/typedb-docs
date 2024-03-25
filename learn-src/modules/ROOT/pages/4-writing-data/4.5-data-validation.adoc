@@ -12,18 +12,18 @@ $ga isa state, has name "Georgia";
 insert
 ($us, $ga) isa locating;
 ----
-image:learn::studio-icons/run.png[] *_Try running_*
+image:learn::studio-icons/run-query.png[] *_Try running_*
 
 In this case, the query was invalid because TypeDB cannot infer the roles that `$us` and `$ga` should play, but there are many reasons a query can be invalid. Try running each of the following ones to see what happens.
 
 [,typeql]
 ----
 match
-$odyssey isa book, has isbn "9780393634563";
+$odyssey isa ebook, has isbn "9780393634563";
 insert
 $odyssey has stock 20;
 ----
-image:learn::studio-icons/run.png[] *_Try running_*
+image:learn::studio-icons/run-query.png[] *_Try running_*
 
 [,typeql]
 ----
@@ -33,7 +33,7 @@ $isbn "9781489962287" isa isbn;
 delete
 $book has $isbn;
 ----
-image:learn::studio-icons/run.png[] *_Try running_*
+image:learn::studio-icons/run-query.png[] *_Try running_*
 
 [,typeql]
 ----
@@ -45,7 +45,7 @@ $order-28 has $paid;
 insert
 $order-28 has status "sent";
 ----
-image:learn::studio-icons/run.png[] *_Try running_*
+image:learn::studio-icons/run-query.png[] *_Try running_*
 
 .Exercise
 [caption=""]
@@ -61,4 +61,4 @@ Examine the three queries above and the error messages returned to determine the
 =====
 ====
 
-We'll see how we can use the schema to constrain inserted data in xref:learn::5-defining-schemas/5-defining-schemas.adoc[Lesson 5], and then explore how TypeDB validates data against the schema in Lesson 7.1 (coming soon).
+We'll see how we can use the schema to constrain inserted data in xref:learn::5-defining-schemas/5-defining-schemas.adoc[Lesson 5], and then explore how TypeDB validates data against the schema in xref:learn::7-understanding-query-patterns/7.1-patterns-as-constraints.adoc[Lesson 7.1].

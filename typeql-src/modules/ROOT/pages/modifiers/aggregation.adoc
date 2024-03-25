@@ -1,0 +1,149 @@
+= Aggregation
+
+This page covers an aggregation of TypeQL Get query results.
+
+== Syntax
+
+TypeQL supports the following types of aggregation:
+
+* `count` -- Get the total number of results returned.
+* `sum`-- Get the *sum* of the `long` or `double` values of the specified variable.
+* `max` -- Get the *maximum* value among the `long` or `double` values of the specified variable.
+* `min` -- Get the *minimum* value among the `long` or `double` values of the specified variable.
+* `mean` -- Get the average value of the `long` or `double` values of the specified variable.
+* `median` -- Get the median value among the `long` or `double` values of the matched variable.
+* `std` -- Get the *sample standard deviation* value among the `long` or `double` values of the matched variable.
+
+They are used at the end of a query.
+
+== Behavior
+
+A Get query without aggregation or grouping returns a stream of ConceptMaps
+to represent every matched solution for its pattern.
+With aggregation, the query performs calculation on the collection of ConceptMaps and returns a single value.
+Aggregation can be used alongside grouping and in subqueries, which affects the output.
+
+[#_count]
+== Usage for counting results
+
+include::typeql::partial$iam-database-links.adoc[]
+
+For any Get query, to count the number of results returned,
+add the `count` keyword at the end of the query with a semicolon.
+
+.Count example
+[,typeql]
+----
+match
+$o isa object, has path $fp;
+get;
+count;
+----
+
+Notice, that `count` keyword uses no variables, as it counts only the number of results, regardless of contents.
+Changing the variables in the `get` clause of a query can lead to changing the number of results,
+due to deduplication (the same result can't be returned twice).
+See the next example below.
+
+== Usage for numeric values
+
+include::typeql::partial$iam-database-links.adoc[]
+
+For `long` or `double` values represented by a value variable or by a concept variable mapped to an attribute,
+we can use aggregation to compute an output based on all returned values.
+
+.Aggregation example
+[,typeql]
+----
+match
+$f isa file, has size-kb $s;
+get $f, $s;
+sum $s;
+----
+
+[WARNING]
+====
+Omitting the variable `$f` in the `get` clause of the above query will result in missing all duplicated values
+of `$s` from the aggregation.
+For more information,
+see the xref:typeql::queries/get.adoc#_number_of_results[number of results] section on the Get query page.
+====
+
+////
+[#_maximum]
+=== Maximum
+
+.Maximum example
+[,typeql]
+----
+match
+$f isa file, has size-kb $s;
+get $f, $s;
+max $s;
+----
+
+[#_minimum]
+=== Minimum
+
+.Minimum example
+[,typeql]
+----
+match
+$f isa file, has size-kb $s;
+get $f, $s;
+min $s;
+----
+
+[#_mean]
+=== Mean
+
+.Mean example
+[,typeql]
+----
+match
+$f isa file, has size-kb $s;
+get $f, $s;
+mean $s;
+----
+
+[#_median]
+=== Median
+
+.Median example
+[,typeql]
+----
+match
+$f isa file, has size-kb $s;
+get $f, $s;
+median $s;
+----
+
+[#_standard_deviation]
+=== Standard deviation
+
+.Standard deviation example
+[,typeql]
+----
+match
+$f isa file, has size-kb $s;
+get $f, $s;
+std $s;
+----
+////
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::modifiers/grouping.adoc[]
+[.clickable]
+****
+Learn about results grouping in TypeQL.
+****
+
+.xref:typeql::queries/get.adoc[]
+[.clickable]
+****
+Learn about Get queries in TypeQL.
+****
+--

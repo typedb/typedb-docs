@@ -1,0 +1,97 @@
+= rule
+
+The `rule` keyword is used in TypeQL schema to define a rule for rule-based inference.
+
+== Syntax
+
+The syntax of a `plays` statement includes:
+
+* header -- the `rule` keyword followed by a rule label and a colon
+* condition -- the `when` keyword followed by a condition pattern in curly brackets
+* conclusion -- the `then` keyword followed by a conclusion pattern in curly brackets
+
+.Syntax
+[,typeql]
+----
+rule <rule-label>: when {
+    <condition>
+} then {
+    <conclusion>
+};
+----
+
+== Behavior
+
+TypeQL statements with the `rule` keyword can be used only in Define queries.
+To undefine a rule, use the `rule` keyword, followed by the rule's label, and a semicolon.
+
+The `rule` keyword adds a new rule to a schema, or updates an existing rule with the same label.
+
+== Usage in a schema definition
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Usually, Define and Undefine queries you can't use variables.
+But rules use patterns for matching data in their condition and conclusion.
+
+A condition of a rule can be any pattern, similar to a `match` clause.
+
+A conclusion of a rule can be a single statement:
+either a xref:typeql::statements/has.adoc[has statement],
+or an xref:typeql::statements/isa.adoc[isa statement] for a relation with any number of roles.
+
+For example, to define the `add-view-permission` rule,
+that adds a permission for a subject to view a file if there is one to modify it, use:
+
+.Define a rule query example
+[,typeql]
+----
+define
+rule add-view-permission: when {
+    $modify isa action, has name "modify_file";
+    $view isa action, has name "view_file";
+    $ac_modify (object: $obj, action: $modify) isa access;
+    $ac_view (object: $obj, action: $view) isa access;
+    (subject: $subj, access: $ac_modify) isa permission;
+} then {
+    (subject: $subj, access: $ac_view) isa permission;
+};
+----
+
+To remove the new rule, use:
+
+.Undefine rule query example
+[,typeql]
+----
+undefine
+rule add-view-permission;
+----
+
+== Learn more
+
+[cols-2]
+--
+.xref:learn::5-defining-schemas/5.4-defining-rules.adoc[]
+[.clickable]
+****
+Learn more about defining rules in a schema.
+****
+
+.xref:learn::5-defining-schemas/5.5-schema-validation.adoc[]
+[.clickable]
+****
+Learn more about schema validation, including rule validation.
+****
+
+.xref:learn::10-using-inference/10-using-inference.adoc[]
+[.clickable]
+****
+Learn more about inference in TypeDB.
+****
+
+.xref:manual::reading/infer.adoc[]
+[.clickable]
+****
+See how to use rule-based inference in queries.
+****
+--

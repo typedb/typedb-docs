@@ -1,0 +1,217 @@
+= Lesson 7.3: Logical operators
+
+== Disjunctions
+
+By default, all statements in a pattern are joined in a https://en.wikipedia.org/wiki/Logical_conjunction[conjunction]. As we have seen in xref:learn::7-understanding-query-patterns/7.1-patterns-as-constraints.adoc[Lesson 7.1], this means that the pattern must be satisfied as a set of simultaneous constraints. If we want to create a https://en.wikipedia.org/wiki/Logical_disjunction[disjunction], we must do so explicitly, as we do in the following Fetch query where we retrieve a list of books that a user "likes". We consider a user to have liked a book if either they have ordered it _or_ they have reviewed it with a score of seven or higher.
+
+[,typeql]
+----
+match
+$user isa user, has id "u0008";
+$liked-book isa book;
+{
+    ($user, $order) isa action-execution;
+    ($order, $liked-book) isa order-line;
+} or {
+    ($user, $review) isa action-execution;
+    ($review, $liked-book) isa rating;
+    $review has score >= 7;
+};
+fetch
+$liked-book: isbn-13;
+----
+
+We have encountered *blocks* before when we used them to define rules in xref:learn::5-defining-schemas/5.4-defining-rules.adoc[Lesson 5.4]. To recap, blocks are delimited by braces and contain patterns. To construct a disjunction within a query pattern, we place each branch of the disjunction inside a block and interleave the blocks with the `or` keyword.
+
+[,typeql]
+----
+{
+    # branch 1
+} or {
+    # branch 2
+};
+----
+
+In this example, we have used a disjunction with two branches, but they can be made to have any number by extending the syntax. The final block of a disjunction must be followed with a `;` delimiter, signalling the end of the disjunction. As with all TypeQL syntax elements, whitespace and indentation does not affect the functionality of a disjunction.
+
+.Exercise
+[caption=""]
+====
+Write a Fetch query to retrieve the ISBN-13s of all books that are included in an order that has a status of "paid", "dispatched", or "delivered".
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$book isa book;
+$order isa order;
+($book, $order) isa order-line;
+{
+    $order has status "paid";
+} or {
+    $order has status "dispatched";
+} or {
+    $order has status "delivered";
+};
+fetch
+$book: isbn-13;
+----
+=====
+====
+
+== Negations
+
+Just as we can represent a disjunction of patterns, we can also represent the https://en.wikipedia.org/wiki/Negation[negation] of patterns. The following Fetch query retrieves a list of books that do not have illustrators.
+
+[,typeql]
+----
+match
+$book isa book;
+not {
+    ($book, $contributor) isa illustrating;
+};
+fetch
+$book: isbn-13;
+----
+
+To construct a negation within a query, we place the negated pattern inside a block preceded by the `not` keyword and followed by a `;` delimiter.
+
+[,typeql]
+----
+not {
+    # negated pattern
+};
+----
+
+
+[IMPORTANT]
+====
+All patterns inside a block must have at least one variable that is shared with the pattern outside the block. Additionally, variables that _only_ appear within a block cannot be accessed in other clauses of the query.
+====
+
+.Exercise
+[caption=""]
+====
+Write a Fetch query to retrieve the ISBN-13s of books that the user with ID "u0008" has neither ordered nor reviewed, indicating that the book would likely be new to that user.
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$user isa user, has id "u0008";
+$new-book isa book;
+not {
+    ($user, $order) isa action-execution;
+    ($order, $new-book) isa order-line;
+};
+not {
+    ($user, $review) isa action-execution;
+    ($review, $new-book) isa rating;
+};
+fetch
+$new-book: isbn-13;
+----
+
+Here, we have used a conjunction of negations, but we could identically use a negation of disjunctions by https://en.wikipedia.org/wiki/De_Morgan%27s_laws[De Morgan's laws]!
+
+[,typeql]
+----
+match
+$user isa user, has id "u0008";
+$new-book isa book;
+not { {
+    ($user, $order) isa action-execution;
+    ($order, $new-book) isa order-line;
+} or {
+    ($user, $review) isa action-execution;
+    ($review, $new-book) isa rating;
+}; };
+fetch
+$new-book: isbn-13;
+----
+=====
+====
+
+== Identities
+
+We encountered the following query in xref:learn::3-reading-data/3.5-query-validation.adoc[Lesson 3.5], in which we have used the `is` keyword. It retrieves the IDs of orders being sent to a city other than the city of the user that placed the order.
+
+[,typeql]
+----
+match
+(located: $user, location: $user-city) isa locating;
+(action: $order, executor: $user) isa action-execution;
+(delivered: $order, destination: $destination) isa delivery;
+(located: $destination, location: $destination-city) isa locating;
+$user-city isa city;
+$destination-city isa city;
+not { $destination-city is $user-city; };
+fetch
+$order: id;
+----
+
+The `is` keyword is used to denote that two variables are identical: that they represent the same data object. It is most useful when used in a negation, in order to state that two variables are _not_ identical. As TypeQL is a constraint-based language, anything that is not constrained can be satisfied in any way, as long as it conforms to the schema. For instance in the query above, if we do not explicitly state that `$destination-city` and `$user-city` are not identical, then the constraints can be easily satisfied by resolving the two variables to the same instance of `city`.
+
+.Exercise
+[caption=""]
+====
+Write a Fetch query to retrieve the ISBN-13s of pairs of books that have the same publisher, along with the name of the shared publisher.
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$book-1 isa book;
+$book-2 isa book;
+$shared-publisher isa publisher;
+($book-1, $shared-publisher) isa publishing;
+($book-2, $shared-publisher) isa publishing;
+not { $book-1 is $book-2; };
+fetch
+$book-1: isbn-13;
+$book-2: isbn-13;
+$shared-publisher: name;
+----
+
+If we did not state that `$book-1` and `$book-2` are not identical, then this query would be trivially satisfied by retrieving all books, which always have the same publishers as themselves! Try running it with and without the negation statement to see this.
+=====
+====

@@ -1,0 +1,385 @@
+= Lesson 6.4: Executing queries
+
+== Data read queries
+
+Now that we know how to instantiate driver objects, open sessions, and control transactions, we can begin running queries. We'll begin with the following Fetch query.
+
+[,typeql]
+----
+match
+$book isa book;
+fetch
+$book: title, page-count;
+----
+
+Fetch queries should be run using a *data session* and *read transaction*. Queries can be issued using the `query` property of a transaction object, as illustrated in the following code snippet. To run a Fetch query, we use its `fetch` method.
+
+// Remove after change to Cloud.
+[,python]
+----
+ADDRESS = "localhost:1730"
+DATABASE = "bookstore"
+
+with TypeDB.core_driver(ADDRESS) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
+            results: Iterator[dict] = transaction.query.fetch("""
+                match
+                $book isa book;
+                fetch
+                $book: title, page-count;
+            """)
+
+            for result in results:
+                print(result)
+----
+
+// Remove after change to Cloud.
+Try running this code snippet against the sample database. You should see the results printed out in the same JSON format that TypeDB Studio displayed them in xref:learn::3-reading-data/3.2-fetching-polymorphic-data.adoc[Lesson 3.2].
+
+// Add after change to Cloud.
+// [,python]
+// ----
+// DATABASE = "bookstore"
+//
+// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+//     with driver.session(DATABASE, SessionType.DATA) as session:
+//         with session.transaction(TransactionType.READ) as transaction:
+//             results: Iterator[dict] = transaction.query.fetch("""
+//                 match
+//                 $book isa book;
+//                 fetch
+//                 $book: title, page-count;
+//             """)
+//
+//             for result in results:
+//                 print(result)
+// ----
+//
+// Try running this code snippet against the sample database. Remember to provide necessary the server address and credential object as shown in xref:learn::6-building-applications/6.2-managing-users-and-databases.adoc[Lesson 6.2]. You should see the results printed out in the same JSON format that TypeDB Studio displayed them in xref:learn::3-reading-data/3.2-fetching-polymorphic-data.adoc[Lesson 3.2].
+
+One important thing to note is that the `results` object is an *iterator*. This is because TypeDB returns the results of queries in a https://en.wikipedia.org/wiki/Stream_processing[stream] that is evaluated https://en.wikipedia.org/wiki/Lazy_evaluation[lazily] and responds https://en.wikipedia.org/wiki/Elasticity_(system_resource)[elastically] to consumption by the client. As a result, results cannot be accessed outside the scope of the transaction's context manager, because the iterator is terminated when the transaction object is destroyed. In order to be accessed outside the transaction's scope, the iterator must first be cast to a *sequence*, such as a list. The casting operation forces the stream to be fully resolved before the program can continue execution.
+
+// Remove after change to Cloud.
+[,python]
+----
+with TypeDB.core_driver(ADDRESS) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
+            results: list[dict] = list(transaction.query.fetch("""
+                match
+                $book isa book;
+                fetch
+                $book: title, page-count;
+            """))
+
+for result in results:
+    print(result)
+----
+
+// Add after change to Cloud.
+// [,python]
+// ----
+// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+//     with driver.session(DATABASE, SessionType.DATA) as session:
+//         with session.transaction(TransactionType.READ) as transaction:
+//             results: list[dict] = list(transaction.query.fetch("""
+//                 match
+//                 $book isa book;
+//                 fetch
+//                 $book: title, page-count;
+//             """))
+//
+// for result in results:
+//     print(result)
+// ----
+
+We will examine the result set more closely in xref:learn::6-building-applications/6.5-processing-results.adoc[Lesson 6.5].
+
+== Data write queries
+
+To run Insert, Delete, and Update queries, we should use a *data session* and *write* transaction. To issue these queries, we use the `insert`, `delete`, and `update` methods, as shown respectively in the following code snippets.
+
+// Remove after change to Cloud.
+[,python]
+----
+with TypeDB.core_driver(ADDRESS) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.WRITE) as transaction:
+            transaction.query.insert("""
+                insert
+                $new-user isa user,
+                    has id "u0014",
+                    has name "Jaiden Hurst",
+                    has birth-date 1950-03-03;
+            """)
+
+            transaction.commit()
+----
+
+// Remove after change to Cloud.
+[,python]
+----
+with TypeDB.core_driver(ADDRESS) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.WRITE) as transaction:
+            transaction.query.delete("""
+                match
+                $retracted-review isa review, has id "r0001";
+                $relation ($retracted-review) isa relation;
+                delete
+                $relation isa relation;
+            """)
+
+            transaction.query.delete("""
+                match
+                $retracted-review isa review, has id "r0001";
+                delete
+                $retracted-review isa review;
+            """)
+
+            transaction.commit()
+----
+
+// Remove after change to Cloud.
+[,python]
+----
+with TypeDB.core_driver(ADDRESS) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.WRITE) as transaction:
+            transaction.query.update("""
+                match
+                $dispatched-order isa order, has id "o0008";
+                $paid "paid" isa status;
+                delete
+                $dispatched-order has $paid;
+                insert
+                $dispatched-order has status "dispatched";
+            """)
+
+            transaction.commit()
+----
+
+// Add after change to Cloud.
+// [,python]
+// ----
+// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+//     with driver.session(DATABASE, SessionType.DATA) as session:
+//         with session.transaction(TransactionType.WRITE) as transaction:
+//             transaction.query.insert("""
+//                 insert
+//                 $new-user isa user,
+//                     has id "u0014",
+//                     has name "Jaiden Hurst",
+//                     has birth-date 1950-03-03;
+//             """)
+//
+//             transaction.commit()
+// ----
+//
+// [,python]
+// ----
+// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+//     with driver.session(DATABASE, SessionType.DATA) as session:
+//         with session.transaction(TransactionType.WRITE) as transaction:
+//             transaction.query.delete("""
+//                 match
+//                 $retracted-review isa review, has id "r0001";
+//                 $relation ($retracted-review) isa relation;
+//                 delete
+//                 $relation isa relation;
+//             """)
+//
+//             transaction.query.delete("""
+//                 match
+//                 $retracted-review isa review, has id "r0001";
+//                 delete
+//                 $retracted-review isa review;
+//             """)
+//
+//             transaction.commit()
+// ----
+//
+// [,python]
+// ----
+// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+//     with driver.session(DATABASE, SessionType.DATA) as session:
+//         with session.transaction(TransactionType.WRITE) as transaction:
+//             transaction.query.update("""
+//                 match
+//                 $dispatched-order isa order, has id "o0008";
+//                 $paid "paid" isa status;
+//                 delete
+//                 $dispatched-order has $paid;
+//                 insert
+//                 $dispatched-order has status "dispatched";
+//             """)
+//
+//             transaction.commit()
+// ----
+
+In each case, we must *commit* the transaction for the changes to be persisted. The second query deletes a review and must use two queries to do so, as explained in xref:learn::4-writing-data/4.3-deleting-data.adoc[Lesson 4.3]. Because deleting a review is an atomic process, the two queries should be executed in the same transaction and committed together, as shown above.
+
+.Exercise
+[caption=""]
+====
+Write functions to do each of the following. In each case, do not commit the transaction within the function, as the transaction should be committed by the code that calls the functions rather than the functions themselves.
+
+1. Insert a new user. The function should have the following signature.
++
+--
+[,python]
+----
+create_user(transaction: TypeDBTransaction, id: str, name: str, birth_date: str) -> None
+----
+
+.Sample solution
+[%collapsible]
+=====
+[,python]
+----
+def create_user(transaction: TypeDBTransaction, id: str, name: str, birth_date: str) -> None:
+    transaction.query.insert(f"""
+        insert
+        $new-user isa user,
+            has id "{id}",
+            has name "{name}",
+            has birth-date {birth_date};
+    """)
+----
+=====
+--
+
+2. Delete a review by its ID. The function should have the following signature.
++
+--
+[,python]
+----
+delete_review(transaction: TypeDBTransaction, id: str) -> None
+----
+
+.Sample solution
+[%collapsible]
+=====
+[,python]
+----
+def delete_review(transaction: TypeDBTransaction, id: str) -> None:
+    transaction.query.delete(f"""
+        match
+        $retracted-review isa review, has id "{id}";
+        $relation ($retracted-review) isa relation;
+        delete
+        $relation isa relation;
+    """)
+
+    transaction.query.delete(f"""
+        match
+        $retracted-review isa review, has id "{id}";
+        delete
+        $retracted-review isa review;
+    """)
+----
+=====
+--
+
+3. Update the status of an order by ID. The function should have the following signature.
++
+--
+[,python]
+----
+update_order_status(transaction: TypeDBTransaction, id: str, status_old: str, status_new: str) -> None
+----
+
+.Sample solution
+[%collapsible]
+=====
+[,python]
+----
+def update_order_status(transaction: TypeDBTransaction, id: str, status_old: str, status_new: str) -> None:
+    transaction.query.update(f"""
+        match
+        $dispatched-order isa order, has id "{id}";
+        $status-old "{status_old}" isa status;
+        delete
+        $dispatched-order has $status-old;
+        insert
+        $dispatched-order has status "{status_new}";
+    """)
+----
+=====
+--
+====
+
+== Schema write queries
+
+To run Define queries, we should use a *schema session* and *write transaction*. As with all previous queries, we issue the query with a method of the transaction's `query` property, in this case the `define` method. In the following code snippet, we create a new database for a social network and define a rudimentary schema.
+
+// Remove after change to Cloud.
+[,python]
+----
+DATABASE = "social-network"
+
+with TypeDB.core_driver(ADDRESS) as driver:
+    driver.databases.create(DATABASE)
+
+    with driver.session(DATABASE, SessionType.SCHEMA) as session:
+        with session.transaction(TransactionType.WRITE) as transaction:
+            transaction.query.define("""
+                define
+                person sub entity,
+                    owns first-name,
+                    owns last-name,
+                    owns birth-date,
+                    plays friendship:friend,
+                    plays relationship:partner,
+                    plays marriage:spouse;
+                friendship sub relation,
+                    relates friend;
+                relationship sub relation,
+                    relates partner;
+                marriage sub relationship,
+                    relates spouse as partner;
+                name sub attribute, abstract, value string;
+                first-name sub name;
+                last-name sub name;
+                birth-date sub attribute, value datetime;
+            """)
+
+            transaction.commit()
+----
+
+// Add after change to Cloud.
+// [,python]
+// ----
+// DATABASE = "social-network"
+//
+// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+//     driver.databases.create(DATABASE)
+//
+//     with driver.session(DATABASE, SessionType.SCHEMA) as session:
+//         with session.transaction(TransactionType.WRITE) as transaction:
+//             transaction.query.define("""
+//                 define
+//                 person sub entity,
+//                     owns first-name,
+//                     owns last-name,
+//                     owns birth-date,
+//                     plays friendship:friend,
+//                     plays relationship:partner,
+//                     plays marriage:spouse;
+//                 friendship sub relation,
+//                     relates friend;
+//                 relationship sub relation,
+//                     relates partner;
+//                 marriage sub relationship,
+//                     relates spouse as partner;
+//                 name sub attribute, abstract, value string;
+//                 first-name sub name;
+//                 last-name sub name;
+//                 birth-date sub attribute, value datetime;
+//             """)
+//
+//             transaction.commit()
+// ----
+
+As when writing data, we must *commit* the transaction when defining schemas in order for the changes to be persisted.

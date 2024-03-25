@@ -1,0 +1,85 @@
+= Comparators
+
+== Usage
+
+Comparing operators or comparators can be used in a `match` clause of a TypeQL query
+to compare by value two variables or a variable with a static value.
+You can use both concept variables and value variables with comparators.
+A concept variable must represent an attribute, since only attributes have values.
+
+Comparators are always considered to return True.
+That sets a constraint on values that can be assigned to a variable used in a statement with a comparator.
+
+The following operators are supported for comparing values: `==`, `!=`, `>`, `>=`, `<`, and `+<=+`.
+
+== Equality operator
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Use the double equal sign (`==`) to declare equality between two values.
+
+For example, let's find all files with a `size` attribute of value equal to `100`:
+
+.Example
+[,typeql]
+----
+match
+$file isa file,
+    has path $filepath,
+    has size-kb $size;
+$size == 100;
+get $filepath;
+----
+
+[NOTE]
+====
+Since version `2.18.0` of TypeDB, the single equals sign (`=`) was *deprecated* as a comparison operator,
+as it can be used to assign a value to a value variable.
+It's still possible to use it as a comparator for backward compatibility,
+but we recommend using `==` for equality instead.
+====
+
+== Inequality operator
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Use the exclamation mark with a single equal sign (`!=`) to declare inequality between two values.
+
+For example, to find sizes for all files, that have `filepath` attribute of any value except the `README.md`:
+
+.Example
+[,typeql]
+----
+match
+$file isa file,
+    has path $filepath,
+    has size-kb $size;
+$filepath != "README.md";
+get $size;
+----
+
+== Greater than / Less than operators
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Use the greater than sign (`>`) to declare the value/variable on the left from it as strictly greater
+than the one on the right from it.
+For a relaxed comparison, use the "greater than or equal" sign (`≥`).
+
+Use the less than sign (`<`) to declare the value/variable on the left from it as strictly less
+than the one on the right from it.
+For a relaxed comparison, use the "less than or equal" sign (`≤`).
+
+For example, use the following query to find all files that have an attribute of the `size` type
+and value less than or equal to `50`.
+
+.Example
+[,typeql]
+----
+match
+$file isa file,
+    has path $filepath,
+    has size-kb $size;
+$size ≤ 100;
+get $filepath;
+----

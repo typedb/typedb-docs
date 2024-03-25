@@ -98,8 +98,8 @@ async function main() {
             tx = await session.transaction(TransactionType.WRITE);
             const insert_query = `
                                 insert
-                                $user1 isa user, has name "Alice", has email "alice@vaticle.com";
-                                $user2 isa user, has name "Bob", has email "bob@vaticle.com";
+                                $user1 isa user, has name "Alice", has email "alice@typedb.com";
+                                $user2 isa user, has name "Bob", has email "bob@typedb.com";
                                 $friendship (friend:$user1, friend: $user2) isa friendship;
                                 `;
             await tx.query.insert(insert_query);
@@ -118,7 +118,7 @@ async function main() {
                                 match
                                 $u isa user, has name "Bob";
                                 insert
-                                $new-u isa user, has name "Charlie", has email "charlie@vaticle.com";
+                                $new-u isa user, has name "Charlie", has email "charlie@typedb.com";
                                 $f($u,$new-u) isa friendship;
                                 `;
             let response = await tx.query.insert(match_insert_query).collect();
@@ -161,7 +161,7 @@ async function main() {
                                 delete
                                 $u has $e;
                                 insert
-                                $u has email "charles@vaticle.com";
+                                $u has email "charles@typedb.com";
                                 `;
             let response = await tx.query.update(update_query).collect();
             if (response.length == 1) {
@@ -335,7 +335,7 @@ async function main() {
                 console.log(rule.when);
                 console.log(rule.then);
             }
-            let newRule = await tx.logic.putRule("Employee","{$u isa user, has email $e; $e contains '@vaticle.com';}","$u has name 'Employee'");
+            let newRule = await tx.logic.putRule("Employee","{$u isa user, has email $e; $e contains '@typedb.com';}","$u has name 'Employee'");
             console.log((await tx.logic.getRule("users")).label);
             await newRule.delete(tx);
             await tx.commit();
@@ -358,7 +358,7 @@ async function main() {
             }
             // end::get_rules[]
             // tag::put_rule[]
-            let newRule = await tx.logic.putRule("Employee","{$u isa user, has email $e; $e contains '@vaticle.com';}","$u has name 'Employee'");
+            let newRule = await tx.logic.putRule("Employee","{$u isa user, has email $e; $e contains '@typedb.com';}","$u has name 'Employee'");
             // end::put_rule[]
             // tag::get_rule[]
             let oldRule = (await tx.logic.getRule("users")).label;

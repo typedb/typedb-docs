@@ -1,6 +1,6 @@
 = Export and import
 :keywords: typedb, import, export, backup, save
-//:page-aliases: typedb::admin/export-import.adoc
+:page-aliases: typedb::admin/export-import.adoc, typedb::managing/export-import.adoc
 :pageTitle: Export and import
 :summary: TypeDB import and export functions.
 
@@ -52,9 +52,9 @@ This and the following commands should be addressed to the *new server*, that wi
 
 For the export to work make sure the TypeDB server with *the database to export* is working.
 
-[,bash]
+[source,console]
 ----
-typedb server export --database=<database> --port=<server rpc port> --data=<data_filename>.typedb --schema=<schema_filename>.tql
+$ typedb server export --database=<database> --port=<server rpc port> --data=<data_filename>.typedb --schema=<schema_filename>.tql
 ----
 
 Where:
@@ -74,9 +74,9 @@ Use positional arguments instead. For example, `typedb server export <database> 
 
 For the import to work make sure the target TypeDB server (where the database will be *migrated to*) is working.
 
-[,bash]
+[source,console]
 ----
-typedb server import --database=<database> --port=<server rpc port> --data=<data_filename>.typedb --schema=<schema_filename>.tql
+$ typedb server import --database=<database> --port=<server rpc port> --data=<data_filename>.typedb --schema=<schema_filename>.tql
 ----
 
 Where:

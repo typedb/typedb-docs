@@ -1,0 +1,93 @@
+= Types
+
+TypeQL is a polymorphic query language that supports strong typing and uses types defined in the schema of a database
+to construct queries to the database.
+
+[#_type_hierarchy]
+== Type hierarchy
+
+Types are defined in the schema of a database, and their definitions are written in TypeQL.
+Types from the schema are used to design data queries to the database and are modeled with the use of the
+xref:learn::5-defining-schemas/5.1-defining-individual-types.adoc[PERA model].
+Type definitions can be used in Define and Undefine queries and can't use any variables.
+
+To create new types in a schema, subtype one of the existing types.
+A subtype inherits all definitions of its supertype.
+
+By default, a schema has three built-in root types.
+Root types are abstract types and need to be subtyped to use them.
+
+.Root types
+[cols="^.^1, ^.^3, ^.^4",options="header"]
+|===
+| Root type label | A subtype of the root type | A data instance of a subtype
+
+| `entity`
+| Entity type
+| Entity
+
+| `relation`
+| Relation type
+| Relation
+
+| `attribute`
+| Attribute type
+| Attribute
+|===
+
+Since data instances can be named after their respective root type,
+we try to prevent ambiguity by specifying whether we mean the root type or data instance in every case
+if it's not obvious from the context.
+
+== Abstract types
+
+Abstract types can't be used to insert data instances, but can be subtyped and queried for.
+
+To make a type abstract, use the `abstract` keyword in its definition.
+
+.Abstract type definition example
+[,typeql]
+----
+define
+
+subject sub entity, abstract;
+----
+
+[#_example]
+== Usage in a Define query
+
+Let's define a simple schema for users:
+
+.Define query example
+[,typeql]
+----
+include::home::attachment$quickstart-schema.tql[]
+----
+
+== Usage in a Fetch query
+
+Now let's fetch all types from the database:
+
+.Fetch query example
+[,typeql]
+----
+match
+$x sub! $y;
+fetch
+$x;
+----
+
+This simple pattern lets us match all types from a database:
+
+.Output
+[,json]
+----
+{ "x": { "label": "user", "root": "entity" } }
+{ "x": { "label": "entity", "root": "entity" } }
+{ "x": { "label": "attribute", "root": "attribute", "value_type": "object" } }
+{ "x": { "label": "relation", "root": "relation" } }
+{ "x": { "label": "person", "root": "entity" } }
+{ "x": { "label": "email", "root": "attribute", "value_type": "string" } }
+{ "x": { "label": "full-name", "root": "attribute", "value_type": "string" } }
+{ "x": { "label": "id", "root": "attribute", "value_type": "long" } }
+----
