@@ -42,8 +42,8 @@ macOS::
 +
 --
 . Download the latest package for your systems architecture:
-https://repo.typedb.com/public/public-release/raw/names/typedb-console-mac-x86_64/versions/2.26.6/typedb-console-mac-x86_64-2.26.6.zip[x86/x64] |
-https://repo.typedb.com/public/public-release/raw/names/typedb-console-mac-arm64/versions/2.26.6/typedb-console-mac-arm64-2.26.6.zip[arm64]. +
+https://repo.typedb.com/public/public-release/raw/names/typedb-console-mac-x86_64/versions/{latest-version}/typedb-console-mac-x86_64-{latest-version}.zip[x86/x64] |
+https://repo.typedb.com/public/public-release/raw/names/typedb-console-mac-arm64/versions/{latest-version}/typedb-console-mac-arm64-{latest-version}.zip[arm64]. +
 For other versions, see the
 https://cloudsmith.io/~typedb/repos/public-release/packages/?q=format%3Araw+name%3A%5Etypedb-console-mac&sort=-version[Downloads repository] page.
 . Extract the archive into a new directory:
@@ -67,8 +67,8 @@ Linux::
 +
 --
 . Download the latest package for your systems architecture:
-https://repo.typedb.com/public/public-release/raw/names/typedb-console-linux-x86_64/versions/2.26.6/typedb-console-linux-x86_64-2.26.6.tar.gz[x86/x64] |
-https://repo.typedb.com/public/public-release/raw/names/typedb-console-linux-arm64/versions/2.26.6/typedb-console-linux-arm64-2.26.6.tar.gz[arm64]. +
+https://repo.typedb.com/public/public-release/raw/names/typedb-console-linux-x86_64/versions/{latest-version}/typedb-console-linux-x86_64-{latest-version}.tar.gz[x86/x64] |
+https://repo.typedb.com/public/public-release/raw/names/typedb-console-linux-arm64/versions/{latest-version}/typedb-console-linux-arm64-{latest-version}.tar.gz[arm64]. +
 For other versions, see the
 https://cloudsmith.io/~typedb/repos/public-release/packages/?q=format%3Araw+name%3A%5Etypedb-console-linux&sort=-version[Downloads repository] page.
 . Extract the archive into a new directory:
@@ -80,7 +80,7 @@ $ tar -xzf ~/Downloads/<filename>.tar.gz -C /opt/typedb-console
 ----
 +
 Where `<filename>` is the name of the archive.
-. Add a symlink to the TypeDB executable in the `/usr/local/bin` directory:
+. Add a symlink to the TypeDB Console executable in the `/usr/local/bin` directory:
 +
 [source,console]
 ----
@@ -92,7 +92,7 @@ Windows::
 +
 --
 . Download the latest package for your systems architecture:
-https://repo.typedb.com/public/public-release/raw/names/typedb-console-windows-x86_64/versions/2.26.6/typedb-console-windows-x86_64-2.26.6.zip[x86/x64]. +
+https://repo.typedb.com/public/public-release/raw/names/typedb-console-windows-x86_64/versions/{latest-version}/typedb-console-windows-x86_64-{latest-version}.zip[x86/x64]. +
 For other versions, see the
 https://cloudsmith.io/~typedb/repos/public-release/packages/?q=format%3Araw+name%3A%5Etypedb-console-win&sort=-version[Downloads repository] page.
 
@@ -130,156 +130,4 @@ For more information on how to use TypeDB Console, see the xref:manual::console.
 [#_version_compatibility]
 == Version Compatibility
 
-[cols="^.^2,^.^1,^.^2,^.^2"]
-|===
-| TypeDB Console | Protocol encoding version | TypeDB Core | TypeDB Cloud
-
-| https://github.com/vaticle/typedb-console/releases/tag/2.26.6[2.26.6]
-| 3
-| 2.26.6
-| 2.26.6
-
-| https://github.com/vaticle/typedb-console/releases/tag/2.25.7[2.25.7]
-| 3
-| 2.25.7
-| 2.25.7
-
-| https://github.com/vaticle/typedb-console/releases/tag/2.24.15[2.24.15]
-| 2
-| 2.24.17
-| 2.24.17
-
-| https://github.com/vaticle/typedb-console/releases/tag/2.18.0[2.18.0]
-| 1
-| 2.18.0 to 2.23.0
-| 2.18.0 to 2.23.0
-
-| https://github.com/vaticle/typedb-console/releases/tag/2.17.0[2.17.0]
-| N/A
-| 2.17.0
-| 2.17.0
-|===
-
-.See older versions
-[%collapsible]
-====
-[cols="^.^2,^.^1,^.^2,^.^2"]
-|===
-| TypeDB Console | Protocol encoding version | TypeDB Core | TypeDB Cloud
-
-| 2.16.1
-| N/A
-| 2.16.1
-| 2.16.1 to 2.16.2
-
-| 2.15.0
-| N/A
-| 2.15.0
-| 2.15.0
-
-| 2.14.2
-| N/A
-| 2.14.2 to 2.14.3
-| 2.14.1
-
-| 2.14.0
-| N/A
-| 2.14.0 to 2.14.1
-| 2.14.1
-
-| 2.12.0
-| N/A
-| 2.12.0 to 2.13.0
-| 2.12.0 to 2.13.0
-
-| 2.11.0
-| N/A
-| 2.11.0 to 2.11.1
-| 2.11.1 to 2.11.2
-
-| 2.10.0
-| N/A
-| 2.10.0
-| 2.10.0
-
-| 2.9.0
-| N/A
-| 2.9.0
-| 2.9.0
-
-| 2.8.0
-| N/A
-| 2.8.0 to 2.8.1
-| 2.5.0
-
-| 2.6.1
-| N/A
-| 2.6.1 to 2.7.1
-| 2.5.0
-
-| 2.6.0
-| N/A
-| 2.6.0
-| 2.5.0
-
-| 2.5.0
-| N/A
-| 2.5.0
-| 2.3.0
-
-| 2.4.0
-| N/A
-| 2.4.0
-| 2.3.0
-
-| 2.3.2
-| N/A
-| 2.3.2 to 2.3.3
-| 2.3.0
-
-| 2.3.1
-| N/A
-| 2.3.1
-| 2.3.0
-
-| 2.3.0
-| N/A
-| 2.3.0
-| 2.3.0
-
-| 2.1.3
-| N/A
-| 2.1.3 to 2.2.0
-| 2.1.2
-
-| 2.1.2
-| N/A
-| 2.1.2
-| 2.0.3
-
-| 2.1.1
-| N/A
-| 2.1.1
-| 2.0.3
-
-| 2.1.0
-| N/A
-| 2.1.0
-| 2.0.3
-
-| 2.0.1
-| N/A
-| 2.0.1 to 2.0.2
-| 2.0.1 to 2.0.2
-
-| 2.0.0
-| N/A
-| 2.0.0
-| 2.0.0
-
-| 1.0.8
-| N/A
-| 1.1.0 to 1.8.4
-| -
-|===
-====
+include::manual::console.adoc[tags="latest-compatibility,older-compatibility"]
