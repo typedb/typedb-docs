@@ -327,11 +327,11 @@ $f isa file;
 fetch
 $f as file: path as filename, size-kb;
 file-size:{
-        match
-        $f has size-kb $sk;
-        ?sm = round( $sk / 1024 );
-        fetch
-        ?sm as size-mb;
+    match
+    $f has size-kb $sk;
+    ?sm = round( $sk / 1024 );
+    fetch
+    ?sm as size-mb;
 };
 ----
 
@@ -412,7 +412,7 @@ The resulting JSON objects have a predictable structure of keys, that was set by
 ** User attributes
 * permitted-files
 ** file
-*** file-attributes
+*** File attributes
 
 .Output example (partial)
 [,json]
@@ -547,6 +547,57 @@ xref:manual::reading/infer.adoc#_how_to_send_a_query_with_inference[enabled].
 
 Try the same query with disabled inference to see no matched results.
 ////
+
+=== Aggregated Get subquery
+
+To add an aggregated value for the Fetch output, use a Get query with an
+xref:typeql::modifiers/aggregation.adoc[aggregation modifier].
+
+The returned value is added to the resulted JSON with a subquery label as a key.
+If there is an empty response (no answer) for the Get subquery, then the value in JSON will be `null`.
+
+.Aggregated Get subquery example
+[,typeql]
+----
+match
+$person isa person;
+fetch
+$person: full-name;
+average-file-size: {
+    match
+    ($person,$acc) isa permission;
+    $acc($file) isa access;
+    $file isa file, has size-kb $size;
+    get $size;
+    mean $size;
+};
+----
+
+.Output example
+[,json]
+----
+{
+    "average-file-size": null,
+    "person": {
+        "full-name": [ { "value": "Masako Holley", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "person", "root": "entity" }
+    }
+}
+{
+    "average-file-size": { "value": 444.85714285714283, "value_type": "double" },
+    "person": {
+        "full-name": [ { "value": "Kevin Morrison", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "person", "root": "entity" }
+    }
+}
+{
+    "average-file-size": { "value": 1231.5, "value_type": "double" },
+    "person": {
+        "full-name": [ { "value": "Pearle Goodman", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "person", "root": "entity" }
+    }
+}
+----
 
 [#_number_of_results]
 == Number of results
