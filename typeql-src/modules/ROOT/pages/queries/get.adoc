@@ -118,7 +118,7 @@ For examples on how to work with schema and data concepts,
 see the xref:manual::objects/schema.adoc[] and xref:manual::objects/data.adoc[] pages.
 
 [#_simple_example]
-== Usage of a Get query
+== Get concepts
 
 include::typeql::partial$iam-database-links.adoc[]
 
@@ -145,7 +145,7 @@ The response is a stream/iterator of ConceptMap.
 Every ConceptMap bounds the variable `$e` to an attribute of the `email` type, that matches the pattern.
 
 [#_complex_get_query_example]
-== Usage of a Get query with modifiers
+== Get with modifiers
 
 include::typeql::partial$iam-database-links.adoc[]
 
@@ -184,7 +184,7 @@ The results are sorted and grouped by the `$o-fp` and aggregated with the `count
 The response is the number of results for every `$o-fp`: number of pairs `$x-n` and `$act-n`.
 
 [#_number_of_results]
-== Number of results
+== Effects of filtering
 
 include::typeql::partial$iam-database-links.adoc[]
 
