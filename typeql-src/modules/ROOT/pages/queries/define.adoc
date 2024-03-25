@@ -25,7 +25,7 @@ Define queries are written in TypeQL with the following syntax:
 define <schema_definitions>
 ----
 
-Where `<schema_definitions>` are valid TypeQL schema-specific statements:
+where `<schema_definitions>` are valid schema-specific TypeQL statements:
 xref:typeql::statements/sub.adoc[],
 xref:typeql::statements/abstract.adoc[],
 xref:typeql::statements/owns.adoc[],
@@ -35,6 +35,7 @@ xref:typeql::statements/relates.adoc[],
 xref:typeql::statements/plays.adoc[],
 xref:typeql::statements/rule.adoc[],
 and annotations: xref:typeql::statements/key.adoc[] and xref:typeql::statements/unique.adoc[].
+Schema statements in a `define` clause can't use any variables or values, except for xref:statements/rule.adoc[rules].
 // end::syntax[]
 
 // For more information on defining rules, see the xref:schema/rule-definitions.adoc[] page.
@@ -51,19 +52,21 @@ Define queries can't change schema statements already existing in a schema, exce
 xref:typeql::statements/overview.adoc#_annotation_statements[annotations] and
 xref:statements/rule.adoc[rules].
 
-Define queries are idempotent, meaning they can be applied multiple times
-without changing the result of the initial application.
+=== Query execution
 
-A Define query must produce a consistent and valid schema in a database,
-otherwise it will not pass validation.
+Define queries are _idempotent_, meaning they can be applied multiple times
+without changing the result of the initial application. 
 
-Define query returns a Promise of an empty response.
+A Define query must produce a _valid_ schema in a database,
+otherwise it will be rejected.
+
+=== Query response
+
+A successful Define query returns a promise of an empty response.
 // end::behavior[]
 
-A `define` clause is used in a Define query to specify schema statements for new or updated types and rules.
-Schema statements in a `define` clause can't use any variables or values, except for xref:statements/rule.adoc[rules].
 
-== Usage to define types
+== Define types
 
 To define a new type, subtype an existing type with a xref:typeql::statements/sub.adoc[sub] statement.
 Use xref:typeql::statements/owns.adoc[owns] statements to assign an ability to own attribute types.
@@ -100,7 +103,7 @@ permission sub relation,
 
 The above example defines four attribute types, three entity types, and a single relation type.
 
-== Usage to define rules
+== Define rules
 
 include::typeql::partial$iam-database-links.adoc[]
 
