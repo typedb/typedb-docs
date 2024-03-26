@@ -748,36 +748,44 @@ transaction sample_db data read --infer true
 [#_version_compatibility]
 == Version Compatibility
 
+// tag::latest-compatibility[]
 [cols="^.^2,^.^1,^.^2,^.^2"]
 |===
 | TypeDB Console | Protocol encoding version | TypeDB Core | TypeDB Cloud
 
-| 2.26.5
+| https://github.com/vaticle/typedb-console/releases/tag/2.27.0[2.27.0]
 | 3
-| 2.26.3
-| 2.26.0
+| 2.27.0
+| 2.27.0
 
-| 2.25.7
+| https://github.com/vaticle/typedb-console/releases/tag/2.26.6[2.26.6]
+| 3
+| 2.26.6
+| 2.26.6
+
+| https://github.com/vaticle/typedb-console/releases/tag/2.25.7[2.25.7]
 | 3
 | 2.25.7
 | 2.25.7
 
-| 2.24.15
+| https://github.com/vaticle/typedb-console/releases/tag/2.24.15[2.24.15]
 | 2
 | 2.24.17
 | 2.24.17
 
-| 2.18.0
+| https://github.com/vaticle/typedb-console/releases/tag/2.18.0[2.18.0]
 | 1
 | 2.18.0 to 2.23.0
 | 2.18.0 to 2.23.0
 
-| 2.17.0
+| https://github.com/vaticle/typedb-console/releases/tag/2.17.0[2.17.0]
 | N/A
 | 2.17.0
 | 2.17.0
 |===
+// end::latest-compatibility[]
 
+// tag::older-compatibility[]
 .See older versions
 [%collapsible]
 ====
@@ -901,4 +909,5 @@ transaction sample_db data read --infer true
 | -
 |===
 ====
+// end::older-compatibility[]
 // end::body[]
