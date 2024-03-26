@@ -91,9 +91,17 @@ include::partial$tutorials/change-psw.adoc[]
 
 == Database setup
 
-To set up a TypeDB database, we need to <<_creating_a_database,create a database>> on the TypeDB server,
-<<_defining_a_schema,define its schema>> and <<_loading_initial_data,load initial data>> into it.
-Additionally, we test it to make sure that the setup process is completed successfully.
+To set up a TypeDB database, we need to make sure that it exists and has the correct schema and data.
+First, we check whether a database with the provided name already exists on the server.
+
+If such a database doesn't exist, we <<_creating_a_database,create a new database>>.
+
+If it does exist, we check whether we need to replace it.
+We check the `db_reset` parameter, and, if it's `False`, ask for an input from a user.
+If it's `True` or user decides to proceed with replacement, we replace an existing database with a new one.
+That is done by deleting an existing database and then <<_creating_a_database,creating a new one>>.
+
+As the final step of the database setup, we <<_testing_a_database,test it>>.
 
 [,python]
 ----
@@ -184,6 +192,7 @@ include::drivers::partial$tutorials/iam-data-single-query.tql[lines=17..]
 ----
 ====
 
+[#_testing_a_database]
 === Testing a database
 
 With the schema defined and data loaded, we test our database to make sure it's ready.
