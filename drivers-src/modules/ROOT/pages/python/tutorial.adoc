@@ -77,11 +77,10 @@ The `connect_to_typedb()` function takes `edition` and `addr` as mandatory param
 include::drivers::partial$tutorials/python/sample.py[tag=connection]
 ----
 
-The `edition` is expected to be a Enum for selecting a TypeDB edition.
+The `edition` is expected to be an Enum for selecting a TypeDB edition.
 Depending on the TypeDB edition selected, this function initializes either a TypeDB Core or TypeDB Cloud connection.
-Both require server address, passed in the `addr` parameter.
 
-TypeDB Cloud connection also requires an object of the `TypeDBCredential` class
+TypeDB Cloud connection requires an object of the `TypeDBCredential` class
 that is initialized with a username and password.
 For our sample application,
 we have the default credentials for the `admin` account
