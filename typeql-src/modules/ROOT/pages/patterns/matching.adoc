@@ -39,7 +39,8 @@ A `match` clause is used to find all existing concepts in a database that *satis
 
 Note that the order of patterns in conjunctions or disjunctions is irrelevant.
 
-=== Execution
+[#_match_clause_results]
+=== Execution and results
 
 A `match` clause finds a set of matched results. 
 Every matched result contains
@@ -47,12 +48,9 @@ Every matched result contains
 * an exact value for every xref:typeql::values/value-variables.adoc[value variable]
 * an exact concept for every xref:typeql::concepts/concept-variables.adoc[concept variable].
 
-Matched results for a pattern are <<_solution,solution>> for that pattern, meaning when you substitute variables in a pattern with values and concepts from a solution, it becomes a true statement.
+Matched results for a pattern are *solution* for that pattern, meaning when you substitute variables in a pattern with values and concepts from a solution, it becomes a true statement.
 
-[#_match_clause_results]
-=== Response
-
-A match clause is an intermediate step in the execution of queries and thus does not directly provide a response to the user.
+Note that a match clause is an intermediate step in the execution of queries and thus does not directly provide a response to the user.
 
 == Matching a specific concept
 
