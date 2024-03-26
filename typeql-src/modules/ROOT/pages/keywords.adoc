@@ -18,7 +18,8 @@ Starts a `define` clause of a xref:typeql::queries/define.adoc[].
 Starts an `undefine` clause of a xref:typeql::queries/undefine.adoc[]
 
 `match`::
-Starts a `match` clause that can be used in an xref:typeql::queries/insert.adoc[Insert],
+Starts a `match` clause that xref:typeql::patterns/matching.adoc[matches existing data] by a pattern in an
+xref:typeql::queries/insert.adoc[Insert],
 xref:typeql::queries/delete.adoc[Delete],
 xref:typeql::queries/update.adoc[Update],
 xref:typeql::queries/fetch.adoc[Fetch], or
@@ -42,54 +43,53 @@ Schema statement keywords used inside a clause of a query as a part of a data pa
 //Schema statements are used to specify types in both data queries and schema queries.
 
 `sub`::
-Specify a type as a subtype of a given type.
-Takes into account all subtypes of a given type.
-//See an xref:typeql::data/examples.adoc#_specific_type_or_nested_subtype[example].
+Adds a constraint on a type to be any subtype of a given type. +
+For more information, see the xref:typeql::statements/sub.adoc[] page.
 
 `sub!`::
-Specify a type as a direct subtype of a given type.
-//See an xref:typeql::data/examples.adoc#_direct_subtypes[example].
+Adds a constraint on a type to be a direct subtype of a given type. +
+For more information, see the xref:typeql::statements/sub.adoc[] page.
 
 `type`::
-Specify an exact type by its label.
-//See an xref:typeql::data/examples.adoc#_specific_type[example].
+Adds a constraint on a type to be an exact type by its label. +
+For more information, see the xref:typeql::statements/type.adoc[] page.
 
 `abstract`::
-Specify that a given type is an abstract type.
+Specify that a given type is an abstract type. +
+For more information, see the xref:typeql::statements/abstract.adoc[] page.
 
 `owns`::
-Specify that a given type can own attributes of a given attribute type.
-//See an xref:typeql::data/examples.adoc#_owners_spec_type[example].
+Specify that a type can own attributes of a given attribute type. +
+For more information, see the xref:typeql::statements/owns.adoc[] page.
 
 `value`::
-Specify a value type for an attribute type.
-//See an xref:typeql::data/examples.adoc#_attribute_types_by_value_type[example].
+Specify a value type of an attribute type. +
+For more information, see the xref:typeql::statements/value.adoc[] page.
 
 `relates`::
-Add a new role for a relation.
-//See an xref:typeql::data/examples.adoc#_role_matching[example].
+Add a new role for a relation. +
+For more information, see the xref:typeql::statements/relates.adoc[] page.
 
 `plays`::
-Specify that a given type can play a given role (in a given relation).
-//See an xref:typeql::data/examples.adoc#_players_of_a_specific_role[example].
+Specify that a given type can play a given role (in a given relation). +
+For more information, see the xref:typeql::statements/plays.adoc[] page.
 
 `@key`::
-Add a key constraint to ownership of a given attribute type by a given type.
-//See [key annotation].
-//#todo Add link to annotations
+Add a key constraint to ownership of a given attribute type by a type. +
+For more information, see the xref:typeql::statements/key.adoc[] page.
 
 `@unique`::
-Add a uniqueness constraint to ownership of a given attribute type by a given type.
-//See [unique annotation].
-//#todo Add link to annotations
+Add a uniqueness constraint to ownership of a given attribute type by a type. +
+For more information, see the xref:typeql::statements/unique.adoc[] page.
 
 `regex`::
-Specify a regular expression that limits values of a given attribute type.
-See an xref:home::25-queries.adoc#_counterquery_limiting_values_with_regex[example].
+Specify a regular expression that limits values of a given attribute type. +
+For more information, see the xref:typeql::statements/regex.adoc[] page.
 
 `as`::
-Override an inherited attribute type ownership or role.
-//See an xref:typeql::schema/type-definitions.adoc#_override_inherited_ownership[example].
+Override an inherited attribute type ownership or role playing ability. +
+For more information, see the xref:typeql::statements/owns.adoc#_usage_with_override[owns] and
+xref:typeql::statements/plays.adoc#_usage_with_override[plays] pages respectively.
 
 `when`::
 Specify a condition of a xref:typeql::statements/rule.adoc[rule].
@@ -103,105 +103,83 @@ Data statement keywords used inside a clause of a data query as a part of a data
 //Data statements are only used in data query patterns.
 
 `isa`::
-Specify a type for a data instance.
-Takes into account all subtypes of a given type.
-//Can be used in data statements only.
-//See an xref:typeql::data/examples.adoc#_instances_of_a_type_including_subtypes[example].
+Adds a constraint for a data instance to be an instance of a type.
+Takes into account type inference. +
+For more information, see the xref:typeql::statements/isa.adoc[] page.
 
 `isa!`::
-Specify a type for a data instance without taking into account its subtypes.
-//See an xref:typeql::data/examples.adoc#_specific_types_instances[example].
+Adds a constraint for a data instance to be an instance of a type.
+Does not take into account type inference. +
+For more information, see the xref:typeql::statements/isa.adoc[] page.
 
 `is`::
-Specify an equality between two concepts.
-//See an xref:typeql::data/examples.adoc#_equality[example].
+Adds a constraint for two concept variables to be equal both by value and type. +
+For more information, see the xref:typeql::statements/isa.adoc[] page.
 
 `has`::
-Specify an ownership of a given attribute by a given instance.
-//See an xref:typeql::data/examples.adoc#_owners_of_a_specific_attribute_by_type_and_value[example].
+Adds a constraint for an ownership of a given attribute by a given data instance. +
+For more information, see the xref:typeql::statements/has.adoc[] page.
 
 === Modifiers
 
 `offset`::
-Offset the result of a query by the specified number of results.
+Offset the result of a query by the specified number of results. +
 See an xref:typeql::modifiers/pagination.adoc[example].
 
 `limit`::
-Limit the result of a query by the specified number of results.
+Limit the result of a query by the specified number of results. +
 See an xref:typeql::modifiers/pagination.adoc[example].
 
 `sort`::
-Sort the results of a query.
+Sort the results of a query. +
 See an xref:typeql::modifiers/sorting.adoc[example].
 
 === Logic
 
 `or`::
-Specify a disjunction between two sets of statements surrounded by curly brackets.
-//See an xref:typeql::data/examples.adoc#_disjunctions[example].
+Specify a disjunction between two blocks of statements surrounded by curly brackets. +
+For more information, see the xref:typeql::patterns/disjunction.adoc[] page.
 
 `not`::
-Specify a negation of a set of statements surrounded by curly brackets.
-//See an xref:typeql::data/examples.adoc#_complex_example[example].
+Specify a negation of a block of statements surrounded by curly brackets. +
+For more information, see the xref:typeql::patterns/negation.adoc[] page.
 
 === Value comparators
 
-`==`::
-Specify that values are equal.
-
-`!=`::
-Specify that values are not equal.
-
-`>`::
-Specify that the first value is bigger than the second one.
-
-`<`::
-Specify that the first value is smaller than the second one.
-
-`>=`::
-Specify that the first value is bigger or equal than the second one.
-
-`+<=+`::
-Specify that the first value is smaller or equal than the second one.
-
-`like`::
-Specify that value matches a given regular expression.
-//See an xref:typeql::data/examples.adoc#_value_matching_regex[example].
-
-`contains`::
-Specify that value contains a given substring.
-//See an xref:typeql::data/examples.adoc#_value_containing[example].
+`==`, `!=`, `>`, `<`, `>=`, `+<=+`, `like`, `contains`::
+Specify the result of comparison to be true. +
+For more information, see the xref:typeql::values/comparators.adoc[] page.
 
 === Aggregation
 
 `group`::
-Group results by a given variable.
-See an xref:typeql::queries/get.adoc#_grouping[example].
+Group results by a given variable. +
+For more information, see the xref:typeql::modifiers/grouping.adoc[] page.
 
 `count`::
-Count the number of results.
-See an xref:typeql::queries/get.adoc#_count[example].
+Count the number of results. +
+For more information, see the xref:typeql::modifiers/aggregation.adoc#_count[Aggregation] page.
 
 `max`::
-Find maximum value of a given variable.
-See an xref:typeql::queries/get.adoc#_maximum[example].
+Find the maximum value of a given variable. +
+For more information, see the xref:typeql::modifiers/aggregation.adoc[Aggregation] page.
 
 `min`::
-Find minimum value a given variable.
-See an xref:typeql::queries/get.adoc#_minimum[example].
+Find the minimum value of a given variable. +
+For more information, see the xref:typeql::modifiers/aggregation.adoc[Aggregation] page.
 
 `mean`::
-Find average value a given variable.
-See an xref:typeql::queries/get.adoc#_mean[example].
+Find average value of a given variable. +
+For more information, see the xref:typeql::modifiers/aggregation.adoc[Aggregation] page.
 
 `median`::
-Find median value a given variable.
-See an xref:typeql::queries/get.adoc#_median[example].
+Find median value of a given variable. +
+For more information, see the xref:typeql::modifiers/aggregation.adoc[Aggregation] page.
 
 `std`::
-Find standard deviation a given variable.
-See an xref:typeql::queries/get.adoc#_standard_deviation[example].
+Find standard deviation of values for a given variable. +
+For more information, see the xref:typeql::modifiers/aggregation.adoc[Aggregation] page.
 
 `sum`::
-Find sum of values for a given variable.
-See an xref:typeql::queries/get.adoc#_sum[example].
+Find the sum of values for a given variable. +
+For more information, see the xref:typeql::modifiers/aggregation.adoc[Aggregation] page.
