@@ -1,14 +1,19 @@
 = Patterns overview
 
-TypeQL uses fully-declarative and <<_composable_patterns,composable patterns>> for queries.
+== What is a pattern?
 
-In data queries, patterns are used to specify constraints on concepts to be retrieved or processed.
+A pattern is a set of declarative constraints. TypeQL uses patterns in its queries and clauses.
 
-In schema queries, we use schema related patterns without any variables to define or undefine type definitions.
+* In data queries, patterns are used to specify constraints on concepts to be retrieved or processed.
 
-== Pattern blocks
+* In schema queries, we use schema-specific patterns without any variables to define or undefine type definitions.
 
-[cols-2]
+Patterns are xref:typeql::patterns/matching.adoc[constructed] from xref:typeql::statements/overview.adoc[statements] and <<_pattern_operations,pattern operations>>.
+
+[#_pattern_operations]
+== Pattern operations
+
+[cols-3]
 --
 .xref:typeql::patterns/conjunction.adoc[]
 [.clickable]
@@ -25,21 +30,31 @@ Create alternative branches in a pattern with disjunction.
 .xref:typeql::patterns/negation.adoc[NOT]
 [.clickable]
 ****
-Exclude results with negated pattern blocks.
+Exclude results with a negation pattern.
 ****
+--
 
+== Pattern usage
+
+[cols-2]
+--
 .xref:typeql::patterns/matching.adoc[]
 [.clickable]
 ****
 Pattern-based matching of concepts in a database.
 ****
+
+.xref:typeql::queries/overview.adoc[Queries]
+[.clickable]
+****
+Patterns are used in queries in various ways.
+****
 --
 
 [#_composable_patterns]
-== Composable patterns
+== Composing patterns
 
-A pattern is a set of statements combined by an implicit xref:typeql::patterns/conjunction.adoc[conjunction].
-Hence, you can combine two patterns by joining their statements together in a new pattern.
+The most important way of writing patterns is xref:typeql::patterns/conjunction.adoc[conjunction]: you can combine two patterns by joining their statements together in a new pattern.
 
 For example, in the following pattern
 the `$u` variable is specified to be a user with a `full-name` attribute, which value is equal to `Kevin Morrison`,
@@ -54,6 +69,3 @@ $f isa file, has path "zlckt.ts";
 $acc ($f, $act) isa access;
 $per ($u, $acc) isa permission;
 ----
-
-For more information on how to use patterns in queries to retrieve or modify data,
-see the xref:typeql::queries/overview.adoc[] page.

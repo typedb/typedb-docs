@@ -11,37 +11,57 @@ with another clause to specify how to use the matched data.
 
 == Syntax
 
-A `match` clause start with the `match` keyword, followed by a pattern.
-A pattern consists of one or multiple statements.
-Each statement ends with a semicolon.
+A `match` clause starts with the `match` keyword, followed by the pattern that is to be matched:
 
 [,typeql]
 ----
-match
-<statement>;
-[<statement>;]
+match <pattern>;
 ----
+
+=== General pattern construction
+
+A pattern is a conjunction of either a single statement or other patterns:
+[,typeql]
+----
+{ <statement>; | <pattern>; } [ <pattern>; ] 
+----
+See xref:typeql::statements/overview.adoc[statements] for more information on the syntax of statements. Note that at least one variable in a xref:typeql::patterns/disjunction.adoc[disjunction] or xref:typeql::patterns/negation.adoc[negation] pattern must be bound outside that pattern.
+
+While patterns of general form can be used for `match` clauses, specific xref:typeql::queries/overview.adoc[queries] often require patterns of specific form.
 
 == Behavior
 
-A `match` clause is used to find all existing concepts in a database that satisfy a pattern.
-By default, statements in a pattern are combined with an implicit xref:typeql::patterns/conjunction.adoc[]
-or logical `AND` operation.
-That makes the order of statements irrelevant, as they all must be true to find a match.
+A `match` clause is used to find all existing concepts in a database that *satisfy* a pattern. These concepts are called the *matched results* of that pattern. Satisfaction of a pattern depends on the structure of the pattern:
 
-Patterns are composable,
-meaning you can combine two patterns by joining their statements together in a new pattern.
+* In a conjunction of patterns, each pattern must hold true.
+* In a disjunction of patterns, at least one pattern must hold true.
+* In a negation of a pattern, the negated pattern must be false.
 
-=== Constraints statements
+Note that the order of patterns in conjunctions or disjunctions is irrelevant.
 
-Every statement in TypeQL sets constraints to its subject.
+=== Execution
+
+A `match` clause finds a set of matched results. 
+Every matched result contains
+
+* an exact value for every xref:typeql::values/value-variables.adoc[value variable]
+* an exact concept for every xref:typeql::concepts/concept-variables.adoc[concept variable].
+
+Matched results for a pattern are <<_solution,solution>> for that pattern, meaning when you substitute variables in a pattern with values and concepts from a solution, it becomes a true statement.
+
+[#_match_clause_results]
+=== Response
+
+A match clause is an intermediate step in the execution of queries and thus does not directly provide a response to the user.
+
+== Matching a specific concept
 
 To match a specific concept, use statements to set enough constraints for a concept variable to distinguish the concept
-from all others.
+from all others. 
 For example, to match an attribute of the `full-name` type with the value of `Kevin Morrison`,
 you can use the following pattern in a `match` clause:
 
-.Matching example
+.Pattern for specific concept
 [,typeql]
 ----
 $name isa full-name;
@@ -59,22 +79,16 @@ You can think of matching a pattern as solving a system of equations,
 where every single statement in a pattern is an equation.
 TypeDB solves the system and returns all its solutions, including permutations.
 
-[#_match_clause_results]
-== Matched results
 
-A `match` clause returns a *set of matched results*.
-Every matched result is a <<_solution,solution>> for a given pattern,
-that contains an exact value for every xref:typeql::values/value-variables.adoc[value variable]
-and exact concept for every xref:typeql::concepts/concept-variables.adoc[concept variable].
 
-When you substitute variables in a pattern with values and concepts from a solution, it becomes a True statement.
+== Matching with duplicates
 
 The number of results found (and returned) can be zero (no solutions found), one, or multiple.
 Due to set semantics of results, there can be no duplicates.
 
 Consider the following example:
 
-.Pattern example
+.Pattern with potential duplicates
 [,typeql]
 ----
 $p isa person, has full-name $n;
@@ -90,16 +104,14 @@ If there is a person with two `full-name` attributes, then such a person will be
 A `match` clause returns all possible <<_solution,solutions>> for a given pattern, including all possible permutations.
 ====
 
-Data queries use results of a `match` clause to retrieve or process the matched data.
-
-=== Permutations
+== Matching with permutations
 
 A `match` clause returns all possible solutions for the given pattern based on the data and schema of a database.
 That includes all permutations of results between variables.
 
 For example, let's match two different variables to all entities of the `person` type:
 
-.Pattern example
+.Pattern with permutations
 [,typeql]
 ----
 $p1 isa person;

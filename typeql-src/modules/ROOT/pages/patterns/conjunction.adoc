@@ -1,34 +1,24 @@
 = Conjunction
 
-Conjunction is the default operation between all statements and blocks of statements in a TypeQL pattern.
+A conjunction of patterns requires all its patterns to be true simultaneously. A conjunction is itself a pattern.
 
 == Syntax
 
-Since conjunction is the default, there is no specific syntax to apply conjunction.
-Conjunction applied implicitly for all statements by default, as opposed to
-xref:typeql::patterns/negation.adoc[negation] and xref:typeql::patterns/disjunction.adoc[disjunction].
-For simplicity, you can think of a semicolon as a conjunction operator.
-
-The syntax of a conjunction block:
+There is no specific syntax to apply conjunctions: conjunctions are applied implicitly to all patterns separated by `;`. A conjunction of two or more patterns is of the form
 
 .Syntax
 [,typeql]
 ----
-<pattern>; [<pattern>;]
+<pattern>; <pattern>; [<pattern>;]
 ----
 
-Where each `<pattern>` can be any valid pattern with at least one variable bound outside the disjunction.
+where each `<pattern>` can be any valid pattern. Note, each `<pattern>` itself may be a conjunction of smaller patterns or individual statements: see xref:typeql::patterns/matching.adoc[patterns] for more information.
 
 == Behavior
 
-Conjunction is used in all TypeQL patterns by default.
-It is implicitly applied between all statements separated with a semicolon.
+Conjunction is used in all TypeQL patterns by default: it is implicitly applied between all statements separated with a semicolon.
 
-To match a pattern, a solution must contain concepts/values for all variables used in it,
-such as when variables are substituted with these values/concepts, the pattern becomes equal to True.
-
-Hence, all statements in a pattern must be True for the pattern itself to be True.
-If any statement in a conjunction is False, then the whole pattern is False.
+All patterns in a conjunction must be true for the conjunction itself to be true. Thus, if any statement in a conjunction is false, then the whole pattern is false.
 //#todo expand disjunction behavior with detailed explanation
 
 The ordering of statements in a conjunction is irrelevant, as every statement is equaly important for the whole pattern.
