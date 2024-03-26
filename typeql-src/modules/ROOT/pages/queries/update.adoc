@@ -21,63 +21,37 @@ An Update query consists of a
 [,typeql]
 ----
 match <pattern>
-delete <pattern>
-insert <pattern>
+delete <delete_pattern>
+insert <insert_pattern>
 ----
 // end::syntax[]
+where both `<delete_pattern>` and `<insert_pattern>` are patterns of valid data-specific TypeQL statements including xref:typeql::statements/isa.adoc[],
+xref:typeql::statements/has.adoc[],
+xref:typeql::statements/role-assignment.adoc[role assignment], and xref:typeql::statements/value-assignment.adoc[value assignment]. 
+
+The _mandatory_ `match` clause `<pattern>` can be any valid match pattern: for more information, see the
+xref:typeql::patterns/overview.adoc[Patterns] and xref:typeql::statements/overview.adoc[Statements] sections.
+
 
 == Behavior
 
-An Update query deletes concepts and then inserts new concepts, ownerships, or role player assignments to a database.
+An Update query first deletes and then inserts data instances, ownerships, or role player assignments to a database. The results of the `match` clause in an Update query will be used for the variables in its subsequent `delete` and `insert` clauses. For more information and examples of the latter clauses, see the xref:typeql::queries/delete.adoc[] and xref:typeql::queries/insert.adoc[] page.
 
-While a `match` clause pattern is used to match existing data from a database,
-the `delete` clause of the same query is used to select the exact data to delete,
-finally the `insert` clause is used to insert new data to a database.
-Both `delete` and `insert` clauses are executed once per result of a preceding `match` clause.
+Note that inserted data _need not be a direct replacement_ for the data deleted by the same query. You can insert a new concept instead of a deleted one with either the same variable or a new one.
 
-An Update query returns a lazy Stream/Iterator of ConceptMap with the inserted data.
-Inserted data must not violate a schema of a database.
-
-[#_match_clause]
-=== Match clause
-
-A `match` clause in an Update query matches existing concepts in a database to provide context for deleting and
-inserting data specified by the `delete` and `insert` clause pattern respectively.
-You can use a declarative and composable TypeQL pattern in a `match` clause and TypeDB will find data that matches
-specified pattern.
-
-A `match` clause is mandatory in an Update query.
-
-For more information on patterns and statements used in a `match` clause, see the
-xref:typeql::patterns/overview.adoc[Patterns] and xref:typeql::statements/overview.adoc[Statements] sections.
-
-[#_delete_clause]
-=== Delete clause
-
-include::typeql::queries/delete.adoc[tags=delete_clause]
-
-For more information and examples, see the xref:typeql::queries/delete.adoc[] page.
-
-[#_insert_clause]
-=== Insert clause
-
-include::typeql::queries/insert.adoc[tags=insert_clause]
-
-For more information and examples, see the xref:typeql::queries/insert.adoc[] page.
-
-== Inserting after deleting
+=== Query execution
 
 The `insert` clause is executed after the `delete` clause of the same query and uses the same matched result
-from the `match` clause.
+from the `match` clause. For an Update query to succeed the following must be satisfied:
 
-If we try to delete a concept that is used in the subsequent `insert` clause of the same query,
-that creates an error.
-For example, deleting an entity and then trying to insert ownership of an attribute to that deleted entity.
-You can insert a new concept instead of a deleted one with either the same variable or a new one.
+* Data that is assumed to exist `insert` must not be deleted in the preceding `delete` clause. For example, deleting an entity and then trying to insert ownership of an attribute to that deleted entity (and without inserting a new entity its place).
+* Inserted data must not violate a schema of a database.
 
-Inserted data doesn't have to be a direct replacement for the data deleted by the same query.
+=== Query response
 
-== Replacing ownership
+An Update query returns a lazy Stream/Iterator of ConceptMap with the inserted data.
+
+== Update ownerships
 
 include::typeql::partial$iam-database-links.adoc[]
 
@@ -121,7 +95,7 @@ consider specifying xref:typeql::statements/unique.adoc[uniqueness annotation]
 for some of its attribute ownerships.
 
 [#_delete_attribute]
-== Replacing attributes
+== Update attributes
 
 include::typeql::partial$iam-database-links.adoc[]
 
@@ -153,7 +127,7 @@ after running the above query, there will be a single `full-name` attribute with
 which is owned by the matched entities.
 Any `full-name` attributes which contained the substring `inappropriate word` will no longer exist in the database.
 
-== Updating a relation's role player
+== Update role players
 
 include::typeql::partial$iam-database-links.adoc[]
 

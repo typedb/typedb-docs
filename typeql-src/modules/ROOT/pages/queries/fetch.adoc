@@ -76,7 +76,7 @@ But it can <<_number_of_results,return fewer results>>,
 than matched by the `match` clause if not all variables are projected.
 
 [#_direct_projection]
-== Using direct projection
+== Fetch variables
 
 Types and values can be projected directly into a JSON.
 
@@ -137,7 +137,7 @@ Finally, we bound the value variable `?size` to some value, based on the value o
 ----
 
 [#_ownership_projection]
-== Using ownership projection
+== Fetch owned attributes
 
 include::typeql::partial$iam-database-links.adoc[]
 
@@ -221,7 +221,7 @@ and then fetches all attributes for every file.
 
 [#_relabeling]
 [#_customize_output]
-== Using output customization
+== Fetch with custom labels
 
 include::typeql::partial$iam-database-links.adoc[]
 
@@ -305,7 +305,7 @@ The above query is equal to the previous one, but it uses the `all attribute str
 ----
 
 [#_subqueries]
-== Using subqueries
+== Fetch with subqueries
 
 include::typeql::partial$iam-database-links.adoc[]
 

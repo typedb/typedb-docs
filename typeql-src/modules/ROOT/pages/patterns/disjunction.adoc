@@ -1,11 +1,10 @@
-= Logical OR (Disjunction)
+= OR (Disjunction)
 
-A disjunction pattern block is used to create branches of logic,
-so that not every branch must be True at the same time.
+A disjunction of patterns requires at least one of its patterns to be true. A disjunction is itself a pattern.
 
 == Syntax
 
-The syntax of a disjunction block:
+A disjunction block of two or more pattern is of the form:
 
 .Syntax
 [,typeql]
@@ -13,7 +12,7 @@ The syntax of a disjunction block:
 { <pattern> } or { <pattern> } [or { <pattern> }];
 ----
 
-Where each `<pattern>` can be any valid pattern with at least one variable bound outside the disjunction.
+where each `<pattern>` can be any valid pattern. Note that _at least one variable_ in the `<pattern>` must be bound outside the disjunction.
 
 == Behavior
 
@@ -21,11 +20,9 @@ Disjunctions can be used in a `match` clause or a condition of a rule to create 
 Matching one of the branches is enough for the solution to be returned.
 //#todo expand disjunction behavior with detailed explanation
 
-== Usage in a match clause
+== Disjunction of statements
 
 include::typeql::partial$iam-database-links.adoc[]
-
-=== Get all data
 
 One of the uses of a disjunction is to retrieve instances of different types.
 As a simple and one of the most common examples,
@@ -42,7 +39,7 @@ get $s;
 
 The above query returns all data instances from a database as stateful objects.
 
-=== Multiple statements in a branch
+== Disjunction of patterns
 
 Let's retrieve entities that can be of either `person` or `file` entity type and fetch their attributes, either
 a `full-name` or a `path` respectively:
@@ -72,7 +69,7 @@ $name;
 ----
 ====
 
-== Usage in a rule condition
+== Disjunction in rules
 
 include::typeql::partial$iam-database-links.adoc[]
 

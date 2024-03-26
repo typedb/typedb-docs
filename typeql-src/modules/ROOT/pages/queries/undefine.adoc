@@ -34,7 +34,7 @@ xref:typeql::statements/regex.adoc[],
 xref:typeql::statements/relates.adoc[],
 xref:typeql::statements/plays.adoc[],
 xref:typeql::statements/rule.adoc[],
-and annotations: xref:typeql::statements/key.adoc[] and xref:typeql::statements/unique.adoc[].
+and annotations: xref:typeql::statements/key.adoc[] and xref:typeql::statements/unique.adoc[]. Schema statements in a `undefine` clause can't use any variables or values, except for xref:statements/rule.adoc[rules].
 // end::syntax[]
 
 // For more information on defining rules, see the xref:schema/rule-definitions.adoc[] page.
@@ -44,33 +44,25 @@ and annotations: xref:typeql::statements/key.adoc[] and xref:typeql::statements/
 == Behavior
 
 // tag::behavior[]
-A Undefine query deletes existing types and rules.
+An Undefine query deletes the parts of the schema specified in its `undefine` clause, including types, rules, roles, and ownerships. Undefining a type also undefines all ownerships of attribute types and all roles of that type. 
 
-An `undefine` clause uses without variables to declare a piece of schema to delete.
-
-Undefine queries are validated with TypeQL syntax.
-A database's schema is validated after applying a given query to validate its consistency.
-Undefining a type also undefines all ownerships of attribute types and all roles it could play.
+=== Query execution
 
 [#_undefine_a_type_with_a_subtype]
-A deleted type must exist in a schema and have neither subtypes nor instances of data.
-If any subtypes or instances of that type exist in a database,
-they need to be removed prior to removing the type or in the same query.
-Undefining the same type definition or rule definition twice will result in an error
-because of an attempt to remove a non-existent definition from a schema.
+For an undefine query to succeed, the following must be satisfied:
 
-Undefine query returns a Promise of an empty response.
+* Types that are to be deleted must _exist_.
+* Types that are to be deleted can have neither _subtypes_ nor _instances of data_. 
+* An undefine query must result in a _valid_ schema state.
+
+Undefining the same definition twice will result in an error.
+
+=== Query response
+
+Undefine queries return a promise of an empty response.
 // end::behavior[]
 
-An `undefine` clause is used in an Undefine query to specify types and rules to be removed from a schema.
-Rules are removed by using the `rule` keyword and their label.
-
-Types can be removed completely by using the `sub` keyword with a supertype.
-It can be a direct supertype, or indirect one, up to a root type.
-
-Alternatively, we can remove some parts of type definition, like an ownership of an attribute type, or a role to play.
-
-== Usage to undefine new types
+== Undefine types
 
 include::typeql::partial$iam-database-links.adoc[]
 
@@ -88,7 +80,7 @@ database owns name;
 The above example deletes from a schema the attribute type `number` and ownership of the attribute type `name` by the
 entity type `database`.
 
-== Usage to undefine a rule
+== Undefine rules
 
 include::typeql::partial$iam-database-links.adoc[]
 
