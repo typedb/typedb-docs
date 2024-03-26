@@ -1,29 +1,29 @@
-= Logical NOT (Negation)
+= NOT (Negation)
 
-A negation pattern block is used to exclude some concepts from a result.
+A negation of a pattern requires that pattern to be false. A negation is itself a pattern.
 
 == Syntax
 
-The syntax of a negation block:
+A negation of a pattern is of the form:
 
 .Syntax
 [,typeql]
 ----
-not { <negated-pattern> };
+not { <pattern> };
 ----
 
-Where `<negated-pattern>` can be any valid pattern with at least one variable bound outside the negation.
+where `<pattern>` can be any valid pattern. Note that _at least one variable_ of `<pattern>` must be bound outside the negation.
 
 == Behavior
 
-Negations can be used in a `match` clause or a condition of a rule
-to set a constraint of not matching the negated pattern.
+A negation is true, if its negated pattern is false. 
+Negations can be used in a `match` clause or a condition of a rule 
+to set a constraint of not matching the negated pattern. 
 //#todo expand negation behavior with detailed explanation
 
-We understand pattern negation in terms of computation of *set differences*.
-The set-difference semantics is different to the perhaps familiar semantics of Negation-as-Failure of Prolog.
+When using negations in rules, complicated logical behavior can arise: we use the theory of https://en.wikipedia.org/wiki/Syntax_and_semantics_of_logic_programming#Stratified_negation[stratified negation] to compute the behavior of patterns in these cases.
 
-== Usage in a match clause
+== Negation of statement
 
 include::typeql::partial$iam-database-links.adoc[]
 
@@ -56,7 +56,7 @@ $u as "Not Kevin": full-name;
 ----
 ====
 
-== Usage in a rule condition
+== Negation in rules
 
 include::typeql::partial$iam-database-links.adoc[]
 
@@ -77,6 +77,26 @@ rule permission-non-validity: when {
     $permission has validity false;
 };
 ----
+
+== Negation with cycles
+
+_The following example yields an error!!_
+
+In contrast to the previous example, we cannot write a rule of the following form:
+
+.Negation in a rule example
+[,typeql]
+----
+define
+rule give-all-permissions: when {
+    $permission isa permission;
+    not { $permission has validity true; };
+} then {
+    $permission has validity true;
+};
+----
+
+The rule creates a logical cycle, which violates the principles of of https://en.wikipedia.org/wiki/Syntax_and_semantics_of_logic_programming#Stratified_negation[stratified negation].
 
 == Learn more
 
