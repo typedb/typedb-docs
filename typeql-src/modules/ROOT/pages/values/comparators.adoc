@@ -1,6 +1,6 @@
 = Comparators
 
-== Usage
+== Behavior
 
 Comparing operators or comparators can be used in a `match` clause of a TypeQL query
 to compare by value two variables or a variable with a static value.
@@ -12,7 +12,7 @@ That sets a constraint on values that can be assigned to a variable used in a st
 
 The following operators are supported for comparing values: `==`, `!=`, `>`, `>=`, `<`, and `+<=+`.
 
-== Equality operator
+== Equality comparator
 
 include::typeql::partial$iam-database-links.adoc[]
 
@@ -39,7 +39,7 @@ It's still possible to use it as a comparator for backward compatibility,
 but we recommend using `==` for equality instead.
 ====
 
-== Inequality operator
+== Inequality comparator
 
 include::typeql::partial$iam-database-links.adoc[]
 
@@ -58,7 +58,7 @@ $filepath != "README.md";
 get $size;
 ----
 
-== Greater than / Less than operators
+== Greater than / Less than comparators
 
 include::typeql::partial$iam-database-links.adoc[]
 
@@ -82,4 +82,39 @@ $file isa file,
     has size-kb $size;
 $size ≤ 100;
 get $filepath;
+----
+
+== String comparators
+
+=== Contains
+
+Use the `contains` keyword
+followed by a literal string to declare that the subject contains literal string as a substring.
+
+[IMPORTANT]
+====
+The `contains` keyword is not case-sensitive.
+====
+
+.Example
+[,typeql]
+----
+match
+$p isa person, has full-name $name;
+$name contains "kevin";
+fetch $p: full-name;
+----
+
+=== Like
+
+Use the `like` keyword followed by a regular expression pattern
+to declare that the subject has a string value that matches the regular expression.
+
+.Example
+[,typeql]
+----
+match
+$p isa person, has full-name $name;
+$name like "^(Kevin Morrison|Pearle Goodman)$";
+fetch $p: full-name;
 ----
