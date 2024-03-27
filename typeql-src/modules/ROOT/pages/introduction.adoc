@@ -3,44 +3,72 @@
 :keywords: typeql, intro, introduction, query, language, declarative, composable
 :pageTitle: Introduction
 
-TypeQL is the query language of TypeDB.
+== About TypeQL
 
-== Conceptual and intuitive
+TypeQL is the query language of TypeDB. It is designed based on TypeDB's expressive type system and inspired by natural language. It enables users to write concise and declarative queries, which can be used to:
 
-TypeQL is based directly on the conceptual
-xref:learn::5-defining-schemas/5.2-defining-type-hierarchies.adoc[PERA] data model of TypeDB.
-Its queries comprise sequences of statements that assemble into patterns.
-This mirrors natural language and makes it easy and intuitive to express even highly complex queries.
+* Define and modify the schema of your database, using *Define* and *Undefine* queries,
+* Write and modify the data in your database, using *Insert*, *Delete*, and *Update* queries,
+* Read data and the schema from your database, using *Fetch* and *Get* queries.
 
-== Fully declarative and composable
+== Layers of TypeQL
 
-TypeQL is fully declarative, allowing us to define query patterns without considering execution strategy.
-The user only composes sets of requirements, and TypeDB finds all matching data to process.
+TypeQL queries can be understood layer-by-layer. We give a brief overview of these layers below.
 
-== A fully variablizable language
+=== Query clauses
 
-Any concept in TypeQL can be variablized in a query – even types!
-This enables TypeQL to express powerful parametric database operations.
+At the top layer, each query comprises *clauses* which begin with keywords such as `define`, `insert`, or `fetch`, or `match`. These keywords indicate the purpose of the subsequent clause: for example, a `define` clause will comprise a set of declarative statements describing the (to-be-defined) schema of our database, and an `insert` clause will comprise a set of declarative statements describing the (to-be-inserted) data in our database. These “sets of declarative statements” are called *patterns*.
 
-== Built for consistency
+Query clauses can also be augmented with *modifiers* which allow for various query modifications to be applied, such as sorting, pagination, aggregation, or grouping.
 
-TypeQL patterns are underpinned by a powerful strong type system
-that ensures safety and consistency of database applications.
+=== Patterns and operations
 
-== Schema and data manipulation
+Patterns describe the properties and interactions of types and data. They can be used for several purposes:
 
-As a DDL, TypeQL lets us define a xref:typeql::queries/overview.adoc#_schema_queries[schema] of a database.
+* Patterns describing types (without variables) are used in `define` (or `undefine`) clauses in order to modify the schema of our database,
+* Patterns describing data are used in `insert` (or `delete`) clauses in order to modify the data in our database,
+* General patterns are used in `match` clauses in order to find existing data and types that satisfy the statements described by the pattern.
 
-As a DML, TypeQL lets us query (read&write) xref:typeql::queries/overview.adoc#_data_queries[data] of a database.
+In TypeQL, individual patterns always terminate with a semicolon (`;`). They can be either simple *statements*, usually of the form `subject keyword object` (but there are exceptions!), or they can constructed by a pattern operation, such as *conjunction*, *disjunction* (`or`), and *negation* (`not`). Among these, conjunction is the most important operation to construct patterns: in TypeQL, the conjunction of two patterns is simply written by _chaining the patterns one after the other_! 
 
-== Full unicode support
+=== Statements and compositions
+
+Statements are the simplest declarative patterns in TypeQL. They often look and read like actual, natural-language sentences. For examples, `$someone isa person;` and `$someone has name "John";` are both valid statements in TypeQL. 
+
+Statement fulfil a variety of purposes, covering all the different interactions of types and data in TypeDB's type system. For example, the statement `$someone isa person;` states that the concept `$someone` will be of type `person`.
+
+Finally, to make TypeQL's syntax yet more convenient, we are allowed to combine statements with the same subject into *composite statements*. For example, the statements `$someone isa person;` and `$someone has name "John";` can be combined into the composite statement `$someone isa person, has name "John";`.
+
+=== Variables, concepts, and values
+
+The final layer of TypeQL's syntax are variables, which are prefixed with `$`. These represent single *concepts* which may refer to either types or data in our database. All data lives in types, and types can be of different kinds (namely, *entity*, *relation*, or *attribute* types). Each of these kinds plays a special role in structuring the data in our database, and their precise function is defined in TypeDB's data model: the https://typedb.com/fundamentals/polymorphic-data-model[polymorphic entity-relation-attribute model].
+
+Attributes (i.e., data instances in attribute types) are the only concepts with have an underlying values associated to them: for example, an attribute in the type `name` may have a `string` value. TypeQL allows us work with such values in familiar ways: e.g., by comparing them or applying functions to them! Note that temporary values may be stored in special variables, called “value variable”, and these are prefixed with the special symbol `?`.
+
+
+== Principles of TypeQL
+
+As a query language, TypeQL synthesizes typeful programming with near-natural language. Its design emphasizes the following principles.
+
+1. _Naturality and expressivity_: The type system of TypeDB and the language of TypeQL are both designed to closely reflect how we think about and use our data. Based on this, TypeQL pattern-based syntax becomes highly expressive, allowing us to capture complex thoughts in concise queries.
+2. _Composability and flexibility_: The expressivity of TypeQL derives from the ability to compose patterns via pattern operations. TypeQL builds on simple and basic ingredients which can be freely combined and composed in a flexible manner. When something looks like it should be a valid TypeQL, it most likely is a valid TypeQL pattern!
+3. _Safety and typedness_: TypeQL syntax is fully type-checked, and this catches many subtle errors before they can happen.
+
+=== The theory
+
+TypeQL is based on the contemporary mathematical area of type theory. If you want to learn more about the mathematics of TypeQL, see our https://typedb.com/papers[papers] section!
+
+=== Contribution
+
+TypeQL is an open source language project. You can learn more about (and contribute to) TypeQL by visiting our https://github.com/vaticle/typeql[Github repo].
+
+== Good to know
+
+=== TypeQL example resources
+
+For a range of query examples see, e.g., the xref:home::25-queries.adoc[] page.
+
+=== Full unicode support
 
 TypeQL has full support for UTF-8 encoding.
 All labels are valid unicode identifiers, not starting with the underscore character (`_`).
-
-== Syntax and grammar
-
-The complete set of the TypeQL grammar can be seen in the *ANTLR v.4* specification file:
-https://github.com/vaticle/typeql/blob/master/grammar/TypeQL.g4[TypeQL.g4,window=_blank].
-
-For query examples, see the xref:home::25-queries.adoc[] page.
