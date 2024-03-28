@@ -313,7 +313,7 @@ void queries(TypeDB::Driver& driver, const std::string& dbName) {
 }
 // end::queries[]
 // tag::connection[]
-TypeDB::Driver connectToTypedb(const edition typedb_edition,
+TypeDB::Driver connectToTypeDB(const edition typedb_edition,
                                 const std::string& addr,
                                 const std::string& username=CLOUD_USERNAME,
                                 const std::string& password=CLOUD_PASSWORD,
@@ -325,7 +325,7 @@ TypeDB::Driver connectToTypedb(const edition typedb_edition,
 // end::connection[]
 // tag::main[]
 int main() {
-    TypeDB::Driver driver = connectToTypedb(TYPEDB_EDITION, SERVER_ADDR);
+    TypeDB::Driver driver = connectToTypeDB(TYPEDB_EDITION, SERVER_ADDR);
     if (driver.isOpen()) {
         if (dbSetup(driver, DB_NAME)) {
             queries(driver, DB_NAME);
