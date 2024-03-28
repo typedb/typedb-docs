@@ -96,14 +96,14 @@ fn get_files_by_user(
             .query()
             .get(&format!(
                 "match
-                $fn == '{}';
-                $u isa user, has full-name $fn;
-                $p($u, $pa) isa permission;
-                $o isa object, has path $fp;
-                $pa($o, $va) isa access;
-                $va isa action, has name 'view_file';
-                get $fp; sort $fp asc;
-                ",
+                    $fn == '{}';
+                    $u isa user, has full-name $fn;
+                    $p($u, $pa) isa permission;
+                    $o isa object, has path $fp;
+                    $pa($o, $va) isa access;
+                    $va isa action, has name 'view_file';
+                    get $fp; sort $fp asc;
+                    ",
                 name
             ))?
             .map(|x| x.unwrap())
@@ -135,13 +135,13 @@ fn update_filepath(
         .query()
         .update(&format!(
             "match
-            $f isa file, has path $old_path;
-            $old_path = '{old}';
-            delete
-            $f has $old_path;
-            insert
-            $f has path $new_path;
-            $new_path = '{new}';",
+                $f isa file, has path $old_path;
+                $old_path = '{old}';
+                delete
+                $f has $old_path;
+                insert
+                $f has path $new_path;
+                $new_path = '{new}';",
             old = old_path,
             new = new_path
         ))?
@@ -168,8 +168,8 @@ fn delete_file(driver: Connection, db_name: String, path: &str) -> Result<(), Bo
         .query()
         .get(&format!(
             "match
-            $f isa file, has path '{}';
-            get;",
+                $f isa file, has path '{}';
+                get;",
             path
         ))?
         .map(|x| x.unwrap())
@@ -179,10 +179,10 @@ fn delete_file(driver: Connection, db_name: String, path: &str) -> Result<(), Bo
             .query()
             .delete(&format!(
                 "match
-                $f isa file, has path '{path}';
-                delete
-                $f isa file;
-                "
+                    $f isa file, has path '{path}';
+                    delete
+                    $f isa file;
+                    "
             ))
             .resolve();
         match response {
@@ -249,47 +249,44 @@ fn connect_to_typedb(edition: &Edition, addr: &str) -> Result<Connection, typedb
 }
 // end::connection[]
 // tag::create_new_db[]
-fn try_create_database(driver: &Connection, db_name: String, db_reset: bool) -> Result<bool, TypeDBError> {
+fn create_database(driver: &Connection, db_name: String) -> Result<bool, Box<dyn Error>> {
     let databases = DatabaseManager::new(driver.to_owned());
-    if databases.contains(&db_name)? {
-        if db_reset {
-            print!("Replacing an existing database...");
-            databases.get(&db_name)?.delete()?;
-            let result = databases.create(&db_name);
-
-            match result {
-                Ok(_) => {
-                    println!("OK");
-                    return Ok(true);
-                }
-                Err(x) => return Err(x),
-            };
-        } else {
-            let mut answer = String::new();
-            print!("Found a pre-existing database. Do you want to replace it? (Y/N) ");
-            io::Write::flush(&mut io::stdout()).unwrap();
-            io::stdin().read_line(&mut answer).expect("Failed to read a line");
-            if answer.trim().to_lowercase() == "y" {
-                return try_create_database(driver, db_name, true);
-            } else {
-                println!("Reusing an existing database.");
-                return Ok(false);
-            }
+    print!("Creating a new database...");
+    let result = databases.create(&db_name);
+    match result {
+        Ok(_) => {
+            println!("OK");
         }
-    } else {
-        // No such database found on the server
-        print!("Creating a new database...");
-        let result = databases.create(&db_name);
-        match result {
-            Ok(_) => {
-                println!("OK");
-                return Ok(false);
-            }
-            Err(x) => return Err(x),
-        };
+        Err(_) => return Err(Box::new(TypeDBError::Other("Failed to create a DB.".to_string()))),
+    };
+    {
+        let schema_session = Session::new(databases.get(&db_name)?, SessionType::Schema)?;
+        db_schema_setup(&schema_session, "iam-schema.tql".to_string())?;
     }
+    {
+        let data_session = Session::new(databases.get(&db_name)?, SessionType::Data)?;
+        db_dataset_setup(&data_session, "iam-data-single-query.tql".to_string())?;
+    }
+    return Ok(true);
 }
 // end::create_new_db[]
+// tag::replace_db[]
+fn replace_database(driver: &Connection, db_name: String) -> Result<bool, Box<dyn Error>> {
+    let databases = DatabaseManager::new(driver.to_owned());
+    print!("Deleting an existing database...");
+    let deletion_result = databases.get(&db_name)?.delete();
+    match deletion_result {
+        Ok(_) => println!("OK"),
+        Err(_) => return Err(Box::new(TypeDBError::Other("Failed to delete a database.".to_string()))),
+    };
+    let creation_result = create_database(&driver, db_name);
+    match creation_result {
+        Ok(_) => return Ok(true),
+        Err(_) => return Err(Box::new(TypeDBError::Other("Failed to create a new database.".to_string()))),
+    };
+}
+// end::replace_db[]
+
 // tag::db-schema-setup[]
 fn db_schema_setup(schema_session: &Session, schema_file: String) -> Result<(), TypeDBError> {
     let tx = schema_session.transaction(TransactionType::Write)?;
@@ -316,7 +313,7 @@ fn db_dataset_setup(data_session: &Session, data_file: String) -> Result<(), Box
 }
 // end::db-dataset-setup[]
 // tag::test-db[]
-fn test_initial_database(data_session: &Session) -> Result<bool, Box<dyn Error>> {
+fn db_check(data_session: &Session) -> Result<bool, Box<dyn Error>> {
     let tx = data_session.transaction(TransactionType::Write)?;
     let test_query = "match $u isa user; get $u; count;";
     print!("Testing the database...");
@@ -334,26 +331,43 @@ fn test_initial_database(data_session: &Session) -> Result<bool, Box<dyn Error>>
 }
 // end::test-db[]
 // tag::db-setup[]
-pub fn db_setup(driver: Connection, db_name: String) -> Result<(), Box<dyn Error>> {
+pub fn db_setup(driver: Connection, db_name: String, db_reset: bool) -> Result<bool, Box<dyn Error>> {
+    let databases = DatabaseManager::new(driver.to_owned());
     println!("Setting up the database: {}", &db_name);
-    let is_new = try_create_database(&driver, db_name.clone(), false);
-    {
-        let databases = DatabaseManager::new(driver.clone());
-        {
-            let schema_session = Session::new(databases.get(&db_name)?, SessionType::Schema)?;
-            db_schema_setup(&schema_session, "iam-schema.tql".to_string())?;
-        }
-        {
-            let data_session = Session::new(databases.get(&db_name)?, SessionType::Data)?;
-            if is_new? {
-                db_dataset_setup(&data_session, "iam-data-single-query.tql".to_string())?;
+    if databases.contains(&db_name)? {
+        if db_reset {
+            match replace_database(&driver, db_name.clone()) {
+                Ok(_) => (),
+                Err(e) => {
+                    eprintln!("Error: {:#?}", e);
+                    std::process::exit(1);
+                }
             }
-            if test_initial_database(&data_session)? {
-                Ok(())
+        } else {
+            let mut answer = String::new();
+            print!("Found a pre-existing database. Do you want to replace it? (Y/N) ");
+            io::Write::flush(&mut io::stdout()).unwrap();
+            io::stdin().read_line(&mut answer).expect("Failed to read a line");
+            if answer.trim().to_lowercase() == "y" {
+                match replace_database(&driver, db_name.clone()) {
+                    Ok(_) => (),
+                    Err(e) => {
+                        eprintln!("Error: {:#?}", e);
+                        std::process::exit(1);
+                    }
+                }
             } else {
-                Err(Box::new(TypeDBError::Other("Test failed. Terminating...".to_string())))
+                println!("Reusing an existing database.");
             }
         }
+    } else {
+        // No such database found on the server
+        let _ = create_database(&driver, db_name.clone());
+    }
+    let data_session = Session::new(databases.get(db_name.clone())?, SessionType::Data)?;
+    match db_check(&data_session) {
+        Ok(_) => return Ok(true),
+        Err(x) => return Err(x),
     }
 }
 // end::db-setup[]
@@ -361,8 +375,8 @@ pub fn db_setup(driver: Connection, db_name: String) -> Result<(), Box<dyn Error
 fn main() -> Result<(), Box<dyn Error>> {
     println!("Sample App");
     let driver = connect_to_typedb(&TYPEDB_EDITION, SERVER_ADDR)?;
-    match db_setup(driver.clone(), DB_NAME.to_owned()) {
-        Ok(()) => match queries(driver, DB_NAME.to_owned()) {
+    match db_setup(driver.clone(), DB_NAME.to_owned(), false) {
+        Ok(_) => match queries(driver, DB_NAME.to_owned()) {
             Ok(_) => {
                 return Ok(());
             }
