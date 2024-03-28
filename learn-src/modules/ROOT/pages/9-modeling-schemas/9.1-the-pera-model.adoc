@@ -1,1 +1,143 @@
 = Lesson 9.1: The PERA model
+
+== Conceptual, logical, and physical models
+
+In database design, there are normally three separate models for a database: the conceptual, logical, and physical models.
+
+Conceptual model:: Describes the data domain in human terms. It is entirely independent of software and hardware used to run the database, and captures the business logic of the domain in abstract form. The most widely adopted conceptual modeling paradigm is Chen's https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model[ Entity-Relationship model] (ER model).
+Logical model:: Describes the implementation of the data domain in terms of the DBMS in use. It is independent of the hardware used to run the database. It is constructed by translating the conceptual model, and the business logic of the data domain must be modeled in terms of constraints provided by the DBMS. Some of the most common logical data modeling paradigms (i.e. database paradigms) are the https://en.wikipedia.org/wiki/Relational_database[relational model], the https://en.wikipedia.org/wiki/Document-oriented_database[document model], the https://en.wikipedia.org/wiki/Key%E2%80%93value_database[key-value model], the https://en.wikipedia.org/wiki/Triplestore[triplestore model], and the https://en.wikipedia.org/wiki/Graph_database[graph model].
+Physical model:: Describes how the data is stored on disk. It is tightly coupled to both the DBMS and hardware used to run the database. Modern DBMSs do not require physical models to be planned, which are implemented automatically by the DBMS based on the logical model. Properties of the physical model may sometimes be altered to optimise database performance, such as by adding indexes.
+
+One of the problems with contemporary database paradigms is the need for translation between the conceptual and logical models. These translations are often not lossless, especially when dealing with polymorphic data, and leads to some of the https://typedb.com/fundamentals/why-polymorphic-database[hardest challenges] in data engineering.
+
+== The conceptual PERA model
+
+TypeDB avoids the translation between conceptual and logical models by implementing the https://typedb.com/fundamentals/polymorphic-data-model[Polymorphic Entity-Relation-Attribute model] (PERA model), an extension of the ER model with dependent typing and polymorphic data structures. The PERA model is a conceptual data model, and there is no separate logical model in TypeDB: the conceptual model _is_ the logical model. This allows database designers to model their data only once, at the highest and most abstract level, and avoid lossy translation processes. Because object models in applications are also conceptual in nature, it is possible to avoid any mismatch between the database model and application model.
+
+=== Entities, relations, and attributes
+
+A PERA data model comprises *types* and *interfaces* between them, similar to classes and interfaces in OOP. The modeling paradigm is based on the theory of https://en.wikipedia.org/wiki/Dependent_type[dependent types], and interfaces serve as abstractions of the *dependencies* between types. All types in the PERA model are either entity types, relation types, or attribute types. Each is used to model a different concept in the data domain.
+
+Entity types:: Used to represent classes of *independent objects*. An entity might practically require other concepts to exist, such as a car that cannot exist without its parts, but can be conceptualized without reference to them: a car can be imagined without considering its parts.
+
+Relation types:: Used to represent classes of *objects dependent on other objects*. Every relation must depend on at least one other concept, and cannot be conceptualized without those dependencies: it is impossible to imagine a marriage without considering its spouses. The dependency of a relation type on another object type is described by a *role interface*, and an object type that implements it is a *roleplayer* of that role. In the case of marriages, the role would be "spouse", but there could also be other roles such as "officiant" or "witness".
+
+Attribute types:: Used to represent classes of *values dependent on objects*. They represent properties of those objects, such as names of people, dates of marriages, and license plates of cars. Every attribute has a literal value, for instance a string, a number, or a boolean. The dependency of an attribute type on an object type is described by an *ownership interface*, and an object type that implements it is an *owner* of that attribute type. Unlike relation types, which can have several role interfaces, every attribute type has only a single ownership interface.
+
+[IMPORTANT]
+=====
+We use the terms "entity type", "relation type" and "attribute type" to refer to types, and the terms "entity", "relation", and "attribute" to refer to respective _instances_ of those types.
+=====
+
+=== Comparing objects and values
+
+A key difference between entity or relation types and attribute types is that entity and relation types contain *objects* whereas attribute types contain *values*. Entity and relation types can be collectively referred to as *object types*, as distinct from attribute types, similar to https://en.wikipedia.org/wiki/Value_type_and_reference_type[reference types and value types] respectively in OOP. Much like their OOP analogs, objects types are _freely instantiable_, so it is possible to create two objects that have identical properties but are not themselves identical. Meanwhile, values are not freely instantiable, so two attributes with the same type and value are in fact _the same_ attribute.
+
+This difference also affects permitted *interface implementations* in the PERA model. Only object types are able to implement interfaces: own attribute types and play roles in relation types. It is not possible for an attribute type to own another attribute type, or to play a role in a relation type.
+
+[WARNING]
+====
+In TypeDB 2.x, attribute types can implement interfaces (own other attribute types and play roles in relation types) in the same way object types can, contrary to the PERA model. This behaviour is deprecated and will be removed in TypeDB 3.0. In some niche cases, usage of this feature can result in information loss due to attribute idempotency, so it is strongly advised against.
+====
+
+=== Polymorphic features
+
+The biggest difference between the ER and PERA models is that the PERA model permits the use of polymorphic features like interfaces, inheritance, and abstraction. *Interface implementations* are used to define capabilities of object types, and an interface can be independently implemented by multiple object types. Meanwhile, *inheritance* allows types to be made subtypes of other types, and the interface implementations of an object type are inherited by its subtypes. Finally, *abstraction* is used to prevent instantiation of a type, which can only be instantiated through a concrete subtype.
+
+=== Quick reference
+
+The following table summarises the key properties of types in the PERA model.
+
+[cols="^.^h,^.^,^.^,^.^",caption="",options="header"]
+|===
+| | Entity types | Relation types | Attribute types
+| Contain | objects | objects | values
+| Dependencies | none | roleplayers | owners
+| Interfaces | none | roles | ownership
+| Can implement interfaces | ✓ | ✓ | ✗
+| Can be subtyped | ✓ | ✓ | if abstract
+| Can be abstract | ✓ | ✓ | ✓
+|===
+
+As we saw in xref:learn::5-defining-schemas/5.2-defining-type-hierarchies.adoc[Lesson 5.2], only an abstract attribute type can have subtypes, in order to prevent ambiguities in the interpretation of queries.
+
+== The TypeDB implementation
+
+The PERA model is implemented in TypeDB through https://typedb.com/papers/typeql-theory[TypeQL], its type-theoretic and polymorphic query language. This allows us to define types and interfaces, declare implementations of interfaces, and make use of polymorphic features, as illustrated in the following excerpt from the bookstore schema.
+
+[,typeql]
+----
+define
+book sub entity,
+    abstract,
+    owns title,
+    owns price,
+    plays order-line:item;
+hardback sub book,
+    owns stock;
+paperback sub book,
+    owns stock;
+ebook sub book;
+order sub entity,
+    owns id,
+    owns status,
+    plays order-line:order;
+order-line sub relation,
+    relates order,
+    relates item,
+    owns quantity,
+    owns price;
+title sub attribute, value string;
+price sub attribute, value double;
+stock sub attribute, value long;
+id sub attribute, value string;
+status sub attribute, value string;
+quantity sub attribute, value long;
+----
+
+=== Type definitions
+
+A new type is defined using a `sub` statement. For example, in the above schema excerpt:
+
+* `book sub entity;` defines a new entity type with label `book`.
+* `order-line sub relation;` defines a new relation type with label `order-line`.
+* `title sub attribute;` defines a new attribute type with label `title`.
+
+=== Interface definitions
+
+A role interface is defined using a `relates` statement. The label of the created role interface is given by the label of the dependent relation followed by the name of the role, separated by a `:` delimiter. For example, in the above schema excerpt:
+
+* `order-line relates item;` defines a new role interface with label `order-line:item`, depended on by the relation type `order-line`.
+
+Unlike roles, ownership interfaces are not explicitly defined in TypeQL. Because every attribute has only one ownership interface, an attribute's ownership interface is created implicitly when the attribute is defined. As a result, an ownership does not have an explicitly referenceable label like a role does, but we can describe it with an implicit label comprising the label of the dependent attribute followed by an `:OWNER` suffix. For example, in the above schema excerpt:
+
+* `title sub attribute;` implicitly defines a new ownership interface with implicit label `title:OWNER`, depended on by the attribute type `title`.
+
+=== Interface implementations
+
+An implementation of a role interface is declared using a `plays` statement. For example, in the above schema excerpt:
+
+* `book plays order-line:item;` declares the object type `book` to implement the role interface `order-line:item`.
+
+Meanwhile, an implementation of an ownership interface is declared using an `owns` statement. As ownership interfaces do not have explicit labels, the https://en.wikipedia.org/wiki/Subject%E2%80%93verb%E2%80%93object_word_order[object] of an `owns` statement is the label of the dependent attribute rather than the interface itself. For example, in the above schema excerpt:
+
+* `book owns title;` declares the object type `book` to implement the ownership interface `title:OWNER`.
+
+=== Polymorphic features
+
+Interface implementations are independent, allowing multiple object types to implement the same interfaces, even if they share no common supertypes. For example, in the above schema excerpt:
+
+* The object types `paperback` and `hardback` both implement the ownership interface `stock:OWNER`.
+* The object types `book` and `order-line` both implement the ownership interface `price:OWNER`.
+
+A type hierarchy is defined using a `sub` statement. For example, in the above schema excerpt:
+
+* The types `paperback`, `hardback`, and `ebook` are all defined to be subtypes of `book`.
+
+When an object type implements interfaces, those implementations are inherited by its subtypes. For example, in the above schema excerpt:
+
+* The object types `paperback`, `hardback`, and `ebook` all inherit the implementations of the `title:OWNER`, `price:OWNER`, and `order-line:item` interfaces from their supertype `book`.
+
+Finally, a type if defined to be abstract using an `abstract` statement. For example, in the above schema excerpt:
+
+* The type `book` is declared to be abstract, and can only be instantiated through one of its concrete subtypes: `paperback`, `hardback`, and `ebook`.
