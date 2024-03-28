@@ -239,7 +239,7 @@ fn queries(driver: Connection, db_name: String) -> Result<(), Box<dyn Error>> {
 }
 // end::queries[]
 // tag::connection[]
-fn connect_to_typedb(edition: &Edition, addr: &str) -> Result<Connection, typedb_driver::Error> {
+fn connect_to_TypeDB(edition: &Edition, addr: &str) -> Result<Connection, typedb_driver::Error> {
     match edition {
         Edition::Core => return Connection::new_core(addr),
         Edition::Cloud => {
@@ -374,7 +374,7 @@ pub fn db_setup(driver: Connection, db_name: String, db_reset: bool) -> Result<b
 // tag::main[]
 fn main() -> Result<(), Box<dyn Error>> {
     println!("Sample App");
-    let driver = connect_to_typedb(&TYPEDB_EDITION, SERVER_ADDR)?;
+    let driver = connect_to_TypeDB(&TYPEDB_EDITION, SERVER_ADDR)?;
     match db_setup(driver.clone(), DB_NAME.to_owned(), false) {
         Ok(_) => match queries(driver, DB_NAME.to_owned()) {
             Ok(_) => {
