@@ -13,34 +13,6 @@ edition TYPEDB_EDITION = edition::core;
 const std::string CLOUD_USERNAME = "admin";
 const std::string CLOUD_PASSWORD = "password";
 // end::constants[]
-// tag::create_new_db[]
-bool tryCreateDatabase(TypeDB::Driver& driver, const std::string& dbName, bool dbReset = false) {
-    if (driver.databases.contains(dbName)) {
-        if (dbReset) {
-            std::cout << "Replacing an existing database...";
-            driver.databases.get(dbName).deleteDatabase(); // Delete the database if it exists already
-            driver.databases.create(dbName);
-            std::cout << "OK" << std::endl;
-            return true;
-        } else {
-            std::string answer;
-            std::cout << "Found a pre-existing database. Do you want to replace it? (Y/N) ";
-            std::cin >> answer;
-            if (answer == "Y" || answer == "y") {
-                return tryCreateDatabase(driver, dbName, true);
-            } else {
-                std::cout << "Reusing an existing database." << std::endl;
-                return false;
-            }
-        }
-    } else {
-        std::cout << "Creating a new database...";
-        driver.databases.create(dbName);
-        std::cout << "OK" << std::endl;
-        return true;
-    }
-}
-// end::create_new_db[]
 // tag::db-schema-setup[]
 void dbSchemaSetup(TypeDB::Session& schemaSession, const std::string& schemaFile = "iam-schema.tql") {
     std::string defineQuery;
@@ -78,8 +50,37 @@ void dbDatasetSetup(TypeDB::Session& dataSession, const std::string& dataFile = 
     std::cout << "OK" << std::endl;
 }
 // end::db-dataset-setup[]
+// tag::create_new_db[]
+bool createDatabase(TypeDB::Driver& driver, const std::string& dbName) {
+    std::cout << "Creating a new database...";
+    driver.databases.create(dbName);
+    std::cout << "OK" << std::endl;
+    TypeDB::Options options;
+    {
+        TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
+        dbSchemaSetup(session);
+    }
+    {
+        TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::DATA, options);
+        dbDatasetSetup(session);
+    }
+    return true;
+}
+// end::create_new_db[]
+// tag::replace_db[]
+bool replaceDatabase(TypeDB::Driver& driver, const std::string& dbName) {
+    std::cout << "Deleting an existing database...";
+    driver.databases.get(dbName).deleteDatabase(); // Delete the database if it exists already
+    std::cout << "OK" << std::endl;
+    if (!createDatabase(driver, dbName)) {
+        std::cout << "Failed to create a new database. Terminating..." << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    return true;
+}
+// end::replace_db[]
 // tag::test-db[]
-bool testInitialDatabase(TypeDB::Session& dataSession) {
+bool dbCheck(TypeDB::Session& dataSession) {
     TypeDB::Options options;
     TypeDB::Transaction tx = dataSession.transaction(TypeDB::TransactionType::READ, options);
     std::string testQuery = "match $u isa user; get $u; count;";
@@ -98,25 +99,32 @@ bool testInitialDatabase(TypeDB::Session& dataSession) {
 // tag::db-setup[]
 bool dbSetup(TypeDB::Driver& driver, const std::string& dbName, bool dbReset = false) {
     std::cout << "Setting up the database: " << dbName << std::endl;
-    bool isNew = tryCreateDatabase(driver, dbName, dbReset);
-    if (!driver.databases.contains(dbName)) {
-        std::cout << "Database creation failed. Terminating..." << std::endl;
-        exit(EXIT_FAILURE);
+    if (driver.databases.contains(dbName)) {
+        if (dbReset) {
+            replaceDatabase(driver, dbName);
+        } else {
+            std::string answer;
+            std::cout << "Found a pre-existing database. Do you want to replace it? (Y/N) ";
+            std::cin >> answer;
+            if (answer == "Y" || answer == "y") {
+                replaceDatabase(driver, dbName);
+            } else {
+                std::cout << "Reusing an existing database." << std::endl;
+            }
+        }
+    } else {
+        if (!createDatabase(driver, dbName)) {
+            std::cout << "Failed to create a new database. Terminating..." << std::endl;
+            exit(EXIT_FAILURE);
+        }
     }
     TypeDB::Options options;
-    if (isNew) {
-        {
-            TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
-            dbSchemaSetup(session);
-        }
-        {
-            TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::DATA, options);
-            dbDatasetSetup(session);
-        }
-    }
-    {
+    if (driver.databases.contains(dbName)) {
         TypeDB::Session session = driver.session(dbName, TypeDB::SessionType::DATA, options);
-        return testInitialDatabase(session);
+        return dbCheck(session);
+    } else {
+        std::cout << "Failed to find the database. Terminating..." << std::endl;
+        exit(EXIT_FAILURE);
     }
 }
 // end::db-setup[]
@@ -323,12 +331,13 @@ int main() {
             queries(driver, DB_NAME);
             return EXIT_SUCCESS;
         } else {
-            std::cerr << "Failed to set up the databse. Terminating..." << std::endl;
+            std::cerr << "Failed to set up the database. Terminating..." << std::endl;
+            exit(EXIT_FAILURE);
         }
     } else {
         std::cerr << "Failed to connect to TypeDB server. Terminating..." << std::endl;
+        exit(EXIT_FAILURE);
     }
-    exit(EXIT_FAILURE);
 }
 // end::main[]
 // end::code[]
