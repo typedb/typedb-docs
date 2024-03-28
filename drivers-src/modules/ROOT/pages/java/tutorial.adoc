@@ -207,6 +207,7 @@ The queries are as follows:
 . <<_delete,Delete query>> -- to delete data from the database
 
 Every query is implemented as a function that includes some output of the query response
+and returns some meaningful data.
 
 [#_fetch]
 === Fetch query
