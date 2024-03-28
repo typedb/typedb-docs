@@ -32,7 +32,7 @@ public class Main {
     // end::constants[]
     // tag::main[]
     public static void main(String[] args) {
-        try (TypeDBDriver driver = connectToTypedb(TYPEDB_EDITION, SERVER_ADDR)) {
+        try (TypeDBDriver driver = connectToTypeDB(TYPEDB_EDITION, SERVER_ADDR)) {
             if (dbSetup(driver, DB_NAME, false)) {
                 System.out.println("Setup complete.");
                 queries(driver, DB_NAME);
@@ -76,7 +76,7 @@ public class Main {
     }
     // end::queries[]
     // tag::connection[]
-    private static TypeDBDriver connectToTypedb(Edition edition, String addr) {
+    private static TypeDBDriver connectToTypeDB(Edition edition, String addr) {
         if (edition == Edition.CORE) {
             return TypeDB.coreDriver(addr);
         };
@@ -210,10 +210,10 @@ public class Main {
     }
     // end::delete[]
     // tag::db-setup[]
-    private static boolean dbSetup(TypeDBDriver driver, String dbName, boolean reset) {
+    private static boolean dbSetup(TypeDBDriver driver, String dbName, boolean dbReset) {
         System.out.println("Setting up the database: " + dbName);
         if (driver.databases().contains(dbName)) {
-            if (reset) {
+            if (dbReset) {
                 if (!replaceDatabase(driver, dbName)) {
                     return false;
                 }

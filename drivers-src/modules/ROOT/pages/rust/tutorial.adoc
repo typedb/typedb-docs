@@ -130,9 +130,9 @@ include::drivers::partial$tutorials/rust/src/main.rs[tag=create_new_db]
 We delete a database with the specified name (`sample_app_db` by default)
 and call a function to <<_creating_a_database,create a new one>> instead:
 
-[,python]
+[,rust, indent=0]
 ----
-include::drivers::partial$tutorials/python/sample.py[tag=replace_db]
+include::drivers::partial$tutorials/rust/src/main.rs[tag=replace_db]
 ----
 
 [#_defining_a_schema]
