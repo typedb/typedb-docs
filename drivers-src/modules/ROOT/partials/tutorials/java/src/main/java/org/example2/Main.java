@@ -32,7 +32,7 @@ public class Main {
     // end::constants[]
     // tag::main[]
     public static void main(String[] args) {
-        try (TypeDBDriver driver = connectToTypedb(TYPEDB_EDITION, SERVER_ADDR)) {
+        try (TypeDBDriver driver = connectToTypeDB(TYPEDB_EDITION, SERVER_ADDR)) {
             if (dbSetup(driver, DB_NAME, false)) {
                 System.out.println("Setup complete.");
                 queries(driver, DB_NAME);
@@ -76,7 +76,7 @@ public class Main {
     }
     // end::queries[]
     // tag::connection[]
-    private static TypeDBDriver connectToTypedb(Edition edition, String addr) {
+    private static TypeDBDriver connectToTypeDB(Edition edition, String addr) {
         if (edition == Edition.CORE) {
             return TypeDB.coreDriver(addr);
         };
@@ -210,59 +210,73 @@ public class Main {
     }
     // end::delete[]
     // tag::db-setup[]
-    private static boolean dbSetup(TypeDBDriver driver, String dbName, boolean reset) {
+    private static boolean dbSetup(TypeDBDriver driver, String dbName, boolean dbReset) {
         System.out.println("Setting up the database: " + dbName);
-        boolean isNew = tryCreateDatabase(driver, dbName, reset);
-        if (!driver.databases().contains(dbName)) {
-            System.out.println("Database creation failed. Terminating...");
-            return false;
-        }
-        if (isNew) {
-            try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.SCHEMA)) {
-                dbSchemaSetup(session);
-            }
-            try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.DATA)) {
-                dbDatasetSetup(session);
-            }
-        }
-        try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.DATA)) {
-            return testInitialDatabase(session);
-        }
-    }
-    // end::db-setup[]
-    // tag::create_new_db[]
-    private static boolean tryCreateDatabase(TypeDBDriver driver, String dbName, boolean dbReset) {
         if (driver.databases().contains(dbName)) {
             if (dbReset) {
-                System.out.print("Replacing an existing database...");
-                driver.databases().get(dbName).delete();
-                driver.databases().create(dbName);
-                System.out.println("OK");
-                return true;
-            } else { // dbReset = false
+                if (!replaceDatabase(driver, dbName)) {
+                    return false;
+                }
+            } else{
                 System.out.println("Found a pre-existing database. Do you want to replace it? (Y/N) ");
                 String answer;
                 try {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
                     answer = reader.readLine();
                 } catch (IOException e) {
-                    throw new RuntimeException("Failed to read schema file.", e);
+                    throw new RuntimeException("Failed to read user input.", e);
                 }
                 if (answer.equalsIgnoreCase("y")) {
-                    return tryCreateDatabase(driver, dbName, true);
+                    if (!replaceDatabase(driver, dbName)) {
+                        return false;
+                    }
                 } else {
                     System.out.println("Reusing an existing database.");
-                    return false;
                 }
             }
         } else { // No such database found on the server
-            System.out.print("Creating a new database...");
-            driver.databases().create(dbName);
-            System.out.println("OK");
-            return true;
+            if (!createDatabase(driver,dbName)) {
+                System.out.println("Failed to create a new database. Terminating...");
+                return false;
+            }
+        }
+        if (driver.databases().contains(dbName)) {
+            try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.DATA)) {
+                return dbCheck(session);
+            }
+        } else {
+            System.out.println("Database not found. Terminating...");
+            return false;
         }
     }
+    // end::db-setup[]
+    // tag::create_new_db[]
+    private static boolean createDatabase(TypeDBDriver driver, String dbName) {
+        System.out.print("Creating a new database...");
+        driver.databases().create(dbName);
+        System.out.println("OK");
+        try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.SCHEMA)) {
+            dbSchemaSetup(session);
+        }
+        try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.DATA)) {
+            dbDatasetSetup(session);
+        }
+        return true;
+    }
     // end::create_new_db[]
+    // tag::replace_db[]
+    private static boolean replaceDatabase(TypeDBDriver driver, String dbName) {
+        System.out.print("Deleting an existing database...");
+        driver.databases().get(dbName).delete();  // Delete the database if it exists already
+        System.out.println("OK");
+        if (createDatabase(driver,dbName)) {
+            return true;
+        } else {
+            System.out.println("Failed to create a new database. Terminating...");
+            return false;
+        }
+    }
+    // end::replace_db[]
     // tag::db-schema-setup[]
     private static void dbSchemaSetup(TypeDBSession session) {
         String schemaFile = "iam-schema.tql";
@@ -273,7 +287,7 @@ public class Main {
             tx.commit();
             System.out.println("OK");
         } catch (IOException e) {
-            throw new RuntimeException("Failed to read schema file.", e);
+            throw new RuntimeException("Failed to read the schema file.", e);
         }
     }
     // end::db-schema-setup[]
@@ -287,12 +301,12 @@ public class Main {
             tx.commit();
             System.out.println("OK");
         } catch (IOException e) {
-            throw new RuntimeException("Failed to read data file.", e);
+            throw new RuntimeException("Failed to read the data file.", e);
         }
     }
     // end::db-dataset-setup[]
     // tag::test-db[]
-    private static boolean testInitialDatabase(TypeDBSession session) {
+    private static boolean dbCheck(TypeDBSession session) {
         try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.READ)) {
             String testQuery = "match $u isa user; get $u; count;";
             System.out.print("Testing the database...");
@@ -301,7 +315,7 @@ public class Main {
                 System.out.println("Passed");
                 return true;
             } else {
-                System.out.println("Failed with the result: " + result + "\n Expected result: 3.");
+                System.out.println("Failed the test with the result: " + result + "\n Expected result: 3.");
                 return false;
             }
         }

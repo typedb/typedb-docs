@@ -22,27 +22,29 @@ CLOUD_PASSWORD = "password"
 
 
 # tag::create_new_db[]
-def try_create_database(driver, db_name, db_reset=False) -> bool:
-    if driver.databases.contains(db_name):
-        if db_reset:
-            print("Replacing an existing database", end="...")
-            driver.databases.get(db_name).delete()  # Delete the database if it exists already
-            driver.databases.create(db_name)
-            print("OK")
-            return True
-        else:
-            answer = input("Found a pre-existing database. Do you want to replace it? (Y/N) ")
-            if answer.lower() == "y":
-                return try_create_database(driver, db_name, db_reset=True)
-            else:
-                print("Reusing an existing database.")
-                return False
-    else:  # No such database found on the server
-        print("Creating a new database", end="...")
-        driver.databases.create(db_name)
-        print("OK")
-        return True
+def create_database(driver, db_name) -> bool:
+    print("Creating a new database", end="...")
+    driver.databases.create(db_name)
+    print("OK")
+    with driver.session(db_name, SessionType.SCHEMA) as session:
+        db_schema_setup(session)
+    with driver.session(db_name, SessionType.DATA) as session:
+        db_dataset_setup(session)
+    return True
 # end::create_new_db[]
+
+
+# tag::replace_db[]
+def replace_database(driver, db_name) -> bool:
+    print("Deleting an existing database", end="...")
+    driver.databases.get(db_name).delete()  # Delete the database if it exists already
+    print("OK")
+    if create_database(driver, db_name):
+        return True
+    else:
+        print("Failed to create a new database. Terminating...")
+        return False
+# end::replace_db[]
 
 
 # tag::db-schema-setup[]
@@ -70,7 +72,7 @@ def db_dataset_setup(data_session, data_file='iam-data-single-query.tql'):
 
 
 # tag::test-db[]
-def test_initial_database(data_session) -> bool:
+def db_check(data_session) -> bool:
     with data_session.transaction(TransactionType.READ) as tx:
         test_query = "match $u isa user; get $u; count;"
         print("Testing the database", end="...")
@@ -80,7 +82,7 @@ def test_initial_database(data_session) -> bool:
             print("Passed")
             return True
         else:
-            print("Failed with the result:", result, "\n Expected result: 3.")
+            print("Failed the test with the result:", result, "\n Expected result: 3.")
             return False
 # end::test-db[]
 
@@ -88,25 +90,32 @@ def test_initial_database(data_session) -> bool:
 # tag::db-setup[]
 def db_setup(driver, db_name, db_reset=False) -> bool:
     print(f"Setting up the database: {db_name}")
-    is_new = try_create_database(driver, db_name, db_reset)
-    if not driver.databases.contains(db_name):
-        print("Database creation failed. Terminating...")
-        return False
-    if is_new:
-        with driver.session(db_name, SessionType.SCHEMA) as session:
-            db_schema_setup(session)
+    if driver.databases.contains(db_name):
+        if db_reset or (input("Found a pre-existing database. Do you want to replace it? (Y/N) ").lower() == "y"):
+            if not replace_database(driver, db_name):
+                return False
+        else:
+            print("Reusing an existing database.")
+    else:  # No such database found on the server
+        if not create_database(driver, db_name):
+            print("Failed to create a new database. Terminating...")
+            return False
+    if driver.databases.contains(db_name):
         with driver.session(db_name, SessionType.DATA) as session:
-            db_dataset_setup(session)
-    with driver.session(db_name, SessionType.DATA) as session:
-        return test_initial_database(session)
+            return db_check(session)
+    else:
+        print("Database not found. Terminating...")
+        return False
 # end::db-setup[]
 
 
 # tag::fetch[]
 def fetch_all_users(driver, db_name) -> list:
     with driver.session(db_name, SessionType.DATA) as data_session:
-        with data_session.transaction(TransactionType.READ) as read_tx:
-            users = list(read_tx.query.fetch("match $u isa user; fetch $u: full-name, email;"))
+        with data_session.transaction(TransactionType.READ) as tx:
+            users = list(
+                tx.query.fetch("match $u isa user; fetch $u: full-name, email;")
+            )
             for i, JSON in enumerate(users, start=0):
                 print(f"User #{i + 1} — Full-name:", JSON['u']['full-name'][0]['value'],
                       "E-mail:", JSON['u']['email'][0]['value'])
@@ -117,11 +126,12 @@ def fetch_all_users(driver, db_name) -> list:
 # tag::insert[]
 def insert_new_user(driver, db_name, name, email) -> list:
     with driver.session(db_name, SessionType.DATA) as data_session:
-        with data_session.transaction(TransactionType.WRITE) as write_tx:
+        with data_session.transaction(TransactionType.WRITE) as tx:
             response = list(
-                write_tx.query.insert(
-                    f"insert $p isa person, has full-name $fn, has email $e; $fn == '{name}'; $e == '{email}';"))
-            write_tx.commit()
+                tx.query.insert(
+                    f"insert $p isa person, has full-name $fn, has email $e; $fn == '{name}'; $e == '{email}';")
+            )
+            tx.commit()
             for i, concept_map in enumerate(response, start=1):
                 name = concept_map.get("fn").as_attribute().get_value()
                 email = concept_map.get("e").as_attribute().get_value()
@@ -134,22 +144,26 @@ def insert_new_user(driver, db_name, name, email) -> list:
 def get_files_by_user(driver, db_name, name, inference=False):
     options = TypeDBOptions(infer=inference)
     with driver.session(db_name, SessionType.DATA) as data_session:
-        with data_session.transaction(TransactionType.READ, options) as read_tx:
-            users = list(read_tx.query.get(f"match $u isa user, has full-name '{name}'; get;"))
+        with data_session.transaction(TransactionType.READ, options) as tx:
+            users = list(
+                tx.query.get(f"match $u isa user, has full-name '{name}'; get;")
+            )
             if len(users) > 1:
                 print("Error: Found more than one user with that name.")
                 return None
             elif len(users) == 1:
-                response = list(read_tx.query.get(f"""
-                                                    match
-                                                    $fn == '{name}';
-                                                    $u isa user, has full-name $fn;
-                                                    $p($u, $pa) isa permission;
-                                                    $o isa object, has path $fp;
-                                                    $pa($o, $va) isa access;
-                                                    $va isa action, has name 'view_file';
-                                                    get $fp; sort $fp asc;
-                                                    """))
+                response = list(
+                    tx.query.get(f"""
+                                    match
+                                    $fn == '{name}';
+                                    $u isa user, has full-name $fn;
+                                    $p($u, $pa) isa permission;
+                                    $o isa object, has path $fp;
+                                    $pa($o, $va) isa access;
+                                    $va isa action, has name 'view_file';
+                                    get $fp; sort $fp asc;
+                                    """)
+                )
                 for i, file in enumerate(response, start=1):
                     print(f"File #{i}:", file.get("fp").as_attribute().get_value())
                 if len(response) == 0:
@@ -164,19 +178,21 @@ def get_files_by_user(driver, db_name, name, inference=False):
 # tag::update[]
 def update_filepath(driver, db_name, old, new):
     with driver.session(db_name, SessionType.DATA) as data_session:
-        with data_session.transaction(TransactionType.WRITE) as write_tx:
-            response = list(write_tx.query.update(f"""
-                                                    match
-                                                    $f isa file, has path $old_path;
-                                                    $old_path = '{old}';
-                                                    delete
-                                                    $f has $old_path;
-                                                    insert
-                                                    $f has path $new_path;
-                                                    $new_path = '{new}';
-                                                    """))
+        with data_session.transaction(TransactionType.WRITE) as tx:
+            response = list(
+                tx.query.update(f"""
+                                match
+                                $f isa file, has path $old_path;
+                                $old_path = '{old}';
+                                delete
+                                $f has $old_path;
+                                insert
+                                $f has path $new_path;
+                                $new_path = '{new}';
+                                """)
+            )
             if len(response) > 0:
-                write_tx.commit()
+                tx.commit()
                 print(f"Total number of paths updated: {len(response)}.")
                 return response
             else:
@@ -188,20 +204,22 @@ def update_filepath(driver, db_name, old, new):
 # tag::delete[]
 def delete_file(driver, db_name, path):
     with driver.session(db_name, SessionType.DATA) as data_session:
-        with data_session.transaction(TransactionType.WRITE) as write_tx:
-            response = list(write_tx.query.get(f"""
-                                                match
-                                                $f isa file, has path '{path}';
-                                                get;
-                                                """))
+        with data_session.transaction(TransactionType.WRITE) as tx:
+            response = list(
+                tx.query.get(f"""
+                                match
+                                $f isa file, has path '{path}';
+                                get;
+                                """)
+            )
             if len(response) == 1:
-                write_tx.query.delete(f"""
-                                        match
-                                        $f isa file, has path '{path}';
-                                        delete
-                                        $f isa file;
-                                        """).resolve()
-                write_tx.commit()
+                tx.query.delete(f"""
+                                match
+                                $f isa file, has path '{path}';
+                                delete
+                                $f isa file;
+                                """).resolve()
+                tx.commit()
                 print("The file has been deleted.")
                 return True
             elif len(response) > 1:
@@ -216,7 +234,7 @@ def delete_file(driver, db_name, path):
 
 
 # tag::connection[]
-def connect_to_typedb(edition, addr, username=CLOUD_USERNAME, password=CLOUD_PASSWORD):
+def connect_to_TypeDB(edition, addr, username=CLOUD_USERNAME, password=CLOUD_PASSWORD):
     if edition is Edition.Core:
         return TypeDB.core_driver(addr)
     if edition is Edition.Cloud:
@@ -263,7 +281,7 @@ def queries(driver, db_name):
 
 # tag::main[]
 def main():
-    with connect_to_typedb(TYPEDB_EDITION, SERVER_ADDR) as driver:
+    with connect_to_TypeDB(TYPEDB_EDITION, SERVER_ADDR) as driver:
         if db_setup(driver, DB_NAME, db_reset=False):
             queries(driver, DB_NAME)
         else:
