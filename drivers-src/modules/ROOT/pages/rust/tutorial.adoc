@@ -49,7 +49,7 @@ We store default values as constants in the source code:
 include::drivers::partial$tutorials/rust/src/main.rs[tag=constants]
 ----
 
-Where `DB_NAME` -- the name of the database to use;
+where `DB_NAME` -- the name of the database to use;
 `SERVER_ADDR` -- address of the TypeDB server to connect to;
 `TYPEDB_EDITION` -- TypeDB Core or Cloud edition selector;
 `CLOUD_USERNAME`/`CLOUD_PASSWORD` -- credentials to connect to TypeDB Cloud.
@@ -64,24 +64,23 @@ database setup, and querying.
 include::drivers::partial$tutorials/rust/src/main.rs[tag=main]
 ----
 
-The entire `main()` function code is executed in the context of the network connection
-established by the `connect_to_typedb()` function.
-The network connection is represented by the `driver` object that is returned by the function.
+The entire `main()` function code is executed in the context of the <<_typedb_connection,network connection>>,
+represented by the `driver` object that is returned by the function.
 
+[#_typedb_connection]
 == TypeDB connection
 
-The `connect_to_typedb()` function takes `edition` and `addr` as mandatory parameters.
+The `connect_to_TypeDB()` function takes `edition` and `addr` as mandatory parameters.
 
 [,rust]
 ----
 include::drivers::partial$tutorials/rust/src/main.rs[tag=connection]
 ----
 
-The `edition` is expected to be a Enum for selecting a TypeDB edition.
+The `edition` is expected to be an Enum for selecting a TypeDB edition.
 Depending on the TypeDB edition selected, this function initializes either a TypeDB Core or TypeDB Cloud connection.
-Both require server address, passed in the `addr` parameter.
 
-TypeDB Cloud connection also requires an object of the `TypeDBCredential` class
+TypeDB Cloud connection requires an object of the `TypeDBCredential` class
 that is initialized with a username and password.
 For our sample application,
 we have the default credentials for the `admin` account
@@ -91,9 +90,24 @@ include::partial$tutorials/change-psw.adoc[]
 
 == Database setup
 
-To set up a TypeDB database, we need to <<_creating_a_database,create a database>> on the TypeDB server,
-<<_defining_a_schema,define its schema>> and <<_loading_initial_data,load initial data>> into it.
-Additionally, we test it to make sure that the setup process is completed successfully.
+To set up a TypeDB database, we need to make sure that it exists and has the correct schema and data.
+First, we check whether a database with the provided name already exists on the server.
+
+If such a database doesn't exist, we <<_creating_a_database,create a new database>>,
+<<_defining_a_schema,define its schema>>,
+and <<_loading_initial_data,load initial data>>.
+
+[NOTE]
+====
+To prevent data loss, avoid deleting an existing database without confirmation from a user.
+====
+
+If a database with the specified name already exists, we check whether we need to replace it.
+To do so, we check the `db_reset` parameter, and, if it's `False`, ask for an input from a user.
+If any of the two suggesting replacement of the database is acceptable,
+we replace the database by deleting the existing database and then <<_creating_a_database,creating a new one>>.
+
+As the final step of the database setup, we <<_testing_a_database,test it>>.
 
 [,rust]
 ----
@@ -101,52 +115,39 @@ include::drivers::partial$tutorials/rust/src/main.rs[tag=db-setup]
 ----
 
 [#_creating_a_database]
-=== Creating a database
+=== Creating a new database
 
-For this sample application we create a new database of the default name `sample_app_db`
-in the `try_create_database()` function.
-But first, we check whether a database with such a name already exists.
+We create a new database with the specified name (`sample_app_db` by default)
+and call functions to <<_defining_a_schema,define its schema>> and <<_loading_initial_data,load initial data>>.
 
 [,rust]
 ----
 include::drivers::partial$tutorials/rust/src/main.rs[tag=create_new_db]
 ----
 
-If there is no such database, we just create a new database.
-But if there is one, we ask user's confirmation on how to proceed.
+[#_replacing_a_database]
+=== Replacing a database
+We delete a database with the specified name (`sample_app_db` by default)
+and call a function to <<_creating_a_database,create a new one>> instead:
 
-[NOTE]
-====
-Avoid deleting an existing database without confirmation from a user to prevent loss of the existing data.
-====
-
-By default, the `db_reset` is set to `false`.
-In combination with a pre-existing database,
-that leads to requesting the user's input on whether to replace the existing database with a new one.
-
-If a user gives confirmation for the replacement, we delete the existing database (with all of its schema and data)
-by restarting the `try_create_database()` function with the `db_reset` parameter set to `true`.
-
-If a user doesn't want to delete the existing database,
-we proceed further without modification of the existing database.
-This will most likely lead to failing the database testing after the setup phase that comes next,
-but it prevents user from losing the existing data completely.
+[,rust, indent=0]
+----
+include::drivers::partial$tutorials/rust/src/main.rs[tag=replace_db]
+----
 
 [#_defining_a_schema]
 === Defining a schema
 
-After the new database is created,
-we use a xref:typeql::queries/define.adoc[Define query] to define a schema for that database.
-See the `db_schema_setup()` function:
+We use a xref:typeql::queries/define.adoc[Define query] to define a schema for the newly created database:
 
 [,rust]
 ----
 include::drivers::partial$tutorials/rust/src/main.rs[tag=db-schema-setup]
 ----
 
-The schema for the sample application is stored in the file
-https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[iam-schema.tql,window=_blank],
-so we read the file first.
+The schema for the sample application is stored in the
+https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[iam-schema.tql,window=_blank]
+file.
 
 .See the full schema
 [%collapsible]
@@ -163,17 +164,17 @@ Then we send the contents of the file as a TypeQL Define query and commit the ch
 [#_loading_initial_data]
 === Loading initial data
 
-With the schema defined, we can load initial data into our database with the xref:typeql::queries/insert.adoc[Insert query]
-in the `db_dataset_setup()` function:
+With the schema defined, we can load initial data into our database with the
+xref:typeql::queries/insert.adoc[Insert query]:
 
 [,rust]
 ----
 include::drivers::partial$tutorials/rust/src/main.rs[tag=db-dataset-setup]
 ----
 
-We do it the very same way: read the file
+We read the
 https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/iam-data-single-query.tql[iam-data-single-query.tql,window=_blank]
-and send it as a single query, and then commit the changes.
+file, send its contents as a single query, and then commit the changes.
 
 .See the full Insert query
 [%collapsible]
@@ -184,10 +185,12 @@ include::drivers::partial$tutorials/iam-data-single-query.tql[lines=17..]
 ----
 ====
 
+[#_testing_a_database]
 === Testing a database
 
-With the schema defined and data loaded, we test our database to make sure it's ready.
-To test the database, we send a query to count the number of users in the database.
+With the <<_defining_a_schema,schema defined>> and <<_loading_initial_data,data loaded>>,
+we test our database to make sure it's ready.
+To test the database, we send a query to count the number of users in the database:
 
 [,rust]
 ----
@@ -206,15 +209,15 @@ include::drivers::partial$tutorials/rust/src/main.rs[tag=queries]
 
 The queries are as follows:
 
-. <<_fetch,Fetch query>> -- to get attribute values as JSON
-. <<_insert,Insert query>> -- to add new data
-. <<_get,Get query>> -- to get stateful objects
-. <<_get_infer,Get query with inference>> -- to get stateful objects with inference
-. <<_update,Update query>> -- to replace data
-. <<_delete,Delete query>> -- to delete data
+. <<_fetch,Fetch query>> -- to retrieve information in a JSON format
+. <<_insert,Insert query>> -- to insert new data into the database
+. <<_get,Get query>> -- to retrieve data from the database as stateful objects
+. <<_get_infer,Get query with inference>> -- to retrieve data from the database as stateful objects using inference
+. <<_update,Update query>> -- to replace data in the database
+. <<_delete,Delete query>> -- to delete data from the database
 
-Every query is implemented as a function that includes visualisation of the query response
-and returns some response.
+Every query is implemented as a function that includes some output of the query response
+and returns some meaningful data.
 
 [#_fetch]
 === Fetch query
