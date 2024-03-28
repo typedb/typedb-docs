@@ -34,6 +34,19 @@ def create_database(driver, db_name) -> bool:
 # end::create_new_db[]
 
 
+# tag::replace_db[]
+def replace_database(driver, db_name) -> bool:
+    print("Deleting an existing database", end="...")
+    driver.databases.get(db_name).delete()  # Delete the database if it exists already
+    print("OK")
+    if create_database(driver, db_name):
+        return True
+    else:
+        print("Failed to create a new database. Terminating...")
+        return False
+# end::replace_db[]
+
+
 # tag::db-schema-setup[]
 def db_schema_setup(schema_session, schema_file='iam-schema.tql'):
     with open(schema_file, 'r') as data:
@@ -69,7 +82,7 @@ def db_check(data_session) -> bool:
             print("Passed")
             return True
         else:
-            print("Failed with the result:", result, "\n Expected result: 3.")
+            print("Failed the test with the result:", result, "\n Expected result: 3.")
             return False
 # end::test-db[]
 
@@ -79,17 +92,13 @@ def db_setup(driver, db_name, db_reset=False) -> bool:
     print(f"Setting up the database: {db_name}")
     if driver.databases.contains(db_name):
         if db_reset or (input("Found a pre-existing database. Do you want to replace it? (Y/N) ").lower() == "y"):
-            print("Deleting an existing database", end="...")
-            driver.databases.get(db_name).delete()  # Delete the database if it exists already
-            print("OK")
-            if not create_database(driver, db_name):
-                print("Creating a new database failed. Terminating...")
+            if not replace_database(driver, db_name):
                 return False
         else:
             print("Reusing an existing database.")
     else:  # No such database found on the server
         if not create_database(driver, db_name):
-            print("Creating a new database failed. Terminating...")
+            print("Failed to create a new database. Terminating...")
             return False
     if driver.databases.contains(db_name):
         with driver.session(db_name, SessionType.DATA) as session:
