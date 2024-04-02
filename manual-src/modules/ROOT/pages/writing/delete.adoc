@@ -2,15 +2,15 @@
 :experimental:
 :tabs-sync-option:
 
-A Delete query is used to delete data from a TypeDB database.
-A `delete` clause is executed once per every result matched by the `match` clause of the same Delete query.
+In this guide you'll see how to delete data from a database using Studio, Console, or one of the drivers.
 
-This page assumes you've already followed instructions from the xref:manual::writing/insert.adoc[] page.
-Here, you'll see how to delete data from a database using Studio, Console, or one of the drivers.
+== Understanding Delete queries
 
-== How to send a Delete query
+A Delete query is used to delete _data_ from a TypeDB database. A `delete` clause is executed once per every result matched by the `match` clause of the same Delete query. For a detailed explanation of the query see the xref:typeql::queries/delete.adoc[] page. 
 
-The easiest way to send a Delete query is to use Studio or Console:
+== Sending Delete queries
+
+Before you begin, make sure you followed the instructions from the xref:manual::writing/insert.adoc[] page. The easiest way to send a Delete query is to use Studio or Console:
 
 [tabs]
 ====

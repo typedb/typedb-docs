@@ -1,20 +1,24 @@
 = Schema editing
 :experimental:
 
-This page assumes you've already followed instructions from the xref:connecting/overview.adoc[] section pages.
-Here, you'll see how to modify an existing schema without TypeQL queries.
-For a Define query, see the xref:manual::defining/define.adoc[] page.
+In this guide you will learn how to edit the schema of your database without sending Define and Undefine queries. This page assumes you've already followed instructions from the xref:connecting/overview.adoc[] section pages.
 
-There are two ways of modifying the schema of a database without TypeQL Define/Undefine queries:
+== Understanding query-less editing
+
+Besides using Define and Undefine queries, TypeDB also provides a program interface for editing the database schema _directly_. 
+TypeDB clients and drivers may implement this interface. On this page, we discuss _two_ yields additional ways of modifying the schema of a database in this way:
 with Studio's <<_modify_with_type_editor,Type Editor>> and with <<_modify_with_driver_api,driver API>> methods.
 
+To learn more about Define queries, see the xref:manual::defining/define.adoc[] page.
+
+
 [#_modify_with_type_editor]
-== Modify with Type Editor
+== TypeDB Studio's Type Editor
 
 include::manual::studio.adoc[tag=type-editor]
 
 [#_modify_with_driver_api]
-== Modify with driver API
+== Schema edits with driver API
 
 Driver API has methods can be used to work with schema types and rules.
 These methods can vary from driver to driver due to language-specific details.

@@ -1,17 +1,13 @@
-= Configuring server
+= Configuring servers
 :keywords: typedb, configuration, administration, config, settings
 :page-aliases: typedb::admin/configuration.adoc, typedb::managing/configuration.adoc
 :pageTitle: Configuring server
 :summary: TypeDB server configuration guides overview.
 :page-preamble-card: 1
 
-There are two ways to configure a TypeDB server: in a xref:manual::configuring/config.adoc[config file]
-or with xref:manual::configuring/arguments.adoc[command line arguments].
+== Configuration options
 
-Command line arguments can be used with the command that starts a TypeDB server (`typedb server`)
-and they have a higher priority over config file.
-
-For more information, see the relevant pages:
+Learn how to configure a TypeDB server.
 
 [cols-2]
 --
@@ -28,7 +24,9 @@ TypeDB command line arguments documentation: overriding config parameters and sp
 ****
 --
 
-== Maintenance
+== Maintenance tasks
+
+Learn about perform common maintenance tasks with TypeDB.
 
 [cols-2]
 --
@@ -56,7 +54,6 @@ Upgrading TypeDB server's version.
 User management operations.
 ****
 --
-
 
 == Host machine requirements
 
@@ -105,7 +102,7 @@ We recommend this is increased to at least `50 000`.
 
 == Diagnostics
 
-TypeDB optionally reports anonymous diagnostics to guide the development and optimisation of TypeDB.
+TypeDB optionally reports anonymous diagnostics to guide the development and optimization of TypeDB.
 This data includes unexpected errors and occasional system status updates for number and size of databases,
 and number of transactions executed per hour.
 

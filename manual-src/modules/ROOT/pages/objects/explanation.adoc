@@ -1,11 +1,14 @@
 = Explanation objects
 
-TypeDB has explainable rule-based data inference feature.
-This page covers programmatic usage of explanations.
+In this guide, you'll learn how to use driver API methods and stateful objects to programmatically work with explanations. 
+This page assumes you've already followed instructions from the xref:manual::reading/infer.adoc[] page.
+
+== Understanding explanations
+
+TypeDB has explainable rule-based data inference feature: explanations represent chains of reasoning that yield a conclusions. The Driver API provides methods to programmatically work with explanations as objects.
 To learn how to use explanations in TypeDB Studio, see the xref:manual::studio.adoc#_explanation[explanation]
 section of the TypeDB Studio Manual.
 
-This page assumes you've already followed instructions from the xref:manual::reading/infer.adoc[] page.
 
 == Explainables
 

@@ -2,15 +2,17 @@
 :experimental:
 :tabs-sync-option:
 
-A Fetch query is used to retrieve values and types from a TypeDB database.
-
-This page assumes you've already followed instructions from the xref:manual::writing/overview.adoc[] section.
-Here, you'll see how to retrieve data from a database and project it as a JSON using Studio,
+In this guide you'll see how to retrieve data from a database and project it as a JSON using Studio,
 Console, or one of the drivers.
 
-== How to send a Fetch query
+== Understanding Fetch queries
 
-The easiest way to send a Fetch query is to use Studio or Console:
+A Fetch query is used to retrieve _values_ and _types_ from a TypeDB database. For a detailed explanation of the query see the xref:typeql::queries/fetch.adoc[] page. 
+
+
+== Sending Fetch queries
+
+Before getting start, ensure you followed instructions from the xref:manual::writing/overview.adoc[] section. The easiest way to send a Fetch query is to use Studio or Console:
 
 [tabs]
 ====
