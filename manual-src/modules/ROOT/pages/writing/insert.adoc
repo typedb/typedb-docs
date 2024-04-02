@@ -2,17 +2,19 @@
 :experimental:
 :tabs-sync-option:
 
+In this guide you'll see how to insert data in a database using Studio, Console, or one of the drivers.
+
+== Understanding Insert queries
+
 An Insert query is used to insert data into a TypeDB database.
 An `insert` clause is executed once per every result matched by the `match` clause of the same query.
-If the `match` clause is omitted, then the `insert` clause is executed exactly once.
-
-This page assumes you've already followed instructions from the xref:manual::defining/overview.adoc[] section.
-Here, you'll see how to insert data in a database using Studio, Console, or one of the drivers.
+If the `match` clause is omitted, then the `insert` clause is executed exactly once. 
+For a detailed explanation of the query see the xref:typeql::queries/delete.adoc[] page.
 
 [#_how_to_send_an_insert_query]
-== How to send an Insert query
+== Sending Insert queries
 
-The easiest way to send an Insert query is to use Studio or Console:
+Before you start, make sure you followed the instructions from the xref:manual::defining/overview.adoc[] section. The easiest way to send an Insert query is to use Studio or Console:
 
 [tabs]
 ====

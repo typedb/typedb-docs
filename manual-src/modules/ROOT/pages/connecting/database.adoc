@@ -1,18 +1,19 @@
 = Create a database
 
-TypeDB stores data in isolated databases, each comprising a schema and data.
-//xref:typeql::schema/overview.adoc[schema] and xref:typeql::data/overview.adoc[data].
-These databases operate independently, ensuring that one database cannot affect another.
-Nevertheless, a TypeDB client can connect to and interact with multiple databases concurrently.
-
 This guide covers creating a database, as well as other database management operations, like listing
 and deleting databases with Studio, Console, or one of the drivers.
-Make sure to follow the instructions on the xref:manual::connecting/connection.adoc[]
-page to connect to TypeDB before proceeding.
+
+== Understanding database operation
+
+TypeDB stores data in *isolated* databases, each comprising a schema and data.
+//xref:typeql::schema/overview.adoc[schema] and xref:typeql::data/overview.adoc[data].
+These databases operate independently, ensuring that one database cannot affect another.
+Nevertheless, a TypeDB client can connect to and interact with *multiple* databases concurrently.
 
 == Create a new database
 
-To create a new database, follow the steps below:
+Before you begin, make sure to follow the instructions on the xref:manual::connecting/connection.adoc[]
+page to connect to TypeDB before proceeding. To create a new database, follow the steps below:
 
 [tabs]
 ====

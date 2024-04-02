@@ -2,18 +2,20 @@
 :experimental:
 :tabs-sync-option:
 
+In this guide, you'll see how to update data in a database using Studio, Console, or one of the drivers.
+
+== Understanding Update queries
+
 An Update query is used to update data in a TypeDB database by matching existing data, deleting some of it,
 and then inserting some other data instead.
 A `delete` and `insert` clauses are executed once per every result
 matched by the `match` clause of the same Update query.
-
-This page assumes you've already followed instructions from the xref:manual::writing/delete.adoc[] page.
-Here, you'll see how to update data in a database using Studio, Console, or one of the drivers.
+For a detailed explanation of the query see the xref:typeql::queries/update.adoc[] page.
 
 [#_how_to_send_an_update_query]
-== How to send an Update query
+== Sending Update queries
 
-The easiest way to send an Update query is to use Studio or Console:
+Before you start, make sure you followed instructions from the xref:manual::writing/delete.adoc[] page. The easiest way to send an Update query is to use Studio or Console:
 
 [tabs]
 ====
