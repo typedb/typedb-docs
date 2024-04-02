@@ -1,8 +1,14 @@
-= Command line arguments
-:page-preamble-card: 1
+= Server arguments
+
+In this guide, you'll see how to use command line argument to configure TypeDB server.
 
 [#_command_line_arguments]
-Use command line arguments to override any option in the configuration file.
+== Argument structure
+
+Command line arguments can be used with the command that starts a TypeDB server (`typedb server`)
+and they have a higher priority over config file. Any option in the TypeDB configuration file can be provided/overridden by using a command line argument. 
+
+=== Overriding config values
 
 For example, the configuration file sets the server address as the following:
 
@@ -20,7 +26,9 @@ command line using the following command:
 $ typedb server --server.address 0.0.0.0:1730
 ----
 
-Use the same approach to set a completely new section of the configuration that isn't presented in the file yet.
+=== Setting new config values
+
+We can use the same approach to set a completely new section of the configuration that isn't presented in the file yet.
 For example, to define a new logger subsection to print out all query plans,
 we could do the following to set the package `com.vaticle.typedb.core.traversal` to output on a more verbose level:
 

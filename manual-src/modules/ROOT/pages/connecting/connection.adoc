@@ -3,9 +3,9 @@
 :tabs-sync-option:
 :experimental:
 
-TypeDB uses a gRPC-based protocol for external communications, including queries.
-TypeDB clients, like Studio and Console, as well as language-specific drivers with native APIs,
-have been developed to implement this protocol.
+// TypeDB uses a gRPC-based protocol for external communications, including queries.
+// TypeDB clients, like Studio and Console, as well as language-specific drivers with native APIs,
+// have been developed to implement this protocol.
 
 This guide covers connecting to
 <<_connect_to_typedb_cloud,TypeDB Cloud>> or
@@ -22,6 +22,13 @@ All released clients and drivers support connection to both TypeDB Cloud and Typ
 //To connect to TypeDB, you can use any TypeDB client or driver.
 //Select a client/driver, make sure it's installed,
 //and see below a practical guide on how to connect to TypeDB Core and TypeDB Cloud.
+
+== Understanding connections
+
+TypeDB uses a *gRPC*-based protocol for external communications, including queries.
+*TypeDB clients*, like Studio and Console, as well as language-specific *drivers* with native APIs,
+have been developed to implement this protocol.
+
 
 [#_connect_to_typedb_core]
 == Connect to TypeDB Core

@@ -2,19 +2,24 @@
 :tabs-sync-option:
 :experimental:
 
-All queries to a TypeDB database are performed through transactions.
-TypeDB transactions provide full xref:home::acid.adoc[ACID guarantees] up to snapshot isolation.
-There are two types of transactions: `read` and `write`.
-Read transactions are read-only, faster, and support inference.
+
 
 This guide covers transaction control and best practices with Studio, Console, or one of the drivers.
 Studio provides automated transaction control, so you don't need to open transactions manually.
 
+
+
+== Understanding transactions
+
+All queries to a TypeDB database are performed through *transactions*.
+TypeDB transactions provide full xref:home::acid.adoc[ACID guarantees] up to snapshot isolation.
+There are two types of transactions: `read` and `write`.
+Read transactions are read-only, faster, and support inference.
 To open a transaction, you need an open session.
-Make sure to open a transaction using instructions from the xref:manual::connecting/session.adoc[] page.
 
 == Open a new transaction
 
+Before you begin, make sure to open a transaction using instructions from the xref:manual::connecting/session.adoc[] page.
 To open a transaction, you need to select a transaction type and use an open session.
 Optionally, you can set transaction options.
 
