@@ -3,12 +3,15 @@
 :pageTitle: TypeDB Manual
 :page-aliases: typedb::tutorials/data-migration.adoc
 :summary: How to guides and tutorials
+:page-preamble-card: 1
 
 Welcome to the TypeDB Manual.
 Here you'll find practice oriented guides on TypeDB operations and configuration, as well as Studio and Console manuals.
 See the full selection of our guides below.
 
 == Standalone clients
+
+Standalone clients can be used to conveniently query TypeDB without requiring additional software to be installed.
 
 [cols-2]
 --
@@ -39,11 +42,9 @@ xref:drivers::cpp/overview.adoc[C++]
 --
 ////
 
-== Drivers
-
-For TypeDB drivers documentation, see the xref:drivers::overview.adoc[Drivers] category.
-
 == Using TypeDB
+
+Learn how to perform common tasks with TypeDB.
 
 [cols-2]
 --
@@ -84,7 +85,14 @@ Retrieve data as JSONs or stateful objects with TypeQL queries.
 // * xref:manual::reading/get.adoc[]
 // * xref:manual::reading/infer.adoc[]
 ****
+--
 
+== Using drivers
+
+TypeDB Drivers can be used to query TypeDB directly from within your application. For the TypeDB drivers documentation, see the xref:drivers::overview.adoc[Drivers] category.
+
+[cols-1]
+--
 .xref:manual::objects/overview.adoc[]
 [.clickable]
 ****
@@ -95,9 +103,12 @@ Use stateful objects to alter data and schema, as well as explain inferred data.
 ****
 --
 
-== Configuring server
 
-[cols-3]
+== Configuring TypeDB
+
+Learn how to configure, migrate, and upgrade TypeDB.
+
+[cols-2]
 --
 .xref:manual::configuring/config.adoc[Config file]
 [.clickable]
