@@ -1,16 +1,15 @@
-[#_Future]
+[#_Future__RETURN__NATIVE_PROMISE__HELPER_]
 === Future
 
 *Package*: `TypeDB`
 
-----
-template<typename RETURN, typename NATIVE_PROMISE, typename HELPER = FutureHelper<RETURN, NATIVE_PROMISE>>
-----
-----
-class TypeDB::Future< RETURN, NATIVE_PROMISE, HELPER >
-----
 
-A structure emulating std::future, used as a result of an asynchronous call to the server.
+ template<typename RETURN, typename NATIVE_PROMISE, typename HELPER = FutureHelper<RETURN, NATIVE_PROMISE>>
+ 
+  class TypeDB::Future< RETURN, NATIVE_PROMISE, HELPER >
+
+
+A structure emulating std::future, used as result of an asynchronous call to the server.
 
 Note that a future must be evaluated for any server-side exceptions to be raised.
 

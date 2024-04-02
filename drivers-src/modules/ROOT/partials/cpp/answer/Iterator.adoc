@@ -1,11 +1,14 @@
-[#_Iterator]
+[#_Iterator__NATIVE_ITER__NATIVE_T__T__HELPER_]
 === Iterator
 
 *Package*: `TypeDB`
 
+[,cpp]
 ----
 template<typename NATIVE_ITER, typename NATIVE_T, typename T, typename HELPER = IteratorHelper<NATIVE_ITER, NATIVE_T, T>>
 ----
+
+[,cpp]
 ----
 class TypeDB::Iterator< NATIVE_ITER, NATIVE_T, T, HELPER >
 ----

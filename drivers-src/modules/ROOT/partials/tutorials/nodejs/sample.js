@@ -18,7 +18,7 @@ const CLOUD_PASSWORD = "password";
 // tag::main[]
 async function main() {
     try {
-        const driver = await connectToTypedb(typedbEdition, SERVER_ADDR);
+        const driver = await connectToTypeDB(typedbEdition, SERVER_ADDR);
         let setup = await dbSetup(driver, DB_NAME, dbReset);
         if (setup) {
             await queries(driver, DB_NAME);
@@ -33,7 +33,7 @@ async function main() {
 };
 // end::main[]
 // tag::connection[]
-async function connectToTypedb(edition, addr, username = CLOUD_USERNAME, password = CLOUD_PASSWORD) {
+async function connectToTypeDB(edition, addr, username = CLOUD_USERNAME, password = CLOUD_PASSWORD) {
     if (edition == "core") {
         return await TypeDB.coreDriver(addr);
     }
@@ -74,7 +74,7 @@ async function fetchAllUsers(driver, dbName) {
     let dataSession = await driver.session(dbName, SessionType.DATA);
     let users;
     try {
-        tx = await dataSession.transaction(TransactionType.READ);
+        let tx = await dataSession.transaction(TransactionType.READ);
         try {
             users = await tx.query.fetch("match $u isa user; fetch $u: full-name, email;").collect();
             for (let i = 0; i < users.length; i++) {
@@ -94,7 +94,7 @@ async function insertNewUser(driver, dbName, name, email) {
     let result;
     let dataSession = await driver.session(dbName, SessionType.DATA);
     try {
-        tx = await dataSession.transaction(TransactionType.WRITE);
+        let tx = await dataSession.transaction(TransactionType.WRITE);
         try {
             let response = await tx.query.insert(`insert $p isa person, has full-name $fn, has email $e; $fn == '${name}'; $e == '${email}';`);
             let answers = await response.collect();
@@ -124,11 +124,12 @@ async function getFilesByUser(driver, dbName, name, inference=false) {
     let dataSession = await driver.session(dbName, SessionType.DATA);
     let users;
     try {
-        tx = await dataSession.transaction(TransactionType.READ, options);
+        let tx = await dataSession.transaction(TransactionType.READ, options);
         try {
             users = await tx.query.get(`match $u isa user, has full-name '${name}'; get;`).collect();
             if (users.length > 1) {
                 console.log("Error: Found more than one user with that name.");
+                await dataSession.close();
                 return null;
             } else if (users.length == 1) {
                 let response = tx.query.get(`match
@@ -155,6 +156,7 @@ async function getFilesByUser(driver, dbName, name, inference=false) {
                 }
             } else {
                 console.log("Error: No users found with that name.");
+                await dataSession.close();
                 return null;
             }
         }
@@ -170,7 +172,7 @@ async function getFilesByUser(driver, dbName, name, inference=false) {
 async function updateFilepath(driver, dbName, oldPath, newPath) {
     let dataSession = await driver.session(dbName, SessionType.DATA);
     try {
-        tx = await dataSession.transaction(TransactionType.WRITE);
+        let tx = await dataSession.transaction(TransactionType.WRITE);
         try {
             let response = await tx.query.update(`
                                                 match
@@ -185,9 +187,11 @@ async function updateFilepath(driver, dbName, oldPath, newPath) {
             if (response.length > 0) {
                 await tx.commit();
                 console.log(`Total number of paths updated: ${response.length}.`);
+                await dataSession.close();
                 return response;
             } else {
                 console.log("No matched paths: nothing to update.");
+                await dataSession.close();
                 return null;
             }
         }
@@ -202,7 +206,7 @@ async function updateFilepath(driver, dbName, oldPath, newPath) {
 async function delete_file(driver, dbName, path) {
     let dataSession = await driver.session(dbName, SessionType.DATA);
     try {
-        tx = await dataSession.transaction(TransactionType.WRITE);
+        let tx = await dataSession.transaction(TransactionType.WRITE);
         try {
             let response = await tx.query.get(`match
                                                 $f isa file, has path '${path}';
@@ -216,17 +220,20 @@ async function delete_file(driver, dbName, path) {
                                     `);
                 await tx.commit();
                 console.log("The file has been deleted.");
+                await dataSession.close();
                 return true;
             } else if (response.length > 1) {
                 console.log("Matched more than one file with the same path.");
                 console.log("No files were deleted.");
                 await tx.close();
+                await dataSession.close();
                 return false;
             } else {
                 console.log(response.length)
                 console.log("No files matched in the database.");
                 console.log("No files were deleted.");
                 await tx.close();
+                await dataSession.close();
                 return false;
             }
         }
@@ -240,26 +247,39 @@ async function delete_file(driver, dbName, path) {
 // tag::db-setup[]
 async function dbSetup(driver, dbName, dbReset=false) {
     console.log(`Setting up the database: ${dbName}`);
-    let isNew = await tryCreateDatabase(driver, dbName, dbReset);
-    if (!driver.databases.contains(dbName)) {
-        console.log("Database creation failed. Terminating...");
-        return false;
-    }
-    if (isNew) {
-        try {
-            let session = await driver.session(dbName, SessionType.SCHEMA);
-            await dbSchemaSetup(session);
-            await session.close();
-            session = await driver.session(dbName, SessionType.DATA);
-            await dbDatasetSetup(session);
-            await session.close();
-        } catch (error) { console.error(error); };
-    }
     try {
-        let session = await driver.session(dbName, SessionType.DATA);
-        let result = await testInitialDatabase(session)
-        await session.close();
-        return result
+        if (await driver.databases.contains(dbName)) {
+            if (dbReset === true) {
+                if ((await replaceDatabase(driver, dbName)) === false) {
+                    return false;
+                }
+            } else { // dbReset = false
+                const input = prompt("Found a pre-existing database. Do you want to replace it? (Y/N) ");
+                if (input.toLowerCase() == "y") {
+                    if ((await replaceDatabase(driver, dbName)) === false) {
+                        return false;
+                    }
+                } else {
+                    console.log("Reusing an existing database.");
+                }
+            }
+        } else { // No such database on the server
+            if ((await createDatabase(driver, dbName)) === false) {
+                console.log("Failed to create a database. Terminating...");
+                return false;
+            }
+        }
+        if (await driver.databases.contains(dbName)) {
+            try {
+                let session = await driver.session(dbName, SessionType.DATA);
+                let result = await dbCheck(session);
+                await session.close();
+                return result;
+            } catch (error) { console.error(error); };
+        } else {
+            console.log("Database not found. Terminating...");
+            return false;
+        }
     } catch (error) { console.error(error); };
 }
 // end::db-setup[]
@@ -267,7 +287,7 @@ async function dbSetup(driver, dbName, dbReset=false) {
 async function dbSchemaSetup(schemaSession) {
     process.stdout.write("Defining schema...");
     try {
-        tx = await schemaSession.transaction(TransactionType.WRITE);
+        let tx = await schemaSession.transaction(TransactionType.WRITE);
         try {
             const define_query = await readFile("iam-schema.tql", 'utf8');
             await tx.query.define(define_query);
@@ -284,14 +304,13 @@ async function dbSchemaSetup(schemaSession) {
         callback(e);
         return false;
     }
-    finally { if (tx.isOpen()) {await tx.close()}; }
 }
 // end::db-schema-setup[]
 // tag::db-dataset-setup[]
 async function dbDatasetSetup(dataSession) {
     process.stdout.write("Loading data...");
     try {
-        tx = await dataSession.transaction(TransactionType.WRITE);
+        let tx = await dataSession.transaction(TransactionType.WRITE);
         try {
             const insert_query = await readFile("iam-data-single-query.tql", 'utf8');
             await tx.query.insert(insert_query);
@@ -301,14 +320,13 @@ async function dbDatasetSetup(dataSession) {
         catch (e) { callback(e); }
     }
     catch (e) { callback(e); }
-    finally { if (tx.isOpen()) {await tx.close()}; }
 }
 // end::db-dataset-setup[]
 // tag::test-db[]
-async function testInitialDatabase(dataSession) {
+async function dbCheck(dataSession) {
     process.stdout.write("Testing the database...");
     try {
-        tx = await dataSession.transaction(TransactionType.READ);
+        let tx = await dataSession.transaction(TransactionType.READ);
         try {
             const test_query = "match $u isa user; get $u; count;";
             let response = await tx.query.getAggregate(test_query);
@@ -324,39 +342,39 @@ async function testInitialDatabase(dataSession) {
         catch (e) { callback(e); }
     }
     catch (e) { callback(e); }
-    finally { if (tx.isOpen()) {await tx.close()}; }
 }
 // end::test-db[]
 // tag::create_new_db[]
-async function tryCreateDatabase(driver, dbName, reset=false) {
+async function createDatabase(driver, dbName) {
+    process.stdout.write("Creating a new database...");
+    await driver.databases.create(dbName);
+    console.log("OK");
     try {
-        if (await driver.databases.contains(dbName)) {
-            if (reset) {
-                process.stdout.write("Replacing an existing database...");
-                await (await driver.databases.get(dbName)).delete();
-                await driver.databases.create(dbName);
-                console.log("OK");
-                return true;
-            } else { // reset = false
-                const input = prompt("Found a pre-existing database. Do you want to replace it? (Y/N) ");
-                if (input.toLowerCase() == "y") {
-                    return await tryCreateDatabase(driver, dbName, true);
-                } else {
-                    console.log("Reusing an existing database.");
-                    return false;
-                }
-            }
-        } else { // No such database on the server
-            process.stdout.write("Creating a new database...");
-            await driver.databases.create(dbName);
-            console.log("");
-            return true;
+        {
+            let session = await driver.session(dbName, SessionType.SCHEMA);
+            await dbSchemaSetup(session);
+            await session.close();
         }
-    }
-    catch (e) {
-        callback(e);
+        {
+            let session = await driver.session(dbName, SessionType.DATA);
+            await dbDatasetSetup(session);
+            await session.close();
+        }
+    } catch (error) { console.error(error); };
+    return true;
+}
+// end::create_new_db[]
+// tag::replace_db[]
+async function replaceDatabase(driver, dbName) {
+    process.stdout.write("Deleting an existing database...");
+    await (await driver.databases.get(dbName)).delete();
+    console.log("OK");
+    if ((await createDatabase(driver, dbName)) === true) {
+        return true;
+    } else {
+        console.log("Failed to create a database. Terminating...");
         return false;
     }
 }
-// end::create_new_db[]
+// end::replace_db[]
 main();
