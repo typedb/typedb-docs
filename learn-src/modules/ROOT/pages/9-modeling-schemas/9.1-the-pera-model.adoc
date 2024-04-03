@@ -16,13 +16,13 @@ TypeDB avoids the translation between conceptual and logical models by implement
 
 === Entities, relations, and attributes
 
-A PERA data model comprises *types* and *interfaces* between them, similar to classes and interfaces in OOP. The modeling paradigm is based on the theory of https://en.wikipedia.org/wiki/Dependent_type[dependent types], and interfaces serve as abstractions of the *dependencies* between types. All types in the PERA model are either entity types, relation types, or attribute types. Each is used to model a different concept in the data domain.
+A PERA data model comprises *data-storing types* and *interface types* (or simply "interfaces") between them, similar to classes and interfaces in OOP. The modeling paradigm is based on the theory of https://en.wikipedia.org/wiki/Dependent_type[dependent types], and interfaces serve as abstractions of the *dependencies* between data-storing types. All data-storing types in the PERA model are either entity types, relation types, or attribute types. Each is used to model a different class of concepts in the data domain.
 
 Entity types:: Used to represent classes of *independent objects*. An entity might practically require other concepts to exist, such as a car that cannot exist without its parts, but can be conceptualized without reference to them: a car can be imagined without considering its parts.
 
-Relation types:: Used to represent classes of *objects dependent on other objects*. Every relation must depend on at least one other concept, and cannot be conceptualized without those dependencies: it is impossible to imagine a marriage without considering its spouses. The dependency of a relation type on another object type is described by a *role interface*, and an object type that implements it is a *roleplayer* of that role. In the case of marriages, the role would be "spouse", but there could also be other roles such as "officiant" or "witness".
+Relation types:: Used to represent classes of *objects dependent on other objects*. Every relation must depend on at least one other concept, and cannot be conceptualized without those dependencies: it is impossible to imagine a marriage without considering its spouses. The dependency of a relation type on another object type is described by an exposed *role interface*, and an object type that implements it is a *roleplayer* of that role. In the case of marriages, the role would be "spouse", but there could also be other roles such as "officiant" or "witness".
 
-Attribute types:: Used to represent classes of *values dependent on objects*. They represent properties of those objects, such as names of people, dates of marriages, and license plates of cars. Every attribute has a literal value, for instance a string, a number, or a boolean. The dependency of an attribute type on an object type is described by an *ownership interface*, and an object type that implements it is an *owner* of that attribute type. Unlike relation types, which can have several role interfaces, every attribute type has only a single ownership interface.
+Attribute types:: Used to represent classes of *values dependent on objects*. They represent properties of those objects, such as names of people, dates of marriages, and license plates of cars. Every attribute has a literal value, for instance a string, a number, or a boolean, and the type of this value is determined by the attribute type's *value type*. The dependency of an attribute type on an object type is described by an exposed *ownership interface*, and an object type that implements it is an *owner* of that attribute type. Unlike relation types, which can have several role interfaces, every attribute type has only a single ownership interface.
 
 [IMPORTANT]
 =====
@@ -31,7 +31,7 @@ We use the terms "entity type", "relation type" and "attribute type" to refer to
 
 === Comparing objects and values
 
-A key difference between entity or relation types and attribute types is that entity and relation types contain *objects* whereas attribute types contain *values*. Entity and relation types can be collectively referred to as *object types*, as distinct from attribute types, similar to https://en.wikipedia.org/wiki/Value_type_and_reference_type[reference types and value types] respectively in OOP. Much like their OOP analogs, objects types are _freely instantiable_, so it is possible to create two objects that have identical properties but are not themselves identical. Meanwhile, values are not freely instantiable, so two attributes with the same type and value are in fact _the same_ attribute.
+A key difference between entity or relation types and attribute types is that entity and relation types contain *objects* whereas attribute types contain *values*. Entity and relation types can be collectively referred to as *object types*, as distinct from *attribute types*, similar to https://en.wikipedia.org/wiki/Value_type_and_reference_type[reference types and value types] respectively in OOP. Much like their OOP analogs, objects types are _freely instantiable_, so it is possible to create two objects that have identical properties but are not themselves identical. Meanwhile, values are not freely instantiable, so two attributes with the same type and value are in fact _the same_ attribute.
 
 This difference also affects permitted *interface implementations* in the PERA model. Only object types are able to implement interfaces: own attribute types and play roles in relation types. It is not possible for an attribute type to own another attribute type, or to play a role in a relation type.
 
@@ -44,9 +44,9 @@ In TypeDB 2.x, attribute types can implement interfaces (own other attribute typ
 
 The biggest difference between the ER and PERA models is that the PERA model permits the use of polymorphic features like interfaces, inheritance, and abstraction. *Interface implementations* are used to define capabilities of object types, and an interface can be independently implemented by multiple object types. Meanwhile, *inheritance* allows types to be made subtypes of other types, and the interface implementations of an object type are inherited by its subtypes. Finally, *abstraction* is used to prevent instantiation of a type, which can only be instantiated through a concrete subtype.
 
-=== Quick reference
+=== Types and casting
 
-The following table summarises the key properties of types in the PERA model.
+The following table summarises the key properties of data-storing types in the PERA model. As we saw in xref:learn::5-defining-schemas/5.2-defining-type-hierarchies.adoc[Lesson 5.2], only an abstract attribute type can have subtypes, in order to prevent ambiguities in the interpretation of queries.
 
 [cols="^.^h,^.^,^.^,^.^",caption="",options="header"]
 |===
@@ -59,7 +59,18 @@ The following table summarises the key properties of types in the PERA model.
 | Can be abstract | ✓ | ✓ | ✓
 |===
 
-As we saw in xref:learn::5-defining-schemas/5.2-defining-type-hierarchies.adoc[Lesson 5.2], only an abstract attribute type can have subtypes, in order to prevent ambiguities in the interpretation of queries.
+In addition to these data-storing types, interface types and value types together make up the *data-structuring types*. In fact, all parts of the PERA model are types! This arises from the PERA model's core philosophy:
+
+[quote]
+____
+https://typedb.com/fundamentals/type-theory[_Everything has a type, and so everything can be a variable._]
+____
+
+The key difference between data-storing and data-structuring types is that only data-storing types can be instantiated directly, and their instances operated on. Meanwhile, the data-structuring types serve to define the behaviours of these data instances. The following diagram summarises the ways in which different kinds of types in the PERA model are associated.
+
+image::typeql-terminology.png[role=framed, width = 75%, link=self]
+
+The upcasting of types into their supertypes enables the use of inheritance polymorphism in queries. Similarly, object types can be upcast into the interface types they implement, which enables interface polymorphism in queries. Finally, attribute types can also be upcast into their value types, which enables arithmetic expressions.
 
 == The TypeDB implementation
 
@@ -141,3 +152,28 @@ When an object type implements interfaces, those implementations are inherited b
 Finally, a type if defined to be abstract using an `abstract` statement. For example, in the above schema excerpt:
 
 * The type `book` is declared to be abstract, and can only be instantiated through one of its concrete subtypes: `paperback`, `hardback`, and `ebook`.
+
+=== Type inference
+
+When TypeQL queries are executed by TypeDB, casting of types takes place automatically via type inference. Let's consider some example constraints, starting with the following example of inheritance polymorphism.
+
+[,typeql]
+----
+$x isa book;
+----
+
+In this case, the variable `$x` is of type `book`. To resolve this constraint, TypeDB determines the list of types that can be upcast into `book`, and finds `paperback`, `hardback`, and `ebook`. Thus, instances of these types can be matched for `$x`. Now let's consider an example of interface polymorphism.
+
+[,typeql]
+----
+$y has price $p;
+----
+
+In this case, the variable `$y` is of type `price:OWNER`. TypeDB determines that `book` and `order-line` can be upcast into `price:OWNER`, and so can have instances matched for `$y`. Finally, we'll consider parametric polymorphism.
+
+[,typeql]
+----
+$z isa entity;
+----
+
+In this case, the variable `$z` is of type `entity`. Thus, TypeDB will match instances of any entity types, as they can all be upcast into `entity`.
