@@ -1,14 +1,16 @@
 = Schema objects
 
-Driver APIs provide a set of methods to programmatically manipulate <<_types,types>> and
-<<_rules,rules>> in the schema of a TypeDB database.
-
-This page assumes you've already followed instructions from the xref:manual::defining/define.adoc[] page.
-Here, you'll see how to use driver API methods and stateful objects to programmatically manipulate types and rules
+In this guide you'll see how to use driver API methods and stateful objects to programmatically manipulate types and rules
 in a database schema using one of the TypeDB drivers.
+This page assumes you've already followed instructions from the xref:manual::defining/define.adoc[] page.
+
+== Understanding schema objects
+
+Schema objects represent <<_types,types>> and
+<<_rules,rules>> in the schema of a TypeDB database. Driver APIs provide a set of methods to programmatically manipulate these objects.
 
 [#_types]
-== Types
+== Type objects
 
 A type object has many useful methods to traverse the type hierarchy, find related types,
 and manipulate types definitions/properties.
@@ -16,7 +18,7 @@ To manipulate a type with driver API methods,
 you need to get a stateful object that represents the type in the database.
 
 [#_get_query]
-=== Get a type
+=== Get type objects
 
 To get a type object from a TypeDB database,
 you can use a TypeQL Get query or one of the driver API methods.
@@ -104,7 +106,7 @@ $x sub entity;
 get $x;
 ----
 
-=== Add a type
+=== Create type objects
 
 To add a new type into the schema of a database,
 use a TypeQL xref:typeql::queries/define.adoc[Define query] or one of the put type methods.
@@ -310,7 +312,7 @@ For an additional example of programmatic type manipulations,
 see the xref:manual::defining/schema-editing.adoc#_modify_with_driver_api[Schema editing] page.
 
 [#_rules]
-== Rules
+== Rule objects
 
 A rule object has `label`, `when`, and `then` properties and just a few methods.
 

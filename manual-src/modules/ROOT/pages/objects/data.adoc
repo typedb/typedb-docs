@@ -1,12 +1,14 @@
 = Data objects
 
-Driver APIs provide a set of methods to programmatically manipulate data in a TypeDB database.
-
+In this guide you'll see how to use driver API methods and stateful objects to programmatically manipulate data
+in a database using one of the TypeDB drivers. 
 This page assumes you've already followed instructions from the xref:manual::writing/insert.adoc[] page.
-Here, you'll see how to use driver API methods and stateful objects to programmatically manipulate data
-in a database using one of the TypeDB drivers.
 
-== Get data
+== Understanding data objects
+
+Data objects represent data instances in a TypeDB database. Driver APIs provide a set of methods to programmatically manipulate these objects.
+
+== Get data objects
 
 To manipulate data with driver API methods,
 you need to get a stateful object that represents a data instance in the database.
@@ -168,7 +170,7 @@ see the xref:drivers::cpp/api-reference.adoc#_data_header[Data class] methods.
 --
 ====
 
-== Add data
+== Create data objects
 
 To add a new instance of a type, use the create method of a type object:
 

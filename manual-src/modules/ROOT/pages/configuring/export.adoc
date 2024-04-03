@@ -3,10 +3,13 @@
 :page-aliases: typedb::admin/export-import.adoc, typedb::managing/export-import.adoc
 :pageTitle: Export and import
 :summary: TypeDB import and export functions.
+:page-preamble-card: 1
 
-TypeDB can export and import both schema and data of a database.
+In this guide you'll see how to export and import both the schema and data of a TypeDB database.
 
-TypeDB offers a way to export database data into a binary format. The resulting file can be used to import the data on
+== Understanding exports and imports
+
+TypeDB supports exports databases into a binary format. The resulting file can be used to import the data on
 any database with compatible schema on a TypeDB server.
 
 [NOTE]
@@ -18,35 +21,6 @@ current one in use.
 The exported binary file might be up to two times larger than the original database. Please ensure the disk has enough
 free capacity to store a file of this size.
 
-== Migration process
-
-A TypeDB database consists of a schema and data.
-
-Since version `2.19.0` the TypeDB server export and import can process both schema and data.
-
-[IMPORTANT]
-====
-Prior to the `2.19.0` version of TypeDB, the export process included a separate schema export with any TypeDB Client
-and data export by the TypeDB server export command, followed by import of the schema (by any TypeDB Client),
-and finally -- import of data through TypeDB server import command. See the example below.
-====
-
-.See the example of the migration commands for versions prior to 2.19.0
-[%collapsible]
-====
-1. Export the schema into a file: +
-`typedb console --command="database schema <database>" > <filename>.tql`
-2. Delete the first line of the exported tql file.
-3. Export the data into a file: +
-`typedb server export --database=<database> --port=<server rpc port> --file=<filename>.typedb`
-4. Create a database in the new server: +
-`typedb console --command="database create <new-db>"` +
-This and the following commands should be addressed to the *new server*, that will be importing the database.
-5. Import the schema into the new database: +
-`typedb console --command="transaction <new-db> schema write" --command="source <filename>.tql" --command="commit"`
-6. Import the data into the new database: +
-`typedb server import --database=<database> --port=<server rpc port> --file=<filename>.typedb`
-====
 
 == Export
 
@@ -106,3 +80,31 @@ schema after import.
 * Ensure that the correct path was specified for the datafile import.
 
 If any errors persist, please join one of our communities and ask for assistance.
+
+== Version note
+
+Since version `2.19.0` the TypeDB server export and import can process both schema and data.
+
+[IMPORTANT]
+====
+Prior to the `2.19.0` version of TypeDB, the export process included a separate schema export with any TypeDB Client
+and data export by the TypeDB server export command, followed by import of the schema (by any TypeDB Client),
+and finally -- import of data through TypeDB server import command. See the example below.
+====
+
+.See the example of the migration commands for versions prior to 2.19.0
+[%collapsible]
+====
+1. Export the schema into a file: +
+`typedb console --command="database schema <database>" > <filename>.tql`
+2. Delete the first line of the exported tql file.
+3. Export the data into a file: +
+`typedb server export --database=<database> --port=<server rpc port> --file=<filename>.typedb`
+4. Create a database in the new server: +
+`typedb console --command="database create <new-db>"` +
+This and the following commands should be addressed to the *new server*, that will be importing the database.
+5. Import the schema into the new database: +
+`typedb console --command="transaction <new-db> schema write" --command="source <filename>.tql" --command="commit"`
+6. Import the data into the new database: +
+`typedb server import --database=<database> --port=<server rpc port> --file=<filename>.typedb`
+====

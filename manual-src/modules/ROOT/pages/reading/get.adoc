@@ -2,16 +2,18 @@
 :experimental:
 :tabs-sync-option:
 
-A Get query is used to retrieve concepts from a TypeDB database.
+In this guide you'll see how to retrieve data from a database using Studio, Console, or one of the drivers.
+
+== Understanding Get queries
+
+A Get query is used to retrieve _concepts_ from a TypeDB database. For a detailed explanation of the query see the xref:typeql::queries/get.adoc[] page. 
+
 //#todo Add a link to the Concept term definition
 
-This page assumes you've already followed instructions from the xref:manual::writing/overview.adoc[] section.
-Here, you'll see how to retrieve data from a database using Studio, Console, or one of the drivers.
-
 [#_how_to_send_a_get_query]
-== How to send a Get query
+== Sending Get queries
 
-The easiest way to send a Get query is to use Studio or Console:
+Before you get started, ensure you followed instructions from the xref:manual::writing/overview.adoc[] section. The easiest way to send a Get query is to use Studio or Console:
 
 [tabs]
 ====

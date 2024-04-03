@@ -1,6 +1,11 @@
 = Config file
+:page-preamble-card: 1
+
+In this guide, you'll see how to use a config file to configure TypeDB server.
 
 [#_configuration_file]
+== File structure
+
 TypeDB uses a config file with a specific YAML format.
 See the xref:manual::configuring/config.adoc[] for examples.
 
@@ -18,7 +23,7 @@ For any change in TypeDB config file to take effect, restart the TypeDB server.
 ====
 
 [#_the_default_location_of_the_config_file]
-== Config file location
+== File location
 
 TypeDB ships with a default configuration file.
 The location of this file varies based on how TypeDB has been installed.
@@ -38,9 +43,9 @@ For APT, check the following directory:
 /opt/typedb/core/server/conf/config.yml
 ----
 
-== TypeDB Cloud cluster configuration
+== Cluster configuration
 
-Every server in a cluster has its own config file that contains a list of known servers in the cluster.
+Every server in a TypeDB Cloud cluster has its own config file that contains a list of known servers in the cluster.
 A server in a cluster will not accept connections from servers that are not on the list.
 
 [NOTE]
