@@ -1,4 +1,4 @@
-= Lesson 9.3: Avoiding data redundancies
+= Lesson 9.3: Avoiding model redundancies
 
 == Identifying redundancies
 
@@ -116,8 +116,8 @@ locating sub relation,
     relates located,
     relates location;
 city plays locating:located;
-state plays locating:located,
-    plays locating:location;
+state plays locating:location,
+    plays locating:located;
 country plays locating:location;
 ----
 

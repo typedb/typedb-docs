@@ -40,7 +40,7 @@ book sub entity,
 
 [NOTE]
 ====
-For most of Lesson 9, we'll be omitting the attribute type definitions in schema definitions for simplicity.
+For most of Lesson 9, we'll be omitting the attribute type definitions in schema definitions where not required for simplicity.
 ====
 
 The lack of expressivity causes several problems. Consider, for instance, if we had an author that was listed as having published different books under different names, as often is the case. We would not be able to tell which names (and therefore books) corresponded to the same author. Similarly, if two different authors published books under the same name, we would not be able to tell that they were written by different authors.
@@ -110,7 +110,7 @@ publisher plays publishing:publisher;
 
 Once again, we've leveraged interface polymorphism to re-use the same `contribution` relation types to represent the interdependencies between `book` and several contributor types: `author`, `editor`, `illustrator`, and `other-contributor`.
 
-However, we run into a problem when attempting to model the connection from `city`, `state`, and `country` to `book`. What should this relation be? Examining the dataset, we can tell that these fields refer to the location in which the book was published. As such, it makes sense that the `publishing` relation is appropriate, and it follows that we should extend `publishing` to be a *ternary relation type* to account for this.
+However, the connection from `city`, `state`, and `country` to `book` is less obvious. What should this relation be? Examining the dataset, we can tell that these fields refer to the location in which the book was published. As such, it makes sense that the `publishing` relation is appropriate, and it follows that we should extend `publishing` to be a *ternary relation type* to account for this.
 
 [,typeql]
 ----
@@ -122,5 +122,4 @@ state plays publishing:location;
 country plays publishing:location;
 ----
 
-
-We have also moved the `year` attribute from `book` to `publishing`, as it is more accurately a property of the publication event than it is the book itself.
+We have also moved the `year` attribute from `book` to `publishing`, as it is more accurately a property of the publication event than it is the book itself. This is a good first iteration, but there are still many ways this model can be improved. We'll explore them in the next few lessons.

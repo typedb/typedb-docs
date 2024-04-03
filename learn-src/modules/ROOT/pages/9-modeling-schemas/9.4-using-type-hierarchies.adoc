@@ -126,18 +126,20 @@ state sub place;
 country sub place;
 ----
 
-Grouping existing types into hierarchies in this way is not always a good idea. As types in the PERA model can only have a single supertype, we must choose our types carefully. The fact the several types exhibit common behaviours is not necessarily an indicator that they are all subtypes of a common supertype, as we can alternatively encode those common behaviours by having the types independently implement the same interfaces.
+Grouping existing types into hierarchies in this way is not always a good idea. As types in the PERA model can only have a single supertype, we must choose our types carefully. The fact the several types exhibit common behaviours is not necessarily an indicator that they are all subtypes of a common supertype, as we can alternatively encode those common behaviours by having the types independently implement the same interfaces. We will see an example of such a case in xref:learn::9-modeling-schemas/9.5-composition-over-inheritance.adoc[Lesson 9.5].
 
 [IMPORTANT]
-====
-In order for a type to be considered the subtype of another type, it must be true that every instance of the subtype is necessarily an instance of the supertype.
-====
+=====
+A type should only be considered a subtype of another type if every instance of the subtype is _necessarily_ an instance of the supertype. For instance, every city is necessarily a place. If this is not the case, then subtyping is likely a poor modeling choice for the types in question.
+=====
 
 == Top-down hierarchy design
 
 Next, we'll try the top-down method. Building type hierarchies top-down can be harder because it is often less obvious that a hierarchy should be present at all. The biggest indicator of a potential top-down hierarchy is when typing information is being stored as data. Let's examine an example.
 
-Currently, the schema shows that `book` owns `format`. If we examine the data table, we see that each book has exactly one format and that there are only a small number of these formats: "paperback", "hardback", and "ebook". As such, it would make sense for these to be subtypes of book. This is a case where typing information has been stored in a way that is structurally indistinguishable from data, as is often the case when working with tabulated data or non-polymorphic databases. There is an additional hint that this field in the data table represents a type: the `stock` attribute is absent for any book with the format "ebook". This makes sense of course, as an ebook cannot possibly go out of stock. The exclusivity of the stock property to physical books is another indicator that formats are best modelled as a type hierarchy, as we can then assign the property only to the appropriate subtypes. Based on this, we will create three subtypes of `book`: `paperback`, `hardback`, and `ebook`, and move ownership of `stock` down the hierarchy. As a result, we will also make the supertype abstract, as every book must necessarily have a format.
+Currently, the schema shows that `book` owns `format`. If we examine the data table, we see that each book has exactly one format and that there are only a small number of these formats: "paperback", "hardback", and "ebook". As such, it would make sense for these to be subtypes of book. This is a case where typing information has been stored in a way that is structurally indistinguishable from data, as is often the case when working with tabulated data or non-polymorphic databases. Because of the lack of subtyping in other data modeling paradigms, types must be stored as properties in this way, or that data must be divided into separate structures (tables, documents, etc.) per type.
+
+There is an additional hint that this field in the data table represents a type: the `stock` attribute is absent for any book with the format "ebook". This makes sense of course, as an ebook cannot possibly go out of stock. The exclusivity of the stock property to physical books is another indicator that formats are best modelled as a type hierarchy, as we can then assign the property only to the appropriate subtypes. Based on this, we will create three subtypes of `book`: `paperback`, `hardback`, and `ebook`, and move ownership of `stock` down the hierarchy. As a result, we will also make the supertype abstract, as every book must necessarily have a format.
 
 [,typeql]
 ----
@@ -183,6 +185,7 @@ The current schema includes the types `author`, `editor`, `illustrator`, and `ot
 
 [,typeql]
 ----
+define
 contributor sub entity,
     abstract,
     owns name,
@@ -197,12 +200,13 @@ However, this hierarchy includes the redundant representation `other-contributor
 
 [,typeql]
 ----
+define
 contributor sub entity,
     owns name,
     plays contribution:contributor;
 author sub contributor;
 editor sub contributor;
-illustrator sub entity;
+illustrator sub contributor;
 ----
 
 Now, if there is a contributor that is an author, editor, or illustrator, we can instantiate the appropriate specialized subtype. Meanwhile, if there is a contributor without a specific role listed, we can instantiate the generalized supertype.
