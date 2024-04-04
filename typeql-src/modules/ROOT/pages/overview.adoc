@@ -1,21 +1,17 @@
-= TypeQL overview
+= TypeQL
 :keywords: typeql, overview
 :pageTitle: TypeQL overview
 :summary: A birds-eye view of TypeQL documentation.
-:page-preamble-card: 1
 
-*TypeQL* is the query language of TypeDB.
+Welcome to the *TypeQL* documentation: TypeQL is the query language of TypeDB!
 
-[cols-1]
---
-.xref:typeql::introduction.adoc[]
-[.clickable]
-****
-Learn about the principles and design of TypeQL.
-****
---
+== Introduction
+
+To learn about the principles and design of TypeQL, see our xref:typeql::introduction.adoc[] page.
 
 == Queries
+
+TypeQL queries are distinguished by the purpose they fulfil.
 
 [cols-2]
 --
@@ -62,7 +58,9 @@ A Get query to get data and types as stateful objects from a database.
 ****
 --
 
-== TypeQL building blocks
+== Components
+
+Each query is build from various components.
 
 [cols-2]
 --
@@ -99,11 +97,4 @@ Value-types, value variables, comparators, arithmetic, functions.
 
 == Terminology
 
-[cols-1]
---
-.xref:typeql::keywords.adoc[]
-[.clickable]
-****
-A list of TypeQL keywords used in clauses, schema statements, and data statements.
-****
---
+A list of TypeQL keywords used in clauses, schema statements, and data statements, can be found on our xref:typeql::keywords.adoc[] page.

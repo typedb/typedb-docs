@@ -9,7 +9,7 @@ A disjunction block of two or more pattern is of the form:
 .Syntax
 [,typeql]
 ----
-{ <pattern> } or { <pattern> } [or { <pattern> }];
+"{" <pattern> "}" or "{" <pattern> "}" [ or "{" <pattern> "}" ... ] ;
 ----
 
 where each `<pattern>` can be any valid pattern. Note that _at least one variable_ in the `<pattern>` must be bound outside the disjunction.

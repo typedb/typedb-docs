@@ -15,19 +15,19 @@ A `match` clause starts with the `match` keyword, followed by the pattern that i
 
 [,typeql]
 ----
-match <pattern>;
+match <pattern>
 ----
 
-=== General pattern construction
+=== Pattern construction
 
-A pattern is a conjunction of either a single statement or other patterns:
-[,typeql]
-----
-{ <statement>; | <pattern>; } [ <pattern>; ] 
-----
+A pattern `<pattern>` is 
+
+* either, a single statement `<statement>;` (excluding xref:typeql::statements/rule.adoc[disjunction] definition statements),
+* or, constructed from patterns using a xref:typeql::patterns/conjunction.adoc[conjunction], xref:typeql::patterns/disjunction.adoc[disjunction], or xref:typeql::patterns/negation.adoc[negation].
+
 See xref:typeql::statements/overview.adoc[statements] for more information on the syntax of statements. Note that at least one variable in a xref:typeql::patterns/disjunction.adoc[disjunction] or xref:typeql::patterns/negation.adoc[negation] pattern must be bound outside that pattern.
 
-While patterns of general form can be used for `match` clauses, specific xref:typeql::queries/overview.adoc[queries] often require patterns of specific form.
+While patterns of general form can be used for `match` clauses, specific xref:typeql::queries/overview.adoc[queries] often require patterns to be of more specific form.
 
 == Behavior
 

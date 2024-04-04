@@ -2,8 +2,7 @@
 :Summary: Introduction to TypeQL.
 :keywords: typeql, intro, introduction, query, language, declarative, composable
 :pageTitle: Introduction
-
-== About TypeQL
+:page-preamble-card: 1
 
 TypeQL is the query language of TypeDB. It is designed based on TypeDB's expressive type system and inspired by natural language. It enables users to write concise and declarative queries, which can be used to:
 
@@ -17,7 +16,10 @@ TypeQL queries can be understood layer-by-layer. We give a brief overview of the
 
 === Query clauses
 
-At the top layer, each query comprises *clauses* which begin with keywords such as `define`, `insert`, or `fetch`, or `match`. These keywords indicate the purpose of the subsequent clause: for example, a `define` clause will comprise a set of declarative statements describing the (to-be-defined) schema of our database, and an `insert` clause will comprise a set of declarative statements describing the (to-be-inserted) data in our database. These “sets of declarative statements” are called *patterns*.
+At the top layer, each query comprises *clauses* which begin with keywords such as `define`, `insert`, or `fetch`, or `match`. These keywords indicate the purpose of the subsequent clause: for example, 
+
+* a `define` clause will comprise a set of declarative statements describing the (to-be-defined) schema of our database, 
+* an `insert` clause will comprise a set of declarative statements describing the (to-be-inserted) data in our database. These “sets of declarative statements” are called *patterns*.
 
 Query clauses can also be augmented with *modifiers* which allow for various query modifications to be applied, such as sorting, pagination, aggregation, or grouping.
 
@@ -29,7 +31,13 @@ Patterns describe the properties and interactions of types and data. They can be
 * Patterns describing data are used in `insert` (or `delete`) clauses in order to modify the data in our database,
 * General patterns are used in `match` clauses in order to find existing data and types that satisfy the statements described by the pattern.
 
-In TypeQL, individual patterns always terminate with a semicolon (`;`). They can be either simple *statements*, usually of the form `subject keyword object` (but there are exceptions!), or they can constructed by a pattern operation, such as *conjunction*, *disjunction* (`or`), and *negation* (`not`). Among these, conjunction is the most important operation to construct patterns: in TypeQL, the conjunction of two patterns is simply written by _chaining the patterns one after the other_! 
+In TypeQL, individual patterns always terminate with a semicolon (`;`). They can be either simple *statements*, usually of the form `subject keyword object` (but there are exceptions!), or they can constructed by a pattern operation, including
+
+* *conjunction* (simple chaining of patterns, separated by `;`), 
+* *disjunction* (using the `or` keyword), 
+* and *negation* (using the `not` keyword). 
+
+Among these, conjunction is the most important operation to construct patterns: in TypeQL, the conjunction of two patterns is simply written by _chaining the patterns one after the other_, without the explicit usage of any keyword.
 
 === Statements and compositions
 
