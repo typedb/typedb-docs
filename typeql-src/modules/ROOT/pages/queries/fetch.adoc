@@ -5,7 +5,6 @@
 :page-aliases: typeql::data/fetch.adoc
 
 A Fetch query retrieves values from a TypeDB database and returns them as JSON objects.
-
 For a practical guide on how to send a Fetch query to TypeDB,
 see the xref:manual::reading/fetch.adoc[] page of TypeDB Manual.
 Fetch queries can use rule-based xref:manual::reading/infer.adoc[inference].
@@ -20,11 +19,11 @@ A Fetch query consists of a
 [,typeql]
 ----
 match <pattern>
-fetch {
-    <variable> [as <label>]
-  | <variable> [as <label>] : (<attribute-type> [as <label>]), ...
-  | <subquery-label>        : {<fetch_query> | <get_aggregate_query>}
-}; ...
+fetch 
+  {  <variable> [as <label>]
+   | <variable> [as <label>] : (<attribute-type> [as <label>]), ...
+   | <subquery-label>        : "{" { <fetch_query> | <get_aggregate_query>} "}" 
+  }; ...
 ----
 // end::syntax[]
 

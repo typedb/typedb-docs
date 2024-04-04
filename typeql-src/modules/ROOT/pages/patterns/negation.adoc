@@ -9,7 +9,7 @@ A negation of a pattern is of the form:
 .Syntax
 [,typeql]
 ----
-not { <pattern> };
+not "{" <pattern> "}" ;
 ----
 
 where `<pattern>` can be any valid pattern. Note that _at least one variable_ of `<pattern>` must be bound outside the negation.

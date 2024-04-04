@@ -1,9 +1,12 @@
-= TypeDB drivers overview
+= TypeDB Drivers
 :Summary: TypeDB drivers overview.
 :page-aliases: clients::overview.adoc
 :keywords: typedb, driver, api, RPC, library, FFI
 :pageTitle: Drivers overview
-:page-preamble-card: 1
+
+Welcome to the TypeDB driver documentation!
+
+== Introduction
 
 TypeDB accepts client connections via gRPC based
 https://github.com/vaticle/typedb-protocol[TypeDB driver RPC,window=_blank] protocol.
@@ -146,7 +149,7 @@ see the https://github.com/vaticle/typedb-driver/blob/development/c/README.md[Re
 
 // We recommend instantiating a single TypeDB driver per application.
 
-== TypeDB driver architecture
+== Driver architecture
 
 TypeDB drivers share a common architecture and capabilities.
 The key components have to do with providing an API, opening and managing connections, sessions, and transactions,
