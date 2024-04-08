@@ -1,4 +1,5 @@
 = Lesson 9.4: Using type hierarchies
+:page-preamble-card: 1
 
 In the previous two lessons, we created and developed a data model for book data. In this lesson, we'll see how we can introduce type hierarchies into the model so that we can leverage inheritance polymorphism in our queries.
 
@@ -192,8 +193,8 @@ contributor sub entity,
     plays contribution:contributor;
 author sub contributor;
 editor sub contributor;
-illustrator sub entity;
-other-contributor sub entity;
+illustrator sub contributor;
+other-contributor sub contributor;
 ----
 
 However, this hierarchy includes the redundant representation `other-contributor`. Such a contributor is merely a contributor that is not an author, editor, or illustrator. In other words, this type is a generalised catch-all subtype. But the type that is supposed to represent the generalised behaviour in a type hierarchy is the supertype. As a result, we should make `contributor` non-abstract and instantiate directly instead of `other-contributor`.
