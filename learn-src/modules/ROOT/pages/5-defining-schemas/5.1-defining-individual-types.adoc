@@ -17,7 +17,7 @@ address sub entity;
 promotion sub entity;
 ----
 
-When used in a Define query, a `sub` statement defines a new type. The subject of each statement is the new *type label*, and the object is one of the three *root types*: `entity`, `relation`, or `attribute`, indicating which kind of type is being defined.
+When used in a Define query, a `sub` statement defines a new type. The https://en.wikipedia.org/wiki/Subject%E2%80%93verb%E2%80%93object_word_order[subject] of each statement is the new *type label*, and the https://en.wikipedia.org/wiki/Subject%E2%80%93verb%E2%80%93object_word_order[object] is one of the three *root types*: `entity`, `relation`, or `attribute`, indicating which kind of type is being defined.
 
 When `sub` statements are used in a Define query, they are *data definition statements*. This is in contrast to when used in other kinds of query, as we saw in xref:learn::3-reading-data/3.4-fetching-schema-types.adoc[Lesson 3.4], in which they are *data manipulation statements*. Define queries comprise only data definition statements, and so cannot contain any variables. The only permitted terms are keywords and type labels.
 
