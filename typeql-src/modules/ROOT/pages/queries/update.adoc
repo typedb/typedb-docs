@@ -24,26 +24,37 @@ delete <delete_pattern>
 insert <insert_pattern>
 ----
 // end::syntax[]
-where both `<delete_pattern>` and `<insert_pattern>` are patterns of valid data-specific TypeQL statements including xref:typeql::statements/isa.adoc[],
+where both `<delete_pattern>` and `<insert_pattern>` are patterns of valid data-specific TypeQL statements including
+xref:typeql::statements/isa.adoc[],
 xref:typeql::statements/has.adoc[],
-xref:typeql::statements/role-assignment.adoc[role assignment], and xref:typeql::statements/value-assignment.adoc[value assignment]. 
+xref:typeql::statements/role-assignment.adoc[role assignment], and
+xref:typeql::statements/value-assignment.adoc[value assignment].
 
 The _mandatory_ `match` clause `<pattern>` can be any valid match pattern: for more information, see the
 xref:typeql::patterns/overview.adoc[Patterns] and xref:typeql::statements/overview.adoc[Statements] sections.
 
-
 == Behavior
 
-An Update query first deletes and then inserts data instances, ownerships, or role player assignments to a database. The results of the `match` clause in an Update query will be used for the variables in its subsequent `delete` and `insert` clauses. For more information and examples of the latter clauses, see the xref:typeql::queries/delete.adoc[] and xref:typeql::queries/insert.adoc[] page.
+[#_match_clause]
+[#_insert_clause]
+[#_delete_clause]
+An Update query first deletes and then inserts data instances, ownerships, or role player assignments to a database.
+The results of the `match` clause in an Update query will be used for the variables in its subsequent
+`delete` and `insert` clauses.
+For more information and examples of the latter clauses,
+see the xref:typeql::queries/delete.adoc[] and xref:typeql::queries/insert.adoc[] page.
 
-Note that inserted data _need not be a direct replacement_ for the data deleted by the same query. You can insert a new concept instead of a deleted one with either the same variable or a new one.
+Note that inserted data _need not be a direct replacement_ for the data deleted by the same query.
+You can insert a new concept instead of a deleted one with either the same variable or a new one.
 
 === Query execution
 
 The `insert` clause is executed after the `delete` clause of the same query and uses the same matched result
 from the `match` clause. For an Update query to succeed the following must be satisfied:
 
-* Data that is assumed to exist `insert` must not be deleted in the preceding `delete` clause. For example, deleting an entity and then trying to insert ownership of an attribute to that deleted entity (and without inserting a new entity its place).
+* Data that is assumed to exist `insert` must not be deleted in the preceding `delete` clause.
+For example, deleting an entity and then trying to insert ownership of an attribute to that deleted entity
+(and without inserting a new entity its place).
 * Inserted data must not violate a schema of a database.
 
 === Query response
