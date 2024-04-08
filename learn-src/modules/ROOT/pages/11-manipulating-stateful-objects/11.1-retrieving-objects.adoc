@@ -1,5 +1,4 @@
-= Lesson 10.1: Retrieving objects
-// = Lesson 11.1: Retrieving objects
+= Lesson 11.1: Retrieving objects
 
 == The Get query
 
@@ -64,8 +63,7 @@ To retrieve the objects from the concept map, we can use its `get` method, which
 * `as_relation_type`
 * `as_attribute_type`
 
-With the above query, we have retrieved two entity objects, one relation object, one attribute object, and one entity type object. We will see how we can operate on these objects in xref:learn::11-manipulating-stateful-objects/11.2-operating-on-objects.adoc[Lesson 10.2].
-// With the above query, we have retrieved two entity objects, one relation object, one attribute object, and one entity type object. We will see how we can operate on these objects in xref:learn::11-manipulating-stateful-objects/11.2-operating-on-objects.adoc[Lesson 11.2].
+With the above query, we have retrieved two entity objects, one relation object, one attribute object, and one entity type object. We will see how we can operate on these objects in xref:learn::11-manipulating-stateful-objects/11.2-operating-on-objects.adoc[Lesson 11.2].
 
 .Exercise
 [caption=""]
@@ -262,8 +260,7 @@ with TypeDB.core_driver(ADDRESS) as driver:
 Most API methods that retrieve information from the server return either iterators or promises. An iterator can be resolved by iterating over it or casting it to a sequence (such as a list), while a promise can be resolved by calling its `resolve` method. The return types of all Python driver methods are documented in the xref:drivers::python/api-reference.adoc[API reference]. TypeDB drivers in other languages have equivalent functionality.
 ====
 
-Sometimes, retrieving data instances this way can be more convenient than issuing a query, but most non-trivial constraints on the data instances to be returned can only be expressed by using a query. More importantly, we can also operate on the type object to insert new instances, as we will see in xref:learn::11-manipulating-stateful-objects/11.2-operating-on-objects.adoc[Lesson 10.2], and to perform *programmatic schema migrations*, which will be the topic of Lesson 16 (coming soon).
-// Sometimes, retrieving data instances this way can be more convenient than issuing a query, but most non-trivial constraints on the data instances to be returned can only be expressed by using a query. More importantly, we can also operate on the type object to insert new instances, as we will see in xref:learn::11-manipulating-stateful-objects/11.2-operating-on-objects.adoc[Lesson 11.2], and to perform *programmatic schema migrations*, which will be the topic of Lesson 16 (coming soon).
+Sometimes, retrieving data instances this way can be more convenient than issuing a query, but most non-trivial constraints on the data instances to be returned can only be expressed by using a query. More importantly, we can also operate on the type object to insert new instances, as we will see in xref:learn::11-manipulating-stateful-objects/11.2-operating-on-objects.adoc[Lesson 11.2], and to perform *programmatic schema migrations*, which will be the topic of Lesson 16 (coming soon).
 
 .Exercise
 [caption=""]
