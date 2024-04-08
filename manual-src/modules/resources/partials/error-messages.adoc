@@ -1,0 +1,933 @@
+// Total number of fields across all classes: 285
+
+== Invalid Server Operation
+
+`FAILED_TO_CREATE_DATA_DIRECTORY`::
+[SRV1] Invalid Server Operation: Failed to create the data directory '%s', received exception:\n'%s'
+
+`DATA_DIRECTORY_NOT_WRITABLE`::
+[SRV2] Invalid Server Operation: The data directory path '%s' is not writable.
+
+`EXITED_WITH_ERROR`::
+[SRV3] Invalid Server Operation: Exited with error.
+
+`UNCAUGHT_ERROR`::
+[SRV4] Invalid Server Operation: Uncaught error thrown at thread '%s':\n'%s'
+
+`CONFIG_FILE_NOT_FOUND`::
+[SRV5] Invalid Server Operation: Could not find/read the configuration file '%s'.
+
+`UNRECOGNISED_CLI_COMMAND`::
+[SRV6] Invalid Server Operation: The command '%s' was not recognised.
+
+`CLI_OPTION_MISSING_PREFIX`::
+[SRV7] Invalid Server Operation: All arguments should be prefixed with '%s', which '%s' is missing.
+
+`DUPLICATE_CLI_OPTION`::
+[SRV8] Invalid Server Operation: Unexpected duplicate command line arguments '%s'.
+
+`CLI_FLAG_OPTION_HAS_VALUE`::
+[SRV9] Invalid Server Operation: Command line option '%s' does not take a value.
+
+`CLI_OPTION_REQUIRES_TYPED_VALUE`::
+[SRV10] Invalid Server Operation: Command line option '%s' requires a '%s' value.
+
+`CLI_OPTION_REQUIRES_VALUE`::
+[SRV11] Invalid Server Operation: Command line option '%s' requires a value.
+
+`CLI_OPTION_REQUIRED`::
+[SRV12] Invalid Server Operation: Missing required command line option: '%s'.
+
+`CLI_OPTION_UNRECOGNISED`::
+[SRV13] Invalid Server Operation: Unrecognized command line option: '%s'.
+
+`CONFIG_YAML_MUST_BE_MAP`::
+[SRV14] Invalid Server Operation: The configuration file must be a YAML map.
+
+`CONFIG_SECTION_MUST_BE_MAP`::
+[SRV15] Invalid Server Operation: The configuration section with key '%s' must be a key-value map.
+
+`CONFIG_KEY_MISSING`::
+[SRV16] Invalid Server Operation: Required configuration '%s' is missing.
+
+`CONFIGS_UNRECOGNISED`::
+[SRV17] Invalid Server Operation: The provided configuration(s) '%s' are unrecognised.
+
+`CONFIG_VALUE_UNEXPECTED`::
+[SRV18] Invalid Server Operation: Configuration '%s' received an unexpected value '%s'. It must be '%s'.
+
+`CONFIG_VALUE_ENUM_UNEXPECTED`::
+[SRV19] Invalid Server Operation: Configuration '%s' received an unexpected value '%s'. It must be one of '%s'.
+
+`CONFIG_LOG_OUTPUT_UNRECOGNISED`::
+[SRV20] Invalid Server Operation: Configuration output named '%s' was not recognised (check the output definition names).
+
+`CONFIG_REASONER_REQUIRES_DIR_OUTPUT`::
+[SRV21] Invalid Server Operation: Reasoner debugger configuration requires a directory output
+
+`FAILED_AT_STOPPING`::
+[SRV22] Invalid Server Operation: Exception occurred while attempting to stop the server.
+
+`ENV_VAR_NOT_FOUND`::
+[SRV23] Invalid Server Operation: Environment variable '%s' is not defined.
+
+`SERVER_SHUTDOWN`::
+[SRV24] Invalid Server Operation: TypeDB server has been shutdown.
+
+`MISSING_FIELD`::
+[SRV25] Invalid Server Operation: The request message does not contain the required field '%s'.
+
+`PROTOCOL_VERSION_MISMATCH`::
+[SRV26] Invalid Server Operation: A protocol version mismatch was detected. This server supports version '%s' but the driver supports version '%s'. Please use a compatible driver to connect.
+
+`MISSING_CONCEPT`::
+[SRV27] Invalid Server Operation: Concept does not exist.
+
+`BAD_VALUE_TYPE`::
+[SRV28] Invalid Server Operation: The value type '%s' was not recognised.
+
+`TRANSACTION_EXCEEDED_MAX_SECONDS`::
+[SRV29] Invalid Server Operation: Transaction exceeded maximum configured duration of '%s' seconds.
+
+`EMPTY_TRANSACTION_REQUEST`::
+[SRV30] Invalid Server Operation: Empty transaction request.
+
+`UNKNOWN_REQUEST_TYPE`::
+[SRV31] Invalid Server Operation: The request message was not recognised.
+
+`ITERATION_WITH_UNKNOWN_ID`::
+[SRV32] Invalid Server Operation: Iteration was requested for ID '%s', but this ID does not correspond to an existing query iterator.
+
+`DUPLICATE_REQUEST`::
+[SRV33] Invalid Server Operation: The request with ID '%s' is a duplicate.
+
+`PORT_IN_USE`::
+[SRV34] Invalid Server Operation: Could not bind to the port since it is in use: '%s'.
+
+`INCOMPATIBLE_JAVA_RUNTIME`::
+[SRV35] Invalid Server Operation: Incompatible Java runtime version: '%s'. Please use Java 11 or above.
+
+`ERROR_LOGGING_CONNECTIONS`::
+[SRV36] Invalid Server Operation: An error occurred while logging server connection info.
+
+`USER_MANAGEMENT_NOT_AVAILABLE`::
+[SRV37] Invalid Server Operation: User management is only available in TypeDB Cloud.
+
+// Number of fields in Server: 37
+
+== Invalid Internal State
+
+`ILLEGAL_STATE`::
+[INT1] Invalid Internal State: Illegal internal state!
+
+`ILLEGAL_CAST`::
+[INT2] Invalid Internal State: Illegal casting operation from '%s' to '%s'.
+
+`ILLEGAL_OPERATION`::
+[INT3] Invalid Internal State: Illegal internal operation! This method should not have been called.
+
+`ILLEGAL_ARGUMENT`::
+[INT4] Invalid Internal State: Illegal argument provided.
+
+`UNSUPPORTED_OPERATION`::
+[INT5] Invalid Internal State: Operation is not supported.
+
+`UNRECOGNISED_VALUE`::
+[INT7] Invalid Internal State: Unrecognised encoding value!
+
+`STORAGE_PROPERTY_EXCEPTION`::
+[INT8] Invalid Internal State: Failed to get storage property.
+
+`DIRTY_INITIALISATION`::
+[INT9] Invalid Internal State: Invalid Database Initialisation.
+
+`TYPEDB_CLOSED`::
+[INT10] Invalid Internal State: Attempted to open a session on a closed TypeDB.
+
+`OUT_OF_BOUNDS`::
+[INT11] Invalid Internal State: Resource out of bounds.
+
+`UNEXPECTED_INTERRUPTION`::
+[INT12] Invalid Internal State: Unexpected thread interruption!
+
+`UNEXPECTED_PLANNING_ERROR`::
+[INT13] Invalid Internal State: Unexpected error during traversal plan optimisation.
+
+`UNEXPECTED_OPTIMISER_VALUE`::
+[INT14] Invalid Internal State: Unexpected optimiser value.
+
+`UNIMPLEMENTED`::
+[INT15] Invalid Internal State: This functionality is not yet implemented.
+
+`JAVA_ERROR`::
+[INT16] Invalid Internal State: Received Java error:\n%s
+
+`STORAGE_ERROR`::
+[INT17] Invalid Internal State: Received storage error:\n%s
+
+`UNKNOWN_ERROR`::
+[INT18] Invalid Internal State: Received unknown error:\n%s
+
+// Number of fields in Internal: 17
+
+== Invalid Database Operation
+
+`INVALID_DATABASE_DIRECTORIES`::
+[DBS1] Invalid Database Operation: Database '%s' (located at: %s) does not contain required directories '%s'.
+
+`INCOMPATIBLE_ENCODING`::
+[DBS2] Invalid Database Operation: Database '%s' (located at: %s) has incompatible data version '%d' - this server supports " +\n                        "version '%d'. Please reload or migrate your data.
+
+`DATABASE_MANAGER_CLOSED`::
+[DBS3] Invalid Database Operation: Attempted to use database manager when it has been closed.
+
+`DATABASE_EXISTS`::
+[DBS4] Invalid Database Operation: The database with the name '%s' already exists.
+
+`DATABASE_NOT_EMPTY`::
+[DBS5] Invalid Database Operation: The existing database with the name '%s' is not empty.
+
+`DATABASE_NOT_FOUND`::
+[DBS6] Invalid Database Operation: The database with the name '%s' does not exist.
+
+`DATABASE_DELETED`::
+[DBS7] Invalid Database Operation: Database with the name '%s' has been deleted.
+
+`DATABASE_CLOSED`::
+[DBS8] Invalid Database Operation: Attempted to open a new session from the database '%s' that has been closed.
+
+`DATABASE_NAME_RESERVED`::
+[DBS9] Invalid Database Operation: Database name must not start with an underscore.
+
+`ROCKS_LOGGER_SHUTDOWN_TIMEOUT`::
+[DBS10] Invalid Database Operation: Background RocksDB properties logger shutdown timed out.
+
+`STATISTICS_CORRECTOR_SHUTDOWN_TIMEOUT`::
+[DBS11] Invalid Database Operation: Background statistics corrector shutdown timed out.
+
+// Number of fields in Database: 11
+
+== Invalid Session Operation
+
+`SESSION_NOT_FOUND`::
+[SSN1] Invalid Session Operation: Session with UUID '%s' does not exist.
+
+`SESSION_CLOSED`::
+[SSN2] Invalid Session Operation: Attempted to open a transaction from closed session.
+
+`SCHEMA_ACQUIRE_LOCK_TIMEOUT`::
+[SSN3] Invalid Session Operation: Could not acquire lock for schema session. Another schema session may have been left open.
+
+`SESSION_IDLE_TIMEOUT_NOT_CONFIGURABLE`::
+[SSN4] Invalid Session Operation: The session idle timeout is not configurable at the '%s' level.
+
+// Number of fields in Session: 4
+
+== Invalid Transaction Operation
+
+`UNSUPPORTED_OPERATION`::
+[TXN1] Invalid Transaction Operation: Unsupported operation: calling '%s' for '%s' is not supported.
+
+`ILLEGAL_OPERATION`::
+[TXN2] Invalid Transaction Operation: Attempted an illegal operation!
+
+`TRANSACTION_NOT_OPENED`::
+[TXN3] Invalid Transaction Operation: The transaction has not been opened yet, so the only allowed operation is to open it.
+
+`TRANSACTION_ALREADY_OPENED`::
+[TXN4] Invalid Transaction Operation: Transaction has already been opened.
+
+`TRANSACTION_CLOSED`::
+[TXN5] Invalid Transaction Operation: The transaction has been closed and no further operation is allowed.
+
+`ILLEGAL_COMMIT`::
+[TXN6] Invalid Transaction Operation: Only write transactions can be committed.
+
+`TRANSACTION_SCHEMA_READ_VIOLATION`::
+[TXN7] Invalid Transaction Operation: Attempted schema writes when transaction type does not allow.
+
+`TRANSACTION_DATA_READ_VIOLATION`::
+[TXN8] Invalid Transaction Operation: Attempted data writes when transaction type does not allow.
+
+`TRANSACTION_ISOLATION_MODIFY_DELETE_VIOLATION`::
+[TXN9] Invalid Transaction Operation: The transaction modifies a key that is deleted in a concurrent transaction.
+
+`TRANSACTION_ISOLATION_DELETE_MODIFY_VIOLATION`::
+[TXN10] Invalid Transaction Operation: The transaction deletes a key that is modified in concurrent transaction.
+
+`TRANSACTION_ISOLATION_EXCLUSIVE_CREATE_VIOLATION`::
+[TXN11] Invalid Transaction Operation: The transaction fails to create a key that is created exclusively in a concurrent transaction.
+
+`SESSION_DATA_VIOLATION`::
+[TXN12] Invalid Transaction Operation: Attempted schema writes when session type does not allow.
+
+`SESSION_SCHEMA_VIOLATION`::
+[TXN13] Invalid Transaction Operation: Attempted data writes when session type does not allow.
+
+`MISSING_TRANSACTION`::
+[TXN14] Invalid Transaction Operation: Transaction can not be null.
+
+`BAD_TRANSACTION_TYPE`::
+[TXN15] Invalid Transaction Operation: The transaction type '%s' was not recognised.
+
+`DATA_ACQUIRE_LOCK_TIMEOUT`::
+[TXN16] Invalid Transaction Operation: Could not acquire lock for data transaction. A schema session may have been left open.
+
+`RPC_PREFETCH_SIZE_TOO_SMALL`::
+[TXN17] Invalid Transaction Operation: RPC answer streaming prefetch size must be at least 1, is set to: %d.
+
+`TRANSACTION_TIMEOUT_NOT_CONFIGURABLE`::
+[TXN18] Invalid Transaction Operation: Transaction timeout cannot be configured at the '%s' level.
+
+`QUERY_ERROR`::
+[TXN19] Invalid Transaction Operation: Error executing query: \n%s
+
+`CONCEPT_ERROR`::
+[TXN20] Invalid Transaction Operation: Error executing concept operation: \n%s
+
+`LOGIC_ERROR`::
+[TXN21] Invalid Transaction Operation: Error executing logic operation: \n%s
+
+`RESOURCE_CLOSED`::
+[TXN22] Invalid Transaction Operation: Attempted to utilise a closed resource.
+
+`SCHEMA_VALIDATION_EXCEPTIONS`::
+[TXN23] Invalid Transaction Operation: Errors during schema validation:\n%s
+
+// Number of fields in Transaction: 23
+
+== Invalid Query Pattern
+
+`INVALID_CASTING`::
+[QRY1] Invalid Query Pattern: The class '%s' cannot be casted to '%s'.
+
+`ANONYMOUS_CONCEPT_VARIABLE`::
+[QRY2] Invalid Query Pattern: Attempted to refer to a concept using an anonymous variable. Their intended use is for inserting things.
+
+`ANONYMOUS_TYPE_VARIABLE`::
+[QRY3] Invalid Query Pattern: Attempted to refer to a type using an anonymous variable. Their intended use is for inserting things.
+
+`UNBOUNDED_CONCEPT_VARIABLE`::
+[QRY4] Invalid Query Pattern: Invalid query containing unbounded concept variable '%s'.
+
+`UNBOUNDED_NEGATION`::
+[QRY5] Invalid Query Pattern: Invalid query containing unbounded negation pattern.
+
+`MISSING_CONSTRAINT_VALUE`::
+[QRY6] Invalid Query Pattern: The value constraint for variable has not been provided with a variable or literal value.
+
+`VARIABLE_CONTRADICTION`::
+[QRY7] Invalid Query Pattern: The variable '%s' is both a type and a thing.
+
+`MULTIPLE_THING_CONSTRAINT_IID`::
+[QRY8] Invalid Query Pattern: The thing variable '%s' has multiple 'iid' constraints.
+
+`MULTIPLE_THING_CONSTRAINT_ISA`::
+[QRY9] Invalid Query Pattern: The thing variable '%s' has multiple 'isa' constraints, '%s' and '%s'.
+
+`MULTIPLE_THING_CONSTRAINT_RELATION`::
+[QRY10] Invalid Query Pattern: The relation variable '%s' has multiple 'relation' constraints
+
+`ILLEGAL_TYPE_SPECIFIER`::
+[QRY11] Invalid Query Pattern: The variable '%s' is specified with a type '%s', which is not allowed in this part of the query.
+
+`MULTIPLE_TYPE_CONSTRAINT_SUB`::
+[QRY12] Invalid Query Pattern: The type variable '%s' has multiple 'sub' constraints.
+
+`MULTIPLE_TYPE_CONSTRAINT_LABEL`::
+[QRY13] Invalid Query Pattern: The type variable '%s' has multiple 'label' constraints.
+
+`MULTIPLE_TYPE_CONSTRAINT_VALUE_TYPE`::
+[QRY14] Invalid Query Pattern: The type variable '%s' has multiple 'value' constraints.
+
+`MULTIPLE_TYPE_CONSTRAINT_REGEX`::
+[QRY15] Invalid Query Pattern: The type variable '%s' has multiple 'regex' constraints.
+
+`INFERENCE_INCOHERENT_MATCH_PATTERN`::
+[QRY16] Invalid Query Pattern: Could not infer compatible types for the match pattern:\n'%s'.
+
+`INFERENCE_INCOHERENT_MATCH_SUB_PATTERN`::
+[QRY17] Invalid Query Pattern: Could not infer compatible types for the match pattern:\n '%s'\n, due to the included pattern:\n'%s'.
+
+`INFERENCE_INCOHERENT_VALUE_TYPES`::
+[QRY18] Invalid Query Pattern: Could not infer compatible types for the pattern:\n'%s'\n, due to contradicting attribute value types for:\n'%s'.
+
+`UNRECOGNISED_ANNOTATION`::
+[QRY19] Invalid Query Pattern: The annotation '%s' is not recognised.
+
+`VARIABLE_NAME_CONFLICT`::
+[QRY20] Invalid Query Pattern: The variable name '%s' was used both for a concept variable and a value variable.
+
+`VALUE_VARIABLE_UNASSIGNED`::
+[QRY21] Invalid Query Pattern: The value variable '%s' is never assigned to.
+
+`VALUE_VARIABLE_DUPLICATE_ASSIGMENT`::
+[QRY22] Invalid Query Pattern: The value variable '%s' can only have one assignment in the first scope it is used in.
+
+`VALUE_ASSIGNMENT_CYCLE`::
+[QRY23] Invalid Query Pattern: A cyclic assignment between value variables was detected: '%s'.
+
+`TYPEQL_ERROR`::
+[QRY24] Invalid Query Pattern: TypeQL error occurred:\n'%s'.
+
+// Number of fields in Pattern: 24
+
+== Invalid projection operation
+
+`PROJECTION_VARIABLE_UNNAMED`::
+[PRO1] Invalid projection operation: Projection variable '%s' must be named.
+
+`PROJECTION_VARIABLE_UNBOUND`::
+[PRO2] Invalid projection operation: Projection variable '%s' is not bound in the preceding match clause.
+
+`VARIABLE_PROJECTION_CONCEPT_NOT_READABLE`::
+[PRO3] Invalid projection operation: The variable projection '%s' cannot be used to fetch entity or relation instances. Entities and relations must be mapped to attributes.
+
+`ILLEGAL_ATTRIBUTE_PROJECTION_TYPE_VARIABLE`::
+[PRO4] Invalid projection operation: Illegal attribute projection from type variable '%s'.
+
+`ILLEGAL_ATTRIBUTE_PROJECTION_ATTRIBUTE_TYPE_INVALID`::
+[PRO5] Invalid projection operation: Attribute projection from '%s' maps to an invalid attribute type '%s'.
+
+`ILLEGAL_ATTRIBUTE_PROJECTION_TYPES_NOT_OWNED`::
+[PRO6] Invalid projection operation: Projection from '%s' to attribute type '%s' is illegal, since '%s' could be of type '%s' which does not own the attribute type or any of its subtypes. Constrain the 'match' clause such that all types can own the attribute type or its subtypes.
+
+`SUBQUERY_UNBOUNDED`::
+[PRO7] Invalid projection operation: Subquery labeled '%s' is not bounded by any parent match clause.
+
+// Number of fields in Projection: 7
+
+== Invalid expression operation
+
+`AMBIGUOUS_VARIABLE_TYPE`::
+[EXP1] Invalid expression operation: The variable '%s' has ambiguous value types: '%s'.
+
+`FUNCTION_NOT_RECOGNISED`::
+[EXP2] Invalid expression operation: The expression function '%s' is not recognised.
+
+`OPERATION_NOT_RECOGNISED`::
+[EXP3] Invalid expression operation: The expression operation '%s' is not recognised.
+
+`FUNCTION_ARGUMENTS_INCOMPATIBLE`::
+[EXP4] Invalid expression operation: The expression '%s' has arguments with incompatible value types: '%s : %s' and '%s : %s'.
+
+`ILLEGAL_CONVERSION`::
+[EXP5] Invalid expression operation: The expression '%s' with value type '%s' cannot be converted to type '%s'.
+
+`ILLEGAL_FUNCTION_ARGUMENT_TYPE`::
+[EXP6] Invalid expression operation: The expression function '%s' cannot accept arguments of value type '%s'.
+
+`ARGUMENT_COUNT_MISMATCH`::
+[EXP7] Invalid expression operation: The expression '%s' expects '%s' arguments but received '%s': '%s'.
+
+`EVALUATION_ERROR`::
+[EXP8] Invalid expression operation: An error occured while evaluating an expression:\nExpression: '%s = %s'; \nInput: '%s'.\nError: '%s'
+
+`EVALUATION_ERROR_DIVISION_BY_ZERO`::
+[EXP9] Invalid expression operation: Illegal division by zero occurred during: '%s / %s'.
+
+// Number of fields in Expression: 9
+
+== Invalid Thing Read
+
+`INVALID_THING_IID_CASTING`::
+[THR1] Invalid Thing Read: Invalid Thing IID casting to '%s'.
+
+`INVALID_THING_VERTEX_CASTING`::
+[THR2] Invalid Thing Read: Invalid ThingVertex ('%s') casting to '%s'.
+
+`INVALID_THING_CASTING`::
+[THR3] Invalid Thing Read: Invalid concept conversion from '%s' to '%s'.
+
+`THING_NOT_FOUND`::
+[THR4] Invalid Thing Read: The thing with IID '%s' is not found.
+
+`INVALID_ROLE_TYPE_LABEL`::
+[THR5] Invalid Thing Read: The role type '%s' is not scoped by its relation type.
+
+`CONTRADICTORY_BOUND_VARIABLE`::
+[THR6] Invalid Thing Read: The nested variable '%s' contradicts the type of its bound variable.
+
+`SORT_ATTRIBUTE_NOT_COMPARABLE`::
+[THR7] Invalid Thing Read: The variable '%s' cannot be used to sort, as it may represent incomparable types '%s' and '%s'.
+
+`VALUES_NOT_COMPARABLE`::
+[THR8] Invalid Thing Read: The '%s' value '%s' cannot be compared to the '%s' value '%s'.
+
+`VALUE_TYPES_NOT_COMPARABLE`::
+[THR9] Invalid Thing Read: The value type '%s' cannot be compared to value type '%s'.
+
+`AGGREGATE_ATTRIBUTE_NOT_NUMBER`::
+[THR10] Invalid Thing Read: The variable '%s' cannot be used to calculate aggregate functions, as it contains non-numeric values.
+
+`NUMERIC_IS_NOT_NUMBER`::
+[THR11] Invalid Thing Read: The numeric value is not a valid number (NaN).
+
+// Number of fields in ThingRead: 11
+
+== Invalid Thing Write
+
+`ILLEGAL_ABSTRACT_WRITE`::
+[THW1] Invalid Thing Write: Attempted an illegal write of a new '%s' of abstract type '%s'.
+
+`THING_HAS_BEEN_DELETED`::
+[THW2] Invalid Thing Write: Instance '%s' of type '%s' has been deleted and cannot be modified any further.
+
+`THING_CANNOT_OWN_ATTRIBUTE`::
+[THW3] Invalid Thing Write: Attribute of type '%s' is not defined to be owned by type '%s'.
+
+`THING_KEY_OVER`::
+[THW4] Invalid Thing Write: Attempted to assign a key of type '%s' onto a(n) '%s' that already has one.
+
+`THING_KEY_TAKEN`::
+[THW5] Invalid Thing Write: Attempted to assign a key '%s' of type '%s' that had been taken by another '%s'.
+
+`THING_KEY_MISSING`::
+[THW6] Invalid Thing Write: Attempted to commit a(n) '%s' that is missing key(s) of type(s): %s
+
+`THING_UNIQUE_TAKEN`::
+[THW7] Invalid Thing Write: Attempted to assign a unique attribute '%s' of type '%s' that had been taken by another '%s'.
+
+`THING_ROLE_UNPLAYED`::
+[THW8] Invalid Thing Write: The thing type '%s' does not play the role type '%s'.
+
+`RELATION_ROLE_UNRELATED`::
+[THW9] Invalid Thing Write: Relation type '%s' does not relate role type '%s'.
+
+`RELATION_PLAYER_MISSING`::
+[THW10] Invalid Thing Write: Relation instance of type '%s' does not have any role player
+
+`ATTRIBUTE_VALUE_UNSATISFIES_REGEX`::
+[THW11] Invalid Thing Write: Attempted to put an instance of '%s' with value '%s' that does not satisfy the regular expression '%s'.
+
+`THING_IID_NOT_INSERTABLE`::
+[THW12] Invalid Thing Write: The variable '%s' tries to insert iid '%s'. IIDs are prohibited in insert clauses. You may want to query the variable using IID in the match clause.
+
+`THING_INSERT_ISA_NOT_THING_TYPE`::
+[THW13] Invalid Thing Write: The type '%s' cannot be used for creating an instance as it is not a thing type.
+
+`THING_ISA_REINSERTION`::
+[THW14] Invalid Thing Write: Attempted to re-insert pre-existing thing of matched variable '%s' as a new instance (isa) of type '%s'.
+
+`THING_ISA_MISSING`::
+[THW15] Invalid Thing Write: The thing variable '%s' cannot be inserted as a new instance without providing its type (isa).
+
+`ILLEGAL_VALUE_VARIABLE_IN_DELETE`::
+[THW16] Invalid Thing Write: Illegal value variable '%s' in delete query. You can only delete named variables that were matched.
+
+`ILLEGAL_ANONYMOUS_VARIABLE_IN_DELETE`::
+[THW17] Invalid Thing Write: Illegal anonymous delete variable in pattern '%s'.  You can only delete named variables that were matched.
+
+`INVALID_DELETE_THING`::
+[THW18] Invalid Thing Write: The thing '%s' cannot be deleted, as the provided type '%s' is not its direct type nor supertype.
+
+`INVALID_DELETE_THING_DIRECT`::
+[THW19] Invalid Thing Write: The thing '%s' cannot be deleted, as the provided direct type '%s' is not valid.
+
+`INVALID_DELETE_HAS`::
+[THW20] Invalid Thing Write: Invalid attempt to delete attribute ownership. The thing '%s' does not have attribute '%s'.
+
+`HAS_TYPE_MISMATCH`::
+[THW21] Invalid Thing Write: The instance of type '%s' cannot own instances of attribute type '%s'.
+
+`ILLEGAL_IS_CONSTRAINT`::
+[THW22] Invalid Thing Write: The 'is' constraint, e.g. used in '%s', is not accepted in an insert/delete query.
+
+`ATTRIBUTE_VALUE_TOO_MANY`::
+[THW23] Invalid Thing Write: Unable to insert attribute '%s' of type '%s' with more than one value operations.
+
+`ATTRIBUTE_VALUE_MISSING`::
+[THW24] Invalid Thing Write: Unable to insert attribute '%s' of type '%s' without a value assigned to the variable.
+
+`INSERT_RELATION_CONSTRAINT_TOO_MANY`::
+[THW25] Invalid Thing Write: Unable to insert relation '%s' as it has more than one relation tuple describing the role players.
+
+`ROLE_TYPE_AMBIGUOUS`::
+[THW26] Invalid Thing Write: Unable to add role player '%s' to the relation, as there are more than one possible role type it could play.
+
+`ROLE_TYPE_MISSING`::
+[THW27] Invalid Thing Write: Unable to add role player '%s' to the relation, as there is no provided or inferrable role type.
+
+`ROLE_TYPE_MISMATCH`::
+[THW28] Invalid Thing Write: The type '%s' cannot be used as a role type.
+
+`PLAYING_TYPE_MISMATCH`::
+[THW29] Invalid Thing Write: The instance of type '%s' cannot play the role type '%s'.
+
+`RELATING_TYPE_MISMATCH`::
+[THW30] Invalid Thing Write: The relation instance of type '%s' cannot relate the role type '%s'.
+
+`MAX_INSTANCE_REACHED`::
+[THW31] Invalid Thing Write: The maximum number of instances for type '%s' has been reached: '%s'
+
+`DELETE_RELATION_CONSTRAINT_TOO_MANY`::
+[THW32] Invalid Thing Write: Could not perform delete of role players due to multiple relation constraints being present for relation '%s'.
+
+`DELETE_ROLEPLAYER_NOT_PRESENT`::
+[THW33] Invalid Thing Write: Could not delete roleplayer '%s' as relation '%s' does not relate it.
+
+`ILLEGAL_VALUE_CONSTRAINT_IN_INSERT`::
+[THW34] Invalid Thing Write: Illegal value constraint found in the insert query on variable '%s'. Value variables are only permitted to specify attribute values.
+
+`ILLEGAL_UNBOUND_TYPE_VAR_IN_INSERT`::
+[THW35] Invalid Thing Write: Type variable '%s' found in the insert query must retrieved by the match previously.
+
+// Number of fields in ThingWrite: 35
+
+== Invalid Schema Graph Operation
+
+`INVALID_SCHEMA_IID_CASTING`::
+[SCG1] Invalid Schema Graph Operation: Invalid Schema IID cast to '%s'.
+
+`INVALID_SCHEMA_WRITE`::
+[SCG2] Invalid Schema Graph Operation: The label '%s' is already in use in the schema graph.
+
+// Number of fields in TypeGraph: 2
+
+== Invalid Type Read
+
+`INVALID_TYPE_CASTING`::
+[TYR1] Invalid Type Read: Invalid concept conversion from '%s' to '%s'.
+
+`TYPE_ROOT_MISMATCH`::
+[TYR2] Invalid Type Read: Attempted to retrieve '%s' as '%s', while it is actually a(n) '%s'.
+
+`TYPE_NOT_FOUND`::
+[TYR3] Invalid Type Read: The type '%s' does not exist.
+
+`ROLE_TYPE_NOT_FOUND`::
+[TYR4] Invalid Type Read: There is no role type '%s' in the relation type '%s'
+
+`TYPE_NOT_RESOLVABLE`::
+[TYR5] Invalid Type Read: The type for variable '%s' is not resolvable.
+
+`TYPE_NOT_ATTRIBUTE_TYPE`::
+[TYR6] Invalid Type Read: The type '%s' is not a valid attribute type.
+
+`VALUE_TYPE_MISMATCH`::
+[TYR7] Invalid Type Read: Attempted to retrieve '%s' as AttributeType of ValueType '%s', while it actually has ValueType '%s'.
+
+`OVERRIDDEN_TYPES_IN_TRAVERSAL`::
+[TYR8] Invalid Type Read: Attempted to query for an overridden type through a traversal. Overridden types cannot be queried via TypeQL Match.
+
+`ROLE_TYPE_SCOPE_IS_NOT_RELATION_TYPE`::
+[TYR9] Invalid Type Read: The role type '%s' has scope '%s' that is not a relation type.
+
+// Number of fields in TypeRead: 9
+
+== Invalid Type Write
+
+`ROOT_TYPE_MUTATION`::
+[TYW1] Invalid Type Write: Root types are immutable.
+
+`TYPE_HAS_SUBTYPES`::
+[TYW2] Invalid Type Write: The type '%s' has subtypes, and cannot be deleted.
+
+`TYPE_HAS_INSTANCES_SET_ABSTRACT`::
+[TYW3] Invalid Type Write: The type '%s' has instances, and cannot be set abstract.
+
+`TYPE_HAS_INSTANCES_DELETE`::
+[TYW4] Invalid Type Write: The type '%s' has instances, and cannot be deleted.
+
+`TYPE_HAS_BEEN_DELETED`::
+[TYW5] Invalid Type Write: The type '%s' has been deleted and cannot be modified any further.
+
+`EDGE_HAS_BEEN_DELETED`::
+[TYW6] Invalid Type Write: The edge '%s' has been deleted and cannot be modified any further.
+
+`TYPE_REFERENCED_IN_RULES`::
+[TYW7] Invalid Type Write: The type '%s' is referenced in rules '%s', and cannot be deleted.
+
+`CYCLIC_TYPE_HIERARCHY`::
+[TYW8] Invalid Type Write: There is a cyclic type hierarchy, which is not allowed: '%s'.
+
+`OWNS_ABSTRACT_ATTRIBUTE_TYPE`::
+[TYW9] Invalid Type Write: The type '%s' is not abstract, and thus cannot own an abstract attribute type '%s'.
+
+`OVERRIDDEN_OWNED_ATTRIBUTE_TYPE_NOT_SUPERTYPE`::
+[TYW10] Invalid Type Write: In the type '%s', the owned attribute type '%s' cannot override '%s' as it is not a supertype.
+
+`OVERRIDDEN_PLAYED_ROLE_TYPE_NOT_SUPERTYPE`::
+[TYW11] Invalid Type Write: In the type '%s', the played role type '%s' cannot override '%s' as it is not a supertype.
+
+`OVERRIDDEN_RELATED_ROLE_TYPE_NOT_INHERITED`::
+[TYW12] Invalid Type Write: In the relation type '%s', the related role type '%s' cannot override '%s' as it is not an inherited role type.
+
+`ATTRIBUTE_SUPERTYPE_VALUE_TYPE`::
+[TYW14] Invalid Type Write: The attribute type '%s' has value type '%s', and cannot have supertype '%s' with value type '%s'.
+
+`ATTRIBUTE_VALUE_TYPE_MISSING`::
+[TYW15] Invalid Type Write: The attribute type '%s' is missing a value type.
+
+`ATTRIBUTE_VALUE_TYPE_MODIFIED`::
+[TYW16] Invalid Type Write: An attribute value type (in this case '%s') can only be set onto an attribute type (in this case '%s') when it is defined for the first time.
+
+`ATTRIBUTE_VALUE_TYPE_UNDEFINED`::
+[TYW17] Invalid Type Write: An attribute value type (in this case '%s') cannot be undefined. You can only undefine the attribute type (in this case '%s') itself.
+
+`ATTRIBUTE_UNSET_ABSTRACT_HAS_SUBTYPES`::
+[TYW18] Invalid Type Write: The attribute type '%s' cannot be set to non abstract as it has subtypes.
+
+`ATTRIBUTE_NEW_SUPERTYPE_NOT_ABSTRACT`::
+[TYW19] Invalid Type Write: The attribute type '%s' cannot be subtyped as it is not abstract.
+
+`ATTRIBUTE_REGEX_UNSATISFIES_INSTANCES`::
+[TYW20] Invalid Type Write: The attribute type '%s' cannot have regex '%s' as as it has an instance of value '%s'.
+
+`ATTRIBUTE_VALUE_TYPE_DEFINED_NOT_ON_ATTRIBUTE_TYPE`::
+[TYW21] Invalid Type Write: The type '%s' is not an attribute type, so it can not have a value type defined.
+
+`ROOT_ATTRIBUTE_TYPE_CANNOT_BE_OWNED`::
+[TYW22] Invalid Type Write: The native root 'attribute' type cannot be owned.
+
+`ROOT_ROLE_TYPE_CANNOT_BE_PLAYED`::
+[TYW23] Invalid Type Write: The native root 'role' type cannot be played.
+
+`OWNS_ATTRIBUTE_WAS_OVERRIDDEN`::
+[TYW24] Invalid Type Write: Type '%s' cannot own '%s' since it was overridden in a supertype, and cannot be redeclared as an ownership.
+
+`REDUNDANT_OWNS_DECLARATION`::
+[TYW25] Invalid Type Write: Type '%s' cannot redeclare inherited ownership '%s' without annotation specialisation.
+
+`OWNS_VALUE_TYPE_NO_EXACT_EQUALITY`::
+[TYW26] Invalid Type Write: Type '%s' cannot own '%s' with annotations '%s' since it has has value type '%s', which does not have an exact equality.
+
+`OWNS_ANNOTATION_DECLARATION_INCOMPATIBLE`::
+[TYW27] Invalid Type Write: Type '%s' cannot own '%s' with incompatible declared annotations '%s' and '%s'
+
+`OWNS_OVERRIDE_ANNOTATIONS_REDUNDANT`::
+[TYW28] Invalid Type Write: Type '%s' cannot declare ownership of '%s' with annotations '%s' since these annotations are inherited from overriding '%s'.
+
+`OWNS_ANNOTATION_LESS_STRICT_THAN_PARENT`::
+[TYW29] Invalid Type Write: Type '%s' cannot declare ownership of '%s' with annotations '%s' since this annotation is not stricter than the parent ownership '%s'.
+
+`OWNS_KEY_PRECONDITION_OWNERSHIP_KEY_TOO_MANY`::
+[TYW30] Invalid Type Write: Some instances of type '%s' have zero attributes of type '%s' to convert to key.
+
+`OWNS_KEY_PRECONDITION_OWNERSHIP_KEY_MISSING`::
+[TYW31] Invalid Type Write: Some instances of type '%s' have more than one attribute of type '%s' to convert to key.
+
+`OWNS_KEY_PRECONDITION_UNIQUENESS`::
+[TYW32] Invalid Type Write: The attributes of type '%s' are not uniquely owned by instances of type '%s' to convert to key.
+
+`OWNS_UNIQUE_PRECONDITION`::
+[TYW33] Invalid Type Write: The attributes of type '%s' are not uniquely owned by instances of type '%s' to convert to unique.
+
+`ILLEGAL_ROLE_TYPE_ALIAS`::
+[TYW34] Invalid Type Write: The role type '%s' cannot be used as an alias for the inherited role type '%s' - use the inherited role type or define a new role type overriding it with a new name.
+
+`PLAYS_ROLE_NOT_AVAILABLE_OVERRIDDEN`::
+[TYW35] Invalid Type Write: Type '%s' cannot declare plays role type '%s' as it has been overridden and cannot be redeclared.
+
+`PLAYS_ABSTRACT_ROLE_TYPE`::
+[TYW36] Invalid Type Write: The type '%s' is not abstract, and thus cannot play an abstract role type '%s'.
+
+`RELATION_NO_ROLE`::
+[TYW37] Invalid Type Write: The relation type '%s' does not relate any role type.
+
+`RELATION_ABSTRACT_ROLE`::
+[TYW38] Invalid Type Write: The relation type '%s' is not abstract, and thus cannot relate an abstract role type '%s'.
+
+`RELATION_RELATES_ROLE_FROM_SUPERTYPE`::
+[TYW39] Invalid Type Write: The role type '%s' is already declared by a supertype of '%s'.
+
+`RELATION_RELATES_ROLE_NOT_AVAILABLE`::
+[TYW40] Invalid Type Write: The role type '%s' cannot override '%s' as it is either directly related or not inherited.
+
+`ROLE_DEFINED_OUTSIDE_OF_RELATION`::
+[TYW41] Invalid Type Write: The role type '%s' cannot be defined/undefined outside the scope of its relation type.
+
+`INVALID_DEFINE_SUB`::
+[TYW42] Invalid Type Write: The type '%s' cannot be defined, as the provided supertype '%s' is not a valid thing type.
+
+`INVALID_UNDEFINE_SUB`::
+[TYW43] Invalid Type Write: The type '%s' cannot be undefined, as the provided supertype '%s' is not a valid supertype.
+
+`INVALID_UNDEFINE_RELATES_OVERRIDE`::
+[TYW44] Invalid Type Write: The overridden related role type '%s' cannot be undefined. You should re-define relating '%s' without overriding.
+
+`INVALID_UNDEFINE_PLAYS_OVERRIDE`::
+[TYW45] Invalid Type Write: The overridden played role type '%s' cannot be undefined. You should re-define playing '%s' without overriding.
+
+`INVALID_UNDEFINE_OWNS_OVERRIDE`::
+[TYW46] Invalid Type Write: The overridden owned attribute type '%s' cannot be undefined. You should re-define owning '%s' without overriding.
+
+`INVALID_UNDEFINE_ANNOTATIONS`::
+[TYW47] Invalid Type Write: Annotations cannot be undefined on '%s'. You should re-define the pattern without the annotations.
+
+`INVALID_UNDEFINE_RELATES_HAS_INSTANCES`::
+[TYW48] Invalid Type Write: The role type '%s' cannot be undefined because it is currently played by existing instances.
+
+`INVALID_UNDEFINE_OWNS_HAS_INSTANCES`::
+[TYW49] Invalid Type Write: The ability of type '%s' to own attribute type '%s' cannot be undefined because there are data instances using this ownership.
+
+`INVALID_UNDEFINE_PLAYS_HAS_INSTANCES`::
+[TYW50] Invalid Type Write: The ability of type '%s' to play role type '%s' cannot be undefined because it is currently played by existing instances.
+
+`INVALID_UNDEFINE_INHERITED_OWNS`::
+[TYW51] Invalid Type Write: The ability of type '%s' to own attribute type '%s' cannot be undefined because the ability is inherited from a supertype.
+
+`INVALID_UNDEFINE_INHERITED_PLAYS`::
+[TYW52] Invalid Type Write: The ability of type '%s' to play role type '%s' cannot be undefined because the ability is inherited from a supertype.
+
+`INVALID_UNDEFINE_NONEXISTENT_OWNS`::
+[TYW53] Invalid Type Write: The ability of type '%s' to own attribute type '%s' cannot be undefined because it does not have that ability.
+
+`INVALID_UNDEFINE_NONEXISTENT_PLAYS`::
+[TYW54] Invalid Type Write: The ability of type '%s' to play role type '%s' cannot be undefined because it does not have that ability.
+
+`TYPE_CONSTRAINT_UNACCEPTED`::
+[TYW55] Invalid Type Write: The type constraint '%s' is not accepted in a define/undefine query.
+
+`ILLEGAL_SUPERTYPE_ENCODING`::
+[TYW56] Invalid Type Write: Unable to set type with class '%s' as a supertype.
+
+`SCHEMA_VALIDATION_INVALID_DEFINE`::
+[TYW57] Invalid Type Write: Defining '%s' failed because resulting schema would be invalid: %s.
+
+`SCHEMA_VALIDATION_INVALID_UNDEFINE`::
+[TYW58] Invalid Type Write: Undefining '%s' failed because the resulting schema would be invalid: %s.
+
+`SCHEMA_VALIDATION_INVALID_SET_SUPERTYPE`::
+[TYW59] Invalid Type Write: Setting the supertype of '%s' to '%s' failed because the resulting schema would be invalid: %s.
+
+`OVERRIDDEN_PLAYED_ROLE_NOT_AVAILABLE`::
+[TYW60] Invalid Type Write: The type '%s' cannot override playing '%s' with '%s' as it is either directly declared or not inherited.
+
+`OVERRIDDEN_OWNED_ATTRIBUTE_NOT_AVAILABLE`::
+[TYW61] Invalid Type Write: The type '%s' cannot override the ownership of '%s' with '%s' as it is either directly declared or not inherited.
+
+`REDUNDANT_PLAYS_DECLARATION`::
+[TYW62] Invalid Type Write: Type '%s' cannot declare plays role type '%s' as it is already inherited.
+
+`MAX_SUBTYPE_REACHED`::
+[TYW63] Invalid Type Write: The maximum number of '%s' types has been reached: '%s'.
+
+// Number of fields in TypeWrite: 62
+
+== Invalid value read
+
+`INVALID_VALUE_CASTING`::
+[VLR1] Invalid value read: Invalid value conversion from '%s' to '%s'.
+
+`INVALID_VALUE_IID_CASTING`::
+[VLR2] Invalid value read: Invalid value IID casting to '%s'.
+
+// Number of fields in ValueRead: 2
+
+== Invalid Rule Read
+
+`RULE_NOT_FOUND`::
+[RUR1] Invalid Rule Read: The rule with label '%s' is not found.
+
+// Number of fields in RuleRead: 1
+
+== Invalid Rule Write
+
+`INVALID_UNDEFINE_RULE_BODY`::
+[RUW1] Invalid Rule Write: The rule body of '%s' ('when' or 'then') cannot be undefined. The rule must be undefined entirely by referring to its label.
+
+`CONTRADICTORY_RULE_CYCLE`::
+[RUW2] Invalid Rule Write: A cycle containing negation(s) that can cause inference contradictions has been detected in rules: %s
+
+`RULE_CONCLUSION_ILLEGAL_INSERT`::
+[RUW3] Invalid Rule Write: The conclusion of rule '%s' may insert types '%s', which is not allowed in the current schema.
+
+`RULE_WHEN_INCOHERENT`::
+[RUW4] Invalid Rule Write: The rule '%s' has a when clause '%s' that is illegal in the current schema.
+
+`RULE_WHEN_UNANSWERABLE`::
+[RUW5] Invalid Rule Write: The rule '%s' has a when clause '%s' that can never have answers in the current schema.
+
+`RULE_WHEN_UNANSWERABLE_BRANCH`::
+[RUW6] Invalid Rule Write: The rule '%s' has a branch in the when clause '%s' that can never have answers in the current schema.
+
+`RULE_THEN_INCOHERENT`::
+[RUW7] Invalid Rule Write: The rule '%s' has a then clause '%s' that can never be satisfied in the current schema.
+
+`RULE_THEN_INSERTS_ABSTRACT_TYPES`::
+[RUW8] Invalid Rule Write: The rule '%s' has a then clause '%s' which tries to insert instances of types '%s', some of which are abstract.
+
+`RULE_THEN_INVALID_VALUE_ASSIGNMENT`::
+[RUW9] Invalid Rule Write: The rule '%s' has a then clause with an invalid assignment of '%s' into a '%s'.
+
+`MAX_RULE_REACHED`::
+[RUW10] Invalid Rule Write: The maximum number of rules has been reached: '%s'
+
+// Number of fields in RuleWrite: 10
+
+== Reasoner Error
+
+`REASONING_CANNOT_BE_TOGGLED_PER_QUERY`::
+[RSN1] Reasoner Error: Reasoning cannot be enabled/disabled per query. Try using Transaction options instead.
+
+`REVERSE_UNIFICATION_MISSING_CONCEPT`::
+[RSN2] Reasoner Error: Reverse unification failed because a concept for identifier '%s' was not found in the provided map '%s'.
+
+`REASONING_TERMINATED_WITH_CAUSE`::
+[RSN3] Reasoner Error: Reasoning is terminated, caused by '%s'.
+
+`REASONER_TRACING_CANNOT_BE_TOGGLED_PER_QUERY`::
+[RSN4] Reasoner Error: Reasoner tracing cannot be enabled/disabled per query. Try using Transaction options instead.
+
+`REASONER_TRACING_DIRECTORY_COULD_NOT_BE_FOUND`::
+[RSN5] Reasoner Error: Reasoner tracing could not find or create the log directory provided.
+
+`REASONER_TRACING_FILE_COULD_NOT_BE_FOUND`::
+[RSN6] Reasoner Error: Reasoner tracing file could not be found.
+
+`REASONER_TRACING_WRITE_FAILED`::
+[RSN7] Reasoner Error: Reasoner tracing failed to write to file.
+
+// Number of fields in Reasoner: 7
+
+== Migrator failure
+
+`DATABASE_NOT_FOUND`::
+[MIG1] Migrator failure: The database '%s' was not found.
+
+`FILE_NOT_FOUND`::
+[MIG2] Migrator failure: The specified file path '%s' could not be found.
+
+`FILE_READ_ERROR`::
+[MIG3] Migrator failure: Error reading the file at '%s'.
+
+`FILE_WRITE_ERROR`::
+[MIG4] Migrator failure: Error writing the file at '%s'.
+
+`TYPE_NOT_FOUND`::
+[MIG5] Migrator failure: The type '%s' is not defined in the schema.
+
+`ROLE_TYPE_NOT_FOUND`::
+[MIG6] Migrator failure: The role type '%s'is not defined for relation type '%s. Please confirm schema was migrated correctly.
+
+`PLAYER_NOT_FOUND`::
+[MIG7] Migrator failure: A player for relation type '%s' was expected but not found.
+
+`NO_PLAYERS`::
+[MIG8] Migrator failure: The relation of type '%s' with original ID '%s' has no role players
+
+`INVALID_DATA`::
+[MIG9] Migrator failure: The data being imported is invalid.
+
+`MISSING_HEADER`::
+[MIG10] Migrator failure: The data being imported is invalid - the header is missing.
+
+`IMPORT_CHECKSUM_MISMATCH`::
+[MIG11] Migrator failure: The import has finished but mismatches the required checksums: '%s
+
+// Number of fields in Migrator: 11
+
+== Data encoding error
+
+`ILLEGAL_STRING_SIZE`::
+[ENC1] Data encoding error: Attempted to insert a string larger than the maximum possible size: %s bytes.
+
+`UNENCODABLE_STRING`::
+[ENC2] Data encoding error: The string '%s' cannot be encoded to bytes using the encoding '%s'.
+
+`UNENCODABLE_DOUBLE`::
+[ENC3] Data encoding error: The double '%s' cannot be encoded.
+
+// Number of fields in Encoding: 3
+
