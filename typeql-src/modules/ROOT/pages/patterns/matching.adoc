@@ -27,15 +27,15 @@ and xref:typeql::patterns/negation.adoc[negations].
 
 A matching pattern can use any valid TypeQL statements,
 except the xref:typeql::statements/rule.adoc[rule] definition statement.
-Other clauses use limited subsets of statements, e.g., in
-xref:typeql::queries/overview.adoc#_schema_queries[schema queries] one can only use schema related statements.
-
-A pattern in an `insert` or `delete` clause can use only data-specific statements
+Other clauses use limited subsets of statements, e.g.,
+a pattern in an `insert` or `delete` clause can use only data-specific statements
 and can reuse variables matched by a `match` clause.
 
 == Behavior
 
-A `match` clause is used to find all existing concepts in a database that *satisfy* a pattern. These concepts are called the *matched results* of that pattern. Satisfaction of a pattern depends on the structure of the pattern:
+A `match` clause is used to find all existing concepts in a database that *satisfy* a pattern.
+These concepts are called the *matched results* of that pattern.
+Satisfaction of a pattern depends on the structure of the pattern:
 
 * In a conjunction of patterns, each pattern must hold true.
 * In a disjunction of patterns, at least one pattern must hold true.
@@ -52,9 +52,12 @@ Every matched result contains
 * an exact value for every xref:typeql::values/value-variables.adoc[value variable]
 * an exact concept for every xref:typeql::concepts/concept-variables.adoc[concept variable].
 
-Matched results for a pattern are *solution* for that pattern, meaning when you substitute variables in a pattern with values and concepts from a solution, it becomes a true statement.
+Matched results for a pattern are *solution* for that pattern,
+meaning when you substitute variables in a pattern with values and concepts from a solution,
+it becomes a true statement.
 
-Note that a match clause is an intermediate step in the execution of queries and thus does not directly provide a response to the user.
+Note that a match clause is an intermediate step in the execution of queries
+and thus does not directly provide a response to the user.
 
 == Matching a specific concept
 
