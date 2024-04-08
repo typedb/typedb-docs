@@ -6,8 +6,7 @@
 
 A Fetch query retrieves values from a TypeDB database and returns them as JSON objects.
 For a practical guide on how to send a Fetch query to TypeDB,
-see the xref:manual::reading/fetch.adoc[] page of TypeDB Manual.
-Fetch queries can use rule-based xref:manual::reading/infer.adoc[inference].
+see the xref:manual::reading/fetch.adoc[] page of the TypeDB Manual.
 
 == Syntax
 
@@ -39,6 +38,8 @@ if not all query variables are projected into results.
 
 You can use xref:typeql::modifiers/sorting.adoc[sorting] and
 xref:typeql::modifiers/pagination.adoc[pagination] with a Fetch query.
+
+Fetch queries can use rule-based xref:manual::reading/infer.adoc[inference].
 
 [#_match_clause]
 === Match clause

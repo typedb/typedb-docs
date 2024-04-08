@@ -6,11 +6,10 @@
 
 A Get query retrieves concepts as stateful objects from a TypeDB database that you can further process with the
 xref:drivers::overview.adoc#_driver_api[driver API] methods.
-For example, see the xref:manual::objects/data.adoc[data objects] and
-xref:manual::objects/schema.adoc[schema objects] pages.
 For a practical guide on how to send a Get query to TypeDB,
-see the xref:manual::reading/get.adoc[] page of TypeDB Manual.
-Get queries can use rule-based xref:manual::reading/infer.adoc[inference].
+see the xref:manual::reading/get.adoc[] page of the TypeDB Manual.
+For response processing examples, see the xref:manual::objects/data.adoc[data objects] and
+xref:manual::objects/schema.adoc[schema objects] pages.
 
 == Syntax
 
@@ -41,6 +40,8 @@ See the <<_response>> section below.
 
 You can use xref:typeql::modifiers/sorting.adoc[sorting] and
 xref:typeql::modifiers/pagination.adoc[pagination] with a Get query.
+
+Get queries can use rule-based xref:manual::reading/infer.adoc[inference].
 
 [#_match_clause]
 === Match clause
