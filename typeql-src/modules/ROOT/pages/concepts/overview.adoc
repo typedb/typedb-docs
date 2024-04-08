@@ -1,11 +1,12 @@
 = Concepts overview
+:page-preamble-card: 1
 
 TypeQL can be used for polymorphic queries with patterns containing
 xref:typeql::concepts/concept-variables.adoc[concept variables] and
 xref:typeql::values/value-variables.adoc[value variables].
-By default, a concept variable can represent any type or data instance in a database.
+A concept variable can represent any type or data instance in a database.
 To limit the set of possible concepts represented by a concept variable,
-add constraints with TypeQL keywords, like `sub`, `isa`, `has`.
+add constraints with TypeQL keywords, like `sub`, `isa`, `has`, etc.
 
 ////
 .See an example
