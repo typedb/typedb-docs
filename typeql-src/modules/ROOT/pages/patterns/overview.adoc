@@ -5,10 +5,10 @@
 A pattern is a set of declarative constraints. TypeQL uses patterns in its queries and clauses.
 
 * In data queries, patterns are used to specify constraints on concepts to be retrieved or processed.
-
 * In schema queries, we use schema-specific patterns without any variables to define or undefine type definitions.
 
-Patterns are xref:typeql::patterns/matching.adoc[constructed] from xref:typeql::statements/overview.adoc[statements] and <<_pattern_operations,pattern operations>>.
+Patterns are xref:typeql::patterns/matching.adoc[built] from xref:typeql::statements/overview.adoc[statements]
+using <<_pattern_operations,pattern operations>>.
 
 [#_pattern_operations]
 == Pattern operations
@@ -54,7 +54,11 @@ Patterns are used in queries in various ways.
 [#_composable_patterns]
 == Composing patterns
 
-The most important way of writing patterns is xref:typeql::patterns/conjunction.adoc[conjunction]: you can combine two patterns by joining their statements together in a new pattern.
+You can combine two patterns by joining their statements together in a new pattern.
+All semicolon-separated statements are combined with an implicit
+xref:typeql::patterns/conjunction.adoc[conjunction].
+That makes the order of statements irrelevant.
+Hence, it's easy to change the results by adding new constraints to the pattern.
 
 For example, in the following pattern
 the `$u` variable is specified to be a user with a `full-name` attribute, which value is equal to `Kevin Morrison`,

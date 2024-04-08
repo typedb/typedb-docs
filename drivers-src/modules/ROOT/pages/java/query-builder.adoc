@@ -6,7 +6,9 @@
 
 The Java query builder library can be used to programmatically construct TypeQL queries with native Java code.
 
-To use TypeQL, add it as a dependency to the `pom.xml`.
+== Import
+
+To use TypeQL, add it as a dependency to the `pom.xml` file.
 
 The latest version of the `typeql-lang` can be found in the
 https://cloudsmith.io/~typedb/repos/public-release/packages/detail/maven/typeql-lang/latest/a=noarch;xg=com.vaticle.typeql/#versions[Vaticle's public Maven repository,window=_blank].
@@ -33,16 +35,16 @@ Replace the `\{version}` placeholder with the exact version of the library.
 </dependencies>
 ----
 
-Then we import `TypeQL`.
+Then, import `TypeQL` in the source code:
 
 [,java]
 ----
 import com.vaticle.typeql.lang.TypeQL;
 ----
 
-We are now ready to construct TypeQL queries, using the methods available for the `TypeQL` class.
+You are now ready to construct TypeQL queries, using the methods available for the `TypeQL` class.
 
-== Examples
+== Usage
 
 Using the Java query builder library is quite simple as it produces a TypeQL string.
 See the examples below.
@@ -60,27 +62,26 @@ TypeQLGet getQuery = TypeQL.match(
 ).get(cVar("fp"));
 ----
 
-As the result of the above example we should get a TypeQL query in a `getQuery` variable that can be used for a
-get query like in the following line.
-
-[WARNING]
-====
-Since version `2.18.0` for concept variables we should use `cVar()`, and for value variables -- `vVar()`.
-
-In version prior to `2.18.0` the `var()` was used instead of `cVar()` as there were no value variables.
-====
-
-[,java]
-----
-readTransaction.query().get(getQuery)
-----
-
-The result should be the same as if we set `getQuery` variable as a TypeQL string.
+As the result of the above example you should get a TypeQL query string in a `getQuery` variable that can be used for a
+get query.
+The resulted string should be similar to the following:
 
 [,java]
 ----
 String getQuery = "match $u isa user, has full-name 'Kevin Morrison'; $p($u, $pa) isa permission; " +
                   "$o isa object, has path $fp; $pa($o, $va) isa access; get $fp;";
+----
+
+[NOTE]
+====
+In versions prior to `2.18.0` the `var()` keyword was used instead of `cVar()` as there were no value variables.
+====
+
+Send the query:
+
+[,java]
+----
+readTransaction.query().get(getQuery);
 ----
 
 //2
