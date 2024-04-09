@@ -136,18 +136,26 @@ The full API reference for the TypeDB C++ driver.
 
 == C driver
 
-For TypeDB C driver documentation,
-see the https://github.com/vaticle/typedb-driver/blob/development/c/README.md[Readme file] in the GitHub repository.
+[cols-3]
+--
+.xref:drivers::c/overview.adoc[Overview]
+[.clickable]
+****
+Basic information, Installation instructions, and version compatibility.
+****
 
-// * xref:drivers::rust/overview.adoc[Rust] (xref:rust/api-reference.adoc[API reference])
-// * xref:drivers::python/overview.adoc[Python] (xref:python/api-reference.adoc[API reference])
-// * xref:drivers::java/overview.adoc[Java] (xref:java/api-reference.adoc[API reference])
-// * xref:drivers::nodejs/overview.adoc[Node.js] (xref:nodejs/api-reference.adoc[API reference])
+// .xref:drivers::cpp/tutorial.adoc[Tutorial]
+// [.clickable]
+// ****
+// The sample application tutorial for the C++ driver.
+// ****
 
-//We also have some community projects for xref:other-languages.adoc[other languages].
-//and provide support for creating a xref:new-driver.adoc[new driver].
-
-// We recommend instantiating a single TypeDB driver per application.
+.xref:drivers::c/api-reference.adoc[API reference]
+[.clickable]
+****
+The full API reference for the TypeDB C driver.
+****
+--
 
 == Driver architecture
 
