@@ -1,0 +1,164 @@
+= C driver
+:Summary: Overview for the TypeDB C driver.
+:keywords: typedb, client, driver, c
+:pageTitle: TypeDB C driver
+
+The C language driver was developed by Vaticle to enable TypeDB support for C language software and developers.
+
+[cols-2]
+--
+.link:https://github.com/vaticle/typedb-driver/tree/development/c[GitHub,window=_blank]
+[.clickable]
+****
+The GitHub repository with the driver's source code and release notes.
+****
+
+.link:https://cloudsmith.io/~typedb/packages/?q=clib&sort=-version[Downloads,window=_blank]
+[.clickable]
+****
+See the driver's downloadable packages.
+****
+--
+
+[#_install_c]
+== Install
+
+For Linux: the minimum version of `glibc` is `2.25.0`.
+
+See the
+<<_version_compatibility>> table to check what versions of TypeDB and C driver are compatible.
+
+The C driver is distributed as an archive containing the headers & a shared library.
+
+To install TypeDB C driver:
+
+. https://cloudsmith.io/~typedb/packages/?q=clib&sort=-version[Download] the latest release for your
+architecture (`x86_64`/`arm64`) and OS (Linux/macOS/Win).
+. Place the library file in the `lib` directory inside your project folder
+and the header files in the `include` directory.
+. Configure the build and include the header file `typedb_driver.hpp` from the `include` directory.
+See an example of `CMakeLists.txt` below:
++
+.CMakeLists.txt example
+[,source]
+----
+cmake_minimum_required(VERSION 3.10)
+if(NOT DEFINED TYPEDB_ASSEMBLY)
+    message(FATAL_ERROR "TYPEDB_ASSEMBLY is not set")
+ENDIF()
+
+project (TestAssembly C)
+
+link_directories(${TYPEDB_ASSEMBLY}/lib)
+include_directories(${TYPEDB_ASSEMBLY}/include)
+
+add_executable(test_assembly test.c)
+IF (WIN32)
+    target_link_libraries(test_assembly typedb_driver_clib.dll.lib)
+ELSE()
+    target_link_libraries(test_assembly typedb_driver_clib)
+ENDIF()
+----
+
+////
+== Quickstart
+
+See below a short example of C code that connects to a local TypeDB Core,
+creates a database named `access-management-db`, defines a schema, inserts some data, and then reads it.
+
+[,c]
+----
+#include <iostream>
+#include <typedb_driver.hpp>
+
+int main() {
+    const std::string dbName = "access-management-db";
+    const std::string ServerAddr = "127.0.0.1:1729";
+    try {
+        TypeDB::Driver driver = TypeDB::Driver::coreDriver(ServerAddr);
+        if (driver.databases.contains(dbName)) {
+            driver.databases.get(dbName).deleteDatabase();
+        }
+        driver.databases.create(dbName);
+        TypeDB::Options options;
+        {
+            auto session = driver.session(dbName, TypeDB::SessionType::SCHEMA, options);
+            auto tx = session.transaction(TypeDB::TransactionType::WRITE, options);
+            tx.query.define("define person sub entity;", options).get();
+            tx.query.define("define name sub attribute, value string; person owns name;", options).get();
+            tx.commit();
+        }
+        {
+            auto session = driver.session(dbName, TypeDB::SessionType::DATA, options);
+            {
+                auto tx = session.transaction(TypeDB::TransactionType::WRITE, options);
+                (void) tx.query.insert("insert $p isa person, has name 'Alice';", options);
+                (void) tx.query.insert("insert $p isa person, has name 'Bob';", options);
+                tx.commit();
+            }
+            {
+                auto tx = session.transaction(TypeDB::TransactionType::READ, options);
+                TypeDB::ConceptMapIterable result = tx.query.get("match $p isa person, has name $n; get $n;", options);
+                for (TypeDB::ConceptMap& cm : result) {
+                    std::unique_ptr<TypeDB::Concept> t = cm.get("n");
+                    std::cout << t->asAttribute()->getType()->getLabel() << " : " << (t->asAttribute()->getValue()->asString()) << std::endl;
+                }
+                tx.close();
+            }
+        }
+    } catch (TypeDB::DriverException e ) {
+        std::cout << "Caught TypeDB::DriverException: " << e.code() << "\n" << e.message()  << std::endl;
+        return 2;
+    }
+    return 0;
+}
+----
+
+
+////
+
+== Usage
+
+For usage example of the TypeDB C driver, see the
+https://github.com/vaticle/typedb-driver/blob/master/c/tests/integration/driver_test.c[integration tests] on GitHub.
+
+For more information on the TypeDB C driver API methods, see the API reference link below.
+
+== Learn more
+
+[cols-2]
+--
+////
+.xref:drivers::c/tutorial.adoc[Tutorial]
+[.clickable]
+****
+This tutorial will help you learn how to use the C driver.
+****
+////
+
+.xref:c/api-reference.adoc[API reference]
+[.clickable]
+****
+Driver API reference for the C language.
+****
+--
+
+include::drivers::partial$drivers2discord.adoc[]
+
+[#_version_compatibility]
+== Version Compatibility
+
+[cols="^.^3,^.^2,^.^3,^.^3"]
+|===
+| C driver | Protocol encoding version | TypeDB Core | TypeDB Cloud
+
+| 2.27.0
+| 3
+| 2.27.0
+| 2.27.0
+
+| 2.26.6
+| 3
+| 2.26.6
+| 2.26.6
+|===
