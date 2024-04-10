@@ -9,12 +9,12 @@ Welcome to the TypeDB, TypeQL and TypeDB Clients technical documentation.
 // tag::rust-rewrite[]
 [NOTE]
 ====
-TypeDB & TypeQL are in the process of being ported over and rewritten in Rust.
-There will be changes that won't be backwards compatible,
-as we refine the language further to extend its expressivity,
-as well as changes to the byte storage data structure to further boost performance significantly.
-We're aiming to complete this by April/May 2024,
-released as TypeDB 3.0, along with preliminary benchmarks of TypeDB.
+TypeDB & TypeQL are in the process of being rewritten in https://www.rust-lang.org[Rust].
+There will be significant refinement to the language, and minor breaks in backwards compatibility.
+Learn about the changes on our https://github.com/vaticle/typedb/issues/6764[roadmap issue on GitHub].
+The biggest change to TypeDB 3.0 will be our storage data structure and architecture
+that significantly boosts performance.
+We’re aiming to release 3.0 in the summer this year, along with preliminary benchmarks of TypeDB.
 ====
 // end::rust-rewrite[]
 
