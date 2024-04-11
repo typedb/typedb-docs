@@ -6,7 +6,8 @@
 :tabs-sync-option:
 :experimental:
 
-This Quickstart guide shows how to set up a TypeDB database and run queries.
+This Quickstart guide shows how to set up a TypeDB database and run queries using
+xref:manual::studio.adoc[TypeDB Studio].
 
 include::home::overview.adoc[tag=rust-rewrite]
 
@@ -54,10 +55,8 @@ include::manual::studio.adoc[tag=connect_studio]
 == Select a project folder
 
 Select a xref:manual::studio.adoc#_select_a_project_directory[project directory]
-to store project files by clicking either:
-
-* btn:[Open Project] in the *Project* panel; or
-* Folder icon (image:home::studio-icons/project.png[]) in the top toolbar.
+to store project files by clicking either btn:[Open Project] in the *Project* panel or
+image:home::studio-icons/project.png[] Open Project Directory button in the top toolbar.
 
 [#_create_a_database]
 == Create a new database
@@ -81,7 +80,7 @@ A new database needs a schema before we can load any data:
 ----
 include::attachment$quickstart-schema.tql[]
 ----
-. Click btn:[Run Query] (image:home::studio-icons/run.png[]).
+. Click the image:home::studio-icons/run.png[Run query,width=9] btn:[Run Query] button.
 . When the query has completed, click btn:[Commit Transaction] (image:home::studio-icons/commit.png[]).
 
 Now that the schema has been defined, data can be inserted into the database.
@@ -97,7 +96,8 @@ Now let's insert some sample data into the newly created database to be able to 
 ----
 include::attachment$quickstart-data.tql[]
 ----
-. Execute all queries in the file by clicking btn:[Run Query] (image:home::studio-icons/run.png[]).
+. Execute all queries in the file by clicking the image:home::studio-icons/svg/play-solid-green.svg[Run query,width=9]
+btn:[Run Query] button.
 . When the queries have completed, click btn:[Commit Transaction] (image:home::studio-icons/commit.png[]).
 
 Assuming there were no errors in the process, the data is persisted in the database.
