@@ -1,0 +1,124 @@
+= Crash course
+:keywords: course, queries, typedb, typeql, tutorial, quickstart, insert, fetch
+//:page-aliases: home::25-queries.adoc
+:pageTitle: Crash course
+:summary: Learn about schema definitions and data operations in TypeDB.
+
+To explore the capabilities of TypeDB and TypeQL, check below the express course for queries in TypeDB.
+
+[NOTE]
+====
+To follow the examples on this page, make sure to create a TypeDB database with sample
+xref:home::quickstart.adoc#_define_a_schema[schema] and xref:home::quickstart.adoc#_load_data[data],
+as instructed in the xref:quickstart.adoc[Quickstart guide].
+====
+
+== Types
+
+Lorem ipsum
+
+== Query types
+
+Lorem ipsum
+
+== Pattern matching
+
+[,typeql]
+----
+include::home::partial$cc-queries/list-users.tql[]
+----
+
+== Composable patterns
+
+[,typeql]
+----
+include::home::partial$cc-queries/fetch-all-bob-emails.tql[]
+----
+
+== Fetch & subqueries
+
+
+[,typeql]
+----
+include::home::partial$cc-queries/subquery.tql[]
+----
+
+== Get & aggregations
+
+
+[,typeql]
+----
+include::home::partial$cc-queries/get-count-files.tql[]
+----
+
+== Inserts
+
+
+[,typeql]
+----
+include::home::partial$cc-queries/match-insert.tql[]
+----
+
+== Deletes
+
+
+[,typeql]
+----
+include::home::partial$cc-queries/delete.tql[]
+----
+
+== Updates
+
+
+[,typeql]
+----
+include::home::partial$cc-queries/update.tql[]
+----
+
+== Polymorphism
+
+
+[,typeql]
+----
+include::home::partial$cc-queries/inheritance-polymorphism.tql[]
+----
+
+[,typeql]
+----
+include::home::partial$cc-queries/interface-polymorphism.tql[]
+----
+
+[,typeql]
+----
+include::home::partial$cc-queries/parametric-polymorphism.tql[]
+----
+
+== N-ary relations
+
+
+[,typeql]
+----
+include::home::partial$cc-queries/N-relations.tql[]
+----
+
+== Multi-valued attributes
+
+[,typeql]
+----
+include::home::partial$cc-queries/attributes.tql[]
+----
+
+
+== Rule-based inference
+
+
+[,typeql]
+----
+include::home::partial$cc-queries/inference-rule.tql[]
+----
+
+[,typeql]
+----
+include::home::partial$cc-queries/inference-fetch.tql[]
+----
+
