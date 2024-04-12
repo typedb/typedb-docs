@@ -1,4 +1,5 @@
 = Crash course
+:page-preamble-card: 1
 :keywords: course, queries, typedb, typeql, tutorial, quickstart, insert, fetch
 //:page-aliases: home::25-queries.adoc
 :pageTitle: Crash course
@@ -44,20 +45,69 @@ Relations have roles that other data instances can play.
 
 == Getting to know patterns
 
-Lorem ipsum
+TypeQL uses declarative patterns to seek and manipulate data in a database.
 
-=== Pattern matching
+Let's see an example of a query that matches all data instances of the `user` type in a database and,
+for every matched instance, retrieves all owned attributes of types `name` and `email`:
 
+.TypeQL query example
 [,typeql]
 ----
 include::home::partial$cc-queries/list-users.tql[]
 ----
 
+The above is a xref:typeql::queries/fetch.adoc[Fetch query],
+with a `match` clause for selecting data that matches the provided pattern
+and a `fetch` clause to project every matched result as a JSON:
+
+//#todo Automate testing
+.Output example
+[,json]
+----
+{
+    "u": {
+        "email": [  ],
+        "name": [ { "value": "Alex", "type": { "label": "name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+{
+    "u": {
+        "email": [ { "value": "bob@typedb.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
+        "name": [ { "value": "Bob", "type": { "label": "name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+----
+
 === Composable patterns
 
+Patterns in TypeQL queries can be combined with implicit
+xref:typeql::patterns/conjunction.adoc[conjunction] of statements.
+Let's modify the previous query's pattern to retrieve a specific user, that has name `Bob`:
+
+.Composable pattern example
 [,typeql]
 ----
 include::home::partial$cc-queries/fetch-all-bob-emails.tql[]
+----
+
+The first line of the pattern inside the `match` clause now specifies that user must have a name,
+while the second line adds a constraint for the value of the name to be
+xref:typeql::values/comparators.adoc#_equality_comparator[equal] to `Bob`.
+
+The result now includes only one user that matches the new pattern:
+
+.Output example
+[,json]
+----
+{
+    "u": {
+        "email": [ { "value": "bob@typedb.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
+        "name": [ { "value": "Bob", "type": { "label": "name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
 ----
 
 === N-ary relations
