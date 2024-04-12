@@ -40,7 +40,7 @@ book sub entity,
 
 [NOTE]
 ====
-For most of Lesson 9, we'll be omitting the attribute type definitions in schema definitions where not required for simplicity.
+For simplicity, throughout most of Lesson 9, we'll be omitting the attribute type definitions in schema definitions where not required.
 ====
 
 The lack of expressivity causes several problems. Consider, for instance, if we had an author that was listed as having published different books under different names, as often is the case. We would not be able to tell which names (and therefore books) corresponded to the same author. Similarly, if two different authors published books under the same name, we would not be able to tell that they were written by different authors.
