@@ -8,16 +8,15 @@ TypeDB is a novel kind of database,
 combining ideas from classical databases and modern high-level programming languages.
 In this crash course, we'll have a quick look at the main ingredients of TypeDB:
 
-. *The type system*: TypeDB is built on a rich type system structuring data and the controlling the flow of data.
+. *The type system*: TypeDB is built on a rich and strong type system structuring and controlling the flow of data.
 . *Getting to know patterns*: patterns are used in TypeDB to interact with data and types.
 They comprise sets of declarative statements, that can be read like natural language!
-. *Efficient database operations*:
-TypeDB's comes with a unique conceptual data model that eliminates object-relational mismatches.
+. *Efficient database operations*: TypeDB's unique conceptual data model naturally resolves object-relational mismatch.
 No tables, no joins, no nulls!
 . *Using polymorphic queries*: polymorphism is a first-class feature of TypeDB's data model,
 and can be used naturally in our queries.
-. *Rule-based inference*: we can infer new data on-the-fly using rules,
-which allow us to embed the logic of our data directly into our schema.
+. *Rule-based inference*: we can infer new data on-the-fly using rules, which represent logic embedded into a schema.
+// we can infer new data on-the-fly using rules, which allow us to embed the logic of our data directly into our schema.
 
 This covers only a fraction of what TypeDB is capable of.
 For an in-depth dive into TypeDB, check out our xref:learn::overview.adoc[TypeDB Learning Course].
@@ -61,12 +60,20 @@ include::home::partial$cc-queries/list-users.tql[]
 include::home::partial$cc-queries/fetch-all-bob-emails.tql[]
 ----
 
+=== N-ary relations
+
+[,typeql]
+----
+include::home::partial$cc-queries/N-relations.tql[]
+----
+
 == Efficient database operations
 
 Lorem ipsum
 
+=== Query types
 
-== Fetch & subqueries
+==== Fetch & subqueries
 
 
 [,typeql]
@@ -74,7 +81,7 @@ Lorem ipsum
 include::home::partial$cc-queries/subquery.tql[]
 ----
 
-== Get & aggregations
+==== Get & aggregations
 
 
 [,typeql]
@@ -82,7 +89,7 @@ include::home::partial$cc-queries/subquery.tql[]
 include::home::partial$cc-queries/get-count-files.tql[]
 ----
 
-== Inserts
+==== Inserts
 
 
 [,typeql]
@@ -90,7 +97,7 @@ include::home::partial$cc-queries/get-count-files.tql[]
 include::home::partial$cc-queries/match-insert.tql[]
 ----
 
-== Deletes
+==== Deletes
 
 
 [,typeql]
@@ -98,45 +105,43 @@ include::home::partial$cc-queries/match-insert.tql[]
 include::home::partial$cc-queries/delete.tql[]
 ----
 
-== Updates
-
+==== Updates
 
 [,typeql]
 ----
 include::home::partial$cc-queries/update.tql[]
 ----
 
-== Polymorphism
+=== Multi-valued attributes
 
+[,typeql]
+----
+include::home::partial$cc-queries/attributes.tql[]
+----
+
+=== Hassle-free schema extension
+
+== Using polymorphic queries
+
+=== Inheritance polymorphism
 
 [,typeql]
 ----
 include::home::partial$cc-queries/inheritance-polymorphism.tql[]
 ----
 
+=== Interface polymorphism
+
 [,typeql]
 ----
 include::home::partial$cc-queries/interface-polymorphism.tql[]
 ----
 
+=== Parametric polymorphism
+
 [,typeql]
 ----
 include::home::partial$cc-queries/parametric-polymorphism.tql[]
-----
-
-== N-ary relations
-
-
-[,typeql]
-----
-include::home::partial$cc-queries/N-relations.tql[]
-----
-
-== Multi-valued attributes
-
-[,typeql]
-----
-include::home::partial$cc-queries/attributes.tql[]
 ----
 
 
