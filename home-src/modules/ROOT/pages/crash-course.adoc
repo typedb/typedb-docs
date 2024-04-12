@@ -45,10 +45,15 @@ Relations have roles that other data instances can play.
 
 == Getting to know patterns
 
-TypeQL uses declarative patterns to seek and manipulate data in a database.
+TypeQL uses declarative xref:typeql::patterns/overview.adoc[patterns] to seek and manipulate data in a database.
+Every statement is a constraint to be satisfied by the query engine.
+
+Variables indicate unknowns that can be matched by a concept from a database.
+Solving a pattern is like solving a system of equations, where every equation (statement) must be satisfied,
+and a solution (result) is a set of values for variables that make every equation in the system a True statement.
 
 Let's see an example of a query that matches all data instances of the `user` type in a database and,
-for every matched instance, retrieves all owned attributes of types `name` and `email`:
+for every matched instance, retrieves all their names and emails:
 
 .TypeQL query example
 [,typeql]
@@ -57,8 +62,8 @@ include::home::partial$cc-queries/list-users.tql[]
 ----
 
 The above is a xref:typeql::queries/fetch.adoc[Fetch query],
-with a `match` clause for selecting data that matches the provided pattern
-and a `fetch` clause to project every matched result as a JSON:
+with a `match` that matches data by the provided pattern
+and a `fetch` that projects every matched result as a JSON with types and values:
 
 //#todo Automate testing
 .Output example
@@ -82,8 +87,8 @@ and a `fetch` clause to project every matched result as a JSON:
 
 === Composable patterns
 
-Patterns in TypeQL queries can be combined with implicit
-xref:typeql::patterns/conjunction.adoc[conjunction] of statements.
+TypeQL patterns consist of TypeQL xref:typeql::statements/overview.adoc[statements],
+which can be combined in any order by an implicit logical xref:typeql::patterns/conjunction.adoc[conjunction] (`AND`).
 Let's modify the previous query's pattern to retrieve a specific user, that has name `Bob`:
 
 .Composable pattern example
@@ -112,6 +117,27 @@ The result now includes only one user that matches the new pattern:
 
 === N-ary relations
 
+Relations in TypeDB work elegantly and naturally, without the need for joins,
+tables, foreign keys, or any other tricks.
+
+A database schema defines relation types and their roles, as well as types that can play a role in a relation.
+Creating a relation is just instantiating a relation type with the exact role players that you want.
+
+You can create an n-nary relation by defining N roles in the relation's type definition.
+
+A unary relation with just one role, for example,
+a `friendship` relation with multiple role players for the role `friend`.
+
+A binary relation with two roles, for example,
+`group-membership` with roles `group` and `member`.
+
+A ternary relation with three roles, for example,
+a `permission` relation with roles `subject`, `object`,
+and `action` played by data instances of types `user`, `file`, and `action` respectively.
+Such a relation type defined in the xref:home::quickstart.adoc#_define_a_schema[sample schema] in the Quickstart guide.
+Let's see how to make a query using such a relation.
+For example, what files does the user with name "Bob" has full access to?
+
 [,typeql]
 ----
 include::home::partial$cc-queries/N-relations.tql[]
@@ -119,28 +145,67 @@ include::home::partial$cc-queries/N-relations.tql[]
 
 == Efficient database operations
 
-Lorem ipsum
+TypeQL queries with fully declarative and composable patterns let you express what data you need,
+without considering implementation details.
+The query engine does query planning and execution under the hood.
+No need for query optimization.
 
 === Query types
 
-==== Fetch & subqueries
+There are multiple types of queries in TypeDB:
 
+* To retrieve data from a database, use Fetch and Get queries.
+* To modify data in a database, use Insert, Delete, and Update queries.
+* To modify the schema of a database, use Define and Undefine queries.
+
+==== Fetch queries
+
+A xref:typeql::queries/fetch.adoc[Fetch query]
+projects types and values of concepts matched by selected variables into JSON output.
+
+For example, let's match a user by its username and fetch its name:
+
+[,typeql]
+----
+include::home::partial$cc-queries/subquery.tql[lines=1..4]
+----
+
+The above example uses xref:typeql::queries/fetch.adoc#_customize_output[customized output labels] for the JSON output.
+
+A Fetch query can be used with a xref:typeql::queries/fetch.adoc#_subqueries[subquery].
+For example, let's add a subquery to fetch paths for all files that the user has access to:
 
 [,typeql]
 ----
 include::home::partial$cc-queries/subquery.tql[]
 ----
 
-==== Get & aggregations
+==== Get queries
 
+A xref:typeql::queries/get.adoc[Get query] returns stateful objects representing concepts matched by selected variables
+for you to programmatically manipulate them with driver API methods.
+
+For example, you can send the following Get query to get all file entities from a database:
 
 [,typeql]
 ----
-include::home::partial$cc-queries/get-count-files.tql[]
+include::home::partial$cc-queries/get-count-files.tql[lines=1..3]
+----
+
+Then, you can use ConceptMap returned for every matched result to retrieve concepts and manipulate them with driver API.
+
+[,typeql]
+----
+match
+$f isa file, has size-kb $s;
+get $f, $s;
+mean $s;
 ----
 
 ==== Inserts
 
+An Insert query inserts data into a database.
+It can be used with or without a `match` clause.
 
 [,typeql]
 ----
@@ -149,6 +214,7 @@ include::home::partial$cc-queries/match-insert.tql[]
 
 ==== Deletes
 
+Delete queries delete data from a database.
 
 [,typeql]
 ----
@@ -157,12 +223,16 @@ include::home::partial$cc-queries/delete.tql[]
 
 ==== Updates
 
+Update queries delete data from a database and then insert other data instead to replace.
+
 [,typeql]
 ----
 include::home::partial$cc-queries/update.tql[]
 ----
 
 === Multi-valued attributes
+
+Cardinality, Global uniqueness of attributes.
 
 [,typeql]
 ----
@@ -173,6 +243,13 @@ include::home::partial$cc-queries/attributes.tql[]
 
 == Using polymorphic queries
 
+There are three types of polymorphism you can use in a query:
+
+* <<_inheritance_polymorphism,Inheritance polymorphism>>
+* <<_interface_polymorphism,Interface polymorphism>>
+* Parametric polymorphism
+
+[#_inheritance_polymorphism]
 === Inheritance polymorphism
 
 [,typeql]
@@ -180,6 +257,7 @@ include::home::partial$cc-queries/attributes.tql[]
 include::home::partial$cc-queries/inheritance-polymorphism.tql[]
 ----
 
+[#_interface_polymorphism]
 === Interface polymorphism
 
 [,typeql]
