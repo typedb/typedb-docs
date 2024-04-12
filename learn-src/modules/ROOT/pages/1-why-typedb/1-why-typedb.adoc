@@ -120,7 +120,7 @@ The programmatic way of interacting with a TypeDB database extends all the way d
 [,typeql]
 ----
 insert
-$new_audio isa audio_file, has audio_format "png";
+$new_audio isa audio_file, has audio_format "mp3";
 ----
 
 The very same data insert can be achieved by manipulating data objects directly from your program code. For example, the above query could take the following form using TypeDB's Python driver.
