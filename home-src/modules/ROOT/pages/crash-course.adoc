@@ -4,7 +4,23 @@
 :pageTitle: Crash course
 :summary: Learn about schema definitions and data operations in TypeDB.
 
-To explore the capabilities of TypeDB and TypeQL, check below the express course for queries in TypeDB.
+TypeDB is a novel kind of database,
+combining ideas from classical databases and modern high-level programming languages.
+In this crash course, we'll have a quick look at the main ingredients of TypeDB:
+
+. *The type system*: TypeDB is built on a rich type system structuring data and the controlling the flow of data.
+. *Getting to know patterns*: patterns are used in TypeDB to interact with data and types.
+They comprise sets of declarative statements, that can be read like natural language!
+. *Efficient database operations*:
+TypeDB's comes with a unique conceptual data model that eliminates object-relational mismatches.
+No tables, no joins, no nulls!
+. *Using polymorphic queries*: polymorphism is a first-class feature of TypeDB's data model,
+and can be used naturally in our queries.
+. *Rule-based inference*: we can infer new data on-the-fly using rules,
+which allow us to embed the logic of our data directly into our schema.
+
+This covers only a fraction of what TypeDB is capable of.
+For an in-depth dive into TypeDB, check out our xref:learn::overview.adoc[TypeDB Learning Course].
 
 [NOTE]
 ====
@@ -13,27 +29,42 @@ xref:home::quickstart.adoc#_define_a_schema[schema] and xref:home::quickstart.ad
 as instructed in the xref:quickstart.adoc[Quickstart guide].
 ====
 
-== Types
+== The type system
+
+TypeDB uses the xref:learn::9-modeling-schemas/9.1-the-pera-model.adoc[PERA model]
+for its pattern-based xref:typeql::overview.adoc[TypeQL query language].
+
+A TypeDB database has a schema, that describes types and rules definitions
+A new database has only three built-in types, called root types: `entity`, `relation`, and `attribute`.
+A new type can be added by subtyping one of existing types.
+
+Data can be inserted into a TypeDB database as instances of types from the database's schema.
+Entities (or instances of entity types) represent independent objects in a business domain.
+Attributes represent properties that can be owned by other data instances.
+Relations have roles that other data instances can play.
+
+== Getting to know patterns
 
 Lorem ipsum
 
-== Query types
-
-Lorem ipsum
-
-== Pattern matching
+=== Pattern matching
 
 [,typeql]
 ----
 include::home::partial$cc-queries/list-users.tql[]
 ----
 
-== Composable patterns
+=== Composable patterns
 
 [,typeql]
 ----
 include::home::partial$cc-queries/fetch-all-bob-emails.tql[]
 ----
+
+== Efficient database operations
+
+Lorem ipsum
+
 
 == Fetch & subqueries
 
