@@ -4,5 +4,5 @@ $act has name "read";
 $p isa person, has name $name;
 $f isa file, has path $path;
 fetch 
-$name as Subject-name;
-$path as Filepath;
+$name as "Name";
+$path as "Filepath";

@@ -1,4 +1,5 @@
 match
 $u isa user, has name $fn;
 $fn contains "Bob";
-fetch $u as user: email as "E-mail addresses";
+fetch
+$u: email;
