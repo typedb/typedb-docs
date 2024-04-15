@@ -1,7 +1,8 @@
+import copy
 from abc import ABC
 from datetime import datetime
 from enum import Enum
-from typing import Optional, Self
+from typing import Optional
 
 
 class Place(ABC):
@@ -77,16 +78,20 @@ class Contributor:
         self.name = name
 
 
+class ContributorRole(Enum):
+    AUTHOR = "author"
+    EDITOR = "editor"
+    ILLUSTRATOR = "illustrator"
+    CONTRIBUTOR = "contributor"
+
+
 class Book(ABC):
     def __init__(
         self,
         isbn_13: str,
         isbn_10: Optional[str],
         title: str,
-        authors: set[Contributor],
-        editors: set[Contributor],
-        illustrators: set[Contributor],
-        other_contributors: set[Contributor],
+        contributors: set[tuple[Contributor, ContributorRole]],
         publisher: Publisher,
         year: int,
         location: City,
@@ -97,10 +102,7 @@ class Book(ABC):
         self.isbn_13 = isbn_13
         self.isbn_10 = isbn_10
         self.title = title
-        self.authors = authors
-        self.editors = editors
-        self.illustrators = illustrators
-        self.other_contributors = other_contributors
+        self._contributors = contributors
         self.publisher = publisher
         self.year = year
         self.location = location
@@ -117,7 +119,23 @@ class Book(ABC):
 
     @property
     def contributors(self) -> set[Contributor]:
-        return self.authors | self.editors | self.illustrators | self.other_contributors
+        return {contributor for contributor, role in self._contributors}
+
+    @property
+    def authors(self) -> set[Contributor]:
+        return {contributor for contributor, role in self._contributors if role is ContributorRole.AUTHOR}
+
+    @property
+    def editors(self) -> set[Contributor]:
+        return {contributor for contributor, role in self._contributors if role is ContributorRole.EDITOR}
+
+    @property
+    def illustrators(self) -> set[Contributor]:
+        return {contributor for contributor, role in self._contributors if role is ContributorRole.ILLUSTRATOR}
+
+    @property
+    def other_contributors(self) -> set[Contributor]:
+        return {contributor for contributor, role in self._contributors if role is ContributorRole.CONTRIBUTOR}
 
 
 class Paperback(Book):
@@ -126,10 +144,7 @@ class Paperback(Book):
         isbn_13: str,
         isbn_10: Optional[str],
         title: str,
-        authors: set[Contributor],
-        editors: set[Contributor],
-        illustrators: set[Contributor],
-        other_contributors: set[Contributor],
+        contributors: set[tuple[Contributor, ContributorRole]],
         publisher: Publisher,
         year: int,
         location: City,
@@ -142,10 +157,7 @@ class Paperback(Book):
             isbn_13,
             isbn_10,
             title,
-            authors,
-            editors,
-            illustrators,
-            other_contributors,
+            contributors,
             publisher,
             year,
             location,
@@ -163,10 +175,7 @@ class Hardback(Book):
         isbn_13: str,
         isbn_10: Optional[str],
         title: str,
-        authors: set[Contributor],
-        editors: set[Contributor],
-        illustrators: set[Contributor],
-        other_contributors: set[Contributor],
+        contributors: set[tuple[Contributor, ContributorRole]],
         publisher: Publisher,
         year: int,
         location: City,
@@ -179,10 +188,7 @@ class Hardback(Book):
             isbn_13,
             isbn_10,
             title,
-            authors,
-            editors,
-            illustrators,
-            other_contributors,
+            contributors,
             publisher,
             year,
             location,
@@ -200,10 +206,7 @@ class Ebook(Book):
         isbn_13: str,
         isbn_10: Optional[str],
         title: str,
-        authors: set[Contributor],
-        editors: set[Contributor],
-        illustrators: set[Contributor],
-        other_contributors: set[Contributor],
+        contributors: set[tuple[Contributor, ContributorRole]],
         publisher: Publisher,
         year: int,
         location: City,
@@ -215,10 +218,7 @@ class Ebook(Book):
             isbn_13,
             isbn_10,
             title,
-            authors,
-            editors,
-            illustrators,
-            other_contributors,
+            contributors,
             publisher,
             year,
             location,
@@ -234,17 +234,17 @@ class Promotion:
         self.name = name
         self.start_timestamp = start_timestamp
         self.end_timestamp = end_timestamp
-        self._inclusions: dict[Book, float] = dict()
+        self._discounts: dict[Book, float] = dict()
 
     @property
-    def inclusions(self) -> list[tuple[Book, float]]:
-        return [(book, discount) for book, discount in self._inclusions.items()]
+    def discounts(self) -> dict[Book, float]:
+        return copy.copy(self._discounts)
 
-    def add_or_update_book(self, book: Book, discount: float):
+    def put_discount(self, item: Book, discount: float):
         if discount == 0:
-            self._inclusions.pop(book, None)
+            self._discounts.pop(item, None)
         else:
-            self._inclusions[book] = discount
+            self._discounts[item] = discount
 
 
 class User:
@@ -275,18 +275,18 @@ class Order(UserAction):
         super().__init__(user, timestamp)
         self.id = id
         self.status = Status.PENDING
-        self._order_lines: dict[Book, int] = dict()
+        self._lines: dict[Book, int] = dict()
 
     @property
-    def order_lines(self) -> list[tuple[Book, int]]:
-        return [(book, quantity) for book, quantity in self._order_lines.items()]
+    def items(self) -> list[tuple[Book, int]]:
+        return [(book, quantity) for book, quantity in self._lines.items()]
 
-    def add_or_remove_book(self, book: Book, quantity: int):
-        self._order_lines.setdefault(book, 0)
-        self._order_lines[book] += quantity
+    def add_or_remove_items(self, item: Book, quantity: int):
+        self._lines.setdefault(item, 0)
+        self._lines[item] += quantity
 
-        if self._order_lines[book] <= 0:
-            del self._order_lines[book]
+        if self._lines[item] <= 0:
+            del self._lines[item]
 
 
 class Review(UserAction):
