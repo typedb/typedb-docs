@@ -34,14 +34,219 @@ as instructed in the xref:quickstart.adoc[Quickstart guide].
 TypeDB uses the xref:learn::9-modeling-schemas/9.1-the-pera-model.adoc[PERA model]
 for its pattern-based xref:typeql::overview.adoc[TypeQL query language].
 
-A TypeDB database has a schema, that describes types and rules definitions
-A new database has only three built-in types, called root types: `entity`, `relation`, and `attribute`.
+A TypeDB database has a schema, that describes types definitions.
 A new type can be added by subtyping one of existing types.
+A new database has only three built-in types, called root types: `entity`, `relation`, and `attribute`.
+That creates a type hierarchy with three distinct trees and the root types as their roots.
 
 Data can be inserted into a TypeDB database as instances of types from the database's schema.
 Entities (or instances of entity types) represent independent objects in a business domain.
 Attributes represent properties that can be owned by other data instances.
 Relations have roles that other data instances can play.
+
+.Root types and their specific properties
+[cols="^.^h,^.^,^.^,^.^",options="header"]
+|===
+| | Entity types | Relation types | Attribute types
+| Contain | objects | objects | values
+| Dependencies | none | roleplayers | owners
+| Interfaces | none | roles | ownership
+| Can implement interfaces | ✓ | ✓ | ✗
+| Can be subtyped | ✓ | ✓ | if abstract
+| Can be abstract | ✓ | ✓ | ✓
+|===
+
+== Efficient database operations
+
+TypeQL queries with fully declarative and composable patterns let you express constraints on the data you need,
+without considering implementation details.
+There is no need for query optimization, as the query engine does query planning and execution automatically.
+
+=== Query types
+
+TypeDB databases use schema to set constraints on types and respective data.
+To modify the schema of a database, use <<_extend_schema,Define>> and <<_extend_schema,Undefine>> queries.
+
+To modify data, use <<_insert_queries,Insert>>, <<_delete_queries,Delete>>,
+and <<_updates,Update>> queries.
+
+To retrieve data from a database, use <<_fetch_queries,Fetch>> and <<_get_queries,Get>> queries.
+
+[cols="^.^1,^.^2,^.^2"]
+.Query types
+|===
+| |Read transaction |Write transaction
+
+|Schema session
+|<<_fetch_queries,Fetch>>, <<_get_queries,Get>>
+|<<_extend_schema,Define>>, <<_extend_schema,Undefine>>
+
+|Data session
+|<<_fetch_queries,Fetch>>, <<_get_queries,Get>>
+|<<_insert_queries,Insert>>, <<_delete_queries,Delete>>, <<_updates,Update>>
+|===
+
+[#_fetch_queries]
+=== Fetch queries
+
+A xref:typeql::queries/fetch.adoc[Fetch query]
+projects types and values of concepts matched by selected variables into JSON output.
+
+For example, let's match a user by its username and fetch its name:
+
+[,typeql]
+----
+include::home::partial$cc-queries/subquery.tql[lines=1..4]
+----
+
+The above example uses xref:typeql::queries/fetch.adoc#_customize_output[customized output labels] for the JSON output.
+
+A Fetch query can be used with a xref:typeql::queries/fetch.adoc#_subqueries[subquery].
+For example, let's add a subquery to fetch paths for all files that the user has access to:
+
+[,typeql]
+----
+include::home::partial$cc-queries/subquery.tql[]
+----
+
+[#_get_queries]
+=== Get queries
+
+A xref:typeql::queries/get.adoc[Get query] returns stateful objects representing concepts matched by selected variables
+for you to programmatically manipulate them with driver API methods.
+
+For example, you can send the following Get query to get all file entities from a database:
+
+[,typeql]
+----
+include::home::partial$cc-queries/get-count-files.tql[lines=1..3]
+----
+
+Then, you can use ConceptMap returned for every matched result to retrieve concepts and manipulate them with driver API.
+
+[,typeql]
+----
+match
+$f isa file, has size-kb $s;
+get $f, $s;
+mean $s;
+----
+
+[#_insert_queries]
+=== Insert queries
+
+An xref:typeql::queries/insert.adoc[Insert query] inserts data into a database.
+It can be used with or without a `match` clause.
+
+Use an `insert` clause without a `match` clause to insert completely new data in a database,
+that is not related to existing data:
+
+[,typeql]
+----
+include::home::partial$cc-queries/insert.tql[]
+----
+
+The above example inserts a new `user` entity, with `username`, `name`, and `email` attributes owned.
+The inserted user has no connection to existing data in a database.
+
+To insert new data that is connected to existing data, use a `match` clause in an Insert query.
+An `insert` clause is executed once for every matched result and inserts data in the context of the matched data.
+For example, match a user from a database first to be able to insert a new email for this user:
+
+[,typeql]
+----
+include::home::partial$cc-queries/match-insert.tql[]
+----
+
+[#_delete_queries]
+=== Delete queries
+
+A xref:typeql::queries/delete.adoc[Delete query] deletes data from a database.
+Match data with a `match` clause and then specify the specific data to delete with a `delete` clause.
+
+For example, let's match a specific user by its username and delete its email:
+
+[,typeql]
+----
+include::home::partial$cc-queries/delete.tql[]
+----
+
+In the above query, we specify a pattern to delete the ownership of the email from the matched user,
+but not the email attribute itself.
+The email attribute can be potentially owned by some other data instances.
+Deleting the attribute will automatically delete all ownerships of it.
+
+A `delete` clause is executed exactly once for every matched result of the preceding `match` clause.
+If a `match` clause matches no results from a database, then there is nothing to delete.
+
+[#_updates]
+=== Update queries
+
+Update queries combine `match`, `delete`, and `insert` clauses to replace or otherwise update data stored in a database.
+
+For example, let's match a user with the username `bob_93` that has some email to replace such an email by a new one.
+
+[,typeql]
+----
+include::home::partial$cc-queries/update.tql[]
+----
+
+Note, that if the user doesn't have any email, then there will be no deletes or inserts.
+And if the user has multiple emails, each of them will be matched, deleted, and replaced by the same new email.
+Since there can be only one email attribute with the same value and it can be owned only once,
+any subsequent insert will produce the same result as the first one.
+
+[#_extend_schema]
+=== Hassle-free schema extension
+
+A database schema can be modified without the need to update queries.
+We can extend our schema by adding new types or adding new capabilities to existing types.
+
+As long as it's not violating the consistency of the existing data,
+we can modify the schema of a database with a Define query and continue to use same queries for the same effect.
+
+For example, let's extend our sample schema for the `user` entity type to be able to own the new attribute type:
+`rating`.
+
+.Extending schema
+[,typeql]
+----
+define
+
+rating sub attribute, value double;
+user has rating;
+----
+
+Now you can add some rating data: let's add one attribute for existing user with username `bob_93`
+and one for a new user.
+
+.Adding rating data
+[,typeql]
+----
+match
+$u1 isa user, has username "bob_93";
+insert
+$u1 has rating 0.99;
+$u2 isa user, has username "not_bob", has rating "0";
+----
+
+Check one of the previous queries, for example,
+the <<_fetch_queries,Fetch query>> to get name of the user with the username `bob_93`.
+The results of existing queries are not affected in any way.
+
+We can modify the query to retrieve the new attribute:
+
+.Fetch rating
+[,typeql]
+----
+match
+$u isa user, has username "bob_93";
+fetch
+$u: name, rating;
+----
+
+Alternatively, you can use type inference with <<_inheritance_polymorphism,inheritance polymorphism>>
+to organically incorporate added data into the results of existing queries by using subtyping.
 
 == Getting to know patterns
 
@@ -115,131 +320,106 @@ The result now includes only one user that matches the new pattern:
 }
 ----
 
-=== N-ary relations
+=== Using relations
 
-Relations in TypeDB work elegantly and naturally, without the need for joins,
-tables, foreign keys, or any other tricks.
+Relations in TypeDB work elegantly and naturally, without the need for joins, tables, foreign keys, or any other tricks.
 
-A database schema defines relation types and their roles, as well as types that can play a role in a relation.
-Creating a relation is just instantiating a relation type with the exact role players that you want.
+A database schema defines relation types and their roles, as well as what types can play a role in a relation.
+Creating a relation is just instantiating a relation type with the exact role player for at least one of its roles.
 
-You can create an n-nary relation by defining N roles in the relation's type definition.
+For example, let's insert a relation of the `permission` type, between a user with username `bob_93`
+and file with the path `README.md`:
 
-A unary relation with just one role, for example,
-a `friendship` relation with multiple role players for the role `friend`.
+.Inserting relation permission
+[,typeql]
+----
+match
+$u isa user, has username "bob_93";
+$f isa file, has name path "README.md";
+insert
+(subject: $u, obejct: $f) isa permission;
+----
 
-A binary relation with two roles, for example,
-`group-membership` with roles `group` and `member`.
+In the above example, we start by matching the user and file in the database first,
+and then we insert the `permission` relation with the user playing the `subject` role
+and the file playing the `object` role.
+
+Note, that the `permission` relation type is defined in the xref:home::quickstart.adoc#_define_a_schema[sample schema]
+of the Quickstart guide as having three roles.
+An incomplete relation that has no players for some of its roles is considered an incomplete data state,
+but is permitted in the database.
+
+==== N-ary relations
+
+You can create an N-ary relation by defining N roles in the relation's type definition.
+
+A unary relation with just one role, for example, a `friendship` relation with only one role `friend`.
+All players play the same role in this kind of relation.
+
+A binary relation with two roles, for example, `group-membership` with roles `group` and `member`.
+Every role has a set of types capable of playing it, defined in a schema.
+Let's say the `user` type is defined to be able to play the `member` role and `user-group` can be a `group` role player.
+But the `user` can't play the `group` role, unless you specify such an ability in the schema with the
+xref:typeql::statements/plays.adoc[plays] statement.
 
 A ternary relation with three roles, for example,
 a `permission` relation with roles `subject`, `object`,
 and `action` played by data instances of types `user`, `file`, and `action` respectively.
-Such a relation type defined in the xref:home::quickstart.adoc#_define_a_schema[sample schema] in the Quickstart guide.
 Let's see how to make a query using such a relation.
 For example, what files does the user with name "Bob" has full access to?
 
 [,typeql]
 ----
-include::home::partial$cc-queries/N-relations.tql[]
+include::home::partial$cc-queries/n-relations.tql[]
 ----
 
-== Efficient database operations
+=== Using attributes
 
-TypeQL queries with fully declarative and composable patterns let you express what data you need,
-without considering implementation details.
-The query engine does query planning and execution under the hood.
-No need for query optimization.
+Attributes in TypeDB databases are unique in their ability to store a value.
 
-=== Query types
+Every attribute type is defined in the schema of a database with its value type,
+as well as what types can own instances of this attribute type.
+Creating an attribute is just instantiating an attribute type with a value of the appropriate value type.
 
-There are multiple types of queries in TypeDB:
+You can create an attribute explicitly by providing a type and value constraint.
+Alternatively, you can assign ownership of an attribute, and if the attribute doesn't exist in the database,
+it will be created implicitly.
 
-* To retrieve data from a database, use Fetch and Get queries.
-* To modify data in a database, use Insert, Delete, and Update queries.
-* To modify the schema of a database, use Define and Undefine queries.
+==== Multi-valued attributes
 
-==== Fetch queries
+By default, multiple attributes of the same type can be owned by the same data instance.
+That makes it possible for a data instances to have multiple values of the same property owned simultaneously.
 
-A xref:typeql::queries/fetch.adoc[Fetch query]
-projects types and values of concepts matched by selected variables into JSON output.
-
-For example, let's match a user by its username and fetch its name:
+For example, let's insert a new person that owns two names: `Bob` and `Another Bob`:
 
 [,typeql]
 ----
-include::home::partial$cc-queries/subquery.tql[lines=1..4]
+include::home::partial$cc-queries/attributes.tql[lines=6..7]
 ----
 
-The above example uses xref:typeql::queries/fetch.adoc#_customize_output[customized output labels] for the JSON output.
+You can limit behavior this by using the xref:typeql::statements/key.adoc[key statement],
+which adds a constraint on the number of owned attributes to be equal to exactly one.
 
-A Fetch query can be used with a xref:typeql::queries/fetch.adoc#_subqueries[subquery].
-For example, let's add a subquery to fetch paths for all files that the user has access to:
+==== Globally unique attributes
+
+An attribute can be uniquely addressed by its type and value.
+There can be no other attribute of the same type with the same value.
+Storage space and memory consumption are optimal as data is naturally deduplicated.
 
 [,typeql]
 ----
-include::home::partial$cc-queries/subquery.tql[]
+include::home::partial$cc-queries/attributes.tql[lines=9..12]
 ----
 
-==== Get queries
+Attribute values are immutable.
+You can’t change the value of an attribute.
+What you can do is to delete ownership of one attribute and insert ownership of another, for example,
+with an <<_updates,Update query>>.
 
-A xref:typeql::queries/get.adoc[Get query] returns stateful objects representing concepts matched by selected variables
-for you to programmatically manipulate them with driver API methods.
+For example, if multiple people have the same name, they have ownership of the same attribute:
 
-For example, you can send the following Get query to get all file entities from a database:
+image::home::bobs.png[Multiple Bobs, role=framed, width = 75%, link=self]
 
-[,typeql]
-----
-include::home::partial$cc-queries/get-count-files.tql[lines=1..3]
-----
-
-Then, you can use ConceptMap returned for every matched result to retrieve concepts and manipulate them with driver API.
-
-[,typeql]
-----
-match
-$f isa file, has size-kb $s;
-get $f, $s;
-mean $s;
-----
-
-==== Inserts
-
-An Insert query inserts data into a database.
-It can be used with or without a `match` clause.
-
-[,typeql]
-----
-include::home::partial$cc-queries/match-insert.tql[]
-----
-
-==== Deletes
-
-Delete queries delete data from a database.
-
-[,typeql]
-----
-include::home::partial$cc-queries/delete.tql[]
-----
-
-==== Updates
-
-Update queries delete data from a database and then insert other data instead to replace.
-
-[,typeql]
-----
-include::home::partial$cc-queries/update.tql[]
-----
-
-=== Multi-valued attributes
-
-Cardinality, Global uniqueness of attributes.
-
-[,typeql]
-----
-include::home::partial$cc-queries/attributes.tql[]
-----
-
-=== Hassle-free schema extension
 
 == Using polymorphic queries
 
