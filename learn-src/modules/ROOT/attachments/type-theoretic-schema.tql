@@ -17,15 +17,12 @@
 
 define
 
-book sub relation,
+publication sub relation,
     abstract,
     relates publisher,
     relates location,
-    owns isbn-13 @key,
-    owns isbn-10 @unique,
+    owns isn @key,
     owns title,
-    owns year,
-    owns page-count,
     owns genre,
     owns price,
     plays contribution:work,
@@ -34,6 +31,13 @@ book sub relation,
     plays review:reviewed,
     plays recommendation:recommended;
 
+book sub publication,
+    abstract,
+    owns isbn-13 as isn,
+    owns isbn-10 @unique,
+    owns year,
+    owns page-count;
+
 hardback sub book,
     owns stock;
 
@@ -41,6 +45,24 @@ paperback sub book,
     owns stock;
 
 ebook sub book;
+
+serial sub publication,
+    abstract,
+    owns issn as isn,
+    owns next-issue-number,
+    owns next-issue-date;
+
+newspaper sub serial;
+
+magazine sub serial;
+
+journal sub serial;
+
+music-score sub publication,
+    owns ismn as isn,
+    owns year,
+    owns page-count,
+    owns stock;
 
 contributor sub entity,
     owns name,
@@ -54,7 +76,7 @@ company sub entity,
     owns name;
 
 publisher sub company,
-    plays book:publisher;
+    plays publication:publisher;
 
 courier sub company,
     plays delivery:deliverer;
@@ -105,7 +127,7 @@ place sub relation,
 
 city sub place,
     relates location,
-    plays book:location,
+    plays publication:location,
     plays user:location,
     plays address:location;
 
@@ -154,11 +176,16 @@ recommendation sub relation,
     relates recommended,
     relates recipient;
 
-isbn sub attribute, abstract, value string;
+isn sub attribute, abstract, value string;
+isbn sub isn, abstract;
 isbn-13 sub isbn;
 isbn-10 sub isbn;
+issn sub isn;
+ismn sub isn;
 title sub attribute, value string;
 page-count sub attribute, value long;
+next-issue-number sub attribute, value long;
+next-issue-date sub attribute, value datetime;
 genre sub attribute, value string;
 stock sub attribute, value long;
 price sub attribute, value double;
@@ -196,57 +223,57 @@ rule review-unverified:
         $review has verified false;
     };
 
-rule book-recommendation-by-genre:
+rule publication-recommendation-by-genre:
     when {
         $user isa user;
-        $liked-book isa book;
+        $liked-publication isa publication;
         {
             $order ($user) isa order;
-            ($order, $liked-book) isa order-line;
+            ($order, $liked-publication) isa order-line;
         } or {
-            ($user, $liked-book) isa review,
+            ($user, $liked-publication) isa review,
                 has score >= 7;
         };
-        $new-book isa book;
+        $new-publication isa publication;
         not { {
             $order ($user) isa order;
-            ($order, $new-book) isa order-line;
+            ($order, $new-publication) isa order-line;
         } or {
-            ($user, $new-book) isa review;
+            ($user, $new-publication) isa review;
         }; };
-        $liked-book has genre $shared-genre;
-        $new-book has genre $shared-genre;
+        $liked-publication has genre $shared-genre;
+        $new-publication has genre $shared-genre;
         not { {
             $shared-genre == "fiction";
         } or {
             $shared-genre == "nonfiction";
         }; };
     } then {
-        (recommended: $new-book, recipient: $user) isa recommendation;
+        (recommended: $new-publication, recipient: $user) isa recommendation;
     };
 
-rule book-recommendation-by-author:
+rule publication-recommendation-by-contributor:
     when {
         $user isa user;
-        $liked-book isa book;
+        $liked-publication isa publication;
         {
             $order ($user) isa order;
-            ($order, $liked-book) isa order-line;
+            ($order, $liked-publication) isa order-line;
         } or {
-            ($user, $liked-book) isa review,
+            ($user, $liked-publication) isa review,
                 has score >= 7;
         };
-        $new-book isa book;
+        $new-publication isa publication;
         not { {
             $order ($user) isa order;
-            ($order, $new-book) isa order-line;
+            ($order, $new-publication) isa order-line;
         } or {
-            ($user, $new-book) isa review;
+            ($user, $new-publication) isa review;
         }; };
-        ($liked-book, $shared-author) isa authoring;
-        ($new-book, $shared-author) isa authoring;
+        ($liked-publication, $shared-contributor) isa contribution;
+        ($new-publication, $shared-contributor) isa contribution;
     } then {
-        (recommended: $new-book, recipient: $user) isa recommendation;
+        (recommended: $new-publication, recipient: $user) isa recommendation;
     };
 
 rule order-line-total-retail-price:
