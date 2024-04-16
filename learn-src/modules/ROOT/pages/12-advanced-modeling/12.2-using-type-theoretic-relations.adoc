@@ -1,0 +1,373 @@
+= Lesson 12.2: Using type-theoretic relations
+:page-preamble-card: 1
+
+In the previous lesson, we learned how to map application types onto database types using the type-theoretic framework of the PERA model. In this lesson, we'll explore how our models change when we represent application classes with type-theoretic relations.
+
+== Modeling type hierarchies
+
+In xref:learn::12-advanced-modeling/12.1-using-dependent-types.adoc[Lesson 12.1], we encountered the following `Review` type.
+
+[,python]
+----
+class Review:
+    def __init__(
+        self,
+        id: str,
+        reviewed: Book,
+        reviewer: User,
+        timestamp: datetime,
+        score: int
+    ):
+        self.id = id
+        self.reviewed = reviewed
+        self.reviewer = reviewer
+        self.timestamp = timestamp
+        self.score = score
+----
+
+Now, we have decided to make it part of a type hierarchy of user actions instead, represented by the following classes.
+
+[,python]
+----
+class UserAction(ABC):
+    def __init__(self, user: User, timestamp: datetime):
+        self.user = user
+        self.timestamp = timestamp
+
+
+class Order(UserAction):
+    def __init__(
+        self,
+        id: str,
+        user: User,
+        timestamp: datetime
+    ):
+        super().__init__(user, timestamp)
+        self.id = id
+        self.status = Status.PENDING
+
+
+class Review(UserAction):
+    def __init__(
+        self, id: str,
+        reviewed: Book,
+        user: User,
+        timestamp: datetime,
+        score: int
+    ):
+        super().__init__(user, timestamp)
+        self.id = id
+        self.reviewed = reviewed
+        self.score = score
+
+
+class Login(UserAction):
+    def __init__(
+        self,
+        user: User,
+        timestamp: datetime,
+        success: bool
+    ):
+        super().__init__(user, timestamp)
+        self.success = success
+----
+
+[NOTE]
+====
+In Python, the `ABC` class from the `abc` (abstract base class) module is used to denote abstract classes. A class that is a direct subtype of `ABC` is abstract.
+====
+
+Representing these classes in TypeQL is straightforward under the type-theoretic framework. The `UserAction` type is composed of the composite `User` type, so `user-action` should be a relation type with a role `user-action:user`. That role is then inherited by its subtypes. The `Review` type is also composed of the composite `Book` type. In the PERA model, this is represented by adding an extra role `review:reviewed` to `review`.
+
+[,typeql]
+----
+define
+user-action sub relation,
+    abstract,
+    relates user,
+    owns timestamp;
+order sub user-action,
+    owns id @key,
+    owns status,
+    plays order-line:order,
+    plays delivery:delivered;
+review sub user-action,
+    relates reviewed,
+    owns id @key,
+    owns score,
+    owns verified;
+login sub user-action,
+    owns success;
+user plays user-action:user;
+book plays review:reviewed;
+----
+
+.Exercise
+[caption=""]
+====
+Write TypeQL type definitions to represent the following Python classes under the type-theoretic PERA framework. Make sure to include any `plays` statements for roles defined.
+
+[,python]
+----
+class Company(ABC):
+    def __init__(self, name: str):
+        self.name = name
+
+
+class Publisher(Company):
+    def __init__(self, name: str):
+        super().__init__(name)
+
+
+class Courier(Company):
+    def __init__(self, name: str):
+        super().__init__(name)
+
+
+class User:
+    def __init__(
+        self,
+        id: str,
+        name: str,
+        birth_date: datetime,
+        location: City
+    ):
+        self.id = id
+        self.name = name
+        self.birth_date = birth_date
+        self.location = location
+
+
+class Delivery:
+    def __init__(
+        self,
+        delivered: Order,
+        deliverer: Courier,
+        destination: Address
+    ):
+        self.delivered = delivered
+        self.deliverer = deliverer
+        self.destination = destination
+----
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+define
+company sub entity,
+    abstract,
+    owns name;
+publisher sub company;
+courier sub company,
+    plays delivery:deliverer;
+user sub relation,
+    owns id @key,
+    owns name,
+    owns birth-date,
+    relates location;
+delivery sub relation,
+    relates delivered,
+    relates deliverer,
+    relates destination;
+city plays user:location;
+order plays delivery:delivered;
+address plays delivery:destination;
+----
+=====
+====
+
+== Naming interfaces effectively
+
+Next, let's consider the following `Address` class.
+
+[,python]
+----
+class Address:
+    def __int__(self, street: str, city: City):
+        self.street = street
+        self.city = city
+
+    @property
+    def state(self) -> State:
+        return self.city.state
+
+    @property
+    def country(self) -> Country:
+        return self.city.country
+----
+
+We could represent this in TypeQL in the following manner. We'll leave out the properties of `Address` for now, but we could always replicate their behaviour using rules.
+
+[,typeql]
+----
+define
+address sub relation,
+    owns street,
+    relates city;
+city plays address:city;
+----
+
+If we were to implement this as it is, then there would be a disparity between the way that users (defined in the above exercise) and addresses reference cities. The object type `city` would play the roles `user:location` and `address:city`, and there is no way we can polymorphically query these two roles without explicitly listing them. However, if we renamed the `address:city` role to `address:location`, then we can query them polymorphically via their shared role name, as we saw in xref:learn::7-understanding-query-patterns/7.2-relation-patterns.adoc[Lesson 7.2], using the following pattern.
+
+[,typeql]
+----
+$located (location: $city);
+----
+
+This pattern will match instances of both `user` and `address` for `$located`, as long as we use the following definition for `address`.
+
+[,typeql]
+----
+define
+address sub relation,
+    owns street,
+    relates location;
+city plays address:location;
+----
+
+For this reason, it is even more important to choose interface names carefully when using the type-theoretic framework of the PERA model.
+
+[NOTE]
+====
+TypeDB 3.0 will include user-defined *functions* that allow for https://en.wikipedia.org/wiki/Ad_hoc_polymorphism[ad hoc polymorphism]. This will enable a new class of powerful polymorphic queries that do not depend on inheritance hierarchies or interface implementations. By making use of ad hoc polymorphism in TypeDB 3.0, interface names could be chosen freely and the desired polymorphic behaviour could still be implemented!
+====
+
+
+== Handling nullary relations
+
+Finally, we will consider the following classes representing places.
+
+[,python]
+----
+class Place(ABC):
+    def __init__(self, name: str):
+        self.name = name
+
+
+class Country(Place):
+    def __init__(self, name: str):
+        super().__init__(name)
+
+
+class State(Place):
+    def __init__(self, name: str, location: Country):
+        super().__init__(name)
+        self.location = location
+
+    @property
+    def country(self) -> Country:
+        return self.location
+
+
+class City(Place):
+    def __init__(self, name: str, location: State | Country):
+        super().__init__(name)
+        self.location = location
+
+    @property
+    def state(self) -> Optional[State]:
+        if type(self.location) is State:
+            return self.location
+
+    @property
+    def country(self) -> Country:
+        match self.location:
+            case State():
+                return self.location.country
+            case Country():
+                return self.location
+----
+
+Here we run into an interesting problem. The types `Place` and `Country` are composed only of primitive types, but `State` and `City` are also composed of composite types. The PERA model does not permit the mixing of entity and relation types into a single hierarchy. In the type-theoretic framework, we might consider an implementation where some of the relation types have no roles, as shown here.
+
+[,typeql]
+----
+define
+place sub relation,
+    abstract,
+    owns name;
+country sub place,
+    plays city:location,
+    plays state:location;
+state sub place,
+    relates location,
+    plays city:location;
+city sub place,
+    relates location;
+----
+
+However, this schema excerpt will not commit to a database. While abstract relation types can have no roles, all concrete relation types must have at least one role. The type `country` is concrete but does not have any roles, causing this schema to fail validation. Even if we gave `country` a dummy role, we could not instantiate it, as any relation instances without roleplayers are erased automatically on commit. We have a few options to deal with this:
+
+1. Make `country` an entity type instead, and remove the supertype `place` altogether.
+2. Add a `location` role to `country`, and an entity type `world` to play it. We will instantiate `world` once with no attributes, and it will act as the placeholder location for all countries.
+3. Change the supertype `place` to an entity type, and model the network of locations with `locating` relations instead of `location` roles. This is the approach we used in the original bookstore schema under the entity-centric framework.
+
+All of these solutions will allow the schema to pass validation, but none of the resulting schemas will completely match the application model. Here we cannot quite achieve parity with the current model, and we must decide whether to allow the mismatch or modify the application model to match the chosen solution in the database. In this particular case, option (2) lets us come the closest to parity, after which we can make minor changes to the application model to match, if complete parity is required.
+
+[,typeql]
+----
+define
+world sub entity,
+    plays country:location;
+place sub relation,
+    abstract,
+    owns name;
+country sub place,
+    relates location,
+    plays city:location,
+    plays state:location;
+state sub place,
+    relates location,
+    plays city:location;
+city sub place,
+    relates location;
+----
+
+[,python]
+----
+class World:
+    def __init__(self):
+        pass
+
+
+class Place(ABC):
+    def __init__(self, name: str):
+        self.name = name
+
+
+class Country(Place):
+    def __init__(self, name: str, location: World):
+        super().__init__(name)
+        self.location = location
+
+
+class State(Place):
+    def __init__(self, name: str, location: Country):
+        super().__init__(name)
+        self.location = location
+
+    @property
+    def country(self) -> Country:
+        return self.location
+
+
+class City(Place):
+    def __init__(self, name: str, location: State | Country):
+        super().__init__(name)
+        self.location = location
+
+    @property
+    def state(self) -> Optional[State]:
+        if type(self.location) is State:
+            return self.location
+
+    @property
+    def country(self) -> Country:
+        match self.location:
+            case State():
+                return self.location.country
+            case Country():
+                return self.location
+----

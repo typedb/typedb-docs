@@ -1,0 +1,174 @@
+= Lesson 12.4: Using interface contracts
+
+== Overriding interface implementations
+
+In xref:learn::5-defining-schemas/5.5-schema-validation.adoc[Lesson 5.5], we learned that if an attribute type is abstract, then any types that own it must also be abstract. In the current schema, `book` owns `isbn-13` and `isbn-10`, both subtypes of `isbn`.
+
+[,typeql]
+----
+define
+isbn sub attribute, abstract, value string;
+isbn-13 sub isbn;
+isbn-10 sub isbn;
+book sub relation,
+    abstract,
+    relates publisher,
+    owns isbn-13 @key,
+    owns isbn-10 @unique;
+paperback sub book;
+hardback sub book;
+ebook sub book;
+----
+
+Its subtypes `paperback`, `hardback`, and `ebook` also own `isbn-13` and `isbn-10` by inheritance. If we make `book` own `isbn`, we will violate schema validation rules, even though they are both abstract types.
+
+[,typeql]
+----
+define
+isbn sub attribute, abstract, value string;
+isbn-13 sub isbn;
+isbn-10 sub isbn;
+book sub relation,
+    abstract,
+    relates publisher,
+    owns isbn,
+    owns isbn-13 @key,
+    owns isbn-10 @unique;
+paperback sub book;
+hardback sub book;
+ebook sub book;
+----
+
+This is because `paperback`, `hardback`, and `ebook` are concrete, and they inherit ownership of the abstract `isbn`. We can get around this by *overriding* the interface _implementation_ using the `as` keyword. In xref:learn::9-modeling-schemas/9.6-using-interface-hierarchies.adoc[Lesson 9.6], we used the `as` keyword in `relates` statements to override interface _definitions_. This ensured that the role interfaces exposed by the relation supertype would not be exposed by its subtypes. Similarly, we can use it in `owns` and `plays` statements to ensure that the interfaces implemented by an object supertype will not be implemented by its subtypes.
+
+[,typeql]
+----
+define
+isbn sub attribute, abstract, value string;
+isbn-13 sub isbn;
+isbn-10 sub isbn;
+book sub relation,
+    abstract,
+    relates publisher,
+    owns isbn;
+paperback sub book,
+    owns isbn-13 as isbn @key,
+    owns isbn-10 as isbn @unique;
+hardback sub book,
+    owns isbn-13 as isbn @key,
+    owns isbn-10 as isbn @unique;
+ebook sub book,
+    owns isbn-13 as isbn @key,
+    owns isbn-10 as isbn @unique;
+----
+
+Now the implementation of `isbn:OWNER` is overridden by `isbn-13:OWNER` and `isbn-10:OWNER`, and the schema will pass validation. Note that we have overridden the implementation twice! When overriding an interface definition or implementation, we can always override it multiple times.
+
+[IMPORTANT]
+====
+In order to override an interface implementation using the `as` keyword in an `owns` or `plays` statement, the overriding interface type must be a subtype of the overridden interface type.
+====
+
+This modification to the schema isn't particularly useful, and we'll explore a more practical use in the remainder of this lesson.
+
+== Using ownership contracts
+
+By making use of schema validation rules and interface implementation overrides, we can use https://en.wikipedia.org/wiki/Design_by_contract[design by contract] as a schema design strategy. Consider how we might extend the bookstore model so that we can sell serial publications like newspapers, magazines, and journals. Every product sold should have a unique identification number, implemented as a key attribute. Unlike books which have https://en.wikipedia.org/wiki/ISBN[ISBNs], serial publications have https://en.wikipedia.org/wiki/ISSN[ISSNs] instead. We could implement this in the following manner, without using ownership overrides.
+
+[,typeql]
+----
+define
+isn sub attribute, abstract, value string;
+isbn sub isn, abstract;
+isbn-13 sub isbn;
+isbn-10 sub isbn;
+issn sub isn;
+publication sub relation,
+    abstract,
+    relates publisher;
+book sub publication,
+    abstract,
+    owns isbn-13 @key,
+    owns isbn-10 @unique;
+paperback sub book;
+hardback sub book;
+ebook sub book;
+serial sub publication,
+    abstract,
+    owns issn @key;
+newspaper sub serial;
+magazine sub serial;
+journal sub serial;
+----
+
+This allows us to polymorphically describe all publications and their "international standard numbers" (ISNs) with the following pattern.
+
+[,typeql]
+----
+$publication isa publication, has isn $isn;
+----
+
+However, if we extend the schema by defining a new subtype of `publication`, we could do so without assigning it ownership of an ISN type.
+
+[,typeql]
+----
+define
+music-score sub publication;
+----
+
+Now we will have publications in the database that do not have ISNs, and so are not matched by the above pattern. We can solve this by using an ownership contract. To do so, we assign `publication` ownership of `isn`. This will force all subtypes of `publication` to override the ownership with a subtype of `isn`, or the schema will not commit.
+
+[,typeql]
+----
+define
+isn sub attribute, abstract, value string;
+isbn sub isn, abstract;
+isbn-13 sub isbn;
+isbn-10 sub isbn;
+issn sub isn;
+publication sub relation,
+    abstract,
+    relates publisher,
+    owns isn @key;
+book sub publication,
+    abstract,
+    owns isbn-13 as isn,
+    owns isbn-10 @unique;
+paperback sub book;
+hardback sub book;
+ebook sub book;
+serial sub publication,
+    abstract,
+    owns issn as isn;
+newspaper sub serial;
+magazine sub serial;
+journal sub serial;
+----
+
+We have also made sure to apply the `@key` annotation to the top-level ownership implementation. This causes it to be inherited and shared, ensuring that every publication has exactly one ISN, and no two ISNs are the same, even if they are of different types. Now if we were to define `music-score` as we did above, the commit would fail.
+
+----
+Invalid Type Write: The type 'music-score' is not abstract, and thus cannot own an abstract attribute type 'isn'.
+----
+
+In order to define new subtypes of publication, we are now forced to give them ownership of an ISN type, ensuring the contract defined on `publication` is fulfilled. For music scores, we use https://en.wikipedia.org/wiki/International_Standard_Music_Number[ISMNs].
+
+[,typeql]
+----
+define
+ismn sub isn;
+music-score sub publication,
+    owns ismn as isn;
+----
+
+[NOTE]
+====
+TypeDB 2.x does not support the use of schema validation to enforce role contracts in the same way as for ownership contracts. This feature will be released in TypeDB 3.0.
+====
+
+Below is a complete implementation of the bookstore schema using the type-theoretic framework of the PERA model, and including the new publication types `serial` and `music-score` and the `isn` interface contract.
+
+[,typeql]
+----
+include::learn::attachment$type-theoretic-schema.tql[lines=18..]
+----
