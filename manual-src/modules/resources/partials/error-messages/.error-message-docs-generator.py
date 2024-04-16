@@ -1,22 +1,23 @@
 import re
+import os
 
-with open('./ErrorMessage.java', 'r') as data:
-    java_source = data.read()
-
-# Update the class_pattern to accurately capture class contents
-class_pattern = re.compile(r'^\s*public static class (\w+) extends ErrorMessage \{(.*?)^\s*}', re.DOTALL | re.MULTILINE)
-# Template for field pattern, requiring adjustment for class name
-field_pattern_template = r'^\s*public static final {class_name} (\w+) =\s*new {class_name}\((\d+), "(.*?)"\);'
-# Updated prefix_pattern to match both public and private modifiers for codePrefix
-prefix_pattern = re.compile(r'\s*(public|private) static final String codePrefix = "(.*?)";.*?private static final String messagePrefix = "(.*?)";', re.DOTALL)
+SRC_PATH = './src/'
+ADOC_PATH = './adoc/'
 
 
 def parse_java_source(source):
+    # Update the class_pattern to accurately capture class contents extends ErrorMessage
+    class_pattern = re.compile(r'^\s*public (static )?class (\w+) extends ([\w\.]+)?ErrorMessage \{(.*?)^\s*}', re.DOTALL | re.MULTILINE)
+    # Template for field pattern, requiring adjustment for class name
+    field_pattern_template = r'^\s*public static final {class_name} (\w+) =\s*new {class_name}\((\d+), "(.*?)"\);'
+    # Updated prefix_pattern to match both public and private modifiers for codePrefix
+    prefix_pattern = re.compile(r'\s*(public|private) static final String codePrefix = "(.*?)";.*?private static final String messagePrefix = "(.*?)";', re.DOTALL)
+
     total_field_count = 0  # Initialize total field count
     docs = []
     for class_match in class_pattern.finditer(source):
-        class_body = class_match.group(2)  # Extracted class body content
-        class_name = class_match.group(1)
+        class_body = class_match.group(4)  # Extracted class body content
+        class_name = class_match.group(2)
         field_count = 0  # Initialize field count for this class
 
         # Search for codePrefix and messagePrefix within the class body
@@ -43,10 +44,24 @@ def parse_java_source(source):
     return "".join(docs)
 
 
-# Generate AsciiDoc from the Java source
-asciidoc = parse_java_source(java_source)
+def main():
+    for dirpath, dirnames, filenames in os.walk(SRC_PATH):
+        for filename in filenames:
+            file_path = os.path.join(SRC_PATH, filename)
+            try:
+                # Open the source file
+                with open(file_path, 'r') as data:
+                    java_source = data.read()
+                # Generate AsciiDoc from the Java source
+                asciidoc = parse_java_source(java_source)
+                # print(asciidoc)
+                # Save the adoc file
+                new_file_path = os.path.join(ADOC_PATH, filename + '.adoc')
+                with open(new_file_path, 'w') as data:
+                    data.write(asciidoc)
+            except Exception as e:
+                print(f"An error occurred: {e}")
 
-# print(asciidoc)
 
-with open('./error-messages.adoc', 'w') as data:
-    data.write(asciidoc)
+if __name__ == "__main__":
+    main()
