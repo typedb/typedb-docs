@@ -20,7 +20,7 @@ and can be used naturally in our queries.
 // we can infer new data on-the-fly using rules, which allow us to embed the logic of our data directly into our schema.
 
 This covers only a fraction of what TypeDB is capable of.
-For an in-depth dive into TypeDB, check out our xref:learn::overview.adoc[TypeDB Learning Course].
+For an in-depth dive, check out our xref:learn::overview.adoc[TypeDB Learning Course].
 
 [NOTE]
 ====
@@ -43,6 +43,8 @@ Data can be inserted into a TypeDB database as instances of types from the datab
 Entities (or instances of entity types) represent independent objects in a business domain.
 Attributes represent properties that can be owned by other data instances.
 Relations have roles that other data instances can play.
+
+[#_root_types]
 
 .Root types and their specific properties
 [cols="^.^h,^.^,^.^,^.^",options="header"]
@@ -381,9 +383,25 @@ Every attribute type is defined in the schema of a database with its value type,
 as well as what types can own instances of this attribute type.
 Creating an attribute is just instantiating an attribute type with a value of the appropriate value type.
 
-You can create an attribute explicitly by providing a type and value constraint.
+You can create an attribute explicitly by using an xref:typeql::statements/isa.adoc[isa statement] with
+xref:typeql::statements/value-assignment.adoc[value assignment]:
+
+.Explicit attribute insertion
+[,typeql]
+----
+insert
+$name "James" isa name;
+----
+
 Alternatively, you can assign ownership of an attribute, and if the attribute doesn't exist in the database,
-it will be created implicitly.
+it will be created implicitly:
+
+.Ownership assignment with optional implicit attribute insertion
+[,typeql]
+----
+insert
+$p isa person, has name "Sam";
+----
 
 ==== Multi-valued attributes
 
@@ -420,49 +438,129 @@ For example, if multiple people have the same name, they have ownership of the s
 
 image::home::bobs.png[Multiple Bobs, role=framed, width = 75%, link=self]
 
-
 == Using polymorphic queries
 
-There are three types of polymorphism you can use in a query:
+Full power of patterns and type inference can be utilised by using polymorphism in queries.
+To use polymorphism, relax type constraints in the matching pattern of a query.
+That way, TypeDB can find all possible matching results, regardless of their specific type.
+
+There are three types of polymorphism in TypeQL queries:
 
 * <<_inheritance_polymorphism,Inheritance polymorphism>>
 * <<_interface_polymorphism,Interface polymorphism>>
-* Parametric polymorphism
+* <<_parametric_polymorphism,Parametric polymorphism>>
 
 [#_inheritance_polymorphism]
 === Inheritance polymorphism
+
+Inheritance polymorphism is enabled by type inference.
+Using type hierarchy, you can query for a supertype to include all of its subtypes in the results.
+
+For a simple example, let's match all entities in a database and fetch all their attributes in a single query:
 
 [,typeql]
 ----
 include::home::partial$cc-queries/inheritance-polymorphism.tql[]
 ----
 
+The output of such a query includes all entities in a database,
+regardless of their exact type because they all are subtypes of the `entity` root type.
+In the same way, we can match data instances of the `person` type
+and include data instances of the `user` type due to type inference.
+To avoid type inference in matching, use the `isa!` keyword instead.
+For more information on the `isa` and `isa!` keywords, see the xref:typeql::statements/isa.adoc[] page.
+
 [#_interface_polymorphism]
 === Interface polymorphism
+
+Interface polymorphism lets us query for any types that implement a given interface.
+By implementing a given interface, we mean owning an attribute type or playing a role in a relation type
+(see the <<_root_types,root types table>>).
+
+For example, let's match all data instances that have a name, without specifying their types:
 
 [,typeql]
 ----
 include::home::partial$cc-queries/interface-polymorphism.tql[]
 ----
 
+The above example can match any type, as long as it's data instance owns a `name` attribute.
+
+[#_parametric_polymorphism]
 === Parametric polymorphism
+
+Parametric polymorphism lets us look for a value of an attribute regardless of its type.
+Querying without constraining a type can return any type that matches a pattern.
+
+// [,typeql]
+// ----
+// include::home::partial$cc-queries/parametric-polymorphism.tql[]
+// ----
+
+For example, let's match any data instance that has any attribute with a value bigger than `100`:
 
 [,typeql]
 ----
-include::home::partial$cc-queries/parametric-polymorphism.tql[]
+match
+$data has $attr;
+$attr > 100;
+fetch
+$data: attribute;
 ----
 
+The result of the above query sent to our sample database from the xref:home::quickstart.adoc[Quickstart guide]
+includes a `file` entity owning a `size-kb` attribute, that is bigger than `100`:
+
+[,json]
+----
+{
+    "data": {
+        "attribute": [
+            { "value": 3458761, "type": { "label": "size-kb", "root": "attribute", "value_type": "long" } },
+            { "value": "docs/quickstart-guide.adoc", "type": { "label": "path", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "file", "root": "entity" }
+    }
+}
+----
 
 == Rule-based inference
 
+TypeDB can perform rule-based inference in read queries (Fetch and Get).
+Rules are defined in the schema of a database.
+When you retrieve data in a read transaction with the `inference` option enabled, TypeDB can add inferred "virtual"
+data to the results.
+This inferred data is never persisted in the database and only exists for this particular transaction.
+When you close the transaction and open a new one,
+the data needs to be inferred again to ensure that it is always up-to-date.
+
+For example, let's add a rule to infer permission with action `read`
+if a permission with actions `write` or `full` already exist in the database for the file and person:
 
 [,typeql]
 ----
 include::home::partial$cc-queries/inference-rule.tql[]
 ----
 
+To use the inference, xref:manual::reading/infer.adoc[enable the `infer` transaction option]
+and use the following fetch query:
+
 [,typeql]
 ----
 include::home::partial$cc-queries/inference-fetch.tql[]
 ----
 
+The above query matches all files and people that participate in a `permission` relation
+with the `action` role played by an instance of the `action` type with the name `read`.
+
+Since we are matching only files with a `read` permission and there is no such permission inserted in our database
+directly, all results returned must be obtained though inference with the rule we inserted earlier.
+
+=== Combining rules
+
+A single rule can infer a single relation or a single attribute ownership.
+
+A rule can be applied many times, as long as it's producing new results.
+You can use multiple rules in a schema, as well as some advanced technics, like
+xref:learn::10-using-inference/10.2-rule-chaining.adoc[chaining] or
+xref:learn::10-using-inference/10.3-rule-branching.adoc[branching] rules.
