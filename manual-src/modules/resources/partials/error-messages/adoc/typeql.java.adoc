@@ -1,0 +1,132 @@
+// Total number of fields across all classes: 42
+
+== TypeQL Error
+
+`ILLEGAL_STATE`::
+[TQL1] TypeQL Error: Illegal internal state!
+
+`SYNTAX_ERROR_NO_DETAILS`::
+[TQL2] TypeQL Error: There is a syntax error at line %s:\n%s
+
+`SYNTAX_ERROR_DETAILED`::
+[TQL3] TypeQL Error: There is a syntax error at line %s:\n%s\n%s\n%s
+
+`INVALID_CASTING`::
+[TQL4] TypeQL Error: The class '%s' cannot be casted to '%s'.
+
+`MISSING_PATTERNS`::
+[TQL5] TypeQL Error: The query has not been provided with any patterns.
+
+`VARIABLE_NAME_CONFLICT`::
+[TQL6] TypeQL Error: The variable(s) named '%s' cannot be used for both concept variables and a value variables.
+
+`MISSING_DEFINABLES`::
+[TQL7] TypeQL Error: The query has not been provided with any definables.
+
+`MATCH_HAS_NO_BOUNDING_NAMED_VARIABLE`::
+[TQL8] TypeQL Error: The match query does not have named variables to bound the nested disjunction/negation pattern(s).
+
+`MATCH_HAS_NO_NAMED_VARIABLE`::
+[TQL9] TypeQL Error: The match query has no named variables to retrieve.
+
+`MATCH_PATTERN_STATEMENT_HAS_NO_NAMED_VARIABLE`::
+[TQL10] TypeQL Error: The pattern '%s' has no named variable.
+
+`MATCH_HAS_UNBOUNDED_NESTED_PATTERN`::
+[TQL11] TypeQL Error: The match query contains a nested pattern is not bounded: '%s'.
+
+`MISSING_GET_FILTER`::
+[TQL12] TypeQL Error: The get query cannot be constructed with NULL filter variable collection.
+
+`INVALID_IID_STRING`::
+[TQL13] TypeQL Error: Invalid IID: '%s'. IIDs must follow the regular expression: '%s'.
+
+`INVALID_ATTRIBUTE_TYPE_REGEX`::
+[TQL14] TypeQL Error: Invalid regular expression '%s'.
+
+`ILLEGAL_FILTER_VARIABLE_REPEATING`::
+[TQL15] TypeQL Error: The variable '%s' occurred more than once in the filter.
+
+`VARIABLE_OUT_OF_SCOPE`::
+[TQL16] TypeQL Error: The variable '%s' is out of scope of the query.
+
+`VARIABLE_OUT_OF_SCOPE_DELETE`::
+[TQL17] TypeQL Error: The deleted variable '%s' is out of scope of the match query.
+
+`NO_VARIABLE_IN_SCOPE_INSERT`::
+[TQL18] TypeQL Error: None of the variables in 'insert' ('%s') is within scope of 'match' ('%s')
+
+`FILTER_VARIABLE_ANONYMOUS`::
+[TQL19] TypeQL Error: Anonymous variable encountered in the query filter.
+
+`INVALID_VARIABLE_NAME`::
+[TQL20] TypeQL Error: Invalid variable name '%s'. Variables must be valid unicode identifiers.
+
+`ILLEGAL_CONSTRAINT_REPETITION`::
+[TQL21] TypeQL Error: The variable '%s' contains illegally repeating constraints: '%s' and '%s'.
+
+`MISSING_CONSTRAINT_RELATION_PLAYER`::
+[TQL22] TypeQL Error: A relation variable has not been provided with role players.
+
+`MISSING_CONSTRAINT_VALUE`::
+[TQL23] TypeQL Error: A value constraint has not been provided with a variable or literal value.
+
+`MISSING_CONSTRAINT_PREDICATE`::
+[TQL24] TypeQL Error: A value constraint has not been provided with a predicate.
+
+`INVALID_CONSTRAINT_DATETIME_PRECISION`::
+[TQL26] TypeQL Error: Attempted to assign DateTime value of '%s' which is more precise than 1 millisecond.
+
+`INVALID_DEFINE_QUERY_VARIABLE`::
+[TQL27] TypeQL Error: Invalid define/undefine query. User defined variables are not accepted in define/undefine query.
+
+`INVALID_UNDEFINE_QUERY_RULE`::
+[TQL28] TypeQL Error: Invalid undefine query: the rule body of '%s' ('when' or 'then') cannot be undefined. The rule must be undefined entirely by referring to its label.
+
+`INVALID_RULE_WHEN_MISSING_PATTERNS`::
+[TQL29] TypeQL Error: Rule '%s' 'when' has not been provided with any patterns.
+
+`INVALID_RULE_WHEN_NESTED_NEGATION`::
+[TQL30] TypeQL Error: Rule '%s' 'when' contains a nested negation.
+
+`INVALID_RULE_THEN`::
+[TQL31] TypeQL Error: Rule '%s' 'then' '%s': must be exactly one attribute ownership, or exactly one relation.
+
+`INVALID_RULE_THEN_HAS`::
+[TQL32] TypeQL Error: Rule '%s' 'then' '%s' tries to assign type '%s' to variable '%s', but this variable already had a type assigned by the rule 'when'. Try omitting this type assignment.
+
+`INVALID_RULE_THEN_VARIABLES`::
+[TQL33] TypeQL Error: Rule '%s' 'then' variables must be present in the 'when', outside of nested patterns.
+
+`INVALID_RULE_THEN_ROLES`::
+[TQL34] TypeQL Error: Rule '%s' 'then' '%s' must specify all role types explicitly or by using a variable.
+
+`INVALID_RULE_THEN_RELATION_VARIABLE`::
+[TQL35] TypeQL Error: Rule '%s': relation variable name '%s' in 'then' must not be present.
+
+`REDUNDANT_NESTED_NEGATION`::
+[TQL36] TypeQL Error: Invalid query containing redundant nested negations.
+
+`VARIABLE_NOT_SORTED`::
+[TQL37] TypeQL Error: Variable '%s' does not exist in the sorting clause.
+
+`INVALID_SORTING_VARIABLE_NOT_MATCHED`::
+[TQL38] TypeQL Error: Sort variable '%s' is not present in the match clause.
+
+`INVALID_SORTING_ORDER`::
+[TQL39] TypeQL Error: Invalid sorting order '%s'. Valid options: '%s' or '%s'.
+
+`INVALID_COUNT_VARIABLE_ARGUMENT`::
+[TQL40] TypeQL Error: Aggregate COUNT does not accept a Variable.
+
+`ILLEGAL_GRAMMAR`::
+[TQL41] TypeQL Error: Illegal grammar: '%s'
+
+`INVALID_TYPE_LABEL`::
+[TQL42] TypeQL Error: The type label '%s' is invalid. Type labels must be valid unicode identifiers.
+
+`INVALID_ANNOTATION`::
+[TQL43] TypeQL Error: Invalid annotation '%s' on '%s' constraint
+
+// Number of fields in ErrorMessage: 42
+
