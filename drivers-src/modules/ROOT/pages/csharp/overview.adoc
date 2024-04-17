@@ -13,11 +13,10 @@ The C# driver was developed by Vaticle to enable TypeDB support for C# software 
 The GitHub repository with the driver's source code and release notes.
 ****
 
-//#todo Check the link after release
-.link:https://www.nuget.org/packages/TypeDB.Driver[Downloads,window=_blank]
+.link:https://www.nuget.org/packages/TypeDB.Driver[NuGet page,window=_blank]
 [.clickable]
 ****
-See the driver's downloadable packages.
+The NuGet package manager’s page about the driver’s package.
 ****
 --
 
@@ -34,7 +33,7 @@ To install the TypeDB C# driver,
 https://www.nuget.org/packages/TypeDB.Driver[Download] the latest release of the driver and its
 https://www.nuget.org/packages?q=TypeDB.Driver.Pinvoke[Pinvoke runtime]
 for you architecture (`x86_64`/`arm64`) and OS (Linux/macOS/Win).
-Here is an example from the `.csproj` file for `macOS` and `x86_64`:
+Here is an example from the `.csproj` file for macOS and `x86_64`:
 
 [,xml]
 ----
