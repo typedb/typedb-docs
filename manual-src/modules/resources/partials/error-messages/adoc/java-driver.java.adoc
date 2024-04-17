@@ -1,0 +1,99 @@
+// Total number of fields across all classes: 27
+
+== Driver Error
+
+`UNRECOGNISED_OS`::
+[JDR1] Driver Error: The operating system '%s' is not recognised.
+
+`UNRECOGNISED_ARCH`::
+[JDR2] Driver Error: The architecture '%s' is not recognised.
+
+`UNRECOGNISED_OS_ARCH`::
+[JDR3] Driver Error: The platform os '%s' and architecture '%s' are not supported by this driver.
+
+`JNI_LIBRARY_NOT_FOUND`::
+[JDR4] Driver Error: Native JNI library not found (searching for '%s').
+
+`JNI_PLATFORM_LIBRARY_NOT_FOUND`::
+[JDR5] Driver Error: Found multiple JNI libraries in classpath, could not select one for target platform (searching for '%s' for platform '%s').
+
+`DRIVER_CLOSED`::
+[JDR6] Driver Error: The driver has been closed and no further operation is allowed.
+
+`SESSION_CLOSED`::
+[JDR7] Driver Error: The session has been closed and no further operation is allowed.
+
+`TRANSACTION_CLOSED`::
+[JDR8] Driver Error: The transaction has been closed and no further operation is allowed.
+
+`TRANSACTION_CLOSED_WITH_ERRORS`::
+[JDR9] Driver Error: The transaction has been closed with error(s): \n%s.
+
+`DATABASE_DELETED`::
+[JDR10] Driver Error: The database has been deleted and no further operation is allowed.
+
+`POSITIVE_VALUE_REQUIRED`::
+[JDR11] Driver Error: Value cannot be less than 1, was: '%d'.
+
+`MISSING_DB_NAME`::
+[JDR12] Driver Error: Database name cannot be null.
+
+// Number of fields in Driver: 12
+
+== Concept Error
+
+`INVALID_CONCEPT_CASTING`::
+[JCO1] Concept Error: Invalid concept conversion from '%s' to '%s'.
+
+`MISSING_TRANSACTION`::
+[JCO2] Concept Error: Transaction cannot be null.
+
+`MISSING_IID`::
+[JCO3] Concept Error: IID cannot be null or empty.
+
+`MISSING_LABEL`::
+[JCO4] Concept Error: Label cannot be null or empty.
+
+`MISSING_VARIABLE`::
+[JCO5] Concept Error: Variable name cannot be null or empty.
+
+`MISSING_VALUE`::
+[JCO6] Concept Error: Value cannot be null.
+
+`NONEXISTENT_EXPLAINABLE_CONCEPT`::
+[JCO7] Concept Error: The concept identified by '%s' is not explainable.
+
+`NONEXISTENT_EXPLAINABLE_OWNERSHIP`::
+[JCO8] Concept Error: The ownership by owner '%s' of attribute '%s' is not explainable.
+
+`UNRECOGNISED_ANNOTATION`::
+[JCO9] Concept Error: The annotation '%s' is not recognised.
+
+// Number of fields in Concept: 9
+
+== Query Error
+
+`VARIABLE_DOES_NOT_EXIST`::
+[JQR1] Query Error: The variable '%s' does not exist.
+
+`MISSING_QUERY`::
+[JQR2] Query Error: Query cannot be null or empty.
+
+// Number of fields in Query: 2
+
+== Java Internal Error
+
+`UNEXPECTED_NATIVE_VALUE`::
+[JIN1] Java Internal Error: Unexpected native value encountered!
+
+`ILLEGAL_STATE`::
+[JIN2] Java Internal Error: Illegal state has been reached!
+
+`ILLEGAL_CAST`::
+[JIN3] Java Internal Error: Illegal casting operation to '%s'.
+
+`NULL_NATIVE_VALUE`::
+[JIN4] Java Internal Error: Unhandled null pointer to a native object encountered!
+
+// Number of fields in Internal: 4
+
