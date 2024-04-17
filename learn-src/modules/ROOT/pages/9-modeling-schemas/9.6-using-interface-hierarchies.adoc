@@ -151,7 +151,7 @@ The implementing object type is `book` and the implemented interface type is `is
 
 [NOTE]
 ====
-As we learned in xref:learn::5-defining-schemas/5.5-schema-validation.adoc[Lesson 5.5], if an attribute type is abstract, then any owners must also be abstract. Because the implementation of `isbn:OWNER` is inherited by the subtypes of `book` (which are not themselves abstract), this will result in a violation of schema validation rules, and the schema will not commit! However, we will see how we can use this property to our advantage in Lesson 12.3 (coming soon), where we will explore https://en.wikipedia.org/wiki/Design_by_contract[schema design by contract].
+As we learned in xref:learn::5-defining-schemas/5.5-schema-validation.adoc[Lesson 5.5], if an attribute type is abstract, then any owners must also be abstract. Because the implementation of `isbn:OWNER` is inherited by the subtypes of `book` (which are not themselves abstract), this will result in a violation of schema validation rules, and the schema will not commit! However, we will see how we can use this property to our advantage in xref:learn::12-advanced-modeling/12.4-using-interface-contracts.adoc[Lesson 12.4], where we will explore https://en.wikipedia.org/wiki/Design_by_contract[schema design by contract].
 ====
 
 Because implementations are invariant in the interface, this means that we must separately declare implementations of their subtypes if we wish to use them, as [#_footnote_1]#follows#^<<_footnotes,1>>^.

@@ -1,0 +1,313 @@
+#
+# Copyright (C) 2024 Vaticle
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+define
+
+publication sub relation,
+    abstract,
+    relates publisher,
+    relates location,
+    owns isn @key,
+    owns title,
+    owns genre,
+    owns price,
+    plays contribution:work,
+    plays promotion-inclusion:item,
+    plays order-line:item,
+    plays review:reviewed,
+    plays recommendation:recommended;
+
+book sub publication,
+    abstract,
+    owns isbn-13 as isn,
+    owns isbn-10 @unique,
+    owns year,
+    owns page-count;
+
+hardback sub book,
+    owns stock;
+
+paperback sub book,
+    owns stock;
+
+ebook sub book;
+
+serial sub publication,
+    abstract,
+    owns issn as isn,
+    owns next-issue-number,
+    owns next-issue-date;
+
+newspaper sub serial;
+
+magazine sub serial;
+
+journal sub serial;
+
+music-score sub publication,
+    owns ismn as isn,
+    owns year,
+    owns page-count,
+    owns stock;
+
+contributor sub entity,
+    owns name,
+    plays contribution:contributor,
+    plays authoring:author,
+    plays editing:editor,
+    plays illustrating:illustrator;
+
+company sub entity,
+    abstract,
+    owns name;
+
+publisher sub company,
+    plays publication:publisher;
+
+courier sub company,
+    plays delivery:deliverer;
+
+user sub relation,
+    relates location,
+    owns id @key,
+    owns name,
+    owns birth-date,
+    plays user-action:user,
+    plays recommendation:recipient;
+
+user-action sub relation,
+    abstract,
+    relates user,
+    owns timestamp;
+
+order sub user-action,
+    owns id @key,
+    owns status,
+    plays order-line:order,
+    plays delivery:delivered;
+
+review sub user-action,
+    relates reviewed,
+    owns id @key,
+    owns score,
+    owns verified;
+
+login sub user-action,
+    owns success;
+
+promotion sub entity,
+    owns code @key,
+    owns name,
+    owns start-timestamp,
+    owns end-timestamp,
+    plays promotion-inclusion:promotion;
+
+address sub relation,
+    relates location,
+    owns street,
+    plays delivery:destination;
+
+place sub relation,
+    abstract,
+    owns name;
+
+city sub place,
+    relates location,
+    plays publication:location,
+    plays user:location,
+    plays address:location;
+
+state sub place,
+    relates location,
+    plays city:location;
+
+country sub place,
+    relates location,
+    plays city:location,
+    plays state:location;
+
+world sub entity,
+    plays country:location;
+
+contribution sub relation,
+    relates contributor,
+    relates work;
+
+authoring sub contribution,
+    relates author as contributor;
+
+editing sub contribution,
+    relates editor as contributor;
+
+illustrating sub contribution,
+    relates illustrator as contributor;
+
+promotion-inclusion sub relation,
+    relates promotion,
+    relates item,
+    owns discount;
+
+order-line sub relation,
+    relates order,
+    relates item,
+    owns quantity,
+    owns price;
+
+delivery sub relation,
+    relates deliverer,
+    relates delivered,
+    relates destination;
+
+recommendation sub relation,
+    relates recommended,
+    relates recipient;
+
+isn sub attribute, abstract, value string;
+isbn sub isn, abstract;
+isbn-13 sub isbn;
+isbn-10 sub isbn;
+issn sub isn;
+ismn sub isn;
+title sub attribute, value string;
+page-count sub attribute, value long;
+next-issue-number sub attribute, value long;
+next-issue-date sub attribute, value datetime;
+genre sub attribute, value string;
+stock sub attribute, value long;
+price sub attribute, value double;
+discount sub attribute, value double;
+id sub attribute, value string;
+code sub attribute, value string;
+name sub attribute, value string;
+birth-date sub attribute, value datetime;
+street sub attribute, value string;
+year sub attribute, value long;
+quantity sub attribute, value long;
+score sub attribute, value long;
+verified sub attribute, value boolean;
+timestamp sub attribute, value datetime;
+start-timestamp sub attribute, value datetime;
+end-timestamp sub attribute, value datetime;
+status sub attribute, value string, regex "^(paid|dispatched|delivered|returned|canceled)$";
+success sub attribute, value boolean;
+
+rule review-verified-by-purchase:
+    when {
+        $review ($user, $product) isa review, has timestamp $review-time;
+        $order ($user) isa order, has timestamp $order-time;
+        ($order, $product) isa order-line;
+        $review-time > $order-time;
+    } then {
+        $review has verified true;
+    };
+
+rule review-unverified:
+    when {
+        $review isa review;
+        not { $review has verified true; };
+    } then {
+        $review has verified false;
+    };
+
+rule publication-recommendation-by-genre:
+    when {
+        $user isa user;
+        $liked-publication isa publication;
+        {
+            $order ($user) isa order;
+            ($order, $liked-publication) isa order-line;
+        } or {
+            ($user, $liked-publication) isa review,
+                has score >= 7;
+        };
+        $new-publication isa publication;
+        not { {
+            $order ($user) isa order;
+            ($order, $new-publication) isa order-line;
+        } or {
+            ($user, $new-publication) isa review;
+        }; };
+        $liked-publication has genre $shared-genre;
+        $new-publication has genre $shared-genre;
+        not { {
+            $shared-genre == "fiction";
+        } or {
+            $shared-genre == "nonfiction";
+        }; };
+    } then {
+        (recommended: $new-publication, recipient: $user) isa recommendation;
+    };
+
+rule publication-recommendation-by-contributor:
+    when {
+        $user isa user;
+        $liked-publication isa publication;
+        {
+            $order ($user) isa order;
+            ($order, $liked-publication) isa order-line;
+        } or {
+            ($user, $liked-publication) isa review,
+                has score >= 7;
+        };
+        $new-publication isa publication;
+        not { {
+            $order ($user) isa order;
+            ($order, $new-publication) isa order-line;
+        } or {
+            ($user, $new-publication) isa review;
+        }; };
+        ($liked-publication, $shared-contributor) isa contribution;
+        ($new-publication, $shared-contributor) isa contribution;
+    } then {
+        (recommended: $new-publication, recipient: $user) isa recommendation;
+    };
+
+rule order-line-total-retail-price:
+    when {
+        $order has timestamp $order-time;
+        $line ($order, $item) isa order-line;
+        not {
+            ($promotion, $item) isa promotion-inclusion;
+            $promotion has start-timestamp <= $order-time,
+                has end-timestamp >= $order-time;
+        };
+        $item has price $retail-price;
+        $line has quantity $quantity;
+        ?line-total = $quantity * $retail-price;
+    } then {
+        $line has price ?line-total;
+    };
+
+rule order-line-total-discounted-price:
+    when {
+        $order has timestamp $order-time;
+        $line ($order, $item) isa order-line;
+        ($best-promotion, $item) isa promotion-inclusion, has discount $best-discount;
+        $best-promotion has start-timestamp <= $order-time,
+            has end-timestamp >= $order-time;
+        not {
+            ($other-promotion, $item) isa promotion-inclusion, has discount > $best-discount;
+            $other-promotion has start-timestamp <= $order-time,
+                has end-timestamp >= $order-time;
+        };
+        $item has price $retail-price;
+        ?discounted-price = round(100 * $retail-price * (1 - $best-discount)) / 100;
+        $line has quantity $quantity;
+        ?line-total = $quantity * ?discounted-price;
+    } then {
+        $line has price ?line-total;
+    };

@@ -1,0 +1,141 @@
+= Lesson 12.1: Using dependent types
+:page-preamble-card: 1
+
+The PERA model and TypeQL are both based on the theory of https://en.wikipedia.org/wiki/Dependent_type[dependent types]. Though we have previously taken advantage of polymorphic features in the model and language, we have not used their type-theoretic natures to their complete potential. When used in this way, we can eliminate object model mismatch by achieving parity between application classes and database types.
+
+== A unified view of object types
+
+We first encountered the following diagram in xref:learn::9-modeling-schemas/9.1-the-pera-model.adoc[Lesson 9.1], in which the building blocks of the PERA model were introduced. It summarises the ways in which different kinds of types in the model are associated.
+
+image::typeql-terminology.png[role=framed, width = 75%, link=self]
+
+The properties of entity and relation types are almost identical. Both are freely instantiable, both can implement interfaces, both can be subtyped, and both can be abstract. The only difference between them is that entity types have no dependencies while relation types depend on roles. As we learned in xref:learn::5-defining-schemas/5.1-defining-individual-types.adoc[Lesson 5.1], relation type can depend on any number of roles, allowing us to create unary, binary, ternary, and n-ary relation types. However, nullary relation types, those that relate zero roles, are not permitted in TypeDB. The reason for this is that they would be functionally identical to entities!
+
+In that sense, we can consider an entity type simply to be a nullary relation type. Thus, instead of entity, relation, and attribute types, we will consider only two kinds of data-storing types when designing data models: *object types* and *attribute types*. With this perspective in mind, we can treat entity and relation types to simply be implementations of object types with a zero or non-zero number of dependencies respectively.
+
+== Analyzing constructors
+
+There are two key differences between object and attribute types in the PERA model. Object types are freely instantiable while attribute types are not, and object types can implement interfaces while attribute types cannot. These properties mirror https://en.wikipedia.org/wiki/Composite_data_type[composite types] and https://en.wikipedia.org/wiki/Primitive_data_type[primitive types] in OOP respectively. The parity between the properties of PERA types and OOP types, along with the polymorphic capabilities of the PERA model, allow us build TypeDB schemas that closely match application object models. Let's consider some examples drawn from the bookstore. We'll start with promotions, which might be represented by the following Python class.
+
+[,python]
+----
+class Promotion:
+    def __init__(
+        self,
+        code: str,
+        name: str,
+        start_timestamp: datetime,
+        end_timestamp: datetime
+    ):
+        self.code = code
+        self.name = name
+        self.start_timestamp = start_timestamp
+        self.end_timestamp = end_timestamp
+----
+
+Currently, we can only instantiate `Promotion` and modify the instance's variables. We cannot, for instance, add books to the promotion, but we will address this in xref:learn::12-advanced-modeling/12.3-reifying-interfaces.adoc[Lesson 12.3]. In OOP, a type's constructor acts as a conceptual template for objects of that type. It defines the information required to create such an object, and so is a minimal representation of it. We might enrich the object with more information later on, perhaps by calling its methods, but this is not necessary to create the object. As such, a type's constructor is the logical place to begin when designing a corresponding PERA model.
+
+The constructor for `Promotion` takes four arguments: a code, a name, a start timestamp and an end timestamp. The values of those argument are then stored in the created object. This kind of constructor is very simple, and we can consider the created object to be simply a https://en.wikipedia.org/wiki/Object_composition[composite] of the constructor's arguments. Each of the arguments is of a primitive type.
+
+Let's now compare this to the following class, which represents reviews.
+
+[,python]
+----
+class Review:
+    def __init__(
+        self,
+        id: str,
+        reviewed: Book,
+        reviewer: User,
+        timestamp: datetime,
+        score: int
+    ):
+        self.id = id
+        self.reviewed = reviewed
+        self.reviewer = reviewer
+        self.timestamp = timestamp
+        self.score = score
+----
+
+This constructor is very similar to that of `Promotion`, simply taking several arguments and storing their values in the created object. However, this time only the id, timestamp, and score are of primitive types. The reviewed book and reviewer user are of the composite types `Book` and `User` respectively.
+
+== The entity-centric framework
+
+How should we go about modelling `Promotion` and `Review` in TypeDB? Previously, we have generally represented classes with entity types and references between them with relation types. In this *entity-centric framework*, we might use the following model for these two classes.
+
+[,typeql]
+----
+define
+promotion sub entity,
+    owns code,
+    owns name,
+    owns start-timestamp,
+    owns end-timestamp;
+review sub entity,
+    owns id,
+    plays rating:review,
+    plays action-execution:action,
+    owns timestamp,
+    owns score;
+rating sub relation,
+    relates review,
+    relates rated;
+action-execution sub relation,
+    relates action,
+    relates executor;
+book plays rating:rated;
+user plays action-execution:executor;
+----
+
+[NOTE]
+====
+For simplicity, throughout most of Lesson 12, we'll be omitting any statements in schema definitions where not required for the discussion topic at hand.
+====
+
+If we instantiate `Promotion` in our application, then we can persist the instance by instantiating `promotion` in the database. However, if we instantiate `Review` in the application, we must instantiate `review`, `rating`, and `action-execution` in the database. Here, the creation of one object in the application necessitates the creation of three objects in the database. This also highlights another disparity in the way we reference one type from another. We reference attribute types using interface types (ownerships), but reference other object types using object types (relations). This is distinct from the approach in the application, in which composite types are composed in the same way from both primitive types and other composite types.
+
+== The type-theoretic framework
+
+We can solve these problems by adopting a *type-theoretic framework* to schema design. In this framework, we represent classes with object types, and references between them with interface types.
+
+[,typeql]
+----
+define
+promotion sub entity,
+    owns code,
+    owns name,
+    owns start-timestamp,
+    owns end-timestamp;
+review sub relation,
+    owns id,
+    relates reviewed,
+    relates reviewer,
+    owns timestamp,
+    owns score;
+book plays review:reviewed;
+user plays review:reviewer;
+----
+
+OOP primitive types are represented with PERA attribute types, and OOP composite types with PERA object types. References from OOP composite types to OOP primitive types are represented with PERA ownership types, and references from OOP composite types to other OOP composite types with PERA role types. If an OOP composite type is composed only of primitive types, it is represented with a PERA entity type. If it is composed of both primitive and other composite types, it is represented with a PERA relation type. In this framework, the number of objects instantiated in the application and the database is the same, and we create references between objects in the database in a single way.
+
+The mappings from OOP types to PERA types in the type-theoretic framework are summarised in the following table.
+
+[cols="^.^,^.^",caption="",options="header"]
+|===
+| OOP | PERA
+| *Primitive type* | *Attribute type*
+| *Composite type* +
+(of primitive types only) | *Object type* +
+(entity type)
+| *Composite type* +
+(of primitive and composites types) | *Object type* +
+(relation type)
+| *Reference* +
+(to primitive type) | *Interface type* +
+(ownership type)
+| *Reference* +
+(to composite type) | *Interface type* +
+(role type)
+|===
+
+Terminology and conventions vary across OOP languages, and these mappings are intended to serve primarily as a guide. There are circumstances in which they may not be the best choices, some of which we will explore further. Some discrepancies also arise in these mappings, for instance OOP primitive types can normally not be subtyped, while PERA attribute types can. The engineer should always bear these facts in mind when designing data models and apply their best judgement.

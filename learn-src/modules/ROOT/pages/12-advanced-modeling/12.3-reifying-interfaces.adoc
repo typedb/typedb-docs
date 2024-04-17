@@ -1,0 +1,331 @@
+= Lesson 12.3: Reifying interfaces
+
+== Reification and de-reification
+
+In xref:learn::12-advanced-modeling/12.1-using-dependent-types.adoc[Lesson 12.1], we saw how references between object types can be stored either as relation types or as role types, as illustrated in the following examples.
+
+[,typeql]
+----
+define
+rating sub relation,
+    relates review,
+    relates rated;
+review plays rating:review;
+book plays rating:rated;
+----
+
+[,typeql]
+----
+define
+review relates reviewed;
+book plays review:reviewed;
+----
+
+In the first schema excerpt, the reference between `review` and `book` is represented by the `rating` relation type. In the second, it is represented by the `review:reviewed` role type. The process of changing a model so that a relation type is replaced by a role type is called *de-reification*. Similarly, the process of replacing a role type with a relation type is called *reification*.
+
+[NOTE]
+====
+In conceptual modeling, https://en.wikipedia.org/wiki/Reification_(computer_science)[reification] normally refers to the process of replacing a relationship with an https://en.wikipedia.org/wiki/Associative_entity[associative entity]. This is based on classical https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model[ER modeling], in which entities are used to represent concepts and relations represent references between them, identical to the *entity-centric framework* of the PERA model. However, in the *type-theoretic framework*, roles are used to represent references between objects. Thus, replacing a role type with a relation type in the type-theoretic framework of the PERA model is equivalent to reification in the ER model.
+====
+
+In xref:learn::9-modeling-schemas/9.7-avoiding-interface-redundancies.adoc[Lesson 9.7], we saw how *nested relations*, relations in which another relation plays a role, can be a powerful but complex feature of PERA data models. In general, nested relations are not a common feature of entity-centric models, but are used extensively in type-theoretic models. A type-theoretic model can be transformed into an entity-centric one by reifying any nested relations. Similarly, an entity-centric model can be transformed into a type-theoretic one by de-reifying any binary relation types. As we will explore in this lesson, there are some exceptions to this rule.
+
+== Relocating interface implementations
+
+While de-reification is a powerful tool that allows us to achieve parity with application models, it can also break parity if not used correctly, potentially leading to loss of data or type fidelity. One of the ways this can occur is if the de-reified relation type is used to store attributes, as role types are unable to own attribute types. This was not the case for `rating`, so it was fine to de-reify `rating` by replacing it with `review:reviewed` as we did above. However, it _was_ the case for another relation type we de-reified. In the original entity-centric bookstore schema, the timestamp of an action was stored on a relation of type `action-execution`.
+
+[,typeql]
+----
+define
+action-execution sub relation,
+    relates action,
+    relates executor,
+    owns timestamp;
+review plays action-execution:action;
+user plays action-execution:executor;
+----
+
+The type-theoretic version in xref:learn::12-advanced-modeling/12.1-using-dependent-types.adoc[Lesson 12.1] de-reified the relation type to the role type `review:reviewer`. This would leave the `timestamp` attribute type without an object type to own it, but this was solved by relocating it to `review`.
+
+[,typeql]
+----
+define
+review sub relation,
+    relates reviewer,
+    owns timestamp;
+user plays review:reviewer;
+----
+
+This is possible because, in the entity-centric schema, `action-execution` has a https://en.wikipedia.org/wiki/Bijection[one-to-one mapping] onto `review`, so the two types have the same https://en.wikipedia.org/wiki/Functional_dependency[functional dependencies] by the https://en.wikipedia.org/wiki/Armstrong%27s_axioms[axiom of transitivity]. This allows us to freely relocate interface implementations between them.
+
+[NOTE]
+====
+More accurately, `action-execution` has a one-to-one mapping onto `action-execution:action`, which has a one-to-one mapping onto the union of `order`, `review`, and `login`. This means that any owned attributes relocated from `action-execution` to `review` must also then be owned by `order` and `login`, and vice versa.
+====
+
+== Avoiding data fidelity loss
+
+When the mapping between a relation and its roleplayer is not one-to-one, then interface implementations cannot be freely relocated between them. Consider the following relation from the entity-centric schema.
+
+[,typeql]
+----
+define
+promotion-inclusion sub relation,
+    relates promotion,
+    relates item,
+    owns discount;
+promotion plays promotion-inclusion:promotion;
+book plays promotion-inclusion:item;
+----
+
+If we de-reified `promotion-inclusion`, then it might look as follows.
+
+[,typeql]
+----
+define
+promotion sub relation,
+    relates item;
+book plays promotion:item;
+----
+
+But neither `promotion` nor `book` can own `discount` without incurring information loss. A book may be in multiple promotions, and a promotion may contain multiple books. This means that neither has a one-to-one mapping onto the removed `promotion-inclusion` relation. As a result, this relation cannot be safely de-reified.
+
+Let's return to the definition of the `Promotion` class from xref:learn::12-advanced-modeling/12.1-using-dependent-types.adoc[Lesson 12.1], and now introduce a method that allows us to add books.
+
+[,python]
+----
+class Promotion:
+    def __init__(
+        self,
+        code: str,
+        name: str,
+        start_timestamp: datetime,
+        end_timestamp: datetime
+    ):
+        self.code = code
+        self.name = name
+        self.start_timestamp = start_timestamp
+        self.end_timestamp = end_timestamp
+        self._discounts: dict[Book, float] = dict()
+
+    @property
+    def discounts(self) -> dict[Book, float]:
+        return copy.copy(self._discounts)
+
+    def put_discount(self, item: Book, discount: float):
+        if discount == 0:
+            self._discounts.pop(item, None)
+        else:
+            self._discounts[item] = discount
+----
+
+Initially, it seems that the only composite types involved are `Book` and `Promotion`, and that keeping the `promotion-inclusion` relation in the database model will result in model mismatch. However, there is a third composite type hidden within the definition of `Promotion`. The variable `+Promotion._discounts+` has the type `dict[Book, float]`, which is a composition of `Book` and `float`. As the application model includes a third composite type, we require a third object type in the database model. This is represented with `promotion-inclusion`, which is a relation type because `+Promotion._discounts+` is composed of `Book`, another composite type. So in fact, de-reification would _introduce_ model mismatch in this case, not eliminate it! We can apply this same logic to the `order-line` relation, demonstrating that it cannot be safely de-reified due to the `quantity` attribute.
+
+[,typeql]
+----
+define
+order-line sub relation,
+    relates order,
+    relates item,
+    owns quantity;
+order plays order-line:order;
+book plays order-line:item;
+----
+
+[,python]
+----
+class Order(UserAction):
+    def __init__(
+        self,
+        id: str,
+        user: User,
+        timestamp: datetime
+    ):
+        super().__init__(user, timestamp)
+        self.id = id
+        self.status = Status.PENDING
+        self._lines: dict[Book, int] = dict()
+
+    @property
+    def items(self) -> list[tuple[Book, int]]:
+        return [(book, quantity) for book, quantity in self._lines.items()]
+
+    def add_or_remove_items(self, item: Book, quantity: int):
+        self._lines.setdefault(item, 0)
+        self._lines[item] += quantity
+
+        if self._lines[item] <= 0:
+            del self._lines[item]
+----
+
+== Avoiding type fidelity loss
+
+While data fidelity loss occurs when the implementer of an interface is improperly de-reified, type fidelity loss occurs when a relation type hierarchy is improperly de-reified. Let's consider the hierarchy of contribution types from the entity-centric bookstore schema.
+
+[,typeql]
+----
+define
+contribution sub relation,
+    relates contributor,
+    relates work;
+authoring sub contribution,
+    relates author as contributor;
+editing sub contribution,
+    relates editor as contributor;
+illustrating sub contribution,
+    relates illustrator as contributor;
+book plays contribution:work;
+contributor plays contribution:contributor;
+contributor plays authoring:author;
+contributor plays editing:editor;
+contributor plays illustrating:illustrator;
+----
+
+The `contributor` relation type and its subtypes do not own any attributes or play any roles, so there should be no data fidelity loss in using the following type-theoretic model instead.
+
+[,typeql]
+----
+define
+book sub relation,
+    relates author,
+    relates editor,
+    relates illustrator,
+    relates contributor;
+contributor plays book:author,
+    plays book:editor,
+    plays book:illustrator,
+    plays book:contributor;
+----
+
+However, we run into an issue if we would like to query all contributors to a book. We saw in xref:learn::9-modeling-schemas/9.6-using-interface-hierarchies.adoc[Lesson 9.6] that we can use the following pattern to do so with the entity-centric schema.
+
+[,typeql]
+----
+(contributor: $person, work: $book) isa contribution;
+----
+
+This works because the pattern assigns `$person` the type `contribution:contributor`, which is also cast into its subtypes `authoring:author`, `editing:editor`, and `illustrating:illustrator` by inheritance polymorphism. But if we try a similar pattern with the type-theoretic schema, it does not work.
+
+[,typeql]
+----
+(contributor: $person) isa book;
+----
+
+This is because `book:contributor` has no subtypes. The four roles of `book` are not in a hierarchy, so we have to use the following pattern instead.
+
+[,typeql]
+----
+($contributor-role: $person) isa book;
+{
+    $contributor-role type book:author;
+} or {
+    $contributor-role type book:editor;
+} or {
+    $contributor-role type book:illustrator;
+} or {
+    $contributor-role type book:contributor;
+};
+----
+
+Once again, de-reification has resulted in information loss. This time, the lost information is not an attribute's owner but a role's supertype. The PERA model does not allow us to model a role type hierarchy without an associated relation type hierarchy, as this could lead to ambiguities in the interpretation of queries. As such, we cannot de-reify `contribution` without this loss of role type fidelity. If we examine the `Book` class, we once again see that there is a hidden composite type corresponding to the relation type: `Book._contributors`, which has type `set[tuple[Contributor, ContributorRole]]`.
+
+[,python]
+----
+class Book(ABC):
+    def __init__(
+        self,
+        isbn_13: str,
+        isbn_10: Optional[str],
+        title: str,
+        contributors: set[tuple[Contributor, ContributorRole]],
+        publisher: Publisher,
+        year: int,
+        location: City,
+        page_count: str,
+        genres: set[str],
+        price: float,
+    ):
+        self.isbn_13 = isbn_13
+        self.isbn_10 = isbn_10
+        self.title = title
+        self._contributors = contributors
+        self.publisher = publisher
+        self.year = year
+        self.location = location
+        self.page_count = page_count
+        self.genres = genres
+        self.price = price
+
+    @property
+    def isbns(self) -> set[str]:
+        if self.isbn_10 is None:
+            return {self.isbn_13}
+        else:
+            return {self.isbn_13, self.isbn_10}
+
+    @property
+    def contributors(self) -> set[Contributor]:
+        return {contributor for contributor, role in self._contributors}
+
+    @property
+    def authors(self) -> set[Contributor]:
+        return {contributor for contributor, role in self._contributors if role is ContributorRole.AUTHOR}
+
+    @property
+    def editors(self) -> set[Contributor]:
+        return {contributor for contributor, role in self._contributors if role is ContributorRole.EDITOR}
+
+    @property
+    def illustrators(self) -> set[Contributor]:
+        return {contributor for contributor, role in self._contributors if role is ContributorRole.ILLUSTRATOR}
+
+    @property
+    def other_contributors(self) -> set[Contributor]:
+        return {contributor for contributor, role in self._contributors if role is ContributorRole.CONTRIBUTOR}
+----
+
+In general, the storage of composite objects in collections are best modeled as relations in the database, with one role referencing the containing collection object (e.g. `promotion-inclusion:promotion`, `order-line:order`, `contribution:work`) and the other referencing the contained objects (e.g. `promotion-inclusion:item`, `order-line:item`, `contribution:contributor`). This will normally ensure close parity to the application model and prevent data or type fidelity loss. As always when modeling, this should be taken as a guideline and not a rule.
+
+.Exercise
+[caption=""]
+====
+Write TypeQL type definitions to represent the above `Book` class under the type-theoretic PERA framework. Make sure to include any `plays` statements for roles defined.
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+define
+book sub relation,
+    abstract,
+    owns isbn-13 @key,
+    owns isbn-10 @unique,
+    owns title,
+    plays contribution:work,
+    relates publisher,
+    owns year,
+    relates location,
+    owns page-count,
+    owns genre,
+    owns price;
+contribution sub relation,
+    relates contributor,
+    relates work;
+authoring sub contribution,
+    relates author as contributor;
+editing sub contribution,
+    relates editor as contributor;
+illustrating sub contribution,
+    relates illustrator as contributor;
+contributor plays contribution:contributor,
+    plays authoring:author,
+    plays editing:editor,
+    plays illustrating:illustrator;
+publisher plays book:publisher;
+city plays book:location;
+----
+
+Here we have named the role for the city of the book's publication `book:location` in order to maximise the polymorphic querying capabilities of the model, as we learned in xref:learn::12-advanced-modeling/12.2-using-type-theoretic-relations.adoc[Lesson 12.2].
+=====
+====
