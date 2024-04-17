@@ -1,0 +1,5 @@
+match
+$u isa user, has username "bob_93", has email $email;
+$email == "bob@gmail.com";
+delete
+$u has $email;

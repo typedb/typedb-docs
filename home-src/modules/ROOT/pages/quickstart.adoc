@@ -6,7 +6,8 @@
 :tabs-sync-option:
 :experimental:
 
-This Quickstart guide shows how to set up a TypeDB database and run queries.
+This Quickstart guide shows how to set up a TypeDB database and run queries using
+xref:manual::studio.adoc[TypeDB Studio].
 
 include::home::overview.adoc[tag=rust-rewrite]
 
@@ -54,10 +55,8 @@ include::manual::studio.adoc[tag=connect_studio]
 == Select a project folder
 
 Select a xref:manual::studio.adoc#_select_a_project_directory[project directory]
-to store project files by clicking either:
-
-* btn:[Open Project] in the *Project* panel; or
-* Folder icon (image:home::studio-icons/project.png[]) in the top toolbar.
+to store project files by clicking either btn:[Open Project] in the *Project* panel or
+image:home::studio-icons/project.png[] Open Project Directory button in the top toolbar.
 
 [#_create_a_database]
 == Create a new database
@@ -79,13 +78,14 @@ A new database needs a schema before we can load any data:
 +
 [,typeql]
 ----
-include::attachment$quickstart-schema.tql[]
+include::attachment$crash-course-schema.tql[]
 ----
-. Click btn:[Run Query] (image:home::studio-icons/run.png[]).
+. Click the image:home::studio-icons/run.png[Run query,width=9] btn:[Run Query] button.
 . When the query has completed, click btn:[Commit Transaction] (image:home::studio-icons/commit.png[]).
 
 Now that the schema has been defined, data can be inserted into the database.
 
+[#_load_data]
 == Load data
 
 Now let's insert some sample data into the newly created database to be able to query in future steps:
@@ -95,9 +95,10 @@ Now let's insert some sample data into the newly created database to be able to 
 +
 [,typeql]
 ----
-include::attachment$quickstart-data.tql[]
+include::attachment$crash-course-data.tql[]
 ----
-. Execute all queries in the file by clicking btn:[Run Query] (image:home::studio-icons/run.png[]).
+. Execute all queries in the file by clicking the image:home::studio-icons/svg/play-solid-green.svg[Run query,width=9]
+btn:[Run Query] button.
 . When the queries have completed, click btn:[Commit Transaction] (image:home::studio-icons/commit.png[]).
 
 Assuming there were no errors in the process, the data is persisted in the database.
@@ -264,126 +265,34 @@ $e = "kevin2@gmail.com";
 delete
 $p has $e;
 ----
-
-== Repeat with TypeDB Console
-
-xref:manual::console.adoc[TypeDB Console] is usually distributed with TypeDB.
-You can find it with the TypeDB or xref:home::install/console.adoc[install] it separately.
-
-[#_console_run]
-[#_console_connect]
-=== Run TypeDB Console
-
-[tabs]
-====
-Cloud::
-+
---
-.TypeDB Cloud connection
-[source,console]
-----
-$ typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
-----
-
-You will be prompted for a password.
-
-include::manual::console.adoc[tags=cloud-psw]
---
-
-Core::
-+
---
-.TypeDB Core connection
-[source,console]
-----
-$ typedb console
-----
-
-By default, TypeDB Console connects to your local TypeDB Core installation with the `localhost:1729` address.
-Use the `--core` argument to specify a different address if needed.
---
-====
-
-Upon connection, TypeDB Console shows a welcome message and a prompt for a CLI input.
-
-[#_console_create_db]
-=== Create a new database
-
-[,bash]
-----
-database create typedb-2
-----
-
-[#_console_define_a_schema]
-=== Define a schema
-
-. Open a transaction:
-+
-[,bash]
-----
-transaction typedb-2 schema write
-----
-. Run query:
-+
-[,typeql]
-----
-include::attachment$quickstart-schema.tql[]
-----
-+
-Press btn:[Enter] twice to send the query.
-. Commit:
-+
-[,bash]
-----
-commit
-----
-
-[#_console_load_data]
-=== Load data
-
-. Open a transaction:
-+
-[,bash]
-----
-transaction typedb-2 data write
-----
-. Run queries:
-+
-[,typeql]
-----
-include::attachment$quickstart-data.tql[]
-----
-+
-Press btn:[Enter] twice to send the query.
-. Commit:
-+
-[,bash]
-----
-commit
-----
-
-=== Try queries
-
-Repeat the <<_query_examples>> from TypeDB Studio in TypeDB Console.
-
 [#_learn_more]
 == Learn more
 
-After completing this guide, we recommend the following order of topics to continue exploring TypeDB:
+After completing this guide, we recommend the following topics to continue exploring TypeDB:
 
-. Explore more interesting queries with the xref:home::25-queries.adoc[] page.
-. Learn more about TypeQL schemas, patterns, and queries in our xref:learn::overview.adoc[TypeDB Learning course].
-. Go straight to practice with our xref:manual::overview.adoc[TypeDB manual]:
-* xref:manual::connecting/overview.adoc[]
-* xref:manual::defining/overview.adoc[]
-* xref:manual::writing/overview.adoc[]
-* xref:manual::reading/overview.adoc[]
-. Learn how to create an application with TypeDB, using any of the
-xref:drivers::overview.adoc[TypeDB Drivers]:
-* xref:drivers:ROOT:rust/overview.adoc[]
-* xref:drivers:ROOT:python/overview.adoc[]
-* xref:drivers:ROOT:java/overview.adoc[]
-* xref:drivers:ROOT:nodejs/overview.adoc[]
-* xref:drivers::cpp/overview.adoc[]
+[cols-2]
+--
+.xref:home::25-queries.adoc[]
+[.clickable]
+****
+More interesting query examples.
+****
 
-//. (Optional) Explore the xref:typedb::tutorials/sample-app.adoc[Sample application] written in Java, Python, or Node.js.
+.xref:learn::overview.adoc[]
+[.clickable]
+****
+A comprehensive learning course for TypeDB.
+****
+
+.xref:manual::overview.adoc[TypeDB manual]
+[.clickable]
+****
+Practice-oriented how-to guides for TypeDB.
+****
+
+.xref:drivers::overview.adoc[TypeDB Drivers]
+[.clickable]
+****
+Information on language-specific TypeDB drivers with native API.
+****
+--

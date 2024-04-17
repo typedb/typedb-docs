@@ -1,0 +1,5 @@
+match
+$u isa user, has name $fn;
+$fn == "Bob";
+fetch
+$u: name, email;
