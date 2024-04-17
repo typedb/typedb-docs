@@ -4,7 +4,7 @@
 [#_blank_heading]
 == {blank}
 
-To retrieve any data from a TypeDB database, you need to use `data` session and `write` transaction.
+To retrieve any data from a TypeDB database, you need to use `data` session and `read` transaction.
 All data queries are validated against the schema of a database.
 
 There are only two types of operations that can retrieve data in a database,
