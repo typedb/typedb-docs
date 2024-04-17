@@ -1,0 +1,184 @@
+= C# driver
+:Summary: Overview for TypeDB C# driver.
+:keywords: typedb, client, driver, c#, cpp, clang
+:pageTitle: TypeDB C# driver
+
+The C# driver was developed by Vaticle to enable TypeDB support for C# software and developers.
+
+[cols-2]
+--
+.link:https://github.com/vaticle/typedb-driver/tree/development/csharp[GitHub,window=_blank]
+[.clickable]
+****
+The GitHub repository with the driver's source code and release notes.
+****
+
+.link:https://www.nuget.org/packages/TypeDB.Driver[NuGet page,window=_blank]
+[.clickable]
+****
+The NuGet package manager’s page about the driver’s package.
+****
+--
+
+[#_install_csharp]
+== Install
+
+The driver is based on the cross-platform .NET 6 framework.
+For Linux: the minimum version of `glibc` is `2.25.0`.
+
+See the
+<<_version_compatibility>> table to check what versions of TypeDB and C# driver are compatible.
+
+To install the TypeDB C# driver,
+https://www.nuget.org/packages/TypeDB.Driver[Download] the latest release of the driver and its
+https://www.nuget.org/packages?q=TypeDB.Driver.Pinvoke[Pinvoke runtime]
+for you architecture (`x86_64`/`arm64`) and OS (Linux/macOS/Win).
+Here is an example from the `.csproj` file for macOS and `x86_64`:
+
+[,xml]
+----
+<PackageReference Include="TypeDB.Driver" Version={VERSION} />
+<PackageReference Include="TypeDB.Driver.Pinvoke.osx-x64" Version={VERSION} />
+----
+
+If you aim to build a platform-independent package,
+reference all the needed runtimes (it will affect the size of the application):
+
+[,xml]
+----
+<PackageReference Include="TypeDB.Driver.Pinvoke.osx-x64" Version={VERSION} />
+<PackageReference Include="TypeDB.Driver.Pinvoke.osx-arm64" Version={VERSION} />
+<PackageReference Include="TypeDB.Driver.Pinvoke.linux-x64" Version={VERSION} />
+<PackageReference Include="TypeDB.Driver.Pinvoke.linux-arm64" Version={VERSION} />
+<PackageReference Include="TypeDB.Driver.Pinvoke.win-x64" Version={VERSION} />
+----
+
+== Quickstart
+
+See below a short example of C# code that connects to a local TypeDB Core,
+creates a database named `access-management-db`, defines a schema, inserts some data, and then reads it.
+
+[,cs]
+----
+using TypeDB.Driver.Api;
+using TypeDB.Driver.Common;
+
+class WelcomeToTypeDB
+{
+    static void Main(string[] args)
+    {
+        string dbName = "access-management-db";
+        string serverAddr = "127.0.0.1:1729";
+
+        try
+        {
+            using (ITypeDBDriver driver = Drivers.CoreDriver(serverAddr))
+            {
+                driver.Databases.Create(dbName);
+                IDatabase database = driver.Databases.Get(dbName);
+
+                // Example of one transaction for one session
+                using (ITypeDBSession session = driver.Session(dbName, SessionType.Schema))
+                {
+                    // Example of multiple queries for one transaction
+                    using (ITypeDBTransaction transaction = session.Transaction(TransactionType.Write))
+                    {
+                        transaction.Query.Define("define person sub entity;").Resolve();
+
+                        string longQuery = "define name sub attribute, value string; person owns name;";
+                        transaction.Query.Define(longQuery).Resolve();
+
+                        transaction.Commit();
+                    }
+                }
+
+                // Example of multiple transactions for one session
+                using (ITypeDBSession session = driver.Session(dbName, SessionType.Data))
+                {
+                    // Examples of one query for one transaction
+                    using (ITypeDBTransaction transaction = session.Transaction(TransactionType.Write))
+                    {
+                        string query = "insert $p isa person, has name 'Alice';";
+                        IEnumerable<IConceptMap> insertResults = transaction.Query.Insert(query);
+
+                        Console.WriteLine($"Inserted with {insertResults.Count()} result(s)");
+
+                        transaction.Commit();
+                    }
+
+                    using (ITypeDBTransaction transaction = session.Transaction(TransactionType.Write))
+                    {
+                        IEnumerable<IConceptMap> insertResults =
+                            transaction.Query.Insert("insert $p isa person, has name 'Bob';");
+
+                        foreach (IConceptMap insertResult in insertResults)
+                        {
+                            Console.WriteLine($"Inserted: {insertResult}");
+                        }
+
+                        // transaction.Commit(); // Not committed
+                    }
+
+                    using (ITypeDBTransaction transaction = session.Transaction(TransactionType.Read))
+                    {
+                        IConceptMap[] matchResults =
+                            transaction.Query.Get("match $p isa person, has name $n; get $n;").ToArray();
+
+                        // Matches only Alice as Bob has not been committed
+                        var resultName = matchResults[0].Get("n");
+                        Console.WriteLine($"Found the first name: {resultName.AsAttribute().Value.AsString()}");
+
+                        if (matchResults.Length > 1) // Will work only if the previous transaction is committed
+                        {
+                            Console.WriteLine($"Found the second name as concept: {matchResults[1]}");
+                        }
+                    }
+                }
+
+                database.Delete();
+            }
+        }
+        catch (TypeDBDriverException e)
+        {
+            Console.WriteLine($"Caught TypeDB Driver Exception: {e}");
+            // ...
+        }
+    }
+}
+----
+
+For more information on methods used above and other capabilities, see the API reference link below.
+
+== Learn more
+
+[cols-2]
+--
+// .xref:drivers::csharp/tutorial.adoc[Tutorial]
+// [.clickable]
+// ****
+// This tutorial will help you learn how to use the C# driver.
+// ****
+
+.xref:csharp/api-reference.adoc[API reference]
+[.clickable]
+****
+Driver API reference for the C# language.
+****
+--
+
+include::drivers::partial$drivers2discord.adoc[]
+
+[#_version_compatibility]
+== Version Compatibility
+
+[cols="^.^3,^.^2,^.^3,^.^3,^.^1"]
+|===
+| C# driver | Protocol encoding version | TypeDB Core | TypeDB Cloud | .NET
+
+| 2.28.0
+| 3
+| 2.28.0
+| 2.28.0
+| 6
+
+|===
