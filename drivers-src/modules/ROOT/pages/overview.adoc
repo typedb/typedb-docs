@@ -180,6 +180,7 @@ database, execute queries, and process responses.
 
 [NOTE]
 ====
-As of version `2.24.x` the Java, Python,
-and C/C++ drivers are re-implemented as wrappers on top of the Rust driver via an FFI interface.
+The Java, Python, and C/C++/C# drivers are implemented as wrappers on top of the Rust driver via an FFI interface.
+The Node.js driver is implemented independently.
+Prior to version `2.24.0` all drivers were implemented independently.
 ====
