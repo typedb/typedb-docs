@@ -21,7 +21,7 @@ The driver object `driver` takes one argument, the *server address*, and should 
 
 [WARNING]
 ====
-If destructors are not properly called when using the TypeDB Driver APIs, it is possible to temporarily deadlock transactions in some niche cases. To avoid this, ensure that you always take appropriate measures to ensure that destructors are called regardless of application termination state.
+If destructors are not properly called when using the TypeDB driver APIs, it is possible to temporarily deadlock transactions in some niche cases. To avoid this, ensure that you always take appropriate measures to ensure that destructors are called regardless of application termination state.
 ====
 
 There are three key ways we can use a driver object:
@@ -150,7 +150,7 @@ def print_database_details(driver: TypeDBDriver) -> None:
 //
 // [WARNING]
 // ====
-// If destructors are not properly called when using the TypeDB Driver APIs, it is possible to temporarily deadlock transactions in some niche cases. To avoid this, ensure that you always take appropriate measures to ensure that destructors are called regardless of application termination state.
+// If destructors are not properly called when using the TypeDB driver APIs, it is possible to temporarily deadlock transactions in some niche cases. To avoid this, ensure that you always take appropriate measures to ensure that destructors are called regardless of application termination state.
 // ====
 //
 // [NOTE]
