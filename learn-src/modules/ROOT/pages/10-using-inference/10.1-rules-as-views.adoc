@@ -39,7 +39,7 @@ average-verified-score: {
     ($user, $review) isa action-execution, has timestamp $review-time;
     ($user, $order) isa action-execution, has timestamp $order-time;
     $review-time > $order-time;
-    get $score;
+    get $review, $score;
     mean $score;
 };
 ----
