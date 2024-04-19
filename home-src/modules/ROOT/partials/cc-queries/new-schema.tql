@@ -1,0 +1,30 @@
+define
+id sub attribute,
+    abstract,
+    value string;
+email sub id;
+name sub id;
+path sub id;
+username sub id;
+size-kb sub attribute,
+    value long;
+updated sub attribute,
+    value datetime;
+permission sub relation,
+    owns updated,
+    relates object,
+    relates subject,
+    relates action;
+action sub entity,
+    owns name @key,
+    plays permission:action;
+file sub entity,
+    owns path @key,
+    owns size-kb,
+    plays permission:object;
+person sub entity,
+    owns name;
+user sub person,
+    owns username @key,
+    owns email @unique,
+    plays permission:subject;

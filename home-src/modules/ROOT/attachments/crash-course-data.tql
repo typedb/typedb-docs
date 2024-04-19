@@ -1,0 +1,16 @@
+insert
+$p isa person, has name "Charlie";
+$u1 isa user,
+    has name "Bob",
+    has username "bob_93",
+    has email "bob@typedb.com";
+$u2 isa user, has name "Alex", has username "al-capucino";
+$f1 isa file, has path "README.md";
+$f2 isa file,
+    has path "docs/quickstart-guide.adoc",
+    has size-kb 3458761;
+$full isa action, has name "full";
+$write isa action, has name "write";
+$read isa action, has name "read";
+$p1(subject:$u1, object:$f1, action:$full) isa permission, has updated 2023-10-27T12:04:36;
+$p2(subject:$u2, object:$f2, action:$write) isa permission;

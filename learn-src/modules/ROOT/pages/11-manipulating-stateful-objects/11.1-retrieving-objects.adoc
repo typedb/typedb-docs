@@ -342,7 +342,7 @@ In addition to these two methods, there are a number of others for retrieving as
 | `Relation.get_players_by_role_type` | `Iterator[Thing]` | Retrieves the roleplayers in a relation. Roles may be optionally specified.
 |===
 
-Because the owners of an attribute or the roleplayers in a relation can be both entities and relations, the objects returned by `get_owners` and `get_players` are of the generic `Thing` class. They can be cast to the appropriate type using the following helper function or similar.
+Because the owners of an attribute or the roleplayers in a relation can be both entities and relations, the objects returned by `get_owners` and `get_players_by_role_type` are of the generic `Thing` class. They can be cast to the appropriate type using the following helper function or similar.
 
 [,python]
 ----
