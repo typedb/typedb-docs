@@ -1,0 +1,9 @@
+match
+$u isa user;
+$f isa file;
+$act isa action;
+($u,$f,$act) isa permission;
+fetch
+$u as "User": name;
+$f as "File": path;
+$act as "Action": name;

@@ -1,0 +1,11 @@
+match
+$u isa user, has username "bob_93";
+fetch 
+$u as Bob: name as "Name";
+permitted-files: {
+    match
+    $f isa file;
+    ($u,$f) isa permission;
+    fetch
+    $f as file: path;
+};
