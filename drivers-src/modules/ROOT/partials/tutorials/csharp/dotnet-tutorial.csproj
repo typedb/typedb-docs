@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>dotnet_tutorial</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TypeDB.Driver" Version="2.28.0-rc0" />
+    <PackageReference Include="TypeDB.Driver.Pinvoke.osx-x64" Version="2.28.0-rc0" />
+  </ItemGroup>
+
+</Project>
