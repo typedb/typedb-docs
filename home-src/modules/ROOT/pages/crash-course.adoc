@@ -13,12 +13,12 @@ TypeDB is a novel kind of database,
 combining ideas from classical databases and modern high-level programming languages.
 To get started with TypeDB, let's have a look at three key components and ideas underlying its design.
 
-* *<<_type_system,The type system>>*: TypeDB is built on a rich type system enabling us to _directly_, _flexibly_, and _safely_ capture the structure and flow of data. This roots in a novel conceptual data model that can express the _polymorphic_ dependencies of data, and cleanly model relational, graph, and document data.
+* *<<_type_system,The type system>>*: TypeDB is built on a rich type system enabling us to _directly_ and _safely_ capture the structure and flow of data. This roots in a novel conceptual data model that can express _polymorphic_ dependencies of data and thereby natively adapts, e.g., to relational, graph, and document data.
 * *<<_database_essentials,The querying paradigm>>*: TypeDB approaches database management with a _simple pattern-based querying paradigm_. Building on TypeDB's unique conceptual data model, this provide us with a highly versatile toolset which naturally resolves object-relational mismatch. *_No tables, no joins, no nulls!_*
 * *<<_patterns,The power of patterns>>*: Patterns are used in TypeDB to interact with data and types of all sorts. 
 Patterns read just like statements in _natural language_, and can be easily composed to form new patterns. This makes many tasks that are arduous in traditional databases simple and elegant in TypeDB.
 
-While these topics cover the basics, TypeDB supports several advanced database programming models: for example, with TypeDB we can write *<<_polymorphism,polymorphic queries>>* which automatically adapt to the database schema. The type system also enables the use of *<<_rules,rule-based inference>>* to infer new data on-the-fly using rules, which models logic embedded into a schema. For a comprehensive overview, check out our xref:learn::overview.adoc[Learning Course] for more!
+While these topics cover the basics, TypeDB supports several advanced database programming models: for example, with TypeDB we can write *<<_polymorphism,polymorphic queries>>* which automatically adapt to the database schema. The type system also enables the use of *<<_rules,rule-based inference>>* to infer new data on-the-fly using rules, which models logic embedded into a schema. Finally, TypeDB strives for *xref:learn::6-building-applications/6-building-applications.adoc[high embeddability]* in many existing application frameworks, and can be used with various programming languages. For a more comprehensive overview, check out our xref:learn::overview.adoc[Learning Course]!
 // we can infer new data on-the-fly using rules, which allow us to embed the logic of our data directly into our schema.
 
 [NOTE]
