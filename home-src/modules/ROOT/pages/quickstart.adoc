@@ -11,7 +11,7 @@ xref:manual::studio.adoc[TypeDB Studio].
 
 include::home::overview.adoc[tag=rust-rewrite]
 
-== Run TypeDB
+== Running TypeDB
 
 To start TypeDB, select the TypeDB edition below and follow the instructions.
 
@@ -42,9 +42,9 @@ include::home::partial$docker.adoc[tags=run]
 ====
 
 [#_typedb_studio]
-== Connect with TypeDB Studio
+== Connecting to TypeDB
 // tag::run_studio[]
-TypeDB Studio is a standalone TypeDB Client with GUI that needs to be
+There are several ways to connect to a running TypeDB server. In this quickstart guide we will use *TypeDB Studio*, a standalone TypeDB Client with GUI that needs to be
 xref:home::install/studio.adoc[installed] and launched separately from a TypeDB server.
 
 Find the TypeDB Studio binary and run it.
@@ -52,14 +52,14 @@ Click btn:[Connect to TypeDB] on the right side of the top toolbar.
 // end::run_studio[]
 include::manual::studio.adoc[tag=connect_studio]
 
-== Select a project folder
+=== Selecting a project folder
 
-Select a xref:manual::studio.adoc#_select_a_project_directory[project directory]
-to store project files by clicking either btn:[Open Project] in the *Project* panel or
+To enable TypeDB Studio's IDE functionality, you now need to select a project folder to store your project files. Select a xref:manual::studio.adoc#_select_a_project_directory[project folder]
+by clicking either btn:[Open Project] in the *Project* panel or
 image:home::studio-icons/project.png[] Open Project Directory button in the top toolbar.
 
 [#_create_a_database]
-== Create a new database
+== Creating a new database
 
 Create a database to play with:
 
@@ -68,7 +68,7 @@ Create a database to play with:
 . Select the new database from the dropdown to the right of the database icon.
 
 [#_define_a_schema]
-== Define a schema
+== Defining a schema
 
 A new database needs a schema before we can load any data:
 
@@ -86,7 +86,7 @@ include::attachment$crash-course-schema.tql[]
 Now that the schema has been defined, data can be inserted into the database.
 
 [#_load_data]
-== Load data
+== Loading data
 
 Now let's insert some sample data into the newly created database to be able to query in future steps:
 
@@ -103,11 +103,10 @@ btn:[Run Query] button.
 
 Assuming there were no errors in the process, the data is persisted in the database.
 
-== Finish
+== Finishing up
 
 Congratulations on completing the TypeDB quickstart guide!
 Now you can try sending your first queries to the database.
-We have prepared some simple <<_query_examples,query examples>> for you to try.
 
 To learn about TypeDB's advanced and unique features such as
 polymorphic queries,
@@ -116,178 +115,29 @@ type inheritance,
 rule-based reasoning,
 and n-ary relations, we recommend you check the <<_learn_more>> section.
 
-[#_query_examples]
-== Query examples
-
-Try sending the following queries:
-
-* <<#_list_people>>
-* <<#_get_query_all_instances_and_attributes>>
-* <<#_fetch_all_emails_of_kevin>>
-* <<#_insert_email_for_kevin>>
-* <<#_update_email_for_kevin>>
-* <<#_delete_email_from_kevin>>
-
-//#todo Replace the link below with a more specific one in a TypeQL section. Query types?
-For more TypeQL query examples, check the xref:home::25-queries.adoc[] page or the
-xref:typeql:ROOT:overview.adoc[TypeQL] documentation section.
-
-
-[#_list_people]
-=== List names and emails
-
-To retrieve full names and emails of all instances of the `person` type you can do:
-
-[,typeql]
-----
-match
-$p isa person;
-fetch $p: full-name, email;
-----
-
-For every person in a database,
-the above xref:typeql::queries/fetch.adoc[Fetch] query returns a JSON object similar to the following example:
-
-.Result example
-[,js]
-----
-{
-    "p": {
-        "email": [ { "value": "kevin.morrison@typedb.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } } ],
-        "full-name": [ { "value": "Kevin Morrison", "value_type": "string", "type": { "label": "full-name", "root": "attribute" } } ],
-        "type": { "label": "person", "root": "entity" }
-    }
-}
-----
-
-[#_get_query_all_instances_and_attributes]
-=== Get all instances of a type and their attributes
-
-To xref:typeql::queries/get.adoc[get] all instances of a `person` type with all attributes owned:
-
-[,typeql]
-----
-match
-$p isa person, has $a;
-get $p, $a;
-----
-
-The above xref:typeql::queries/get.adoc[Get] query returns concepts from a database as a ConceptMap
-that can be used programmatically with a xref:drivers::overview.adoc#_typedb_drivers[Driver API] to process the result.
-The following image is a graph visualization produced by xref:manual::studio.adoc[TypeDB Studio].
-
-image::quickstart-get-example.png[Quickstart Get query example, role=framed, width = 75%, link=self]
-
-[#_fetch_all_emails_of_kevin]
-=== Fetch all emails of Kevin
-
-To xref:typeql::queries/fetch.adoc[fetch] all emails
-owned by every person with a full name that contains substring `Kevin`:
-
-[,typeql]
-----
-match
-$p isa person, has full-name $fn;
-$fn contains "Kevin";
-fetch $p as person: email as "E-mail address";
-----
-
-The above query returns a single JSON object (we have only one such person in the example database)
-that looks as the following:
-
-.Result example
-[,js]
-----
-{
-    "person": {
-        "E-mail address": [ { "value": "kevin.morrison@typedb.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } } ],
-        "type": { "label": "person", "root": "entity" }
-    }
-}
-----
-
-[#_insert_email_for_kevin]
-=== Insert a new email for Kevin
-
-To xref:typeql::queries/insert.adoc[insert] a new email (`kevin@gmail.com`) for every person with a full name
-that contains "Kevin":
-
-[,typeql]
-----
-match
-$p isa person, has full-name $fn;
-$fn contains "Kevin";
-insert $p has email "kevin@gmail.com";
-----
-
-Now Kevin has more than one email.
-
-[#_update_email_for_kevin]
-=== Update the email for Kevin
-
-To xref:typeql::queries/update.adoc[update] the email from `kevin@gmail.com` to `kevin2@gmail.com`
-for every person with a full name that contains "Kevin":
-
-[,typeql]
-----
-match
-$p isa person,
-    has full-name $fn,
-    has email $e;
-$fn contains "Kevin";
-$e = "kevin@gmail.com";
-delete
-$p has $e;
-insert
-$p has email "kevin2@gmail.com";
-----
-
-The query above does the following:
-
-- Matches the person and its email (`kevin@gmail.com`).
-- Deletes the ownership by the person of the email.
-- Inserts a new email (`kevin2@gmail.com`) owned by the person.
-
-[#_delete_email_from_kevin]
-=== Delete ownership over the email for Kevin
-
-To xref:typeql::queries/delete.adoc[delete] the ownership of the email `kevin2@gmail.com`
-for every person with a full name that contains "Kevin":
-
-[,typeql]
-----
-match
-$p isa person,
-    has full-name $fn,
-    has email $e;
-$fn contains "Kevin";
-$e = "kevin2@gmail.com";
-delete
-$p has $e;
-----
 [#_learn_more]
 == Learn more
 
-After completing this guide, we recommend the following topics to continue exploring TypeDB:
+Here are some options for your next steps with TypeDB.
 
 [cols-2]
 --
-.xref:home::25-queries.adoc[]
+.xref:home::crash-course.adoc[]
 [.clickable]
 ****
-More interesting query examples.
+Continue this quickstart guide and learn the basics of TypeDB.
 ****
 
 .xref:learn::overview.adoc[]
 [.clickable]
 ****
-A comprehensive learning course for TypeDB.
+A comprehensive learning course for TypeDB comprising several individual lessons.
 ****
 
 .xref:manual::overview.adoc[TypeDB manual]
 [.clickable]
 ****
-Practice-oriented how-to guides for TypeDB.
+A collection of practice-oriented how-to guides for TypeDB.
 ****
 
 .xref:drivers::overview.adoc[TypeDB Drivers]
