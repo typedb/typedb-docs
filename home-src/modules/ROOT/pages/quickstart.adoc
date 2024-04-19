@@ -11,7 +11,7 @@ xref:manual::studio.adoc[TypeDB Studio].
 
 include::home::overview.adoc[tag=rust-rewrite]
 
-== Running TypeDB
+== Run TypeDB
 
 To start TypeDB, select the TypeDB edition below and follow the instructions.
 
@@ -42,7 +42,7 @@ include::home::partial$docker.adoc[tags=run]
 ====
 
 [#_typedb_studio]
-== Connecting to TypeDB
+== Connect to TypeDB
 // tag::run_studio[]
 There are several ways to connect to a running TypeDB server. In this quickstart guide we will use *TypeDB Studio*, a standalone TypeDB Client with GUI that needs to be
 xref:home::install/studio.adoc[installed] and launched separately from a TypeDB server.
@@ -52,14 +52,14 @@ Click btn:[Connect to TypeDB] on the right side of the top toolbar.
 // end::run_studio[]
 include::manual::studio.adoc[tag=connect_studio]
 
-=== Selecting a project folder
+=== Select a project folder
 
 To enable TypeDB Studio's IDE functionality, you now need to select a project folder to store your project files. Select a xref:manual::studio.adoc#_select_a_project_directory[project folder]
 by clicking either btn:[Open Project] in the *Project* panel or
 image:home::studio-icons/project.png[] Open Project Directory button in the top toolbar.
 
 [#_create_a_database]
-== Creating a new database
+== Create a new database
 
 Create a database to play with:
 
@@ -68,7 +68,7 @@ Create a database to play with:
 . Select the new database from the dropdown to the right of the database icon.
 
 [#_define_a_schema]
-== Defining a schema
+== Define a schema
 
 A new database needs a schema before we can load any data:
 
@@ -86,7 +86,7 @@ include::attachment$crash-course-schema.tql[]
 Now that the schema has been defined, data can be inserted into the database.
 
 [#_load_data]
-== Loading data
+== Load data
 
 Now let's insert some sample data into the newly created database to be able to query in future steps:
 
@@ -103,7 +103,7 @@ btn:[Run Query] button.
 
 Assuming there were no errors in the process, the data is persisted in the database.
 
-== Finishing up
+== Finish
 
 Congratulations on completing the TypeDB quickstart guide!
 Now you can try sending your first queries to the database.
