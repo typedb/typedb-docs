@@ -301,5 +301,5 @@ class TutorialProgram
         }
     }
     // end::main[]
-    // end::code[]
 }
+// end::code[]
