@@ -6,7 +6,8 @@
 :tabs-sync-option:
 :experimental:
 
-This Quickstart guide shows how to set up a TypeDB database and run queries.
+This Quickstart guide shows how to set up a TypeDB database and run queries using
+xref:manual::studio.adoc[TypeDB Studio].
 
 include::home::overview.adoc[tag=rust-rewrite]
 
@@ -41,9 +42,9 @@ include::home::partial$docker.adoc[tags=run]
 ====
 
 [#_typedb_studio]
-== Connect with TypeDB Studio
+== Connect to TypeDB
 // tag::run_studio[]
-TypeDB Studio is a standalone TypeDB Client with GUI that needs to be
+There are several ways to connect to a running TypeDB server. In this quickstart guide we will use *TypeDB Studio*, a standalone TypeDB Client with GUI that needs to be
 xref:home::install/studio.adoc[installed] and launched separately from a TypeDB server.
 
 Find the TypeDB Studio binary and run it.
@@ -51,13 +52,11 @@ Click btn:[Connect to TypeDB] on the right side of the top toolbar.
 // end::run_studio[]
 include::manual::studio.adoc[tag=connect_studio]
 
-== Select a project folder
+=== Select a project folder
 
-Select a xref:manual::studio.adoc#_select_a_project_directory[project directory]
-to store project files by clicking either:
-
-* btn:[Open Project] in the *Project* panel; or
-* Folder icon (image:home::studio-icons/project.png[]) in the top toolbar.
+To enable TypeDB Studio's IDE functionality, you now need to select a project folder to store your project files. Select a xref:manual::studio.adoc#_select_a_project_directory[project folder]
+by clicking either btn:[Open Project] in the *Project* panel or
+image:home::studio-icons/project.png[] Open Project Directory button in the top toolbar.
 
 [#_create_a_database]
 == Create a new database
@@ -79,13 +78,14 @@ A new database needs a schema before we can load any data:
 +
 [,typeql]
 ----
-include::attachment$quickstart-schema.tql[]
+include::attachment$crash-course-schema.tql[]
 ----
-. Click btn:[Run Query] (image:home::studio-icons/run.png[]).
+. Click the image:home::studio-icons/run.png[Run query,width=9] btn:[Run Query] button.
 . When the query has completed, click btn:[Commit Transaction] (image:home::studio-icons/commit.png[]).
 
 Now that the schema has been defined, data can be inserted into the database.
 
+[#_load_data]
 == Load data
 
 Now let's insert some sample data into the newly created database to be able to query in future steps:
@@ -95,9 +95,10 @@ Now let's insert some sample data into the newly created database to be able to 
 +
 [,typeql]
 ----
-include::attachment$quickstart-data.tql[]
+include::attachment$crash-course-data.tql[]
 ----
-. Execute all queries in the file by clicking btn:[Run Query] (image:home::studio-icons/run.png[]).
+. Execute all queries in the file by clicking the image:home::studio-icons/svg/play-solid-green.svg[Run query,width=9]
+btn:[Run Query] button.
 . When the queries have completed, click btn:[Commit Transaction] (image:home::studio-icons/commit.png[]).
 
 Assuming there were no errors in the process, the data is persisted in the database.
@@ -106,7 +107,6 @@ Assuming there were no errors in the process, the data is persisted in the datab
 
 Congratulations on completing the TypeDB quickstart guide!
 Now you can try sending your first queries to the database.
-We have prepared some simple <<_query_examples,query examples>> for you to try.
 
 To learn about TypeDB's advanced and unique features such as
 polymorphic queries,
@@ -115,275 +115,34 @@ type inheritance,
 rule-based reasoning,
 and n-ary relations, we recommend you check the <<_learn_more>> section.
 
-[#_query_examples]
-== Query examples
-
-Try sending the following queries:
-
-* <<#_list_people>>
-* <<#_get_query_all_instances_and_attributes>>
-* <<#_fetch_all_emails_of_kevin>>
-* <<#_insert_email_for_kevin>>
-* <<#_update_email_for_kevin>>
-* <<#_delete_email_from_kevin>>
-
-//#todo Replace the link below with a more specific one in a TypeQL section. Query types?
-For more TypeQL query examples, check the xref:home::25-queries.adoc[] page or the
-xref:typeql:ROOT:overview.adoc[TypeQL] documentation section.
-
-
-[#_list_people]
-=== List names and emails
-
-To retrieve full names and emails of all instances of the `person` type you can do:
-
-[,typeql]
-----
-match
-$p isa person;
-fetch $p: full-name, email;
-----
-
-For every person in a database,
-the above xref:typeql::queries/fetch.adoc[Fetch] query returns a JSON object similar to the following example:
-
-.Result example
-[,js]
-----
-{
-    "p": {
-        "email": [ { "value": "kevin.morrison@typedb.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } } ],
-        "full-name": [ { "value": "Kevin Morrison", "value_type": "string", "type": { "label": "full-name", "root": "attribute" } } ],
-        "type": { "label": "person", "root": "entity" }
-    }
-}
-----
-
-[#_get_query_all_instances_and_attributes]
-=== Get all instances of a type and their attributes
-
-To xref:typeql::queries/get.adoc[get] all instances of a `person` type with all attributes owned:
-
-[,typeql]
-----
-match
-$p isa person, has $a;
-get $p, $a;
-----
-
-The above xref:typeql::queries/get.adoc[Get] query returns concepts from a database as a ConceptMap
-that can be used programmatically with a xref:drivers::overview.adoc#_typedb_drivers[Driver API] to process the result.
-The following image is a graph visualization produced by xref:manual::studio.adoc[TypeDB Studio].
-
-image::quickstart-get-example.png[Quickstart Get query example, role=framed, width = 75%, link=self]
-
-[#_fetch_all_emails_of_kevin]
-=== Fetch all emails of Kevin
-
-To xref:typeql::queries/fetch.adoc[fetch] all emails
-owned by every person with a full name that contains substring `Kevin`:
-
-[,typeql]
-----
-match
-$p isa person, has full-name $fn;
-$fn contains "Kevin";
-fetch $p as person: email as "E-mail address";
-----
-
-The above query returns a single JSON object (we have only one such person in the example database)
-that looks as the following:
-
-.Result example
-[,js]
-----
-{
-    "person": {
-        "E-mail address": [ { "value": "kevin.morrison@typedb.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } } ],
-        "type": { "label": "person", "root": "entity" }
-    }
-}
-----
-
-[#_insert_email_for_kevin]
-=== Insert a new email for Kevin
-
-To xref:typeql::queries/insert.adoc[insert] a new email (`kevin@gmail.com`) for every person with a full name
-that contains "Kevin":
-
-[,typeql]
-----
-match
-$p isa person, has full-name $fn;
-$fn contains "Kevin";
-insert $p has email "kevin@gmail.com";
-----
-
-Now Kevin has more than one email.
-
-[#_update_email_for_kevin]
-=== Update the email for Kevin
-
-To xref:typeql::queries/update.adoc[update] the email from `kevin@gmail.com` to `kevin2@gmail.com`
-for every person with a full name that contains "Kevin":
-
-[,typeql]
-----
-match
-$p isa person,
-    has full-name $fn,
-    has email $e;
-$fn contains "Kevin";
-$e = "kevin@gmail.com";
-delete
-$p has $e;
-insert
-$p has email "kevin2@gmail.com";
-----
-
-The query above does the following:
-
-- Matches the person and its email (`kevin@gmail.com`).
-- Deletes the ownership by the person of the email.
-- Inserts a new email (`kevin2@gmail.com`) owned by the person.
-
-[#_delete_email_from_kevin]
-=== Delete ownership over the email for Kevin
-
-To xref:typeql::queries/delete.adoc[delete] the ownership of the email `kevin2@gmail.com`
-for every person with a full name that contains "Kevin":
-
-[,typeql]
-----
-match
-$p isa person,
-    has full-name $fn,
-    has email $e;
-$fn contains "Kevin";
-$e = "kevin2@gmail.com";
-delete
-$p has $e;
-----
-
-== Repeat with TypeDB Console
-
-xref:manual::console.adoc[TypeDB Console] is usually distributed with TypeDB.
-You can find it with the TypeDB or xref:home::install/console.adoc[install] it separately.
-
-[#_console_run]
-[#_console_connect]
-=== Run TypeDB Console
-
-[tabs]
-====
-Cloud::
-+
---
-.TypeDB Cloud connection
-[source,console]
-----
-$ typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
-----
-
-You will be prompted for a password.
-
-include::manual::console.adoc[tags=cloud-psw]
---
-
-Core::
-+
---
-.TypeDB Core connection
-[source,console]
-----
-$ typedb console
-----
-
-By default, TypeDB Console connects to your local TypeDB Core installation with the `localhost:1729` address.
-Use the `--core` argument to specify a different address if needed.
---
-====
-
-Upon connection, TypeDB Console shows a welcome message and a prompt for a CLI input.
-
-[#_console_create_db]
-=== Create a new database
-
-[,bash]
-----
-database create typedb-2
-----
-
-[#_console_define_a_schema]
-=== Define a schema
-
-. Open a transaction:
-+
-[,bash]
-----
-transaction typedb-2 schema write
-----
-. Run query:
-+
-[,typeql]
-----
-include::attachment$quickstart-schema.tql[]
-----
-+
-Press btn:[Enter] twice to send the query.
-. Commit:
-+
-[,bash]
-----
-commit
-----
-
-[#_console_load_data]
-=== Load data
-
-. Open a transaction:
-+
-[,bash]
-----
-transaction typedb-2 data write
-----
-. Run queries:
-+
-[,typeql]
-----
-include::attachment$quickstart-data.tql[]
-----
-+
-Press btn:[Enter] twice to send the query.
-. Commit:
-+
-[,bash]
-----
-commit
-----
-
-=== Try queries
-
-Repeat the <<_query_examples>> from TypeDB Studio in TypeDB Console.
-
 [#_learn_more]
 == Learn more
 
-After completing this guide, we recommend the following order of topics to continue exploring TypeDB:
+Here are some options for your next steps with TypeDB.
 
-. Explore more interesting queries with the xref:home::25-queries.adoc[] page.
-. Learn more about TypeQL schemas, patterns, and queries in our xref:learn::overview.adoc[TypeDB Learning course].
-. Go straight to practice with our xref:manual::overview.adoc[TypeDB manual]:
-* xref:manual::connecting/overview.adoc[]
-* xref:manual::defining/overview.adoc[]
-* xref:manual::writing/overview.adoc[]
-* xref:manual::reading/overview.adoc[]
-. Learn how to create an application with TypeDB, using any of the
-xref:drivers::overview.adoc[TypeDB Drivers]:
-* xref:drivers:ROOT:rust/overview.adoc[]
-* xref:drivers:ROOT:python/overview.adoc[]
-* xref:drivers:ROOT:java/overview.adoc[]
-* xref:drivers:ROOT:nodejs/overview.adoc[]
-* xref:drivers::cpp/overview.adoc[]
+[cols-2]
+--
+.xref:home::crash-course.adoc[]
+[.clickable]
+****
+Continue this quickstart guide and learn the basics of TypeDB.
+****
 
-//. (Optional) Explore the xref:typedb::tutorials/sample-app.adoc[Sample application] written in Java, Python, or Node.js.
+.xref:learn::overview.adoc[]
+[.clickable]
+****
+A comprehensive learning course for TypeDB comprising several individual lessons.
+****
+
+.xref:manual::overview.adoc[TypeDB manual]
+[.clickable]
+****
+A collection of practice-oriented how-to guides for TypeDB.
+****
+
+.xref:drivers::overview.adoc[TypeDB Drivers]
+[.clickable]
+****
+Information on language-specific TypeDB drivers with native API.
+****
+--

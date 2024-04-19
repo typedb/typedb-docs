@@ -1,0 +1,12 @@
+match
+$p isa person, has name "Charlie";
+insert
+$p has name "Bob";
+
+insert
+$p isa person, has name "Bob", has name "Another Bob";
+
+match
+$u isa person, has name $name;
+get
+$u, $name;
