@@ -1,0 +1,197 @@
+= Lesson 11.1: Retrieval by query
+:page-aliases: learn::11-manipulating-stateful-objects/11.1-retrieving-objects.adoc
+
+== The Get query
+
+In previous lessons, the query results we retrieved were in JSON format. But TypeDB also includes functionality for retrieving *stateful objects*, which we can continue to operate on within the scope of a transaction, allowing us to read or write associated data. In order to retrieve stateful objects, we must use a *Get query* issued using a TypeDB driver. The following code snippet shows an example of such a query.
+
+// Remove after change to Cloud.
+[,python]
+----
+with TypeDB.core_driver(ADDRESS) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
+            results: Iterator[ConceptMap] = transaction.query.get("""
+                match
+                $user isa user;
+                $execution ($user, $action) isa action-execution,
+                    has timestamp $timestamp;
+                $action isa $action-type;
+                get;
+            """)
+
+            for result in results:
+                user: Entity = result.get("user").as_entity()
+                action: Entity = result.get("action").as_entity()
+                execution: Relation = result.get("execution").as_relation()
+                timestamp: Attribute = result.get("timestamp").as_attribute()
+                action_type: EntityType = result.get("action-type").as_entity_type()
+----
+
+// Add after change to Cloud.
+// [,python]
+// ----
+// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+//     with driver.session(DATABASE, SessionType.DATA) as session:
+//         with session.transaction(TransactionType.READ) as transaction:
+//             results: Iterator[ConceptMap] = transaction.query.get("""
+//                 match
+//                 $user isa user;
+//                 $execution ($user, $action) isa action-execution,
+//                     has timestamp $timestamp;
+//                 $action isa $action-type;
+//                 get;
+//             """)
+//
+//             for result in results:
+//                 user: Entity = result.get("user").as_entity()
+//                 action: Entity = result.get("action").as_entity()
+//                 execution: Relation = result.get("execution").as_relation()
+//                 timestamp: Attribute = result.get("timestamp").as_attribute()
+//                 action_type: EntityType = result.get("action-type").as_entity_type()
+// ----
+
+We briefly encountered Get queries in xref:learn::8-structuring-query-results/8.3-aggregations.adoc[Lesson 8.3], where we used them for aggregation subqueries. We also use them for stateful object retrieval. A Get query consists of a `match` clause and a `get` clause, and returns one result for each pattern matched in the data. The `get` clause is used to filter those results, which we will explore further shortly. In this query, the clause is empty, indicating that the results should be returned unfiltered.
+
+We saw in xref:learn::6-building-applications/6.4-executing-queries.adoc[Lesson 6.4] that Fetch queries return dictionary iterators, however Get queries return *concept map* iterators. A concept map is a collection of *stateful objects* that were matched by the variables in the query. In the above example, we have variables corresponding to both data instances and types, so objects of both kinds will be returned.
+
+To retrieve the objects from the concept map, we can use its `get` method, which takes the variable name as an argument, and returns the object corresponding to the variable name for the respective result. In the above example, we have retrieved the objects corresponding to the `$user`, `$action`, `$execution`, `$timestamp`, and `$action-type` variables. Because the `get` method cannot distinguish the type of the variable, we must cast the object to the correct type using one of the following methods, as we do above:
+
+* `as_entity`
+* `as_relation`
+* `as_attribute`
+* `as_entity_type`
+* `as_relation_type`
+* `as_attribute_type`
+
+With the above query, we have retrieved two entity objects, one relation object, one attribute object, and one entity type object. We will see how we can operate on these objects in xref:learn::11-manipulating-stateful-objects/11.3-operating-on-objects.adoc[Lesson 11.3].
+
+.Exercise
+[caption=""]
+====
+Write a function that yields the books in a specified genre as stateful objects. The function should have the following signature.
+
+[,python]
+----
+get_books_in_genre(transaction: TypeDBTransaction, genre: str) -> Iterator[Entity]
+----
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,python]
+----
+def get_books_in_genre(transaction: TypeDBTransaction, genre: str) -> Iterator[Entity]:
+    results = transaction.query.get(f"""
+        match
+        $book isa book, has genre "{genre}";
+        get;
+    """)
+
+    for result in results:
+        book = result.get("book").as_entity()
+
+        yield book
+----
+=====
+====
+
+== Filtering results
+
+In xref:learn::8-structuring-query-results/8.3-aggregations.adoc[Lesson 8.3], we saw how a Get query will return one result per unique combination of variables matched by the pattern in the `match` clause. As a result, if a data instance is matched multiple times for a particular variable, it will be returned in more than one result. In the following example, we use a function to retrieve orders that include multiple copies of the same book.
+
+[,python]
+----
+def get_orders_with_multiple_copies(transaction: TypeDBTransaction) -> Iterator[Entity]:
+    results = transaction.query.get("""
+        match
+        $order isa order;
+        $book isa book;
+        ($order, $book) isa order-line, has quantity > 1;
+        get;
+    """)
+
+    for result in results:
+        order = result.get("order").as_entity()
+
+        yield order
+----
+
+If an order contains multiple copies of more than one book, then it will be matched for the `$order` variable once for _each_ of those books. Each pair of `$order` and `$book` will be unique in the result set, but `$order` and `$book` may individually not be unique. In order to return a unique list of orders, we must filter the results on the `$order` variable using the `get` clause.
+
+[,python]
+----
+def get_orders_with_multiple_copies(transaction: TypeDBTransaction) -> Iterator[Entity]:
+    results = transaction.query.get("""
+        match
+        $order isa order;
+        $book isa book;
+        ($order, $book) isa order-line, has quantity > 1;
+        get $order;
+    """)
+
+    for result in results:
+        order = result.get("order").as_entity()
+
+        yield order
+----
+
+As a general rule, the `get` clause should be used to filter out any variables not retrieved from the concept map. This will ensure that the objects retrieved from the concept map form a unique set of results. In some niche cases, it may instead be desirable to return duplicate results.
+
+.Exercise
+[caption=""]
+====
+Write a function that yields the books that are currently discounted as stateful objects. Ensure that each such book is only yielded once, regardless of the number of promotions it is in. The function should have the following signature.
+
+[,python]
+----
+get_discounted_books(transaction: TypeDBTransaction) -> Iterator[Entity]
+----
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,python]
+----
+def get_discounted_books(transaction: TypeDBTransaction) -> Iterator[Entity]:
+    current_timestamp = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")
+
+    results = transaction.query.get(f"""
+        match
+        $book isa book;
+        $promotion isa promotion,
+            has start-timestamp <= {current_timestamp},
+            has end-timestamp >= {current_timestamp};
+        ($book, $promotion) isa promotion-inclusion;
+        get $book;
+    """)
+
+    for result in results:
+        book = result.get("book").as_entity()
+
+        yield book
+----
+=====
+====
