@@ -223,7 +223,23 @@ with TypeDB.core_driver(ADDRESS) as driver:
 
 The methods `get_entity_type`, `get_relation_type`, and `get_attribute_type` are used to retrieve entity, relation, and attribute types respectively, and take the type label as an argument. These methods return https://en.wikipedia.org/wiki/Futures_and_promises[promises], and so must be resolved using their `resolve` methods in order to obtain the responses.
 
-Once a type has been retrieved as a stateful object, we can retrieve all instances of the type as stateful objects using the type's `get_instances` method. These methods require a transaction as an argument.
+We can also retrieve the roles in a given relation type by calling its `get_relates` method, as follows. This method requires a transaction as an argument.
+
+[,python]
+----
+with TypeDB.core_driver(ADDRESS) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
+            contribution_type: RelationType
+            contribution_roles: Iterator[RoleType] = contribution_type.get_relates(transaction)
+----
+
+[NOTE]
+====
+Most API methods that retrieve information from the server require a transaction as an argument and return either iterators or promises. An iterator can be resolved by iterating over it or casting it to a sequence (such as a list), while a promise can be resolved by calling its `resolve` method. The return types of all Python driver methods are documented in the xref:drivers::python/api-reference.adoc[API reference]. TypeDB drivers in other languages have equivalent functionality.
+====
+
+Once an entity, relation, or attribute type has been retrieved as a stateful object, we can retrieve all instances of the type as stateful objects using the type's `get_instances` method.
 
 // Remove after change to Cloud.
 [,python]
@@ -254,11 +270,6 @@ with TypeDB.core_driver(ADDRESS) as driver:
 //             contributions: Iterator[Relation] = contribution_type.get_instances(transaction)
 //             page_counts: Iterator[Attribute] = page_count_type.get_instances(transaction)
 // ----
-
-[NOTE]
-====
-Most API methods that retrieve information from the server return either iterators or promises. An iterator can be resolved by iterating over it or casting it to a sequence (such as a list), while a promise can be resolved by calling its `resolve` method. The return types of all Python driver methods are documented in the xref:drivers::python/api-reference.adoc[API reference]. TypeDB drivers in other languages have equivalent functionality.
-====
 
 Sometimes, retrieving data instances this way can be more convenient than issuing a query, but most non-trivial constraints on the data instances to be returned can only be expressed by using a query. More importantly, we can also operate on the type object to insert new instances, as we will see in xref:learn::11-manipulating-stateful-objects/11.2-operating-on-objects.adoc[Lesson 11.2], and to perform programmatic schema migrations.
 

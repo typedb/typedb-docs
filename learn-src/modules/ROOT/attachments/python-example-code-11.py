@@ -104,6 +104,13 @@ with TypeDB.cloud_driver(ADDRESS, credential) as driver:
             page_count_type: AttributeType = transaction.concepts.get_attribute_type("page-count").resolve()
 
 
+with TypeDB.core_driver(ADDRESS) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
+            contribution_type: RelationType
+            contribution_roles: Iterator[RoleType] = contribution_type.get_relates(transaction)
+
+
 with TypeDB.cloud_driver(ADDRESS, credential) as driver:
     with driver.session(DATABASE, SessionType.DATA) as session:
         with session.transaction(TransactionType.READ) as transaction:
