@@ -121,7 +121,7 @@ Here `authoring`, `editing`, and `illustrating` each expose a new interface: `au
 
 == Interface variance
 
-The way in which interface implementations are inherited is strongly determined by their https://en.wikipedia.org/wiki/Covariance_and_contravariance_(computer_science)[variance]. Interface implementations, as defined in `owns` and `plays` statements, are:
+The way in which interface implementations are inherited is determined by their https://en.wikipedia.org/wiki/Covariance_and_contravariance_(computer_science)[variance]. Interface implementations, as defined in `owns` and `plays` statements, are:
 
 * *Covariant* in the implementing object type. This means that the statement _also_ applies to subtypes of the object type by inheritance.
 * *Invariant* in the implemented interface type. This means that the statement does _not_ also apply to subtypes of the interface type.

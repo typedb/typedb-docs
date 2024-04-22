@@ -141,7 +141,7 @@ def add_to_promotion(transaction: TypeDBTransaction, book: Entity, promotion: En
     inclusion.add_player(transaction, item_role, book).resolve()
     inclusion.add_player(transaction, promotion_role, promotion).resolve()
     discount = discount_type.put(transaction, discount_value).resolve()
-    inclusion.set_has(transaction, discount)
+    inclusion.set_has(transaction, discount).resolve()
 ----
 
 [NOTE]
