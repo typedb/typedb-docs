@@ -43,7 +43,8 @@ include::drivers::partial$tutorials/c/tutorial.c[tag=constants]
 where `DB_NAME` -- the name of the database to use;
 `SERVER_ADDR` -- address of the TypeDB server to connect to;
 `TYPEDB_EDITION` -- TypeDB Core or Cloud edition selector;
-`CLOUD_USERNAME`/`CLOUD_PASSWORD` -- credentials to connect to TypeDB Cloud.
+`CLOUD_USERNAME`/`CLOUD_PASSWORD` -- credentials to connect to TypeDB Cloud;
+`FAILED()` is used for error handling, see the <<_error_handling>> section for details.
 
 == Program structure
 
@@ -245,7 +246,7 @@ But the Insert query always returns a list of ConceptMap objects, where every Co
 [#_get]
 === Get query
 
-Let's retrieve all files available for a user with a `GetFilesByUser()` function.
+Let's retrieve all files available for a user with a `getFilesByUser()` function.
 It can be used with or without inference enabled.
 
 [,c,indent=0]
@@ -306,6 +307,16 @@ then our transaction fails upon a commit.
 [,c,indent=0]
 ----
 include::drivers::partial$tutorials/c/tutorial.c[tag=delete]
+----
+
+[#_error_handling]
+== Error handling
+
+To simplify error handling, we use additional functions: `handle_error()` and `check_error_may_print()`.
+
+[,c,indent=0]
+----
+include::drivers::partial$tutorials/c/tutorial.c[tag=error_handling]
 ----
 
 == Learn more
