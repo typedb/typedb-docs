@@ -8,7 +8,7 @@ TypeDB Studio is a cross-platform IDE for developing with TypeDB. With Studio, y
 
 When you start TypeDB Studio, you should see the following interface.
 
-image::studio-screenshots/1-landing-page-labelled.png[role=framed, width = 75%, link=self]
+image:learn::studio-screenshots/1-landing-page-labelled.png[role=framed, width = 75%, link=self]
 
 There are four key elements:
 
@@ -23,7 +23,7 @@ There are four key elements:
 
 To begin with, we'll need to open a project. Click the *Open Project* button in the Project panel to open the project directory window.
 
-image::studio-screenshots/2-open-project.png[role=framed, width = 75%, link=self]
+image:learn::studio-screenshots/2-open-project.png[role=framed, width = 75%, link=self]
 
 Choose a directory in which to save your project files and click the *Open* button. You should now see a file tree in the Project panel.
 
@@ -31,7 +31,7 @@ Choose a directory in which to save your project files and click the *Open* butt
 
 Next, we'll connect to the server. Click the *Connect to TypeDB* button in the Type Browser panel to open the server connection window.
 
-image::studio-screenshots/3-open-connection.png[role=framed, width = 75%, link=self]
+image:learn::studio-screenshots/3-open-connection.png[role=framed, width = 75%, link=self]
 
 Select `TypeDB` from the Server dropdown, enter `localhost:1730` into the Address box, then click the *Connect* button. If Studio connects successfully, you should see the address displayed on the top-right of the toolbar. If Studio fails to connect, ensure that the Docker image we started in xref:learn::2-environment-setup/2.1-sample-deployment.adoc[Lesson 2.1] is running and available at the expected address.
 
@@ -39,11 +39,11 @@ Select `TypeDB` from the Server dropdown, enter `localhost:1730` into the Addres
 
 After connecting to the server, the button in the Type Browser panel will update to read *Select Database*. Click on it to open the database selection window.
 
-image::studio-screenshots/4-open-session.png[role=framed, width = 75%, link=self]
+image:learn::studio-screenshots/4-open-session.png[role=framed, width = 75%, link=self]
 
 The dropdown menu will display a list of databases on the server. Select the `bookstore` sample database and click the *Close* button. The Type Browser should update to show the list of types in the sample database.
 
-image::studio-screenshots/5-end-state.png[role=framed, width = 75%, link=self]
+image:learn::studio-screenshots/5-end-state.png[role=framed, width = 75%, link=self]
 
 We're now ready to begin running queries.
 
@@ -53,7 +53,7 @@ We're now ready to begin running queries.
 
 To begin with, let's review the controls on the toolbar.
 
-image::studio-screenshots/6-toolbar.png[role=framed, width = 75%, link=self]
+image:learn::studio-screenshots/6-toolbar.png[role=framed, width = 75%, link=self]
 
 The following controls will be important throughout this course.
 
