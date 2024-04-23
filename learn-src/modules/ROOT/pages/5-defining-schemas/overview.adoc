@@ -9,6 +9,19 @@ In this lesson, we'll learn how to define entity, relation, and attribute types 
 
 * You should complete xref:learn::4-writing-data/overview.adoc[Lesson 4] before starting this lesson.
 
+== Running examples
+
+The sample database already has the complete bookstore schema defined and data inserted. If you would like to try running the Define queries featured in the examples and exercises in this section, then you should do so using another database. To create a new database, use the *database manager* image:learn::studio-icons/database-manager.png[]. After creation, make sure to switch over to it using the *database selector*. For more information on how to manage databases using TypeDB Studio, refer back to xref:learn::2-environment-setup/2.2-using-typedb-studio.adoc[Lesson 2.2]
+
+To run a Define query, make sure to use a *schema* session and *write* transaction. After running a Define query, you should see any committed changes to the schema reflected in the *type browser*. The examples and exercises featured in this lesson are annotated with one of the following instructions to indicate how they should be run.
+
+image:learn::studio-icons/run-query.png[] *_Run_*:: *Run* this query without committing the transaction afterward. Write transactions will remain open for further queries, and changes will not be persisted until a commit.
+image:learn::studio-icons/run-query.png[]image:learn::studio-icons/commit-transaction.png[] *_Run and commit_*:: *Run* this query and then *commit* the transaction, persisting the changes to the database.
+image:learn::studio-icons/close-transaction.png[] *_Do not run_*:: Do not run this query, which is shown for information only. To rollback an open transaction, *close* it without committing.
+image:learn::studio-icons/run-query.png[] *_Try running_*:: *Run* this query to see the error generated.
+
+For information on how to control sessions, transactions, and queries using TypeDB Studio, refer back to xref:learn::2-environment-setup/2.2-using-typedb-studio.adoc[Lesson 2.2].
+
 == TypeQL keywords introduced
 
 * `define`

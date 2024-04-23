@@ -35,8 +35,9 @@ $book isa book;
 fetch
 $book: title, page-count;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
-We have just changed the type of `$book` from `paperback` to `book`. Now if we *run* image:learn::studio-icons/run-query.png[] this query, the results include paperbacks, hardbacks, and ebooks!
+We have just changed the type of `$book` from `paperback` to `book`. Now if we run this query, the results include paperbacks, hardbacks, and ebooks!
 
 [,json]
 ----
@@ -212,6 +213,7 @@ $book isa paperback;
 fetch
 $book: isbn;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 [,json]
 ----
@@ -330,6 +332,7 @@ $book isa book;
 fetch
 $book: isbn;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 =====
 ====
 
@@ -342,6 +345,7 @@ $book isa book, has isbn "0500026556";
 fetch
 $book: title, stock;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 [,json]
 ----
@@ -369,13 +373,14 @@ fetch
 $order: id;
 $line: quantity;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 In this query, we specify the type of `$book` to be `paperback` and the type of `$line` to be `order-line` using the `isa` keyword, but nowhere in the query do we explicitly specify the type of `$order`! Instead, we constrain its type according to two facts:
 
 * The type of `$order` must play the role of `order` in `order-line`.
 * The type of `$order` must own the attribute `id`.
 
-This is more than enough information for TypeDB to infer the type of `$order`, which we can see by *running* image:learn::studio-icons/run-query.png[] this query.
+This is more than enough information for TypeDB to infer the type of `$order`, which we can see by running this query.
 
 [,json]
 ----
@@ -421,8 +426,9 @@ $kansas-city isa city, has name "Kansas City";
 fetch
 $x: attribute;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
-In this case, `$x` can be resolved to any type that both plays `located` in `locating`. Essentially, this query will return the attributes of anything located in Kansas City regardless of what it is. If we *run* image:learn::studio-icons/run-query.png[] this query, we see that we return instances of `publication` and `address`!
+In this case, `$x` can be resolved to any type that both plays `located` in `locating`. Essentially, this query will return the attributes of anything located in Kansas City regardless of what it is. If we run this query, we see that we return instances of `publication` and `address`!
 
 [,json]
 ----
@@ -466,9 +472,10 @@ $user isa user, has name "Kevin Morrison";
 fetch
 $action: attribute;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 =====
 
-Based on the results of *running* image:learn::studio-icons/run-query.png[] this query, what types of system actions exist in the schema?
+Based on the results returned by running this query, what types of system actions exist in the schema?
 
 .Answer
 [%collapsible]
@@ -490,6 +497,7 @@ $entity isa entity;
 fetch
 $entity: attribute;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 This query will retrieve all attributes of all entities. Meanwhile, the following query retrieves the attributes of any two entities that are roleplayers in the same relation.
 
@@ -503,6 +511,7 @@ fetch
 $entity-1: attribute;
 $entity-2: attribute;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 In this query we have omitted the roles that the two entities play! In general, we can omit roles in a relation tuple if we do not care what they are. This is particularly useful for parametric queries, and we will explore this feature more fully in xref:learn::7-understanding-query-patterns/7.2-relation-patterns.adoc[Lesson 7.2].
 
@@ -533,6 +542,7 @@ $entity-1: attribute;
 $entity-2: attribute;
 $entity-3: attribute;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 =====
 ====
 
@@ -550,6 +560,7 @@ $book isa book;
 fetch
 $book: isbn, title;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 [,json]
 ----

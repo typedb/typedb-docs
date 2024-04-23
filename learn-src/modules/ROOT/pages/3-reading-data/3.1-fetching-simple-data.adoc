@@ -11,6 +11,7 @@ $book isa paperback;
 fetch
 $book: attribute;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 This is equivalent to the following SQL query.
 
@@ -221,6 +222,7 @@ $user isa user;
 fetch
 $user: attribute;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 =====
 ====
 
@@ -235,8 +237,9 @@ $book isa paperback;
 fetch
 $book: title, page-count;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
-If we *run* image:learn::studio-icons/run-query.png[] this query, we see the following result.
+If we run this query, we see the following result.
 
 [,json]
 ----
@@ -342,6 +345,7 @@ $book isa paperback;
 fetch
 $book: isbn-13, price, stock;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 =====
 ====
 
@@ -356,6 +360,7 @@ $book isa paperback, has isbn-13 "9780446310789";
 fetch
 $book: title, page-count;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 [,json]
 ----
@@ -387,8 +392,9 @@ $book has isbn-13 "9780446310789";
 fetch
 $book: title, page-count;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
-Try *running* image:learn::studio-icons/run-query.png[] these two queries. You should get the same results.
+Try running these two queries. You should get the same results.
 
 In the first version, we used a single composite *statement* in the `match` clause, whereas in the second version, we instead used two simple statements. If simple statements concern the same variable (in this case `$book`), we can always concatenate them using commas to form a composite statement, and vice versa.
 
@@ -409,6 +415,7 @@ $book isa paperback, has title "Great Discoveries in Medicine";
 fetch
 $book: page-count, price;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 With simple statements:
 
@@ -420,6 +427,7 @@ $book has title "Great Discoveries in Medicine";
 fetch
 $book: page-count, price;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 =====
 ====
 
@@ -451,6 +459,7 @@ fetch
 $order: id;
 $line: quantity;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 [,json]
 ----
@@ -519,6 +528,7 @@ $order: id, status;
 $line: quantity;
 $book: price;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 =====
 ====
 
@@ -538,6 +548,7 @@ $line: quantity;
 $courier: name;
 $address: street;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 [,json]
 ----
