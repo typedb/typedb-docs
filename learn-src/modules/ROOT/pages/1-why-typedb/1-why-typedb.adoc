@@ -40,7 +40,7 @@ $ext as file_format;
 
 Notice how the TypeQL query captures the intent of our earlier SQL query simply by stating each variable's intended function. No sequences of operations are needed: in fact, the statements in the `match` clause can be given in any order. Under the hood, this high-level, fully declarative approach of TypeQL's language is powered by a robust type system and a type-inference engine. This is why we also refer to TypeQL as a _type-theoretic_ query language!
 
-The design of TypeQL is based on four main pillars, which we'll learn about in this lecture course. They closely reflect fundamental advances in modern high-level programming models over the past decades.
+The design of TypeQL is based on four main pillars, which we'll learn about in this course. They closely reflect fundamental advances in modern high-level programming models over the past decades.
 
 * *Declarative*: TypeQL allows users to directly express the intent of their query, without the need to specify sequences of operations.
 * *Safe*: Users work within the type system of TypeDB, which alerts users about subtle errors before they happen, and ensures the high-level semantic integrity of their data at all times.

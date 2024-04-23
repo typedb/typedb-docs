@@ -482,7 +482,6 @@ Based on the results returned by running this query, what types of system action
 =====
 The types `login`, `order`, and `review`, as they play the role of `action` in `action-execution`.
 =====
-
 ====
 
 
@@ -517,7 +516,7 @@ In this query we have omitted the roles that the two entities play! In general, 
 
 [NOTE]
 ====
-This particular query would return every pair of entities in a binary relation twice: each of the two entities would be returned in one result as `$entity-1` and in another as `$entity-2`. In fact, it would also return pairs of entities in ternary or higher order relations, returning each possible pair of roleplayers twice. This would result in a large number of redundant results, and we will see how we can return the results of this query in a more useful structure in Lesson 8.3.
+This particular query would return every pair of entities in a binary relation twice: each of the two entities would be returned in one result as `$entity-1` and in another as `$entity-2`. In fact, it would also return pairs of entities in ternary or higher order relations, returning each possible pair of roleplayers twice. This would result in a large number of redundant results, and we will see how we can return the results of queries like these in more useful structures in xref:learn::8-structuring-query-results/8.2-subqueries.adoc[Lesson 8.2].
 ====
 
 While these queries are purely parametric, it is also possible to write non-parametric queries that include parametric statements, as we will see shortly. The defining feature of parametric statements is that they do not include any type names, except for the *root type* keywords `entity`, `relation`, and `attribute`, which allows them to be run against any schema. Much like using https://en.wikipedia.org/wiki/Generic_programming[generics] in application code, using parametric statements in queries can be a challenging aspect of TypeQL, but allows for extremely powerful queries that cannot be expressed in non-polymorphic query languages. We will see several more examples in future lessons.
