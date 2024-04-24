@@ -1,8 +1,6 @@
 = Lesson 5: Defining schemas
 
-== Summary
-
-=== xref:learn::5-defining-schemas/5.1-defining-individual-types.adoc[]
+== xref:learn::5-defining-schemas/5.1-defining-individual-types.adoc[Defining individual types]
 
 * *Define queries* are used to define new types, interfaces, and rules. They comprise a `define` clause only. Define queries are run using a *schema session* and *write transaction*.
 +
@@ -43,7 +41,7 @@ attribute-type value boolean;
 entity-type owns attribute-type;
 ----
 
-=== xref:learn::5-defining-schemas/5.2-defining-type-hierarchies.adoc[]
+== xref:learn::5-defining-schemas/5.2-defining-type-hierarchies.adoc[Defining type hierarchies]
 
 * A *type hierarchy* can be defined by using an existing type instead of a root type in a `sub` statement.
 +
@@ -66,7 +64,7 @@ relation-type relates role as overridden-role;
 ----
 * To define subtypes of an attribute type, that attribute type must be abstract.
 
-=== xref:learn::5-defining-schemas/5.3-defining-constraints.adoc[]
+== xref:learn::5-defining-schemas/5.3-defining-constraints.adoc[Defining constraints]
 
 * A `regex` statment is used to constrain the values of a string attribute type with a https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/regex/Pattern.html[Java regex pattern]
 +
@@ -88,7 +86,7 @@ entity-type owns attribute-type @key;
 entity-type owns attribute-type @unique;
 ----
 
-=== xref:learn::5-defining-schemas/5.4-defining-rules.adoc[]
+== xref:learn::5-defining-schemas/5.4-defining-rules.adoc[Defining rules]
 
 * A rule definition has three components: a *rule label*, a *condition*, and a *conclusion*. A rule definition begins with the `rule` keyword. The `when` and `then` keywords precede the condition and conclusion *blocks* respectively.
 +
@@ -106,7 +104,7 @@ rule rule-label:
 * A rule must generate either a single new relation or a single new attribute.
 * Every variable in the conclusion must also appear in the condition.
 
-=== xref:learn::5-defining-schemas/5.5-schema-validation.adoc[]
+== xref:learn::5-defining-schemas/5.5-schema-validation.adoc[Schema validation]
 
 * Checks must be passed whenever changes to the schema are made to ensure internal consistency.
 * Making changes that fail a validation check will cause an exception to be thrown.

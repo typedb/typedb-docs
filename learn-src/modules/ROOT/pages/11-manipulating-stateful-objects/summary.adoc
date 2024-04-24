@@ -1,8 +1,6 @@
 = Lesson 11: Manipulating stateful objects
 
-== Summary
-
-=== xref:learn::11-manipulating-stateful-objects/11.1-retrieval-by-query.adoc[]
+== xref:learn::11-manipulating-stateful-objects/11.1-retrieval-by-query.adoc[Retrieval by query]
 
 * When issued using a TypeDB driver, *Get queries* are used to retrieve *stateful objects*. They comprise a `match` clause and a `get` clause.
 +
@@ -36,7 +34,7 @@ attribute_type: AttributeType = result.get(VARIABLE_6).as_attribute_type()
 get $a, $b, $c;
 ----
 
-=== xref:learn::11-manipulating-stateful-objects/11.2-programmatic-retrieval.adoc[]
+== xref:learn::11-manipulating-stateful-objects/11.2-programmatic-retrieval.adoc[Programmatic retrieval]
 
 * The `TypeDBTransaction.concepts` property is used to access programmatic *schema type retrieval* methods. Its `get_entity_type`, `get_relation_type`, and `get_attribute_type` methods are used to retrieve entity, relation, and attribute types respectively. These methods return https://en.wikipedia.org/wiki/Futures_and_promises[promises], and must be resolved using their `resolve` methods in order to obtain the responses.
 +
@@ -95,7 +93,7 @@ def cast_thing(thing: Thing) -> Entity | Relation:
         return thing.as_relation()
 ----
 
-=== xref:learn::11-manipulating-stateful-objects/11.3-operating-on-objects.adoc[]
+== xref:learn::11-manipulating-stateful-objects/11.3-operating-on-objects.adoc[Operating on objects]
 
 * The `EntityType.create`, `RelationType.create`, and `AttributeType.put` methods are used to instantiate entity, relation, and attribute types respectively. When instantiating an attribute, its value must be provided as an argument.
 +

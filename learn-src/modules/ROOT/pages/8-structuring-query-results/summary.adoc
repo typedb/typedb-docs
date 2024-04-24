@@ -1,8 +1,6 @@
 = Lesson 8: Structuring query results
 
-== Summary
-
-=== xref:learn::8-structuring-query-results/8.1-fetching-attributes.adoc[]
+== xref:learn::8-structuring-query-results/8.1-fetching-attributes.adoc[Fetching attributes]
 
 * Attributes can be retrieved from the entities or relations that own them, or retrieved directly.
 +
@@ -20,7 +18,7 @@ $attribute;
 * Retrieving attributes via the owner returns those attributes grouped into results by owner, and matches those attribute optionally.
 * Retrieving attributes directly returns one of those attributes per result, and matches those attributes as a required constraint.
 
-=== xref:learn::8-structuring-query-results/8.2-subqueries.adoc[]
+== xref:learn::8-structuring-query-results/8.2-subqueries.adoc[Subqueries]
 
 * Results can be grouped in a general manner using *subqueries*.
 * A subquery is constructed by enclosing a Fetch query in a block and placing it inside the `fetch` clause of a parent query. The block is preceded by a subquery label and `:` delimiter, and followed by a `;` delimiter.
@@ -38,7 +36,7 @@ subquery-label: {
 * Variables in a subquery are shared with the parent query. Constraints in the parent query also apply to the subquery, but constraints in the subquery do not apply to the parent query. All subqueries must share at least one variable with the parent query.
 * Subqueries can be nested to any depth.
 
-=== xref:learn::8-structuring-query-results/8.3-aggregations.adoc[]
+== xref:learn::8-structuring-query-results/8.3-aggregations.adoc[Aggregations]
 
 * When used as subqueries, *Get queries* are used to perform aggregations. They comprise a `match` clause, a `get` clause, and an *aggregation modifier*.
 +
@@ -76,7 +74,7 @@ get $a, $b, $c;
 get;
 ----
 
-=== xref:learn::8-structuring-query-results/8.4-sorting-and-pagination.adoc[]
+== xref:learn::8-structuring-query-results/8.4-sorting-and-pagination.adoc[Sorting and pagination]
 
 * The results of Fetch queries and subqueries are *sorted* in ascending order by appending a `sort` modifier, which takes an attribute variable or value variable as an argument to sort on. Results are instead sorted in descending order by adding the `desc` keyword.
 +
