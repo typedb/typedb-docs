@@ -37,7 +37,7 @@ $user1 isa user, has name "Alice", has email "alice@typedb.com";
 $user2 isa user, has name "Bob", has email "bob@typedb.com";
 $friendship (friend:$user1, friend: $user2) isa friendship;
 ----
-. Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
+. Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[Run query,width=9]).
 . Commit the changes by clicking the btn:[Commit query] button (image:home::studio-icons/commit.png[Commit]).
 --
 
