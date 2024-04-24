@@ -132,6 +132,26 @@ include::manual::partial$python-manual-code.py[tags=get]
 ----
 --
 
+Node.js::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a data session to the selected database,
+open a read transaction, and use the
+xref:drivers::nodejs/api-reference.adoc#_QueryManager_get__query_string__options_TypeDBOptions[transaction.query.get()]
+method:
+++++
+
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tags=get]
+----
+--
+
 Java::
 +
 --
@@ -152,7 +172,7 @@ include::manual::partial$java-manual-code.java[tags=get]
 ----
 --
 
-Node.js::
+C#::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
@@ -162,13 +182,14 @@ to connect the `driver` to TypeDB Cloud or TypeDB Core.
 ++++
 Open a data session to the selected database,
 open a read transaction, and use the
-xref:drivers::nodejs/api-reference.adoc#_QueryManager_get__query_string__options_TypeDBOptions[transaction.query.get()]
+xref:drivers::csharp/api-reference.adoc#_IEnumerable__IConceptMap___TypeDB_Driver_Api_IQueryManager_Get___string_query_[transaction.Query.Get()]
 method:
 ++++
 
-[,js,indent=0]
+[,csharp,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tags=get]
+include::manual::partial$csharp-manual-code.cs[tags=options]
+include::manual::partial$csharp-manual-code.cs[tags=get]
 ----
 --
 
@@ -190,6 +211,27 @@ method:
 ----
 include::manual::partial$cpp-manual-code.cpp[tags=options,indent=8]
 include::manual::partial$cpp-manual-code.cpp[tags=get]
+----
+--
+
+C::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a data session to the selected database,
+open a read transaction, and use the
+xref:drivers::c/api-reference.adoc#_query_get[query_get()]
+function:
+++++
+
+[,c,indent=0]
+----
+include::manual::partial$c-manual-code.c[tags=options,indent=8]
+include::manual::partial$c-manual-code.c[tags=get]
 ----
 --
 ====
