@@ -67,6 +67,17 @@ include::manual::partial$python-manual-code.py[tags=create-db]
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
 --
 
+Node.js::
++
+--
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tags=create-db]
+----
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
+--
+
 Java::
 +
 --
@@ -78,12 +89,12 @@ include::manual::partial$java-manual-code.java[tags=create-db]
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
 --
 
-Node.js::
+C#::
 +
 --
-[,js,indent=0]
+[,csharp,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tags=create-db]
+include::manual::partial$csharp-manual-code.cs[tags=create-db]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -98,6 +109,18 @@ include::manual::partial$cpp-manual-code.cpp[tags=create-db]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
+--
+
+C::
++
+--
+[,c,indent=0]
+----
+include::manual::partial$c-manual-code.c[tags=create-db]
+----
+
+Where `databaseManager` provides access to all database management methods for the TypeDB server,
+and `DB_NAME` is the name of the database.
 --
 ====
 
@@ -150,15 +173,6 @@ include::manual::partial$python-manual-code.py[tags=delete-db]
 ----
 --
 
-Java::
-+
---
-[,java,indent=0]
-----
-include::manual::partial$java-manual-code.java[tags=delete-db]
-----
---
-
 Node.js::
 +
 --
@@ -168,12 +182,39 @@ include::manual::partial$nodejs-manual-code.js[tags=delete-db]
 ----
 --
 
+Java::
++
+--
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tags=delete-db]
+----
+--
+
+C#::
++
+--
+[,csharp,indent=0]
+----
+include::manual::partial$csharp-manual-code.cs[tags=delete-db]
+----
+--
+
 C++::
 +
 --
 [,cpp,indent=0]
 ----
 include::manual::partial$cpp-manual-code.cpp[tags=delete-db]
+----
+--
+
+C::
++
+--
+[,c,indent=0]
+----
+include::manual::partial$c-manual-code.c[tags=delete-db]
 ----
 --
 ====
@@ -223,15 +264,6 @@ include::manual::partial$python-manual-code.py[tags=list-db]
 ----
 --
 
-Java::
-+
---
-[,java,indent=0]
-----
-include::manual::partial$java-manual-code.java[tags=list-db]
-----
---
-
 Node.js::
 +
 --
@@ -241,12 +273,39 @@ include::manual::partial$nodejs-manual-code.js[tags=list-db]
 ----
 --
 
+Java::
++
+--
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tags=list-db]
+----
+--
+
+C#::
++
+--
+[,csharp,indent=0]
+----
+include::manual::partial$csharp-manual-code.cs[tags=list-db]
+----
+--
+
 C++::
 +
 --
 [,cpp,indent=0]
 ----
 include::manual::partial$cpp-manual-code.cpp[tags=list-db]
+----
+--
+
+C::
++
+--
+[,c,indent=0]
+----
+include::manual::partial$c-manual-code.c[tags=list-db]
 ----
 --
 ====
