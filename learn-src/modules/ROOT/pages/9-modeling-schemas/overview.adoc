@@ -1,7 +1,6 @@
 = Lesson 9: Modeling schemas
 :page-aliases: learn::9-modeling-schemas/9-modeling-schemas.adoc
-
-== Overview
+:page-preamble-card: 1
 
 In this lesson, we'll learn how to design TypeDB schemas using the conceptual *PERA data model*. We'll start with an overview of the PERA model and see how it is implemented by TypeDB and TypeQL. We'll then work through the design of a small part of the bookstore schema and cover major design decisions like choosing *object types*, using *type hierarchies*, and using *interface hierarchies*. We'll also see how we can avoid some specific problems like *data redundancies*, *inheritance overuse*, and *interface redundancies*.
 
