@@ -1,0 +1,147 @@
+= Lesson 6: Building applications
+
+== xref:learn::6-building-applications/6.1-driver-setup.adoc[Driver setup]
+
+* The official TypeDB Python driver package can be installed with:
++
+[source,console]
+----
+$ pip install typedb-driver
+----
+* The following classes must be imported in order to use the Python driver in any codebase:
++
+[,python]
+----
+from typedb.driver import TypeDB, SessionType, TransactionType
+from typedb.api.connection.credential import TypeDBCredential
+----
+
+== xref:learn::6-building-applications/6.2-managing-users-and-databases.adoc[Managing databases]
+
+* The `TypeDB.core_driver` method is used to instantiate a new *driver object*.
++
+[,python]
+----
+driver: TypeDBDriver = TypeDB.core_driver(ADDRESS)
+----
+* The `TypeDBDriver.databases` property is used to access *database management* controls.
+* The `TypeDBDriver.databases.create` method is used to create a new database.
++
+[,python]
+----
+driver.databases.create(DATABASE)
+----
+
+== xref:learn::6-building-applications/6.3-sessions-and-transactions.adoc[Sessions and transactions]
+
+* The `TypeDBDriver.session` method is used to instantiate a new *session object*. The *session type* is specified using the `DATA` and `SCHEMA` values of the `SessionType` enum.
++
+[,python]
+----
+session: TypeDBSession = driver.session(DATABASE, SessionType.DATA)
+----
+* Schema sessions are *locking*: only one can be opened at any time per database, and data writes cannot be performed in any active session while a schema session is open.
+* The `TypeDBSession.transaction` method is used to instantiate a new *transaction object*. The *transaction type* is specified using the `READ` and `WRITE` value of the `TransactionType` enum.
++
+[,python]
+----
+transaction: TypeDBTransaction = session.transaction(TransactionType.READ)
+----
+* Driver, session, and transaction objects should always be instantiated using a https://peps.python.org/pep-0343/[context manager] so that their destructors are called automatically.
++
+[,python]
+----
+with TypeDB.core_driver(ADDRESS) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
+            # code goes here
+----
+* The `TypeDBTransaction.commit` method is used to commit a transaction.
++
+[,python]
+----
+transaction.commit()
+----
+
+== xref:learn::6-building-applications/6.4-executing-queries.adoc[Executing queries]
+
+* The `TypeDBTransaction.query` property is used to access *query execution* methods.
+* The `TypeDBTransaction.query.fetch` method is used to execute Fetch queries. It returns an *iterator* of results.
++
+[,python]
+----
+results: Iterator[Dict] = transaction.query.fetch(QUERY)
+----
+* The `TypeDBTransaction.query.insert` method is used to execute Insert queries.
++
+[,python]
+----
+transaction.query.insert(QUERY)
+----
+* The `TypeDBTransaction.query.delete` method is used to execute Delete queries.
++
+[,python]
+----
+transaction.query.delete(QUERY)
+----
+* The `TypeDBTransaction.query.update` method is used to execute Update queries.
++
+[,python]
+----
+transaction.query.update(QUERY)
+----
+* The `TypeDBTransaction.query.define` method is used to execute Define queries.
++
+[,python]
+----
+transaction.query.define(QUERY)
+----
+
+== xref:learn::6-building-applications/6.5-processing-results.adoc[Processing results]
+
+* Each result of a Fetch query is returned as a JSON-style nested dictionary. The top-level dictionary has fields corresponding to the variables in the `fetch` clause. The second-level dictionary has fields corresponding to the attributes of those variables, in addition to a `type` field containing the type of the variable.
+* Every attribute retrieved as part of a result has the following format:
++
+[,js]
+----
+{
+    'type': {
+        'value_type': <attribute value type>,
+        'root': 'attribute',
+        'label': <attribute type label>
+    },
+    'value': <attribute value>
+}
+----
+* Every type retrieved as part of a result has the following format:
++
+[,js]
+----
+{
+    'root': <'entity' or 'relation'>,
+    'label': <entity or relation type label>
+}
+----
+
+== Further learning
+
+[cols-3]
+--
+.xref:learn::7-understanding-query-patterns/overview.adoc[]
+[.clickable]
+****
+Learn how to build query patterns utilising advanced elements of TypeQL syntax, and how queries are resolved by TypeDB.
+****
+
+.xref:drivers::python/api-reference.adoc[Python Driver: Reference]
+[.clickable]
+****
+Explore the comprehensive API reference for the official TypeDB Python driver.
+****
+
+.xref:drivers::overview.adoc[Drivers: Overview]
+[.clickable]
+****
+Explore the docs for all the official TypeDB drivers, including installation guides, tutorials, and API references.
+****
+--

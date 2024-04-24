@@ -104,6 +104,13 @@ with TypeDB.cloud_driver(ADDRESS, credential) as driver:
             page_count_type: AttributeType = transaction.concepts.get_attribute_type("page-count").resolve()
 
 
+with TypeDB.core_driver(ADDRESS) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
+            contribution_type: RelationType
+            contribution_roles: Iterator[RoleType] = contribution_type.get_relates(transaction)
+
+
 with TypeDB.cloud_driver(ADDRESS, credential) as driver:
     with driver.session(DATABASE, SessionType.DATA) as session:
         with session.transaction(TransactionType.READ) as transaction:
@@ -230,7 +237,7 @@ def add_to_promotion(transaction: TypeDBTransaction, book: Entity, promotion: En
     inclusion.add_player(transaction, item_role, book).resolve()
     inclusion.add_player(transaction, promotion_role, promotion).resolve()
     discount = discount_type.put(transaction, discount_value).resolve()
-    inclusion.set_has(transaction, discount)
+    inclusion.set_has(transaction, discount).resolve()
 
 
 def remove_from_promotion(transaction: TypeDBTransaction, book: Entity, promotion: Entity) -> None:

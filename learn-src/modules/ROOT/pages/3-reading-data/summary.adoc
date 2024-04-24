@@ -1,0 +1,119 @@
+= Lesson 3: Reading data
+
+== xref:learn::3-reading-data/3.1-fetching-simple-data.adoc[Fetching simple data]
+
+* *Fetch queries* are used to retrieve data in JSON format. They comprise a `match` clause and `fetch` clause. Fetch queries are run using a *data session* and *read transaction*.
++
+[,typeql]
+----
+match
+# match clause
+fetch
+# fetch clause
+----
+* *Variables* are declared with a `$` prefix.
+* An `isa` statement is used to specify the *type* of a variable.
++
+[,typeql]
+----
+$entity isa entity-type;
+----
+* Data objects can be either *entities* or *relations*.
+* Relations have *roles*. An entity that plays a role is a *roleplayer*. All relations must have at least one roleplayer.
++
+[,typeql]
+----
+($role-1: $a, $role-2: $b) isa relation-type;
+----
+* A `has` statement is used to specify the value of an entity or relation's *attribute*.
++
+[,typeql]
+----
+$entity has attribute-type "attribute value";
+----
+
+== xref:learn::3-reading-data/3.2-fetching-polymorphic-data.adoc[Fetching polymorphic data]
+
+* *Type inference* allows the database to infer the possible types of a variable without having to explicitly specify them all.
+* *Inheritance polymorphism* allows us to query data of multiple types through a common *supertype*.
+* *Interface polymorphism* allows us to query data of multiple types through a common implemented *interface*: either a role in a relation or ownership of an attribute.
+* *Parametric polymorphism* allows us to query data of multiple types through the structure of the data alone. Purely parametric queries can be run on any schema.
+* Different types of polymorphism can be combined to produce complex queries.
+
+== xref:learn::3-reading-data/3.3-fetching-inferred-data.adoc[Fetching inferred data]
+
+* *Rule inference* allows the database to infer new data based on existing data and *rules* defined as part of the schema.
+* Rule inference must be enabled for inferred data to be returned.
+
+== xref:learn::3-reading-data/3.4-fetching-schema-types.adoc[Fetching schema types]
+
+* Types can be *variablized* in the same way as data instances, by using a variable in place of a *type label* in statements.
++
+[,typeql]
+----
+$entity isa $entity-type;
+----
+* An `isa!` statement is used to specify the exact type of a data variable.
++
+[,typeql]
+----
+$entity isa! exact-type;
+----
+* A `sub` statement is used to specify a supertype of a type.
++
+[,typeql]
+----
+$type sub supertype;
+----
+* A `sub!` statement is used to specify the direct supertype of a type.
++
+[,typeql]
+----
+$type sub! direct-supertype;
+----
+* An `owns` statement is used to specify an owner of an attribute type.
++
+[,typeql]
+----
+$entity-type owns attribute-type;
+----
+* A `relates` statement is used to specify a role of a relation type.
++
+[,typeql]
+----
+relation-type relates $role;
+----
+* A `plays` statement is used to specify a roleplayer of a role.
++
+[,typeql]
+----
+$entity-type plays $role;
+----
+
+== xref:learn::3-reading-data/3.5-query-validation.adoc[Query validation]
+
+* All queries are *validated* against the schema.
+* Running a query that does not conform to the schema will cause an exception to be thrown.
+
+== Further learning
+
+[cols-3]
+--
+.xref:learn::4-writing-data/overview.adoc[]
+[.clickable]
+****
+Learn how to write data to TypeDB, covering insert, delete, and update operations, including polymorphic data writes.
+****
+
+.xref:manual::reading/overview.adoc[Manual: Reading data]
+[.clickable]
+****
+Learn more about reading data from TypeDB, covering Fetch queries, Get queries, and inference.
+****
+
+.xref:typeql::queries/fetch.adoc[Reference: Fetch query]
+[.clickable]
+****
+Read the Fetch query reference, including syntax, behaviour, and advanced usage.
+****
+--

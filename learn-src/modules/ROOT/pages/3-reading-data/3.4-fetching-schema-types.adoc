@@ -83,8 +83,9 @@ fetch
 $book: isbn, title;
 $action-type;                # new line
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
-If we *run* image:learn::studio-icons/run-query.png[] this new query, we now also retrieve the type of `$action`!
+If we run this new query, we now also retrieve the type of `$action`!
 
 [,json]
 ----
@@ -189,8 +190,8 @@ $book: isbn, title;
 $action-type;
 $relation-type;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 =====
-
 ====
 
 The ability to variablize types in queries arises from TypeQL's core philosophy:
@@ -222,6 +223,7 @@ ____
 // fetch
 // $contributor: name;
 // ----
+// image:learn::studio-icons/run-query.png[] *_Run_*
 //
 // [,json]
 // ----
@@ -251,6 +253,7 @@ ____
 // $contributor: name;
 // $contributor-role;
 // ----
+// image:learn::studio-icons/run-query.png[] *_Run_*
 //
 // [,json]
 // ----
@@ -284,8 +287,8 @@ ____
 // $book-role;
 // $action-role;
 // ----
+// image:learn::studio-icons/run-query.png[] *_Run_*
 // =====
-//
 // ====
 
 == Querying type hierarchies
@@ -299,8 +302,7 @@ $book-type sub book;
 fetch
 $book-type;
 ----
-
-Try *running* image:learn::studio-icons/run-query.png[] this query. You should see the following result.
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 [,json]
 ----
@@ -319,6 +321,7 @@ publisher sub $supertype;
 fetch
 $supertype;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 [,json]
 ----
@@ -344,6 +347,7 @@ publisher sub! $supertype;
 fetch
 $supertype;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 [,json]
 ----
@@ -365,6 +369,7 @@ city sub! $supertype;
 fetch
 $supertype;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 =====
 
 Now write a query to determine the other types that share that direct supertype.
@@ -385,6 +390,7 @@ $place-type sub! place;
 fetch
 $place-type;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 =====
 
 Finally, write a query to retrieve all entity types in the schema.
@@ -405,8 +411,8 @@ $entity-type sub entity;
 fetch
 $entity-type;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 =====
-
 ====
 
 == Querying ownership interfaces
@@ -420,6 +426,7 @@ promotion owns $attribute;
 fetch
 $attribute;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 [,json]
 ----
@@ -438,6 +445,7 @@ $type owns isbn-13;
 fetch
 $type;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 [,json]
 ----
@@ -462,8 +470,8 @@ $type owns name;
 fetch
 $type;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 =====
-
 ====
 
 == Querying role interfaces
@@ -477,6 +485,7 @@ locating relates $role;
 fetch
 $role;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 [,json]
 ----
@@ -498,6 +507,7 @@ $type plays locating:located;
 fetch
 $type;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 [,json]
 ----
@@ -519,6 +529,7 @@ book plays $role;
 fetch
 $role;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 [,json]
 ----
@@ -529,7 +540,6 @@ $role;
 { "role": { "label": "contribution:work", "root": "relation:role" } }
 { "role": { "label": "promotion-inclusion:item", "root": "relation:role" } }
 ----
-
 
 .Exercise
 [caption=""]
@@ -546,6 +556,7 @@ delivery relates $role;
 fetch
 $role;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 =====
 
 Now modify the query to also retrieve the types that play those roles.
@@ -562,8 +573,8 @@ fetch
 $role;
 $type;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 =====
-
 ====
 
 [#_footnotes]

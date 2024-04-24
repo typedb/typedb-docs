@@ -135,7 +135,7 @@ TypeDB 2.x does not support SQL-style cascading deletes. When a roleplayer in a 
 
 [NOTE]
 ====
-The method we've used to delete this entity relies on the fact that the review has a unique ID we can retrieve and then match on. If this were not the case, properly deleting it might be significantly harder. For this reason, it's good to ensure that any entity types that might be regularly deleted have *key attributes* that we can use. We'll explore this further in xref:learn::5-defining-schemas/5-defining-schemas.adoc[Lesson 5].
+The method we've used to delete this entity relies on the fact that the review has a unique ID we can retrieve and then match on. If this were not the case, properly deleting it might be significantly harder. For this reason, it's good to ensure that any entity types that might be regularly deleted have *key attributes* that we can use. We'll explore this further in xref:learn::5-defining-schemas/overview.adoc[Lesson 5].
 ====
 
 .Exercise
