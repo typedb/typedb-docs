@@ -1,0 +1,134 @@
+= Lesson 5: Defining schemas
+
+== xref:learn::5-defining-schemas/5.1-defining-individual-types.adoc[Defining individual types]
+
+* *Define queries* are used to define new types, interfaces, and rules. They comprise a `define` clause only. Define queries are run using a *schema session* and *write transaction*.
++
+[,typeql]
+----
+define
+# define clause
+----
+* A `sub` statement is used to define a new subtype of an existing type. All types are subtypes of one of the three *root types*: `entity`, `relation`, or `attribute`.
++
+[,typeql]
+----
+entity-type sub entity;
+----
+* Define queries cannot contain variables, only keywords and type labels.
+* A `relates` statement is used to define a new role for a relation type. All relation types must have at least one role defined.
++
+[,typeql]
+----
+relation-type relates role;
+----
+* A `plays` statement is used to define a new roleplayer for a role.
++
+[,typeql]
+----
+entity-type plays role;
+----
+* A `value` statement is used to define the value type of an attribute type. All attribute types must have a value type defined: one of `boolean`, `long`, `double`, `string`, or `datetime`.
++
+[,typeql]
+----
+attribute-type value boolean;
+----
+* An `owns` statment is used to define a new owner of an attribute type.
++
+[,typeql]
+----
+entity-type owns attribute-type;
+----
+
+== xref:learn::5-defining-schemas/5.2-defining-type-hierarchies.adoc[Defining type hierarchies]
+
+* A *type hierarchy* can be defined by using an existing type instead of a root type in a `sub` statement.
++
+[,typeql]
+----
+entity-type sub supertype;
+----
+* A subtype of an entity or relation type will *inherit* all of its owned attributes and played roles.
+* An `abstract` statement is used to define a type as *abstract*.
++
+[,typeql]
+----
+entity-type abstract;
+----
+* By default, a subtype of a relation type will inherit all of its roles. Inherited roles can be overridden using the `as` keyword. An overriding role is the subtype of the role it overrides.
++
+[,typeql]
+----
+relation-type relates role as overridden-role;
+----
+* To define subtypes of an attribute type, that attribute type must be abstract.
+
+== xref:learn::5-defining-schemas/5.3-defining-constraints.adoc[Defining constraints]
+
+* A `regex` statment is used to constrain the values of a string attribute type with a https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/regex/Pattern.html[Java regex pattern]
++
+[,typeql]
+----
+attribute-type regex "^java regex pattern$";
+----
+* *Annotations* can be used to constrain attribute ownerships by applying them to `owns` statements.
+* A `@key` annotation is used to define a *key constraint* on an attribute ownership, requiring that instances of the owner type own exactly one instance of the attribute type, and that it must be uniquely owned by the owner type.
++
+[,typeql]
+----
+entity-type owns attribute-type @key;
+----
+* A `@unique` annotation is used to define a *unique constraint* on an attribute ownership, requiring that instances of the attribute type are uniquely owned by the owner type.
++
+[,typeql]
+----
+entity-type owns attribute-type @unique;
+----
+
+== xref:learn::5-defining-schemas/5.4-defining-rules.adoc[Defining rules]
+
+* A rule definition has three components: a *rule label*, a *condition*, and a *conclusion*. A rule definition begins with the `rule` keyword. The `when` and `then` keywords precede the condition and conclusion *blocks* respectively.
++
+[,typeql]
+----
+rule rule-label:
+    when {
+        # condition
+    } then {
+        # conclusion
+    };
+----
+* The condition block can contain any number of simple or composite statements.
+* The condition block must contain only one simple statement.
+* A rule must generate either a single new relation or a single new attribute.
+* Every variable in the conclusion must also appear in the condition.
+
+== xref:learn::5-defining-schemas/5.5-schema-validation.adoc[Schema validation]
+
+* Checks must be passed whenever changes to the schema are made to ensure internal consistency.
+* Making changes that fail a validation check will cause an exception to be thrown.
+* Rules undergo the same validation as Insert queries.
+
+== Further learning
+
+[cols-3]
+--
+.xref:learn::6-building-applications/overview.adoc[]
+[.clickable]
+****
+Learn how to build applications on TypeDB, covering database management, transaction control, and result stream processing.
+****
+
+.xref:learn::7-understanding-query-patterns/overview.adoc[]
+[.clickable]
+****
+Learn how to build query patterns utilising advanced elements of TypeQL syntax, and how queries are resolved by TypeDB.
+****
+
+.xref:manual::defining/overview.adoc[Manual: Defining schemas]
+[.clickable]
+****
+Learn more about defining schemas for TypeDB, covering Define queries, Undefine queries, and schema editing.
+****
+--

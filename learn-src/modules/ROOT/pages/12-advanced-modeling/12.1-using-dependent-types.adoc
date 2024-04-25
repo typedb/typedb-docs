@@ -7,7 +7,7 @@ The PERA model and TypeQL are both based on the theory of https://en.wikipedia.o
 
 We first encountered the following diagram in xref:learn::9-modeling-schemas/9.1-the-pera-model.adoc[Lesson 9.1], in which the building blocks of the PERA model were introduced. It summarises the ways in which different kinds of types in the model are associated.
 
-image::typeql-terminology.png[role=framed, width = 75%, link=self]
+image::learn::typeql-terminology.png[role=framed, width = 75%, link=self]
 
 The properties of entity and relation types are almost identical. Both are freely instantiable, both can implement interfaces, both can be subtyped, and both can be abstract. The only difference between them is that entity types have no dependencies while relation types depend on roles. As we learned in xref:learn::5-defining-schemas/5.1-defining-individual-types.adoc[Lesson 5.1], relation type can depend on any number of roles, allowing us to create unary, binary, ternary, and n-ary relation types. However, nullary relation types, those that relate zero roles, are not permitted in TypeDB. The reason for this is that they would be functionally identical to entities!
 

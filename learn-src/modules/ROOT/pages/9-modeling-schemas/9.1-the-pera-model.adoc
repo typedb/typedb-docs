@@ -68,7 +68,7 @@ ____
 
 The key difference between data-storing and data-structuring types is that only data-storing types can be instantiated directly, and their instances operated on. Meanwhile, the data-structuring types serve to define the behaviours of these data instances. The following diagram summarises the ways in which different kinds of types in the PERA model are associated.
 
-image::typeql-terminology.png[role=framed, width = 75%, link=self]
+image::learn::typeql-terminology.png[role=framed, width = 75%, link=self]
 
 The upcasting of types into their supertypes enables the use of inheritance polymorphism in queries. Similarly, object types can be upcast into the interface types they implement, which enables interface polymorphism in queries. Finally, attribute types can also be upcast into their value types, which enables arithmetic expressions.
 

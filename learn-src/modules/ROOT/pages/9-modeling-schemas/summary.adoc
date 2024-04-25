@@ -1,0 +1,68 @@
+= Lesson 9: Modeling schemas
+
+== xref:learn::9-modeling-schemas/9.1-the-pera-model.adoc[The PERA model]
+
+* A PERA data model comprises *data-storing types* and *interface types* between them, similar to classes and interfaces in OOP. Interface types serve as abstractions of the *dependencies* between data-storing types.
+* *Entity types* are used to represent classes of *independent objects*.
+* *Relation types* are used to represent classes of *objects dependent on other objects*. The dependency of a relation type on another object type is described by an exposed *role interface*, and an object type that implements it is a *roleplayer* of that role.
+* *Attribute types* are used to represent classes of *values dependent on objects*. Every attribute has a literal value, and the type of this value is determined by the attribute type’s *value type*. The dependency of an attribute type on an object type is described by an exposed *ownership interface*, and an object type that implements it is an *owner* of that attribute type.
+* Entity and relation types can be collectively referred to as *object types*, as distinct from *attribute types*. Object types contain *objects* while attribute types contain *values*. Only object types can implement interfaces.
+* Entity, relation, and attribute types are collectively referred to as *data-storing types*, while interface and value types are collectively referred to as *data-structuring types*. Data-structuring types can only be instantiated indirectly by instantiating data-storing types.
+
+image::learn::typeql-terminology.png[role=framed, width = 75%, link=self]
+
+== xref:learn::9-modeling-schemas/9.2-determining-object-types.adoc[Determining object types]
+
+* The *identity* of a concept is independent of any properties it has. If two concepts have the same properties but remain different concepts, they have identities. Concepts with identities are generally best categorised as belonging to entity types.
+* Dependencies between entity types are generally best modeled with relation types.
+
+== xref:learn::9-modeling-schemas/9.3-avoiding-data-redundancies.adoc[Avoiding data redundancies]
+
+* In order to prevent data redundancies, there should be no more than one https://en.wikipedia.org/wiki/Functional_dependency[functional dependency] between any two types. When dependencies are duplicated, this creates redundancy in the data model, which can lead to data inconsistencies.
+
+== xref:learn::9-modeling-schemas/9.4-using-type-hierarchies.adoc[Using type hierarchies]
+
+* If a type implements an interface, all its subtypes will inherit the interface implementation, including future supertypes not yet defined.
+* Types can only have a single supertype. The fact the several types exhibit common behaviours is not necessarily an indicator that they are all subtypes of a common supertype. A type should only be considered a subtype of another type if every instance of the subtype is necessarily an instance of the supertype.
+* If a data field always contains exactly one value or is empty, has a small number of possible values, and has other fields that depend on the presence or absence of it, then it is likely the field contains typing information rather than data.
+* Non-abstract supertypes should be used to model general-purpose types, and their subtypes should be used to model specialized variants.
+
+== xref:learn::9-modeling-schemas/9.5-composition-over-inheritance.adoc[Composition over inheritance]
+
+* A data instance can only have a single type. If a concept displays multiple simultaneous capabilities, then this indicates that the concept should be modeled as a single type implementing multiple interfaces, rather than as multiple types.
+
+== xref:learn::9-modeling-schemas/9.6-using-interface-hierarchies.adoc[Using interface hierarchies]
+
+* Interface types form hierarchies in the same way as data-storing types.
+* If an attribute type has a subtype, then the subtype's ownership interface is itself a subtype of the supertype's ownership interface.
+* If a relation type overrides a role of its supertype, then the overriding role interface is a subtype of the role interface it overrides.
+* Inheritance of interface implementations is determined by their https://en.wikipedia.org/wiki/Covariance_and_contravariance_(computer_science)[variance].
+* In schema definitions, `owns` and `plays` statements are *covariant* in the implementing object type, so the statement also applies to subtypes of the object type by inheritance. Meanwhile, they are *invariant* in the implemented interface type, so the statement does not also apply to subtypes of the interface type.
+* When building a relation type hierarchy, if roleplayers of the relation supertype should also be roleplayers of the relation subtypes, then the relevant role should be inherited. If not, the role should be overridden.
+
+== xref:learn::9-modeling-schemas/9.7-avoiding-interface-redundancies.adoc[Avoiding interface redundancies]
+
+* Each behaviour should be represented by a single interface. Using two different interfaces to represent the same common behaviour results in model redundancies, preventing the behaviour from being polymorphically queried over.
+
+== Further learning
+
+[cols-3]
+--
+.xref:learn::10-using-inference/overview.adoc[]
+[.clickable]
+****
+Learn how to use rule inference to abstract complex patterns into simple forms, and capture complex logic with combinations of rules.
+****
+
+.xref:learn::12-advanced-modeling/overview.adoc[]
+[.clickable]
+****
+Learn how to eliminate mismatch with applications by using the type-theoretic framework of the PERA model for schema design.
+****
+
+.https://typedb.com/lectures/polymorphic-data-model[Lecture: The polymorphic data model with types]
+[.clickable]
+****
+Learn about the conceptual PERA model that backs TypeDB, and how it subsumes and surpasses previous database models.
+****
+--

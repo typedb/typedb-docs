@@ -1,0 +1,152 @@
+= Lesson 11: Manipulating stateful objects
+
+== xref:learn::11-manipulating-stateful-objects/11.1-retrieval-by-query.adoc[Retrieval by query]
+
+* When issued using a TypeDB driver, *Get queries* are used to retrieve *stateful objects*. They comprise a `match` clause and a `get` clause.
++
+[,typeql]
+----
+match
+# match clause
+get;
+----
+* The `TypeDBTransaction.query.get` method is used to execute Get queries. It returns an *iterator* of results in the form of *concept maps*. A concept map is a collection of stateful objects that were matched by the variables in the query.
++
+[,python]
+----
+results: Iterator[ConceptMap] = transaction.query.fetch(QUERY)
+----
+* The `ConceptMap.get` method is used to retrieve a stateful object from the concept map corresponding to a particular variable label. The object must then be cast to the appropriate type.
++
+[,python]
+----
+entity: Entity = result.get(VARIABLE_1).as_entity()
+relation: Relation = result.get(VARIABLE_2).as_relation()
+attribute: Attribute = result.get(VARIABLE_3).as_attribute()
+entity_type: EntityType = result.get(VARIABLE_4).as_entity_type()
+relation_type: RelationType = result.get(VARIABLE_5).as_relation_type()
+attribute_type: AttributeType = result.get(VARIABLE_6).as_attribute_type()
+----
+* One result is returned per variable for each match returned by the `match` clause. The set of results can be *filtered* before being returned using the `get` clause. The results are filtered for each unique combination of instances of the filter variables.
++
+[,typeql]
+----
+get $a, $b, $c;
+----
+
+== xref:learn::11-manipulating-stateful-objects/11.2-programmatic-retrieval.adoc[Programmatic retrieval]
+
+* The `TypeDBTransaction.concepts` property is used to access programmatic *schema type retrieval* methods. Its `get_entity_type`, `get_relation_type`, and `get_attribute_type` methods are used to retrieve entity, relation, and attribute types respectively. These methods return https://en.wikipedia.org/wiki/Futures_and_promises[promises], and must be resolved using their `resolve` methods in order to obtain the responses.
++
+[,python]
+----
+entity_type: EntityType = transaction.concepts.get_entity_type(LABEL_1).resolve()
+relation_type: RelationType = transaction.concepts.get_relation_type(LABEL_2).resolve()
+attribute_type: AttributeType = transaction.concepts.get_attribute_type(LABEL_3).resolve()
+----
+* The `RelationType.get_relates` method is used to retrieve the roles in a relation type.
++
+[,python]
+----
+role_types: Iterator[RoleType] = relation_type.get_relates(transaction)
+----
+* The `Type.get_instances` method is used to retrieve all instances of a type.
++
+[,python]
+----
+entities: Iterator[Entity] = entity_type.get_instances(transaction)
+relations: Iterator[Relation] = relation_type.get_instances(transaction)
+attributes: Iterator[Attribute] = attribute_type.get_instances(transaction)
+----
+* The `Entity.get_has` and `Relation.get_has` methods are used to retrieve the attributes owned by an entity or relation.
++
+[,python]
+----
+attributes: Iterator[Attribute] = entity.get_has(transaction)
+----
+* The `Entity.get_relations` and `Relation.get_relations` methods are used to retrieve the relations that an entity or relation plays a role in.
++
+[,python]
+----
+relations: Iterator[Relation] = entity.get_relations(transaction)
+----
+* The `Attribute.get_owners` method is used to retrieve the owners of an attribute.
++
+[,python]
+----
+owners: Iterator[Thing] = attribute.get_owners(transaction)
+----
+* The `Relation.get_players_by_role_type` method is used to retrieve the roleplayers in a relation.
++
+[,python]
+----
+players: Iterator[Thing] = relation.get_players(transaction)
+----
+* Because the owners of an attribute or the roleplayers in a relation can be both entities and relations, the objects returned by `get_owners` and `get_players_by_role_type` are of the generic `Thing` class and must be cast to the appropriate type.
++
+[,python]
+----
+def cast_thing(thing: Thing) -> Entity | Relation:
+    if thing.is_entity():
+        return thing.as_entity()
+    if thing.is_relation():
+        return thing.as_relation()
+----
+
+== xref:learn::11-manipulating-stateful-objects/11.3-operating-on-objects.adoc[Operating on objects]
+
+* The `EntityType.create`, `RelationType.create`, and `AttributeType.put` methods are used to instantiate entity, relation, and attribute types respectively. When instantiating an attribute, its value must be provided as an argument.
++
+[,python]
+----
+entity: Entity = entity_type.create(transaction).resolve()
+relation: Relation = relation_type.create(transaction).resolve()
+attribute: Attribute = attribute_type.put(transaction, VALUE).resolve()
+----
+* The `Entity.set_has` and `Relation.set_has` methods are used to give an entity or relation ownership of an attribute.
++
+[,python]
+----
+entity.set_has(attribute, transaction).resolve()
+----
+* The `Entity.unset_has` and `Relation.unset_has` methods are used to remove ownership of an attribute from an entity or relation.
++
+[,python]
+----
+entity.unset_has(attribute, transaction).resolve()
+----
+* The `Relation.add_players` method is used to add roleplayers to a relation.
++
+[,python]
+----
+relation.add_player(transaction, entity, role_type).resolve()
+----
+* The `Entity.delete` and `Relation.delete` methods are used to delete entities and relations.
++
+[,python]
+----
+relation.delete(transaction).resolve()
+----
+
+== Further learning
+
+[cols-3]
+--
+.xref:learn::12-advanced-modeling/overview.adoc[]
+[.clickable]
+****
+Learn how to eliminate mismatch with applications by using the type-theoretic framework of the PERA model for schema design.
+****
+
+.xref:manual::objects/overview.adoc[Manual: Programming objects]
+[.clickable]
+****
+Learn more about working with stateful objects in TypeDB, covering schema objects, data objects, and explanation objects.
+****
+
+.xref:drivers::python/api-reference.adoc[Python Driver: Reference]
+[.clickable]
+****
+Explore the comprehensive API reference for the official TypeDB Python driver.
+****
+--

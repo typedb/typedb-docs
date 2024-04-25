@@ -1,0 +1,95 @@
+= Lesson 4: Writing data
+
+== xref:learn::4-writing-data/4.1-inserting-simple-data.adoc[Inserting simple data]
+
+* *Insert queries* are used to insert data. They comprise either an `insert` clause only, or a `match` clause and an `insert` clause. Insert queries are run using a *data session* and *write transaction*.
++
+[,typeql]
+----
+insert
+# insert clause
+----
++
+[,typeql]
+----
+match
+# match clause
+insert
+# insert clause
+----
+* All attributes are *multivalued*, allowing an entity or relation to own any number of attributes of the same type, as long as they each have different values.
+* An Insert query without a `match` clause inserts data *once*. An Insert query with a `match` clause inserts data *multiple times*, once for each match found.
+
+== xref:learn::4-writing-data/4.2-inserting-polymorphic-data.adoc[Inserting polymorphic data]
+
+* A *polymorphic insert* can be performed by using a polymorphic pattern in the `match` clause of an Insert query.
+* When inserting a relation, the roles can be omitted if they can be inferred unambiguously.
+
+== xref:learn::4-writing-data/4.3-deleting-data.adoc[Deleting data]
+
+* *Delete queries* are used to delete data. They comprise a `match` clause and a `delete` clause. Delete queries are run using a *data session* and *write transaction*.
++
+[,typeql]
+----
+match
+# match clause
+delete
+# delete clause
+----
+* Delete queries delete data per statement.
+* A `has` statement is used to delete an entity or relation's attribute.
++
+[,typeql]
+----
+$entity has $deleted-attribute;
+----
+* An `isa` statement is used to delete an entity or relation.
++
+[,typeql]
+----
+$deleted-entity isa entity-type;
+----
+* When deleting a roleplayer in a relation, the relation must also be deleted manually if required. A relation is only deleted automatically if all of its roleplayers are deleted.
+
+== xref:learn::4-writing-data/4.4-updating-data.adoc[Updating data]
+
+* *Update queries* are used to update data. They comprise a `match` clause, a `delete` clause, and an `insert` clause. Update queries are run using a *data session* and *write transaction*.
++
+[,typeql]
+----
+match
+# match clause
+delete
+# delete clause
+insert
+# insert clause
+----
+
+== xref:learn::4-writing-data/4.5-data-validation.adoc[Data validation]
+
+* All inserted data is *validated* against the schema.
+* Inserting data that does not conform to the schema will cause an exception to be thrown.
+* An exception will also be thrown if deleting or updating data leads to an invalid state.
+
+== Further learning
+
+[cols-3]
+--
+.xref:learn::5-defining-schemas/overview.adoc[]
+[.clickable]
+****
+Learn how to define schemas for TypeDB, including type hierarchies, interfaces between types, value constraints, and inference rules.
+****
+
+.xref:manual::writing/overview.adoc[Manual: Writing data]
+[.clickable]
+****
+Learn more about writing data to TypeDB, covering Insert queries, Delete queries, and Update queries.
+****
+
+.xref:typeql::queries/insert.adoc[Reference: Insert query]
+[.clickable]
+****
+Read the Insert query reference, including syntax, behaviour, and advanced usage.
+****
+--

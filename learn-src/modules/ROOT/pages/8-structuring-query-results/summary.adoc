@@ -1,0 +1,132 @@
+= Lesson 8: Structuring query results
+
+== xref:learn::8-structuring-query-results/8.1-fetching-attributes.adoc[Fetching attributes]
+
+* Attributes can be retrieved from the entities or relations that own them, or retrieved directly.
++
+[,typeql]
+----
+fetch
+$owner: attribute-type;
+----
++
+[,typeql]
+----
+fetch
+$attribute;
+----
+* Retrieving attributes via the owner returns those attributes grouped into results by owner, and matches those attribute optionally.
+* Retrieving attributes directly returns one of those attributes per result, and matches those attributes as a required constraint.
+
+== xref:learn::8-structuring-query-results/8.2-subqueries.adoc[Subqueries]
+
+* Results can be grouped in a general manner using *subqueries*.
+* A subquery is constructed by enclosing a Fetch query in a block and placing it inside the `fetch` clause of a parent query. The block is preceded by a subquery label and `:` delimiter, and followed by a `;` delimiter.
++
+[,typeql]
+----
+match
+# parent query match clause
+fetch
+# parent query fetch clause
+subquery-label: {
+    # subquery
+};
+----
+* Variables in a subquery are shared with the parent query. Constraints in the parent query also apply to the subquery, but constraints in the subquery do not apply to the parent query. All subqueries must share at least one variable with the parent query.
+* Subqueries can be nested to any depth.
+
+== xref:learn::8-structuring-query-results/8.3-aggregations.adoc[Aggregations]
+
+* When used as subqueries, *Get queries* are used to perform aggregations. They comprise a `match` clause, a `get` clause, and an *aggregation modifier*.
++
+[,typeql]
+----
+subquery-label: {
+    match
+    # match clause
+    get;
+    # aggregation modifier
+};
+----
+* The aggregation modifiers are `count`, `sum`, `max`, `min`, `mean`, `median`, and `std`. Except for `count`, each modifier takes a variable to aggregate over as an argument, which can represent either a numeric attribute or a numeric value.
++
+[,typeql]
+----
+count;
+----
++
+[,typeql]
+----
+sum $numeric;
+----
+* Aggregations are performed over the set of matches returned by the `match` clause. Those results can be *filtered* before aggregating using the `get` clause. The results are filtered for each unique combination of instances of the filter variables.
++
+[,typeql]
+----
+get $a, $b, $c;
+----
+* When filtering results, a variable appearing as an argument in the aggregation modifier must also appear in the `get` clause.
+* An empty `get` clause is used to aggregate over all results without filtering.
++
+[,typeql]
+----
+get;
+----
+
+== xref:learn::8-structuring-query-results/8.4-sorting-and-pagination.adoc[Sorting and pagination]
+
+* The results of Fetch queries and subqueries are *sorted* in ascending order by appending a `sort` modifier, which takes an attribute variable or value variable as an argument to sort on. Results are instead sorted in descending order by adding the `desc` keyword.
++
+[,typeql]
+----
+match
+# match clause
+fetch
+# fetch clause
+sort $attribute;
+----
++
+[,typeql]
+----
+match
+# match clause
+fetch
+# fetch clause
+sort $attribute desc;
+----
+* The results of Fetch queries are *paginated* using the `limit` and `offset` modifiers, which take a literal integer as an argument.
++
+[,typeql]
+----
+match
+# match clause
+fetch
+# fetch clause
+offset 10;
+limit 5;
+----
+* The `sort`, `limit`, and `offset` modifiers can all be used individually or in any combination. When two or more are used together, those present must appear in the following order: `sort`, `offset`, `limit`.
+
+== Further learning
+
+[cols-3]
+--
+.xref:learn::9-modeling-schemas/overview.adoc[]
+[.clickable]
+****
+Learn how to design schemas for TypeDB using the conceptual PERA model, including common design patterns and pitfalls.
+****
+
+.xref:learn::10-using-inference/overview.adoc[]
+[.clickable]
+****
+Learn how to use rule inference to abstract complex patterns into simple forms, and capture complex logic with combinations of rules.
+****
+
+.xref:learn::11-manipulating-stateful-objects/overview.adoc[]
+[.clickable]
+****
+Learn how to use retrieve data instances and schema types from the database as stateful objects and perform operations on them.
+****
+--

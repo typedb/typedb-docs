@@ -12,10 +12,11 @@ $evelin isa user,
     has name "Evelin Griffith",
     has birth-date 1994-08-03;
 ----
+image:learn::studio-icons/run-query.png[]image:learn::studio-icons/commit-transaction.png[] *_Run and commit_*
 
 This Insert query consists of a single `insert` clause, which inserts a single entity of type `user` and assigns it three attributes: one each of types `id`, `name`, and `birth-date`.
 
-Using a *data* session and a *write* transaction, try *running* image:learn::studio-icons/run-query.png[] this query. After running it, make sure to *commit* image:learn::studio-icons/commit-transaction.png[] the transaction. The new user should now be in the database! You can check by switching to a *data* session and *read* transaction and then *running* image:learn::studio-icons/run-query.png[] the following query, which lists the names of users in the database.
+Using a *data* session and a *write* transaction, try *running* image:learn::studio-icons/run-query.png[] this query. After running it, make sure to *commit* image:learn::studio-icons/commit-transaction.png[] the transaction. The new user should now be in the database! You can check by switching to a *data* session and *read* transaction and then running the following query, which lists the names of users in the database.
 
 [,typeql]
 ----
@@ -24,13 +25,9 @@ $user isa user;
 fetch
 $user: name;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 If you have correctly executed the Insert query, the new user Evelin should appear in the results.
-
-[IMPORTANT]
-====
-In the remainder of Lesson 4, we will be using inserted data in later queries. If you would like to follow along, make sure to run and commit each query marked with the *run* image:learn::studio-icons/run-query.png[] and *commit* image:learn::studio-icons/commit-transaction.png[] icons in examples and exercises. To run any Insert, Delete, or Update query, make sure to use a *data* session and *write* transaction. Run each query only once: running a query more than once may have unintended effects, such as inserting duplicate data. To rollback a transaction, *close* image:learn::studio-icons/close-transaction.png[] it without committing.
-====
 
 .Exercise
 [caption=""]

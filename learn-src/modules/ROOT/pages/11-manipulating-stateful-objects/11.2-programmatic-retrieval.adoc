@@ -1,0 +1,222 @@
+= Lesson 11.2: Programmatic retrieval
+
+== Retrieving objects programmatically
+
+In addition to retrieving stateful objects via Get queries, we can also retrieve them programmatically via API calls. Type objects can be retrieved through the `concepts` property of a transaction object, as in the following example.
+
+// Remove after change to Cloud.
+[,python]
+----
+with TypeDB.core_driver(ADDRESS) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
+            book_type: EntityType = transaction.concepts.get_entity_type("book").resolve()
+            contribution_type: RelationType = transaction.concepts.get_relation_type("contribution").resolve()
+            page_count_type: AttributeType = transaction.concepts.get_attribute_type("page-count").resolve()
+----
+
+// Add after change to Cloud.
+// [,python]
+// ----
+// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+//     with driver.session(DATABASE, SessionType.DATA) as session:
+//         with session.transaction(TransactionType.READ) as transaction:
+//             book_type: EntityType = transaction.concepts.get_entity_type("book").resolve()
+//             contribution_type: RelationType = transaction.concepts.get_relation_type("contribution").resolve()
+//             page_count_type: AttributeType = transaction.concepts.get_attribute_type("page-count").resolve()
+// ----
+
+The methods `get_entity_type`, `get_relation_type`, and `get_attribute_type` are used to retrieve entity, relation, and attribute types respectively, and take the type label as an argument. These methods return https://en.wikipedia.org/wiki/Futures_and_promises[promises], and so must be resolved using their `resolve` methods in order to obtain the responses.
+
+We can also retrieve the roles in a given relation type by calling its `get_relates` method, as follows. This method requires a transaction as an argument.
+
+[,python]
+----
+with TypeDB.core_driver(ADDRESS) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
+            contribution_type: RelationType
+            contribution_roles: Iterator[RoleType] = contribution_type.get_relates(transaction)
+----
+
+[NOTE]
+====
+Most API methods that retrieve information from the server require a transaction as an argument and return either iterators or promises. An iterator can be resolved by iterating over it or casting it to a sequence (such as a list), while a promise can be resolved by calling its `resolve` method. The return types of all Python driver methods are documented in the xref:drivers::python/api-reference.adoc[API reference]. TypeDB drivers in other languages have equivalent functionality.
+====
+
+Once an entity, relation, or attribute type has been retrieved as a stateful object, we can retrieve all instances of the type as stateful objects using the type's `get_instances` method.
+
+// Remove after change to Cloud.
+[,python]
+----
+with TypeDB.core_driver(ADDRESS) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
+            book_type: EntityType
+            contribution_type: RelationType
+            page_count_type: AttributeType
+
+            books: Iterator[Entity] = book_type.get_instances(transaction)
+            contributions: Iterator[Relation] = contribution_type.get_instances(transaction)
+            page_counts: Iterator[Attribute] = page_count_type.get_instances(transaction)
+----
+
+// Add after change to Cloud.
+// [,python]
+// ----
+// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+//     with driver.session(DATABASE, SessionType.DATA) as session:
+//         with session.transaction(TransactionType.READ) as transaction:
+//             book_type: EntityType
+//             contribution_type: RelationType
+//             page_count_type: AttributeType
+//
+//             books: Iterator[Entity] = book_type.get_instances(transaction)
+//             contributions: Iterator[Relation] = contribution_type.get_instances(transaction)
+//             page_counts: Iterator[Attribute] = page_count_type.get_instances(transaction)
+// ----
+
+Sometimes, retrieving data instances this way can be more convenient than issuing a query, but most non-trivial constraints on the data instances to be returned can only be expressed by using a query. More importantly, we can also operate on the type object to insert new instances, as we will see in xref:learn::11-manipulating-stateful-objects/11.3-operating-on-objects.adoc[Lesson 11.3], and to perform programmatic schema migrations.
+
+// Sometimes, retrieving data instances this way can be more convenient than issuing a query, but most non-trivial constraints on the data instances to be returned can only be expressed by using a query. More importantly, we can also operate on the type object to insert new instances, as we will see in xref:learn::11-manipulating-stateful-objects/11.3-operating-on-objects.adoc[Lesson 11.3], and to perform *programmatic schema migrations*, which will be the topic of Lesson 17 (coming soon).
+
+.Exercise
+[caption=""]
+====
+Write a function that yields all users in the database as stateful objects. Write the function once by executing a TypeQL query, and again without using any TypeQL. The function should have the following signature.
+
+[,python]
+----
+get_users(transaction: TypeDBTransaction) -> Iterator[Entity]
+----
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+With TypeQL:
+
+[,python]
+----
+def get_users(transaction: TypeDBTransaction) -> Iterator[Entity]:
+    results = transaction.query.get("""
+        match
+        $user isa user;
+        get;
+    """)
+
+    for result in results:
+        user = result.get("user").as_entity()
+
+        yield user
+----
+
+Without TypeQL:
+
+[,python]
+----
+def get_users(transaction: TypeDBTransaction) -> Iterator[Entity]:
+    user_type = transaction.concepts.get_entity_type("user").resolve()
+    users = user_type.get_instances(transaction)
+    return users
+----
+=====
+====
+
+== Retrieving associated objects
+
+Once we have retrieved a stateful object, we can use its methods to retrieve associated objects. For example, to retrieve the attributes that an entity or relation object owns, we can use its `get_has` method, and to retrieve the relations that it plays as role in, we can use its `get_relations` method. Both of these methods return the results as stateful objects. In the following code snippet, we retrieve the attributes of a book and the relations it is in.
+
+[,python]
+----
+with TypeDB.core_driver(ADDRESS) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
+            book: Entity
+            attributes: Iterator[Attribute] = book.get_has(transaction)
+            relations: Iterator[Relation] = book.get_relations(transaction)
+----
+
+In addition to these two methods, there are a number of others for retrieving associated objects. The most useful methods are summarised in the following table.
+
+[cols="^.^5,^.^3,^.^4",caption="",options="header"]
+|===
+| Method | Return type | Usage
+| `Entity.get_has`, `Relation.get_has` | `Iterator[Attribute]` | Retrieves the attributes of an entity or relation. Attribute types may be optionally specified.
+| `Entity.get_relations`, `Relation.get_relations` | `Iterator[Relation]` | Retrieves the relations in which an entity or relation plays a role. Roles may be optionally specified.
+| `Attribute.get_owners` | `Iterator[Thing]` | Retrieves the owners of an attribute. Owner types may be optionally specified.
+| `Relation.get_players_by_role_type` | `Iterator[Thing]` | Retrieves the roleplayers in a relation. Roles may be optionally specified.
+|===
+
+Because the owners of an attribute or the roleplayers in a relation can be both entities and relations, the objects returned by `get_owners` and `get_players_by_role_type` are of the generic `Thing` class. They can be cast to the appropriate type using the following helper function or similar.
+
+[,python]
+----
+def cast_thing(thing: Thing) -> Entity | Relation:
+    if thing.is_entity():
+        return thing.as_entity()
+    if thing.is_relation():
+        return thing.as_relation()
+----
+
+[WARNING]
+====
+The `Thing` class is deprecated and will be removed in TypeDB 3.0.
+====
+
+The methods in the above table can also take types or roles as optional arguments on which to filter the data instances returned, as in the following example. This time, we only retrieve the contributions a book plays the `work` role in, rather than all relations.
+
+
+[,python]
+----
+with TypeDB.core_driver(ADDRESS) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.READ) as transaction:
+            book: Entity
+            work_role: RoleType
+            contributions = book.get_relations(transaction, work_role)
+----
+
+.Exercise
+[caption=""]
+====
+Write a function that yields the entities that are related to a given entity by a relation of any type. The function should have the following signature.
+
+[,python]
+----
+get_related_entities(transaction: TypeDBTransaction, entity: Entity) -> Iterator[Entity]
+----
+
+.Hint
+[%collapsible]
+=====
+For each roleplayer yielded, you will need to ensure that it is an entity, and that it is not the original entity.
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,python]
+----
+def get_related_entities(transaction: TypeDBTransaction, entity: Entity) -> Iterator[Entity]:
+    for relation in entity.get_relations(transaction):
+        for player in relation.get_players_by_role_type(transaction):
+            if not player.is_entity():
+                continue
+            elif player == entity:
+                continue
+            else:
+                yield player.as_entity()
+----
+=====
+====

@@ -1,0 +1,130 @@
+= Lesson 7: Understanding query patterns
+
+== xref:learn::7-understanding-query-patterns/7.1-patterns-as-constraints.adoc[Patterns as constraints]
+
+* A *pattern* comprises a https://en.wikipedia.org/wiki/Logical_conjunction[conjunction] of any number of consecutive statements.
+* A pattern is equivalent to a list of *constraints* about the *terms* involved, which must be *simultaneously* satisfied. A term can be either a variable or a literal.
+* Type inference determines the type of each variable by solving the pattern as a *constraint satisfaction* problem.
+* If a variable in a query pattern has no possible types, the pattern fails validation and an exception is thrown.
+
+== xref:learn::7-understanding-query-patterns/7.2-relation-patterns.adoc[Relation patterns]
+
+* A relation with any number of roleplayers can be represented using a *relation tuple* with the same number of elements. This allows for unary, binary, ternary, and n-ary relations.
++
+[,typeql]
+----
+(role-1: $a, role-2: $b, role-3: $c, role-4: $d, ...) isa n-ary-relation;
+----
+* Roleplayers can be omitted from relation tuples, allowing *partial tuple* representations of relations. This will match those relations regardless of the omitted roleplayers.
++
+[,typeql]
+----
+(role-1: $a, role-2: $b) isa ternary-relation;
+----
+* Roles can be omitted from relation tuples, allowing TypeDB to use *role inference* to infer them. This will match the roleplayers in any combination of the relation's roles.
++
+[,typeql]
+----
+($a, $b) isa example-relation;
+----
+* A relation's type can be omitted after a relation tuple, allowing TypeDB to use *type inference* to infer the possible types. This will match any relations with the supplied role names.
++
+[,typeql]
+----
+(role-1: $a, role-2: $b);
+----
+
+
+== xref:learn::7-understanding-query-patterns/7.3-logical-operators.adoc[Logical operators]
+
+* A https://en.wikipedia.org/wiki/Logical_disjunction[disjunction] of patterns is made by placing those patterns in separate *blocks* interleaved with the `or` keyword, terminated with a `;` delimiter.
++
+[,typeql]
+----
+{
+    # branch 1
+} or {
+    # branch 2
+};
+----
+* A https://en.wikipedia.org/wiki/Negation[negation] of a pattern is made by placing it in a block preceded by the `not` keyword and followed by a `;` delimiter.
++
+[,typeql]
+----
+not {
+    # negated pattern
+};
+----
+* An `is` statement is used to specify that two variables represent the same data object.
++
+[,typeql]
+----
+$a is $b;
+----
+
+== xref:learn::7-understanding-query-patterns/7.4-value-comparisons.adoc[Value comparisons]
+
+* The *equality operators* `==` and `!=` are used to compare values of all types.
++
+[,typeql]
+----
+$attribute-1 == $attribute-2;
+----
+* The *ordering operators* `>`, `>=`, `<`, and `\<=` are used to compare numeric values.
++
+[,typeql]
+----
+$numeric-1 > $numeric-2;
+----
+* The `contains` operator is used to specify that one string contains another string in a case-insensitive manner.
++
+[,typeql]
+----
+$string contains "sub-string";
+----
+* The `like` operator is used to specify that a string matches a https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/regex/Pattern.html[Java regex pattern].
++
+[,typeql]
+----
+$string like "^java regex pattern$";
+----
+
+== xref:learn::7-understanding-query-patterns/7.5-value-expressions.adoc[Value expressions]
+
+* *Value variables* are declared with a `?` prefix. They exist only within the scope of the query and can be read out in the results of read queries or written to attribute instances with write queries.
+* The *assignment operator* `=` is used to specify the value of a value variable.
++
+[,typeql]
+----
+?value = $attribute;
+----
+* Numeric values can be computed using *arithmetic operators* `^`, `+*+`, `/`, `%`, `+`, and `-`, as well as *arithmetic functions* `min`, `max`, `round`, `floor`, `ceil`, and `abs`.
+
+== xref:learn::7-understanding-query-patterns/7.6-solution-set-semantics.adoc[Solution set semantics]
+
+* If a query pattern can be split into multiple independent sub-patterns with no shared variables, then those sub-patterns are resolved against the schema independently, and all possible combinations of data matching each sub-pattern are returned.
+* If the constraints on two variables are identical, then each pair of data instances matched by those variables will be returned twice.
+* These behaviours can lead to unintended query results if not accounted for.
+
+== Further learning
+
+[cols-3]
+--
+.xref:learn::8-structuring-query-results/overview.adoc[]
+[.clickable]
+****
+Learn how to structure query results in the optimal manner, covering result grouping, aggregations, sorting, and pagination.
+****
+
+.xref:learn::9-modeling-schemas/overview.adoc[]
+[.clickable]
+****
+Learn how to design schemas for TypeDB using the conceptual PERA model, including common design patterns and pitfalls.
+****
+
+.xref:typeql::patterns/overview.adoc[Reference: Patterns]
+[.clickable]
+****
+Read the TypeQL patterns reference, covering conjunctions, disjunctions, negations, and pattern matching behaviour.
+****
+--
