@@ -82,18 +82,6 @@ include::manual::partial$python-manual-code.py[tag=connect_core]
 Where `127.0.0.1:1729` is the address and port to connect to.
 --
 
-Java::
-+
---
-.Connect to TypeDB Core
-[,java,indent=0]
-----
-include::manual::partial$java-manual-code.java[tag=connect_core]
-----
-
-Where `127.0.0.1:1729` is the address and port to connect to.
---
-
 Node.js::
 +
 --
@@ -106,6 +94,30 @@ include::manual::partial$nodejs-manual-code.js[tag=connect_core]
 Where `127.0.0.1:1729` is the address and port to connect to.
 --
 
+Java::
++
+--
+.Connect to TypeDB Core
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tag=connect_core]
+----
+
+Where `127.0.0.1:1729` is the address and port to connect to.
+--
+
+C#::
++
+--
+.Connect to TypeDB Core
+[,csharp,indent=0]
+----
+include::manual::partial$csharp-manual-code.cs[tag=connect_core]
+----
+
+Where `127.0.0.1:1729` is the address and port to connect to.
+--
+
 C++::
 +
 --
@@ -113,6 +125,18 @@ C++::
 [,cpp,indent=0]
 ----
 include::manual::partial$cpp-manual-code.cpp[tag=connect_core]
+----
+
+Where `127.0.0.1:1729` is the address and port to connect to.
+--
+
+C::
++
+--
+.Connect to TypeDB Core
+[,c,indent=0]
+----
+include::manual::partial$c-manual-code.c[tag=connect_core]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -192,6 +216,17 @@ include::manual::partial$python-manual-code.py[tag=connect_cloud]
 
 Where `127.0.0.1:1729` is the address and port to connect to.
 --
+Node.js::
++
+--
+.Connect to TypeDB Cloud
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tag=connect_cloud]
+----
+
+Where `127.0.0.1:1729` is the address and port to connect to.
+--
 
 Java::
 +
@@ -205,13 +240,13 @@ include::manual::partial$java-manual-code.java[tag=connect_cloud]
 Where `127.0.0.1:1729` is the address and port to connect to.
 --
 
-Node.js::
+C#::
 +
 --
 .Connect to TypeDB Cloud
-[,js,indent=0]
+[,csharp,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tag=connect_cloud]
+include::manual::partial$csharp-manual-code.cs[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -224,6 +259,18 @@ C++::
 [,cpp,indent=0]
 ----
 include::manual::partial$cpp-manual-code.cpp[tag=connect_cloud]
+----
+
+Where `127.0.0.1:1729` is the address and port to connect to.
+--
+
+C::
++
+--
+.Connect to TypeDB Cloud
+[,c,indent=0]
+----
+include::manual::partial$c-manual-code.c[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.

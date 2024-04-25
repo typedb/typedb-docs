@@ -70,6 +70,18 @@ include::manual::partial$python-manual-code.py[tag=session_open]
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
 --
 
+Node.js::
++
+--
+.Open a session
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tag=session_open]
+----
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
+--
+
 Java::
 +
 --
@@ -82,13 +94,13 @@ include::manual::partial$java-manual-code.java[tag=session_open]
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
 --
 
-Node.js::
+C#::
 +
 --
 .Open a session
-[,js,indent=0]
+[,csharp,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tag=session_open]
+include::manual::partial$csharp-manual-code.cs[tag=session_open]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -104,6 +116,19 @@ include::manual::partial$cpp-manual-code.cpp[tag=session_open]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
+--
+
+C::
++
+--
+.Open a session
+[,c,indent=0]
+----
+include::manual::partial$c-manual-code.c[tag=session_open]
+----
+
+Where `databaseManager` provides access to all database management methods for the TypeDB server,
+and `DB_NAME` is the name of the database.
 --
 ====
 
@@ -147,6 +172,18 @@ include::manual::partial$python-manual-code.py[tag=session_close]
 ----
 --
 
+Node.js::
++
+--
+Use the xref:drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
+
+.Close a session
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tag=session_close]
+----
+--
+
 Java::
 +
 --
@@ -161,15 +198,18 @@ include::manual::partial$java-manual-code.java[tag=session_close]
 ----
 --
 
-Node.js::
+C#::
 +
 --
-Use the xref:drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
+A session is automatically closed when the variable containing it is dropped from memory.
+
+To explicitly close a session,
+use the xref:drivers::csharp/api-reference.adoc#_void_TypeDB_Driver_Api_ITypeDBSession_Close___[close] method:
 
 .Close a session
-[,js,indent=0]
+[,csharp,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tag=session_close]
+include::manual::partial$csharp-manual-code.cs[tag=session_close]
 ----
 --
 
@@ -185,6 +225,19 @@ use the xref:drivers::java/api-reference.adoc#_TypeDBSession_close__[close] meth
 [,cpp,indent=0]
 ----
 include::manual::partial$cpp-manual-code.cpp[tag=session_close]
+----
+--
+
+C::
++
+--
+To close a session,
+use the xref:drivers::c/api-reference.adoc#_session_close[close] method:
+
+.Close a session
+[,c,indent=0]
+----
+include::manual::partial$c-manual-code.c[tag=session_close]
 ----
 --
 ====

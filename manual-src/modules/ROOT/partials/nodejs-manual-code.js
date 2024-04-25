@@ -16,11 +16,11 @@ async function main() {
         console.log(db.name);
     }
     // end::list-db[]
-    // tag::delete-db[]
     if (await driver.databases.contains(DB_NAME)) {
+        // tag::delete-db[]
         await (await driver.databases.get(DB_NAME)).delete();
+        // end::delete-db[]
     }
-    // end::delete-db[]
     // tag::create-db[]
     await driver.databases.create(DB_NAME);
     // end::create-db[]
