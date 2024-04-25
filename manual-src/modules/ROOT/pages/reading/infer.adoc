@@ -58,7 +58,8 @@ $u isa user;
 fetch
 $u: name;
 ----
-. Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
+. Run the query by clicking the image:home::studio-icons/svg/play-solid-green.svg[Run query,width=9]
+btn:[Run Query] button.
 --
 
 Console::
@@ -169,26 +170,6 @@ include::manual::partial$python-manual-code.py[tags=infer-fetch]
 ----
 --
 
-Java::
-+
---
-Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core.
-
-[subs="macros, post_replacements, replacements"]
-++++
-Open a read transaction, and use the
-xref:drivers::java/api-reference.adoc#_QueryManager_fetch__com_vaticle_typeql_lang_query_TypeQLFetch[transaction.query().fetch()] or
-xref:drivers::java/api-reference.adoc#_QueryManager_get__com_vaticle_typeql_lang_query_TypeQLGet__TypeDBOptions[transaction.query().get()]
-method to retrieve data with inference:
-++++
-
-[,java,indent=0]
-----
-include::manual::partial$java-manual-code.java[tags=infer-fetch]
-----
---
-
 Node.js::
 +
 --
@@ -209,6 +190,46 @@ include::manual::partial$nodejs-manual-code.js[tags=infer-fetch]
 ----
 --
 
+Java::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a read transaction, and use the
+xref:drivers::java/api-reference.adoc#_QueryManager_fetch__com_vaticle_typeql_lang_query_TypeQLFetch[transaction.query().fetch()] or
+xref:drivers::java/api-reference.adoc#_QueryManager_get__com_vaticle_typeql_lang_query_TypeQLGet__TypeDBOptions[transaction.query().get()]
+method to retrieve data with inference:
+++++
+
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tags=infer-fetch]
+----
+--
+
+C#::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a read transaction, and use the
+xref:drivers::csharp/api-reference.adoc#_IEnumerable__JObject___TypeDB_Driver_Api_IQueryManager_Fetch___string_query_[transaction.Query.Fetch()] or
+xref:drivers::csharp/api-reference.adoc#_IEnumerable__IConceptMap___TypeDB_Driver_Api_IQueryManager_Get___string_query_[transaction.query.get()]
+method to retrieve data with inference:
+++++
+
+[,csharp,indent=0]
+----
+include::manual::partial$csharp-manual-code.cs[tags=infer-fetch]
+----
+--
+
 C++::
 +
 --
@@ -225,7 +246,27 @@ method to retrieve data with inference:
 
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tags=infer-fetch]
+include::manual::partial$cpp-manual-code.cpp[tags=infer-fetch,indent=0]
+----
+--
+
+C::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a read transaction, and use the
+xref:drivers::c/api-reference.adoc#_query_fetch[query_fetch()] or
+xref:drivers::c/api-reference.adoc#_query_get[query_get()]
+method to retrieve data with inference:
+++++
+
+[,c,indent=0]
+----
+include::manual::partial$c-manual-code.c[tags=infer-fetch]
 ----
 --
 ====

@@ -9,12 +9,15 @@ Console, or one of the drivers.
 
 == Understanding Define queries
 
-A Define query is used to define the schema of a database or replace existing parts of the schema. For a detailed explanation of the query see the xref:typeql::queries/define.adoc[] page. For an alternative way of editing your schema, see the xref:manual::defining/schema-editing.adoc[] page.
+A Define query is used to define the schema of a database or replace existing parts of the schema.
+For a detailed explanation of the query see the xref:typeql::queries/define.adoc[] page.
+For an alternative way of editing your schema, see the xref:manual::defining/schema-editing.adoc[] page.
 
 [#_how_to_send_a_define_query]
 == Sending Define queries
 
-Before you begin, ensure you have following the xref:connecting/overview.adoc[] section pages. The easiest way to send a Define query is to use Studio or Console:
+Before you begin, ensure you have following the xref:connecting/overview.adoc[] section pages.
+The easiest way to send a Define query is to use Studio or Console:
 
 [tabs]
 ====
@@ -46,7 +49,8 @@ user sub entity,
     plays friendship:friend;
 admin sub user;
 ----
-. Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
+. Run the query by clicking the image:home::studio-icons/svg/play-solid-green.svg[Run query,width=9]
+btn:[Run Query] button.
 . Commit the changes by clicking the btn:[Commit query] button (image:home::studio-icons/commit.png[Commit]).
 --
 
@@ -122,21 +126,6 @@ include::manual::partial$python-manual-code.py[tags=define]
 ----
 --
 
-Java::
-+
---
-Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
-open a `write` transaction, and use the
-xref:drivers::java/api-reference.adoc#_QueryManager_define__com_vaticle_typeql_lang_query_TypeQLDefine[`transaction.query.define()`]
-method:
-
-[,java,indent=0]
-----
-include::manual::partial$java-manual-code.java[tags=define]
-----
---
-
 Node.js::
 +
 --
@@ -152,19 +141,65 @@ include::manual::partial$nodejs-manual-code.js[tags=define]
 ----
 --
 
+Java::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::java/api-reference.adoc#_QueryManager_define__com_vaticle_typeql_lang_query_TypeQLDefine[`transaction.query.define()`]
+method:
+
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tags=define]
+----
+--
+
+C#::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::csharp/api-reference.adoc#_VoidPromise_TypeDB_Driver_Api_IQueryManager_Define___string_query_[`transaction.Query.Define()`]
+method:
+
+[,csharp,indent=0]
+----
+include::manual::partial$csharp-manual-code.cs[tags=define]
+----
+--
+
 C++::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
 open a `write` transaction, and use the
-xref:drivers::cpp/api-reference.adoc#_VoidFuture_TypeDBQueryManagerdefine_const_stdstring_query_const_Options_options_Options_const[`transaction.query.define()`]
+xref:drivers::cpp/api-reference.adoc#_VoidFuture_TypeDBQueryManagerdefine___const_stdstring__query__const_Options__options__Options_____const[`transaction.query.define()`]
 method:
 
 [,cpp,indent=0]
 ----
 include::manual::partial$cpp-manual-code.cpp[tags=options,indent=8]
 include::manual::partial$cpp-manual-code.cpp[tags=define]
+----
+--
+
+C::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:drivers::c/api-reference.adoc#_query_define[`query_define()`]
+function:
+
+[,c,indent=0]
+----
+include::manual::partial$c-manual-code.c[tags=options,indent=8]
+include::manual::partial$c-manual-code.c[tags=define]
 ----
 --
 ====

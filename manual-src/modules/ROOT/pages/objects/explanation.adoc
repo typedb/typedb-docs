@@ -46,19 +46,6 @@ see the xref:drivers::python/api-reference.adoc#_Explainables[Explainables] and
 xref:drivers::python/api-reference.adoc#_Explainable[Explainable] classes.
 --
 
-Java::
-+
---
-.Example
-[,java,indent=0]
-----
-include::manual::partial$java-manual-code.java[tag=explainables]
-----
-For more information,
-see the xref:drivers::java/api-reference.adoc#_ConceptMap_Explainables[Explainables] and
-xref:drivers::java/api-reference.adoc#_ConceptMap_Explainable[Explainable] classes.
---
-
 Node.js::
 +
 --
@@ -72,6 +59,32 @@ see the xref:drivers::nodejs/api-reference.adoc#_Explainables[Explainables] and
 xref:drivers::nodejs/api-reference.adoc#_Explainable[Explainable] classes.
 --
 
+Java::
++
+--
+.Example
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tag=explainables]
+----
+For more information,
+see the xref:drivers::java/api-reference.adoc#_ConceptMap_Explainables[Explainables] and
+xref:drivers::java/api-reference.adoc#_ConceptMap_Explainable[Explainable] classes.
+--
+
+C#::
++
+--
+.Example
+[,csharp,indent=0]
+----
+include::manual::partial$csharp-manual-code.cs[tag=explainables]
+----
+For more information,
+see the xref:drivers::csharp/api-reference.adoc#_IExplainables[IExplainables] and
+xref:drivers::csharp/api-reference.adoc#_IExplainable[IExplainable] classes.
+--
+
 C++::
 +
 --
@@ -82,7 +95,17 @@ include::manual::partial$cpp-manual-code.cpp[tag=explainables]
 ----
 For more information,
 see the xref:drivers::cpp/api-reference.adoc#_Explainables[Explainables] and
-xref:drivers::nodejs/api-reference.adoc#_Explainable[Explainable] classes.
+xref:drivers::cpp/api-reference.adoc#_Explainable[Explainable] classes.
+--
+
+C::
++
+--
+.Example
+[,c,indent=0]
+----
+include::manual::partial$c-manual-code.c[tag=explainables]
+----
 --
 ====
 
@@ -124,20 +147,6 @@ and
 xref:drivers::python/api-reference.adoc#_Explainable[Explainable class] methods.
 --
 
-Java::
-+
---
-.Example
-[,java,indent=0]
-----
-include::manual::partial$java-manual-code.java[tag=explain]
-----
-For more information, see the
-xref:drivers::java/api-reference.adoc#_QueryManager_explain__ConceptMap_Explainable[Explain query]
-and
-xref:drivers::java/api-reference.adoc#_ConceptMap_Explainable[Explainable class] methods.
---
-
 Node.js::
 +
 --
@@ -152,6 +161,34 @@ and
 xref:drivers::nodejs/api-reference.adoc#_Explainable[Explainable class] methods.
 --
 
+Java::
++
+--
+.Example
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tag=explain]
+----
+For more information, see the
+xref:drivers::java/api-reference.adoc#_QueryManager_explain__ConceptMap_Explainable[Explain query]
+and
+xref:drivers::java/api-reference.adoc#_ConceptMap_Explainable[Explainable class] methods.
+--
+
+C#::
++
+--
+.Example
+[,csharp,indent=0]
+----
+include::manual::partial$csharp-manual-code.cs[tag=explain]
+----
+For more information, see the
+xref:drivers::csharp/api-reference.adoc#_IEnumerable__IExplanation___TypeDB_Driver_Api_IQueryManager_Explain___IConceptMap_IExplainable_explainable_[Explain query]
+and
+xref:drivers::csharp/api-reference.adoc#_IExplainable[IExplainable class] methods.
+--
+
 C++::
 +
 --
@@ -164,6 +201,16 @@ For more information, see the
 xref:drivers::cpp/api-reference.adoc#_ExplanationIterable_TypeDBQueryManagerexplain___const_Explainable__explainable__const_Options___Options_____const[Explain query]
 and
 xref:drivers::cpp/api-reference.adoc#_Explainable[Explainable class] methods.
+--
+
+C::
++
+--
+.Example
+[,c,indent=0]
+----
+include::manual::partial$c-manual-code.c[tag=explain]
+----
 --
 ====
 
@@ -200,18 +247,6 @@ For more information,
 see the xref:drivers::python/api-reference.adoc#_Explanation[Explanation class] methods.
 --
 
-Java::
-+
---
-.Example
-[,java,indent=0]
-----
-include::manual::partial$java-manual-code.java[tag=explanation]
-----
-For more information,
-see the xref:drivers::java/api-reference.adoc#_Explanation[Explanation class] methods.
---
-
 Node.js::
 +
 --
@@ -224,6 +259,30 @@ For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_Explanation[Explanation class] methods.
 --
 
+Java::
++
+--
+.Example
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tag=explanation]
+----
+For more information,
+see the xref:drivers::java/api-reference.adoc#_Explanation[Explanation class] methods.
+--
+
+C#::
++
+--
+.Example
+[,csharp,indent=0]
+----
+include::manual::partial$csharp-manual-code.cs[tag=explanation]
+----
+For more information,
+see the xref:drivers::csharp/api-reference.adoc#_IExplanation[IExplanation class] methods.
+--
+
 C++::
 +
 --
@@ -234,6 +293,16 @@ include::manual::partial$cpp-manual-code.cpp[tag=explanation]
 ----
 For more information,
 see the xref:drivers::cpp/api-reference.adoc#_Explanation[Explanation class] methods.
+--
+
+C::
++
+--
+.Example
+[,c,indent=0]
+----
+include::manual::partial$c-manual-code.c[tag=explanation]
+----
 --
 ====
 
@@ -277,18 +346,6 @@ For more information,
 see the xref:drivers::python/api-reference.adoc#_Explanation[Explanation class] methods.
 --
 
-Java::
-+
---
-.Example
-[,java,indent=0]
-----
-include::manual::partial$java-manual-code.java[tags=explain-get]
-----
-For more information,
-see the xref:drivers::java/api-reference.adoc#_Explanation[Explanation class] methods.
---
-
 Node.js::
 +
 --
@@ -301,6 +358,30 @@ For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_Explanation[Explanation class] methods.
 --
 
+Java::
++
+--
+.Example
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tags=explain-get]
+----
+For more information,
+see the xref:drivers::java/api-reference.adoc#_Explanation[Explanation class] methods.
+--
+
+C#::
++
+--
+.Example
+[,csharp,indent=0]
+----
+include::manual::partial$csharp-manual-code.cs[tags=explain-get]
+----
+For more information,
+see the xref:drivers::csharp/api-reference.adoc#_IExplanation[Explanation class] methods.
+--
+
 C++::
 +
 --
@@ -311,6 +392,16 @@ include::manual::partial$cpp-manual-code.cpp[tags=explain-get]
 ----
 For more information,
 see the xref:drivers::cpp/api-reference.adoc#_Explanation[Explanation class] methods.
+--
+
+C::
++
+--
+.Example
+[,c,indent=0]
+----
+include::manual::partial$c-manual-code.c[tags=explain-get]
+----
 --
 ====
 
