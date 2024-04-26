@@ -1,17 +1,9 @@
-[#_Iterator__NATIVE_ITER__NATIVE_T__T__HELPER_]
-=== Iterator
+[#_Iterator]
+=== Iterator< NATIVE_ITER, NATIVE_T, T, HELPER >
 
 *Package*: `TypeDB`
 
-[,cpp]
-----
-template<typename NATIVE_ITER, typename NATIVE_T, typename T, typename HELPER = IteratorHelper<NATIVE_ITER, NATIVE_T, T>>
-----
 
-[,cpp]
-----
-class TypeDB::Iterator< NATIVE_ITER, NATIVE_T, T, HELPER >
-----
 
 A structure emulating std::iterator, used for streaming of query results from the server.
 
