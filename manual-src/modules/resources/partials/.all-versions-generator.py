@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import requests
 
 GITHUB_REPO = "vaticle/typedb"
