@@ -1,41 +1,35 @@
-# from cloudsmith_api import api_client, configuration
 import requests
-import json
-import os
 
-access_token = os.getenv('CLOUDSMITH_TOKEN')
-products = {'core_server', 'console', 'studio', }
-file_path = 'output.txt'
+platforms = ['mac', 'linux', 'windows']
+architectures = ['x86_64', 'arm64']
+product_types = ['typedb-all', 'typedb-console', 'typedb-studio']
 
-url = "https://api.cloudsmith.io/v1/packages/typedb/public-release/?page_size=500&sort=-date"
+anchor_start = '^'
+anchor_end = '$'
 
-headers = {
-    "accept": "application/json",
-    "X-Api-Key": access_token
-}
+url = "https://api.cloudsmith.io/v1/packages/typedb/public-release/?query=name:"
+sorting = f" AND tag:{anchor_start}latest{anchor_end}&page_size=1"
 
-response = requests.get(url, headers=headers)
-if response.ok:
-    with open(file_path, 'w') as file:
-        for result in response.json():
-            file.write(json.dumps(result)+'\n')
-else:
-    print("Error:", response)
-# print(response.links)
-# print(response.text)
+# ACCESS_TOKEN = None
+# headers = {
+#     "accept": "application/json",
+#     "X-Api-Key": ACCESS_TOKEN
+# }
 
-# for json in response.json():
-#     print(json['version'], '---', json['name'], ', files:')
-#     for file in json['files']:
-#         print('    ', file['filename'])
-    # print(json['name'])
-    # print('---------')
-
-# parsed = json.loads(response.text)
-# print(json.dumps(parsed, indent=2))
-
-# for json1 in response.json():
-#     print(json1)
-#     print(json.dumps(json1))
-#     print(type(json1))
-
+for product in product_types:
+    for os in platforms:
+        for arch in architectures:
+            print("\nRequesting:", product, os, arch, end=" -- ")
+            query = f"{url}{product}-{os}-{arch}{anchor_end}{sorting}"
+            # print(query)
+            response = requests.get(query)
+            if response.ok:
+                results = response.json()
+                if len(results) > 0:
+                    for result in results:
+                        print(result['display_name'], result['version'])
+                        # print(result)
+                else:
+                    print("No results found!")
+            else:
+                print("Error requesting the", query)
