@@ -40,9 +40,9 @@ For installation instructions, follow the steps below for your OS:
 macOS::
 +
 --
-. Download the latest package for your systems architecture:
-https://repo.typedb.com/public/public-release/raw/names/typedb-console-mac-x86_64/versions/{latest-version}/typedb-console-mac-x86_64-{latest-version}.zip[x86/x64] |
-https://repo.typedb.com/public/public-release/raw/names/typedb-console-mac-arm64/versions/{latest-version}/typedb-console-mac-arm64-{latest-version}.zip[arm64]. +
+. Download the latest package for your system architecture:
+include::manual:resources:partial$typedb-console-latest-links.adoc[tag=mac]
++
 For other versions, see the
 https://cloudsmith.io/~typedb/repos/public-release/packages/?q=format%3Araw+name%3A%5Etypedb-console-mac&sort=-version[Downloads repository] page.
 . Extract the archive into a new directory:
@@ -65,9 +65,9 @@ $ ln -s /opt/typedb-console/<filename>/typedb /usr/local/bin/typedb
 Linux::
 +
 --
-. Download the latest package for your systems architecture:
-https://repo.typedb.com/public/public-release/raw/names/typedb-console-linux-x86_64/versions/{latest-version}/typedb-console-linux-x86_64-{latest-version}.tar.gz[x86/x64] |
-https://repo.typedb.com/public/public-release/raw/names/typedb-console-linux-arm64/versions/{latest-version}/typedb-console-linux-arm64-{latest-version}.tar.gz[arm64]. +
+. Download the latest package for your system architecture:
+include::manual:resources:partial$typedb-console-latest-links.adoc[tag=linux]
++
 For other versions, see the
 https://cloudsmith.io/~typedb/repos/public-release/packages/?q=format%3Araw+name%3A%5Etypedb-console-linux&sort=-version[Downloads repository] page.
 . Extract the archive into a new directory:
@@ -90,8 +90,9 @@ $ ln -s /opt/typedb-console/<filename>/typedb /usr/local/bin/typedb
 Windows::
 +
 --
-. Download the latest package for your systems architecture:
-https://repo.typedb.com/public/public-release/raw/names/typedb-console-windows-x86_64/versions/{latest-version}/typedb-console-windows-x86_64-{latest-version}.zip[x86/x64]. +
+. Download the latest package for your system architecture:
+include::manual:resources:partial$typedb-console-latest-links.adoc[tag=windows]
++
 For other versions, see the
 https://cloudsmith.io/~typedb/repos/public-release/packages/?q=format%3Araw+name%3A%5Etypedb-console-win&sort=-version[Downloads repository] page.
 
