@@ -55,9 +55,11 @@ def get_release_notes(product):
 
 if __name__ == "__main__":
     for product in product_types:
-        with open(product + '.adoc', 'w') as file:
+        with open(product + '-latest-links.adoc', 'w') as file:
             latest_released_version, link = get_release_notes(product)
-            file.write(f"| {link}[{latest_released_version}]\n")
+            file.write(f"| \n{link}[{latest_released_version}]\n")
+            with open(product + '-latest-version.adoc', 'w') as file2:
+                file2.write(f"{latest_released_version}")
             for os in platforms:
                 file.write(f"\n| \n// tag::{os}[]\n")
                 for arch in architectures:
@@ -81,4 +83,4 @@ if __name__ == "__main__":
                         print(f"Link check failed: {download_link}")
                         continue
                 file.write(f"// end::{os}[]\n")
-    print("Processing complete.")
+    print("Processing is complete.")
