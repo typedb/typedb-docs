@@ -30,14 +30,15 @@ TypeDB's conceptual data model can express polymorphic dependencies of types, wh
 
 *2. <<_database_essentials,The querying paradigm>>*. TypeDB approaches database management through a simple, pattern-based querying paradigm.
 
-.Find images and videos with the same creation date, and part of the same project
+.Find images and videos with the same creation date part of the same project, and output JSON
 [,typeql]
 ----
 match
   $thumbnail isa image, has creation-date $d;
   $video isa video, has creation-date $d;
   ($thumbnail, $video) isa project;
-fetch $thumbnail: name, $video: name;
+fetch
+  $thumbnail: name; $video: name;
 ----
 Building on TypeDB's conceptual data model, this provides us with a highly versatile toolset that resolves a range of deep engineering challenges. *_No tables, no joins, no nulls!_*
 
