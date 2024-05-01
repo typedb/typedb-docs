@@ -15,41 +15,42 @@ To get started with TypeDB, let's have a look at three key components and ideas 
 
 *1. <<_type_system,The type system>>*. TypeDB is built on a rich type system enabling us to directly capture the structure and flow of the data we work with.
 
-.A simple schema with 4 inter-dependent types
+.A simple schema with several inter-dependent types
 [,typeql]
 ----
 define
-  pet sub entity, owns name, plays friendship:friend;
-  person sub entity, owns name, plays friendship:friend;
-  friendship sub relation, relates friend;
+  file sub entity, owns name, owns creation-date;
+  image sub file, plays project:asset;
+  video sub file, plays project:asset;
+  project sub relation, relates asset, owns name;
+  creation-date sub attribute, value datetime;
   name sub attribute, value string;
 ----
 TypeDB's conceptual data model can express polymorphic dependencies of types, which means we can easily combine various data structures including, e.g., relational, graph, and document-like data.
 
 *2. <<_database_essentials,The querying paradigm>>*. TypeDB approaches database management through a simple, pattern-based querying paradigm.
 
-.Find persons and pets with same name who are friends
+.Find images and videos with the same creation date, and part of the same project
 [,typeql]
 ----
 match
-  $b isa person, has name $n;
-  $a isa pet, has name $n;
-  ($a, $b) isa friendship;
-get $a, $b;
+  $thumbnail isa image, has creation-date $d;
+  $video isa video, has creation-date $d;
+  ($thumbnail, $video) isa project;
+fetch $thumbnail: name, $video: name;
 ----
 Building on TypeDB's conceptual data model, this provides us with a highly versatile toolset that resolves a range of deep engineering challenges. *_No tables, no joins, no nulls!_*
 
 *3. <<_patterns,The power of patterns>>*: Patterns are used in TypeDB to interact with data and types of all sorts.
 
-.Insert new friendships between multiple data instances
+.Add files older than 1970 to the "archive" project
 [,typeql]
 ----
 match
-  $a isa pet, has name "Fluffy";
-  $l isa person, has name $n;
-  $n contains "Luffy";
+  $archive isa project, has name "archive";
+  $old_file isa image, has creation-date <= 1970-01-01;
 insert
-  ($a, $l) isa friendship;
+  $archive (asset: $f);
 ----
 Patterns often read just like statements in natural language, and can be easily composed to form new patterns. This makes many tasks that are arduous in traditional databases simple and elegant in TypeDB.
 
