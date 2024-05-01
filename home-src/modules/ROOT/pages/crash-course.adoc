@@ -15,7 +15,7 @@ To get started with TypeDB, let's have a look at three key components and ideas 
 
 *1. <<_type_system,The type system>>*. TypeDB is built on a rich type system enabling us to directly capture the structure and flow of the data we work with.
 
-.A simple model with 4 inter-dependent types
+.A simple schema with 4 inter-dependent types
 [,typeql]
 ----
 define
@@ -28,12 +28,12 @@ TypeDB's conceptual data model can express polymorphic dependencies of types, wh
 
 *2. <<_database_essentials,The querying paradigm>>*. TypeDB approaches database management through a simple, pattern-based querying paradigm.
 
-.Find pets and persons with same name who are friends
+.Find persons and pets with same name who are friends
 [,typeql]
 ----
 match
-  $a isa pet, has name $n;
   $b isa person, has name $n;
+  $a isa pet, has name $n;
   ($a, $b) isa friendship;
 get $a, $b;
 ----
