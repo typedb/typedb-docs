@@ -1,0 +1,40 @@
+= Lesson 10: Using inference
+
+== xref:learn::10-using-inference/10.1-rules-as-views.adoc[Rules as views]
+
+* If a query pattern is placed in the condition of a rule, then the statement in the rule's conclusion can replace the pattern wherever it occurs in the `match` clause of read queries. This can be used to create simplified *abstractions* for complex patterns.
+* The condition of a rule implies the conclusion, but the conclusion does not imply the condition. If a read query matches a statement that corresponds to the conclusion of a rule, it is possible that the statement is satisfied by data on disk rather than by the rule.
+* Using a rule to dynamically calculate values at query time can prevent stale and inconsistent data resulting from writing the values of calculations to disk.
+
+== xref:learn::10-using-inference/10.2-rule-chaining.adoc[Rule chaining]
+
+* If the statement in the conclusion of a rule also appears in the condition of another rule, then the rules can be triggered in sequence to form a *chain* of logic.
+* If the statement in the conclusion of a rule also appears in its own condition, then the rule can *recursively* trigger itself.
+
+== xref:learn::10-using-inference/10.3-rule-branching.adoc[Rule branching]
+
+* If two rules have the same conclusion and mutually exclusive conditions, then they represent two alternative *branches* of logic.
+* If two rules have the same conclusion but are not mutually exclusive, then both rules can be triggered simultaneously. If the conclusions generate identical data, then the data will only be generated once, and only if it doesn't already exist on disk.
+
+== Further learning
+
+[cols-3]
+--
+.xref:learn::11-manipulating-stateful-objects/overview.adoc[]
+[.clickable]
+****
+Learn how to use retrieve data instances and schema types from the database as stateful objects and perform operations on them.
+****
+
+.xref:manual::reading/infer.adoc[Manual: Inference]
+[.clickable]
+****
+Learn more about inferring data with TypeDB, covering defining rules and querying inferred data.
+****
+
+.https://typedb.com/blog/inference-in-typedb[Blog: Inference in TypeDB]
+[.clickable]
+****
+Learn more about rule inference and type inference, and the benefits they bring to database engineering.
+****
+--

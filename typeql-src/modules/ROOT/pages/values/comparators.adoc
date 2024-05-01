@@ -12,6 +12,7 @@ That sets a constraint on values that can be assigned to a variable used in a st
 
 The following operators are supported for comparing values: `==`, `!=`, `>`, `>=`, `<`, and `+<=+`.
 
+[#_equality_comparator]
 == Equality comparator
 
 include::typeql::partial$iam-database-links.adoc[]
@@ -64,11 +65,11 @@ include::typeql::partial$iam-database-links.adoc[]
 
 Use the greater than sign (`>`) to declare the value/variable on the left from it as strictly greater
 than the one on the right from it.
-For a relaxed comparison, use the "greater than or equal" sign (`≥`).
+For a relaxed comparison, use the "greater than or equal" sign (`>=`).
 
 Use the less than sign (`<`) to declare the value/variable on the left from it as strictly less
 than the one on the right from it.
-For a relaxed comparison, use the "less than or equal" sign (`≤`).
+For a relaxed comparison, use the "less than or equal" sign (`+<=+`).
 
 For example, use the following query to find all files that have an attribute of the `size` type
 and value less than or equal to `50`.

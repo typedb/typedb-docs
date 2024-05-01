@@ -1,0 +1,73 @@
+= Lesson 12: Advanced modeling
+
+== xref:learn::12-advanced-modeling/12.1-using-dependent-types.adoc[Using dependent types]
+
+* Entity and relation types can be treated as implementations of *object types* with a zero or non-zero number of *dependencies* respectively.
+* In the *entity-centric framework* of the PERA model, application classes are represented by entity types, and references between classes are represented by relation types.
+* In the *type-theoretic framework* of the PERA model, application classes are represented by object types, and references between classes are represented by interface types.
+* Entity types are used to represent application types composed only of primitive types. Relation types are used to represent application types composed of both primitive and composite types.
+
+[cols="^.^,^.^",caption="",options="header"]
+|===
+| OOP | PERA
+| *Primitive type* | *Attribute type*
+| *Composite type* +
+(of primitive types only) | *Object type* +
+(entity type)
+| *Composite type* +
+(of primitive and composites types) | *Object type* +
+(relation type)
+| *Reference* +
+(to primitive type) | *Interface type* +
+(ownership type)
+| *Reference* +
+(to composite type) | *Interface type* +
+(role type)
+|===
+
+== xref:learn::12-advanced-modeling/12.2-using-type-theoretic-relations.adoc[Using type theoretic relations]
+
+* A database type hierarchy can be used to represent an application class hierarchy, with interfaces and their implementations applied at different levels to represent the capabilities of the constituent classes.
+* When representing a common capability across different relation types in the type-theoretic PERA framework, the roles representing the capability should have the same name.
+* The PERA model does not permit the mixing of entity and relation types into a single hierarchy. If an application class hierarchy includes some classes composed only of primitives and some composed of primitives and composites, then a suitable workaround must be selected to model it.
+
+== xref:learn::12-advanced-modeling/12.3-reifying-interfaces.adoc[Reifying interfaces]
+
+* *Reification* is the process of replacing a role type with a relation type. A type-theoretic data model can be transformed into an entity-centric one by reifying any nested relations.
+* *De-reification* is the process of replacing a relation type with a role type. An entity-centric data model can be transformed into a type-theoretic one by de-reifying any binary relation types.
+* While *nested relations* should be avoided in the entity-centric PERA framework, they are a common feature in the type-theoretic PERA framework.
+* Interface implementations can be freely relocated between two object types that have a https://en.wikipedia.org/wiki/Bijection[one-to-one mapping]. A binary relation type can be losslessly de-reified by first relocating interface implementations it has (if any) to a roleplayer with which it has a one-to-one mapping.
+* A binary relation type cannot be losslessly de-reified if it implements interface types and does not have one-to-one mapping to any of its roleplayers. Similarly, a hierarchy of binary relation types cannot be losslessly de-reified.
+
+== xref:learn::12-advanced-modeling/12.4-using-interface-contracts.adoc[Using interface contracts]
+
+* Interface implementations can be *overridden* using the `as` keyword. Using it in an `owns` or `plays` statement will ensure that the interface implemented by the object supertype is not implemented by its subtypes. The overriding interface must be a subtype of the overridden interface.
++
+[,typeql]
+----
+object-type owns attribute-type as overridden-attribute-type;
+----
+* If an abstract object type owns an abstract attribute types, then any subtypes of the object type must own a subtype of the attribute type. This allows for schema design https://en.wikipedia.org/wiki/Design_by_contract[by contract].
+
+== Further learning
+
+[cols-3]
+--
+.https://typedb.com/lectures/polymorphic-data-model[Lecture: The polymorphic data model with types]
+[.clickable]
+****
+Learn about the conceptual PERA model that backs TypeDB, and how it subsumes and surpasses previous database models.
+****
+
+.https://typedb.com/lectures/type-theory[Lecture: The unifying foundation for databases]
+[.clickable]
+****
+Learn about the unification of paradigms backed by modern type-theoretic mathematics, laying a novel foundation for modern databases.
+****
+
+.https://typedb.com/papers/typeql-theory[Paper: TypeQL formalism]
+[.clickable]
+****
+Read the preprint of the paradigm-defining paper behind TypeQL, due to be published in Proceedings of the ACM on Management of Data.
+****
+--

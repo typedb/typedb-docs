@@ -17,8 +17,7 @@ In order to maintain integrity, the schema is validated to ensure internal consi
 ** The owner does not already inherit the ownership capability from a supertype.
 ** If the attribute type is abstract: the owner is also abstract.
 
-There are also more complex checks that take place, some of which we will encounter in Lesson 11 (coming soon).
-// There are also more complex checks that take place, some of which we will encounter in Lesson 10 (coming soon).
+There are also more complex checks that take place, some of which we will encounter in xref:learn::12-advanced-modeling/12.4-using-interface-contracts.adoc[Lesson 12.4].
 
 .Exercise
 [caption=""]
@@ -138,6 +137,7 @@ rule georgia-is-in-united-states:
         ($us, $ga) isa locating;
     };
 ----
+image:learn::studio-icons/run-query.png[] *_Try running_*
 
 [,typeql]
 ----
@@ -148,5 +148,6 @@ rule odyssey-has-stock-20:
         $odyssey has stock 20;
     };
 ----
+image:learn::studio-icons/run-query.png[] *_Try running_*
 
 However, both of these rules would fail validation for the same reasons the Insert queries do. In the first example, TypeDB is unable to infer the roles for the `locating` relation as they are ambiguous. In the second, `book` does not own `stock`, making the attribute ownership illegal.

@@ -1,0 +1,367 @@
+= Lesson 9.7: Avoiding interface redundancies
+:page-preamble-card: 1
+
+In the previous lesson, we learned how to use interface hierarchies in our schema to achieve different behaviours. In this lesson, we'll see how having multiple interfaces that fulfill the same behaviour damages the querying capabilities of the model.
+
+.Data table
+[%collapsible]
+====
+[%header,format=csv]
+|===
+include::attachment$books.csv[]
+|===
+====
+
+.Lesson 9.6 schema
+[%collapsible]
+====
+[,typeql]
+----
+define
+book sub entity,
+    abstract,
+    owns isbn-13,
+    owns isbn-10,
+    owns title,
+    owns page-count,
+    owns genre,
+    owns price,
+    plays contribution:work,
+    plays publishing:published;
+paperback sub book,
+    owns stock;
+hardback sub book,
+    owns stock;
+ebook sub book;
+contributor sub entity,
+    owns name,
+    plays contribution:contributor;
+publisher sub entity,
+    owns name,
+    plays publishing:publisher;
+place sub entity,
+    abstract,
+    owns name,
+    plays locating:location,
+    plays locating:located;
+city sub place,
+    plays publishing:location;
+state sub place;
+country sub place;
+contribution sub relation,
+    relates contributor,
+    relates work;
+authoring sub contribution;
+editing sub contribution;
+illustrating sub contribution;
+publishing sub relation,
+    relates publisher,
+    relates published,
+    relates location,
+    owns year;
+locating sub relation,
+    relates located,
+    relates location;
+isbn sub attribute, abstract, value string;
+isbn-13 sub isbn;
+isbn-10 sub isbn;
+title sub attribute, value string;
+page-count sub attribute, value long;
+genre sub attribute, value string;
+price sub attribute, value double;
+stock sub attribute, value long;
+name sub attribute, value string;
+year sub attribute, value long;
+----
+====
+
+== Identifying redundancies
+
+Let's begin by adding the following rule to our schema to make `locating` relations transitive, which we first encountered in xref:learn::5-defining-schemas/5.4-defining-rules.adoc[Lesson 5.4].
+
+[,typeql]
+----
+define
+rule transitive-location:
+    when {
+        (location: $parent-place, located: $child-place) isa locating;
+        (location: $child-place, located: $x) isa locating;
+    } then {
+        (location: $parent-place, located: $x) isa locating;
+    };
+----
+
+With this rule defined, we can use the following patterns to describe things that are located in a particular country:
+
+* To describe states located in the country:
++
+[,typeql]
+----
+$country isa country, has name ?country-name;
+$state isa state;
+(location: $country, located: $state) isa locating;
+----
+* To describe cities located in the country:
++
+[,typeql]
+----
+$country isa country, has name ?country-name;
+$city isa city;
+(location: $country, located: $city) isa locating;
+----
+* To describe publications that were located in the country:
++
+[,typeql]
+----
+$country isa country, has name ?country-name;
+(location: $country, located: $city) isa locating;
+$publishing (location: $city) isa publishing;
+----
+
+It's very easy to write a polymorphic pattern that describes states or cities located in a particular country.
+
+[,typeql]
+----
+$country isa country, has name ?country-name;
+(location: $country, located: $x) isa locating;
+----
+
+Here the type of `$x` is determined to be `locating:located`, so instances of `state` and `city` are returned as they can be cast into this role. Now, what happens if we want to polymorphically query for _everything_ located in the country? Well, we must use the following pattern instead.
+
+[,typeql]
+----
+$country isa country, has name ?country-name;
+{
+    (location: $country, located: $x) isa locating;
+} or {
+    (location: $country, located: $city) isa locating;
+    $x (location: $city) isa publishing;
+};
+----
+
+Here we need a disjunction. This is due to the fact that `publishing` cannot be cast into `locating:located`, so we need to make a special case for it using the second branch of the disjunction. When querying them individually, the patterns for states and cities were structurally identical, while the pattern for publications was different. This means that we cannot query all three together using a structurally common pattern.
+
+Essentially, we are using two different interfaces to represent common behaviour: the `locating:location` interface and the `publishing:location` interface. This is a bad practice in PERA model design, as it would be in application model design. While it is not too much of a problem at this stage, it has the potential to grow much more prevalent if we do not build the model's interfaces in an extensible manner.
+
+== Eliminating redundancies
+
+In order to eliminate the interface redundancy, we must choose which to keep. Between `locating:location` and `publishing:location`, the former is the more general-purpose interface. We will keep that interface, and change the way we record the locations where books are published to use it as well. Let's begin by examining the section of the current schema used for publishing information.
+
+[,typeql]
+----
+define
+book sub entity,
+    plays publishing:published;
+publisher sub entity,
+    plays publishing:publisher;
+city sub place,
+    plays publishing:location;
+publishing sub relation,
+    relates publisher,
+    relates published,
+    relates location,
+    owns year;
+----
+
+We need to choose an object type to play the `locating:located` role. The entity type `publisher` would be a very poor choice.
+
+[,typeql]
+----
+define
+book sub entity,
+    plays publishing:published;
+publisher sub entity,
+    plays publishing:publisher,
+    plays locating:located;
+publishing sub relation,
+    relates publisher,
+    relates published,
+    owns year;
+----
+
+Publishers can publish different books in different cities, and if we record the publishing location on the publisher, we won't be able to tell which book was published in which city. Consider if we chose this approach and then inserted, for example, the following data from the dataset.
+
+[,typeql]
+----
+match
+$book-1 isa book, has isbn-13 "9780387881355";
+$springer isa publisher, has name "Springer";
+$nyc isa city, has name "New York City";
+insert
+(published: $book-1, publisher: $springer) isa publishing;
+(located: $springer, location: $nyc) isa locating;
+----
+
+[,typeql]
+----
+match
+$book-2 isa book, has isbn-13 "9783319398778";
+$springer isa publisher, has name "Springer";
+$london isa city, has name "London";
+insert
+(published: $book-2, publisher: $springer) isa publishing;
+(located: $springer, location: $london) isa locating;
+----
+
+If we were to then query the location that one of the books was published, we'd get two results back.
+
+[,typeql]
+----
+match
+$book-1 isa book, has isbn-13 "9780387881355";
+$publisher isa publisher;
+$city isa city, has name $city-name;
+(published: $book-1, publisher: $publisher) isa publishing;
+(located: $publisher, location: $city) isa locating;
+fetch
+$city-name;
+----
+
+[,json]
+----
+{ "city-name": { "value": "New York City", "type": { "label": "name", "root": "attribute", "value_type": "string" } } }
+{ "city-name": { "value": "London", "type": { "label": "name", "root": "attribute", "value_type": "string" } } }
+----
+
+This occurs because both `publisher` and `city` have *functional dependencies* on `book`, but there is no functional dependency between `city` and `publisher`. As a result, we can't use `publisher` as the roleplayer because the data model will store the data in a lossy manner, as we have just seen.
+
+Moving to the next option for the new roleplayer of `locating:located`, the entity type `book` is a reasonable choice.
+
+[,typeql]
+----
+define
+book sub entity,
+    plays publishing:published,
+    plays locating:located;
+publisher sub entity,
+    plays publishing:publisher;
+publishing sub relation,
+    relates publisher,
+    relates published,
+    owns year;
+----
+
+We won't run into the issue we do with `publisher` as there _is_ a functional dependency of `city` on `book`. But this feels semantically odd. If we chose this approach, then the above query for a book's publication city would become the following.
+
+[,typeql]
+----
+match
+$book-1 isa book, has isbn-13 "9780387881355";
+$city isa city, has name $city-name;
+(located: $book-1, location: $city) isa locating;
+fetch
+$city-name;
+----
+
+While this model would not incur data loss, it is strange to talk about the location of a book as if it is somehow fixed, and the intent of the query is not immediately obvious as there is no mention of the book's publication. In fact, there is a better choice.
+
+In this case, the best option is to make the relation type `publishing` the roleplayer of `location:located`.
+
+[,typeql]
+----
+define
+book sub entity,
+    plays publishing:published;
+publisher sub entity,
+    plays publishing:publisher;
+publishing sub relation,
+    relates publisher,
+    relates published,
+    owns year,
+    plays locating:located;
+----
+
+Because `publishing` is an object type, it can implement any interface like an entity type can. And because it depends functionally on `book` (by definition), doing so does not incur information loss. Here we have created a *nested relation type*: a relation type in which another relation type plays a role. Now we can query for a book's publication city in the following manner.
+
+[,typeql]
+----
+match
+$book-1 isa book, has isbn-13 "9780387881355";
+$publishing (published: $book-1) isa publishing;
+$city isa city, has name $city-name;
+(located: $publishing, location: $city) isa locating;
+fetch
+$city-name;
+----
+
+With this model, we do not incur information loss, and the intent of the query is clear. If we return to our polymorphic pattern from earlier, it will now match instances of `city`, `state`, and `publishing` for `$x`, as they can all be upcast to `location:located`!
+
+[,typeql]
+----
+$country isa country, has name ?country-name;
+(location: $country, located: $x) isa locating;
+----
+
+When we extend the model to include more concepts with locations, we should always make them play `locating:located`. In this way, this polymorphic query will always be able to find everything in a given location. If we would like to restrict the list of things returned, we can always place further constraints on the type of `$x`.
+
+Nested relation types are an advanced feature of the PERA model. They can be difficult to deal with, and so should be used with caution. Notably, the strategies we explored in xref:learn::4-writing-data/4.3-deleting-data.adoc[Lesson 4.3] for deleting entities and relations cannot be applied universally if there are nested relations in the schema. However, nested relations are also an extremely powerful tool, as we will see in xref:learn::12-advanced-modeling/12.1-using-dependent-types.adoc[Lesson 12.1], where we will explore the full type-theoretic capabilities of the PERA model.
+
+.The final schema
+[%collapsible]
+====
+[,typeql]
+----
+define
+book sub entity,
+    abstract,
+    owns isbn-13,
+    owns isbn-10,
+    owns title,
+    owns page-count,
+    owns genre,
+    owns price,
+    plays contribution:work,
+    plays publishing:published;
+paperback sub book,
+    owns stock;
+hardback sub book,
+    owns stock;
+ebook sub book;
+contributor sub entity,
+    owns name,
+    plays contribution:contributor;
+publisher sub entity,
+    owns name,
+    plays publishing:publisher;
+place sub entity,
+    abstract,
+    owns name,
+    plays locating:location,
+    plays locating:located;
+city sub place;
+state sub place;
+country sub place;
+contribution sub relation,
+    relates contributor,
+    relates work;
+authoring sub contribution;
+editing sub contribution;
+illustrating sub contribution;
+publishing sub relation,
+    relates publisher,
+    relates published,
+    owns year,
+    plays locating:located;
+locating sub relation,
+    relates located,
+    relates location;
+isbn sub attribute, abstract, value string;
+isbn-13 sub isbn;
+isbn-10 sub isbn;
+title sub attribute, value string;
+page-count sub attribute, value long;
+genre sub attribute, value string;
+price sub attribute, value double;
+stock sub attribute, value long;
+name sub attribute, value string;
+year sub attribute, value long;
+
+rule transitive-location:
+    when {
+        (location: $parent-place, located: $child-place) isa locating;
+        (location: $child-place, located: $x) isa locating;
+    } then {
+        (location: $parent-place, located: $x) isa locating;
+    };
+----
+====

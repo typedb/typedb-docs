@@ -4,7 +4,7 @@
 [#_blank_heading]
 == {blank}
 
-TypeQL's composability provides a natural syntax for building queries, but not all queries are valid. Try *running* image:learn::studio-icons/run-query.png[] the following queries. Only the first one will be successfully executed.
+TypeQL's composability provides a natural syntax for building queries, but not all queries are valid. Try running the following queries. Only the first one will be successfully executed.
 
 [,typeql]
 ----
@@ -16,6 +16,7 @@ fetch
 $user: name;
 $country: name;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 [,typeql]
 ----
@@ -27,6 +28,7 @@ fetch
 $user: isbn-13;
 $country: name;
 ----
+image:learn::studio-icons/run-query.png[] *_Try running_*
 
 [,typeql]
 ----
@@ -38,8 +40,9 @@ fetch
 $book: isbn-13;
 $country: name;
 ----
+image:learn::studio-icons/run-query.png[] *_Try running_*
 
-The second query is invalid because users do not have ISBN attributes. The third is invalid because books do not have locations. TypeDB validates queries against the *schema*, which sets out which types are able to own each attribute and play each role in relations. This enables the database to determine which queries are semantically sound, and extends to queries of arbitrary complexity, for instance the following query. Try *running* image:learn::studio-icons/run-query.png[] it to see if it is valid.
+The second query is invalid because users do not have ISBN attributes. The third is invalid because books do not have locations. TypeDB validates queries against the *schema*, which sets out which types are able to own each attribute and play each role in relations. This enables the database to determine which queries are semantically sound, and extends to queries of arbitrary complexity, for instance the following query. Try running it to see if it is valid.
 
 [,typeql]
 ----
@@ -54,6 +57,7 @@ not { $destination-city is $user-city; };
 fetch
 $order: id;
 ----
+image:learn::studio-icons/run-query.png[] *_Try running_*
 
 We will explore exactly how TypeDB validates queries in xref:learn::7-understanding-query-patterns/7.1-patterns-as-constraints.adoc[Lesson 7.1].
 

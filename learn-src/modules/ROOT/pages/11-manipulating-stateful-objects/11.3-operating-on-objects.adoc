@@ -1,0 +1,218 @@
+= Lesson 11.3: Operating on objects
+
+== Instantiating types
+
+In the previous lesson, we learned how to retrieve data instances and schema types from the database as stateful objects. In this lesson, we'll see how we can operate on them, starting by programmatically instantiating types. To do so, we can call methods of the type objects: the `create` method for entity and relation types, and the `put` method for attribute types. The following code snippet shows an example of each method.
+
+// Remove after change to Cloud.
+[,python]
+----
+with TypeDB.core_driver(ADDRESS) as driver:
+    with driver.session(DATABASE, SessionType.DATA) as session:
+        with session.transaction(TransactionType.WRITE) as transaction:
+            book_type: EntityType
+            contribution_type: RelationType
+            page_count_type: AttributeType
+
+            book: Entity = book_type.create(transaction).resolve()
+            contribution: Relation = contribution_type.create(transaction).resolve()
+            page_count: Attribute = page_count_type.put(transaction, 200).resolve()
+
+            transaction.commit()
+----
+
+// Add after change to Cloud.
+// [,python]
+// ----
+// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+//     with driver.session(DATABASE, SessionType.DATA) as session:
+//         with session.transaction(TransactionType.READ) as transaction:
+//             book_type: EntityType
+//             contribution_type: RelationType
+//             page_count_type: AttributeType
+//
+//             book: Entity = book_type.create(transaction).resolve()
+//             contribution: Relation = contribution_type.create(transaction).resolve()
+//             page_count: Attribute = page_count_type.put(transaction, 200).resolve()
+// ----
+
+All methods that modify data require a transaction to be supplied as an argument. As when executing write queries, this must be a *write transaction*, and it must be *committed* in order for the changes to be persisted. The `put` method of attribute types also takes the attribute's value as an argument.
+
+[NOTE]
+====
+In TypeDB, when we create two attributes of the same type and value, they are stored as the same attribute instance. For example, if we create two books with page count attributes that have the same value, they will actually reference the same instance of page count. This allows for very efficient operations on attributes. For this reason, only one attribute can exist in the database with a given type and value, and creation of attributes is https://en.wikipedia.org/wiki/Idempotence[idempotent].
+====
+
+== Modifying attributes
+
+We can add or remove attributes to an entity or relation using the `set_has` and `unset_has` methods, as shown in the following code snippet, which decrements the stock of a supplied book entity. Here we make the assumption that `stock` is not multivalued for books.
+
+[,python]
+----
+def decrement_stock(transaction: TypeDBTransaction, book: Entity) -> None:
+    stock_type = transaction.concepts.get_attribute_type("stock").resolve()
+    stock_old = next(book.get_has(transaction, stock_type))
+
+    if stock_old.get_value() == 0:
+        raise ValueError("Already out of stock.")
+    else:
+        stock_new = stock_type.put(transaction, stock_old.get_value() - 1).resolve()
+        book.unset_has(transaction, stock_old).resolve()
+        book.set_has(transaction, stock_new).resolve()
+----
+
+Both `set_has` and `unset_has` take an attribute object as an argument. In this example, we have retrieved the existing stock attribute and supplied it to `unset_has`, and created a new stock attribute to supply to `set_has`.
+
+[WARNING]
+====
+Deleting an attribute with its `delete` method will remove it from every entity and relation that owns it. To remove it from a single entity or relation, use the `unset_has` method of the owner instead. See the note above on attribute idempotence for more information.
+====
+
+.Exercise
+[caption=""]
+====
+Write a function that creates a new promotion with the supplied attributes and returns it as a stateful object. The function should have the following signature.
+
+[,python]
+----
+create_promotion(
+        transaction: TypeDBTransaction,
+        code_value: str,
+        name_value: str,
+        start_timestamp_value: datetime,
+        end_timestamp_value: datetime
+) -> Entity
+----
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,python]
+----
+def create_promotion(
+        transaction: TypeDBTransaction,
+        code_value: str,
+        name_value: str,
+        start_timestamp_value: datetime,
+        end_timestamp_value: datetime
+) -> Entity:
+    promotion_type = transaction.concepts.get_entity_type("promotion").resolve()
+    code_type = transaction.concepts.get_attribute_type("code").resolve()
+    name_type = transaction.concepts.get_attribute_type("name").resolve()
+    start_timestamp_type = transaction.concepts.get_attribute_type("start-timestamp").resolve()
+    end_timestamp_type = transaction.concepts.get_attribute_type("end-timestamp").resolve()
+    promotion = promotion_type.create(transaction).resolve()
+    code = code_type.put(transaction, code_value).resolve()
+    name = name_type.put(transaction, name_value).resolve()
+    start_timestamp = start_timestamp_type.put(transaction, start_timestamp_value).resolve()
+    end_timestamp = end_timestamp_type.put(transaction, end_timestamp_value).resolve()
+    promotion.set_has(transaction, code).resolve()
+    promotion.set_has(transaction, name).resolve()
+    promotion.set_has(transaction, start_timestamp).resolve()
+    promotion.set_has(transaction, end_timestamp).resolve()
+    return promotion
+----
+=====
+====
+
+== Modifying relations
+
+To create a relation between entities, we must first create the relation by instantiating it from its type, as shown above. The entities can then be added as roleplayers using its `add_players` method. This is illustrated in the following code snippet, which adds a given book to a given promotion.
+
+[,python]
+----
+def add_to_promotion(transaction: TypeDBTransaction, book: Entity, promotion: Entity, discount_value: float) -> None:
+    inclusion_type = transaction.concepts.get_relation_type("promotion-inclusion").resolve()
+    item_role = inclusion_type.get_relates(transaction, "item").resolve()
+    promotion_role = inclusion_type.get_relates(transaction, "promotion").resolve()
+    discount_type = transaction.concepts.get_attribute_type("discount").resolve()
+    inclusion = inclusion_type.create(transaction).resolve()
+    inclusion.add_player(transaction, item_role, book).resolve()
+    inclusion.add_player(transaction, promotion_role, promotion).resolve()
+    discount = discount_type.put(transaction, discount_value).resolve()
+    inclusion.set_has(transaction, discount).resolve()
+----
+
+[NOTE]
+====
+If a relation does not have any roleplayers when a transaction is committed, that relation will be automatically destroyed.
+====
+
+To remove a relation between entities, we can delete it using its `delete` method. In the following code snippet, we remove a given book from a given promotion.
+
+[,python]
+----
+def remove_from_promotion(transaction: TypeDBTransaction, book: Entity, promotion: Entity) -> None:
+    inclusion_type = transaction.concepts.get_relation_type("promotion-inclusion").resolve()
+    item_role = inclusion_type.get_relates(transaction, "item").resolve()
+    promotion_role = inclusion_type.get_relates(transaction, "promotion").resolve()
+    inclusions = book.get_relations(transaction, item_role)
+
+    for inclusion in inclusions:
+        promotion_players = inclusion.get_players_by_role_type(transaction, promotion_role)
+
+        for player in promotion_players:
+            if player == promotion:
+                inclusion.delete(transaction).resolve()
+                break
+----
+
+.Exercise
+[caption=""]
+====
+Write a function that creates a new review entity, connected to the supplied user and book entities, and with the supplied score attribute.
+
+[,python]
+----
+create_review(transaction: TypeDBTransaction, user: Entity, book: Entity, score_value: int) -> Entity
+----
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::learn::attachment$bookstore-schema.tql[lines=18..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,python]
+----
+def create_review(transaction: TypeDBTransaction, user: Entity, book: Entity, score_value: int) -> Entity:
+    review_type = transaction.concepts.get_entity_type("review").resolve()
+    action_execution_type = transaction.concepts.get_relation_type("action-execution").resolve()
+    rating_type = transaction.concepts.get_relation_type("rating").resolve()
+    score_type = transaction.concepts.get_attribute_type("score").resolve()
+    action_role = action_execution_type.get_relates(transaction, "action").resolve()
+    executor_role = action_execution_type.get_relates(transaction, "executor").resolve()
+    review_role = rating_type.get_relates(transaction, "review").resolve()
+    rated_role = rating_type.get_relates(transaction, "rated").resolve()
+    review = review_type.create(transaction).resolve()
+    action_execution = action_execution_type.create(transaction).resolve()
+    action_execution.add_player(transaction, executor_role, user).resolve()
+    action_execution.add_player(transaction, action_role, review).resolve()
+    rating = rating_type.create(transaction).resolve()
+    rating.add_player(transaction, review_role, review).resolve()
+    rating.add_player(transaction, rated_role, book).resolve()
+    score = score_type.put(transaction, score_value).resolve()
+    review.set_has(transaction, score).resolve()
+    return review
+----
+=====
+====

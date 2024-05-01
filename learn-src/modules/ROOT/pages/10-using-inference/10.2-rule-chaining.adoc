@@ -1,5 +1,4 @@
-= Lesson 9.2: Rule chaining
-// = Lesson 10.2: Rule chaining
+= Lesson 10.2: Rule chaining
 
 == Simple rule chaining
 
@@ -125,4 +124,6 @@ $place: name;
 
 To retrieve the first result (Newark), we do not need to use the rule at all, because the fact the user is located there is written to disk. To retrieve the second result (New Jersey), we need to apply the rule _once_. To retrieve the third result (United States) we need to apply the rule _twice_. Similarly, if we had another level in our location hierarchy (perhaps North America), we would need to apply the rule _three times_ to retrieve the result.
 
-While the rule `transitive-location` is the easiest to understand of the rules in the bookstore schema, it is also the one with the most complex behaviour. Generating transitive relations is not the only use case for rule recursion, but it is by far the most common. Depending on the depth of recursion and the size of the dataset, recursive rules can be computationally intensive to resolve, so they should be used with caution. We will explore optimisation strategies for rules, including recursive ones, in Lesson 15 (coming soon).
+While the rule `transitive-location` is the easiest to understand of the rules in the bookstore schema, it is also the one with the most complex behaviour. Generating transitive relations is not the only use case for rule recursion, but it is by far the most common. Depending on the depth of recursion and the size of the dataset, recursive rules can be computationally intensive to resolve, so they should be used with caution.
+
+// While the rule `transitive-location` is the easiest to understand of the rules in the bookstore schema, it is also the one with the most complex behaviour. Generating transitive relations is not the only use case for rule recursion, but it is by far the most common. Depending on the depth of recursion and the size of the dataset, recursive rules can be computationally intensive to resolve, so they should be used with caution. We will explore optimisation strategies for rules, including recursive ones, in Lesson 16 (coming soon).

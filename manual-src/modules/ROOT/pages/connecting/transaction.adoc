@@ -2,12 +2,8 @@
 :tabs-sync-option:
 :experimental:
 
-
-
 This guide covers transaction control and best practices with Studio, Console, or one of the drivers.
 Studio provides automated transaction control, so you don't need to open transactions manually.
-
-
 
 == Understanding transactions
 
@@ -76,6 +72,16 @@ include::manual::partial$python-manual-code.py[tag=tx_open]
 ----
 --
 
+Node.js::
++
+--
+.Open a transaction
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tag=tx_open]
+----
+--
+
 Java::
 +
 --
@@ -86,13 +92,14 @@ include::manual::partial$java-manual-code.java[tag=tx_open]
 ----
 --
 
-Node.js::
+C#::
 +
 --
 .Open a transaction
-[,js,indent=0]
+[,csharp,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tag=tx_open]
+include::manual::partial$csharp-manual-code.cs[tag=options]
+include::manual::partial$csharp-manual-code.cs[tag=tx_open]
 ----
 --
 
@@ -104,6 +111,17 @@ C++::
 ----
 include::manual::partial$cpp-manual-code.cpp[tag=options]
 include::manual::partial$cpp-manual-code.cpp[tag=tx_open]
+----
+--
+
+C::
++
+--
+.Open a transaction
+[,c,indent=0]
+----
+include::manual::partial$c-manual-code.c[tag=options]
+include::manual::partial$c-manual-code.c[tag=tx_open]
 ----
 --
 ====
@@ -175,6 +193,19 @@ include::manual::partial$python-manual-code.py[tag=tx_close]
 ----
 --
 
+Node.js::
++
+--
+Use the xref:drivers::nodejs/api-reference.adoc#_TypeDBTransaction_close__[close] method
+to explicitly close a transaction:
+
+.Close a transaction
+[,js,indent=0]
+----
+include::manual::partial$nodejs-manual-code.js[tag=tx_close]
+----
+--
+
 Java::
 +
 --
@@ -189,16 +220,18 @@ include::manual::partial$java-manual-code.java[tag=tx_close]
 ----
 --
 
-Node.js::
+C#::
 +
 --
-Use the xref:drivers::nodejs/api-reference.adoc#_TypeDBTransaction_close__[close] method
-to explicitly close a transaction:
+A transaction is automatically closed when the transaction's variable is dropped from memory.
+
+To explicitly close a transaction,
+use the xref:drivers::csharp/api-reference.adoc#_void_TypeDB_Driver_Api_ITypeDBTransaction_Close___[close] method:
 
 .Close a transaction
-[,js,indent=0]
+[,csharp,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tag=tx_close]
+include::manual::partial$csharp-manual-code.cs[tag=tx_close]
 ----
 --
 
@@ -208,7 +241,9 @@ C++::
 A transaction is automatically closed when the transaction's variable is dropped from memory.
 
 To explicitly close a transaction,
-use the xref:drivers::cpp/api-reference.adoc#_void_TypeDBTransactionclose[close] method:
+use the
+xref:drivers::cpp/api-reference.adoc#_void_TypeDBTransactiononClose___stdfunction__void_const_stdoptional__DriverException______callback_[close]
+method:
 
 .Close a transaction
 [,cpp,indent=0]
@@ -216,6 +251,22 @@ use the xref:drivers::cpp/api-reference.adoc#_void_TypeDBTransactionclose[close]
 include::manual::partial$cpp-manual-code.cpp[tag=tx_close]
 ----
 --
+
+C::
++
+--
+A transaction is automatically closed when the transaction's variable is dropped from memory.
+
+To explicitly close a transaction,
+use the xref:drivers::c/api-reference.adoc#_transaction_close[close] function:
+
+.Close a transaction
+[,c,indent=0]
+----
+include::manual::partial$c-manual-code.c[tag=tx_close]
+----
+--
+
 ====
 
 [#_commit_a_transaction]
@@ -281,18 +332,6 @@ include::manual::partial$python-manual-code.py[tag=tx_commit]
 ----
 --
 
-Java::
-+
---
-To commit a transaction, use the xref:drivers::java/api-reference.adoc#_TypeDBTransaction_commit__[commit] method:
-
-.Commit a transaction
-[,java,indent=0]
-----
-include::manual::partial$java-manual-code.java[tag=tx_commit]
-----
---
-
 Node.js::
 +
 --
@@ -305,15 +344,52 @@ include::manual::partial$nodejs-manual-code.js[tag=tx_commit]
 ----
 --
 
+Java::
++
+--
+To commit a transaction, use the xref:drivers::java/api-reference.adoc#_TypeDBTransaction_commit__[commit] method:
+
+.Commit a transaction
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tag=tx_commit]
+----
+--
+
+C#::
++
+--
+To commit a transaction, use the
+xref:drivers::csharp/api-reference.adoc#_void_TypeDB_Driver_Api_ITypeDBTransaction_Commit___[commit] method:
+
+.Commit a transaction
+[,csharp,indent=0]
+----
+include::manual::partial$cpp-manual-code.cpp[tag=tx_commit]
+----
+--
+
 C++::
 +
 --
-To commit a transaction, use the xref:drivers::cpp/api-reference.adoc#_void_TypeDBTransactioncommit[commit] method:
+To commit a transaction, use the xref:drivers::cpp/api-reference.adoc#_void_TypeDBTransactioncommit___[commit] method:
 
 .Commit a transaction
 [,cpp,indent=0]
 ----
 include::manual::partial$cpp-manual-code.cpp[tag=tx_commit]
+----
+--
+
+C::
++
+--
+To commit a transaction, use the xref:drivers::c/api-reference.adoc#_transaction_commit[commit] function:
+
+.Commit a transaction
+[,c,indent=0]
+----
+include::manual::partial$c-manual-code.c[tag=tx_commit]
 ----
 --
 ====

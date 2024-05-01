@@ -1,0 +1,10 @@
+match 
+$data isa! $type;
+fetch
+$type;
+owned-attributes: {
+    match
+    $data has $attr;
+    fetch
+    $attr;
+};

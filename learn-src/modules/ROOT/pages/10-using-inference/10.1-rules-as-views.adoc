@@ -1,5 +1,4 @@
-= Lesson 9.1: Rules as views
-// = Lesson 10.1: Rules as views
+= Lesson 10.1: Rules as views
 
 == Abstracting complex patterns
 
@@ -40,7 +39,7 @@ average-verified-score: {
     ($user, $review) isa action-execution, has timestamp $review-time;
     ($user, $order) isa action-execution, has timestamp $order-time;
     $review-time > $order-time;
-    get $score;
+    get $review, $score;
     mean $score;
 };
 ----

@@ -32,7 +32,7 @@ fetch
 $attribute;
 ----
 
-Let's modify the previous query to retrieve the order price along with the line total in each of these two ways. First, by retrieving the price via the book.
+Let's modify the previous query to retrieve the book price along with the line total in each of these two ways. First, by retrieving the price via the book.
 
 [,typeql]
 ----
@@ -43,7 +43,7 @@ $book isa book, has price $retail-price;
     has quantity $quantity;
 ?line-total = $quantity * $retail-price;
 fetch
-$order: price;
+$book: price;
 ?line-total;
 ----
 

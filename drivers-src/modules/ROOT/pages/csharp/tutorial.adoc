@@ -1,0 +1,328 @@
+= C# driver tutorial
+:keywords: typedb, typeql, tutorial, C#, quickstart, start, sample, example, application, app
+:pageTitle: C# driver tutorial
+:summary: A simple example with an application using TypeDB C# driver.
+:page-preamble-card: 1
+
+In this tutorial, we'll build a sample application with the C# driver capable of basic interaction with TypeDB:
+
+* Connect to a TypeDB server (Core or Cloud),
+* Manage databases, sessions, and transactions,
+* Send different types of queries.
+
+Follow the steps below or see the
+https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/csharp/tutorial.cs[full source code,window=_blank].
+
+== Environment setup
+
+To run this sample application, you'll need:
+
+. TypeDB: either a https://cloud.typedb.com/[TypeDB Cloud] deployment or a TypeDB Core server.
+For TypeDB Core installation instructions, see the xref:home::install/core.adoc[] page.
+. Download the https://www.nuget.org/packages/TypeDB.Driver/[TypeDB C# driver].
+For the driver installation instructions, see the xref:drivers::csharp/overview.adoc[] page.
+
+//#todo Consider adding virtualenv step-by-step guide
+== Includes
+
+To be able to use the TypeDB C# driver API in the Sample application, use the following include statements:
+
+[,csharp,indent=0]
+----
+include::drivers::partial$tutorials/csharp/tutorial.cs[tag=import]
+----
+
+== Default values
+
+We store default values as constants in the source code:
+
+[,csharp,indent=0]
+----
+include::drivers::partial$tutorials/csharp/tutorial.cs[tag=constants]
+----
+
+where `DB_NAME` -- the name of the database to use;
+`SERVER_ADDR` -- address of the TypeDB server to connect to;
+`TYPEDB_EDITION` -- TypeDB Core or Cloud edition selector;
+`CLOUD_USERNAME`/`CLOUD_PASSWORD` -- credentials to connect to TypeDB Cloud.
+
+== Program structure
+
+The main workflow of this sample application includes establishing a connection to TypeDB,
+a new database setup, and querying.
+
+[,csharp,indent=0]
+----
+include::drivers::partial$tutorials/csharp/tutorial.cs[tag=main]
+----
+
+The entire `main()` function code is executed in the context of the <<_typedb_connection,network connection>>,
+represented by the `driver` object that is returned by the function.
+
+[#_typedb_connection]
+== TypeDB connection
+
+The `ConnectToTypeDB()` function takes `edition` and `addr` as mandatory parameters.
+
+[,csharp,indent=0]
+----
+include::drivers::partial$tutorials/csharp/tutorial.cs[tag=connection]
+----
+
+The `edition` is expected to be an Enum for selecting a TypeDB edition.
+Depending on the TypeDB edition selected, this function initializes either a TypeDB Core or TypeDB Cloud connection.
+
+TypeDB Cloud connection requires an object of the `TypeDBCredential` class
+that is initialized with a username and password.
+For our sample application, we have the default credentials for the `admin` account set in the code of the
+`ConnectToTypeDB` function.
+
+include::partial$tutorials/change-psw.adoc[]
+
+== Database setup
+
+To set up a TypeDB database, we need to make sure that it exists and has the correct schema and data.
+First, we check whether a database with the provided name already exists on the server.
+
+If such a database doesn't exist, we <<_creating_a_database,create a new database>>,
+<<_defining_a_schema,define its schema>>,
+and <<_loading_initial_data,load initial data>>.
+
+[NOTE]
+====
+To prevent data loss, avoid deleting an existing database without confirmation from a user.
+====
+
+If a database with the specified name already exists, we check whether we need to replace it.
+To do so, we check the `dbReset` parameter, and, if it's `false`, ask for an input from a user.
+If any of the two suggesting replacement of the database is acceptable,
+we replace the database by deleting the existing database and then <<_creating_a_database,creating a new one>>.
+
+As the final step of the database setup, we <<_testing_a_database,test it>>.
+
+[,csharp,indent=0]
+----
+include::drivers::partial$tutorials/csharp/tutorial.cs[tag=db-setup]
+----
+
+[#_creating_a_database]
+=== Creating a new database
+
+We create a new database with the specified name (`sample_app_db` by default)
+and call functions to <<_defining_a_schema,define its schema>> and <<_loading_initial_data,load initial data>>.
+
+[,csharp,indent=0]
+----
+include::drivers::partial$tutorials/csharp/tutorial.cs[tag=create_new_db]
+----
+
+[#_replacing_a_database]
+=== Replacing a database
+We delete a database with the specified name (`sample_app_db` by default)
+and call a function to <<_creating_a_database,create a new one>> instead:
+
+[,csharp,indent=0]
+----
+include::drivers::partial$tutorials/csharp/tutorial.cs[tag=replace_db]
+----
+
+[#_defining_a_schema]
+=== Defining a schema
+
+We use a xref:typeql::queries/define.adoc[Define query] to define a schema for the newly created database:
+
+[,csharp,indent=0]
+----
+include::drivers::partial$tutorials/csharp/tutorial.cs[tag=db-schema-setup]
+----
+
+The schema for the sample application is stored in the
+https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[iam-schema.tql,window=_blank]
+file.
+
+.See the full schema
+[%collapsible]
+====
+[,typeql]
+----
+include::drivers::partial$tutorials/iam-schema.tql[lines=17..]
+----
+====
+
+We use a session object passed as a parameter to open a transaction.
+Then we send the contents of the file as a TypeQL Define query and commit the changes made by the transaction.
+
+[#_loading_initial_data]
+=== Loading initial data
+
+With the schema defined, we can load initial data into our database with the
+xref:typeql::queries/insert.adoc[Insert query]:
+
+[,csharp,indent=0]
+----
+include::drivers::partial$tutorials/csharp/tutorial.cs[tag=db-dataset-setup]
+----
+
+We read the
+https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/iam-data-single-query.tql[iam-data-single-query.tql,window=_blank]
+file, send its contents as a single query, and then commit the changes.
+
+.See the full Insert query
+[%collapsible]
+====
+[,typeql]
+----
+include::drivers::partial$tutorials/iam-data-single-query.tql[lines=17..]
+----
+====
+
+[#_testing_a_database]
+=== Testing a database
+
+With the <<_defining_a_schema,schema defined>> and <<_loading_initial_data,data loaded>>,
+we test our database to make sure it's ready.
+To test the database, we send a query to count the number of users in the database:
+
+[,csharp,indent=0]
+----
+include::drivers::partial$tutorials/csharp/tutorial.cs[tag=test-db]
+----
+
+== Query examples
+
+After database setup is complete, we proceed with querying our database with different types of queries in the
+`queries()` function:
+
+[,js,indent=0]
+----
+include::drivers::partial$tutorials/csharp/tutorial.cs[tag=queries]
+----
+
+The queries are as follows:
+
+. <<_fetch,Fetch query>> -- to retrieve information in a JSON format
+. <<_insert,Insert query>> -- to insert new data into the database
+. <<_get,Get query>> -- to retrieve data from the database as stateful objects
+. <<_get_infer,Get query with inference>> -- to retrieve data from the database as stateful objects using inference
+. <<_update,Update query>> -- to replace data in the database
+. <<_delete,Delete query>> -- to delete data from the database
+
+Every query is implemented as a function that includes some output of the query response
+and returns some meaningful data.
+
+[#_fetch]
+=== Fetch query
+
+The main way to retrieve data from a TypeDB database is to use fetching to get values of attributes,
+matched by a pattern.
+
+Let's use a xref:typeql::queries/fetch.adoc[Fetch query] to fetch names and emails for all users in the database:
+
+[,csharp,indent=0]
+----
+include::drivers::partial$tutorials/csharp/tutorial.cs[tag=fetch]
+----
+
+We get the response as a stream of JSONs and iterate through it to print all String values from each JSON.
+
+//#todo Add printing Names and E-mail from a JSON, add multiple names/e-mails implementation
+
+[#_insert]
+=== Insert query
+
+Let's insert a new user with a `full-name` and `email` attributes to the database.
+
+[,csharp,indent=0]
+----
+include::drivers::partial$tutorials/csharp/tutorial.cs[tag=insert]
+----
+
+The Insert query returns a stream of ConceptMaps: one for every `insert` clause execution.
+We iterate through the stream and print name and email for each ConceptMap returned.
+
+Since the Insert query has no `match` clause, the `insert` clause is executed exactly once.
+But the Insert query always returns a list of ConceptMap objects, where every ConceptMap represents an inserted result.
+
+[#_get]
+=== Get query
+
+Let's retrieve all files available for a user with a `GetFilesByUser()` function.
+It can be used with or without inference enabled.
+
+[,csharp,indent=0]
+----
+include::drivers::partial$tutorials/csharp/tutorial.cs[tag=get]
+----
+
+We call the function with the inference disabled (`false`) and expect it to return no results, as the query pattern
+matches only files available for `view_file` action, and there are no such files initially in the database.
+
+The `GetFilesByUser()` function checks
+that there is only one user matched with the name provided by an input parameter.
+It then executes the query to find the files, collect the results, and
+iterates through them to print a value of every matched `path` attribute.
+
+[NOTE]
+====
+For bigger numbers of results, it might be faster to iterate through a stream,
+rather than collect and store the results first.
+====
+
+[#_get_infer]
+=== Get query with inference
+
+To get query results with inferred data, let's enable the `infer` parameter of the TypeDB transaction options.
+We use the same `GetFilesByUser()` function, but set the `inference` parameter to `true` when we call it again.
+The `add-view-permission` rule provides us with some inferred results this time.
+
+[#_update]
+=== Update query
+
+Let's replace a path for one of the files with a new path.
+We can do that by deleting ownership of the old path attribute from the file entity
+and assigning it with ownership of the new path attribute with the xref:typeql::queries/update.adoc[Update query]:
+
+[,csharp,indent=0]
+----
+include::drivers::partial$tutorials/csharp/tutorial.cs[tag=update]
+----
+
+We iterate through the response of the Update query and count the length of it to determine
+the number of times the `delete` and `insert` clauses are executed.
+We then commit the changes only if the number meets our expectation.
+
+[#_delete]
+=== Delete query
+
+Finally, let's delete the same file we updated the path for.
+First, we match the file in a Get (or Fetch) query to check how many files get matched to prevent unplanned deletes.
+If the number (or any other relevant parameters) of matched results is as expected,
+we proceed with a xref:typeql::queries/delete.adoc[Delete query] with the same match clause.
+
+By using the same `write` transaction we employ snapshot isolation
+to prevent any other transactions from changing the expected results.
+If any other transaction makes a conflicting change before we commit this transaction,
+then our transaction fails upon a commit.
+
+[,csharp,indent=0]
+----
+include::drivers::partial$tutorials/csharp/tutorial.cs[tag=delete]
+----
+
+== Learn more
+
+[cols-2]
+--
+.link:https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/csharp/tutorial.cs[Source code,window=_blank]
+[.clickable]
+****
+The full source code of this sample application.
+****
+
+.xref:drivers::csharp/api-reference.adoc[]
+[.clickable]
+****
+The full API reference for the TypeDB C# driver.
+****
+--
+

@@ -57,10 +57,10 @@ Examine the three queries above and the error messages returned to determine the
 .Answer
 [%collapsible]
 =====
-* The first query attempts to give a stock level to an ebook, but ebooks do not have stock levels. In the current schema, only `paperback` and `hardback` own `stock`.
+* The first query attempts to give a stock level to an ebook, but ebooks do not have stock levels. In the schema, only `paperback` and `hardback` own `stock`.
 * The second query attempts to delete a book's ISBN-13, but all books must have an ISBN-13. In the schema, `isbn-13` is a key attribute of `book`.
 * The third query attempts to change the status of order "o0028" to "sent", but this is not a permitted value for the status. In the schema, the value of `status` has a regex constraint applied.
 =====
 ====
 
-We'll see how we can use the schema to constrain inserted data in xref:learn::5-defining-schemas/5-defining-schemas.adoc[Lesson 5], and then explore how TypeDB validates data against the schema in xref:learn::7-understanding-query-patterns/7.1-patterns-as-constraints.adoc[Lesson 7.1].
+We'll see how we can use the schema to constrain inserted data in xref:learn::5-defining-schemas/overview.adoc[Lesson 5], and then explore how TypeDB validates data against the schema in xref:learn::7-understanding-query-patterns/7.1-patterns-as-constraints.adoc[Lesson 7.1].

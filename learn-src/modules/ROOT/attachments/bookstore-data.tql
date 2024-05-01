@@ -223,10 +223,10 @@ match $publisher-type type publisher; not { $publisher isa $publisher-type; $pub
 match $book isa ebook; $book has isbn-13 "9780575104419"; $publisher isa publisher; $publisher has name "Hachette Book Group"; $city isa city; $city has name "New York City"; insert $publication isa publication; $publication has year 2010; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;
 # book
 insert $book isa ebook; $book has isbn-13 "9780008627843"; $book has title "The Hobbit"; $book has page-count 310; $book has price 16.99; $book has genre "fiction"; $book has genre "fantasy"; $book has isbn-10 "0008627843";
-match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "J.R.R. Tolkein"; }; insert $contributor isa $contributor-type; $contributor has name "J.R.R. Tolkein";
-match $book isa ebook; $book has isbn-13 "9780008627843"; $contributor isa contributor; $contributor has name "J.R.R. Tolkein"; insert (work: $book, author: $contributor) isa authoring;
-match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "J.R.R. Tolkein"; }; insert $contributor isa $contributor-type; $contributor has name "J.R.R. Tolkein";
-match $book isa ebook; $book has isbn-13 "9780008627843"; $contributor isa contributor; $contributor has name "J.R.R. Tolkein"; insert (work: $book, illustrator: $contributor) isa illustrating;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "J.R.R. Tolkien"; }; insert $contributor isa $contributor-type; $contributor has name "J.R.R. Tolkien";
+match $book isa ebook; $book has isbn-13 "9780008627843"; $contributor isa contributor; $contributor has name "J.R.R. Tolkien"; insert (work: $book, author: $contributor) isa authoring;
+match $contributor-type type contributor; not { $contributor isa $contributor-type; $contributor has name "J.R.R. Tolkien"; }; insert $contributor isa $contributor-type; $contributor has name "J.R.R. Tolkien";
+match $book isa ebook; $book has isbn-13 "9780008627843"; $contributor isa contributor; $contributor has name "J.R.R. Tolkien"; insert (work: $book, illustrator: $contributor) isa illustrating;
 match $publisher-type type publisher; not { $publisher isa $publisher-type; $publisher has name "Harper Collins"; }; insert $publisher isa $publisher-type; $publisher has name "Harper Collins";
 match $book isa ebook; $book has isbn-13 "9780008627843"; $publisher isa publisher; $publisher has name "Harper Collins"; $city isa city; $city has name "New York City"; insert $publication isa publication; $publication has year 2023; (published: $book, publisher: $publisher, publication: $publication) isa publishing; (location: $city, located: $publication) isa locating;
 # user

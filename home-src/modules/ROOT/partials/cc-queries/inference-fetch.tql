@@ -1,0 +1,8 @@
+match
+(subject: $p, object: $f, action: $act) isa permission;
+$act isa action, has name "read";
+$p isa person, has name $name;
+$f isa file, has path $path;
+fetch 
+$name as "Name";
+$path as "Filepath";

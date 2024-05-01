@@ -1,0 +1,12 @@
+define
+
+rule view-permission: when {
+    $p isa person;
+    $f isa file;
+    $act isa action, has name $an;
+    {$an == "write";} or {$an == "full";};
+    (object: $f, subject: $p, action: $act) isa permission;
+    $read-act isa action, has name "read";
+} then {
+    (object: $f, subject: $p, action: $read-act) isa permission;
+};

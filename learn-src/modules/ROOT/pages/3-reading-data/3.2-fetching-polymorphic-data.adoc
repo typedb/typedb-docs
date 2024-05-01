@@ -35,8 +35,9 @@ $book isa book;
 fetch
 $book: title, page-count;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
-We have just changed the type of `$book` from `paperback` to `book`. Now if we *run* image:learn::studio-icons/run-query.png[] this query, the results include paperbacks, hardbacks, and ebooks!
+We have just changed the type of `$book` from `paperback` to `book`. Now if we run this query, the results include paperbacks, hardbacks, and ebooks!
 
 [,json]
 ----
@@ -197,33 +198,11 @@ Inheritance polymorphism:: Allows us to define type hierarchies in the schema an
 Interface polymorphism:: Allows us to define interfaces that can be implemented independently in the schema and then query those interfaces declaratively.
 Parametric polymorphism:: Allows us to write declarative queries that are completely independent of the schema.
 
-// Alternative, but it didn't look great:
-// [cols-3]
-// --
-// .Inheritance polymorphism
-// [.clickable]
-// ****
-// Allows us to define type hierarchies in the schema and then query those hierarchies declaratively.
-// ****
-//
-// .Interface polymorphism
-// [.clickable]
-// ****
-// Allows us to define interfaces that can be implemented independently in the schema and then query those interfaces declaratively.
-// ****
-//
-// .Parametric polymorphism
-// [.clickable]
-// ****
-// Allows us to write declarative queries that are completely independent of the schema.
-// ****
-// --
-
-In this lesson, we'll be focusing on how we can use each type of polymorphism in our queries. We'll see in xref:learn::5-defining-schemas/5-defining-schemas.adoc[Lesson 5] how we can define type hierarchies and interfaces in the schema.
+In this lesson, we'll be focusing on how we can use each type of polymorphism in our queries. We'll see in xref:learn::5-defining-schemas/overview.adoc[Lesson 5] how we can define type hierarchies and interfaces in the schema.
 
 == Inheritance polymorphism
 
-In the last query, we used inheritance polymorphism to retrieve the titles and page counts of all types of books. The results contained instances of `paperback`, `hardback`, and `ebook` for the `$book` variable. This is because all three of these types are *subtypes* of `book`, which was the type we specified for `$book`. In fact, it is not possible to return a direct instance of `book` because it is an *abstract* type. We will explore abstract types further in xref:learn::5-defining-schemas/5-defining-schemas.adoc[Lesson 5].
+In the last query, we used inheritance polymorphism to retrieve the titles and page counts of all types of books. The results contained instances of `paperback`, `hardback`, and `ebook` for the `$book` variable. This is because all three of these types are *subtypes* of `book`, which was the type we specified for `$book`. In fact, it is not possible to return a direct instance of `book` because it is an *abstract* type. We will explore abstract types further in xref:learn::5-defining-schemas/overview.adoc[Lesson 5].
 
 Entity, relation, and attribute types can all be defined in *type hierarchies*, which allows us to retrieve their instances together by querying their *supertypes*, as we did with the entity type `book`. In the following query, we retrieve the ISBNs of all paperbacks using the `isbn` attribute type.
 
@@ -234,6 +213,7 @@ $book isa paperback;
 fetch
 $book: isbn;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 [,json]
 ----
@@ -352,6 +332,7 @@ $book isa book;
 fetch
 $book: isbn;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 =====
 ====
 
@@ -364,6 +345,7 @@ $book isa book, has isbn "0500026556";
 fetch
 $book: title, stock;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 [,json]
 ----
@@ -391,13 +373,14 @@ fetch
 $order: id;
 $line: quantity;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 In this query, we specify the type of `$book` to be `paperback` and the type of `$line` to be `order-line` using the `isa` keyword, but nowhere in the query do we explicitly specify the type of `$order`! Instead, we constrain its type according to two facts:
 
 * The type of `$order` must play the role of `order` in `order-line`.
 * The type of `$order` must own the attribute `id`.
 
-This is more than enough information for TypeDB to infer the type of `$order`, which we can see by *running* image:learn::studio-icons/run-query.png[] this query.
+This is more than enough information for TypeDB to infer the type of `$order`, which we can see by running this query.
 
 [,json]
 ----
@@ -443,8 +426,9 @@ $kansas-city isa city, has name "Kansas City";
 fetch
 $x: attribute;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
-In this case, `$x` can be resolved to any type that both plays `located` in `locating`. Essentially, this query will return the attributes of anything located in Kansas City regardless of what it is. If we *run* image:learn::studio-icons/run-query.png[] this query, we see that we return instances of `publication` and `address`!
+In this case, `$x` can be resolved to any type that both plays `located` in `locating`. Essentially, this query will return the attributes of anything located in Kansas City regardless of what it is. If we run this query, we see that we return instances of `publication` and `address`!
 
 [,json]
 ----
@@ -488,16 +472,16 @@ $user isa user, has name "Kevin Morrison";
 fetch
 $action: attribute;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 =====
 
-Based on the results of *running* image:learn::studio-icons/run-query.png[] this query, what types of system actions exist in the schema?
+Based on the results returned by running this query, what types of system actions exist in the schema?
 
 .Answer
 [%collapsible]
 =====
 The types `login`, `order`, and `review`, as they play the role of `action` in `action-execution`.
 =====
-
 ====
 
 
@@ -512,6 +496,7 @@ $entity isa entity;
 fetch
 $entity: attribute;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 This query will retrieve all attributes of all entities. Meanwhile, the following query retrieves the attributes of any two entities that are roleplayers in the same relation.
 
@@ -525,12 +510,13 @@ fetch
 $entity-1: attribute;
 $entity-2: attribute;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 In this query we have omitted the roles that the two entities play! In general, we can omit roles in a relation tuple if we do not care what they are. This is particularly useful for parametric queries, and we will explore this feature more fully in xref:learn::7-understanding-query-patterns/7.2-relation-patterns.adoc[Lesson 7.2].
 
 [NOTE]
 ====
-This particular query would return every pair of entities in a binary relation twice: each of the two entities would be returned in one result as `$entity-1` and in another as `$entity-2`. In fact, it would also return pairs of entities in ternary or higher order relations, returning each possible pair of roleplayers twice. This would result in a large number of redundant results, and we will see how we can return the results of this query in a more useful structure in Lesson 8.3.
+This particular query would return every pair of entities in a binary relation twice: each of the two entities would be returned in one result as `$entity-1` and in another as `$entity-2`. In fact, it would also return pairs of entities in ternary or higher order relations, returning each possible pair of roleplayers twice. This would result in a large number of redundant results, and we will see how we can return the results of queries like these in more useful structures in xref:learn::8-structuring-query-results/8.2-subqueries.adoc[Lesson 8.2].
 ====
 
 While these queries are purely parametric, it is also possible to write non-parametric queries that include parametric statements, as we will see shortly. The defining feature of parametric statements is that they do not include any type names, except for the *root type* keywords `entity`, `relation`, and `attribute`, which allows them to be run against any schema. Much like using https://en.wikipedia.org/wiki/Generic_programming[generics] in application code, using parametric statements in queries can be a challenging aspect of TypeQL, but allows for extremely powerful queries that cannot be expressed in non-polymorphic query languages. We will see several more examples in future lessons.
@@ -555,6 +541,7 @@ $entity-1: attribute;
 $entity-2: attribute;
 $entity-3: attribute;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 =====
 ====
 
@@ -572,6 +559,7 @@ $book isa book;
 fetch
 $book: isbn, title;
 ----
+image:learn::studio-icons/run-query.png[] *_Run_*
 
 [,json]
 ----

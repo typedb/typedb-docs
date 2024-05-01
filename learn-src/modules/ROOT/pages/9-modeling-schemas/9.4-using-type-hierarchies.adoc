@@ -1,0 +1,213 @@
+= Lesson 9.4: Using type hierarchies
+:page-preamble-card: 1
+
+In the previous two lessons, we created and developed a data model for book data. In this lesson, we'll see how we can introduce type hierarchies into the model so that we can leverage inheritance polymorphism in our queries.
+
+.Data table
+[%collapsible]
+====
+[%header,format=csv]
+|===
+include::attachment$books.csv[]
+|===
+====
+
+.Lesson 9.3 schema
+[%collapsible]
+====
+[,typeql]
+----
+define
+book sub entity,
+    owns isbn-13,
+    owns isbn-10,
+    owns title,
+    owns format,
+    owns page-count,
+    owns genre,
+    owns price,
+    owns stock,
+    plays contribution:work,
+    plays publishing:published;
+author sub entity,
+    owns name,
+    plays contribution:contributor;
+editor sub entity,
+    owns name,
+    plays contribution:contributor;
+illustrator sub entity,
+    owns name,
+    plays contribution:contributor;
+other-contributor sub entity,
+    owns name,
+    plays contribution:contributor;
+publisher sub entity,
+    owns name,
+    plays publishing:publisher;
+city sub entity,
+    owns name,
+    plays publishing:location,
+    plays locating:located;
+state sub entity,
+    owns name,
+    plays locating:location,
+    plays locating:located;
+country sub entity,
+    owns name,
+    plays locating:location;
+contribution sub relation,
+    relates contributor,
+    relates work;
+publishing sub relation,
+    relates publisher,
+    relates published,
+    relates location,
+    owns year;
+locating sub relation,
+    relates located,
+    relates location;
+isbn-13 sub attribute, value string;
+isbn-10 sub attribute, value string;
+title sub attribute, value string;
+format sub attribute, value string;
+page-count sub attribute, value long;
+genre sub attribute, value string;
+price sub attribute, value double;
+stock sub attribute, value long;
+name sub attribute, value string;
+year sub attribute, value long;
+----
+====
+
+There are two ways we can go about identifying potential type hierarchies in our schemas: bottom-up and top-down. In the bottom-up approach, we identify a set of types that should share a common supertype. In the top-down approach, we identify a single type that should have multiple subtypes. We'll explore both approaches here.
+
+== Bottom-up hierarchy design
+
+We'll begin with the bottom-up method. The entity types `city`, `state`, and `country` are clearly very alike. Conceptually, these all represent kinds of place, so it makes sense to give them a common supertype `place`. This supertype should be abstract, as it is not possible to have a place that is not one of these kinds, or some other kind not yet defined in the schema.
+
+[,typeql]
+----
+define
+place sub entity,
+    abstract;
+city sub place,
+    owns name,
+    plays publishing:location,
+    plays locating:located;
+state sub place,
+    owns name,
+    plays locating:location,
+    plays locating:located;
+country sub place,
+    owns name,
+    plays locating:location;
+----
+
+Next, we must consider which properties of the subtypes are actually properties that should be inherited from the supertype. The first is ownership of `name`. All three subtypes own `name`, so we can move it to the supertype with no change in expressivity of the current model, however this is a significant change for the development of the model in the future. If we give ownership of `name` to `place`, not only will all three current subtypes inherit the ownership, all future subtypes will inherit it as well. For that reason, we should consider if _all_ kinds of places have names, not just the ones in the data model so far. Indeed, we decide that this is the case, so ownership of `name` is moved to the supertype.
+
+Now we should consider the other interfaces implemented by the subtypes:
+
+* `publishing:location` implemented by `city`.
+* `locating:located` implemented by `city` and `state`.
+* `locating:location` implemented by `state` and `country`.
+
+None of these interfaces are implemented by all three subtypes, so it might seem that we should leave them defined there rather than at the supertype level. Once again though, we need to consider what the behaviour should be if we introduce more subtypes of `place`. Should all kinds of place be publishing locations? Probably not. The front matter of books always lists the city of publication by convention. Should all kinds of place be locations for other places? That seems more likely. We might later introduce a "region" type that is superior to countries, or a "street" type that is inferior to cities. As such, we'll move the playing of `locating:located` and `locating:location` to the supertype, but keep that of `publishing:location` exclusive to `city`.
+
+[,typeql]
+----
+define
+place sub entity,
+    abstract,
+    owns name,
+    plays locating:location,
+    plays locating:located;
+city sub place,
+    plays publishing:location;
+state sub place;
+country sub place;
+----
+
+Grouping existing types into hierarchies in this way is not always a good idea. As types in the PERA model can only have a single supertype, we must choose our types carefully. The fact the several types exhibit common behaviours is not necessarily an indicator that they are all subtypes of a common supertype, as we can alternatively encode those common behaviours by having the types independently implement the same interfaces. We will see an example of such a case in xref:learn::9-modeling-schemas/9.5-composition-over-inheritance.adoc[Lesson 9.5].
+
+[IMPORTANT]
+=====
+A type should only be considered a subtype of another type if every instance of the subtype is _necessarily_ an instance of the supertype. For instance, every city is necessarily a place. If this is not the case, then subtyping is likely a poor modeling choice for the types in question.
+=====
+
+== Top-down hierarchy design
+
+Next, we'll try the top-down method. Building type hierarchies top-down can be harder because it is often less obvious that a hierarchy should be present at all. The biggest indicator of a potential top-down hierarchy is when typing information is being stored as data. Let's examine an example.
+
+Currently, the schema shows that `book` owns `format`. If we examine the data table, we see that each book has exactly one format and that there are only a small number of these formats: "paperback", "hardback", and "ebook". As such, it would make sense for these to be subtypes of book. This is a case where typing information has been stored in a way that is structurally indistinguishable from data, as is often the case when working with tabulated data or non-polymorphic databases. Because of the lack of subtyping in other data modeling paradigms, types must be stored as properties in this way, or that data must be divided into separate structures (tables, documents, etc.) per type.
+
+There is an additional hint that this field in the data table represents a type: the `stock` attribute is absent for any book with the format "ebook". This makes sense of course, as an ebook cannot possibly go out of stock. The exclusivity of the stock property to physical books is another indicator that formats are best modelled as a type hierarchy, as we can then assign the property only to the appropriate subtypes. Based on this, we will create three subtypes of `book`: `paperback`, `hardback`, and `ebook`, and move ownership of `stock` down the hierarchy. As a result, we will also make the supertype abstract, as every book must necessarily have a format.
+
+[,typeql]
+----
+define
+book sub entity,
+    abstract,
+    owns isbn-13,
+    owns isbn-10,
+    owns title,
+    owns page-count,
+    owns genre
+    owns price,
+    plays contribution:work,
+    plays publishing:published;
+paperback sub book,
+    owns stock;
+hardback sub book,
+    owns stock;
+ebook sub book;
+----
+
+In general, the following characteristics are good indicators of types stored as data in a particular field:
+
+* The field always contains exactly one value or is empty.
+* There are a small number of possible values for the field, including being empty.
+* The presence or absence of other fields depends on the value of this field.
+
+Where the field always contains a value, this is indicative that the common supertype is abstract, as we have seen with `book`. If the field is sometimes empty, this would indicate that the common supertype is not abstract, and applies as a non-specialised variant covering cases where the field is empty. We will see an example of such a hierarchy shortly.
+
+Conversely, the following would be indicators against a field containing typing information:
+
+* The field can contain more than one value.
+* There are many possible value for the field.
+* There are no other fields whose presence or absence depends on this field.
+
+An example of a field like this in the current schema would be `genre`.
+
+== Using non-abstract supertypes
+
+In both of the cases we have examined, those of `place` and `book`, it made sense to make the supertype abstract. This is primarily driven by semantic considerations, as it is not possible to have a place without a specific type, or a book without a format. However, non-abstract supertypes are very useful for constructing hierarchies in which some instances will have generalized behaviour, and some will have specialized behaviours in addition to the general behaviours. Let's consider an example.
+
+The current schema includes the types `author`, `editor`, `illustrator`, and `other-contributor`. Adopting a bottom-up approach to hierarchy design, it is clear these types should have a common supertype `contributor`, especially seeing as they have identical interface implementations.
+
+[,typeql]
+----
+define
+contributor sub entity,
+    abstract,
+    owns name,
+    plays contribution:contributor;
+author sub contributor;
+editor sub contributor;
+illustrator sub contributor;
+other-contributor sub contributor;
+----
+
+However, this hierarchy includes the redundant representation `other-contributor`. Such a contributor is merely a contributor that is not an author, editor, or illustrator. In other words, this type is a generalised catch-all subtype. But the type that is supposed to represent the generalised behaviour in a type hierarchy is the supertype. As a result, we should make `contributor` non-abstract and instantiate directly instead of `other-contributor`.
+
+[,typeql]
+----
+define
+contributor sub entity,
+    owns name,
+    plays contribution:contributor;
+author sub contributor;
+editor sub contributor;
+illustrator sub contributor;
+----
+
+Now, if there is a contributor that is an author, editor, or illustrator, we can instantiate the appropriate specialized subtype. Meanwhile, if there is a contributor without a specific role listed, we can instantiate the generalized supertype.

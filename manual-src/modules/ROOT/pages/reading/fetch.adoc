@@ -2,7 +2,7 @@
 :experimental:
 :tabs-sync-option:
 
-In this guide you'll see how to retrieve data from a database and project it as a JSON using Studio,
+In this guide, you'll see how to retrieve data from a database and project it as a JSON using Studio,
 Console, or one of the drivers.
 
 == Understanding Fetch queries
@@ -35,7 +35,8 @@ $u isa user;
 fetch
 $u: name, email;
 ----
-. Run the query by clicking the btn:[Run query] button (image:home::studio-icons/run.png[run]).
+. Run the query by clicking the image:home::studio-icons/svg/play-solid-green.svg[Run query,width=9]
+btn:[Run Query] button.
 --
 
 Console::
@@ -141,26 +142,6 @@ include::manual::partial$python-manual-code.py[tags=fetch]
 ----
 --
 
-Java::
-+
---
-Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core.
-
-[subs="macros, post_replacements, replacements"]
-++++
-Open a data session to the selected database,
-open a read transaction, and use the
-xref:drivers::java/api-reference.adoc#_QueryManager_fetch__com_vaticle_typeql_lang_query_TypeQLFetch[transaction.query.fetch()]
-method:
-++++
-
-[,java,indent=0]
-----
-include::manual::partial$java-manual-code.java[tags=fetch]
-----
---
-
 Node.js::
 +
 --
@@ -181,6 +162,46 @@ include::manual::partial$nodejs-manual-code.js[tags=fetch]
 ----
 --
 
+Java::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a data session to the selected database,
+open a read transaction, and use the
+xref:drivers::java/api-reference.adoc#_QueryManager_fetch__com_vaticle_typeql_lang_query_TypeQLFetch[transaction.query.fetch()]
+method:
+++++
+
+[,java,indent=0]
+----
+include::manual::partial$java-manual-code.java[tags=fetch]
+----
+--
+
+C#::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a data session to the selected database,
+open a read transaction, and use the
+xref:drivers::csharp/api-reference.adoc#_IEnumerable__JObject___TypeDB_Driver_Api_IQueryManager_Fetch___string_query_[transaction.Query.Fetch()]
+method:
+++++
+
+[,csharp,indent=0]
+----
+include::manual::partial$csharp-manual-code.cs[tags=fetch]
+----
+--
+
 C++::
 +
 --
@@ -198,7 +219,28 @@ method:
 [,cpp,indent=0]
 ----
 include::manual::partial$cpp-manual-code.cpp[tags=options,indent=8]
-include::manual::partial$cpp-manual-code.cpp[tags=fetch]
+include::manual::partial$cpp-manual-code.cpp[tags=fetch,indent=0]
+----
+--
+
+C::
++
+--
+Follow the xref:manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to TypeDB Cloud or TypeDB Core.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a data session to the selected database,
+open a read transaction, and use the
+xref:drivers::c/api-reference.adoc#_query_fetch[query_fetch()]
+function:
+++++
+
+[,c,indent=0]
+----
+include::manual::partial$c-manual-code.c[tags=options,indent=0]
+include::manual::partial$c-manual-code.c[tags=fetch,indent=0]
 ----
 --
 ====
