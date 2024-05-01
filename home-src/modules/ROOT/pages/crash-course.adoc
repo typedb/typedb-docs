@@ -9,36 +9,73 @@ For an in-depth dive into these topics, check out our xref:learn::overview.adoc[
 
 == Key ingredients
 
-TypeDB is a novel kind of database,
-combining ideas from classical databases and modern high-level programming languages.
-To get started with TypeDB, let's have a look at three key components and ideas underlying its design.
+TypeDB is a new kind of database that
+combines ideas from classical databases and modern high-level programming languages.
+To get started with TypeDB, let's have a look at three key components and ideas underlying TypeDB's design.
 
-* *<<_type_system,The type system>>*: TypeDB is built on a rich type system enabling us to _directly_ and _safely_ capture the structure and flow of data. This roots in a novel conceptual data model that can express _polymorphic_ dependencies of data and thereby natively adapts, e.g., to relational, graph, and document data.
-* *<<_database_essentials,The querying paradigm>>*: TypeDB approaches database management with a _simple pattern-based querying paradigm_. Building on TypeDB's unique conceptual data model, this provide us with a highly versatile toolset which naturally resolves object-relational mismatch. *_No tables, no joins, no nulls!_*
-* *<<_patterns,The power of patterns>>*: Patterns are used in TypeDB to interact with data and types of all sorts. 
-Patterns read just like statements in _natural language_, and can be easily composed to form new patterns. This makes many tasks that are arduous in traditional databases simple and elegant in TypeDB.
+*1. <<_type_system,The type system>>*. TypeDB is built on a rich type system enabling us to directly capture the structure and flow of the data we work with.
 
-While these topics cover the basics, TypeDB supports several advanced database programming models: for example, with TypeDB we can write *<<_polymorphism,polymorphic queries>>* which automatically adapt to the database schema. The type system also enables the use of *<<_rules,rule-based inference>>* to infer new data on-the-fly using rules, which models logic embedded into a schema. Finally, TypeDB strives for *xref:learn::6-building-applications/6-building-applications.adoc[high embeddability]* in many existing application frameworks, and can be used with various programming languages. For a more comprehensive overview, check out our xref:learn::overview.adoc[Learning Course]!
+.A simple model with 4 inter-dependent types
+[,typeql]
+----
+define
+  pet sub entity, owns name, plays friendship:friend;
+  person sub entity, owns name, plays friendship:friend;
+  friendship sub relation, relates friend;
+  name sub attribute, value string;
+----
+TypeDB's conceptual data model can express polymorphic dependencies of types, which means we can easily combine various data structures including, e.g., relational, graph, and document-like data.
+
+*2. <<_database_essentials,The querying paradigm>>*. TypeDB approaches database management through a simple, pattern-based querying paradigm.
+
+.Find pets and persons with same name who are friends
+[,typeql]
+----
+match
+  $a isa pet, has name $n;
+  $b isa person, has name $n;
+  ($a, $b) isa friendship;
+get $a, $b;
+----
+Building on TypeDB's conceptual data model, this provides us with a highly versatile toolset that resolves a range of deep engineering challenges. *_No tables, no joins, no nulls!_*
+
+*3. <<_patterns,The power of patterns>>*: Patterns are used in TypeDB to interact with data and types of all sorts.
+
+.Insert new friendships between multiple data instances
+[,typeql]
+----
+match
+  $a isa pet, has name "Fluffy";
+  $l isa person, has name $n;
+  $n contains "Luffy";
+insert
+  ($a, $l) isa friendship;
+----
+Patterns often read just like statements in natural language, and can be easily composed to form new patterns. This makes many tasks that are arduous in traditional databases simple and elegant in TypeDB.
+
+In the next sections, we dive deeper into each of the above topics. But note: this crash course covers only the very basics of TypeDB! For a more comprehensive overview, check out our xref:learn::overview.adoc[Learning Course].
 // we can infer new data on-the-fly using rules, which allow us to embed the logic of our data directly into our schema.
 
 [NOTE]
 ====
 To follow the examples on this page, make sure to create a TypeDB database with sample
-xref:home::quickstart.adoc#_define_a_schema[schema] and xref:home::quickstart.adoc#_load_data[data],
+xref:home::quickstart.adoc#_define_a_schema[schema] and xref:home::quickstart.adoc#_load_data[data] for a permission system,
 as instructed in the xref:quickstart.adoc[Quickstart guide].
 ====
 
 [#_type_system]
 == The type system
 
-TypeDB uses the xref:learn::9-modeling-schemas/9.1-the-pera-model.adoc[PERA model], a novel conceptual data model based on recent https://typedb.com/papers/typeql-theory[research]. The model aims to provide higher levels of flexibility and expressivity when working with structured data. The model underpins the type system of TypeDB and its pattern-based xref:typeql::overview.adoc[query language TypeQL].
+TypeDB is based on a novel conceptual data and querying model, called the xref:learn::9-modeling-schemas/9.1-the-pera-model.adoc[PERA model]. This modern database model was introduced in recent https://typedb.com/papers/typeql-theory[research], and aims to provide higher levels of flexibility and expressivity when working with structured data.
 
 === Schema and types
 
-A TypeDB database has a *_schema_*, that describes types definitions.
-A new type can be added by subtyping one of existing types.
-A new database has only three built-in types, called root types: `entity`, `relation`, and `attribute`. Types subtyping these types are called, respectively, entity types, relation types, and attribute types.
-Thus, a schema will create a type hierarchy with three distinct trees and the root types as their roots. The properties of these types are summarized by the table below.
+A TypeDB database has a *_schema_*, that describes type definitions.
+A new type can be added by subtyping an existing type.
+To begin, a new database has only three built-in types, called _root types_: these are the `entity`, `relation`, and `attribute` root type. Types subtyping these root types are called, respectively, entity types, relation types, and attribute types.
+
+A schema will create a type hierarchy with three distinct trees and the root types as their roots. The properties of these types are summarized by the table below.
+
 
 [#_root_types]
 
