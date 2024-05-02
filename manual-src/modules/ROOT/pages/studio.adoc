@@ -47,7 +47,7 @@ To prepare TypeDB Studio for work, you need to complete the following steps:
 
 TypeDB Studio stores queries you work with as files in a local directory, called project directory.
 To select a project directory,
-click on the open folder icon (image:home::studio-icons/project.png[]) in the top toolbar.
+click on the open folder icon (image:home::studio-icons/svg/studio_projects.svg[width=17]) in the top toolbar.
 
 [#_connect_to_typedb]
 === Connect to TypeDB
@@ -102,7 +102,7 @@ image::home::studio-connect-core.png[TypeDB Studio connect window, role=right, w
 
 TypeDB can work with one database at a time.
 To select a database to work with, use the dropdown menu on the right from the database icon
-(image:home::studio-icons/database.png[])
+(image:home::studio-icons/svg/studio_dbs.svg[width=17])
 in the top toolbar.
 
 If there are no databases yet, see how to <<_create_a_database,create>> a new one.
@@ -132,7 +132,7 @@ The file will be created and saved with temporary name in a hidden folder `./typ
 inside the selected project directory.
 There is an autosave feature that persists all the changes made in a file to disk.
 It can be disabled in settings.
-By manually saving (image:home::studio-icons/save.png[]) a temporary file you can rename
+By manually saving (image:home::studio-icons/svg/studio_save.svg[width=17]) a temporary file you can rename
 and move it from the hidden folder.
 
 [#_run_a_query]
@@ -144,12 +144,12 @@ Select a session type (image:manual::icons/session-data.png[])
 and a transaction type (image:manual::icons/transaction-write.png[]) in the top Toolbar.
 
 To run a query file, open it in a tab of the Text editor panel and
-click the btn:[Run Query] button (image:home::studio-icons/run.png[]) from the top Toolbar.
+click the btn:[Run Query] button (image:home::studio-icons/svg/studio_run.svg[width=17]) from the top Toolbar.
 
 For a `write` transaction type wait for a query to complete its execution
 and select one of the transaction control actions:
-Commit (image:home::studio-icons/commit.png[]),
-Close (image:home::studio-icons/close.png[]), etc.
+Commit (image:home::studio-icons/svg/studio_check.svg[width=17]),
+Close (image:home::studio-icons/svg/studio_fail.svg[width=17]), etc.
 
 If a `write` transaction committed successfully -- a blue pop-up with confirmation is displayed.
 If any error occurs during a transaction, it is shown as a red pop-up.
@@ -221,7 +221,7 @@ Only available for `read` transactions.
 
 | 6
 | btn:[Transaction status] indicator
-| image:home::studio-icons/activity.png[]
+| image:home::studio-icons/svg/studio_status.svg[width=17]
 | Transaction activity indicator. +
 Green if there is a transaction opened by TypeDB Studio at this moment. +
 Gray if there is no opened transaction. +
@@ -229,29 +229,29 @@ Rotating animation -- TypeDB Studio processing the query or the results (includi
 
 | 7
 | btn:[Close transaction] button
-| image:home::studio-icons/close.png[]
+| image:home::studio-icons/svg/studio_fail.svg[width=17]
 | Close active transaction without committing the results.
 
 | 8
 | btn:[Rollback transaction] button
-| image:home::studio-icons/revert.png[]
+| image:home::studio-icons/svg/studio_back.svg[width=17]
 | Revert the transaction results without closing it.
 
 | 9
 | btn:[Commit transaction] button
-| image:home::studio-icons/commit.png[]
+| image:home::studio-icons/svg/studio_check.svg[width=17]
 | Commit the changes and close the transaction.
 
 | 10
 | btn:[Run Query] button
-| image:home::studio-icons/run.png[]
+| image:home::studio-icons/svg/studio_run.svg[width=17]
 | Run query or queries in the active tab of the *Text editor* panel.
 It will open a transaction (with the session type and transaction type specified in the *Toolbar* on the left)
 and execute the TypeQL code against the selected database.
 
 | 11
 | btn:[Stop Signal] button
-| image:home::studio-icons/signal.png[]
+| image:home::studio-icons/svg/studio_stop.svg[width=17]
 | Stop query execution after the next result.
 
 |===
@@ -308,7 +308,7 @@ image::drivers::studio/databases-interface-iam-database.png[Database Manager wit
 Creating and deleting databases can be done via the Manage Database window.
 // tag::db_manager[]
 To open the Manage Database window, make sure TypeDB Studio is connected to TypeDB server
-and click on the database button (image:home::studio-icons/database.png[]) in the top toolbar.
+and click on the database button (image:home::studio-icons/svg/studio_dbs.svg[width=17]) in the top toolbar.
 // end::db_manager[]
 
 To create a new database:
@@ -380,7 +380,7 @@ To rename a type:
 . Open the Type Editor window by double-clicking on the selected type in the Type Browser.
 . At the very top, click on the pencil icon immediately right from the type name.
 . Edit the name in the Label field and press the btn:[Rename] button to save the changes.
-. Commit the transaction by the btn:[Commit] (image:home::studio-icons/commit.png[]) button at the top toolbar.
+. Commit the transaction by the btn:[Commit] (image:home::studio-icons/svg/studio_check.svg[width=17]) button at the top toolbar.
 //#todo Add the pencil icon
 
 You can also do the same by right-clicking on the type in the Type Browser panel and choosing the Rename Type option.
@@ -395,7 +395,7 @@ To delete a type:
 
 . Open the Type Editor window by double-clicking on the selected type in the Type Browser.
 . At the very bottom, click the btn:[Delete] button and then the btn:[Confirm] button.
-. Commit the transaction by the btn:[Commit] (image:home::studio-icons/commit.png[]) button at the top toolbar.
+. Commit the transaction by the btn:[Commit] (image:home::studio-icons/svg/studio_check.svg[width=17]) button at the top toolbar.
 
 You can also do the same by right-clicking on the type in the Type browser panel and choosing the Delete option,
 then clicking the btn:[Confirm] button.
