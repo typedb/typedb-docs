@@ -96,7 +96,7 @@ editing sub contribution;
 illustrating sub contribution;
 ----
 
-As we saw in xref:learn::5-defining-schemas/5.2-defining-type-hierarchies.adoc[Lesson 5.2], the role interface `contribution:contributor` is inherited by the subtypes of `contribution`, so they expose it as well. Because `contributor` implements this interface, this allows instances of `contributor` to play the role in instances of all three subtypes (or the supertype).
+As we saw in xref:5-defining-schemas/5.2-defining-type-hierarchies.adoc[Lesson 5.2], the role interface `contribution:contributor` is inherited by the subtypes of `contribution`, so they expose it as well. Because `contributor` implements this interface, this allows instances of `contributor` to play the role in instances of all three subtypes (or the supertype).
 
 [,typeql]
 ----

@@ -2,7 +2,7 @@
 
 == Abstracting complex patterns
 
-In xref:learn::5-defining-schemas/5.4-defining-rules.adoc[Lesson 5.4], we learned how to define *rules* for TypeDB's *rule inference* engine to infer new relations and attributes. In this lesson, we'll learn how to design rules that capture *domain logic*, in this case for the domain of an online bookstore. To begin with, let's consider a piece of domain logic expressed in natural language.
+In xref:5-defining-schemas/5.4-defining-rules.adoc[Lesson 5.4], we learned how to define *rules* for TypeDB's *rule inference* engine to infer new relations and attributes. In this lesson, we'll learn how to design rules that capture *domain logic*, in this case for the domain of an online bookstore. To begin with, let's consider a piece of domain logic expressed in natural language.
 
 [quote]
 ____
@@ -23,7 +23,7 @@ fetch
 $review: id;
 ----
 
-Now let's consider how we might apply this domain logic. Suppose we want to query for the average review score of each book, as we did in xref:learn::8-structuring-query-results/8.3-aggregations.adoc[Lesson 8.3], except this time we only want to include verified reviews in the average.
+Now let's consider how we might apply this domain logic. Suppose we want to query for the average review score of each book, as we did in xref:8-structuring-query-results/8.3-aggregations.adoc[Lesson 8.3], except this time we only want to include verified reviews in the average.
 
 [,typeql]
 ----
@@ -94,7 +94,7 @@ You may find it useful to refer to the bookstore's schema.
 =====
 [,typeql]
 ----
-include::learn::attachment$bookstore-schema.tql[lines=18..]
+include::attachment$bookstore-schema.tql[lines=18..]
 ----
 =====
 
@@ -180,7 +180,7 @@ Now, as long as we continue not to insert or generate instances of `verified`, t
 
 == Ensuring data consistency
 
-Much like views, rules can be a powerful tool for ensuring data consistency. Let's review a query we previously encountered in xref:learn::7-understanding-query-patterns/7.5-value-expressions.adoc[Lesson 7.5], which calculates and inserts a line total for a given order.
+Much like views, rules can be a powerful tool for ensuring data consistency. Let's review a query we previously encountered in xref:7-understanding-query-patterns/7.5-value-expressions.adoc[Lesson 7.5], which calculates and inserts a line total for a given order.
 
 [,typeql]
 ----
@@ -222,7 +222,7 @@ You may find it useful to refer to the bookstore's schema.
 =====
 [,typeql]
 ----
-include::learn::attachment$bookstore-schema.tql[lines=18..]
+include::attachment$bookstore-schema.tql[lines=18..]
 ----
 =====
 

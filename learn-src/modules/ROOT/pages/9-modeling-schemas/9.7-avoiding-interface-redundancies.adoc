@@ -77,7 +77,7 @@ year sub attribute, value long;
 
 == Identifying redundancies
 
-Let's begin by adding the following rule to our schema to make `locating` relations transitive, which we first encountered in xref:learn::5-defining-schemas/5.4-defining-rules.adoc[Lesson 5.4].
+Let's begin by adding the following rule to our schema to make `locating` relations transitive, which we first encountered in xref:5-defining-schemas/5.4-defining-rules.adoc[Lesson 5.4].
 
 [,typeql]
 ----
@@ -294,7 +294,7 @@ $country isa country, has name ?country-name;
 
 When we extend the model to include more concepts with locations, we should always make them play `locating:located`. In this way, this polymorphic query will always be able to find everything in a given location. If we would like to restrict the list of things returned, we can always place further constraints on the type of `$x`.
 
-Nested relation types are an advanced feature of the PERA model. They can be difficult to deal with, and so should be used with caution. Notably, the strategies we explored in xref:learn::4-writing-data/4.3-deleting-data.adoc[Lesson 4.3] for deleting entities and relations cannot be applied universally if there are nested relations in the schema. However, nested relations are also an extremely powerful tool, as we will see in xref:learn::12-advanced-modeling/12.1-using-dependent-types.adoc[Lesson 12.1], where we will explore the full type-theoretic capabilities of the PERA model.
+Nested relation types are an advanced feature of the PERA model. They can be difficult to deal with, and so should be used with caution. Notably, the strategies we explored in xref:4-writing-data/4.3-deleting-data.adoc[Lesson 4.3] for deleting entities and relations cannot be applied universally if there are nested relations in the schema. However, nested relations are also an extremely powerful tool, as we will see in xref:12-advanced-modeling/12.1-using-dependent-types.adoc[Lesson 12.1], where we will explore the full type-theoretic capabilities of the PERA model.
 
 .The final schema
 [%collapsible]

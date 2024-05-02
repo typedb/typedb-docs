@@ -9,7 +9,7 @@
 This Quickstart guide shows how to set up a TypeDB database and run queries using
 xref:manual::studio.adoc[TypeDB Studio].
 
-include::home::overview.adoc[tag=rust-rewrite]
+include::{page-component-version}@home::overview.adoc[tag=rust-rewrite]
 
 == Run TypeDB
 
@@ -33,11 +33,11 @@ see the xref:install/cloud-self-hosted.adoc[Self-hosted deployment] page.
 Core::
 +
 --
-TypeDB Core needs to be xref:home::install/core.adoc[installed] first.
+TypeDB Core needs to be xref:{page-component-version}@home::install/core.adoc[installed] first.
 
-include::home::install/core.adoc[tag=core-run]
+include::{page-component-version}@home::install/core.adoc[tag=core-run]
 
-include::home::partial$docker.adoc[tags=run]
+include::{page-component-version}@home::partial$docker.adoc[tags=run]
 --
 ====
 
@@ -45,7 +45,7 @@ include::home::partial$docker.adoc[tags=run]
 == Connect to TypeDB
 // tag::run_studio[]
 There are several ways to connect to a running TypeDB server. In this quickstart guide we will use *TypeDB Studio*, a standalone TypeDB Client with GUI that needs to be
-xref:home::install/studio.adoc[installed] and launched separately from a TypeDB server.
+xref:{page-component-version}@home::install/studio.adoc[installed] and launched separately from a TypeDB server.
 
 Find the TypeDB Studio binary and run it.
 Click btn:[Connect to TypeDB] on the right side of the top toolbar.
@@ -56,14 +56,14 @@ include::manual::studio.adoc[tag=connect_studio]
 
 To enable TypeDB Studio's IDE functionality, you now need to select a project folder to store your project files. Select a xref:manual::studio.adoc#_select_a_project_directory[project folder]
 by clicking either btn:[Open Project] in the *Project* panel or
-image:home::studio-icons/project.png[] Open Project Directory button in the top toolbar.
+image:{page-component-version}@home::studio-icons/project.png[] Open Project Directory button in the top toolbar.
 
 [#_create_a_database]
 == Create a new database
 
 Create a database to play with:
 
-. Click the database icon (image:home::studio-icons/database.png[]) in the top toolbar.
+. Click the database icon (image:{page-component-version}@home::studio-icons/database.png[]) in the top toolbar.
 . Enter a name for a new database, for example, `typedb-1`, and click btn:[Create].
 . Select the new database from the dropdown to the right of the database icon.
 
@@ -80,8 +80,8 @@ A new database needs a schema before we can load any data:
 ----
 include::attachment$crash-course-schema.tql[]
 ----
-. Click the image:home::studio-icons/run.png[Run query,width=9 query,width=9] btn:[Run Query] button.
-. When the query has completed, click btn:[Commit Transaction] (image:home::studio-icons/commit.png[]).
+. Click the image:{page-component-version}@home::studio-icons/run.png[Run query,width=9 query,width=9] btn:[Run Query] button.
+. When the query has completed, click btn:[Commit Transaction] (image:{page-component-version}@home::studio-icons/commit.png[]).
 
 Now that the schema has been defined, data can be inserted into the database.
 
@@ -97,9 +97,9 @@ Now let's insert some sample data into the newly created database to be able to 
 ----
 include::attachment$crash-course-data.tql[]
 ----
-. Execute all queries in the file by clicking the image:home::studio-icons/svg/play-solid-green.svg[Run query,width=9]
+. Execute all queries in the file by clicking the image:{page-component-version}@home::studio-icons/svg/play-solid-green.svg[Run query,width=9]
 btn:[Run Query] button.
-. When the queries have completed, click btn:[Commit Transaction] (image:home::studio-icons/commit.png[]).
+. When the queries have completed, click btn:[Commit Transaction] (image:{page-component-version}@home::studio-icons/commit.png[]).
 
 Assuming there were no errors in the process, the data is persisted in the database.
 
@@ -122,13 +122,13 @@ Here are some options for your next steps with TypeDB.
 
 [cols-2]
 --
-.xref:home::crash-course.adoc[]
+.xref:{page-component-version}@home::crash-course.adoc[]
 [.clickable]
 ****
 Continue this quickstart guide and learn the basics of TypeDB.
 ****
 
-.xref:learn::overview.adoc[]
+.xref:{page-component-version}@learn::overview.adoc[]
 [.clickable]
 ****
 A comprehensive learning course for TypeDB comprising several individual lessons.

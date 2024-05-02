@@ -2,7 +2,7 @@
 
 == Sorting
 
-The results of any query can be sorted by appending the `sort` modifier to the query. As we learned in xref:learn::8-structuring-query-results/8.3-aggregations.adoc[Lesson 8.3], *modifiers* are appended to queries to modify the results returned in some manner. The following query retrieves the list of every book's title and page count, and sorts by page count in ascending order.
+The results of any query can be sorted by appending the `sort` modifier to the query. As we learned in xref:8-structuring-query-results/8.3-aggregations.adoc[Lesson 8.3], *modifiers* are appended to queries to modify the results returned in some manner. The following query retrieves the list of every book's title and page count, and sorts by page count in ascending order.
 
 [,typeql]
 ----
@@ -349,7 +349,7 @@ You may find it useful to refer to the bookstore's schema.
 =====
 [,typeql]
 ----
-include::learn::attachment$bookstore-schema.tql[lines=18..]
+include::attachment$bookstore-schema.tql[lines=18..]
 ----
 =====
 
@@ -483,7 +483,7 @@ You may find it useful to refer to the bookstore's schema.
 =====
 [,typeql]
 ----
-include::learn::attachment$bookstore-schema.tql[lines=18..]
+include::attachment$bookstore-schema.tql[lines=18..]
 ----
 =====
 

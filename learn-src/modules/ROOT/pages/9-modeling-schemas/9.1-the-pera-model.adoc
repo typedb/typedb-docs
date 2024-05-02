@@ -46,7 +46,7 @@ The biggest difference between the ER and PERA models is that the PERA model per
 
 === Types and casting
 
-The following table summarises the key properties of data-storing types in the PERA model. As we saw in xref:learn::5-defining-schemas/5.2-defining-type-hierarchies.adoc[Lesson 5.2], only an abstract attribute type can have subtypes, in order to prevent ambiguities in the interpretation of queries.
+The following table summarises the key properties of data-storing types in the PERA model. As we saw in xref:5-defining-schemas/5.2-defining-type-hierarchies.adoc[Lesson 5.2], only an abstract attribute type can have subtypes, in order to prevent ambiguities in the interpretation of queries.
 
 [cols="^.^h,^.^,^.^,^.^",caption="",options="header"]
 |===
@@ -68,7 +68,7 @@ ____
 
 The key difference between data-storing and data-structuring types is that only data-storing types can be instantiated directly, and their instances operated on. Meanwhile, the data-structuring types serve to define the behaviours of these data instances. The following diagram summarises the ways in which different kinds of types in the PERA model are associated.
 
-image::learn::typeql-terminology.png[role=framed, width = 75%, link=self]
+image::typeql-terminology.png[role=framed, width = 75%, link=self]
 
 The upcasting of types into their supertypes enables the use of inheritance polymorphism in queries. Similarly, object types can be upcast into the interface types they implement, which enables interface polymorphism in queries. Finally, attribute types can also be upcast into their value types, which enables arithmetic expressions.
 

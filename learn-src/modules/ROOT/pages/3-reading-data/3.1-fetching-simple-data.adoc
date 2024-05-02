@@ -11,7 +11,7 @@ $book isa paperback;
 fetch
 $book: attribute;
 ----
-image:learn::studio-icons/run-query.png[] *_Run_*
+image:studio-icons/run-query.png[] *_Run_*
 
 This is equivalent to the following SQL query.
 
@@ -25,7 +25,7 @@ This TypeQL query comprises two *clauses*: a `match` clause and a `fetch` clause
 
 The `match` clause is equivalent to a *selection* in SQL. It identifies what entity types (tables) we wish to retrieve data from. It can also specify further constraints that the retrieved data must meet, as we'll see shortly. The `fetch` clause is equivalent to a *projection* in SQL. It specifies what attributes (columns) we would like to retrieve for the entities (rows) identified. In this case, we've chosen to retrieve _all_ attributes using the `attribute` keyword.
 
-Using a *data* session and *read* transaction, *run* image:learn::studio-icons/run-query.png[] this query. You should see the following result.
+Using a *data* session and *read* transaction, *run* image:studio-icons/run-query.png[] this query. You should see the following result.
 
 [,json]
 ----
@@ -222,7 +222,7 @@ $user isa user;
 fetch
 $user: attribute;
 ----
-image:learn::studio-icons/run-query.png[] *_Run_*
+image:studio-icons/run-query.png[] *_Run_*
 =====
 ====
 
@@ -237,7 +237,7 @@ $book isa paperback;
 fetch
 $book: title, page-count;
 ----
-image:learn::studio-icons/run-query.png[] *_Run_*
+image:studio-icons/run-query.png[] *_Run_*
 
 If we run this query, we see the following result.
 
@@ -345,7 +345,7 @@ $book isa paperback;
 fetch
 $book: isbn-13, price, stock;
 ----
-image:learn::studio-icons/run-query.png[] *_Run_*
+image:studio-icons/run-query.png[] *_Run_*
 =====
 ====
 
@@ -360,7 +360,7 @@ $book isa paperback, has isbn-13 "9780446310789";
 fetch
 $book: title, page-count;
 ----
-image:learn::studio-icons/run-query.png[] *_Run_*
+image:studio-icons/run-query.png[] *_Run_*
 
 [,json]
 ----
@@ -392,7 +392,7 @@ $book has isbn-13 "9780446310789";
 fetch
 $book: title, page-count;
 ----
-image:learn::studio-icons/run-query.png[] *_Run_*
+image:studio-icons/run-query.png[] *_Run_*
 
 Try running these two queries. You should get the same results.
 
@@ -415,7 +415,7 @@ $book isa paperback, has title "Great Discoveries in Medicine";
 fetch
 $book: page-count, price;
 ----
-image:learn::studio-icons/run-query.png[] *_Run_*
+image:studio-icons/run-query.png[] *_Run_*
 
 With simple statements:
 
@@ -427,7 +427,7 @@ $book has title "Great Discoveries in Medicine";
 fetch
 $book: page-count, price;
 ----
-image:learn::studio-icons/run-query.png[] *_Run_*
+image:studio-icons/run-query.png[] *_Run_*
 =====
 ====
 
@@ -459,7 +459,7 @@ fetch
 $order: id;
 $line: quantity;
 ----
-image:learn::studio-icons/run-query.png[] *_Run_*
+image:studio-icons/run-query.png[] *_Run_*
 
 [,json]
 ----
@@ -528,7 +528,7 @@ $order: id, status;
 $line: quantity;
 $book: price;
 ----
-image:learn::studio-icons/run-query.png[] *_Run_*
+image:studio-icons/run-query.png[] *_Run_*
 =====
 ====
 
@@ -548,7 +548,7 @@ $line: quantity;
 $courier: name;
 $address: street;
 ----
-image:learn::studio-icons/run-query.png[] *_Run_*
+image:studio-icons/run-query.png[] *_Run_*
 
 [,json]
 ----
@@ -649,4 +649,4 @@ This way, we can represent relations with any number of roleplayers.
 [#_footnotes]
 == Footnotes
 
-1. <<_footnote_1,^>> The seasoned SQL engineer will notice that, if paperbacks are not the only item that can be ordered, then we could not use a foreign key to reference them. We'd need a proper strategy for modeling the polymorphism in the model, likely one of Martin Fowler's https://search.worldcat.org/title/1381298808[inheritance design patterns]. If we go with the https://typedb.com/fundamentals/why-polymorphic-database#pattern-3:-class-table-inheritance-17[class-table inheritance] pattern, then the foreign key would instead be to a `product` table. Conveniently, using this pattern means the `isbn_13` column of the `paperback` table would reference the `id` column of the `product` table, so the SQL query shown would remain the same. As a polymorphic database, TypeDB is not affected by these architectural challenges! We'll see how polymorphism is modeled in TypeDB in xref:learn::5-defining-schemas/overview.adoc[Lesson 5].
+1. <<_footnote_1,^>> The seasoned SQL engineer will notice that, if paperbacks are not the only item that can be ordered, then we could not use a foreign key to reference them. We'd need a proper strategy for modeling the polymorphism in the model, likely one of Martin Fowler's https://search.worldcat.org/title/1381298808[inheritance design patterns]. If we go with the https://typedb.com/fundamentals/why-polymorphic-database#pattern-3:-class-table-inheritance-17[class-table inheritance] pattern, then the foreign key would instead be to a `product` table. Conveniently, using this pattern means the `isbn_13` column of the `paperback` table would reference the `id` column of the `product` table, so the SQL query shown would remain the same. As a polymorphic database, TypeDB is not affected by these architectural challenges! We'll see how polymorphism is modeled in TypeDB in xref:5-defining-schemas/overview.adoc[Lesson 5].

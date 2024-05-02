@@ -12,7 +12,7 @@ $user isa user, has id "u0003";
 fetch
 $place: name;
 ----
-image:learn::studio-icons/run-query.png[] *_Run_*
+image:studio-icons/run-query.png[] *_Run_*
 
 [,json]
 ----
@@ -28,7 +28,7 @@ As we can see from the results, the user is located in Newark. Now, toggle on th
 
 [NOTE]
 ====
-If you are using TypeDB Studio, you can find out how to toggle the *infer* option on and off in xref:learn::2-environment-setup/2.2-using-typedb-studio.adoc[Lesson 2.2]. If you are using a different client, then you can find out how to provide this flag for queries in the xref:manual::reading/infer.adoc[rule inference section] of the TypeDB Manual.
+If you are using TypeDB Studio, you can find out how to toggle the *infer* option on and off in xref:2-environment-setup/2.2-using-typedb-studio.adoc[Lesson 2.2]. If you are using a different client, then you can find out how to provide this flag for queries in the xref:manual::reading/infer.adoc[rule inference section] of the TypeDB Manual.
 ====
 
 You should see the following results.
@@ -55,7 +55,7 @@ You should see the following results.
 }
 ----
 
-We haven't inserted any new data or changed our query, but TypeDB is now generating additional results! This is due to TypeDB's built-in *rule inference* engine, which allows it to generate new data based on *rules* defined in the schema. We'll learn how to define rules in xref:learn::5-defining-schemas/5.4-defining-rules.adoc[Lesson 5.4], but for now let's take a quick look at the one we've made use of for the previous query.
+We haven't inserted any new data or changed our query, but TypeDB is now generating additional results! This is due to TypeDB's built-in *rule inference* engine, which allows it to generate new data based on *rules* defined in the schema. We'll learn how to define rules in xref:5-defining-schemas/5.4-defining-rules.adoc[Lesson 5.4], but for now let's take a quick look at the one we've made use of for the previous query.
 
 [,typeql]
 ----
@@ -91,7 +91,7 @@ $us isa country, has name "United States";
 fetch
 $book: title;
 ----
-image:learn::studio-icons/run-query.png[] *_Run_*
+image:studio-icons/run-query.png[] *_Run_*
 
 [,json]
 ----
@@ -224,7 +224,7 @@ $us isa country, has name "United States";
 fetch
 $city: name;
 ----
-image:learn::studio-icons/run-query.png[] *_Run_*
+image:studio-icons/run-query.png[] *_Run_*
 =====
 ====
 
@@ -239,7 +239,7 @@ Rule inference also provides us with a number of additional benefits:
 * Inferred data is only generated once, so results returned are never redundant.
 * Rules can be activated sequentially, leading to complex emergent behaviour.
 
-We will explore rule inference in more detail in xref:learn::10-using-inference/overview.adoc[Lesson 10]. In the meantime, we will continue to make use of it in our queries throughout this course.
+We will explore rule inference in more detail in xref:10-using-inference/overview.adoc[Lesson 10]. In the meantime, we will continue to make use of it in our queries throughout this course.
 
 [IMPORTANT]
 ====

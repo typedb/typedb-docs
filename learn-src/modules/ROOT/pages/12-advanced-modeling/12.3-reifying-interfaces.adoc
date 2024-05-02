@@ -2,7 +2,7 @@
 
 == Reification and de-reification
 
-In xref:learn::12-advanced-modeling/12.1-using-dependent-types.adoc[Lesson 12.1], we saw how references between object types can be stored either as relation types or as role types, as illustrated in the following examples.
+In xref:12-advanced-modeling/12.1-using-dependent-types.adoc[Lesson 12.1], we saw how references between object types can be stored either as relation types or as role types, as illustrated in the following examples.
 
 [,typeql]
 ----
@@ -28,7 +28,7 @@ In the first schema excerpt, the reference between `review` and `book` is repres
 In conceptual modeling, https://en.wikipedia.org/wiki/Reification_(computer_science)[reification] normally refers to the process of replacing a relationship with an https://en.wikipedia.org/wiki/Associative_entity[associative entity]. This is based on classical https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model[ER modeling], in which entities are used to represent concepts and relations represent references between them, identical to the *entity-centric framework* of the PERA model. However, in the *type-theoretic framework*, roles are used to represent references between objects. Thus, replacing a role type with a relation type in the type-theoretic framework of the PERA model is equivalent to reification in the ER model.
 ====
 
-In xref:learn::9-modeling-schemas/9.7-avoiding-interface-redundancies.adoc[Lesson 9.7], we saw how *nested relations*, relations in which another relation plays a role, can be a powerful but complex feature of PERA data models. In general, nested relations are not a common feature of entity-centric models, but are used extensively in type-theoretic models. A type-theoretic model can be transformed into an entity-centric one by reifying any nested relations. Similarly, an entity-centric model can be transformed into a type-theoretic one by de-reifying any binary relation types. As we will explore in this lesson, there are some exceptions to this rule.
+In xref:9-modeling-schemas/9.7-avoiding-interface-redundancies.adoc[Lesson 9.7], we saw how *nested relations*, relations in which another relation plays a role, can be a powerful but complex feature of PERA data models. In general, nested relations are not a common feature of entity-centric models, but are used extensively in type-theoretic models. A type-theoretic model can be transformed into an entity-centric one by reifying any nested relations. Similarly, an entity-centric model can be transformed into a type-theoretic one by de-reifying any binary relation types. As we will explore in this lesson, there are some exceptions to this rule.
 
 == Relocating interface implementations
 
@@ -45,7 +45,7 @@ review plays action-execution:action;
 user plays action-execution:executor;
 ----
 
-The type-theoretic version in xref:learn::12-advanced-modeling/12.1-using-dependent-types.adoc[Lesson 12.1] de-reified the relation type to the role type `review:reviewer`. This would leave the `timestamp` attribute type without an object type to own it, but this was solved by relocating it to `review`.
+The type-theoretic version in xref:12-advanced-modeling/12.1-using-dependent-types.adoc[Lesson 12.1] de-reified the relation type to the role type `review:reviewer`. This would leave the `timestamp` attribute type without an object type to own it, but this was solved by relocating it to `review`.
 
 [,typeql]
 ----
@@ -90,7 +90,7 @@ book plays promotion:item;
 
 But neither `promotion` nor `book` can own `discount` without incurring information loss. A book may be in multiple promotions, and a promotion may contain multiple books. This means that neither has a one-to-one mapping onto the removed `promotion-inclusion` relation. As a result, this relation cannot be safely de-reified.
 
-Let's return to the definition of the `Promotion` class from xref:learn::12-advanced-modeling/12.1-using-dependent-types.adoc[Lesson 12.1], and now introduce a method that allows us to add books.
+Let's return to the definition of the `Promotion` class from xref:12-advanced-modeling/12.1-using-dependent-types.adoc[Lesson 12.1], and now introduce a method that allows us to add books.
 
 [,python]
 ----
@@ -197,7 +197,7 @@ contributor plays book:author,
     plays book:contributor;
 ----
 
-However, we run into an issue if we would like to query all contributors to a book. We saw in xref:learn::9-modeling-schemas/9.6-using-interface-hierarchies.adoc[Lesson 9.6] that we can use the following pattern to do so with the entity-centric schema.
+However, we run into an issue if we would like to query all contributors to a book. We saw in xref:9-modeling-schemas/9.6-using-interface-hierarchies.adoc[Lesson 9.6] that we can use the following pattern to do so with the entity-centric schema.
 
 [,typeql]
 ----
@@ -326,6 +326,6 @@ publisher plays book:publisher;
 city plays book:location;
 ----
 
-Here we have named the role for the city of the book's publication `book:location` in order to maximise the polymorphic querying capabilities of the model, as we learned in xref:learn::12-advanced-modeling/12.2-using-type-theoretic-relations.adoc[Lesson 12.2].
+Here we have named the role for the city of the book's publication `book:location` in order to maximise the polymorphic querying capabilities of the model, as we learned in xref:12-advanced-modeling/12.2-using-type-theoretic-relations.adoc[Lesson 12.2].
 =====
 ====

@@ -24,19 +24,19 @@ If you are new to TypeDB, the following pages will help you get started.
 
 [cols-3]
 --
-.xref:home::install/overview.adoc[]
+.xref:{page-component-version}@home::install/overview.adoc[]
 [.clickable]
 ****
 Setup and run TypeDB environment and tools.
 ****
 
-.xref:home::quickstart.adoc[]
+.xref:{page-component-version}@home::quickstart.adoc[]
 [.clickable]
 ****
 Connect to TypeDB and create a simple database.
 ****
 
-.xref:home::crash-course.adoc[]
+.xref:{page-component-version}@home::crash-course.adoc[]
 [.clickable]
 ****
 Learn about the basics of TypeDB.
@@ -49,73 +49,73 @@ An end-to-end learning experience for TypeDB and TypeQL. Through the lens of a s
 
 [cols-3]
 --
-.xref:learn::1-why-typedb/1-why-typedb.adoc[]
+.xref:{page-component-version}@learn::1-why-typedb/1-why-typedb.adoc[]
 [.clickable]
 ****
 Introduction to the unique features that sets TypeDB apart from other databases and the design philosophy behind them.
 ****
 
-.xref:learn::2-environment-setup/2-environment-setup.adoc[]
+.xref:{page-component-version}@learn::2-environment-setup/2-environment-setup.adoc[]
 [.clickable]
 ****
 Easy guide to setting up and using the sample environment needed to run the queries featured in examples and exercises.
 ****
 
-.xref:learn::3-reading-data/3-reading-data.adoc[]
+.xref:{page-component-version}@learn::3-reading-data/3-reading-data.adoc[]
 [.clickable]
 ****
 Learn how to read data from TypeDB, including declarative polymorphic querying, rule inference, and retrieving types from the schema.
 ****
 
-.xref:learn::4-writing-data/4-writing-data.adoc[]
+.xref:{page-component-version}@learn::4-writing-data/4-writing-data.adoc[]
 [.clickable]
 ****
 Learn how to write data to TypeDB, covering insert, delete, and update operations, including polymorphic data writes.
 ****
 
-.xref:learn::5-defining-schemas/5-defining-schemas.adoc[]
+.xref:{page-component-version}@learn::5-defining-schemas/5-defining-schemas.adoc[]
 [.clickable]
 ****
 Learn how to define schemas for TypeDB, including type hierarchies, interfaces between types, value constraints, and inference rules.
 ****
 
-.xref:learn::6-building-applications/6-building-applications.adoc[]
+.xref:{page-component-version}@learn::6-building-applications/6-building-applications.adoc[]
 [.clickable]
 ****
 Learn how to build applications on TypeDB, covering database management, transaction control, and result stream processing.
 ****
 
-.xref:learn::7-understanding-query-patterns/7-understanding-query-patterns.adoc[]
+.xref:{page-component-version}@learn::7-understanding-query-patterns/7-understanding-query-patterns.adoc[]
 [.clickable]
 ****
 Learn how to build query patterns utilising advanced elements of TypeQL syntax, and how queries are resolved by TypeDB.
 ****
 
-.xref:learn::8-structuring-query-results/8-structuring-query-results.adoc[]
+.xref:{page-component-version}@learn::8-structuring-query-results/8-structuring-query-results.adoc[]
 [.clickable]
 ****
 Learn how to structure query results in the optimal manner, covering result grouping, aggregations, sorting, and pagination.
 ****
 
-.xref:learn::9-modeling-schemas/9-modeling-schemas.adoc[]
+.xref:{page-component-version}@learn::9-modeling-schemas/9-modeling-schemas.adoc[]
 [.clickable]
 ****
 Learn how to design schemas for TypeDB using the conceptual PERA model, including common design patterns and pitfalls.
 ****
 
-.xref:learn::10-using-inference/10-using-inference.adoc[]
+.xref:{page-component-version}@learn::10-using-inference/10-using-inference.adoc[]
 [.clickable]
 ****
 Learn how to use rule inference to abstract complex patterns into simple forms, and capture complex logic with combinations of rules.
 ****
 
-.xref:learn::11-manipulating-stateful-objects/11-manipulating-stateful-objects.adoc[]
+.xref:{page-component-version}@learn::11-manipulating-stateful-objects/11-manipulating-stateful-objects.adoc[]
 [.clickable]
 ****
 Learn how to use retrieve data instances and schema types from the database as stateful objects and perform operations on them.
 ****
 
-.xref:learn::12-advanced-modeling/12-advanced-modeling.adoc[]
+.xref:{page-component-version}@learn::12-advanced-modeling/12-advanced-modeling.adoc[]
 [.clickable]
 ****
 Learn how to eliminate mismatch with applications by using the type-theoretic framework of the PERA model for schema design.
@@ -182,44 +182,44 @@ See the xref:drivers::overview.adoc[] page or select an environment below:
 
 [cols-3]
 --
-.image:home::rust.png[width=30] xref:drivers::rust/overview.adoc[Rust]
+.image:{page-component-version}@home::rust.png[width=30] xref:drivers::rust/overview.adoc[Rust]
 [.clickable]
 ****
 Add via cargo to use the Rust driver API.
 ****
 
-.image:home::python.png[width=30] xref:drivers::python/overview.adoc[Python]
+.image:{page-component-version}@home::python.png[width=30] xref:drivers::python/overview.adoc[Python]
 [.clickable]
 ****
 Install via pip to use the Python driver API.
 ****
 
-.image:home::nodejs.png[width=30] xref:drivers::nodejs/overview.adoc[Node.js]
+.image:{page-component-version}@home::nodejs.png[width=30] xref:drivers::nodejs/overview.adoc[Node.js]
 [.clickable]
 ****
 Install via NPM to use the Node.js driver API.
 ****
 
-.image:home::java.png[width=30] xref:drivers::java/overview.adoc[Java]
+.image:{page-component-version}@home::java.png[width=30] xref:drivers::java/overview.adoc[Java]
 [.clickable]
 ****
 Add to a Maven project to use the Java driver API.
 ****
 
 [.clickable]
-.image:home::csharp.png[width=30] xref:drivers::csharp/overview.adoc[C#]
+.image:{page-component-version}@home::csharp.png[width=30] xref:drivers::csharp/overview.adoc[C#]
 ****
 Install via NuGet to use the C# driver API.
 ****
 
-.image:home::cpp.png[width=30] xref:drivers::cpp/overview.adoc[C++]
+.image:{page-component-version}@home::cpp.png[width=30] xref:drivers::cpp/overview.adoc[C++]
 [.clickable]
 ****
 Import as a library with a header file to use the C++ driver API.
 ****
 
 [.clickable]
-.image:home::c.png[width=30] xref:drivers::c/overview.adoc[C]
+.image:{page-component-version}@home::c.png[width=30] xref:drivers::c/overview.adoc[C]
 ****
 Import as a library with a header file to use the C driver API.
 ****

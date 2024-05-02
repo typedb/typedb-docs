@@ -8,7 +8,7 @@ Studio provides automated transaction control, so you don't need to open transac
 == Understanding transactions
 
 All queries to a TypeDB database are performed through *transactions*.
-TypeDB transactions provide full xref:home::acid.adoc[ACID guarantees] up to snapshot isolation.
+TypeDB transactions provide full xref:{page-component-version}@home::acid.adoc[ACID guarantees] up to snapshot isolation.
 There are two types of transactions: `read` and `write`.
 Read transactions are read-only, faster, and support inference.
 To open a transaction, you need an open session.
@@ -142,7 +142,7 @@ Studio::
 +
 --
 In the top toolbar click the btn:[Close Transaction] button with the red cross icon:
-image:home::studio-icons/close.png[].
+image:{page-component-version}@home::studio-icons/close.png[].
 
 The button is active only when a transaction is open.
 --
@@ -285,7 +285,7 @@ Studio::
 +
 --
 In the top toolbar click the btn:[Commit Transaction] button with a green check mark:
-image:home::studio-icons/commit.png[].
+image:{page-component-version}@home::studio-icons/commit.png[].
 
 The button is active only when a transaction is open.
 --
@@ -401,7 +401,7 @@ A good principle to follow is for logically coherent queries to be grouped into 
 
 TypeDB transactions use snapshot isolation and optimistic concurrency control to support concurrent,
 lock-free read/write transactions.
-For more information, see the xref:home::acid.adoc[ACID guarantees] page.
+For more information, see the xref:{page-component-version}@home::acid.adoc[ACID guarantees] page.
 
 === Transaction timeout
 
