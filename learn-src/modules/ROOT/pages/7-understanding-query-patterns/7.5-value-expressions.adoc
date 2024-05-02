@@ -18,7 +18,7 @@ fetch
 ?line-total;
 ----
 
-Value variables are declared using a `?` prefix, like `?line-total` in this example. They are distinct from *concept variables*, which are declared with a `$` prefix as we saw in xref:learn::3-reading-data/3.1-fetching-simple-data.adoc[Lesson 3.1]. Concept variables represent specific data instances or types within the databases, while value variables represent temporary values that exist only within the scope of a query.
+Value variables are declared using a `?` prefix, like `?line-total` in this example. They are distinct from *concept variables*, which are declared with a `$` prefix as we saw in xref:3-reading-data/3.1-fetching-simple-data.adoc[Lesson 3.1]. Concept variables represent specific data instances or types within the databases, while value variables represent temporary values that exist only within the scope of a query.
 
 === Writing values
 
@@ -130,7 +130,7 @@ You may find it useful to refer to the bookstore's schema.
 =====
 [,typeql]
 ----
-include::learn::attachment$bookstore-schema.tql[lines=18..]
+include::attachment$bookstore-schema.tql[lines=18..]
 ----
 =====
 

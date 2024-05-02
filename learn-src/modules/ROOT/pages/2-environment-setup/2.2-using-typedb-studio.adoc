@@ -7,7 +7,7 @@ TypeDB Studio is a cross-platform IDE for developing with TypeDB. With Studio, y
 
 When you start TypeDB Studio, you should see the following interface.
 
-image::learn::studio-screenshots/1-landing-page-labelled.png[role=framed, width = 75%, link=self]
+image::studio-screenshots/1-landing-page-labelled.png[role=framed, width = 75%, link=self]
 
 There are four key elements:
 
@@ -22,7 +22,7 @@ There are four key elements:
 
 To begin with, we'll need to open a project. Click the *Open Project* button in the Project panel to open the project directory window.
 
-image::learn::studio-screenshots/2-open-project.png[role=framed, width = 75%, link=self]
+image::studio-screenshots/2-open-project.png[role=framed, width = 75%, link=self]
 
 Choose a directory in which to save your project files and click the *Open* button. You should now see a file tree in the Project panel.
 
@@ -30,19 +30,19 @@ Choose a directory in which to save your project files and click the *Open* butt
 
 Next, we'll connect to the server. Click the *Connect to TypeDB* button in the Type Browser panel to open the server connection window.
 
-image::learn::studio-screenshots/3-open-connection.png[role=framed, width = 75%, link=self]
+image::studio-screenshots/3-open-connection.png[role=framed, width = 75%, link=self]
 
-Select `TypeDB` from the Server dropdown, enter `localhost:1730` into the Address box, then click the *Connect* button. If Studio connects successfully, you should see the address displayed on the top-right of the toolbar. If Studio fails to connect, ensure that the Docker image we started in xref:learn::2-environment-setup/2.1-sample-deployment.adoc[Lesson 2.1] is running and available at the expected address.
+Select `TypeDB` from the Server dropdown, enter `localhost:1730` into the Address box, then click the *Connect* button. If Studio connects successfully, you should see the address displayed on the top-right of the toolbar. If Studio fails to connect, ensure that the Docker image we started in xref:2-environment-setup/2.1-sample-deployment.adoc[Lesson 2.1] is running and available at the expected address.
 
 === Select a database
 
 After connecting to the server, the button in the Type Browser panel will update to read *Select Database*. Click on it to open the database selection window.
 
-image::learn::studio-screenshots/4-open-session.png[role=framed, width = 75%, link=self]
+image::studio-screenshots/4-open-session.png[role=framed, width = 75%, link=self]
 
 The dropdown menu will display a list of databases on the server. Select the `bookstore` sample database and click the *Close* button. The Type Browser should update to show the list of types in the sample database.
 
-image::learn::studio-screenshots/5-end-state.png[role=framed, width = 75%, link=self]
+image::studio-screenshots/5-end-state.png[role=framed, width = 75%, link=self]
 
 We're now ready to begin running queries.
 
@@ -52,7 +52,7 @@ We're now ready to begin running queries.
 
 To begin with, let's review the controls on the toolbar.
 
-image::learn::studio-screenshots/6-toolbar.png[role=framed, width = 75%, link=self]
+image::studio-screenshots/6-toolbar.png[role=framed, width = 75%, link=self]
 
 The following controls will be important throughout this course.
 
@@ -61,35 +61,35 @@ The following controls will be important throughout this course.
 | Name | Control ^.^| Description
 
 | Database manager
-| image:learn::studio-icons/database-manager.png[]
+| image:studio-icons/database-manager.png[]
 | Use this button to open the *database manager*. From there, you can create and delete databases.
 
 | Database selector
-| image:learn::studio-icons/database-selector.png[]
+| image:studio-icons/database-selector.png[]
 | Use this dropdown menu to select a database to work with. Unless the course material says otherwise, we'll be working with the `bookstore` database.
 
 | Session switch
-| image:learn::studio-icons/session-switch.png[]
+| image:studio-icons/session-switch.png[]
 | Use these buttons to toggle between *schema* and *data* sessions. The course material will tell you when to switch session types. For now, switch to a data session.
 
 | Transaction switch
-| image:learn::studio-icons/transaction-switch.png[]
+| image:studio-icons/transaction-switch.png[]
 | Use these buttons to toggle between *write* and *read* transactions. The course material will tell you when to switch transaction types. For now, switch to a read transaction.
 
 | Inference toggle
-| image:learn::studio-icons/inference-toggle.png[]
-| Use this button to toggle *rule inference* on and off. For now, make sure it's switched off, otherwise you may get back unexpected query results. We'll explore rule inference in xref:learn::3-reading-data/3.3-fetching-inferred-data.adoc[Lesson 3.3].
+| image:studio-icons/inference-toggle.png[]
+| Use this button to toggle *rule inference* on and off. For now, make sure it's switched off, otherwise you may get back unexpected query results. We'll explore rule inference in xref:3-reading-data/3.3-fetching-inferred-data.adoc[Lesson 3.3].
 
 | Close transaction
-| image:learn::studio-icons/close-transaction.png[]
+| image:studio-icons/close-transaction.png[]
 | Use this button to *close* an open write transaction without committing the changes to the database.
 
 | Commit transaction
-| image:learn::studio-icons/commit-transaction.png[]
+| image:studio-icons/commit-transaction.png[]
 | Use this button to *commit* an open write transaction, persisting the changes made.
 
 | Run query
-| image:learn::studio-icons/run-query.png[]
+| image:studio-icons/run-query.png[]
 | Use this button to *run* the query displayed in the text editor. If the transaction toggle is set to "write", this will open a transaction which must then be closed or committed.
 |===
 
@@ -97,7 +97,7 @@ The remaining toolbar controls will not be necessary for the majority of this co
 
 === Running a test query
 
-Let's try running a query. To start off, image:learn::studio-icons/new-file.png[] *open* a new window in the text editor and paste in the following query.
+Let's try running a query. To start off, image:studio-icons/new-file.png[] *open* a new window in the text editor and paste in the following query.
 
 [,typeql]
 ----
@@ -107,7 +107,7 @@ fetch
 $book: title, page-count;
 ----
 
-Ensure the session toggle is set to a *data* session and the transaction toggle is set to a *read* query, then image:learn::studio-icons/run-query.png[] *run* the query. You should see the following result.
+Ensure the session toggle is set to a *data* session and the transaction toggle is set to a *read* query, then image:studio-icons/run-query.png[] *run* the query. You should see the following result.
 
 [,json]
 ----
@@ -120,4 +120,4 @@ Ensure the session toggle is set to a *data* session and the transaction toggle 
 }
 ----
 
-If you see this result, you've set up everything correctly and are ready to begin learning how to read data in xref:learn::3-reading-data/3-reading-data.adoc[Lesson 3].
+If you see this result, you've set up everything correctly and are ready to begin learning how to read data in xref:3-reading-data/3-reading-data.adoc[Lesson 3].

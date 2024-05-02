@@ -8,22 +8,22 @@ using <<_docker,Docker>> image,
 via <<_package,package manager>>, or by
 <<_manual,manual installation>>.
 For self-hosted TypeDB Cloud installation and setup,
-see the xref:{page-component-version}@home::install/cloud-self-hosted.adoc[Self-hosted deployment] page.
+see the xref:install/cloud-self-hosted.adoc[Self-hosted deployment] page.
 
 [#_docker]
 == Docker
 
-include::home::partial$docker.adoc[tag=install]
+include::partial$docker.adoc[tag=install]
 
 === Run
 
-include::home::partial$docker.adoc[tags=run]
+include::partial$docker.adoc[tags=run]
 
-include::home::partial$docker.adoc[tags=run-info]
+include::partial$docker.adoc[tags=run-info]
 
-include::home::partial$docker.adoc[tag=stop]
+include::partial$docker.adoc[tag=stop]
 
-include::home::partial$docker.adoc[tag=start]
+include::partial$docker.adoc[tag=start]
 
 [#_package]
 == Package manager
@@ -33,13 +33,13 @@ include::home::partial$docker.adoc[tag=start]
 macOS::
 +
 --
-include::home::partial$macos.adoc[tag=install-homebrew]
+include::partial$macos.adoc[tag=install-homebrew]
 --
 
 Linux::
 +
 --
-include::home::partial$linux.adoc[tag=install-apt]
+include::partial$linux.adoc[tag=install-apt]
 --
 
 Windows::
@@ -83,49 +83,49 @@ see the link:https://cloudsmith.io/~typedb/repos/public-release/packages/?q=type
 macOS::
 +
 --
-include::home::partial$macos.adoc[tag=manual-install]
+include::partial$macos.adoc[tag=manual-install]
 --
 
 Linux::
 +
 --
-include::home::partial$linux.adoc[tag=manual-install]
+include::partial$linux.adoc[tag=manual-install]
 --
 
 Windows::
 +
 --
-include::home::partial$win.adoc[tag=manual-install]
+include::partial$win.adoc[tag=manual-install]
 --
 ====
 
 === Run
 
-include::home::install/core.adoc[tags="core-run,core-stop"]
+include::page$install/core.adoc[tags="core-run,core-stop"]
 
 == Learn more
 
 [cols-2]
 --
-.xref:home::install/studio.adoc[]
+.xref:install/studio.adoc[]
 [.clickable]
 ****
 Install an IDE that facilitates the development process for TypeDB.
 ****
 
-.xref:home::quickstart.adoc[]
+.xref:quickstart.adoc[]
 [.clickable]
 ****
 Connect to TypeDB and create a simple sample database.
 ****
 
-.xref:home::crash-course.adoc[]
+.xref:crash-course.adoc[]
 [.clickable]
 ****
 Learn about the basics of TypeDB.
 ****
 
-.xref:learn::course-overview.adoc[Learning course]
+.xref:{page-component-version}@learn::course-overview.adoc[Learning course]
 [.clickable]
 ****
 Check out our dedicated Learning course for TypeDB.

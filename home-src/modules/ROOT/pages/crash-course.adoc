@@ -5,7 +5,7 @@
 :summary: Learn about schema definitions and data operations in TypeDB.
 
 This crash course will give you a quick overview of the main ingredients for building your application with TypeDB.
-For an in-depth dive into these topics, check out our xref:learn::overview.adoc[TypeDB Learning Course].
+For an in-depth dive into these topics, check out our xref:{page-component-version}@learn::overview.adoc[TypeDB Learning Course].
 
 == Key ingredients
 
@@ -55,20 +55,20 @@ insert
 ----
 Patterns often read just like statements in natural language, and can be easily composed to form new patterns. This makes many tasks that are arduous in traditional databases simple and elegant in TypeDB.
 
-In the next sections, we dive deeper into each of the above topics. But note: this crash course covers only the very basics of TypeDB! For a more comprehensive overview, check out our xref:learn::overview.adoc[Learning Course].
+In the next sections, we dive deeper into each of the above topics. But note: this crash course covers only the very basics of TypeDB! For a more comprehensive overview, check out our xref:{page-component-version}@learn::overview.adoc[Learning Course].
 // we can infer new data on-the-fly using rules, which allow us to embed the logic of our data directly into our schema.
 
 [NOTE]
 ====
 To follow the examples on this page, make sure to create a TypeDB database with sample
-xref:{page-component-version}@home::quickstart.adoc#_define_a_schema[schema] and xref:home::quickstart.adoc#_load_data[data] for a permission system,
+xref:quickstart.adoc#_define_a_schema[schema] and xref:quickstart.adoc#_load_data[data] for a permission system,
 as instructed in the xref:quickstart.adoc[Quickstart guide].
 ====
 
 [#_type_system]
 == The type system
 
-TypeDB is based on a novel conceptual data and querying model, called the xref:learn::9-modeling-schemas/9.1-the-pera-model.adoc[PERA model]. This modern database model was introduced in recent https://typedb.com/papers/typeql-theory[research], and aims to provide higher levels of flexibility and expressivity when working with structured data.
+TypeDB is based on a novel conceptual data and querying model, called the xref:{page-component-version}@learn::9-modeling-schemas/9.1-the-pera-model.adoc[PERA model]. This modern database model was introduced in recent https://typedb.com/papers/typeql-theory[research], and aims to provide higher levels of flexibility and expressivity when working with structured data.
 
 === Schema and types
 
@@ -93,7 +93,7 @@ A schema will create a type hierarchy with three distinct trees and the root typ
 | Can be abstract | ✓ | ✓ | ✓
 |===
 
-You will find an in-depth explanation of this table and much more in xref:learn::9-modeling-schemas/9-modeling-schemas.adoc[Lesson 9] of the Learning Course.
+You will find an in-depth explanation of this table and much more in xref:{page-component-version}@learn::9-modeling-schemas/overview.adoc[Lesson 9] of the Learning Course.
 
 === Data instances and values
 
@@ -148,7 +148,7 @@ For example, let's match a user by its username and fetch its name:
 
 [,typeql]
 ----
-include::home::partial$cc-queries/subquery.tql[lines=1..4]
+include::{page-component-version}@home::partial$cc-queries/subquery.tql[lines=1..4]
 ----
 
 The above example uses xref:typeql::queries/fetch.adoc#_customize_output[customized output labels] for the JSON output.
@@ -158,7 +158,7 @@ For example, let's add a subquery to fetch paths for all files that the user has
 
 [,typeql]
 ----
-include::home::partial$cc-queries/subquery.tql[]
+include::{page-component-version}@home::partial$cc-queries/subquery.tql[]
 ----
 
 [#_get_queries]
@@ -170,7 +170,7 @@ For example, you can send the following Get query to get all file entities from 
 
 [,typeql]
 ----
-include::home::partial$cc-queries/get-count-files.tql[lines=1..3]
+include::{page-component-version}@home::partial$cc-queries/get-count-files.tql[lines=1..3]
 ----
 
 Then, you can use ConceptMap returned for every matched result to retrieve concepts and manipulate them with driver API.
@@ -194,7 +194,7 @@ that is not related to existing data. For example:
 
 [,typeql]
 ----
-include::home::partial$cc-queries/insert.tql[]
+include::{page-component-version}@home::partial$cc-queries/insert.tql[]
 ----
 
 The above example inserts a new `user` entity, with `username`, `name`, and `email` attributes owned.
@@ -205,7 +205,7 @@ For example, to match a user from a database and insert a new email for this use
 
 [,typeql]
 ----
-include::home::partial$cc-queries/match-insert.tql[]
+include::{page-component-version}@home::partial$cc-queries/match-insert.tql[]
 ----
 
 It is important to note that an `insert` clause is executed _once for every tuple of results_ from the `match` clause, and inserts data using the context of these results.
@@ -218,7 +218,7 @@ In a Delete query we first retrieve data using a `match` clause, and then, based
 
 [,typeql]
 ----
-include::home::partial$cc-queries/delete.tql[]
+include::{page-component-version}@home::partial$cc-queries/delete.tql[]
 ----
 
 In the `delete` clause, we specify a pattern of data that is to be deleted: the ownership of an email of a user. This does _not_ delete the user or the attribute itself, however! 
@@ -235,7 +235,7 @@ For example, let's match a user with the username `bob_93` that has some email t
 
 [,typeql]
 ----
-include::home::partial$cc-queries/update.tql[]
+include::{page-component-version}@home::partial$cc-queries/update.tql[]
 ----
 
 Note, that if the user doesn't have any email, then there will be no deletes or inserts.
@@ -286,7 +286,7 @@ fetch
 $u: name, rating;
 ----
 
-Of course, this example is quite simplistic. But the "modular" approach of type dependencies, via relation roles and attribute ownership, often makes schema modification extremely convenient. Moreover, this can be combined with built-in support for <<_inheritance_polymorphism,inheritance polymorphism>> or the usage of xref:learn::3-reading-data/3.4-fetching-schema-types.adoc[type variablization] (both enabled by TypeDB's type inference)
+Of course, this example is quite simplistic. But the "modular" approach of type dependencies, via relation roles and attribute ownership, often makes schema modification extremely convenient. Moreover, this can be combined with built-in support for <<_inheritance_polymorphism,inheritance polymorphism>> or the usage of xref:{page-component-version}@learn::3-reading-data/3.4-fetching-schema-types.adoc[type variablization] (both enabled by TypeDB's type inference)
 to organically incorporate schema changes into existing queries.
 
 [#_patterns]
@@ -307,7 +307,7 @@ for every matched instance, retrieves all their names and emails:
 .TypeQL query example
 [,typeql]
 ----
-include::home::partial$cc-queries/list-users.tql[]
+include::{page-component-version}@home::partial$cc-queries/list-users.tql[]
 ----
 
 The above is a xref:typeql::queries/fetch.adoc[Fetch query],
@@ -343,7 +343,7 @@ Let's modify the previous query's pattern to retrieve a specific user who has na
 .Composable pattern example
 [,typeql]
 ----
-include::home::partial$cc-queries/fetch-all-bob-emails.tql[]
+include::{page-component-version}@home::partial$cc-queries/fetch-all-bob-emails.tql[]
 ----
 
 The first line of the pattern inside the `match` clause now specifies that user must have a name,
@@ -368,7 +368,7 @@ The result of the above query now includes only one user that matches the new pa
 
 Relations in TypeDB make expressing data dependencies simple and efficient, without the need for joins, tables, foreign keys, or any other “hacks” to model complex data. A relation type collects “linkages” between objects of other types. 
 
-The specification of these linkages is given by the schema: a relation type has _roles_ which can be _played_ by other types. For example, in the xref:home::quickstart.adoc#_define_a_schema[sample schema] for this crash course, we specified:
+The specification of these linkages is given by the schema: a relation type has _roles_ which can be _played_ by other types. For example, in the xref:{page-component-version}@home::quickstart.adoc#_define_a_schema[sample schema] for this crash course, we specified:
 .Inserting relation permission
 [,typeql]
 ----
@@ -396,7 +396,7 @@ In the above example, we start by matching the user and file in the database fir
 and then we insert the `permission` relation with the user playing the `subject` role
 and the file playing the `object` role.
 
-Note, that the `permission` relation type is defined in the xref:home::quickstart.adoc#_define_a_schema[sample schema] of the Quickstart guide as having _three_ roles.
+Note, that the `permission` relation type is defined in the xref:{page-component-version}@home::quickstart.adoc#_define_a_schema[sample schema] of the Quickstart guide as having _three_ roles.
 An incomplete relation that has no players for some of its roles is considered an incomplete data state, but is permitted in the database.
 
 ==== N-ary relations
@@ -420,7 +420,7 @@ For example, what files does the user with name "Bob" has full access to?
 
 [,typeql]
 ----
-include::home::partial$cc-queries/n-relations.tql[]
+include::{page-component-version}@home::partial$cc-queries/n-relations.tql[]
 ----
 
 === Attribute patterns
@@ -456,7 +456,7 @@ For example, let's insert a new person that owns two names: `Bob` and `Another B
 
 [,typeql]
 ----
-include::home::partial$cc-queries/attributes.tql[lines=6..7]
+include::{page-component-version}@home::partial$cc-queries/attributes.tql[lines=6..7]
 ----
 
 You can limit behavior this by using the xref:typeql::statements/key.adoc[key statement],
@@ -470,11 +470,11 @@ Storage space and memory consumption are optimized in this way as data is natura
 
 [,typeql]
 ----
-include::home::partial$cc-queries/attributes.tql[lines=9..12]
+include::{page-component-version}@home::partial$cc-queries/attributes.tql[lines=9..12]
 ----
 For example, if multiple people have the same name, they have ownership of the same attribute:
 
-image::home::bobs.png[Multiple Bobs, role=framed, width = 50%, link=self]
+image::{page-component-version}@home::bobs.png[Multiple Bobs, role=framed, width = 50%, link=self]
 
 It is useful to think of attribute values as immutable: i.e. you can’t change the value of an attribute (since the attribute _is_ its value and type). What you can do is to delete ownership of one attribute and insert ownership of another, for example,
 with an <<_updates,Update query>>.
@@ -498,7 +498,7 @@ For a simple example, let's match all entities in a database and fetch all their
 
 [,typeql]
 ----
-include::home::partial$cc-queries/inheritance-polymorphism.tql[]
+include::{page-component-version}@home::partial$cc-queries/inheritance-polymorphism.tql[]
 ----
 
 The output of such a query includes all entities in a database,
@@ -517,7 +517,7 @@ For example, let's match all data instances that have a name, without specifying
 
 [,typeql]
 ----
-include::home::partial$cc-queries/interface-polymorphism.tql[]
+include::{page-component-version}@home::partial$cc-queries/interface-polymorphism.tql[]
 ----
 
 The above example can match any type, as long as it's data instance owns a `name` attribute.
@@ -531,7 +531,7 @@ For example, let's match any data instance that has any attribute with a value b
 
 // [,typeql]
 // ----
-// include::home::partial$cc-queries/parametric-polymorphism.tql[]
+// include::{page-component-version}@home::partial$cc-queries/parametric-polymorphism.tql[]
 // ----
 
 
@@ -544,7 +544,7 @@ fetch
 $data: attribute;
 ----
 
-The result of the above query sent to our sample database from the xref:home::quickstart.adoc[Quickstart guide]
+The result of the above query sent to our sample database from the xref:{page-component-version}@home::quickstart.adoc[Quickstart guide]
 includes a `file` entity owning a `size-kb` attribute, that is bigger than `100`:
 
 [,json]
@@ -576,7 +576,7 @@ if a permission with actions `write` or `full` already exist in the database for
 
 [,typeql]
 ----
-include::home::partial$cc-queries/inference-rule.tql[]
+include::{page-component-version}@home::partial$cc-queries/inference-rule.tql[]
 ----
 
 To use the inference, xref:manual::reading/infer.adoc[enable the `infer` transaction option]
@@ -584,7 +584,7 @@ and use the following fetch query:
 
 [,typeql]
 ----
-include::home::partial$cc-queries/inference-fetch.tql[]
+include::{page-component-version}@home::partial$cc-queries/inference-fetch.tql[]
 ----
 
 The above query matches all files and people that participate in a `permission` relation
@@ -598,5 +598,5 @@ directly, all results returned must be obtained though inference with the rule w
 A single rule can infer a single relation or a single attribute ownership.
 But a rule can be applied many times, as long as it's producing new results.
 You can use multiple rules in a schema, and combine them with advanced technics, like
-xref:learn::10-using-inference/10.2-rule-chaining.adoc[chaining] or
-xref:learn::10-using-inference/10.3-rule-branching.adoc[branching] rules!
+xref:{page-component-version}@learn::10-using-inference/10.2-rule-chaining.adoc[chaining] or
+xref:{page-component-version}@learn::10-using-inference/10.3-rule-branching.adoc[branching] rules!

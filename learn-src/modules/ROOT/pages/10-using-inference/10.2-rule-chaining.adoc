@@ -46,7 +46,7 @@ fetch
 $review: id;
 ----
 
-When executing this query, TypeDB divides the pattern into individual constraints and attempts to search for each of them. Where there are dependencies between constraints, as described in xref:learn::7-understanding-query-patterns/7.6-solution-set-semantics.adoc[Lesson 7.6], these constraints are resolved in the most efficient order as determined by the query planner. At some point, TypeDB will attempt to resolve the following constraint.
+When executing this query, TypeDB divides the pattern into individual constraints and attempts to search for each of them. Where there are dependencies between constraints, as described in xref:7-understanding-query-patterns/7.6-solution-set-semantics.adoc[Lesson 7.6], these constraints are resolved in the most efficient order as determined by the query planner. At some point, TypeDB will attempt to resolve the following constraint.
 
 [,typeql]
 ----
@@ -68,7 +68,7 @@ This pair of rules is just one example of rules that can form a chain, and rule 
 
 == Recursive rule chaining
 
-If the conclusion of a rule occurs in its own condition, it can form a chain with itself, leading to recursive behaviour. We have encountered the following rule several times since it was first introduced in xref:learn::3-reading-data/3.3-fetching-inferred-data.adoc[Lesson 3.3], but now we will spend some time examining it.
+If the conclusion of a rule occurs in its own condition, it can form a chain with itself, leading to recursive behaviour. We have encountered the following rule several times since it was first introduced in xref:3-reading-data/3.3-fetching-inferred-data.adoc[Lesson 3.3], but now we will spend some time examining it.
 
 [,typeql]
 ----

@@ -1,7 +1,7 @@
 = Lesson 7.2: Relation patterns
 :page-preamble-card: 1
 
-We initially learned how to use TypeQL's tuple syntax to represent relations in xref:learn::3-reading-data/3.1-fetching-simple-data.adoc[Lesson 3.1]. In this lesson, we will cover the many flexible ways that TypeQL allows us to format relation tuples to represent different kinds of relations.
+We initially learned how to use TypeQL's tuple syntax to represent relations in xref:3-reading-data/3.1-fetching-simple-data.adoc[Lesson 3.1]. In this lesson, we will cover the many flexible ways that TypeQL allows us to format relation tuples to represent different kinds of relations.
 
 == N-ary relations
 
@@ -82,7 +82,7 @@ $courier: name;
 
 Functionally, there is a slight difference in semantics. The first form of the query, where we include the destination, will only match instances of `delivery` where there is a roleplayer of `destination`, while the second form can match instances where there is no `destination` roleplayer at all. However, if we always instantiate `delivery` relations with exactly one of each roleplayer, then these two queries will have identical results.
 
-Partial relations are essential to certain queries. For instance, we encountered the following query in xref:learn::4-writing-data/4.3-deleting-data.adoc[Lesson 4.3], which deletes all relations in which a given review is a roleplayer.
+Partial relations are essential to certain queries. For instance, we encountered the following query in xref:4-writing-data/4.3-deleting-data.adoc[Lesson 4.3], which deletes all relations in which a given review is a roleplayer.
 
 [,typeql]
 ----
@@ -115,7 +115,7 @@ You may find it useful to refer to the bookstore's schema.
 =====
 [,typeql]
 ----
-include::learn::attachment$bookstore-schema.tql[lines=18..]
+include::attachment$bookstore-schema.tql[lines=18..]
 ----
 =====
 
