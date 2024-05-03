@@ -72,7 +72,7 @@ commit
 --
 ====
 
-To send an Insert query programmatically, use xref:drivers::overview.adoc[drivers]:
+To send an Insert query programmatically, use xref:{page-component-version}@drivers::overview.adoc[drivers]:
 
 [tabs]
 ====
@@ -82,13 +82,12 @@ Rust::
 Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
-[subs="macros, post_replacements, replacements"]
-++++
+
 Open a data session to the selected database,
 open a write transaction, and use the
-xref:drivers::rust/api-reference.adoc#_struct_QueryManager_insert__[transaction.query().insert()]
+xref:{page-component-version}@drivers::rust/api-reference.adoc#_struct_QueryManager_insert__[transaction.query().insert()]
 method:
-++++
+
 
 [,rust,indent=0]
 ----
@@ -103,13 +102,12 @@ Python::
 Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
-[subs="macros, post_replacements, replacements"]
-++++
+
 Open a data session to the selected database,
 open a write transaction, and use the
-xref:drivers::python/api-reference.adoc#_QueryManager_insert__query_str__options_TypeDBOptions__None[transaction.query.insert()]
+xref:{page-component-version}@drivers::python/api-reference.adoc#_QueryManager_insert__query_str__options_TypeDBOptions__None[transaction.query.insert()]
 method:
-++++
+
 
 [,python,indent=0]
 ----
@@ -123,13 +121,12 @@ Node.js::
 Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
-[subs="macros, post_replacements, replacements"]
-++++
+
 Open a data session to the selected database,
 open a write transaction, and use the
-xref:drivers::nodejs/api-reference.adoc#_QueryManager_insert__query_string__options_TypeDBOptions[transaction.query.insert()]
+xref:{page-component-version}@drivers::nodejs/api-reference.adoc#_QueryManager_insert__query_string__options_TypeDBOptions[transaction.query.insert()]
 method:
-++++
+
 
 [,js,indent=0]
 ----
@@ -143,13 +140,12 @@ Java::
 Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
-[subs="macros, post_replacements, replacements"]
-++++
+
 Open a data session to the selected database,
 open a write transaction, and use the
-xref:drivers::java/api-reference.adoc#_QueryManager_insert__java_lang_String[transaction.query().insert()]
+xref:{page-component-version}@drivers::java/api-reference.adoc#_QueryManager_insert__java_lang_String[transaction.query().insert()]
 method:
-++++
+
 
 [,java,indent=0]
 ----
@@ -162,13 +158,12 @@ C#::
 --
 Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
-[subs="macros, post_replacements, replacements"]
-++++
+
 Open a data session to the selected database,
 open a write transaction, and use the
-xref:drivers::csharp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerinsert___const_stdstring__query__const_Options__options__Options_____const[`transaction.Query.Insert()]
+xref:{page-component-version}@drivers::csharp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerinsert___const_stdstring__query__const_Options__options__Options_____const[`transaction.Query.Insert()]
 method:
-++++
+
 
 [,csharp,indent=0]
 ----
@@ -182,13 +177,12 @@ C++::
 Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
-[subs="macros, post_replacements, replacements"]
-++++
+
 Open a data session to the selected database,
 open a write transaction, and use the
-xref:drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerinsert___const_stdstring__query__const_Options__options__Options_____const[`transaction.query.insert()`]
+xref:{page-component-version}@drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerinsert___const_stdstring__query__const_Options__options__Options_____const[`transaction.query.insert()`]
 method:
-++++
+
 
 [,cpp,indent=0]
 ----
@@ -203,13 +197,12 @@ C::
 Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
-[subs="macros, post_replacements, replacements"]
-++++
+
 Open a data session to the selected database,
 open a write transaction, and use the
-xref:drivers::c/api-reference.adoc#_query_insert[`query_insert()`]
+xref:{page-component-version}@drivers::c/api-reference.adoc#_query_insert[`query_insert()`]
 function:
-++++
+
 
 [,c,indent=0]
 ----
@@ -265,7 +258,7 @@ Both Studio and Console should produce similar results:
 ----
 
 To process the response of an Insert query programmatically,
-you need to collect the response and iterate through it with a xref:drivers::overview.adoc[TypeDB driver].
+you need to collect the response and iterate through it with a xref:{page-component-version}@drivers::overview.adoc[TypeDB driver].
 The number of iterations is equal to the number of the `insert` clause executions and every iteration returns
 a ConceptMap object with inserted data.
 
@@ -281,13 +274,12 @@ Rust::
 Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
-[subs="macros, post_replacements, replacements"]
-++++
+
 Open a data session to the selected database,
 open a write transaction, and use the
-xref:drivers::rust/api-reference.adoc#_struct_QueryManager_insert__[transaction.query().insert()]
+xref:{page-component-version}@drivers::rust/api-reference.adoc#_struct_QueryManager_insert__[transaction.query().insert()]
 method:
-++++
+
 
 [,rust,indent=0]
 ----
@@ -302,13 +294,12 @@ Python::
 Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
-[subs="macros, post_replacements, replacements"]
-++++
+
 Open a data session to the selected database,
 open a write transaction, and use the
-xref:drivers::python/api-reference.adoc#_QueryManager_insert__query_str__options_TypeDBOptions__None[transaction.query.insert()]
+xref:{page-component-version}@drivers::python/api-reference.adoc#_QueryManager_insert__query_str__options_TypeDBOptions__None[transaction.query.insert()]
 method:
-++++
+
 
 [,python,indent=0]
 ----
@@ -322,13 +313,12 @@ Node.js::
 Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
-[subs="macros, post_replacements, replacements"]
-++++
+
 Open a data session to the selected database,
 open a write transaction, and use the
-xref:drivers::nodejs/api-reference.adoc#_QueryManager_insert__query_string__options_TypeDBOptions[transaction.query.insert()]
+xref:{page-component-version}@drivers::nodejs/api-reference.adoc#_QueryManager_insert__query_string__options_TypeDBOptions[transaction.query.insert()]
 method:
-++++
+
 
 [,js,indent=0]
 ----
@@ -342,13 +332,12 @@ Java::
 Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
-[subs="macros, post_replacements, replacements"]
-++++
+
 Open a data session to the selected database,
 open a write transaction, and use the
-xref:drivers::java/api-reference.adoc#_QueryManager_insert__java_lang_String[transaction.query().insert()]
+xref:{page-component-version}@drivers::java/api-reference.adoc#_QueryManager_insert__java_lang_String[transaction.query().insert()]
 method:
-++++
+
 
 [,java,indent=0]
 ----
@@ -362,13 +351,12 @@ C#::
 Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
-[subs="macros, post_replacements, replacements"]
-++++
+
 Open a data session to the selected database,
 open a write transaction, and use the
-xref:drivers::csharp/api-reference.adoc#_IEnumerable__IConceptMap___TypeDB_Driver_Api_IQueryManager_Insert___string_query_[`transaction.query.insert()`]
+xref:{page-component-version}@drivers::csharp/api-reference.adoc#_IEnumerable__IConceptMap___TypeDB_Driver_Api_IQueryManager_Insert___string_query_[`transaction.query.insert()`]
 method:
-++++
+
 
 [,csharp,indent=0]
 ----
@@ -382,13 +370,12 @@ C++::
 Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
-[subs="macros, post_replacements, replacements"]
-++++
+
 Open a data session to the selected database,
 open a write transaction, and use the
-xref:drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerinsert___const_stdstring__query__const_Options__options__Options_____const[`transaction.query.insert()`]
+xref:{page-component-version}@drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerinsert___const_stdstring__query__const_Options__options__Options_____const[`transaction.query.insert()`]
 method:
-++++
+
 
 [,cpp,indent=0]
 ----
@@ -403,13 +390,12 @@ C::
 Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
-[subs="macros, post_replacements, replacements"]
-++++
+
 Open a data session to the selected database,
 open a write transaction, and use the
-xref:drivers::c/api-reference.adoc#_query_insert[`query_insert()`]
+xref:{page-component-version}@drivers::c/api-reference.adoc#_query_insert[`query_insert()`]
 function:
-++++
+
 
 [,c,indent=0]
 ----

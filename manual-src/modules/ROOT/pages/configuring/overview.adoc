@@ -74,9 +74,9 @@ We can estimate the amount of memory the server will need to run a single databa
 
 ////
 [stem]
-++++
+
 "required memory" = "JVM memory" + "2 GB" + (2 xx "configured db-caches in GB") + ("0.5 GB" xx "Number of CPUs")
-++++
+
 ////
 
 `required memory = JVM memory + 2 GB + (2 × configured db-caches in GB) + (0.5 GB × CPUs)`

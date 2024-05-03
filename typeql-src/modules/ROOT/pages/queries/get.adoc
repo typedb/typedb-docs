@@ -5,7 +5,7 @@
 // :page-aliases: typeql::data/get.adoc
 
 A Get query retrieves concepts as stateful objects from a TypeDB database that you can further process with the
-xref:drivers::overview.adoc#_driver_api[driver API] methods.
+xref:{page-component-version}@drivers::overview.adoc#_driver_api[driver API] methods.
 For a practical guide on how to send a Get query to TypeDB,
 see the xref:{page-component-version}@manual::reading/get.adoc[] page of the TypeDB Manual.
 For response processing examples, see the xref:{page-component-version}@manual::objects/data.adoc[data objects] and
@@ -356,7 +356,7 @@ insert $p isa person, has name "Alice", has age 31, has certified-fortune-teller
 insert $p isa person;
 ----
 
-To insert this dataset with any xref:drivers::overview.adoc[other] client --
+To insert this dataset with any xref:{page-component-version}@drivers::overview.adoc[other] client --
 make sure to send every line, except from comments, as a separate insert query.
 
 For more information on an Insert query, see the xref:typeql::queries/insert.adoc[] page.
