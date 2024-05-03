@@ -17,7 +17,7 @@ image::drivers::console.png[TypeDB Console hero image, role="right", width = 50%
 TypeDB Console is a standalone TypeDB client with a command line interface (CLI).
 
 It is the default client distributed with TypeDB, but it can also be installed separately.
-For a standalone installation, see the xref:home:ROOT:install/console.adoc[Install] page.
+For a standalone installation, see the xref:{page-component-version}@home::install/console.adoc[Install] page.
 --
 
 [cols-2]
@@ -69,7 +69,7 @@ You will be prompted for a password.
 [NOTE]
 =====
 On your first login,
-xref:manual::configuring/users.adoc#_first_login[change the password] for the `admin` account.
+xref:configuring/users.adoc#_first_login[change the password] for the `admin` account.
 A TypeDB Cloud deployment will refuse queries until the password is changed from its default value.
 =====
 // end::cloud-psw[]

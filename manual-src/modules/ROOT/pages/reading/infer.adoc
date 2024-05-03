@@ -12,9 +12,9 @@ It can be used in read transactions only, so no new facts get to be persisted in
 
 == How to define a rule
 
-Before you begin, make sure you followed instructions from the xref:manual::reading/get.adoc[] page. Inference uses rules defined in the schema of a database.
+Before you begin, make sure you followed instructions from the xref:reading/get.adoc[] page. Inference uses rules defined in the schema of a database.
 Since our schema from the
-xref:manual::defining/define.adoc[] page has no rules in it, let's add a new rule to the schema first:
+xref:defining/define.adoc[] page has no rules in it, let's add a new rule to the schema first:
 
 .Simple rule example
 [,typeql]
@@ -28,7 +28,7 @@ when {
 ----
 
 Add the `define` keyword at the beginning and send it as a Define query.
-See xref:manual::defining/define.adoc#_how_to_send_a_define_query[How to send a Define query] for exact instructions.
+See xref:defining/define.adoc#_how_to_send_a_define_query[How to send a Define query] for exact instructions.
 
 [#_how_to_send_a_query_with_inference]
 == How to send a query with inference
@@ -42,7 +42,7 @@ The easiest way to send a read query with inference is to use Studio or Console:
 Studio::
 +
 --
-Follow the xref:manual::studio.adoc#_prepare_a_query[Studio manual]
+Follow the xref:studio.adoc#_prepare_a_query[Studio manual]
 to connect to TypeDB and select a project folder.
 Then use the steps below:
 
@@ -132,7 +132,7 @@ To send a fetch query with inference programmatically, use xref:drivers::overvie
 Rust::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 [subs="macros, post_replacements, replacements"]
@@ -145,15 +145,15 @@ method to retrieve data with inference:
 
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
-include::manual::partial$rust-manual-code.rs[tags=infer-fetch]
+include::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::partial$rust-manual-code.rs[tags=infer-fetch]
 ----
 --
 
 Python::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 [subs="macros, post_replacements, replacements"]
@@ -166,14 +166,14 @@ method to retrieve data with inference:
 
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tags=infer-fetch]
+include::partial$python-manual-code.py[tags=infer-fetch]
 ----
 --
 
 Node.js::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 [subs="macros, post_replacements, replacements"]
@@ -186,14 +186,14 @@ method to retrieve data with inference:
 
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tags=infer-fetch]
+include::partial$nodejs-manual-code.js[tags=infer-fetch]
 ----
 --
 
 Java::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 [subs="macros, post_replacements, replacements"]
@@ -206,14 +206,14 @@ method to retrieve data with inference:
 
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tags=infer-fetch]
+include::partial$java-manual-code.java[tags=infer-fetch]
 ----
 --
 
 C#::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 [subs="macros, post_replacements, replacements"]
@@ -226,14 +226,14 @@ method to retrieve data with inference:
 
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tags=infer-fetch]
+include::partial$csharp-manual-code.cs[tags=infer-fetch]
 ----
 --
 
 C++::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 [subs="macros, post_replacements, replacements"]
@@ -246,14 +246,14 @@ method to retrieve data with inference:
 
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tags=infer-fetch,indent=0]
+include::partial$cpp-manual-code.cpp[tags=infer-fetch,indent=0]
 ----
 --
 
 C::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 [subs="macros, post_replacements, replacements"]
@@ -266,7 +266,7 @@ method to retrieve data with inference:
 
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tags=infer-fetch]
+include::partial$c-manual-code.c[tags=infer-fetch]
 ----
 --
 ====

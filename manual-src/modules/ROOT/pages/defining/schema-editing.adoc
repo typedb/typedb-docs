@@ -9,13 +9,13 @@ Besides using Define and Undefine queries, TypeDB also provides a program interf
 TypeDB clients and drivers may implement this interface. On this page, we discuss _two_ yields additional ways of modifying the schema of a database in this way:
 with Studio's <<_modify_with_type_editor,Type Editor>> and with <<_modify_with_driver_api,driver API>> methods.
 
-To learn more about Define queries, see the xref:manual::defining/define.adoc[] page.
+To learn more about Define queries, see the xref:defining/define.adoc[] page.
 
 
 [#_modify_with_type_editor]
 == TypeDB Studio's Type Editor
 
-include::manual::studio.adoc[tag=type-editor]
+include::../studio.adoc[tag=type-editor]
 
 [#_modify_with_driver_api]
 == Schema edits with driver API
@@ -38,7 +38,7 @@ Rust::
 .{code-caption}
 [,rust, indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tags=types-editing]
+include::partial$rust-manual-code.rs[tags=types-editing]
 ----
 
 For more details about these and other API methods, see the xref:drivers::rust/api-reference.adoc[API reference].
@@ -50,7 +50,7 @@ Python::
 .{code-caption}
 [,python, indent=0]
 ----
-include::manual::partial$python-manual-code.py[tags=types-editing]
+include::partial$python-manual-code.py[tags=types-editing]
 ----
 
 For more details about these and other API methods, see the xref:drivers::python/api-reference.adoc[API reference].
@@ -62,7 +62,7 @@ Node.js::
 .{code-caption}
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tags=types-editing]
+include::partial$nodejs-manual-code.js[tags=types-editing]
 ----
 
 For more details about these and other API methods, see the xref:drivers::nodejs/api-reference.adoc[API reference].
@@ -74,7 +74,7 @@ Java::
 .{code-caption}
 [,java, indent=0]
 ----
-include::manual::partial$java-manual-code.java[tags=types-editing]
+include::partial$java-manual-code.java[tags=types-editing]
 ----
 
 For more details about these and other API methods, see the xref:drivers::java/api-reference.adoc[API reference].
@@ -86,7 +86,7 @@ C#::
 .{code-caption}
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tags=types-editing]
+include::partial$csharp-manual-code.cs[tags=types-editing]
 ----
 
 For more details about these and other API methods, see the xref:drivers::csharp/api-reference.adoc[API reference].
@@ -98,7 +98,7 @@ C++::
 .{code-caption}
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tags=types-editing]
+include::partial$cpp-manual-code.cpp[tags=types-editing]
 ----
 
 For more details about these and other API methods, see the xref:drivers::cpp/api-reference.adoc[API reference].
@@ -110,7 +110,7 @@ C::
 .{code-caption}
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tags=types-editing]
+include::partial$c-manual-code.c[tags=types-editing]
 ----
 
 For more details about these and other API methods, see the xref:drivers::c/api-reference.adoc[API reference].
@@ -127,7 +127,7 @@ For more details about these and other API methods, see the xref:drivers::c/api-
 Learn more about Define queries in TypeQL: syntax, behavior, and query examples.
 ****
 
-.xref:manual::writing/overview.adoc[]
+.xref:writing/overview.adoc[]
 [.clickable]
 ****
 Learn how to write some data to a database with the schema you just defined.

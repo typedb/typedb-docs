@@ -2,7 +2,7 @@
 
 In this guide, you'll see how to use driver API methods and stateful objects to programmatically manipulate types and rules
 in a database schema using one of the TypeDB drivers.
-This page assumes you've already followed instructions from the xref:manual::defining/define.adoc[] page.
+This page assumes you've already followed instructions from the xref:defining/define.adoc[] page.
 
 == Understanding schema objects
 
@@ -36,7 +36,7 @@ Rust::
 .Example
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tag=get_type]
+include::partial$rust-manual-code.rs[tag=get_type]
 ----
 
 For more information,
@@ -49,7 +49,7 @@ Python::
 .Example
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tag=get_type]
+include::partial$python-manual-code.py[tag=get_type]
 ----
 For more information,
 see the xref:drivers::python/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -61,7 +61,7 @@ Node.js::
 .Example
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tag=get_type]
+include::partial$nodejs-manual-code.js[tag=get_type]
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -73,7 +73,7 @@ Java::
 .Example
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tag=get_type]
+include::partial$java-manual-code.java[tag=get_type]
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -85,7 +85,7 @@ C#::
 .Example
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tag=get_type]
+include::partial$csharp-manual-code.cs[tag=get_type]
 ----
 For more information,
 see the xref:drivers::csharp/api-reference.adoc#_IConceptManager[IConceptManager class] methods.
@@ -97,7 +97,7 @@ C++::
 .Example
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tag=get_type]
+include::partial$cpp-manual-code.cpp[tag=get_type]
 ----
 For more information,
 see the xref:drivers::cpp/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -109,7 +109,7 @@ C::
 .Example
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tag=get_type]
+include::partial$c-manual-code.c[tag=get_type]
 ----
 For more information,
 see the xref:drivers::c/api-reference.adoc#_Struct_Concept[Concept struct] functions.
@@ -118,7 +118,7 @@ see the xref:drivers::c/api-reference.adoc#_Struct_Concept[Concept struct] funct
 
 ==== Query for types
 
-xref:manual::reading/get.adoc#_how_to_send_a_get_query[Send a Get query] with a pattern to retrieve types
+xref:reading/get.adoc#_how_to_send_a_get_query[Send a Get query] with a pattern to retrieve types
 and process the response to get type objects.
 For example, to get all entity types, send the following Get query:
 
@@ -144,7 +144,7 @@ Rust::
 .Example
 [,rust,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tag=add_type]
+include::partial$python-manual-code.py[tag=add_type]
 ----
 For more information,
 see the xref:drivers::rust/api-reference.adoc#_struct_ConceptManager[ConceptManager class] methods.
@@ -156,7 +156,7 @@ Python::
 .Example
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tag=add_type]
+include::partial$python-manual-code.py[tag=add_type]
 ----
 For more information,
 see the xref:drivers::python/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -168,7 +168,7 @@ Node.js::
 .Example
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tag=add_type]
+include::partial$nodejs-manual-code.js[tag=add_type]
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -180,7 +180,7 @@ Java::
 .Example
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tag=add_type]
+include::partial$java-manual-code.java[tag=add_type]
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -192,7 +192,7 @@ C#::
 .Example
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tag=add_type]
+include::partial$csharp-manual-code.cs[tag=add_type]
 ----
 For more information,
 see the xref:drivers::csharp/api-reference.adoc#_IConceptManager[IConceptManager class] methods.
@@ -204,7 +204,7 @@ C++::
 .Example
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tag=add_type]
+include::partial$cpp-manual-code.cpp[tag=add_type]
 ----
 For more information,
 see the xref:drivers::cpp/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -216,7 +216,7 @@ C::
 .Example
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tag=add_type]
+include::partial$c-manual-code.c[tag=add_type]
 ----
 For more information,
 see the xref:drivers::c/api-reference.adoc#_Struct_Concept[Concept struct] functions.
@@ -245,7 +245,7 @@ Rust::
 .Example
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tag=set_supertype]
+include::partial$rust-manual-code.rs[tag=set_supertype]
 ----
 For more information on methods, available for manipulating Type objects,
 see the xref:drivers::rust/api-reference.adoc#_schema_header[Schema class] methods.
@@ -257,7 +257,7 @@ Python::
 .Example
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tag=set_supertype]
+include::partial$python-manual-code.py[tag=set_supertype]
 ----
 For more information on methods, available for manipulating Type objects,
 see the xref:drivers::python/api-reference.adoc#_schema_header[Schema class] methods.
@@ -269,7 +269,7 @@ Node.js::
 .Example
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tag=set_supertype]
+include::partial$nodejs-manual-code.js[tag=set_supertype]
 ----
 For more information on methods, available for manipulating Type objects,
 see the xref:drivers::python/api-reference.adoc#_schema_header[Schema class] methods.
@@ -281,7 +281,7 @@ Java::
 .Example
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tag=set_supertype]
+include::partial$java-manual-code.java[tag=set_supertype]
 ----
 For more information on methods, available for manipulating Type objects,
 see the xref:drivers::java/api-reference.adoc#_schema_header[Schema class] methods.
@@ -293,7 +293,7 @@ C#::
 .Example
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tag=set_supertype]
+include::partial$csharp-manual-code.cs[tag=set_supertype]
 ----
 For more information on methods, available for manipulating Type objects,
 see the xref:drivers::csharp/api-reference.adoc#_schema_header[Schema class] methods.
@@ -305,7 +305,7 @@ C++::
 .Example
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tag=set_supertype]
+include::partial$cpp-manual-code.cpp[tag=set_supertype]
 ----
 For more information on methods, available for manipulating Type objects,
 see the xref:drivers::cpp/api-reference.adoc#_schema_header[Schema class] methods.
@@ -317,7 +317,7 @@ C::
 .Example
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tag=set_supertype]
+include::partial$c-manual-code.c[tag=set_supertype]
 ----
 For more information on methods, available for manipulating Type objects,
 see the xref:drivers::c/api-reference.adoc#_schema_header[Schema] section functions.
@@ -338,8 +338,8 @@ Rust::
 --
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
-include::manual::partial$rust-manual-code.rs[tags=types-api]
+include::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::partial$rust-manual-code.rs[tags=types-api]
 ----
 --
 
@@ -348,7 +348,7 @@ Python::
 --
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tags=types-api]
+include::partial$python-manual-code.py[tags=types-api]
 ----
 --
 
@@ -357,7 +357,7 @@ Node.js::
 --
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tags=types-api]
+include::partial$nodejs-manual-code.js[tags=types-api]
 ----
 --
 
@@ -366,7 +366,7 @@ Java::
 --
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tags=types-api]
+include::partial$java-manual-code.java[tags=types-api]
 ----
 --
 
@@ -375,7 +375,7 @@ C#::
 --
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tags=types-api]
+include::partial$csharp-manual-code.cs[tags=types-api]
 ----
 --
 
@@ -384,8 +384,8 @@ C++::
 --
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tags=options,indent=0]
-include::manual::partial$cpp-manual-code.cpp[tags=types-api,indent=0]
+include::partial$cpp-manual-code.cpp[tags=options,indent=0]
+include::partial$cpp-manual-code.cpp[tags=types-api,indent=0]
 ----
 --
 
@@ -394,14 +394,14 @@ C::
 --
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tags=options,indent=0]
-include::manual::partial$c-manual-code.c[tags=types-api,indent=0]
+include::partial$c-manual-code.c[tags=options,indent=0]
+include::partial$c-manual-code.c[tags=types-api,indent=0]
 ----
 --
 ====
 
 For an additional example of programmatic type manipulations,
-see the xref:manual::defining/schema-editing.adoc#_modify_with_driver_api[Schema editing] page.
+see the xref:defining/schema-editing.adoc#_modify_with_driver_api[Schema editing] page.
 
 [#_rules]
 == Rule objects
@@ -430,7 +430,7 @@ Rust::
 .Example
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tag=get_rule]
+include::partial$rust-manual-code.rs[tag=get_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -447,7 +447,7 @@ Python::
 .Example
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tag=get_rule]
+include::partial$python-manual-code.py[tag=get_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -464,7 +464,7 @@ Node.js::
 .Example
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tag=get_rule]
+include::partial$nodejs-manual-code.js[tag=get_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -481,7 +481,7 @@ Java::
 .Example
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tag=get_rule]
+include::partial$java-manual-code.java[tag=get_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -498,7 +498,7 @@ C#::
 .Example
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tag=get_rule]
+include::partial$csharp-manual-code.cs[tag=get_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -515,7 +515,7 @@ C++::
 .Example
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tag=get_rule]
+include::partial$cpp-manual-code.cpp[tag=get_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -532,7 +532,7 @@ C::
 .Example
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tag=get_rule]
+include::partial$c-manual-code.c[tag=get_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -556,7 +556,7 @@ Rust::
 .Example
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tag=get_rules]
+include::partial$rust-manual-code.rs[tag=get_rules]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -573,7 +573,7 @@ Python::
 .Example
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tag=get_rules]
+include::partial$python-manual-code.py[tag=get_rules]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -590,7 +590,7 @@ Node.js::
 .Example
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tag=get_rules]
+include::partial$nodejs-manual-code.js[tag=get_rules]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -607,7 +607,7 @@ Java::
 .Example
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tag=get_rules]
+include::partial$java-manual-code.java[tag=get_rules]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -624,7 +624,7 @@ C#::
 .Example
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tag=get_rules]
+include::partial$csharp-manual-code.cs[tag=get_rules]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -641,7 +641,7 @@ C++::
 .Example
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tag=get_rules]
+include::partial$cpp-manual-code.cpp[tag=get_rules]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -658,7 +658,7 @@ C::
 .Example
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tag=get_rules]
+include::partial$c-manual-code.c[tag=get_rules]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -682,7 +682,7 @@ Rust::
 .Example
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tag=put_rule]
+include::partial$rust-manual-code.rs[tag=put_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -699,7 +699,7 @@ Python::
 .Example
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tag=put_rule]
+include::partial$python-manual-code.py[tag=put_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -716,7 +716,7 @@ Node.js::
 .Example
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tag=put_rule]
+include::partial$nodejs-manual-code.js[tag=put_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -733,7 +733,7 @@ Java::
 .Example
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tag=put_rule]
+include::partial$java-manual-code.java[tag=put_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -750,7 +750,7 @@ C#::
 .Example
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tag=put_rule]
+include::partial$csharp-manual-code.cs[tag=put_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -767,7 +767,7 @@ C++::
 .Example
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tag=put_rule]
+include::partial$cpp-manual-code.cpp[tag=put_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -784,7 +784,7 @@ C::
 .Example
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tag=put_rule]
+include::partial$c-manual-code.c[tag=put_rule]
 ----
 
 [subs="macros, post_replacements, replacements"]
@@ -808,7 +808,7 @@ Rust::
 .Example
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tag=delete_rule]
+include::partial$rust-manual-code.rs[tag=delete_rule]
 ----
 The above example deletes the type, which type object is stored in the variable, from the schema of a database.
 You need to commit transaction to persist the changes.
@@ -826,7 +826,7 @@ Python::
 .Example
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tag=delete_rule]
+include::partial$python-manual-code.py[tag=delete_rule]
 ----
 
 The above example deletes the type, which type object is stored in the variable, from the schema of a database.
@@ -845,7 +845,7 @@ Node.js::
 .Example
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tag=delete_rule]
+include::partial$nodejs-manual-code.js[tag=delete_rule]
 ----
 
 The above example deletes the type, which type object is stored in the variable, from the schema of a database.
@@ -864,7 +864,7 @@ Java::
 .Example
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tag=delete_rule]
+include::partial$java-manual-code.java[tag=delete_rule]
 ----
 
 The above example deletes the type, which type object is stored in the variable, from the schema of a database.
@@ -883,7 +883,7 @@ C#::
 .Example
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tag=delete_rule]
+include::partial$csharp-manual-code.cs[tag=delete_rule]
 ----
 
 The above example deletes the type, which type object is stored in the variable, from the schema of a database.
@@ -902,7 +902,7 @@ C++::
 .Example
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tag=delete_rule]
+include::partial$cpp-manual-code.cpp[tag=delete_rule]
 ----
 
 The above example deletes the type, which type object is stored in the variable, from the schema of a database.
@@ -921,7 +921,7 @@ C::
 .Example
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tag=delete_rule]
+include::partial$c-manual-code.c[tag=delete_rule]
 ----
 
 The above example deletes the type, which type object is stored in the variable, from the schema of a database.
@@ -952,7 +952,7 @@ Rust::
 --
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tags=rules-api]
+include::partial$rust-manual-code.rs[tags=rules-api]
 ----
 --
 
@@ -961,7 +961,7 @@ Python::
 --
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tags=rules-api]
+include::partial$python-manual-code.py[tags=rules-api]
 ----
 --
 
@@ -970,7 +970,7 @@ Node.js::
 --
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tags=rules-api]
+include::partial$nodejs-manual-code.js[tags=rules-api]
 ----
 --
 
@@ -979,7 +979,7 @@ Java::
 --
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tags=rules-api]
+include::partial$java-manual-code.java[tags=rules-api]
 ----
 --
 
@@ -988,7 +988,7 @@ C#::
 --
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tags=rules-api]
+include::partial$csharp-manual-code.cs[tags=rules-api]
 ----
 --
 
@@ -997,8 +997,8 @@ C++::
 --
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tags=options,indent=0]
-include::manual::partial$cpp-manual-code.cpp[tags=rules-api,indent=0]
+include::partial$cpp-manual-code.cpp[tags=options,indent=0]
+include::partial$cpp-manual-code.cpp[tags=rules-api,indent=0]
 ----
 --
 
@@ -1007,8 +1007,8 @@ C::
 --
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tags=options,indent=0]
-include::manual::partial$c-manual-code.c[tags=rules-api,indent=0]
+include::partial$c-manual-code.c[tags=options,indent=0]
+include::partial$c-manual-code.c[tags=rules-api,indent=0]
 ----
 --
 ====
@@ -1026,6 +1026,6 @@ Learn more about TypeDB drivers: list of available drivers, installation guides,
 
 For more information about driver API methods, see the API reference of the relevant driver:
 
-include::manual::reading/get.adoc[tags=drivers-api]
+include::../reading/get.adoc[tags=drivers-api]
 
 
