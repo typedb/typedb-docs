@@ -8,7 +8,7 @@ The syntax of a `value` statement includes:
 
 * Subject -- attribute type label
 * Predicate -- the `value` keyword
-* Object -- one of the xref:typeql::values/value-types.adoc[value types]
+* Object -- one of the xref:values/value-types.adoc[value types]
 
 .Syntax
 [,typeql]
@@ -28,7 +28,7 @@ to be of the selected value type only.
 
 == Usage in a schema definition
 
-include::typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 Since in Define queries you can't use variables, the subject of a `value` statement can only be
 an attribute type label.
@@ -46,13 +46,13 @@ callsign sub attribute, value string;
 
 [cols-2]
 --
-.xref:typeql::statements/type.adoc[]
+.xref:statements/type.adoc[]
 [.clickable]
 ****
 Learn more about `type` statement in TypeQL.
 ****
 
-.xref:typeql::concepts/types.adoc[]
+.xref:concepts/types.adoc[]
 [.clickable]
 ****
 Learn about types in TypeQL.

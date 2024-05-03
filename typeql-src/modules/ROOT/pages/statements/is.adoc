@@ -24,7 +24,7 @@ That makes two concept variables equal both by type and value, so we could repla
 
 == Usage for equality
 
-include::typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 Let's match different concept variables that are set to be equal and fetch values of the same attribute type:
 
@@ -51,7 +51,7 @@ It can be used for simplifying patterns or combining two different patterns into
 
 == Usage with negation
 
-include::typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 The most common use of an `is` statement is to exclude some results.
 
@@ -79,13 +79,13 @@ that query returns no results.
 
 [cols-2]
 --
-.xref:typeql::statements/isa.adoc[]
+.xref:statements/isa.adoc[]
 [.clickable]
 ****
 Learn more about `isa` statement in TypeQL.
 ****
 
-.xref:typeql::concepts/data-instances.adoc[]
+.xref:concepts/data-instances.adoc[]
 [.clickable]
 ****
 Learn about data instances in TypeQL.

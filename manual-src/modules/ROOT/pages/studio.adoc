@@ -15,7 +15,7 @@ TypeDB Studio is an IDE that facilitates the development process for TypeDB data
 
 With Studio developers can efficiently manage databases, execute queries, and explore query results,
 all within a unified environment.
-It has a built-in xref:typeql::overview.adoc[TypeQL] support, as well as Type Browser, Type Editor,
+It has a built-in xref:{page-component-version}@typeql::overview.adoc[TypeQL] support, as well as Type Browser, Type Editor,
 and query results visualizer.
 --
 
@@ -334,7 +334,7 @@ image::{page-component-version}@drivers::studio/type-browser.png[Type browser, r
 
 Type Browser panel gives you a full overview of the type hierarchy for the currently selected database.
 
-In an empty database, there are only three xref:typeql::concepts/types.adoc#_type_hierarchy[root types] shown in the panel.
+In an empty database, there are only three xref:{page-component-version}@typeql::concepts/types.adoc#_type_hierarchy[root types] shown in the panel.
 
 In a database with a schema,
 all types displayed in the exact hierarchy they were created (subtypes inside their supertypes).
@@ -403,7 +403,7 @@ then clicking the btn:[Confirm] button.
 In some cases, the btn:[Delete] option and button can be unavailable.
 That means there are some conditions that prevent you from deleting this type.
 For example,
-we can't xref:typeql::queries/undefine.adoc#_undefine_a_type_with_a_subtype[delete a type that has a subtype].
+we can't xref:{page-component-version}@typeql::queries/undefine.adoc#_undefine_a_type_with_a_subtype[delete a type that has a subtype].
 // end::type-editor[]
 
 == Settings

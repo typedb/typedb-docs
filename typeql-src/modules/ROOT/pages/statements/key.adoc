@@ -1,13 +1,13 @@
 = @key
 
 The `@key` keyword is an annotation, that can be used with an
-xref:typeql::statements/owns.adoc[owns statement] to specify, that the selected attribute type serves as a key for the subject type.
+xref:statements/owns.adoc[owns statement] to specify, that the selected attribute type serves as a key for the subject type.
 
 == Syntax
 
 The syntax of a `@key` statement includes:
 
-* xref:typeql::statements/owns.adoc[owns statement]
+* xref:statements/owns.adoc[owns statement]
 * the `@key` keyword
 
 .Syntax
@@ -20,7 +20,7 @@ The syntax of a `@key` statement includes:
 
 TypeQL statements with the `@key` keyword can be used only in Define queries.
 
-The `@key` keyword adds a xref:typeql::statements/unique.adoc[unique annotation] constraint,
+The `@key` keyword adds a xref:statements/unique.adoc[unique annotation] constraint,
 as well as a cardinality constraint of exactly one.
 
 The Cardinality constraint of exactly one means,
@@ -29,7 +29,7 @@ attribute of the given attribute type.
 
 == Usage in a schema definition
 
-include::typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 Since in Define and Undefine queries you can't use variables,
 both subject and object of an owns statement can only be type labels.
@@ -48,13 +48,13 @@ object owns object-type @key;
 
 [cols-2]
 --
-.xref:typeql::statements/type.adoc[]
+.xref:statements/type.adoc[]
 [.clickable]
 ****
 Learn more about `type` statement in TypeQL.
 ****
 
-.xref:typeql::concepts/types.adoc[]
+.xref:concepts/types.adoc[]
 [.clickable]
 ****
 Learn about types in TypeQL.

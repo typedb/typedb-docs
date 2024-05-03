@@ -23,11 +23,11 @@ TypeQL value assignment statements can be used only in a match clause or rule co
 Since only attributes can have a value,
 value assignment syntax implicitly bounds the concept variable to the `attribute` type.
 You can specify the type of the concept variable by bounding it explicitly with an
-xref:typeql::statements/isa.adoc[isa statement].
+xref:statements/isa.adoc[isa statement].
 
 == Usage in a match pattern
 
-include::typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 For example, let's find all attributes of any type in a database with the value equal to the `Kevin Morrison` string:
 
@@ -51,10 +51,10 @@ fetch $a;
 
 == Usage in an insert pattern
 
-include::typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 To explicitly insert an attribute, use a value assignment to set its value,
-and an xref:typeql::statements/isa.adoc[isa] statement to set its type:
+and an xref:statements/isa.adoc[isa] statement to set its type:
 
 .Inserting attribute example
 [,typeql]
@@ -67,13 +67,13 @@ $a "Bob" isa full-name;
 
 [cols-2]
 --
-.xref:typeql::statements/type.adoc[]
+.xref:statements/type.adoc[]
 [.clickable]
 ****
 Learn more about `type` statement in TypeQL.
 ****
 
-.xref:typeql::concepts/types.adoc[]
+.xref:concepts/types.adoc[]
 [.clickable]
 ****
 Learn about types in TypeQL.
