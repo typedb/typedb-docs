@@ -13,7 +13,7 @@ Grouping can be used alongside aggregation to return an aggregated value for eve
 
 == Usage
 
-include::typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 Let's match all `person` entities that have a `full-name` and `email` attributes, retrieve them all,
 and group by the instance of entity.
@@ -49,7 +49,7 @@ iid 0x826e800a8000000000000003 isa person => {
 
 == Usage with polymorphism
 
-include::typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 Now let's query for any attributes of any person, grouped by the person entity.
 
@@ -83,7 +83,7 @@ iid 0x826e800a8000000000000003 isa person => {
 
 == Usage with aggregation
 
-include::typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 Now let's see how many people own every attribute by grouping the same query by the `$a` variable
 and counting the results in every group.
@@ -118,13 +118,13 @@ Kevin Morrison isa full-name => Optional[1]
 
 [cols-2]
 --
-.xref:typeql::modifiers/aggregation.adoc[]
+.xref:modifiers/aggregation.adoc[]
 [.clickable]
 ****
 Learn more about results aggregation in TypeQL.
 ****
 
-.xref:typeql::queries/get.adoc[]
+.xref:queries/get.adoc[]
 [.clickable]
 ****
 Learn more about Get queries in TypeQL.

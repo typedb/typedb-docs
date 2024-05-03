@@ -6,7 +6,7 @@ and deleting databases with Studio, Console, or one of the drivers.
 == Understanding database operation
 
 TypeDB stores data in *isolated* databases, each comprising a schema and data.
-//xref:typeql::schema/overview.adoc[schema] and xref:typeql::data/overview.adoc[data].
+//xref:{page-component-version}@typeql::schema/overview.adoc[schema] and xref:{page-component-version}@typeql::data/overview.adoc[data].
 These databases operate independently, ensuring that one database cannot affect another.
 Nevertheless, a TypeDB client can connect to and interact with *multiple* databases concurrently.
 

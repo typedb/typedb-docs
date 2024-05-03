@@ -13,13 +13,13 @@ A simple statement is the smallest complete TypeQL block that can be used as a p
 Most simple statements have three parts: *Subject Predicate Object*.
 Where the predicate is a TypeQL keyword.
 
-Some notable exceptions are: assignments (xref:typeql::statements/role-assignment.adoc[role] and
-xref:typeql::statements/value-assignment.adoc[value]),
-annotations (xref:typeql::statements/key.adoc[key] and
-xref:typeql::statements/unique.adoc[unique]),
-xref:typeql::statements/abstract.adoc[abstract],
-xref:typeql::statements/value.adoc[value], and
-xref:typeql::statements/rule.adoc[rules].
+Some notable exceptions are: assignments (xref:statements/role-assignment.adoc[role] and
+xref:statements/value-assignment.adoc[value]),
+annotations (xref:statements/key.adoc[key] and
+xref:statements/unique.adoc[unique]),
+xref:statements/abstract.adoc[abstract],
+xref:statements/value.adoc[value], and
+xref:statements/rule.adoc[rules].
 
 [#_composite_statements]
 == Composite statements
@@ -36,7 +36,7 @@ A composite statement starts with a single subject, and multiple comma-separated
 $p isa person, has full-name "Kevin Morrison", has email $e;
 ----
 
-The above example combines simple xref:typeql::statements/isa.adoc[] and xref:typeql::statements/has.adoc[] statements
+The above example combines simple xref:statements/isa.adoc[] and xref:statements/has.adoc[] statements
 to the same result without repeating the subject (`$p`):
 
 .Equal simple statements example
@@ -48,81 +48,81 @@ $p has email $e;
 ----
 ====
 
-The xref:typeql::statements/role-assignment.adoc[role assignment] and
-xref:typeql::statements/value-assignment.adoc[value assignment] statements do not require a comma
+The xref:statements/role-assignment.adoc[role assignment] and
+xref:statements/value-assignment.adoc[value assignment] statements do not require a comma
 when added in a composite statement, as they are used without any additional keyword.
 
 == Statement types
 
 [cols-3]
 --
-.xref:typeql::statements/isa.adoc[]
+.xref:statements/isa.adoc[]
 [.clickable]
 ****
 
 ****
 
-.xref:typeql::statements/is.adoc[]
+.xref:statements/is.adoc[]
 [.clickable]
 ****
 
 ****
 
-.xref:typeql::statements/has.adoc[]
+.xref:statements/has.adoc[]
 [.clickable]
 ****
 
 ****
 
-.xref:typeql::statements/sub.adoc[]
+.xref:statements/sub.adoc[]
 [.clickable]
 ****
 
 ****
 
-.xref:typeql::statements/type.adoc[]
+.xref:statements/type.adoc[]
 [.clickable]
 ****
 
 ****
 
-.xref:typeql::statements/abstract.adoc[]
+.xref:statements/abstract.adoc[]
 [.clickable]
 ****
 
 ****
 
-.xref:typeql::statements/owns.adoc[]
+.xref:statements/owns.adoc[]
 [.clickable]
 ****
 
 ****
 
-.xref:typeql::statements/value.adoc[]
+.xref:statements/value.adoc[]
 [.clickable]
 ****
 
 ****
 
-.xref:typeql::statements/regex.adoc[]
+.xref:statements/regex.adoc[]
 [.clickable]
 ****
 
 ****
 
-.xref:typeql::statements/relates.adoc[]
+.xref:statements/relates.adoc[]
 [.clickable]
 ****
 
 ****
 
-.xref:typeql::statements/plays.adoc[]
+.xref:statements/plays.adoc[]
 [.clickable]
 ****
 
 ****
 
-.xref:typeql::statements/rule.adoc[]
+.xref:statements/rule.adoc[]
 [.clickable]
 ****
 
@@ -152,13 +152,13 @@ when added in a composite statement, as they are used without any additional key
 
 [cols-2]
 --
-.xref:typeql::statements/unique.adoc[]
+.xref:statements/unique.adoc[]
 [.clickable]
 ****
 
 ****
 
-.xref:typeql::statements/key.adoc[]
+.xref:statements/key.adoc[]
 [.clickable]
 ****
 
@@ -169,13 +169,13 @@ when added in a composite statement, as they are used without any additional key
 
 [cols-2]
 --
-.xref:typeql::statements/value-assignment.adoc[]
+.xref:statements/value-assignment.adoc[]
 [.clickable]
 ****
 
 ****
 
-.xref:typeql::statements/role-assignment.adoc[]
+.xref:statements/role-assignment.adoc[]
 [.clickable]
 ****
 

@@ -9,7 +9,7 @@ In this guide, you'll see how to insert data in a database using Studio, Console
 An Insert query is used to insert data into a TypeDB database.
 An `insert` clause is executed once per every result matched by the `match` clause of the same query.
 If the `match` clause is omitted, then the `insert` clause is executed exactly once. 
-For a detailed explanation of the query see the xref:typeql::queries/delete.adoc[] page.
+For a detailed explanation of the query see the xref:{page-component-version}@typeql::queries/delete.adoc[] page.
 
 [#_how_to_send_an_insert_query]
 == Sending Insert queries
@@ -431,7 +431,7 @@ The response should be a single number.
 
 [cols-2]
 --
-.More about an xref:typeql::queries/insert.adoc[]
+.More about an xref:{page-component-version}@typeql::queries/insert.adoc[]
 [.clickable]
 ****
 Learn more about Insert queries in TypeQL: syntax, behavior, and query examples.

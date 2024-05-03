@@ -10,7 +10,7 @@ An Update query is used to update data in a TypeDB database by matching existing
 and then inserting some other data instead.
 A `delete` and `insert` clauses are executed once per every result
 matched by the `match` clause of the same Update query.
-For a detailed explanation of the query see the xref:typeql::queries/update.adoc[] page.
+For a detailed explanation of the query see the xref:{page-component-version}@typeql::queries/update.adoc[] page.
 
 [#_how_to_send_an_update_query]
 == Sending Update queries
@@ -285,7 +285,7 @@ of a Delete query with the same `match` clause in the same `write` transaction w
 
 [cols-2]
 --
-.More about an xref:typeql::queries/update.adoc[]
+.More about an xref:{page-component-version}@typeql::queries/update.adoc[]
 [.clickable]
 ****
 Learn more about Update queries in TypeQL: syntax, behavior, and query examples.

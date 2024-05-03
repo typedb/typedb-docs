@@ -29,7 +29,7 @@ The `rule` keyword adds a new rule to a schema, or updates an existing rule with
 
 == Usage in a schema definition
 
-include::typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 Usually, Define and Undefine queries you can't use variables.
 But rules use patterns for matching data in their condition and conclusion.
@@ -37,8 +37,8 @@ But rules use patterns for matching data in their condition and conclusion.
 A condition of a rule can be any pattern, similar to a `match` clause.
 
 A conclusion of a rule can be a single statement:
-either a xref:typeql::statements/has.adoc[has statement],
-or an xref:typeql::statements/isa.adoc[isa statement] for a relation with any number of roles.
+either a xref:statements/has.adoc[has statement],
+or an xref:statements/isa.adoc[isa statement] for a relation with any number of roles.
 
 For example, to define the `add-view-permission` rule,
 that adds a permission for a subject to view a file if there is one to modify it, use:

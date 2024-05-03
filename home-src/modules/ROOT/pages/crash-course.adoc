@@ -142,7 +142,7 @@ These queries fall into TypeDB's schema/transaction model in a natural way, as t
 [#_fetch_queries]
 === Fetch queries
 
-A xref:typeql::queries/fetch.adoc[Fetch query]
+A xref:{page-component-version}@typeql::queries/fetch.adoc[Fetch query]
 projects types and values of concepts matched by selected variables into JSON output. 
 For example, let's match a user by its username and fetch its name:
 
@@ -151,9 +151,9 @@ For example, let's match a user by its username and fetch its name:
 include::{page-component-version}@home::partial$cc-queries/subquery.tql[lines=1..4]
 ----
 
-The above example uses xref:typeql::queries/fetch.adoc#_customize_output[customized output labels] for the JSON output.
+The above example uses xref:{page-component-version}@typeql::queries/fetch.adoc#_customize_output[customized output labels] for the JSON output.
 
-A Fetch query can be used with a xref:typeql::queries/fetch.adoc#_subqueries[subquery].
+A Fetch query can be used with a xref:{page-component-version}@typeql::queries/fetch.adoc#_subqueries[subquery].
 For example, let's add a subquery to fetch paths for all files that the user has access to:
 
 [,typeql]
@@ -164,7 +164,7 @@ include::{page-component-version}@home::partial$cc-queries/subquery.tql[]
 [#_get_queries]
 === Get queries
 
-A xref:typeql::queries/get.adoc[Get query] returns stateful objects representing concepts matched by selected variables
+A xref:{page-component-version}@typeql::queries/get.adoc[Get query] returns stateful objects representing concepts matched by selected variables
 for you to programmatically manipulate them with driver API methods.
 For example, you can send the following Get query to get all file entities from a database:
 
@@ -186,7 +186,7 @@ mean $s;
 [#_insert_queries]
 === Insert queries
 
-An xref:typeql::queries/insert.adoc[Insert query] inserts data into a database.
+An xref:{page-component-version}@typeql::queries/insert.adoc[Insert query] inserts data into a database.
 It can be used with or without a `match` clause, which can be used to retrieve existing data from the database. 
 
 We can use an `insert` clause without a `match` clause to insert completely new data in a database,
@@ -213,7 +213,7 @@ It is important to note that an `insert` clause is executed _once for every tupl
 [#_delete_queries]
 === Delete queries
 
-A xref:typeql::queries/delete.adoc[Delete query] deletes data from a database.
+A xref:{page-component-version}@typeql::queries/delete.adoc[Delete query] deletes data from a database.
 In a Delete query we first retrieve data using a `match` clause, and then, based on the matched results, specify a pattern that is to be deleted. For example, let's match a specific user by its username and delete that the user has a given email:
 
 [,typeql]
@@ -292,7 +292,7 @@ to organically incorporate schema changes into existing queries.
 [#_patterns]
 == The power of patterns
 
-TypeQL uses declarative xref:typeql::patterns/overview.adoc[patterns] to seek and manipulate data in a database.
+TypeQL uses declarative xref:{page-component-version}@typeql::patterns/overview.adoc[patterns] to seek and manipulate data in a database.
 Every statement is a constraint to be satisfied by the query engine.
 
 Variables indicate unknowns that can be matched by a concept from a database.
@@ -310,7 +310,7 @@ for every matched instance, retrieves all their names and emails:
 include::{page-component-version}@home::partial$cc-queries/list-users.tql[]
 ----
 
-The above is a xref:typeql::queries/fetch.adoc[Fetch query],
+The above is a xref:{page-component-version}@typeql::queries/fetch.adoc[Fetch query],
 with a `match` that matches data by the provided pattern
 and a `fetch` that projects every matched result as a JSON with types and values:
 
@@ -336,8 +336,8 @@ and a `fetch` that projects every matched result as a JSON with types and values
 
 === Composing patterns
 
-TypeQL patterns consist of TypeQL xref:typeql::statements/overview.adoc[statements],
-which can be combined in any order by an implicit xref:typeql::patterns/conjunction.adoc[conjunction] (i.e., a logical "and") and other pattern operations like `or` (a logical "or") or `not` (a logical negation).
+TypeQL patterns consist of TypeQL xref:{page-component-version}@typeql::statements/overview.adoc[statements],
+which can be combined in any order by an implicit xref:{page-component-version}@typeql::patterns/conjunction.adoc[conjunction] (i.e., a logical "and") and other pattern operations like `or` (a logical "or") or `not` (a logical negation).
 Let's modify the previous query's pattern to retrieve a specific user who has name `Bob`:
 
 .Composable pattern example
@@ -348,7 +348,7 @@ include::{page-component-version}@home::partial$cc-queries/fetch-all-bob-emails.
 
 The first line of the pattern inside the `match` clause now specifies that user must have a name,
 while the second line adds a constraint for the value of the name to be
-xref:typeql::values/comparators.adoc#_equality_comparator[equal] to `Bob`. This is an example of a composition of patterns with a logical "and", but simply reading the query out loud should make it clear what is going on!
+xref:{page-component-version}@typeql::values/comparators.adoc#_equality_comparator[equal] to `Bob`. This is an example of a composition of patterns with a logical "and", but simply reading the query out loud should make it clear what is going on!
 
 The result of the above query now includes only one user that matches the new pattern:
 
@@ -413,7 +413,7 @@ and `action` played by data instances of types `user`, `file`, and `action` resp
 
 Every role has a set of types capable of playing it, defined in a schema.
 For example, a `user` type could be defined to be able to play the role of a `member`, and `user-group` may play the role of a `group` role player. Then a `user` can't play the `group` role, unless you specify such an ability in the schema with the
-xref:typeql::statements/plays.adoc[plays] statement.
+xref:{page-component-version}@typeql::statements/plays.adoc[plays] statement.
 
 Let's say how we can write a query with a N-ary relation for N > 2. 
 For example, what files does the user with name "Bob" has full access to?
@@ -427,8 +427,8 @@ include::{page-component-version}@home::partial$cc-queries/n-relations.tql[]
 
 Attributes in TypeDB are unique in their ability to store a value. Every attribute type is defined in the schema of a database to be of a specific value type (e.g. integers or strings). The schema also specifies which other types _own_ a given attribute type. 
 
-Creating an attribute is just instantiating an attribute type with a value of the appropriate value type. You can create an attribute explicitly by using an xref:typeql::statements/isa.adoc[isa statement] with
-xref:typeql::statements/value-assignment.adoc[value assignment]:
+Creating an attribute is just instantiating an attribute type with a value of the appropriate value type. You can create an attribute explicitly by using an xref:{page-component-version}@typeql::statements/isa.adoc[isa statement] with
+xref:{page-component-version}@typeql::statements/value-assignment.adoc[value assignment]:
 
 .Explicit attribute insertion
 [,typeql]
@@ -459,7 +459,7 @@ For example, let's insert a new person that owns two names: `Bob` and `Another B
 include::{page-component-version}@home::partial$cc-queries/attributes.tql[lines=6..7]
 ----
 
-You can limit behavior this by using the xref:typeql::statements/key.adoc[key statement],
+You can limit behavior this by using the xref:{page-component-version}@typeql::statements/key.adoc[key statement],
 which adds a constraint on the number of owned attributes to be equal to exactly one.
 
 ==== Globally unique attributes
@@ -506,7 +506,7 @@ regardless of their exact type because they all are subtypes of the `entity` roo
 In the same way, we can match data instances of the `person` type
 and include data instances of the `user` type due to type inference.
 To avoid type inference in matching, use the `isa!` keyword instead.
-For more information on the `isa` and `isa!` keywords, see the xref:typeql::statements/isa.adoc[] page.
+For more information on the `isa` and `isa!` keywords, see the xref:{page-component-version}@typeql::statements/isa.adoc[] page.
 
 [#_interface_polymorphism]
 === Interface polymorphism

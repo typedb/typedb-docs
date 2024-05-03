@@ -5,13 +5,13 @@ TypeQL data queries use pattern matching to manipulate data instances in a datab
 == Behavior
 
 A data instance can be inserted into a database only as an instance of a
-xref:typeql::concepts/types.adoc[type] from the schema of the database.
+xref:concepts/types.adoc[type] from the schema of the database.
 
 To retrieve data from a database with TypeQL, match it with a pattern in a `match` clause of a query.
 To match a data instance, we can use its type, as well as other information regarding this particular instance.
 
 All data instances can be split into three major categories,
-that originate from different xref:typeql::concepts/types.adoc[root types]
+that originate from different xref:concepts/types.adoc[root types]
 and differ in capabilities: attributes, entities, and relations.
 
 === Entities
@@ -32,7 +32,7 @@ An attribute is a data instance of an attribute type.
 An attribute type represents some property, so an attribute represents a particular value of such property.
 There can't be more than one attribute of the same type with the same value,
 so an attribute can be uniquely addressed by its type and value.
-The value of an attribute must be of the correct xref:typeql::values/value-types.adoc[Value type]
+The value of an attribute must be of the correct xref:values/value-types.adoc[Value type]
 that is set for its attribute type in the schema.
 
 An attribute can be owned by another data instance if such an ability is defined for their respective types
@@ -56,7 +56,7 @@ that the logical sense of the relation is maintained when considering N-1 relati
 
 == Usage in an Insert query
 
-Given the schema from the xref:typeql::concepts/types.adoc#_example[Types page example],
+Given the schema from the xref:concepts/types.adoc#_example[Types page example],
 let's see a simple example of how to insert some data with an Insert query:
 
 .Inserting data example

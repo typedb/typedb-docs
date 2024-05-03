@@ -28,18 +28,18 @@ get [<variable> [, <variable>]];
 [#_behavior]
 == Behavior
 
-A Get query retrieves xref:typeql::concepts/overview.adoc[concepts] from a database.
+A Get query retrieves xref:concepts/overview.adoc[concepts] from a database.
 
 A `match` clause is used to match data by a pattern, while a `get` clause is used to filter the returned variables.
 
 A Get query projects concepts matched from a database to language-specific programmatic stateful objects
 that can be used via driver API methods.
 The output of a Get query is a lazy stream/iterator of ConceptMap objects, unless it's used with
-xref:typeql::modifiers/aggregation.adoc[aggregation], xref:typeql::modifiers/grouping.adoc[grouping], or both.
+xref:modifiers/aggregation.adoc[aggregation], xref:modifiers/grouping.adoc[grouping], or both.
 See the <<_response>> section below.
 
-You can use xref:typeql::modifiers/sorting.adoc[sorting] and
-xref:typeql::modifiers/pagination.adoc[pagination] with a Get query.
+You can use xref:modifiers/sorting.adoc[sorting] and
+xref:modifiers/pagination.adoc[pagination] with a Get query.
 
 Get queries can use rule-based xref:{page-component-version}@manual::reading/infer.adoc[inference].
 
@@ -53,14 +53,14 @@ specified pattern.
 A `match` clause is mandatory in a Get query.
 
 For more information on patterns and statements used in a `match` clause, see the
-xref:typeql::patterns/overview.adoc[Patterns] and xref:typeql::statements/overview.adoc[Statements] sections.
+xref:patterns/overview.adoc[Patterns] and xref:statements/overview.adoc[Statements] sections.
 
 [#_get_clause]
 === Get clause
 
 A `get` clause is used in a Get query to select variables
-(xref:typeql::concepts/concept-variables.adoc[concept variables] and
-xref:typeql::values/value-variables.adoc[value variables])
+(xref:concepts/concept-variables.adoc[concept variables] and
+xref:values/value-variables.adoc[value variables])
 to include in the output.
 An empty `get` clause (`get;`) includes all variables, used in the preceding `match` clause.
 
@@ -106,7 +106,7 @@ An empty `get` clause (`get;`) includes all variables, used in the preceding `ma
 // |===
 
 A Get query returns solutions matched by the `match` clause and filtered by the `get` clause,
-optionally processed by xref:typeql::modifiers/overview.adoc[modifiers].
+optionally processed by xref:modifiers/overview.adoc[modifiers].
 A `get` clause returns exactly one ConceptMap for every solution matched by its preceding `match` clause.
 The results are in set semantics, meaning that there are no duplicates.
 
@@ -120,7 +120,7 @@ see the xref:{page-component-version}@manual::objects/schema.adoc[] and xref:{pa
 [#_simple_example]
 == Get concepts
 
-include::typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 A simple Get query example:
 
@@ -147,7 +147,7 @@ Every ConceptMap bounds the variable `$e` to an attribute of the `email` type, t
 [#_complex_get_query_example]
 == Get with modifiers
 
-include::typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 For the next example, let's try a bit more complex pattern and some modifiers:
 
@@ -186,7 +186,7 @@ The response is the number of results for every `$o-fp`: number of pairs `$x-n` 
 [#_number_of_results]
 == Effects of filtering
 
-include::typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 A Get query can return fewer results, than matched by its `match` clause,
 due to filtering with a `get` clause or using modifiers.
@@ -194,7 +194,7 @@ due to filtering with a `get` clause or using modifiers.
 [#_get_clause_filtering]
 === Get clause filtering
 
-include::typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 Filtering variables with a `get` clause can reduce the number of results.
 Due to set semantics, some results might lose their uniqueness and made redundant.
@@ -221,23 +221,23 @@ The results then will include pairs of `$p` and `$n`.
 
 === Using modifiers
 
-Applying xref:typeql::modifiers/overview.adoc[modifiers] can have a drastic effect on the format and number
+Applying xref:modifiers/overview.adoc[modifiers] can have a drastic effect on the format and number
 of results returned by a Get query.
 See the <<_table_output_types,table above>> for output formats depending on the usage of
-xref:typeql::modifiers/grouping.adoc[grouping]
-and xref:typeql::modifiers/aggregation.adoc[aggregation].
+xref:modifiers/grouping.adoc[grouping]
+and xref:modifiers/aggregation.adoc[aggregation].
 
-Usage of the xref:typeql::modifiers/pagination.adoc#_limit_the_results[limit] modifier directly sets a limitation
+Usage of the xref:modifiers/pagination.adoc#_limit_the_results[limit] modifier directly sets a limitation
 for the number of results.
 
-Combination of <<_get_clause_filtering>> and xref:typeql::modifiers/sorting.adoc[] can produce
+Combination of <<_get_clause_filtering>> and xref:modifiers/sorting.adoc[] can produce
 somewhat unpredictable results, if sorting is done by a variable, that is not included in the `get` clause.
 
 ////
 [#_results_example_1]
 == Permutations
 
-include::typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 If there are multiple variables returned in every result,
 then results of a query include all permutations of answers.
@@ -256,7 +256,7 @@ get $x, $y;
 count;
 ----
 
-The xref:typeql::modifiers/aggregation.adoc#_count[count modifier] is added to get the number of results,
+The xref:modifiers/aggregation.adoc#_count[count modifier] is added to get the number of results,
 rather than the results themselves.
 
 How many results are we expecting to retrieve from a database?
@@ -275,7 +275,7 @@ xref:{page-component-version}@learn::7-understanding-query-patterns/7.6-solution
 [#_results_example_2]
 === Variables filtering
 
-include::typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 For the following example, consider the following database schema:
 
@@ -359,7 +359,7 @@ insert $p isa person;
 To insert this dataset with any xref:{page-component-version}@drivers::overview.adoc[other] client --
 make sure to send every line, except from comments, as a separate insert query.
 
-For more information on an Insert query, see the xref:typeql::queries/insert.adoc[] page.
+For more information on an Insert query, see the xref:queries/insert.adoc[] page.
 ====
 
 Those Bobs that don't have the attribute ownership won't be matched by the `match` clause at all.

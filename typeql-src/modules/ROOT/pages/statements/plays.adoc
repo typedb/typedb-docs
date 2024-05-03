@@ -26,7 +26,7 @@ The `plays` keyword adds an ability to play a role to a schema.
 
 == Usage in a schema definition
 
-include::typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 Since in Define and Undefine queries you can't use variables,
 both subject and object can only be type labels.
@@ -53,7 +53,7 @@ subject plays permission:subject;
 [#_usage_with_override]
 == Usage with override
 
-include::typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 By default, a subtype of a relation type inherits all roles that were defined for its supertype.
 To override an inherited role, use the `as` keyword.
@@ -75,13 +75,13 @@ subject plays permission:manager as subject;
 
 [cols-2]
 --
-.xref:typeql::statements/type.adoc[]
+.xref:statements/type.adoc[]
 [.clickable]
 ****
 Learn more about `type` statement in TypeQL.
 ****
 
-.xref:typeql::concepts/types.adoc[]
+.xref:concepts/types.adoc[]
 [.clickable]
 ****
 Learn about types in TypeQL.

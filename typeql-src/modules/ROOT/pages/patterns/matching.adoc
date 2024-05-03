@@ -20,13 +20,13 @@ match <pattern>
 
 === Pattern composition
 
-A pattern consists of one or multiple xref:typeql::statements/overview.adoc[statements], combined by any combination of
-xref:typeql::patterns/conjunction.adoc[conjunctions],
-xref:typeql::patterns/disjunction.adoc[disjunctions],
-and xref:typeql::patterns/negation.adoc[negations].
+A pattern consists of one or multiple xref:statements/overview.adoc[statements], combined by any combination of
+xref:patterns/conjunction.adoc[conjunctions],
+xref:patterns/disjunction.adoc[disjunctions],
+and xref:patterns/negation.adoc[negations].
 
 A matching pattern can use any valid TypeQL statements,
-except the xref:typeql::statements/rule.adoc[rule] definition statement.
+except the xref:statements/rule.adoc[rule] definition statement.
 Other clauses use limited subsets of statements, e.g.,
 a pattern in an `insert` or `delete` clause can use only data-specific statements
 and can reuse variables matched by a `match` clause.
@@ -49,8 +49,8 @@ Note that the order of patterns in conjunctions or disjunctions is irrelevant.
 A `match` clause finds a set of matched results. 
 Every matched result contains
 
-* an exact value for every xref:typeql::values/value-variables.adoc[value variable]
-* an exact concept for every xref:typeql::concepts/concept-variables.adoc[concept variable].
+* an exact value for every xref:values/value-variables.adoc[value variable]
+* an exact concept for every xref:concepts/concept-variables.adoc[concept variable].
 
 Matched results for a pattern are *solution* for that pattern,
 meaning when you substitute variables in a pattern with values and concepts from a solution,
@@ -74,10 +74,10 @@ $name == "Kevin Morrison";
 ----
 
 The above pattern consists of two simple statements that can be combined in a comma-separated
-xref:typeql::statements/overview.adoc#_composite_statements[composite statement] that produces the same effect.
+xref:statements/overview.adoc#_composite_statements[composite statement] that produces the same effect.
 
 It may be easier to find a specific entity using its attributes, if there is the
-xref:typeql::statements/unique.adoc[unique] or xref:typeql::statements/key.adoc[key] annotation set in the schema.
+xref:statements/unique.adoc[unique] or xref:statements/key.adoc[key] annotation set in the schema.
 
 [#_solution]
 You can think of matching a pattern as solving a system of equations,
@@ -161,7 +161,7 @@ See the table representation of the results below:
 Learn more about query patterns in the TypeDB Learning course.
 ****
 
-.xref:typeql::queries/overview.adoc[]
+.xref:queries/overview.adoc[]
 [.clickable]
 ****
 TypeQL queries overview.
