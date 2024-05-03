@@ -7,7 +7,7 @@
 :experimental:
 
 This Quickstart guide shows how to set up a TypeDB database and run queries using
-xref:manual::studio.adoc[TypeDB Studio].
+xref:{page-component-version}@manual::studio.adoc[TypeDB Studio].
 
 include::{page-component-version}@home::overview.adoc[tag=rust-rewrite]
 
@@ -50,11 +50,11 @@ xref:{page-component-version}@home::install/studio.adoc[installed] and launched 
 Find the TypeDB Studio binary and run it.
 Click btn:[Connect to TypeDB] on the right side of the top toolbar.
 // end::run_studio[]
-include::manual::studio.adoc[tag=connect_studio]
+include::{page-component-version}@manual::studio.adoc[tag=connect_studio]
 
 === Select a project folder
 
-To enable TypeDB Studio's IDE functionality, you now need to select a project folder to store your project files. Select a xref:manual::studio.adoc#_select_a_project_directory[project folder]
+To enable TypeDB Studio's IDE functionality, you now need to select a project folder to store your project files. Select a xref:{page-component-version}@manual::studio.adoc#_select_a_project_directory[project folder]
 by clicking either btn:[Open Project] in the *Project* panel or
 image:{page-component-version}@home::studio-icons/project.png[] Open Project Directory button in the top toolbar.
 
@@ -134,7 +134,7 @@ Continue this quickstart guide and learn the basics of TypeDB.
 A comprehensive learning course for TypeDB comprising several individual lessons.
 ****
 
-.xref:manual::overview.adoc[TypeDB manual]
+.xref:{page-component-version}@manual::overview.adoc[TypeDB manual]
 [.clickable]
 ****
 A collection of practice-oriented how-to guides for TypeDB.

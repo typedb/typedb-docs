@@ -7,9 +7,9 @@
 A Get query retrieves concepts as stateful objects from a TypeDB database that you can further process with the
 xref:drivers::overview.adoc#_driver_api[driver API] methods.
 For a practical guide on how to send a Get query to TypeDB,
-see the xref:manual::reading/get.adoc[] page of the TypeDB Manual.
-For response processing examples, see the xref:manual::objects/data.adoc[data objects] and
-xref:manual::objects/schema.adoc[schema objects] pages.
+see the xref:{page-component-version}@manual::reading/get.adoc[] page of the TypeDB Manual.
+For response processing examples, see the xref:{page-component-version}@manual::objects/data.adoc[data objects] and
+xref:{page-component-version}@manual::objects/schema.adoc[schema objects] pages.
 
 == Syntax
 
@@ -41,7 +41,7 @@ See the <<_response>> section below.
 You can use xref:typeql::modifiers/sorting.adoc[sorting] and
 xref:typeql::modifiers/pagination.adoc[pagination] with a Get query.
 
-Get queries can use rule-based xref:manual::reading/infer.adoc[inference].
+Get queries can use rule-based xref:{page-component-version}@manual::reading/infer.adoc[inference].
 
 [#_match_clause]
 === Match clause
@@ -115,7 +115,7 @@ To retrieve a concept object from a ConceptMap, use the driver API `ConceptMap.g
 that takes input of variable's label.
 Further processing of a concept object is done via methods of the driver API.
 For examples on how to work with schema and data concepts,
-see the xref:manual::objects/schema.adoc[] and xref:manual::objects/data.adoc[] pages.
+see the xref:{page-component-version}@manual::objects/schema.adoc[] and xref:{page-component-version}@manual::objects/data.adoc[] pages.
 
 [#_simple_example]
 == Get concepts
@@ -327,7 +327,7 @@ and the rest don't have an ownership of the attribute.
 .See how to load such a dataset into a database
 [%collapsible]
 ====
-In xref:manual::studio.adoc[TypeDB Studio], we can paste the following TypeQL in the text editor
+In xref:{page-component-version}@manual::studio.adoc[TypeDB Studio], we can paste the following TypeQL in the text editor
 and send all the queries by a single click in a data/write mode.
 Make sure to commit the changes.
 
@@ -393,19 +393,19 @@ the <<_answers_example2_dataset,dataset>> provided above into a TypeDB database 
 Learn more about query patterns in the TypeDB Learning course.
 ****
 
-.xref:manual::reading/get.adoc[]
+.xref:{page-component-version}@manual::reading/get.adoc[]
 [.clickable]
 ****
 See how to send a Get query to TypeDB.
 ****
 
-.xref:manual::objects/schema.adoc[]
+.xref:{page-component-version}@manual::objects/schema.adoc[]
 [.clickable]
 ****
 See how to manipulate Schema stateful objects with driver API.
 ****
 
-.xref:manual::objects/data.adoc[]
+.xref:{page-component-version}@manual::objects/data.adoc[]
 [.clickable]
 ****
 See how to manipulate Data stateful objects with driver API.

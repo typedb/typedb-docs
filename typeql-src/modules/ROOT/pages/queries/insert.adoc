@@ -8,7 +8,7 @@ An Insert query is used to insert new data into a database.
 You can insert an instance of a type, assign <<_inserting_ownerships,ownership of an attribute>>,
 or <<_adding_role_players_to_a_relation,add a new role player>> for a relation.
 For a practical guide on how to send an Insert query to TypeDB,
-see the xref:manual::writing/insert.adoc[] page of the TypeDB Manual.
+see the xref:{page-component-version}@manual::writing/insert.adoc[] page of the TypeDB Manual.
 
 == Syntax
 
@@ -239,7 +239,7 @@ As a result, the matched entity should own six attributes, four of which are of 
 ----
 ====
 
-// See the illustration of the resulted data from xref:manual::studio.adoc[] below.
+// See the illustration of the resulted data from xref:{page-component-version}@manual::studio.adoc[] below.
 //
 // image::john-6-attributes.png[John with 4 emails, role=framed, width = 75%, link=self]
 
@@ -365,7 +365,7 @@ The relation of `access` type now plays the role of `access` in the inserted rel
 Learn more about inserting data into a database in the TypeDB Learning course.
 ****
 
-.xref:manual::writing/insert.adoc[]
+.xref:{page-component-version}@manual::writing/insert.adoc[]
 [.clickable]
 ****
 See how to send an Insert query to TypeDB.

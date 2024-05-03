@@ -6,7 +6,7 @@
 
 A Fetch query retrieves values from a TypeDB database and returns them as JSON objects.
 For a practical guide on how to send a Fetch query to TypeDB,
-see the xref:manual::reading/fetch.adoc[] page of the TypeDB Manual.
+see the xref:{page-component-version}@manual::reading/fetch.adoc[] page of the TypeDB Manual.
 
 == Syntax
 
@@ -39,7 +39,7 @@ if not all query variables are projected into results.
 You can use xref:typeql::modifiers/sorting.adoc[sorting] and
 xref:typeql::modifiers/pagination.adoc[pagination] with a Fetch query.
 
-Fetch queries can use rule-based xref:manual::reading/infer.adoc[inference].
+Fetch queries can use rule-based xref:{page-component-version}@manual::reading/infer.adoc[inference].
 
 [#_match_clause]
 === Match clause
@@ -537,7 +537,7 @@ fetch $fp;
 Using the
 https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-data-single-query.tql[IAM sample data,window=_blank]
 the above query shows any results only if inference is
-xref:manual::reading/infer.adoc#_how_to_send_a_query_with_inference[enabled].
+xref:{page-component-version}@manual::reading/infer.adoc#_how_to_send_a_query_with_inference[enabled].
 
 .Result example with inference enabled
 [,json]
@@ -720,7 +720,7 @@ The corresponding value would contain an empty list of values in this case.
 Learn more about query patterns in the TypeDB Learning course.
 ****
 
-.xref:manual::reading/fetch.adoc[]
+.xref:{page-component-version}@manual::reading/fetch.adoc[]
 [.clickable]
 ****
 See how to send a Fetch query to TypeDB.
