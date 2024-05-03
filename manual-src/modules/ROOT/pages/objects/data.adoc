@@ -2,7 +2,7 @@
 
 In this guide, you'll see how to use driver API methods and stateful objects to programmatically manipulate data
 in a database using one of the TypeDB drivers. 
-This page assumes you've already followed instructions from the xref:manual::writing/insert.adoc[] page.
+This page assumes you've already followed instructions from the xref:writing/insert.adoc[] page.
 
 == Understanding data objects
 
@@ -18,7 +18,7 @@ you can use a TypeQL Get query or one of the driver API methods.
 
 === Query for data objects
 
-xref:manual::reading/get.adoc#_how_to_send_a_get_query[Send a Get query] with a pattern to retrieve data
+xref:reading/get.adoc#_how_to_send_a_get_query[Send a Get query] with a pattern to retrieve data
 and process the response to get data objects.
 For example, to get all instances of the `user` type, send the following Get query:
 
@@ -43,7 +43,7 @@ Rust::
 .Example
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tag=get_instances]
+include::partial$rust-manual-code.rs[tag=get_instances]
 ----
 
 For more information,
@@ -56,7 +56,7 @@ Python::
 .Example
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tag=get_instances]
+include::partial$python-manual-code.py[tag=get_instances]
 ----
 For more information,
 see the xref:drivers::python/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -68,7 +68,7 @@ Node.js::
 .Example
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tag=get_instances]
+include::partial$nodejs-manual-code.js[tag=get_instances]
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -80,7 +80,7 @@ Java::
 .Example
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tag=get_instances]
+include::partial$java-manual-code.java[tag=get_instances]
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -92,7 +92,7 @@ C#::
 .Example
 [,scharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tag=get_instances]
+include::partial$csharp-manual-code.cs[tag=get_instances]
 ----
 For more information,
 see the xref:drivers::csharp/api-reference.adoc#_IConceptManager[IConceptManager class] methods.
@@ -104,7 +104,7 @@ C++::
 .Example
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tag=get_instances]
+include::partial$cpp-manual-code.cpp[tag=get_instances]
 ----
 For more information,
 see the xref:drivers::cpp/api-reference.adoc#_ConceptManager[ConceptManager class] methods.
@@ -116,7 +116,7 @@ C::
 .Example
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tag=get_instances]
+include::partial$c-manual-code.c[tag=get_instances]
 ----
 For more information,
 see the xref:drivers::c/api-reference.adoc#_concept_header[Concepts] section functions.
@@ -138,7 +138,7 @@ Rust::
 .Example
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tag=get_has]
+include::partial$rust-manual-code.rs[tag=get_has]
 ----
 
 For more information,
@@ -151,7 +151,7 @@ Python::
 .Example
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tag=get_has]
+include::partial$python-manual-code.py[tag=get_has]
 ----
 For more information,
 see the xref:drivers::python/api-reference.adoc#_data_header[Data class] methods.
@@ -163,7 +163,7 @@ Node.js::
 .Example
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tag=get_has]
+include::partial$nodejs-manual-code.js[tag=get_has]
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_data_header[Data class] methods.
@@ -175,7 +175,7 @@ Java::
 .Example
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tag=get_has]
+include::partial$java-manual-code.java[tag=get_has]
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_data_header[Data class] methods.
@@ -187,7 +187,7 @@ C#::
 .Example
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tag=get_has]
+include::partial$csharp-manual-code.cs[tag=get_has]
 ----
 For more information,
 see the xref:drivers::csharp/api-reference.adoc#_data_header[Data class] methods.
@@ -199,7 +199,7 @@ C++::
 .Example
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tag=get_has]
+include::partial$cpp-manual-code.cpp[tag=get_has]
 ----
 For more information,
 see the xref:drivers::cpp/api-reference.adoc#_data_header[Data class] methods.
@@ -211,7 +211,7 @@ C::
 .Example
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tag=get_has]
+include::partial$c-manual-code.c[tag=get_has]
 ----
 For more information,
 see the xref:drivers::c/api-reference.adoc#_concept_header[Concepts] section functions.
@@ -230,7 +230,7 @@ Rust::
 .Example
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tag=create]
+include::partial$rust-manual-code.rs[tag=create]
 ----
 
 For more information,
@@ -243,7 +243,7 @@ Python::
 .Example
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tag=create]
+include::partial$python-manual-code.py[tag=create]
 ----
 For more information,
 see the xref:drivers::python/api-reference.adoc#_EntityType[EntityType class] methods.
@@ -255,7 +255,7 @@ Node.js::
 .Example
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tag=create]
+include::partial$nodejs-manual-code.js[tag=create]
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_EntityType[EntityType class] methods.
@@ -267,7 +267,7 @@ Java::
 .Example
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tag=create]
+include::partial$java-manual-code.java[tag=create]
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_EntityType[EntityType class] methods.
@@ -279,7 +279,7 @@ C#::
 .Example
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tag=create]
+include::partial$csharp-manual-code.cs[tag=create]
 ----
 For more information,
 see the xref:drivers::csharp/api-reference.adoc#_IEntityType[IEntityType class] methods.
@@ -291,7 +291,7 @@ C++::
 .Example
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tag=create]
+include::partial$cpp-manual-code.cpp[tag=create]
 ----
 For more information,
 see the xref:drivers::cpp/api-reference.adoc#_EntityType[EntityType class] methods.
@@ -303,7 +303,7 @@ C::
 .Example
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tag=create]
+include::partial$c-manual-code.c[tag=create]
 ----
 For more information,
 see the xref:drivers::c/api-reference.adoc#_Struct_Concept[Concepts] section functions.
@@ -324,7 +324,7 @@ Rust::
 .Example
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tag=delete_user]
+include::partial$rust-manual-code.rs[tag=delete_user]
 ----
 
 For more information,
@@ -337,7 +337,7 @@ Python::
 .Example
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tag=delete_user]
+include::partial$python-manual-code.py[tag=delete_user]
 ----
 For more information,
 see the xref:drivers::python/api-reference.adoc#_EntityType[EntityType class] methods.
@@ -349,7 +349,7 @@ Node.js::
 .Example
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tag=delete_user]
+include::partial$nodejs-manual-code.js[tag=delete_user]
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_EntityType[EntityType class] methods.
@@ -361,7 +361,7 @@ Java::
 .Example
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tag=delete_user]
+include::partial$java-manual-code.java[tag=delete_user]
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_EntityType[EntityType class] methods.
@@ -373,7 +373,7 @@ C#::
 .Example
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tag=delete_user]
+include::partial$csharp-manual-code.cs[tag=delete_user]
 ----
 For more information,
 see the xref:drivers::csharp/api-reference.adoc#_IEntityType[IEntityType class] methods.
@@ -385,7 +385,7 @@ C++::
 .Example
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tag=delete_user]
+include::partial$cpp-manual-code.cpp[tag=delete_user]
 ----
 For more information,
 see the xref:drivers::cpp/api-reference.adoc#_EntityType[EntityType class] methods.
@@ -397,7 +397,7 @@ C::
 .Example
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tag=delete_user]
+include::partial$c-manual-code.c[tag=delete_user]
 ----
 For more information,
 see the xref:drivers::c/api-reference.adoc#_Struct_Concept[Concepts] section functions.
@@ -420,8 +420,8 @@ Rust::
 .Example
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
-include::manual::partial$rust-manual-code.rs[tags=data-api]
+include::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::partial$rust-manual-code.rs[tags=data-api]
 ----
 
 For more information,
@@ -434,7 +434,7 @@ Python::
 .Example
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tags=data-api]
+include::partial$python-manual-code.py[tags=data-api]
 ----
 For more information,
 see the xref:drivers::python/api-reference.adoc#_data_header[Data class] methods.
@@ -446,7 +446,7 @@ Node.js::
 .Example
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tags=data-api]
+include::partial$nodejs-manual-code.js[tags=data-api]
 ----
 For more information,
 see the xref:drivers::nodejs/api-reference.adoc#_data_header[Data class] methods.
@@ -458,7 +458,7 @@ Java::
 .Example
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tags=data-api]
+include::partial$java-manual-code.java[tags=data-api]
 ----
 For more information,
 see the xref:drivers::java/api-reference.adoc#_data_header[Data class] methods.
@@ -470,7 +470,7 @@ C#::
 .Example
 [,csharp]
 ----
-include::manual::partial$csharp-manual-code.cs[tags=data-api]
+include::partial$csharp-manual-code.cs[tags=data-api]
 ----
 For more information,
 see the xref:drivers::csharp/api-reference.adoc#_data_header[Data section] methods.
@@ -482,7 +482,7 @@ C++::
 .Example
 [,cpp]
 ----
-include::manual::partial$cpp-manual-code.cpp[tags=data-api]
+include::partial$cpp-manual-code.cpp[tags=data-api]
 ----
 For more information,
 see the xref:drivers::cpp/api-reference.adoc#_data_header[Data class] methods.
@@ -494,7 +494,7 @@ C::
 .Example
 [,c]
 ----
-include::manual::partial$c-manual-code.c[tags=data-api]
+include::partial$c-manual-code.c[tags=data-api]
 ----
 For more information,
 see the xref:drivers::c/api-reference.adoc#_Struct_Concept[Concepts] section functions.
@@ -514,4 +514,4 @@ Learn more about TypeDB drivers: list of available drivers, installation guides,
 
 For more information about driver API methods, see the API reference of the relevant driver:
 
-include::manual::reading/get.adoc[tags=drivers-api]
+include::../reading/get.adoc[tags=drivers-api]

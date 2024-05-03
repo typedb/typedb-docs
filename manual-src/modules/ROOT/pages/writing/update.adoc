@@ -15,14 +15,14 @@ For a detailed explanation of the query see the xref:typeql::queries/update.adoc
 [#_how_to_send_an_update_query]
 == Sending Update queries
 
-Before you start, make sure you followed instructions from the xref:manual::writing/delete.adoc[] page. The easiest way to send an Update query is to use Studio or Console:
+Before you start, make sure you followed instructions from the xref:writing/delete.adoc[] page. The easiest way to send an Update query is to use Studio or Console:
 
 [tabs]
 ====
 Studio::
 +
 --
-Follow the xref:manual::studio.adoc#_prepare_a_query[Studio manual]
+Follow the xref:studio.adoc#_prepare_a_query[Studio manual]
 to connect to TypeDB and select a project folder.
 Then use the steps below:
 
@@ -83,7 +83,7 @@ To send an Update query programmatically, use xref:drivers::overview.adoc[driver
 Rust::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 [subs="macros, post_replacements, replacements"]
@@ -96,15 +96,15 @@ method:
 
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
-include::manual::partial$rust-manual-code.rs[tags=update]
+include::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::partial$rust-manual-code.rs[tags=update]
 ----
 --
 
 Python::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 [subs="macros, post_replacements, replacements"]
@@ -117,14 +117,14 @@ method:
 
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tags=update]
+include::partial$python-manual-code.py[tags=update]
 ----
 --
 
 Node.js::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 [subs="macros, post_replacements, replacements"]
@@ -137,14 +137,14 @@ method:
 
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tags=update]
+include::partial$nodejs-manual-code.js[tags=update]
 ----
 --
 
 Java::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 [subs="macros, post_replacements, replacements"]
@@ -157,14 +157,14 @@ method:
 
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tags=update]
+include::partial$java-manual-code.java[tags=update]
 ----
 --
 
 C#::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 [subs="macros, post_replacements, replacements"]
@@ -177,14 +177,14 @@ method:
 
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tags=update]
+include::partial$csharp-manual-code.cs[tags=update]
 ----
 --
 
 C++::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 [subs="macros, post_replacements, replacements"]
@@ -197,15 +197,15 @@ method:
 
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tags=options,indent=0]
-include::manual::partial$cpp-manual-code.cpp[tags=update,indent=0]
+include::partial$cpp-manual-code.cpp[tags=options,indent=0]
+include::partial$cpp-manual-code.cpp[tags=update,indent=0]
 ----
 --
 
 C::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 [subs="macros, post_replacements, replacements"]
@@ -218,8 +218,8 @@ function:
 
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tags=options,indent=0]
-include::manual::partial$c-manual-code.c[tags=update,indent=0]
+include::partial$c-manual-code.c[tags=options,indent=0]
+include::partial$c-manual-code.c[tags=update,indent=0]
 ----
 --
 ====
@@ -298,7 +298,7 @@ of a Delete query with the same `match` clause in the same `write` transaction w
 Learn more about Update queries in TypeQL: syntax, behavior, and query examples.
 ****
 
-.xref:manual::reading/overview.adoc[]
+.xref:reading/overview.adoc[]
 [.clickable]
 ****
 Learn how to read data from a TypeDB database.

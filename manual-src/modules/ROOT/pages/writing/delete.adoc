@@ -10,14 +10,14 @@ A Delete query is used to delete _data_ from a TypeDB database. A `delete` claus
 
 == Sending Delete queries
 
-Before you begin, make sure you followed the instructions from the xref:manual::writing/insert.adoc[] page. The easiest way to send a Delete query is to use Studio or Console:
+Before you begin, make sure you followed the instructions from the xref:writing/insert.adoc[] page. The easiest way to send a Delete query is to use Studio or Console:
 
 [tabs]
 ====
 Studio::
 +
 --
-Follow the xref:manual::studio.adoc#_prepare_a_query[Studio manual]
+Follow the xref:studio.adoc#_prepare_a_query[Studio manual]
 to connect to TypeDB and select a project folder.
 Then use the steps below:
 
@@ -79,7 +79,7 @@ To send a Delete query programmatically, use xref:drivers::overview.adoc[drivers
 Rust::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 [subs="macros, post_replacements, replacements"]
@@ -92,14 +92,14 @@ method:
 
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tags=delete]
+include::partial$rust-manual-code.rs[tags=delete]
 ----
 --
 
 Python::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 [subs="macros, post_replacements, replacements"]
@@ -112,14 +112,14 @@ method:
 
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tags=delete]
+include::partial$python-manual-code.py[tags=delete]
 ----
 --
 
 Node.js::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 [subs="macros, post_replacements, replacements"]
@@ -132,14 +132,14 @@ method:
 
 [,js, indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tags=delete]
+include::partial$nodejs-manual-code.js[tags=delete]
 ----
 --
 
 Java::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 [subs="macros, post_replacements, replacements"]
@@ -152,14 +152,14 @@ method:
 
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tags=delete]
+include::partial$java-manual-code.java[tags=delete]
 ----
 --
 
 C#::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 [subs="macros, post_replacements, replacements"]
@@ -172,14 +172,14 @@ method:
 
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tags=delete]
+include::partial$csharp-manual-code.cs[tags=delete]
 ----
 --
 
 C++::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 [subs="macros, post_replacements, replacements"]
@@ -192,15 +192,15 @@ method:
 
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tags=options,indent=0]
-include::manual::partial$cpp-manual-code.cpp[tags=delete,indent=0]
+include::partial$cpp-manual-code.cpp[tags=options,indent=0]
+include::partial$cpp-manual-code.cpp[tags=delete,indent=0]
 ----
 --
 
 C::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 [subs="macros, post_replacements, replacements"]
@@ -213,8 +213,8 @@ method:
 
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tags=options,indent=0]
-include::manual::partial$c-manual-code.c[tags=delete,indent=0]
+include::partial$c-manual-code.c[tags=options,indent=0]
+include::partial$c-manual-code.c[tags=delete,indent=0]
 ----
 --
 ====
@@ -262,7 +262,7 @@ no additional data is deleted and no error is produced.
 Learn more about Delete queries in TypeQL: syntax, behavior, and query examples.
 ****
 
-.xref:manual::writing/update.adoc[]
+.xref:writing/update.adoc[]
 [.clickable]
 ****
 Learn how to update or replace data from a database with a single query.
