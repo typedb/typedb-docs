@@ -12,7 +12,7 @@ paperback sub book;
 hardback sub book;
 ebook sub book;
 ----
-image:learn::studio-icons/run-query.png[]image:learn::studio-icons/commit-transaction.png[] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=17]image:home::studio-icons/svg/studio_check.svg[width=17] *_Run and commit_*
 
 To make one type a subtype of another, we simply replace the root type with the intended *supertype* in the `sub` statement that defines that type. When defined in a type hierarchy, subtypes will *inherit* all the owned attributes and played roles of their supertypes. Consider the following Define query where we assign a number of ownerships and roles to `book`.
 
@@ -31,7 +31,7 @@ title sub attribute, value string;
 page-count sub attribute, value long;
 genre sub attribute, value string;
 ----
-image:learn::studio-icons/run-query.png[]image:learn::studio-icons/commit-transaction.png[] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=17]image:home::studio-icons/svg/studio_check.svg[width=17] *_Run and commit_*
 
 `paperback`, `hardback`, and `ebook` will inherit all of these capabilities from `book` without having to explicitly declare this to be the case. This will even apply to new subtypes of `book` defined in the future! If we want capabilities that only apply to certain subtypes, then we can declare them directly on those types only.
 
@@ -42,7 +42,7 @@ paperback owns stock;
 hardback owns stock;
 stock sub attribute, value long;
 ----
-image:learn::studio-icons/run-query.png[]image:learn::studio-icons/commit-transaction.png[] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=17]image:home::studio-icons/svg/studio_check.svg[width=17] *_Run and commit_*
 
 This allows paperbacks and hardbacks to have stock levels, but not ebooks.
 
@@ -68,7 +68,7 @@ publisher sub company,
 courier sub company,
     plays delivery:deliverer;
 ----
-image:learn::studio-icons/run-query.png[]image:learn::studio-icons/commit-transaction.png[] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=17]image:home::studio-icons/svg/studio_check.svg[width=17] *_Run and commit_*
 =====
 ====
 
@@ -82,7 +82,7 @@ define
 book abstract;
 company abstract;
 ----
-image:learn::studio-icons/run-query.png[]image:learn::studio-icons/commit-transaction.png[] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=17]image:home::studio-icons/svg/studio_check.svg[width=17] *_Run and commit_*
 
 Now `book` can only be instantiated through `paperback`, `hardback`, or `ebook`, and `company` can only be instantiated through `publisher` or `courier`.
 
@@ -110,7 +110,7 @@ country sub place;
 state sub place;
 city sub place;
 ----
-image:learn::studio-icons/run-query.png[]image:learn::studio-icons/commit-transaction.png[] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=17]image:home::studio-icons/svg/studio_check.svg[width=17] *_Run and commit_*
 =====
 ====
 
@@ -128,7 +128,7 @@ authoring sub contribution;
 editing sub contribution;
 illustrating sub contribution;
 ----
-image:learn::studio-icons/run-query.png[]image:learn::studio-icons/commit-transaction.png[] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=17]image:home::studio-icons/svg/studio_check.svg[width=17] *_Run and commit_*
 
 Here, `authoring`, `editing`, and `illustrating` inherit the roles `work` and `contributor` from `contribution`. This would allow instantiation of the following relation types:
 
@@ -146,7 +146,7 @@ authoring relates author as contributor;
 editing relates editor as contributor;
 illustrating relates illustrator as contributor;
 ----
-image:learn::studio-icons/run-query.png[]image:learn::studio-icons/commit-transaction.png[] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=17]image:home::studio-icons/svg/studio_check.svg[width=17] *_Run and commit_*
 
 This would instead allow instantiation of the following relation types:
 
@@ -175,7 +175,7 @@ contributor plays authoring:author;
 contributor plays editing:editor;
 contributor plays illustrating:illustrator;
 ----
-image:learn::studio-icons/run-query.png[]image:learn::studio-icons/commit-transaction.png[] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=17]image:home::studio-icons/svg/studio_check.svg[width=17] *_Run and commit_*
 =====
 ====
 
@@ -239,7 +239,7 @@ isbn sub attribute,
 isbn-13 sub isbn;
 isbn-10 sub isbn;
 ----
-image:learn::studio-icons/run-query.png[]image:learn::studio-icons/commit-transaction.png[] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=17]image:home::studio-icons/svg/studio_check.svg[width=17] *_Run and commit_*
 
 Value types of attribute types are inherited by their subtypes. In this case, `isbn-13` and `isbn-10` inherit the `string` value type.
 
