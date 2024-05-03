@@ -20,7 +20,7 @@ To run this sample application, you'll need:
 . TypeDB: either a https://cloud.typedb.com/[TypeDB Cloud] deployment or a TypeDB Core server.
 For TypeDB Core installation instructions, see the xref:{page-component-version}@home::install/core.adoc[] page.
 . Download the https://cloudsmith.io/~typedb/repos/public-release/packages/?q=cpp&sort=-version[TypeDB C++ driver].
-For the driver installation instructions, see the xref:drivers::cpp/overview.adoc[] page.
+For the driver installation instructions, see the xref:cpp/overview.adoc[] page.
 
 //#todo Consider adding virtualenv step-by-step guide
 == Includes
@@ -29,7 +29,7 @@ To be able to use the TypeDB C++ driver API in the Sample application, use the f
 
 [,cpp,indent=0]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=import]
+include::partial$tutorials/cpp/main.cpp[tag=import]
 ----
 
 == Default values
@@ -38,7 +38,7 @@ We store default values as constants in the source code:
 
 [,cpp,indent=0]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=constants]
+include::partial$tutorials/cpp/main.cpp[tag=constants]
 ----
 
 where `DB_NAME` -- the name of the database to use;
@@ -53,7 +53,7 @@ a new database setup, and querying.
 
 [,cpp,indent=0]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=main]
+include::partial$tutorials/cpp/main.cpp[tag=main]
 ----
 
 The entire `main()` function code is executed in the context of the <<_typedb_connection,network connection>>,
@@ -66,7 +66,7 @@ The `connectToTypeDB()` function takes `edition` and `addr` as mandatory paramet
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=connection]
+include::partial$tutorials/cpp/main.cpp[tag=connection]
 ----
 
 The `edition` is expected to be an Enum for selecting a TypeDB edition.
@@ -102,7 +102,7 @@ As the final step of the database setup, we <<_testing_a_database,test it>>.
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=db-setup]
+include::partial$tutorials/cpp/main.cpp[tag=db-setup]
 ----
 
 [#_creating_a_database]
@@ -113,7 +113,7 @@ and call functions to <<_defining_a_schema,define its schema>> and <<_loading_in
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=create_new_db]
+include::partial$tutorials/cpp/main.cpp[tag=create_new_db]
 ----
 
 [#_replacing_a_database]
@@ -123,7 +123,7 @@ and call a function to <<_creating_a_database,create a new one>> instead:
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=replace_db]
+include::partial$tutorials/cpp/main.cpp[tag=replace_db]
 ----
 
 [#_defining_a_schema]
@@ -133,7 +133,7 @@ We use a xref:typeql::queries/define.adoc[Define query] to define a schema for t
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=db-schema-setup]
+include::partial$tutorials/cpp/main.cpp[tag=db-schema-setup]
 ----
 
 The schema for the sample application is stored in the
@@ -145,7 +145,7 @@ file.
 ====
 [,typeql]
 ----
-include::drivers::partial$tutorials/iam-schema.tql[lines=17..]
+include::partial$tutorials/iam-schema.tql[lines=17..]
 ----
 ====
 
@@ -160,7 +160,7 @@ xref:typeql::queries/insert.adoc[Insert query]:
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=db-dataset-setup]
+include::partial$tutorials/cpp/main.cpp[tag=db-dataset-setup]
 ----
 
 We read the
@@ -172,7 +172,7 @@ file, send its contents as a single query, and then commit the changes.
 ====
 [,typeql]
 ----
-include::drivers::partial$tutorials/iam-data-single-query.tql[lines=17..]
+include::partial$tutorials/iam-data-single-query.tql[lines=17..]
 ----
 ====
 
@@ -185,7 +185,7 @@ To test the database, we send a query to count the number of users in the databa
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=test-db]
+include::partial$tutorials/cpp/main.cpp[tag=test-db]
 ----
 
 == Query examples
@@ -195,7 +195,7 @@ After database setup is complete, we proceed with querying our database with dif
 
 [,js,indent=0]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=queries]
+include::partial$tutorials/cpp/main.cpp[tag=queries]
 ----
 
 The queries are as follows:
@@ -220,7 +220,7 @@ Let's use a xref:typeql::queries/fetch.adoc[Fetch query] to fetch names and emai
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=fetch]
+include::partial$tutorials/cpp/main.cpp[tag=fetch]
 ----
 
 We get the response as a stream of JSONs and iterate through it to print all String values from each JSON.
@@ -228,7 +228,7 @@ To print the values, we use the `printJSON()` function:
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=json]
+include::partial$tutorials/cpp/main.cpp[tag=json]
 ----
 
 //#todo Add printing Names and E-mail from a JSON, add multiple names/e-mails implementation
@@ -240,7 +240,7 @@ Let's insert a new user with a `full-name` and `email` attributes to the databas
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=insert]
+include::partial$tutorials/cpp/main.cpp[tag=insert]
 ----
 
 The Insert query returns a stream of ConceptMaps: one for every `insert` clause execution.
@@ -257,7 +257,7 @@ It can be used with or without inference enabled.
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=get]
+include::partial$tutorials/cpp/main.cpp[tag=get]
 ----
 
 We call the function with the inference disabled (`false`) and expect it to return no results, as the query pattern
@@ -290,7 +290,7 @@ and assigning it with ownership of the new path attribute with the xref:typeql::
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=update]
+include::partial$tutorials/cpp/main.cpp[tag=update]
 ----
 
 We iterate through the response of the Update query and count the length of it to determine
@@ -312,7 +312,7 @@ then our transaction fails upon a commit.
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=delete]
+include::partial$tutorials/cpp/main.cpp[tag=delete]
 ----
 
 == Learn more
@@ -325,7 +325,7 @@ include::drivers::partial$tutorials/cpp/main.cpp[tag=delete]
 The full source code of this sample application.
 ****
 
-.xref:drivers::cpp/api-reference.adoc[]
+.xref:cpp/api-reference.adoc[]
 [.clickable]
 ****
 The full API reference for the TypeDB C++ driver.

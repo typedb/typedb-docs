@@ -20,7 +20,7 @@ To run this sample application, you'll need:
 . TypeDB: either a https://cloud.typedb.com/[TypeDB Cloud] deployment or a TypeDB Core server.
 For TypeDB Core installation instructions, see the xref:{page-component-version}@home::install/core.adoc[] page.
 . Java and https://crates.io/crates/typedb-driver[TypeDB Java driver].
-For the driver installation instructions, see the xref:drivers::java/overview.adoc[] page.
+For the driver installation instructions, see the xref:java/overview.adoc[] page.
 
 //#todo Consider adding virtualenv step-by-step guide
 
@@ -30,7 +30,7 @@ To be able to use the TypeDB Java driver API in the Sample application, use the 
 
 [,java,indent=0]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=import]
+include::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=import]
 ----
 
 == Default values
@@ -39,7 +39,7 @@ We store default values as constants in the source code:
 
 [,java,indent=0]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=constants]
+include::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=constants]
 ----
 
 where `DB_NAME` -- the name of the database to use;
@@ -54,7 +54,7 @@ database setup, and querying.
 
 [,java,indent=0]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=main]
+include::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=main]
 ----
 
 The entire `main()` function code is executed in the context of the <<_typedb_connection,network connection>>,
@@ -67,7 +67,7 @@ The `connectToTypeDB()` function takes `edition` and `addr` as mandatory paramet
 
 [,java,indent=0]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=connection]
+include::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=connection]
 ----
 
 The `edition` is expected to be an Enum for selecting a TypeDB edition.
@@ -103,7 +103,7 @@ As the final step of the database setup, we <<_testing_a_database,test it>>.
 
 [,java,indent=0]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=db-setup]
+include::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=db-setup]
 ----
 
 [#_creating_a_database]
@@ -114,7 +114,7 @@ and call functions to <<_defining_a_schema,define its schema>> and <<_loading_in
 
 [,java,indent=0]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=create_new_db]
+include::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=create_new_db]
 ----
 
 [#_replacing_a_database]
@@ -124,7 +124,7 @@ and call a function to <<_creating_a_database,create a new one>> instead:
 
 [,java,indent=0]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=replace_db]
+include::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=replace_db]
 ----
 
 [#_defining_a_schema]
@@ -134,7 +134,7 @@ We use a xref:typeql::queries/define.adoc[Define query] to define a schema for t
 
 [,java,indent=0]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=db-schema-setup]
+include::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=db-schema-setup]
 ----
 
 The schema for the sample application is stored in the
@@ -146,7 +146,7 @@ file.
 ====
 [,typeql]
 ----
-include::drivers::partial$tutorials/iam-schema.tql[lines=17..]
+include::partial$tutorials/iam-schema.tql[lines=17..]
 ----
 ====
 
@@ -161,7 +161,7 @@ xref:typeql::queries/insert.adoc[Insert query]:
 
 [,java,indent=0]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=db-dataset-setup]
+include::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=db-dataset-setup]
 ----
 
 We read the
@@ -173,7 +173,7 @@ file, send its contents as a single query, and then commit the changes.
 ====
 [,typeql]
 ----
-include::drivers::partial$tutorials/iam-data-single-query.tql[lines=17..]
+include::partial$tutorials/iam-data-single-query.tql[lines=17..]
 ----
 ====
 
@@ -185,7 +185,7 @@ To test the database, we send a query to count the number of users in the databa
 
 [,java,indent=0]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=test-db]
+include::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=test-db]
 ----
 
 == Query examples
@@ -195,7 +195,7 @@ After database setup is complete, we proceed with querying our database with dif
 
 [,java,indent=0]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=queries]
+include::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=queries]
 ----
 
 The queries are as follows:
@@ -220,7 +220,7 @@ Let's use a xref:typeql::queries/fetch.adoc[Fetch query] to fetch names and emai
 
 [,java,indent=0]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=fetch]
+include::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=fetch]
 ----
 
 We get the response as a stream of results, containing JSON.
@@ -235,7 +235,7 @@ Let's insert a new user with a `full-name` and `email` attributes to the databas
 
 [,java,indent=0]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=insert]
+include::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=insert]
 ----
 
 The Insert query returns a stream of ConceptMaps: one for every `insert` clause execution.
@@ -254,7 +254,7 @@ It can be used with or without inference enabled.
 
 [,java,indent=0]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=get]
+include::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=get]
 ----
 
 We call the function with the inference disabled (`false`) and expect it to return no results, as the query pattern
@@ -287,7 +287,7 @@ and assigning it with ownership of the new path attribute with the xref:typeql::
 
 [,java,indent=0]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=update]
+include::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=update]
 ----
 
 We collect the response of the Update query and check the length of it to determine
@@ -309,7 +309,7 @@ then our transaction fails upon a commit.
 
 [,java,indent=0]
 ----
-include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=delete]
+include::partial$tutorials/java/src/main/java/org/example2/Main.java[tag=delete]
 ----
 
 == Learn more
@@ -322,7 +322,7 @@ include::drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[ta
 The full source code of this sample application.
 ****
 
-.xref:drivers::java/api-reference.adoc[]
+.xref:java/api-reference.adoc[]
 [.clickable]
 ****
 The full API reference for the TypeDB Java driver.

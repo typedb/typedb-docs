@@ -8,7 +8,7 @@
 
 [.float-group]
 --
-image::drivers::studio/studio.png[TypeDB Studio hero image, role="right", width = 50%, window=_blank, link=self]
+image::{page-component-version}@drivers::studio/studio.png[TypeDB Studio hero image, role="right", width = 50%, window=_blank, link=self]
 
   +
 TypeDB Studio is an IDE that facilitates the development process for TypeDB databases.
@@ -138,7 +138,7 @@ and move it from the hidden folder.
 [#_run_a_query]
 === Run a query
 
-image::drivers::studio/project-schema-committed.png[Commit the Transaction,role="right",width = 50%,link=self]
+image::{page-component-version}@drivers::studio/project-schema-committed.png[Commit the Transaction,role="right",width = 50%,link=self]
 
 Select a session type (image:icons/session-data.png[])
 and a transaction type (image:icons/transaction-write.png[]) in the top Toolbar.
@@ -179,7 +179,7 @@ It uses Studio's Graph Visualizer to build a graphical representation of query r
 To control query execution, we have the top *Toolbar* elements located to the right from the database selection
 drop-down menu.
 
-image::drivers::studio/studio-transaction-controls.png[Transaction controls, link=self]
+image::{page-component-version}@drivers::studio/studio-transaction-controls.png[Transaction controls, link=self]
 
 //From left to right (numbered respectively to the numbers on the above screenshot):
 
@@ -261,7 +261,7 @@ and execute the TypeQL code against the selected database.
 
 //#todo Add a link explaining what an inference is
 [#_inference_results]
-image::drivers::studio/inference.png[Inference results example, role=right, width = 50%, link=self]
+image::{page-component-version}@drivers::studio/inference.png[Inference results example, role=right, width = 50%, link=self]
 
 To run a query with inference, enable the btn:[infer] button before executing a query.
 If the button is unavailable, double-check <<_connect_to_typedb,TypeDB connection>>,
@@ -277,7 +277,7 @@ See an example on the image to the right.
 === Explanation
 
 [#_explanation_results]
-image::drivers::studio/explanation.png[Explanation example, role=right, width = 50%, link=self]
+image::{page-component-version}@drivers::studio/explanation.png[Explanation example, role=right, width = 50%, link=self]
 
 To run a query with explanation, turn the btn:[explain] button *on* before executing a query.
 To be able to do that, the btn:[infer] and btn:[snapshot] buttons must be enabled.
@@ -303,7 +303,7 @@ While connected to TypeDB, the button changes its label to server's address.
 
 [.float-group]
 --
-image::drivers::studio/databases-interface-iam-database.png[Database Manager with IAM database, role=right, width=50%, link=self]
+image::{page-component-version}@drivers::studio/databases-interface-iam-database.png[Database Manager with IAM database, role=right, width=50%, link=self]
 
 Creating and deleting databases can be done via the Manage Database window.
 // tag::db_manager[]
@@ -330,7 +330,7 @@ To delete a database:
 [#_types_browser_capabilities]
 == Type Browser
 
-image::drivers::studio/type-browser.png[Type browser, role=right framed, width=50%, link=self]
+image::{page-component-version}@drivers::studio/type-browser.png[Type browser, role=right framed, width=50%, link=self]
 
 Type Browser panel gives you a full overview of the type hierarchy for the currently selected database.
 
@@ -355,7 +355,7 @@ The button creates a new tab with inserted TypeQL Define query that creates the 
 // tag::type-editor[]
 [.float-group]
 --
-image::drivers::studio/type-editor.png[Type editor, role=right framed, width = 50%, link=self]
+image::{page-component-version}@drivers::studio/type-editor.png[Type editor, role=right framed, width = 50%, link=self]
 
 Type Editor is a powerful instrument that combines easy to use GUI with API calls that can modify schema types directly,
 without TypeQL queries.

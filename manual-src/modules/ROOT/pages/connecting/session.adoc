@@ -40,7 +40,7 @@ You choose a session type when you open a xref:connecting/transaction.adoc[trans
 --
 ====
 
-xref:drivers::overview.adoc[TypeDB drivers]
+xref:{page-component-version}@drivers::overview.adoc[TypeDB drivers]
 provide manual session control via native API:
 
 [tabs]
@@ -140,7 +140,7 @@ session, see how to xref:connecting/transaction.adoc[open a transaction].
 
 Both Studio and Console manage sessions automatically.
 
-For manual session control, use xref:drivers::overview.adoc[TypeDB drivers]:
+For manual session control, use xref:{page-component-version}@drivers::overview.adoc[TypeDB drivers]:
 
 [tabs]
 ====
@@ -150,7 +150,7 @@ Rust::
 A session is automatically closed when the variable containing it is dropped from memory.
 
 To explicitly close a session,
-use the xref:drivers::rust/api-reference.adoc#_struct_Session_force_close__[force_close] method:
+use the xref:{page-component-version}@drivers::rust/api-reference.adoc#_struct_Session_force_close__[force_close] method:
 
 .Close a session
 [,rust,indent=0]
@@ -163,7 +163,7 @@ Python::
 +
 --
 Use a https://peps.python.org/pep-0343/[context manager] to close a session when it's longer needed,
-or use the xref:drivers::python/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
+or use the xref:{page-component-version}@drivers::python/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
 
 .Close a session
 [,python,indent=0]
@@ -175,7 +175,7 @@ include::partial$python-manual-code.py[tag=session_close]
 Node.js::
 +
 --
-Use the xref:drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
+Use the xref:{page-component-version}@drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
 
 .Close a session
 [,js,indent=0]
@@ -189,7 +189,7 @@ Java::
 --
 Use the https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html[Try with resources] statement
 to close a session when it's longer needed, or use the
-xref:drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
+xref:{page-component-version}@drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
 
 .Close a session
 [,java,indent=0]
@@ -204,7 +204,7 @@ C#::
 A session is automatically closed when the variable containing it is dropped from memory.
 
 To explicitly close a session,
-use the xref:drivers::csharp/api-reference.adoc#_void_TypeDB_Driver_Api_ITypeDBSession_Close___[close] method:
+use the xref:{page-component-version}@drivers::csharp/api-reference.adoc#_void_TypeDB_Driver_Api_ITypeDBSession_Close___[close] method:
 
 .Close a session
 [,csharp,indent=0]
@@ -219,7 +219,7 @@ C++::
 A session is automatically closed when the variable containing it is dropped from memory.
 
 To explicitly close a session,
-use the xref:drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method:
+use the xref:{page-component-version}@drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method:
 
 .Close a session
 [,cpp,indent=0]
@@ -232,7 +232,7 @@ C::
 +
 --
 To close a session,
-use the xref:drivers::c/api-reference.adoc#_session_close[close] method:
+use the xref:{page-component-version}@drivers::c/api-reference.adoc#_session_close[close] method:
 
 .Close a session
 [,c,indent=0]

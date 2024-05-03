@@ -11,7 +11,7 @@
 // tag::body[]
 [.float-group]
 --
-image::drivers::console.png[TypeDB Console hero image, role="right", width = 50%, window=_blank, link=self]
+image::{page-component-version}@drivers::console.png[TypeDB Console hero image, role="right", width = 50%, window=_blank, link=self]
 
   +
 TypeDB Console is a standalone TypeDB client with a command line interface (CLI).
@@ -391,7 +391,7 @@ database delete iam_sample_db
 .iam-schema.tql
 [,typeql]
 ----
-include::drivers::partial$tutorials/iam-schema.tql[lines=17..]
+include::{page-component-version}@drivers::partial$tutorials/iam-schema.tql[lines=17..]
 ----
 ====
 
@@ -401,7 +401,7 @@ include::drivers::partial$tutorials/iam-schema.tql[lines=17..]
 .iam-data.tql
 [,typeql]
 ----
-include::drivers::partial$tutorials/iam-data.tql[lines=17..]
+include::{page-component-version}@drivers::partial$tutorials/iam-data.tql[lines=17..]
 ----
 ====
 

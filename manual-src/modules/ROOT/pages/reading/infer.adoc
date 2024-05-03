@@ -125,7 +125,7 @@ The resulted Log output should look like this:
 }
 ----
 
-To send a fetch query with inference programmatically, use xref:drivers::overview.adoc[drivers]:
+To send a fetch query with inference programmatically, use xref:{page-component-version}@drivers::overview.adoc[drivers]:
 
 [tabs]
 ====
@@ -135,13 +135,12 @@ Rust::
 Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
-[subs="macros, post_replacements, replacements"]
-++++
+
 Open a read transaction, and use the
-xref:drivers::rust/api-reference.adoc#_struct_QueryManager_fetch__[transaction.query().fetch()] or
-xref:drivers::rust/api-reference.adoc#_struct_QueryManager_get__[transaction.query().get()]
+xref:{page-component-version}@drivers::rust/api-reference.adoc#_struct_QueryManager_fetch__[transaction.query().fetch()] or
+xref:{page-component-version}@drivers::rust/api-reference.adoc#_struct_QueryManager_get__[transaction.query().get()]
 method to retrieve data with inference:
-++++
+
 
 [,rust,indent=0]
 ----
@@ -156,13 +155,12 @@ Python::
 Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
-[subs="macros, post_replacements, replacements"]
-++++
+
 Open a read transaction, and use the
-xref:drivers::python/api-reference.adoc#_QueryManager_fetch__query_str__options_TypeDBOptions__None[transaction.query.fetch()] or
-xref:drivers::python/api-reference.adoc#_QueryManager_get__query_str__options_TypeDBOptions__None[transaction.query.get()]
+xref:{page-component-version}@drivers::python/api-reference.adoc#_QueryManager_fetch__query_str__options_TypeDBOptions__None[transaction.query.fetch()] or
+xref:{page-component-version}@drivers::python/api-reference.adoc#_QueryManager_get__query_str__options_TypeDBOptions__None[transaction.query.get()]
 method to retrieve data with inference:
-++++
+
 
 [,python,indent=0]
 ----
@@ -176,13 +174,12 @@ Node.js::
 Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
-[subs="macros, post_replacements, replacements"]
-++++
+
 Open a read transaction, and use the
-xref:drivers::nodejs/api-reference.adoc#_QueryManager_fetch__query_string__options_TypeDBOptions[transaction.query.fetch()] or
-xref:drivers::nodejs/api-reference.adoc#_QueryManager_get__query_string__options_TypeDBOptions[transaction.query.get()]
+xref:{page-component-version}@drivers::nodejs/api-reference.adoc#_QueryManager_fetch__query_string__options_TypeDBOptions[transaction.query.fetch()] or
+xref:{page-component-version}@drivers::nodejs/api-reference.adoc#_QueryManager_get__query_string__options_TypeDBOptions[transaction.query.get()]
 method to retrieve data with inference:
-++++
+
 
 [,js,indent=0]
 ----
@@ -196,13 +193,12 @@ Java::
 Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
-[subs="macros, post_replacements, replacements"]
-++++
+
 Open a read transaction, and use the
-xref:drivers::java/api-reference.adoc#_QueryManager_fetch__com_vaticle_typeql_lang_query_TypeQLFetch[transaction.query().fetch()] or
-xref:drivers::java/api-reference.adoc#_QueryManager_get__com_vaticle_typeql_lang_query_TypeQLGet__TypeDBOptions[transaction.query().get()]
+xref:{page-component-version}@drivers::java/api-reference.adoc#_QueryManager_fetch__com_vaticle_typeql_lang_query_TypeQLFetch[transaction.query().fetch()] or
+xref:{page-component-version}@drivers::java/api-reference.adoc#_QueryManager_get__com_vaticle_typeql_lang_query_TypeQLGet__TypeDBOptions[transaction.query().get()]
 method to retrieve data with inference:
-++++
+
 
 [,java,indent=0]
 ----
@@ -216,13 +212,12 @@ C#::
 Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
-[subs="macros, post_replacements, replacements"]
-++++
+
 Open a read transaction, and use the
-xref:drivers::csharp/api-reference.adoc#_IEnumerable__JObject___TypeDB_Driver_Api_IQueryManager_Fetch___string_query_[transaction.Query.Fetch()] or
-xref:drivers::csharp/api-reference.adoc#_IEnumerable__IConceptMap___TypeDB_Driver_Api_IQueryManager_Get___string_query_[transaction.query.get()]
+xref:{page-component-version}@drivers::csharp/api-reference.adoc#_IEnumerable__JObject___TypeDB_Driver_Api_IQueryManager_Fetch___string_query_[transaction.Query.Fetch()] or
+xref:{page-component-version}@drivers::csharp/api-reference.adoc#_IEnumerable__IConceptMap___TypeDB_Driver_Api_IQueryManager_Get___string_query_[transaction.query.get()]
 method to retrieve data with inference:
-++++
+
 
 [,csharp,indent=0]
 ----
@@ -236,13 +231,12 @@ C++::
 Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
-[subs="macros, post_replacements, replacements"]
-++++
+
 Open a read transaction, and use the
-xref:drivers::cpp/api-reference.adoc#_JSONIterable_TypeDBQueryManagerfetch___const_stdstring__query__const_Options__options__Options_____const[transaction.query.fetch()] or
-xref:drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerget___const_stdstring__query__const_Options__options__Options_____const[transaction.query.get()]
+xref:{page-component-version}@drivers::cpp/api-reference.adoc#_JSONIterable_TypeDBQueryManagerfetch___const_stdstring__query__const_Options__options__Options_____const[transaction.query.fetch()] or
+xref:{page-component-version}@drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerget___const_stdstring__query__const_Options__options__Options_____const[transaction.query.get()]
 method to retrieve data with inference:
-++++
+
 
 [,cpp,indent=0]
 ----
@@ -256,13 +250,12 @@ C::
 Follow the xref:connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
-[subs="macros, post_replacements, replacements"]
-++++
+
 Open a read transaction, and use the
-xref:drivers::c/api-reference.adoc#_query_fetch[query_fetch()] or
-xref:drivers::c/api-reference.adoc#_query_get[query_get()]
+xref:{page-component-version}@drivers::c/api-reference.adoc#_query_fetch[query_fetch()] or
+xref:{page-component-version}@drivers::c/api-reference.adoc#_query_get[query_get()]
 method to retrieve data with inference:
-++++
+
 
 [,c,indent=0]
 ----

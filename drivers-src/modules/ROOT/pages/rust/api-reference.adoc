@@ -19,133 +19,133 @@ toc::[]
 [#_connection_header]
 == Connection
 
-include::drivers::partial$rust/connection/Connection.adoc[]
+include::partial$rust/connection/Connection.adoc[]
 
-include::drivers::partial$rust/connection/Credential.adoc[]
+include::partial$rust/connection/Credential.adoc[]
 
-include::drivers::partial$rust/connection/DatabaseManager.adoc[]
+include::partial$rust/connection/DatabaseManager.adoc[]
 
-include::drivers::partial$rust/connection/Database.adoc[]
+include::partial$rust/connection/Database.adoc[]
 
-include::drivers::partial$rust/connection/ReplicaInfo.adoc[]
+include::partial$rust/connection/ReplicaInfo.adoc[]
 
-include::drivers::partial$rust/connection/UserManager.adoc[]
+include::partial$rust/connection/UserManager.adoc[]
 
-include::drivers::partial$rust/connection/User.adoc[]
+include::partial$rust/connection/User.adoc[]
 
 [#_session_header]
 == Session
 
-include::drivers::partial$rust/session/Session.adoc[]
+include::partial$rust/session/Session.adoc[]
 
-include::drivers::partial$rust/session/SessionType.adoc[]
+include::partial$rust/session/SessionType.adoc[]
 
-include::drivers::partial$rust/session/Options.adoc[]
+include::partial$rust/session/Options.adoc[]
 
 [#_transaction_header]
 == Transaction
 
-include::drivers::partial$rust/transaction/Transaction.adoc[]
+include::partial$rust/transaction/Transaction.adoc[]
 
-include::drivers::partial$rust/transaction/TransactionType.adoc[]
+include::partial$rust/transaction/TransactionType.adoc[]
 
-include::drivers::partial$rust/transaction/QueryManager.adoc[]
+include::partial$rust/transaction/QueryManager.adoc[]
 
 [#_answer_header]
 == Answer
 
-include::drivers::partial$rust/answer/ConceptMapGroup.adoc[]
+include::partial$rust/answer/ConceptMapGroup.adoc[]
 
-include::drivers::partial$rust/answer/ConceptMap.adoc[]
+include::partial$rust/answer/ConceptMap.adoc[]
 
-include::drivers::partial$rust/answer/ValueGroup.adoc[]
+include::partial$rust/answer/ValueGroup.adoc[]
 
-include::drivers::partial$rust/answer/JSON.adoc[]
+include::partial$rust/answer/JSON.adoc[]
 
-include::drivers::partial$rust/answer/Trait_Promise.adoc[]
+include::partial$rust/answer/Trait_Promise.adoc[]
 
-include::drivers::partial$rust/answer/Explainables.adoc[]
+include::partial$rust/answer/Explainables.adoc[]
 
-include::drivers::partial$rust/answer/Explainable.adoc[]
+include::partial$rust/answer/Explainable.adoc[]
 
-include::drivers::partial$rust/answer/Explanation.adoc[]
+include::partial$rust/answer/Explanation.adoc[]
 
 [#_concept_header]
 == Concept
 
-include::drivers::partial$rust/concept/ConceptManager.adoc[]
+include::partial$rust/concept/ConceptManager.adoc[]
 
-include::drivers::partial$rust/concept/Concept.adoc[]
+include::partial$rust/concept/Concept.adoc[]
 
 [#_schema_header]
 == Schema
 
-//include::drivers::partial$rust/schema/Type.adoc[]
+//include::partial$rust/schema/Type.adoc[]
 
-include::drivers::partial$rust/schema/RootThingType.adoc[]
+include::partial$rust/schema/RootThingType.adoc[]
 
-include::drivers::partial$rust/schema/ThingType.adoc[]
+include::partial$rust/schema/ThingType.adoc[]
 
-include::drivers::partial$rust/schema/Trait_ThingTypeAPI.adoc[]
+include::partial$rust/schema/Trait_ThingTypeAPI.adoc[]
 
-include::drivers::partial$rust/schema/EntityType.adoc[]
+include::partial$rust/schema/EntityType.adoc[]
 
-include::drivers::partial$rust/schema/Trait_EntityTypeAPI.adoc[]
+include::partial$rust/schema/Trait_EntityTypeAPI.adoc[]
 
-include::drivers::partial$rust/schema/RelationType.adoc[]
+include::partial$rust/schema/RelationType.adoc[]
 
-include::drivers::partial$rust/schema/Trait_RelationTypeAPI.adoc[]
+include::partial$rust/schema/Trait_RelationTypeAPI.adoc[]
 
-include::drivers::partial$rust/schema/RoleType.adoc[]
+include::partial$rust/schema/RoleType.adoc[]
 
-include::drivers::partial$rust/schema/Trait_RoleTypeAPI.adoc[]
+include::partial$rust/schema/Trait_RoleTypeAPI.adoc[]
 
-include::drivers::partial$rust/schema/AttributeType.adoc[]
+include::partial$rust/schema/AttributeType.adoc[]
 
-include::drivers::partial$rust/schema/Trait_AttributeTypeAPI.adoc[]
+include::partial$rust/schema/Trait_AttributeTypeAPI.adoc[]
 
-include::drivers::partial$rust/schema/Annotation.adoc[]
+include::partial$rust/schema/Annotation.adoc[]
 
-include::drivers::partial$rust/schema/Transitivity.adoc[]
+include::partial$rust/schema/Transitivity.adoc[]
 
-include::drivers::partial$rust/schema/ValueType.adoc[]
+include::partial$rust/schema/ValueType.adoc[]
 
-include::drivers::partial$rust/schema/ScopedLabel.adoc[]
+include::partial$rust/schema/ScopedLabel.adoc[]
 
 [#_data_header]
 == Data
 
-include::drivers::partial$rust/data/Thing.adoc[]
+include::partial$rust/data/Thing.adoc[]
 
-include::drivers::partial$rust/data/Trait_ThingAPI.adoc[]
+include::partial$rust/data/Trait_ThingAPI.adoc[]
 
-include::drivers::partial$rust/data/Entity.adoc[]
+include::partial$rust/data/Entity.adoc[]
 
-//include::drivers::partial$rust/data/Trait_EntityAPI.adoc[]
+//include::partial$rust/data/Trait_EntityAPI.adoc[]
 //#todo Check why there is no such file
 
-include::drivers::partial$rust/data/Relation.adoc[]
+include::partial$rust/data/Relation.adoc[]
 
-include::drivers::partial$rust/data/Attribute.adoc[]
+include::partial$rust/data/Attribute.adoc[]
 
-include::drivers::partial$rust/data/Value.adoc[]
+include::partial$rust/data/Value.adoc[]
 
 [#_logic_header]
 == Logic
 
-include::drivers::partial$rust/logic/LogicManager.adoc[]
+include::partial$rust/logic/LogicManager.adoc[]
 
-include::drivers::partial$rust/logic/Rule.adoc[]
+include::partial$rust/logic/Rule.adoc[]
 
-include::drivers::partial$rust/logic/Trait_RuleAPI.adoc[]
+include::partial$rust/logic/Trait_RuleAPI.adoc[]
 
 [#_errors_header]
 == Errors
 
-include::drivers::partial$rust/errors/SchemaException.adoc[]
+include::partial$rust/errors/SchemaException.adoc[]
 
-include::drivers::partial$rust/errors/Error.adoc[]
+include::partial$rust/errors/Error.adoc[]
 
-include::drivers::partial$rust/errors/ConnectionError.adoc[]
+include::partial$rust/errors/ConnectionError.adoc[]
 
-include::drivers::partial$rust/errors/InternalError.adoc[]
+include::partial$rust/errors/InternalError.adoc[]

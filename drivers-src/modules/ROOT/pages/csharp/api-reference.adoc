@@ -18,116 +18,116 @@ toc::[]
 [#_connection_header]
 == Connection
 
-include::drivers::partial$csharp/connection/Drivers.adoc[]
+include::partial$csharp/connection/Drivers.adoc[]
 
-include::drivers::partial$csharp/connection/ITypeDBDriver.adoc[]
+include::partial$csharp/connection/ITypeDBDriver.adoc[]
 
-include::drivers::partial$csharp/connection/TypeDBCredential.adoc[]
+include::partial$csharp/connection/TypeDBCredential.adoc[]
 
-include::drivers::partial$csharp/connection/IDatabaseManager.adoc[]
+include::partial$csharp/connection/IDatabaseManager.adoc[]
 
-include::drivers::partial$csharp/connection/IDatabase.adoc[]
+include::partial$csharp/connection/IDatabase.adoc[]
 
-include::drivers::partial$csharp/connection/IReplica.adoc[]
+include::partial$csharp/connection/IReplica.adoc[]
 
-include::drivers::partial$csharp/connection/IUserManager.adoc[]
+include::partial$csharp/connection/IUserManager.adoc[]
 
-include::drivers::partial$csharp/connection/IUser.adoc[]
+include::partial$csharp/connection/IUser.adoc[]
 
 [#_session_header]
 == Session
 
-include::drivers::partial$csharp/session/ITypeDBSession.adoc[]
+include::partial$csharp/session/ITypeDBSession.adoc[]
 
-include::drivers::partial$csharp/session/SessionType.adoc[]
+include::partial$csharp/session/SessionType.adoc[]
 
-include::drivers::partial$csharp/session/TypeDBOptions.adoc[]
+include::partial$csharp/session/TypeDBOptions.adoc[]
 
 [#_transaction_header]
 == Transaction
 
-include::drivers::partial$csharp/transaction/ITypeDBTransaction.adoc[]
+include::partial$csharp/transaction/ITypeDBTransaction.adoc[]
 
-include::drivers::partial$csharp/transaction/TransactionType.adoc[]
+include::partial$csharp/transaction/TransactionType.adoc[]
 
-include::drivers::partial$csharp/transaction/IQueryManager.adoc[]
+include::partial$csharp/transaction/IQueryManager.adoc[]
 
 [#_answer_header]
 == Answer
 
-include::drivers::partial$csharp/answer/IConceptMap.adoc[]
+include::partial$csharp/answer/IConceptMap.adoc[]
 
-include::drivers::partial$csharp/answer/IConceptMapGroup.adoc[]
+include::partial$csharp/answer/IConceptMapGroup.adoc[]
 
-include::drivers::partial$csharp/answer/IValueGroup.adoc[]
+include::partial$csharp/answer/IValueGroup.adoc[]
 
-// include::drivers::partial$csharp/answer/JSON.adoc[]
+// include::partial$csharp/answer/JSON.adoc[]
 
-// include::drivers::partial$csharp/answer/JSONType.adoc[]
+// include::partial$csharp/answer/JSONType.adoc[]
 
-include::drivers::partial$csharp/answer/IExplainables.adoc[]
+include::partial$csharp/answer/IExplainables.adoc[]
 
-include::drivers::partial$csharp/answer/IExplainable.adoc[]
+include::partial$csharp/answer/IExplainable.adoc[]
 
-include::drivers::partial$csharp/answer/IExplanation.adoc[]
+include::partial$csharp/answer/IExplanation.adoc[]
 
-include::drivers::partial$csharp/answer/Promise__T__.adoc[]
+include::partial$csharp/answer/Promise__T__.adoc[]
 
-include::drivers::partial$csharp/answer/VoidPromise.adoc[]
+include::partial$csharp/answer/VoidPromise.adoc[]
 
 [#_concept_header]
 == Concept
 
-include::drivers::partial$csharp/concept/IConceptManager.adoc[]
+include::partial$csharp/concept/IConceptManager.adoc[]
 
-include::drivers::partial$csharp/concept/IConcept.adoc[]
+include::partial$csharp/concept/IConcept.adoc[]
 
-include::drivers::partial$csharp/concept/Transitivity.adoc[]
+include::partial$csharp/concept/Transitivity.adoc[]
 
 [#_schema_header]
 == Schema
 
-include::drivers::partial$csharp/schema/IType.adoc[]
+include::partial$csharp/schema/IType.adoc[]
 
-include::drivers::partial$csharp/schema/IThingType.adoc[]
+include::partial$csharp/schema/IThingType.adoc[]
 
-include::drivers::partial$csharp/schema/IEntityType.adoc[]
+include::partial$csharp/schema/IEntityType.adoc[]
 
-include::drivers::partial$csharp/schema/IRelationType.adoc[]
+include::partial$csharp/schema/IRelationType.adoc[]
 
-include::drivers::partial$csharp/schema/IRoleType.adoc[]
+include::partial$csharp/schema/IRoleType.adoc[]
 
-include::drivers::partial$csharp/schema/IAttributeType.adoc[]
+include::partial$csharp/schema/IAttributeType.adoc[]
 
-include::drivers::partial$csharp/schema/Annotation.adoc[]
+include::partial$csharp/schema/Annotation.adoc[]
 
-include::drivers::partial$csharp/schema/Label.adoc[]
+include::partial$csharp/schema/Label.adoc[]
 
 [#_data_header]
 == Data
 
-include::drivers::partial$csharp/data/IThing.adoc[]
+include::partial$csharp/data/IThing.adoc[]
 
-include::drivers::partial$csharp/data/IEntity.adoc[]
+include::partial$csharp/data/IEntity.adoc[]
 
-include::drivers::partial$csharp/data/IRelation.adoc[]
+include::partial$csharp/data/IRelation.adoc[]
 
-include::drivers::partial$csharp/data/IAttribute.adoc[]
+include::partial$csharp/data/IAttribute.adoc[]
 
-include::drivers::partial$csharp/data/IValue.adoc[]
+include::partial$csharp/data/IValue.adoc[]
 
-include::drivers::partial$csharp/data/ValueType.adoc[]
+include::partial$csharp/data/ValueType.adoc[]
 
-include::drivers::partial$csharp/data/ValueTypeExtensions.adoc[]
+include::partial$csharp/data/ValueTypeExtensions.adoc[]
 
 [#_logic_header]
 == Logic
 
-include::drivers::partial$csharp/logic/ILogicManager.adoc[]
+include::partial$csharp/logic/ILogicManager.adoc[]
 
-include::drivers::partial$csharp/logic/IRule.adoc[]
+include::partial$csharp/logic/IRule.adoc[]
 
 [#_errors_header]
 == Errors
 
-include::drivers::partial$csharp/errors/TypeDBDriverException.adoc[]
+include::partial$csharp/errors/TypeDBDriverException.adoc[]
