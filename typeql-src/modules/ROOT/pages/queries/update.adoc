@@ -42,7 +42,7 @@ An Update query first deletes and then inserts data instances, ownerships, or ro
 The results of the `match` clause in an Update query will be used for the variables in its subsequent
 `delete` and `insert` clauses.
 For more information and examples of the latter clauses,
-see the xref:queries/delete.adoc[] and xref:queries/insert.adoc[] page.
+see the xref:data/delete.adoc[] and xref:data/insert.adoc[] page.
 
 Note that inserted data _need not be a direct replacement_ for the data deleted by the same query.
 You can insert a new concept instead of a deleted one with either the same variable or a new one.

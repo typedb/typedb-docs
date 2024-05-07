@@ -12,24 +12,24 @@ https://github.com/vaticle/typeql/blob/master/grammar/TypeQL.g4[TypeQL.g4,window
 Clause keywords declare a start of a query's clause:
 
 `define`::
-Starts a `define` clause of a xref:queries/define.adoc[].
+Starts a `define` clause of a xref:schema/define.adoc[].
 
 `undefine`::
-Starts an `undefine` clause of a xref:queries/undefine.adoc[]
+Starts an `undefine` clause of a xref:schema/undefine.adoc[]
 
 `match`::
 Starts a `match` clause that xref:patterns/matching.adoc[matches existing data] by a pattern in an
-xref:queries/insert.adoc[Insert],
-xref:queries/delete.adoc[Delete],
+xref:data/insert.adoc[Insert],
+xref:data/delete.adoc[Delete],
 xref:queries/update.adoc[Update],
 xref:queries/fetch.adoc[Fetch], or
 xref:queries/get.adoc[Get] query.
 
 `insert`::
-Starts an `insert` clause of an xref:queries/insert.adoc[].
+Starts an `insert` clause of an xref:data/insert.adoc[].
 
 `delete`::
-Starts a `delete` clause of a xref:queries/delete.adoc[].
+Starts a `delete` clause of a xref:data/delete.adoc[].
 
 `fetch`::
 Starts a `fetch` clause of a xref:queries/fetch.adoc[].

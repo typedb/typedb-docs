@@ -154,7 +154,7 @@ $s 34 isa size-kb;
 ----
 
 Attributes that are not owned by any other instances are called
-xref:queries/delete.adoc#_orphaned_attributes[orphaned attributes]
+xref:data/delete.adoc#_orphaned_attributes[orphaned attributes]
 and aren't very useful to store in a database.
 
 To implicitly insert an attribute, assign an ownership of it with a xref:statements/has.adoc[has] statement.
