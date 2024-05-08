@@ -1,9 +1,16 @@
 = Schema definition queries
 
+There are only two types of TypeQL queries to alter a schema: Define and Undefine.
+
 == Define
+
+A Define query extends the schema of a database with new schema statements.
+It can add new types, extend existing types, and add or replace functions.
+
+For more information on Define queries, see the xref:schema/define.adoc[] page.
 
 == Undefine
 
+An Undefine query removes type and function definitions from a schema.
 
-
-
+For more information on Define queries, see the xref:schema/undefine.adoc[] page.
