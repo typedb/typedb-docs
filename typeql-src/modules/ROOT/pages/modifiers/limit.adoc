@@ -1,4 +1,4 @@
-= Pagination
+= Limit
 
 This page covers pagination of TypeQL query results.
 
@@ -12,26 +12,6 @@ you can iterate through the entire result set in manageable batches.
 xref:modifiers/sorting.adoc[Sorting] the results is strongly advised, but is not mandatory.
 Without sorting, the ordering of results is not guaranteed and can be unpredictable.
 Pagination relies on sorting to traverse the full set of results.
-
-[#_offset_the_results]
-=== Offset the results
-
-include::partial$iam-database-links.adoc[]
-
-Use the `offset` keyword followed by the number of results to skip.
-
-.Offset example
-[,typeql]
-----
-match
-$p isa person, has full-name $n;
-get $n;
-sort $n;
-offset 2;
-----
-
-The above example sorts the `full-name` attributes of all `person` entities in ascending order (as default),
-skips the first two results, and returns the rest of results.
 
 [#_limit_the_results]
 === Limit the number of results

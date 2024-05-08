@@ -2,7 +2,7 @@
 
 == Behavior
 
-Value variables are used in patterns with xref:values/arithmetic.adoc[arithmetics] or
+Value variables are used in patterns with xref:values/built-in.adoc[arithmetics] or
 xref:values/functions.adoc[built-in functions] to represent values in statements.
 Value variables are never persisted into a database and can be used only within the scope of a query or a rule.
 
@@ -36,4 +36,4 @@ $f isa file, has size-kb $kb;
 insert $f has size-mb ?mb;
 ----
 
-For more examples, see the xref:values/arithmetic.adoc[] page.
+For more examples, see the xref:values/built-in.adoc[] page.

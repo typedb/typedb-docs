@@ -35,11 +35,11 @@ A `match` clause is used to match data by a pattern, while a `get` clause is use
 A Get query projects concepts matched from a database to language-specific programmatic stateful objects
 that can be used via driver API methods.
 The output of a Get query is a lazy stream/iterator of ConceptMap objects, unless it's used with
-xref:modifiers/aggregation.adoc[aggregation], xref:modifiers/grouping.adoc[grouping], or both.
+aggregation, grouping, or both.
 See the <<_response>> section below.
 
 You can use xref:modifiers/sorting.adoc[sorting] and
-xref:modifiers/pagination.adoc[pagination] with a Get query.
+xref:modifiers/limit.adoc[pagination] with a Get query.
 
 Get queries can use rule-based xref:{page-component-version}@manual::reading/infer.adoc[inference].
 
@@ -223,11 +223,11 @@ The results then will include pairs of `$p` and `$n`.
 
 Applying xref:modifiers/overview.adoc[modifiers] can have a drastic effect on the format and number
 of results returned by a Get query.
-See the <<_table_output_types,table above>> for output formats depending on the usage of
-xref:modifiers/grouping.adoc[grouping]
-and xref:modifiers/aggregation.adoc[aggregation].
+// See the <<_table_output_types,table above>> for output formats depending on the usage of
+// xref:modifiers/grouping.adoc[grouping]
+// and xref:modifiers/aggregation.adoc[aggregation].
 
-Usage of the xref:modifiers/pagination.adoc#_limit_the_results[limit] modifier directly sets a limitation
+Usage of the xref:modifiers/limit.adoc#_limit_the_results[limit] modifier directly sets a limitation
 for the number of results.
 
 Combination of <<_get_clause_filtering>> and xref:modifiers/sorting.adoc[] can produce

@@ -24,31 +24,18 @@
 ** xref:{page-component-version}@typeql::output-formatting/reduce.adoc[]
 ** xref:{page-component-version}@typeql::output-formatting/fetch.adoc[]
 
-* xref:{page-component-version}@typeql::modifiers/overview.adoc[]
-** Limit
-** Offset
-** Filter
-** Sort
-
-
-
-
-
-
-* xref:{page-component-version}@typeql::queries/overview.adoc[Queries]
-** xref:{page-component-version}@typeql::schema/define.adoc[Define]
-** xref:{page-component-version}@typeql::schema/undefine.adoc[Undefine]
-** xref:{page-component-version}@typeql::data/insert.adoc[Insert]
-** xref:{page-component-version}@typeql::data/delete.adoc[Delete]
-// ** xref:{page-component-version}@typeql::queries/update.adoc[Update]
-// ** xref:{page-component-version}@typeql::queries/fetch.adoc[Fetch]
-// ** xref:{page-component-version}@typeql::queries/get.adoc[Get]
+* xref:{page-component-version}@typeql::modifiers/overview.adoc[Modifiers]
+** xref:{page-component-version}@typeql::modifiers/limit.adoc[]
+** xref:{page-component-version}@typeql::modifiers/offset.adoc[]
+** xref:{page-component-version}@typeql::modifiers/filter.adoc[]
+** xref:{page-component-version}@typeql::modifiers/sorting.adoc[Sort]
 
 * xref:{page-component-version}@typeql::patterns/overview.adoc[Patterns]
-** xref:{page-component-version}@typeql::patterns/conjunction.adoc[]
-** xref:{page-component-version}@typeql::patterns/disjunction.adoc[OR]
-** xref:{page-component-version}@typeql::patterns/negation.adoc[NOT]
-** xref:{page-component-version}@typeql::patterns/matching.adoc[]
+** xref:{page-component-version}@typeql::patterns/conjunction.adoc[Conjunction (AND)]
+** xref:{page-component-version}@typeql::patterns/disjunction.adoc[Disjunction (OR)]
+** xref:{page-component-version}@typeql::patterns/negation.adoc[Negation (NOT)]
+** xref:{page-component-version}@typeql::patterns/optionality.adoc[Optionality (TRY)]
+
 
 * xref:{page-component-version}@typeql::statements/overview.adoc[Statements]
 ** xref:{page-component-version}@typeql::statements/isa.adoc[isa]
@@ -63,27 +50,40 @@
 ** xref:{page-component-version}@typeql::statements/relates.adoc[]
 ** xref:{page-component-version}@typeql::statements/plays.adoc[]
 ** xref:{page-component-version}@typeql::statements/rule.adoc[]
-** xref:{page-component-version}@typeql::statements/key.adoc[]
-** xref:{page-component-version}@typeql::statements/unique.adoc[]
+
+
 ** xref:{page-component-version}@typeql::statements/role-assignment.adoc[]
 ** xref:{page-component-version}@typeql::statements/value-assignment.adoc[]
 
-* xref:{page-component-version}@typeql::modifiers/overview.adoc[Modifiers]
-** xref:{page-component-version}@typeql::modifiers/sorting.adoc[]
-** xref:{page-component-version}@typeql::modifiers/pagination.adoc[]
-** xref:{page-component-version}@typeql::modifiers/aggregation.adoc[]
-** xref:{page-component-version}@typeql::modifiers/grouping.adoc[]
+* Functions
+** Definition
+** Call
+** Result
+
+* Annotations
+** xref:{page-component-version}@typeql::statements/key.adoc[Key]
+** Compound key
+** xref:{page-component-version}@typeql::statements/unique.adoc[Unique]
+** Abstract
+** Enumeration
+** Regex
+** Cardinality
+** Cascade
+** Replace
+** Independent
+** Distinct
+** Duplicate
 
 * xref:{page-component-version}@typeql::concepts/overview.adoc[Concepts]
 ** xref:{page-component-version}@typeql::concepts/types.adoc[]
-** xref:{page-component-version}@typeql::concepts/data-instances.adoc[]
-** xref:{page-component-version}@typeql::concepts/concept-variables.adoc[]
+** xref:{page-component-version}@typeql::concepts/data-instances.adoc[Data]
+** xref:{page-component-version}@typeql::concepts/concept-variables.adoc[Variables]
 
 * xref:{page-component-version}@typeql::values/overview.adoc[Values]
-** xref:{page-component-version}@typeql::values/value-types.adoc[]
-** xref:{page-component-version}@typeql::values/value-variables.adoc[]
+** xref:{page-component-version}@typeql::values/value-types.adoc[Primitives]
+** Structs
+** Lists
 ** xref:{page-component-version}@typeql::values/comparators.adoc[]
-** xref:{page-component-version}@typeql::values/arithmetic.adoc[]
-** xref:{page-component-version}@typeql::values/functions.adoc[]
+** xref:{page-component-version}@typeql::values/built-in.adoc[Built-in]
 
 * xref:{page-component-version}@typeql::keywords.adoc[]

@@ -21,7 +21,7 @@ Some TypeQL statements can imply type restrictions on a concept variable via typ
 
 * `sub`, `sub!`, `type`, and `owns` can be applied only to types;
 * `isa`, `has`, and `is` can be used only with data instances to the left from them;
-* Any value operations, including xref:values/arithmetic.adoc[arithmetic operations],
+* Any value operations, including xref:values/built-in.adoc[arithmetic operations],
 xref:values/comparators.adoc[comparators],
 xref:values/functions.adoc[built-in functions] can be applied only to attributes.
 
