@@ -1,4 +1,25 @@
 = Data manipulation queries
 
+TypeDB 3.0+ uses data processing pipeline approach to query design.
+A query consists of one or multiple clauses that are executed one after another passing the results between clauses via
+<<_concept_streaming>>.
 
+== Combining clauses
+
+To design a data manipulating query, use any combination of the following clauses:
+
+* match
+* insert
+* delete
+* put
+* assert
+
+A data manipulating clause of every type can be used more than once in any data query.
+
+[#_concept_streaming]
+== Concept streaming
+
+Any data manipulating clause takes input from the preceding clause and returns output to the following clause.
+
+== Examples
 

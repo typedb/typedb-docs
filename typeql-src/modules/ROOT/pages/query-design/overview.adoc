@@ -1,2 +1,37 @@
-= Query design
+= Queries
 
+TypeQL queries can be used either to modify a schema of a database or to manipulate data.
+
+== Query types
+
+[cols-2]
+--
+.xref:query-design/schema.adoc[]
+[.clickable]
+****
+Define and Undefine queries to alter a database's schema.
+****
+
+.xref:query-design/data.adoc[]
+[.clickable]
+****
+Data manipulation pipelines.
+****
+--
+
+== Data processing
+
+[cols-2]
+--
+.xref:query-design/pre-processing.adoc[]
+[.clickable]
+****
+Context management of a data query.
+****
+
+.xref:query-design/post-processing.adoc[]
+[.clickable]
+****
+Query output formatting for data queries.
+****
+--
