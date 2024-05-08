@@ -244,10 +244,34 @@ A high-level description of TypeQL query language and its features.
 
 [cols-3]
 --
-.xref:{page-component-version}@typeql::queries/overview.adoc[Queries]
+.xref:{page-component-version}@typeql::query-design/overview.adoc[]
 [.clickable]
 ****
-TypeQL queries to define schema and manipulate data.
+TypeQL queries design for schema definition and data manipulation.
+****
+
+.xref:{page-component-version}@typeql::schema/overview.adoc[]
+[.clickable]
+****
+TypeQL Define and Undefine queries.
+****
+
+.xref:{page-component-version}@typeql::data/overview.adoc[]
+[.clickable]
+****
+TypeQL match, insert, delete, put, and assert clauses for data queries.
+****
+
+.xref:{page-component-version}@typeql::output-formatting/overview.adoc[]
+[.clickable]
+****
+TypeQL queries post-processing with fetch and reduce.
+****
+
+.xref:{page-component-version}@typeql::modifiers/overview.adoc[Modifiers]
+[.clickable]
+****
+TypeQL modifiers to paginate, filter, or sort the results.
 ****
 
 .xref:{page-component-version}@typeql::patterns/overview.adoc[Patterns]
@@ -262,10 +286,16 @@ TypeQL patterns used in queries.
 TypeQL statements used in patterns.
 ****
 
-.xref:{page-component-version}@typeql::modifiers/overview.adoc[Modifiers]
+.xref:{page-component-version}@typeql::functions/overview.adoc[]
 [.clickable]
 ****
-TypeQL modifiers used with queries.
+TypeQL functions used in statements.
+****
+
+.xref:{page-component-version}@typeql::annotations/overview.adoc[]
+[.clickable]
+****
+TypeQL annotations used in schema and data queries.
 ****
 
 .xref:{page-component-version}@typeql::concepts/overview.adoc[Concepts]

@@ -142,7 +142,7 @@ These queries fall into TypeDB's schema/transaction model in a natural way, as t
 [#_fetch_queries]
 === Fetch queries
 
-A xref:{page-component-version}@typeql::queries/fetch.adoc[Fetch query]
+A xref:{page-component-version}@typeql::output-formatting/fetch.adoc[Fetch query]
 projects types and values of concepts matched by selected variables into JSON output. 
 For example, let's match a user by its username and fetch its name:
 
@@ -151,9 +151,9 @@ For example, let's match a user by its username and fetch its name:
 include::{page-component-version}@home::partial$cc-queries/subquery.tql[lines=1..4]
 ----
 
-The above example uses xref:{page-component-version}@typeql::queries/fetch.adoc#_customize_output[customized output labels] for the JSON output.
+The above example uses xref:{page-component-version}@typeql::output-formatting/fetch.adoc#_customize_output[customized output labels] for the JSON output.
 
-A Fetch query can be used with a xref:{page-component-version}@typeql::queries/fetch.adoc#_subqueries[subquery].
+A Fetch query can be used with a xref:{page-component-version}@typeql::output-formatting/fetch.adoc#_subqueries[subquery].
 For example, let's add a subquery to fetch paths for all files that the user has access to:
 
 [,typeql]
@@ -164,7 +164,7 @@ include::{page-component-version}@home::partial$cc-queries/subquery.tql[]
 [#_get_queries]
 === Get queries
 
-A xref:{page-component-version}@typeql::queries/get.adoc[Get query] returns stateful objects representing concepts matched by selected variables
+A Get query returns stateful objects representing concepts matched by selected variables
 for you to programmatically manipulate them with driver API methods.
 For example, you can send the following Get query to get all file entities from a database:
 
@@ -186,7 +186,7 @@ mean $s;
 [#_insert_queries]
 === Insert queries
 
-An xref:{page-component-version}@typeql::queries/insert.adoc[Insert query] inserts data into a database.
+An xref:{page-component-version}@typeql::data/insert.adoc[Insert query] inserts data into a database.
 It can be used with or without a `match` clause, which can be used to retrieve existing data from the database. 
 
 We can use an `insert` clause without a `match` clause to insert completely new data in a database,
@@ -213,7 +213,7 @@ It is important to note that an `insert` clause is executed _once for every tupl
 [#_delete_queries]
 === Delete queries
 
-A xref:{page-component-version}@typeql::queries/delete.adoc[Delete query] deletes data from a database.
+A xref:{page-component-version}@typeql::data/delete.adoc[Delete query] deletes data from a database.
 In a Delete query we first retrieve data using a `match` clause, and then, based on the matched results, specify a pattern that is to be deleted. For example, let's match a specific user by its username and delete that the user has a given email:
 
 [,typeql]
@@ -310,7 +310,7 @@ for every matched instance, retrieves all their names and emails:
 include::{page-component-version}@home::partial$cc-queries/list-users.tql[]
 ----
 
-The above is a xref:{page-component-version}@typeql::queries/fetch.adoc[Fetch query],
+The above is a xref:{page-component-version}@typeql::output-formatting/fetch.adoc[Fetch query],
 with a `match` that matches data by the provided pattern
 and a `fetch` that projects every matched result as a JSON with types and values:
 
