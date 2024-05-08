@@ -8,6 +8,41 @@ In this lesson, we'll learn how to write data to the sample database using *Inse
 
 * You should complete xref:learn::3-reading-data/overview.adoc[Lesson 3] before starting this lesson.
 
+== Lesson contents
+
+[cols-2]
+--
+.xref:learn::4-writing-data/4.1-inserting-simple-data.adoc[]
+[.clickable]
+****
+Learn how to insert new entities, relations, and attributes.
+****
+
+.xref:learn::4-writing-data/4.2-inserting-polymorphic-data.adoc[]
+[.clickable]
+****
+Learn how to insert data with polymorphic queries.
+****
+
+.xref:learn::4-writing-data/4.3-deleting-data.adoc[]
+[.clickable]
+****
+Learn how to delete entities, relations, and attributes.
+****
+
+.xref:learn::4-writing-data/4.4-updating-data.adoc[]
+[.clickable]
+****
+Learn how to update the attributes of entities and relations.
+****
+
+.xref:learn::4-writing-data/4.5-data-validation.adoc[]
+[.clickable]
+****
+Learn about how new data is validated against the schema.
+****
+--
+
 == Running examples
 
 To run an Insert, Delete, or Update query, make sure to use a *data* session and *write* transaction. The examples and exercises featured in this lesson are annotated with one of the following instructions to indicate how they should be run. Each write query should only be run once. Running write queries more than once may have unintended effects, such as inserting duplicate data.

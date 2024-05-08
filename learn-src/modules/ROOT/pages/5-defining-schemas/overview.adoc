@@ -8,6 +8,41 @@ In this lesson, we'll learn how to define entity, relation, and attribute types 
 
 * You should complete xref:learn::4-writing-data/overview.adoc[Lesson 4] before starting this lesson.
 
+== Lesson contents
+
+[cols-2]
+--
+.xref:learn::5-defining-schemas/5.1-defining-individual-types.adoc[]
+[.clickable]
+****
+Learn how to define new entity, relation, and attribute types.
+****
+
+.xref:learn::5-defining-schemas/5.2-defining-type-hierarchies.adoc[]
+[.clickable]
+****
+Learn how to define type hierarchies and abstract types.
+****
+
+.xref:learn::5-defining-schemas/5.3-defining-constraints.adoc[]
+[.clickable]
+****
+Learn how to constrain attribute values and ownerships.
+****
+
+.xref:learn::5-defining-schemas/5.4-defining-rules.adoc[]
+[.clickable]
+****
+Learn how to define rules to generate new data by rule inference.
+****
+
+.xref:learn::5-defining-schemas/5.5-schema-validation.adoc[]
+[.clickable]
+****
+Learn about how types and rules are validated against the schema.
+****
+--
+
 == Running examples
 
 The sample database already has the complete bookstore schema defined and data inserted. If you would like to try running the Define queries featured in the examples and exercises in this section, then you should do so using another database. To create a new database, use the *database manager* image:home::studio-icons/svg/studio_dbs.svg[width=17]. After creation, make sure to switch over to it using the *database selector*. For more information on how to manage databases using TypeDB Studio, refer back to xref:learn::2-environment-setup/2.2-using-typedb-studio.adoc[Lesson 2.2]
