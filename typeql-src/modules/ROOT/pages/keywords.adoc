@@ -18,12 +18,12 @@ Starts a `define` clause of a xref:schema/define.adoc[].
 Starts an `undefine` clause of a xref:schema/undefine.adoc[]
 
 `match`::
-Starts a `match` clause that xref:data/matching.adoc[matches existing data] by a pattern in an
+Starts a `match` clause that xref:data/match.adoc[matches existing data] by a pattern in an
 xref:data/insert.adoc[Insert],
 xref:data/delete.adoc[Delete],
-xref:queries/update.adoc[Update],
-xref:output-formatting/fetch.adoc[Fetch], or
-xref:queries/get.adoc[Get] query.
+// xref:queries/update.adoc[Update],
+xref:output-formatting/fetch.adoc[Fetch].
+// xref:queries/get.adoc[Get] query
 
 `insert`::
 Starts an `insert` clause of an xref:data/insert.adoc[].
@@ -34,8 +34,8 @@ Starts a `delete` clause of a xref:data/delete.adoc[].
 `fetch`::
 Starts a `fetch` clause of a xref:output-formatting/fetch.adoc[].
 
-`get`::
-Starts a `get` clause of a xref:queries/get.adoc[].
+// `get`::
+// Starts a `get` clause of a xref:queries/get.adoc[].
 
 == Schema statements
 
@@ -76,11 +76,11 @@ For more information, see the xref:statements/plays.adoc[] page.
 
 `@key`::
 Add a key constraint to ownership of a given attribute type by a type. +
-For more information, see the xref:statements/key.adoc[] page.
+For more information, see the xref:annotations/key.adoc[] page.
 
 `@unique`::
 Add a uniqueness constraint to ownership of a given attribute type by a type. +
-For more information, see the xref:statements/unique.adoc[] page.
+For more information, see the xref:annotations/unique.adoc[] page.
 
 `regex`::
 Specify a regular expression that limits values of a given attribute type. +
@@ -132,7 +132,7 @@ See an xref:modifiers/limit.adoc[example].
 
 `sort`::
 Sort the results of a query. +
-See an xref:modifiers/sorting.adoc[example].
+See an xref:modifiers/sort.adoc[example].
 
 === Logic
 
@@ -158,28 +158,28 @@ For more information, see the xref:values/comparators.adoc[] page.
 
 `count`::
 Count the number of results. +
-For more information, see the xref:modifiers/aggregation.adoc#_count[Aggregation] page.
+// For more information, see the xref:modifiers/aggregation.adoc#_count[Aggregation] page.
 
 `max`::
 Find the maximum value of a given variable. +
-For more information, see the xref:modifiers/aggregation.adoc[Aggregation] page.
+// For more information, see the xref:modifiers/aggregation.adoc[Aggregation] page.
 
 `min`::
 Find the minimum value of a given variable. +
-For more information, see the xref:modifiers/aggregation.adoc[Aggregation] page.
+// For more information, see the xref:modifiers/aggregation.adoc[Aggregation] page.
 
 `mean`::
 Find average value of a given variable. +
-For more information, see the xref:modifiers/aggregation.adoc[Aggregation] page.
+// For more information, see the xref:modifiers/aggregation.adoc[Aggregation] page.
 
 `median`::
 Find median value of a given variable. +
-For more information, see the xref:modifiers/aggregation.adoc[Aggregation] page.
+// For more information, see the xref:modifiers/aggregation.adoc[Aggregation] page.
 
 `std`::
 Find standard deviation of values for a given variable. +
-For more information, see the xref:modifiers/aggregation.adoc[Aggregation] page.
+// For more information, see the xref:modifiers/aggregation.adoc[Aggregation] page.
 
 `sum`::
 Find the sum of values for a given variable. +
-For more information, see the xref:modifiers/aggregation.adoc[Aggregation] page.
+// For more information, see the xref:modifiers/aggregation.adoc[Aggregation] page.

@@ -6,7 +6,7 @@
 :!table-caption:
 
 A `match` clause is used by all data queries to seek data and types in a TypeDB database based on a provided pattern.
-It can be used only as a part of a xref:queries/overview.adoc#_data_queries[data query]
+It can be used only as a part of a xref:data/overview.adoc[data query]
 with another clause to specify how to use the matched data.
 
 == Syntax
@@ -49,8 +49,8 @@ Note that the order of patterns in conjunctions or disjunctions is irrelevant.
 A `match` clause finds a set of matched results. 
 Every matched result contains
 
-* an exact value for every xref:values/value-variables.adoc[value variable]
-* an exact concept for every xref:concepts/concept-variables.adoc[concept variable].
+* an exact value for every xref:values/variables.adoc[value variable]
+* an exact concept for every xref:concepts/variables.adoc[concept variable].
 
 Matched results for a pattern are *solution* for that pattern,
 meaning when you substitute variables in a pattern with values and concepts from a solution,
@@ -77,7 +77,7 @@ The above pattern consists of two simple statements that can be combined in a co
 xref:statements/overview.adoc#_composite_statements[composite statement] that produces the same effect.
 
 It may be easier to find a specific entity using its attributes, if there is the
-xref:statements/unique.adoc[unique] or xref:statements/key.adoc[key] annotation set in the schema.
+xref:annotations/unique.adoc[unique] or xref:annotations/key.adoc[key] annotation set in the schema.
 
 [#_solution]
 You can think of matching a pattern as solving a system of equations,

@@ -5,8 +5,8 @@
 == {blank}
 
 TypeQL can be used for polymorphic queries with patterns containing
-xref:concepts/concept-variables.adoc[concept variables] and
-xref:values/value-variables.adoc[value variables].
+xref:concepts/variables.adoc[concept variables] and
+xref:values/variables.adoc[value variables].
 A concept variable can represent any type or data instance in a database.
 To limit the set of possible concepts represented by a concept variable,
 add constraints with TypeQL keywords, like `sub`, `isa`, `has`, etc.
@@ -39,13 +39,13 @@ but the variable to the left of it is considered to be a data instance instead o
 Root types and type hierarchy, abstract types.
 ****
 
-.xref:concepts/data-instances.adoc[]
+.xref:concepts/data.adoc[]
 [.clickable]
 ****
 Data representation in TypeQL.
 ****
 
-.xref:concepts/concept-variables.adoc[]
+.xref:concepts/variables.adoc[]
 [.clickable]
 ****
 Query variables to represent types and data.

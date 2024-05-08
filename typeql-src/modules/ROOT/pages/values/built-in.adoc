@@ -1,4 +1,6 @@
-= Arithmetic
+= Built-in operations
+
+== Arithmetic
 
 == Expressions
 
@@ -10,11 +12,10 @@ An expression describes a computation of a value in a query.
 It can be used only in a `match` clause or a `condition` of a rule
 and can contain any combination of the following elements:
 
-* a xref:concepts/concept-variables.adoc[concept variable] representing an attribute (e.g., `$size-kb`),
-* a xref:values/value-variables.adoc[value variable] (e.g., `?sum`),
+* a xref:concepts/variables.adoc[concept variable] representing an attribute (e.g., `$size-kb`),
+* a xref:values/variables.adoc[value variable] (e.g., `?sum`),
 * a literal value (e.g., `4`),
-* an xref:values/built-in.adoc[arithmetic operation] (e.g., `+`),
-* or a xref:values/functions.adoc[built-in function] (e.g., `max()`).
+* xref:values/built-in.adoc[built-in function] (e.g., `max()`).
 
 .Expression example
 [,typeql]
@@ -52,3 +53,46 @@ then divides the result by `1024`, and finally divides the result by `1024` agai
 
 Arithmetic operations are often used in a combination with xref:values/comparators.adoc[comparators] and
 xref:{page-component-version}@learn::5-defining-schemas/5.4-defining-rules.adoc[rules].
+
+== Min / Max functions
+
+Use the `max()` function to find the maximum value out of all provided input arguments,
+or the `min()` to find the minimum.
+
+.Example
+[,typeql]
+----
+?maximum = max(100, $x, ?a);
+----
+
+== Ceil / Floor functions
+
+Use the `ceil()` function to round up the input value, or the `floor()` to round down.
+
+.Example
+[,typeql]
+----
+?int = floor(100.7);
+----
+
+== Round function
+
+Use the `round()` function to round the input value up to a closest integer (half-way up).
+
+.Example
+[,typeql]
+----
+?int = round(100.7);
+----
+
+== Abs function
+
+Use the `abs()` function to produce an absolute value of the input value.
+
+.Example
+[,typeql]
+----
+?x = abs($s - 1000);
+----
+
+The above example bound the `?x` value variable to the absolute value of subtraction of `1000` from the value of `$s`.

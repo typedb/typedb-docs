@@ -14,27 +14,27 @@ Aggregation can be done only with a Get query and is incompatible with other mod
 
 [cols-2]
 --
-.xref:modifiers/sorting.adoc[]
+.xref:modifiers/sort.adoc[]
 [.clickable]
 ****
 By sorting, we can change the order in which results are returned.
 ****
 
-.xref:modifiers/pagination.adoc[]
+.xref:modifiers/limit.adoc[]
 [.clickable]
 ****
-Get a subset of results by limiting the range of returned answers.
+Get a subset of results by limiting the number of returned answers.
 ****
 
-.xref:modifiers/aggregation.adoc[]
+.xref:modifiers/offset.adoc[]
 [.clickable]
 ****
-Process query results on a server to return aggregated values, or group results by similar values of a variable.
+Offset the returned answers by the specified number of results.
 ****
 
-.xref:modifiers/grouping.adoc[]
+.xref:modifiers/filter.adoc[]
 [.clickable]
 ****
-Process query results on a server to return aggregated values, or group results by similar values of a variable.
+Filter the results by query variables.
 ****
 --

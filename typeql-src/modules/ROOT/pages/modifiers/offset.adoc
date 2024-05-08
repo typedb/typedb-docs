@@ -7,7 +7,7 @@ By <<_limit_the_results,limiting>> the query to return the first `x` results,
 processing them, and then sending subsequent queries with an <<_offset_the_results,offset>>, incremented by `x`,
 you can iterate through the entire result set in manageable batches.
 
-xref:modifiers/sorting.adoc[Sorting] the results is strongly advised, but is not mandatory.
+xref:modifiers/sort.adoc[Sorting] the results is strongly advised, but is not mandatory.
 Without sorting, the ordering of results is not guaranteed and can be unpredictable.
 Pagination relies on sorting to traverse the full set of results.
 

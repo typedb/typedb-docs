@@ -117,8 +117,8 @@ While it is possible to insert an entity without any attributes owned or roles p
 such an entity can't be easily found in a database or distinguished from other entities of the same type.
 As a best practice, we recommend using the same query to add at least some information about the inserted entity.
 
-You can also use the xref:statements/key.adoc[@key] or
-xref:statements/unique.adoc[@unique] annotations for an attribute type ownership schema definition
+You can also use the xref:annotations/key.adoc[@key] or
+xref:annotations/unique.adoc[@unique] annotations for an attribute type ownership schema definition
 to add constraints that make it much easier to uniquely address instances of this entity type.
 
 .Inserting an entity example
