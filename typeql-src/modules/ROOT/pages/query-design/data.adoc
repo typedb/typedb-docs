@@ -1,25 +1,71 @@
 = Data manipulation queries
 
-TypeDB 3.0+ uses data processing pipeline approach to query design.
-A query consists of one or multiple clauses that are executed one after another passing the results between clauses via
-<<_concept_streaming>>.
+In contrast to a xref:query-design/schema.adoc[schema query],
+a data query uses variables, patterns, and pipelines to specify data processing operations to be performed.
 
-== Combining clauses
+TypeDB 3.0+ uses pipelines for data processing: a query can include
+xref:query-design/pre-processing.adoc[pre-processing],
+a <<_combining_clauses,combination of data processing clauses>>,
+and xref:query-design/post-processing.adoc[post-processing] for output customization.
 
-To design a data manipulating query, use any combination of the following clauses:
+== Syntax
+// tag::syntax[]
+A data query consists of one or multiple data clauses with optional pre-processing and post-processing clauses.
 
-* match
-* insert
-* delete
-* put
-* assert
+Data queries are written in TypeQL with the following syntax:
 
-A data manipulating clause of every type can be used more than once in any data query.
+[,typeql]
+----
+[<pre-processing>] <data clauses> [<post-processing>]
+----
+
+// end::syntax[]
+
+== Pre-processing
+
+Pre-processing makes it possible to define functions specifically for the query.
+These functions are not persisted in the schema of a database.
+
+For information on pre-processing in data queries, see the xref:query-design/pre-processing.adoc[] page.
+
+[#_combining_clauses]
+== Data clauses
+
+A data query can have the following types of data manipulating clauses (or data clauses):
+
+* xref:data/match.adoc[match]
+* xref:data/insert.adoc[insert]
+* xref:data/delete.adoc[delete]
+* xref:data/put.adoc[put]
+* xref:data/assert.adoc[assert]
+
+Each data clause takes a <<_concept_streaming,stream of ConceptMaps>> as input
+and provides the result as another <<_concept_streaming,stream of ConceptMaps>>.
+Hence, a data clause of every type can be used more than once in a data query.
 
 [#_concept_streaming]
 == Concept streaming
 
 Any data manipulating clause takes input from the preceding clause and returns output to the following clause.
+//#todo Add more info on CM streaming
 
-== Examples
+== Post-processing
 
+Post-processing makes it possible to reduce a ConceptMap stream to a value, or project it as JSONs.
+
+For more information on post-processing, see the xref:query-design/post-processing.adoc[] page.
+
+== Usage example
+
+[,typeql]
+----
+match
+$x isa person, has name $n;
+$n = "bob";
+insert
+$x has name "Bob";
+delete
+$x has name $n;
+match
+$x has email $e;
+----
