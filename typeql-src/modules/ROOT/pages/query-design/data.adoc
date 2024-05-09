@@ -21,7 +21,9 @@ Data queries are written in TypeQL with the following syntax:
 
 // end::syntax[]
 
-== Pre-processing
+== Behavior
+
+=== Pre-processing
 
 Pre-processing makes it possible to define functions specifically for the query.
 These functions are not persisted in the schema of a database.
@@ -29,7 +31,7 @@ These functions are not persisted in the schema of a database.
 For information on pre-processing in data queries, see the xref:query-design/pre-processing.adoc[] page.
 
 [#_combining_clauses]
-== Data clauses
+=== Data clauses
 
 A data query can have the following types of data manipulating clauses (or data clauses):
 
@@ -44,12 +46,12 @@ and provides the result as another <<_concept_streaming,stream of ConceptMaps>>.
 Hence, a data clause of every type can be used more than once in a data query.
 
 [#_concept_streaming]
-== Concept streaming
+==== Concept streaming
 
 Any data manipulating clause takes input from the preceding clause and returns output to the following clause.
 //#todo Add more info on CM streaming
 
-== Post-processing
+=== Post-processing
 
 Post-processing makes it possible to reduce a ConceptMap stream to a value, or project it as JSONs.
 
