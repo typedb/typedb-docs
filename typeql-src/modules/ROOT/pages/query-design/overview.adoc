@@ -1,8 +1,10 @@
 = Queries
 
-TypeQL queries can be used either to modify a schema of a database or to manipulate data.
+TypeQL queries can be used either to modify the schema of a database or to manipulate its data.
 
 == Query types
+
+TypeQL has *schema* and *data* queries:
 
 [cols-2]
 --
@@ -15,11 +17,11 @@ Define and Undefine queries to alter a database's schema.
 .xref:query-design/data.adoc[]
 [.clickable]
 ****
-Data manipulation pipelines.
+TypeQL queries for Data processing pipelines.
 ****
 --
 
-== Data processing
+== Query processing
 
 [cols-2]
 --
