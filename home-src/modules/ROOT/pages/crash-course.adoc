@@ -459,7 +459,7 @@ For example, let's insert a new person that owns two names: `Bob` and `Another B
 include::{page-component-version}@home::partial$cc-queries/attributes.tql[lines=6..7]
 ----
 
-You can limit behavior this by using the xref:{page-component-version}@typeql::statements/key.adoc[key statement],
+You can limit behavior this by using the xref:{page-component-version}@typeql::annotations/key.adoc[key statement],
 which adds a constraint on the number of owned attributes to be equal to exactly one.
 
 ==== Globally unique attributes
