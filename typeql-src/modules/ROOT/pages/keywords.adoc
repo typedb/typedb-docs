@@ -56,7 +56,7 @@ For more information, see the xref:statements/type.adoc[] page.
 
 `abstract`::
 Specify that a given type is an abstract type. +
-For more information, see the xref:statements/abstract.adoc[] page.
+For more information, see the xref:annotations/abstract.adoc[] page.
 
 `owns`::
 Specify that a type can own attributes of a given attribute type. +
@@ -90,12 +90,6 @@ For more information, see the xref:statements/regex.adoc[] page.
 Override an inherited attribute type ownership or role playing ability. +
 For more information, see the xref:statements/owns.adoc#_usage_with_override[owns] and
 xref:statements/plays.adoc#_usage_with_override[plays] pages respectively.
-
-`when`::
-Specify a condition of a xref:statements/rule.adoc[rule].
-
-`then`::
-Specify a conclusion of a xref:statements/rule.adoc[rule].
 
 == Data statements
 

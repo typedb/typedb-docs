@@ -25,8 +25,7 @@ xref:patterns/conjunction.adoc[conjunctions],
 xref:patterns/disjunction.adoc[disjunctions],
 and xref:patterns/negation.adoc[negations].
 
-A matching pattern can use any valid TypeQL statements,
-except the xref:statements/rule.adoc[rule] definition statement.
+A matching pattern can use any valid TypeQL statements.
 Other clauses use limited subsets of statements, e.g.,
 a pattern in an `insert` or `delete` clause can use only data-specific statements
 and can reuse variables matched by a `match` clause.
