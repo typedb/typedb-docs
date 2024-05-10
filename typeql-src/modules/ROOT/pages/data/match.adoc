@@ -20,15 +20,12 @@ match <pattern>
 
 === Pattern composition
 
-A pattern consists of one or multiple xref:statements/overview.adoc[statements], combined by any combination of
+A xref:patterns/overview.adoc[pattern] consists of one or multiple xref:statements/overview.adoc[statements],
+combined by any combination of
 xref:patterns/conjunction.adoc[conjunctions],
 xref:patterns/disjunction.adoc[disjunctions],
-and xref:patterns/negation.adoc[negations].
-
-A matching pattern can use any valid TypeQL statements.
-Other clauses use limited subsets of statements, e.g.,
-a pattern in an `insert` or `delete` clause can use only data-specific statements
-and can reuse variables matched by a `match` clause.
+xref:patterns/negation.adoc[negations], and
+xref:patterns/optionality.adoc[optionals].
 
 == Behavior
 
@@ -45,18 +42,13 @@ Note that the order of patterns in conjunctions or disjunctions is irrelevant.
 [#_match_clause_results]
 === Execution and results
 
-A `match` clause finds a set of matched results. 
-Every matched result contains
+A `match` clause finds a set of matched results and returns them as Concept Maps.
 
-* an exact value for every xref:values/variables.adoc[value variable]
-* an exact concept for every xref:concepts/variables.adoc[concept variable].
+Every matched result contains a concept or value for every xref:concepts/variables.adoc[variable].
 
 Matched results for a pattern are *solution* for that pattern,
 meaning when you substitute variables in a pattern with values and concepts from a solution,
 it becomes a true statement.
-
-Note that a match clause is an intermediate step in the execution of queries
-and thus does not directly provide a response to the user.
 
 == Matching a specific concept
 
@@ -82,8 +74,6 @@ xref:annotations/unique.adoc[unique] or xref:annotations/key.adoc[key] annotatio
 You can think of matching a pattern as solving a system of equations,
 where every single statement in a pattern is an equation.
 TypeDB solves the system and returns all its solutions, including permutations.
-
-
 
 == Matching with duplicates
 
