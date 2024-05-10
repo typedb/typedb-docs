@@ -1,5 +1,6 @@
 ﻿// tag::code[]
 // tag::import[]
+using TypeDB.Driver;
 using TypeDB.Driver.Api;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
