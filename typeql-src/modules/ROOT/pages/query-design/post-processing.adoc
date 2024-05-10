@@ -1,2 +1,32 @@
 = Post-processing
 
+Post-processing is the last stage of a data query execution that converts the stream of Concept Maps
+returned by the last data processing clause to a different output format.
+
+== Reduce
+
+Aggregation of the input Concept Map stream.
+Produces a single xref:values/overview.adoc[value].
+
+=== Count
+
+Counts the number of elements in a stream.
+
+=== Check
+
+Returns `True` if there are any elements in the stream, otherwise -- `False`.
+
+=== Sum
+
+Returns a result of summation of values in a selected query variable.
+
+=== Mean
+
+Returns a result of calculating an average of values of the selected variable.
+
+=== List
+
+Returns a list with values of the selected variable.
+
+== Fetch
+
