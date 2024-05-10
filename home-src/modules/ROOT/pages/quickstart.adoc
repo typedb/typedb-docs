@@ -56,14 +56,14 @@ include::manual::studio.adoc[tag=connect_studio]
 
 To enable TypeDB Studio's IDE functionality, you now need to select a project folder to store your project files. Select a xref:manual::studio.adoc#_select_a_project_directory[project folder]
 by clicking either btn:[Open Project] in the *Project* panel or
-image:home::studio-icons/svg/studio_projects.svg[width=17] Open Project Directory button in the top toolbar.
+image:home::studio-icons/svg/studio_projects.svg[width=24] Open Project Directory button in the top toolbar.
 
 [#_create_a_database]
 == Create a new database
 
 Create a database to play with:
 
-. Click the database icon (image:home::studio-icons/svg/studio_dbs.svg[width=17]) in the top toolbar.
+. Click the image:home::studio-icons/svg/studio_dbs.svg[width=24] btn:[database icon] in the top toolbar.
 . Enter a name for a new database, for example, `typedb-1`, and click btn:[Create].
 . Select the new database from the dropdown to the right of the database icon.
 
@@ -80,8 +80,8 @@ A new database needs a schema before we can load any data:
 ----
 include::attachment$crash-course-schema.tql[]
 ----
-. Click the image:home::studio-icons/svg/studio_run.svg[width=17] btn:[Run Query] button.
-. When the query has completed, click btn:[Commit Transaction] (image:home::studio-icons/svg/studio_check.svg[width=17]).
+. Click the image:home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
+. When the query has completed, click image:home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit Transaction].
 
 Now that the schema has been defined, data can be inserted into the database.
 
@@ -99,7 +99,7 @@ include::attachment$crash-course-data.tql[]
 ----
 . Execute all queries in the file by clicking the image:home::studio-icons/svg/studio_run.svg[width=17px]
 btn:[Run Query] button.
-. When the queries have completed, click btn:[Commit Transaction] (image:home::studio-icons/svg/studio_check.svg[width=17]).
+. When the queries have completed, click image:home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit Transaction].
 
 Assuming there were no errors in the process, the data is persisted in the database.
 
