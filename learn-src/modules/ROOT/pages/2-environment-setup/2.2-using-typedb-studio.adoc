@@ -61,7 +61,7 @@ The following controls will be important throughout this course.
 | Name | Control ^.^| Description
 
 | Database manager
-| image:home::studio-icons/svg/studio_dbs.svg[width=17]
+| image:home::studio-icons/svg/studio_dbs.svg[width=24]
 | Use this button to open the *database manager*. From there, you can create and delete databases.
 
 | Database selector
@@ -81,15 +81,15 @@ The following controls will be important throughout this course.
 | Use this button to toggle *rule inference* on and off. For now, make sure it's switched off, otherwise you may get back unexpected query results. We'll explore rule inference in xref:learn::3-reading-data/3.3-fetching-inferred-data.adoc[Lesson 3.3].
 
 | Close transaction
-| image:home::studio-icons/svg/studio_fail.svg[width=17]
+| image:home::studio-icons/svg/studio_fail.svg[width=24]
 | Use this button to *close* an open write transaction without committing the changes to the database.
 
 | Commit transaction
-| image:home::studio-icons/svg/studio_check.svg[width=17]
+| image:home::studio-icons/svg/studio_check.svg[width=24]
 | Use this button to *commit* an open write transaction, persisting the changes made.
 
 | Run query
-| image:home::studio-icons/svg/studio_run.svg[width=17]
+| image:home::studio-icons/svg/studio_run.svg[width=24]
 | Use this button to *run* the query displayed in the text editor. If the transaction toggle is set to "write", this will open a transaction which must then be closed or committed.
 |===
 
@@ -97,7 +97,7 @@ The remaining toolbar controls will not be necessary for the majority of this co
 
 === Running a test query
 
-Let's try running a query. To start off, image:home::studio-icons/svg/studio_new.svg[width=17] *open* a new window in the text editor and paste in the following query.
+Let's try running a query. To start off, image:home::studio-icons/svg/studio_new.svg[width=24] *open* a new window in the text editor and paste in the following query.
 
 [,typeql]
 ----
@@ -107,7 +107,7 @@ fetch
 $book: title, page-count;
 ----
 
-Ensure the session toggle is set to a *data* session and the transaction toggle is set to a *read* query, then image:home::studio-icons/svg/studio_run.svg[width=17] *run* the query. You should see the following result.
+Ensure the session toggle is set to a *data* session and the transaction toggle is set to a *read* query, then image:home::studio-icons/svg/studio_run.svg[width=24] *run* the query. You should see the following result.
 
 [,json]
 ----

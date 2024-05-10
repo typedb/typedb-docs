@@ -62,7 +62,7 @@ rule transitive-location:
         (location: $parent-place, located: $x) isa locating;
     };
 ----
-image:home::studio-icons/svg/studio_run.svg[width=17]image:home::studio-icons/svg/studio_check.svg[width=17] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=24]image:home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
 All the roleplayers of the new relation must already exist in the data and be represented by variables in the rule's condition. This particular rule makes `locating` relations https://en.wikipedia.org/wiki/Transitive_relation[transitive] by leveraging interface polymorphism, regardless of the types of the roleplayers.
 
@@ -84,7 +84,7 @@ rule review-verified-by-purchase:
         $review has verified true;
     };
 ----
-image:home::studio-icons/svg/studio_run.svg[width=17]image:home::studio-icons/svg/studio_check.svg[width=17] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=24]image:home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
 The owner of the new attribute must already exist in the data and be represented by a variable in the rule's condition. This rule checks if a user who reviewed a book has previously bought it, and then marks the review as verified if so. In fact, this rule does not specify the type of `$product`, so would even work for reviews of things other than books! We also have a second rule that checks if reviews are verified, and marks them as unverified if not.
 
@@ -99,6 +99,6 @@ rule review-unverified:
         $review has verified false;
     };
 ----
-image:home::studio-icons/svg/studio_run.svg[width=17]image:home::studio-icons/svg/studio_check.svg[width=17] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=24]image:home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
 The combination of these two rules ensures that every review always has exactly one `verified` attribute. We never have to insert these attributes because they are _always_ derived by rule inference. These are a few simple ways we can define rules. We will explore more complex cases of rule inference in xref:learn::10-using-inference/overview.adoc[Lesson 10].
