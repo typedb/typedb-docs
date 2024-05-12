@@ -11,7 +11,7 @@ An `assert` clause is used to assert condition and return the inputted stream on
 == Syntax
 
 // tag::syntax[]
-An `assert` clause starts with the `insert` keyword, followed by the pattern declaring data that is to be inserted:
+An `assert` clause starts with the `insert` keyword, followed by the condition to assert:
 
 [,typeql]
 ----
@@ -23,10 +23,8 @@ where `<condition>` is a statement with a comparator.
 
 [#_behavior]
 == Behavior
-[#_insert_clause]
 // tag::assert_clause[]
 An `assert` clause checks the condition to be met by the inputted Concept Map.
-The data to be inserted is specified using _new variables_
 // end::assert_clause[]
 
 === Clause execution
