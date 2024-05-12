@@ -11,7 +11,7 @@ see the xref:{page-component-version}@manual::writing/delete.adoc[] page of the 
 == Syntax
 
 // tag::syntax[]
-A `delete` clause starts with the `delete` keyword, followed by the pattern declaring data that is to be inserted:
+A `delete` clause starts with the `delete` keyword, followed by the pattern declaring data that is to be deleted:
 
 [,typeql]
 ----
@@ -34,7 +34,7 @@ A Delete clause deletes the data instances, ownerships, and role player assignme
 A Concept Map from input provides values/concepts for the variables in a `delete` clause.
 
 To <<_deleting_data_instances,delete a data instance>>, you need to use an
-xref:statements/isa.adoc[isa] statement in an `insert` clause.
+xref:statements/isa.adoc[isa] statement in a `delete` clause.
 
 To delete ownership of an attribute, use a xref:statements/has.adoc[has] statement.
 
