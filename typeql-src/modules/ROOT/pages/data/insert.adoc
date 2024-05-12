@@ -1,25 +1,21 @@
 = Insert
-:Summary: Insert data to a TypeDB database with an Insert query
-:keywords: typeql, typedb, query, insert, write, create
+:Summary: Insert data to a TypeDB database
+:keywords: typeql, typedb, clause, insert, write, create
 :pageTitle: Insert
-// :page-aliases: typeql::data/insert.adoc
 
-An Insert query is used to insert new data into a database.
+An Insert clause is used to insert new data into a database.
 You can insert an instance of a type, assign <<_inserting_ownerships,ownership of an attribute>>,
 or <<_adding_role_players_to_a_relation,add a new role player>> for a relation.
-For a practical guide on how to send an Insert query to TypeDB,
-see the xref:{page-component-version}@manual::writing/insert.adoc[] page of the TypeDB Manual.
+For a practical guide on how to send a query with an insert clause to TypeDB,
+see the xref:{page-component-version}@manual::writing/insert.adoc[Insert] page of the TypeDB Manual.
 
 == Syntax
 
 // tag::syntax[]
-An Insert query consists of an optional
-<<_match_clause,match>> clause and an
-<<_insert_clause,insert>> clause:
+A `insert` clause starts with the `insert` keyword, followed by the pattern declaring data that is to be inserted:
 
 [,typeql]
 ----
-[match <pattern>]
 insert <insert_pattern>
 ----
 // end::syntax[]
@@ -27,39 +23,42 @@ where `<insert_pattern>` is a pattern of valid data-specific TypeQL statements i
 xref:statements/has.adoc[],
 xref:statements/role-assignment.adoc[role assignment], and xref:statements/value-assignment.adoc[value assignment].
 
-The _optional_ `match` clause `<pattern>` can be any valid match pattern: for more information, see the
-xref:patterns/overview.adoc[Patterns] and xref:statements/overview.adoc[Statements] sections.
-
 [#_behavior]
 == Behavior
 [#_insert_clause]
 // tag::insert_clause[]
-An Insert query inserts new data into a TypeDB database, as specified in its `insert` clause pattern. The data to be inserted is specified using _new variables_ (i.e., variables _not_ appearing in the optional `match` clause) or _values_.
+An insert clause inserts new data into a TypeDB database, as specified in its pattern.
+The data to be inserted is specified using _new variables_
+(i.e., variables _not_ appearing in the preceding clause) or _literal values_.
 
-* <<_insert_entity_example,Entities>>, <<_inserting_attributes,attributes>>,
+<<_insert_entity_example,Entities>>, <<_inserting_attributes,attributes>>,
 or <<_inserting_relations,relations>> are inserted using
 xref:statements/isa.adoc[isa] statements.
-* Ownerships of attributes are inserted using a xref:statements/has.adoc[has] statement. Note that inserting an ownership of an attribute that doesn't yet exist in a database (with a new value), implicitly inserts such an attribute.
-* Role players are usually assigned as a part of a <<_inserting_relations,relation insertion>> with a
+
+Ownerships of attributes are inserted using a xref:statements/has.adoc[has] statement.
+Note that inserting an ownership of an attribute that doesn't exist in a database,
+implicitly inserts such an attribute.
+
+Role players are usually assigned as a part of a <<_inserting_relations,relation insertion>> with a
 xref:statements/role-assignment.adoc[role assignment] statement.
 // end::insert_clause[]
 
-=== Query execution
+=== Clause execution
 [#_match_clause]
-If a `match` clause is specified in an Insert query, then its `insert` clause is executed once per every result of the `match` clause. If there is no `match` clause in an Insert query, then the `insert` clause is executed exactly once.
+An `insert` clause is executed exactly once for every inputted Concept Map.
 
-For an Insert query to succeed, inserted data must not violate the schema of a database.
+For an Insert clause to succeed, inserted data must not violate the schema of a database.
 
-=== Query response
+=== Clause response
 
-An Insert query returns a lazy Stream/Iterator of ConceptMap objects with the inserted data.
+An Insert clause returns a stream of Concept Maps combining inputted ConceptMap with the inserted data.
 
 [#_inserting_data_with_no_matching]
 == Insert without matching
 
 include::partial$iam-database-links.adoc[]
 
-To insert new data with no connection to existing database data, we can use an Insert query without a `match` clause:
+To insert new data with no connection to existing database data, we can use an Insert clause without a `match` clause:
 
 .Insert example
 [,typeql]
@@ -67,11 +66,11 @@ To insert new data with no connection to existing database data, we can use an I
 insert $p isa person, has full-name "Bob";
 ----
 
-The above query inserts a `person` entity that owns a `full-name` attribute whose value is "Bob".
+The above clause inserts a `person` entity that owns a `full-name` attribute whose value is "Bob".
 
 [NOTE]
 ====
-If there is no such attribute in a database, then it will be created by this query implicitly.
+If there is no such attribute in a database, then it will be created by this clause implicitly.
 ====
 
 == Insert with matching
@@ -79,7 +78,7 @@ If there is no such attribute in a database, then it will be created by this que
 include::partial$iam-database-links.adoc[]
 
 To be able to insert new data that is connected to existing concepts,
-use a `match` clause in an Insert query to match the existing data from a database first:
+use a preceding `match` clause to match the existing data from a database first:
 
 .Match insert example
 [,typeql]
@@ -90,10 +89,10 @@ insert
 $p has email "bob@typedb.com";
 ----
 
-The above query finds a `person` entity that has the `full-name` attribute with the value of `Bob`
+The above clause finds a `person` entity that has the `full-name` attribute with the value of `Bob`
 and makes it the owner of the `email` attribute with the value of `bob@typedb.com`.
 
-If there is no person that matches the `match` clause pattern, then there will be no information inserted by the query.
+If there is no person that matches the `match` clause pattern, then there will be no information inserted by the clause.
 If there are multiple instances that match the pattern, then every matched person will be assigned ownership of the
 email attribute.
 
@@ -115,7 +114,7 @@ Entities without any additional information associated with them are almost indi
 
 While it is possible to insert an entity without any attributes owned or roles played,
 such an entity can't be easily found in a database or distinguished from other entities of the same type.
-As a best practice, we recommend using the same query to add at least some information about the inserted entity.
+As a best practice, we recommend using the same clause to add at least some information about the inserted entity.
 
 You can also use the xref:annotations/key.adoc[@key] or
 xref:annotations/unique.adoc[@unique] annotations for an attribute type ownership schema definition
@@ -128,7 +127,7 @@ insert
 $p isa person, has full-name "John Parkson";
 ----
 
-The above query inserts a `person` entity with the following attributes:
+The above clause inserts a `person` entity with the following attributes:
 
 * `full-name` -- value is `John Parkson`,
 * `email` -- value is `john.parkson@gmail.com`,
@@ -167,7 +166,7 @@ insert
 $f isa file, has path "new-file.txt";
 ----
 
-The above query inserts a `file` entity and assigns it an ownership of `path` attribute
+The above clause inserts a `file` entity and assigns it an ownership of `path` attribute
 with the value of `new-file.txt`.
 If there is no such attribute in a database, it is inserted implicitly as a result of assigning the ownership.
 
@@ -192,7 +191,7 @@ $p has credential "qwerty1";
 
 The above query matches a person that has full-name "John Parkson", that we <<_insert_entity_example,inserted>> earlier,
 and assign for the person to be owner of attribute of the type `credential` and value `qwerty1`.
-If the attribute doesn't exist, it is created/inserted implicitly by this query.
+If the attribute doesn't exist, it is created/inserted implicitly by this clause.
 
 [#_multivalued_attributes]
 === Multivalued attributes
@@ -258,7 +257,7 @@ Like a `marriage` relation with only one known spouse.
 ====
 
 Use a xref:statements/role-assignment.adoc[] statement with an
-xref:statements/isa.adoc[isa] statement in an `insert clause` to insert a relation.
+xref:statements/isa.adoc[isa] statement in an `insert` clause to insert a relation.
 
 .Inserting a relation
 [,typeql]
@@ -323,37 +322,6 @@ The above query:
 In short, it makes `Pearle Goodman` and `Masako Holley` both play the same role in the same relation.
 
 // owners of the `zewhb.java` file.
-
-////
-== Relations as role players
-
-In addition to entities and attributes, a role of a relation can be played by another relation.
-
-.Example of relation playing a role in another relation
-[,typeql]
-----
-match
-$s isa subject, has full-name "Pearle Goodman";
-$o isa object, has path "zewhb.java";
-$a isa action, has name "modify_file";
-$ac (object: $o, action: $a) isa access;
-insert
-$p (subject: $s, access: $ac) isa permission;
-----
-
-The above query:
-
-. Finds the `subject` (`$s`) with the `full-name` attribute with the value of `Pearle Goodman`.
-. Finds the `object` (`$o`) with the `path` attribute with the value of `zewhb.java`.
-. Finds the `action` (`$a`) whose name attribute has a value of `modify_file`.
-. Finds the `access` relation (`$ac`) that relates the `$o` (as `object`) to `$a` (as `action`).
-. Inserts a `permission` relation that relates `$s` (as `subject`) to the relation `$ac` (as
-`access`).
-
-In short, it creates the `permission` that lets `Pearle Goodman` to modify the `zewhb.java` file.
-
-The relation of `access` type now plays the role of `access` in the inserted relation of the `permission` type.
-////
 
 == Learn more
 

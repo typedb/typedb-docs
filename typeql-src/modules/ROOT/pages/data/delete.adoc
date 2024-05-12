@@ -1,10 +1,9 @@
 = Delete
 :Summary: Deleting data from a TypeDB database.
-:keywords: typeql, typedb, query, delete, remove
+:keywords: typeql, typedb, clause, delete, remove
 :pageTitle: Delete
-// :page-aliases: typeql::data/delete.adoc
 
-A Delete query is used to delete data from a database.
+A Delete clause is used to delete data from a database.
 You can delete a data instance, ownership of an attribute, or a role player reference of a relation.
 For a practical guide on how to send a Delete query to TypeDB,
 see the xref:{page-component-version}@manual::writing/delete.adoc[] page of the TypeDB Manual.
@@ -12,22 +11,18 @@ see the xref:{page-component-version}@manual::writing/delete.adoc[] page of the 
 == Syntax
 
 // tag::syntax[]
-A Delete query consists of a
-<<_match_clause,match>> clause and a
-<<_delete_clause,delete>> clause:
+A `delete` clause starts with the `delete` keyword, followed by the pattern declaring data that is to be inserted:
 
 [,typeql]
 ----
-match <pattern>
 delete <delete_pattern>
 ----
+
 where `<delete_pattern>` is a pattern of valid data-specific TypeQL statements including xref:statements/isa.adoc[],
 xref:statements/has.adoc[],
 xref:statements/role-assignment.adoc[role assignment], and xref:statements/value-assignment.adoc[value assignment].
 
-The _mandatory_ `match` clause `<pattern>` can be any valid match pattern: for more information, see the
-xref:patterns/overview.adoc[Patterns] and xref:statements/overview.adoc[Statements] sections.
-
+Every variable used in a delete clause must be bound by a preceding clause and present in an input Concept Map.
 // end::syntax[]
 
 [#_behavior]
@@ -35,34 +30,29 @@ xref:patterns/overview.adoc[Patterns] and xref:statements/overview.adoc[Statemen
 
 // tag::delete_clause[]
 [#_delete_clause]
-A Delete query deletes the data instances, ownerships, and role player assignments specified in the `delete` clause. 
-A `match` clause is mandatory in a Delete query: the `match` clause provides results for the variables in `delete` clause.
+A Delete clause deletes the data instances, ownerships, and role player assignments specified in the `delete` clause.
+A Concept Map from input provides values/concepts for the variables in a `delete` clause.
 
-* To <<_deleting_data_instances,delete a data instance>>, you need to use an
+To <<_deleting_data_instances,delete a data instance>>, you need to use an
 xref:statements/isa.adoc[isa] statement in an `insert` clause.
-* To delete ownership of an attribute, use a xref:statements/has.adoc[has] statement.
-* Role players can be deleted with a
+
+To delete ownership of an attribute, use a xref:statements/has.adoc[has] statement.
+
+Role players can be deleted with a
 xref:statements/role-assignment.adoc[role assignment] statement. See <<_deleting_role_players_from_a_relation>>.
 
-=== Query execution
+=== Clause execution
 
 [#_match_clause]
-A `delete` clause is executed once per every result of a preceding `match` clause. 
-Deleting data doesn't affect the set of matched results from the `match` clause of the same query:
-all matching is done by the time of the first delete.
+A `delete` clause is executed once per every Concept Map in its input.
+Deleting data doesn't affect Concept Maps from input.
 
-A Delete query is idempotent: deleting the same concept twice will not result in any further changes to the database.
+A Delete clause is idempotent: deleting the same concept twice will not result in any further changes to the database.
 
-[NOTE]
-====
-Since version `2.22.0` of TypeDB a Delete query doesn't fail (throw an error)
-if its `delete` clause tries to delete previously deleted or non-existent data.
-====
+=== Clause response
 
-=== Query response
-
-A Delete query returns a Promise of an empty response.
-
+A Delete clause returns a Promise of an empty response.
+//#todo Double-check or reconsider!
 // end::delete_clause[]
 
 [#_deleting_data_instances]
@@ -71,8 +61,8 @@ A Delete query returns a Promise of an empty response.
 include::partial$iam-database-links.adoc[]
 
 To delete an entity, attribute, or relation,
-match it in a `match` clause, then
-use the matched concept variable in an `isa` statement with the type or supertype of the data instance.
+match it in a `match` clause, then in a `delete` clause,
+use the matched variable in an `isa` statement with the type or supertype of the data instance.
 
 Deleting an attribute will result in all owners of the attribute to lose ownership of it:
 
@@ -190,37 +180,6 @@ not {$x has $a;};
 delete
 $a isa attribute;
 ----
-
-////
-== Deleting a relation
-
-include::partial$iam-database-links.adoc[]
-
-To delete a relation, match it in a database and then use a `delete` clause with an `isa` pattern:
-
-.Deleting a relation
-[,typeql]
-----
-match
-$p isa subject, has full-name "Pearle Goodman";
-$pe (subject: $p) isa permission;
-delete
-$pe isa permission;
-----
-
-The above query does the following:
-
-. Finds the `subject` entity (`$p`), with `full-name` attribute value of `Pearle Goodman`.
-. Finds all `permission` relations (`$pe`) relating the `subject` entity `$p` (as the `subject` role).
-. Deletes all matched permissions `$pe`.
-
-In short, it removes all permissions for `Pearle Goodman`.
-
-[NOTE]
-====
-We didn't specify all roles of a `permission` relation, e.g., the `object` role.
-====
-////
 
 [#_deleting_role_players_from_a_relation]
 == Delete role players
