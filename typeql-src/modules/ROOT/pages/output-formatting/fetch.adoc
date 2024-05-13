@@ -1,71 +1,52 @@
 = Fetch
 
-A Fetch query retrieves a Concept Map and projects values and types to a JSON object.
+A Fetch clause retrieves a Concept Map and projects values and types to a JSON object.
+
 For a practical guide on how to send a Fetch query to TypeDB,
 see the xref:manual::reading/fetch.adoc[] page of the TypeDB Manual.
 
 == Syntax
 
 // tag::syntax[]
-A Fetch clause consists of:
+A Fetch clause consists of the `fetch` keyword, followed by projection declarations separated with a semicolon:
 
 [,typeql]
 ----
 fetch
   {  <variable> [as <label>]
    | <variable> [as <label>] : (<attribute-type> [as <label>]), ...
-   | <subquery-label>        : "{" { <fetch_query> | <get_aggregate_query>} "}"
+   | <subquery-label>        : "{" { <fetch_query> | <aggregate_query>} "}"
   }; ...
 ----
 // end::syntax[]
 
 == Behavior
 
-A Fetch query retrieves concepts from a database and projects values and types to a JSON object.
+A `fetch` clause is used to specify the format of the returned JSON objects for
+projection of values (and types) of concepts from a Concept Map to a JSON.
 
-A `match` clause is used to match data by a pattern, while a `fetch` clause is used to format the returned JSON.
-
-The output of a Fetch query is a lazy stream/iterator of JSON objects.
-The number of query results can be less than the number of solutions of its `match` clause due to set semantics
-if not all query variables are projected into results.
+The output of a Fetch clause is a lazy stream/iterator of JSON objects.
+The number of query results can be less than the number of Concept Maps in a stream from the query's data processing
+pipeline if not all query variables are projected into JSONs.
 
 You can use xref:modifiers/sort.adoc[],
 xref:modifiers/limit.adoc[], and
 xref:modifiers/offset.adoc[] for pagination with a Fetch.
 
-[#_match_clause]
-=== Match clause
-
-A `match` clause in a Fetch query matches existing concepts in a database to project their values
-or values of attributes they own.
-You can use a declarative and composable TypeQL pattern in a `match` clause and TypeDB will find data that matches
-specified pattern.
-
-A `match` clause is mandatory in a Fetch query.
-
-For more information on patterns and statements used in a `match` clause, see the
-xref:typeql::patterns/overview.adoc[Patterns] and xref:typeql::statements/overview.adoc[Statements] sections.
-
-[#_fetch_clause]
-=== Fetch clause
-
-A `fetch` clause is used in a Fetch query to specify the format of the returned JSON objects and
-projection of values (and types) from matched database concepts to the JSON.
-
 In a `fetch` clause you specify top level projections to JSON, separating them with a semicolon.
 Projected variables and attribute types are used as keys in the resulted JSON,
 but you can customize that with <<_customize_output,output customization>>.
 
-There are three types of projections that you can use in a Fetch query:
+There are three types of projections that you can use in a Fetch clause:
 
 * <<_direct_projection,Direct projection>> -- use a concept variable with either a type object or attribute.
 * <<_ownership_projection,Ownership projection>> -- use a concept variable, colon,
 and attribute types that can be owned by an object in the variable.
-* <<_subqueries,Subquery>> -- use another Fetch query or aggregated Get query.
+* <<_subqueries,Subquery>> -- use a value from another aggregated query
+(fetch or xref:output-formatting/reduce.adoc[reduce]).
 
-A `fetch` clause is executed exactly once for every result matched by the preceding `match` clause of the same query.
-But it can <<_number_of_results,return fewer results>>,
-than matched by the `match` clause if not all variables are projected.
+A `fetch` clause is executed exactly once for every inputted Concept Map,
+but it can <<_number_of_results,return fewer results>>, if not all variables are being projected.
 
 [#_direct_projection]
 == Fetch variables
@@ -131,11 +112,11 @@ Finally, we bound the value variable `?size` to some value, based on the value o
 
 include::typeql::partial$iam-database-links.adoc[]
 
-Entities and relations can be used in a `fetch` clause only by extracting values of attributes they own.
+Entities and relations can be used in a `fetch` clause only by extracting values of *attributes* they own.
 
 You can project all attributes owned by a data instance, filtered by an attribute type.
-To do that, use the concept variable, matched in a preceding `match` clause,
-in a `fetch` clause followed by a colon and attribute type label.
+To do that, use the variable, matched in a data processing pipeline,
+followed by a colon and an attribute type label.
 You can use multiple types by listing them with a comma as a separator.
 
 Let's see how to fetch all attributes owned by every `person` entity of type `full-name` and `email`.
@@ -215,8 +196,8 @@ and then fetches all attributes for every file.
 
 include::typeql::partial$iam-database-links.adoc[]
 
-A Fetch query supports output customization (or relabeling) of the top level keys in the resulting JSON.
-<<_subqueries,Subqueries>> always use labels set in the query for their output.
+A Fetch clause supports output customization (or relabeling) of the top level keys in the resulting JSON.
+<<_subqueries,Subqueries>> require a label for their output.
 To customize a key for a <<_direct_projection,direct projection>> or <<_ownership_projection,ownership projection>>,
 use the `as` keyword after the concept variable in a `fetch` clause.
 By surrounding a new label in double quotes, you can use whitespaces in it.
@@ -299,11 +280,9 @@ The above query is equal to the previous one, but it uses the `all attribute str
 
 include::typeql::partial$iam-database-links.adoc[]
 
-A Fetch query can include a subquery in a `fetch` clause.
-A subquery is another Fetch query that returns a JSON for the key or an
-// xref:typeql::queries/get.adoc[Get query] with
-xref:typeql::output-formatting/reduce.adoc[aggregation] that returns a value.
-A subquery consists of label, colon, and a TypeQL query string surrounded by curly brackets.
+A Fetch clause can include a subquery.
+A subquery is another aggregated query that returns a value or a JSON.
+A subquery's syntax consists of a label, colon, and a TypeQL query string surrounded by curly brackets.
 
 The label determines the key that will be used to introduce results of the subquery into the JSON output.
 
@@ -464,14 +443,17 @@ The resulting JSON objects have a predictable structure of keys, that was set by
 The order of key/value pairs in a JSON is not guaranteed.
 ====
 
-
-=== Aggregated Get subquery
+=== Aggregated subquery
 
 To add an aggregated value for the Fetch output, use a
-xref:typeql::output-formatting/reduce.adoc[] output formatted subquery.
+xref:typeql::output-formatting/reduce.adoc[] subquery.
 
 The returned value is added to the resulted JSON with a subquery label as a key.
-If there is an empty response (no answer) for the Get subquery, then the value in JSON will be `null`.
+As subqueries are used in post-processing only,
+the aggregated results of subqueries can't be used for further processing in data processing pipelines.
+Use xref:functions/overview.adoc[functions] instead.
+
+If there is an empty response (no answer) for a subquery, then the outputted value is `null`.
 
 .Aggregated Get subquery example
 [,typeql]
@@ -521,7 +503,7 @@ average-file-size: {
 
 include::typeql::partial$iam-database-links.adoc[]
 
-A Fetch query can return fewer results, than it was matched by its `match` clause.
+A Fetch clause can return fewer results, than it was matched by its query.
 Due to set semantics, if fetch clause projects not every variable from the `match` clause,
 some results might lose their uniqueness and made redundant.
 
