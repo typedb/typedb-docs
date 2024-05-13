@@ -1,10 +1,10 @@
-= Define query
-:Summary: Define schema types and rules with TypeQL.
-:keywords: typeql, schema, model, define, modify, extend, type, rule, annotations
-:pageTitle: Define query
-// :page-aliases: typeql::schema/define.adoc, typeql::type-definitions.adoc, typeql::rule-definitions.adoc
+= Define clause
+:Summary: Define schema types and functions with TypeQL.
+:keywords: typeql, schema, model, define, clause, modify, extend, type, function, annotations
+:pageTitle: Define clause
 
-A Define query extends the schema of a database with new schema statements. 
+A Define clause extends the schema of a database with new schema statements.
+
 For a practical guide on how to send a Define query to TypeDB,
 see the xref:{page-component-version}@manual::defining/define.adoc[] page of the TypeDB Manual.
 
@@ -15,7 +15,7 @@ see the xref:{page-component-version}@manual::defining/define.adoc[] page of the
 == Syntax
 
 // tag::syntax[]
-A Define query consists of a single `define` clause and always starts with the `define` keyword.
+A Define clause consists of a single `define` clause and always starts with the `define` keyword.
 
 Define queries are written in TypeQL with the following syntax:
 
@@ -35,30 +35,26 @@ and annotations: xref:annotations/key.adoc[] and xref:annotations/unique.adoc[].
 Schema statements in a `define` clause can't use any variables or values.
 // end::syntax[]
 
-// For more information on defining rules, see the xref:schema/rule-definitions.adoc[] page.
-// For more information on defining types, ownerships, and roleplayers,
-// see below and the xref:schema/type-definitions.adoc[].
-
 == Behavior
 
 // tag::behavior[]
-A Define query adds schema statements to an existing schema.
-These statements can add new types and rules,
-or they can add new properties to existing types and replace existing rules.
+A Define clause adds schema statements to an existing schema.
+These statements can add new types and functions,
+or they can add new properties to existing types and replace existing functions.
 Define queries can't change schema statements already existing in a schema, except for
 xref:statements/overview.adoc#_annotation_statements[annotations].
 
-=== Query execution
+=== Clause execution
 
 Define queries are _idempotent_, meaning they can be applied multiple times
 without changing the result of the initial application. 
 
-A Define query must produce a _valid_ schema in a database,
+A Define clause must produce a _valid_ schema in a database,
 otherwise it will be rejected.
 
-=== Query response
+=== Clause response
 
-A successful Define query returns a promise of an empty response.
+A successful Define clause returns a promise of an empty response.
 // end::behavior[]
 
 

@@ -1,10 +1,10 @@
-= Undefine query
-:Summary: Undefine schema types and rules with TypeQL.
-:keywords: typeql, schema, model, undefine, delete, remove, truncate, type, rule
-:pageTitle: Undefine query
-// :page-aliases: typeql::schema/undefine.adoc
+= Undefine clause
+:Summary: Undefine schema types and functions from a schema
+:keywords: typeql, schema, undefine, clause, delete, remove, truncate, type, function
+:pageTitle: Undefine clause
 
-An Undefine query removes type and rule definition from a schema.
+An Undefine clause removes type and function definition from a schema.
+
 For a practical guide on how to send an Undefine query to TypeDB,
 see the xref:{page-component-version}@manual::defining/undefine.adoc[] page of the TypeDB Manual.
 
@@ -15,7 +15,7 @@ see the xref:{page-component-version}@manual::defining/undefine.adoc[] page of t
 == Syntax
 
 // tag::syntax[]
-An Undefine query consists of a single `undefine` clause and always starts with the `undefine` keyword.
+An Undefine clause consists of a single `undefine` clause and always starts with the `undefine` keyword.
 
 Undefine queries are written in TypeQL with the following syntax:
 
@@ -35,27 +35,25 @@ and annotations: xref:annotations/key.adoc[] and xref:annotations/unique.adoc[].
 Schema statements in a `undefine` clause can't use any variables or values.
 // end::syntax[]
 
-// For more information on defining rules, see the xref:schema/rule-definitions.adoc[] page.
-// For more information on defining types, ownerships, and roleplayers,
-// see below and the xref:schema/type-definitions.adoc[].
-
 == Behavior
 
 // tag::behavior[]
-An Undefine query deletes the parts of the schema specified in its `undefine` clause, including types, rules, roles, and ownerships. Undefining a type also undefines all ownerships of attribute types and all roles of that type. 
+An Undefine clause deletes the parts of the schema specified in its `undefine` clause, including types, functions,
+roles, and ownerships.
+Undefining a type also undefines all ownerships of attribute types and all roles of that type.
 
-=== Query execution
+=== Clause execution
 
 [#_undefine_a_type_with_a_subtype]
-For an undefine query to succeed, the following must be satisfied:
+For an undefine clause to succeed, the following must be satisfied:
 
 * Types that are to be deleted must _exist_.
 * Types that are to be deleted can have neither _subtypes_ nor _instances of data_. 
-* An undefine query must result in a _valid_ schema state.
+* An undefine clause must result in a _valid_ schema state.
 
 Undefining the same definition twice will result in an error.
 
-=== Query response
+=== Clause response
 
 Undefine queries return a promise of an empty response.
 // end::behavior[]
@@ -64,7 +62,7 @@ Undefine queries return a promise of an empty response.
 
 include::partial$iam-database-links.adoc[]
 
-Use a schema statement to delete from a schema in an Undefine query:
+Use a schema statement to delete from a schema in an Undefine clause:
 
 .Undefine type example
 [,typeql]
@@ -78,18 +76,18 @@ database owns name;
 The above example deletes from a schema the attribute type `number` and ownership of the attribute type `name` by the
 entity type `database`.
 
-== Undefine rules
+== Undefine functions
 
 include::partial$iam-database-links.adoc[]
 
-To delete a rule, use the `rule` keyword with rule's label:
+To delete a function, use the `fun` keyword with function's label:
 
-.Undefine a rule example
+.Undefine a function example
 [,typeql]
 ----
 undefine
 
-rule add-view-permission;
+fun add-view-permission;
 ----
 
 == Learn more
