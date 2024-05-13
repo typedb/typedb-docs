@@ -1,2 +1,30 @@
 = Filter
 
+This page covers the filter modifier for filtering TypeQL query results.
+
+== Syntax
+
+A filter modifier syntax consists of the `filter` keyword followed by a comma separated list of variables
+to include in the output:
+
+[,typeql]
+----
+filter <var> [, <var>] ;
+----
+
+== Behavior
+
+Filter modifier specifies what variables to keep in the outputted Concept Map.
+All other variables are dropped from the output and that can lead to fewer results due to deduplication.
+
+== Usage
+
+include::partial$iam-database-links.adoc[]
+
+
+
+.Filter modifier example
+[,typeql]
+----
+
+----
