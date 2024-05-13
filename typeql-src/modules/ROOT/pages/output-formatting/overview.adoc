@@ -1,2 +1,23 @@
 = Output formatting
+:page-no-toc: 1
 
+[#_blank_heading]
+== {blank}
+
+A data query can have optional post-processing to convert the output to another form.
+The following types of post-processing are available:
+
+[cols-2]
+--
+.xref:output-formatting/reduce.adoc[]
+[.clickable]
+****
+Aggregation of data query results.
+****
+
+.xref:output-formatting/fetch.adoc[]
+[.clickable]
+****
+Projection of data query results to JSONs.
+****
+--
