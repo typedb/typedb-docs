@@ -2,13 +2,11 @@
 
 == What is a pattern?
 
-A pattern is a set of declarative constraints. TypeQL uses patterns in its queries and clauses.
+A pattern is a set of declarative constraints.
+Patterns are used in data clauses and functions to specify constraints on concepts to be matched,
+processed, or retrieved.
 
-* In data queries, patterns are used to specify constraints on concepts to be retrieved or processed.
-* In schema queries, we use schema-specific patterns without any variables to define or undefine type definitions.
-
-Patterns are xref:data/match.adoc[built] from xref:statements/overview.adoc[statements]
-using <<_pattern_operations,pattern operations>>.
+Patterns are built from xref:statements/overview.adoc[statements] using <<_pattern_operations,pattern operations>>.
 
 [#_pattern_operations]
 == Pattern operations
@@ -18,36 +16,25 @@ using <<_pattern_operations,pattern operations>>.
 .xref:patterns/conjunction.adoc[]
 [.clickable]
 ****
-Combine statements in a pattern with conjunction.
+Add more elements to an equal list of mandatory constraints in a pattern with conjunction.
 ****
 
-.xref:patterns/disjunction.adoc[OR]
+.xref:patterns/disjunction.adoc[]
 [.clickable]
 ****
 Create alternative branches in a pattern with disjunction.
 ****
 
-.xref:patterns/negation.adoc[NOT]
+.xref:patterns/optionality.adoc[]
+[.clickable]
+****
+Add optional elements to enrich results with additional optional data.
+****
+
+.xref:patterns/negation.adoc[]
 [.clickable]
 ****
 Exclude results with a negation pattern.
-****
---
-
-== Pattern usage
-
-[cols-2]
---
-.xref:data/match.adoc[]
-[.clickable]
-****
-Pattern-based matching of concepts in a database.
-****
-
-.xref:query-design/overview.adoc[Queries]
-[.clickable]
-****
-Patterns are used in queries in various ways.
 ****
 --
 

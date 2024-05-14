@@ -1,2 +1,82 @@
-= Optionality
+= Optionality (TRY)
+
+A stream of Concept Maps returned by a `match` clause or a function can be ragged: contain optional elements,
+making Concept Maps uneven in size.
+That is due to optional variables, that can be added by using a xref:patterns/disjunction.adoc[] or a Try block.
+
+== Syntax
+
+=== Try block
+
+A Try block has the following syntax:
+
+.Syntax
+[,typeql]
+----
+try "{" <pattern> "}" ;
+----
+
+where `<pattern>` can be _any valid pattern_.
+Note that _at least one variable_ in the `<pattern>` must be bound outside the Try block.
+
+=== Disjunction
+
+For disjunction syntax, see the xref:patterns/disjunction.adoc[] page.
+
+== Behavior
+
+=== Try block
+
+A Try block can be used in a data clause or function to extend the base pattern and create an optional constraints.
+Matching the pattern of a Try block is not needed for the result to be returned.
+
+[NOTE]
+====
+A Try block of a pattern is equivalent to a disjunction of the same pattern with a True statement.
+====
+
+=== Disjunction behavior
+
+For disjunction behavior, see the xref:patterns/disjunction.adoc[] page.
+
+== Usage of Try block
+
+include::partial$iam-database-links.adoc[]
+
+One of the uses of a Try block is to retrieve optional data.
+Let's retrieve all data from a database by using a disjunction with all three root types:
+
+.Data retrieval example
+[,typeql]
+----
+match
+$p isa person, has full-name $name;
+try { $p has email $e; };
+----
+
+The above query returns all data instances of a person type that have a full-name attribute, and optionally,
+if they an email, it retrieves their email.
+
+== Learn more
+
+[cols-2]
+--
+.xref:patterns/conjunction.adoc[]
+[.clickable]
+****
+Learn more about conjunction in TypeQL.
+****
+
+.xref:patterns/negation.adoc[]
+[.clickable]
+****
+Learn more about negation in TypeQL.
+****
+
+.xref:statements/overview.adoc[]
+[.clickable]
+****
+Learn more about statements used in TypeQL patterns.
+****
+--
 

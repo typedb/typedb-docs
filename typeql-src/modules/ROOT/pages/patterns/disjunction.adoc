@@ -1,10 +1,10 @@
-= OR (Disjunction)
+= Disjunction (OR)
 
-A disjunction of patterns requires at least one of its patterns to be true. A disjunction is itself a pattern.
+A disjunction is a pattern operation that requires that at least one of its patterns to be true.
 
 == Syntax
 
-A disjunction block of two or more pattern is of the form:
+A disjunction block of two or more pattern has the following syntax:
 
 .Syntax
 [,typeql]
@@ -12,13 +12,19 @@ A disjunction block of two or more pattern is of the form:
 "{" <pattern> "}" or "{" <pattern> "}" [ or "{" <pattern> "}" ... ] ;
 ----
 
-where each `<pattern>` can be any valid pattern. Note that _at least one variable_ in the `<pattern>` must be bound outside the disjunction.
+where `<pattern>` can be _any valid pattern_.
+Note that _at least one variable_ in the `<pattern>` must be bound outside the disjunction.
 
 == Behavior
 
-Disjunctions can be used in a `match` clause or a condition of a rule to create alternative constraints.
+Disjunctions can be used in a data clause or function to create alternative constraints.
 Matching one of the branches is enough for the solution to be returned.
 //#todo expand disjunction behavior with detailed explanation
+
+=== Optional variables with disjunction
+
+Disjunction of patterns can create optional variables, existing only for some results in a stream of Concept Maps.
+For more information on ragged streams and optionals, see the xref:patterns/optionality.adoc[] page.
 
 == Disjunction of statements
 
@@ -34,10 +40,9 @@ let's retrieve all data from a database by using a disjunction with all three ro
 match
 $s isa $t;
 {$t type entity;} or {$t type relation;} or {$t type attribute;};
-get $s;
 ----
 
-The above query returns all data instances from a database as stateful objects.
+The above query returns all data instances from a database and their types as stateful objects.
 
 == Disjunction of patterns
 
@@ -69,33 +74,6 @@ $name;
 ----
 ====
 
-== Disjunction in rules
-
-include::partial$iam-database-links.adoc[]
-
-Disjunction can be used in a rule condition in the same way as it can be used in a `match` clause.
-
-Let's create a rule to add the `validity` attribute with the value `true` to a `permission`
-if at least one of the following conditions is met:
-
-* the permission has `review-date` attribute with value bigger than 25th of December 2022;
-* the permission has no `review-date` attribute.
-
-.Disjunction in a rule example
-[,typeql]
-----
-define
-rule permission-validity: when {
-    $permission isa permission;
-    { $permission has review-date $date;
-      $date > 2022-12-25T00:00:00.000; }
-    or
-    { not { $permission has review-date $date; }; };
-} then {
-    $permission has validity true;
-};
-----
-
 == Learn more
 
 [cols-2]
@@ -115,6 +93,6 @@ Learn more about negation in TypeQL.
 .xref:statements/overview.adoc[]
 [.clickable]
 ****
-Learn more about statements in TypeQL patterns.
+Learn more about statements used in TypeQL patterns.
 ****
 --
