@@ -1,17 +1,24 @@
 = Limit
 
-This page covers pagination of TypeQL query results.
+This page covers the limit modifier for limiting the number of results returned by a data processing clause.
+The limit modifier is often used with xref:modifiers/sort.adoc[] and xref:modifiers/offset.adoc[] modifiers for pagination.
+
+== Syntax
+
+A limit modifier syntax consists of the `limit` keyword followed by a natural number of results to return:
+
+[,typeql]
+----
+limit <number> ;
+----
+
+where `<number>` is a positive whole number.
 
 == Behavior
 
-Pagination in TypeQL queries makes it possible to return a range of results, rather than retrieving all results at once.
-By <<_limit_the_results,limiting>> the query to return the first `x` results,
-processing them, and then sending subsequent queries with an <<_offset_the_results,offset>>, incremented by `x`,
-you can iterate through the entire result set in manageable batches.
-
-xref:modifiers/sort.adoc[Sorting] the results is strongly advised, but is not mandatory.
-Without sorting, the ordering of results is not guaranteed and can be unpredictable.
-Pagination relies on sorting to traverse the full set of results.
+A limit modifier specifies the number of results to return in the output of a clause.
+If there are more results, only the specified number of results are returned.
+If there are fewer or the same number of results, then all results are returned.
 
 [#_limit_the_results]
 === Limit the number of results
@@ -25,7 +32,6 @@ Use the `limit` keyword followed by the number of results to return.
 ----
 match
 $p isa person, has full-name $n;
-get $n;
 limit 2;
 ----
 
@@ -45,7 +51,6 @@ Make sure to also use sorting, as otherwise you can't guarantee the continuity o
 ----
 match
 $p isa person, has full-name $n;
-get $n;
 sort $n;
 limit 2;
 ----
@@ -57,7 +62,6 @@ The above query returns the first two results.
 ----
 match
 $p isa person, has full-name $n;
-get $n;
 sort $n;
 offset 2;
 limit 2;

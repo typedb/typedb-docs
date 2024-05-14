@@ -1,15 +1,25 @@
 = Offset
 
+This page covers the offset modifier for skipping the specified number of results from the beginning of the output
+of a data processing clause.
+The offset modifier is often used with xref:modifiers/sort.adoc[] and xref:modifiers/limit.adoc[] modifiers for pagination.
+
+== Syntax
+
+An offset modifier syntax consists of the `offset` keyword followed by a natural number of results to skip:
+
+[,typeql]
+----
+offset <number> ;
+----
+
+where `<number>` is a positive whole number.
+
 == Behavior
 
-Pagination in TypeQL queries makes it possible to return a range of results, rather than retrieving all results at once.
-By <<_limit_the_results,limiting>> the query to return the first `x` results,
-processing them, and then sending subsequent queries with an <<_offset_the_results,offset>>, incremented by `x`,
-you can iterate through the entire result set in manageable batches.
-
-xref:modifiers/sort.adoc[Sorting] the results is strongly advised, but is not mandatory.
-Without sorting, the ordering of results is not guaranteed and can be unpredictable.
-Pagination relies on sorting to traverse the full set of results.
+An offset modifier specifies the number of results to skip in the output of a clause.
+If there are fewer or the same number of results, as the number specified for the `offset` clause,
+then an empty stream of results is returned.
 
 [#_offset_the_results]
 === Offset the results
@@ -23,7 +33,6 @@ Use the `offset` keyword followed by the number of results to skip.
 ----
 match
 $p isa person, has full-name $n;
-get $n;
 sort $n;
 offset 2;
 ----

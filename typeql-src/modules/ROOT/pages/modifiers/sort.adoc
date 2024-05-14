@@ -1,6 +1,6 @@
-= Sorting
+= Sort
 
-This page covers sorting of TypeQL query results.
+This page covers the sort modifier for sorting the output of a data processing clause.
 
 == Syntax
 
@@ -12,70 +12,68 @@ to sort by and an optional direction specifier for each variable:
 sort <var> [<direction>] [, <var> [<direction>] ] ;
 ----
 
+where `<direction>` can be `asc` or `desc` for ascending and descending order respectively.
+The ascending order is used by default if no direction is specified.
+
 == Behavior
 
 By default, a TypeDB server streams query results without a specific order,
 ensuring fast retrieval as solutions are sent as soon as they're found.
 
 To impose a specific order, you can use the `sort` keyword followed by one or multiple comma-separated query variables.
-But this requires the server to find all results to make sure they are properly sorted before sending any.
-
-You can specify ascending (asc) or descending (desc) order for each variable sorted by.
-The ascending order is assumed by default.
+However, this requires the server to find all results to make sure they are properly sorted before sending any.
 
 Sorting is crucial for result reproducibility.
 Without it, the order of query results isn't guaranteed in any way
 and can be different every time you send the same query to the same database.
 
 Sorting is commonly used alongside pagination.
-In this case, sorting precedes pagination in TypeQL query syntax.
-For example, see the xref:modifiers/limit.adoc[] page.
+For more information on pagination, see the xref:modifiers/offset.adoc[] page.
 
 == Usage
 
 include::partial$iam-database-links.adoc[]
 
-Here is an example of a Get query with sorting the results in descending order:
+Here is an example of a query with sorting of the results in descending order:
 
 .Get query sorting example
 [,typeql]
 ----
 match
 $p isa person, has full-name $n;
-get $n;
 sort $n desc;
 ----
 
-The above Get query returns stateful objects for sorted `full-name` attributes owned by entities of the `person` type.
+The above query returns stateful objects for sorted `full-name` attributes owned by entities of the `person` type.
 
 == Usage with post-processing
 
 include::partial$iam-database-links.adoc[]
 
-Let's see an example of sorting results of a Fetch query:
+Let's see an example of sorting results with a Fetch post-processing:
 
 .Fetch query sorting example
 [,typeql]
 ----
 match
 $p isa person, has full-name $n;
+sort $n asc;
 fetch
 $p: full-name;
-sort $n asc;
 ----
 
-The above Fetch query returns sorted `full-name` attributes owned by entities of the `person` type.
+The above query returns sorted `full-name` attributes owned by entities of the `person` type.
 Notice that there is no `$n` variable in the `fetch` clause of this query.
 Sorting is performed on the results of the `match` clause,
 so `fetch` clause determines only what data is projected into JSONs.
-In this case, we are projecting all attributes of the `full-name` type owned by the `$p` already.
+In this case, we are projecting all attributes of the `full-name` type owned by the `$p`.
 Adding `$n` to the `fetch` clause is possible, but redundant in this case.
 
 == Learn more
 
 [cols-2]
 --
-.xref:modifiers/limit.adoc[][]
+.xref:modifiers/limit.adoc[]
 [.clickable]
 ****
 Learn about limiting the number of results in TypeQL.

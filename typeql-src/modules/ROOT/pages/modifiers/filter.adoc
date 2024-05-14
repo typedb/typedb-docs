@@ -1,6 +1,6 @@
 = Filter
 
-This page covers the filter modifier for filtering TypeQL query results.
+This page covers the filter modifier for filtering the output of a data processing clause.
 
 == Syntax
 
@@ -15,16 +15,17 @@ filter <var> [, <var>] ;
 == Behavior
 
 Filter modifier specifies what variables to keep in the outputted Concept Map.
-All other variables are dropped from the output and that can lead to fewer results due to deduplication.
+All other variables are dropped from the output and that can lead to having fewer results in the output
+due to deduplication.
 
 == Usage
 
 include::partial$iam-database-links.adoc[]
 
-
-
 .Filter modifier example
 [,typeql]
 ----
-
+match
+$p isa person, has name $n, has email $e;
+filter $n;
 ----

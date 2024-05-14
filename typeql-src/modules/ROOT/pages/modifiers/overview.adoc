@@ -1,40 +1,50 @@
 = Modifiers overview
-:page-no-toc: 1
 
-[#_blank_heading]
-== {blank}
+Modifiers directly influence a stream of Concept Maps outputted by a data processing clause.
+By using modifiers, you can change number of results, sort them, or even the filter query variables in every Concept Map.
 
-Modifiers let us process the results of a query.
-By using modifiers, you can change ordering, number of results, or even the output format.
+== Types of modifiers
 
-Modifiers always go at the end of a query (after all clauses).
-Sorting and pagination are quite often used together.
-
-Aggregation can be done only with a Get query and is incompatible with other modifiers.
+There are four different types of modifiers can be used with a data processing clause in TypeQL 3.0+:
 
 [cols-2]
 --
 .xref:modifiers/sort.adoc[]
 [.clickable]
 ****
-By sorting, we can change the order in which results are returned.
+Sort the results by one or multiple variables.
 ****
 
 .xref:modifiers/limit.adoc[]
 [.clickable]
 ****
-Get a subset of results by limiting the number of returned answers.
+Get a subset of results by limiting the number of returned Concept Maps.
 ****
 
 .xref:modifiers/offset.adoc[]
 [.clickable]
 ****
-Offset the returned answers by the specified number of results.
+Offset the returned results by the specified number of Concept Maps.
 ****
 
 .xref:modifiers/filter.adoc[]
 [.clickable]
 ****
-Filter the results by query variables.
+Filter the results to contain only the specified query variables.
 ****
 --
+
+== Pagination
+
+Pagination in TypeQL queries makes it possible to return a range of results, rather than retrieving all results at once.
+Pagination is possible by utilising the
+xref:modifiers/sort.adoc[],
+xref:modifiers/limit.adoc[],
+and xref:modifiers/offset.adoc[] modifiers at the same time.
+
+By limiting the query to return the first `x` results,
+processing them, and then sending subsequent queries with an offset, incremented by `x`,
+you can iterate through the entire result set in manageable batches.
+
+xref:modifiers/sort.adoc[Sorting] the results is strongly advised, to preserve the order of results between queries.
+Pagination relies on sorting to traverse the full set of results.
