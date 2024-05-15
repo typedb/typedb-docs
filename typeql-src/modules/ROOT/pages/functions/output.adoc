@@ -1,0 +1,31 @@
+= Output
+
+Functions return either a stream of results or a single aggregated value.
+
+== Syntax
+
+An output returned by a function is declared in the function xref:functions/definition.adoc[definition]
+after the `return` keyword:
+
+[,typeql]
+----
+return "{" <var> [, <var>] "}" ;
+----
+
+== Behavior
+
+To get output as a stream of results, use a variable from the matched pattern.
+For every matched results, the function will provide the specified value of the variable in the results.
+
+To get output as a single aggregated value, use one of the built-in
+xref:query-design/post-processing.adoc#_aggregation_reduction[aggregation functions].
+
+== Usage
+
+// include::partial$iam-database-links.adoc[]
+
+.Functions return example
+[,typeql]
+----
+return { name, birthday, bool };
+----
