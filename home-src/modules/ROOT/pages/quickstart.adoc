@@ -130,18 +130,23 @@ Let's find a quickstart file that a user named `Alex` has access to and replace 
 [,typeql]
 ----
 match
-$user isa user, has name "Alex";
-$file isa file, has path $path;
-($user, $file) isa permission;
-$path == "docs/quickstart-guide.adoc";
+$u1 isa user, has name "Bob";
+$f2 isa file, has path "docs/quickstart-guide.adoc";
+$read isa action, has name "read";
+$pe (subject:$u1, object:$f2, action:$read) isa permission, has updated $date;
+$write isa action, has name "write";
 delete
-$file has $path;
+$pe (action: $read);
+$pe has $date;
 insert
-$file has path "docs/quickstart.html";
+$pe (action: $write);
+$pe has updated 2024-05-15T11:04:36;
 ----
 
-The query matches the file by its path and its participation in a `permission` relation,
-then deletes the existing path and inserts a new one.
+The query matches the user, file, action types, and the `permission` relation for the user to read the file,
+then deletes from the relation a roleplayer reference to the `read` action for the `action` role,
+only to replace it with the `write` action.
+The same query also replaces the `updated` attribute owned by the relation with a newer one.
 After commiting the transaction,
 the updated information is persisted in the database and becomes available for querying.
 
