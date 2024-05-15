@@ -83,12 +83,12 @@ include::attachment$crash-course-schema.tql[]
 . Click the image:home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
 . When the query has completed, click image:home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit Transaction].
 
-Now that the schema has been defined, data can be inserted into the database.
+The schema has been defined, data can be inserted into the database.
 
 [#_load_data]
 == Load data
 
-Now let's insert some sample data into the newly created database to be able to query in future steps:
+Let's insert sample data for our newly defined schema:
 
 . Ensure the Session toggle is set to `data` and the Transaction toggle is set to `write`.
 . Open a new tab and copy-paste the following Insert queries:
@@ -102,23 +102,53 @@ btn:[Run Query] button.
 . When the queries have completed, click image:home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit Transaction].
 
 Assuming there were no errors in the process, the data is persisted in the database.
+Now the database is ready to be queried.
 
-== Finish
+== Read data
 
-Congratulations on completing the TypeDB quickstart guide!
-Now you can try sending your first queries to the database.
+Let's send a Fetch query to retrieve all types of action permitted for a particular user on a particular file:
 
-To learn about TypeDB's advanced and unique features such as
-polymorphic queries,
-type inference,
-type inheritance,
-rule-based reasoning,
-and n-ary relations, we recommend you check the <<_learn_more>> section.
+[,typeql]
+----
+match
+$user isa user, has name "Bob";
+$file isa file, has path "README.md";
+(subject: $user, object: $file, action: $act) isa permission;
+fetch
+$act: name;
+----
+
+The query above uses a pattern to match a user with the name `Bob` and a file with the path `README.md`
+that are playing roles of `subject` and `object` respectively in a relation of the type `permission`.
+For any matched data, it fetches the name of action in the relation.
+
+== Update data
+
+To update data in a database, we need to match the existing data before deleting and replacing some of it.
+Let's find a quickstart file that a user named `Alex` has access to and replace the file's path with a new one:
+
+[,typeql]
+----
+match
+$user isa user, has name "Alex";
+$file isa file, has path $path;
+($user, $file) isa permission;
+$path == "docs/quickstart-guide.adoc";
+delete
+$file has $path;
+insert
+$file has path "docs/quickstart.html";
+----
+
+The query matches the file by its path and its participation in a `permission` relation,
+then deletes the existing path and inserts a new one.
+After commiting the transaction,
+the updated information is persisted in the database and becomes available for querying.
 
 [#_learn_more]
-== Learn more
+== What's next?
 
-Here are some options for your next steps with TypeDB.
+We recommend you check out other sections of TypeDB documentation:
 
 [cols-2]
 --
@@ -140,7 +170,7 @@ A comprehensive learning course for TypeDB comprising several individual lessons
 A collection of practice-oriented how-to guides for TypeDB.
 ****
 
-.xref:drivers::overview.adoc[TypeDB Drivers]
+.xref:drivers::overview.adoc[TypeDB drivers]
 [.clickable]
 ****
 Information on language-specific TypeDB drivers with native API.
