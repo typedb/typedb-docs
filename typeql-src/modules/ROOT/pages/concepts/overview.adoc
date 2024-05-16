@@ -4,32 +4,17 @@
 [#_blank_heading]
 == {blank}
 
-TypeQL can be used for polymorphic queries with patterns containing
-xref:concepts/variables.adoc[concept variables] and
-xref:values/variables.adoc[value variables].
-A concept variable can represent any type or data instance in a database.
-To limit the set of possible concepts represented by a concept variable,
-add constraints with TypeQL keywords, like `sub`, `isa`, `has`, etc.
+TypeQL can be used for polymorphic queries with patterns using xref:concepts/variables.adoc[variables].
+A variable represents an unknown element, that we can constrain with TypeQL
+xref:statements/overview.adoc[statements] in a pattern.
 
-////
-.See an example
-[%collapsible]
-====
-For example, by using the `sub` keyword we can limit a concept variable to be a subtype of some type.
-If both sides of `sub` are variables with no additional constraints, then the only requirement for them both to be types.
+When a xref:patterns/overview.adoc[pattern] is solved,
+query engine finds all values and/or concepts that every variable can take
+to statisfy all the constraints of the query.
 
-.Query example
-[,typeql]
-----
-match
-$x sub $t;
-get $x;
-----
+A Concept can be either a data instance from a database or a type from its schema.
 
-The same approach can be used with the `isa` keyword,
-but the variable to the left of it is considered to be a data instance instead of a type.
-====
-////
+For information on values that a variable can take, see the xref:values/overview.adoc[] page.
 
 [cols-3]
 --

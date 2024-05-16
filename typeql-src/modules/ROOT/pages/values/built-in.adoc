@@ -13,7 +13,7 @@ It can be used only in a `match` clause or a `condition` of a rule
 and can contain any combination of the following elements:
 
 * a xref:concepts/variables.adoc[concept variable] representing an attribute (e.g., `$size-kb`),
-* a xref:values/variables.adoc[value variable] (e.g., `?sum`),
+* a variable containing a value (e.g., `$sum`),
 * a literal value (e.g., `4`),
 * xref:values/built-in.adoc[built-in function] (e.g., `max()`).
 

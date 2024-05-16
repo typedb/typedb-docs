@@ -1,8 +1,11 @@
 = Variables
 
+Variables represent unknown xref:concepts/overview.adoc[concepts] or
+xref:values/overview.adoc[values] to be used in a statement of a TypeQL data query.
+
 == Syntax
 
-A concept variable is used in TypeQL as dollar sign (`$`) followed by the variable's label:
+A variable can be invoked in a pattern with a dollar sign (`$`) followed by the variable's label:
 
 [,typeql]
 ----
@@ -11,11 +14,9 @@ $<variable-label>
 
 == Behavior
 
-Concept variables in TypeQL represent unknown xref:concepts/types.adoc[types] and
-xref:concepts/data.adoc[data instances] in data query patterns.
-
-When solving a pattern, each solution consists of variable/concept pairs for every query variable.
-Substituting variables with respective concepts from a solution should ensure that the pattern equals True.
+When solving a pattern, each solution includes a value or a concept for every variable in a query,
+except for some of the optionals.
+Substituting variables with respective concepts or values from a solution makes pattern a True statement.
 
 Some TypeQL statements can imply type restrictions on a concept variable via type inference, for example:
 
@@ -23,11 +24,11 @@ Some TypeQL statements can imply type restrictions on a concept variable via typ
 * `isa`, `has`, and `is` can be used only with data instances to the left from them;
 * Any value operations, including
 xref:values/comparators.adoc[comparators],
-xref:values/built-in.adoc[built-in functions] can be applied only to attributes.
+xref:values/built-in.adoc[built-in functions] can be applied only to attributes or values.
 
 == Usage in a query
 
-Let's use `has` keyword to retrieve all attributes that owned by anything.
+Let's use the `has` keyword to retrieve all attributes that owned by anything.
 
 .Fetching attributes
 [,typeql]
@@ -38,7 +39,7 @@ fetch
 $a;
 ----
 
-The resulted JSON should look like this:
+The resulted JSONs contain results of different types and look like this:
 
 [,typeql]
 ----
@@ -64,7 +65,7 @@ fetch $type;
 Here we are matching all entities (`$x`) of the `person` type and all attributes that they have (`$a`).
 But then we match and fetch only the exact type of every attribute.
 
-The resulted JSON should look like this:
+The resulted JSONs look like this:
 
 [,json]
 ----
