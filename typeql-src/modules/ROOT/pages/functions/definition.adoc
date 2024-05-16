@@ -19,8 +19,8 @@ input parameters, output types declaration, a match clause serving as the functi
 [,typeql]
 ----
 fun <label> [ "(" <var>:<type> [, <var>:<type>] ") -> {" <type> "}" ] :
-match <pattern>
-return "{" <var> [, <var>] "}" ;
+    match <pattern>
+    return "{" <var> [, <var>] "}" ;
 ----
 
 where `<label>` is the label for the newly defined function,
@@ -43,8 +43,8 @@ The return clause is used to declare the output and its format.
 ----
 define
 fun extended_name($x: person) -> {name}:
-match
-{ $x has name $n; }
-or { ($x, $y) isa marriage; $y has name $n; };
-return { $n } ;
+    match
+    { $x has name $n; }
+    or { ($x, $y) isa marriage; $y has name $n; };
+    return { $n };
 ----
