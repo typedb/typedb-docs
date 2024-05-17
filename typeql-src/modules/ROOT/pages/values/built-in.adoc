@@ -1,36 +1,32 @@
 = Built-in operations
 
-== Arithmetic
-
-== Expressions
-
-Arithmetic expressions can be used to set a value of a value variable based on other values used in a query.
-To use arithmetic operations, start a statement with a value variable and an equal sign, followed by an expression.
+== Arithmetic expression
 
 [#_expression]
-An expression describes a computation of a value in a query.
-It can be used only in a `match` clause or a `condition` of a rule
+An arithmetic expression describes a computation of a value in a query.
+It can be used only in a `match` clause or a body of a function to set a value for a variable
 and can contain any combination of the following elements:
 
-* a xref:concepts/variables.adoc[concept variable] representing an attribute (e.g., `$size-kb`),
-* a variable containing a value (e.g., `$sum`),
+* a variable containing a value (e.g., `$sum`) or a concept with a value (attribute),
 * a literal value (e.g., `4`),
-* xref:values/built-in.adoc[built-in function] (e.g., `max()`).
+* an arithmetic operation (e.g., `+`),
+* a xref:values/built-in.adoc[built-in function] (e.g., `max()`),
+* a user-defined xref:functions/overview.adoc[function].
 
 .Expression example
 [,typeql]
 ----
-?x = $s + 1;
+$y = round(($x + 1) / 2);
 ----
 
-In the above example, the value variable `?x` is bound to the value of the attribute in `$s` added `1`.
+In the above example, the variable `$y` is bound to the value calculated by adding `1` to the value of `$x`,
+dividing the result by two, and then applying the built-in <<_round_function,round>> function.
 
 [#_operations]
-== Operations
+== Arithmetic operations
 
 TypeQL includes the following arithmetic operations for values, presented in the order of operations in an expression:
 
-//#todo reimplement the links to examples
 // tag::arithmetics[]
 1. `()` -- parentheses.
 2. `^` -- exponentiation (power).
@@ -44,55 +40,49 @@ TypeQL includes the following arithmetic operations for values, presented in the
 .Arithmetic example
 [,typeql]
 ----
-?gb = (($s + ?o)/ 1024) / 1024;
+$size-gb = (($size-kb + $overhead)/ 1024) / 1024;
 ----
 
-In the above example, the value variable `?gb` is bound to the result of a complex arithmetic expression.
-The expression takes the value of concept variable `$s`, adds it to a value of value variable `?o`,
+In the above example, the variable `size-gb` is bound to the result of a complex arithmetic expression.
+The expression takes the value of the `$size-kb` variable, adds it to a value of the `$o` variable,
 then divides the result by `1024`, and finally divides the result by `1024` again.
+It represents a conversion of kilobytes into gigabytes.
 
-Arithmetic operations are often used in a combination with xref:values/comparators.adoc[comparators] and
-xref:{page-component-version}@learn::5-defining-schemas/5.4-defining-rules.adoc[rules].
+Arithmetic operations are often used in a combination with xref:values/comparators.adoc[comparators]
+to set a constraint on data to match by a pattern.
 
-== Min / Max functions
+== Built-in functions
 
-Use the `max()` function to find the maximum value out of all provided input arguments,
-or the `min()` to find the minimum.
+There are multiple built-in functions available in TypeQL for value operations:
 
+* `min()`, `max()` -- to find the minimum or maximum value out of all presented comma-separated values
++
 .Example
 [,typeql]
 ----
-?maximum = max(100, $x, ?a);
+$maximum = max(100, $x, $a);
 ----
 
-== Ceil / Floor functions
-
-Use the `ceil()` function to round up the input value, or the `floor()` to round down.
-
+* `ceil()`, `floor()`-- to round up or down the inputted number
++
 .Example
 [,typeql]
 ----
-?int = floor(100.7);
+$int = floor(100.7);
 ----
 
-== Round function
-
-Use the `round()` function to round the input value up to a closest integer (half-way up).
-
+* `round()` -- to round half up a number
++
 .Example
 [,typeql]
 ----
-?int = round(100.7);
+$int = round(100.7);
 ----
 
-== Abs function
-
-Use the `abs()` function to produce an absolute value of the input value.
-
+* `abs()` -- to find absolute value of a number
++
 .Example
 [,typeql]
 ----
-?x = abs($s - 1000);
+$x = abs($s - 1000);
 ----
-
-The above example bound the `?x` value variable to the absolute value of subtraction of `1000` from the value of `$s`.

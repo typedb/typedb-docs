@@ -1,2 +1,70 @@
 = Structs
 
+A struct is a composite data type that can be used in TypeQL as a value type for an attribute.
+
+== Syntax
+
+Structs must be defined in the schema of a database with the `struct` keyword and the following syntax:
+
+.Struct definition syntax
+[,typeql]
+----
+struct <struct-label>: <element-label> value <value-type> [,<struct-label>: <element-label> value <value-type>];
+----
+
+where `<struct-label>` is a unicode label to call the struct by,
+`<element-label>` is a unicode label to call an element of the struct by,
+`<value-type>` is a value type of the element.
+
+Struct syntax uses curly brackets to envelope a comma-separated list of label/value pairs:
+
+.Struct syntax
+[,typeql]
+----
+{ <label>: <value> [, <label>: <value>] }
+----
+
+where `<label>` is an unicode label, serving as a key to address an element and
+`<value` can be any value, including another struct.
+
+== Behavior
+
+A struct represents a composite value type.
+
+An attribute of value type struct must have all its elements.
+Every element of such an attribute must be of the exact value type
+specified for such an element in the schema of a database.
+
+An element of a struct can be of any value, including structs and lists.
+
+== Usage
+
+=== Defining a struct
+
+To define a struct, use the `struct` keyword with a label for the struct,
+followed by a colon and a comma separated triplets of label, `value` keyword, and value type of an element.
+
+.Struct definition example
+[,typeql]
+----
+define
+struct my_struct:
+  label1 value int,
+  label2 value string[],
+  label3 value bool?,
+  label4 value other_struct;
+
+my_att sub attribute, value my_struct;
+----
+
+To declare a struct in a data query,
+use its label followed by curly brackets with a comma-separated list of pairs of label and value separated by a colon:
+
+.Struct declaration example
+[,typeql]
+----
+match
+$e has my_att { label1: $a, label2: $b, label3: $c, label4: { sub_label1: $d , ... } };
+$d { sub_sub_label1: ... , };
+----
+//#todo Complete the example

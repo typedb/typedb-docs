@@ -1,5 +1,7 @@
 = Primitives
 
+Primitives can be used as literal values or as values of attributes, stored in a database.
+
 == Behavior
 
 Primitive values used in TypeQL patterns can be of one of the following value types:
@@ -30,7 +32,7 @@ we can't create an attribute of the `full-name` type with a value of a different
 
 == Usage
 
-A Define query and its schema statements is used to define value types for attribute types.
+A Define query and its schema statements are used to define value types for attribute types:
 
 .Define query example
 [,typeql]

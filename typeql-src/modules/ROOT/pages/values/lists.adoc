@@ -1,2 +1,108 @@
 = Lists
 
+A List is a sequence of values of the same value type.
+
+== Syntax
+
+List syntax uses square brackets to envelope a comma-separated list of elements:
+
+.List syntax
+[,typeql]
+----
+"[" [<element>] [ , <element> ] "]"
+----
+
+where `<element>` is an element of the list.
+
+An empty list (with zero elements in it) can be declared as just square brackets with no elements between them:
+
+.Empty list example
+[,typeql]
+----
+[]
+----
+
+== Behavior
+
+A list represents a sequence of values.
+Every value in a list can be one of the following:
+
+* a primitive value;
+* a struct;
+* an attribute;
+* a variable representing one of the above.
+
+List can't be used as a value type for an attribute.
+
+The only lists that can be persisted in a TypeDB database are lists of attributes.
+
+Lists can be used as input or output of a function and can be returned from a query as a value.
+
+== Usage of lists
+
+Lists can be assigned to a query variable.
+
+=== Declaring a new list
+
+To declare a new list of elements, use a comma-separated list of elements surrounded by square brackets:
+
+.Element of a list example
+[,typeql]
+----
+$list = [ 4, 2, 10, 1 ];
+----
+
+=== Addressing an element from a list
+
+Elements of a list can be addressed by their index.
+
+.Element of a list example
+[,typeql]
+----
+$e = $list[1];
+----
+
+=== Addressing a range of elements
+
+A new list can be declared as a part of an existing list by using a range of indexes
+or as a concatenation of lists or their parts.
+
+.List as a range of elements from another list
+[,typeql]
+----
+$new_list = $list[$index_from : $index_to];
+----
+
+where `$new_list` is a variable to represent a new list, that is declared as a part of the existing list in the `$list`
+variable with index range from `$index_from` to `$index_to`.
+
+=== Check whether a list contains an element
+
+To check whether an element is in a list, use the xref:statements/in.adoc[in statement]:
+
+.A list contains an element example
+[,typeql]
+----
+$x in $list;
+----
+
+=== Concatenate lists
+
+To combine two lists into one that contains all the elements of the first list and then all the elements of the second:
+
+.List concatenation
+[,typeql]
+----
+$new_list = $list_1 + $list_2
+----
+
+=== List length function
+
+To find a length of a list, use `length()` built-in function:
+//#todo Document on the built-in functions page
+
+.List length
+[,typeql]
+----
+$x = length($list)
+----
