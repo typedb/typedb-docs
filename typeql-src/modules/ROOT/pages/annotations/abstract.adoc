@@ -1,22 +1,29 @@
 = Abstract
 
-The `abstract` keyword is used in TypeQL to define a type as an abstract type.
+The `@abstract` keyword is an annotation that can be used with a
+xref:statements/sub.adoc[sub statement]
+to specify that the defined subtype is an xref:concepts/types.adoc#_abstract_types[abstract type].
 
 == Syntax
 
-The syntax of a simple statement with the `type` keyword:
+The syntax of an `@abstract` annotation includes:
 
 .Syntax
 [,typeql]
 ----
-<type label> abstract;
+<sub-statement> "@abstract" ;
 ----
 
-The `abstract` keyword doesn't use any object, so after the keyword always follows either a comma, or a semicolon.
+The annotation is placed at the very end of a `sub` statement and effectively becomes a part of it,
+not being separated by a comma or a semicolon.
+
+This syntax can be combined with other type definition statements, like `owns` and `plays` as a
+xref:statements/overview.adoc#_composite_statements[composite statement].
 
 == Behavior
 
-TypeQL statements with the `abstract` keyword are used in Define queries to define (declare) that the type is abstract.
+TypeQL sub statements with the `@abstract` annotation are used
+in Define queries to declare a new type as an abstract type or in data queries to match an abstract type.
 
 An abstract type can't be used to insert a data instance
 but can be used to create a subtype or to query (for its subtypes).
@@ -25,18 +32,29 @@ but can be used to create a subtype or to query (for its subtypes).
 
 include::partial$iam-database-links.adoc[]
 
-Since in Define queries you can't use variables, the `abstract` keyword can be used only with a type label.
-It can be a part of a composite statement.
-
-For example, to define a new *abstract* attribute type `id` as a subtype of the `attribute` root type,
-and then the `email` non-abstract (concrete) type as a subtype of the `id`, use:
+The `@abstract` annotation is usually used in a Define query.
+For example, to define a new *abstract* attribute type `id` as a subtype of the `attribute` root type, use:
 
 .Define an abstract type example
 [,typeql]
 ----
 define
-id sub attribute, abstract, value string;
-email sub id, value string;
+
+id sub attribute @abstract, value string;
+----
+//#todo double-check that a value type is still mandatory for abstract types
+
+== Usage in a data query
+
+The `@abstract` annotation can be used in a data query to match abstract types.
+For example, let's find all abstract types in a schema:
+
+.Match abstract types
+[,typeql]
+----
+match
+$x sub $y @abstract;
+filter $x;
 ----
 
 == Learn more
@@ -47,12 +65,6 @@ email sub id, value string;
 [.clickable]
 ****
 Learn more about `sub` statement in TypeQL.
-****
-
-.xref:statements/type.adoc[]
-[.clickable]
-****
-Learn more about `type` statement in TypeQL.
 ****
 
 .xref:concepts/types.adoc[]
