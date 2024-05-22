@@ -89,7 +89,7 @@ $book isa book, has isbn "9781859840665";
 $user-9 isa user, has id "u0009";
 $review isa review;
 ($review, $book) isa rating;
-($review, $user) isa action-execution;
+($review, $user-9) isa action-execution;
 fetch
 $review: id;
 ----
