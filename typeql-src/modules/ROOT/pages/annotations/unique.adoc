@@ -1,47 +1,68 @@
 = Unique
 
-The `@unique` keyword is an annotation, that can be used with an
-xref:statements/owns.adoc[owns statement] to specify, that the selected attribute type must be uniquely owned by data instances of a given type.
+The `@unique` keyword is an annotation that can be used with an
+xref:statements/owns.adoc[owns statement]
+to specify that the selected attribute type must be uniquely owned by data instances of a given type.
 
 == Syntax
 
-The syntax of a `@unique` statement includes:
-
-* xref:statements/owns.adoc[owns statement]
-* the `@unique` keyword
+The syntax of a `@unique` annotation includes:
 
 .Syntax
 [,typeql]
 ----
-<type> owns <attribute-type> @unique;
+<owns-statement> "@unique" ;
 ----
+
+The annotation is placed at the very end of an `owns` statement and effectively becomes a part of it,
+not being separated by a comma or a semicolon.
+
+This syntax can be combined with other type definition statements, like `owns` and `plays` as a
+xref:statements/overview.adoc#_composite_statements[composite statement].
 
 == Behavior
 
-TypeQL statements with the `@unique` keyword can be used only in Define queries.
+The `@unique` annotation adds a uniqueness constraint for all attributes of the attribute type
+owned by data instances of the subject type from the owns statement it is used with.
 
-The `@unique` keyword adds a uniqueness constraint for all attributes of the attribute type
-owned by data instances of the subject type.
+A uniquely owned attribute can be used to address its owner.
+However, while a key must always exist and be the only key owned by a data instance,
+data instance can have multiple or zero unique attributes of the same attribute type.
 
-A uniqueness constraint means that every attribute of an attribute type can be owned by no more than one
+A uniqueness constraint means that every attribute of an attribute type must be owned by no more than one
 data instance of the subject type.
 That makes every owned attribute unique among all data instances of the subject type.
+
+Uniqueness is defined for the ownership statement it is used with.
+The same attribute type can be defined as owned as unique by one type and as non-unique by another type.
 
 == Usage in a schema definition
 
 include::partial$iam-database-links.adoc[]
 
-Since in Define and Undefine queries you can't use variables,
-both subject and object of an owns statement can only be type labels.
+The `@unique` annotation is usually used in a Define query.
 
 For example, to define that the `object` type owns the `object-type` attribute type
 with the `@unique` annotation, use:
 
-.Define unique query example
+.Define unique example
 [,typeql]
 ----
 define
-object sub entity, owns object-type @unique;
+object owns object-type @unique;
+----
+
+== Usage in a data query
+
+The `@unique` annotation can be used in a data query to match unique attribute types.
+For example, let's find all unique attributes types in a schema:
+
+.Match abstract types
+[,typeql]
+----
+match
+$x owns $y @unique;
+filter $y;
 ----
 
 == Learn more
