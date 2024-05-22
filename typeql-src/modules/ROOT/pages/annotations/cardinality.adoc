@@ -1,1 +1,76 @@
 = Cardinality
+
+The `@card` keyword is used for cardinality annotation that can be used with:
+
+* xref:statements/owns.adoc[owns statements] to specify cardinality constraints for ownership of an attribute type;
+* xref:statements/relates.adoc[relates statements] to specify cardinality constraints for players of a role in a
+relation.
+
+== Syntax
+
+The syntax of a cardinality annotation includes:
+
+.Syntax
+[,typeql]
+----
+<statement> "@card(" [<min>,] <max> ")" ;
+----
+
+where `<min>` is the minimum and `<max>` is the maximum cardinality allowed
+for the ownership or role defined by a statement.
+
+The annotation is placed at the very end of an owns or relates statement and effectively becomes a part of it,
+not being separated by a comma or a semicolon.
+
+This syntax can be combined with other type definition statements, like `sub` and `plays` as a
+xref:statements/overview.adoc#_composite_statements[composite statement].
+
+== Behavior
+
+TypeQL owns or relates statements with the cardinality annotation are used
+in Define queries to declare a cardinality constraint for ownership of an attribute type
+or a playing a role in a relation respectively.
+
+The specified *maximum* restricts the maximum number of owned attributes for a given type or players for a given role.
+
+The optional *minimum* restricts the minimum number of owned attributes for a given type or players for a given role.
+If only one number is provided, then it is used for the maximum, as the minimum is considered to have the default value.
+
+The default value of a *minimum*:
+
+* xref:statements/owns.adoc[owns statements]: `0`
+* xref:statements/relates.adoc[relates statements]: `1`
+
+== Usage
+
+include::partial$iam-database-links.adoc[]
+
+The cardinality annotation is used in a Define query.
+For example,
+to define an ownership of the attribute type `email` by the entity type `person` with cardinality of minimum `0`,
+maximum `1`:
+
+.Ownership definition with cardinality annotation
+[,typeql]
+----
+define
+
+person owns email @card(0,1);
+----
+
+== Learn more
+
+[cols-2]
+--
+.xref:statements/owns.adoc[]
+[.clickable]
+****
+Learn more about the `owns` statement in TypeQL.
+****
+
+.xref:statements/relates.adoc[]
+[.clickable]
+****
+Learn more about the `relates` statement in TypeQL.
+****
+--
