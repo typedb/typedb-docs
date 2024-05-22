@@ -110,9 +110,9 @@ These constraints mean that TypeDB can infer the roles of `$review` and `$franke
 ----
 match
 $us isa country, has name "United States";
-$ga isa state, has name "Georgia";
+$ma isa state, has name "Massachusetts";
 insert
-($us, $ga) isa locating;
+($us, $ma) isa locating;
 ----
 image:home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*
 
