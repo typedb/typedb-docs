@@ -1,2 +1,60 @@
 = Cascade
 
+The `@cascade` keyword is used for cascade annotation that can be used to enable cascade deletes of relations
+on a schema or data query level.
+
+== Syntax
+
+The syntax of a cascade annotation includes the `@cascade` keyword but varies for schema definition
+and data deletion queries.
+
+For schema definition queries, use the `@cascade` keyword after a sub statement for a relation:
+
+.Syntax for a relation definition
+[,typeql]
+----
+<relation-sub-statement> "@cascade" ;
+----
+
+where `<relation-sub-statement>` is a relation definition xref:statements/sub.adoc[sub statement].
+
+For data deletion queries,
+use the same keyword followed by a list of relation types for cascade deletion in parentheses:
+
+.Syntax for a data deletion
+[,typeql]
+----
+<isa-statement> "@cascade(<relation-types>)" ;
+----
+
+where `<isa-statement>` -- `isa` statement used for deleting a data instance that can play a role in a relation,
+`<relation-types>` is a comma-separated list of relation types permitted for cascade deletion
+if it blocks the deletion of the data instance in the isa statement.
+
+== Behavior
+
+For a schema-level `@cascade`, relations get deleted once they have insufficient role player cardinality.
+For a query-level `@cascade`, relations get deleted if any of their role players gets deleted in the delete query.
+
+== Usage
+
+include::partial$iam-database-links.adoc[]
+
+//#todo Add an example
+
+== Learn more
+
+[cols-2]
+--
+.xref:statements/type.adoc[]
+[.clickable]
+****
+Learn more about `type` statement in TypeQL.
+****
+
+.xref:concepts/types.adoc[]
+[.clickable]
+****
+Learn about types in TypeQL.
+****
+--
