@@ -1,2 +1,76 @@
 = Replace
 
+The replace annotation is used in TypeQL data queries to replace existing data by a simple `insert` clause.
+
+== Syntax
+
+A replace annotation is used with a
+xref:statements/has.adoc[has statement] or
+xref:statements/links.adoc[links statement]
+and its syntax is as follows:
+
+.Syntax
+[,typeql]
+----
+<has/links-statement> "@replace" ;
+----
+
+where `<has/links-statement>` is a either a
+xref:statements/has.adoc[has statement] or
+xref:statements/links.adoc[links statement].
+
+== Behavior
+
+A replace annotation is added to replace data in case inserted data is conflicting with existing data in a database
+because of cardinality constraints of ownership or role playing.
+
+It has a strict limitation of working only for ownerships and roles with cardinality constraint of exactly `1`
+(i.e., `@card(1,1)`).
+The limit is need to make it possible to determine,
+which ownership or role player reference to replace with the newly inserted.
+
+== Usage
+
+Let's say we have the following schema:
+
+.Schema example for replace annotation
+[,typeql]
+----
+define
+ownership sub relation,
+    relates owner @card(1,1),
+    relates owned @card(*);
+----
+
+Now we can do an insert with a replace annotation for the `owner` role, because it has suitable cardinality constraint.
+
+.Replace annotation insert
+[,typeql]
+----
+match
+$o isa ownership;
+$peasant isa person, has name "Peasant";
+$freedom isa public_property, has description "Freedom of thought";
+insert
+$o links (owner: $peasant) @replace;
+----
+
+If we are to try to use it with the `owned` role in this example,
+it would result in an error, due to violating cardinality restrictions.
+
+== Learn more
+
+[cols-2]
+--
+.xref:statements/type.adoc[]
+[.clickable]
+****
+Learn more about `type` statement in TypeQL.
+****
+
+.xref:concepts/types.adoc[]
+[.clickable]
+****
+Learn about types in TypeQL.
+****
+--
