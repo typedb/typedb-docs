@@ -18,9 +18,8 @@ A `delete` clause starts with the `delete` keyword, followed by the pattern decl
 delete <delete_pattern>
 ----
 
-where `<delete_pattern>` is a pattern of valid data-specific TypeQL statements including xref:statements/isa.adoc[],
-xref:statements/has.adoc[],
-xref:statements/role-assignment.adoc[role assignment], and xref:statements/value-assignment.adoc[value assignment].
+where `<delete_pattern>` is a pattern of valid data-specific TypeQL statements including xref:statements/isa.adoc[] and
+xref:statements/has.adoc[].
 
 Every variable used in a delete clause must be bound by a preceding clause and present in an input Concept Map.
 // end::syntax[]
@@ -39,7 +38,8 @@ xref:statements/isa.adoc[isa] statement in a `delete` clause.
 To delete ownership of an attribute, use a xref:statements/has.adoc[has] statement.
 
 Role players can be deleted with a
-xref:statements/role-assignment.adoc[role assignment] statement. See <<_deleting_role_players_from_a_relation>>.
+xref:statements/links.adoc[] statement.
+See <<_deleting_role_players_from_a_relation>>.
 
 === Clause execution
 
@@ -187,7 +187,7 @@ $a isa attribute;
 include::partial$iam-database-links.adoc[]
 
 To delete a role player from a relation, match both the relation and data instance
-that needs to stop playing a role in it, then use xref:statements/role-assignment.adoc[] statement in the
+that needs to stop playing a role in it, then use xref:statements/links.adoc[] statement in the
 `delete` clause of the same query.
 For example:
 

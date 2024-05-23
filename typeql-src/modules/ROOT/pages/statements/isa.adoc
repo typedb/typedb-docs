@@ -103,17 +103,21 @@ $p isa person, has full-name "Bob Fake";
 The object must be the exact type of the instance you are inserting.
 In an `insert` clause, the `isa` keyword has no difference from the `isa!` keyword.
 
-When inserting an attribute, you can provide a value with a xref:statements/value-assignment.adoc[] syntax:
+When inserting an attribute, you can provide a value with a
+xref:values/comparators.adoc[comparator] or
+value assignment syntax:
+//#todo double check for new value assignment
 
 .Insert attribute with value assignment example
 [,typeql]
 ----
 insert
-$f "John Smith" isa full-name;
+$f isa full-name;
+$f == "John Smith";
 ----
 
 When inserting a relation,
-you can provide role players for every role with a xref:statements/role-assignment.adoc[] syntax:
+you can provide role players for every role with a xref:statements/links.adoc[] syntax:
 
 .Insert relation with role assignment example
 [,typeql]
@@ -121,7 +125,7 @@ you can provide role players for every role with a xref:statements/role-assignme
 match
 $p isa person, has full-name "Bob Fake";
 insert
-$per(subject: $p) isa permission;
+$per isa permission, links (subject: $p);
 ----
 
 [#_in_a_delete_pattern]

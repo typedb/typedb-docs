@@ -19,9 +19,8 @@ An `insert` clause starts with the `insert` keyword, followed by the pattern dec
 insert <insert_pattern>
 ----
 // end::syntax[]
-where `<insert_pattern>` is a pattern of valid data-specific TypeQL statements including xref:statements/isa.adoc[],
-xref:statements/has.adoc[],
-xref:statements/role-assignment.adoc[role assignment], and xref:statements/value-assignment.adoc[value assignment].
+where `<insert_pattern>` is a pattern of valid data-specific TypeQL statements including xref:statements/isa.adoc[] and
+xref:statements/has.adoc[].
 
 [#_behavior]
 == Behavior
@@ -40,7 +39,7 @@ Note that inserting an ownership of an attribute that doesn't exist in a databas
 implicitly inserts such an attribute.
 
 Role players are usually assigned as a part of a <<_inserting_relations,relation insertion>> with a
-xref:statements/role-assignment.adoc[role assignment] statement.
+xref:statements/links.adoc[] statement.
 // end::insert_clause[]
 
 === Clause execution
@@ -139,8 +138,7 @@ The above clause inserts a `person` entity with the following attributes:
 include::partial$iam-database-links.adoc[]
 
 Inserting an attribute requires setting both type and value of a new attribute.
-You can specify the value with a xref:values/comparators.adoc[comparator] or
-xref:statements/value-assignment.adoc[] statement.
+You can specify the value with a xref:values/comparators.adoc[comparator].
 
 You can insert an attribute explicitly.
 Use a variable followed by a value and `isa` pattern with an attribute type to insert an attribute.
@@ -256,7 +254,7 @@ Inserting a relation without a role player for a role can create an incomplete d
 Like a `marriage` relation with only one known spouse.
 ====
 
-Use a xref:statements/role-assignment.adoc[] statement with an
+Use a xref:statements/links.adoc[] statement with an
 xref:statements/isa.adoc[isa] statement in an `insert` clause to insert a relation.
 
 .Inserting a relation
@@ -279,7 +277,7 @@ between them with roles `object` and `action` played by the file and operation r
 include::partial$iam-database-links.adoc[]
 
 To add a new role player for an existing relation,
-match the relation from a database and use a xref:statements/role-assignment.adoc[] statement
+match the relation from a database and use a xref:statements/links.adoc[] statement
 with only new roleplayers.
 Don't use an xref:statements/isa.adoc[] statement with relation type
 as it will insert a new relation instead of adding roles to an existing one.

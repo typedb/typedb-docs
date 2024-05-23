@@ -109,7 +109,7 @@ To use a role represented by a list in a data query, we also add the square brac
 [,typeql]
 ----
 match
-$p isa permission, links (object[]:$files);
+$p isa permission, links (object[]: $files);
 filter $files;
 ----
 

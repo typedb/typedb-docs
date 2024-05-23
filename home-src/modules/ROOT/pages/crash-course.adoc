@@ -425,17 +425,25 @@ include::{page-component-version}@home::partial$cc-queries/n-relations.tql[]
 
 === Attribute patterns
 
-Attributes in TypeDB are unique in their ability to store a value. Every attribute type is defined in the schema of a database to be of a specific value type (e.g. integers or strings). The schema also specifies which other types _own_ a given attribute type. 
+Attributes in TypeDB are unique in their ability to store a value.
+Every attribute type is defined in the schema of a database to be of a specific value type (e.g. integers or strings).
+The schema also specifies which other types _own_ a given attribute type.
 
-Creating an attribute is just instantiating an attribute type with a value of the appropriate value type. You can create an attribute explicitly by using an xref:{page-component-version}@typeql::statements/isa.adoc[isa statement] with
-xref:{page-component-version}@typeql::statements/value-assignment.adoc[value assignment]:
+Creating an attribute is just instantiating an attribute type with a value of the appropriate value type.
+You can create an attribute explicitly by using an
+xref:{page-component-version}@typeql::statements/isa.adoc[isa statement] with a
+value assignment:
+//#todo Add link to value assignment
 
 .Explicit attribute insertion
 [,typeql]
 ----
 insert
-$name "James" isa name;
+$name isa name;
+$name == "James";
 ----
+//#todo Double check the syntax. We should be able to do a oneliner
+
 We refer to such as attribute as _independent_: a priori, it is not owned by any object!
 
 Alternatively, you can assign ownership of an attribute, and if the attribute doesn't exist in the database, it will be created implicitly:

@@ -3,27 +3,29 @@
 A TypeQL statement is a building block of a TypeQL pattern.
 Statements in TypeQL are always end with a semicolon.
 By default, a conjunction combines all statements in a pattern.
-There is a specific syntax to use for a disjunction or negation.
+There is a specific syntax to use for a
+xref:patterns/disjunction.adoc[disjunction] or
+xref:patterns/negation.adoc[negation].
 //# todo Add links to disjunction and negation
 
 == Simple statements
 
-A simple statement is the smallest complete TypeQL block that can be used as a pattern in a query.
+A simple statement is the smallest complete TypeQL block that can be used as a pattern in a clause.
 
-Most simple statements have three parts: *Subject Predicate Object*.
+Most simple statements have three parts: *Subject*, *Predicate*, and *Object*.
 Where the predicate is a TypeQL keyword.
 
-Some notable exceptions are: assignments (xref:statements/role-assignment.adoc[role] and
-xref:statements/value-assignment.adoc[value]),
-annotations (xref:annotations/key.adoc[key] and
-xref:annotations/unique.adoc[unique]), and
-xref:statements/value.adoc[value].
+Some notable exceptions are:
+xref:annotations/overview.adoc[annotations],
+xref:modifiers/overview.adoc[modifiers], and
+xref:statements/value.adoc[value statement].
 
 [#_composite_statements]
 == Composite statements
 
 Multiple simple statements with the same subject can be combined into a composite statement.
-A composite statement starts with a single subject, and multiple comma-separated simple statements with subject omitted.
+A composite statement starts with a single subject, followed by comma-separated simple statements with
+the subject omitted.
 
 .See an example
 [%collapsible]
@@ -45,10 +47,6 @@ $p has full-name "Kevin Morrison";
 $p has email $e;
 ----
 ====
-
-The xref:statements/role-assignment.adoc[role assignment] and
-xref:statements/value-assignment.adoc[value assignment] statements do not require a comma
-when added in a composite statement, as they are used without any additional keyword.
 
 == Statement types
 
@@ -84,7 +82,6 @@ when added in a composite statement, as they are used without any additional key
 
 ****
 
-
 .xref:statements/owns.adoc[]
 [.clickable]
 ****
@@ -97,12 +94,6 @@ when added in a composite statement, as they are used without any additional key
 
 ****
 
-.xref:statements/regex.adoc[]
-[.clickable]
-****
-
-****
-
 .xref:statements/relates.adoc[]
 [.clickable]
 ****
@@ -110,6 +101,18 @@ when added in a composite statement, as they are used without any additional key
 ****
 
 .xref:statements/plays.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:statements/links.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:statements/in.adoc[]
 [.clickable]
 ****
 
@@ -133,38 +136,3 @@ when added in a composite statement, as they are used without any additional key
 // * plays
 // * as
 // * rule (when/then)
-
-[#_annotation_statements]
-=== Annotation statements
-
-[cols-2]
---
-.xref:annotations/unique.adoc[]
-[.clickable]
-****
-
-****
-
-.xref:annotations/key.adoc[]
-[.clickable]
-****
-
-****
---
-
-=== Assignment statements
-
-[cols-2]
---
-.xref:statements/value-assignment.adoc[]
-[.clickable]
-****
-
-****
-
-.xref:statements/role-assignment.adoc[]
-[.clickable]
-****
-
-****
---
