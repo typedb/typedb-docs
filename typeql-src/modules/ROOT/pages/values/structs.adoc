@@ -16,6 +16,11 @@ where `<struct-label>` is a unicode label to call the struct by,
 `<element-label>` is a unicode label to call an element of the struct by,
 `<value-type>` is a value type of the element.
 
+A value type can be followed by:
+
+* square brackets `[]` -- to declare the element as a list of the specified value type,
+* question mark `?` -- to declare the element as optional.
+
 Struct syntax uses curly brackets to envelope a comma-separated list of label/value pairs:
 
 .Struct syntax
@@ -25,7 +30,7 @@ Struct syntax uses curly brackets to envelope a comma-separated list of label/va
 ----
 
 where `<label>` is an unicode label, serving as a key to address an element and
-`<value` can be any value, including another struct.
+`<value>` can be any value, including another struct.
 
 == Behavior
 
@@ -35,7 +40,7 @@ An attribute of value type struct must have all its elements.
 Every element of such an attribute must be of the exact value type
 specified for such an element in the schema of a database.
 
-An element of a struct can be of any value, including structs and lists.
+An element of a struct can be defined as optional and can be of any value including other structs and lists.
 
 == Usage
 
