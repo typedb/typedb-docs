@@ -32,10 +32,10 @@ in Define queries to declare a cardinality constraint for ownership of an attrib
 or a playing a role in a relation respectively.
 
 The specified *maximum* restricts the maximum number of owned attributes for a given type or players for a given role.
+The default value of a *maximum*: is `1`.
 
 The optional *minimum* restricts the minimum number of owned attributes for a given type or players for a given role.
 If only one number is provided, then it is used for the maximum, as the minimum is considered to have the default value.
-
 The default value of a *minimum*:
 
 * xref:statements/owns.adoc[owns statements]: `0`
