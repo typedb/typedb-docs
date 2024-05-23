@@ -1,5 +1,38 @@
 = in
 
+The `in` keyword can be used to bind results returned by a function to query variables in a data query.
+
+== Syntax
+
+The syntax of an `in` statement includes:
+
+.Syntax
+[,typeql]
+----
+<var> in <function>;
+----
+
+where `<var>` is a comma-separated list
+
+== Behavior
+
+A function can return a stream of tuples or reduce it to a single aggregated value.
+A statement with the `in` keyword binds a query variable for every returned element of tuple.
+
+
+
+== Usage
+
+For example, we can match
+
+.Example of in statement
+[,typeql]
+----
+match
+$berlin isa city, has name "Berlin";
+$other_city in north_of($berlin);
+----
+
 Membership
 
 FUN_RETURN  ~  FUN_NAME(CONCEPT, CONCEPT, …): Stream_CTuple
