@@ -22,6 +22,9 @@ as well as other useful debugging information.
 
 == Usage
 
+To have debug output, place the `@debug` annotation after the clause defining keyword.
+For example, to have a debug output of a `match` clause:
+
 .Debug match clause
 [,typeql]
 ----
