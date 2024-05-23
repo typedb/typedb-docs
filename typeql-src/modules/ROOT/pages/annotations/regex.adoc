@@ -1,11 +1,11 @@
 = Regex
 
-The `regex` annotation is used in TypeQL schema to define the regular expression to restrict possible
-values for attributes of a given type.
+The regex annotation is used in TypeQL schema to define a regular expression to restrict possible
+string values for attributes of a given type.
 
 == Syntax
 
-The syntax of a `regex` annotation includes:
+The syntax of a regex annotation includes:
 
 .Syntax
 [,typeql]
@@ -25,7 +25,7 @@ by the regex in the annotation.
 
 include::partial$iam-database-links.adoc[]
 
-Use regex annotation to limit possible values for all attributes of an attribute type.
+Use regex annotation to limit possible string values for all attributes of an attribute type.
 For example, to make the `visibility` attribute type to be able to have only string values of
 `public`, `private`, and `closed`:
 
