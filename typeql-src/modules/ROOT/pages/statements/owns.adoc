@@ -1,33 +1,30 @@
 = owns
 
-The `owns` keyword is used in TypeQL schema to define an owner type for an attribute type.
+The `owns` keyword is used in TypeQL schema to declare that a subject type can own instances of a given type.
 
 == Syntax
 
 The syntax of a `owns` statement includes:
 
-* Subject -- type label of the owner type
-* Predicate -- the `owns` keyword
-* Object -- type label of an attribute type
-
 .Syntax
 [,typeql]
 ----
-<type> owns <attribute-type> [<annotation>] [as <overridden-type>];
+<owner> "owns" <attribute-type> [<annotation>] ["as" <overridden-type>];
 ----
 
-For more information about annotations, see the
-xref:annotations/key.adoc[] and
-xref:annotations/unique.adoc[] pages.
+where `<owner>` is the type that can own attributes of a given attribute type.
+
+For more information about annotations, see the xref:annotations/overview.adoc[] page.
 
 An optional <<_usage_with_override,override>> can be added at the end.
 
 == Behavior
 
-TypeQL statements with the `owns` keyword can be used only in Define and Undefine queries.
+The `owns` keyword declares an ability for the subject type to own attributes of
+a given attribute type.
 
-The `owns` keyword adds an ability for the subject type to own attributes of
-the object attribute type to the schema.
+TypeQL statements with the `owns` keyword can be used in schema queries to modify a schema,
+or in data queries to match data using types information.
 
 == Usage in a schema definition
 
@@ -75,6 +72,20 @@ full-name sub name;
 
 person sub entity, abstract, owns name;
 user sub person, owns full-name as name;
+----
+
+== Usage in data queries
+
+Let's retrieve all attribute types that can be owned by the `person` entity type:
+
+.Owns statement in a data query
+[,typeql]
+----
+match
+$p type person, owns $a;
+$a type $type;
+fetch
+$type;
 ----
 
 == Learn more

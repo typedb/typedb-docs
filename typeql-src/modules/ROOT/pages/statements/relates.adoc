@@ -1,14 +1,10 @@
 = relates
 
-The `relates` keyword is used in TypeQL schema to define a role of a relation type.
+The `relates` keyword is used in TypeQL schema to declare a role for a relation type.
 
 == Syntax
 
 The syntax of a `relates` statement includes:
-
-* Subject -- type label of a relation type
-* Predicate -- the `relates` keyword
-* Object -- type label of a role
 
 .Syntax
 [,typeql]
@@ -20,9 +16,10 @@ An optional <<_usage_with_override,override>> can be added at the end.
 
 == Behavior
 
-TypeQL statements with the `relates` keyword can be used only in Define and Undefine queries.
+The `relates` keyword declares a role for a relation type.
 
-The `relates` keyword adds a new role to a relation type.
+TypeQL statements with the `relates` keyword can be used in schema queries to modify a schema
+or in data queries to retrieve types information.
 
 == Usage in a schema definition
 

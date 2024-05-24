@@ -1,6 +1,6 @@
 = in
 
-The `in` keyword can be used to bind results returned by a function to query variables in a data query.
+The `in` keyword can be used to match an element in a sequence.
 
 == Syntax
 
@@ -9,33 +9,86 @@ The syntax of an `in` statement includes:
 .Syntax
 [,typeql]
 ----
-<var> in <function>;
+<vars> in <sequence>;
 ----
 
-where `<var>` is a comma-separated list
+where `<vars>` is a variable or a comma-separated list of query variables,
+`<sequence>` is a list of values or a stream of tuples.
 
 == Behavior
 
-A function can return a stream of tuples or reduce it to a single aggregated value.
-A statement with the `in` keyword binds a query variable for every returned element of tuple.
+TypeQL statements with the `in` keyword can be used only in data queries.
 
+The `in` keyword declares that a list or stream on the right hand side contains the element on the left hand side.
 
+If a sequence contain single elements, like a list of values, than a single variable is accepted on the left hand side.
+
+If a sequence is a stream of tuples, where each tuple can contain multiple elements,
+than a comma-separated list is accepted of the left hand side to match each variable to an element of a tuple.
+Effectively, that converts stream of tuples into a stream of Concept Maps,
+mapping every element of a tuple into a variable on the left of the keyword.
 
 == Usage
 
-For example, we can match
+Use the `in` keyword to match an element of a given list.
+For example, to match all entities of the `person` type
+except those returned in a list by the `get_all_admins()` function, use:
 
-.Example of in statement
+.Example
 [,typeql]
 ----
 match
-$berlin isa city, has name "Berlin";
-$other_city in north_of($berlin);
+$p isa person;
+$admins = get_all_admins();
+not { $p in $admins; };
+fetch
+$p: full-name;
 ----
 
-Membership
+== Usage with a list of role players
 
-FUN_RETURN  ~  FUN_NAME(CONCEPT, CONCEPT, …): Stream_CTuple
+Here is an example of using the `in` keyword with a list:
 
-IN_FUN  ~  (VAR, VAR, …) in FUN_NAME(CONCEPT, CONCEPT,…): Stream_CMap
-Wraps a function, turning the function output tuple into a map
+.Example with a list
+[,typeql]
+----
+match
+$flow isa action_flow, links (item[]: $flow_items);
+$subscription in $flow_items, has info "customer subscribes";
+fetch
+$subscription: info;
+----
+
+== Usage with a stream of tuples
+
+In the following example, let's match the `$median` and `$deviation` query variables to the elements of tuples,
+returned by the `salary_med_and_dev()` function:
+
+.Example with a stream of tuples
+[,typeql]
+----
+$median, $deviation = salary_med_and_dev($ecorp)
+----
+
+== Learn more
+
+[cols-2]
+--
+.xref:concepts/data.adoc[]
+[.clickable]
+****
+Learn about data instances in TypeQL.
+****
+
+.xref:values/lists.adoc[]
+[.clickable]
+****
+Learn about lists in TypeQL.
+****
+
+.xref:functions/overview.adoc[]
+[.clickable]
+****
+Learn about functions in TypeQL.
+****
+--

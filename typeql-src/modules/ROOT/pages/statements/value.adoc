@@ -6,15 +6,17 @@ The `value` keyword is used in TypeQL schema to define the value type of an attr
 
 The syntax of a `value` statement includes:
 
-* Subject -- attribute type label
-* Predicate -- the `value` keyword
-* Object -- one of the xref:values/primitives[value types]
-
 .Syntax
 [,typeql]
 ----
-<attribute-type> value <value-type>;
+<attribute-type> "value" <value-type> ;
 ----
+
+where `<value-type` cam be any value type
+(xref:values/primitives.adoc[primitive],
+xref:values/structs.adoc[struct], or
+xref:values/lists.adoc[list])
+available in TypeQL.
 
 == Behavior
 

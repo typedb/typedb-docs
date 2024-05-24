@@ -1,29 +1,25 @@
 = isa / isa!
 
-The `isa` keyword is used in TypeQL to specify a type for data instances, taking into account type inference.
+The `isa` keyword is used in TypeQL to specify a type for a data instances, taking into account type inference.
 For specifying only a direct type with no subtypes, use the `isa!` keyword instead.
 
 == Syntax
 
 The syntax of an `isa` or `isa!` statement includes:
 
-* Subject -- a concept variable representing a data instance
-* Predicate -- the `isa`/`isa!` keyword
-* Object -- a type label or concept variable representing a type
-
 .Syntax
 [,typeql]
 ----
-<concept-variable> isa <type>;
+<var> "isa" <type>;
 ----
 
 == Behavior
 
-TypeQL statements with the `isa` and `isa!` keyword are used in data queries and rules.
+TypeQL statements with the `isa` and `isa!` keyword are used in data queries.
 
-The `isa` keyword adds a constraint of a type, including all subtypes, to data instances,
-represented by a concept variable.
-The `isa!` keyword does the same, but excludes the subtypes.
+The `isa!` keyword (with an exclamation mark) adds a constraint to a data instances to be of a given type.
+The `isa` keyword (without an exclamation mark) does the same,
+but the data instance can also be a subtype of a given type (via type inference).
 
 == Usage in a match pattern
 
