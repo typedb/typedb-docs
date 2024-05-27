@@ -1,2 +1,77 @@
 = struct
 
+The `struct` keyword is used in TypeQL schema to define new composite value types.
+
+== Syntax
+
+The syntax of a `struct` statement includes:
+
+.Syntax
+[,typeql]
+----
+"struct" <struct-label> ":" <sub-label> "value" <value-type> [, <sub-label> "value" <value-type>] ;
+----
+
+where `<struct-label>` is the label for the new composite value type,
+`<sub-label>` is a label of structs element,
+`<value-type>` is a value type for the element.
+
+== Behavior
+
+TypeQL statements with the `struct` keyword can be used only in Define queries.
+
+The `struct` keyword adds a new composite value types (structs) with a given label and given elements.
+Elements of a struct can be defined as any value type, including other structs.
+
+xref:values/primitives.adoc[Primitive value types],
+xref:values/lists.adoc[lists], and other defined structs can be used as value types for elements of a struct.
+Optional fields must be declared as such with a question mark in the element's definition after its value type.
+
+== Usage
+
+Use the struct keyword to define a struct in a schema.
+For example, let's define a new struct with a catchy name of `my_struct`, with some elements of different value types,
+including long, list of strings, optional boolean, and some other struct called `other_struct`:
+
+.Struct definition example
+[,typeql]
+----
+define
+struct my_struct:
+    label1 value int,
+    label2 value string[],
+    label3 value bool?,
+    label4 value other_struct;
+my_att sub attribute, value my_struct;
+----
+
+In the above example, we also defined an attribute type of `my_att` with value type `my_struct`.
+Now let's use such an attribute type in a data query:
+
+.Data query with struct example (partial)
+[,typeql]
+----
+match
+$e has my_att { label1: $a, label2: $b, label3: $c, label4: { sub_label1: $d , ... } };
+$d == { sub_sub_label1: ... , };
+insert
+$f has my_att { label1: $x, label2: ... };
+----
+//#todo Complete and test the example
+
+== Learn more
+
+[cols-2]
+--
+.xref:values/primitives.adoc[]
+[.clickable]
+****
+Learn more about primitive value types in TypeQL.
+****
+
+.xref:values/lists.adoc[]
+[.clickable]
+****
+Learn about lists in TypeQL.
+****
+--
