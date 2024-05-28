@@ -89,7 +89,7 @@ $book isa book, has isbn "9781859840665";
 $user-9 isa user, has id "u0009";
 $review isa review;
 ($review, $book) isa rating;
-($review, $user) isa action-execution;
+($review, $user-9) isa action-execution;
 fetch
 $review: id;
 ----
@@ -141,7 +141,7 @@ The method we've used to delete this entity relies on the fact that the review h
 .Exercise
 [caption=""]
 ====
-We will no longer be stocking _Pet Semetary_. Delete it from the database. Remember to delete all the relations it plays a role in first.
+We will no longer be stocking _Pet Sematary_. Delete it from the database. Remember to delete all the relations it plays a role in first.
 
 .Hint
 [%collapsible]
