@@ -1,6 +1,6 @@
 = Distinct
 
-The distinct annotation ensures distinctness of elements for a list.
+The distinct annotation ensures there are no duplicates in a list.
 
 == Syntax
 
@@ -16,6 +16,8 @@ The syntax of a distinct annotation includes the `@distinct` keyword placed afte
 == Behavior
 
 A list with the distinct annotation must not have duplicates.
+
+By default, lists can have duplicates.
 
 == Usage
 

@@ -29,14 +29,17 @@ Every value in a list can be one of the following:
 
 * a primitive value;
 * a struct;
-* an attribute;
-* a variable representing one of the above.
+* an attribute.
 
 List can't be used as a value type for an attribute.
+So you can have a list of attributes, but not an attribute containing a list.
 
 The only lists that can be persisted in a TypeDB database are lists of attributes.
 
-Lists can be used as input or output of a function and can be returned from a query as a value.
+A list can be used as an input or output of a function and can be returned from a query as a value.
+
+By default, lists can contain duplicates.
+That behavior can be changed with the xref:annotations/distinct.adoc[] annotation.
 
 == Usage of lists
 
