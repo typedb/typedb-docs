@@ -1,3 +1,82 @@
 = Compound key
 
-//#todo Document compound keys
+The `@subkey` keyword is used for a compound key annotation with an
+xref:statements/owns.adoc[owns statement]
+to specify that the selected attribute type serves as a part of a compound key for the subject type.
+
+== Syntax
+
+The syntax of a compound key annotation includes:
+
+.Syntax
+[,typeql]
+----
+<owns-statement> "@subkey(" <key> ")";
+----
+
+where `<key>` is the label of a compound key.
+
+The `@subkey` is placed at the very end of an `owns` statement and effectively becomes a part of it,
+not being separated by a comma or a semicolon.
+
+This syntax can be combined with other type definition statements, like `sub` and `plays` as a
+xref:statements/overview.adoc#_composite_statements[composite statement].
+
+== Behavior
+
+TypeQL statements with the `@subkey` keyword are used
+in Define queries to declare a new part of a compound key or in data queries to match a compound key attribute type.
+
+A compound key consists of multiple parts and imposes a uniqueness constraint on all of its parts collectively.
+That means that every part can be owned by an instance of the subject type only once,
+and the combination of parts is unique among instances of the subject type.
+
+For a single part key, see the xref:annotations/key.adoc[] page.
+
+== Usage in a schema definition
+
+include::partial$iam-database-links.adoc[]
+
+The `@subkey` annotation is usually used in a Define query.
+
+For example, to define that the `object` type owns the `object-type` and `namw` attribute types
+with the `@subkey` annotation with the key label of `id`, use:
+
+.Define key example
+[,typeql]
+----
+define
+object owns object-type @subkey(id), owns name @subkey(id);
+----
+//#todo Double-check the syntax and example, since we have not enough information in the specification
+
+== Usage in a data query
+
+The `@subkey` annotation can be used in a data query to match key attribute types.
+For example, let's find all keys in a schema:
+
+.Match abstract types
+[,typeql]
+----
+match
+$x owns $y @subkey(id);
+filter $y;
+----
+
+== Learn more
+
+[cols-2]
+--
+.xref:annotations/key.adoc[]
+[.clickable]
+****
+Learn more about the key annotation in TypeQL.
+****
+
+.xref:concepts/types.adoc[]
+[.clickable]
+****
+Learn about types in TypeQL.
+****
+--
+
