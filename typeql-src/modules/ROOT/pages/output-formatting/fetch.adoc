@@ -13,12 +13,14 @@ A Fetch clause consists of the `fetch` keyword, followed by projection declarati
 [,typeql]
 ----
 fetch
-  {  <variable> [as <label>]
-   | <variable> [as <label>] : (<attribute-type> [as <label>]), ...
-   | <subquery-label>        : "{" { <fetch_query> | <aggregate_query>} "}"
+    {  <var> [as <key-label>]
+        | <var> [as <key-label>] : (<attribute-type> [as <key-label>]), ...
+        | <key-label>   : "{" { <fetch_query> | <aggregate_query> } "}"
+        | <key-label>   : <fun_call()> [as <key-label>], ...
   }; ...
 ----
 // end::syntax[]
+//#todo double check the new syntax - https://typedb.com/fundamentals/pipelines-3-0
 
 == Behavior
 
@@ -47,6 +49,8 @@ and attribute types that can be owned by an object in the variable.
 
 A `fetch` clause is executed exactly once for every inputted Concept Map,
 but it can <<_number_of_results,return fewer results>>, if not all variables are being projected.
+
+//#todo Update all examples for the new syntax
 
 [#_direct_projection]
 == Fetch variables
