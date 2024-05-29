@@ -41,6 +41,9 @@ The default value of a *minimum*:
 * xref:statements/owns.adoc[owns statements]: `0`
 * xref:statements/relates.adoc[relates statements]: `1`
 
+If cardinality annotation is used for a list,
+then it constrains not the number of lists, but the number of elements for the list.
+
 == Usage
 
 include::partial$iam-database-links.adoc[]
