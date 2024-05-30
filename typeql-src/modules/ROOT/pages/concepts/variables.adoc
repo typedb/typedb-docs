@@ -18,7 +18,7 @@ When solving a pattern, each solution includes a value or a concept for every va
 except for some of the optionals.
 Substituting variables with respective concepts or values from a solution makes pattern a True statement.
 
-Some TypeQL statements can imply type restrictions on a concept variable via type inference, for example:
+Some TypeQL statements can imply type restrictions on a variable via type inference, for example:
 
 * `sub`, `sub!`, `type`, and `owns` can be applied only to types;
 * `isa`, `has`, and `is` can be used only with data instances to the left from them;
@@ -50,7 +50,7 @@ The resulted JSONs contain results of different types and look like this:
 
 == Usage with types
 
-We can replace any type in a pattern with a concept variable and then retrieve such a variable to get the type
+We can replace any type in a pattern with a variable and then retrieve such a variable to get the type
 (or rather all possible types):
 
 .Fetching types example

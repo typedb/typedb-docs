@@ -45,7 +45,7 @@ pdf sub file;
 include::partial$iam-database-links.adoc[]
 
 In a data query pattern a `sub` statement can be used only in a `match` clause or condition of a rule.
-Both subject and object of a `sub` statement can be concept variables, or one of them can be a type label.
+Both subject and object of a `sub` statement can be variables, or one of them can be a type label.
 The `sub` keyword adds a constraint on a subject being an exact type, a direct subtype,
 or indirect subtype (via type inference) of the type used as an object.
 

@@ -13,39 +13,40 @@ A Fetch clause consists of the `fetch` keyword, followed by projection declarati
 [,typeql]
 ----
 fetch
-    {  <var> [as <key-label>]
-        | <var> [as <key-label>] : (<attribute-type> [as <key-label>]), ...
-        | <key-label>   : "{" { <fetch_query> | <aggregate_query> } "}"
-        | <key-label>   : <fun_call()> [as <key-label>], ...
-  }; ...
+    { <var> [as <key-label>]
+    | <var> [as <key-label>] : (<attribute-type> [as <key-label>]), ...
+    | <key-label>   : "{" { <fetch_query> | <aggregate_query> } "}"
+    | <key-label>   : <fun_call()> [as <key-label>], ...
+    }; ...
 ----
 // end::syntax[]
-//#todo double check the new syntax - https://typedb.com/fundamentals/pipelines-3-0
+
+where `<var>` is a query variable,
+`<key-label>` is a label for a JSON field.
 
 == Behavior
 
-A `fetch` clause is used to specify the format of the returned JSON objects for
-projection of values (and types) of concepts from a Concept Map to a JSON.
+Fetch clause is used to fetch values from concept maps and project them to JSONs.
 
-The output of a Fetch clause is a lazy stream/iterator of JSON objects.
-The number of query results can be less than the number of Concept Maps in a stream from the query's data processing
-pipeline if not all query variables are projected into JSONs.
+The output of a fetch clause is a stream of JSON objects.
+A `fetch` clause is used to specify the format of the returned JSON objects.
 
-You can use xref:modifiers/sort.adoc[],
-xref:modifiers/limit.adoc[], and
-xref:modifiers/offset.adoc[] for pagination with a Fetch.
+An implicit filter is applied by all the variables mentioned in a fetch clause.
+The number of query results can be less than the number of Concept Maps in an inputted stream
+if not all query variables are projected into JSONs.
 
 In a `fetch` clause you specify top level projections to JSON, separating them with a semicolon.
 Projected variables and attribute types are used as keys in the resulted JSON,
 but you can customize that with <<_customize_output,output customization>>.
 
-There are three types of projections that you can use in a Fetch clause:
+There are four types of projections that you can use in a fetch clause:
 
-* <<_direct_projection,Direct projection>> -- use a concept variable with either a type object or attribute.
-* <<_ownership_projection,Ownership projection>> -- use a concept variable, colon,
+* <<_direct_projection,Direct projection>> -- use a variable with either a type object or an attribute.
+* <<_ownership_projection,Ownership projection>> -- use a variable followed by a colon,
 and attribute types that can be owned by an object in the variable.
-* <<_subqueries,Subquery>> -- use a value from another aggregated query
-(fetch or xref:output-formatting/reduce.adoc[reduce]).
+* <<_subqueries,Subquery output>> -- use a value from a subquery: either fetch query or
+xref:output-formatting/reduce.adoc[aggregated/reduced].
+* Function output -- use a value returned by a xref:functions/overview.adoc[function].
 
 A `fetch` clause is executed exactly once for every inputted Concept Map,
 but it can <<_number_of_results,return fewer results>>, if not all variables are being projected.
@@ -55,7 +56,7 @@ but it can <<_number_of_results,return fewer results>>, if not all variables are
 [#_direct_projection]
 == Fetch variables
 
-Types and values can be projected directly into a JSON.
+Types and values can be projected directly into JSON values.
 
 [#_fetch_an_value]
 === Fetch a value
@@ -87,7 +88,7 @@ $p;
 
 include::typeql::partial$iam-database-links.adoc[]
 
-To fetch a type from a database, use a concept variable that is matched to a type by an
+To fetch a type from a database, use a variable that is matched to a type by an
 xref:typeql::statements/isa.adoc[isa] or xref:typeql::statements/sub.adoc[sub] statement.
 Make sure to use an exclamation mark (`isa!`/`sub!`) to get only the exact type, and no supertypes via type inference.
 
@@ -101,9 +102,8 @@ fetch
 $type;
 ----
 
-The above query matches any instance of data (`$x`) that has `name` of `iopvu.java` and any `size-kb` (`$s`).
-The variable `$type` is assigned to be equal to the type of `$x`.
-Finally, we bound the value variable `?size` to some value, based on the value of the `$s`.
+The above query matches any instance of data (`$x`) that has an attribute of any type with the `iopvu.java` value.
+The variable `$type` is assigned to be equal to the type of `$x` and is being projected to a JSON output.
 
 .Output example
 [,json]
@@ -124,7 +124,7 @@ followed by a colon and an attribute type label.
 You can use multiple types by listing them with a comma as a separator.
 
 Let's see how to fetch all attributes owned by every `person` entity of type `full-name` and `email`.
-First, we match every person entity, then we use the concept variable we matched them with in a `fetch` clause
+First, we match every person entity, then we use the variable we matched them with in a `fetch` clause
 and specify attribute types to fetch:
 
 .Fetching owned attributes
@@ -203,7 +203,7 @@ include::typeql::partial$iam-database-links.adoc[]
 A Fetch clause supports output customization (or relabeling) of the top level keys in the resulting JSON.
 <<_subqueries,Subqueries>> require a label for their output.
 To customize a key for a <<_direct_projection,direct projection>> or <<_ownership_projection,ownership projection>>,
-use the `as` keyword after the concept variable in a `fetch` clause.
+use the `as` keyword after the variable in a `fetch` clause.
 By surrounding a new label in double quotes, you can use whitespaces in it.
 
 For example, if we want to fetch all attributes of entities matched by the variable `$f`,
@@ -500,6 +500,25 @@ average-file-size: {
         "type": { "label": "person", "root": "entity" }
     }
 }
+----
+
+[#_functions]
+== Fetch with functions
+
+A fetch clause can include a xref:functions/overview.adoc[function] call.
+
+Specify a key to use in a JSON, followed by a colon, and then a function to call with optional output projection.
+
+For example, let's match a person and return an output of the `friends` function, namely the first two parameters,
+labeled as `name` and `age`:
+
+.Fetch with functions example
+[,typeql]
+----
+match $p is person;
+fetch
+$p: name;
+"Friends" : friends($p) as "name", "age";
 ----
 
 [#_number_of_results]

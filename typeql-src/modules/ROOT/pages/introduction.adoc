@@ -51,7 +51,7 @@ Finally, to make TypeQL's syntax yet more convenient, we are allowed to combine 
 
 The final layer of TypeQL's syntax are variables, which are prefixed with `$`. These represent single *concepts* which may refer to either types or data in our database. All data lives in types, and types can be of different kinds (namely, *entity*, *relation*, or *attribute* types). Each of these kinds plays a special role in structuring the data in our database, and their precise function is defined in TypeDB's data model: the https://typedb.com/fundamentals/polymorphic-data-model[polymorphic entity-relation-attribute model].
 
-Attributes (i.e., data instances in attribute types) are the only concepts with have an underlying values associated to them: for example, an attribute in the type `name` may have a `string` value. TypeQL allows us work with such values in familiar ways: e.g., by comparing them or applying functions to them! Note that temporary values may be stored in special variables, called “value variable”, and these are prefixed with the special symbol `?`.
+Attributes (i.e., data instances in attribute types) are the only concepts with have an underlying values associated to them: for example, an attribute in the type `name` may have a `string` value. TypeQL allows us work with such values in familiar ways: e.g., by comparing them or applying functions to them! Note that temporary values may be stored in variables.
 
 
 == Principles of TypeQL
