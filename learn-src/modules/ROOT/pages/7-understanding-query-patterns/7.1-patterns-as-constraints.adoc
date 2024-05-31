@@ -93,7 +93,7 @@ Every pattern is equivalent to a list of *constraints* that must be *simultaneou
 
 [NOTE]
 ====
-In TypeDB 2.x, the `match` clause of all queries uses all-or-nothing pattern matching, meaning that every constraint must be satisfied simultaneously. Syntax for optional pattern elements will be introduced in TypeDB 3.0, which will allow some constraints to be matched only if possible.
+In TypeDB 2.x, the `match` clause of all queries uses all-or-nothing pattern matching, meaning that every constraint must be satisfied simultaneously. Syntax for optional pattern elements will be introduced in TypeDB 3.0, which will allow some constraints to be matched only if possible. To learn more about this and other powerful new features, see the https://typedb.com/blog/typedb-3-roadmap[TypeDB 3.0 roadmap].
 ====
 
 The types of `$book`, `$user`, and `$review` are not explicitly specified in the pattern, but we have previously seen how TypeDB is able to infer their types regardless. This is done by solving the pattern as a *constraint satisfaction* problem.
