@@ -335,7 +335,7 @@ In addition to `company` (which is the direct supertype of `publisher`) and `pub
 
 [WARNING]
 ====
-The `thing` type is deprecated and will be removed in TypeDB 3.0.
+The `thing` type is deprecated and will be removed in TypeDB 3.0. For more information, see the https://typedb.com/blog/typedb-3-roadmap[TypeDB 3.0 roadmap].
 ====
 
 If we would like to retrieve only _direct_ subtypes or supertypes of a type, we can instead use the `sub!` keyword, similar to the `isa!` keyword!
