@@ -83,7 +83,7 @@ fetch
 $book: isbn, title;
 $action-type;                # new line
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 If we run this new query, we now also retrieve the type of `$action`!
 
@@ -190,7 +190,7 @@ $book: isbn, title;
 $action-type;
 $relation-type;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 =====
 ====
 
@@ -223,7 +223,7 @@ ____
 // fetch
 // $contributor: name;
 // ----
-// image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+// image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 //
 // [,json]
 // ----
@@ -253,7 +253,7 @@ ____
 // $contributor: name;
 // $contributor-role;
 // ----
-// image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+// image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 //
 // [,json]
 // ----
@@ -287,7 +287,7 @@ ____
 // $book-role;
 // $action-role;
 // ----
-// image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+// image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 // =====
 // ====
 
@@ -302,7 +302,7 @@ $book-type sub book;
 fetch
 $book-type;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
@@ -321,7 +321,7 @@ publisher sub $supertype;
 fetch
 $supertype;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
@@ -347,7 +347,7 @@ publisher sub! $supertype;
 fetch
 $supertype;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
@@ -369,7 +369,7 @@ city sub! $supertype;
 fetch
 $supertype;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 =====
 
 Now write a query to determine the other types that share that direct supertype.
@@ -390,7 +390,7 @@ $place-type sub! place;
 fetch
 $place-type;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 =====
 
 Finally, write a query to retrieve all entity types in the schema.
@@ -411,7 +411,7 @@ $entity-type sub entity;
 fetch
 $entity-type;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 =====
 ====
 
@@ -426,7 +426,7 @@ promotion owns $attribute;
 fetch
 $attribute;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
@@ -445,7 +445,7 @@ $type owns isbn-13;
 fetch
 $type;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
@@ -470,7 +470,7 @@ $type owns name;
 fetch
 $type;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 =====
 ====
 
@@ -485,7 +485,7 @@ locating relates $role;
 fetch
 $role;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
@@ -507,7 +507,7 @@ $type plays locating:located;
 fetch
 $type;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
@@ -529,7 +529,7 @@ book plays $role;
 fetch
 $role;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
@@ -556,7 +556,7 @@ delivery relates $role;
 fetch
 $role;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 =====
 
 Now modify the query to also retrieve the types that play those roles.
@@ -573,7 +573,7 @@ fetch
 $role;
 $type;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 =====
 ====
 

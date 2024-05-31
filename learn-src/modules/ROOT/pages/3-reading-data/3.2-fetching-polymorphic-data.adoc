@@ -35,7 +35,7 @@ $book isa book;
 fetch
 $book: title, page-count;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 We have just changed the type of `$book` from `paperback` to `book`. Now if we run this query, the results include paperbacks, hardbacks, and ebooks!
 
@@ -213,7 +213,7 @@ $book isa paperback;
 fetch
 $book: isbn;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
@@ -332,7 +332,7 @@ $book isa book;
 fetch
 $book: isbn;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 =====
 ====
 
@@ -345,7 +345,7 @@ $book isa book, has isbn "0500026556";
 fetch
 $book: title, stock;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
@@ -373,7 +373,7 @@ fetch
 $order: id;
 $line: quantity;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 In this query, we specify the type of `$book` to be `paperback` and the type of `$line` to be `order-line` using the `isa` keyword, but nowhere in the query do we explicitly specify the type of `$order`! Instead, we constrain its type according to two facts:
 
@@ -426,7 +426,7 @@ $kansas-city isa city, has name "Kansas City";
 fetch
 $x: attribute;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 In this case, `$x` can be resolved to any type that both plays `located` in `locating`. Essentially, this query will return the attributes of anything located in Kansas City regardless of what it is. If we run this query, we see that we return instances of `publication` and `address`!
 
@@ -472,7 +472,7 @@ $user isa user, has name "Kevin Morrison";
 fetch
 $action: attribute;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 =====
 
 Based on the results returned by running this query, what types of system actions exist in the schema?
@@ -496,7 +496,7 @@ $entity isa entity;
 fetch
 $entity: attribute;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 This query will retrieve all attributes of all entities. Meanwhile, the following query retrieves the attributes of any two entities that are roleplayers in the same relation.
 
@@ -510,7 +510,7 @@ fetch
 $entity-1: attribute;
 $entity-2: attribute;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 In this query we have omitted the roles that the two entities play! In general, we can omit roles in a relation tuple if we do not care what they are. This is particularly useful for parametric queries, and we will explore this feature more fully in xref:7-understanding-query-patterns/7.2-relation-patterns.adoc[Lesson 7.2].
 
@@ -541,7 +541,7 @@ $entity-1: attribute;
 $entity-2: attribute;
 $entity-3: attribute;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 =====
 ====
 
@@ -559,7 +559,7 @@ $book isa book;
 fetch
 $book: isbn, title;
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
