@@ -12,11 +12,11 @@ $evelin isa user,
     has name "Evelin Griffith",
     has birth-date 1994-08-03;
 ----
-image:studio-icons/run-query.png[]image:studio-icons/commit-transaction.png[] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=24]image:home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
 This Insert query consists of a single `insert` clause, which inserts a single entity of type `user` and assigns it three attributes: one each of types `id`, `name`, and `birth-date`.
 
-Using a *data* session and a *write* transaction, try *running* image:studio-icons/run-query.png[] this query. After running it, make sure to *commit* image:studio-icons/commit-transaction.png[] the transaction. The new user should now be in the database! You can check by switching to a *data* session and *read* transaction and then running the following query, which lists the names of users in the database.
+Using a *data* session and a *write* transaction, try *running* image:home::studio-icons/svg/studio_run.svg[width=24] this query. After running it, make sure to *commit* image:home::studio-icons/svg/studio_check.svg[width=24] the transaction. The new user should now be in the database! You can check by switching to a *data* session and *read* transaction and then running the following query, which lists the names of users in the database.
 
 [,typeql]
 ----
@@ -25,7 +25,7 @@ $user isa user;
 fetch
 $user: name;
 ----
-image:studio-icons/run-query.png[] *_Run_*
+image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 If you have correctly executed the Insert query, the new user Evelin should appear in the results.
 
@@ -51,7 +51,7 @@ $spring-sale isa promotion,
     has start-timestamp 2024-03-15T00:00:00,
     has end-timestamp 2024-03-31T23:59:59;
 ----
-image:studio-icons/run-query.png[]image:studio-icons/commit-transaction.png[] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=24]image:home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 =====
 ====
 
@@ -91,7 +91,7 @@ $publication isa publication,
 (work: $frankenstein, author: $shelley) isa authoring;
 (published: $frankenstein, publisher: $dover, publication: $publication) isa publishing;
 ----
-image:studio-icons/run-query.png[]image:studio-icons/commit-transaction.png[] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=24]image:home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
 Notice that we have given the book two `genre` attributes! This is perfectly permissible, and in fact all attributes in TypeDB are *multivalued* by default, allowing an entity or relation to own any number of attributes of the same type, as long as they each have different values.
 
@@ -127,7 +127,7 @@ $jordan isa user,
     has name "Jordan Duarte",
     has birth-date 1963-10-31;
 ----
-image:studio-icons/run-query.png[]image:studio-icons/commit-transaction.png[] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=24]image:home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 =====
 ====
 
@@ -142,7 +142,7 @@ $book isa book, has isbn-13 "9780486282114";
 insert
 $book has stock 20;
 ----
-image:studio-icons/run-query.png[]image:studio-icons/commit-transaction.png[] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=24]image:home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
 This query matches the book we inserted previously by its ISBN, and then gives it a new `stock` attribute. In a Fetch query, the `match` clause identifies matching data within the database, and the `fetch` clause specifies what to retrieve from each match. In an Insert query, the `match` clause serves the same function, but then we insert new data for each match rather than retrieving existing data.
 
@@ -159,7 +159,7 @@ $city isa city, has name "New York City";
 insert
 (location: $city, located: $publication) isa locating;
 ----
-image:studio-icons/run-query.png[]image:studio-icons/commit-transaction.png[] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=24]image:home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
 An Insert query without a `match` clause always inserts the data described in the `insert` clause *once*. However, an Insert query _with_ a `match` clause will insert the data described in the `insert` clause *multiple times*, once for each match found. The following query would assign a `stock` attribute to every paperback in the database, even if it already had one!
 
@@ -170,7 +170,7 @@ $book isa paperback;
 insert
 $book has stock 20;
 ----
-image:studio-icons/close-transaction.png[] *_Do not run_*
+image:home::studio-icons/svg/studio_fail.svg[width=24] *_Do not run_*
 
 Likewise, the following query would create a `locating` relation for every `publication` entity with a `year` attribute equal to `2002`.
 
@@ -182,7 +182,7 @@ $city isa city, has name "New York City";
 insert
 (location: $city, located: $publication) isa locating;
 ----
-image:studio-icons/close-transaction.png[] *_Do not run_*
+image:home::studio-icons/svg/studio_fail.svg[width=24] *_Do not run_*
 
 [IMPORTANT]
 ====
@@ -226,6 +226,6 @@ $login isa login, has success true;
 (action: $login, executor: $user) isa action-execution,
     has timestamp 2024-03-04T07:32:03.287;
 ----
-image:studio-icons/run-query.png[]image:studio-icons/commit-transaction.png[] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=24]image:home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 =====
 ====

@@ -137,7 +137,7 @@ rule georgia-is-in-united-states:
         ($us, $ga) isa locating;
     };
 ----
-image:studio-icons/run-query.png[] *_Try running_*
+image:home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*
 
 [,typeql]
 ----
@@ -148,6 +148,6 @@ rule odyssey-has-stock-20:
         $odyssey has stock 20;
     };
 ----
-image:studio-icons/run-query.png[] *_Try running_*
+image:home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*
 
 However, both of these rules would fail validation for the same reasons the Insert queries do. In the first example, TypeDB is unable to infer the roles for the `locating` relation as they are ambiguous. In the second, `book` does not own `stock`, making the attribute ownership illegal.

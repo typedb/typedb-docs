@@ -6,7 +6,7 @@ To delete data from the database, we use a *Delete query*. Delete queries always
 
 == Deleting attributes
 
-It turns out that _Fundamentals of Data Engineering_ has been mistakenly assigned the genre "children's fiction" (in addition to "nonfiction" and "technology"). We should probably change that before there are too many upset children, which we'll do with the following Delete query. To run a Delete query, use a *data* session and *write* transaction, *run* image:studio-icons/run-query.png[] the query, and *commit* image:studio-icons/commit-transaction.png[] the transaction.
+It turns out that _Fundamentals of Data Engineering_ has been mistakenly assigned the genre "children's fiction" (in addition to "nonfiction" and "technology"). We should probably change that before there are too many upset children, which we'll do with the following Delete query. To run a Delete query, use a *data* session and *write* transaction, *run* image:home::studio-icons/svg/studio_run.svg[width=24] the query, and *commit* image:home::studio-icons/svg/studio_check.svg[width=24] the transaction.
 
 [,typeql]
 ----
@@ -16,7 +16,7 @@ $childrens "children's fiction" isa genre;
 delete
 $fundamentals has $childrens;
 ----
-image:studio-icons/run-query.png[]image:studio-icons/commit-transaction.png[] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=24]image:home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
 To begin with, we've matched the book entity by its ISBN in the `match` clause. Then, we've matched the genre attribute by its value. Finally, we've deleted the entity's ownership of the attribute. In TypeQL, Delete queries delete data per statement rather than per variable, so the `has` statement in the `delete` clause only deletes the attribute ownership, not the entity itself.
 
@@ -32,7 +32,7 @@ $delivery-33 ($order-33) isa delivery;
 delete
 $delivery-33 isa delivery;
 ----
-image:studio-icons/run-query.png[]image:studio-icons/commit-transaction.png[] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=24]image:home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
 Similar to the previous example, we've begun by matching the order by its order ID. Next, we've matched the `delivery` relation in which it plays a role. We've omitted the role and let TypeDB infer it. Role inference means we'll match any delivery in which `$order-33` plays any role, but in this case only one such relation exists, in which `$order-33` plays `delivery:delivered`. We've also omitted the roleplayers we aren't interested in from the tuple: the courier and the address. We don't need to know them to identify or delete the relation!
 
@@ -74,7 +74,7 @@ $inclusion ($spring-sale, $calvin-hobbes) isa promotion-inclusion;
 delete
 $inclusion isa promotion-inclusion;
 ----
-image:studio-icons/run-query.png[]image:studio-icons/commit-transaction.png[] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=24]image:home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 =====
 ====
 
@@ -89,7 +89,7 @@ $book isa book, has isbn "9781859840665";
 $user-9 isa user, has id "u0009";
 $review isa review;
 ($review, $book) isa rating;
-($review, $user) isa action-execution;
+($review, $user-9) isa action-execution;
 fetch
 $review: id;
 ----
@@ -113,7 +113,7 @@ $relation ($review-4) isa relation;
 delete
 $relation isa relation;
 ----
-image:studio-icons/run-query.png[] *_Run_*
+image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 Here, we delete the relations by using the same query structure as we used to delete the `delivery` relation earlier, but we're using a *parametric statement* to delete _all_ relations rather than just deliveries. Once that's done, we can delete the review itself.
 
@@ -124,7 +124,7 @@ $review-4 isa review, has id "r0004";
 delete
 $review-4 isa review;
 ----
-image:studio-icons/run-query.png[]image:studio-icons/commit-transaction.png[] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=24]image:home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
 When deleting an entity, it's important to also delete any relations it plays a role in. If we don't, then those relations would be left behind without the entity as a roleplayer. A relation is only deleted automatically if _all_ of its roleplayers are deleted.
 
@@ -141,7 +141,7 @@ The method we've used to delete this entity relies on the fact that the review h
 .Exercise
 [caption=""]
 ====
-We will no longer be stocking _Pet Semetary_. Delete it from the database. Remember to delete all the relations it plays a role in first.
+We will no longer be stocking _Pet Sematary_. Delete it from the database. Remember to delete all the relations it plays a role in first.
 
 .Hint
 [%collapsible]
@@ -167,7 +167,7 @@ $relation ($pet-sematary) isa relation;
 delete
 $relation isa relation;
 ----
-image:studio-icons/run-query.png[] *_Run_*
+image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,typeql]
 ----
@@ -176,6 +176,6 @@ $pet-sematary isa book, has isbn "9780451162076";
 delete
 $pet-sematary isa book;
 ----
-image:studio-icons/run-query.png[]image:studio-icons/commit-transaction.png[] *_Run and commit_*
+image:home::studio-icons/svg/studio_run.svg[width=24]image:home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 =====
 ====

@@ -13,4 +13,5 @@ $full isa action, has name "full";
 $write isa action, has name "write";
 $read isa action, has name "read";
 $p1(subject:$u1, object:$f1, action:$full) isa permission, has updated 2023-10-27T12:04:36;
-$p2(subject:$u2, object:$f2, action:$write) isa permission;
+$p2(subject:$u1, object:$f2, action:$read) isa permission, has updated 2023-10-27T12:04:36;
+$p3(subject:$u2, object:$f2, action:$write) isa permission;

@@ -13,6 +13,29 @@ The examples and exercises in this lesson feature the official *TypeDB Python dr
 * You should complete xref:6-building-applications/overview.adoc[Lesson 6] before starting this lesson.
 * You should complete xref:8-structuring-query-results/overview.adoc[Lesson 8] before starting this lesson.
 
+== Lesson contents
+
+[cols-2]
+--
+.xref:learn::11-manipulating-stateful-objects/11.1-retrieval-by-query.adoc[]
+[.clickable]
+****
+Learn how to retrieve stateful objects using queries.
+****
+
+.xref:learn::11-manipulating-stateful-objects/11.2-programmatic-retrieval.adoc[]
+[.clickable]
+****
+Learn how to retrieve stateful objects using API calls.
+****
+
+.xref:learn::11-manipulating-stateful-objects/11.3-operating-on-objects.adoc[]
+[.clickable]
+****
+Learn how to modify data via retrieved stateful objects.
+****
+--
+
 == Necessary imports
 
 The following classes must be imported in order to use the Python driver in any codebase.
@@ -40,6 +63,6 @@ from typedb.api.concept.type.attribute_type import AttributeType
 from typedb.api.concept.type.role_type import RoleType
 ----
 
-== Using different driver languages
+== Using other driver languages
 
 Official drivers are also available for xref:{page-component-version}@drivers::overview.adoc[other languages]. All official drivers offer very similar APIs, so it is recommended to use the Python driver while following this course, as the skills learned will be easily transferable to the other drivers.

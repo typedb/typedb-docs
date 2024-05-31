@@ -1,6 +1,7 @@
 // tag::import[]
-using Newtonsoft.Json.Linq;
+using TypeDB.Driver;
 using TypeDB.Driver.Api;
+using Newtonsoft.Json.Linq;
 // end::import[]
 
 class ManualProgram

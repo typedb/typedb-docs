@@ -48,6 +48,7 @@ Then use the steps below:
 
 . Use a drop-down list in the top toolbar to select a database.
 . Switch to `data` session and `read` transaction types.
+. Enable the inference transaction option, by toggling on the `infer` button.
 . Open a new tab and insert or type in an Insert query, for example:
 +
 .TypeQL Fetch query
@@ -58,18 +59,19 @@ $u isa user;
 fetch
 $u: name;
 ----
-. Run the query by clicking the image:{page-component-version}@home::studio-icons/svg/play-solid-green.svg[Run query,width=9]
+. Run the query by clicking the image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]
 btn:[Run Query] button.
 --
 
 Console::
 +
 --
-. Open a `data` session and `read` transaction to the selected database (e.g., `sample_db`):
+. Open a `data` session and `read` transaction to the selected database (e.g., `sample_db`)
+with the `infer` transaction option enabled:
 +
 [,bash]
 ----
-transaction sample_db data read
+transaction sample_db data read --infer true
 ----
 . Send the Fetch query:
 +

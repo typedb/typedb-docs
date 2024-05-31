@@ -1,0 +1,61 @@
+site:
+  title: TypeDB Documentation portal
+  start_page: home:ROOT:overview.adoc
+  robots: allow
+content:
+  edit_url: 'https://github.com/vaticle/typedb-docs/edit/development/{path}' 
+  sources: 
+    - url: .
+      start_path: content2/drivers-src
+      branches: HEAD
+    - url: .
+      start_path: content2/typeql-src
+      branches: HEAD
+    - url: .
+      start_path: content2/manual-src
+      branches: HEAD
+    - url: .
+      start_path: content2/learn-src
+      branches: HEAD
+    - url: .
+      start_path: content2/home-src
+      branches: HEAD
+    - url: https://github.com/vaticle/typedb-driver.git
+      start_path: docs
+      branches: master #This is the latest. It will probably contain the 3.x content but for now, it's 2.x
+    - url: .
+      start_path: content3/drivers-src
+      branches: HEAD
+    - url: .
+      start_path: content3/typeql-src
+      branches: HEAD
+    - url: .
+      start_path: content3/manual-src
+      branches: HEAD
+    - url: .
+      start_path: content3/learn-src
+      branches: HEAD
+    - url: .
+      start_path: content3/home-src
+      branches: HEAD
+    - url: .
+      start_path: content3/api-ref-placeholder/docs #This is a placeholder until we have both 2.x and 3.x content for api reference in the drivers repo
+      branches: HEAD
+urls:
+  latest_version_segment: ""
+antora:
+  extensions:
+    - "@antora/lunr-extension"
+asciidoc:
+  attributes:
+    page-pagination: "@"
+    source-highlighter: ~
+  extensions:
+    - "@asciidoctor/tabs"
+ui:
+  bundle:
+    url: ./ui/build/ui-bundle.zip
+    snapshot: true
+output:
+  clean: true
+  dir: ./dist
