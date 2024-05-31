@@ -37,7 +37,7 @@ This difference also affects permitted *interface implementations* in the PERA m
 
 [WARNING]
 ====
-In TypeDB 2.x, attribute types can implement interfaces (own other attribute types and play roles in relation types) in the same way object types can, contrary to the PERA model. This behaviour is deprecated and will be removed in TypeDB 3.0. In some niche cases, usage of this feature can result in information loss due to attribute idempotency, so it is strongly advised against.
+In TypeDB 2.x, attribute types can implement interfaces (own other attribute types and play roles in relation types) in the same way object types can, contrary to the PERA model. This behaviour is deprecated and will be removed in TypeDB 3.0. In some niche cases, usage of this feature can result in information loss due to attribute idempotency, so it is strongly advised against. For more information, see the https://typedb.com/blog/typedb-3-roadmap[TypeDB 3.0 roadmap].
 ====
 
 === Polymorphic features

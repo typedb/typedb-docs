@@ -171,7 +171,7 @@ def cast_thing(thing: Thing) -> Entity | Relation:
 
 [WARNING]
 ====
-The `Thing` class is deprecated and will be removed in TypeDB 3.0.
+The `Thing` class is deprecated and will be removed in TypeDB 3.0. For more information, see the https://typedb.com/blog/typedb-3-roadmap[TypeDB 3.0 roadmap].
 ====
 
 The methods in the above table can also take types or roles as optional arguments on which to filter the data instances returned, as in the following example. This time, we only retrieve the contributions a book plays the `work` role in, rather than all relations.
