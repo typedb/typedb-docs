@@ -45,9 +45,9 @@ To prepare TypeDB Studio for work, you need to complete the following steps:
 [#_select_a_project_directory]
 === Select a project directory
 
-TypeDB Studio stores queries you work with as files in a local directory, called project directory.
-To select a project directory,
-click on the image:home::studio-icons/svg/studio_projects.svg[width=24] btn:[open folder] icon in the top toolbar.
+// tag::select_project[]
+TypeDB Studio stores queries you create as TypeQL files in a local project directory. To select a project directory, click either btn:[Open Project] in the *Project* panel, or the image:home::studio-icons/svg/studio_projects.svg[width=24] btn:[Open Project Directory] button in the top toolbar.
+// end::select_project[]
 
 [#_connect_to_typedb]
 === Connect to TypeDB
@@ -66,20 +66,16 @@ image::home::studio-connect-cloud.png[TypeDB Studio connect window, role=right, 
 . Click btn:[Connect to TypeDB] on the right side of the top toolbar.
 . Switch the `Server` field drop-down to `TypeDB Cloud`.
 . Click btn:[Manage Cloud Addresses] button.
-. Add address and port for at least one server from your TypeDB Cloud deployment. Close the Address management window.
+. Add address and port for at least one server from your TypeDB Cloud deployment, then close the Address Management window.
 . Fill in the `Username` and `Password` fields with valid user credentials.
-. Turn on the `Enable TLS` option and leave the `CA Certificate` field empty. +
-_For self-hosted deployments, encryption parameters may vary._
-. Click `Connect`.
-// end::connect_cloud_studio[]
-
-// tag::first_login_studio[]
++
 [NOTE]
 =====
-On your first login you will be asked to change the password for the `admin` account.
-A TypeDB Cloud deployment will refuse queries until the password is changed from its default value.
+For newly created deployments, the default username and password are `admin` and `password`. After connecting for the first time, you will be required to change the password before queries can be run.
 =====
-// end::first_login_studio[]
+. Turn on the `Enable TLS` option and leave the `CA Certificate` field empty. For self-hosted deployments, encryption parameters may vary.
+. Click `Connect`.
+// end::connect_cloud_studio[]
 --
 
 Core::
@@ -90,7 +86,7 @@ image::home::studio-connect-core.png[TypeDB Studio connect window, role=right, w
 // tag::connect_core_studio[]
 . Click btn:[Connect to TypeDB] on the right side of the top toolbar.
 . Make sure the `TypeDB Core` option is selected in the `Server` field.
-. Enter the address and port of the server to connect to (e.g., `localhost:1729`).
+. Enter the address and port of the server to connect to (e.g. `localhost:1729`).
 . Click btn:[Connect].
 // end::connect_core_studio[]
 --

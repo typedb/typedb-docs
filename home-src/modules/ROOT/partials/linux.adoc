@@ -19,14 +19,14 @@ $ sudo apt install default-jre
 +
 TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
-. Install `typedb`:
+. Install TypeDB:
 +
 [source,console]
 ----
 $ sudo apt install typedb
 ----
 +
-If you had an older version (≤`2.25.5`) of TypeDB installed, it might be needed to uninstall older packages to avoid
+If you had an older version (≤`2.25.5`) of TypeDB installed, you might first need to uninstall older packages to avoid
 conflicts:
 +
 [source,console]

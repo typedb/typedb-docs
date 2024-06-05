@@ -3,12 +3,7 @@
 :experimental:
 // Goal – Install TypeDB Core
 
-TypeDB Core can be installed in multiple ways:
-using <<_docker,Docker>> image,
-via <<_package,package manager>>, or by
-<<_manual,manual installation>>.
-For self-hosted TypeDB Cloud installation and setup,
-see the xref:home::install/cloud-self-hosted.adoc[Self-hosted deployment] page.
+TypeDB Core can be installed in several ways: using the <<_docker,Docker image>>, via a <<_package,package manager>>, or by <<_manual,manual installation>>. For self-hosted TypeDB Cloud installation and setup, see the xref:home::install/cloud-self-hosted.adoc[self-hosted deployment] page.
 
 [#_docker]
 == Docker
@@ -52,7 +47,7 @@ No package manager option is available for Windows. See the <<_manual>> section 
 === Run
 
 // tag::core-run[]
-To start a local TypeDB Core server:
+To start a locally installed TypeDB Core server:
 
 [source,console]
 ----
