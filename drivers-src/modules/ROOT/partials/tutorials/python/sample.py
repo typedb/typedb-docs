@@ -6,12 +6,13 @@ from enum import Enum
 
 
 # tag::constants[]
+DB_NAME = "sample_app_db"
+SERVER_ADDR = "127.0.0.1:1729"
+
 class Edition(Enum):
     Cloud = 1
     Core = 2
 
-DB_NAME = "sample_app_db"
-SERVER_ADDR = "127.0.0.1:1729"
 TYPEDB_EDITION = Edition.Core
 CLOUD_USERNAME = "admin"
 CLOUD_PASSWORD = "password"
