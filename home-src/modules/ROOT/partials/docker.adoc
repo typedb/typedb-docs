@@ -22,11 +22,12 @@ see the link:https://github.com/vaticle/typedb/releases[Releases,window=_blank] 
 // end::install[]
 
 // tag::run[]
-To create and run a new Docker container with TypeDB Core server:
+To create a new Docker container with TypeDB Core server:
 
 [source,console]
 ----
-$ docker run --name typedb -d -v typedb-data:/opt/ -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
+$ docker volume create typedb-data
+$ docker create --name typedb -v typedb-data:/opt/typedb-all-linux-x86_64/server/data -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
 ----
 // end::run[]
 // tag::run-info[]
@@ -37,6 +38,15 @@ architecture.
 //Support for `linux/arm64` will be released in a future version of TypeDB.
 // end::run-info[]
 
+// tag::start[]
+To start the created Docker container, or restart a stopped container:
+
+[source,console]
+----
+$ docker start typedb
+----
+// end::start[]
+
 // tag::stop[]
 To stop a running Docker container:
 
@@ -46,11 +56,3 @@ $ docker stop typedb
 ----
 // end::stop[]
 
-// tag::start[]
-To start an existing Docker container again:
-
-[source,console]
-----
-$ docker start typedb
-----
-// end::start[]
