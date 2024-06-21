@@ -27,7 +27,7 @@ To create a new Docker container with TypeDB Core server:
 [source,console]
 ----
 $ docker volume create typedb-data
-$ docker create --name typedb -d -v typedb-data:/opt/typedb-all-linux-x86_64/server/data -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
+$ docker create --name typedb -v typedb-data:/opt/typedb-all-linux-x86_64/server/data -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
 ----
 // end::run[]
 // tag::run-info[]
