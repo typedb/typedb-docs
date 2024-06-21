@@ -51,11 +51,15 @@ $ docker pull vaticle/typedb-cloud:latest
 
 Use `docker run` to create a new container with the downloaded image.
 By default, a TypeDB Cloud server is expected to be running on port `1729`.
-To ensure that data is preserved even when the container is killed or restarted, use a Docker volume:
+To ensure that data is preserved even when the container is killed or restarted, use Docker volumes:
 
 [source,console]
 ----
-$ docker run --name typedb -d -v $(pwd)/db/:/opt/ -p 1729:1729 vaticle/typedb-cloud:latest
+$ docker run --name typedb -d -p 1729:1729 \
+    -v $(pwd)/db/data:/opt/typedb-cloud-all-linux-x86_64/server/data \
+    -v $(pwd)/db/replication:/opt/typedb-cloud-all-linux-x86_64/server/replication \
+    -v $(pwd)/db/user:/opt/typedb-cloud-all-linux-x86_64/server/user \
+    vaticle/typedb-cloud:latest
 ----
 
 ==== Start and Stop TypeDB Cloud in Docker
