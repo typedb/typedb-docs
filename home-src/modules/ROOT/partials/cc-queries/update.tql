@@ -1,6 +1,8 @@
 match
-$u isa user, has username "bob_93", has email $email;
+  $u isa user,
+    has username "bob_93",
+    has email $email;
 delete
-$u has $email;
+  $u has $email;
 insert
-$u has email "mr.bob@typedb.com";
+  $u has email "mr.bob@typedb.com";

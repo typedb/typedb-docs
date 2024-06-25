@@ -31,10 +31,7 @@ $ docker create --name typedb -v typedb-data:/opt/typedb-all-linux-x86_64/server
 ----
 // end::run[]
 // tag::run-info[]
-Where `typedb` -- the name of the container; `typedb-data` -- the name of the volume to persist data.
-
-The `--platform linux/amd64` parameter is required to run the TypeDB container on macOS with the `arm64`
-architecture.
+Where `typedb` is the name of the container, and `typedb-data` is the name of the volume to persist data. The `--platform linux/amd64` parameter is required to run the TypeDB container on macOS with the `arm64` architecture.
 //Support for `linux/arm64` will be released in a future version of TypeDB.
 // end::run-info[]
 

@@ -1,5 +1,7 @@
 match
-$u isa user, has name $fn;
-$fn == "Bob";
+  $u isa user;
+  $n isa name;
+  $u has $n;
+  $n == "Bob";
 fetch
-$u: name, email;
+  $u: name, email;
