@@ -43,7 +43,22 @@ brew install --cask vaticle/tap/typedb-studio
 Linux::
 +
 --
-No package manager option is available for Linux. See the <<_manual>> section below.
+. Add the TypeDB repository:
++
+[source,console]
+----
+sudo apt install software-properties-common apt-transport-https gpg
+gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 17507562824cfdcc
+gpg --export 17507562824cfdcc | sudo tee /etc/apt/trusted.gpg.d/vaticle.gpg > /dev/null
+echo "deb https://repo.typedb.com/public/public-release/deb/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/vaticle.list > /dev/null
+sudo apt update
+----
+. Install TypeDB Studio:
++
+[source,console]
+----
+sudo apt install typedb-studio
+----
 --
 
 Windows::
