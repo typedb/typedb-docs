@@ -1,7 +1,7 @@
 = Optimizing speed
 :page-preamble-card: 1
 
-The speed of bulk loading can be optimised in two ways: by batching queries, and by parellelizing transactions. On this page, we'll explore these methods.
+The speed of bulk loading can be optimised in two ways: by batching queries, and by parellelizing transactions. In this guide, we'll explore these methods.
 
 For the examples shown on this page, we'll load data into a bookstore database. We'll assume the data is pre-formatted into TypeQL files containing _one Insert query per line_. We'll consider data relating to contributors, publishers, and books, in the files `contributors.tql`, `publishers.tql`, and `books.tql` respectively.
 

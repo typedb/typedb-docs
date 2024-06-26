@@ -1,7 +1,7 @@
 = Preventing duplication
 :page-preamble-card: 1
 
-If care is not taken, data can easily end up being duplicated during bulk loading, especially if the source of the data is not properly cleaned. Let's consider the following JSON object describing a book, which we'd like to insert into a bookstore database.
+When bulk loading data to a database, data can easily end up being duplicated if the source of the data is not properly cleaned. Let's consider the following JSON object describing a book, which we'd like to insert into a bookstore database, likely one of thousands of similar books.
 
 [,json]
 ----
@@ -43,154 +43,22 @@ $publisher has name "Harper Collins";
 (published: $book, publisher: $publisher) isa publishing;
 ----
 
-However, this might cause some problems. If other books in the dataset are written by Tolkien or published by Harper Collins, then there will be multiple `contributor` and `publisher` instances inserted for them. Similarly, if this particular book occurred twice in our dataset, it would be inserted twice.
+This query would work fine in isolation, but could result in data duplication when run alongside other queries during bulk loading:
 
-We can adopt one of three strategies to prevent duplications of this kind from happening: pre-processing the data, using conditional inserts, or leveraging key constraints. Regardless of which approach we adopt, it's important to ensure our queries are run in the right order.
+- If more than one book in the dataset is written by Tolkien, then there will be multiple corresponding `contributor` instances inserted.
+- If more than one book in the dataset is written is published by Harper Collins, then there will be multiple corresponding `publisher` instances inserted.
+- If the Hobbit appears more than once in the dataset (due to poor quality data), then there will be multiple corresponding `book` entities inserted.
+
+In this guide, we'll see how we can prevent duplication of entities by leveraging key constraints, and duplication of relations by using conditional inserts.
 
 [NOTE]
 ====
 TypeDB 3.0 will introduce a "put" operation, which can be used to insert data only if it doesn't already exist. This will allow the above example data to be inserted in a single highly performant query, with each entity or relation being inserted only if it doesn't exist already. To learn more about this and other powerful new features, see the https://typedb.com/blog/typedb-3-roadmap[TypeDB 3.0 roadmap].
 ====
 
-== Pre-processing data
+== Preventing entity duplication
 
-To prevent duplications, we can first collect all the contributors, publishers, and books in our dataset and de-duplicate them with a pre-processing script. Afterward, we then individually insert the contributors and publishers once each.
-
-[,typeql]
-----
-insert
-$contributor isa contributor;
-$contributor has name "J.R.R. Tolkien";
-----
-
-[,typeql]
-----
-insert
-$publisher isa publisher;
-$publisher has name "Harper Collins";
-----
-
-Finally, we can then match the contributors and publishers for each book we insert.
-
-[,typeql]
-----
-match
-$contributor_1 isa contributor;
-$contributor_1 has name "J.R.R. Tolkien";
-$publisher isa publisher;
-$publisher has name "Harper Collins";
-insert
-$book isa ebook;
-$book has isbn-13 "9780008627843";
-$book has title "The Hobbit";
-$book has page-count 310;
-$book has price 16.99;
-$book has isbn-10 "0008627843";
-$book has genre "fiction";
-$book has genre "fantasy";
-(work: $book, author: $contributor_1) isa authoring;
-(work: $book, illustrator: $contributor_1) isa illustrating;
-(published: $book, publisher: $publisher) isa publishing;
-----
-
-As long each part of the dataset has been thoroughly de-duplicated, we will not end up with duplicate data in the database.
-
-== Using conditional inserts
-
-Another way we can prevent duplications is to use xref:typeql::patterns/negation.adoc[negations] to ensure that the data instances we are trying to insert don't already exist. In order for this to work correctly, we must insert each entity and relation separately, or one pre-existing instance might block too many things from being inserted. For the above example, we need six queries in total.
-
-[,typeql]
-----
-match
-$contributor_type type contributor;
-not {
-    $contributor isa $contributor_type;
-    $contributor has name "J.R.R. Tolkien";
-};
-insert
-$contributor isa $contributor_type;
-$contributor has name "J.R.R. Tolkien";
-----
-
-[,typeql]
-----
-match
-$publisher_type type publisher;
-not {
-    $publisher isa $publisher_type;
-    $publisher has name "Harper Collins";
-};
-insert
-$publisher isa $publisher_type;
-$publisher has name "Harper Collins";
-----
-
-[,typeql]
-----
-match
-$book-type type ebook;
-not {
-    $book isa $book-type;
-    $book has isbn-13 "9780008627843";
-};
-insert
-$book isa $book-type;
-$book has isbn-13 "9780008627843";
-$book has title "The Hobbit";
-$book has page-count 310;
-$book has price 16.99;
-$book has isbn-10 "0008627843";
-$book has genre "fiction";
-$book has genre "fantasy";
-----
-
-[,typeql]
-----
-match
-$contributor isa contributor;
-$contributor has name "J.R.R. Tolkien";
-$book isa ebook;
-$book has isbn-13 "9780008627843";
-not {
-    (work: $book, author: $contributor) isa authoring;
-};
-insert
-(work: $book, author: $contributor) isa authoring;
-----
-
-[,typeql]
-----
-match
-$contributor isa contributor;
-$contributor has name "J.R.R. Tolkien";
-$book isa ebook;
-$book has isbn-13 "9780008627843";
-not {
-    (work: $book, illustrator: $contributor) isa illustrating;
-};
-insert
-(work: $book, illustrator: $contributor) isa illustrating;;
-----
-
-[,typeql]
-----
-match
-$publisher isa publisher;
-$publisher has name "Harper Collins";
-$book isa ebook;
-$book has isbn-13 "9780008627843";
-not {
-    (published: $book, publisher: $publisher) isa publishing;
-};
-insert
-(published: $book, publisher: $publisher) isa publishing;
-----
-
-In order to check if each data instance exists already, we must have a way of describing them. In general, it is best to check for existing entities by their attribute values, and for relations by their roleplayers, as we have done above.
-
-== Leveraging key constraints
-
-The final way we can prevent duplications is to leverage xref:typeql::statements/key.adoc[key constraints]. To do so, each entity or relation we insert must be of a type that owns a key attribute. For example, we might make the `isbn-13` attribute a key attribute of `book` (the supertype of `ebook` in this example), and the `name` attribute a key attribute of `contributor` and `company` (the supertype of `publisher`).
+To prevent entities from being duplicated, we can leverage xref:typeql::statements/key.adoc[key constraints]. It is normally a good idea to ensure every entity in the schema has a key attribute for the purpose of unique identification. For example, we might make the `isbn-13` attribute a key attribute of `book` (the supertype of `ebook` in this example), and the `name` attribute a key attribute of `contributor` and `company` (the supertype of `publisher`).
 
 [,typeql]
 ----
@@ -200,7 +68,7 @@ contributor owns name @key;
 company owns name @key;
 ----
 
-Now we no longer need to check for pre-existing data instances when we insert new books, as the database will throw an exception if the key constraint is violated.
+Now if we insert an entity that would violate a key constraint, the database will throw an exception, preventing the data from being duplicated. It is best to insert each entity in a separate query, as follows, so that it is clear which entity has violated its key constraint. This way, the exception can be properly handled.
 
 [,typeql]
 ----
@@ -229,9 +97,13 @@ $book has genre "fiction";
 $book has genre "fantasy";
 ----
 
-By handling the exception, we can automatically deal with duplicates as they arise, likely by simply skipping the duplicated insert and moving to the next data instance. As with the previous method, each entity or relation should be inserted in its own query to prevent an exception from blocking more inserts than it should.
+By handling the exception, we can automatically deal with duplicates as they arise, likely by simply skipping the duplicated insert and moving to the next data instance.
 
-However, we can't easily use this strategy for the `authoring`, `illustrating`, and `publishing` relations, as these relations do not have any attributes that can be made keys. In this situation, we should continue to use the conditional insert strategy as above for those relations.
+== Preventing relation duplication
+
+It is generally better to identify relations via their roleplayers rather than by key attributes. This is because relations are most often used to represent references between objects, and so are defined by the objects they link rather than by their properties, if any. Indeed, the `authoring`, `illustrating`, and `publishing` relations do not even have any attributes!
+
+When we insert a relation, we can prevent duplication by using xref:typeql::patterns/negation.adoc[negations] to ensure that the relations we are trying to insert don't already exist. Again, it is best to insert each relation in a separate query.
 
 [,typeql]
 ----
@@ -275,17 +147,4 @@ insert
 (published: $book, publisher: $publisher) isa publishing;
 ----
 
-[NOTE]
-====
-It is normally a good idea to ensure every entity in the schema has a key attribute for the purpose of unique identification. For relations, it is often better to identify them via their roleplayers rather than attributes.
-====
-
-== Comparing de-duplication strategies
-
-Each of the above approaches has its advantages and disadvantages. Selecting the best strategy will depend on a number of factors.
-
-* Pre-processing data allows us to insert multiple entities or relations in a single query, as we know in advance that duplication will not occur. As each query run incurs a computational cost, this will often be the fastest way to load data. Many of the Insert queries will not need a `match` clause, which makes them particularly fast to run. However, it is the hardest to implement correctly as data must be manually pre-processed.
-
-* Using conditional inserts is the most certain way of guaranteeing that data is not duplicated, and requires no pre-processing of data. However, a large number of queries are necessary, which has a high computational cost. Many negations are also required, which are particularly computationally expensive operations, and can reduce loading speeds.
-
-* Leveraging key attributes is an effective middle ground. No pre-processing is required, and though a large number of queries are still necessary, key constraint checks are more efficient than negations. However, this can cause problems when xref:manual::bulk-loading/optimizing-speed.adoc[batching data] into transactions. Even if using one of the other strategies, it is very useful to include key constraints anyway, as violations can indicate an error in the pipeline.
+While entities are independent of each other and can be inserted in any order, it's important to insert the relations only when the roleplayers are already inserted, otherwise no insert will occur.
