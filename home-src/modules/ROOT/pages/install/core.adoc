@@ -5,24 +5,10 @@
 
 TypeDB Core can be installed in several ways: using the <<_docker,Docker image>>, via a <<_package,package manager>>, or by <<_manual,manual installation>>. For self-hosted TypeDB Cloud installation and setup, see the xref:home::install/cloud-self-hosted.adoc[self-hosted deployment] page.
 
-[#_docker]
-== Docker
-
-include::home::partial$docker.adoc[tag=install]
-
-=== Run
-
-include::home::partial$docker.adoc[tags=run]
-
-include::home::partial$docker.adoc[tags=run-info]
-
-include::home::partial$docker.adoc[tag=stop]
-
-include::home::partial$docker.adoc[tag=start]
-
 [#_package]
 == Package manager
 
+// tag::core-package-install[]
 [tabs]
 ====
 macOS::
@@ -43,6 +29,7 @@ Windows::
 No package manager option is available for Windows. See the <<_manual>> section below.
 --
 ====
+// end::core-package-install[]
 
 === Run
 
@@ -51,17 +38,34 @@ To start a locally installed TypeDB Core server:
 
 [source,console]
 ----
-$ typedb server
+typedb server
 ----
 // end::core-run[]
+
 // tag::core-stop[]
 To stop a local TypeDB server, close the terminal where it runs or press kbd:[Ctrl+C].
 // end::core-stop[]
 
+[#_docker]
+== Docker
+
+include::home::partial$docker.adoc[tag=install]
+
+=== Run
+
+include::home::partial$docker.adoc[tags=run]
+
+include::home::partial$docker.adoc[tags=run-info]
+
+include::home::partial$docker.adoc[tag=stop]
+
+include::home::partial$docker.adoc[tag=start]
+
 [#_manual]
 == Manual install
 
-Download the latest version of TypeDB Core from the table below.
+// tag::core-manual-install[]
+Download the latest version of TypeDB from the table below.
 
 [cols="^.^1,^.^1,^.^1,^.^1",caption="",options="header"]
 |===
@@ -93,6 +97,7 @@ Windows::
 include::home::partial$win.adoc[tag=manual-install]
 --
 ====
+// end::core-manual-install[]
 
 === Run
 

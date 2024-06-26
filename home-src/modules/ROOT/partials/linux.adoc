@@ -4,17 +4,17 @@
 +
 [source,console]
 ----
-$ sudo apt install software-properties-common apt-transport-https gpg
-$ gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 17507562824cfdcc
-$ gpg --export 17507562824cfdcc | sudo tee /etc/apt/trusted.gpg.d/vaticle.gpg > /dev/null
-$ echo "deb https://repo.typedb.com/public/public-release/deb/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/vaticle.list > /dev/null
-$ sudo apt update
+sudo apt install software-properties-common apt-transport-https gpg
+gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 17507562824cfdcc
+gpg --export 17507562824cfdcc | sudo tee /etc/apt/trusted.gpg.d/vaticle.gpg > /dev/null
+echo "deb https://repo.typedb.com/public/public-release/deb/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/vaticle.list > /dev/null
+sudo apt update
 ----
 . Ensure Java 11+ is installed:
 +
 [source,console]
 ----
-$ sudo apt install default-jre
+sudo apt install default-jre
 ----
 +
 TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
@@ -23,7 +23,7 @@ https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_bl
 +
 [source,console]
 ----
-$ sudo apt install typedb
+sudo apt install typedb
 ----
 +
 If you had an older version (≤`2.25.5`) of TypeDB installed, you might first need to uninstall older packages to avoid
@@ -31,7 +31,7 @@ conflicts:
 +
 [source,console]
 ----
-$ sudo apt remove typedb-server typedb-bin typedb-console
+sudo apt remove typedb-server typedb-bin typedb-console
 ----
 ////
 The `typedb-server` and `typedb-console` packages are updated more often than `typedb-bin`, so their
@@ -51,8 +51,8 @@ https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_bl
 +
 [source,console]
 ----
-$ mkdir /opt/typedb
-$ tar -xzf ~/Downloads/<filename>.tar.gz -C /opt/typedb
+mkdir /opt/typedb
+tar -xzf ~/Downloads/<filename>.tar.gz -C /opt/typedb
 ----
 +
 Where `<filename>` is the name of the archive.
@@ -60,7 +60,7 @@ Where `<filename>` is the name of the archive.
 +
 [source,console]
 ----
-$ ln -s /opt/typedb/<filename>/typedb /usr/local/bin/typedb
+ln -s /opt/typedb/<filename>/typedb /usr/local/bin/typedb
 ----
 
 // end::manual-install[]
@@ -70,7 +70,7 @@ To run TypeDB Core installed locally:
 
 [source,console]
 ----
-$ typedb server
+typedb server
 ----
 // end::start[]
 
