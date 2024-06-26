@@ -35,8 +35,8 @@ To install TypeDB Studio via Homebrew:
 
 [source,console]
 ----
-$ brew tap vaticle/tap
-$ brew install --cask vaticle/tap/typedb-studio
+brew tap vaticle/tap
+brew install --cask vaticle/tap/typedb-studio
 ----
 --
 
@@ -82,8 +82,8 @@ https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%5Etypedb-
 +
 [source,console]
 ----
-$ mkdir /opt/typedb-studio
-$ tar -xzf ~/Downloads/<filename>.tar.gz -C /opt/typedb-studio
+mkdir /opt/typedb-studio
+tar -xzf ~/Downloads/<filename>.tar.gz -C /opt/typedb-studio
 ----
 +
 Where `<filename>` is the name of the archive.
@@ -91,7 +91,7 @@ Where `<filename>` is the name of the archive.
 +
 [source,console]
 ----
-$ ln -s /opt/typedb-studio/<filename>/typedb-studio /usr/local/bin/typedb-studio
+ln -s /opt/typedb-studio/<filename>/typedb-studio /usr/local/bin/typedb-studio
 ----
 --
 

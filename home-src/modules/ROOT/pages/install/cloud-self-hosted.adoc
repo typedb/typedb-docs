@@ -46,7 +46,7 @@ To pull the TypeDB Cloud Docker image, run:
 
 [source,console]
 ----
-$ docker pull vaticle/typedb-cloud:latest
+docker pull vaticle/typedb-cloud:latest
 ----
 
 Use `docker create` to create a new container with the downloaded image.
@@ -55,7 +55,7 @@ To ensure that data is preserved even when the container is killed or restarted,
 
 [source,console]
 ----
-$ docker create --name typedb -p 1729:1729 \
+docker create --name typedb -p 1729:1729 \
     -v $(pwd)/db/data:/opt/typedb-cloud-all-linux-x86_64/server/data \
     -v $(pwd)/db/replication:/opt/typedb-cloud-all-linux-x86_64/server/replication \
     -v $(pwd)/db/user:/opt/typedb-cloud-all-linux-x86_64/server/user \
@@ -68,21 +68,21 @@ To start the Docker container, or restart a stopped container:
 
 [source,console]
 ----
-$ docker start typedb
+docker start typedb
 ----
 
 To check the containers running:
 
 [source,console]
 ----
-$ docker ps
+docker ps
 ----
 
 To stop the Docker container:
 
 [source,console]
 ----
-$ docker stop typedb
+docker stop typedb
 ----
 
 [#_manual_download_and_installation]
@@ -105,7 +105,7 @@ To start TypeDB Cloud manually:
 +
 [source,console]
 ----
-$ ./typedb server
+./typedb server
 ----
 
 Now TypeDB Cloud should show a welcome screen with its version, address, and bootup time.
@@ -123,14 +123,14 @@ You can use xref:manual:ROOT:console.adoc[TypeDB Console] from your TypeDB Cloud
 
 [source,console]
 ----
-$ ./typedb console --cloud 127.0.0.1:1729 --username admin --password
+./typedb console --cloud 127.0.0.1:1729 --username admin --password
 ----
 
 To run TypeDB Console from a Docker container, run:
 
 [source,console]
 ----
-$ docker exec -ti typedb-cloud bash -c '/opt/typedb-cloud-all-linux-x86_64/typedb console --cloud 127.0.0.1:1729 --username admin --password'
+docker exec -ti typedb-cloud bash -c '/opt/typedb-cloud-all-linux-x86_64/typedb console --cloud 127.0.0.1:1729 --username admin --password'
 ----
 
 [#_deploying_manually]
@@ -178,7 +178,7 @@ To run TypeDB server #1:
 
 [source,console]
 ----
-$ ./typedb server \
+./typedb server \
     --server.address=10.0.0.1:1729 \
     --server.internal-address.zeromq=10.0.0.1:1730 \
     --server.internal-address.grpc=10.0.0.1:1731 \
@@ -202,7 +202,7 @@ To run TypeDB server #2:
 
 [source,console]
 ----
-$ ./typedb server \
+./typedb server \
     --server.address=10.0.0.2:1729 \
     --server.internal-address.zeromq=10.0.0.2:1730 \
     --server.internal-address.grpc=10.0.0.2:1731 \
@@ -226,7 +226,7 @@ To run TypeDB server #3:
 
 [source,console]
 ----
-$ ./typedb server \
+./typedb server \
     --server.address=10.0.0.3:1729 \
     --server.internal-address.zeromq=10.0.0.3:1730 \
     --server.internal-address.grpc=10.0.0.3:1731 \
@@ -256,7 +256,7 @@ The relevant external hostname should be passed as arguments using the `--server
 
 [source,console]
 ----
-$ ./typedb server \
+./typedb server \
     --server.address=external-host-1:1729 \
     --server.internal-address.zeromq=10.0.0.1:1730 \
     --server.internal-address.grpc=10.0.0.1:1731 \

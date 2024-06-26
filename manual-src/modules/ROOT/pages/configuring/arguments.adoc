@@ -23,7 +23,7 @@ command line using the following command:
 
 [source,console]
 ----
-$ typedb server --server.address 0.0.0.0:1730
+typedb server --server.address 0.0.0.0:1730
 ----
 
 === Setting new config values
@@ -34,7 +34,7 @@ we could do the following to set the package `com.vaticle.typedb.core.traversal`
 
 [source,console]
 ----
-$ typedb server  \
+typedb server  \
   --server.address 0.0.0.0:1730  \
   --log.logger.traversal.filter com.vaticle.typedb.core.traversal  \
   --log.logger.traversal.level debug \
@@ -66,7 +66,7 @@ For all available commands via the command line use the `--help` argument to get
 
 [source,console]
 ----
-$ typedb server --help
+typedb server --help
 ----
 
 This will list out how to use specific command line arguments as well as options derived from the configuration file.
