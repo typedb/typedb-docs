@@ -23,8 +23,38 @@ See documentation.
 ****
 --
 
-[#_studio_install]
-== Install
+[#_package]
+== Package manager
+
+[tabs]
+====
+macOS::
++
+--
+To install TypeDB Studio via Homebrew:
+
+[source,console]
+----
+$ brew tap vaticle/tap
+$ brew install --cask vaticle/tap/typedb-studio
+----
+--
+
+Linux::
++
+--
+No package manager option is available for Linux. See the <<_manual>> section below.
+--
+
+Windows::
++
+--
+No package manager option is available for Windows. See the <<_manual>> section below.
+--
+====
+
+[#_manual]
+== Manual install
 
 [tabs]
 ====
@@ -38,14 +68,6 @@ For other versions, see the
 https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%5Etypedb-studio-mac&sort=-version[Downloads repository] page.
 . Open the downloaded `.dmg` file and accept the license agreement.
 . Drag and drop TypeDB Studio executable to the Applications folder.
-
-Alternatively, you can use Brew to install TypeDB Studio:
-
-[source,console]
-----
-$ brew tap vaticle/tap
-$ brew install --cask vaticle/tap/typedb-studio
-----
 --
 
 Linux::
