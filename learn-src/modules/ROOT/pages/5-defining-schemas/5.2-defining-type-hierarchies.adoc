@@ -169,7 +169,7 @@ Write a query to define the following new roleplayers:
 [,typeql]
 ----
 define
-book plays contrubution:work;
+book plays contribution:work;
 contributor plays contribution:contributor;
 contributor plays authoring:author;
 contributor plays editing:editor;
@@ -187,7 +187,7 @@ match
 (work: $book, contributor: $contributor) isa contribution;
 fetch
 $book: title;
-$contributor: $name;
+$contributor: name;
 ----
 
 .Exercise
@@ -204,7 +204,7 @@ match
 (work: $book, author: $contributor) isa authoring;
 fetch
 $book: title;
-$contributor: $name;
+$contributor: name;
 ----
 =====
 

@@ -1,8 +1,6 @@
 = TypeDB Studio installation guide
 
-TypeDB Studio is a standalone IDE for TypeDB.
-If you are unsure of the exact version you need,
-check the <<_version_compatibility,compatibility table>> below.
+TypeDB Studio is a standalone IDE for TypeDB. If you are unsure of the version you need, check the <<_version_compatibility,compatibility table>> below.
 
 [cols-3]
 --
@@ -25,10 +23,53 @@ See documentation.
 ****
 --
 
-[#_studio_install]
-== Install
+[#_package]
+== Package manager
 
-For installation instructions, follow the steps below for your OS:
+[tabs]
+====
+macOS::
++
+--
+To install TypeDB Studio via Homebrew:
+
+[source,console]
+----
+brew tap vaticle/tap
+brew install --cask vaticle/tap/typedb-studio
+----
+--
+
+Linux::
++
+--
+. Add the TypeDB repository:
++
+[source,console]
+----
+sudo apt install software-properties-common apt-transport-https gpg
+gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 17507562824cfdcc
+gpg --export 17507562824cfdcc | sudo tee /etc/apt/trusted.gpg.d/vaticle.gpg > /dev/null
+echo "deb https://repo.typedb.com/public/public-release/deb/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/vaticle.list > /dev/null
+sudo apt update
+----
+. Install TypeDB Studio:
++
+[source,console]
+----
+sudo apt install typedb-studio
+----
+--
+
+Windows::
++
+--
+No package manager option is available for Windows. See the <<_manual>> section below.
+--
+====
+
+[#_manual]
+== Manual install
 
 [tabs]
 ====
@@ -42,14 +83,6 @@ For other versions, see the
 https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%5Etypedb-studio-mac&sort=-version[Downloads repository] page.
 . Open the downloaded `.dmg` file and accept the license agreement.
 . Drag and drop TypeDB Studio executable to the Applications folder.
-
-Alternatively, you can use Brew to install TypeDB Studio:
-
-[source,console]
-----
-$ brew tap vaticle/tap
-$ brew install --cask vaticle/tap/typedb-studio
-----
 --
 
 Linux::
@@ -64,8 +97,8 @@ https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%5Etypedb-
 +
 [source,console]
 ----
-$ mkdir /opt/typedb-studio
-$ tar -xzf ~/Downloads/<filename>.tar.gz -C /opt/typedb-studio
+mkdir /opt/typedb-studio
+tar -xzf ~/Downloads/<filename>.tar.gz -C /opt/typedb-studio
 ----
 +
 Where `<filename>` is the name of the archive.
@@ -73,7 +106,7 @@ Where `<filename>` is the name of the archive.
 +
 [source,console]
 ----
-$ ln -s /opt/typedb-studio/<filename>/typedb-studio /usr/local/bin/typedb-studio
+ln -s /opt/typedb-studio/<filename>/typedb-studio /usr/local/bin/typedb-studio
 ----
 --
 
