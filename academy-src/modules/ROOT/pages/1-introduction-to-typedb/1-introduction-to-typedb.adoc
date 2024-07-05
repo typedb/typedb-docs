@@ -1,10 +1,13 @@
-= Lesson 1: Why TypeDB
+= Lesson 1: Introduction to TypeDB
+:page-aliases: academy::1-why-typedb/1-why-typedb.adoc
 :page-preamble-card: 1
+
+// tag::introductory-statement[]
+The fast advances of modern, high-level declarative programming models in parallel with the rise of distributed and multithreaded systems make it harder and harder to continue piling layers of abstractions on the relational model. TypeDB tackles this issue by re-thinking database systems from first principles, building on a new declarative language paradigm, a polymorphic data model, a powerful logic engine, and a new query execution model.
 
 [quote, "Amin Vahdat (VP/GM at Google)", "Coming of age in the fifth epoch of distributed computing, 2024"]
 Complexity will only increase in the years ahead, essentially requiring new declarative programming models focused on intent, the user, and business logic.
-
-The fast advances of modern, high-level declarative programming models in parallel with the rise of distributed and multi-threaded systems make it harder and harder to continue piling layers of abstractions on the relational model. TypeDB tackles this issue by re-thinking database systems from first principles, building on a new declarative language paradigm, a polymorphic data model, a powerful logic engine, and a new query execution model.
+// end::introductory-statement[]
 
 == Modern query language
 
