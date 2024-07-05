@@ -4,7 +4,7 @@
 :pageTitle: Crash course
 :summary: Learn about schema definitions and data operations in TypeDB.
 
-This crash course will give you a quick overview of the main ingredients for building your application with TypeDB. For an in-depth dive into these topics, check out the xref:learn::overview.adoc[TypeDB Learning Course].
+This crash course gives a quick overview of the main ingredients for building your application with TypeDB. For an in-depth dive into these topics, check out the xref:academy::overview.adoc[TypeDB Learning Course].
 
 == Key ingredients
 
@@ -17,27 +17,30 @@ TypeDB is a new kind of database that combines ideas from classical databases an
 ----
 define
   file sub entity, owns name, owns creation-date;
-  image sub file, plays project:asset;
-  video sub file, plays project:asset;
-  project sub relation, relates asset, owns name;
+  image sub file, plays project-inclusion:asset;
+  video sub file, plays project-inclusion:asset;
+  project sub entity, owns name, plays project-inclusion:project;
+  project-inclusion sub relation, relates project, relates asset;
   creation-date sub attribute, value datetime;
   name sub attribute, value string;
 ----
-TypeDB's conceptual data model can express polymorphic dependencies of types, which means we can easily combine various data structures including relational-, graph-, and document-like data.
+TypeDB's conceptual data model can express object-oriented constructs like abstraction, inheritance, and polymorphism, which means we can easily represent various data structures including relational-, graph-, and document-like data.
 
 *2. <<_database_essentials,The querying paradigm>>*. TypeDB approaches database management through a simple, pattern-based querying paradigm.
 
-.Find images and videos with the same creation date, that are also part of the same project, and return their names
+.Find images and videos that are part of the same project and have the same creation date, and return their names
 [,typeql]
 ----
 match
-  $thumbnail isa image, has creation-date $d;
-  $video isa video, has creation-date $d;
-  ($thumbnail, $video) isa project;
+  $thumbnail isa image, has creation-date $date;
+  $video isa video, has creation-date $date;
+  (project: $project, asset: $thumbnail) isa project-inclusion;
+  (project: $project, asset: $video) isa project-inclusion;
 fetch
-  $thumbnail: name; $video: name;
+  $thumbnail: name;
+  $video: name;
 ----
-Building on TypeDB's conceptual data model, this provides us with a highly versatile toolset that resolves a range of deep engineering challenges. *_No tables, no joins, no nulls!_*
+Building on TypeDB's conceptual data model, this provides us with a highly versatile toolset that resolves a range of deep engineering challenges.
 
 *3. <<_patterns,The power of patterns>>*. Patterns are used in TypeDB to interact with data and types of all sorts.
 
@@ -46,13 +49,13 @@ Building on TypeDB's conceptual data model, this provides us with a highly versa
 ----
 match
   $archive isa project, has name "archive";
-  $old_file isa image, has creation-date < 2010-01-01;
+  $old-file isa image, has creation-date < 2010-01-01;
 insert
-  $archive (asset: $f);
+  (project: $archive, asset: $old-file) isa project-inclusion;
 ----
 Patterns often read just like statements in natural language, and can be easily composed to form new patterns. This makes many tasks that are arduous in traditional databases simple and elegant in TypeDB.
 
-In the next sections, we dive deeper into each of the above topics. Note that this crash course covers only the very basics of TypeDB! For a more comprehensive overview, check out our xref:learn::overview.adoc[Learning Course].
+In the next sections, we dive deeper into each of the above topics. Note that this crash course covers only the very basics of TypeDB! For a more comprehensive overview, check out our xref:academy::overview.adoc[Learning Course].
 // we can infer new data on-the-fly using rules, which allow us to embed the logic of our data directly into our schema.
 
 [NOTE]
@@ -63,17 +66,17 @@ To follow the examples on this page, make sure to create a TypeDB database with 
 [#_type_system]
 == The type system
 
-TypeDB is based on a novel conceptual data and querying model, called the xref:learn::9-modeling-schemas/9.1-the-pera-model.adoc[PERA model]. This modern database model was introduced in recent https://typedb.com/papers/typeql-theory[research], and aims to provide higher levels of flexibility and expressivity when working with structured data.
+TypeDB is based on a novel conceptual data and querying model, the xref:academy::9-modeling-schemas/9.1-the-pera-model.adoc[PERA model]. This modern database model was introduced in recent https://typedb.com/papers/typeql-theory[research], and aims to provide higher levels of flexibility and expressivity when working with structured data.
 
 === Schema and types
 
-A TypeDB database has a *schema*, that describes type definitions. A new type can be added by subtyping an existing type. Initially, a new database has only three built-in types, called *root types*: these are the `entity`, `relation`, and `attribute` types. Types subtyping these root types are called, entity types, relation types, and attribute types respectively.
+A TypeDB database has a *schema* that defines the *types* that comprise a data model. A new type can be added by *subtyping* an existing type: either a previously defined type of one of the three built-in *root types*: `entity`, `relation`, and `attribute`.
 
-A schema comprises three distinct type hierarchies with the root types as their roots. The properties of these types are summarized in the following table.
+A schema comprises three distinct hierarchies of entity types, relation types, and attribute types descended from their respective root types. The properties of these types are summarized in the following table.
 
 [#_root_types]
 
-.Root types and their specific properties
+.Root types and their properties
 [cols="^.^h,^.^,^.^,^.^",options="header"]
 |===
 | | Entity types | Relation types | Attribute types
@@ -85,17 +88,17 @@ A schema comprises three distinct type hierarchies with the root types as their 
 | Can be abstract | ✓ | ✓ | ✓
 |===
 
-You will find an in-depth explanation of this table and much more in xref:learn::9-modeling-schemas/9-modeling-schemas.adoc[Lesson 9] of the Learning Course.
+You can learn more about the PERA model in xref:academy::9-modeling-schemas/9-modeling-schemas.adoc[Lesson 9] of the Learning Course.
 
 === Data instances and values
 
-Data is inserted into a TypeDB database as instances of types in the schema.
+Data is inserted into a TypeDB database by instantiating of types in the schema.
 
 * *Entities* (instances of entity types) represent the independent objects in a data domain.
 
-* *Relations* (the instances of relation types) represent linkages between objects. The ways in which relations can link data are defined in the schema by a relation type's *roles*, which other types can play.
+* *Relations* (instances of relation types) represent linkages between objects. The ways in which relations can link data are defined in the schema by a relation type's *roles*, which other types can play.
 
-* *Attributes* (the instances of attribute types) represent properties that can be owned by other data instances, and always have a *value* associated to them (e.g. an integer, a string, or a datetime). The attributes that a type can own are specified in the schema by an attribute type's *ownerships*.
+* *Attributes* (instances of attribute types) represent properties of other data instances, and always have a *value* associated to them (e.g. an integer, a string, or a datetime). The attributes that a type can own are specified in the schema by an attribute type's *ownerships*.
 
 [#_database_essentials]
 == The querying paradigm
@@ -108,19 +111,9 @@ Unlike other databases, there is no need to explicitly specify "data transformat
 
 TypeDB comes with a handful of basic query types.
 
-* To modify the schema, use *Define* and *Undefine* queries.
-* To modify data, use *Insert*, *Delete*, and *Update* queries.
-* To retrieve data from a database, use *Fetch* and *Get* queries.
-
-These queries fall into TypeDB's schema/transaction model in a natural way, as the table below illustrates.
-
-[cols="^.^1h,^.^2,^.^2",options="header"]
-.Query types
-|===
-| | Read transaction | Write transaction
-| Schema session | Fetch, Get | Define, Undefine
-| Data session | Fetch, Get | Insert, Delete, Update
-|===
+* *Define* and *Undefine* queries are used to create and modify the schema.
+* *Insert*, *Delete*, and *Update* queries are used to insert and modify data.
+* *Fetch* and *Get* queries are used to read data.
 
 [#_fetch_queries]
 === Fetch queries
@@ -247,7 +240,7 @@ fetch
   $u: name, rating;
 ----
 
-Of course, this example is quite simple, but the "modular" approach of type dependencies, via relation roles and attribute ownership, often makes schema modification extremely convenient. Moreover, this can be combined with built-in support for <<_inheritance_polymorphism,inheritance polymorphism>> or the usage of xref:learn::3-reading-data/3.4-fetching-schema-types.adoc[type variablization] (both enabled by TypeDB's type inference) to organically incorporate schema changes into existing queries.
+Of course, this example is quite simple, but the "modular" approach of type dependencies, via relation roles and attribute ownership, often makes schema modification extremely convenient. Moreover, this can be combined with built-in support for <<_inheritance_polymorphism,inheritance polymorphism>> or the usage of xref:academy::3-reading-data/3.4-fetching-schema-types.adoc[type variablization] (both enabled by TypeDB's type inference) to organically incorporate schema changes into existing queries.
 
 [#_patterns]
 == The power of patterns
@@ -507,4 +500,4 @@ The above query matches all read permissions that people have on files, and retu
 
 === Combining rules
 
-Each rule can infer a single relation or a single attribute ownership, but a rule can be applied many times, as long as it's producing new results. We can use multiple rules in a schema, and also combine them with advanced technics, like logical xref:learn::10-using-inference/10.2-rule-chaining.adoc[chaining] (including recursion) or xref:learn::10-using-inference/10.3-rule-branching.adoc[branching]!
+Each rule can infer a single relation or a single attribute ownership, but a rule can be applied many times, as long as it's producing new results. We can use multiple rules in a schema, and also combine them with advanced technics, like logical xref:academy::10-using-inference/10.2-rule-chaining.adoc[chaining] (including recursion) or xref:academy::10-using-inference/10.3-rule-branching.adoc[branching]!
