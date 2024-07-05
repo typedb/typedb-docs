@@ -1,0 +1,58 @@
+= Lesson 6: Building applications
+:page-aliases: academy::6-building-applications/6-building-applications.adoc
+:page-preamble-card: 1
+
+In this lesson, we'll learn how to use the TypeDB native language drivers to build applications on TypeDB. We'll start by seeing how to *manage databases*, then move onto *using sessions* and *controlling transactions*. We'll see how we use different session and transaction types to *execute queries*, and how we can *process results* that are returned.
+
+The examples and exercises in this lesson feature the official *TypeDB Python driver*.
+
+== Recommended prerequisites
+
+* You should complete xref:academy::5-defining-schemas/overview.adoc[Lesson 5] before starting this lesson.
+
+== Lesson contents
+
+[cols-2]
+--
+.xref:academy::6-building-applications/6.1-driver-setup.adoc[]
+[.clickable]
+****
+Install and import the official TypeDB Python driver.
+****
+
+// Remove after change to Cloud.
+.xref:academy::6-building-applications/6.2-managing-users-and-databases.adoc[]
+[.clickable]
+****
+Learn how to connect to a server and manage databases.
+****
+
+// Add after change to Cloud.
+// .xref:academy::6-building-applications/6.2-managing-users-and-databases.adoc[]
+// [.clickable]
+// ****
+// Learn how to manage users and databases on a server.
+// ****
+
+.xref:academy::6-building-applications/6.3-sessions-and-transactions.adoc[]
+[.clickable]
+****
+Learn how to open sessions and control transactions.
+****
+
+.xref:academy::6-building-applications/6.4-executing-queries.adoc[]
+[.clickable]
+****
+Learn how to execute read, write, and schema queries.
+****
+
+.xref:academy::6-building-applications/6.5-processing-results.adoc[]
+[.clickable]
+****
+Learn how to efficiently process the results of read queries.
+****
+--
+
+== Using other driver languages
+
+Official drivers are also available for xref:drivers::overview.adoc[other languages]. All official drivers offer very similar APIs, so it is recommended to use the Python driver while following this course, as the skills learned will be easily transferable to the other drivers.
