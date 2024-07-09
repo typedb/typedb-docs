@@ -3,181 +3,125 @@
 :pageTitle: Documentation overview
 :page-aliases: typedb::overview.adoc
 :summary: A birds-eye view of all documentation for TypeDB, TypeQL, and TypeDB Clients
-
-Welcome to the TypeDB, TypeQL and TypeDB Clients technical documentation.
+// :page-preamble-card: 1
 
 // tag::rust-rewrite[]
 [NOTE]
 ====
 TypeDB & TypeQL are in the process of being rewritten in https://www.rust-lang.org[Rust,window=_blank].
 There will be significant refinement to the language, and minor breaks in backwards compatibility.
-Learn about the changes on our https://github.com/vaticle/typedb/issues/6764[roadmap issue on GitHub,window=_blank].
+Learn more about the changes from our https://typedb.com/blog/typedb-3-roadmap[3.0 Roadmap].
 The biggest change to TypeDB 3.0 will be our storage data structure and architecture
 that significantly boosts performance.
 We’re aiming to release 3.0 in the summer this year, along with preliminary benchmarks of TypeDB.
 ====
 // end::rust-rewrite[]
 
+
+== The future of databases
+
+include::academy::1-introduction-to-typedb/1-introduction-to-typedb.adoc[tag=introductory-statement]
+
 == Getting started
-If you are new to TypeDB, the following pages will help you get started.
+
+Deploy your TypeDB server, connect to it from a client or driver, and learn how to start building applications with TypeDB.
 
 [cols-3]
 --
 .xref:home::install/overview.adoc[]
 [.clickable]
 ****
-Setup and run TypeDB environment and tools.
+Set up a TypeDB Cloud or Core deployment, clients, and language drivers.
 ****
 
 .xref:home::quickstart.adoc[]
 [.clickable]
 ****
-Connect to TypeDB and create a simple database.
+Connect to your TypeDB deployment and run your first queries.
 ****
 
 .xref:home::crash-course.adoc[]
 [.clickable]
 ****
-Learn about the basics of TypeDB.
+Explore the key ingredients of TypeDB with easy and intuitive examples.
 ****
 --
 
-== Learning course
+== TypeDB Academy
 
-An end-to-end learning experience for TypeDB and TypeQL. Through the lens of a sample bookstore database, you'll learn how to read data, write data, and build schemas while taking advantage of TypeDB's unique features as the polymorphic database.
+TypeDB Academy is an end-to-end learning experience for TypeDB and TypeQL. Through the lens of a sample bookstore database, you'll learn how to read data, write data, and build schemas while taking advantage of TypeDB's unique features as a modern, type-safe, and highly expressive database.
 
-[cols-3]
---
-.xref:learn::1-why-typedb/1-why-typedb.adoc[]
-[.clickable]
-****
-Introduction to the unique features that sets TypeDB apart from other databases and the design philosophy behind them.
-****
+++++
+<br>
+<a class="text-p2 button-secondary" href="../academy/overview.html" target="_blank">Go to Academy
+    <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+    style="height: 17px;">
+        <path d="M16.6707 8.97635L6.64706 19L5 17.353L15.0237 7.3293H6.1889V5H19V17.8111H16.6707V8.97635Z">
+        </path>
+    </svg>
+</a>
+++++
 
-.xref:learn::2-environment-setup/2-environment-setup.adoc[]
-[.clickable]
-****
-Easy guide to setting up and using the sample environment needed to run the queries featured in examples and exercises.
-****
 
-.xref:learn::3-reading-data/3-reading-data.adoc[]
-[.clickable]
-****
-Learn how to read data from TypeDB, including declarative polymorphic querying, rule inference, and retrieving types from the schema.
-****
+== TypeDB Manual
 
-.xref:learn::4-writing-data/4-writing-data.adoc[]
-[.clickable]
-****
-Learn how to write data to TypeDB, covering insert, delete, and update operations, including polymorphic data writes.
-****
-
-.xref:learn::5-defining-schemas/5-defining-schemas.adoc[]
-[.clickable]
-****
-Learn how to define schemas for TypeDB, including type hierarchies, interfaces between types, value constraints, and inference rules.
-****
-
-.xref:learn::6-building-applications/6-building-applications.adoc[]
-[.clickable]
-****
-Learn how to build applications on TypeDB, covering database management, transaction control, and result stream processing.
-****
-
-.xref:learn::7-understanding-query-patterns/7-understanding-query-patterns.adoc[]
-[.clickable]
-****
-Learn how to build query patterns utilising advanced elements of TypeQL syntax, and how queries are resolved by TypeDB.
-****
-
-.xref:learn::8-structuring-query-results/8-structuring-query-results.adoc[]
-[.clickable]
-****
-Learn how to structure query results in the optimal manner, covering result grouping, aggregations, sorting, and pagination.
-****
-
-.xref:learn::9-modeling-schemas/9-modeling-schemas.adoc[]
-[.clickable]
-****
-Learn how to design schemas for TypeDB using the conceptual PERA model, including common design patterns and pitfalls.
-****
-
-.xref:learn::10-using-inference/10-using-inference.adoc[]
-[.clickable]
-****
-Learn how to use rule inference to abstract complex patterns into simple forms, and capture complex logic with combinations of rules.
-****
-
-.xref:learn::11-manipulating-stateful-objects/11-manipulating-stateful-objects.adoc[]
-[.clickable]
-****
-Learn how to use retrieve data instances and schema types from the database as stateful objects and perform operations on them.
-****
-
-.xref:learn::12-advanced-modeling/12-advanced-modeling.adoc[]
-[.clickable]
-****
-Learn how to eliminate mismatch with applications by using the type-theoretic framework of the PERA model for schema design.
-****
---
-
-== TypeDB manual
-
-TypeDB manual consists of practice-oriented guides for configuring environment and developing with TypeDB.
+Practice-oriented guides on using TypeDB, including the TypeDB Studio and TypeDB Console manuals.
 
 [cols-2]
 --
 .xref:manual::studio.adoc[]
 [.clickable]
 ****
-TypeDB Studio manual:
-prepare for work, query, control transactions, use Type Editor, Type Browser, and Graph Visualization.
+How to set up TypeDB Studio, connect to your deployments, run queries, control transactions, modify your schema, and visualize your results.
 ****
+
 .xref:manual::console.adoc[]
 [.clickable]
 ****
-TypeDB Console manual: how to connect to TypeDB, use interactive and non-interactive modes, and scripting.
+How to set up TypeDB Console, connect to your deployments, issue commands in interactive and non-interactive modes, and run scripts.
 ****
+
 .xref:manual::connecting/overview.adoc[]
 [.clickable]
 ****
-Connecting to TypeDB Core and Cloud with Studio, Console, and drivers: network connection, database management,
-opening sessions and transaction.
+How to connect to your deployments, manage databases, open sessions, and control transactions with TypeDB Studio, Console, and drivers.
 ****
+
 .xref:manual::defining/overview.adoc[]
 [.clickable]
 ****
-Defining a database schema with Define and Define queries, as well as modifying schema using driver APIs and Studio.
+How to create a database schema with Define and Undefine queries, with Studio's graphical interface, and with programmatic API calls.
 ****
+
 .xref:manual::writing/overview.adoc[]
 [.clickable]
 ****
-Writing data to a TypeDB database with Insert, Delete, and Update queries.
+How to write data to a database with Insert, Delete, and Update queries.
 ****
+
 .xref:manual::reading/overview.adoc[]
 [.clickable]
 ****
-Reading data from a TypeDB database with Get and Fetch queries. Using rule-based inference.
+How to read data from a database with Fetch and Get queries, and use rule-based inference.
 ****
 
 .xref:manual::objects/overview.adoc[]
 [.clickable]
 ****
-Use driver API and its classes to manipulate stateful objects of database's types, rules, and data.
+How to use the driver APIs and to retrieve and manipulate schema types and data instances as stateful objects, and explain the results of rule inference.
 ****
+
 .xref:manual::configuring/overview.adoc[]
 [.clickable]
 ****
-TypeDB server configuration and maintaining: config file, CLI arguments, logs, DB export and import, upgrading versions,
-user management.
+How to configure and maintain TypeDB servers: the config file, CLI arguments, logs, database import and export, version upgrades, and user management.
 ****
 --
 
 [#_typedb_drivers]
 == TypeDB drivers
 
-Client-side libraries with native API to connect to TypeDB. +
-See the xref:drivers::overview.adoc[] page or select an environment below:
+Installation guides, tutorials, and API references for the official TypeDB drivers in all supported languages. See the xref:drivers::overview.adoc[drivers overview] page or select an environment below.
 
 [cols-3]
 --
@@ -230,14 +174,14 @@ Import as a library with a header file to use the C driver API.
 [#_typeql]
 == TypeQL reference
 
-TypeQL is a modern, beautiful and elegant type-theoretic query language, supporting polymorphic queries.
+Complete language reference for TypeQL, covering all query types, pattern elements, and keywords.
 
 [cols-1]
 --
 .xref:typeql::introduction.adoc[]
 [.clickable]
 ****
-A high-level description of TypeQL query language and its features.
+A high-level description of the TypeQL query language and its features.
 ****
 --
 
@@ -246,37 +190,37 @@ A high-level description of TypeQL query language and its features.
 .xref:typeql::queries/overview.adoc[Queries]
 [.clickable]
 ****
-TypeQL queries to define schema and manipulate data.
+Breakdown of the different query types in TypeQL.
 ****
 
 .xref:typeql::patterns/overview.adoc[Patterns]
 [.clickable]
 ****
-TypeQL patterns used in queries.
+Breakdown of patterns for building queries.
 ****
 
 .xref:typeql::statements/overview.adoc[Statements]
 [.clickable]
 ****
-TypeQL statements used in patterns.
+Breakdown of individual TypeQL statements.
 ****
 
 .xref:typeql::modifiers/overview.adoc[Modifiers]
 [.clickable]
 ****
-TypeQL modifiers used with queries.
+Breakdown of modifiers for structuring query results.
 ****
 
 .xref:typeql::concepts/overview.adoc[Concepts]
 [.clickable]
 ****
-TypeQL concepts stored in a database.
+Breakdown of different concepts manipulated with queries.
 ****
 
 .xref:typeql::values/overview.adoc[Values]
 [.clickable]
 ****
-Values and value variables used in TypeQL.
+Breakdown of values and value operations used in queries.
 ****
 --
 
@@ -285,6 +229,6 @@ Values and value variables used in TypeQL.
 .xref:typeql::keywords.adoc[]
 [.clickable]
 ****
-TypeQL keywords and terminology glossary.
+Glossary of TypeQL keywords and terminology.
 ****
 --

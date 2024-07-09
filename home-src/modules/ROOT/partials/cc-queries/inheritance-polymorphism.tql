@@ -1,4 +1,4 @@
-match 
-$x isa entity;
-fetch 
-$x as "Entity": attribute as "Attributes";
+match
+  $p isa person;
+fetch
+  $p: name;

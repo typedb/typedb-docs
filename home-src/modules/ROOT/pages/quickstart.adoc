@@ -33,7 +33,7 @@ see the xref:install/cloud-self-hosted.adoc[Self-hosted deployment] page.
 Core::
 +
 --
-TypeDB Core needs to be xref:home::install/core.adoc[installed] first.
+Ensure TypeDB Core is xref:home::install/core.adoc[installed].
 
 include::home::install/core.adoc[tag=core-run]
 
@@ -44,81 +44,102 @@ include::home::partial$docker.adoc[tags=run]
 [#_typedb_studio]
 == Connect to TypeDB
 // tag::run_studio[]
-There are several ways to connect to a running TypeDB server. In this quickstart guide we will use *TypeDB Studio*, a standalone TypeDB Client with GUI that needs to be
-xref:home::install/studio.adoc[installed] and launched separately from a TypeDB server.
-
-Find the TypeDB Studio binary and run it.
-Click btn:[Connect to TypeDB] on the right side of the top toolbar.
+In this quickstart guide, we will use *TypeDB Studio*, the standalone GUI-based client for TypeDB. Ensure Studio is xref:home::install/studio.adoc[installed], then launch the application.
 // end::run_studio[]
 include::manual::studio.adoc[tag=connect_studio]
 
-=== Select a project folder
+== Create a project
 
-To enable TypeDB Studio's IDE functionality, you now need to select a project folder to store your project files. Select a xref:manual::studio.adoc#_select_a_project_directory[project folder]
-by clicking either btn:[Open Project] in the *Project* panel or
-image:home::studio-icons/project.png[] Open Project Directory button in the top toolbar.
+include::manual::studio.adoc[tag=select_project]
 
 [#_create_a_database]
 == Create a new database
 
-Create a database to play with:
+Let's begin by creating a database:
 
-. Click the database icon (image:home::studio-icons/database.png[]) in the top toolbar.
-. Enter a name for a new database, for example, `typedb-1`, and click btn:[Create].
-. Select the new database from the dropdown to the right of the database icon.
+. Click the image:home::studio-icons/svg/studio_dbs.svg[width=24] btn:[Manage Databases] button in the top toolbar.
+. Enter a name for a new database, for example `typedb-quickstart`, and click btn:[Create].
+. Select the new database from the btn:[Select Database] dropdown (image:home::studio-icons/database-none.png[]) in the top toolbar.
 
 [#_define_a_schema]
 == Define a schema
 
 A new database needs a schema before we can load any data:
 
-. Ensure the Session toggle (`schema` / `data`) is set to `schema` and
-  the Transaction toggle (`write` / `read`) is set to `write`.
-. Open a new tab and copy-paste the following Define query:
+. Ensure the session type toggle (image:manual::icons/session-schema.png[]) is set to `schema` and the transaction type toggle (image:manual::icons/transaction-write.png[]) is set to `write`.
+. Open a image:home::studio-icons/svg/studio_new.svg[width=24] btn:[New Tab] in the btn:[Text Editor] and paste in the following Define query.
 +
 [,typeql]
 ----
 include::attachment$crash-course-schema.tql[]
 ----
-. Click the image:home::studio-icons/run.png[Run query,width=9 query,width=9] btn:[Run Query] button.
-. When the query has completed, click btn:[Commit Transaction] (image:home::studio-icons/commit.png[]).
+. Click the image:home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
+. When the query has completed, click image:home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit Transaction].
 
-Now that the schema has been defined, data can be inserted into the database.
+With the schema defined, we can now insert data into the database.
 
 [#_load_data]
 == Load data
 
-Now let's insert some sample data into the newly created database to be able to query in future steps:
+Let's insert sample data for our newly defined schema:
 
-. Ensure the Session toggle is set to `data` and the Transaction toggle is set to `write`.
-. Open a new tab and copy-paste the following Insert queries:
+. Ensure the session toggle is set to `data` and the transaction toggle is set to `write`.
+. Open a new tab and paste in the following Insert query.
 +
 [,typeql]
 ----
 include::attachment$crash-course-data.tql[]
 ----
-. Execute all queries in the file by clicking the image:home::studio-icons/svg/play-solid-green.svg[Run query,width=9]
-btn:[Run Query] button.
-. When the queries have completed, click btn:[Commit Transaction] (image:home::studio-icons/commit.png[]).
+. Click the image:home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
+. When the query has completed, click image:home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit Transaction].
 
-Assuming there were no errors in the process, the data is persisted in the database.
+The data should now be persisted in the database, and is ready to be queried.
 
-== Finish
+== Read data
 
-Congratulations on completing the TypeDB quickstart guide!
-Now you can try sending your first queries to the database.
+Let's send a Fetch query to retrieve all types of action permitted for a particular user on a particular file. Using a `data` session and `read` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] btn:[run] the following query.
 
-To learn about TypeDB's advanced and unique features such as
-polymorphic queries,
-type inference,
-type inheritance,
-rule-based reasoning,
-and n-ary relations, we recommend you check the <<_learn_more>> section.
+[,typeql]
+----
+match
+  $bob isa user, has name "Bob";
+  $readme isa file, has path "docs/quickstart-guide.adoc";
+  (subject: $bob, object: $readme, action: $action) isa permission;
+fetch
+  $action: name;
+----
+
+This query matches permissions of users with the name "Bob" for files with the path "docs/quickstart-guide.adoc". This is represented by a `permission` relation in which the user plays the `subject` role and the file plays the `object` role. For any matched permissions, it fetches the name of permitted action.
+
+== Update data
+
+To update data in a database, we match the existing data, delete it, and then insert new data to replace it. Let's update Bob's permissions for the quickstart guide documentation. Using a `data` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] btn:[run] the following query, then image:home::studio-icons/svg/studio_check.svg[width=24] btn:[commit] the transaction.
+
+[,typeql]
+----
+match
+  $guide isa file, has path "docs/quickstart-guide.adoc";
+  $bob isa user, has name "Bob";
+  $read isa action, has name "read";
+  $perm (object: $guide, subject: $bob, action: $read) isa permission,
+    has updated $date;
+  $write isa action, has name "write";
+delete
+  $perm (action: $read);
+  $perm has $date;
+insert
+  $perm (action: $write);
+  $perm has updated 2024-05-15T11:04:36;
+----
+
+This query matches `permission` relation by its roleplayers, removes the "read" action from playing `action` role, and replaces it with the "write" action. It also replaces the `updated` attribute to record the update to Bob's permissions.
+
+After committing the transaction, the updated information is persisted in the database and becomes available for querying. If we then re-run the above Fetch query, we should see the results have updated to reflect the change.
 
 [#_learn_more]
-== Learn more
+== What's next?
 
-Here are some options for your next steps with TypeDB.
+Continue to discover TypeDB's powerful features with the Crash Course, or explore other sections of the documentation.
 
 [cols-2]
 --
@@ -128,7 +149,7 @@ Here are some options for your next steps with TypeDB.
 Continue this quickstart guide and learn the basics of TypeDB.
 ****
 
-.xref:learn::overview.adoc[]
+.xref:academy::overview.adoc[]
 [.clickable]
 ****
 A comprehensive learning course for TypeDB comprising several individual lessons.
@@ -140,7 +161,7 @@ A comprehensive learning course for TypeDB comprising several individual lessons
 A collection of practice-oriented how-to guides for TypeDB.
 ****
 
-.xref:drivers::overview.adoc[TypeDB Drivers]
+.xref:drivers::overview.adoc[TypeDB drivers]
 [.clickable]
 ****
 Information on language-specific TypeDB drivers with native API.

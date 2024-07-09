@@ -60,19 +60,16 @@ Cloud::
 .Connect to TypeDB Cloud
 [source,console]
 ----
-$ typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
+typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
 ----
 
 You will be prompted for a password.
-// end::connect_cloud_console[]
-// tag::cloud-psw[]
+
 [NOTE]
 =====
-On your first login,
-xref:manual::configuring/users.adoc#_first_login[change the password] for the `admin` account.
-A TypeDB Cloud deployment will refuse queries until the password is changed from its default value.
+For newly created deployments, the default username and password are `admin` and `password`. After connecting for the first time, you will be required to xref:manual::configuring/users.adoc#_first_login[change the password] before queries can be run.
 =====
-// end::cloud-psw[]
+// end::connect_cloud_console[]
 --
 
 Core::
@@ -82,7 +79,7 @@ Core::
 .Connect to TypeDB Core
 [source,console]
 ----
-$ typedb console --core=<server-address>
+typedb console --core=<server-address>
 ----
 
 The `--core` argument is used to set the TypeDB Core server IP address and port to connect to,
@@ -160,7 +157,7 @@ The asterisk (`*`) is used to notify that the current transaction has uncommitte
 +
 [source,console]
 ----
-$ typedb console
+typedb console
 ----
 
 . Now, run the following command to create a database:
@@ -205,7 +202,7 @@ You can run Console commands using the `--command` argument:
 [,bash]
 [source,console]
 ----
-$ typedb console --command=<command1> --command=<command2>
+typedb console --command=<command1> --command=<command2>
 ----
 
 [#_command_argument_example]
@@ -217,7 +214,7 @@ Run the following command in a terminal to start TypeDB and execute queries:
 [,bash]
 [source,console]
 ----
-$ typedb console --command="database create sample_db" \
+typedb console --command="database create sample_db" \
 --command="database list" \
 --command="transaction sample_db schema write" \
 --command="define person sub entity;" \
@@ -260,7 +257,7 @@ To use a script file with commands, run Console with the `--script` argument and
 
 [source,console]
 ----
-$ typedb console --script=<script-file-path>
+typedb console --script=<script-file-path>
 ----
 
 [NOTE]
@@ -294,7 +291,7 @@ Execute the script with TypeDB Console:
 .Run script.txt
 [source,console]
 ----
-$ typedb console --script=PATH/script.txt
+typedb console --script=PATH/script.txt
 ----
 
 Where `PATH/script.txt` is the path to the file and the filename.
@@ -488,7 +485,7 @@ For example, to use `en_US.UTF-8` run:
 
 [source,console]
 ----
-$ bash export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8
+bash export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8
 ----
 --
 
@@ -500,7 +497,7 @@ For example, to use `en_US.UTF-8` run:
 
 [source,console]
 ----
-$ bash export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8
+bash export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8
 ----
 --
 
@@ -752,6 +749,11 @@ transaction sample_db data read --infer true
 [cols="^.^2,^.^1,^.^2,^.^2"]
 |===
 | TypeDB Console | Protocol encoding version | TypeDB Core | TypeDB Cloud
+
+| https://github.com/vaticle/typedb-console/releases/tag/2.28.0[2.28.0]
+| 3
+| 2.28.0
+| 2.28.0
 
 | https://github.com/vaticle/typedb-console/releases/tag/2.27.0[2.27.0]
 | 3

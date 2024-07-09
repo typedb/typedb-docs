@@ -1,4 +1,4 @@
 match 
-$x has name $name;
+  $x has name $n;
 fetch 
-$x as "Something with a name": attribute as "Attributes";
+  $x: name;

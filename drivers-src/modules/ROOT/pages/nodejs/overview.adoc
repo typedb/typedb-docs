@@ -38,7 +38,7 @@ To install TypeDB Node.js driver:
 
 [source,console]
 ----
-$ npm install typedb-driver
+npm install typedb-driver
 ----
 
 .See the command for older versions (<2.24.0)
@@ -46,7 +46,7 @@ $ npm install typedb-driver
 ====
 [source,console]
 ----
-$ npm install typedb-client
+npm install typedb-client
 ----
 ====
 
@@ -126,6 +126,12 @@ include::drivers::partial$drivers2discord.adoc[]
 [cols="^.^3,^.^2,^.^3,^.^3,^.^2",options="header"]
 |===
 | Node.js driver | Protocol encoding version | TypeDB Core | TypeDB Cloud | Node
+
+| 2.28.0
+| 3
+| 2.28.0
+| 2.28.0
+| >= 14.15
 
 | 2.27.0
 | 3

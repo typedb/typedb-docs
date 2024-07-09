@@ -18,7 +18,7 @@ https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/part
 
 To run this sample application, you'll need:
 
-. TypeDB: either a https://cloud.typedb.com/[TypeDB Cloud] deployment or a TypeDB Core server.
+. TypeDB: either a https://cloud.typedb.com/[TypeDB Cloud,window=_blank] deployment or a TypeDB Core server.
 For TypeDB Core installation instructions, see the xref:home::install/core.adoc[] page.
 . Rust, cargo, and https://crates.io/crates/typedb-driver[TypeDB Rust driver].
 For the driver installation instructions, see the xref:drivers::rust/overview.adoc[] page.
@@ -28,7 +28,7 @@ so make sure to add `sync` feature either in the `Cargo.toml` or via the followi
 
 [source,console]
 ----
-$ cargo add typedb-driver -F sync
+cargo add typedb-driver -F sync
 ----
 
 //#todo Consider adding virtualenv step-by-step guide
