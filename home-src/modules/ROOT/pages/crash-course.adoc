@@ -52,6 +52,7 @@ match
   $old-file isa image, has creation-date < 2010-01-01;
 insert
   (project: $archive, asset: $old-file) isa project-inclusion;
+
 ----
 Patterns often read just like statements in natural language, and can be easily composed to form new patterns. This makes many tasks that are arduous in traditional databases simple and elegant in TypeDB.
 
