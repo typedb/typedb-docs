@@ -5,21 +5,23 @@
 Primitive values used in TypeQL patterns can be of one of the following value types:
 
 // tag::value_types[]
-* `long` -- a 64-bit signed integer number
-* `double` -- a double-precision floating point number, including a decimal point
-* `string` -- a string enclosed in double `"` or single `'` quotes
-* `boolean` -- a `true` or `false`
-* `datetime` -- A date or date-time in one of the supported formats.
+* `boolean` -- Represented by literals `true` and `false`.
+* `long` -- 64-bit signed integer.
+* `double` -- 64-bit floating-point number.
+* `string` -- Variable length UTF-8 encoded string up to 64 kB, enclosed in single or double quotes.
+* `datetime` -- Millisecond-precision timestamp without timezone.
 +
-.See the list of available date-time formats
+.Permitted date-time formats
 [%collapsible]
 ====
+The following formats are permitted for representing datetimes in queries:
+
 * `yyyy-mm-dd`
 * `yyyy-mm-ddThh:mm`
 * `yyyy-mm-ddThh:mm:ss`
-* `yyyy-mm-ddThh:mm:ss.f`
-* `yyyy-mm-ddThh:mm:ss.ff`
 * `yyyy-mm-ddThh:mm:ss.fff`
+
+Regardless of the representation in the query, datetimes are always padded to millisecond precision when stored.
 ====
 // end::value_types[]
 
