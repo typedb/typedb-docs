@@ -11,55 +11,7 @@ xref:manual::studio.adoc[TypeDB Studio].
 
 include::home::overview.adoc[tag=rust-rewrite]
 
-== Run TypeDB
-
-To start TypeDB, select the TypeDB edition below and follow the instructions.
-
-[tabs]
-====
-Cloud::
-+
---
-// tag::cloud-run[]
-Log in to https://cloud.typedb.com/[TypeDB Cloud,window=_blank] and create a new deployment on the Deployments page.
-// end::cloud-run[]
-
-// tag::self-hosted-run[]
-For self-hosted TypeDB Cloud installation and setup,
-see the xref:install/cloud-self-hosted.adoc[Self-hosted deployment] page.
-// end::self-hosted-run[]
---
-
-Core::
-+
---
-Ensure TypeDB Core is xref:home::install/core.adoc[installed].
-
-include::home::install/core.adoc[tag=core-run]
-
-include::home::partial$docker.adoc[tags=run]
---
-====
-
-[#_typedb_studio]
-== Connect to TypeDB
-// tag::run_studio[]
-In this quickstart guide, we will use *TypeDB Studio*, the standalone GUI-based client for TypeDB. Ensure Studio is xref:home::install/studio.adoc[installed], then launch the application.
-// end::run_studio[]
-include::manual::studio.adoc[tag=connect_studio]
-
-== Create a project
-
-include::manual::studio.adoc[tag=select_project]
-
-[#_create_a_database]
-== Create a new database
-
-Let's begin by creating a database:
-
-. Click the image:home::studio-icons/svg/studio_dbs.svg[width=24] btn:[Manage Databases] button in the top toolbar.
-. Enter a name for a new database, for example `typedb-quickstart`, and click btn:[Create].
-. Select the new database from the btn:[Select Database] dropdown (image:home::studio-icons/database-none.png[]) in the top toolbar.
+include::partial$quick-setup.adoc[]
 
 [#_define_a_schema]
 == Define a schema
