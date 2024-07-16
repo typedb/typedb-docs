@@ -8,7 +8,7 @@ As a modern database built on highly expressive and type-safe foundations, TypeD
 
 * Multivalued attributes.
 * Inheritance hierarchies.
-* Polymorphic dependencies.
+* Multi-type references.
 * Abstract data types.
 
 These data structures would normally require an ORM to properly manage. TypeDB is able to express them using high-level declarative syntax and properly apply the necessary constraints to enforce data integrity, without any additional layers in the stack.
@@ -36,10 +36,10 @@ TypeDB uses distinct terminology to relational databases. The following table gi
 [cols="^.^,^.^",options="header"]
 |===
 | Relational term | TypeDB term
-| Table (without FKs) | Entity type
-| Table (with FKs) | Relation type
-| Column | Attribute type
-| Foreign key | Role
+| Table (without FK columns) | Entity type
+| Table (with FK columns) | Relation type
+| Data column | Attribute type
+| Foreign key column | Role
 | View | Rule
 |===
 
@@ -50,7 +50,7 @@ The next table compares the key terms used to describe data instances.
 | Relational term | TypeDB term
 | Row (in table without FKs) | Entity
 | Row (in table with FKs) | Relation
-| Value (in a column) | Attribute
+| Value (in a data column) | Attribute
 |===
 
 [NOTE]
@@ -771,16 +771,16 @@ insert
   (order: $order-6, item: $book-4) isa order-line, has quantity 2;
 ----
 
-== Working with polymorphic dependencies
+== Working with multi-type references
 
-In addition to using inheritance hierarchies in our models, we can also make use of polymorphic dependencies. In TypeDB, this comes in two forms:
+In addition to using inheritance hierarchies in our models, we can also make use of multi-type references. In TypeDB, this comes in two forms:
 
 * Multiple types that own the same attribute type via `owns` statements.
 * Multiple types that play the same role in a relation type via `plays` statements.
 
 These are not possible to model in relational databases, and they are particularly difficult to emulate. Doing so typically involves either adopting a class-inheritance pattern approach as we did previously, or by forgoing referential integrity in the model.
 
-To see how we can use polymorphic dependencies in our model, we will define a new type of product to sell in the bookstore: accessories. Using a `schema` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+To see how we can use multi-type references in our model, we will define a new type of product to sell in the bookstore: accessories. Using a `schema` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
 [,typeql]
 ----
