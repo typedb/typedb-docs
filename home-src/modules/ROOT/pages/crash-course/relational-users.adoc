@@ -31,7 +31,7 @@ It also has several differences:
 
 == Terminology comparison
 
-TypeDB uses distinct terminology to relational databases. The following table gives a comparison of the key terms used to describe schemas in relational databases, and their equivalents in TypeQL.
+TypeDB uses distinct terminology to relational databases, which is broadly described by a *_"tables as types"_* approach. The following table gives a comparison of the key terms used to describe schemas in relational databases, and their equivalents in TypeQL.
 
 [cols="^.^,^.^",options="header"]
 |===
@@ -538,7 +538,6 @@ When inserting data into a type hierarchy, we declare only the exact type of the
 
 [,typeql]
 ----
-
 insert
   $book-1 isa ebook,
     has isbn-13 "9780393634563",
@@ -1045,7 +1044,7 @@ define
     };
 ----
 
-The calculates a line total for each order line and assigns it to the line as a `price` attribute using an xref:typeql::values/arithmetic.adoc[arithmetic expression]. A rule consists of a *condition* and a *conclusion*, located in the `when` and `then` blocks respectively. Wherever in the data the condition is met, the conclusion is applied. Functionally, the above rule is very similar to the following Insert query, which should _not_ be run.
+This calculates a line total for each order line and assigns it to the line as a `price` attribute using an xref:typeql::values/arithmetic.adoc[arithmetic expression]. A rule consists of a *condition* and a *conclusion*, located in the `when` and `then` blocks respectively. Wherever in the data the condition is met, the conclusion is applied. Functionally, the above rule is very similar to the following Insert query, which should _not_ be run.
 
 [,typeql]
 ----
