@@ -1,10 +1,34 @@
-= Crash course setup
+= Crash course
 :keywords: course, queries, typedb, typeql, tutorial, quickstart, insert, fetch
 :page-aliases: home::25-queries.adoc, home::crash-course.adoc
 :pageTitle: Crash course
 :summary: Learn about schema definitions and data operations in TypeDB.
 
 The TypeDB crash course will give you a concise overview of the main aspects of working with TypeDB and TypeQL. For a more in-depth introduction, check out xref:academy::overview.adoc[TypeDB Academy].
+
+== Introduction
+
+The TypeDB crash course is divided into two halves: the environment setup, followed by one of three pathways.
+
+=== Environment setup
+
+Follow the instructions on this page to quickly set up the environment you'll need for the crash course:
+
+* Start your TypeDB server deployment.
+* Connect to your server with TypeDB Studio.
+* Create a new database.
+* Learn how to execute queries using Studio's UI.
+
+=== Choosing a pathway
+
+After setting up the environment, there are three crash course pathways available, tailored to users with different database backgrounds. After completing the setup, choose the pathway that most closely matches your previous database experience:
+
+* *New to databases*: Pathway for those completely new to databases.
+* *Relational users*: Pathway for those used to working with relational databases.
+// * *Document users*: Pathway for those used to working with document databases.
+* *Graph users*: Pathway for those used to working with graph databases.
+
+You'll find links to continue with the Crash Course on your choice of pathway at the end of this page.
 
 include::partial$quick-setup.adoc[]
 
@@ -26,33 +50,34 @@ To run a query:
 . Click the image:home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
 . If the transaction is a `write` transaction: when the query has completed, click image:home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit Transaction]. The course material will tell you when this is necessary.
 
-== Continuing with the crash course
+[#_pathways]
+== Choose a pathway
 
-There are four versions of the crash course available, tailored to users with different database backgrounds. With setup complete, choose the version that most closely matches your previous database experience.
+There are three crash course pathways available, tailored to users with different database backgrounds. With setup complete, choose the pathway that most closely matches your previous database experience.
 
-[cols-2]
+[cols-3]
 --
 .xref:home::crash-course/new-users.adoc[New to databases]
 [.clickable]
 ****
-Crash course for those completely new to databases.
+Pathway for those completely new to databases.
 ****
 
 .xref:home::crash-course/relational-users.adoc[Relational users]
 [.clickable]
 ****
-Crash course for those used to working with relational databases.
+Pathway for those used to working with relational databases.
 ****
 
-.xref:home::crash-course/document-users.adoc[Document users]
-[.clickable]
-****
-Crash course for those used to working with document databases.
-****
+// .xref:home::crash-course/document-users.adoc[Document users]
+// [.clickable]
+// ****
+// Pathway for those used to working with document databases.
+// ****
 
 .xref:home::crash-course/graph-users.adoc[Graph users]
 [.clickable]
 ****
-Crash course for those used to working with graph databases.
+Pathway for those used to working with graph databases.
 ****
 --
