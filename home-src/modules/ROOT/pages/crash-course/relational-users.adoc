@@ -130,11 +130,12 @@ CREATE TABLE orders (
 );
 ----
 
-Here we have introduced three new TypeQL keywords:
+Here we have introduced four new TypeQL keywords:
 
 * `relation`: The root type from which all relation types are subtyped.
 * `relates`: Used to define a *role* for a relation type. Relation types must have at least one role defined.
-* `plays`: Used to define a *roleplayer* for a relation's role.
+* `plays`: Used to define a *roleplayer* for a relation type's role.
+* `regex`: Used to place a *xref:typeql::statements/regex.adoc[regex constraint]* on the value of a string attribute type.
 
 In TypeDB, relation types reference roleplayers by pointers rather than values, so we do not need to specify an attribute to be used as the reference value: the role `buyer` directly references the entity type `user` rather than its attribute type `id`.
 
@@ -232,7 +233,7 @@ To reference an entity in a relation, we use a *relation tuple* of the following
 
 [,typeql]
 ----
-(role-1: $a, role-2: $b, role-3: $c, ...) isa relation-type;
+$relation (role-1: $a, role-2: $b, role-3: $c, ...) isa relation-type;
 ----
 
 Each element of the tuple consists of the role that the entity will play, followed by the variable representing that entity. As the `order` relation type references only one role (`buyer`), the tuples in the query above have only one element. We will see examples of larger relation tuples later on.
@@ -249,7 +250,7 @@ fetch
   $user: attribute;
 ----
 
-All Fetch queries return results in JSON format. You should see the following result.
+All Fetch queries return results in JSON format. You should see the following results.
 
 [,json]
 ----

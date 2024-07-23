@@ -442,7 +442,7 @@ Unlike the previous Insert queries, this Insert query has two clauses. The `matc
 
 [,typeql]
 ----
-(role-1: $a, role-2: $b, role-3: $c, ...) isa relation-type;
+$relation (role-1: $a, role-2: $b, role-3: $c, ...) isa relation-type;
 ----
 
 Each element of the tuple consists of the role that the entity will play, followed by the variable representing that entity. As the `publishing` relation type references two roles (`published` and `publisher`), the tuples in the query above have two elements, but the syntax can represent relations with any number of roleplayers as needed.
