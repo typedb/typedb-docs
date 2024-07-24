@@ -25,12 +25,13 @@ TypeDB shares several common traits with graph databases:
 
 * Data is structured using vertices and edges.
 * Both vertices and edges have labels and properties.
-* Edges are stored as pointers to their endpoint vertices for efficient traversal.
+* Edges are stored as references to their endpoint vertices for efficient traversal.
 * The database enforces edge integrity and ACID guarantees.
 
 It also has several differences:
 
-* Edges can link any number of vertices or other edges, similar to a https://en.wikipedia.org/wiki/Hypergraph[hypergraph,window=_blank].
+* Edges are implemented as https://en.wikipedia.org/wiki/Hypergraph[hyperedges,window=_blank], and can link any number of vertices.
+* Edges can also be nested, allowing them to link other edges too.
 * Edge endpoints are defined with specific labels, rather than by edge direction.
 * Properties are stored as independent vertices, connected to their parent vertices/edges.
 * Permitted data structures must be pre-defined in the schema before data can be inserted.
@@ -153,7 +154,7 @@ This query introduces two new TypeQL keywords:
 
 TypeDB Studio shows entities as pink rectangles and attributes as blue ovals in graphs. Entities are connected to their attributes by arrows labeled with the `has` keyword. We can see that four results have been returned, corresponding to the previously inserted data. The graph shows one vertex per variable in the `get` clause per result. Unlike in graph databases, attributes are vertices independent of the entities that own them, so we need to match and get them in addition to their owners, or they will not appear in the graph.
 
-== Using entity type hierarchies
+=== Defining entity type hierarchies
 
 The entity type `publisher` that we defined previously was declared to be a subtype of the root type `entity` by using the `sub` keyword. However, we can also declare types to be subtypes of existing types. In the following query, we define four new entity types in a *type hierarchy*, along with some new attribute types. Using a `schema` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
@@ -482,7 +483,7 @@ RETURN *
 
 TypeDB Studio shows relations as yellow diamonds in graphs. Relations are connected to their roleplayers by arrows labeled with the associated role names.
 
-== Using relation type hierarchies
+=== Defining relation type hierarchies
 
 We can define hierarchies of relation types in the same way we define entity type hierarchies. In the next query, we define a `contribution` relation type and three subtypes: `authoring`, `editing`, and `illustrating`. Using a `schema` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 

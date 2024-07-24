@@ -30,8 +30,8 @@ TypeDB shares several common traits with relational databases:
 It also has several differences:
 
 * The query language is TypeQL rather than SQL.
-* All columns are multivalued by default, and null values are not necessary.
-* Foreign keys are stored as pointers rather than values.
+* All columns are multivalued by default, so normalization and null values are not necessary.
+* Foreign keys are stored as references rather than values.
 * Columns with the same name in different tables are automatically indexed together.
 
 == Terminology comparison
@@ -142,7 +142,7 @@ Here we have introduced four new TypeQL keywords:
 * `plays`: Used to define a *roleplayer* for a relation type's role.
 * `regex`: Used to place a *xref:typeql::statements/regex.adoc[regex constraint]* on the value of a string attribute type.
 
-In TypeDB, relation types reference roleplayers by pointers rather than values, so we do not need to specify an attribute to be used as the reference value: the role `buyer` directly references the entity type `user` rather than its attribute type `id`.
+In TypeDB, relation types refer to roleplayers by references rather than values, so we do not need to specify an attribute to be used as the reference value: the role `buyer` directly references the entity type `user` rather than its attribute type `id`.
 
 In this query we have also reused `id`. We originally declared it to be owned by `user`, and now we have declared it also to be owned by `order`. This is not possible in a relational databases, and allows us to query common attributes of different types together, as we will see later on!
 
