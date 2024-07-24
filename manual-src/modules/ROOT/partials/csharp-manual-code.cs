@@ -88,8 +88,8 @@ class ManualProgram
             using (ITypeDBTransaction tx = session.Transaction(TransactionType.Write)) {
                 string insert_query = @"
                                         insert
-                                        $user1 isa user, has name 'Alice', has email 'alice@vaticle.com';
-                                        $user2 isa user, has name 'Bob', has email 'bob@vaticle.com';
+                                        $user1 isa user, has name 'Alice', has email 'alice@typedb.com';
+                                        $user2 isa user, has name 'Bob', has email 'bob@typedb.com';
                                         $friendship (friend:$user1, friend: $user2) isa friendship;";
                 _ = tx.Query.Insert(insert_query).ToList();
                 tx.Commit();
@@ -103,7 +103,7 @@ class ManualProgram
                                             match
                                             $u isa user, has name 'Bob';
                                             insert
-                                            $new-u isa user, has name 'Charlie', has email 'charlie@vaticle.com';
+                                            $new-u isa user, has name 'Charlie', has email 'charlie@typedb.com';
                                             $f($u,$new-u) isa friendship;";
                 List<IConceptMap> response = tx.Query.Insert(match_insert_query).ToList();
                 if (response.Count == 1) {
@@ -137,7 +137,7 @@ class ManualProgram
                                 delete
                                 $u has $e;
                                 insert
-                                $u has email 'charles@vaticle.com';";
+                                $u has email 'charles@typedb.com';";
                 List<IConceptMap> response = tx.Query.Update(update_query).ToList();
                 if (response.Count == 1) {
                     tx.Commit();
@@ -276,7 +276,7 @@ class ManualProgram
                     Console.WriteLine(rule.When);
                     Console.WriteLine(rule.Then);
                 }
-                IRule newRule = tx.Logic.PutRule("Employee", "{$u isa user, has email $e; $e contains '@vaticle.com';}","$u has name 'Employee'").Resolve()!;
+                IRule newRule = tx.Logic.PutRule("Employee", "{$u isa user, has email $e; $e contains '@typedb.com';}","$u has name 'Employee'").Resolve()!;
                 IRule oldRule = tx.Logic.GetRule("users").Resolve()!;
                 Console.WriteLine(oldRule.Label);
                 newRule.Delete(tx).Resolve();
@@ -295,7 +295,7 @@ class ManualProgram
                 }
                 // end::get_rules[]
                 // tag::put_rule[]
-                IRule newRule = tx.Logic.PutRule("Employee", "{$u isa user, has email $e; $e contains '@vaticle.com';}","$u has name 'Employee'").Resolve()!;
+                IRule newRule = tx.Logic.PutRule("Employee", "{$u isa user, has email $e; $e contains '@typedb.com';}","$u has name 'Employee'").Resolve()!;
                 // end::put_rule[]
                 // tag::get_rule[]
                 IRule oldRule = tx.Logic.GetRule("users").Resolve()!;

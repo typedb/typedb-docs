@@ -162,11 +162,7 @@ image:home::studio-icons/svg/studio_run.svg[width=24]image:home::studio-icons/sv
 
 When used in a Define query, the `value` keyword defines the value type of an attribute type. When the attribute type is later instantiated, its values must be of the specified value type. There are currently five value types in TypeDB:
 
-* `boolean`
-* `long` (64-bit signed integer)
-* `double` (64-bit floating-point number)
-* `string` (variable length UTF-8 encoded string up to 64 kB)
-* `datetime` (millisecond-precision timestamp without timezone)
+include::typeql::values/value-types.adoc[tag=value_types]
 
 More value types will be added in future updates.
 
