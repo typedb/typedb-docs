@@ -49,7 +49,7 @@ def get_release_notes(product):
         case _:
             gh_alias = product
     product_version = get_released_version(product)
-    release_notes_link = f"https://github.com/vaticle/{gh_alias}/releases/tag/{product_version}"
+    release_notes_link = f"https://github.com/typedb/{gh_alias}/releases/tag/{product_version}"
     return product_version, release_notes_link
 
 

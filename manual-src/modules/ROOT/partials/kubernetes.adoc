@@ -20,11 +20,11 @@ kubectl create secret docker-registry private-docker-hub --docker-server=https:/
 You can use an
 https://hub.docker.com/settings/security?generateToken=true[access token,window=_blank] instead of password.
 
-Next, add the Vaticle Helm repo:
+Next, add the TypeDB Helm repo:
 
 [source,console]
 ----
-helm repo add vaticle https://repo.typedb.com/repository/helm/
+helm repo add typedb https://repo.typedb.com/repository/helm/
 ----
 
 == Encryption setup (optional)
@@ -102,7 +102,7 @@ Deploy:
 
 [source,console]
 ----
-helm install typedb-cloud vaticle/typedb-cloud --set "exposed=false,encrypted=false"
+helm install typedb-cloud typedb/typedb-cloud --set "exposed=false,encrypted=false"
 ----
 --
 
@@ -114,7 +114,7 @@ To enable in-flight encryption for your private cluster, make sure the `encrypte
 
 [source,console]
 ----
-helm install typedb-cloud vaticle/typedb-cloud --set "exposed=false,encrypted=true" \
+helm install typedb-cloud typedb/typedb-cloud --set "exposed=false,encrypted=true" \
 --set servers=3,cpu=1,storage.persistent=false,storage.size=1Gi,exposed=true,domain=localhost-ext --set encryption.enable=true --set encryption.enable=true,encryption.externalGRPC.secretName=ext-grpc,encryption.externalGRPC.content.privateKeyName=ext-grpc-private-key.pem,encryption.externalGRPC.content.certificateName=ext-grpc-certificate.pem,encryption.externalGRPC.content.rootCAName=ext-grpc-root-ca.pem \
 --set encryption.internalGRPC.secretName=int-grpc,encryption.internalGRPC.content.privateKeyName=int-grpc-private-key.pem,encryption.internalGRPC.content.certificateName=int-grpc-certificate.pem,encryption.internalGRPC.content.rootCAName=int-grpc-root-ca.pem \
 --set encryption.internalZMQ.secretName=int-zmq,encryption.internalZMQ.content.privateKeyName=int-zmq-private-key,encryption.internalZMQ.content.publicKeyName=int-zmq-public-key
@@ -151,7 +151,7 @@ Deploy:
 
 [source,console]
 ----
-helm install typedb-cloud vaticle/typedb-cloud --set "exposed=true"
+helm install typedb-cloud typedb/typedb-cloud --set "exposed=true"
 ----
 
 Once the deployment has been completed,
@@ -189,7 +189,7 @@ Ensure that the `encrypted` flag is set to `true` and the `domain` flag set acco
 
 [source,console]
 ----
-helm install typedb-cloud vaticle/typedb-cloud --set "exposed=true,encrypted=true,domain=<domain-name>" \
+helm install typedb-cloud typedb/typedb-cloud --set "exposed=true,encrypted=true,domain=<domain-name>" \
 --set servers=3,cpu=1,storage.persistent=false,storage.size=1Gi,exposed=true,domain=localhost-ext --set encryption.enable=true --set encryption.enable=true,encryption.externalGRPC.secretName=ext-grpc,encryption.externalGRPC.content.privateKeyName=ext-grpc-private-key.pem,encryption.externalGRPC.content.certificateName=ext-grpc-certificate.pem,encryption.externalGRPC.content.rootCAName=ext-grpc-root-ca.pem \
 --set encryption.internalGRPC.secretName=int-grpc,encryption.internalGRPC.content.privateKeyName=int-grpc-private-key.pem,encryption.internalGRPC.content.certificateName=int-grpc-certificate.pem,encryption.internalGRPC.content.rootCAName=int-grpc-root-ca.pem \
 --set encryption.internalZMQ.secretName=int-zmq,encryption.internalZMQ.content.privateKeyName=int-zmq-private-key,encryption.internalZMQ.content.publicKeyName=int-zmq-public-key
@@ -234,13 +234,13 @@ Deploy, adjusting the parameters for CPU and storage to run on a local machine:
 
 [source,console]
 ----
-helm install typedb-cloud vaticle/typedb-cloud --set image.pullPolicy=Always,servers=3,singlePodPerNode=false,cpu=1,storage.persistent=false,storage.size=1Gi,exposed=true,javaopts=-Xmx4G --set encryption.enable=false
+helm install typedb-cloud typedb/typedb-cloud --set image.pullPolicy=Always,servers=3,singlePodPerNode=false,cpu=1,storage.persistent=false,storage.size=1Gi,exposed=true,javaopts=-Xmx4G --set encryption.enable=false
 ----
 
 ////
 [source,console]
 ----
-helm install vaticle/typedb-cloud --generate-name \
+helm install typedb/typedb-cloud --generate-name \
 --set "cpu=2,replicas=3,singlePodPerNode=false,storage.persistent=true,storage.size=10Gi,exposed=true"
 ----
 ////
