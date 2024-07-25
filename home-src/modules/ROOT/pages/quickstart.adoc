@@ -23,7 +23,31 @@ A new database needs a schema before we can load any data:
 +
 [,typeql]
 ----
-include::attachment$crash-course-schema.tql[]
+define
+  person sub entity, owns name;
+  user sub person,
+    owns username @key,
+    owns email @unique,
+    plays permission:subject;
+  file sub entity,
+    owns path @key,
+    owns size-kb,
+    plays permission:object;
+  action sub entity,
+    owns name @key,
+    plays permission:action;
+  permission sub relation,
+    owns updated,
+    relates object,
+    relates subject,
+    relates action;
+  id sub attribute, abstract, value string;
+  email sub id, value string;
+  name sub id, value string;
+  path sub id, value string;
+  username sub id, value string;
+  size-kb sub attribute, value long;
+  updated sub attribute, value datetime;
 ----
 . Click the image:home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
 . When the query has completed, click image:home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit Transaction].
@@ -40,7 +64,27 @@ Let's insert sample data for our newly defined schema:
 +
 [,typeql]
 ----
-include::attachment$crash-course-data.tql[]
+insert
+  $charlie isa person, has name "Charlie";
+  $bob isa user,
+    has name "Bob",
+    has username "bob_93",
+    has email "bob@typedb.com";
+  $alex isa user,
+    has name "Alex",
+    has username "al-capucino";
+  $readme isa file, has path "README.md";
+  $guide isa file,
+    has path "docs/quickstart-guide.adoc",
+    has size-kb 3458761;
+  $full isa action, has name "full";
+  $write isa action, has name "write";
+  $read isa action, has name "read";
+  $perm-1 (subject: $bob, object: $readme, action: $full) isa permission,
+    has updated 2023-10-27T12:04:36;
+  $perm-2 (subject: $bob, object: $guide, action: $read) isa permission,
+    has updated 2023-10-27T12:04:36;
+  $perm-3 (subject: $alex, object: $guide, action: $write) isa permission;
 ----
 . Click the image:home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
 . When the query has completed, click image:home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit Transaction].
