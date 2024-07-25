@@ -61,7 +61,18 @@ Let's define a simple schema for users:
 .Define query example
 [,typeql]
 ----
-include::home::attachment$quickstart-schema.tql[]
+define
+
+id sub attribute, value long;
+email sub attribute, value string;
+full-name sub attribute, value string;
+
+user sub entity,
+    owns id @key,
+    owns email,
+    abstract;
+
+person sub user, owns full-name;
 ----
 
 == Usage in a Fetch query
