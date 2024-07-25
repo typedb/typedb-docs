@@ -24,30 +24,28 @@ A new database needs a schema before we can load any data:
 [,typeql]
 ----
 define
-  person sub entity, owns name;
-  user sub person,
-    owns username @key,
-    owns email @unique,
-    plays permission:subject;
-  file sub entity,
-    owns path @key,
-    owns size-kb,
-    plays permission:object;
-  action sub entity,
-    owns name @key,
-    plays permission:action;
-  permission sub relation,
-    owns updated,
-    relates object,
-    relates subject,
-    relates action;
-  id sub attribute, abstract, value string;
-  email sub id, value string;
-  name sub id, value string;
-  path sub id, value string;
-  username sub id, value string;
-  size-kb sub attribute, value long;
-  updated sub attribute, value datetime;
+  user sub entity,
+    owns id @key,
+    owns name,
+    owns birth-date,
+    plays purchase:buyer;
+  order sub entity,
+    owns id @key,
+    owns timestamp,
+    owns status,
+    plays purchase:order;
+
+  purchase sub relation,
+    relates order,
+    relates buyer;
+
+  id sub attribute, value string;
+  name sub attribute, value string;
+  birth-date sub attribute, value datetime;
+  timestamp sub attribute, value datetime;
+  status sub attribute,
+    value string,
+    regex "^(paid|dispatched|delivered|returned|canceled)$";
 ----
 . Click the image:home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
 . When the query has completed, click image:home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit Transaction].
@@ -65,26 +63,32 @@ Let's insert sample data for our newly defined schema:
 [,typeql]
 ----
 insert
-  $charlie isa person, has name "Charlie";
-  $bob isa user,
-    has name "Bob",
-    has username "bob_93",
-    has email "bob@typedb.com";
-  $alex isa user,
-    has name "Alex",
-    has username "al-capucino";
-  $readme isa file, has path "README.md";
-  $guide isa file,
-    has path "docs/quickstart-guide.adoc",
-    has size-kb 3458761;
-  $full isa action, has name "full";
-  $write isa action, has name "write";
-  $read isa action, has name "read";
-  $perm-1 (subject: $bob, object: $readme, action: $full) isa permission,
-    has updated 2023-10-27T12:04:36;
-  $perm-2 (subject: $bob, object: $guide, action: $read) isa permission,
-    has updated 2023-10-27T12:04:36;
-  $perm-3 (subject: $alex, object: $guide, action: $write) isa permission;
+  $user-1 isa user,
+    has id "u0001",
+    has name "Kevin Morrison",
+    has birth-date 1995-10-29;
+  $user-2 isa user,
+    has id "u0002",
+    has name "Cameron Osborne",
+    has birth-date 1954-11-11;
+  $user-3 isa user,
+    has id "u0003",
+    has name "Keyla Pineda";
+  $order-1 isa order,
+    has id "o0001",
+    has timestamp 2022-08-03T19:51:24.324,
+    has status "canceled";
+  $order-2 isa order,
+    has id "o0002",
+    has timestamp 2021-04-27T05:02:39.672,
+    has status "dispatched";
+  $order-6 isa order,
+    has id "o0006",
+    has timestamp 2020-08-19T20:21:54.194,
+    has status "paid";
+  (order: $order-1, buyer: $user-1) isa purchase;
+  (order: $order-2, buyer: $user-1) isa purchase;
+  (order: $order-6, buyer: $user-2) isa purchase;
 ----
 . Click the image:home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
 . When the query has completed, click image:home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit Transaction].
@@ -93,42 +97,33 @@ The data should now be persisted in the database, and is ready to be queried.
 
 == Read data
 
-Let's send a Fetch query to retrieve all types of action permitted for a particular user on a particular file. Using a `data` session and `read` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] btn:[run] the following query.
+Let's retrieve some details for orders that are currently dispatched. The following Fetch query matches any dispatched orders, and returns the order timestamp, order status, and the name of the buyer. Using a `data` session and `read` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] btn:[run] this query.
 
 [,typeql]
 ----
 match
-  $bob isa user, has name "Bob";
-  $readme isa file, has path "docs/quickstart-guide.adoc";
-  (subject: $bob, object: $readme, action: $action) isa permission;
+  $order has status "dispatched";
+  $purchase (order: $order, buyer: $buyer) isa purchase;
 fetch
-  $action: name;
+  $order: timestamp, status;
+  $buyer: name;
 ----
-
-This query matches permissions of users with the name "Bob" for files with the path "docs/quickstart-guide.adoc". This is represented by a `permission` relation in which the user plays the `subject` role and the file plays the `object` role. For any matched permissions, it fetches the name of permitted action.
 
 == Update data
 
-To update data in a database, we match the existing data, delete it, and then insert new data to replace it. Let's update Bob's permissions for the quickstart guide documentation. Using a `data` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] btn:[run] the following query, then image:home::studio-icons/svg/studio_check.svg[width=24] btn:[commit] the transaction.
+To update data in a database, we match the existing data, delete it, and then insert new data to replace it. The following Update query updates the status of the order with ID "o0006". Using a `data` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] btn:[run] this query, then image:home::studio-icons/svg/studio_check.svg[width=24] btn:[commit] the transaction.
 
 [,typeql]
 ----
 match
-  $guide isa file, has path "docs/quickstart-guide.adoc";
-  $bob isa user, has name "Bob";
-  $read isa action, has name "read";
-  $perm (object: $guide, subject: $bob, action: $read) isa permission,
-    has updated $date;
-  $write isa action, has name "write";
+  $order-6 isa order,
+    has id "o0006",
+    has status $old-status;
 delete
-  $perm (action: $read);
-  $perm has $date;
+  $order-6 has $old-status;
 insert
-  $perm (action: $write);
-  $perm has updated 2024-05-15T11:04:36;
+  $order-6 has status "dispatched";
 ----
-
-This query matches `permission` relation by its roleplayers, removes the "read" action from playing `action` role, and replaces it with the "write" action. It also replaces the `updated` attribute to record the update to Bob's permissions.
 
 After committing the transaction, the updated information is persisted in the database and becomes available for querying. If we then re-run the above Fetch query, we should see the results have updated to reflect the change.
 
@@ -142,7 +137,7 @@ Continue learning how to use TypeDB with the Crash Course and TypeDB Academy, or
 .xref:home::crash-course.adoc[]
 [.clickable]
 ****
-A concise overview of the main aspects of TypeDB and TypeQL, with multiple paths based on previous database experience.
+A concise overview of the main aspects of TypeDB and TypeQL, with multiple pathways based on previous database experience.
 ****
 
 .xref:academy::overview.adoc[]
