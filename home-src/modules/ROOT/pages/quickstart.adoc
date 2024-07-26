@@ -103,7 +103,7 @@ Let's retrieve some details for orders that are currently dispatched. The follow
 ----
 match
   $order has status "dispatched";
-  $purchase (order: $order, buyer: $buyer) isa purchase;
+  (order: $order, buyer: $buyer) isa purchase;
 fetch
   $order: timestamp, status;
   $buyer: name;
