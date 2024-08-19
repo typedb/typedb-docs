@@ -52,6 +52,21 @@ pip install typedb-client
 ----
 ====
 
+[#_check_install_python]
+== Checking your installation
+
+You should be able to import the TypeDB driver as follows:
+
+[,python]
+----
+import typedb.driver
+----
+
+[NOTE]
+====
+On Windows, the import may fail with `ImportError: DLL load failed`. If it does, it means your system is missing the Microsoft Visual C++ redistributable matching your Python version. To fix the issue, link:https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads[download and install the package] corresponding to your Python version.
+====
+
 == Quickstart
 
 See below a short example of Python code that connects to a local TypeDB Core,
