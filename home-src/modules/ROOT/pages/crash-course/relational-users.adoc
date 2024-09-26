@@ -139,7 +139,7 @@ Here we have introduced four new TypeQL keywords:
 
 * `relation`: The root type from which all relation types are subtyped.
 * `relates`: Used to define a *role* for a relation type. Relation types must have at least one role defined.
-* `plays`: Used to define a *roleplayer* for a relation type's role.
+* `plays`: Used to define a *roleplayer* for a relation type's role. The role is specified using both the relation type and the role name, separated by a `:` delimiter.
 * `regex`: Used to place a *xref:typeql::statements/regex.adoc[regex constraint]* on the value of a string attribute type.
 
 In TypeDB, relation types refer to roleplayers by references rather than values, so we do not need to specify an attribute to be used as the reference value: the role `buyer` directly references the entity type `user` rather than its attribute type `id`.
