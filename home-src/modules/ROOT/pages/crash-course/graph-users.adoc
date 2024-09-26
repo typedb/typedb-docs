@@ -392,11 +392,18 @@ Here we have introduced three new TypeQL keywords:
 
 * `relation`: The root type from which all relation types are subtyped.
 * `relates`: Used to define a *role* for a relation type. Relation types must have at least one role defined.
-* `plays`: Used to define a *roleplayer* for a relation's role.
+* `plays`: Used to define a *roleplayer* for a relation's role. The role is specified using both the relation type and the role name, separated by a `:` delimiter.
 
 Edges in graph databases are directed, with a start-vertex and an end-vertex indicating direction. In contrast, relations in TypeDB are characterised by named roles rather than direction. For the binary `publishing` relation type, the endpoints are defined by the `publisher` and `publishing` roles. This is highly generalised, and we could define as many roles as we want by using an appropriate number of `relates` statements. We could, for instance, define a *ternary relation type* by declaring three roles, or a *unary relation type* by declaring just one!
 
 For each role defined, we must define the permitted roleplayers with a `plays` statement. Any number of entity types can be defined to play a given role.
+
+[NOTE]
+====
+Here, we have used the label `publisher` for one of the roles of `publishing`, despite previously having used the same label for the entity type `publisher`. This is permitted because the role is *scoped* by the relation type. When referring to the role outside the scope of its definition, we must always use its fully-scoped label `publishing:publisher`. The entity type `publisher` is distinct from this role type. To make the entity type play the role, we must use a `plays` statement as with any other role and roleplayer.
+====
+
+
 
 === Inserting relations
 

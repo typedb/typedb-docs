@@ -498,6 +498,11 @@ Here we have introduced two new TypeQL keywords:
 
 This query defines a new type hierarchy of book types, described by an abstract type `book` with three subtypes: `paperback`, `hardback`, and `ebook`. The attribute type ownerships of `book` are automatically inherited by its subtypes. Meanwhile, ownership of `stock` is defined individually at the subtype level. This gives complete control over which data instances are permitted to own which attributes. This also applies to which data instances are permitted to play which roles via `plays` statements, which can likewise be defined at the supertype or subtypes levels.
 
+[NOTE]
+====
+Here, we have used the label `order` for one of the roles of `order-line`, despite previously having used the same label for the entity type `order`. This is permitted because the role is *scoped* by the relation type, in the same way that a column in a relational database can have the same name as another table. When referring to the role outside the scope of its definition, we must always use its fully-scoped label `order-line:order`, in the same way that we would use the fully-scoped term `order_line.order` in a SQL query.
+====
+
 Modeling this in a relational database would require us to adopt a specialized strategy to handle the inheritance hierarchy. In the SQL query below, we use a https://typedb.com/fundamentals/semantic-integrity-loss#pattern-3:-class-table-inheritance-4[class-table inheritance] design pattern.
 
 [,sql]
