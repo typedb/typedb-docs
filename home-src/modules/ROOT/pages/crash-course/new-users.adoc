@@ -69,7 +69,7 @@ Data in TypeDB is stored as entities, relations, and attributes. This provides a
 
 Entities:: Used to represent *independent concepts*. An entity might practically require other concepts to exist, such as a car that cannot exist without its parts, but can be conceptualized without reference to them: a car can be imagined without considering its parts.
 
-Relations:: Used to represent *relationships between concepts*. Every relation must depend on at least one other concept, and cannot be conceptualized without those dependencies: it is impossible to imagine a marriage without considering its spouses.
+Relations (and roles):: Used to represent *relationships between concepts*. Every relation must depend on at least one other concept playing a *role*, and cannot be conceptualized without those dependencies: it is impossible to imagine a marriage without considering its spouses. Here, "spouse" would be a role in a marriage.
 
 Attributes:: Used to represent *properties of concepts*. Every attribute has a literal value representing a property of one or more concepts, such as names of people, dates of marriages, and license plates of cars.
 
@@ -91,7 +91,7 @@ It describes six types:
 
 * An entity type `person`.
 * An entity type `car`.
-* A relation type `marriage`, which depends on at least one `spouse`.
+* A relation type `marriage`, which depends on the role `spouse`.
 * An attribute type `name`, which has values of type `string`.
 * An attribute type `date`, which has values of type `datetime`.
 * An attribute type `license-plate`, which has values of type `string`.
@@ -99,7 +99,7 @@ It describes six types:
 In addition to the declared names of these types, the above DDL *statements* contain a number of TypeQL keywords:
 
 * `sub`: Used to declare an entity, relation, or attribute type. Followed by the keywords `entity`, `relation`, or `attribute` to indicate the kind of the type.
-* `relates`: Used to declare a *role* for a relation type. Relation types must have at least one role declared.
+* `relates`: Used to declare a *role* for a relation type, which can be played by entity or relation types. Relation types must have at least one role declared.
 * `value`: Used to declare the *xref:typeql::values/value-types.adoc[value type]* of an attribute type. Attribute types must have a value type declared.
 
 === Describing type capabilities
@@ -116,7 +116,7 @@ marriage owns date;
 It uses two new TypeQL keywords:
 
 * `owns`: Used to declare an entity or relation type to be the *owner* of an attribute type.
-* `plays`: Used to declare an entity or relation type to be a *roleplayer* of a relation type's role.
+* `plays`: Used to declare an entity or relation type to be a *roleplayer* of a relation type's role. The role is specified using both the relation type and the role name, separated by a `:` delimiter.
 
 These capabilities describe how data instances can depend on each other. It declares that people can have names and can be spouses in marriages, that cars can have license plates, and that marriages can have dates.
 
@@ -136,10 +136,10 @@ define
     owns id @key,
     owns timestamp,
     owns status,
-    plays purchase:order;
+    plays purchase:purchased;
 
   purchase sub relation,
-    relates order,
+    relates purchased,
     relates buyer;
 
   id sub attribute, value string;
@@ -287,10 +287,10 @@ Now that we have inserted users and orders into the database, we will insert som
 
 [,typeql]
 ----
-$purchase (order: $order, buyer: $user) isa purchase;
+$purchase (purchased: $order, buyer: $user) isa purchase;
 ----
 
-Each element of the tuple consists of the role that the roleplayer plays, followed by the variable representing that roleplayer. As the `purchase` relation type references two roles (`order` and `buyer`), the tuple above has two elements, but the syntax can represent relations with any number of roleplayers as needed.
+Each element of the tuple consists of the role that the roleplayer plays, followed by the variable representing that roleplayer. As the `purchase` relation type references two roles (`purchased` and `buyer`), the tuple above has two elements, but the syntax can represent relations with any number of roleplayers as needed.
 
 [,typeql]
 ----
@@ -313,9 +313,9 @@ match
   $order-2 isa order, has id "o0002";
   $order-6 isa order, has id "o0006";
 insert
-  $purchase-1 (order: $order-1, buyer: $user-1) isa purchase;
-  $purchase-2 (order: $order-2, buyer: $user-1) isa purchase;
-  $purchase-6 (order: $order-6, buyer: $user-2) isa purchase;
+  $purchase-1 (purchased: $order-1, buyer: $user-1) isa purchase;
+  $purchase-2 (purchased: $order-2, buyer: $user-1) isa purchase;
+  $purchase-6 (purchased: $order-6, buyer: $user-2) isa purchase;
 ----
 
 Unlike the previous Insert queries, this one has two clauses: a `match` clause followed by an `insert` clause. The `match` clause is used to match the existing entities as with the previous Fetch query, but then instead of returning attributes from them, we instead reference them in newly inserted relations. When inserting relations, it is best to match the roleplayers by a key attribute, as we have done here, to ensure that each roleplayer variable matches exactly one data instance.
@@ -327,7 +327,7 @@ To retrieve data from relations, we use the same tuple syntax as used to insert 
 [,typeql]
 ----
 match
-  $purchase (order: $order, buyer: $user) isa purchase;
+  $purchase (purchased: $order, buyer: $user) isa purchase;
 fetch
   $order: timestamp, status;
   $user: name;
@@ -379,7 +379,7 @@ The patterns used in the `match` clauses of TypeQL queries are fully composable,
 [,typeql]
 ----
 match
-  $purchase (order: $order, buyer: $user) isa purchase;
+  $purchase (purchased: $order, buyer: $user) isa purchase;
   $order has status "paid";
 fetch
   $order: timestamp, status;
@@ -469,6 +469,11 @@ define
 
   quantity sub attribute, value long;
 ----
+
+[NOTE]
+====
+Here, we have used the label `order` for one of the roles of `order-line`, despite previously having used the same label for the entity type `order`. This is permitted because the role is *scoped* by the relation type. When referring to the role outside the scope of its definition, we must always use its fully-scoped label `order-line:order`. The entity type `order` is distinct from this role type. To make the entity type play the role, we must use a `plays` statement as usual.
+====
 
 === Inserting data into type hierarchies
 
@@ -710,7 +715,7 @@ Finally, we will retrieve the list of books in each order made by the user with 
 ----
 match
   $user isa user, has id "u0001";
-  $purchase (order: $order, buyer: $user) isa purchase;
+  $purchase (purchased: $order, buyer: $user) isa purchase;
   $order-line (order: $order, item: $book) isa order-line;
 fetch
   $order: id;
@@ -777,7 +782,7 @@ However, the results are not in a particularly useful format. We have retrieved 
 ----
 match
   $user isa user, has id "u0001";
-  $purchase (order: $order, buyer: $user) isa purchase;
+  $purchase (purchased: $order, buyer: $user) isa purchase;
 fetch
   $order: id;
   "order-lines": {
