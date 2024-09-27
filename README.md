@@ -1,4 +1,4 @@
-# Vaticle Documentation
+# TypeDB Documentation
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/e8d3d72a-dcb6-4e31-bfc5-deb4e665d083/deploy-status)](https://app.netlify.com/sites/typedb-docs/deploys)
 [![Discord](https://img.shields.io/discord/665254494820368395?color=7389D8&label=chat&logo=discord&logoColor=ffffff)](https://typedb.com/discord)
@@ -6,7 +6,7 @@
 [![Stack Overflow](https://img.shields.io/badge/stackoverflow-typedb-796de3.svg)](https://stackoverflow.com/questions/tagged/typedb)
 [![Stack Overflow](https://img.shields.io/badge/stackoverflow-typeql-3dce8c.svg)](https://stackoverflow.com/questions/tagged/typeql)
 
-This repository contains all content that powers the Vaticle Documentation Portal, accessible at [https://typedb.com/docs](https://typedb.com/docs).
+This repository contains all content that powers the TypeDB Documentation Portal, accessible at [https://typedb.com/docs](https://typedb.com/docs).
 
 ---
 

@@ -149,7 +149,7 @@ int main() {
             goto cleanup;
         }
         char query[512];
-        snprintf(query, sizeof(query), "insert $user1 isa user, has name 'Alice', has email 'alice@vaticle.com'; $user2 isa user, has name 'Bob', has email 'bob@vaticle.com'; $friendship (friend:$user1, friend: $user2) isa friendship;");
+        snprintf(query, sizeof(query), "insert $user1 isa user, has name 'Alice', has email 'alice@typedb.com'; $user2 isa user, has name 'Bob', has email 'bob@typedb.com'; $friendship (friend:$user1, friend: $user2) isa friendship;");
         ConceptMapIterator* insertResult = query_insert(tx, query, opts);
         if (FAILED()) {
             handle_error("Query execution failed.");
@@ -172,7 +172,7 @@ int main() {
             goto cleanup;
         }
         char query[512];
-        snprintf(query, sizeof(query), "match $u isa user, has name 'Bob'; insert $new-u isa user, has name 'Charlie', has email 'charlie@vaticle.com'; $f($u,$new-u) isa friendship;");
+        snprintf(query, sizeof(query), "match $u isa user, has name 'Bob'; insert $new-u isa user, has name 'Charlie', has email 'charlie@typedb.com'; $f($u,$new-u) isa friendship;");
         ConceptMapIterator* insertResult = query_insert(tx, query, opts);
         if (FAILED()) {
             handle_error("Query execution failed.");
@@ -223,7 +223,7 @@ int main() {
             goto cleanup;
         }
         char query[512];
-        snprintf(query, sizeof(query), "match $u isa user, has name 'Charlie', has email $e; delete $u has $e; insert $u has email 'charles@vaticle.com';");
+        snprintf(query, sizeof(query), "match $u isa user, has name 'Charlie', has email $e; delete $u has $e; insert $u has email 'charles@typedb.com';");
         ConceptMapIterator* insertResult = query_update(tx, query, opts);
         if (FAILED()) {
             handle_error("Query execution failed.");
@@ -445,7 +445,7 @@ int main() {
         while ((rule = rule_iterator_next(rules)) != NULL) {
             printf("%s\n%s\n%s\n", rule_get_label(rule), rule_get_when(rule), rule_get_then(rule));
         }
-        Rule* newRule = rule_promise_resolve(logic_manager_put_rule(tx, "Employee", "{$u isa user, has email $e; $e contains '@vaticle.com';}", "$u has name 'Employee'"));
+        Rule* newRule = rule_promise_resolve(logic_manager_put_rule(tx, "Employee", "{$u isa user, has email $e; $e contains '@typedb.com';}", "$u has name 'Employee'"));
         Rule* oldRule = rule_promise_resolve(logic_manager_get_rule(tx, "users"));
         printf("%s\n", rule_get_label(oldRule));
         rule_delete(tx, newRule);
@@ -472,7 +472,7 @@ int main() {
         }
         // end::get_rules[]
         // tag::put_rule[]
-        Rule* newRule = rule_promise_resolve(logic_manager_put_rule(tx, "Employee", "{$u isa user, has email $e; $e contains '@vaticle.com';}", "$u has name 'Employee'"));
+        Rule* newRule = rule_promise_resolve(logic_manager_put_rule(tx, "Employee", "{$u isa user, has email $e; $e contains '@typedb.com';}", "$u has name 'Employee'"));
         // end::put_rule[]
         // tag::get_rule[]
         Rule* oldRule = rule_promise_resolve(logic_manager_get_rule(tx, "users"));

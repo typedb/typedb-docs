@@ -12,13 +12,13 @@ In this tutorial, we'll build a sample application with the Rust driver capable 
 * Send different types of queries.
 
 Follow the steps below or see the
-https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/rust/src/main.rs[full source code,window=_blank].
+https://github.com/typedb/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/rust/src/main.rs[full source code,window=_blank].
 
 == Environment setup
 
 To run this sample application, you'll need:
 
-. TypeDB: either a https://cloud.typedb.com/[TypeDB Cloud] deployment or a TypeDB Core server.
+. TypeDB: either a https://cloud.typedb.com/[TypeDB Cloud,window=_blank] deployment or a TypeDB Core server.
 For TypeDB Core installation instructions, see the xref:{page-component-version}@home::install/core.adoc[] page.
 . Rust, cargo, and https://crates.io/crates/typedb-driver[TypeDB Rust driver].
 For the driver installation instructions, see the xref:rust/overview.adoc[] page.
@@ -28,7 +28,7 @@ so make sure to add `sync` feature either in the `Cargo.toml` or via the followi
 
 [source,console]
 ----
-$ cargo add typedb-driver -F sync
+cargo add typedb-driver -F sync
 ----
 
 //#todo Consider adding virtualenv step-by-step guide
@@ -147,7 +147,7 @@ include::partial$tutorials/rust/src/main.rs[tag=db-schema-setup]
 ----
 
 The schema for the sample application is stored in the
-https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[iam-schema.tql,window=_blank]
+https://github.com/typedb/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[iam-schema.tql,window=_blank]
 file.
 
 .See the full schema
@@ -174,7 +174,7 @@ include::partial$tutorials/rust/src/main.rs[tag=db-dataset-setup]
 ----
 
 We read the
-https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/iam-data-single-query.tql[iam-data-single-query.tql,window=_blank]
+https://github.com/typedb/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/iam-data-single-query.tql[iam-data-single-query.tql,window=_blank]
 file, send its contents as a single query, and then commit the changes.
 
 .See the full Insert query
@@ -325,7 +325,7 @@ include::partial$tutorials/rust/src/main.rs[tag=delete]
 
 [cols-2]
 --
-.link:https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/rust/src/main.rs[Source code,window=_blank]
+.link:https://github.com/typedb/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/rust/src/main.rs[Source code,window=_blank]
 [.clickable]
 ****
 The full source code of this sample application.

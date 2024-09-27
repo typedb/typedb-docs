@@ -10,7 +10,7 @@ https://typedb.com/deploy?dialog=contact[contact form,window=_blank].
 [IMPORTANT]
 ====
 TypeDB Cloud is available as a fully managed cloud service with no installation required at
-https://cloud.typedb.com/[cloud.typedb.com].
+https://cloud.typedb.com/[cloud.typedb.com,window=_blank].
 ====
 
 == System Requirements
@@ -23,7 +23,7 @@ https://www.oracle.com/java/technologies/downloads/#java11[Oracle Java]).
 
 TypeDB Cloud is distributed and installed separately from TypeDB Core.
 
-Request access to the TypeDB Cloud distributive repositories from Vaticle.
+Request access to the TypeDB Cloud distributive repositories from the TypeDB team.
 You can do that via technical support, using the contact details from your contract, or through our
 https://typedb.com/discord[Discord,window=_blank] server.
 
@@ -33,7 +33,7 @@ Then you can install it with <<_using_docker,Docker>> or manual
 You can deploy a cluster of TypeDB Cloud servers
 <<_deploying_manually,manually>> or via <<_deploying_with_kubernetes,Kubernetes>>.
 
-If you don't have a license yet, you can try our https://cloud.typedb.com/[TypeDB Cloud] service or contact our
+If you don't have a license yet, you can try our https://cloud.typedb.com/[TypeDB Cloud,window=_blank] service or contact our
 mailto:cloud@typedb.com[sales team].
 
 [#_using_docker]
@@ -46,39 +46,43 @@ To pull the TypeDB Cloud Docker image, run:
 
 [source,console]
 ----
-$ docker pull vaticle/typedb-cloud:latest
+docker pull vaticle/typedb-cloud:latest
 ----
 
-Use `docker run` to create a new container with the downloaded image.
+Use `docker create` to create a new container with the downloaded image.
 By default, a TypeDB Cloud server is expected to be running on port `1729`.
-To ensure that data is preserved even when the container is killed or restarted, use a Docker volume:
+To ensure that data is preserved even when the container is killed or restarted, use Docker volumes:
 
 [source,console]
 ----
-$ docker run --name typedb -d -v $(pwd)/db/:/opt/ -p 1729:1729 vaticle/typedb-cloud:latest
+docker create --name typedb -p 1729:1729 \
+    -v $(pwd)/db/data:/opt/typedb-cloud-all-linux-x86_64/server/data \
+    -v $(pwd)/db/replication:/opt/typedb-cloud-all-linux-x86_64/server/replication \
+    -v $(pwd)/db/user:/opt/typedb-cloud-all-linux-x86_64/server/user \
+    vaticle/typedb-cloud:latest
 ----
 
 ==== Start and Stop TypeDB Cloud in Docker
 
-To start the Docker container:
+To start the Docker container, or restart a stopped container:
 
 [source,console]
 ----
-$ docker start typedb
+docker start typedb
 ----
 
 To check the containers running:
 
 [source,console]
 ----
-$ docker ps
+docker ps
 ----
 
 To stop the Docker container:
 
 [source,console]
 ----
-$ docker stop typedb
+docker stop typedb
 ----
 
 [#_manual_download_and_installation]
@@ -90,7 +94,7 @@ Download the https://cloudsmith.io/~typedb/repos/private-release/packages/?q=clo
 unzip it in a location on your machine that is easily accessible via terminal.
 
 If TypeDB doesn't have a distribution you need, please open an issue
-https://github.com/vaticle/typedb/issues[on GitHub].
+https://github.com/typedb/typedb/issues[on GitHub].
 
 ==== Start and Stop TypeDB Cloud manually
 
@@ -101,7 +105,7 @@ To start TypeDB Cloud manually:
 +
 [source,console]
 ----
-$ ./typedb server
+./typedb server
 ----
 
 Now TypeDB Cloud should show a welcome screen with its version, address, and bootup time.
@@ -119,14 +123,14 @@ You can use xref:{page-component-version}@manual:ROOT:console.adoc[TypeDB Consol
 
 [source,console]
 ----
-$ ./typedb console --cloud 127.0.0.1:1729 --username admin --password
+./typedb console --cloud 127.0.0.1:1729 --username admin --password
 ----
 
 To run TypeDB Console from a Docker container, run:
 
 [source,console]
 ----
-$ docker exec -ti typedb-cloud bash -c '/opt/typedb-cloud-all-linux-x86_64/typedb console --cloud 127.0.0.1:1729 --username admin --password'
+docker exec -ti typedb-cloud bash -c '/opt/typedb-cloud-all-linux-x86_64/typedb console --cloud 127.0.0.1:1729 --username admin --password'
 ----
 
 [#_deploying_manually]
@@ -174,7 +178,7 @@ To run TypeDB server #1:
 
 [source,console]
 ----
-$ ./typedb server \
+./typedb server \
     --server.address=10.0.0.1:1729 \
     --server.internal-address.zeromq=10.0.0.1:1730 \
     --server.internal-address.grpc=10.0.0.1:1731 \
@@ -198,7 +202,7 @@ To run TypeDB server #2:
 
 [source,console]
 ----
-$ ./typedb server \
+./typedb server \
     --server.address=10.0.0.2:1729 \
     --server.internal-address.zeromq=10.0.0.2:1730 \
     --server.internal-address.grpc=10.0.0.2:1731 \
@@ -222,7 +226,7 @@ To run TypeDB server #3:
 
 [source,console]
 ----
-$ ./typedb server \
+./typedb server \
     --server.address=10.0.0.3:1729 \
     --server.internal-address.zeromq=10.0.0.3:1730 \
     --server.internal-address.grpc=10.0.0.3:1731 \
@@ -252,7 +256,7 @@ The relevant external hostname should be passed as arguments using the `--server
 
 [source,console]
 ----
-$ ./typedb server \
+./typedb server \
     --server.address=external-host-1:1729 \
     --server.internal-address.zeromq=10.0.0.1:1730 \
     --server.internal-address.grpc=10.0.0.1:1731 \

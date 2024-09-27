@@ -1,9 +1,9 @@
 match
-$u isa user;
-$f isa file;
-$act isa action;
-($u,$f,$act) isa permission;
+  $u isa user;
+  $f isa file;
+  $a isa action;
+  ($u, $f, $a) isa permission;
 fetch
-$u as "User": name;
-$f as "File": path;
-$act as "Action": name;
+  $u as "User": name;
+  $f as "File": path;
+  $a as "Action": name;

@@ -27,7 +27,7 @@ For the export to work make sure the TypeDB server with *the database to export*
 
 [source,console]
 ----
-$ typedb server export --database=<database> --port=<server rpc port> --data=<data_filename>.typedb --schema=<schema_filename>.tql
+typedb server export --database=<database> --port=<server rpc port> --data=<data_filename>.typedb --schema=<schema_filename>.tql
 ----
 
 Where:
@@ -49,7 +49,7 @@ For the import to work make sure the target TypeDB server (where the database wi
 
 [source,console]
 ----
-$ typedb server import --database=<database> --port=<server rpc port> --data=<data_filename>.typedb --schema=<schema_filename>.tql
+typedb server import --database=<database> --port=<server rpc port> --data=<data_filename>.typedb --schema=<schema_filename>.tql
 ----
 
 Where:

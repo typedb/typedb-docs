@@ -169,7 +169,7 @@ with `full-name`, `email`, and `type` keys inside.
 ----
 {
     "p": {
-        "email": [ { "value": "kevin.morrison@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
+        "email": [ { "value": "kevin.morrison@typedb.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } ],
         "full-name": [ { "value": "Kevin Morrison", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } ],
         "type": { "label": "person", "root": "entity" }
     }
@@ -421,7 +421,7 @@ The resulting JSON objects have a predictable structure of keys, that was set by
     "permited-files": [  ],
     "user": {
         "User attributes": [
-            { "value": "masako.holley@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } },
+            { "value": "masako.holley@typedb.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } },
             { "value": "Masako Holley", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } }
         ],
         "type": { "label": "person", "root": "entity" }
@@ -451,7 +451,7 @@ The resulting JSON objects have a predictable structure of keys, that was set by
     ],
     "user": {
         "User attributes": [
-            { "value": "kevin.morrison@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } },
+            { "value": "kevin.morrison@typedb.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } },
             { "value": "Kevin Morrison", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } }
         ],
         "type": { "label": "person", "root": "entity" }
@@ -461,7 +461,7 @@ The resulting JSON objects have a predictable structure of keys, that was set by
     "permited-files": [  ],
     "user": {
         "User attributes": [
-            { "value": "pearle.goodman@vaticle.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } },
+            { "value": "pearle.goodman@typedb.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } },
             { "value": "Pearle Goodman", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } }
         ],
         "type": { "label": "person", "root": "entity" }
@@ -521,7 +521,7 @@ include::partial$iam-database-links.adoc[]
 
 We can use Fetch query to infer new facts.
 For example, we can use the `add-view-permission` rule from the
-https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[IAM schema,window=_blank]
+https://github.com/typedb/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[IAM schema,window=_blank]
 to infer `view_file` action access permissions.
 
 .Example of using inference
@@ -535,7 +535,7 @@ fetch $fp;
 ----
 
 Using the
-https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-data-single-query.tql[IAM sample data,window=_blank]
+https://github.com/typedb/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-data-single-query.tql[IAM sample data,window=_blank]
 the above query shows any results only if inference is
 xref:{page-component-version}@manual::reading/infer.adoc#_how_to_send_a_query_with_inference[enabled].
 
@@ -714,10 +714,10 @@ The corresponding value would contain an empty list of values in this case.
 
 [cols-2]
 --
-.xref:{page-component-version}@learn::7-understanding-query-patterns/overview.adoc[]
+.xref:{page-component-version}@academy::7-understanding-query-patterns/overview.adoc[]
 [.clickable]
 ****
-Learn more about query patterns in the TypeDB Learning course.
+Learn more about query patterns in TypeDB Academy.
 ****
 
 .xref:{page-component-version}@manual::reading/fetch.adoc[]

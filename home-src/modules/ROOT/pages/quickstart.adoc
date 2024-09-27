@@ -6,143 +6,156 @@
 :tabs-sync-option:
 :experimental:
 
-This Quickstart guide shows how to set up a TypeDB database and run queries using
-xref:{page-component-version}@manual::studio.adoc[TypeDB Studio].
+This Quickstart guide shows how to set up a TypeDB database and run queries using xref:{page-component-version}@manual::studio.adoc[TypeDB Studio]. The guide is available in both video and text formats.
 
 include::{page-component-version}@home::overview.adoc[tag=rust-rewrite]
 
-== Run TypeDB
+video::UQbdl35ymOg[youtube,role=framed]
 
-To start TypeDB, select the TypeDB edition below and follow the instructions.
-
-[tabs]
-====
-Cloud::
-+
---
-// tag::cloud-run[]
-Log in to https://cloud.typedb.com/[TypeDB Cloud,window=_blank] and create a new deployment on the Deployments page.
-// end::cloud-run[]
-
-// tag::self-hosted-run[]
-For self-hosted TypeDB Cloud installation and setup,
-see the xref:install/cloud-self-hosted.adoc[Self-hosted deployment] page.
-// end::self-hosted-run[]
---
-
-Core::
-+
---
-TypeDB Core needs to be xref:{page-component-version}@home::install/core.adoc[installed] first.
-
-include::{page-component-version}@home::install/core.adoc[tag=core-run]
-
-include::{page-component-version}@home::partial$docker.adoc[tags=run]
---
-====
-
-[#_typedb_studio]
-== Connect to TypeDB
-// tag::run_studio[]
-There are several ways to connect to a running TypeDB server. In this quickstart guide we will use *TypeDB Studio*, a standalone TypeDB Client with GUI that needs to be
-xref:{page-component-version}@home::install/studio.adoc[installed] and launched separately from a TypeDB server.
-
-Find the TypeDB Studio binary and run it.
-Click btn:[Connect to TypeDB] on the right side of the top toolbar.
-// end::run_studio[]
-include::{page-component-version}@manual::studio.adoc[tag=connect_studio]
-
-=== Select a project folder
-
-To enable TypeDB Studio's IDE functionality, you now need to select a project folder to store your project files. Select a xref:{page-component-version}@manual::studio.adoc#_select_a_project_directory[project folder]
-by clicking either btn:[Open Project] in the *Project* panel or
-image:{page-component-version}@home::studio-icons/project.png[] Open Project Directory button in the top toolbar.
-
-[#_create_a_database]
-== Create a new database
-
-Create a database to play with:
-
-. Click the database icon (image:{page-component-version}@home::studio-icons/database.png[]) in the top toolbar.
-. Enter a name for a new database, for example, `typedb-1`, and click btn:[Create].
-. Select the new database from the dropdown to the right of the database icon.
+include::{page-component-version}@partial$quick-setup.adoc[]
 
 [#_define_a_schema]
 == Define a schema
 
 A new database needs a schema before we can load any data:
 
-. Ensure the Session toggle (`schema` / `data`) is set to `schema` and
-  the Transaction toggle (`write` / `read`) is set to `write`.
-. Open a new tab and copy-paste the following Define query:
+. Ensure the session type toggle (image:manual::icons/session-schema.png[]) is set to `schema` and the transaction type toggle (image:manual::icons/transaction-write.png[]) is set to `write`.
+. Open a image:home::studio-icons/svg/studio_new.svg[width=24] btn:[New Tab] in the btn:[Text Editor] and paste in the following Define query.
 +
 [,typeql]
 ----
-include::attachment$crash-course-schema.tql[]
-----
-. Click the image:{page-component-version}@home::studio-icons/run.png[Run query,width=9 query,width=9] btn:[Run Query] button.
-. When the query has completed, click btn:[Commit Transaction] (image:{page-component-version}@home::studio-icons/commit.png[]).
+define
+  user sub entity,
+    owns id @key,
+    owns name,
+    owns birth-date,
+    plays purchase:buyer;
+  order sub entity,
+    owns id @key,
+    owns timestamp,
+    owns status,
+    plays purchase:order;
 
-Now that the schema has been defined, data can be inserted into the database.
+  purchase sub relation,
+    relates order,
+    relates buyer;
+
+  id sub attribute, value string;
+  name sub attribute, value string;
+  birth-date sub attribute, value datetime;
+  timestamp sub attribute, value datetime;
+  status sub attribute,
+    value string,
+    regex "^(paid|dispatched|delivered|returned|canceled)$";
+----
+. Click the image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
+. When the query has completed, click image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit Transaction].
+
+With the schema defined, we can now insert data into the database.
 
 [#_load_data]
 == Load data
 
-Now let's insert some sample data into the newly created database to be able to query in future steps:
+Let's insert sample data for our newly defined schema:
 
-. Ensure the Session toggle is set to `data` and the Transaction toggle is set to `write`.
-. Open a new tab and copy-paste the following Insert queries:
+. Ensure the session toggle is set to `data` and the transaction toggle is set to `write`.
+. Open a new tab and paste in the following Insert query.
 +
 [,typeql]
 ----
-include::attachment$crash-course-data.tql[]
+insert
+  $user-1 isa user,
+    has id "u0001",
+    has name "Kevin Morrison",
+    has birth-date 1995-10-29;
+  $user-2 isa user,
+    has id "u0002",
+    has name "Cameron Osborne",
+    has birth-date 1954-11-11;
+  $user-3 isa user,
+    has id "u0003",
+    has name "Keyla Pineda";
+  $order-1 isa order,
+    has id "o0001",
+    has timestamp 2022-08-03T19:51:24.324,
+    has status "canceled";
+  $order-2 isa order,
+    has id "o0002",
+    has timestamp 2021-04-27T05:02:39.672,
+    has status "dispatched";
+  $order-6 isa order,
+    has id "o0006",
+    has timestamp 2020-08-19T20:21:54.194,
+    has status "paid";
+  (order: $order-1, buyer: $user-1) isa purchase;
+  (order: $order-2, buyer: $user-1) isa purchase;
+  (order: $order-6, buyer: $user-2) isa purchase;
 ----
-. Execute all queries in the file by clicking the image:{page-component-version}@home::studio-icons/svg/play-solid-green.svg[Run query,width=9]
-btn:[Run Query] button.
-. When the queries have completed, click btn:[Commit Transaction] (image:{page-component-version}@home::studio-icons/commit.png[]).
+. Click the image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
+. When the query has completed, click image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit Transaction].
 
-Assuming there were no errors in the process, the data is persisted in the database.
+The data should now be persisted in the database, and is ready to be queried.
 
-== Finish
+== Read data
 
-Congratulations on completing the TypeDB quickstart guide!
-Now you can try sending your first queries to the database.
+Let's retrieve some details for orders that are currently dispatched. The following Fetch query matches any dispatched orders, and returns the order timestamp, order status, and the name of the buyer. Using a `data` session and `read` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] btn:[run] this query.
 
-To learn about TypeDB's advanced and unique features such as
-polymorphic queries,
-type inference,
-type inheritance,
-rule-based reasoning,
-and n-ary relations, we recommend you check the <<_learn_more>> section.
+[,typeql]
+----
+match
+  $order has status "dispatched";
+  (order: $order, buyer: $buyer) isa purchase;
+fetch
+  $order: timestamp, status;
+  $buyer: name;
+----
+
+== Update data
+
+To update data in a database, we match the existing data, delete it, and then insert new data to replace it. The following Update query updates the status of the order with ID "o0006". Using a `data` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] btn:[run] this query, then image:home::studio-icons/svg/studio_check.svg[width=24] btn:[commit] the transaction.
+
+[,typeql]
+----
+match
+  $order-6 isa order,
+    has id "o0006",
+    has status $old-status;
+delete
+  $order-6 has $old-status;
+insert
+  $order-6 has status "dispatched";
+----
+
+After committing the transaction, the updated information is persisted in the database and becomes available for querying. If we then re-run the above Fetch query, we should see the results have updated to reflect the change.
 
 [#_learn_more]
-== Learn more
+== What's next?
 
-Here are some options for your next steps with TypeDB.
+Continue learning how to use TypeDB with the Crash Course and TypeDB Academy, or explore other sections of the documentation.
 
 [cols-2]
 --
 .xref:{page-component-version}@home::crash-course.adoc[]
 [.clickable]
 ****
-Continue this quickstart guide and learn the basics of TypeDB.
+A concise overview of the main aspects of TypeDB and TypeQL, with multiple pathways based on previous database experience.
 ****
 
-.xref:{page-component-version}@learn::overview.adoc[]
+.xref:{page-component-version}@academy::overview.adoc[]
 [.clickable]
 ****
-A comprehensive learning course for TypeDB comprising several individual lessons.
+An end-to-end learning experience for TypeDB and TypeQL, showing how to take advantage of TypeDB's unique features.
 ****
 
 .xref:{page-component-version}@manual::overview.adoc[TypeDB manual]
 [.clickable]
 ****
-A collection of practice-oriented how-to guides for TypeDB.
+Practice-oriented guides on using TypeDB, including the TypeDB Studio and TypeDB Console manuals.
 ****
 
-.xref:{page-component-version}@drivers::overview.adoc[TypeDB Drivers]
+.xref:{page-component-version}@drivers::overview.adoc[TypeDB drivers]
 [.clickable]
 ****
-Information on language-specific TypeDB drivers with native API.
+Installation guides, tutorials, and API references for the official TypeDB drivers in all supported languages.
 ****
 --

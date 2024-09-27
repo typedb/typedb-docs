@@ -12,13 +12,13 @@ In this tutorial, we'll build a sample application with the Node.js driver capab
 * Send different types of queries.
 
 Follow the steps below or see the
-https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/nodejs/sample.js[full source code,window=_blank].
+https://github.com/typedb/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/nodejs/sample.js[full source code,window=_blank].
 
 == Environment setup
 
 To run this sample application, you'll need:
 
-. TypeDB: either a https://cloud.typedb.com/[TypeDB Cloud] deployment or a TypeDB Core server.
+. TypeDB: either a https://cloud.typedb.com/[TypeDB Cloud,window=_blank] deployment or a TypeDB Core server.
 For TypeDB Core installation instructions, see the xref:{page-component-version}@home::install/core.adoc[] page.
 . Node.js and https://www.npmjs.com/package/typedb-driver[TypeDB Node.js driver].
 For the driver installation instructions, see the xref:nodejs/overview.adoc[] page.
@@ -138,7 +138,7 @@ include::partial$tutorials/nodejs/sample.js[tag=db-schema-setup]
 ----
 
 The schema for the sample application is stored in the
-https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[iam-schema.tql,window=_blank]
+https://github.com/typedb/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[iam-schema.tql,window=_blank]
 file.
 
 .See the full schema
@@ -165,7 +165,7 @@ include::partial$tutorials/nodejs/sample.js[tag=db-dataset-setup]
 ----
 
 We read the
-https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/iam-data-single-query.tql[iam-data-single-query.tql,window=_blank]
+https://github.com/typedb/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/iam-data-single-query.tql[iam-data-single-query.tql,window=_blank]
 file, send its contents as a single query, and then commit the changes.
 
 .See the full TypeQL Insert query
@@ -318,7 +318,7 @@ include::partial$tutorials/nodejs/sample.js[tag=delete]
 
 [cols-2]
 --
-.link:https://github.com/vaticle/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/nodejs/sample.js[Source code,window=_blank]
+.link:https://github.com/typedb/typedb-docs/tree/master/drivers-src/modules/ROOT/partials/tutorials/nodejs/sample.js[Source code,window=_blank]
 [.clickable]
 ****
 The full source code of this sample application.

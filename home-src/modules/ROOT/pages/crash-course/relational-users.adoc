@@ -1,0 +1,1188 @@
+= Crash course - relational database users
+
+This crash course pathway is designed to give a concise overview of the main aspects of working with TypeDB and TypeQL for users coming from relational databases. If you do not have experience with relational databases, you can check out our xref:home::crash-course/overview.adoc#_pathways[other pathways] instead. Relational query examples in this crash course use PostgreSQL syntax.
+
+[NOTE]
+====
+If you would like to follow along with the examples in this crash course, make sure you have completed the xref:home::crash-course/overview.adoc[environment setup].
+====
+
+== Coming from relational databases
+
+As a modern database built on highly expressive and type-safe foundations, TypeDB is designed to elegantly model data structures that are tricky to express in relational databases, including:
+
+* Multivalued attributes.
+* Inheritance hierarchies.
+* Multi-type references.
+* Abstract data types.
+
+These data structures would normally require an ORM to properly manage. TypeDB is able to express them using high-level declarative syntax and properly apply the necessary constraints to enforce data integrity, without any additional layers in the stack.
+
+== Key similarities and differences
+
+TypeDB shares several common traits with relational databases:
+
+* Tables and foreign keys are defined by the schema.
+* Columns have pre-defined data types.
+* Inserted data is validated against the schema.
+* The database enforces referential integrity and ACID guarantees.
+
+It also has several differences:
+
+* The query language is TypeQL rather than SQL.
+* All columns are multivalued by default, so normalization and null values are not necessary.
+* Foreign keys are stored as references rather than values.
+* Columns with the same name in different tables are automatically indexed together.
+
+== Terminology comparison
+
+TypeDB uses distinct terminology to relational databases, which is broadly described by a *_"tables as types"_* approach. The following table gives a comparison of the key terms used to describe schemas in relational databases, and their equivalents in TypeQL.
+
+[cols="^.^,^.^",options="header"]
+|===
+| Relational term | TypeDB term
+| Table (without FK columns) | Entity type
+| Table (with FK columns) | Relation type
+| Data column | Attribute type
+| Foreign key column | Role
+| View | Rule
+|===
+
+The next table compares the key terms used to describe data instances.
+
+[cols="^.^,^.^",options="header"]
+|===
+| Relational term | TypeDB term
+| Row (in table without FKs) | Entity
+| Row (in table with FKs) | Relation
+| Value (in a data column) | Attribute
+|===
+
+[NOTE]
+====
+While these comparisons are equivalent as far as database theory is concerned, they may not always apply well in practice. When converting relational models to TypeDB, these comparisons should be taken as guidelines rather than rules.
+====
+
+== Defining a schema
+
+To define new *types*, we use a *Define query*. The following query defines a new *entity type* `user` along with some *attribute types* for it. Using a `schema` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+
+[,typeql]
+----
+define
+  user sub entity,
+    owns id @key,
+    owns name,
+    owns birth-date;
+
+  id sub attribute, value string;
+  name sub attribute, value string;
+  birth-date sub attribute, value datetime;
+----
+
+This is equivalent to the following SQL query.
+
+[,sql]
+----
+CREATE TABLE users (
+    id TEXT PRIMARY KEY,
+    name TEXT,
+    birth_date DATE
+);
+----
+
+The above query contains the following TypeQL keywords:
+
+* `define`: Used to indicate the beginning of a Define query.
+* `sub`: Used to define a new entity, relation, or attribute type.
+* `entity`: The *root type* from which all entity types are subtyped.
+* `owns`: Used to define an entity or relation type to be the *owner* of an attribute type.
+* `@key`: Used in an `owns` statement to specify a *xref:typeql::statements/key.adoc[key attribute]* of an entity or relation type.
+* `attribute`: The root type from which all attribute types are subtyped.
+* `value`: Used to define the *xref:typeql::values/value-types.adoc[value type]* of an attribute type. Attribute types must have a value type declared.
+
+In TypeDB, attribute types are defined separately to entity types. This allows attributes to be reused for multiple entity or relation types, as we will see shortly. This is different to in a relational database, where columns are defined along with their tables, and columns cannot be reused in multiple tables.
+
+=== Defining relation types
+
+In the next Define query, we define a new *relation type*, which references the existing entity type `user`. Using a `schema` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+
+[,typeql]
+----
+define
+  order sub relation,
+    relates buyer,
+    owns id @key,
+    owns timestamp,
+    owns status;
+  user plays order:buyer;
+
+  timestamp sub attribute, value datetime;
+  status sub attribute,
+    value string,
+    regex "^(paid|dispatched|delivered|returned|canceled)$";
+----
+
+This is equivalent to the following SQL query.
+
+[,sql]
+----
+CREATE TABLE orders (
+    id TEXT PRIMARY KEY,
+    buyer_id TEXT NOT NULL REFERENCES users(id),
+    timestamp TIMESTAMP,
+    status TEXT CHECK (status IN ('paid', 'dispatched', 'delivered', 'returned', 'canceled'))
+);
+----
+
+Here we have introduced four new TypeQL keywords:
+
+* `relation`: The root type from which all relation types are subtyped.
+* `relates`: Used to define a *role* for a relation type. Relation types must have at least one role defined.
+* `plays`: Used to define a *roleplayer* for a relation type's role. The role is specified using both the relation type and the role name, separated by a `:` delimiter.
+* `regex`: Used to place a *xref:typeql::statements/regex.adoc[regex constraint]* on the value of a string attribute type.
+
+In TypeDB, relation types refer to roleplayers by references rather than values, so we do not need to specify an attribute to be used as the reference value: the role `buyer` directly references the entity type `user` rather than its attribute type `id`.
+
+In this query we have also reused `id`. We originally declared it to be owned by `user`, and now we have declared it also to be owned by `order`. This is not possible in a relational databases, and allows us to query common attributes of different types together, as we will see later on!
+
+As with attribute ownerships, roles and roleplayers are also defined separately, allowing us to have multiple roleplayers of the same role. In a relational database, this would be equivalent to a single foreign key column that can reference multiple tables simultaneously, something also not possible! Once again, we will explore this later on.
+
+== Inserting data
+
+With a schema defined, we can begin inserting data. To insert data, we use an *Insert query*. The following query inserts three new users into the database. Using a `data` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+
+[,typeql]
+----
+insert
+  $user-1 isa user,
+    has id "u0001",
+    has name "Kevin Morrison",
+    has birth-date 1995-10-29;
+  $user-2 isa user,
+    has id "u0002",
+    has name "Cameron Osborne",
+    has birth-date 1954-11-11;
+  $user-3 isa user,
+    has id "u0003",
+    has name "Keyla Pineda",
+    has birth-date 1977-06-20;
+----
+
+This is equivalent to the following SQL query.
+
+[,sql]
+----
+INSERT INTO users (id, name, birth_date)
+VALUES
+    ('u0001', 'Kevin Morrison', '1995-10-29'),
+    ('u0002', 'Cameron Osborne', '1954-11-11'),
+    ('u0003', 'Keyla Pineda', '1977-06-20');
+----
+
+This query introduces three new TypeQL keywords:
+
+* `insert`: Used to indicate the beginning of the `insert` clause in an Insert query or Update query.
+* `isa`: Used to declare the type of an entity or relation.
+* `has`: Used to declare an attribute of an entity or relation.
+
+The query contains three *variables*, indicated by the `$` prefix: `$user-1`, `$user-2`, and `$user-3`. Each variable represents an entity to be inserted. The `isa` statements then specify the types of these entities, and the `has` statements specify the types and values of their attributes.
+
+[NOTE]
+====
+Variable names are arbitrary and exist only within the scope of the query.
+====
+
+=== Inserting relations
+
+In the next query, we insert three new orders. Each one references one of the users we just inserted. Using a `data` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+
+[,typeql]
+----
+match
+  $user-1 isa user, has id "u0001";
+  $user-2 isa user, has id "u0002";
+insert
+  $order-1 (buyer: $user-1) isa order,
+    has id "o0001",
+    has timestamp 2022-08-03T19:51:24.324,
+    has status "canceled";
+  $order-2 (buyer: $user-1) isa order,
+    has id "o0002",
+    has timestamp 2021-04-27T05:02:39.672,
+    has status "dispatched";
+  $order-6 (buyer: $user-2) isa order,
+    has id "o0006",
+    has timestamp 2020-08-19T20:21:54.194,
+    has status "paid";
+----
+
+This is equivalent to the following SQL query.
+
+[,sql]
+----
+INSERT INTO orders (id, buyer_id, timestamp, status)
+VALUES
+    ('o0001', 'u0001', '2022-08-03 19:51:24.324', 'canceled'),
+    ('o0002', 'u0001', '2021-04-27 05:02:39.672', 'dispatched'),
+    ('o0006', 'u0002', '2020-08-19 20:21:54.194', 'paid');
+----
+
+Unlike the previous Insert query, this Insert query has two clauses, and introduces another TypeQL keyword:
+
+* `match`: Used to indicate the beginning of the `match` clause in an Insert query, Delete query, Update query, Fetch query, or Get query.
+
+The query first matches the users we just inserted by their IDs. In this case, the variables `$user-1` and `$user-2` represent the entities to be referenced by the newly inserted relations. The query then inserts three new relations of type `order` along with their attributes.
+
+To reference an entity in a relation, we use a *relation tuple* of the following form immediately after the variable representing the relation.
+
+[,typeql]
+----
+$relation (role-1: $a, role-2: $b, role-3: $c, ...) isa relation-type;
+----
+
+Each element of the tuple consists of the role that the entity will play, followed by the variable representing that entity. As the `order` relation type references only one role (`buyer`), the tuples in the query above have only one element. We will see examples of larger relation tuples later on.
+
+== Reading data
+
+Let's now read the data we inserted. To begin with, we'll retrieve the details of the users we inserted with the following *Fetch query*. Using a `data` session and `read` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+
+[,typeql]
+----
+match
+  $user isa user;
+fetch
+  $user: attribute;
+----
+
+All Fetch queries return results in JSON format. You should see the following results.
+
+[,json]
+----
+{
+    "user": {
+        "attribute": [
+            { "value": "1954-11-11T00:00:00.000", "type": { "label": "birth-date", "root": "attribute", "value_type": "datetime" } },
+            { "value": "Cameron Osborne", "type": { "label": "name", "root": "attribute", "value_type": "string" } },
+            { "value": "u0002", "type": { "label": "id", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+{
+    "user": {
+        "attribute": [
+            { "value": "1995-10-29T00:00:00.000", "type": { "label": "birth-date", "root": "attribute", "value_type": "datetime" } },
+            { "value": "Kevin Morrison", "type": { "label": "name", "root": "attribute", "value_type": "string" } },
+            { "value": "u0001", "type": { "label": "id", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+{
+    "user": {
+        "attribute": [
+            { "value": "1977-06-20T00:00:00.000", "type": { "label": "birth-date", "root": "attribute", "value_type": "datetime" } },
+            { "value": "Keyla Pineda", "type": { "label": "name", "root": "attribute", "value_type": "string" } },
+            { "value": "u0003", "type": { "label": "id", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+----
+
+This is equivalent to the following SQL query.
+
+[,sql]
+----
+SELECT *
+FROM users;
+----
+
+This query introduces a new TypeQL keyword:
+
+* `fetch`: Used to indicate the beginning of the `fetch` clause in a Fetch query.
+
+Fetch queries always comprise a `match` clause followed by a `fetch` clause. The above query first matches all users in the database. For each user matched, we then retrieve all of its attributes, as described in the `fetch` clause by the root type `attribute`.
+
+=== Projections
+
+By modifying the `fetch` clause, we can choose to retrieve only specific attributes, as we do in the following query. Using a `data` session and `read` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+
+[,typeql]
+----
+match
+  $user isa user;
+fetch
+  $user: name, birth-date;
+----
+
+.Results
+[%collapsible]
+====
+[,json]
+----
+{
+    "user": {
+        "birth-date": [ { "value": "1954-11-11T00:00:00.000", "type": { "label": "birth-date", "root": "attribute", "value_type": "datetime" } } ],
+        "name": [ { "value": "Cameron Osborne", "type": { "label": "name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+{
+    "user": {
+        "birth-date": [ { "value": "1995-10-29T00:00:00.000", "type": { "label": "birth-date", "root": "attribute", "value_type": "datetime" } } ],
+        "name": [ { "value": "Kevin Morrison", "type": { "label": "name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+{
+    "user": {
+        "birth-date": [ { "value": "1977-06-20T00:00:00.000", "type": { "label": "birth-date", "root": "attribute", "value_type": "datetime" } } ],
+        "name": [ { "value": "Keyla Pineda", "type": { "label": "name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+----
+====
+
+This is equivalent to the following SQL query.
+
+[,sql]
+----
+SELECT name, birth_date
+FROM users;
+----
+
+To retrieve only specific attributes, we list the types of those we want to retrieve in the `fetch` clause.
+
+=== Selections
+
+By modifying the `match` clause, we can choose to retrieve the attributes of specific entities only. This is done by adding *constraints*, which are identical in structure to the statements used to insert data. In the next query, we retrieve the name and birthdate of users with a specific ID. Using a `data` session and `read` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+
+[,typeql]
+----
+match
+  $user isa user, has id "u0001";
+fetch
+  $user: name, birth-date;
+----
+
+
+.Results
+[%collapsible]
+====
+[,json]
+----
+{
+    "user": {
+        "birth-date": [ { "value": "1995-10-29T00:00:00.000", "type": { "label": "birth-date", "root": "attribute", "value_type": "datetime" } } ],
+        "name": [ { "value": "Kevin Morrison", "type": { "label": "name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+----
+====
+
+This is equivalent to the following SQL query.
+
+[,sql]
+----
+SELECT name, birth_date
+FROM users
+WHERE id = 'u0001';
+----
+
+Of course, because `id` is a key attribute of `user`, the `match` clause will only match a single user, whose attributes are then retrieved.
+
+=== Reading from relations
+
+In a Fetch query, the `match` clause can contain multiple constraints, and the `fetch` clause can retrieve attributes from multiple entities or relations. Next, we extend the previous query to also retrieve details of the orders placed by this user. Using a `data` session and `read` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+
+[,typeql]
+----
+match
+  $user isa user, has id "u0001";
+  $order (buyer: $user) isa order;
+fetch
+  $user: name, birth-date;
+  $order: id, status;
+----
+
+.Results
+[%collapsible]
+====
+[,json]
+----
+{
+    "order": {
+        "id": [ { "value": "o0001", "type": { "label": "id", "root": "attribute", "value_type": "string" } } ],
+        "status": [ { "value": "canceled", "type": { "label": "status", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "order", "root": "relation" }
+    },
+    "user": {
+        "birth-date": [ { "value": "1995-10-29T00:00:00.000", "type": { "label": "birth-date", "root": "attribute", "value_type": "datetime" } } ],
+        "name": [ { "value": "Kevin Morrison", "type": { "label": "name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+{
+    "order": {
+        "id": [ { "value": "o0002", "type": { "label": "id", "root": "attribute", "value_type": "string" } } ],
+        "status": [ { "value": "dispatched", "type": { "label": "status", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "order", "root": "relation" }
+    },
+    "user": {
+        "birth-date": [ { "value": "1995-10-29T00:00:00.000", "type": { "label": "birth-date", "root": "attribute", "value_type": "datetime" } } ],
+        "name": [ { "value": "Kevin Morrison", "type": { "label": "name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "user", "root": "entity" }
+    }
+}
+----
+====
+
+This is equivalent to the following SQL query.
+
+[,sql]
+----
+SELECT users.name, users.birth_date, orders.id, orders.status
+FROM users
+INNER JOIN orders ON orders.buyer_id = users.id
+WHERE users.id = 'u0001';
+----
+
+The relation tuple syntax is used both to insert new relations and match existing ones.
+
+== Working with inheritance hierarchies
+
+The entity type `user` and the relation type `order` that we defined previously were declared to be subtypes of the root types `entity` and `relation` respectively by using the `sub` keyword. However, we can also declare types to be subtypes of existing types. In the following query, we define four new entity types in a *type hierarchy* and a new relation type, along with some new attribute types. Using a `schema` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+
+[,typeql]
+----
+define
+  book sub entity, abstract,
+    owns isbn-13 @key,
+    owns isbn-10 @unique,
+    owns title,
+    owns genre,
+    owns page-count,
+    owns price,
+    plays order-line:item;
+  paperback sub book,
+    owns stock;
+  hardback sub book,
+    owns stock;
+  ebook sub book;
+
+  order-line sub relation,
+    relates order,
+    relates item,
+    owns quantity;
+  order plays order-line:order;
+
+  isbn sub attribute, abstract, value string;
+  isbn-13 sub isbn;
+  isbn-10 sub isbn;
+  title sub attribute, value string;
+  genre sub attribute, value string;
+  page-count sub attribute, value long;
+  price sub attribute, value double;
+  stock sub attribute, value long;
+  quantity sub attribute, value long;
+----
+
+Here we have introduced two new TypeQL keywords:
+
+* `abstract`: Used to define an entity, relation, or attribute type to be abstract.
+* `@unique`: Used in an `owns` statement to specify a *xref:typeql::statements/unique.adoc[unique attribute]* of an entity or relation type.
+
+This query defines a new type hierarchy of book types, described by an abstract type `book` with three subtypes: `paperback`, `hardback`, and `ebook`. The attribute type ownerships of `book` are automatically inherited by its subtypes. Meanwhile, ownership of `stock` is defined individually at the subtype level. This gives complete control over which data instances are permitted to own which attributes. This also applies to which data instances are permitted to play which roles via `plays` statements, which can likewise be defined at the supertype or subtypes levels.
+
+[NOTE]
+====
+Here, we have used the label `order` for one of the roles of `order-line`, despite previously having used the same label for the entity type `order`. This is permitted because the role is *scoped* by the relation type, in the same way that a column in a relational database can have the same name as another table. When referring to the role outside the scope of its definition, we must always use its fully-scoped label `order-line:order`, in the same way that we would use the fully-scoped term `order_line.order` in a SQL query.
+====
+
+Modeling this in a relational database would require us to adopt a specialized strategy to handle the inheritance hierarchy. In the SQL query below, we use a https://typedb.com/fundamentals/semantic-integrity-loss#pattern-3:-class-table-inheritance-4[class-table inheritance] design pattern.
+
+[,sql]
+----
+CREATE TABLE books (
+    isbn_13 TEXT PRIMARY KEY,
+    isbn_10 TEXT UNIQUE,
+    title TEXT,
+    page_count INTEGER,
+    price MONEY
+);
+
+CREATE TABLE book_genres (
+    isbn_13 TEXT NOT NULL REFERENCES books(isbn_13),
+    genre TEXT
+);
+
+CREATE TABLE paperbacks (
+    isbn_13 TEXT NOT NULL REFERENCES books(isbn_13),
+    stock INTEGER
+);
+
+CREATE TABLE hardbacks (
+    isbn_13 TEXT NOT NULL REFERENCES books(isbn_13),
+    stock INTEGER
+);
+
+CREATE TABLE ebooks (
+    isbn_13 TEXT NOT NULL REFERENCES books(isbn_13)
+);
+
+CREATE TABLE order_lines (
+    order_id TEXT NOT NULL REFERENCES orders(id),
+    item_id TEXT NOT NULL REFERENCES books(isbn_13),
+    quantity INTEGER
+);
+----
+
+Additionally, it is necessary to create a separate table for book genres, as a book can have multiple genres. In TypeDB, this is not necessary, and there is no difference in the way we model single-valued and multivalued attributes.
+
+=== Inserting data into inheritance hierarchies
+
+When inserting data into a type hierarchy, we declare only the exact type of the data instances. For instance, when we insert an entity of type `paperback`, we do not have to also declare that it is of type `book`, as the schema contains the context necessary for the database to infer this. In the following query we insert five books of different types. Using a `data` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+
+[,typeql]
+----
+insert
+  $book-1 isa ebook,
+    has isbn-13 "9780393634563",
+    has isbn-10 "0393634566",
+    has title "The Odyssey",
+    has genre "fiction",
+    has genre "classics",
+    has page-count 656,
+    has price 13.99;
+  $book-2 isa paperback,
+    has isbn-13 "9780500291221",
+    has isbn-10 "0500291225",
+    has title "Great Discoveries in Medicine",
+    has genre "nonfiction",
+    has genre "history",
+    has page-count 352,
+    has price 12.05,
+    has stock 18;
+  $book-3 isa ebook,
+    has isbn-13 "9780575104419",
+    has isbn-10 "0575104414",
+    has title "Dune",
+    has genre "fiction",
+    has genre "science fiction",
+    has page-count 624,
+    has price 5.49;
+  $book-4 isa hardback,
+    has isbn-13 "9780740748479",
+    has isbn-10 "0740748475",
+    has title "The Complete Calvin and Hobbes",
+    has genre "fiction",
+    has genre "comics",
+    has page-count 1451,
+    has price 128.71,
+    has stock 6;
+  $book-5 isa paperback,
+    has isbn-13 "9798691153570",
+    has title "Business Secrets of The Pharoahs",
+    has genre "nonfiction",
+    has genre "business",
+    has page-count 260,
+    has price 11.99,
+    has stock 8;
+----
+
+This is equivalent to the following SQL query.
+
+[,sql]
+----
+INSERT INTO books (isbn_13, isbn_10, title, page_count, price)
+VALUES
+    ('9780393634563', '0393634566', 'The Odyssey', 656, 13.99),
+    ('9780500291221', '0500291225', 'Great Discoveries in Medicine', 352, 12.05),
+    ('9780575104419', '0575104414', 'Dune', 624, 5.49),
+    ('9780740748479', '0740748475', 'The Complete Calvin and Hobbes', 1451, 128.71),
+    ('9798691153570', NULL, 'Business Secrets of The Pharoahs', 260, 11.99);
+
+INSERT INTO book_genres (isbn_13, genre)
+VALUES
+    ('9780393634563', 'fiction'),
+    ('9780393634563', 'classics'),
+    ('9780500291221', 'nonfiction'),
+    ('9780500291221', 'history'),
+    ('9780575104419', 'fiction'),
+    ('9780575104419', 'science fiction'),
+    ('9780740748479', 'fiction'),
+    ('9780740748479', 'comics'),
+    ('9798691153570', 'nonfiction'),
+    ('9798691153570', 'business');
+
+INSERT INTO paperbacks (isbn_13, stock)
+VALUES
+    ('9780500291221', 18),
+    ('9798691153570', 8);
+
+INSERT INTO hardbacks (isbn_13, stock)
+VALUES ('9780740748479', 6);
+
+INSERT INTO ebooks (isbn_13)
+VALUES
+    ('9780393634563'),
+    ('9780575104419');
+----
+
+Due to the inability of relational databases to natively model inheritance hierarchies or multivalued attributes, we've had to divide the information for each book across multiple tables. In total, twenty rows are necessary to describe the five books. In TypeDB, they are simply described by five entities.
+
+Additionally, there is one book that does not have an ISBN-10, which we represent by a null value in the relevant column. In TypeDB, we do not insert a null value into the `isbn-10` attribute type: we simply do not assign the book entity an attribute of that type. Similarly, when an entity has multiple attributes of a single type, as with `genre`, we simply assign multiple values of that type to the entity.
+
+=== Reading data from inheritance hierarchies
+
+When reading data from type hierarchies, we can match that data using any of its types. In the following query, we retrieve all the attributes of all books. When we match the books, we do not specify which type of book we are looking for, by matching against the supertype `book`. This matches instances of `paperback`, `hardback`, and `ebook`. Using a `data` session and `read` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+
+[,typeql]
+----
+match
+  $book isa book;
+fetch
+  $book: attribute;
+----
+
+.Results
+[%collapsible]
+====
+[,json]
+----
+{
+    "book": {
+        "attribute": [
+            { "value": "9780393634563", "type": { "label": "isbn-13", "root": "attribute", "value_type": "string" } },
+            { "value": 656, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } },
+            { "value": "fiction", "type": { "label": "genre", "root": "attribute", "value_type": "string" } },
+            { "value": "classics", "type": { "label": "genre", "root": "attribute", "value_type": "string" } },
+            { "value": 13.99, "type": { "label": "price", "root": "attribute", "value_type": "double" } },
+            { "value": "0393634566", "type": { "label": "isbn-10", "root": "attribute", "value_type": "string" } },
+            { "value": "The Odyssey", "type": { "label": "title", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "attribute": [
+            { "value": "9780575104419", "type": { "label": "isbn-13", "root": "attribute", "value_type": "string" } },
+            { "value": 624, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } },
+            { "value": "fiction", "type": { "label": "genre", "root": "attribute", "value_type": "string" } },
+            { "value": "science fiction", "type": { "label": "genre", "root": "attribute", "value_type": "string" } },
+            { "value": 5.49, "type": { "label": "price", "root": "attribute", "value_type": "double" } },
+            { "value": "0575104414", "type": { "label": "isbn-10", "root": "attribute", "value_type": "string" } },
+            { "value": "Dune", "type": { "label": "title", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "ebook", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "attribute": [
+            { "value": "9780500291221", "type": { "label": "isbn-13", "root": "attribute", "value_type": "string" } },
+            { "value": 352, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } },
+            { "value": "history", "type": { "label": "genre", "root": "attribute", "value_type": "string" } },
+            { "value": "nonfiction", "type": { "label": "genre", "root": "attribute", "value_type": "string" } },
+            { "value": 18, "type": { "label": "stock", "root": "attribute", "value_type": "long" } },
+            { "value": 12.05, "type": { "label": "price", "root": "attribute", "value_type": "double" } },
+            { "value": "0500291225", "type": { "label": "isbn-10", "root": "attribute", "value_type": "string" } },
+            { "value": "Great Discoveries in Medicine", "type": { "label": "title", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "attribute": [
+            { "value": "9798691153570", "type": { "label": "isbn-13", "root": "attribute", "value_type": "string" } },
+            { "value": 260, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } },
+            { "value": "business", "type": { "label": "genre", "root": "attribute", "value_type": "string" } },
+            { "value": "nonfiction", "type": { "label": "genre", "root": "attribute", "value_type": "string" } },
+            { "value": 8, "type": { "label": "stock", "root": "attribute", "value_type": "long" } },
+            { "value": 11.99, "type": { "label": "price", "root": "attribute", "value_type": "double" } },
+            { "value": "Business Secrets of The Pharoahs", "type": { "label": "title", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "paperback", "root": "entity" }
+    }
+}
+{
+    "book": {
+        "attribute": [
+            { "value": "9780740748479", "type": { "label": "isbn-13", "root": "attribute", "value_type": "string" } },
+            { "value": 1451, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } },
+            { "value": "comics", "type": { "label": "genre", "root": "attribute", "value_type": "string" } },
+            { "value": "fiction", "type": { "label": "genre", "root": "attribute", "value_type": "string" } },
+            { "value": 6, "type": { "label": "stock", "root": "attribute", "value_type": "long" } },
+            { "value": 128.71, "type": { "label": "price", "root": "attribute", "value_type": "double" } },
+            { "value": "0740748475", "type": { "label": "isbn-10", "root": "attribute", "value_type": "string" } },
+            { "value": "The Complete Calvin and Hobbes", "type": { "label": "title", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "hardback", "root": "entity" }
+    }
+}
+----
+====
+
+This is equivalent to the following SQL query.
+
+[,sql]
+----
+SELECT books.*, string_agg(book_genres.genre, ', ') AS genres, paperbacks.stock
+FROM books
+INNER JOIN book_genres ON book_genres.isbn_13 = books.isbn_13
+INNER JOIN paperbacks ON paperbacks.isbn_13 = books.isbn_13
+GROUP BY books.isbn_13, paperbacks.stock
+UNION
+SELECT books.*, string_agg(book_genres.genre, ', ') AS genres, hardbacks.stock
+FROM books
+INNER JOIN book_genres ON book_genres.isbn_13 = books.isbn_13
+INNER JOIN hardbacks ON hardbacks.isbn_13 = books.isbn_13
+GROUP BY books.isbn_13, hardbacks.stock
+UNION
+SELECT books.*, string_agg(book_genres.genre, ', ') AS genres, NULL AS stock
+FROM books
+INNER JOIN book_genres ON book_genres.isbn_13 = books.isbn_13
+INNER JOIN ebooks ON ebooks.isbn_13 = books.isbn_13
+GROUP BY books.isbn_13;
+----
+
+Unlike the TypeQL query, the SQL query contains significant complexity, arising from a number of factors:
+
+* We need to perform several joins, because the data for each book is divided across multiple tables.
+* We need to use one union branch per book type, as the structure of data differs between them.
+* We need to use grouping and aggregates to concatenate the genres into a single string, or we will retrieve multiple rows for each book, one per genre it has.
+
+Another advantage of TypeDB's design is that if we define new subtypes of `book`, or made another attribute of books multivalued, the TypeQL query would automatically return them too due to its declarative nature. In the SQL query, we would need to add new union branches or joins to account for them.
+
+=== Referencing data in inheritance hierarchies
+
+We can also reference existing data in type hierarchies by matching against the supertype when inserting relations that reference that data. In the following query, we insert several new order lines for the orders we create earlier by matching against the supertype `book`. Using a `data` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+
+[,typeql]
+----
+match
+  $order-1 isa order, has id "o0001";
+  $order-2 isa order, has id "o0002";
+  $order-6 isa order, has id "o0006";
+  $book-1 isa book, has isbn-13 "9780393634563";
+  $book-2 isa book, has isbn-13 "9780500291221";
+  $book-3 isa book, has isbn-13 "9780575104419";
+  $book-4 isa book, has isbn-13 "9780740748479";
+insert
+  (order: $order-1, item: $book-1) isa order-line, has quantity 2;
+  (order: $order-1, item: $book-2) isa order-line, has quantity 1;
+  (order: $order-2, item: $book-3) isa order-line, has quantity 1;
+  (order: $order-6, item: $book-4) isa order-line, has quantity 2;
+----
+
+== Working with multi-type references
+
+In addition to using inheritance hierarchies in our models, we can also make use of multi-type references. In TypeDB, this comes in two forms:
+
+* Multiple types that own the same attribute type via `owns` statements.
+* Multiple types that play the same role in a relation type via `plays` statements.
+
+These are not possible to model in relational databases, and they are particularly difficult to emulate. Doing so typically involves either adopting a class-inheritance pattern approach as we did previously, or by forgoing referential integrity in the model.
+
+To see how we can use multi-type references in our model, we will define a new type of product to sell in the bookstore: accessories. Using a `schema` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+
+[,typeql]
+----
+define
+  accessory sub entity,
+    owns id,
+    owns name,
+    owns category,
+    owns price,
+    owns stock,
+    owns color,
+    owns quantity,
+    plays order-line:item;
+
+  category sub attribute, value string;
+  color sub attribute, value string;
+----
+
+The new `accessory` type owns `price` and `stock`, and plays `order-line:item`, all of which `book` also does. This will enable us to query these common properties of books and accessories together. Next, we will insert some accessories into the database. Using a `data` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+
+[,typeql]
+----
+insert
+  $accessory-1 isa accessory,
+    has id "a0001",
+    has name "Classic Bookmark Set",
+    has category "stationary",
+    has price 5.99,
+    has stock 8,
+    has color "red",
+    has color "blue",
+    has color "green",
+    has color "yellow",
+    has color "purple",
+    has quantity 5;
+  $accessory-2 isa accessory,
+    has id "a0002",
+    has name "Reading Light",
+    has category "electronics",
+    has price 12.99,
+    has stock 20;
+  $accessory-3 isa accessory,
+    has id "a0003",
+    has name "Logo Tote Bag",
+    has category "apparel",
+    has price 8.99,
+    has stock 8,
+    has color "orange";
+  $accessory-4 isa accessory,
+    has id "a0004",
+    has name "Logo Notebook Set",
+    has category "stationary",
+    has price 15.99,
+    has stock 14,
+    has color "orange",
+    has quantity 3;
+----
+
+We can then add orders that mix books and accessories, as we do in the following query. In the same transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+
+[,typeql]
+----
+match
+  $user-2 isa user, has id "u0002";
+  $item-1 isa book, has isbn "9798691153570";
+  $item-2 isa accessory, has id "a0001";
+  $item-3 isa accessory, has id "a0003";
+insert
+  $order (buyer: $user-2) isa order,
+    has id "o0039",
+    has timestamp 2022-09-03T00:29:31.741,
+    has status "paid";
+  (order: $order, item: $item-1) isa order-line, has quantity 1;
+  (order: $order, item: $item-2) isa order-line, has quantity 1;
+  (order: $order, item: $item-3) isa order-line, has quantity 2;
+----
+
+=== Reading data from shared attribute types
+
+To retrieve the attributes from the shared attribute types, we do not specify the type of the entity or relation we are querying. Normally, this would be done using an `isa` statement. In the `match` clause of the following query, we do not include an `isa` statement for `$item`. As a result, the variable `$item` will match any data instance that has both a `price` attribute and a `stock` attribute, the two constraints that have been declared. Finally, we retrieve the price and the stock of each matched item in the `fetch` clause. Using a `data` session and `read` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+
+[,typeql]
+----
+match
+  $item has price $price,
+    has stock $stock;
+fetch
+  $price;
+  $stock;
+----
+
+.Results
+[%collapsible]
+====
+[,json]
+----
+{
+    "price": { "value": 128.71, "type": { "label": "price", "root": "attribute", "value_type": "double" } },
+    "stock": { "value": 6, "type": { "label": "stock", "root": "attribute", "value_type": "long" } }
+}
+{
+    "price": { "value": 12.99, "type": { "label": "price", "root": "attribute", "value_type": "double" } },
+    "stock": { "value": 20, "type": { "label": "stock", "root": "attribute", "value_type": "long" } }
+}
+{
+    "price": { "value": 15.99, "type": { "label": "price", "root": "attribute", "value_type": "double" } },
+    "stock": { "value": 14, "type": { "label": "stock", "root": "attribute", "value_type": "long" } }
+}
+{
+    "price": { "value": 12.05, "type": { "label": "price", "root": "attribute", "value_type": "double" } },
+    "stock": { "value": 18, "type": { "label": "stock", "root": "attribute", "value_type": "long" } }
+}
+{
+    "price": { "value": 11.99, "type": { "label": "price", "root": "attribute", "value_type": "double" } },
+    "stock": { "value": 8, "type": { "label": "stock", "root": "attribute", "value_type": "long" } }
+}
+{
+    "price": { "value": 8.99, "type": { "label": "price", "root": "attribute", "value_type": "double" } },
+    "stock": { "value": 8, "type": { "label": "stock", "root": "attribute", "value_type": "long" } }
+}
+{
+    "price": { "value": 5.99, "type": { "label": "price", "root": "attribute", "value_type": "double" } },
+    "stock": { "value": 8, "type": { "label": "stock", "root": "attribute", "value_type": "long" } }
+}
+----
+====
+
+=== Reading data from shared roles
+
+As when retrieving shared attribute types, we can retrieve data from shared roles by omitting the type of the data instance that plays the role. In the following query, we match any orders made by the user with ID "u0002". Then, in a *xref:typeql::queries/fetch.adoc#_subqueries[sub-query]*, we match any items in those orders, regardless of their types. Finally, we retrieve all attributes of both the orders and their constituent items, along with the quantities ordered. Using a `data` session and `read` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+
+[,typeql]
+----
+match
+  $user isa user, has id "u0002";
+  $order (buyer: $user) isa order;
+fetch
+  $order: attribute;
+  order-lines: {
+    match
+      (order: $order, item: $item) isa order-line,
+        has quantity $quantity;
+    fetch
+      $item: attribute;
+      $quantity;
+  };
+----
+
+.Results
+[%collapsible]
+====
+[,json]
+----
+{
+    "order": {
+        "attribute": [
+            { "value": "o0006", "type": { "label": "id", "root": "attribute", "value_type": "string" } },
+            { "value": "2020-08-19T20:21:54.194", "type": { "label": "timestamp", "root": "attribute", "value_type": "datetime" } },
+            { "value": "paid", "type": { "label": "status", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "order", "root": "relation" }
+    },
+    "order-lines": [
+        {
+            "item": {
+                "attribute": [
+                    { "value": "9780740748479", "type": { "label": "isbn-13", "root": "attribute", "value_type": "string" } },
+                    { "value": 1451, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } },
+                    { "value": "comics", "type": { "label": "genre", "root": "attribute", "value_type": "string" } },
+                    { "value": "fiction", "type": { "label": "genre", "root": "attribute", "value_type": "string" } },
+                    { "value": 6, "type": { "label": "stock", "root": "attribute", "value_type": "long" } },
+                    { "value": 128.71, "type": { "label": "price", "root": "attribute", "value_type": "double" } },
+                    { "value": "0740748475", "type": { "label": "isbn-10", "root": "attribute", "value_type": "string" } },
+                    { "value": "The Complete Calvin and Hobbes", "type": { "label": "title", "root": "attribute", "value_type": "string" } }
+                ],
+                "type": { "label": "hardback", "root": "entity" }
+            },
+            "quantity": { "value": 2, "type": { "label": "quantity", "root": "attribute", "value_type": "long" } }
+        }
+    ]
+}
+{
+    "order": {
+        "attribute": [
+            { "value": "o0039", "type": { "label": "id", "root": "attribute", "value_type": "string" } },
+            { "value": "2022-09-03T00:29:31.741", "type": { "label": "timestamp", "root": "attribute", "value_type": "datetime" } },
+            { "value": "paid", "type": { "label": "status", "root": "attribute", "value_type": "string" } }
+        ],
+        "type": { "label": "order", "root": "relation" }
+    },
+    "order-lines": [
+        {
+            "item": {
+                "attribute": [
+                    { "value": "Logo Tote Bag", "type": { "label": "name", "root": "attribute", "value_type": "string" } },
+                    { "value": "a0003", "type": { "label": "id", "root": "attribute", "value_type": "string" } },
+                    { "value": 8, "type": { "label": "stock", "root": "attribute", "value_type": "long" } },
+                    { "value": 8.99, "type": { "label": "price", "root": "attribute", "value_type": "double" } },
+                    { "value": "orange", "type": { "label": "color", "root": "attribute", "value_type": "string" } },
+                    { "value": "apparel", "type": { "label": "category", "root": "attribute", "value_type": "string" } }
+                ],
+                "type": { "label": "accessory", "root": "entity" }
+            },
+            "quantity": { "value": 2, "type": { "label": "quantity", "root": "attribute", "value_type": "long" } }
+        },
+        {
+            "item": {
+                "attribute": [
+                    { "value": "9798691153570", "type": { "label": "isbn-13", "root": "attribute", "value_type": "string" } },
+                    { "value": 260, "type": { "label": "page-count", "root": "attribute", "value_type": "long" } },
+                    { "value": "business", "type": { "label": "genre", "root": "attribute", "value_type": "string" } },
+                    { "value": "nonfiction", "type": { "label": "genre", "root": "attribute", "value_type": "string" } },
+                    { "value": 8, "type": { "label": "stock", "root": "attribute", "value_type": "long" } },
+                    { "value": 11.99, "type": { "label": "price", "root": "attribute", "value_type": "double" } },
+                    { "value": "Business Secrets of The Pharoahs", "type": { "label": "title", "root": "attribute", "value_type": "string" } }
+                ],
+                "type": { "label": "paperback", "root": "entity" }
+            },
+            "quantity": { "value": 1, "type": { "label": "quantity", "root": "attribute", "value_type": "long" } }
+        },
+        {
+            "item": {
+                "attribute": [
+                    { "value": "Classic Bookmark Set", "type": { "label": "name", "root": "attribute", "value_type": "string" } },
+                    { "value": "a0001", "type": { "label": "id", "root": "attribute", "value_type": "string" } },
+                    { "value": 5, "type": { "label": "quantity", "root": "attribute", "value_type": "long" } },
+                    { "value": 8, "type": { "label": "stock", "root": "attribute", "value_type": "long" } },
+                    { "value": 5.99, "type": { "label": "price", "root": "attribute", "value_type": "double" } },
+                    { "value": "red", "type": { "label": "color", "root": "attribute", "value_type": "string" } },
+                    { "value": "blue", "type": { "label": "color", "root": "attribute", "value_type": "string" } },
+                    { "value": "green", "type": { "label": "color", "root": "attribute", "value_type": "string" } },
+                    { "value": "purple", "type": { "label": "color", "root": "attribute", "value_type": "string" } },
+                    { "value": "yellow", "type": { "label": "color", "root": "attribute", "value_type": "string" } },
+                    { "value": "stationary", "type": { "label": "category", "root": "attribute", "value_type": "string" } }
+                ],
+                "type": { "label": "accessory", "root": "entity" }
+            },
+            "quantity": { "value": 1, "type": { "label": "quantity", "root": "attribute", "value_type": "long" } }
+        }
+    ]
+}
+----
+====
+
+== Working with rule inference
+
+In relational databases, abstractions are defined using views. In TypeDB, they are defined with *rules*. Rules form part of the schema and are added to the database with a Define query. The following query defines a new rule, in addition to giving `order-line` ownership of `price`. Using a `schema` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+
+[,typeql]
+----
+define
+  order-line owns price;
+
+  rule order-line-total-price:
+    when {
+        $line (order: $order, item: $item) isa order-line,
+          has quantity $quantity;
+        $item has price $price;
+        ?line-total = $quantity * $price;
+    } then {
+        $line has price ?line-total;
+    };
+----
+
+This calculates a line total for each order line and assigns it to the line as a `price` attribute using an xref:typeql::values/arithmetic.adoc[arithmetic expression]. A rule consists of a *condition* and a *conclusion*, located in the `when` and `then` blocks respectively. Wherever in the data the condition is met, the conclusion is applied. Functionally, the above rule is very similar to the following Insert query, which should _not_ be run.
+
+[,typeql]
+----
+match
+  $line (order: $order, item: $item) isa order-line,
+    has quantity $quantity;
+  $item has price $price;
+  ?line-total = $quantity * $price;
+insert
+  $line has price ?line-total;
+----
+
+Unlike Insert queries, which are run once and insert the data on disk, rules are run at query-time and generate the data in memory, just like a view in a relational database. This means that the line totals will always use the most up-to-date quantity and price data available for each order line.
+
+=== Reading inferred data
+
+Inferred data is read in the same way as data on disk, but rule inference must first be enabled. To do so in TypeDB Studio, use the inference toggle (image:manual::icons/infer.png[]) in the top toolbar. In the following query, we list the inferred line totals for each order made by user "u0002". Using a `data` session and `read` transaction with inference enabled, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+
+[,typeql]
+----
+match
+  $user isa user, has id "u0002";
+  $order (buyer: $user) isa order;
+fetch
+  $order: id;
+  line-totals: {
+    match
+      (order: $order, item: $item) isa order-line,
+        has price $line-total;
+    fetch
+      $line-total;
+  };
+----
+
+.Results
+[%collapsible]
+====
+[,json]
+----
+{
+    "line-totals": [ { "line-total": { "value": 257.42, "type": { "label": "price", "root": "attribute", "value_type": "double" } } } ],
+    "order": {
+        "id": [ { "value": "o0006", "type": { "label": "id", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "order", "root": "relation" }
+    }
+}
+{
+    "line-totals": [
+        { "line-total": { "value": 17.98, "type": { "label": "price", "root": "attribute", "value_type": "double" } } },
+        { "line-total": { "value": 5.99, "type": { "label": "price", "root": "attribute", "value_type": "double" } } },
+        { "line-total": { "value": 11.99, "type": { "label": "price", "root": "attribute", "value_type": "double" } } }
+    ],
+    "order": {
+        "id": [ { "value": "o0039", "type": { "label": "id", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "order", "root": "relation" }
+    }
+}
+----
+====
+
+Finally, we'll get the grand total for each of the user's orders by summing over the line totals. Because the grand total is calculated from the inferred line totals, it will reflect the most up-to-date data available, and because we do not specify the type of `$item`, this query will continue to work even if we add new types of product to the shop.
+
+[,typeql]
+----
+match
+  $user isa user, has id "u0002";
+  $order (buyer: $user) isa order;
+fetch
+  $order: id;
+  grand-total: {
+    match
+      (order: $order, item: $item) isa order-line,
+        has price $line-total;
+    get;
+    sum $line-total;
+  };
+----
+
+.Results
+[%collapsible]
+====
+[,json]
+----
+{
+    "grand-total": { "value": 257.42, "value_type": "double" },
+    "order": {
+        "id": [ { "value": "o0006", "type": { "label": "id", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "order", "root": "relation" }
+    }
+}
+{
+    "grand-total": { "value": 35.96, "value_type": "double" },
+    "order": {
+        "id": [ { "value": "o0039", "type": { "label": "id", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "order", "root": "relation" }
+    }
+}
+----
+====
+
+== What's next?
+
+Continue learning how to use TypeDB with TypeDB Academy, or explore other sections of the documentation.
+
+[cols-2]
+--
+.xref:academy::overview.adoc[]
+[.clickable]
+****
+An end-to-end learning experience for TypeDB and TypeQL, showing how to take advantage of TypeDB's unique features.
+****
+
+.xref:manual::overview.adoc[TypeDB manual]
+[.clickable]
+****
+Practice-oriented guides on using TypeDB, including the TypeDB Studio and TypeDB Console manuals.
+****
+
+.xref:drivers::overview.adoc[TypeDB drivers]
+[.clickable]
+****
+Installation guides, tutorials, and API references for the official TypeDB drivers in all supported languages.
+****
+
+.xref:typeql::overview.adoc[TypeQL reference]
+[.clickable]
+****
+Complete language reference for TypeQL, covering all query types, pattern elements, and keywords.
+****
+--

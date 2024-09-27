@@ -7,8 +7,8 @@
 +
 [source,console]
 ----
-$ mkdir "C:\Program Files\TypeDB"
-$ tar xvf "C:\Users\username\Downloads\<filename>.zip" -C "C:\Program Files\TypeDB"
+mkdir "C:\Program Files\TypeDB"
+tar xvf "C:\Users\username\Downloads\<filename>.zip" -C "C:\Program Files\TypeDB"
 ----
 +
 Where `<filename>` is the name of the archive.
@@ -16,7 +16,7 @@ Where `<filename>` is the name of the archive.
 +
 [source,console]
 ----
-$ setx /M PATH "%path%;C:\Program Files\TypeDB\<filename>"
+setx /M PATH "%path%;C:\Program Files\TypeDB\<filename>"
 ----
 
 Restart the terminal window for the changes to environment variables to take effect.
@@ -27,7 +27,7 @@ Restart the terminal window for the changes to environment variables to take eff
 
 [source,console]
 ----
-$ typedb server
+typedb server
 ----
 
 Or use a `typedb.bat server` command directly from the directory with TypeDB files to start a TypeDB server
@@ -39,7 +39,7 @@ https://developers.google.com/optimization/install/java/binary_windows#microsoft
 [,shell]
 ----
 Exception in thread "main" java.lang.UnsatisfiedLinkError:
-C:\Users\Vaticle\AppData\Local\Temp\ortools-java\win32-x86-64\jniortools.dll: Can't find dependent libraries
+C:\Users\TypeDB\AppData\Local\Temp\ortools-java\win32-x86-64\jniortools.dll: Can't find dependent libraries
 ----
 // end::start[]
 

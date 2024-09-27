@@ -62,7 +62,7 @@ let's see a simple example of how to insert some data with an Insert query:
 .Inserting data example
 [,typeql]
 ----
-include::{page-component-version}@home::attachment$quickstart-data.tql[lines=1]
+insert $p isa person, has id 1, has full-name "Masako Holley", has email "masako.holley@typedb.com";
 ----
 
 == Usage in a Fetch query

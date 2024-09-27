@@ -22,7 +22,7 @@ For a standalone installation, see the xref:{page-component-version}@home::insta
 
 [cols-2]
 --
-.link:https://github.com/vaticle/typedb-console[GitHub,window=_blank]
+.link:https://github.com/typedb/typedb-console[GitHub,window=_blank]
 [.clickable]
 ****
 The GitHub repository with the source code and release notes.
@@ -60,19 +60,16 @@ Cloud::
 .Connect to TypeDB Cloud
 [source,console]
 ----
-$ typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
+typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
 ----
 
 You will be prompted for a password.
-// end::connect_cloud_console[]
-// tag::cloud-psw[]
+
 [NOTE]
 =====
-On your first login,
-xref:configuring/users.adoc#_first_login[change the password] for the `admin` account.
-A TypeDB Cloud deployment will refuse queries until the password is changed from its default value.
+For newly created deployments, the default username and password are `admin` and `password`. After connecting for the first time, you will be required to xref:manual::configuring/users.adoc#_first_login[change the password] before queries can be run.
 =====
-// end::cloud-psw[]
+// end::connect_cloud_console[]
 --
 
 Core::
@@ -82,7 +79,7 @@ Core::
 .Connect to TypeDB Core
 [source,console]
 ----
-$ typedb console --core=<server-address>
+typedb console --core=<server-address>
 ----
 
 The `--core` argument is used to set the TypeDB Core server IP address and port to connect to,
@@ -95,7 +92,7 @@ As a result, you get a welcome message from TypeDB Console followed by a command
 
 ----
 Welcome to TypeDB Console. You are now in TypeDB Wonderland!
-Copyright (C) 2022 Vaticle
+Copyright (C) 2024 TypeDB
 
 >
 ----
@@ -160,7 +157,7 @@ The asterisk (`*`) is used to notify that the current transaction has uncommitte
 +
 [source,console]
 ----
-$ typedb console
+typedb console
 ----
 
 . Now, run the following command to create a database:
@@ -205,7 +202,7 @@ You can run Console commands using the `--command` argument:
 [,bash]
 [source,console]
 ----
-$ typedb console --command=<command1> --command=<command2>
+typedb console --command=<command1> --command=<command2>
 ----
 
 [#_command_argument_example]
@@ -217,7 +214,7 @@ Run the following command in a terminal to start TypeDB and execute queries:
 [,bash]
 [source,console]
 ----
-$ typedb console --command="database create sample_db" \
+typedb console --command="database create sample_db" \
 --command="database list" \
 --command="transaction sample_db schema write" \
 --command="define person sub entity;" \
@@ -260,7 +257,7 @@ To use a script file with commands, run Console with the `--script` argument and
 
 [source,console]
 ----
-$ typedb console --script=<script-file-path>
+typedb console --script=<script-file-path>
 ----
 
 [NOTE]
@@ -294,7 +291,7 @@ Execute the script with TypeDB Console:
 .Run script.txt
 [source,console]
 ----
-$ typedb console --script=PATH/script.txt
+typedb console --script=PATH/script.txt
 ----
 
 Where `PATH/script.txt` is the path to the file and the filename.
@@ -362,10 +359,10 @@ For example, let's use the following script file to:
 
 * Create the `iam_sample_db` database
 * Load the IAM schema form the
-https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[iam-schema.tql,window=_blank]
+https://github.com/typedb/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-schema.tql[iam-schema.tql,window=_blank]
 file in a schema session
 * Load sample data from the
-https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-data.tql[iam-data.tql,window=_blank]
+https://github.com/typedb/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-data.tql[iam-data.tql,window=_blank]
 file in a data session
 * Run a Fetch query
 * Delete the database to reset the environment
@@ -488,7 +485,7 @@ For example, to use `en_US.UTF-8` run:
 
 [source,console]
 ----
-$ bash export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8
+bash export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8
 ----
 --
 
@@ -500,7 +497,7 @@ For example, to use `en_US.UTF-8` run:
 
 [source,console]
 ----
-$ bash export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8
+bash export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8
 ----
 --
 
@@ -753,32 +750,37 @@ transaction sample_db data read --infer true
 |===
 | TypeDB Console | Protocol encoding version | TypeDB Core | TypeDB Cloud
 
-| https://github.com/vaticle/typedb-console/releases/tag/2.27.0[2.27.0]
+| https://github.com/typedb/typedb-console/releases/tag/2.28.0[2.28.0]
+| 3
+| 2.28.0
+| 2.28.0
+
+| https://github.com/typedb/typedb-console/releases/tag/2.27.0[2.27.0]
 | 3
 | 2.27.0
 | 2.27.0
 
-| https://github.com/vaticle/typedb-console/releases/tag/2.26.6[2.26.6]
+| https://github.com/typedb/typedb-console/releases/tag/2.26.6[2.26.6]
 | 3
 | 2.26.6
 | 2.26.6
 
-| https://github.com/vaticle/typedb-console/releases/tag/2.25.7[2.25.7]
+| https://github.com/typedb/typedb-console/releases/tag/2.25.7[2.25.7]
 | 3
 | 2.25.7
 | 2.25.7
 
-| https://github.com/vaticle/typedb-console/releases/tag/2.24.15[2.24.15]
+| https://github.com/typedb/typedb-console/releases/tag/2.24.15[2.24.15]
 | 2
 | 2.24.17
 | 2.24.17
 
-| https://github.com/vaticle/typedb-console/releases/tag/2.18.0[2.18.0]
+| https://github.com/typedb/typedb-console/releases/tag/2.18.0[2.18.0]
 | 1
 | 2.18.0 to 2.23.0
 | 2.18.0 to 2.23.0
 
-| https://github.com/vaticle/typedb-console/releases/tag/2.17.0[2.17.0]
+| https://github.com/typedb/typedb-console/releases/tag/2.17.0[2.17.0]
 | N/A
 | 2.17.0
 | 2.17.0

@@ -1,0 +1,45 @@
+:tabs-sync-option:
+:experimental:
+
+== Run TypeDB
+
+To start TypeDB, select the TypeDB edition below and follow the instructions.
+
+[tabs]
+====
+Cloud::
++
+--
+Log in to https://cloud.typedb.com/[TypeDB Cloud,window=_blank] and create a new deployment on the Deployments page.
+
+For self-hosted TypeDB Cloud installation and setup, see the xref:{page-component-version}@home::install/cloud-self-hosted.adoc[Self-hosted deployment] page.
+--
+
+Core::
++
+--
+Ensure TypeDB Core is xref:{page-component-version}@home::install/core.adoc[installed].
+
+include::{page-component-version}@home::install/core.adoc[tag=core-run]
+
+include::{page-component-version}@home::partial$docker.adoc[tags=run]
+--
+====
+
+== Connect to TypeDB
+
+In this guide, we will use *TypeDB Studio*, the standalone GUI-based client for TypeDB. Ensure Studio is xref:{page-component-version}@home::install/studio.adoc[installed], then launch the application.
+
+include::{page-component-version}@manual::studio.adoc[tag=connect_studio]
+
+== Create a project
+
+include::{page-component-version}@manual::studio.adoc[tag=select_project]
+
+== Create a new database
+
+To create a new database:
+
+. Click the image:{page-component-version}@home::studio-icons/svg/studio_dbs.svg[width=24] btn:[Manage Databases] button in the top toolbar.
+. Enter a name for a new database and click btn:[Create].
+. Select the new database from the btn:[Select Database] dropdown (image:{page-component-version}@home::studio-icons/database-none.png[]) in the top toolbar.

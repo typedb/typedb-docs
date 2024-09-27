@@ -8,7 +8,7 @@ to construct queries to the database.
 
 Types are defined in the schema of a database, and their definitions are written in TypeQL.
 Types from the schema are used to design data queries to the database and are modeled with the use of the
-xref:{page-component-version}@learn::5-defining-schemas/5.1-defining-individual-types.adoc[PERA model].
+xref:{page-component-version}@academy::5-defining-schemas/5.1-defining-individual-types.adoc[PERA model].
 Type definitions can be used in Define and Undefine queries and can't use any variables.
 
 To create new types in a schema, subtype one of the existing types.
@@ -61,7 +61,18 @@ Let's define a simple schema for users:
 .Define query example
 [,typeql]
 ----
-include::{page-component-version}@home::attachment$quickstart-schema.tql[]
+define
+
+id sub attribute, value long;
+email sub attribute, value string;
+full-name sub attribute, value string;
+
+user sub entity,
+    owns id @key,
+    owns email,
+    abstract;
+
+person sub user, owns full-name;
 ----
 
 == Usage in a Fetch query

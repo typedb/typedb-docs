@@ -1,6 +1,6 @@
 import requests
 
-repo = "https://api.github.com/repos/vaticle/typedb-studio/releases"
+repo = "https://api.github.com/repos/typedb/typedb-studio/releases"
 filename_all = "all-versions.adoc"
 filename_latest = "latest-version.adoc"
 errors = []
