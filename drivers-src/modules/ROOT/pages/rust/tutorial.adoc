@@ -21,7 +21,7 @@ To run this sample application, you'll need:
 . TypeDB: either a https://cloud.typedb.com/[TypeDB Cloud,window=_blank] deployment or a TypeDB Core server.
 For TypeDB Core installation instructions, see the xref:{page-component-version}@home::install/core.adoc[] page.
 . Rust, cargo, and https://crates.io/crates/typedb-driver[TypeDB Rust driver].
-For the driver installation instructions, see the xref:rust/overview.adoc[] page.
+For the driver installation instructions, see the xref:{page-component-version}@drivers::rust/overview.adoc[] page.
 
 The Sample application below is synchronous for simplicity,
 so make sure to add `sync` feature either in the `Cargo.toml` or via the following command:
@@ -38,7 +38,7 @@ To be able to use the TypeDB Rust driver API in the Sample application, use the 
 
 [,rust,indent=0]
 ----
-include::partial$tutorials/rust/src/main.rs[tag=import]
+include::{page-component-version}@drivers::partial$tutorials/rust/src/main.rs[tag=import]
 ----
 
 == Default values
@@ -47,7 +47,7 @@ We store default values as constants in the source code:
 
 [,rust,indent=0]
 ----
-include::partial$tutorials/rust/src/main.rs[tag=constants]
+include::{page-component-version}@drivers::partial$tutorials/rust/src/main.rs[tag=constants]
 ----
 
 where `DB_NAME` -- the name of the database to use;
@@ -62,7 +62,7 @@ database setup, and querying.
 
 [,rust,indent=0]
 ----
-include::partial$tutorials/rust/src/main.rs[tag=main]
+include::{page-component-version}@drivers::partial$tutorials/rust/src/main.rs[tag=main]
 ----
 
 The entire `main()` function code is executed in the context of the <<_typedb_connection,network connection>>,
@@ -75,7 +75,7 @@ The `connect_to_TypeDB()` function takes `edition` and `addr` as mandatory param
 
 [,rust]
 ----
-include::partial$tutorials/rust/src/main.rs[tag=connection]
+include::{page-component-version}@drivers::partial$tutorials/rust/src/main.rs[tag=connection]
 ----
 
 The `edition` is expected to be an Enum for selecting a TypeDB edition.
@@ -87,7 +87,7 @@ For our sample application,
 we have the default credentials for the `admin` account
 provided as default values for the function's optional parameters.
 
-include::partial$tutorials/change-psw.adoc[]
+include::{page-component-version}@drivers::partial$tutorials/change-psw.adoc[]
 
 == Database setup
 
@@ -112,7 +112,7 @@ As the final step of the database setup, we <<_testing_a_database,test it>>.
 
 [,rust]
 ----
-include::partial$tutorials/rust/src/main.rs[tag=db-setup]
+include::{page-component-version}@drivers::partial$tutorials/rust/src/main.rs[tag=db-setup]
 ----
 
 [#_creating_a_database]
@@ -123,7 +123,7 @@ and call functions to <<_defining_a_schema,define its schema>> and <<_loading_in
 
 [,rust]
 ----
-include::partial$tutorials/rust/src/main.rs[tag=create_new_db]
+include::{page-component-version}@drivers::partial$tutorials/rust/src/main.rs[tag=create_new_db]
 ----
 
 [#_replacing_a_database]
@@ -133,7 +133,7 @@ and call a function to <<_creating_a_database,create a new one>> instead:
 
 [,rust, indent=0]
 ----
-include::partial$tutorials/rust/src/main.rs[tag=replace_db]
+include::{page-component-version}@drivers::partial$tutorials/rust/src/main.rs[tag=replace_db]
 ----
 
 [#_defining_a_schema]
@@ -143,7 +143,7 @@ We use a xref:{page-component-version}@typeql::queries/define.adoc[Define query]
 
 [,rust]
 ----
-include::partial$tutorials/rust/src/main.rs[tag=db-schema-setup]
+include::{page-component-version}@drivers::partial$tutorials/rust/src/main.rs[tag=db-schema-setup]
 ----
 
 The schema for the sample application is stored in the
@@ -155,7 +155,7 @@ file.
 ====
 [,typeql]
 ----
-include::partial$tutorials/iam-schema.tql[lines=17..]
+include::{page-component-version}@drivers::partial$tutorials/iam-schema.tql[lines=17..]
 ----
 ====
 
@@ -170,7 +170,7 @@ xref:{page-component-version}@typeql::queries/insert.adoc[Insert query]:
 
 [,rust]
 ----
-include::partial$tutorials/rust/src/main.rs[tag=db-dataset-setup]
+include::{page-component-version}@drivers::partial$tutorials/rust/src/main.rs[tag=db-dataset-setup]
 ----
 
 We read the
@@ -182,7 +182,7 @@ file, send its contents as a single query, and then commit the changes.
 ====
 [,typeql]
 ----
-include::partial$tutorials/iam-data-single-query.tql[lines=17..]
+include::{page-component-version}@drivers::partial$tutorials/iam-data-single-query.tql[lines=17..]
 ----
 ====
 
@@ -195,7 +195,7 @@ To test the database, we send a query to count the number of users in the databa
 
 [,rust]
 ----
-include::partial$tutorials/rust/src/main.rs[tag=test-db]
+include::{page-component-version}@drivers::partial$tutorials/rust/src/main.rs[tag=test-db]
 ----
 
 == Query examples
@@ -205,7 +205,7 @@ After database setup is complete, we proceed with querying our database with dif
 
 [,rust,indent=0]
 ----
-include::partial$tutorials/rust/src/main.rs[tag=queries]
+include::{page-component-version}@drivers::partial$tutorials/rust/src/main.rs[tag=queries]
 ----
 
 The queries are as follows:
@@ -230,7 +230,7 @@ Let's use a xref:{page-component-version}@typeql::queries/fetch.adoc[Fetch query
 
 [,rust]
 ----
-include::partial$tutorials/rust/src/main.rs[tag=fetch]
+include::{page-component-version}@drivers::partial$tutorials/rust/src/main.rs[tag=fetch]
 ----
 
 We get the response as a stream of results, containing JSON.
@@ -245,7 +245,7 @@ Let's insert a new user with `full-name` and `email` attributes to the database.
 
 [,rust]
 ----
-include::partial$tutorials/rust/src/main.rs[tag=insert]
+include::{page-component-version}@drivers::partial$tutorials/rust/src/main.rs[tag=insert]
 ----
 
 The Insert query returns a stream of ConceptMaps: one for every `insert` clause execution.
@@ -263,7 +263,7 @@ It can be used with or without inference enabled.
 
 [,rust]
 ----
-include::partial$tutorials/rust/src/main.rs[tag=get]
+include::{page-component-version}@drivers::partial$tutorials/rust/src/main.rs[tag=get]
 ----
 
 We call the function with the inference disabled (`false`) and expect it to return no results, as the query pattern
@@ -296,7 +296,7 @@ and assigning it with ownership of the new path attribute with the xref:{page-co
 
 [,rust]
 ----
-include::partial$tutorials/rust/src/main.rs[tag=update]
+include::{page-component-version}@drivers::partial$tutorials/rust/src/main.rs[tag=update]
 ----
 
 We collect the response of the Update query and check the length of it to determine
@@ -318,7 +318,7 @@ then our transaction fails upon a commit.
 
 [,rust]
 ----
-include::partial$tutorials/rust/src/main.rs[tag=delete]
+include::{page-component-version}@drivers::partial$tutorials/rust/src/main.rs[tag=delete]
 ----
 
 == Learn more
@@ -331,7 +331,7 @@ include::partial$tutorials/rust/src/main.rs[tag=delete]
 The full source code of this sample application.
 ****
 
-.xref:rust/api-reference.adoc[]
+.xref:{page-component-version}@drivers::rust/api-reference.adoc[]
 [.clickable]
 ****
 The full API reference for the TypeDB Rust driver.

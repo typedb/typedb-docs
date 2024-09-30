@@ -1,7 +1,7 @@
 = Schema editing
 :experimental:
 
-In this guide, you will learn how to edit the schema of your database without sending Define and Undefine queries. This page assumes you've already followed instructions from the xref:connecting/overview.adoc[] section pages.
+In this guide, you will learn how to edit the schema of your database without sending Define and Undefine queries. This page assumes you've already followed instructions from the xref:{page-component-version}@manual::connecting/overview.adoc[] section pages.
 
 == Understanding query-less editing
 
@@ -9,13 +9,13 @@ Besides using Define and Undefine queries, TypeDB also provides a program interf
 TypeDB clients and drivers may implement this interface. On this page, we discuss _two_ yields additional ways of modifying the schema of a database in this way:
 with Studio's <<_modify_with_type_editor,Type Editor>> and with <<_modify_with_driver_api,driver API>> methods.
 
-To learn more about Define queries, see the xref:defining/define.adoc[] page.
+To learn more about Define queries, see the xref:{page-component-version}@manual::defining/define.adoc[] page.
 
 
 [#_modify_with_type_editor]
 == TypeDB Studio's Type Editor
 
-include::../studio.adoc[tag=type-editor]
+include::{page-component-version}@manual::studio.adoc[tag=type-editor]
 
 [#_modify_with_driver_api]
 == Schema edits with driver API
@@ -38,7 +38,7 @@ Rust::
 .{code-caption}
 [,rust, indent=0]
 ----
-include::partial$rust-manual-code.rs[tags=types-editing]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=types-editing]
 ----
 
 For more details about these and other API methods, see the xref:{page-component-version}@drivers::rust/api-reference.adoc[API reference].
@@ -50,7 +50,7 @@ Python::
 .{code-caption}
 [,python, indent=0]
 ----
-include::partial$python-manual-code.py[tags=types-editing]
+include::{page-component-version}@manual::partial$python-manual-code.py[tags=types-editing]
 ----
 
 For more details about these and other API methods, see the xref:{page-component-version}@drivers::python/api-reference.adoc[API reference].
@@ -62,7 +62,7 @@ Node.js::
 .{code-caption}
 [,js,indent=0]
 ----
-include::partial$nodejs-manual-code.js[tags=types-editing]
+include::{page-component-version}@manual::partial$nodejs-manual-code.js[tags=types-editing]
 ----
 
 For more details about these and other API methods, see the xref:{page-component-version}@drivers::nodejs/api-reference.adoc[API reference].
@@ -74,7 +74,7 @@ Java::
 .{code-caption}
 [,java, indent=0]
 ----
-include::partial$java-manual-code.java[tags=types-editing]
+include::{page-component-version}@manual::partial$java-manual-code.java[tags=types-editing]
 ----
 
 For more details about these and other API methods, see the xref:{page-component-version}@drivers::java/api-reference.adoc[API reference].
@@ -86,7 +86,7 @@ C#::
 .{code-caption}
 [,csharp,indent=0]
 ----
-include::partial$csharp-manual-code.cs[tags=types-editing]
+include::{page-component-version}@manual::partial$csharp-manual-code.cs[tags=types-editing]
 ----
 
 For more details about these and other API methods, see the xref:{page-component-version}@drivers::csharp/api-reference.adoc[API reference].
@@ -98,7 +98,7 @@ C++::
 .{code-caption}
 [,cpp,indent=0]
 ----
-include::partial$cpp-manual-code.cpp[tags=types-editing]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tags=types-editing]
 ----
 
 For more details about these and other API methods, see the xref:{page-component-version}@drivers::cpp/api-reference.adoc[API reference].
@@ -110,7 +110,7 @@ C::
 .{code-caption}
 [,c,indent=0]
 ----
-include::partial$c-manual-code.c[tags=types-editing]
+include::{page-component-version}@manual::partial$c-manual-code.c[tags=types-editing]
 ----
 
 For more details about these and other API methods, see the xref:{page-component-version}@drivers::c/api-reference.adoc[API reference].

@@ -10,11 +10,11 @@ An expression describes a computation of a value in a query.
 It can be used only in a `match` clause or a `condition` of a rule
 and can contain any combination of the following elements:
 
-* a xref:concepts/concept-variables.adoc[concept variable] representing an attribute (e.g., `$size-kb`),
-* a xref:values/value-variables.adoc[value variable] (e.g., `?sum`),
+* a xref:{page-component-version}@typeql::concepts/concept-variables.adoc[concept variable] representing an attribute (e.g., `$size-kb`),
+* a xref:{page-component-version}@typeql::values/value-variables.adoc[value variable] (e.g., `?sum`),
 * a literal value (e.g., `4`),
-* an xref:values/arithmetic.adoc[arithmetic operation] (e.g., `+`),
-* or a xref:values/functions.adoc[built-in function] (e.g., `max()`).
+* an xref:{page-component-version}@typeql::values/arithmetic.adoc[arithmetic operation] (e.g., `+`),
+* or a xref:{page-component-version}@typeql::values/functions.adoc[built-in function] (e.g., `max()`).
 
 .Expression example
 [,typeql]

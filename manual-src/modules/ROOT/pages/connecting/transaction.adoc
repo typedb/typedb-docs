@@ -15,7 +15,7 @@ To open a transaction, you need an open session.
 
 == Open a new transaction
 
-Before you begin, make sure to open a transaction using instructions from the xref:connecting/session.adoc[] page.
+Before you begin, make sure to open a transaction using instructions from the xref:{page-component-version}@manual::connecting/session.adoc[] page.
 To open a transaction, you need to select a transaction type and use an open session.
 Optionally, you can set transaction options.
 
@@ -34,7 +34,7 @@ and select a database from a drop-down list in the top toolbar.
 Console::
 +
 --
-Use the `transaction` keyword with a database name, xref:connecting/session.adoc[session] type,
+Use the `transaction` keyword with a database name, xref:{page-component-version}@manual::connecting/session.adoc[session] type,
 and transaction type, for example:
 
 .Open a transaction
@@ -58,7 +58,7 @@ Rust::
 .Open a transaction
 [,rust,indent=0]
 ----
-include::partial$rust-manual-code.rs[tag=tx_open]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tag=tx_open]
 ----
 --
 
@@ -68,7 +68,7 @@ Python::
 .Open a transaction
 [,python,indent=0]
 ----
-include::partial$python-manual-code.py[tag=tx_open]
+include::{page-component-version}@manual::partial$python-manual-code.py[tag=tx_open]
 ----
 --
 
@@ -78,7 +78,7 @@ Node.js::
 .Open a transaction
 [,js,indent=0]
 ----
-include::partial$nodejs-manual-code.js[tag=tx_open]
+include::{page-component-version}@manual::partial$nodejs-manual-code.js[tag=tx_open]
 ----
 --
 
@@ -88,7 +88,7 @@ Java::
 .Open a transaction
 [,java,indent=0]
 ----
-include::partial$java-manual-code.java[tag=tx_open]
+include::{page-component-version}@manual::partial$java-manual-code.java[tag=tx_open]
 ----
 --
 
@@ -98,8 +98,8 @@ C#::
 .Open a transaction
 [,csharp,indent=0]
 ----
-include::partial$csharp-manual-code.cs[tag=options]
-include::partial$csharp-manual-code.cs[tag=tx_open]
+include::{page-component-version}@manual::partial$csharp-manual-code.cs[tag=options]
+include::{page-component-version}@manual::partial$csharp-manual-code.cs[tag=tx_open]
 ----
 --
 
@@ -109,8 +109,8 @@ C++::
 .Open a transaction
 [,cpp,indent=0]
 ----
-include::partial$cpp-manual-code.cpp[tag=options]
-include::partial$cpp-manual-code.cpp[tag=tx_open]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tag=options]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tag=tx_open]
 ----
 --
 
@@ -120,8 +120,8 @@ C::
 .Open a transaction
 [,c,indent=0]
 ----
-include::partial$c-manual-code.c[tag=options]
-include::partial$c-manual-code.c[tag=tx_open]
+include::{page-component-version}@manual::partial$c-manual-code.c[tag=options]
+include::{page-component-version}@manual::partial$c-manual-code.c[tag=tx_open]
 ----
 --
 ====
@@ -175,7 +175,7 @@ use the xref:{page-component-version}@drivers::rust/api-reference.adoc#_struct_T
 .Close a transaction
 [,rust,indent=0]
 ----
-include::partial$rust-manual-code.rs[tag=tx_close]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tag=tx_close]
 ----
 --
 
@@ -189,7 +189,7 @@ to explicitly close a transaction:
 .Close a transaction
 [,python,indent=0]
 ----
-include::partial$python-manual-code.py[tag=tx_close]
+include::{page-component-version}@manual::partial$python-manual-code.py[tag=tx_close]
 ----
 --
 
@@ -202,7 +202,7 @@ to explicitly close a transaction:
 .Close a transaction
 [,js,indent=0]
 ----
-include::partial$nodejs-manual-code.js[tag=tx_close]
+include::{page-component-version}@manual::partial$nodejs-manual-code.js[tag=tx_close]
 ----
 --
 
@@ -216,7 +216,7 @@ xref:{page-component-version}@drivers::java/api-reference.adoc#_TypeDBTransactio
 .Close a transaction
 [,java,indent=0]
 ----
-include::partial$java-manual-code.java[tag=tx_close]
+include::{page-component-version}@manual::partial$java-manual-code.java[tag=tx_close]
 ----
 --
 
@@ -231,7 +231,7 @@ use the xref:{page-component-version}@drivers::csharp/api-reference.adoc#_void_T
 .Close a transaction
 [,csharp,indent=0]
 ----
-include::partial$csharp-manual-code.cs[tag=tx_close]
+include::{page-component-version}@manual::partial$csharp-manual-code.cs[tag=tx_close]
 ----
 --
 
@@ -248,7 +248,7 @@ method:
 .Close a transaction
 [,cpp,indent=0]
 ----
-include::partial$cpp-manual-code.cpp[tag=tx_close]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tag=tx_close]
 ----
 --
 
@@ -263,7 +263,7 @@ use the xref:{page-component-version}@drivers::c/api-reference.adoc#_transaction
 .Close a transaction
 [,c,indent=0]
 ----
-include::partial$c-manual-code.c[tag=tx_close]
+include::{page-component-version}@manual::partial$c-manual-code.c[tag=tx_close]
 ----
 --
 
@@ -316,7 +316,7 @@ use the xref:{page-component-version}@drivers::rust/api-reference.adoc#_struct_T
 .Commit a transaction
 [,rust,indent=0]
 ----
-include::partial$rust-manual-code.rs[tag=tx_commit]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tag=tx_commit]
 ----
 --
 
@@ -328,7 +328,7 @@ To commit a transaction, use the xref:{page-component-version}@drivers::python/a
 .Commit a transaction
 [,python,indent=0]
 ----
-include::partial$python-manual-code.py[tag=tx_commit]
+include::{page-component-version}@manual::partial$python-manual-code.py[tag=tx_commit]
 ----
 --
 
@@ -340,7 +340,7 @@ To commit a transaction, use the xref:{page-component-version}@drivers::nodejs/a
 .Commit a transaction
 [,js,indent=0]
 ----
-include::partial$nodejs-manual-code.js[tag=tx_commit]
+include::{page-component-version}@manual::partial$nodejs-manual-code.js[tag=tx_commit]
 ----
 --
 
@@ -352,7 +352,7 @@ To commit a transaction, use the xref:{page-component-version}@drivers::java/api
 .Commit a transaction
 [,java,indent=0]
 ----
-include::partial$java-manual-code.java[tag=tx_commit]
+include::{page-component-version}@manual::partial$java-manual-code.java[tag=tx_commit]
 ----
 --
 
@@ -365,7 +365,7 @@ xref:{page-component-version}@drivers::csharp/api-reference.adoc#_void_TypeDB_Dr
 .Commit a transaction
 [,csharp,indent=0]
 ----
-include::partial$cpp-manual-code.cpp[tag=tx_commit]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tag=tx_commit]
 ----
 --
 
@@ -377,7 +377,7 @@ To commit a transaction, use the xref:{page-component-version}@drivers::cpp/api-
 .Commit a transaction
 [,cpp,indent=0]
 ----
-include::partial$cpp-manual-code.cpp[tag=tx_commit]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tag=tx_commit]
 ----
 --
 
@@ -389,7 +389,7 @@ To commit a transaction, use the xref:{page-component-version}@drivers::c/api-re
 .Commit a transaction
 [,c,indent=0]
 ----
-include::partial$c-manual-code.c[tag=tx_commit]
+include::{page-component-version}@manual::partial$c-manual-code.c[tag=tx_commit]
 ----
 --
 ====
@@ -428,33 +428,33 @@ for a `schema` session
 for a `data` session
 
 | `write` transaction
-| xref:defining/define.adoc[Define] +
-xref:defining/undefine.adoc[Undefine] +
-xref:reading/fetch.adoc[Fetch] +
-xref:reading/get.adoc[Get]
-| xref:writing/insert.adoc[Insert] +
-xref:writing/delete.adoc[Delete] +
-xref:writing/update.adoc[Update] +
-xref:reading/fetch.adoc[Fetch] +
-xref:reading/get.adoc[Get]
+| xref:{page-component-version}@manual::defining/define.adoc[Define] +
+xref:{page-component-version}@manual::defining/undefine.adoc[Undefine] +
+xref:{page-component-version}@manual::reading/fetch.adoc[Fetch] +
+xref:{page-component-version}@manual::reading/get.adoc[Get]
+| xref:{page-component-version}@manual::writing/insert.adoc[Insert] +
+xref:{page-component-version}@manual::writing/delete.adoc[Delete] +
+xref:{page-component-version}@manual::writing/update.adoc[Update] +
+xref:{page-component-version}@manual::reading/fetch.adoc[Fetch] +
+xref:{page-component-version}@manual::reading/get.adoc[Get]
 | `read` transaction
-| xref:reading/fetch.adoc[Fetch] +
-xref:reading/get.adoc[Get]
-| xref:reading/fetch.adoc[Fetch] +
-xref:reading/get.adoc[Get]
+| xref:{page-component-version}@manual::reading/fetch.adoc[Fetch] +
+xref:{page-component-version}@manual::reading/get.adoc[Get]
+| xref:{page-component-version}@manual::reading/fetch.adoc[Fetch] +
+xref:{page-component-version}@manual::reading/get.adoc[Get]
 |===
 
 == Learn more
 
 [cols-2]
 --
-.xref:defining/overview.adoc[]
+.xref:{page-component-version}@manual::defining/overview.adoc[]
 [.clickable]
 ****
 See how to define a schema for your database.
 ****
 
-.xref:writing/overview.adoc[]
+.xref:{page-component-version}@manual::writing/overview.adoc[]
 [.clickable]
 ****
 See how to write data into TypeDB database.

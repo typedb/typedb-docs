@@ -23,7 +23,7 @@ to set a constraint of owning a particular attribute.
 
 == Usage in a match pattern
 
-include::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 To match a particular person by the value of the full-name it owns and return an email it owns:
 
@@ -47,7 +47,7 @@ fetch $e;
 
 == Usage in an insert pattern
 
-include::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 Let's insert a new email for an existing person:
 
@@ -64,7 +64,7 @@ By inserting ownership of an attribute that doesn't exist in the database yet, w
 
 == Usage in a delete pattern
 
-include::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 Let's delete an ownership of the new email from the same person:
 
@@ -80,19 +80,19 @@ $p has $e;
 
 The above example deletes only ownership, but the email attribute itself is still in the database.
 To delete the attribute, use the `isa` statement in a `delete` clause, for example,
-see the xref:statements/isa.adoc#_in_a_delete_pattern[isa] page.
+see the xref:{page-component-version}@typeql::statements/isa.adoc#_in_a_delete_pattern[isa] page.
 
 == Learn more
 
 [cols-2]
 --
-.xref:concepts/types.adoc[]
+.xref:{page-component-version}@typeql::concepts/types.adoc[]
 [.clickable]
 ****
 Learn about types in TypeQL.
 ****
 
-.xref:concepts/data-instances.adoc[]
+.xref:{page-component-version}@typeql::concepts/data-instances.adoc[]
 [.clickable]
 ****
 Learn about data instances in TypeQL.

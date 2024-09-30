@@ -42,7 +42,7 @@ See an example of `CMakeLists.txt` below:
 .CMakeLists.txt example
 [,source]
 ----
-include::partial$tutorials/c/CMakeLists.txt[]
+include::{page-component-version}@drivers::partial$tutorials/c/CMakeLists.txt[]
 ----
 
 == Quickstart
@@ -52,7 +52,7 @@ creates a database named `access-management-db`, defines a schema, inserts some 
 
 [,c]
 ----
-include::partial$tutorials/c/quickstart.c[]
+include::{page-component-version}@drivers::partial$tutorials/c/quickstart.c[]
 ----
 
 For more information on methods used above and other capabilities, see the API reference link below.
@@ -79,20 +79,20 @@ export DYLD_LIBRARY_PATH=./lib
 
 [cols-2]
 --
-.xref:c/tutorial.adoc[Tutorial]
+.xref:{page-component-version}@drivers::c/tutorial.adoc[Tutorial]
 [.clickable]
 ****
 This tutorial will help you learn how to use the C driver.
 ****
 
-.xref:c/api-reference.adoc[API reference]
+.xref:{page-component-version}@drivers::c/api-reference.adoc[API reference]
 [.clickable]
 ****
 Driver API reference for the C language.
 ****
 --
 
-include::partial$drivers2discord.adoc[]
+include::{page-component-version}@drivers::partial$drivers2discord.adoc[]
 
 [#_version_compatibility]
 == Version Compatibility

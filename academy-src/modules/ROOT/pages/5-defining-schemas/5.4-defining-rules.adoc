@@ -2,7 +2,7 @@
 
 == Rule structure
 
-In xref:academy::3-reading-data/3.3-fetching-inferred-data.adoc[Lesson 3.3], we saw how we could use *rule inference* to generate new data based on *rules*. In this lesson, we'll see how we can go about defining these rules. Rules are defined using the same Define queries used to define types, as types and rules together form the schema. The syntactic structure used to define a rule has three parts: a *rule label*, a *condition*, and a *conclusion*, as demonstrated in the following template.
+In xref:{page-component-version}@academy::3-reading-data/3.3-fetching-inferred-data.adoc[Lesson 3.3], we saw how we could use *rule inference* to generate new data based on *rules*. In this lesson, we'll see how we can go about defining these rules. Rules are defined using the same Define queries used to define types, as types and rules together form the schema. The syntactic structure used to define a rule has three parts: a *rule label*, a *condition*, and a *conclusion*, as demonstrated in the following template.
 
 [,typeql]
 ----
@@ -14,7 +14,7 @@ rule rule-label:
     };
 ----
 
-The beginning of a rule definition is denoted with the `rule` keyword followed by the rule label, which uniquely identifies it, analogous to a type label. The condition is contained in a *block* preceded by the `when` keyword. This is followed by the conclusion, which is contained in a block preceded by the `then` keyword. In TypeQL, blocks are delimited by braces and contain *patterns*, which comprise any number of consecutive statements. In xref:academy::3-reading-data/3.5-query-validation.adoc[Lesson 3.5], we briefly saw another kind of block, a `not` block. The `when` and `then` blocks can only be used as parts of rules and must always be used in pairs. With this in mind, let's review the rule we encountered previously.
+The beginning of a rule definition is denoted with the `rule` keyword followed by the rule label, which uniquely identifies it, analogous to a type label. The condition is contained in a *block* preceded by the `when` keyword. This is followed by the conclusion, which is contained in a block preceded by the `then` keyword. In TypeQL, blocks are delimited by braces and contain *patterns*, which comprise any number of consecutive statements. In xref:{page-component-version}@academy::3-reading-data/3.5-query-validation.adoc[Lesson 3.5], we briefly saw another kind of block, a `not` block. The `when` and `then` blocks can only be used as parts of rules and must always be used in pairs. With this in mind, let's review the rule we encountered previously.
 
 [,typeql]
 ----
@@ -62,7 +62,7 @@ rule transitive-location:
         (location: $parent-place, located: $x) isa locating;
     };
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24]image:home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
 All the roleplayers of the new relation must already exist in the data and be represented by variables in the rule's condition. This particular rule makes `locating` relations https://en.wikipedia.org/wiki/Transitive_relation[transitive] by leveraging interface polymorphism, regardless of the types of the roleplayers.
 
@@ -84,7 +84,7 @@ rule review-verified-by-purchase:
         $review has verified true;
     };
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24]image:home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
 The owner of the new attribute must already exist in the data and be represented by a variable in the rule's condition. This rule checks if a user who reviewed a book has previously bought it, and then marks the review as verified if so. In fact, this rule does not specify the type of `$product`, so would even work for reviews of things other than books! We also have a second rule that checks if reviews are verified, and marks them as unverified if not.
 
@@ -99,6 +99,6 @@ rule review-unverified:
         $review has verified false;
     };
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24]image:home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
-The combination of these two rules ensures that every review always has exactly one `verified` attribute. We never have to insert these attributes because they are _always_ derived by rule inference. These are a few simple ways we can define rules. We will explore more complex cases of rule inference in xref:academy::10-using-inference/overview.adoc[Lesson 10].
+The combination of these two rules ensures that every review always has exactly one `verified` attribute. We never have to insert these attributes because they are _always_ derived by rule inference. These are a few simple ways we can define rules. We will explore more complex cases of rule inference in xref:{page-component-version}@academy::10-using-inference/overview.adoc[Lesson 10].

@@ -75,7 +75,7 @@ dict_keys(['book'])
 dict_keys(['book'])
 ----
 
-For each result, the value of `result["book"]` is another dictionary. The keys of these nested dictionaries are the names of the attributes that we fetched of `book`, in addition to a `type` field as we saw in xref:academy::3-reading-data/3.2-fetching-polymorphic-data.adoc[Lesson 3.2].
+For each result, the value of `result["book"]` is another dictionary. The keys of these nested dictionaries are the names of the attributes that we fetched of `book`, in addition to a `type` field as we saw in xref:{page-component-version}@academy::3-reading-data/3.2-fetching-polymorphic-data.adoc[Lesson 3.2].
 
 [,python]
 ----
@@ -319,7 +319,7 @@ You may find it useful to refer to the bookstore's schema.
 =====
 [,typeql]
 ----
-include::academy::attachment$bookstore-schema.tql[lines=18..]
+include::{page-component-version}@academy::attachment$bookstore-schema.tql[lines=18..]
 ----
 =====
 
@@ -328,7 +328,7 @@ include::academy::attachment$bookstore-schema.tql[lines=18..]
 =====
 [,python]
 ----
-include::academy::attachment$python-sample-app.py[lines=18..]
+include::{page-component-version}@academy::attachment$python-sample-app.py[lines=18..]
 ----
 =====
 ====

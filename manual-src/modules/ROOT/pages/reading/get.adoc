@@ -13,14 +13,14 @@ A Get query is used to retrieve _concepts_ from a TypeDB database. For a detaile
 [#_how_to_send_a_get_query]
 == Sending Get queries
 
-Before you get started, ensure you followed instructions from the xref:writing/overview.adoc[] section. The easiest way to send a Get query is to use Studio or Console:
+Before you get started, ensure you followed instructions from the xref:{page-component-version}@manual::writing/overview.adoc[] section. The easiest way to send a Get query is to use Studio or Console:
 
 [tabs]
 ====
 Studio::
 +
 --
-Follow the xref:studio.adoc#_prepare_a_query[Studio manual]
+Follow the xref:{page-component-version}@manual::studio.adoc#_prepare_a_query[Studio manual]
 to connect to TypeDB and select a project folder.
 Then use the steps below:
 
@@ -94,7 +94,7 @@ To send a Get query programmatically, use xref:{page-component-version}@drivers:
 Rust::
 +
 --
-Follow the xref:connecting/connection.adoc[connection guide]
+Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 
@@ -106,15 +106,15 @@ method:
 
 [,rust,indent=0]
 ----
-include::partial$rust-manual-code.rs[tags=databases,indent=8]
-include::partial$rust-manual-code.rs[tags=get]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=get]
 ----
 --
 
 Python::
 +
 --
-Follow the xref:connecting/connection.adoc[connection guide]
+Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 
@@ -126,14 +126,14 @@ method:
 
 [,python,indent=0]
 ----
-include::partial$python-manual-code.py[tags=get]
+include::{page-component-version}@manual::partial$python-manual-code.py[tags=get]
 ----
 --
 
 Node.js::
 +
 --
-Follow the xref:connecting/connection.adoc[connection guide]
+Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 
@@ -145,14 +145,14 @@ method:
 
 [,js,indent=0]
 ----
-include::partial$nodejs-manual-code.js[tags=get]
+include::{page-component-version}@manual::partial$nodejs-manual-code.js[tags=get]
 ----
 --
 
 Java::
 +
 --
-Follow the xref:connecting/connection.adoc[connection guide]
+Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 
@@ -164,14 +164,14 @@ method:
 
 [,java,indent=0]
 ----
-include::partial$java-manual-code.java[tags=get]
+include::{page-component-version}@manual::partial$java-manual-code.java[tags=get]
 ----
 --
 
 C#::
 +
 --
-Follow the xref:connecting/connection.adoc[connection guide]
+Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 
@@ -183,14 +183,14 @@ method:
 
 [,csharp,indent=0]
 ----
-include::partial$csharp-manual-code.cs[tags=get]
+include::{page-component-version}@manual::partial$csharp-manual-code.cs[tags=get]
 ----
 --
 
 C++::
 +
 --
-Follow the xref:connecting/connection.adoc[connection guide]
+Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 
@@ -202,15 +202,15 @@ method:
 
 [,cpp,indent=0]
 ----
-include::partial$cpp-manual-code.cpp[tags=options,indent=0]
-include::partial$cpp-manual-code.cpp[tags=get,indent=0]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tags=options,indent=0]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tags=get,indent=0]
 ----
 --
 
 C::
 +
 --
-Follow the xref:connecting/connection.adoc[connection guide]
+Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 
@@ -222,8 +222,8 @@ function:
 
 [,c,indent=0]
 ----
-include::partial$c-manual-code.c[tags=options,indent=0]
-include::partial$c-manual-code.c[tags=get,indent=0]
+include::{page-component-version}@manual::partial$c-manual-code.c[tags=options,indent=0]
+include::{page-component-version}@manual::partial$c-manual-code.c[tags=get,indent=0]
 ----
 --
 ====
@@ -288,7 +288,7 @@ See the respective drivers API reference for relevant methods to work with these
 Learn more about Get queries in TypeQL: syntax, behavior, and query examples.
 ****
 
-.xref:writing/overview.adoc[]
+.xref:{page-component-version}@manual::writing/overview.adoc[]
 [.clickable]
 ****
 Learn how to write some new data to a database to read.

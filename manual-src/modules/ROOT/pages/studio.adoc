@@ -133,8 +133,8 @@ By manually image:{page-component-version}@home::studio-icons/svg/studio_save.sv
 
 image::{page-component-version}@drivers::studio/project-schema-committed.png[Commit the Transaction,role="right",width = 50%,link=self]
 
-Select a session type (image:icons/session-data.png[])
-and a transaction type (image:icons/transaction-write.png[]) in the top Toolbar.
+Select a session type (image:{page-component-version}@manual::icons/session-data.png[])
+and a transaction type (image:{page-component-version}@manual::icons/transaction-write.png[]) in the top Toolbar.
 
 To run a query file, open it in a tab of the Text editor panel and
 click the image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button from the top Toolbar.
@@ -161,7 +161,7 @@ You can pin a tab to preserve it.
 Otherwise, it will be rewritten with the next run.
 
 Output tabs represent different output formats for the results: Log and Graph.
-Log tab contains textual output, similar to xref:console.adoc[TypeDB Console], as well as input log,
+Log tab contains textual output, similar to xref:{page-component-version}@manual::console.adoc[TypeDB Console], as well as input log,
 and error messages.
 Graph tab is available for Get queries only.
 It uses Studio's Graph Visualizer to build a graphical representation of query results.
@@ -182,18 +182,18 @@ image::{page-component-version}@drivers::studio/studio-transaction-controls.png[
 | # | Name | Icon / Visual ^.^| Action description
 
 | 1
-| xref:connecting/session.adoc[Session type] switch
-| image:icons/session-data.png[]
-| Select a xref:connecting/session.adoc[session type] to use for queries.
+| xref:{page-component-version}@manual::connecting/session.adoc[Session type] switch
+| image:{page-component-version}@manual::icons/session-data.png[]
+| Select a xref:{page-component-version}@manual::connecting/session.adoc[session type] to use for queries.
 
 | 2
-| xref:connecting/transaction.adoc[Transaction type] switch
-| image:icons/transaction-read.png[]
-| Select a xref:connecting/transaction.adoc[transaction type] to use for queries
+| xref:{page-component-version}@manual::connecting/transaction.adoc[Transaction type] switch
+| image:{page-component-version}@manual::icons/transaction-read.png[]
+| Select a xref:{page-component-version}@manual::connecting/transaction.adoc[transaction type] to use for queries
 
 | 3
 | btn:[snapshot] button
-| image:icons/snapshot.png[]
+| image:{page-component-version}@manual::icons/snapshot.png[]
 | Enable snapshot feature that encapsulates a transaction in a snapshot of a database's data
 until the transaction is committed or closed.
 Write transactions are always snapshoted.
@@ -201,15 +201,15 @@ May be enabled or disabled for read transactions.
 
 | 4
 | btn:[infer] button
-| image:icons/infer.png[]
-| Enable xref:reading/infer.adoc[inferring data] by rules.
+| image:{page-component-version}@manual::icons/infer.png[]
+| Enable xref:{page-component-version}@manual::reading/infer.adoc[inferring data] by rules.
 Only available for `read` transactions.
 //#todo Update the link to lead to the Learn category
 
 | 5
 | btn:[explain] button
-| image:icons/explain.png[]
-| Enable xref:objects/explanation.adoc[explanations] mechanics.
+| image:{page-component-version}@manual::icons/explain.png[]
+| Enable xref:{page-component-version}@manual::objects/explanation.adoc[explanations] mechanics.
 //#todo Update the link to lead to the Learn category
 
 | 6

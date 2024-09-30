@@ -6,37 +6,37 @@ In this lesson, we'll learn how to write data to the sample database using *Inse
 
 == Recommended prerequisites
 
-* You should complete xref:academy::3-reading-data/overview.adoc[Lesson 3] before starting this lesson.
+* You should complete xref:{page-component-version}@academy::3-reading-data/overview.adoc[Lesson 3] before starting this lesson.
 
 == Lesson contents
 
 [cols-2]
 --
-.xref:academy::4-writing-data/4.1-inserting-simple-data.adoc[]
+.xref:{page-component-version}@academy::4-writing-data/4.1-inserting-simple-data.adoc[]
 [.clickable]
 ****
 Learn how to insert new entities, relations, and attributes.
 ****
 
-.xref:academy::4-writing-data/4.2-inserting-polymorphic-data.adoc[]
+.xref:{page-component-version}@academy::4-writing-data/4.2-inserting-polymorphic-data.adoc[]
 [.clickable]
 ****
 Learn how to insert data with polymorphic queries.
 ****
 
-.xref:academy::4-writing-data/4.3-deleting-data.adoc[]
+.xref:{page-component-version}@academy::4-writing-data/4.3-deleting-data.adoc[]
 [.clickable]
 ****
 Learn how to delete entities, relations, and attributes.
 ****
 
-.xref:academy::4-writing-data/4.4-updating-data.adoc[]
+.xref:{page-component-version}@academy::4-writing-data/4.4-updating-data.adoc[]
 [.clickable]
 ****
 Learn how to update the attributes of entities and relations.
 ****
 
-.xref:academy::4-writing-data/4.5-data-validation.adoc[]
+.xref:{page-component-version}@academy::4-writing-data/4.5-data-validation.adoc[]
 [.clickable]
 ****
 Learn about how new data is validated against the schema.
@@ -47,12 +47,12 @@ Learn about how new data is validated against the schema.
 
 To run an Insert, Delete, or Update query, make sure to use a *data* session and *write* transaction. The examples and exercises featured in this lesson are annotated with one of the following instructions to indicate how they should be run. Each write query should only be run once. Running write queries more than once may have unintended effects, such as inserting duplicate data.
 
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*:: *Run* this query without committing the transaction afterward. Write transactions will remain open for further queries, and changes will not be persisted until a commit.
-image:home::studio-icons/svg/studio_run.svg[width=24]image:home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*:: *Run* this query and then *commit* the transaction, persisting the changes to the database.
-image:home::studio-icons/svg/studio_fail.svg[width=24] *_Do not run_*:: Do not run this query, which is shown for information only. To rollback an open transaction, *close* it without committing.
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*:: *Run* this query to see the error generated.
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*:: *Run* this query without committing the transaction afterward. Write transactions will remain open for further queries, and changes will not be persisted until a commit.
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*:: *Run* this query and then *commit* the transaction, persisting the changes to the database.
+image:{page-component-version}@home::studio-icons/svg/studio_fail.svg[width=24] *_Do not run_*:: Do not run this query, which is shown for information only. To rollback an open transaction, *close* it without committing.
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*:: *Run* this query to see the error generated.
 
-For information on how to control sessions, transactions, and queries using TypeDB Studio, refer back to xref:academy::2-environment-setup/2.2-using-typedb-studio.adoc[Lesson 2.2].
+For information on how to control sessions, transactions, and queries using TypeDB Studio, refer back to xref:{page-component-version}@academy::2-environment-setup/2.2-using-typedb-studio.adoc[Lesson 2.2].
 
 == TypeQL keywords introduced
 

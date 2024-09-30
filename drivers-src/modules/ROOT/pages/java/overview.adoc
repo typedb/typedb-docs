@@ -57,7 +57,7 @@ For more information, see the
 https://cloudsmith.io/~typedb/repos/public-release/packages/detail/maven/typedb-driver/latest/a=noarch;xg=com.vaticle.typedb/#install[build systems setup]
 page.
 
-To use the TypeQL library, see the xref:java/query-builder.adoc[] page for installation instructions.
+To use the TypeQL library, see the xref:{page-component-version}@drivers::java/query-builder.adoc[] page for installation instructions.
 
 === Add logging config
 
@@ -144,35 +144,35 @@ public class Main {
 }
 ----
 
-The above example uses xref:java/query-builder.adoc[Java query builder] syntax to construct TypeQL queries.
+The above example uses xref:{page-component-version}@drivers::java/query-builder.adoc[Java query builder] syntax to construct TypeQL queries.
 For more code examples, see the Tutorial and API reference links below.
 
 == Learn more
 
 [cols-3]
 --
-.xref:java/tutorial.adoc[Tutorial]
+.xref:{page-component-version}@drivers::java/tutorial.adoc[Tutorial]
 [.clickable]
 ****
 This tutorial will help you learn how to use the Java driver.
 ****
 
-.xref:java/api-reference.adoc[API reference]
+.xref:{page-component-version}@drivers::java/api-reference.adoc[API reference]
 [.clickable]
 ****
 Driver API reference for the Java language.
 ****
 
-.xref:java/query-builder.adoc[Query builder]
+.xref:{page-component-version}@drivers::java/query-builder.adoc[Query builder]
 [.clickable]
 ****
 Learn to use native Java syntax to build TypeQL queries.
 ****
 --
 
-include::partial$drivers2discord.adoc[]
+include::{page-component-version}@drivers::partial$drivers2discord.adoc[]
 
-//Use the xref:java/api-reference.adoc[API reference] page for the documentation of the methods and objects used in the driver.
+//Use the xref:{page-component-version}@drivers::java/api-reference.adoc[API reference] page for the documentation of the methods and objects used in the driver.
 
 [#_version_compatibility]
 == Version Compatibility

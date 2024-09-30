@@ -1,11 +1,11 @@
 = Crash course - graph database users
 :experimental:
 
-This crash course pathway is designed to give a concise overview of the main aspects of working with TypeDB and TypeQL for users coming from graph databases. If you do not have experience with graph databases, you can check out our xref:home::crash-course/overview.adoc#_pathways[other pathways] instead. Graph query examples in this crash course use Neo4j syntax.
+This crash course pathway is designed to give a concise overview of the main aspects of working with TypeDB and TypeQL for users coming from graph databases. If you do not have experience with graph databases, you can check out our xref:{page-component-version}@home::crash-course/overview.adoc#_pathways[other pathways] instead. Graph query examples in this crash course use Neo4j syntax.
 
 [NOTE]
 ====
-If you would like to follow along with the examples in this crash course, make sure you have completed the xref:home::crash-course/overview.adoc[environment setup].
+If you would like to follow along with the examples in this crash course, make sure you have completed the xref:{page-component-version}@home::crash-course/overview.adoc[environment setup].
 ====
 
 == Coming from graph databases
@@ -65,7 +65,7 @@ While these comparisons are equivalent as far as database theory is concerned, t
 
 == Using entity types
 
-Before we can begin inserting entities, we must first define the necessary *entity types* and their *attribute types*. This is different to in schemaless graph databases, where vertices can be inserted without having to define their labels in advance. To define new types, we use a *Define query*. The following query defines a new entity type `publisher` along with an attribute type `name` for it. Using a `schema` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+Before we can begin inserting entities, we must first define the necessary *entity types* and their *attribute types*. This is different to in schemaless graph databases, where vertices can be inserted without having to define their labels in advance. To define new types, we use a *Define query*. The following query defines a new entity type `publisher` along with an attribute type `name` for it. Using a `schema` session and `write` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
 [,typeql]
 ----
@@ -83,11 +83,11 @@ The above query contains the following TypeQL keywords:
 * `entity`: The *root type* from which all entity types are subtyped.
 * `owns`: Used to define an entity or relation type to be the *owner* of an attribute type.
 * `attribute`: The root type from which all attribute types are subtyped.
-* `value`: Used to define the *xref:typeql::values/value-types.adoc[value type]* of an attribute type. Attribute types must have a value type declared.
+* `value`: Used to define the *xref:{page-component-version}@typeql::values/value-types.adoc[value type]* of an attribute type. Attribute types must have a value type declared.
 
 === Inserting entities
 
-With this entity type defined, we can now begin inserting corresponding data. To insert data, we use an *Insert query*. The following query inserts four new publishers into the database. Using a `data` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+With this entity type defined, we can now begin inserting corresponding data. To insert data, we use an *Insert query*. The following query inserts four new publishers into the database. Using a `data` session and `write` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
 [,typeql]
 ----
@@ -119,7 +119,7 @@ The query contains four *variables*, indicated by the mandatory `$` prefix. Each
 
 === Reading entities
 
-Let's now read the data we inserted. To begin with, we'll retrieve the publishers and their names we inserted with the following *Get query*. Using a `data` session and `read` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+Let's now read the data we inserted. To begin with, we'll retrieve the publishers and their names we inserted with the following *Get query*. Using a `data` session and `read` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
 
 [,typeql]
 ----
@@ -130,11 +130,11 @@ get $publisher, $name;
 
 When run in TypeDB Studio, the results of Get queries are displayed by the *graph visualizer*. You should see the following result.
 
-image:home::graph-crash-course/01-publishers.png[]
+image:{page-component-version}@home::graph-crash-course/01-publishers.png[]
 
 [NOTE]
 ====
-If a graph visualization is not displayed for the results of a Get query in TypeDB Studio, ensure the `Enable Graph Output` option is selected in image:home::studio-icons/svg/studio_settings.svg[width=24] btn:[Preferences].
+If a graph visualization is not displayed for the results of a Get query in TypeDB Studio, ensure the `Enable Graph Output` option is selected in image:{page-component-version}@home::studio-icons/svg/studio_settings.svg[width=24] btn:[Preferences].
 ====
 
 This is equivalent to the following Cypher query.
@@ -156,7 +156,7 @@ TypeDB Studio shows entities as pink rectangles and attributes as blue ovals in 
 
 === Defining entity type hierarchies
 
-The entity type `publisher` that we defined previously was declared to be a subtype of the root type `entity` by using the `sub` keyword. However, we can also declare types to be subtypes of existing types. In the following query, we define four new entity types in a *type hierarchy*, along with some new attribute types. Using a `schema` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+The entity type `publisher` that we defined previously was declared to be a subtype of the root type `entity` by using the `sub` keyword. However, we can also declare types to be subtypes of existing types. In the following query, we define four new entity types in a *type hierarchy*, along with some new attribute types. Using a `schema` session and `write` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
 [,typeql]
 ----
@@ -190,14 +190,14 @@ define
 Here we have introduced three new TypeQL keywords:
 
 * `abstract`: Used to define an entity, relation, or attribute type to be abstract.
-* `@key`: Used in an `owns` statement to specify a *xref:typeql::statements/key.adoc[key attribute]* of an entity or relation type.
-* `@unique`: Used in an `owns` statement to specify a *xref:typeql::statements/unique.adoc[unique attribute]* of an entity or relation type.
+* `@key`: Used in an `owns` statement to specify a *xref:{page-component-version}@typeql::statements/key.adoc[key attribute]* of an entity or relation type.
+* `@unique`: Used in an `owns` statement to specify a *xref:{page-component-version}@typeql::statements/unique.adoc[unique attribute]* of an entity or relation type.
 
 This query defines a new type hierarchy of book types, described by an abstract type `book` with three subtypes: `paperback`, `hardback`, and `ebook`. The attribute type ownerships of `book` are automatically inherited by its subtypes. Meanwhile, ownership of `stock` is defined individually at the subtype level. This gives complete control over which data instances are permitted to own which attributes.
 
 === Inserting entities into type hierarchies
 
-When inserting data into a type hierarchy, we declare only the exact type of the data instances. For instance, when we insert an entity of type `paperback`, we do not have to also declare that it is of type `book`, as the schema contains the context necessary for the database to infer this. In the following query we insert five books of different types. Using a `data` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+When inserting data into a type hierarchy, we declare only the exact type of the data instances. For instance, when we insert an entity of type `paperback`, we do not have to also declare that it is of type `book`, as the schema contains the context necessary for the database to infer this. In the following query we insert five books of different types. Using a `data` session and `write` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
 [,typeql]
 ----
@@ -304,7 +304,7 @@ However, this is not quite the same. The graph database does not have the contex
 
 === Reading entities from type hierarchies
 
-When reading data from type hierarchies, we can match that data using any of its types. In the following query, we retrieve all the attributes of all books. When we match the books, we do not specify which type of book we are looking for, by matching against the supertype `book`. This matches instances of `paperback`, `hardback`, and `ebook`. Using a `data` session and `read` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+When reading data from type hierarchies, we can match that data using any of its types. In the following query, we retrieve all the attributes of all books. When we match the books, we do not specify which type of book we are looking for, by matching against the supertype `book`. This matches instances of `paperback`, `hardback`, and `ebook`. Using a `data` session and `read` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
 
 [,typeql]
 ----
@@ -316,7 +316,7 @@ get $book, $title;
 .Results
 [%collapsible]
 ====
-image:home::graph-crash-course/02-books.png[]
+image:{page-component-version}@home::graph-crash-course/02-books.png[]
 ====
 
 This is equivalent to the following Cypher query.
@@ -333,7 +333,7 @@ Similarly, we could specify the type of `$book` to be `paperback` instead of `bo
 
 == Working with globally unique attributes
 
-We have seen that attributes are stored as vertices separate to their owners, and this comes with a powerful advantage over traditional graph databases that implement the labeled property graph model. To see this, we will run the following query. Using a `data` session and `read` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+We have seen that attributes are stored as vertices separate to their owners, and this comes with a powerful advantage over traditional graph databases that implement the labeled property graph model. To see this, we will run the following query. Using a `data` session and `read` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
 
 [,typeql]
 ----
@@ -347,7 +347,7 @@ get $book, $title, $genre;
 .Results
 [%collapsible]
 ====
-image:home::graph-crash-course/03-genres.png[]
+image:{page-component-version}@home::graph-crash-course/03-genres.png[]
 ====
 
 We can see that the vertices representing the fiction and nonfiction genres are shared by multiple books! This is because attributes in TypeDB are *globally unique*: if we insert multiple attributes with the same type and value, then they will be stored as a single data instance. This means that common attributes can be traversed during pattern matching, leading to significantly more efficient query execution.
@@ -367,13 +367,13 @@ get $book, $attribute;
 .Results
 [%collapsible]
 =====
-image:home::graph-crash-course/04-attributes.png[]
+image:{page-component-version}@home::graph-crash-course/04-attributes.png[]
 =====
 ====
 
 == Using relation types
 
-Having explored how to use entity types, we will now look at *relation types*. In the next Define query, we define a new relation type, which references the existing entity types `publisher` and `book`. Using a `schema` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+Having explored how to use entity types, we will now look at *relation types*. In the next Define query, we define a new relation type, which references the existing entity types `publisher` and `book`. Using a `schema` session and `write` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
 [,typeql]
 ----
@@ -407,7 +407,7 @@ Here, we have used the label `publisher` for one of the roles of `publishing`, d
 
 === Inserting relations
 
-In the next query, we insert five new `publishing` relations. Each one references one of the publishers and books we previously inserted. Using a `data` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+In the next query, we insert five new `publishing` relations. Each one references one of the publishers and books we previously inserted. Using a `data` session and `write` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
 [,typeql]
 ----
@@ -462,7 +462,7 @@ Each element of the tuple consists of the role that the entity will play, follow
 
 === Reading relations
 
-To query relations, we use the same tuple syntax we use to insert them, as we do in the following query, which retrieves the publishing data we just inserted. Using a `data` session and `read` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+To query relations, we use the same tuple syntax we use to insert them, as we do in the following query, which retrieves the publishing data we just inserted. Using a `data` session and `read` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
 
 [,typeql]
 ----
@@ -476,7 +476,7 @@ get;
 .Results
 [%collapsible]
 ====
-image:home::graph-crash-course/05-publishings.png[]
+image:{page-component-version}@home::graph-crash-course/05-publishings.png[]
 ====
 
 This is equivalent to the following Cypher query.
@@ -492,7 +492,7 @@ TypeDB Studio shows relations as yellow diamonds in graphs. Relations are connec
 
 === Defining relation type hierarchies
 
-We can define hierarchies of relation types in the same way we define entity type hierarchies. In the next query, we define a `contribution` relation type and three subtypes: `authoring`, `editing`, and `illustrating`. Using a `schema` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+We can define hierarchies of relation types in the same way we define entity type hierarchies. In the next query, we define a `contribution` relation type and three subtypes: `authoring`, `editing`, and `illustrating`. Using a `schema` session and `write` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
 [,typeql]
 ----
@@ -529,7 +529,7 @@ We then define the permitted roleplayers for each new role. Because the `work` r
 
 === Inserting relations in type hierarchies
 
-As with entities, we only declare the exact type of relations when inserting them into hierarchies, as the schema contains the context necessary to infer supertypes. In the following query we insert several new `contributor` entities and `contribution` relations. Using a `data` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+As with entities, we only declare the exact type of relations when inserting them into hierarchies, as the schema contains the context necessary to infer supertypes. In the following query we insert several new `contributor` entities and `contribution` relations. Using a `data` session and `write` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
 [,typeql]
 ----
@@ -599,7 +599,7 @@ CREATE
 
 === Reading relations from type hierarchies
 
-Again as with entities, we can match relations using any of their types. In the following query, we retrieve all the relations we just inserted by matching against the supertype `contribution`. Using a `data` session and `read` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+Again as with entities, we can match relations using any of their types. In the following query, we retrieve all the relations we just inserted by matching against the supertype `contribution`. Using a `data` session and `read` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
 
 [,typeql]
 ----
@@ -613,7 +613,7 @@ get;
 .Results
 [%collapsible]
 ====
-image:home::graph-crash-course/06-contributions.png[]
+image:{page-component-version}@home::graph-crash-course/06-contributions.png[]
 ====
 
 This is equivalent to the following Cypher query.
@@ -629,7 +629,7 @@ Because the edges each have a single label, we need to union over the possible l
 
 == Working with nested relations
 
-One of the biggest differences between edges in graph databases and relations in TypeDB is that edges must be between two vertices, whereas relations can be between any number of entities or other relations. Relations that are between other relations are called *nested relations*. Let's explore how we can use them, by extending the schema so that we can record the cities in which books were published. Using a `schema` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+One of the biggest differences between edges in graph databases and relations in TypeDB is that edges must be between two vertices, whereas relations can be between any number of entities or other relations. Relations that are between other relations are called *nested relations*. Let's explore how we can use them, by extending the schema so that we can record the cities in which books were published. Using a `schema` session and `write` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
 [,typeql]
 ----
@@ -647,7 +647,7 @@ define
   publishing plays locating:located;
 ----
 
-Here we have defined that the existing relation type `publishing` plays the role `located` in the new relation type `locating`. The syntax for defining roleplayers is the same regardless of whether they are entity or relation types. Now we can insert some data. Using a `data` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+Here we have defined that the existing relation type `publishing` plays the role `located` in the new relation type `locating`. The syntax for defining roleplayers is the same regardless of whether they are entity or relation types. Now we can insert some data. Using a `data` session and `write` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
 [,typeql]
 ----
@@ -682,7 +682,7 @@ insert
   (location: $nyc, located: $publishing-5) isa locating;
 ----
 
-Finally, we query the data to see the resulting graph. Using a `data` session and `read` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+Finally, we query the data to see the resulting graph. Using a `data` session and `read` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
 
 [,typeql]
 ----
@@ -698,7 +698,7 @@ get;
 .Results
 [%collapsible]
 ====
-image:home::graph-crash-course/07-locatings.png[]
+image:{page-component-version}@home::graph-crash-course/07-locatings.png[]
 ====
 
 [NOTE]
@@ -721,7 +721,7 @@ Nested relations are a powerful way to model data, not normally possible with gr
 
 == Working with rule inference
 
-TypeDB allows us to infer new data based on existing data by using *rules*. Rules form part of the schema and are added to the database with a Define query. Let's explore how this can be applied. The following query is intended retrieve books that were published in the United States. Using a `data` session and `read` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+TypeDB allows us to infer new data based on existing data by using *rules*. Rules form part of the schema and are added to the database with a Define query. Let's explore how this can be applied. The following query is intended retrieve books that were published in the United States. Using a `data` session and `read` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
 
 [,typeql]
 ----
@@ -734,7 +734,7 @@ match
 get;
 ----
 
-However, we get no results. This is because we haven't actually inserted `locating` relations between the `publishing` relations and the countries of publication, only the cities. We could insert additional relations, but this would lead to redundancy. It is better to do this with a rule, as we define in the following query. Using a `schema` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+However, we get no results. This is because we haven't actually inserted `locating` relations between the `publishing` relations and the countries of publication, only the cities. We could insert additional relations, but this would lead to redundancy. It is better to do this with a rule, as we define in the following query. Using a `schema` session and `write` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
 [,typeql]
 ----
@@ -768,19 +768,19 @@ This particular rule also has two powerful properties:
 
 === Reading inferred data
 
-Inferred data is read in the same way as data on disk, but rule inference must first be enabled. To do so in TypeDB Studio, use the inference toggle (image:manual::icons/infer.png[]) in the top toolbar. If we re-run the above query with inference enabled, we should now get results!
+Inferred data is read in the same way as data on disk, but rule inference must first be enabled. To do so in TypeDB Studio, use the inference toggle (image:{page-component-version}@manual::icons/infer.png[]) in the top toolbar. If we re-run the above query with inference enabled, we should now get results!
 
 .Results
 [%collapsible]
 ====
-image:home::graph-crash-course/08-inference.png[]
+image:{page-component-version}@home::graph-crash-course/08-inference.png[]
 ====
 
 Data generated by rule inference is shown with a green outline in TypeDB Studio's graph visualizations.
 
 == Retrieving the entire database as a graph
 
-During prototyping, it is often useful to view the entire database as a graph. To do so, we can use the following parametric query. Using a `data` session and `read` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query. If inference is enabled, the graph will include all inferred relations.
+During prototyping, it is often useful to view the entire database as a graph. To do so, we can use the following parametric query. Using a `data` session and `read` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query. If inference is enabled, the graph will include all inferred relations.
 
 [,typeql]
 ----
@@ -792,7 +792,7 @@ get $x;
 .Results
 [%collapsible]
 ====
-image:home::graph-crash-course/09-parametric.png[]
+image:{page-component-version}@home::graph-crash-course/09-parametric.png[]
 ====
 
 This will retrieve every entity, relation, and attribute in the database. Note that graph visualizations can be performance intensive for very large result sets. Use this query with caution!
@@ -812,7 +812,7 @@ match
 get;
 ----
 
-It has three variables representing attributes: `$title`, `$publisher-name`, and `$city-name`. We can turn it into a Get query by replacing the `get` clause with a `fetch` clause containing these three variables. Using a `data` session and `read` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+It has three variables representing attributes: `$title`, `$publisher-name`, and `$city-name`. We can turn it into a Get query by replacing the `get` clause with a `fetch` clause containing these three variables. Using a `data` session and `read` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
 
 [,typeql]
 ----
@@ -867,25 +867,25 @@ Continue learning how to use TypeDB with TypeDB Academy, or explore other sectio
 
 [cols-2]
 --
-.xref:academy::overview.adoc[]
+.xref:{page-component-version}@academy::overview.adoc[]
 [.clickable]
 ****
 An end-to-end learning experience for TypeDB and TypeQL, showing how to take advantage of TypeDB's unique features.
 ****
 
-.xref:manual::overview.adoc[TypeDB manual]
+.xref:{page-component-version}@manual::overview.adoc[TypeDB manual]
 [.clickable]
 ****
 Practice-oriented guides on using TypeDB, including the TypeDB Studio and TypeDB Console manuals.
 ****
 
-.xref:drivers::overview.adoc[TypeDB drivers]
+.xref:{page-component-version}@drivers::overview.adoc[TypeDB drivers]
 [.clickable]
 ****
 Installation guides, tutorials, and API references for the official TypeDB drivers in all supported languages.
 ****
 
-.xref:typeql::overview.adoc[TypeQL reference]
+.xref:{page-component-version}@typeql::overview.adoc[TypeQL reference]
 [.clickable]
 ****
 Complete language reference for TypeQL, covering all query types, pattern elements, and keywords.

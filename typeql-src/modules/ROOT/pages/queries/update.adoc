@@ -25,13 +25,13 @@ insert <insert_pattern>
 ----
 // end::syntax[]
 where both `<delete_pattern>` and `<insert_pattern>` are patterns of valid data-specific TypeQL statements including
-xref:statements/isa.adoc[],
-xref:statements/has.adoc[],
-xref:statements/role-assignment.adoc[role assignment], and
-xref:statements/value-assignment.adoc[value assignment].
+xref:{page-component-version}@typeql::statements/isa.adoc[],
+xref:{page-component-version}@typeql::statements/has.adoc[],
+xref:{page-component-version}@typeql::statements/role-assignment.adoc[role assignment], and
+xref:{page-component-version}@typeql::statements/value-assignment.adoc[value assignment].
 
 The _mandatory_ `match` clause `<pattern>` can be any valid match pattern: for more information, see the
-xref:patterns/overview.adoc[Patterns] and xref:statements/overview.adoc[Statements] sections.
+xref:{page-component-version}@typeql::patterns/overview.adoc[Patterns] and xref:{page-component-version}@typeql::statements/overview.adoc[Statements] sections.
 
 == Behavior
 
@@ -42,7 +42,7 @@ An Update query first deletes and then inserts data instances, ownerships, or ro
 The results of the `match` clause in an Update query will be used for the variables in its subsequent
 `delete` and `insert` clauses.
 For more information and examples of the latter clauses,
-see the xref:queries/delete.adoc[] and xref:queries/insert.adoc[] page.
+see the xref:{page-component-version}@typeql::queries/delete.adoc[] and xref:{page-component-version}@typeql::queries/insert.adoc[] page.
 
 Note that inserted data _need not be a direct replacement_ for the data deleted by the same query.
 You can insert a new concept instead of a deleted one with either the same variable or a new one.
@@ -63,7 +63,7 @@ An Update query returns a lazy Stream/Iterator of ConceptMap with the inserted d
 
 == Update ownerships
 
-include::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 In many cases, the desired effect is to change the value of an owned attribute.
 Attributes are immutable, and we can't change a value of an attribute.
@@ -101,13 +101,13 @@ but it will no longer be owned by the person entity.
 ====
 
 If you want to narrow down the matched results to a single unique entity,
-consider specifying xref:statements/unique.adoc[uniqueness annotation]
+consider specifying xref:{page-component-version}@typeql::statements/unique.adoc[uniqueness annotation]
 for some of its attribute ownerships.
 
 [#_delete_attribute]
 == Update attributes
 
-include::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 Deleting an attribute deletes ownership of it from all its owners.
 We can insert a new attribute instead of a deleted one without a problem,
@@ -139,7 +139,7 @@ Any `full-name` attributes which contained the substring `inappropriate word` wi
 
 == Update role players
 
-include::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 To replace a role player, we combine the steps for deleting a role player with extending the relation:
 

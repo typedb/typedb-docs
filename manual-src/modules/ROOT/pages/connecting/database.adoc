@@ -12,7 +12,7 @@ Nevertheless, a TypeDB client can connect to and interact with *multiple* databa
 
 == Create a new database
 
-Before you begin, make sure to follow the instructions on the xref:connecting/connection.adoc[]
+Before you begin, make sure to follow the instructions on the xref:{page-component-version}@manual::connecting/connection.adoc[]
 page to connect to TypeDB before proceeding. To create a new database, follow the steps below:
 
 [tabs]
@@ -50,8 +50,8 @@ Rust::
 --
 [,rust,indent=0]
 ----
-include::partial$rust-manual-code.rs[tags=databases]
-include::partial$rust-manual-code.rs[tags=create-db]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=databases]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=create-db]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -62,7 +62,7 @@ Python::
 --
 [,python,indent=0]
 ----
-include::partial$python-manual-code.py[tags=create-db]
+include::{page-component-version}@manual::partial$python-manual-code.py[tags=create-db]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -73,7 +73,7 @@ Node.js::
 --
 [,js,indent=0]
 ----
-include::partial$nodejs-manual-code.js[tags=create-db]
+include::{page-component-version}@manual::partial$nodejs-manual-code.js[tags=create-db]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -84,7 +84,7 @@ Java::
 --
 [,java,indent=0]
 ----
-include::partial$java-manual-code.java[tags=create-db]
+include::{page-component-version}@manual::partial$java-manual-code.java[tags=create-db]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -95,7 +95,7 @@ C#::
 --
 [,csharp,indent=0]
 ----
-include::partial$csharp-manual-code.cs[tags=create-db]
+include::{page-component-version}@manual::partial$csharp-manual-code.cs[tags=create-db]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -106,7 +106,7 @@ C++::
 --
 [,cpp,indent=0]
 ----
-include::partial$cpp-manual-code.cpp[tags=create-db]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tags=create-db]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -117,7 +117,7 @@ C::
 --
 [,c,indent=0]
 ----
-include::partial$c-manual-code.c[tags=create-db]
+include::{page-component-version}@manual::partial$c-manual-code.c[tags=create-db]
 ----
 
 Where `databaseManager` provides access to all database management methods for the TypeDB server,
@@ -160,8 +160,8 @@ Rust::
 --
 [,rust,indent=0]
 ----
-include::partial$rust-manual-code.rs[tags=databases, indent=8]
-include::partial$rust-manual-code.rs[tags=delete-db]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=databases, indent=8]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=delete-db]
 ----
 --
 
@@ -170,7 +170,7 @@ Python::
 --
 [,python,indent=0]
 ----
-include::partial$python-manual-code.py[tags=delete-db]
+include::{page-component-version}@manual::partial$python-manual-code.py[tags=delete-db]
 ----
 --
 
@@ -179,7 +179,7 @@ Node.js::
 --
 [,js,indent=0]
 ----
-include::partial$nodejs-manual-code.js[tags=delete-db]
+include::{page-component-version}@manual::partial$nodejs-manual-code.js[tags=delete-db]
 ----
 --
 
@@ -188,7 +188,7 @@ Java::
 --
 [,java,indent=0]
 ----
-include::partial$java-manual-code.java[tags=delete-db]
+include::{page-component-version}@manual::partial$java-manual-code.java[tags=delete-db]
 ----
 --
 
@@ -197,7 +197,7 @@ C#::
 --
 [,csharp,indent=0]
 ----
-include::partial$csharp-manual-code.cs[tags=delete-db]
+include::{page-component-version}@manual::partial$csharp-manual-code.cs[tags=delete-db]
 ----
 --
 
@@ -206,7 +206,7 @@ C++::
 --
 [,cpp,indent=0]
 ----
-include::partial$cpp-manual-code.cpp[tags=delete-db]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tags=delete-db]
 ----
 --
 
@@ -215,7 +215,7 @@ C::
 --
 [,c,indent=0]
 ----
-include::partial$c-manual-code.c[tags=delete-db]
+include::{page-component-version}@manual::partial$c-manual-code.c[tags=delete-db]
 ----
 --
 ====
@@ -252,7 +252,7 @@ Rust::
 --
 [,rust,indent=0]
 ----
-include::partial$rust-manual-code.rs[tags=list-db]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=list-db]
 ----
 --
 
@@ -261,7 +261,7 @@ Python::
 --
 [,python,indent=0]
 ----
-include::partial$python-manual-code.py[tags=list-db]
+include::{page-component-version}@manual::partial$python-manual-code.py[tags=list-db]
 ----
 --
 
@@ -270,7 +270,7 @@ Node.js::
 --
 [,js,indent=0]
 ----
-include::partial$nodejs-manual-code.js[tags=list-db]
+include::{page-component-version}@manual::partial$nodejs-manual-code.js[tags=list-db]
 ----
 --
 
@@ -279,7 +279,7 @@ Java::
 --
 [,java,indent=0]
 ----
-include::partial$java-manual-code.java[tags=list-db]
+include::{page-component-version}@manual::partial$java-manual-code.java[tags=list-db]
 ----
 --
 
@@ -288,7 +288,7 @@ C#::
 --
 [,csharp,indent=0]
 ----
-include::partial$csharp-manual-code.cs[tags=list-db]
+include::{page-component-version}@manual::partial$csharp-manual-code.cs[tags=list-db]
 ----
 --
 
@@ -297,7 +297,7 @@ C++::
 --
 [,cpp,indent=0]
 ----
-include::partial$cpp-manual-code.cpp[tags=list-db]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tags=list-db]
 ----
 --
 
@@ -306,7 +306,7 @@ C::
 --
 [,c,indent=0]
 ----
-include::partial$c-manual-code.c[tags=list-db]
+include::{page-component-version}@manual::partial$c-manual-code.c[tags=list-db]
 ----
 --
 ====
@@ -315,13 +315,13 @@ include::partial$c-manual-code.c[tags=list-db]
 
 [cols-2]
 --
-.xref:connecting/session.adoc[]
+.xref:{page-component-version}@manual::connecting/session.adoc[]
 [.clickable]
 ****
 See how to manage sessions in TypeDB.
 ****
 
-.xref:connecting/transaction.adoc[]
+.xref:{page-component-version}@manual::connecting/transaction.adoc[]
 [.clickable]
 ****
 See how to manage transactions in TypeDB.

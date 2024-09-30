@@ -21,12 +21,12 @@ A Delete query consists of a
 match <pattern>
 delete <delete_pattern>
 ----
-where `<delete_pattern>` is a pattern of valid data-specific TypeQL statements including xref:statements/isa.adoc[],
-xref:statements/has.adoc[],
-xref:statements/role-assignment.adoc[role assignment], and xref:statements/value-assignment.adoc[value assignment].
+where `<delete_pattern>` is a pattern of valid data-specific TypeQL statements including xref:{page-component-version}@typeql::statements/isa.adoc[],
+xref:{page-component-version}@typeql::statements/has.adoc[],
+xref:{page-component-version}@typeql::statements/role-assignment.adoc[role assignment], and xref:{page-component-version}@typeql::statements/value-assignment.adoc[value assignment].
 
 The _mandatory_ `match` clause `<pattern>` can be any valid match pattern: for more information, see the
-xref:patterns/overview.adoc[Patterns] and xref:statements/overview.adoc[Statements] sections.
+xref:{page-component-version}@typeql::patterns/overview.adoc[Patterns] and xref:{page-component-version}@typeql::statements/overview.adoc[Statements] sections.
 
 // end::syntax[]
 
@@ -39,10 +39,10 @@ A Delete query deletes the data instances, ownerships, and role player assignmen
 A `match` clause is mandatory in a Delete query: the `match` clause provides results for the variables in `delete` clause.
 
 * To <<_deleting_data_instances,delete a data instance>>, you need to use an
-xref:statements/isa.adoc[isa] statement in an `insert` clause.
-* To delete ownership of an attribute, use a xref:statements/has.adoc[has] statement.
+xref:{page-component-version}@typeql::statements/isa.adoc[isa] statement in an `insert` clause.
+* To delete ownership of an attribute, use a xref:{page-component-version}@typeql::statements/has.adoc[has] statement.
 * Role players can be deleted with a
-xref:statements/role-assignment.adoc[role assignment] statement. See <<_deleting_role_players_from_a_relation>>.
+xref:{page-component-version}@typeql::statements/role-assignment.adoc[role assignment] statement. See <<_deleting_role_players_from_a_relation>>.
 
 === Query execution
 
@@ -68,7 +68,7 @@ A Delete query returns a Promise of an empty response.
 [#_deleting_data_instances]
 == Delete data instances 
 
-include::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 To delete an entity, attribute, or relation,
 match it in a `match` clause, then
@@ -127,7 +127,7 @@ Notice that we didn't specify all roles of a `permission` relation, e.g., the `o
 
 == Delete with type inheritance
 
-include::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 A data instance can be deleted by using not only its exact type in a `delete` clause pattern,
 but also any of its supertypes.
@@ -146,10 +146,10 @@ The above query matches and deletes all attributes with the value of `Bob`, rega
 
 == Delete ownerships
 
-include::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 To delete an ownership of an attribute, match both the attribute and its owner and use a
-xref:statements/has.adoc[] pattern in the `delete` clause of the same query:
+xref:{page-component-version}@typeql::statements/has.adoc[] pattern in the `delete` clause of the same query:
 
 .Deleting ownership
 [,typeql]
@@ -167,7 +167,7 @@ For every matched pair of `$p` and `$fn` it deletes an ownership of `$fn` by `$p
 
 [NOTE]
 ====
-We are not using an xref:statements/isa.adoc[] statement in the `delete` clause above
+We are not using an xref:{page-component-version}@typeql::statements/isa.adoc[] statement in the `delete` clause above
 because we don't want neither owner nor attribute to be deleted.
 Only ownership of one by another.
 ====
@@ -175,7 +175,7 @@ Only ownership of one by another.
 [#_orphaned_attributes]
 === Orphaned attributes
 
-include::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 If an attribute is not owned by any other data instance, then such an attribute is called orphaned.
 Orphaned attributes are not deleted automatically, but quite often they are useless.
@@ -194,7 +194,7 @@ $a isa attribute;
 ////
 == Deleting a relation
 
-include::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 To delete a relation, match it in a database and then use a `delete` clause with an `isa` pattern:
 
@@ -225,10 +225,10 @@ We didn't specify all roles of a `permission` relation, e.g., the `object` role.
 [#_deleting_role_players_from_a_relation]
 == Delete role players
 
-include::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 To delete a role player from a relation, match both the relation and data instance
-that needs to stop playing a role in it, then use xref:statements/role-assignment.adoc[] statement in the
+that needs to stop playing a role in it, then use xref:{page-component-version}@typeql::statements/role-assignment.adoc[] statement in the
 `delete` clause of the same query.
 For example:
 
@@ -271,7 +271,7 @@ all relations without a role player are implicitly deleted at committing.
 
 [NOTE]
 ====
-We are not using an xref:statements/isa.adoc[] statement in the `delete` clause
+We are not using an xref:{page-component-version}@typeql::statements/isa.adoc[] statement in the `delete` clause
 because we don't want any data instances to be deleted.
 ====
 

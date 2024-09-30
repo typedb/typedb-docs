@@ -12,14 +12,14 @@ A Fetch query is used to retrieve _values_ and _types_ from a TypeDB database. F
 
 == Sending Fetch queries
 
-Before getting start, ensure you followed instructions from the xref:writing/overview.adoc[] section. The easiest way to send a Fetch query is to use Studio or Console:
+Before getting start, ensure you followed instructions from the xref:{page-component-version}@manual::writing/overview.adoc[] section. The easiest way to send a Fetch query is to use Studio or Console:
 
 [tabs]
 ====
 Studio::
 +
 --
-Follow the xref:studio.adoc#_prepare_a_query[Studio manual]
+Follow the xref:{page-component-version}@manual::studio.adoc#_prepare_a_query[Studio manual]
 to connect to TypeDB and select a project folder.
 Then use the steps below:
 
@@ -104,7 +104,7 @@ To send a Fetch query programmatically, use xref:{page-component-version}@driver
 Rust::
 +
 --
-Follow the xref:connecting/connection.adoc[connection guide]
+Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 
@@ -116,15 +116,15 @@ method:
 
 [,rust,indent=0]
 ----
-include::partial$rust-manual-code.rs[tags=databases,indent=8]
-include::partial$rust-manual-code.rs[tags=fetch]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=fetch]
 ----
 --
 
 Python::
 +
 --
-Follow the xref:connecting/connection.adoc[connection guide]
+Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 
@@ -136,14 +136,14 @@ method:
 
 [,python,indent=0]
 ----
-include::partial$python-manual-code.py[tags=fetch]
+include::{page-component-version}@manual::partial$python-manual-code.py[tags=fetch]
 ----
 --
 
 Node.js::
 +
 --
-Follow the xref:connecting/connection.adoc[connection guide]
+Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 
@@ -155,14 +155,14 @@ method:
 
 [,js,indent=0]
 ----
-include::partial$nodejs-manual-code.js[tags=fetch]
+include::{page-component-version}@manual::partial$nodejs-manual-code.js[tags=fetch]
 ----
 --
 
 Java::
 +
 --
-Follow the xref:connecting/connection.adoc[connection guide]
+Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 
@@ -174,14 +174,14 @@ method:
 
 [,java,indent=0]
 ----
-include::partial$java-manual-code.java[tags=fetch]
+include::{page-component-version}@manual::partial$java-manual-code.java[tags=fetch]
 ----
 --
 
 C#::
 +
 --
-Follow the xref:connecting/connection.adoc[connection guide]
+Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 
@@ -193,14 +193,14 @@ method:
 
 [,csharp,indent=0]
 ----
-include::partial$csharp-manual-code.cs[tags=fetch]
+include::{page-component-version}@manual::partial$csharp-manual-code.cs[tags=fetch]
 ----
 --
 
 C++::
 +
 --
-Follow the xref:connecting/connection.adoc[connection guide]
+Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 
@@ -212,15 +212,15 @@ method:
 
 [,cpp,indent=0]
 ----
-include::partial$cpp-manual-code.cpp[tags=options,indent=8]
-include::partial$cpp-manual-code.cpp[tags=fetch,indent=0]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tags=options,indent=8]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tags=fetch,indent=0]
 ----
 --
 
 C::
 +
 --
-Follow the xref:connecting/connection.adoc[connection guide]
+Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB Cloud or TypeDB Core.
 
 
@@ -232,8 +232,8 @@ function:
 
 [,c,indent=0]
 ----
-include::partial$c-manual-code.c[tags=options,indent=0]
-include::partial$c-manual-code.c[tags=fetch,indent=0]
+include::{page-component-version}@manual::partial$c-manual-code.c[tags=options,indent=0]
+include::{page-component-version}@manual::partial$c-manual-code.c[tags=fetch,indent=0]
 ----
 --
 ====
@@ -244,7 +244,7 @@ A Fetch query returns all fetched values projected in JSON objects.
 
 The response is a Stream/Iterator with a JSON object for every solution of a `match` clause pattern.
 A concept can't be returned directly, but a value or a type can be projected into the resulting JSON.
-To return full concepts, see the xref:reading/get.adoc[] page.
+To return full concepts, see the xref:{page-component-version}@manual::reading/get.adoc[] page.
 
 == Learn more
 
@@ -256,7 +256,7 @@ To return full concepts, see the xref:reading/get.adoc[] page.
 Learn more about Fetch queries in TypeQL: syntax, behavior, and query examples.
 ****
 
-.xref:writing/overview.adoc[]
+.xref:{page-component-version}@manual::writing/overview.adoc[]
 [.clickable]
 ****
 Learn how to write some new data to a database to read.

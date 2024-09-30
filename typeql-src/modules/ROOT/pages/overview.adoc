@@ -7,7 +7,7 @@ Welcome to the *TypeQL* documentation: TypeQL is the query language of TypeDB!
 
 == Introduction
 
-To learn about the principles and design of TypeQL, see our xref:introduction.adoc[] page.
+To learn about the principles and design of TypeQL, see our xref:{page-component-version}@typeql::introduction.adoc[] page.
 
 == Queries
 
@@ -15,43 +15,43 @@ TypeQL queries are distinguished by the purpose they fulfil.
 
 [cols-2]
 --
-.xref:queries/define.adoc[]
+.xref:{page-component-version}@typeql::queries/define.adoc[]
 [.clickable]
 ****
 A Define query to add types and rules to a schema.
 ****
 
-.xref:queries/undefine.adoc[]
+.xref:{page-component-version}@typeql::queries/undefine.adoc[]
 [.clickable]
 ****
 An Undefine query to delete types and rules to a schema.
 ****
 
-.xref:queries/insert.adoc[]
+.xref:{page-component-version}@typeql::queries/insert.adoc[]
 [.clickable]
 ****
 An Insert query to add data into a database.
 ****
 
-.xref:queries/delete.adoc[]
+.xref:{page-component-version}@typeql::queries/delete.adoc[]
 [.clickable]
 ****
 A Delete query to delete data from a database.
 ****
 
-.xref:queries/update.adoc[]
+.xref:{page-component-version}@typeql::queries/update.adoc[]
 [.clickable]
 ****
 An Update query to replace data in a database.
 ****
 
-.xref:queries/fetch.adoc[]
+.xref:{page-component-version}@typeql::queries/fetch.adoc[]
 [.clickable]
 ****
 A Fetch query to fetch values and types from a database.
 ****
 
-.xref:queries/get.adoc[]
+.xref:{page-component-version}@typeql::queries/get.adoc[]
 [.clickable]
 ****
 A Get query to get data and types as stateful objects from a database.
@@ -64,31 +64,31 @@ Each query is build from various components.
 
 [cols-2]
 --
-.xref:patterns/overview.adoc[Patterns]
+.xref:{page-component-version}@typeql::patterns/overview.adoc[Patterns]
 [.clickable]
 ****
 Conjunction, Disjunction, Negation, and Matching patterns.
 ****
 
-.xref:statements/overview.adoc[Statements]
+.xref:{page-component-version}@typeql::statements/overview.adoc[Statements]
 [.clickable]
 ****
 isa, has, sub, owns, abstract, relates, annotations, etc.
 ****
 
-.xref:modifiers/overview.adoc[Modifiers]
+.xref:{page-component-version}@typeql::modifiers/overview.adoc[Modifiers]
 [.clickable]
 ****
 Sorting, pagination, aggregation, grouping.
 ****
 
-.xref:concepts/overview.adoc[Concepts]
+.xref:{page-component-version}@typeql::concepts/overview.adoc[Concepts]
 [.clickable]
 ****
 Types, data instances, concept variables.
 ****
 
-.xref:values/overview.adoc[Values]
+.xref:{page-component-version}@typeql::values/overview.adoc[Values]
 [.clickable]
 ****
 Value-types, value variables, comparators, arithmetic, functions.
@@ -97,4 +97,4 @@ Value-types, value variables, comparators, arithmetic, functions.
 
 == Terminology
 
-A list of TypeQL keywords used in clauses, schema statements, and data statements, can be found on our xref:keywords.adoc[] page.
+A list of TypeQL keywords used in clauses, schema statements, and data statements, can be found on our xref:{page-component-version}@typeql::keywords.adoc[] page.

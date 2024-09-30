@@ -17,7 +17,7 @@ In order to maintain integrity, the schema is validated to ensure internal consi
 ** The owner does not already inherit the ownership capability from a supertype.
 ** If the attribute type is abstract: the owner is also abstract.
 
-There are also more complex checks that take place, some of which we will encounter in xref:academy::12-advanced-modeling/12.4-using-interface-contracts.adoc[Lesson 12.4].
+There are also more complex checks that take place, some of which we will encounter in xref:{page-component-version}@academy::12-advanced-modeling/12.4-using-interface-contracts.adoc[Lesson 12.4].
 
 .Exercise
 [caption=""]
@@ -106,7 +106,7 @@ hourly-rate sub pay;
 
 == Rule validation
 
-When defined, rules are also validated against the schema. Particularly, the condition and conclusion patterns undergo the same data validation process that the `match` and `insert` clauses of Insert queries do. Consider the following _invalid_ Insert queries that we encountered in xref:academy::4-writing-data/4.5-data-validation.adoc[Lesson 4.5].
+When defined, rules are also validated against the schema. Particularly, the condition and conclusion patterns undergo the same data validation process that the `match` and `insert` clauses of Insert queries do. Consider the following _invalid_ Insert queries that we encountered in xref:{page-component-version}@academy::4-writing-data/4.5-data-validation.adoc[Lesson 4.5].
 
 [,typeql]
 ----
@@ -137,7 +137,7 @@ rule georgia-is-in-united-states:
         ($us, $ga) isa locating;
     };
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*
 
 [,typeql]
 ----
@@ -148,6 +148,6 @@ rule odyssey-has-stock-20:
         $odyssey has stock 20;
     };
 ----
-image:home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*
 
 However, both of these rules would fail validation for the same reasons the Insert queries do. In the first example, TypeDB is unable to infer the roles for the `locating` relation as they are ambiguous. In the second, `book` does not own `stock`, making the attribute ownership illegal.

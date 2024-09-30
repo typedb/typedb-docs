@@ -52,9 +52,9 @@ with TypeDB.core_driver(ADDRESS) as driver:
 //                 action_type: EntityType = result.get("action-type").as_entity_type()
 // ----
 
-We briefly encountered Get queries in xref:academy::8-structuring-query-results/8.3-aggregations.adoc[Lesson 8.3], where we used them for aggregation subqueries. We also use them for stateful object retrieval. A Get query consists of a `match` clause and a `get` clause, and returns one result for each pattern matched in the data. The `get` clause is used to filter those results, which we will explore further shortly. In this query, the clause is empty, indicating that the results should be returned unfiltered.
+We briefly encountered Get queries in xref:{page-component-version}@academy::8-structuring-query-results/8.3-aggregations.adoc[Lesson 8.3], where we used them for aggregation subqueries. We also use them for stateful object retrieval. A Get query consists of a `match` clause and a `get` clause, and returns one result for each pattern matched in the data. The `get` clause is used to filter those results, which we will explore further shortly. In this query, the clause is empty, indicating that the results should be returned unfiltered.
 
-We saw in xref:academy::6-building-applications/6.4-executing-queries.adoc[Lesson 6.4] that Fetch queries return dictionary iterators, however Get queries return *concept map* iterators. A concept map is a collection of *stateful objects* that were matched by the variables in the query. In the above example, we have variables corresponding to both data instances and types, so objects of both kinds will be returned.
+We saw in xref:{page-component-version}@academy::6-building-applications/6.4-executing-queries.adoc[Lesson 6.4] that Fetch queries return dictionary iterators, however Get queries return *concept map* iterators. A concept map is a collection of *stateful objects* that were matched by the variables in the query. In the above example, we have variables corresponding to both data instances and types, so objects of both kinds will be returned.
 
 To retrieve the objects from the concept map, we can use its `get` method, which takes the variable name as an argument, and returns the object corresponding to the variable name for the respective result. In the above example, we have retrieved the objects corresponding to the `$user`, `$action`, `$execution`, `$timestamp`, and `$action-type` variables. Because the `get` method cannot distinguish the type of the variable, we must cast the object to the correct type using one of the following methods, as we do above:
 
@@ -65,7 +65,7 @@ To retrieve the objects from the concept map, we can use its `get` method, which
 * `as_relation_type`
 * `as_attribute_type`
 
-With the above query, we have retrieved two entity objects, one relation object, one attribute object, and one entity type object. We will see how we can operate on these objects in xref:academy::11-manipulating-stateful-objects/11.3-operating-on-objects.adoc[Lesson 11.3].
+With the above query, we have retrieved two entity objects, one relation object, one attribute object, and one entity type object. We will see how we can operate on these objects in xref:{page-component-version}@academy::11-manipulating-stateful-objects/11.3-operating-on-objects.adoc[Lesson 11.3].
 
 .Exercise
 [caption=""]
@@ -84,7 +84,7 @@ You may find it useful to refer to the bookstore's schema.
 =====
 [,typeql]
 ----
-include::academy::attachment$bookstore-schema.tql[lines=18..]
+include::{page-component-version}@academy::attachment$bookstore-schema.tql[lines=18..]
 ----
 =====
 
@@ -110,7 +110,7 @@ def get_books_in_genre(transaction: TypeDBTransaction, genre: str) -> Iterator[E
 
 == Filtering results
 
-In xref:academy::8-structuring-query-results/8.3-aggregations.adoc[Lesson 8.3], we saw how a Get query will return one result per unique combination of variables matched by the pattern in the `match` clause. As a result, if a data instance is matched multiple times for a particular variable, it will be returned in more than one result. In the following example, we use a function to retrieve orders that include multiple copies of the same book.
+In xref:{page-component-version}@academy::8-structuring-query-results/8.3-aggregations.adoc[Lesson 8.3], we saw how a Get query will return one result per unique combination of variables matched by the pattern in the `match` clause. As a result, if a data instance is matched multiple times for a particular variable, it will be returned in more than one result. In the following example, we use a function to retrieve orders that include multiple copies of the same book.
 
 [,python]
 ----
@@ -167,7 +167,7 @@ You may find it useful to refer to the bookstore's schema.
 =====
 [,typeql]
 ----
-include::academy::attachment$bookstore-schema.tql[lines=18..]
+include::{page-component-version}@academy::attachment$bookstore-schema.tql[lines=18..]
 ----
 =====
 

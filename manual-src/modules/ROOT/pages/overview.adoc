@@ -13,13 +13,13 @@ Standalone clients can be used to conveniently work and develop with TypeDB with
 
 [cols-2]
 --
-.xref:studio.adoc[]
+.xref:{page-component-version}@manual::studio.adoc[]
 [.clickable]
 ****
 An IDE that facilitates the development process for TypeDB databases.
 ****
 
-.xref:console.adoc[]
+.xref:{page-component-version}@manual::console.adoc[]
 [.clickable]
 ****
 A powerful CLI client for TypeDB.
@@ -46,42 +46,42 @@ Learn how to perform common tasks with TypeDB.
 
 [cols-2]
 --
-.xref:connecting/overview.adoc[]
+.xref:{page-component-version}@manual::connecting/overview.adoc[]
 [.clickable]
 ****
 Connect to a TypeDB server and create a new database.
 // Network connection to TypeDB Core or Cloud, as well as database, session and transaction management.
-// * xref:connecting/connection.adoc[]
-// * xref:connecting/database.adoc[]
-// * xref:connecting/session.adoc[]
-// * xref:connecting/transaction.adoc[]
+// * xref:{page-component-version}@manual::connecting/connection.adoc[]
+// * xref:{page-component-version}@manual::connecting/database.adoc[]
+// * xref:{page-component-version}@manual::connecting/session.adoc[]
+// * xref:{page-component-version}@manual::connecting/transaction.adoc[]
 ****
 
-.xref:defining/overview.adoc[]
+.xref:{page-component-version}@manual::defining/overview.adoc[]
 [.clickable]
 ****
 Set and modify the schema of a database with a TypeQL query or driver API call.
-// * xref:defining/define.adoc[]
-// * xref:defining/undefine.adoc[]
-// * xref:defining/schema-editing.adoc[]
+// * xref:{page-component-version}@manual::defining/define.adoc[]
+// * xref:{page-component-version}@manual::defining/undefine.adoc[]
+// * xref:{page-component-version}@manual::defining/schema-editing.adoc[]
 ****
 
-.xref:writing/overview.adoc[]
+.xref:{page-component-version}@manual::writing/overview.adoc[]
 [.clickable]
 ****
 Insert, delete, or update (replace) data in a TypeDB database with TypeQL queries.
-// * xref:writing/insert.adoc[]
-// * xref:writing/delete.adoc[]
-// * xref:writing/update.adoc[]
+// * xref:{page-component-version}@manual::writing/insert.adoc[]
+// * xref:{page-component-version}@manual::writing/delete.adoc[]
+// * xref:{page-component-version}@manual::writing/update.adoc[]
 ****
 
-.xref:reading/overview.adoc[]
+.xref:{page-component-version}@manual::reading/overview.adoc[]
 [.clickable]
 ****
 Retrieve data as JSONs or stateful objects with TypeQL queries.
-// * xref:reading/fetch.adoc[]
-// * xref:reading/get.adoc[]
-// * xref:reading/infer.adoc[]
+// * xref:{page-component-version}@manual::reading/fetch.adoc[]
+// * xref:{page-component-version}@manual::reading/get.adoc[]
+// * xref:{page-component-version}@manual::reading/infer.adoc[]
 ****
 --
 
@@ -91,16 +91,16 @@ TypeDB Drivers can be used to query TypeDB directly from within your application
 
 [cols-2]
 --
-.xref:objects/overview.adoc[]
+.xref:{page-component-version}@manual::objects/overview.adoc[]
 [.clickable]
 ****
 Use stateful objects to alter data and schema, as well as explain inferred data.
-// * xref:objects/schema.adoc[]
-// * xref:objects/data.adoc[]
-// * xref:objects/explanation.adoc[]
+// * xref:{page-component-version}@manual::objects/schema.adoc[]
+// * xref:{page-component-version}@manual::objects/data.adoc[]
+// * xref:{page-component-version}@manual::objects/explanation.adoc[]
 ****
 
-.xref:manual::bulk-loading/overview.adoc[]
+.xref:{page-component-version}@manual::bulk-loading/overview.adoc[]
 [.clickable]
 ****
 Best practices for bulk-loading data, during prototyping or migrations.
@@ -114,37 +114,37 @@ Learn how to configure, migrate, and upgrade TypeDB.
 
 [cols-2]
 --
-.xref:configuring/config.adoc[Config file]
+.xref:{page-component-version}@manual::configuring/config.adoc[Config file]
 [.clickable]
 ****
 TypeDB configuration via config file parameters.
 ****
 
-.xref:configuring/arguments.adoc[CLI arguments]
+.xref:{page-component-version}@manual::configuring/arguments.adoc[CLI arguments]
 [.clickable]
 ****
 TypeDB configuration via CLI arguments.
 ****
 
-.xref:configuring/logs.adoc[Logs]
+.xref:{page-component-version}@manual::configuring/logs.adoc[Logs]
 [.clickable]
 ****
 Logs configuration and storage.
 ****
 
-.xref:configuring/export.adoc[Export and Import]
+.xref:{page-component-version}@manual::configuring/export.adoc[Export and Import]
 [.clickable]
 ****
 Exporting and importing databases in TypeDB.
 ****
 
-.xref:configuring/upgrades.adoc[Upgrades]
+.xref:{page-component-version}@manual::configuring/upgrades.adoc[Upgrades]
 [.clickable]
 ****
 Upgrading TypeDB version.
 ****
 
-.xref:configuring/users.adoc[Users]
+.xref:{page-component-version}@manual::configuring/users.adoc[Users]
 [.clickable]
 ****
 User management operations.
@@ -156,25 +156,25 @@ User management operations.
 
 [cols-2]
 --
-.xref:studio.adoc[From CSV/XML/JSON]
+.xref:{page-component-version}@manual::studio.adoc[From CSV/XML/JSON]
 [.clickable]
 ****
 
 ****
 
-.xref:console.adoc[From SQL]
+.xref:{page-component-version}@manual::console.adoc[From SQL]
 [.clickable]
 ****
 
 ****
 
-.xref:studio.adoc[From Neo4J]
+.xref:{page-component-version}@manual::studio.adoc[From Neo4J]
 [.clickable]
 ****
 
 ****
 
-.xref:console.adoc[From MongoDB]
+.xref:{page-component-version}@manual::console.adoc[From MongoDB]
 [.clickable]
 ****
 

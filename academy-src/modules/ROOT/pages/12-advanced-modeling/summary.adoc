@@ -1,6 +1,6 @@
 = Lesson 12: Advanced modeling
 
-== xref:academy::12-advanced-modeling/12.1-using-dependent-types.adoc[Using dependent types]
+== xref:{page-component-version}@academy::12-advanced-modeling/12.1-using-dependent-types.adoc[Using dependent types]
 
 * Entity and relation types can be treated as implementations of *object types* with a zero or non-zero number of *dependencies* respectively.
 * In the *entity-centric framework* of the PERA model, application classes are represented by entity types, and references between classes are represented by relation types.
@@ -25,13 +25,13 @@
 (role type)
 |===
 
-== xref:academy::12-advanced-modeling/12.2-using-type-theoretic-relations.adoc[Using type theoretic relations]
+== xref:{page-component-version}@academy::12-advanced-modeling/12.2-using-type-theoretic-relations.adoc[Using type theoretic relations]
 
 * A database type hierarchy can be used to represent an application class hierarchy, with interfaces and their implementations applied at different levels to represent the capabilities of the constituent classes.
 * When representing a common capability across different relation types in the type-theoretic PERA framework, the roles representing the capability should have the same name.
 * The PERA model does not permit the mixing of entity and relation types into a single hierarchy. If an application class hierarchy includes some classes composed only of primitives and some composed of primitives and composites, then a suitable workaround must be selected to model it.
 
-== xref:academy::12-advanced-modeling/12.3-reifying-interfaces.adoc[Reifying interfaces]
+== xref:{page-component-version}@academy::12-advanced-modeling/12.3-reifying-interfaces.adoc[Reifying interfaces]
 
 * *Reification* is the process of replacing a role type with a relation type. A type-theoretic data model can be transformed into an entity-centric one by reifying any nested relations.
 * *De-reification* is the process of replacing a relation type with a role type. An entity-centric data model can be transformed into a type-theoretic one by de-reifying any binary relation types.
@@ -39,7 +39,7 @@
 * Interface implementations can be freely relocated between two object types that have a https://en.wikipedia.org/wiki/Bijection[one-to-one mapping]. A binary relation type can be losslessly de-reified by first relocating interface implementations it has (if any) to a roleplayer with which it has a one-to-one mapping.
 * A binary relation type cannot be losslessly de-reified if it implements interface types and does not have one-to-one mapping to any of its roleplayers. Similarly, a hierarchy of binary relation types cannot be losslessly de-reified.
 
-== xref:academy::12-advanced-modeling/12.4-using-interface-contracts.adoc[Using interface contracts]
+== xref:{page-component-version}@academy::12-advanced-modeling/12.4-using-interface-contracts.adoc[Using interface contracts]
 
 * Interface implementations can be *overridden* using the `as` keyword. Using it in an `owns` or `plays` statement will ensure that the interface implemented by the object supertype is not implemented by its subtypes. The overriding interface must be a subtype of the overridden interface.
 +

@@ -2,7 +2,7 @@
 
 == Overriding interface implementations
 
-In xref:academy::5-defining-schemas/5.5-schema-validation.adoc[Lesson 5.5], we learned that if an attribute type is abstract, then any types that own it must also be abstract. In the current schema, `book` owns `isbn-13` and `isbn-10`, both subtypes of `isbn`.
+In xref:{page-component-version}@academy::5-defining-schemas/5.5-schema-validation.adoc[Lesson 5.5], we learned that if an attribute type is abstract, then any types that own it must also be abstract. In the current schema, `book` owns `isbn-13` and `isbn-10`, both subtypes of `isbn`.
 
 [,typeql]
 ----
@@ -39,7 +39,7 @@ hardback sub book;
 ebook sub book;
 ----
 
-This is because `paperback`, `hardback`, and `ebook` are concrete, and they inherit ownership of the abstract `isbn`. We can get around this by *overriding* the interface _implementation_ using the `as` keyword. In xref:academy::9-modeling-schemas/9.6-using-interface-hierarchies.adoc[Lesson 9.6], we used the `as` keyword in `relates` statements to override interface _definitions_. This ensured that the role interfaces exposed by the relation supertype would not be exposed by its subtypes. Similarly, we can use it in `owns` and `plays` statements to ensure that the interfaces implemented by an object supertype will not be implemented by its subtypes.
+This is because `paperback`, `hardback`, and `ebook` are concrete, and they inherit ownership of the abstract `isbn`. We can get around this by *overriding* the interface _implementation_ using the `as` keyword. In xref:{page-component-version}@academy::9-modeling-schemas/9.6-using-interface-hierarchies.adoc[Lesson 9.6], we used the `as` keyword in `relates` statements to override interface _definitions_. This ensured that the role interfaces exposed by the relation supertype would not be exposed by its subtypes. Similarly, we can use it in `owns` and `plays` statements to ensure that the interfaces implemented by an object supertype will not be implemented by its subtypes.
 
 [,typeql]
 ----
@@ -170,5 +170,5 @@ Below is a complete implementation of the bookstore schema using the type-theore
 
 [,typeql]
 ----
-include::academy::attachment$type-theoretic-schema.tql[lines=18..]
+include::{page-component-version}@academy::attachment$type-theoretic-schema.tql[lines=18..]
 ----

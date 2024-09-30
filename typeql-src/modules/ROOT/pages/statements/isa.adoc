@@ -27,7 +27,7 @@ The `isa!` keyword does the same, but excludes the subtypes.
 
 == Usage in a match pattern
 
-include::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 In a `match` clause pattern an isa statement can be used to match data instance of a selected type
 or any of its subtype (via type inference).
@@ -88,7 +88,7 @@ fetch $attr;
 
 == Usage in an insert pattern
 
-include::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 To insert a data instance to a database, you need to use an `isa` statement in an `insert` clause.
 For example:
@@ -103,7 +103,7 @@ $p isa person, has full-name "Bob Fake";
 The object must be the exact type of the instance you are inserting.
 In an `insert` clause, the `isa` keyword has no difference from the `isa!` keyword.
 
-When inserting an attribute, you can provide a value with a xref:statements/value-assignment.adoc[] syntax:
+When inserting an attribute, you can provide a value with a xref:{page-component-version}@typeql::statements/value-assignment.adoc[] syntax:
 
 .Insert attribute with value assignment example
 [,typeql]
@@ -113,7 +113,7 @@ $f "John Smith" isa full-name;
 ----
 
 When inserting a relation,
-you can provide role players for every role with a xref:statements/role-assignment.adoc[] syntax:
+you can provide role players for every role with a xref:{page-component-version}@typeql::statements/role-assignment.adoc[] syntax:
 
 .Insert relation with role assignment example
 [,typeql]
@@ -127,7 +127,7 @@ $per(subject: $p) isa permission;
 [#_in_a_delete_pattern]
 == Usage in a delete pattern
 
-include::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 To delete a data instance from a database, you need to match it to a concept variable with a `match` clause,
 and then use the concept variable with an `isa` statement in a `delete` clause of the same query.
@@ -171,13 +171,13 @@ $f isa attribute;
 
 [cols-2]
 --
-.xref:concepts/types.adoc[]
+.xref:{page-component-version}@typeql::concepts/types.adoc[]
 [.clickable]
 ****
 Learn more about types in TypeQL.
 ****
 
-.xref:concepts/data-instances.adoc[]
+.xref:{page-component-version}@typeql::concepts/data-instances.adoc[]
 [.clickable]
 ****
 Learn more about data instances in TypeQL.

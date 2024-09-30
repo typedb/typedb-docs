@@ -3,7 +3,7 @@
 :experimental:
 // Goal – Install TypeDB Core
 
-TypeDB Core can be installed in several ways: using the <<_docker,Docker image>>, via a <<_package,package manager>>, or by <<_manual,manual installation>>. For self-hosted TypeDB Cloud installation and setup, see the xref:home::install/cloud-self-hosted.adoc[self-hosted deployment] page.
+TypeDB Core can be installed in several ways: using the <<_docker,Docker image>>, via a <<_package,package manager>>, or by <<_manual,manual installation>>. For self-hosted TypeDB Cloud installation and setup, see the xref:{page-component-version}@home::install/cloud-self-hosted.adoc[self-hosted deployment] page.
 
 [#_package]
 == Package manager
@@ -14,13 +14,13 @@ TypeDB Core can be installed in several ways: using the <<_docker,Docker image>>
 macOS::
 +
 --
-include::partial$macos.adoc[tag=install-homebrew]
+include::{page-component-version}@home::partial$macos.adoc[tag=install-homebrew]
 --
 
 Linux::
 +
 --
-include::partial$linux.adoc[tag=install-apt]
+include::{page-component-version}@home::partial$linux.adoc[tag=install-apt]
 --
 
 Windows::
@@ -49,17 +49,17 @@ To stop a local TypeDB server, close the terminal where it runs or press kbd:[Ct
 [#_docker]
 == Docker
 
-include::home::partial$docker.adoc[tag=install]
+include::{page-component-version}@home::partial$docker.adoc[tag=install]
 
 === Run
 
-include::home::partial$docker.adoc[tags=run]
+include::{page-component-version}@home::partial$docker.adoc[tags=run]
 
-include::home::partial$docker.adoc[tags=run-info]
+include::{page-component-version}@home::partial$docker.adoc[tags=run-info]
 
-include::home::partial$docker.adoc[tag=stop]
+include::{page-component-version}@home::partial$docker.adoc[tag=stop]
 
-include::home::partial$docker.adoc[tag=start]
+include::{page-component-version}@home::partial$docker.adoc[tag=start]
 
 [#_manual]
 == Manual install
@@ -82,44 +82,44 @@ see the link:https://cloudsmith.io/~typedb/repos/public-release/packages/?q=type
 macOS::
 +
 --
-include::partial$macos.adoc[tag=manual-install]
+include::{page-component-version}@home::partial$macos.adoc[tag=manual-install]
 --
 
 Linux::
 +
 --
-include::partial$linux.adoc[tag=manual-install]
+include::{page-component-version}@home::partial$linux.adoc[tag=manual-install]
 --
 
 Windows::
 +
 --
-include::partial$win.adoc[tag=manual-install]
+include::{page-component-version}@home::partial$win.adoc[tag=manual-install]
 --
 ====
 // end::core-manual-install[]
 
 === Run
 
-include::page$install/core.adoc[tags="core-run,core-stop"]
+include::{page-component-version}@home::page$install/core.adoc[tags="core-run,core-stop"]
 
 == Learn more
 
 [cols-2]
 --
-.xref:install/studio.adoc[]
+.xref:{page-component-version}@home::install/studio.adoc[]
 [.clickable]
 ****
 Install an IDE that facilitates the development process for TypeDB.
 ****
 
-.xref:quickstart.adoc[]
+.xref:{page-component-version}@home::install/studio.adoc[]
 [.clickable]
 ****
 Connect to TypeDB and create a simple sample database.
 ****
 
-.xref:crash-course.adoc[]
+.xref:{page-component-version}@home::crash-course/overview.adoc[]
 [.clickable]
 ****
 Learn about the basics of TypeDB.

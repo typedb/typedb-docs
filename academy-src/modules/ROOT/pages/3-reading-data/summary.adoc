@@ -1,6 +1,6 @@
 = Lesson 3: Reading data
 
-== xref:academy::3-reading-data/3.1-fetching-simple-data.adoc[Fetching simple data]
+== xref:{page-component-version}@academy::3-reading-data/3.1-fetching-simple-data.adoc[Fetching simple data]
 
 * *Fetch queries* are used to retrieve data in JSON format. They comprise a `match` clause and `fetch` clause. Fetch queries are run using a *data session* and *read transaction*.
 +
@@ -32,7 +32,7 @@ $entity isa entity-type;
 $entity has attribute-type "attribute value";
 ----
 
-== xref:academy::3-reading-data/3.2-fetching-polymorphic-data.adoc[Fetching polymorphic data]
+== xref:{page-component-version}@academy::3-reading-data/3.2-fetching-polymorphic-data.adoc[Fetching polymorphic data]
 
 * *Type inference* allows the database to infer the possible types of a variable without having to explicitly specify them all.
 * *Inheritance polymorphism* allows us to query data of multiple types through a common *supertype*.
@@ -40,12 +40,12 @@ $entity has attribute-type "attribute value";
 * *Parametric polymorphism* allows us to query data of multiple types through the structure of the data alone. Purely parametric queries can be run on any schema.
 * Different types of polymorphism can be combined to produce complex queries.
 
-== xref:academy::3-reading-data/3.3-fetching-inferred-data.adoc[Fetching inferred data]
+== xref:{page-component-version}@academy::3-reading-data/3.3-fetching-inferred-data.adoc[Fetching inferred data]
 
 * *Rule inference* allows the database to infer new data based on existing data and *rules* defined as part of the schema.
 * Rule inference must be enabled for inferred data to be returned.
 
-== xref:academy::3-reading-data/3.4-fetching-schema-types.adoc[Fetching schema types]
+== xref:{page-component-version}@academy::3-reading-data/3.4-fetching-schema-types.adoc[Fetching schema types]
 
 * Types can be *variablized* in the same way as data instances, by using a variable in place of a *type label* in statements.
 +
@@ -90,7 +90,7 @@ relation-type relates $role;
 $entity-type plays $role;
 ----
 
-== xref:academy::3-reading-data/3.5-query-validation.adoc[Query validation]
+== xref:{page-component-version}@academy::3-reading-data/3.5-query-validation.adoc[Query validation]
 
 * All queries are *validated* against the schema.
 * Running a query that does not conform to the schema will cause an exception to be thrown.
@@ -99,7 +99,7 @@ $entity-type plays $role;
 
 [cols-3]
 --
-.xref:academy::4-writing-data/overview.adoc[]
+.xref:{page-component-version}@academy::4-writing-data/overview.adoc[]
 [.clickable]
 ****
 Learn how to write data to TypeDB, covering insert, delete, and update operations, including polymorphic data writes.

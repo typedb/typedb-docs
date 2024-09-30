@@ -42,7 +42,7 @@ Studio::
 --
 Run Studio and follow instructions below:
 
-include::../studio.adoc[tag=connect_core_studio]
+include::{page-component-version}@manual::studio.adoc[tag=connect_core_studio]
 --
 
 Console::
@@ -50,7 +50,7 @@ Console::
 --
 Run Console using the `--core` argument to set the address and port to connect to:
 
-include::../console.adoc[tag=connect_core_console]
+include::{page-component-version}@manual::console.adoc[tag=connect_core_console]
 --
 ====
 
@@ -64,7 +64,7 @@ Rust::
 .Connect to TypeDB Core
 [,rust,indent=0]
 ----
-include::partial$rust-manual-code.rs[tag=connect_core]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tag=connect_core]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -76,9 +76,9 @@ Python::
 .Connect to TypeDB Core
 [,python,indent=0]
 ----
-include::partial$python-manual-code.py[tag=connect_core]
+include::{page-component-version}@manual::partial$python-manual-code.py[tag=connect_core]
 ----
-//include::partial$python-manual-code.py[tags=driver]
+//include::{page-component-version}@manual::partial$python-manual-code.py[tags=driver]
 Where `127.0.0.1:1729` is the address and port to connect to.
 --
 
@@ -88,7 +88,7 @@ Node.js::
 .Connect to TypeDB Core
 [,js,indent=0]
 ----
-include::partial$nodejs-manual-code.js[tag=connect_core]
+include::{page-component-version}@manual::partial$nodejs-manual-code.js[tag=connect_core]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -100,7 +100,7 @@ Java::
 .Connect to TypeDB Core
 [,java,indent=0]
 ----
-include::partial$java-manual-code.java[tag=connect_core]
+include::{page-component-version}@manual::partial$java-manual-code.java[tag=connect_core]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -112,7 +112,7 @@ C#::
 .Connect to TypeDB Core
 [,csharp,indent=0]
 ----
-include::partial$csharp-manual-code.cs[tag=connect_core]
+include::{page-component-version}@manual::partial$csharp-manual-code.cs[tag=connect_core]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -124,7 +124,7 @@ C++::
 .Connect to TypeDB Core
 [,cpp,indent=0]
 ----
-include::partial$cpp-manual-code.cpp[tag=connect_core]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tag=connect_core]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -136,16 +136,16 @@ C::
 .Connect to TypeDB Core
 [,c,indent=0]
 ----
-include::partial$c-manual-code.c[tag=connect_core]
+include::{page-component-version}@manual::partial$c-manual-code.c[tag=connect_core]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
 --
 ====
 
-After connecting to TypeDB Core, see how to xref:connecting/database.adoc[create a database] and manage
-xref:connecting/session.adoc[sessions] and
-xref:connecting/transaction.adoc[transactions].
+After connecting to TypeDB Core, see how to xref:{page-component-version}@manual::connecting/database.adoc[create a database] and manage
+xref:{page-component-version}@manual::connecting/session.adoc[sessions] and
+xref:{page-component-version}@manual::connecting/transaction.adoc[transactions].
 
 [#_connect_to_typedb_cloud]
 == Connect to TypeDB Cloud
@@ -160,7 +160,7 @@ Studio::
 --
 Run Studio and follow instructions below:
 
-include::manual::studio.adoc[tag=connect_cloud_studio]
+include::{page-component-version}@manual::studio.adoc[tag=connect_cloud_studio]
 --
 
 Console::
@@ -168,7 +168,7 @@ Console::
 --
 Run TypeDB Console using the `--cloud` argument to set a list of addresses and ports to connect to:
 
-include::manual::console.adoc[tag=connect_cloud_console]
+include::{page-component-version}@manual::console.adoc[tag=connect_cloud_console]
 --
 ====
 
@@ -183,7 +183,7 @@ Rust::
 .Connect to TypeDB Cloud
 [,rust,indent=0]
 ----
-include::partial$rust-manual-code.rs[tag=connect_cloud]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -195,7 +195,7 @@ Python::
 .Connect to TypeDB Cloud
 [,python,indent=0]
 ----
-include::partial$python-manual-code.py[tag=connect_cloud]
+include::{page-component-version}@manual::partial$python-manual-code.py[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -206,7 +206,7 @@ Node.js::
 .Connect to TypeDB Cloud
 [,js,indent=0]
 ----
-include::partial$nodejs-manual-code.js[tag=connect_cloud]
+include::{page-component-version}@manual::partial$nodejs-manual-code.js[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -218,7 +218,7 @@ Java::
 .Connect to TypeDB Cloud
 [,java,indent=0]
 ----
-include::partial$java-manual-code.java[tag=connect_cloud]
+include::{page-component-version}@manual::partial$java-manual-code.java[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -230,7 +230,7 @@ C#::
 .Connect to TypeDB Cloud
 [,csharp,indent=0]
 ----
-include::partial$csharp-manual-code.cs[tag=connect_cloud]
+include::{page-component-version}@manual::partial$csharp-manual-code.cs[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -242,7 +242,7 @@ C++::
 .Connect to TypeDB Cloud
 [,cpp,indent=0]
 ----
-include::partial$cpp-manual-code.cpp[tag=connect_cloud]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -254,7 +254,7 @@ C::
 .Connect to TypeDB Cloud
 [,c,indent=0]
 ----
-include::partial$c-manual-code.c[tag=connect_cloud]
+include::{page-component-version}@manual::partial$c-manual-code.c[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -265,14 +265,14 @@ Where `127.0.0.1:1729` is the address and port to connect to.
 
 [cols-2]
 --
-.xref:connecting/database.adoc[]
+.xref:{page-component-version}@manual::connecting/database.adoc[]
 [.clickable]
 ****
 See how to create a new database in TypeDB.
 
 ****
 
-.xref:connecting/session.adoc[]
+.xref:{page-component-version}@manual::connecting/session.adoc[]
 [.clickable]
 ****
 See how to manage sessions in TypeDB.

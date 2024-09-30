@@ -23,7 +23,7 @@ but can be used to create a subtype or to query (for its subtypes).
 
 == Usage in a schema definition
 
-include::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 Since in Define queries you can't use variables, the `abstract` keyword can be used only with a type label.
 It can be a part of a composite statement.
@@ -43,19 +43,19 @@ email sub id, value string;
 
 [cols-2]
 --
-.xref:statements/sub.adoc[]
+.xref:{page-component-version}@typeql::statements/sub.adoc[]
 [.clickable]
 ****
 Learn more about `sub` statement in TypeQL.
 ****
 
-.xref:statements/type.adoc[]
+.xref:{page-component-version}@typeql::statements/type.adoc[]
 [.clickable]
 ****
 Learn more about `type` statement in TypeQL.
 ****
 
-.xref:concepts/types.adoc[]
+.xref:{page-component-version}@typeql::concepts/types.adoc[]
 [.clickable]
 ****
 Learn more about types in TypeQL.
