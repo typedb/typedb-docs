@@ -4,37 +4,36 @@
 [#_blank_heading]
 == {blank}
 
-In TypeQL, values can be represented by literal values,
-value variables, or concept variables that represent attributes.
-You can perform comparison, arithmetic operations, and call functions on values.
+In TypeQL, values can be represented by variables or literal values.
+You can perform comparison, arithmetic operations, and call built-in functions on values.
 
 [cols-2]
 --
-.xref:{page-component-version}@typeql::values/value-types.adoc[]
+.xref:values/primitives.adoc[]
 [.clickable]
 ****
-Long, double, string, boolean, and date-time.
+Long, double, string, boolean, and date-time data types.
 ****
 
-.xref:{page-component-version}@typeql::values/value-variables.adoc[]
+.xref:values/structs.adoc[]
 [.clickable]
 ****
-Query variables to store values.
+Composite data types.
 ****
 
-.xref:{page-component-version}@typeql::values/comparators.adoc[]
+.xref:values/lists.adoc[]
+[.clickable]
+****
+Lists of immutable objects.
+****
+
+.xref:values/comparators.adoc[]
 [.clickable]
 ****
 Set constraints on values in a pattern.
 ****
 
-.xref:{page-component-version}@typeql::values/arithmetic.adoc[]
-[.clickable]
-****
-Perform basic arithmetic operations on values.
-****
-
-.xref:{page-component-version}@typeql::values/functions.adoc[]
+.xref:values/built-in.adoc[]
 [.clickable]
 ****
 Built-in functions that take value(s) as input.

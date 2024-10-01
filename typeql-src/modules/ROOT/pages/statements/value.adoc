@@ -6,15 +6,17 @@ The `value` keyword is used in TypeQL schema to define the value type of an attr
 
 The syntax of a `value` statement includes:
 
-* Subject -- attribute type label
-* Predicate -- the `value` keyword
-* Object -- one of the xref:{page-component-version}@typeql::values/value-types.adoc[value types]
-
 .Syntax
 [,typeql]
 ----
-<attribute-type> value <value-type>;
+<attribute-type> "value" <value-type> ;
 ----
+
+where `<value-type>` can be any value type
+(xref:values/primitives.adoc[primitive],
+xref:values/structs.adoc[struct], or
+xref:values/lists.adoc[list])
+available in TypeQL.
 
 == Behavior
 
@@ -28,7 +30,7 @@ to be of the selected value type only.
 
 == Usage in a schema definition
 
-include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 Since in Define queries you can't use variables, the subject of a `value` statement can only be
 an attribute type label.
@@ -46,13 +48,13 @@ callsign sub attribute, value string;
 
 [cols-2]
 --
-.xref:{page-component-version}@typeql::statements/type.adoc[]
+.xref:statements/type.adoc[]
 [.clickable]
 ****
 Learn more about `type` statement in TypeQL.
 ****
 
-.xref:{page-component-version}@typeql::concepts/types.adoc[]
+.xref:concepts/types.adoc[]
 [.clickable]
 ****
 Learn about types in TypeQL.

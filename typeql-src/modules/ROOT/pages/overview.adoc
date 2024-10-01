@@ -7,94 +7,158 @@ Welcome to the *TypeQL* documentation: TypeQL is the query language of TypeDB!
 
 == Introduction
 
-To learn about the principles and design of TypeQL, see our xref:{page-component-version}@typeql::introduction.adoc[] page.
+To learn about the principles and design of TypeQL, see our xref:introduction.adoc[] page.
 
 == Queries
 
 TypeQL queries are distinguished by the purpose they fulfil.
 
-[cols-2]
---
-.xref:{page-component-version}@typeql::queries/define.adoc[]
-[.clickable]
-****
-A Define query to add types and rules to a schema.
-****
-
-.xref:{page-component-version}@typeql::queries/undefine.adoc[]
-[.clickable]
-****
-An Undefine query to delete types and rules to a schema.
-****
-
-.xref:{page-component-version}@typeql::queries/insert.adoc[]
-[.clickable]
-****
-An Insert query to add data into a database.
-****
-
-.xref:{page-component-version}@typeql::queries/delete.adoc[]
-[.clickable]
-****
-A Delete query to delete data from a database.
-****
-
-.xref:{page-component-version}@typeql::queries/update.adoc[]
-[.clickable]
-****
-An Update query to replace data in a database.
-****
-
-.xref:{page-component-version}@typeql::queries/fetch.adoc[]
-[.clickable]
-****
-A Fetch query to fetch values and types from a database.
-****
-
-.xref:{page-component-version}@typeql::queries/get.adoc[]
-[.clickable]
-****
-A Get query to get data and types as stateful objects from a database.
-****
---
-
-== Components
-
-Each query is build from various components.
 
 [cols-2]
 --
-.xref:{page-component-version}@typeql::patterns/overview.adoc[Patterns]
+.xref:query-design/schema.adoc[]
 [.clickable]
 ****
-Conjunction, Disjunction, Negation, and Matching patterns.
+An overview of Define and Undefine queries to modify the schema of a database.
 ****
 
-.xref:{page-component-version}@typeql::statements/overview.adoc[Statements]
+.xref:query-design/data.adoc[]
 [.clickable]
 ****
-isa, has, sub, owns, abstract, relates, annotations, etc.
+An overview of data manipulation queries in TypeQL.
 ****
 
-.xref:{page-component-version}@typeql::modifiers/overview.adoc[Modifiers]
+.xref:query-design/pre-processing.adoc[]
 [.clickable]
 ****
-Sorting, pagination, aggregation, grouping.
+An overview of pre-processing in data manipulation.
 ****
 
-.xref:{page-component-version}@typeql::concepts/overview.adoc[Concepts]
+.xref:query-design/post-processing.adoc[]
 [.clickable]
 ****
-Types, data instances, concept variables.
+An overview of post-processing in data manipulation.
+****
+--
+
+== Schema definition clauses
+
+[cols-2]
+--
+.xref:schema/define.adoc[]
+[.clickable]
+****
+A Define query to add types and functions to a schema.
 ****
 
-.xref:{page-component-version}@typeql::values/overview.adoc[Values]
+.xref:schema/undefine.adoc[]
 [.clickable]
 ****
-Value-types, value variables, comparators, arithmetic, functions.
+An Undefine query to delete types and functions from a schema.
+****
+--
+
+== Data manipulation clauses
+
+[cols-2]
+--
+.xref:data/match.adoc[]
+[.clickable]
+****
+A match clause to match data from a database.
+****
+
+.xref:data/insert.adoc[]
+[.clickable]
+****
+An insert clause to add data into a database.
+****
+
+.xref:data/delete.adoc[]
+[.clickable]
+****
+A delete clause to delete data from a database.
+****
+
+.xref:data/put.adoc[]
+[.clickable]
+****
+A put clause to match existing data or add it if it doesn't exist in a database yet.
+****
+
+.xref:data/assert.adoc[]
+[.clickable]
+****
+An assert clause to check a condition before returning a result.
+****
+--
+
+== Output formatting
+
+[cols-2]
+--
+.xref:output-formatting/reduce.adoc[]
+[.clickable]
+****
+An aggregation or other post-processing to reduce a stream to a single value.
+****
+
+.xref:output-formatting/fetch.adoc[]
+[.clickable]
+****
+A fetch clause to project a stream of Concept Maps to a stream of JSONs.
+****
+--
+
+== Other elements of a query
+
+Smaller query elements of TypeQL.
+
+[cols-2]
+--
+.xref:modifiers/overview.adoc[Modifiers]
+[.clickable]
+****
+Filtering, sorting, and pagination.
+****
+
+.xref:patterns/overview.adoc[Patterns]
+[.clickable]
+****
+Conjunction, Disjunction, Negation, and Optionality.
+****
+
+.xref:statements/overview.adoc[Statements]
+[.clickable]
+****
+Simple TypeQL statements, like isa, has, sub, owns, relates, etc.
+****
+
+.xref:functions/overview.adoc[Functions]
+[.clickable]
+****
+Functions definitions, calls, and output.
+****
+
+.xref:annotations/overview.adoc[Annotations]
+[.clickable]
+****
+TypeQL statement annotations, like @key, @abstract, @card, @replace, etc.
+****
+
+.xref:concepts/overview.adoc[Concepts]
+[.clickable]
+****
+Types, data instances, and variables.
+****
+
+.xref:values/overview.adoc[Values]
+[.clickable]
+****
+Primitive values, structs, lists, comparators, arithmetic, and other built-in operations.
 ****
 --
 
 == Terminology
 
-A list of TypeQL keywords used in clauses, schema statements, and data statements, can be found on our xref:{page-component-version}@typeql::keywords.adoc[] page.
+A list of TypeQL keywords used in clauses and statements can be found on the xref:keywords.adoc[] page.

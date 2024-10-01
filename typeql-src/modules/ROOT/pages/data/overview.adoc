@@ -1,0 +1,39 @@
+= Data manipulation clauses
+:page-no-toc: 1
+
+[#_blank_heading]
+== {blank}
+A data manipulation query can use the following spectrum of clauses in any combination:
+
+[cols-2]
+--
+.xref:data/match.adoc[match]
+[.clickable]
+****
+Match data from a database by a pattern.
+****
+
+.xref:data/insert.adoc[insert]
+[.clickable]
+****
+Insert new data in a database.
+****
+
+.xref:data/delete.adoc[delete]
+[.clickable]
+****
+Delete data from a database.
+****
+
+.xref:data/put.adoc[put]
+[.clickable]
+****
+Put (match existing or insert new) data in a database.
+****
+
+.xref:data/assert.adoc[assert]
+[.clickable]
+****
+Assert the condition and continue query execution if the result is True.
+****
+--

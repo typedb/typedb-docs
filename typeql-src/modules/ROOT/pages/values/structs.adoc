@@ -1,0 +1,83 @@
+= Structs
+
+A struct is a composite data type that can be used in TypeQL as a value type for an attribute.
+
+== Syntax
+
+Structs must be defined in the schema of a database with the `struct` keyword and the following syntax:
+
+.Struct definition syntax
+[,typeql]
+----
+struct <struct-label>: <field-label> value <value-type> [,<struct-label>: <field-label> value <value-type>];
+----
+
+where `<struct-label>` is a unicode label to call the struct byas a value type,
+`<field-label>` is a unicode label of the field,
+`<value-type>` is a value type of the field.
+
+A value type of a field can be followed by a question mark `?` to declare the field as optional.
+
+Struct syntax uses curly brackets to envelope a comma-separated list of fields.
+Each field is a pair of a label and its value with a colon `:` as a separator:
+
+.Struct usage syntax
+[,typeql]
+----
+{ <sub-label>: <value> [, <label>: <value>] }
+----
+
+where `<sub-label>` is a unicode label, serving as a key to address an field and
+`<value>` is a xref:values/primitives.adoc[primitive value] or another struct.
+
+== Behavior
+
+A struct represents a composite value type.
+
+A structured value or struct must have values for all of its non-optional fields.
+Every field of a struct must be of the value type specified for this field in a schema.
+
+== Usage in a schema
+
+To define a struct, use the `struct` keyword with a label for the struct,
+followed by a colon, and a comma separated triplets of label, `value` keyword, and value type of a field.
+
+For example, let's define a new struct value type with a catchy name `my_struct`
+and a new attribute type `my_att` that uses the new struct as a value type:
+
+.Struct definition example
+[,typeql]
+----
+define
+
+struct my_struct:
+    label1 value long,
+    label2 value bool?,
+    label3 value other_struct;
+
+my_att sub attribute, value my_struct;
+----
+
+== Usage in a data query
+
+To use a struct value in a data query,
+use curly brackets with a comma-separated list of pairs: a label and a value separated by a colon.
+
+For example, let's match data instances that have ownership of attribute of the newly defined `my_att` type
+that is of struct value type.
+To match a value of such an attribute we bind values for the non-optional fields `label1` and `label3` to variables.
+We later use these variables to match the exact data required,
+including the value of the `sub_label1` field as the `label3` is another struct.
+On top of that, let's insert a new attribute of the `my_att` type:
+
+.Struct declaration example
+[,typeql]
+----
+match
+$x has my_att { label1: $x1; label3: $x3 };
+$x3 == { sub_label1: $x31 };
+$x31 == "Bob";
+
+insert
+$x has my_att { label1: $x31, label3: $x3 };
+----

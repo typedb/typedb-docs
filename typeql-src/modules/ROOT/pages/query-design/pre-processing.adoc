@@ -1,0 +1,31 @@
+= Pre-processing
+
+Pre-processing is used in data queries to define new functions used in the query.
+These newly defined functions are not persisted in the database.
+
+== Syntax
+// tag::syntax[]
+A pre-processing clause uses the `with` keyword followed by function definitions, separated by :
+
+[,typeql]
+----
+with <function-definition>; [<function-definition>;]
+----
+
+// end::syntax[]
+
+== Behavior
+
+Functions defined in the pre-processing section of a data query are treated similar to functions
+defined in the schema of a database.
+The only difference is that these functions are not persisted in the schema, so they don't exist for other queries.
+
+== Usage example
+
+[,typeql]
+----
+with fun FUN_NAME(INPUT_TYPE) -> RETURN_TYPE : FUN_BODY RETURN
+----
+
+
+

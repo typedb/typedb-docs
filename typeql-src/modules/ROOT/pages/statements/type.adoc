@@ -6,24 +6,19 @@ The `type` keyword is used in TypeQL for matching a type by its label.
 
 The syntax of a `type` statement includes:
 
-* Subject -- a concept variable
-* Predicate -- the `type` keyword
-* Object -- a type label
-
 .Syntax
 [,typeql]
 ----
-<concept-variable> type <type label>;
+<variable> "type" <label>;
 ----
 
 == Behavior
 
-TypeQL statements with the `type` keyword are used in `match` clauses.
-The `type` keyword adds a constraint for a concept variable to be of a specified type.
+TypeQL statements with the `type` keyword are used in `match` clauses to bind a variable to an exact type.
 
 == Usage in a match pattern
 
-include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 Let's fetch the `user` entity type:
 
@@ -49,13 +44,13 @@ fetch $u;
 
 [cols-2]
 --
-.xref:{page-component-version}@typeql::statements/sub.adoc[]
+.xref:statements/sub.adoc[]
 [.clickable]
 ****
 Learn more about `sub` statement in TypeQL.
 ****
 
-.xref:{page-component-version}@typeql::concepts/types.adoc[]
+.xref:concepts/types.adoc[]
 [.clickable]
 ****
 Learn about types in TypeQL.

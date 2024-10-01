@@ -1,0 +1,34 @@
+= Distinct
+
+The distinct annotation ensures there are no duplicates in a list.
+
+== Syntax
+
+The syntax of a distinct annotation includes the `@distinct` keyword placed after a list in a schema statement:
+
+.Syntax
+[,typeql]
+----
+<list> @distinct ;
+----
+//<owns/relate-statement>
+
+== Behavior
+
+A list with the distinct annotation must not have duplicates.
+
+By default, lists can have duplicates.
+
+== Usage
+
+To restrict a list to contain no duplicates,
+place the `@distinct` annotation after the list declaration in a schema definition.
+For example, to have a distinct list of roleplayers for a role `edge`:
+
+.Distinct list
+[,typeql]
+----
+define
+Len_3_path sub relation,
+    relates edge[] @card(3) @distinct;
+----

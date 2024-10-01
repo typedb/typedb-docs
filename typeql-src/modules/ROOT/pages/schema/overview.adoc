@@ -1,0 +1,22 @@
+= Schema definition clauses
+:page-no-toc: 1
+
+[#_blank_heading]
+== {blank}
+
+A schema query uses a single clause, either `define` or `undefine`:
+
+[cols-2]
+--
+.xref:schema/define.adoc[]
+[.clickable]
+****
+Extend schema by adding new schema definitions.
+****
+
+.xref:schema/undefine.adoc[]
+[.clickable]
+****
+Truncate schema by deleting schema definitions.
+****
+--

@@ -1,0 +1,54 @@
+= Regex
+
+The regex annotation is used in TypeQL schema to define a regular expression to restrict possible
+string values for attributes of a given type.
+
+== Syntax
+
+The syntax of a regex annotation includes:
+
+.Syntax
+[,typeql]
+----
+<value-type-definition> "@regex " <regular-expression> " ;
+----
+
+where `<value-type-definition>` is a definition of a value type of an attribute type,
+`<regular-expression>` is a regular expression in Java syntax.
+
+== Behavior
+
+Data instances of an attribute type defined with a regex annotation must have values that are matched
+by the regex in the annotation.
+
+== Usage
+
+include::partial$iam-database-links.adoc[]
+
+Use regex annotation to limit possible string values for all attributes of an attribute type.
+For example, to make the `visibility` attribute type to be able to have only string values of
+`public`, `private`, and `closed`:
+
+.Regex annotation example
+[,typeql]
+----
+define
+visibility sub attribute, value string @regex "^(public|private|closed)$";
+----
+
+== Learn more
+
+[cols-2]
+--
+.xref:statements/type.adoc[]
+[.clickable]
+****
+Learn more about `type` statement in TypeQL.
+****
+
+.xref:concepts/types.adoc[]
+[.clickable]
+****
+Learn about types in TypeQL.
+****
+--

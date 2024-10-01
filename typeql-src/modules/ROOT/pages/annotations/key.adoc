@@ -1,0 +1,77 @@
+= Key
+
+The `@key` keyword is an annotation that can be used with an
+xref:statements/owns.adoc[owns statement]
+to specify that the selected attribute type serves as a key for the subject type.
+
+== Syntax
+
+The syntax of a `@key` annotation includes:
+
+.Syntax
+[,typeql]
+----
+<owns-statement> "@key" ;
+----
+
+The annotation is placed at the very end of an `owns` statement and effectively becomes a part of it,
+not being separated by a comma or a semicolon.
+
+This syntax can be combined with other type definition statements, like `sub` and `plays` as a
+xref:statements/overview.adoc#_composite_statements[composite statement].
+
+== Behavior
+
+TypeQL statements with the `@key` annotation are used
+in Define queries to declare a new key or in data queries to match a key attribute type.
+
+The `@key` annotation adds a xref:annotations/unique.adoc[unique annotation] constraint,
+as well as a cardinality constraint of exactly one.
+That means that there must be exactly one (no less and no more) such unique attribute of a given type owned
+by any instance of the owner type.
+
+== Usage in a schema definition
+
+include::partial$iam-database-links.adoc[]
+
+The `@key` annotation is usually used in a Define query.
+
+For example, to define that the `object` type owns the `object-type` attribute type
+with the `@key` annotation, use:
+
+.Define key example
+[,typeql]
+----
+define
+object owns object-type @key;
+----
+
+== Usage in a data query
+
+The `@key` annotation can be used in a data query to match key attribute types.
+For example, let's find all keys in a schema:
+
+.Match abstract types
+[,typeql]
+----
+match
+$x owns $y @key;
+filter $y;
+----
+
+== Learn more
+
+[cols-2]
+--
+.xref:statements/type.adoc[]
+[.clickable]
+****
+Learn more about `type` statement in TypeQL.
+****
+
+.xref:concepts/types.adoc[]
+[.clickable]
+****
+Learn about types in TypeQL.
+****
+--

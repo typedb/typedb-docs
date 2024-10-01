@@ -1,0 +1,46 @@
+= Post-processing
+
+Post-processing is the last stage of a data query execution that converts the stream of Concept Maps
+returned by the last data processing clause to a different output format.
+
+Post-processing is optional.
+Without post-processing, TypeQL query returns a stream of Concept Maps.
+
+There are two types of post-processing that can be done:
+
+* Aggregation / reduction
+* Fetch
+
+[#_aggregation_reduction]
+== Aggregation / reduction
+
+Aggregation of data query results (stream of Concept Maps).
+Produces a single tuple of xref:values/overview.adoc[values].
+
+For more information on aggregation, see the xref:output-formatting/reduce.adoc[] page.
+
+== Fetch
+
+A Fetch clause takes a Concept Map and projects values and types to a JSON object.
+
+For more information on Fetching data for post-processing, see the xref:output-formatting/fetch.adoc[] page.
+For a practical guide on how to send a Fetch query to TypeDB,
+see the xref:{page-component-version}@manual::reading/fetch.adoc[] page of the TypeDB Manual.
+
+== Learn more
+
+[cols-2]
+--
+.xref:{page-component-version}@learn::7-understanding-query-patterns/overview.adoc[]
+[.clickable]
+****
+Learn more about query patterns in the TypeDB Learning course.
+****
+
+.xref:{page-component-version}@manual::reading/fetch.adoc[]
+[.clickable]
+****
+See how to send a Fetch query to TypeDB.
+****
+--
+

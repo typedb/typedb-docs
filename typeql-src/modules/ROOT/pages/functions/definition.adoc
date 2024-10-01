@@ -1,0 +1,50 @@
+= Definition
+
+There are two places to define a function in TypeQL:
+
+* The schema of a database;
+* Pre-processing clause of a data query.
+
+Functions defined in the schema of a database can be used in any data query to the database.
+Functions defined in the pre-processing clause of a data query can be used only in the data query.
+
+== Syntax
+
+For schema definition, use the `define` keyword, as shown on the xref:query-design/schema.adoc[] page.
+For pre-processing, use the `with` keyword, as shown on the xref:query-design/pre-processing.adoc[] page.
+
+A function definition syntax starts with the `fun` keyword followed by the function's label,
+input parameters, output types declaration, a match clause serving as the function's body, and a return clause.
+
+[,typeql]
+----
+fun <label> [ "(" <var>:<type> [, <var>:<type>] ") -> {" <type> "}" ] :
+    match <pattern>
+    return "{" <var> [, <var>] "}" ;
+----
+
+where `<label>` is the label for the newly defined function,
+`<var>` is a query variable,
+`<type>` is a valid type from the schema of the database,
+`<pattern>` is a valid TypeQL matching pattern.
+
+== Behavior
+
+To call a function, it needs to be defined first.
+A function definition uses a `match` clause with a pattern.
+The return clause is used to declare the output and its format.
+
+== Usage
+
+// include::partial$iam-database-links.adoc[]
+
+.Function definition example
+[,typeql]
+----
+define
+fun extended_name($x: person) -> {name}:
+    match
+    { $x has name $n; }
+    or { ($x, $y) isa marriage; $y has name $n; };
+    return { $n };
+----

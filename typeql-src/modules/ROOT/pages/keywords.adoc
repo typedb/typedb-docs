@@ -4,7 +4,7 @@
 :pageTitle: Keywords
 
 The source of truth for the TypeQL keywords and grammar is the *ANTLR v.4* specification file:
-https://github.com/typedb/typeql/blob/master/grammar/TypeQL.g4[TypeQL.g4,window=_blank].
+https://github.com/vaticle/typeql/blob/master/grammar/TypeQL.g4[TypeQL.g4,window=_blank].
 
 [#_clause_keywords]
 == Clauses
@@ -12,30 +12,30 @@ https://github.com/typedb/typeql/blob/master/grammar/TypeQL.g4[TypeQL.g4,window=
 Clause keywords declare a start of a query's clause:
 
 `define`::
-Starts a `define` clause of a xref:{page-component-version}@typeql::queries/define.adoc[].
+Starts a `define` clause of a xref:schema/define.adoc[].
 
 `undefine`::
-Starts an `undefine` clause of a xref:{page-component-version}@typeql::queries/undefine.adoc[]
+Starts an `undefine` clause of a xref:schema/undefine.adoc[]
 
 `match`::
-Starts a `match` clause that xref:{page-component-version}@typeql::patterns/matching.adoc[matches existing data] by a pattern in an
-xref:{page-component-version}@typeql::queries/insert.adoc[Insert],
-xref:{page-component-version}@typeql::queries/delete.adoc[Delete],
-xref:{page-component-version}@typeql::queries/update.adoc[Update],
-xref:{page-component-version}@typeql::queries/fetch.adoc[Fetch], or
-xref:{page-component-version}@typeql::queries/get.adoc[Get] query.
+Starts a `match` clause that xref:data/match.adoc[matches existing data] by a pattern in an
+xref:data/insert.adoc[Insert],
+xref:data/delete.adoc[Delete],
+// xref:queries/update.adoc[Update],
+xref:output-formatting/fetch.adoc[Fetch].
+// xref:queries/get.adoc[Get] query
 
 `insert`::
-Starts an `insert` clause of an xref:{page-component-version}@typeql::queries/insert.adoc[].
+Starts an `insert` clause of an xref:data/insert.adoc[].
 
 `delete`::
-Starts a `delete` clause of a xref:{page-component-version}@typeql::queries/delete.adoc[].
+Starts a `delete` clause of a xref:data/delete.adoc[].
 
 `fetch`::
-Starts a `fetch` clause of a xref:{page-component-version}@typeql::queries/fetch.adoc[].
+Starts a `fetch` clause of a xref:output-formatting/fetch.adoc[].
 
-`get`::
-Starts a `get` clause of a xref:{page-component-version}@typeql::queries/get.adoc[].
+// `get`::
+// Starts a `get` clause of a xref:queries/get.adoc[].
 
 == Schema statements
 
@@ -44,58 +44,51 @@ Schema statement keywords used inside a clause of a query as a part of a data pa
 
 `sub`::
 Adds a constraint on a type to be any subtype of a given type. +
-For more information, see the xref:{page-component-version}@typeql::statements/sub.adoc[] page.
+For more information, see the xref:statements/sub.adoc[] page.
 
 `sub!`::
 Adds a constraint on a type to be a direct subtype of a given type. +
-For more information, see the xref:{page-component-version}@typeql::statements/sub.adoc[] page.
+For more information, see the xref:statements/sub.adoc[] page.
 
 `type`::
 Adds a constraint on a type to be an exact type by its label. +
-For more information, see the xref:{page-component-version}@typeql::statements/type.adoc[] page.
+For more information, see the xref:statements/type.adoc[] page.
 
 `abstract`::
 Specify that a given type is an abstract type. +
-For more information, see the xref:{page-component-version}@typeql::statements/abstract.adoc[] page.
+For more information, see the xref:annotations/abstract.adoc[] page.
 
 `owns`::
 Specify that a type can own attributes of a given attribute type. +
-For more information, see the xref:{page-component-version}@typeql::statements/owns.adoc[] page.
+For more information, see the xref:statements/owns.adoc[] page.
 
 `value`::
 Specify a value type of an attribute type. +
-For more information, see the xref:{page-component-version}@typeql::statements/value.adoc[] page.
+For more information, see the xref:statements/value.adoc[] page.
 
 `relates`::
 Add a new role for a relation. +
-For more information, see the xref:{page-component-version}@typeql::statements/relates.adoc[] page.
+For more information, see the xref:statements/relates.adoc[] page.
 
 `plays`::
 Specify that a given type can play a given role (in a given relation). +
-For more information, see the xref:{page-component-version}@typeql::statements/plays.adoc[] page.
+For more information, see the xref:statements/plays.adoc[] page.
 
 `@key`::
 Add a key constraint to ownership of a given attribute type by a type. +
-For more information, see the xref:{page-component-version}@typeql::statements/key.adoc[] page.
+For more information, see the xref:annotations/key.adoc[] page.
 
 `@unique`::
 Add a uniqueness constraint to ownership of a given attribute type by a type. +
-For more information, see the xref:{page-component-version}@typeql::statements/unique.adoc[] page.
+For more information, see the xref:annotations/unique.adoc[] page.
 
 `regex`::
 Specify a regular expression that limits values of a given attribute type. +
-For more information, see the xref:{page-component-version}@typeql::statements/regex.adoc[] page.
 
 `as`::
 Override an inherited attribute type ownership or role playing ability. +
-For more information, see the xref:{page-component-version}@typeql::statements/owns.adoc#_usage_with_override[owns] and
-xref:{page-component-version}@typeql::statements/plays.adoc#_usage_with_override[plays] pages respectively.
-
-`when`::
-Specify a condition of a xref:{page-component-version}@typeql::statements/rule.adoc[rule].
-
-`then`::
-Specify a conclusion of a xref:{page-component-version}@typeql::statements/rule.adoc[rule].
+For more information, see the xref:statements/owns.adoc#_usage_with_override[owns] and
+xref:statements/plays.adoc#_usage_with_override[plays] pages respectively.
 
 == Data statements
 
@@ -105,81 +98,81 @@ Data statement keywords used inside a clause of a data query as a part of a data
 `isa`::
 Adds a constraint for a data instance to be an instance of a type.
 Takes into account type inference. +
-For more information, see the xref:{page-component-version}@typeql::statements/isa.adoc[] page.
+For more information, see the xref:statements/isa.adoc[] page.
 
 `isa!`::
 Adds a constraint for a data instance to be an instance of a type.
 Does not take into account type inference. +
-For more information, see the xref:{page-component-version}@typeql::statements/isa.adoc[] page.
+For more information, see the xref:statements/isa.adoc[] page.
 
 `is`::
-Adds a constraint for two concept variables to be equal both by value and type. +
-For more information, see the xref:{page-component-version}@typeql::statements/isa.adoc[] page.
+Adds a constraint for two variables to be equal both by value and type. +
+For more information, see the xref:statements/isa.adoc[] page.
 
 `has`::
 Adds a constraint for an ownership of a given attribute by a given data instance. +
-For more information, see the xref:{page-component-version}@typeql::statements/has.adoc[] page.
+For more information, see the xref:statements/has.adoc[] page.
 
 === Modifiers
 
 `offset`::
 Offset the result of a query by the specified number of results. +
-See an xref:{page-component-version}@typeql::modifiers/pagination.adoc[example].
+See an xref:modifiers/limit.adoc[example].
 
 `limit`::
 Limit the result of a query by the specified number of results. +
-See an xref:{page-component-version}@typeql::modifiers/pagination.adoc[example].
+See an xref:modifiers/limit.adoc[example].
 
 `sort`::
 Sort the results of a query. +
-See an xref:{page-component-version}@typeql::modifiers/sorting.adoc[example].
+See an xref:modifiers/sort.adoc[example].
 
 === Logic
 
 `or`::
 Specify a disjunction between two blocks of statements surrounded by curly brackets. +
-For more information, see the xref:{page-component-version}@typeql::patterns/disjunction.adoc[] page.
+For more information, see the xref:patterns/disjunction.adoc[] page.
 
 `not`::
 Specify a negation of a block of statements surrounded by curly brackets. +
-For more information, see the xref:{page-component-version}@typeql::patterns/negation.adoc[] page.
+For more information, see the xref:patterns/negation.adoc[] page.
 
 === Value comparators
 
 `==`, `!=`, `>`, `<`, `>=`, `+<=+`, `like`, `contains`::
 Specify the result of comparison to be true. +
-For more information, see the xref:{page-component-version}@typeql::values/comparators.adoc[] page.
+For more information, see the xref:values/comparators.adoc[] page.
 
 === Aggregation
 
-`group`::
-Group results by a given variable. +
-For more information, see the xref:{page-component-version}@typeql::modifiers/grouping.adoc[] page.
+// `group`::
+// Group results by a given variable. +
+// For more information, see the xref:modifiers/grouping.adoc[] page.
 
 `count`::
 Count the number of results. +
-For more information, see the xref:{page-component-version}@typeql::modifiers/aggregation.adoc#_count[Aggregation] page.
+// For more information, see the xref:modifiers/aggregation.adoc#_count[Aggregation] page.
 
 `max`::
 Find the maximum value of a given variable. +
-For more information, see the xref:{page-component-version}@typeql::modifiers/aggregation.adoc[Aggregation] page.
+// For more information, see the xref:modifiers/aggregation.adoc[Aggregation] page.
 
 `min`::
 Find the minimum value of a given variable. +
-For more information, see the xref:{page-component-version}@typeql::modifiers/aggregation.adoc[Aggregation] page.
+// For more information, see the xref:modifiers/aggregation.adoc[Aggregation] page.
 
 `mean`::
 Find average value of a given variable. +
-For more information, see the xref:{page-component-version}@typeql::modifiers/aggregation.adoc[Aggregation] page.
+// For more information, see the xref:modifiers/aggregation.adoc[Aggregation] page.
 
 `median`::
 Find median value of a given variable. +
-For more information, see the xref:{page-component-version}@typeql::modifiers/aggregation.adoc[Aggregation] page.
+// For more information, see the xref:modifiers/aggregation.adoc[Aggregation] page.
 
 `std`::
 Find standard deviation of values for a given variable. +
-For more information, see the xref:{page-component-version}@typeql::modifiers/aggregation.adoc[Aggregation] page.
+// For more information, see the xref:modifiers/aggregation.adoc[Aggregation] page.
 
 `sum`::
 Find the sum of values for a given variable. +
-For more information, see the xref:{page-component-version}@typeql::modifiers/aggregation.adoc[Aggregation] page.
+// For more information, see the xref:modifiers/aggregation.adoc[Aggregation] page.

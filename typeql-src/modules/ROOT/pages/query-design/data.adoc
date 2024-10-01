@@ -1,0 +1,84 @@
+= Data manipulation queries
+
+TypeDB 3.0+ uses pipelined clauses for data processing: a data query can include
+xref:query-design/pre-processing.adoc[pre-processing],
+a <<_combining_clauses,combination of data processing clauses>>,
+and xref:query-design/post-processing.adoc[post-processing] for output customization.
+
+== Syntax
+// tag::syntax[]
+A data query consists of one or multiple data clauses with optional pre-processing and post-processing clauses:
+
+[,typeql]
+----
+[<pre-processing>] <data processing> [<post-processing>]
+----
+
+where `<data processing>` is a combination of one or multiple <<_combining_clauses,clauses>>
+to specify a data processing pipeline.
+// end::syntax[]
+
+== Behavior
+
+=== Pre-processing
+
+Pre-processing makes it possible to define new functions for the query.
+These functions are not persisted in the schema of a database.
+
+For more information on pre-processing in data queries, see the xref:query-design/pre-processing.adoc[] page.
+
+[#_combining_clauses]
+=== Data processing
+
+A data query can have the following types of data manipulating clauses (or data clauses):
+
+* xref:data/match.adoc[match]
+* xref:data/insert.adoc[insert]
+* xref:data/delete.adoc[delete]
+* xref:data/put.adoc[put]
+* xref:data/assert.adoc[assert]
+
+A clause of every type can be used more than once in a data query.
+Data processing pipeline passes Concept Maps between its clauses.
+
+A Concept Map is like a dictionary of key-value pairs, where a key is a query variable,
+and a value is a single concept or value.
+
+[#_concept_streaming]
+==== Concept streaming
+
+A data clause takes a <<_concept_streaming,stream of ConceptMaps>> from a preceding clause as an input
+and provides an output as another <<_concept_streaming,stream of ConceptMaps>> for the next clause.
+The first clause in a pipeline has a stream of a single empty ConceptMap as its input.
+
+The output of the last clause in a data processing pipeline can be return as a stream of Concept Maps or converted via
+<<_post_processing>>.
+
+Using xref:patterns/optionality.adoc[optionals] (try and opt) can produce a ragged stream of Concept maps.
+Concept Maps in a ragged stream have variable length as they can lack optional variables.
+
+A stream of Concept Maps used in data processing pipelines is deduplicated,
+so every Concept Map in a stream is unique.
+
+[#_post_processing]
+=== Post-processing
+
+Post-processing makes it possible to reduce a ConceptMap stream to a value, or project it as JSONs.
+
+For more information on post-processing, see the xref:query-design/post-processing.adoc[] page.
+
+== Usage example
+
+.Example
+[,typeql]
+----
+match
+$x isa person, has name $n;
+$n = "bob";
+insert
+$x has name "Bob";
+delete
+$x has name $n;
+match
+$x has email $e;
+----

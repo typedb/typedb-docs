@@ -1,0 +1,111 @@
+= Cascade
+
+The `@cascade` keyword is used for cascade annotation that can be used to enable cascade deletes of relations
+on a schema or data query level.
+
+== Syntax
+
+The syntax of a cascade annotation includes the `@cascade` keyword but varies for schema definition
+and data deletion queries.
+
+For schema definition queries, use the `@cascade` keyword after a sub statement for a relation:
+
+.Syntax for a relation definition
+[,typeql]
+----
+<relation-sub-statement> "@cascade" ;
+----
+
+where `<relation-sub-statement>` is a relation definition xref:statements/sub.adoc[sub statement].
+
+For data deletion queries,
+use the same keyword followed by a list of relation types for cascade deletion in parentheses:
+
+.Syntax for a data deletion
+[,typeql]
+----
+<isa-statement> "@cascade(" <relation-types> ")" ;
+----
+
+where `<isa-statement>` -- `isa` statement used for deleting a data instance that can play a role in a relation,
+`<relation-types>` is a comma-separated list of relation types permitted for cascade deletion
+if it blocks the deletion of the data instance in the isa statement.
+
+== Behavior
+
+For a schema-level cascade annotation,
+relations get deleted once they have insufficient role players to satisfy cardinality constraints of their roles.
+That changes the default behavior of just failing the query that leads to violating the cardinality constraint.
+
+The default xref:annotations/cardinality.adoc[cardinality] constraint for a role in a relation is equal to `@card(1,1)`.
+
+For a query-level cascade annotation, a relation gets deleted if:
+
+* its type is in the list of types allowed for cascade deletion in the cascade annotation in the delete query and
+* its existence blocks deletion of a data instance that plays a role in the relation.
+
+== Usage in schema definition
+
+include::partial$iam-database-links.adoc[]
+
+The cascade annotation in a schema is used with a `sub` statement of the affected relation.
+For example, to define the `permission` relation type with cascade annotation, use:
+
+.Cascade annotation in a schema
+[,typeql]
+----
+define
+
+permission sub relation @cascade,
+    relates access,
+    relates subject;
+----
+
+The above example defines the `permission` relation type with two roles having the default cardinality constraints and
+with cascade deletion behavior enabled.
+Hence, if a data instance that plays one of the roles in a permission relation gets deleted,
+then the permission relation gets deleted too,
+because the default cardinality is having exactly one player for each role.
+
+== Usage in data queries
+
+include::partial$iam-database-links.adoc[]
+
+The cascade annotation in a data query is used with an `isa` statement of a `delete` clause
+and it specifies exact relation types that can be deleted by a cascade delete.
+
+For example, to delete a :
+
+.Cascade annotation in a data query
+[,typeql]
+----
+match
+$o isa object, has path "README.md";
+delete
+$o isa object @cascade(access);
+----
+
+In the above example, we are deleting a data instance of type `object` from a database that can play a role of `object`
+in a `access` relation.
+The cascade annotation in the `delete` clause specifies `access` type to enable its cascade deletion.
+
+If you combine this example with the previous one,
+both `access` and `permission` relations can be deleted with a single cascade delete of an `object`.
+One by a data query level, and one by a schema level cascade annotation because `access` play a role in a `permission`.
+
+== Learn more
+
+[cols-2]
+--
+.xref:statements/type.adoc[]
+[.clickable]
+****
+Learn more about `type` statement in TypeQL.
+****
+
+.xref:concepts/types.adoc[]
+[.clickable]
+****
+Learn about types in TypeQL.
+****
+--

@@ -1,38 +1,30 @@
 = sub / sub!
 
-The `sub` keyword is used in TypeQL to specify a parent type for a subtype.
-For specifying only a direct subtype in a pattern, with no type inference,
-use the `sub!` keyword instead.
+The `sub`/`sub!` keywords are used in TypeQL to declare a subtype for a given parent type.
 
 == Syntax
 
 The syntax of a `sub` or `sub!` statement includes:
 
-* Subject -- a subtype
-* Predicate -- the `sub`/`sub!` keyword
-* Object -- a parent type
-
 .Syntax
 [,typeql]
 ----
-<subtype> sub <parent-type>;
+<subtype> "sub" <parent-type> ;
 ----
 
 == Behavior
 
-TypeQL statements with the `sub` keyword can be used in any kind of query.
+TypeQL statements with the `sub` keyword can be used in any kind of query: to declare new types in a schema query
+or to match types in a data query.
 
-The `sub` keyword adds a constraint for subject to be a type that is a subtype of the object:
-
-* In xref:{page-component-version}@typeql::queries/overview.adoc#_schema_queries[schema queries] --
-the `sub` and `sub!` keywords don't have any difference.
-* In xref:{page-component-version}@typeql::queries/overview.adoc#_data_queries[data queries] --
-the `sub` and `sub!` keywords are used to match either all existing subtypes or only direct subtypes
-of a given type respectively.
+The `sub!` keyword (with an exclamation mark) adds a constraint to a type to be a direct subtype of a given type.
+The `sub` keyword (without an exclamation mark) does the same,
+but it can be either a direct or indirect (nested) subtype (via type inference).
+In schema queries, `sub` and `sub!` behavior is equal, since we can declare only direct subtypes in a schema statement.
 
 == Usage in a schema definition
 
-include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 Since in Define and Undefine queries you can't use variables,
 both subject and object can only be type labels in a schema statement.
@@ -50,10 +42,10 @@ pdf sub file;
 
 == Usage in a match pattern
 
-include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 In a data query pattern a `sub` statement can be used only in a `match` clause or condition of a rule.
-Both subject and object of a `sub` statement can be concept variables, or one of them can be a type label.
+Both subject and object of a `sub` statement can be variables, or one of them can be a type label.
 The `sub` keyword adds a constraint on a subject being an exact type, a direct subtype,
 or indirect subtype (via type inference) of the type used as an object.
 
@@ -107,13 +99,13 @@ fetch $type;
 
 [cols-2]
 --
-.xref:{page-component-version}@typeql::statements/type.adoc[]
+.xref:statements/type.adoc[]
 [.clickable]
 ****
 Learn more about `type` statement in TypeQL.
 ****
 
-.xref:{page-component-version}@typeql::concepts/types.adoc[]
+.xref:concepts/types.adoc[]
 [.clickable]
 ****
 Learn about types in TypeQL.

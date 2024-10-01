@@ -1,0 +1,339 @@
+= Insert
+:Summary: Insert data to a TypeDB database
+:keywords: typeql, typedb, clause, insert, write, create
+:pageTitle: Insert
+
+An Insert clause is used to insert new data into a database.
+You can insert an instance of a type, assign <<_inserting_ownerships,ownership of an attribute>>,
+or <<_adding_role_players_to_a_relation,add a new role player>> for a relation.
+For a practical guide on how to send a query with an insert clause to TypeDB,
+see the xref:{page-component-version}@manual::writing/insert.adoc[Insert] page of the TypeDB Manual.
+
+== Syntax
+
+// tag::syntax[]
+An `insert` clause starts with the `insert` keyword, followed by the pattern declaring data that is to be inserted:
+
+[,typeql]
+----
+insert <insert_pattern>
+----
+// end::syntax[]
+where `<insert_pattern>` is a pattern of valid data-specific TypeQL statements including xref:statements/isa.adoc[] and
+xref:statements/has.adoc[].
+
+[#_behavior]
+== Behavior
+[#_insert_clause]
+// tag::insert_clause[]
+An insert clause inserts new data into a TypeDB database, as specified in its pattern.
+The data to be inserted is specified using _new variables_
+(i.e., variables _not_ appearing in the preceding clause) or _literal values_.
+
+<<_insert_entity_example,Entities>>, <<_inserting_attributes,attributes>>,
+or <<_inserting_relations,relations>> are inserted using
+xref:statements/isa.adoc[isa] statements.
+
+Ownerships of attributes are inserted using a xref:statements/has.adoc[has] statement.
+Note that inserting an ownership of an attribute that doesn't exist in a database,
+implicitly inserts such an attribute.
+
+Role players are usually assigned as a part of a <<_inserting_relations,relation insertion>> with a
+xref:statements/links.adoc[] statement.
+// end::insert_clause[]
+
+=== Clause execution
+[#_match_clause]
+An `insert` clause is executed exactly once for every inputted Concept Map.
+
+For an Insert clause to succeed, inserted data must not violate the schema of a database.
+
+=== Clause response
+
+An Insert clause returns a stream of Concept Maps combining inputted ConceptMap with the inserted data.
+
+[#_inserting_data_with_no_matching]
+== Insert without matching
+
+include::partial$iam-database-links.adoc[]
+
+To insert new data with no connection to existing database data, we can use an Insert clause without a `match` clause:
+
+.Insert example
+[,typeql]
+----
+insert $p isa person, has full-name "Bob";
+----
+
+The above clause inserts a `person` entity that owns a `full-name` attribute whose value is "Bob".
+
+[NOTE]
+====
+If there is no such attribute in a database, then it will be created by this clause implicitly.
+====
+
+== Insert with matching
+
+include::partial$iam-database-links.adoc[]
+
+To be able to insert new data that is connected to existing concepts,
+use a preceding `match` clause to match the existing data from a database first:
+
+.Match insert example
+[,typeql]
+----
+match
+$p isa person, has full-name "Bob";
+insert
+$p has email "bob@typedb.com";
+----
+
+The above clause finds a `person` entity that has the `full-name` attribute with the value of `Bob`
+and makes it the owner of the `email` attribute with the value of `bob@typedb.com`.
+
+If there is no person that matches the `match` clause pattern, then there will be no information inserted by the clause.
+If there are multiple instances that match the pattern, then every matched person will be assigned ownership of the
+email attribute.
+
+[#_insert_entity_example]
+== Insert entities
+
+include::partial$iam-database-links.adoc[]
+
+To insert an entity, use a variable followed by an xref:statements/isa.adoc[isa]
+statement with the entity's type (label or variable).
+The `isa` is usually combined with statements to assign attribute ownerships or roles in relations.
+You can use the same variable in multiple statements to insert more about the entity
+or combine statements into a xref:statements/overview.adoc#_composite_statements[composite statement].
+
+[NOTE]
+====
+Entities without any additional information associated with them are almost indistinguishable from one another.
+====
+
+While it is possible to insert an entity without any attributes owned or roles played,
+such an entity can't be easily found in a database or distinguished from other entities of the same type.
+As a best practice, we recommend using the same clause to add at least some information about the inserted entity.
+
+You can also use the xref:annotations/key.adoc[@key] or
+xref:annotations/unique.adoc[@unique] annotations for an attribute type ownership schema definition
+to add constraints that make it much easier to uniquely address instances of this entity type.
+
+.Inserting an entity example
+[,typeql]
+----
+insert
+$p isa person, has full-name "John Parkson";
+----
+
+The above clause inserts a `person` entity with the following attributes:
+
+* `full-name` -- value is `John Parkson`,
+* `email` -- value is `john.parkson@gmail.com`,
+* `credential` -- value is `qwerty1`.
+
+[#_inserting_attributes]
+== Insert attributes
+
+include::partial$iam-database-links.adoc[]
+
+Inserting an attribute requires setting both type and value of a new attribute.
+You can specify the value with a xref:values/comparators.adoc[comparator].
+
+You can insert an attribute explicitly.
+Use a variable followed by a value and `isa` pattern with an attribute type to insert an attribute.
+
+.Explicit attribute insertion
+[,typeql]
+----
+insert
+$s 34 isa size-kb;
+----
+
+Attributes that are not owned by any other instances are called
+xref:data/delete.adoc#_orphaned_attributes[orphaned attributes]
+and aren't very useful to store in a database.
+
+To implicitly insert an attribute, assign an ownership of it with a xref:statements/has.adoc[has] statement.
+If an attribute with the type and value doesn't exist in the database, it is created implicitly.
+
+.Implicit attribute insertion
+[,typeql]
+----
+insert
+$f isa file, has path "new-file.txt";
+----
+
+The above clause inserts a `file` entity and assigns it an ownership of `path` attribute
+with the value of `new-file.txt`.
+If there is no such attribute in a database, it is inserted implicitly as a result of assigning the ownership.
+
+[#_inserting_ownerships]
+== Insert ownerships
+
+Attributes are immutable.
+Rather than changing a value of an owned attribute,
+you can delete an ownership of it
+and replace with an ownership of another attribute with a different value.
+
+To insert an ownership of an attribute, use a xref:statements/has.adoc[] statement:
+
+.Inserting ownership
+[,typeql]
+----
+match
+$p isa person, has full-name "John Parkson";
+insert
+$p has credential "qwerty1";
+----
+
+The above query matches a person that has full-name "John Parkson", that we <<_insert_entity_example,inserted>> earlier,
+and assign for the person to be owner of attribute of the type `credential` and value `qwerty1`.
+If the attribute doesn't exist, it is created/inserted implicitly by this clause.
+
+[#_multivalued_attributes]
+=== Multivalued attributes
+
+TypeDB supports multivalued attributes by allowing ownership of multiple attributes of the same type.
+
+For example, if the `person` entity type can own the `email` attribute type, then an instance of the `person`
+can own multiple (from zero to many) `email` attributes with different values.
+
+.Multivalued attribute example
+[,typeql]
+----
+match
+$p isa person, has full-name "John Parkson";
+insert
+$p has email "john.parkson@typedb.com",
+    has email "admin@jp.com",
+    has email "jp@gmail.com";
+----
+
+The above query assigns ownership of three different attributes of the `email` type to the matched `person` entity
+from one of the previous examples: <<_insert_entity_example>>.
+As a result, the matched entity should own six attributes, four of which are of the `email` type.
+
+.See fetch output
+[%collapsible]
+====
+.Multiple emails owned by a person
+[,json]
+----
+{
+    "p": {
+        "attribute": [
+            { "value": "John Parkson", "value_type": "string", "type": { "label": "full-name", "root": "attribute" } },
+            { "value": "admin@jp.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } },
+            { "value": "jp@gmail.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } },
+            { "value": "john.parkson@gmail.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } },
+            { "value": "john.parkson@typedb.com", "value_type": "string", "type": { "label": "email", "root": "attribute" } },
+            { "value": "qwerty1", "value_type": "string", "type": { "label": "credential", "root": "attribute" } }
+        ],
+        "type": { "label": "person", "root": "entity" }
+    }
+}
+----
+====
+
+// See the illustration of the resulted data from xref:{page-component-version}@manual::studio.adoc[] below.
+//
+// image::john-6-attributes.png[John with 4 emails, role=framed, width = 75%, link=self]
+
+[#_inserting_relations]
+== Insert relations
+
+include::partial$iam-database-links.adoc[]
+
+Inserting a relation requires specifying at least one role player.
+
+[NOTE]
+====
+From a data modeling perspective, the existence of a relation implies the existence of role players for all its roles.
+Inserting a relation without a role player for a role can create an incomplete data state.
+Like a `marriage` relation with only one known spouse.
+====
+
+Use a xref:statements/links.adoc[] statement with an
+xref:statements/isa.adoc[isa] statement in an `insert` clause to insert a relation.
+
+.Inserting a relation
+[,typeql]
+----
+match
+$op isa operation, has name "view_file";
+insert
+$f isa file, has path "new-relation.txt";
+$a (object: $f, action: $op) isa access;
+----
+
+In the above example we match an operation with the `view_file` name
+and insert a file with the `new-relation.txt` path to insert a relation of the `access` type
+between them with roles `object` and `action` played by the file and operation respectively.
+
+[#_adding_role_players_to_a_relation]
+== Insert role players
+
+include::partial$iam-database-links.adoc[]
+
+To add a new role player for an existing relation,
+match the relation from a database and use a xref:statements/links.adoc[] statement
+with only new roleplayers.
+Don't use an xref:statements/isa.adoc[] statement with relation type
+as it will insert a new relation instead of adding roles to an existing one.
+
+.Adding a role player
+[,typeql]
+----
+match
+$f isa file, has path "new-relation.txt";
+$op isa operation, has name "view_file";
+$a (action: $op) isa access;
+insert
+$a (object: $f);
+----
+
+[#_multiple_role_players]
+=== Multiple role players
+
+A role in a relation can be played more than once (by multiple role players).
+
+.Multiple players for a role
+[,typeql]
+----
+match
+$p1 isa subject, has full-name "Pearle Goodman";
+$p2 isa subject, has full-name "Masako Holley";
+$o isa object, has path "zewhb.java";
+insert
+$obj-ownership (owner: $p1, owner: $p2, object: $o) isa object-ownership;
+----
+
+The above query:
+
+. Finds the `person` entity (`$p1`) by its `full-name` attribute `Pearle Goodman`.
+. Finds the `person` entity (`$p2`) by its `full-name` attribute `Masako Holley`.
+. Finds the `object` entity (`$o`) by its `path` attribute `zewhb.java`.
+. Inserts an `object-ownership` relation (`$obj-ownership`) which relates `$p1` (as `owner`) and `$p2` (as
+  `owner`) to `$o` (as `object`).
+
+In short, it makes `Pearle Goodman` and `Masako Holley` both play the same role in the same relation.
+
+// owners of the `zewhb.java` file.
+
+== Learn more
+
+[cols-2]
+--
+.xref:{page-component-version}@learn::4-writing-data/4.1-inserting-simple-data.adoc[]
+[.clickable]
+****
+Learn more about inserting data into a database in the TypeDB Learning course.
+****
+
+.xref:{page-component-version}@manual::writing/insert.adoc[]
+[.clickable]
+****
+See how to send an Insert query to TypeDB.
+****
+--

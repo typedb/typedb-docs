@@ -1,0 +1,33 @@
+= Independent
+
+The independent annotation can be used for attributes that can become orphaned (not having an owner by anything)
+and should not be deleted from a database in that case.
+
+== Syntax
+
+The syntax of a independent annotation includes the `@independent` keyword
+placed after a xref:statements/sub.adoc[sub statement] of an attribute type:
+
+.Syntax
+[,typeql]
+----
+<sub-statement> @independent ;
+----
+
+== Behavior
+
+An attribute type defined with the independent annotation is preserved in the database
+in case all ownerships of it get deleted.
+
+=== Orphaned attributes
+
+An attribute is called orphaned when there are no more owners in the database to have it.
+Be default, TypeDB 3.0+ deletes orphaned attributes to free up storage space.
+
+== Usage
+
+.Independent attribute example
+[,typeql]
+----
+name sub attribute @independent, value string;
+----

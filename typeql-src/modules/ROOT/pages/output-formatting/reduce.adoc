@@ -1,0 +1,107 @@
+= Reduce / Aggregate
+
+This page covers aggregation/reduction of TypeQL query results.
+Aggregation functions take the input stream from preceding data processing pipeline
+and project it to a single tuple of value(s).
+
+== Syntax
+
+An aggregate clause consists of the `reduce` keyword and one or multiple comma-separated aggregation functions:
+//#todo Finalize the reduce/aggregate decision
+
+[,typeql]
+----
+reduce <aggregation-function> [, <aggregation-function>] ;
+----
+
+TypeQL supports the following types of aggregation/reduction functions:
+
+* `count` -- Get the total number of results returned.
+Alternatively, get the number of results that include the specified variable.
+* `sum` -- Get the *sum* of the `long` or `double` values of the specified variable.
+// * `max` -- Get the *maximum* value among the `long` or `double` values of the specified variable.
+// * `min` -- Get the *minimum* value among the `long` or `double` values of the specified variable.
+* `mean` -- Get the average value of the `long` or `double` values of the specified variable.
+// * `median` -- Get the median value among the `long` or `double` values of the matched variable.
+// * `std` -- Get the *sample standard deviation* value among the `long` or `double` values of the matched variable.
+* `check` -- Check the specified condition. Returns `True` if input has any Concept Maps.
+* `list` -- Get a list of values for the selected variable.
+* `first` -- Returns the first Concept Map from results.
+
+== Behavior
+
+With reduction/aggregation,
+the query performs calculation on the stream of ConceptMaps and returns a single tuple with aggregated value(s).
+
+[#_count]
+== Usage for counting results
+
+include::partial$iam-database-links.adoc[]
+
+For any data query, to count the number of results returned,
+add the `count` keyword at the end of the query with a semicolon.
+
+.Count example
+[,typeql]
+----
+match
+$o isa object, has path $fp;
+reduce
+count;
+----
+
+Notice, that the `count` keyword uses no variables here,
+as it counts only the number of results, regardless of contents.
+To count only Concept Maps with a particular variable, specify the variable in parentheses after the `count` keyword.
+That may be useful for queries with optionals, given ragged Concept Maps streams.
+
+.Count with a variable example
+[,typeql]
+----
+match
+$o isa object, has path $fp;
+try {$o has $size-kb};
+reduce
+count($size-kb);
+----
+
+== Usage for numeric values
+
+include::partial$iam-database-links.adoc[]
+
+For `long` or `double` values represented by a variable mapped to an attribute,
+we can use aggregation to compute an output based on all returned values.
+
+.Aggregation example
+[,typeql]
+----
+match
+$f isa file, has size-kb $s;
+get $f, $s;
+sum $s;
+----
+
+[WARNING]
+====
+Omitting the variable `$f` in the `get` clause of the above query will result in missing all duplicated values
+of `$s` from the aggregation.
+For more information,
+see the xref:data/match.adoc[] page.
+====
+
+== Learn more
+
+[cols-2]
+--
+.xref:query-design/data.adoc[]
+[.clickable]
+****
+Learn about data manipulation queries in TypeQL.
+****
+
+.xref:modifiers/filter.adoc[]
+[.clickable]
+****
+Learn about results filtering in TypeQL.
+****
+--

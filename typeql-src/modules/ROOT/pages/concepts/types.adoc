@@ -6,13 +6,13 @@ to construct queries to the database.
 [#_type_hierarchy]
 == Type hierarchy
 
-Types are defined in the schema of a database, and their definitions are written in TypeQL.
-Types from the schema are used to design data queries to the database and are modeled with the use of the
-xref:{page-component-version}@academy::5-defining-schemas/5.1-defining-individual-types.adoc[PERA model].
-Type definitions can be used in Define and Undefine queries and can't use any variables.
+Types are defined with TypeQL in the schema of a database.
+Types are used to design data queries to a database and are modeled with the use of the
+xref:{page-component-version}@learn::9-modeling-schemas/9.1-the-pera-model.adoc[PERA model].
 
-To create new types in a schema, subtype one of the existing types.
-A subtype inherits all definitions of its supertype.
+To create a new type in a schema, subtype one of the existing types with a xref:statements/sub.adoc[] statement.
+A subtype inherits the abilities of its supertype.
+A type can be <<_abstract_types,abstract>> or concrete.
 
 By default, a schema has three built-in root types.
 Root types are abstract types and need to be subtyped to use them.
@@ -36,22 +36,24 @@ Root types are abstract types and need to be subtyped to use them.
 |===
 
 Since data instances can be named after their respective root type,
-we try to prevent ambiguity by specifying whether we mean the root type or data instance in every case
-if it's not obvious from the context.
+we try to prevent ambiguity by providing relevant context or specifically calling them as root types,
+e.g. the `attribute` root type.
 
+[#_abstract_types]
 == Abstract types
 
 Abstract types can't be used to insert data instances, but can be subtyped and queried for.
 
-To make a type abstract, use the `abstract` keyword in its definition.
+To make a type abstract, use the `@abstract` xref:annotations/abstract.adoc[annotation] in its definition.
 
-.Abstract type definition example
-[,typeql]
-----
-define
-
-subject sub entity, abstract;
-----
+// .Abstract type definition example
+// [,typeql]
+// ----
+// define
+//
+// subject sub entity @abstract;
+// ----
+//#todo Double-check the syntax
 
 [#_example]
 == Usage in a Define query
@@ -61,18 +63,7 @@ Let's define a simple schema for users:
 .Define query example
 [,typeql]
 ----
-define
-
-id sub attribute, value long;
-email sub attribute, value string;
-full-name sub attribute, value string;
-
-user sub entity,
-    owns id @key,
-    owns email,
-    abstract;
-
-person sub user, owns full-name;
+include::{page-component-version}@home::attachment$quickstart-schema.tql[]
 ----
 
 == Usage in a Fetch query

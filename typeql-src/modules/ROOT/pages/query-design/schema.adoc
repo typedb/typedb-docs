@@ -1,0 +1,212 @@
+= Schema definition queries
+
+There are only two types of TypeQL queries to alter a schema: Define and Undefine.
+
+== Define query
+
+A Define query extends the schema of a database with new schema statements.
+It can add new types, extend existing types, and add or replace functions.
+
+A Define query extends the schema of a database with new schema statements.
+For a practical guide on how to send a Define query to TypeDB,
+see the xref:{page-component-version}@manual::defining/define.adoc[] page of the TypeDB Manual.
+
+// For more information on the limitations of schema manipulations, see the
+// xref:{page-component-version}@home::acid.adoc#_schema_integrity[Schema integrity enforcement].
+
+[#_syntax_define]
+=== Syntax
+
+// tag::syntax[]
+A Define query consists of a single `define` clause and always starts with the `define` keyword.
+
+Define queries are written in TypeQL with the following syntax:
+
+[,typeql]
+----
+define <schema_definitions>
+----
+
+where `<schema_definitions>` are valid schema-specific TypeQL statements:
+xref:statements/sub.adoc[],
+xref:statements/owns.adoc[],
+xref:statements/value.adoc[],
+xref:statements/relates.adoc[],
+xref:statements/plays.adoc[],
+and annotations: xref:annotations/key.adoc[] and xref:annotations/unique.adoc[].
+Schema statements in a `define` clause can't use any variables or values.
+// end::syntax[]
+
+// For more information on defining rules, see the xref:schema/rule-definitions.adoc[] page.
+// For more information on defining types, ownerships, and roleplayers,
+// see below and the xref:schema/type-definitions.adoc[].
+
+=== Behavior
+
+// tag::behavior[]
+A Define query adds schema statements to an existing schema.
+These statements can add new types and rules,
+or they can add new properties to existing types and replace existing rules.
+Define queries can't change schema statements already existing in a schema, except for
+xref:statements/overview.adoc#_annotation_statements[annotations].
+
+==== Query execution
+
+Define queries are _idempotent_, meaning they can be applied multiple times
+without changing the result of the initial application.
+
+A Define query must produce a _valid_ schema in a database,
+otherwise it will be rejected.
+
+==== Query response
+
+A successful Define query returns a promise of an empty response.
+// end::behavior[]
+
+=== Define types
+
+To define a new type, subtype an existing type with a xref:statements/sub.adoc[sub] statement.
+Use xref:statements/owns.adoc[owns] statements to assign an ability to own attribute types.
+
+For roles on relations, use xref:statements/relates.adoc[relates] and
+xref:statements/plays.adoc[plays] statements.
+
+Simple statements about the same subject can be combined in a
+xref:statements/overview.adoc#_composite_statements[composite statement].
+
+.Defining types example
+[,typeql]
+----
+define
+
+credential sub attribute, value string;
+email sub attribute, value string;
+full-name sub attribute, value string;
+review-date sub attribute, value datetime;
+
+subject sub entity,
+    abstract,
+    owns credential,
+    plays permission:subject;
+user sub subject, abstract;
+person sub user,
+    owns email,
+    owns full-name;
+
+permission sub relation,
+    owns review-date,
+    relates subject;
+----
+
+The above example defines four attribute types, three entity types, and a single relation type.
+
+=== Define functions
+
+Define queries are used to define functions in the schema of a database.
+For more information on syntax, validation, and other aspects of defining functions,
+see the xref:functions/definition.adoc[] page in the Functions section.
+
+== Undefine query
+
+An Undefine query removes type and function definitions from a schema.
+
+An Undefine query removes type and rule definition from a schema.
+For a practical guide on how to send an Undefine query to TypeDB,
+see the xref:{page-component-version}@manual::defining/undefine.adoc[] page of the TypeDB Manual.
+
+// For more information on the limitations of schema manipulation, see the
+// xref:{page-component-version}@home::acid.adoc#_schema_integrity[Schema integrity enforcement].
+
+[#_syntax_undefine]
+=== Syntax
+
+// tag::undefine-syntax[]
+An Undefine query consists of a single `undefine` clause and always starts with the `undefine` keyword.
+
+Undefine queries are written in TypeQL with the following syntax:
+
+[,typeql]
+----
+undefine <schema_definitions>
+----
+
+Where `<schema_definitions>` are valid TypeQL schema-specific statements:
+xref:statements/sub.adoc[],
+xref:statements/owns.adoc[],
+xref:statements/value.adoc[],
+xref:statements/relates.adoc[],
+xref:statements/plays.adoc[],
+and annotations: xref:annotations/key.adoc[] and xref:annotations/unique.adoc[].
+Schema statements in a `undefine` clause can't use any variables or values.
+// end::undefine-syntax[]
+
+=== Behavior
+
+// tag::undefine-behavior[]
+An Undefine query deletes the parts of the schema specified in its `undefine` clause,
+including types, roles, and ownerships.
+Undefining a type also undefines all ownerships of attribute types and all roles of that type.
+
+==== Query execution
+
+[#_undefine_a_type_with_a_subtype]
+For an undefine query to succeed, the following must be satisfied:
+
+* Types that are to be deleted must _exist_.
+* Types that are to be deleted can have neither _subtypes_ nor _instances of data_.
+* An undefine query must result in a _valid_ schema state.
+
+Undefining the same definition twice will result in an error.
+
+==== Query response
+
+Undefine queries return a promise of an empty response.
+// end::undefine-behavior[]
+
+=== Undefine types
+
+include::partial$iam-database-links.adoc[]
+
+Use a schema statement to delete from a schema in an Undefine query:
+
+.Undefine type example
+[,typeql]
+----
+undefine
+
+number sub attribute;
+database owns name;
+----
+
+The above example deletes from a schema the attribute type `number` and ownership of the attribute type `name` by the
+entity type `database`.
+
+=== Undefine functions
+
+Undefine queries are used to delete functions from the schema of a database.
+For more information on syntax, validation, and other aspects of defining functions,
+see the xref:functions/definition.adoc[] page in the Functions section.
+
+== Learn more
+
+[cols-2]
+--
+.xref:{page-component-version}@learn::5-defining-schemas/overview.adoc[]
+[.clickable]
+****
+Learn more about defining a schema in the TypeDB Learning course.
+****
+//#todo Link to Functions section in the Learn course when it's ready
+
+.xref:{page-component-version}@manual::defining/define.adoc[]
+[.clickable]
+****
+See how to send a Define query to TypeDB.
+****
+
+.xref:{page-component-version}@manual::defining/undefine.adoc[]
+[.clickable]
+****
+See how to send an Undefine query to TypeDB.
+****
+--

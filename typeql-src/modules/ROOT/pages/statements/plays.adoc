@@ -1,32 +1,29 @@
 = plays
 
-The `plays` keyword is used in TypeQL schema to define a valid player of a role in a relation type.
+The `plays` keyword is used in TypeQL schema to declare a subject type as a valid player of a role in a relation type.
 
 == Syntax
 
 The syntax of a `plays` statement includes:
 
-* Subject -- type label of a type to play the role
-* Predicate -- the `plays` keyword
-* Object -- scoped type label of a role
-
 .Syntax
 [,typeql]
 ----
-<type> plays <relation-type:role> [as overridden-type];
+<player> "plays" <relation-type:role> [as overridden-type];
 ----
 
 An optional <<_usage_with_override,override>> can be added at the end.
 
 == Behavior
 
-TypeQL statements with the `plays` keyword can be used only in Define and Undefine queries.
+The `plays` keyword declares an ability to play a role.
 
-The `plays` keyword adds an ability to play a role to a schema.
+TypeQL statements with the `plays` keyword can be used only in schema queries to modify a schema,
+or in data queries to match data using types information.
 
 == Usage in a schema definition
 
-include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 Since in Define and Undefine queries you can't use variables,
 both subject and object can only be type labels.
@@ -53,7 +50,7 @@ subject plays permission:subject;
 [#_usage_with_override]
 == Usage with override
 
-include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 By default, a subtype of a relation type inherits all roles that were defined for its supertype.
 To override an inherited role, use the `as` keyword.
@@ -75,13 +72,13 @@ subject plays permission:manager as subject;
 
 [cols-2]
 --
-.xref:{page-component-version}@typeql::statements/type.adoc[]
+.xref:statements/type.adoc[]
 [.clickable]
 ****
 Learn more about `type` statement in TypeQL.
 ****
 
-.xref:{page-component-version}@typeql::concepts/types.adoc[]
+.xref:concepts/types.adoc[]
 [.clickable]
 ****
 Learn about types in TypeQL.

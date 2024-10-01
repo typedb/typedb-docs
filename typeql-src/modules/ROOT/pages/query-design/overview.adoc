@@ -1,0 +1,47 @@
+= Queries
+:page-no-toc: 1
+
+[#_blank_heading]
+== {blank}
+
+TypeQL queries are written in TypeQL and can be used either to modify a schema of a database or to manipulate its data.
+
+== Query types
+
+A schema definition query (or schema query) can be either a Define or Undefine query.
+However, a data manipulation query (or data query) can use multiple clauses in any combination,
+so it can't always be so easily classified.
+
+[cols-2]
+--
+.xref:query-design/schema.adoc[]
+[.clickable]
+****
+Define and Undefine queries to alter a database's schema.
+****
+
+.xref:query-design/data.adoc[]
+[.clickable]
+****
+TypeQL queries for manipulating data in a database.
+****
+--
+
+== Data queries processing
+
+Data queries have an ability to use pre-processing and post-processing to adjust the results.
+
+[cols-2]
+--
+.xref:query-design/pre-processing.adoc[]
+[.clickable]
+****
+Context management of a data query.
+****
+
+.xref:query-design/post-processing.adoc[]
+[.clickable]
+****
+Query output formatting for data queries.
+****
+--

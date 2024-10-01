@@ -1,0 +1,34 @@
+= Call
+
+Calling a function is equal to using its output in a pattern.
+
+== Syntax
+
+To call a function, use its label in a `match` clause or another function's body.
+Input parameters are set in the parentheses right after the label.
+If no input parameters are needed for the function, use empty parentheses to call it.
+
+[,typeql]
+----
+<label> "(" [<param> = ] <var> [, [<param> = ] <var>] ")"
+----
+
+where `<label>` is the label of the function to call,
+`<param>` is the name of the input parameter (optional),
+`<var>` is a query variable.
+
+== Behavior
+
+To call a function, it needs to be xref:functions/definition.adoc[defined] first.
+A function call is effectively substituted with the returned output of the function.
+
+== Usage
+
+// include::partial$iam-database-links.adoc[]
+
+.Function definition example
+[,typeql]
+----
+match
+$n in extended_name($x);
+----

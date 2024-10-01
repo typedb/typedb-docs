@@ -1,0 +1,52 @@
+= Values
+
+The values annotation is used in TypeQL schema to define a list of possible values for attributes of a given type.
+It is used in a similar way to enum types in programming languages.
+
+== Syntax
+
+The syntax of a values annotation includes:
+
+.Syntax
+[,typeql]
+----
+<value-type-definition> "@values(" <list> ")" ;
+----
+
+where `<value-type-definition>` is a definition of a value type of an attribute type,
+`<list>` is a comma-separated list of values.
+
+== Behavior
+
+Data instances of an attribute type defined with a values annotation must have a value from the given list.
+It can be used for any value type.
+
+== Usage
+
+Use values annotation to limit possible values for all attributes of an attribute type.
+For example, to make the `status` attribute type to be able to have only string values of
+"SUCCESS" and "FAILURE":
+
+.Values annotation example
+[,typeql]
+----
+define
+status sub attribute, value string @values("SUCCESS", "FAILURE");
+----
+
+== Learn more
+
+[cols-2]
+--
+.xref:statements/type.adoc[]
+[.clickable]
+****
+Learn more about `type` statement in TypeQL.
+****
+
+.xref:concepts/types.adoc[]
+[.clickable]
+****
+Learn about types in TypeQL.
+****
+--

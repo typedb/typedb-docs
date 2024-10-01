@@ -1,33 +1,29 @@
 = isa / isa!
 
-The `isa` keyword is used in TypeQL to specify a type for data instances, taking into account type inference.
+The `isa` keyword is used in TypeQL to specify a type for a data instances, taking into account type inference.
 For specifying only a direct type with no subtypes, use the `isa!` keyword instead.
 
 == Syntax
 
 The syntax of an `isa` or `isa!` statement includes:
 
-* Subject -- a concept variable representing a data instance
-* Predicate -- the `isa`/`isa!` keyword
-* Object -- a type label or concept variable representing a type
-
 .Syntax
 [,typeql]
 ----
-<concept-variable> isa <type>;
+<var> "isa" <type>;
 ----
 
 == Behavior
 
-TypeQL statements with the `isa` and `isa!` keyword are used in data queries and rules.
+TypeQL statements with the `isa` and `isa!` keyword are used in data queries.
 
-The `isa` keyword adds a constraint of a type, including all subtypes, to data instances,
-represented by a concept variable.
-The `isa!` keyword does the same, but excludes the subtypes.
+The `isa!` keyword (with an exclamation mark) adds a constraint to a data instances to be of a given type.
+The `isa` keyword (without an exclamation mark) does the same,
+but the data instance can also be a subtype of a given type (via type inference).
 
 == Usage in a match pattern
 
-include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 In a `match` clause pattern an isa statement can be used to match data instance of a selected type
 or any of its subtype (via type inference).
@@ -88,7 +84,7 @@ fetch $attr;
 
 == Usage in an insert pattern
 
-include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 To insert a data instance to a database, you need to use an `isa` statement in an `insert` clause.
 For example:
@@ -103,17 +99,21 @@ $p isa person, has full-name "Bob Fake";
 The object must be the exact type of the instance you are inserting.
 In an `insert` clause, the `isa` keyword has no difference from the `isa!` keyword.
 
-When inserting an attribute, you can provide a value with a xref:{page-component-version}@typeql::statements/value-assignment.adoc[] syntax:
+When inserting an attribute, you can provide a value with a
+xref:values/comparators.adoc[comparator] or
+value assignment syntax:
+//#todo double check for new value assignment
 
 .Insert attribute with value assignment example
 [,typeql]
 ----
 insert
-$f "John Smith" isa full-name;
+$f isa full-name;
+$f == "John Smith";
 ----
 
 When inserting a relation,
-you can provide role players for every role with a xref:{page-component-version}@typeql::statements/role-assignment.adoc[] syntax:
+you can provide role players for every role with a xref:statements/links.adoc[] syntax:
 
 .Insert relation with role assignment example
 [,typeql]
@@ -121,16 +121,16 @@ you can provide role players for every role with a xref:{page-component-version}
 match
 $p isa person, has full-name "Bob Fake";
 insert
-$per(subject: $p) isa permission;
+$per isa permission, links (subject: $p);
 ----
 
 [#_in_a_delete_pattern]
 == Usage in a delete pattern
 
-include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
-To delete a data instance from a database, you need to match it to a concept variable with a `match` clause,
-and then use the concept variable with an `isa` statement in a `delete` clause of the same query.
+To delete a data instance from a database, you need to match it to a variable with a `match` clause,
+and then use the variable with an `isa` statement in a `delete` clause of the same query.
 For deleting, you can use the exact type of the data instance or any of its supertypes, including a root type.
 
 Let's delete
@@ -171,13 +171,13 @@ $f isa attribute;
 
 [cols-2]
 --
-.xref:{page-component-version}@typeql::concepts/types.adoc[]
+.xref:concepts/types.adoc[]
 [.clickable]
 ****
 Learn more about types in TypeQL.
 ****
 
-.xref:{page-component-version}@typeql::concepts/data-instances.adoc[]
+.xref:concepts/data.adoc[]
 [.clickable]
 ****
 Learn more about data instances in TypeQL.

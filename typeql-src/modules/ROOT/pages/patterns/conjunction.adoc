@@ -1,10 +1,11 @@
-= Conjunction
+= Conjunction (AND)
 
-A conjunction of patterns requires all its patterns to be true simultaneously. A conjunction is itself a pattern.
+A conjunction is a pattern operation that requires that all patterns to be true simultaneously.
 
 == Syntax
 
-There is no specific syntax to apply conjunctions: conjunctions are applied implicitly to all patterns delineated by a semicolon `;`. A conjunction of two or more patterns is of the form
+There is no specific syntax to apply conjunctions:
+conjunctions are applied implicitly to all statements or patterns delineated by a semicolon `;`:
 
 .Syntax
 [,typeql]
@@ -12,20 +13,29 @@ There is no specific syntax to apply conjunctions: conjunctions are applied impl
 <pattern>; <pattern>; [ <pattern>; ... ]
 ----
 
-where each `<pattern>` is _any valid pattern_ and we added `;` to emphasize that patterns _always end_ with `;`. Note, each `<pattern>` itself may be a conjunction of smaller patterns or individual statements: see xref:{page-component-version}@typeql::patterns/matching.adoc[patterns] for more information.
+where `<pattern>` is _any valid pattern_.
+We added the semicolon `;` to emphasize that patterns _always end_ with a semicolon `;`.
+Note, each `<pattern>` itself may be a conjunction of smaller patterns or individual
+xref:statements/overview.adoc[statements].
+
+[IMPORTANT]
+====
+Conjunction is used by default in any pattern:
+it is implicitly applied between all statements separated with a semicolon.
+====
 
 == Behavior
 
-Conjunction is used in all TypeQL patterns by default: it is implicitly applied between all statements separated with a semicolon.
-
-All patterns in a conjunction must be true for the conjunction itself to be true. Thus, if any statement in a conjunction is false, then the whole pattern is false.
+All patterns in a conjunction must be true for the conjunction itself to be true.
+Thus, if any statement in a conjunction is false, then the whole pattern is false.
 //#todo expand disjunction behavior with detailed explanation
 
-The ordering of statements in a conjunction is irrelevant, as every statement is equaly important for the whole pattern.
+The ordering of statements in a conjunction is irrelevant,
+as every statement is equally important for the whole pattern.
 
 == Usage in a match clause
 
-include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 Let's fetch a `path` attribute for every file that a user with full-name "Kevin Morrison" has a permission to modify.
 There are multiple statements we need to combine with a conjunction for them all to be matched by every solution:
@@ -44,20 +54,21 @@ There are multiple statements we need to combine with a conjunction for them all
 .Conjunction example
 [,typeql]
 ----
-match
 $user isa user, has full-name 'Kevin Morrison';
 ($user, $access) isa permission;
 $obj isa object, has path $path;
 $access($obj, $act) isa access;
 $act isa action, has name 'modify_file';
-fetch $path;
 ----
 
-In the above example, all statements in a `match` clause must be True for the solution to be found.
+In the above example, all statements must be True for the solution to be found.
 
-.See example output
+.See fetch output example
 [%collapsible]
 ====
+For example, if we use this pattern in a `match` clause with a subsequent `fetch $path` post-processing,
+we would get the following or similar results:
+
 .Output example (partial)
 [,json]
 ----
@@ -71,21 +82,21 @@ In the above example, all statements in a `match` clause must be True for the so
 
 [cols-2]
 --
-.xref:{page-component-version}@typeql::patterns/disjunction.adoc[]
+.xref:patterns/disjunction.adoc[]
 [.clickable]
 ****
 Learn more about disjunction in TypeQL.
 ****
 
-.xref:{page-component-version}@typeql::patterns/negation.adoc[]
+.xref:patterns/negation.adoc[]
 [.clickable]
 ****
 Learn more about negation in TypeQL.
 ****
 
-.xref:{page-component-version}@typeql::statements/overview.adoc[]
+.xref:statements/overview.adoc[]
 [.clickable]
 ****
-Learn more about statements in TypeQL patterns.
+Learn more about statements used in TypeQL patterns.
 ****
 --

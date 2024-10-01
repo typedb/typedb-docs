@@ -1,32 +1,31 @@
 = is
 
-The `is` keyword statement is used in TypeQL patterns to specify equality between two concept variables.
+The `is` keyword statement is used in TypeQL data queries to specify equality between two concepts.
 
 == Syntax
 
 The syntax of an `is` statement includes:
 
-* Subject -- a concept variable
-* Predicate -- the `is` keyword
-* Object -- another concept variable
-
 .Syntax
 [,typeql]
 ----
-<concept-variable> is <concept-variable>;
+<concept> "is" <concept>;
 ----
+
+where `<concept` is a variable representing a concept .
 
 == Behavior
 
 TypeQL statements with the `is` keyword are used in data queries
-to set an equality constraint for any two concept variables.
-That makes two concept variables equal both by type and value, so we could replace one of the variables with another.
+to set an equality constraint for any two variables.
+That makes two variables equal both by type and value, so we could replace one of the variables with another.
+//#todo Check whether we still need the `is` statement at all. It was used mostly as a workaround for a problem that doesn't exist anymore
 
 == Usage for equality
 
-include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
-Let's match different concept variables that are set to be equal and fetch values of the same attribute type:
+Let's match different variables that are set to be equal and fetch values of the same attribute type:
 
 .Example
 [,typeql]
@@ -35,7 +34,9 @@ match
 $p1 has full-name $f1;
 $p2 has full-name $f2;
 $p1 is $p2;
-fetch $f1 as first; $f2 as second;
+$f1 < $f2;
+fetch
+$f1 as first; $f2 as second;
 ----
 
 .Output example
@@ -43,7 +44,7 @@ fetch $f1 as first; $f2 as second;
 ----
 {
     "first": { "value": "Kevin Morrison", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } },
-    "second": { "value": "Kevin Morrison", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } }
+    "second": { "value": "Kevin M.", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } }
 }
 ----
 
@@ -51,13 +52,13 @@ It can be used for simplifying patterns or combining two different patterns into
 
 == Usage with negation
 
-include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
+include::partial$iam-database-links.adoc[]
 
 The most common use of an `is` statement is to exclude some results.
 
 For example, let's find all users that have similar emails.
 To do that, match two data instances of the `user` type, both having the same `email` attribute.
-But to exclude the results where the same entity matches both concept variables,
+But to exclude the results where the same entity matches both variables,
 add a negated `is` statement with these variables.
 
 .Negation example
@@ -72,20 +73,20 @@ $e;
 ----
 
 In our IAM database
-link:https://github.com/typedb/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-data-single-query.tql[sample dataset]
+link:https://github.com/vaticle/typedb-docs/blob/master/drivers-src/modules/ROOT/partials/tutorials/iam-data-single-query.tql[sample dataset]
 that query returns no results.
 
 == Learn more
 
 [cols-2]
 --
-.xref:{page-component-version}@typeql::statements/isa.adoc[]
+.xref:statements/isa.adoc[]
 [.clickable]
 ****
 Learn more about `isa` statement in TypeQL.
 ****
 
-.xref:{page-component-version}@typeql::concepts/data-instances.adoc[]
+.xref:concepts/data.adoc[]
 [.clickable]
 ****
 Learn about data instances in TypeQL.
