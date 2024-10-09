@@ -1,1 +1,84 @@
 = Annotations
+
+== Introduction
+
+== Cardinality constraints
+
+[cols-3]
+--
+.xref:{page-component-version}@typeql::annotations/card.adoc[]
+[.clickable]
+****
+Used to specify cardinality ranges for roles and ownerships.
+****
+
+.xref:{page-component-version}@typeql::annotations/cascade.adoc[]
+[.clickable]
+****
+Used to specify behaviour when deleting a relation's roleplayers.
+****
+
+.xref:{page-component-version}@typeql::annotations/independent.adoc[]
+[.clickable]
+****
+Used to prevent attributes without owners from being deleted automatically.
+****
+--
+
+== Modality constraints
+
+[cols-3]
+--
+.xref:{page-component-version}@typeql::annotations/abstract.adoc[]
+[.clickable]
+****
+Used to specify that a type or role is abstract.
+****
+
+.xref:{page-component-version}@typeql::annotations/key.adoc[]
+[.clickable]
+****
+Used to specify key attributes for entities and relations.
+****
+
+.xref:{page-component-version}@typeql::annotations/subkey.adoc[]
+[.clickable]
+****
+Used to specify composite keys built from multiple attributes.
+****
+
+.xref:{page-component-version}@typeql::annotations/unique.adoc[]
+[.clickable]
+****
+Used to specify unique attributes for entities and relations.
+****
+--
+
+== Value constraints
+
+[cols-3]
+--
+.xref:{page-component-version}@typeql::annotations/values.adoc[]
+[.clickable]
+****
+Used to specify a set of permitted values for attributes.
+****
+
+.xref:{page-component-version}@typeql::annotations/range.adoc[]
+[.clickable]
+****
+Used to specify a range of permitted values for attributes.
+****
+
+.xref:{page-component-version}@typeql::annotations/regex.adoc[]
+[.clickable]
+****
+Used to specify a regex pattern for permitted values of attributes.
+****
+
+.xref:{page-component-version}@typeql::annotations/distinct.adoc[]
+[.clickable]
+****
+Used to restrict an owned list of attributes to distinct values.
+****
+--

@@ -1,1 +1,241 @@
 = Documentation overview
+:keywords: typedb, typeql, clients, documentation, overview
+:pageTitle: Documentation overview
+:summary: A birds-eye view of all documentation for TypeDB, TypeQL, and TypeDB Clients
+// :page-preamble-card: 1
+
+== Getting started
+
+Deploy your TypeDB server, connect to it from a client or driver, and learn how to start building applications with TypeDB.
+
+[cols-2]
+--
+.xref:{page-component-version}@home::quickstart.adoc[]
+[.clickable]
+****
+Deploy TypeDB Cloud, connect to your deployment, and run your first queries.
+****
+
+.xref:{page-component-version}@home::crash-course.adoc[]
+[.clickable]
+****
+Explore the key ingredients of TypeDB with easy and intuitive examples.
+****
+--
+
+== TypeDB Academy
+
+TypeDB Academy is an end-to-end learning experience for TypeDB and TypeQL. Through the lens of a sample bookstore database, you'll learn how to read data, write data, and build schemas while taking advantage of TypeDB's unique features as a modern, type-safe, and highly expressive database.
+
+[cols-3]
+--
+.xref:{page-component-version}@academy::1-introduction/1-introduction.adoc[Fundamentals]
+[.clickable]
+****
+Take your first steps with TypeDB and its query language TypeQL.
+****
+
+.xref:{page-component-version}@academy::7-query-patterns/overview.adoc[Intermediate]
+[.clickable]
+****
+Gain an in-depth understanding of how TypeDB works as a database.
+****
+
+.xref:{page-component-version}@academy::10-data-modeling/overview.adoc[Advanced]
+[.clickable]
+****
+Learn advanced techniques for getting the most out of TypeDB.
+****
+--
+
+== TypeDB Manual
+
+Practice-oriented guides on using TypeDB, covering all aspects of the database lifecycle.
+
+[cols-2]
+--
+.xref:{page-component-version}@manual::install/overview.adoc[]
+[.clickable]
+****
+Installation guides for TypeDB Core, TypeDB Studio, TypeDB Console, and the TypeDB Drivers.
+****
+
+.xref:{page-component-version}@manual::setup/overview.adoc[]
+[.clickable]
+****
+Guides on starting, stopping, and configuring TypeDB Cloud and TypeDB Core deployments, and on setting up TypeDB Studio and TypeDB Console.
+****
+
+.xref:{page-component-version}@manual::connect/overview.adoc[]
+[.clickable]
+****
+Guides on connecting to TypeDB Cloud and TypeDB Core deployments using TypeDB Studio, TypeDB Console, and the TypeDB Drivers.
+****
+
+.xref:{page-component-version}@manual::databases/overview.adoc[]
+[.clickable]
+****
+Guides on creating and deleting databases using TypeDB Studio, TypeDB Console, and the TypeDB Drivers.
+****
+
+.xref:{page-component-version}@manual::queries/overview.adoc[]
+[.clickable]
+****
+Guides on controlling transactions, issuing queries, and processing responses using TypeDB Studio, TypeDB Console, and the TypeDB Drivers.
+****
+
+.xref:{page-component-version}@manual::schema/overview.adoc[]
+[.clickable]
+****
+Guides on defining different schema components, and on best data modeling practices.
+****
+
+.xref:{page-component-version}@manual::writing/overview.adoc[]
+[.clickable]
+****
+Guides on inserting, modifying, bulk-loading, and importing data.
+****
+
+.xref:{page-component-version}@manual::reading/overview.adoc[]
+[.clickable]
+****
+Guides on retrieving data, using functions, and building data pipelines.
+****
+
+.xref:{page-component-version}@manual::maintainance/overview.adoc[]
+[.clickable]
+****
+Guides on all aspects of database maintenance, including migrations, backups, upgrades, exports, and orchestration.
+****
+
+.xref:{page-component-version}@manual::users/overview.adoc[]
+[.clickable]
+****
+Guides on managing databases users and creating access policies with roles and permissions.
+****
+
+.xref:{page-component-version}@manual::troubleshooting/overview.adoc[]
+[.clickable]
+****
+Troubleshooting guides for common problems and pitfalls.
+****
+--
+
+[#_typedb_drivers]
+== TypeDB drivers
+
+Installation guides, tutorials, and API references for the official TypeDB drivers in all supported languages. See the xref:{page-component-version}@drivers::overview.adoc[drivers overview] page or select an environment below.
+
+[cols-3]
+--
+.image:{page-component-version}@home::rust.png[width=30] xref:{page-component-version}@drivers::rust/overview.adoc[Rust]
+[.clickable]
+****
+Add via cargo to use the Rust driver API.
+****
+
+.image:{page-component-version}@home::python.png[width=30] xref:{page-component-version}@drivers::python/overview.adoc[Python]
+[.clickable]
+****
+Install via pip to use the Python driver API.
+****
+
+.image:{page-component-version}@home::nodejs.png[width=30] xref:{page-component-version}@drivers::nodejs/overview.adoc[Node.js]
+[.clickable]
+****
+Install via NPM to use the Node.js driver API.
+****
+
+.image:{page-component-version}@home::java.png[width=30] xref:{page-component-version}@drivers::java/overview.adoc[Java]
+[.clickable]
+****
+Add via Maven to use the Java driver API.
+****
+
+[.clickable]
+.image:{page-component-version}@home::csharp.png[width=30] xref:{page-component-version}@drivers::csharp/overview.adoc[C#]
+****
+Install via NuGet to use the C# driver API.
+****
+
+.image:{page-component-version}@home::cpp.png[width=30] xref:{page-component-version}@drivers::cpp/overview.adoc[C++]
+[.clickable]
+****
+Import with a header file to use the C++ driver API.
+****
+
+[.clickable]
+.image:{page-component-version}@home::c.png[width=30] xref:{page-component-version}@drivers::c/overview.adoc[C]
+****
+Import with a header file to use the C driver API.
+****
+--
+
+[#_typeql]
+== TypeQL reference
+
+Complete language reference for TypeQL, covering all query types, pattern elements, and keywords.
+
+[cols-1]
+--
+.xref:{page-component-version}@typeql::introduction.adoc[]
+[.clickable]
+****
+High-level overview of the TypeQL query language and its features.
+****
+--
+
+[cols-3]
+--
+.xref:{page-component-version}@typeql::schema/overview.adoc[]
+[.clickable]
+****
+Reference for Define, Undefine, and Redefine queries for schema manipulation.
+****
+
+.xref:{page-component-version}@typeql::pipelines/overview.adoc[]
+[.clickable]
+****
+Reference for building data pipelines, including all read and write pipeline stages.
+****
+
+.xref:{page-component-version}@typeql::functions/overview.adoc[]
+[.clickable]
+****
+Reference for writing functions, including single-return and stream-return.
+****
+
+.xref:{page-component-version}@typeql::patterns/overview.adoc[]
+[.clickable]
+****
+Reference for query pattern construction using logical operations and optionals.
+****
+
+.xref:{page-component-version}@typeql::statements/overview.adoc[]
+[.clickable]
+****
+Reference for all individual TypeQL statements, covering schema and data.
+****
+
+.xref:{page-component-version}@typeql::annotations/overview.adoc[]
+[.clickable]
+****
+Reference for all annotations, used for modifying schema and pipeline behaviour.
+****
+
+.xref:{page-component-version}@typeql::values/overview.adoc[]
+[.clickable]
+****
+Reference for different value types and operations, including primitives, lists, and structs.
+****
+--
+
+[cols-1]
+--
+.xref:{page-component-version}@typeql::keywords.adoc[]
+[.clickable]
+****
+Glossary of TypeQL keywords and terminology.
+****
+--
+
