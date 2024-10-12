@@ -16,7 +16,7 @@ The `abstract` keyword doesn't use any object, so after the keyword always follo
 
 == Behavior
 
-TypeQL statements with the `abstract` keyword are used in Define queries to define (declare) that the type is abstract.
+TypeQL statements with the `abstract` keyword are used in xref:typeql::queries/define.adoc[] to define (declare) that the type is abstract.
 
 An abstract type can't be used to insert a data instance
 but can be used to create a subtype or to query (for its subtypes).
