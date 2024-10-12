@@ -18,7 +18,7 @@ The syntax of a `@key` statement includes:
 
 == Behavior
 
-TypeQL statements with the `@key` keyword can be used only in Define queries.
+TypeQL statements with the `@key` keyword can be used only in xref:typeql::queries/define.adoc[].
 
 The `@key` keyword adds a xref:typeql::statements/unique.adoc[unique annotation] constraint,
 as well as a cardinality constraint of exactly one.
