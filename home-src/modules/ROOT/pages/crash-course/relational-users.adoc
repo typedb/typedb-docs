@@ -139,7 +139,7 @@ Here we have introduced four new TypeQL keywords:
 
 * `relation`: The root type from which all relation types are subtyped.
 * `relates`: Used to define a *role* for a relation type. Relation types must have at least one role defined.
-* `plays`: Used to define a *roleplayer* for a relation type's role.
+* `plays`: Used to define a *roleplayer* for a relation type's role. The role is specified using both the relation type and the role name, separated by a `:` delimiter.
 * `regex`: Used to place a *xref:typeql::statements/regex.adoc[regex constraint]* on the value of a string attribute type.
 
 In TypeDB, relation types refer to roleplayers by references rather than values, so we do not need to specify an attribute to be used as the reference value: the role `buyer` directly references the entity type `user` rather than its attribute type `id`.
@@ -497,6 +497,11 @@ Here we have introduced two new TypeQL keywords:
 * `@unique`: Used in an `owns` statement to specify a *xref:typeql::statements/unique.adoc[unique attribute]* of an entity or relation type.
 
 This query defines a new type hierarchy of book types, described by an abstract type `book` with three subtypes: `paperback`, `hardback`, and `ebook`. The attribute type ownerships of `book` are automatically inherited by its subtypes. Meanwhile, ownership of `stock` is defined individually at the subtype level. This gives complete control over which data instances are permitted to own which attributes. This also applies to which data instances are permitted to play which roles via `plays` statements, which can likewise be defined at the supertype or subtypes levels.
+
+[NOTE]
+====
+Here, we have used the label `order` for one of the roles of `order-line`, despite previously having used the same label for the entity type `order`. This is permitted because the role is *scoped* by the relation type, in the same way that a column in a relational database can have the same name as another table. When referring to the role outside the scope of its definition, we must always use its fully-scoped label `order-line:order`, in the same way that we would use the fully-scoped term `order_line.order` in a SQL query.
+====
 
 Modeling this in a relational database would require us to adopt a specialized strategy to handle the inheritance hierarchy. In the SQL query below, we use a https://typedb.com/fundamentals/semantic-integrity-loss#pattern-3:-class-table-inheritance-4[class-table inheritance] design pattern.
 
