@@ -1,2 +1,13 @@
 = Limit stage
 :page-aliases: {page-component-version}@typeql::modifiers/pagination.adoc
+
+[,typeql]
+----
+match
+  $person isa person, has username "<username>";
+  (friend: $person, friend: $friend) isa friendship;
+  (friend: $friend, friend: $possible-friend) isa friendship;
+reduce $num-mutuals = count($friend) within $possible-friend;
+sort $num-mutuals;
+limit 10;
+----

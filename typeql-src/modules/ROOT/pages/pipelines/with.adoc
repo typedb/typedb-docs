@@ -1,1 +1,12 @@
 = With stage
+
+[,typeql]
+----
+with
+  fun num-friends($person: person) -> long:
+    (friend: $person, friend: $friend) isa friendship;
+  return count($friend);
+match
+  $person isa person, has name "<name>";
+  $num-friends = num-friends($person);
+----

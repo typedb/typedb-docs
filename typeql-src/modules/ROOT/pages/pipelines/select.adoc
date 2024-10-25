@@ -1,2 +1,17 @@
 = Select stage
 :page-aliases: {page-component-version}@typeql::queries/get.adoc
+
+== Draft example
+
+[,typeql]
+----
+match
+  $group isa group, has group-id "<group id>";
+  (group: $group, member: $member) isa group-membership;
+  try {
+    $other-group isa group;
+    not { $other-group is $group; };
+    (post: $post, author: $member, page: $other-group) isa posting;
+  };
+select $member, $other-group;
+----
