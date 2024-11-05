@@ -6,7 +6,7 @@
 :!table-caption:
 
 A `match` clause is used by all data queries to seek data and types in a TypeDB database based on a provided pattern.
-It can be used only as a part of a xref:queries/overview.adoc#_data_queries[data query]
+It can be used only as a part of a xref:queries/index.adoc#_data_queries[data query]
 with another clause to specify how to use the matched data.
 
 == Syntax
@@ -20,7 +20,7 @@ match <pattern>
 
 === Pattern composition
 
-A pattern consists of one or multiple xref:typeql::statements/overview.adoc[statements], combined by any combination of
+A pattern consists of one or multiple xref:typeql::statements/index.adoc[statements], combined by any combination of
 xref:typeql::patterns/conjunction.adoc[conjunctions],
 xref:typeql::patterns/disjunction.adoc[disjunctions],
 and xref:typeql::patterns/negation.adoc[negations].
@@ -74,7 +74,7 @@ $name == "Kevin Morrison";
 ----
 
 The above pattern consists of two simple statements that can be combined in a comma-separated
-xref:typeql::statements/overview.adoc#_composite_statements[composite statement] that produces the same effect.
+xref:typeql::statements/index.adoc#_composite_statements[composite statement] that produces the same effect.
 
 It may be easier to find a specific entity using its attributes, if there is the
 xref:typeql::statements/unique.adoc[unique] or xref:typeql::statements/key.adoc[key] annotation set in the schema.
@@ -155,13 +155,13 @@ See the table representation of the results below:
 
 [cols-2]
 --
-.xref:academy::7-understanding-query-patterns/overview.adoc[]
+.xref:academy::7-understanding-query-patterns/index.adoc[]
 [.clickable]
 ****
 Learn more about query patterns in TypeDB Academy.
 ****
 
-.xref:typeql::queries/overview.adoc[]
+.xref:typeql::queries/index.adoc[]
 [.clickable]
 ****
 TypeQL queries overview.

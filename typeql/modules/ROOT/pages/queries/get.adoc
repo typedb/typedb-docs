@@ -5,7 +5,7 @@
 :page-aliases: typeql::data/get.adoc
 
 A Get query retrieves concepts as stateful objects from a TypeDB database that you can further process with the
-xref:drivers::overview.adoc#_driver_api[driver API] methods.
+xref:drivers::index.adoc#_driver_api[driver API] methods.
 For a practical guide on how to send a Get query to TypeDB,
 see the xref:manual::reading/get.adoc[] page of the TypeDB Manual.
 For response processing examples, see the xref:manual::objects/data.adoc[data objects] and
@@ -28,7 +28,7 @@ get [<variable> [, <variable>]];
 [#_behavior]
 == Behavior
 
-A Get query retrieves xref:typeql::concepts/overview.adoc[concepts] from a database.
+A Get query retrieves xref:typeql::concepts/index.adoc[concepts] from a database.
 
 A `match` clause is used to match data by a pattern, while a `get` clause is used to filter the returned variables.
 
@@ -53,7 +53,7 @@ specified pattern.
 A `match` clause is mandatory in a Get query.
 
 For more information on patterns and statements used in a `match` clause, see the
-xref:typeql::patterns/overview.adoc[Patterns] and xref:typeql::statements/overview.adoc[Statements] sections.
+xref:typeql::patterns/index.adoc[Patterns] and xref:typeql::statements/index.adoc[Statements] sections.
 
 [#_get_clause]
 === Get clause
@@ -106,7 +106,7 @@ An empty `get` clause (`get;`) includes all variables, used in the preceding `ma
 // |===
 
 A Get query returns solutions matched by the `match` clause and filtered by the `get` clause,
-optionally processed by xref:typeql::modifiers/overview.adoc[modifiers].
+optionally processed by xref:typeql::modifiers/index.adoc[modifiers].
 A `get` clause returns exactly one ConceptMap for every solution matched by its preceding `match` clause.
 The results are in set semantics, meaning that there are no duplicates.
 
@@ -221,7 +221,7 @@ The results then will include pairs of `$p` and `$n`.
 
 === Using modifiers
 
-Applying xref:typeql::modifiers/overview.adoc[modifiers] can have a drastic effect on the format and number
+Applying xref:typeql::modifiers/index.adoc[modifiers] can have a drastic effect on the format and number
 of results returned by a Get query.
 See the <<_table_output_types,table above>> for output formats depending on the usage of
 xref:typeql::modifiers/grouping.adoc[grouping]
@@ -356,7 +356,7 @@ insert $p isa person, has name "Alice", has age 31, has certified-fortune-teller
 insert $p isa person;
 ----
 
-To insert this dataset with any xref:drivers::overview.adoc[other] client --
+To insert this dataset with any xref:drivers::index.adoc[other] client --
 make sure to send every line, except from comments, as a separate insert query.
 
 For more information on an Insert query, see the xref:typeql::queries/insert.adoc[] page.
@@ -387,7 +387,7 @@ the <<_answers_example2_dataset,dataset>> provided above into a TypeDB database 
 
 [cols-2]
 --
-.xref:academy::7-understanding-query-patterns/overview.adoc[]
+.xref:academy::7-understanding-query-patterns/index.adoc[]
 [.clickable]
 ****
 Learn more about query patterns in TypeDB Academy.

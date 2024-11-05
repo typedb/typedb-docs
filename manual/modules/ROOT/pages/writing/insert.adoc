@@ -14,7 +14,7 @@ For a detailed explanation of the query see the xref:typeql::queries/delete.adoc
 [#_how_to_send_an_insert_query]
 == Sending Insert queries
 
-Before you start, make sure you followed the instructions from the xref:manual::defining/overview.adoc[] section.
+Before you start, make sure you followed the instructions from the xref:manual::defining/index.adoc[] section.
 The easiest way to send an Insert query is to use Studio or Console:
 
 [tabs]
@@ -72,7 +72,7 @@ commit
 --
 ====
 
-To send an Insert query programmatically, use xref:drivers::overview.adoc[drivers]:
+To send an Insert query programmatically, use xref:drivers::index.adoc[drivers]:
 
 [tabs]
 ====
@@ -265,7 +265,7 @@ Both Studio and Console should produce similar results:
 ----
 
 To process the response of an Insert query programmatically,
-you need to collect the response and iterate through it with a xref:drivers::overview.adoc[TypeDB driver].
+you need to collect the response and iterate through it with a xref:drivers::index.adoc[TypeDB driver].
 The number of iterations is equal to the number of the `insert` clause executions and every iteration returns
 a ConceptMap object with inserted data.
 
@@ -457,7 +457,7 @@ Learn more about Insert queries in TypeQL: syntax, behavior, and query examples.
 Learn how to delete data from a database.
 ****
 
-.xref:academy::4-writing-data/overview.adoc[]
+.xref:academy::4-writing-data/index.adoc[]
 [.clickable]
 ****
 Check out the Writing data section of TypeDB Academy.

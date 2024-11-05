@@ -28,7 +28,7 @@ xref:typeql::statements/has.adoc[],
 xref:typeql::statements/role-assignment.adoc[role assignment], and xref:typeql::statements/value-assignment.adoc[value assignment]. 
 
 The _optional_ `match` clause `<pattern>` can be any valid match pattern: for more information, see the
-xref:typeql::patterns/overview.adoc[Patterns] and xref:typeql::statements/overview.adoc[Statements] sections.
+xref:typeql::patterns/index.adoc[Patterns] and xref:typeql::statements/index.adoc[Statements] sections.
 
 [#_behavior]
 == Behavior
@@ -106,7 +106,7 @@ To insert an entity, use a concept variable followed by an xref:typeql::statemen
 statement with the entity's type (label or variable).
 The `isa` is usually combined with statements to assign attribute ownerships or roles in relations.
 You can use the same concept variable in multiple statements to insert more about the entity
-or combine statements into a xref:typeql::statements/overview.adoc#_composite_statements[composite statement].
+or combine statements into a xref:typeql::statements/index.adoc#_composite_statements[composite statement].
 
 [NOTE]
 ====

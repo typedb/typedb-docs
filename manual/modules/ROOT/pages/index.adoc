@@ -28,14 +28,14 @@ A powerful CLI client for TypeDB.
 ////
 [cols-1]
 --
-.xref:drivers::overview.adoc[Drivers]
+.xref:drivers::index.adoc[Drivers]
 [.clickable]
 ****
-xref:drivers::rust/overview.adoc[Rust] |
-xref:drivers::python/overview.adoc[Python] |
-xref:drivers::java/overview.adoc[Java] |
-xref:drivers::nodejs/overview.adoc[Node.js] |
-xref:drivers::cpp/overview.adoc[C++]
+xref:drivers::rust/index.adoc[Rust] |
+xref:drivers::python/index.adoc[Python] |
+xref:drivers::java/index.adoc[Java] |
+xref:drivers::nodejs/index.adoc[Node.js] |
+xref:drivers::cpp/index.adoc[C++]
 ****
 --
 ////
@@ -46,7 +46,7 @@ Learn how to perform common tasks with TypeDB.
 
 [cols-2]
 --
-.xref:manual::connecting/overview.adoc[]
+.xref:manual::connecting/index.adoc[]
 [.clickable]
 ****
 Connect to a TypeDB server and create a new database.
@@ -57,7 +57,7 @@ Connect to a TypeDB server and create a new database.
 // * xref:manual::connecting/transaction.adoc[]
 ****
 
-.xref:manual::defining/overview.adoc[]
+.xref:manual::defining/index.adoc[]
 [.clickable]
 ****
 Set and modify the schema of a database with a TypeQL query or driver API call.
@@ -66,7 +66,7 @@ Set and modify the schema of a database with a TypeQL query or driver API call.
 // * xref:manual::defining/schema-editing.adoc[]
 ****
 
-.xref:manual::writing/overview.adoc[]
+.xref:manual::writing/index.adoc[]
 [.clickable]
 ****
 Insert, delete, or update (replace) data in a TypeDB database with TypeQL queries.
@@ -75,7 +75,7 @@ Insert, delete, or update (replace) data in a TypeDB database with TypeQL querie
 // * xref:manual::writing/update.adoc[]
 ****
 
-.xref:manual::reading/overview.adoc[]
+.xref:manual::reading/index.adoc[]
 [.clickable]
 ****
 Retrieve data as JSONs or stateful objects with TypeQL queries.
@@ -87,11 +87,11 @@ Retrieve data as JSONs or stateful objects with TypeQL queries.
 
 == Using drivers
 
-TypeDB Drivers can be used to query TypeDB directly from within your application. For the TypeDB drivers documentation, see the xref:drivers::overview.adoc[Drivers] category.
+TypeDB Drivers can be used to query TypeDB directly from within your application. For the TypeDB drivers documentation, see the xref:drivers::index.adoc[Drivers] category.
 
 [cols-2]
 --
-.xref:manual::objects/overview.adoc[]
+.xref:manual::objects/index.adoc[]
 [.clickable]
 ****
 Use stateful objects to alter data and schema, as well as explain inferred data.
@@ -100,7 +100,7 @@ Use stateful objects to alter data and schema, as well as explain inferred data.
 // * xref:manual::objects/explanation.adoc[]
 ****
 
-.xref:manual::bulk-loading/overview.adoc[]
+.xref:manual::bulk-loading/index.adoc[]
 [.clickable]
 ****
 Best practices for bulk-loading data, during prototyping or migrations.

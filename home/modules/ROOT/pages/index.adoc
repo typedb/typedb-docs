@@ -1,7 +1,7 @@
 = TypeDB Documentation
 :keywords: typedb, typeql, clients, documentation, overview
 :pageTitle: TypeDB Documentation
-:page-aliases: typedb::overview.adoc
+:page-aliases: typedb::index.adoc
 :summary: A birds-eye view of all documentation for TypeDB, TypeQL, and TypeDB Clients
 // :page-preamble-card: 1
 
@@ -20,7 +20,7 @@ We’re aiming to release 3.0 in the autumn this year, along with preliminary be
 
 == The future of databases
 
-include::academy::1-introduction-to-typedb/1-introduction-to-typedb.adoc[tag=introductory-statement]
+include::academy::1-introduction-to-typedb/index.adoc[tag=introductory-statement]
 
 == Getting started
 
@@ -28,7 +28,7 @@ Deploy your TypeDB server, connect to it from a client or driver, and learn how 
 
 [cols-3]
 --
-.xref:home::install/overview.adoc[]
+.xref:home::install/index.adoc[]
 [.clickable]
 ****
 Set up a TypeDB Cloud or Core deployment, clients, and language drivers.
@@ -53,19 +53,19 @@ TypeDB Academy is an end-to-end learning experience for TypeDB and TypeQL. Throu
 
 [cols-3]
 --
-.xref:academy::1-introduction-to-typedb/1-introduction-to-typedb.adoc[Beginner]
+.xref:academy::1-introduction-to-typedb/index.adoc[Beginner]
 [.clickable]
 ****
 Take your first steps with TypeDB and its query language TypeQL.
 ****
 
-.xref:academy::7-understanding-query-patterns/overview.adoc[Intermediate]
+.xref:academy::7-understanding-query-patterns/index.adoc[Intermediate]
 [.clickable]
 ****
 Gain an in-depth understanding of how TypeDB works as a database.
 ****
 
-.xref:academy::11-manipulating-stateful-objects/overview.adoc[Advanced]
+.xref:academy::11-manipulating-stateful-objects/index.adoc[Advanced]
 [.clickable]
 ****
 Learn advanced techniques for getting the most out of TypeDB.
@@ -92,37 +92,37 @@ How to set up TypeDB Studio, connect to your deployments, run queries, control t
 How to set up TypeDB Console, connect to your deployments, issue commands in interactive and non-interactive modes, and run scripts.
 ****
 
-.xref:manual::connecting/overview.adoc[]
+.xref:manual::connecting/index.adoc[]
 [.clickable]
 ****
 How to connect to your deployments, manage databases, open sessions, and control transactions with TypeDB Studio, Console, and drivers.
 ****
 
-.xref:manual::defining/overview.adoc[]
+.xref:manual::defining/index.adoc[]
 [.clickable]
 ****
 How to create a database schema with Define and Undefine queries, with Studio's graphical interface, and with programmatic API calls.
 ****
 
-.xref:manual::writing/overview.adoc[]
+.xref:manual::writing/index.adoc[]
 [.clickable]
 ****
 How to write data to a database with Insert, Delete, and Update queries.
 ****
 
-.xref:manual::reading/overview.adoc[]
+.xref:manual::reading/index.adoc[]
 [.clickable]
 ****
 How to read data from a database with Fetch and Get queries, and use rule-based inference.
 ****
 
-.xref:manual::objects/overview.adoc[]
+.xref:manual::objects/index.adoc[]
 [.clickable]
 ****
 How to use the driver APIs and to retrieve and manipulate schema types and data instances as stateful objects, and explain the results of rule inference.
 ****
 
-.xref:manual::configuring/overview.adoc[]
+.xref:manual::configuring/index.adoc[]
 [.clickable]
 ****
 How to configure and maintain TypeDB servers: the config file, CLI arguments, logs, database import and export, version upgrades, and user management.
@@ -132,48 +132,48 @@ How to configure and maintain TypeDB servers: the config file, CLI arguments, lo
 [#_typedb_drivers]
 == TypeDB drivers
 
-Installation guides, tutorials, and API references for the official TypeDB drivers in all supported languages. See the xref:drivers::overview.adoc[drivers overview] page or select an environment below.
+Installation guides, tutorials, and API references for the official TypeDB drivers in all supported languages. See the xref:drivers::index.adoc[drivers overview] page or select an environment below.
 
 [cols-3]
 --
-.image:home::rust.png[width=30] xref:drivers::rust/overview.adoc[Rust]
+.image:home::rust.png[width=30] xref:drivers::rust/index.adoc[Rust]
 [.clickable]
 ****
 Add via cargo to use the Rust driver API.
 ****
 
-.image:home::python.png[width=30] xref:drivers::python/overview.adoc[Python]
+.image:home::python.png[width=30] xref:drivers::python/index.adoc[Python]
 [.clickable]
 ****
 Install via pip to use the Python driver API.
 ****
 
-.image:home::nodejs.png[width=30] xref:drivers::nodejs/overview.adoc[Node.js]
+.image:home::nodejs.png[width=30] xref:drivers::nodejs/index.adoc[Node.js]
 [.clickable]
 ****
 Install via NPM to use the Node.js driver API.
 ****
 
-.image:home::java.png[width=30] xref:drivers::java/overview.adoc[Java]
+.image:home::java.png[width=30] xref:drivers::java/index.adoc[Java]
 [.clickable]
 ****
 Add to a Maven project to use the Java driver API.
 ****
 
 [.clickable]
-.image:home::csharp.png[width=30] xref:drivers::csharp/overview.adoc[C#]
+.image:home::csharp.png[width=30] xref:drivers::csharp/index.adoc[C#]
 ****
 Install via NuGet to use the C# driver API.
 ****
 
-.image:home::cpp.png[width=30] xref:drivers::cpp/overview.adoc[C++]
+.image:home::cpp.png[width=30] xref:drivers::cpp/index.adoc[C++]
 [.clickable]
 ****
 Import as a library with a header file to use the C++ driver API.
 ****
 
 [.clickable]
-.image:home::c.png[width=30] xref:drivers::c/overview.adoc[C]
+.image:home::c.png[width=30] xref:drivers::c/index.adoc[C]
 ****
 Import as a library with a header file to use the C driver API.
 ****
@@ -198,37 +198,37 @@ A high-level description of the TypeQL query language and its features.
 
 [cols-3]
 --
-.xref:typeql::queries/overview.adoc[Queries]
+.xref:typeql::queries/index.adoc[Queries]
 [.clickable]
 ****
 Breakdown of the different query types in TypeQL.
 ****
 
-.xref:typeql::patterns/overview.adoc[Patterns]
+.xref:typeql::patterns/index.adoc[Patterns]
 [.clickable]
 ****
 Breakdown of patterns for building queries.
 ****
 
-.xref:typeql::statements/overview.adoc[Statements]
+.xref:typeql::statements/index.adoc[Statements]
 [.clickable]
 ****
 Breakdown of individual TypeQL statements.
 ****
 
-.xref:typeql::modifiers/overview.adoc[Modifiers]
+.xref:typeql::modifiers/index.adoc[Modifiers]
 [.clickable]
 ****
 Breakdown of modifiers for structuring query results.
 ****
 
-.xref:typeql::concepts/overview.adoc[Concepts]
+.xref:typeql::concepts/index.adoc[Concepts]
 [.clickable]
 ****
 Breakdown of different concepts manipulated with queries.
 ****
 
-.xref:typeql::values/overview.adoc[Values]
+.xref:typeql::values/index.adoc[Values]
 [.clickable]
 ****
 Breakdown of values and value operations used in queries.

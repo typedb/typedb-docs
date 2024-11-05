@@ -24,9 +24,9 @@ TypeQL statements with the `sub` keyword can be used in any kind of query.
 
 The `sub` keyword adds a constraint for subject to be a type that is a subtype of the object:
 
-* In xref:typeql::queries/overview.adoc#_schema_queries[schema queries] --
+* In xref:typeql::queries/index.adoc#_schema_queries[schema queries] --
 the `sub` and `sub!` keywords don't have any difference.
-* In xref:typeql::queries/overview.adoc#_data_queries[data queries] --
+* In xref:typeql::queries/index.adoc#_data_queries[data queries] --
 the `sub` and `sub!` keywords are used to match either all existing subtypes or only direct subtypes
 of a given type respectively.
 
