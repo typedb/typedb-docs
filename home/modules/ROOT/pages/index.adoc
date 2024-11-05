@@ -13,9 +13,14 @@ https://typedb.com/blog/typedb-3-roadmap[TypeDB 3.0] is coming soon, written in 
 // end::rust-rewrite[]
 
 
-== The future of databases
+Programming languages have evolved rapidly, but database models have failed to keep up. Modern applications use complex layered architectures to manage data as a result. TypeDB resolves this with a completely new, highly expressive database paradigm.
 
-include::academy::1-introduction-to-typedb/index.adoc[tag=introductory-statement]
+== Why choose TypeDB?
+
+- xref:typeql::concepts/types.adoc[Type hierarchy]: TypeDB models are described by types, defined in a schema as templates for data instances, analogous to classes.
+- https://typedb.com/features#modern-language[Near-natural language]: TypeQL reads close to natural language. Domain experts and non-technical users alike can quickly grasp the intent of a query.
+- xref:manual::transactions.adoc[ACID compliance]: TypeDB provides robust data integrity guarantees. Transactions are atomic, consistent, isolated, and durable.
+- https://cloud.typedb.com[Fully-managed cloud deployment]: TypeDB Cloud allows you to scale and manage databases easily, without needing to worry about infrastructure.
 
 == Getting started
 
@@ -35,7 +40,7 @@ Set up a TypeDB Cloud or Core deployment, clients, and language drivers.
 Connect to your TypeDB deployment and run your first queries.
 ****
 
-.xref:home::crash-course.adoc[]
+.xref:home::crash-course/index.adoc[]
 [.clickable]
 ****
 Explore the key ingredients of TypeDB with easy and intuitive examples.

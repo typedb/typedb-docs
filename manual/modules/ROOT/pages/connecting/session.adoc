@@ -258,7 +258,7 @@ it forcibly closes the session due to inactivity.
 Only one *Schema session* can be open at any time.
 An open Schema session *blocks* all attempt to open a `write` transaction in any `data` session.
 For more information on these limitations, see the
-xref:home::acid.adoc#_schema_integrity[Schema integrity enforcement] section on the xref:home::acid.adoc[] page.
+xref:transactions.adoc#_schema_integrity[Schema integrity enforcement] section on the xref:transactions.adoc[] page.
 
 == Learn more
 
