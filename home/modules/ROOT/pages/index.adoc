@@ -3,243 +3,83 @@
 :pageTitle: TypeDB Documentation
 :page-aliases: typedb::index.adoc
 :summary: A birds-eye view of all documentation for TypeDB, TypeQL, and TypeDB Clients
+:page-role: -toc
 // :page-preamble-card: 1
 
 // tag::rust-rewrite[]
 [NOTE]
 ====
-https://typedb.com/blog/typedb-3-roadmap[TypeDB 3.0] is coming soon, written in Rust! Get updates in our https://typedb.com?dialog=newsletter[newsletter,window=_blank] or our Discord https://typedb.com/discord[chat server,window=_blank].
+https://typedb.com/blog/typedb-3-roadmap[TypeDB 3.0] is coming soon, written in Rust! Get updates in our https://typedb.com?dialog=newsletter[newsletter,window=_blank] or https://typedb.com/discord[Discord chat server,window=_blank].
 ====
 // end::rust-rewrite[]
 
+Here you'll find ways to get started, understand core concepts, and explore a variety of resources to help you get the most from TypeDB. We recommend joining our https://typedb.com/discord[Discord chat server] for help along the way.
+// Programming languages have evolved rapidly, but database models have failed to keep up. Modern applications use complex layered architectures to manage data as a result. TypeDB resolves this with a completely new, highly expressive database paradigm.
+//
+// == Why choose TypeDB?
+//
+// - xref:typeql::concepts/types.adoc[Type hierarchy]: TypeDB models are described by types, defined in a schema as templates for data instances, analogous to classes.
+// - https://typedb.com/features#modern-language[Near-natural language]: TypeQL reads close to natural language. Domain experts and non-technical users alike can quickly grasp the intent of a query.
+// - https://typedb.com/fundamentals/functions-3-0[Functional database programming]: TypeDB 3.0 provides functions for modular database programming, enabling powerful abstractions of query logic.
+// - xref:manual::transactions.adoc[ACID-compliant transactions]: TypeDB provides robust data integrity guarantees. Transactions are atomic, consistent, isolated, and durable.
+// - https://cloud.typedb.com[Fully-managed cloud deployment]: TypeDB Cloud allows you to scale and manage databases easily, without needing to worry about infrastructure.
 
-Programming languages have evolved rapidly, but database models have failed to keep up. Modern applications use complex layered architectures to manage data as a result. TypeDB resolves this with a completely new, highly expressive database paradigm.
+[.link-panel.clickable]
+--
+image::home::python.png[Python,72,72]
 
-== Why choose TypeDB?
+xref:home::get-started.adoc[Get Started →]
 
-- xref:typeql::concepts/types.adoc[Type hierarchy]: TypeDB models are described by types, defined in a schema as templates for data instances, analogous to classes.
-- https://typedb.com/features#modern-language[Near-natural language]: TypeQL reads close to natural language. Domain experts and non-technical users alike can quickly grasp the intent of a query.
-- xref:manual::transactions.adoc[ACID compliance]: TypeDB provides robust data integrity guarantees. Transactions are atomic, consistent, isolated, and durable.
-- https://cloud.typedb.com[Fully-managed cloud deployment]: TypeDB Cloud allows you to scale and manage databases easily, without needing to worry about infrastructure.
+Just getting started with TypeDB? Your journey begins here.
+--
 
-== Getting started
+[.link-panel.clickable]
+--
+image::home::java.png[Java,72,72]
 
-Deploy your TypeDB server, connect to it from a client or driver, and learn how to start building applications with TypeDB.
+xref:manual::index.adoc[Database Manual →]
+
+Learn core TypeDB concepts, including connecting, loading data, configuration and more.
+--
+
+[.link-panel.clickable]
+--
+image::home::nodejs.png[NodeJS,72,72]
+
+xref:drivers::index.adoc[Client Drivers →]
+
+Installation guides and API reference for TypeDB's official client drivers.
+--
+
+[.link-panel.clickable]
+--
+image::home::rust.png[Rust,72,72]
+
+xref:typeql::index.adoc[TypeQL Reference →]
+
+Reference documentation containing the details of TypeQL, the query language of TypeDB.
+--
+
+
+== Further learning
 
 [cols-3]
 --
-.xref:home::install/index.adoc[]
+.xref:academy::index.adoc[TypeDB Academy]
 [.clickable]
 ****
-Set up a TypeDB Cloud or Core deployment, clients, and language drivers.
+The comprehensive TypeDB learning experience.
 ****
 
-.xref:home::quickstart.adoc[]
+.https://typedb.com/philosophy[Why use TypeDB?]
 [.clickable]
 ****
-Connect to your TypeDB deployment and run your first queries.
+This article explains the motive behind the technology.
 ****
 
-.xref:home::crash-course/index.adoc[]
+.https://typedb.com/discord[Chat Server]
 [.clickable]
 ****
-Explore the key ingredients of TypeDB with easy and intuitive examples.
-****
---
-
-== TypeDB Academy
-
-TypeDB Academy is an end-to-end learning experience for TypeDB and TypeQL. Through the lens of a sample bookstore database, you'll learn how to read data, write data, and build schemas while taking advantage of TypeDB's unique features as a modern, type-safe, and highly expressive database.
-
-[cols-3]
---
-.xref:academy::1-introduction-to-typedb/index.adoc[Beginner]
-[.clickable]
-****
-Take your first steps with TypeDB and its query language TypeQL.
-****
-
-.xref:academy::7-understanding-query-patterns/index.adoc[Intermediate]
-[.clickable]
-****
-Gain an in-depth understanding of how TypeDB works as a database.
-****
-
-.xref:academy::11-manipulating-stateful-objects/index.adoc[Advanced]
-[.clickable]
-****
-Learn advanced techniques for getting the most out of TypeDB.
-****
---
-
-
-
-== TypeDB Manual
-
-Practice-oriented guides on using TypeDB, including the TypeDB Studio and TypeDB Console manuals.
-
-[cols-2]
---
-.xref:manual::studio.adoc[]
-[.clickable]
-****
-How to set up TypeDB Studio, connect to your deployments, run queries, control transactions, modify your schema, and visualize your results.
-****
-
-.xref:manual::console.adoc[]
-[.clickable]
-****
-How to set up TypeDB Console, connect to your deployments, issue commands in interactive and non-interactive modes, and run scripts.
-****
-
-.xref:manual::connecting/index.adoc[]
-[.clickable]
-****
-How to connect to your deployments, manage databases, open sessions, and control transactions with TypeDB Studio, Console, and drivers.
-****
-
-.xref:manual::defining/index.adoc[]
-[.clickable]
-****
-How to create a database schema with Define and Undefine queries, with Studio's graphical interface, and with programmatic API calls.
-****
-
-.xref:manual::writing/index.adoc[]
-[.clickable]
-****
-How to write data to a database with Insert, Delete, and Update queries.
-****
-
-.xref:manual::reading/index.adoc[]
-[.clickable]
-****
-How to read data from a database with Fetch and Get queries, and use rule-based inference.
-****
-
-.xref:manual::objects/index.adoc[]
-[.clickable]
-****
-How to use the driver APIs and to retrieve and manipulate schema types and data instances as stateful objects, and explain the results of rule inference.
-****
-
-.xref:manual::configuring/index.adoc[]
-[.clickable]
-****
-How to configure and maintain TypeDB servers: the config file, CLI arguments, logs, database import and export, version upgrades, and user management.
-****
---
-
-[#_typedb_drivers]
-== TypeDB drivers
-
-Installation guides, tutorials, and API references for the official TypeDB drivers in all supported languages. See the xref:drivers::index.adoc[drivers overview] page or select an environment below.
-
-[cols-3]
---
-.image:home::rust.png[width=30] xref:drivers::rust/index.adoc[Rust]
-[.clickable]
-****
-Add via cargo to use the Rust driver API.
-****
-
-.image:home::python.png[width=30] xref:drivers::python/index.adoc[Python]
-[.clickable]
-****
-Install via pip to use the Python driver API.
-****
-
-.image:home::nodejs.png[width=30] xref:drivers::nodejs/index.adoc[Node.js]
-[.clickable]
-****
-Install via NPM to use the Node.js driver API.
-****
-
-.image:home::java.png[width=30] xref:drivers::java/index.adoc[Java]
-[.clickable]
-****
-Add to a Maven project to use the Java driver API.
-****
-
-[.clickable]
-.image:home::csharp.png[width=30] xref:drivers::csharp/index.adoc[C#]
-****
-Install via NuGet to use the C# driver API.
-****
-
-.image:home::cpp.png[width=30] xref:drivers::cpp/index.adoc[C++]
-[.clickable]
-****
-Import as a library with a header file to use the C++ driver API.
-****
-
-[.clickable]
-.image:home::c.png[width=30] xref:drivers::c/index.adoc[C]
-****
-Import as a library with a header file to use the C driver API.
-****
---
-
-//* xref:drivers::other-languages.adoc[].
-//* xref:drivers::new-driver.adoc[]
-
-[#_typeql]
-== TypeQL reference
-
-Complete language reference for TypeQL, covering all query types, pattern elements, and keywords.
-
-[cols-1]
---
-.xref:typeql::introduction.adoc[]
-[.clickable]
-****
-A high-level description of the TypeQL query language and its features.
-****
---
-
-[cols-3]
---
-.xref:typeql::queries/index.adoc[Queries]
-[.clickable]
-****
-Breakdown of the different query types in TypeQL.
-****
-
-.xref:typeql::patterns/index.adoc[Patterns]
-[.clickable]
-****
-Breakdown of patterns for building queries.
-****
-
-.xref:typeql::statements/index.adoc[Statements]
-[.clickable]
-****
-Breakdown of individual TypeQL statements.
-****
-
-.xref:typeql::modifiers/index.adoc[Modifiers]
-[.clickable]
-****
-Breakdown of modifiers for structuring query results.
-****
-
-.xref:typeql::concepts/index.adoc[Concepts]
-[.clickable]
-****
-Breakdown of different concepts manipulated with queries.
-****
-
-.xref:typeql::values/index.adoc[Values]
-[.clickable]
-****
-Breakdown of values and value operations used in queries.
-****
---
-
-[cols-1]
---
-.xref:typeql::keywords.adoc[]
-[.clickable]
-****
-Glossary of TypeQL keywords and terminology.
+Join our vibrant TypeDB community on Discord. New faces are always welcome!
 ****
 --

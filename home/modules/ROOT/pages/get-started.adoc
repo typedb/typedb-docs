@@ -2,11 +2,65 @@
 :keywords: typedb, typeql, clients, documentation, overview
 :pageTitle: Get started
 :summary: Getting started with TypeDB
+:page-role: -toc
 // :page-preamble-card: 1
 
 // tag::rust-rewrite[]
 [NOTE]
 ====
-https://typedb.com/blog/typedb-3-roadmap[TypeDB 3.0] is coming soon, written in Rust! Get updates in our https://typedb.com?dialog=newsletter[newsletter,window=_blank] or our Discord https://typedb.com/discord[chat server,window=_blank].
+https://typedb.com/blog/typedb-3-roadmap[TypeDB 3.0] is coming soon, written in Rust! Get updates in our https://typedb.com?dialog=newsletter[newsletter,window=_blank] or Discord https://typedb.com/discord[chat server,window=_blank].
 ====
 // end::rust-rewrite[]
+
+Here you'll find ways to get started, understand core concepts, and explore a variety of resources to help you get the most from TypeDB. We recommend joining our https://typedb.com/discord[Discord chat server] for help along the way.
+
+[.link-panel.clickable]
+--
+image::home::java.png[Java,72,72]
+
+xref:home::install.adoc[Install →]
+
+Install clients and language drivers to communicate with TypeDB.
+--
+
+[.link-panel.clickable]
+--
+image::home::nodejs.png[NodeJS,72,72]
+
+xref:home::quickstart.adoc[Quickstart →]
+
+In 5 minutes, set up TypeDB and begin querying it.
+--
+
+[.link-panel.clickable]
+--
+image::home::rust.png[Rust,72,72]
+
+xref:home::crash-course/index.adoc[Crash Course →]
+
+Explore the key ingredients of TypeDB and conjure fireballs.
+--
+
+
+== Compare databases
+
+[cols-3]
+--
+.https://example.com[Relational]
+[.clickable]
+****
+A TypeDB learning experience tailored for an SQL background.
+****
+
+.https://example.com[Document]
+[.clickable]
+****
+A detailed comparison between TypeDB and document stores.
+****
+
+.https://example.com[Graph]
+[.clickable]
+****
+An in-depth guide about how TypeDB compares to graph databases.
+****
+--

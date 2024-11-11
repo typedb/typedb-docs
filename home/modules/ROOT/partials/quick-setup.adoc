@@ -1,34 +1,14 @@
 :tabs-sync-option:
 :experimental:
 
-== Run TypeDB
+Log in to https://cloud.typedb.com/[TypeDB Cloud,window=_blank] and create a new deployment on the Clusters page.
 
-To start TypeDB, select the TypeDB edition below and follow the instructions.
+For self-hosted TypeDB installation and setup, see the xref:manual::self-managed/index.adoc[Self-hosted deployment] page.
 
-[tabs]
-====
-Cloud::
-+
---
-Log in to https://cloud.typedb.com/[TypeDB Cloud,window=_blank] and create a new deployment on the Deployments page.
-
-For self-hosted TypeDB Cloud installation and setup, see the xref:install/cloud-self-hosted.adoc[Self-hosted deployment] page.
---
-
-Core::
-+
---
-Ensure TypeDB Core is xref:home::install/core.adoc[installed].
-
-include::home::install/core.adoc[tag=core-run]
-
-include::home::partial$docker.adoc[tags=run]
---
-====
 
 == Connect to TypeDB
 
-In this guide, we will use *TypeDB Studio*, the standalone GUI-based client for TypeDB. Ensure Studio is xref:home::install/studio.adoc[installed], then launch the application.
+In this guide, we will use *TypeDB Studio*, the standalone GUI-based client for TypeDB. Ensure Studio is xref:home::install.adoc#_studio[installed], then launch the application.
 
 include::manual::studio.adoc[tag=connect_studio]
 
