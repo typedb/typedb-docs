@@ -7,45 +7,13 @@ This crash course pathway is designed to give a concise overview of the main asp
 If you would like to follow along with the examples in this crash course, make sure you have completed the xref:home::crash-course/index.adoc[environment setup].
 ====
 
-== Introduction to databases
+== Introduction to TypeDB
 
-A database is a system for storing data in an organised format, and making that data available for retrieval. A database is used to store data for a specific purpose, known as a *data domain*. Some examples are:
+In TypeDB, data is stored as *entities* in the data domain, as *relations* between entities, and as *attributes* of entities and relations. It shares many properties with relational, document, and graph DBMSs, but also has a number of distinctions and unique features.
 
-* A bookstore database, containing data on books, customers, and orders.
-* A university database, containing data on students, classes, and grades.
-* An airline database, containing data on aircraft, flights, and cargo.
+=== Query language
 
-Databases are designed to meet a number of organisational goals:
-
-* To provide a centralised store that acts as a source-of-truth for the data.
-* To enable concurrent access to data by multiple parties across the organisation.
-* To enforce that the data is not corrupted and conforms to the correct business logic.
-* To securely regulate access to different categories of data to different users.
-
-=== Database management systems
-
-The software a database runs on is called a *database management system* (DBMS). Sometimes, the term "database" is used to refer to the DBMS rather than an individual database. A single DBMS is capable of hosting multiple individual databases. DBMSs are typically categorised by the data storage format. Some common categories include:
-
-* https://en.wikipedia.org/wiki/Relational_database[Relational databases,window=_blank], which store data as rows in tables.
-* https://en.wikipedia.org/wiki/Document-oriented_database[Document databases,window=_blank], which store data as documents in collections.
-* https://en.wikipedia.org/wiki/Graph_database[Graph databases,window=_blank], which store data as vertices and edges in a graph.
-
-TypeDB is a DBMS, but it does not fall into any of these categories. In TypeDB, data is stored as *entities* in the data domain, as *relations* between entities, and as *attributes* of entities and relations. It shares many properties with relational, document, and graph DBMSs, but also has a number of distinctions and unique features.
-
-=== Database operations
-
-There are four kinds of data operations that can be used to manipulate data in a database:
-
-* Create operation -- the insertion of new data into the database.
-* Read operation -- the retrieval of data from the database.
-* Update operation -- the modification of existing data in the database.
-* Delete operation -- the removal of data from the database.
-
-Together, these are known as the *CRUD operations*, by their initials.
-
-=== Query languages
-
-An instruction sent to a database to perform a CRUD operation is known as a *query*. In the same way that programs are written using a programming language, queries are written in a *query language*. Each database uses a specific query language, the most common of which is SQL. The query language of TypeDB is *TypeQL*. The following is an example of a TypeQL query for a bookstore database, which retrieves the title and page count of a specific paperback book, identified by its ISBN-13.
+The query language of TypeDB is *TypeQL*. The following is an example of a TypeQL query for a bookstore database, which retrieves the title and page count of a specific paperback book, identified by its ISBN-13.
 
 [,typeql]
 ----
@@ -55,13 +23,9 @@ fetch
   $book: title, page-count;
 ----
 
-Queries are categorised by the type of CRUD operation they perform. The above is an example of a TypeQL *Fetch query*, which is used to perform a read operation in TypeDB.
+=== Schema
 
-=== Database schemas
-
-Many databases, including TypeDB, require users to specify permitted data structures before data can be inserted into them, similar to defining classes before instantiating them in object-oriented programming (OOP). This comes with a number of benefits, including data integrity guarantees and more powerful querying capabilities. The data structure specifications are known collectively as a *schema*.
-
-In databases with a schema, the query language comprises two parts: the *data definition language* (DDL), which is used to define a schema, and the *data manipulation language* (DML), which is used to perform CRUD operations on data.
+TypeDB requires users to specify a schema before data can be inserted, similar to defining classes before instantiating them in object-oriented programming (OOP). This comes with a number of benefits, including data integrity guarantees and more powerful querying capabilities.
 
 == Entities, relations, and attributes
 

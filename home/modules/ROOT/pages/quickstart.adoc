@@ -1,159 +1,83 @@
 = Quickstart
 :keywords: start, learn, typedb, typeql, tutorial, quickstart, console, studio, database, create, insert, query
-:page-aliases: typedb::quickstart-guide.adoc, typedb::quickstart.adoc
 :pageTitle: Quickstart guide
 :summary: Learn how to create a TypeDB database, load schema and data, perform queries.
 :tabs-sync-option:
 :experimental:
 
-This Quickstart guide shows how to set up a TypeDB database and run queries using xref:manual::studio.adoc[TypeDB Studio]. The guide is available in both video and text formats.
+This page shows you how to set up TypeDB and use sample code to run your first queries.
 
-video::UQbdl35ymOg[youtube,role=framed]
+// video::UQbdl35ymOg[youtube,role=framed]
 
-include::partial$quick-setup.adoc[]
+[#_create_free_cluster]
+== Create a free cluster
 
-[#_define_a_schema]
-== Define a schema
+. https://cloud.typedb.com[Create a TypeDB Cloud account]. Your first cluster is free.
+. On the *Clusters* dashboard, click *Create cluster*.
+. Configure your cluster, then click *Deploy*.
 
-A new database needs a schema before we can load any data:
+Your cluster will be created in a few seconds and the *Connect to your cluster* dialog will display.
 
-. Ensure the session type toggle (image:manual::icons/session-schema.png[]) is set to `schema` and the transaction type toggle (image:manual::icons/transaction-write.png[]) is set to `write`.
-. Open a image:home::studio-icons/svg/studio_new.svg[width=24] btn:[New Tab] in the btn:[Text Editor] and paste in the following Define query.
-+
-[,typeql]
-----
-define
-  user sub entity,
-    owns id @key,
-    owns name,
-    owns birth-date,
-    plays purchase:buyer;
-  order sub entity,
-    owns id @key,
-    owns timestamp,
-    owns status,
-    plays purchase:order;
 
-  purchase sub relation,
-    relates order,
-    relates buyer;
+[#_connect_cluster]
+== Connect to your cluster
 
-  id sub attribute, value string;
-  name sub attribute, value string;
-  birth-date sub attribute, value datetime;
-  timestamp sub attribute, value datetime;
-  status sub attribute,
-    value string,
-    regex "^(paid|dispatched|delivered|returned|canceled)$";
-----
-. Click the image:home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
-. When the query has completed, click image:home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit Transaction].
+In the *Connect to your cluster* dialog, click *TypeDB Studio*. The dialog will contain instructions to install TypeDB Studio, which can also be found xref:home::install-tools.adoc[here].
 
-With the schema defined, we can now insert data into the database.
+Once your cluster is online and its sample data has been loaded in, the *Connect to your cluster* dialog will display the
+*connection string* for your cluster.
 
-[#_load_data]
-== Load data
+. Copy the connection string and save it in a secure location. You'll need it each time you want to connect to your cluster.
+. Open TypeDB Studio. The *Connect to TypeDB* dialog will appear.
+. Paste in the copied connection string and click *Connect*. Once this is done, you're ready to begin developing with TypeDB!
 
-Let's insert sample data for our newly defined schema:
+[NOTE]
+====
+You'll be connected as the default database user, which is created with admin privileges.
+====
 
-. Ensure the session toggle is set to `data` and the transaction toggle is set to `write`.
-. Open a new tab and paste in the following Insert query.
-+
-[,typeql]
-----
-insert
-  $user-1 isa user,
-    has id "u0001",
-    has name "Kevin Morrison",
-    has birth-date 1995-10-29;
-  $user-2 isa user,
-    has id "u0002",
-    has name "Cameron Osborne",
-    has birth-date 1954-11-11;
-  $user-3 isa user,
-    has id "u0003",
-    has name "Keyla Pineda";
-  $order-1 isa order,
-    has id "o0001",
-    has timestamp 2022-08-03T19:51:24.324,
-    has status "canceled";
-  $order-2 isa order,
-    has id "o0002",
-    has timestamp 2021-04-27T05:02:39.672,
-    has status "dispatched";
-  $order-6 isa order,
-    has id "o0006",
-    has timestamp 2020-08-19T20:21:54.194,
-    has status "paid";
-  (order: $order-1, buyer: $user-1) isa purchase;
-  (order: $order-2, buyer: $user-1) isa purchase;
-  (order: $order-6, buyer: $user-2) isa purchase;
-----
-. Click the image:home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
-. When the query has completed, click image:home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit Transaction].
 
-The data should now be persisted in the database, and is ready to be queried.
+[#_next_steps]
+== Next steps
 
-== Read data
+You can now use TypeDB Studio to explore the sample dataset you loaded. Or, for a deeper dive, try the
+xref:home::crash-course/index.adoc[TypeDB Crash Course], an interactive tutorial for you to learn all of
+the key features of TypeDB.
 
-Let's retrieve some details for orders that are currently dispatched. The following Fetch query matches any dispatched orders, and returns the order timestamp, order status, and the name of the buyer. Using a `data` session and `read` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] btn:[run] this query.
-
-[,typeql]
-----
-match
-  $order has status "dispatched";
-  (order: $order, buyer: $buyer) isa purchase;
-fetch
-  $order: timestamp, status;
-  $buyer: name;
-----
-
-== Update data
-
-To update data in a database, we match the existing data, delete it, and then insert new data to replace it. The following Update query updates the status of the order with ID "o0006". Using a `data` session and `write` transaction, image:home::studio-icons/svg/studio_run.svg[width=24] btn:[run] this query, then image:home::studio-icons/svg/studio_check.svg[width=24] btn:[commit] the transaction.
-
-[,typeql]
-----
-match
-  $order-6 isa order,
-    has id "o0006",
-    has status $old-status;
-delete
-  $order-6 has $old-status;
-insert
-  $order-6 has status "dispatched";
-----
-
-After committing the transaction, the updated information is persisted in the database and becomes available for querying. If we then re-run the above Fetch query, we should see the results have updated to reflect the change.
-
-[#_learn_more]
-== What's next?
-
-Continue learning how to use TypeDB with the Crash Course and TypeDB Academy, or explore other sections of the documentation.
-
-[cols-2]
+[cols-3]
 --
 .xref:home::crash-course/index.adoc[]
 [.clickable]
 ****
-A concise overview of the main aspects of TypeDB and TypeQL, with multiple pathways based on previous database experience.
+Take a deep dive into TypeDB.
 ****
 
-.xref:academy::index.adoc[]
+.xref:academy::index.adoc[TypeDB Academy]
 [.clickable]
 ****
-An end-to-end learning experience for TypeDB and TypeQL, showing how to take advantage of TypeDB's unique features.
+The comprehensive TypeDB learning experience.
 ****
 
-.xref:manual::index.adoc[TypeDB manual]
+.https://typedb.com/discord[Chat Server]
 [.clickable]
 ****
-Practice-oriented guides on using TypeDB, including the TypeDB Studio and TypeDB Console manuals.
-****
-
-.xref:drivers::index.adoc[TypeDB drivers]
-[.clickable]
-****
-Installation guides, tutorials, and API references for the official TypeDB drivers in all supported languages.
+Join our vibrant TypeDB community on Discord. New faces are always welcome!
 ****
 --
+
+
+// [#_next_steps]
+// == Next steps
+//
+// You can now use TypeDB Studio to explore the sample dataset you loaded, following the tutorials below. Or, for a deeper
+// dive, try the xref:home::crash-course/index.adoc[TypeDB Crash Course], an interactive tutorial for you to learn all of
+// the key features of TypeDB by building a fantasy role-playing game.
+//
+// [.link-panel.clickable]
+// --
+// image::home::java.png[Java,72,72]
+//
+// xref:home::explore-sample-datasets/index.adoc[Explore sample datasets →]
+//
+// Explore the sample dataset you created and continue your learning journey.
+// --

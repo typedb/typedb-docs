@@ -1,8 +1,8 @@
-= Get Started
+= Get started
 :keywords: typedb, typeql, clients, documentation, overview
 :pageTitle: Get started
 :summary: Getting started with TypeDB
-:page-role: -toc
+:page-layout: landing
 // :page-preamble-card: 1
 
 // tag::rust-rewrite[]
@@ -12,15 +12,25 @@ https://typedb.com/blog/typedb-3-roadmap[TypeDB 3.0] is coming soon, written in 
 ====
 // end::rust-rewrite[]
 
-Here you'll find ways to get started, understand core concepts, and explore a variety of resources to help you get the most from TypeDB. We recommend joining our https://typedb.com/discord[Discord chat server] for help along the way.
+TypeDB is a cloud-hosted database that you can connect to through client applications and driver SDKs. Here you'll find
+ways to get up and running.
 
 [.link-panel.clickable]
 --
 image::home::java.png[Java,72,72]
 
-xref:home::install.adoc[Install →]
+https://cloud.typedb.com[Launch TypeDB Cloud →]
 
-Install clients and language drivers to communicate with TypeDB.
+Deploy and manage TypeDB database servers.
+--
+
+[.link-panel.clickable]
+--
+image::home::java.png[Java,72,72]
+
+xref:home::install-tools.adoc[Install tools →]
+
+Install clients and language drivers to communicate with a TypeDB database server.
 --
 
 [.link-panel.clickable]
@@ -36,31 +46,39 @@ In 5 minutes, set up TypeDB and begin querying it.
 --
 image::home::rust.png[Rust,72,72]
 
-xref:home::crash-course/index.adoc[Crash Course →]
+xref:home::crash-course/index.adoc[Crash course →]
 
 Explore the key ingredients of TypeDB and conjure fireballs.
 --
 
 
-== Compare databases
+// == Comparisons
+//
+// Coming from a relational, document or graph database background? These guides are for you.
+//
+// [cols-3]
+// --
+// .https://example.com[Relational]
+// [.clickable]
+// ****
+// A TypeDB learning experience tailored for an SQL background.
+// ****
+//
+// .https://example.com[Document]
+// [.clickable]
+// ****
+// A detailed comparison between TypeDB and document stores.
+// ****
+//
+// .https://example.com[Graph]
+// [.clickable]
+// ****
+// An in-depth guide about how TypeDB compares to graph databases.
+// ****
+// --
 
-[cols-3]
---
-.https://example.com[Relational]
-[.clickable]
-****
-A TypeDB learning experience tailored for an SQL background.
-****
 
-.https://example.com[Document]
-[.clickable]
-****
-A detailed comparison between TypeDB and document stores.
-****
+== Self-managed deployments
 
-.https://example.com[Graph]
-[.clickable]
-****
-An in-depth guide about how TypeDB compares to graph databases.
-****
---
+TypeDB also offers self-managed deployments. You can xref:manual::self-managed/cloud.adoc[self-host TypeDB Cloud], or
+install xref:manual::self-managed/index.adoc[TypeDB Open Source].
