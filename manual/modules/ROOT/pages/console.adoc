@@ -1,6 +1,5 @@
 = TypeDB Console
 :keywords: typedb, console, CLI, terminal, REPL
-:page-aliases: clients::console.adoc, typedb::connecting/console.adoc
 :pageTitle: TypeDB Console manual
 :summary: TypeDB Console documentation.
 :tabs-sync-option:
@@ -17,7 +16,7 @@ image::drivers::console.png[TypeDB Console hero image, role="right", width = 50%
 TypeDB Console is a standalone TypeDB client with a command line interface (CLI).
 
 It is the default client distributed with TypeDB, but it can also be installed separately.
-For a standalone installation, see the xref:home::install.adoc#_console[Install] page.
+For a standalone installation, see the xref:home::install-tools.adoc#_console[Install] page.
 --
 
 [cols-2]
@@ -28,7 +27,7 @@ For a standalone installation, see the xref:home::install.adoc#_console[Install]
 The GitHub repository with the source code and release notes.
 ****
 
-.xref:home::install.adoc#_console[Install]
+.xref:home::install-tools.adoc#_console[Install]
 [.clickable]
 ****
 See the TypeDB Console installation guide.
@@ -67,7 +66,7 @@ You will be prompted for a password.
 
 [NOTE]
 =====
-For newly created deployments, the default username and password are `admin` and `password`. After connecting for the first time, you will be required to xref:manual::configuring/users.adoc#_first_login[change the password] before queries can be run.
+For newly deployed clusters, the default username and password are `admin` and `password`. After connecting for the first time, you will be required to xref:manual::configuring/users.adoc#_first_login[change the password] before queries can be run.
 =====
 // end::connect_cloud_console[]
 --
@@ -745,171 +744,109 @@ transaction sample_db data read --infer true
 [#_version_compatibility]
 == Version Compatibility
 
-// tag::latest-compatibility[]
-[cols="^.^2,^.^1,^.^2,^.^2"]
+// tag::compat-intro[]
+For older TypeDB versions, you'll need a compatible version of TypeDB Console. Select the correct TypeDB Console version
+from the version compatibility table, and download it from
+https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%5Etypedb-console&sort=-version[Cloudsmith].
+
+// end::compat-intro[]
+
+// tag::compat-table[]
+.Version compatibility table
+[%collapsible]
+====
+[cols="^.^2,^.^2,^.^2"]
 |===
-| TypeDB Console | Protocol | TypeDB Core | TypeDB Cloud
+| TypeDB Console | TypeDB Cloud | TypeDB Open Source
 
 | https://github.com/typedb/typedb-console/releases/tag/2.28.0[2.28.0]
-| 3
 | 2.28.0
 | 2.28.0
 
 | https://github.com/typedb/typedb-console/releases/tag/2.27.0[2.27.0]
-| 3
 | 2.27.0
 | 2.27.0
 
 | https://github.com/typedb/typedb-console/releases/tag/2.26.6[2.26.6]
-| 3
 | 2.26.6
 | 2.26.6
 
 | https://github.com/typedb/typedb-console/releases/tag/2.25.7[2.25.7]
-| 3
 | 2.25.7
 | 2.25.7
 
 | https://github.com/typedb/typedb-console/releases/tag/2.24.15[2.24.15]
-| 2
 | 2.24.17
 | 2.24.17
 
 | https://github.com/typedb/typedb-console/releases/tag/2.18.0[2.18.0]
-| 1
 | 2.18.0 to 2.23.0
 | 2.18.0 to 2.23.0
 
 | https://github.com/typedb/typedb-console/releases/tag/2.17.0[2.17.0]
-| N/A
 | 2.17.0
 | 2.17.0
-|===
-// end::latest-compatibility[]
 
-// tag::older-compatibility[]
-.See older versions
-[%collapsible]
-====
-[cols="^.^2,^.^1,^.^2,^.^2"]
-|===
-| TypeDB Console | Protocol | TypeDB Core | TypeDB Cloud
-
-| 2.16.1
-| N/A
 | 2.16.1
 | 2.16.1 to 2.16.2
+| 2.16.1
 
 | 2.15.0
-| N/A
 | 2.15.0
 | 2.15.0
 
 | 2.14.2
-| N/A
 | 2.14.2 to 2.14.3
 | 2.14.1
 
-| 2.14.0
-| N/A
-| 2.14.0 to 2.14.1
-| 2.14.1
-
 | 2.12.0
-| N/A
 | 2.12.0 to 2.13.0
 | 2.12.0 to 2.13.0
 
 | 2.11.0
-| N/A
 | 2.11.0 to 2.11.1
 | 2.11.1 to 2.11.2
 
 | 2.10.0
-| N/A
 | 2.10.0
 | 2.10.0
 
 | 2.9.0
-| N/A
 | 2.9.0
 | 2.9.0
 
 | 2.8.0
-| N/A
 | 2.8.0 to 2.8.1
 | 2.5.0
 
 | 2.6.1
-| N/A
 | 2.6.1 to 2.7.1
 | 2.5.0
 
-| 2.6.0
-| N/A
-| 2.6.0
 | 2.5.0
-
-| 2.5.0
-| N/A
 | 2.5.0
 | 2.3.0
 
 | 2.4.0
-| N/A
 | 2.4.0
 | 2.3.0
 
 | 2.3.2
-| N/A
 | 2.3.2 to 2.3.3
 | 2.3.0
 
-| 2.3.1
-| N/A
-| 2.3.1
-| 2.3.0
-
-| 2.3.0
-| N/A
-| 2.3.0
-| 2.3.0
-
 | 2.1.3
-| N/A
 | 2.1.3 to 2.2.0
 | 2.1.2
 
-| 2.1.2
-| N/A
-| 2.1.2
-| 2.0.3
-
-| 2.1.1
-| N/A
-| 2.1.1
-| 2.0.3
-
-| 2.1.0
-| N/A
-| 2.1.0
-| 2.0.3
-
 | 2.0.1
-| N/A
 | 2.0.1 to 2.0.2
 | 2.0.1 to 2.0.2
-
-| 2.0.0
-| N/A
-| 2.0.0
-| 2.0.0
 
 | 1.0.8
-| N/A
-| 1.1.0 to 1.8.4
 | -
+| 1.1.0 to 1.8.4
 |===
 ====
-// end::older-compatibility[]
+// end::compat-table[]
 // end::body[]
