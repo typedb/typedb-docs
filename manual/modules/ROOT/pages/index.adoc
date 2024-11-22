@@ -1,0 +1,183 @@
+= TypeDB Manual
+:keywords: typedb, guides, how, installation, tutorial
+:pageTitle: TypeDB Manual
+:page-aliases: manual::overview.adoc
+:summary: How to guides and tutorials
+
+Welcome to the TypeDB Manual.
+Here you'll find practice oriented guides on TypeDB operations and configuration, as well as Studio and Console manuals.
+
+== Standalone clients
+
+Standalone clients can be used to conveniently work and develop with TypeDB without depending on additional software to be installed.
+
+[cols-2]
+--
+.xref:manual::studio.adoc[]
+[.clickable]
+****
+An IDE that facilitates the development process for TypeDB databases.
+****
+
+.xref:manual::console.adoc[]
+[.clickable]
+****
+A powerful CLI client for TypeDB.
+****
+--
+////
+[cols-1]
+--
+.xref:drivers::index.adoc[Drivers]
+[.clickable]
+****
+xref:drivers::rust/index.adoc[Rust] |
+xref:drivers::python/index.adoc[Python] |
+xref:drivers::java/index.adoc[Java] |
+xref:drivers::nodejs/index.adoc[Node.js] |
+xref:drivers::cpp/index.adoc[C++]
+****
+--
+////
+
+== Using TypeDB
+
+Learn how to perform common tasks with TypeDB.
+
+[cols-2]
+--
+.xref:manual::connecting/index.adoc[]
+[.clickable]
+****
+Connect to a TypeDB server and create a new database.
+// Network connection to TypeDB Core or Cloud, as well as database, session and transaction management.
+// * xref:manual::connecting/connection.adoc[]
+// * xref:manual::connecting/database.adoc[]
+// * xref:manual::connecting/session.adoc[]
+// * xref:manual::connecting/transaction.adoc[]
+****
+
+.xref:manual::defining/index.adoc[]
+[.clickable]
+****
+Set and modify the schema of a database with a TypeQL query or driver API call.
+// * xref:manual::defining/define.adoc[]
+// * xref:manual::defining/undefine.adoc[]
+// * xref:manual::defining/schema-editing.adoc[]
+****
+
+.xref:manual::writing/index.adoc[]
+[.clickable]
+****
+Insert, delete, or update (replace) data in a TypeDB database with TypeQL queries.
+// * xref:manual::writing/insert.adoc[]
+// * xref:manual::writing/delete.adoc[]
+// * xref:manual::writing/update.adoc[]
+****
+
+.xref:manual::reading/index.adoc[]
+[.clickable]
+****
+Retrieve data as JSONs or stateful objects with TypeQL queries.
+// * xref:manual::reading/fetch.adoc[]
+// * xref:manual::reading/get.adoc[]
+// * xref:manual::reading/infer.adoc[]
+****
+--
+
+== Using drivers
+
+TypeDB Drivers can be used to query TypeDB directly from within your application. For the TypeDB drivers documentation, see the xref:drivers::index.adoc[Drivers] category.
+
+[cols-2]
+--
+.xref:manual::objects/index.adoc[]
+[.clickable]
+****
+Use stateful objects to alter data and schema, as well as explain inferred data.
+// * xref:manual::objects/schema.adoc[]
+// * xref:manual::objects/data.adoc[]
+// * xref:manual::objects/explanation.adoc[]
+****
+
+.xref:manual::bulk-loading/index.adoc[]
+[.clickable]
+****
+Best practices for bulk-loading data, during prototyping or migrations.
+****
+--
+
+
+== Configuring TypeDB
+
+Learn how to configure, migrate, and upgrade TypeDB.
+
+[cols-2]
+--
+.xref:manual::configuring/config.adoc[Config file]
+[.clickable]
+****
+TypeDB configuration via config file parameters.
+****
+
+.xref:manual::configuring/arguments.adoc[CLI arguments]
+[.clickable]
+****
+TypeDB configuration via CLI arguments.
+****
+
+.xref:manual::configuring/logs.adoc[Logs]
+[.clickable]
+****
+Logs configuration and storage.
+****
+
+.xref:manual::configuring/export.adoc[Export and Import]
+[.clickable]
+****
+Exporting and importing databases in TypeDB.
+****
+
+.xref:manual::configuring/upgrades.adoc[Upgrades]
+[.clickable]
+****
+Upgrading TypeDB version.
+****
+
+.xref:manual::configuring/users.adoc[Users]
+[.clickable]
+****
+User management operations.
+****
+--
+
+////
+== Migrating to TypeDB
+
+[cols-2]
+--
+.xref:manual::studio.adoc[From CSV/XML/JSON]
+[.clickable]
+****
+
+****
+
+.xref:manual::console.adoc[From SQL]
+[.clickable]
+****
+
+****
+
+.xref:manual::studio.adoc[From Neo4J]
+[.clickable]
+****
+
+****
+
+.xref:manual::console.adoc[From MongoDB]
+[.clickable]
+****
+
+****
+--
+////

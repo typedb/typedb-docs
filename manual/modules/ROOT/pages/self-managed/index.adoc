@@ -1,0 +1,134 @@
+= Self-managed deployments
+:tabs-sync-option:
+:page-aliases: home::install/core.adoc
+:experimental:
+// Goal – Install TypeDB Core
+
+TypeDB Core can be installed in several ways: using the <<_docker,Docker image>>, via a <<_package,package manager>>, or by <<_manual,manual installation>>. For self-hosted TypeDB Cloud installation and setup, see the xref:manual::self-managed/cloud.adoc[Cloud self-hosted] page.
+
+[#_package]
+== Package manager
+
+// tag::core-package-install[]
+[tabs]
+====
+macOS::
++
+--
+include::home::partial$macos.adoc[tag=install-homebrew]
+--
+
+Linux::
++
+--
+include::home::partial$linux.adoc[tag=install-apt]
+--
+
+Windows::
++
+--
+No package manager option is available for Windows. See the <<_manual>> section below.
+--
+====
+// end::core-package-install[]
+
+=== Run
+
+// tag::core-run[]
+To start a locally installed TypeDB Core server:
+
+[source,console]
+----
+typedb server
+----
+// end::core-run[]
+
+// tag::core-stop[]
+To stop a local TypeDB server, close the terminal where it runs or press kbd:[Ctrl+C].
+// end::core-stop[]
+
+[#_docker]
+== Docker
+
+include::home::partial$docker.adoc[tag=install]
+
+=== Run
+
+include::home::partial$docker.adoc[tags=run]
+
+include::home::partial$docker.adoc[tags=run-info]
+
+include::home::partial$docker.adoc[tag=stop]
+
+include::home::partial$docker.adoc[tag=start]
+
+[#_manual]
+== Manual install
+
+// tag::core-manual-install[]
+Download the latest version of TypeDB from the table below.
+
+[cols="^.^1,^.^1,^.^1,^.^1",caption="",options="header"]
+|===
+|Release notes |macOS |Linux |Windows
+
+include::manual:resources:partial$typedb-all-latest-links.adoc[]
+|===
+
+For all versions,
+see the link:https://cloudsmith.io/~typedb/repos/public-release/packages/?q=typedb-all&sort=-version[Packages] page.
+
+[tabs]
+====
+macOS::
++
+--
+include::home::partial$macos.adoc[tag=manual-install]
+--
+
+Linux::
++
+--
+include::home::partial$linux.adoc[tag=manual-install]
+--
+
+Windows::
++
+--
+include::home::partial$win.adoc[tag=manual-install]
+--
+====
+// end::core-manual-install[]
+
+=== Run
+
+include::manual::self-managed/index.adoc[tags="core-run,core-stop"]
+
+== Learn more
+
+[cols-2]
+--
+.xref:home::install-tools.adoc#_studio[TypeDB Studio]
+[.clickable]
+****
+Install an IDE that facilitates the development process for TypeDB.
+****
+
+.xref:home::quickstart.adoc[]
+[.clickable]
+****
+Connect to TypeDB and create a simple sample database.
+****
+
+.xref:home::crash-course/index.adoc[]
+[.clickable]
+****
+Learn about the basics of TypeDB.
+****
+
+.xref:academy::index.adoc[]
+[.clickable]
+****
+Check out our dedicated learning course for TypeDB.
+****
+--

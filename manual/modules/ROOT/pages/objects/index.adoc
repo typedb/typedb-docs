@@ -1,0 +1,43 @@
+= Programming objects
+:page-no-toc: 1
+:page-aliases: manual::objects/overview.adoc
+
+[#_blank_heading]
+== {blank}
+
+//TypeDB can retrieve data by projecting values to JSON objects.
+
+You can use ORM-like objects to manipulate schema and data of a TypeDB databases
+and process explanations of inferred data.
+//To get these stateful objects, you can use either TypeQL Get query or driver API methods.
+
+See below practical guides on how to use stateful schema objects, stateful data objects, and explanation objects.
+
+// tag::nav-blocks[]
+[cols-2]
+--
+.xref:manual::objects/schema.adoc[]
+[.clickable]
+****
+How to use driver API methods to manipulate schema types and rules.
+****
+
+.xref:manual::objects/data.adoc[]
+[.clickable]
+****
+How to use driver API methods to manipulate data.
+****
+
+.xref:manual::objects/explanation.adoc[]
+[.clickable]
+****
+How to use driver API methods to get explanation of rule-based inference.
+****
+
+.xref:drivers::index.adoc[Driver API reference →]
+[.clickable]
+****
+API reference for all of TypeDB's native language drivers.
+****
+--
+// end::nav-blocks[]

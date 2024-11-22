@@ -1,0 +1,70 @@
+= Lesson 5: Defining schemas
+:page-aliases: academy::5-defining-schemas/overview.adoc
+:page-preamble-card: 1
+
+In this lesson, we'll learn how to define entity, relation, and attribute types using *Define queries*. We'll start by defining individual *types* and their interfaces, namely *ownership interfaces* for attributes and *role interfaces* for relations. We'll then see how we can define *type hierarchies* for entities, relations, and attributes. We'll also see how we can apply different kinds of *value constraints* to attributes and define *rules* to infer new data. Finally, we'll see how TypeDB validates changes to the schema to ensure it stays in a consistent state.
+
+== Recommended prerequisites
+
+* You should complete xref:academy::4-writing-data/index.adoc[Lesson 4] before starting this lesson.
+
+== Lesson contents
+
+[cols-2]
+--
+.xref:academy::5-defining-schemas/5.1-defining-individual-types.adoc[]
+[.clickable]
+****
+Learn how to define new entity, relation, and attribute types.
+****
+
+.xref:academy::5-defining-schemas/5.2-defining-type-hierarchies.adoc[]
+[.clickable]
+****
+Learn how to define type hierarchies and abstract types.
+****
+
+.xref:academy::5-defining-schemas/5.3-defining-constraints.adoc[]
+[.clickable]
+****
+Learn how to constrain attribute values and ownerships.
+****
+
+.xref:academy::5-defining-schemas/5.4-defining-rules.adoc[]
+[.clickable]
+****
+Learn how to define rules to generate new data by rule inference.
+****
+
+.xref:academy::5-defining-schemas/5.5-schema-validation.adoc[]
+[.clickable]
+****
+Learn about how types and rules are validated against the schema.
+****
+--
+
+== Running examples
+
+The sample database already has the complete bookstore schema defined and data inserted. If you would like to try running the Define queries featured in the examples and exercises in this section, then you should do so using another database. To create a new database, use the *database manager* image:home::studio-icons/svg/studio_dbs.svg[width=24]. After creation, make sure to switch over to it using the *database selector*. For more information on how to manage databases using TypeDB Studio, refer back to xref:academy::2-environment-setup/2.2-using-typedb-studio.adoc[Lesson 2.2]
+
+To run a Define query, make sure to use a *schema* session and *write* transaction. After running a Define query, you should see any committed changes to the schema reflected in the *type browser*. The examples and exercises featured in this lesson are annotated with one of the following instructions to indicate how they should be run.
+
+image:home::studio-icons/svg/studio_run.svg[width=24] *_Run_*:: *Run* this query without committing the transaction afterward. Write transactions will remain open for further queries, and changes will not be persisted until a commit.
+image:home::studio-icons/svg/studio_run.svg[width=24]image:home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*:: *Run* this query and then *commit* the transaction, persisting the changes to the database.
+image:home::studio-icons/svg/studio_fail.svg[width=24] *_Do not run_*:: Do not run this query, which is shown for information only. To rollback an open transaction, *close* it without committing.
+image:home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*:: *Run* this query to see the error generated.
+
+For information on how to control sessions, transactions, and queries using TypeDB Studio, refer back to xref:academy::2-environment-setup/2.2-using-typedb-studio.adoc[Lesson 2.2].
+
+== TypeQL keywords introduced
+
+* `define`
+* `value`
+* `abstract`
+* `as`
+* `@key`
+* `@unique`
+* `regex`
+* `rule`
+* `when`
+* `then`

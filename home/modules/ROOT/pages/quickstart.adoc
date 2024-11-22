@@ -1,0 +1,83 @@
+= Quickstart
+:keywords: start, learn, typedb, typeql, tutorial, quickstart, console, studio, database, create, insert, query
+:pageTitle: Quickstart guide
+:summary: Learn how to create a TypeDB database, load schema and data, perform queries.
+:tabs-sync-option:
+:experimental:
+
+In 5 minutes, set up TypeDB and use sample code to run your first queries.
+
+// video::UQbdl35ymOg[youtube,role=framed]
+
+[#_create_free_cluster]
+== Create a free cluster
+
+. https://cloud.typedb.com[Create a TypeDB Cloud account]. Your first cluster is free.
+. On the *Clusters* dashboard, click *Create cluster*.
+. Configure your cluster, then click *Deploy*.
+
+Your cluster will be created in a few seconds and the *Connect to your cluster* dialog will display.
+
+
+[#_connect_cluster]
+== Connect to your cluster
+
+In the *Connect to your cluster* dialog, click *TypeDB Studio*. The dialog will contain instructions to install TypeDB Studio, which can also be found xref:home::install-tools.adoc[here].
+
+Once your cluster is online and its sample data has been loaded in, the *Connect to your cluster* dialog will display the
+*connection string* for your cluster.
+
+. Copy the connection string and save it in a secure location. You'll need it each time you want to connect to your cluster.
+. Open TypeDB Studio. The *Connect to TypeDB* dialog will appear.
+. Paste in the copied connection string and click *Connect*. Once this is done, you're ready to begin developing with TypeDB!
+
+[NOTE]
+====
+You'll be connected as the default database user, which is created with admin privileges.
+====
+
+
+[#_next_steps]
+== Next steps
+
+You can now use TypeDB Studio to explore the sample dataset you loaded. Or, for a deeper dive, try the
+xref:home::crash-course/index.adoc[TypeDB Crash Course], an interactive tutorial for you to learn all of
+the key features of TypeDB.
+
+[cols-3]
+--
+.xref:home::crash-course/index.adoc[]
+[.clickable]
+****
+Take a deep dive into TypeDB.
+****
+
+.xref:academy::index.adoc[TypeDB Academy]
+[.clickable]
+****
+The comprehensive TypeDB learning experience.
+****
+
+.https://typedb.com/discord[Chat Server]
+[.clickable]
+****
+Join our vibrant TypeDB community on Discord. New faces are always welcome!
+****
+--
+
+
+// [#_next_steps]
+// == Next steps
+//
+// You can now use TypeDB Studio to explore the sample dataset you loaded, following the tutorials below. Or, for a deeper
+// dive, try the xref:home::crash-course/index.adoc[TypeDB Crash Course], an interactive tutorial for you to learn all of
+// the key features of TypeDB by building a fantasy role-playing game.
+//
+// [.link-panel.clickable]
+// --
+// image::home::java.png[Java,72,72]
+//
+// xref:home::explore-sample-datasets/index.adoc[Explore sample datasets →]
+//
+// Explore the sample dataset you created and continue your learning journey.
+// --

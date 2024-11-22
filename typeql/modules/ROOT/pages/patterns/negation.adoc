@@ -1,0 +1,122 @@
+= NOT (Negation)
+
+A negation of a pattern requires that pattern to be false. A negation is itself a pattern.
+
+== Syntax
+
+A negation of a pattern is of the form:
+
+.Syntax
+[,typeql]
+----
+not "{" <pattern> "}" ;
+----
+
+where `<pattern>` can be any valid pattern. Note that _at least one variable_ of `<pattern>` must be bound outside the negation.
+
+== Behavior
+
+A negation is true, if its negated pattern is false. 
+Negations can be used in a `match` clause or a condition of a rule 
+to set a constraint of not matching the negated pattern. 
+//#todo expand negation behavior with detailed explanation
+
+When using negations in rules, complicated logical behavior can arise: we use the theory of https://en.wikipedia.org/wiki/Syntax_and_semantics_of_logic_programming#Stratified_negation[stratified negation] to compute the behavior of patterns in these cases.
+
+== Negation of statement
+
+include::typeql::partial$iam-database-links.adoc[]
+
+The most direct approach to using negation is to specify a pattern for all results that need to be excluded.
+
+Let's try to get all users except those who have a `full-name` attribute with a particular value:
+
+.Negation exclusion example
+[,typeql]
+----
+match
+$u isa user;
+not {$u has full-name "Kevin Morrison";};
+fetch
+$u as "Not Kevin": full-name;
+----
+
+.See example output
+[%collapsible]
+====
+.Output example (partial)
+[,json]
+----
+{
+    "Not Kevin": {
+        "full-name": [ { "value": "Bob Fake", "type": { "label": "full-name", "root": "attribute", "value_type": "string" } } ],
+        "type": { "label": "person", "root": "entity" }
+    }
+}
+----
+====
+
+== Negation in rules
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Negation can be used in a rule condition in the same way as it can be used in a `match` clause.
+
+There is no need to negate the conclusion of a rule, as the rule will not repeat itself if there is nothing to change.
+
+Let's create a rule to create complementary valued attributes for the `validity` of `permission` relations:
+
+.Negation in a rule example
+[,typeql]
+----
+define
+rule permission-non-validity: when {
+    $permission isa permission;
+    not { $permission has validity true; };
+} then {
+    $permission has validity false;
+};
+----
+
+== Negation with cycles
+
+_The following example yields an error!!_
+
+In contrast to the previous example, we cannot write a rule of the following form:
+
+.Negation in a rule example
+[,typeql]
+----
+define
+rule give-all-permissions: when {
+    $permission isa permission;
+    not { $permission has validity true; };
+} then {
+    $permission has validity true;
+};
+----
+
+The rule creates a logical cycle, which violates the principles of of https://en.wikipedia.org/wiki/Syntax_and_semantics_of_logic_programming#Stratified_negation[stratified negation].
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::patterns/conjunction.adoc[]
+[.clickable]
+****
+Learn more about conjunction in TypeQL.
+****
+
+.xref:typeql::patterns/disjunction.adoc[]
+[.clickable]
+****
+Learn more about disjunction in TypeQL.
+****
+
+.xref:typeql::statements/index.adoc[]
+[.clickable]
+****
+Learn more about statements in TypeQL patterns.
+****
+--

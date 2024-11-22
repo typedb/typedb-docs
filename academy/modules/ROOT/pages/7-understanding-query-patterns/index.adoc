@@ -1,0 +1,64 @@
+= Lesson 7: Understanding query patterns
+:page-aliases: academy::7-understanding-query-patterns/overview.adoc
+:page-preamble-card: 1
+
+In this lesson, we'll learn advanced aspects of building query patterns. We'll begin by examining how TypeDB resolves patterns against the schema as *constraint satisfaction* problems. We'll then examine some specific syntax elements we can use in patterns, including *advanced relation patterns*, *logical operators*, *value comparisons*, and *value expressions*. Finally, we'll study the semantics of *solution sets*, to understand how the number of times a pattern is matched can affect the results of read and write queries.
+
+== Recommended prerequisites
+
+* You should complete xref:academy::5-defining-schemas/index.adoc[Lesson 5] before starting this lesson.
+
+== Lesson contents
+
+[cols-2]
+--
+.xref:academy::7-understanding-query-patterns/7.1-patterns-as-constraints.adoc[]
+[.clickable]
+****
+Learn how patterns are treated as constraint satisfaction problems.
+****
+
+.xref:academy::7-understanding-query-patterns/7.2-relation-patterns.adoc[]
+[.clickable]
+****
+Learn how to construct different representations of relations.
+****
+
+.xref:academy::7-understanding-query-patterns/7.3-logical-operators.adoc[]
+[.clickable]
+****
+Learn how to use disjunctions, negations, and identities.
+****
+
+.xref:academy::7-understanding-query-patterns/7.4-value-comparisons.adoc[]
+[.clickable]
+****
+Learn how to compare the values of different attributes.
+****
+
+.xref:academy::7-understanding-query-patterns/7.5-value-expressions.adoc[]
+[.clickable]
+****
+Learn how to create and use temporary value variables.
+****
+
+.xref:academy::7-understanding-query-patterns/7.6-solution-set-semantics.adoc[]
+[.clickable]
+****
+Learn about how different patterns affect the number of results.
+****
+--
+
+== TypeQL keywords introduced
+
+* `or`
+* `not`
+* `is`
+* `like`
+* `contains`
+* `min`
+* `max`
+* `round`
+* `floor`
+* `ceil`
+* `abs`
