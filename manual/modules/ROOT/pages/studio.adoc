@@ -59,34 +59,19 @@ Select TypeDB edition below, and follow the instructions:
 Cloud::
 +
 --
-image::home::studio-connect-cloud.png[TypeDB Studio connect window, role=right, width = 50%, link=self]
 
 // tag::connect_cloud_studio[]
-. Click btn:[Connect to TypeDB] on the right side of the top toolbar.
-. Switch the `Server` field drop-down to `TypeDB Cloud`.
-. Click btn:[Manage Cloud Addresses] button.
-. Add address and port for at least one server from your TypeDB cluster, then close the Address Management window.
-. Fill in the `Username` and `Password` fields with valid user credentials.
+. In the TypeDB Cloud dashboard, find the cluster you want to connect, and click btn:[Connect]. Copy the displayed connection URI, replacing the password placeholder with your actual database password.
+. In Studio, click btn:[Connect to TypeDB]. Paste the copied URI into the btn:[Connection URI] field and click btn:[Connect].
 +
-[NOTE]
-=====
-For newly created clusters, the default username and password are `admin` and `password`. After connecting for the first time, you will be required to change the password before queries can be run.
-=====
-. Turn on the `Enable TLS` option and leave the `CA Certificate` field empty. For self-hosted deployments, encryption parameters may vary.
-. Click `Connect`.
 // end::connect_cloud_studio[]
 --
 
 Core::
 +
 --
-image::home::studio-connect-core.png[TypeDB Studio connect window, role=right, width = 50%, link=self]
-
 // tag::connect_core_studio[]
-. Click btn:[Connect to TypeDB] on the right side of the top toolbar.
-. Make sure the `TypeDB Core` option is selected in the `Server` field.
-. Enter the address and port of the server to connect to (e.g. `localhost:1729`).
-. Click btn:[Connect].
+Click btn:[Connect to TypeDB]. Your connection URI is `typedb-core://<host>:<port>` (e.g: `typedb-core://localhost:1729`).
 // end::connect_core_studio[]
 --
 ====
