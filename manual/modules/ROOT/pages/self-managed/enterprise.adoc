@@ -1,49 +1,48 @@
-= TypeDB Cloud Self-hosted
-:page-aliases: home::install/cloud-self-hosted.adoc
+= TypeDB Enterprise
+:page-aliases: home::install/cloud-self-hosted.adoc, manual::self-managed/cloud.adoc
 :experimental:
 
 
-This page is an installation guide for a self-hosted deployment of TypeDB Cloud.
+This page is an installation guide for TypeDB Enterprise, a self-hosted deployment of TypeDB.
 You can get a license for it from our sales team: contact us via
 mailto:cloud@typedb.com[e-mail,window=_blank] or
 https://typedb.com/deploy?dialog=contact[contact form,window=_blank].
 
 [IMPORTANT]
 ====
-TypeDB Cloud is available as a fully managed cloud service with no installation required at
+TypeDB is available as a fully managed cloud service with no installation required at
 https://cloud.typedb.com/[cloud.typedb.com,window=_blank].
 ====
 
 == System Requirements
 
-TypeDB Cloud runs on macOS, Linux, and Windows.
+TypeDB Enterprise runs on macOS, Linux, and Windows.
 The only requirement is Java v.11+ (http://openjdk.java.net/install/[OpenJDK] or
 https://www.oracle.com/java/technologies/downloads/#java11[Oracle Java]).
 
 == Download and Install
 
-TypeDB Cloud is distributed and installed separately from TypeDB Core.
+TypeDB Enterprise is distributed and installed separately from other editions of TypeDB.
 
-Request access to the TypeDB Cloud distributive repositories from the TypeDB team.
+Request access to the TypeDB Enterprise distribution repositories from the TypeDB team.
 You can do that via technical support, using the contact details from your contract, or through our
 https://typedb.com/discord[Discord,window=_blank] server.
 
-Then you can install it with <<_using_docker,Docker>> or manual
+Then install it with <<_using_docker,Docker>> or via manual
 <<_manual_download_and_installation,download and installation>>.
 
-You can deploy a cluster of TypeDB Cloud servers
+You can deploy a cluster of TypeDB Enterprise servers
 <<_deploying_manually,manually>> or via <<_deploying_with_kubernetes,Kubernetes>>.
 
-If you don't have a license yet, you can try our https://cloud.typedb.com/[TypeDB Cloud,window=_blank] service or contact our
-mailto:cloud@typedb.com[sales team].
+If you need a license, contact our mailto:cloud@typedb.com[sales team].
 
 [#_using_docker]
 === Docker
 
-TypeDB Cloud Docker image is stored in a private repository.
-Make sure to use `docker login` first, to get correct authentication.
+The TypeDB Enterprise image is hosted in our private Docker repository.
+Make sure to use `docker login` first to authenticate.
 
-To pull the TypeDB Cloud Docker image, run:
+To pull the TypeDB Enterprise Docker image, run:
 
 [source,console]
 ----
@@ -51,7 +50,7 @@ docker pull vaticle/typedb-cloud:latest
 ----
 
 Use `docker create` to create a new container with the downloaded image.
-By default, a TypeDB Cloud server is expected to be running on port `1729`.
+By default, a TypeDB Enterprise server is expected to be running on port `1729`.
 To ensure that data is preserved even when the container is killed or restarted, use Docker volumes:
 
 [source,console]
@@ -63,7 +62,12 @@ docker create --name typedb -p 1729:1729 \
     vaticle/typedb-cloud:latest
 ----
 
-==== Start and Stop TypeDB Cloud in Docker
+[NOTE]
+====
+The port number is configurable. For example, you could configure TypeDB Enterprise to listen on port 80 instead of the default port 1729.
+====
+
+==== Start and Stop TypeDB Enterprise in Docker
 
 To start the Docker container, or restart a stopped container:
 
@@ -97,11 +101,11 @@ unzip it in a location on your machine that is easily accessible via terminal.
 If TypeDB doesn't have a distribution you need, please open an issue
 https://github.com/typedb/typedb/issues[on GitHub].
 
-==== Start and Stop TypeDB Cloud manually
+==== Start and Stop TypeDB Enterprise manually
 
-To start TypeDB Cloud manually:
+To start TypeDB Enterprise manually:
 
-1. Navigate into the directory with unpacked files of TypeDB Cloud.
+1. Navigate into the directory with the unpacked files of TypeDB Enterprise.
 2. Run:
 +
 [source,console]
@@ -109,18 +113,18 @@ To start TypeDB Cloud manually:
 ./typedb server
 ----
 
-Now TypeDB Cloud should show a welcome screen with its version, address, and bootup time.
+Now TypeDB Enterprise should show a welcome screen with its version, address, and bootup time.
 
-To stop TypeDB Cloud:
+To stop TypeDB Enterprise:
 
 Close the terminal or press kbd:[Ctrl+C].
 
 == Connecting
 
-To check whether TypeDB Cloud is working and interact with it, you can connect to it with any
+To check whether TypeDB Enterprise is working and interact with it, you can connect to it with any
 xref:drivers:ROOT:index.adoc[TypeDB Client].
 
-You can use xref:manual:ROOT:console.adoc[TypeDB Console] from your TypeDB Cloud directory:
+You can use xref:manual:ROOT:console.adoc[TypeDB Console] from your TypeDB Enterprise directory:
 
 [source,console]
 ----
@@ -137,7 +141,7 @@ docker exec -ti typedb-cloud bash -c '/opt/typedb-cloud-all-linux-x86_64/typedb 
 [#_deploying_manually]
 == Deploying manually
 
-While it's possible to run TypeDB Cloud in a single-server mode, a highly available and fault-tolerant
+While it's possible to run TypeDB Enterprise in a single-server mode, a highly available and fault-tolerant
 production-grade setup includes setting up multiple servers to connect and form a cluster.
 At any given point in time, one of those servers acts as a leader, and the others are followers.
 Increasing the number of servers increases the
@@ -145,7 +149,7 @@ cluster's tolerance to failure: to tolerate N servers failing, a cluster needs t
 This section describes how you can set up a 3-server cluster (in this case,
 one server can fail with no data loss).
 
-Each TypeDB Cloud server in a cluster binds to three ports:
+Each TypeDB Enterprise server in a cluster binds to three ports:
 a client port that TypeDB drivers connect to (`1729` by default) and two server ports
 (`1730` and `1731`) for server-to-server communication.
 
@@ -165,17 +169,17 @@ ports `1729`, `1730`, `1731` would turn into:
 
 === Starting
 
-TypeDB servers working in a cluster shall be configured specifically to know all servers in the cluster (peers).
+TypeDB Enterprise servers working in a cluster shall be configured specifically to know all servers in the cluster (peers).
 This could be done through `peers` key in the server config, or with command-line arguments when starting the server.
 Command-line arguments have priority over config file.
 
-See below an example of how 3-server TypeDB Cloud would be started on three separate machines to be in a cluster.
+See below an example of how 3-server TypeDB Enterprise would be started on three separate machines to be in a cluster.
 
 .Server #1
 ====
 The first machine with the IP address of `10.0.0.1`.
 
-To run TypeDB server #1:
+To run TypeDB Enterprise server #1:
 
 [source,console]
 ----
@@ -199,7 +203,7 @@ To run TypeDB server #1:
 ====
 The first machine with the IP address of `10.0.0.2`.
 
-To run TypeDB server #2:
+To run TypeDB Enterprise server #2:
 
 [source,console]
 ----
@@ -223,7 +227,7 @@ To run TypeDB server #2:
 ====
 The first machine with the IP address of `10.0.0.3`.
 
-To run TypeDB server #3:
+To run TypeDB Enterprise server #3:
 
 [source,console]
 ----
@@ -244,10 +248,10 @@ To run TypeDB server #3:
 ====
 
 The above example assumes
-the application (TypeDB Client) accessing TypeDB Cloud resides on the same private network as the cluster.
+the application (TypeDB Client) accessing TypeDB Enterprise resides on the same private network as the cluster.
 
 If this is *not* the case,
-TypeDB Cloud also supports using different IP addresses for client and server communication.
+TypeDB Enterprise also supports using different IP addresses for client and server communication.
 
 .Example of using separate network for client connection
 ====
@@ -281,13 +285,13 @@ private network using ports `1730` and `1731`.
 
 === Stopping
 
-Stopping TypeDB Cloud is done the same way as on a single server:
-to stop TypeDB Cloud, close the terminal or press kbd:[Ctrl+C].
+Stopping TypeDB Enterprise is done the same way as on a single server:
+to stop TypeDB Enterprise, close the terminal or press kbd:[Ctrl+C].
 All nodes must be shut down independently in the same way.
 
 [#_deploying_with_kubernetes]
 == Kubernetes
 
-To deploy a TypeDB Cloud cluster with Kubernetes, we can use https://helm.sh/[Helm] package manager.
+To deploy a TypeDB Enterprise cluster with Kubernetes, we can use the https://helm.sh/[Helm] package manager.
 
 include::manual::partial$kubernetes.adoc[leveloffset=+1]
