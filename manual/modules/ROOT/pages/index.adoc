@@ -2,14 +2,38 @@
 :keywords: typedb, guides, how, installation, tutorial
 :pageTitle: TypeDB Manual
 :page-aliases: manual::overview.adoc
-:summary: How to guides and tutorials
+:summary: How-to guides and tutorials
 
 Welcome to the TypeDB Manual.
 Here you'll find practice oriented guides on TypeDB operations and configuration, as well as Studio and Console manuals.
 
+You can run TypeDB database servers in the following environments:
+
+[cols-3]
+--
+.https://cloud.typedb.com[TypeDB Cloud]
+[.clickable]
+****
+The fully managed service for TypeDB deployments in the cloud.
+****
+
+xref:manual::self-managed/enterprise.adoc[TypeDB Enterprise]
+[.clickable]
+****
+The subscription-based, self-hosted version of TypeDB, designed for enterprise usage.
+****
+
+xref:manual::self-managed/index.adoc[TypeDB Community Edition]
+[.clickable]
+****
+The self-hosted, open-source, free-to-use version of TypeDB.
+****
+--
+
+
 == Standalone clients
 
-Standalone clients can be used to conveniently work and develop with TypeDB without depending on additional software to be installed.
+Standalone clients can be used to conveniently work and develop with TypeDB.
 
 [cols-2]
 --
