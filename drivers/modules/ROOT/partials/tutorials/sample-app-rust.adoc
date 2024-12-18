@@ -17,10 +17,10 @@ fn main() -> Result<(), Error> {
     println!("IAM Sample App");
 
     println!(
-        "Attempting to connect to a TypeDB Core server: {}",
+        "Attempting to connect to a TypeDB Community Edition server: {}",
         SERVER_ADDR
     );
-    let driver = Connection::new_core(SERVER_ADDR)?; //Connect to TypeDB Core server
+    let driver = Connection::new_core(SERVER_ADDR)?; //Connect to TypeDB Community Edition server
     let databases = DatabaseManager::new(driver);
 
     if databases.contains(DB_NAME)? {

@@ -17,7 +17,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     println!("TypeDB Manual sample code");
 
-    println!("Attempting to connect to a TypeDB Core server: {}", SERVER_ADDR);
+    println!("Attempting to connect to a TypeDB Community Edition server: {}", SERVER_ADDR);
     // tag::driver[]
     let driver = Connection::new_core(SERVER_ADDR)?;
     // end::driver[]

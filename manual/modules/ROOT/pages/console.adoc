@@ -13,24 +13,22 @@
 image::drivers::console.png[TypeDB Console hero image, role="right", width = 50%, window=_blank, link=self]
 
   +
-TypeDB Console is a standalone TypeDB client with a command line interface (CLI).
-
-It is the default client distributed with TypeDB, but it can also be installed separately.
-For a standalone installation, see the xref:home::install-tools.adoc#_console[Install] page.
+TypeDB Console is a standalone TypeDB client with a command line interface (CLI). It serves as a lightweight and
+powerful CLI tool to manage and query TypeDB databases.
 --
 
 [cols-2]
 --
-.link:https://github.com/typedb/typedb-console[GitHub,window=_blank]
-[.clickable]
-****
-The GitHub repository with the source code and release notes.
-****
-
 .xref:home::install-tools.adoc#_console[Install]
 [.clickable]
 ****
 See the TypeDB Console installation guide.
+****
+
+.link:https://github.com/typedb/typedb-console[GitHub,window=_blank]
+[.clickable]
+****
+The GitHub repository with the source code and release notes.
 ****
 
 ////
@@ -45,18 +43,17 @@ See the Console's downloadable packages.
 [#_connect_to_typedb]
 == Connect to TypeDB
 
-TypeDB can connect to both TypeDB Cloud and TypeDB Core.
-Running TypeDB Console initiates a network connection to a TypeDB server.
-By default, it tries to connect to a TypeDB Core server at the address `localhost:1729`.
-Use command line arguments to set connection parameters:
+TypeDB Console can connect to all editions of TypeDB. Running TypeDB Console initiates a network connection to a TypeDB
+server. Use command line arguments to set connection parameters (if unset it will try to connect to a TypeDB Community
+Edition server at the address `localhost:1729`):
 
 [tabs]
 ====
-Cloud::
+Cloud / Enterprise::
 +
 --
 // tag::connect_cloud_console[]
-.Connect to TypeDB Cloud
+.Connect to TypeDB Cloud or TypeDB Enterprise
 [source,console]
 ----
 typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
@@ -71,17 +68,17 @@ For newly deployed clusters, the default username and password are `admin` and `
 // end::connect_cloud_console[]
 --
 
-Core::
+Community Edition::
 +
 --
 // tag::connect_core_console[]
-.Connect to TypeDB Core
+.Connect to TypeDB Community Edition
 [source,console]
 ----
 typedb console --core=<server-address>
 ----
 
-The `--core` argument is used to set the TypeDB Core server IP address and port to connect to,
+The `--core` argument is used to set the TypeDB Community Edition server IP address and port to connect to,
 for example, `10.0.0.5:1729`.
 // end::connect_core_console[]
 --
@@ -525,39 +522,39 @@ The following arguments can be used when you invoke TypeDB Console:
 |===
 ^| Argument ^| Alias ^| Description
 
-3+^| TypeDB Core specific
+3+^| TypeDB Community Edition specific
 | `--core=<address>`
 |
 | Address to which Console will connect to: IP address and IP port separated by colon.
 Default value: `localhost:1729`. +
-(*TypeDB Core only*)
+(*TypeDB Community Edition only*)
 
-3+^| TypeDB Cloud specific
+3+^| TypeDB Cloud / Enterprise specific
 | `--cloud=<address>`
 |
 | Address to which Console will connect to. +
-(*TypeDB Cloud only*)
+(*TypeDB Cloud / Enterprise only*)
 //#todo Add Default value or example
 
 | `--username=<username>`
 |
 | Username +
-(*TypeDB Cloud only*)
+(*TypeDB Cloud / Enterprise only*)
 
 | `--password`
 |
 | Enable a password prompt +
-(*TypeDB Cloud only*)
+(*TypeDB Cloud / Enterprise only*)
 
 | `--tls-enabled`
 |
 | Whether to connect with TLS encryption +
-(*TypeDB Cloud only*)
+(*TypeDB Cloud / Enterprise only*)
 
 | `--tls-root-ca=<path>`
 |
 | Path to the TLS root CA file +
-(*TypeDB Cloud only*)
+(*TypeDB Cloud / Enterprise only*)
 
 3+^| Common
 | `--help`
@@ -607,25 +604,25 @@ Use these commands at the <<_server_level,Server level>> of TypeDB's <<_REPL,REP
 2+^| User management
 | `user list`
 | List all users on the server +
-(*TypeDB Cloud only*)
+(*TypeDB Cloud / Enterprise only*)
 
 | `user create <username>`
 | Create a user with the name `<username>` on the server +
-(*TypeDB Cloud only*)
+(*TypeDB Cloud / Enterprise only*)
 
 | `user password-update`
 a| [#_change_own_password]
 Update the password for the current user +
-(*TypeDB Cloud only*)
+(*TypeDB Cloud / Enterprise only*)
 
 | `user password-set <username>`
 a| [#_change_password]
 Set password for the user with the name `username` +
-(*TypeDB Cloud only*)
+(*TypeDB Cloud / Enterprise only*)
 
 | `user delete <username>`
 | Delete a user with the name `<username>` on the server +
-(*TypeDB Cloud only*)
+(*TypeDB Cloud / Enterprise only*)
 
 2+^| Open a transaction
 | `transaction <db> schema⎮data read⎮writ [options]`
@@ -738,7 +735,7 @@ transaction sample_db data read --infer true
 | `--read-any-replica`
 | `true⎮false`
 | Allow or disallow reads from any replica +
-(*TypeDB Cloud only*).
+(*TypeDB Cloud / Enterprise only*).
 |===
 
 [#_version_compatibility]
@@ -757,7 +754,7 @@ https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%5Etypedb-
 ====
 [cols="^.^2,^.^2,^.^2"]
 |===
-| TypeDB Console | TypeDB Cloud | TypeDB Community Edition
+| TypeDB Console | TypeDB | TypeDB Community Edition
 
 | https://github.com/typedb/typedb-console/releases/tag/2.28.0[2.28.0]
 | 2.28.0
@@ -842,10 +839,6 @@ https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%5Etypedb-
 | 2.0.1
 | 2.0.1 to 2.0.2
 | 2.0.1 to 2.0.2
-
-| 1.0.8
-| -
-| 1.1.0 to 1.8.4
 |===
 ====
 // end::compat-table[]

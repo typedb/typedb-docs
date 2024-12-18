@@ -14,8 +14,8 @@ async function main() {
 
     console.log("IAM Sample App");
 
-    console.log("Attempting to connect to a TypeDB Core server: ", SERVER_ADDR);
-    const driver = await TypeDB.coreDriver(SERVER_ADDR); // Connect tot TypeDB Core server
+    console.log("Attempting to connect to a TypeDB Community Edition server: ", SERVER_ADDR);
+    const driver = await TypeDB.coreDriver(SERVER_ADDR); // Connect tot TypeDB Community Edition server
     if (await driver.databases.contains(DB_NAME)) {
         console.log("Found a pre-existing database! Re-creating with the default schema and data...");
         let x = await driver.databases.get(DB_NAME);

@@ -77,7 +77,7 @@ Rust::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+to connect the `driver` to a TypeDB server, then open a `schema` session to the selected database,
 open a `write` transaction, and use the
 xref:drivers::rust/api-reference.adoc#_struct_QueryManager_undefine__[`transaction.query.undefine()`]
 method:
@@ -93,7 +93,7 @@ Python::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+to connect the `driver` to a TypeDB server, then open a `schema` session to the selected database,
 open a `write` transaction, and use the
 xref:drivers::python/api-reference.adoc#_QueryManager_undefine{scores}query_str__options_TypeDBOptions[`transaction.query.undefine()`]
 method:
@@ -108,7 +108,7 @@ Node.js::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+to connect the `driver` to a TypeDB server, then open a `schema` session to the selected database,
 open a `write` transaction, and use the
 xref:drivers::nodejs/api-reference.adoc#_QueryManager_undefine__query_string__options_TypeDBOptions[`transaction.query.undefine()`]
 method:
@@ -123,7 +123,7 @@ Java::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+to connect the `driver` to a TypeDB server, then open a `schema` session to the selected database,
 open a `write` transaction, and use the
 xref:drivers::java/api-reference.adoc#_QueryManager_undefine__com_vaticle_typeql_lang_query_TypeQLUndefine[`transaction.query().undefine()`]
 method:
@@ -138,7 +138,7 @@ C#::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+to connect the `driver` to a TypeDB server, then open a `schema` session to the selected database,
 open a `write` transaction, and use the
 xref:drivers::csharp/api-reference.adoc#_VoidPromise_TypeDB_Driver_Api_IQueryManager_Undefine___string_query_[`transaction.Query.Undefine()`]
 method:
@@ -154,7 +154,7 @@ C++::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+to connect the `driver` to a TypeDB server, then open a `schema` session to the selected database,
 open a `write` transaction, and use the
 xref:drivers::cpp/api-reference.adoc#_VoidFuture_TypeDBQueryManagerundefine___const_stdstring__query__const_Options__options__Options_____const[`transaction.query.undefine()`]
 method:
@@ -170,7 +170,7 @@ C::
 +
 --
 Follow the xref:manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to TypeDB Cloud or TypeDB Core, then open a `schema` session to the selected database,
+to connect the `driver` to a TypeDB server, then open a `schema` session to the selected database,
 open a `write` transaction, and use the
 xref:drivers::c/api-reference.adoc#_query_undefine[`query_undefine()`]
 function:

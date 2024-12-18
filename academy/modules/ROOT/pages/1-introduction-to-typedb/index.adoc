@@ -170,7 +170,7 @@ Within each transaction, the execution of queries by TypeDB may further involve 
 
 To round things up, let us also briefly point to the security features that TypeDB implements, though they will not feature prominently in this course.
 
-* *In-flight encryption*: TypeDB Cloud supports modern encryption, to keep your data safe from prying eyes.
+* *In-flight encryption*: TypeDB supports modern encryption, to keep your data safe from prying eyes.
 * *User and role management*: Not all users will have the same privileges in your organization and the same will apply to your database. Using sessions types, such restrictions can be effectively imposed.
 * *ACID guarantees*: TypeDB provides users with https://en.wikipedia.org/wiki/ACID[ACID guarantees]. This includes the use of a write-ahead log, which ensures no data is lost in case of unexpected crashes.
 
