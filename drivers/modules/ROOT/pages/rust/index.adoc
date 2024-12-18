@@ -61,7 +61,7 @@ cargo add typedb-driver -F sync
 
 == Quickstart
 
-See below a short example of Rust code that connects to a local TypeDB Core server,
+See below a short example of Rust code that connects to a local TypeDB server,
 creates a database named `access-management-db`, defines a simple schema, inserts some data, and then reads it.
 
 [,rust]
@@ -133,9 +133,9 @@ include::drivers::partial$drivers2discord.adoc[]
 [#_version_compatibility]
 == Version Compatibility
 
-[cols="^.^3,^.^2,^.^3,^.^3,^.^1"]
+[cols="^.^3,^.^3,^.^3,^.^1"]
 |===
-| Rust driver | Protocol | TypeDB Core | TypeDB Cloud | Rust
+| Rust driver | TypeDB | TypeDB Community Edition | Rust
 
 | 2.28.0
 | 3

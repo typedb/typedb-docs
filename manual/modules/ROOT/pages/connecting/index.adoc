@@ -10,11 +10,8 @@ https://github.com/typedb/typedb-protocol[TypeDB RPC protocol,window=_blank].
 It is implemented by TypeDB drivers and TypeDB clients.
 ////
 
-All released clients and drivers support connection to both TypeDB Cloud and TypeDB Core.
-A connection to TypeDB Core doesn't require a username nor password and does not support encryption.
-
 //To connect to TypeDB, you can use any TypeDB client or driver.
-See below practical guides on how to connect to TypeDB Cloud and TypeDB Core with different clients and drivers.
+See below practical guides on how to connect to TypeDB with different clients and drivers.
 
 ////
 TypeDB clients are able to connect to TypeDB via gRPC based TypeDB protocol and provide an interface for using them.
@@ -30,7 +27,7 @@ use high availability and load-balancing features, send any valid TypeQL queries
 .xref:manual::connecting/connection.adoc[]
 [.clickable]
 ****
-Establishing a network connection to TypeDB Cloud or Core.
+Establishing a network connection to TypeDB.
 ****
 
 .xref:connecting/database.adoc[]

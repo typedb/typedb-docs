@@ -17,8 +17,8 @@ https://github.com/typedb/typedb-docs/tree/master/drivers-src/modules/ROOT/parti
 
 To run this sample application, you'll need:
 
-. TypeDB: either a https://cloud.typedb.com/[TypeDB Cloud,window=_blank] deployment or a TypeDB Core server.
-For TypeDB Core installation instructions, see the xref:manual::self-managed/index.adoc[] page.
+. TypeDB: either a https://cloud.typedb.com/[TypeDB Cloud,window=_blank] cluster or a self-hosted deployment.
+For TypeDB Community Edition and TypeDB Enterprise installation instructions, see the xref:manual::self-managed/index.adoc[] page.
 . Download the https://cloudsmith.io/~typedb/packages/?q=clib&sort=-version[TypeDB C driver].
 For the driver installation instructions, see the xref:drivers::c/index.adoc[] page.
 
@@ -42,8 +42,8 @@ include::drivers::partial$tutorials/c/tutorial.c[tag=constants]
 
 where `DB_NAME` -- the name of the database to use;
 `SERVER_ADDR` -- address of the TypeDB server to connect to;
-`TYPEDB_EDITION` -- TypeDB Core or Cloud edition selector;
-`CLOUD_USERNAME`/`CLOUD_PASSWORD` -- credentials to connect to TypeDB Cloud;
+`TYPEDB_EDITION` -- TypeDB Community Edition or Cloud edition selector;
+`CLOUD_USERNAME`/`CLOUD_PASSWORD` -- credentials to connect to TypeDB Cloud or TypeDB Enterprise;
 `FAILED()` is used for error handling, see the <<_error_handling>> section for details.
 
 == Program structure
@@ -70,9 +70,9 @@ include::drivers::partial$tutorials/c/tutorial.c[tag=connection]
 ----
 
 The `edition` is expected to be an Enum for selecting a TypeDB edition.
-Depending on the TypeDB edition selected, this function initializes either a TypeDB Core or TypeDB Cloud connection.
+Depending on the TypeDB edition selected, this function initializes either a TypeDB Community Edition, TypeDB Enterprise, or TypeDB Cloud connection.
 
-TypeDB Cloud connection requires an object of the `Credential` type
+TypeDB Cloud and TypeDB Enterprise connections require an object of the `Credential` type
 that is initialized with a username and password.
 For our sample application, we have the default credentials for the `admin` account set in the code of the
 `connectToTypeDB` function.

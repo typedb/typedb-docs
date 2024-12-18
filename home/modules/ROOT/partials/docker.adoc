@@ -8,21 +8,21 @@ it from https://github.com/typedb/typedb/tags[source code,window=_blank] with Ba
 // end::manual-install[]
 
 // tag::install[]
-To pull the latest TypeDB Docker image:
+To pull the latest TypeDB Community Edition Docker image:
 
 [source,console]
 ----
 docker pull vaticle/typedb:latest
 ----
 
-You can replace `latest` with a version number to get a specific version of TypeDB Core.
+You can replace `latest` with a version number to get a specific version of TypeDB Community Edition.
 To check the list of available versions,
 see the link:https://github.com/typedb/typedb/releases[Releases,window=_blank] page.
 
 // end::install[]
 
 // tag::run[]
-To create a new Docker container with TypeDB Core server:
+To create a new Docker container with TypeDB Community Edition server:
 
 [source,console]
 ----

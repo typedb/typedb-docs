@@ -34,7 +34,7 @@ We'll cover managing databases in this lesson, and then see how to open sessions
 
 [NOTE]
 ====
-User management features are only available on TypeDB Cloud deployments, and will not be covered in this course. Instructions can be found on the xref:manual::configuring/users.adoc[user management page] of the TypeDB manual.
+User management features are only available in TypeDB Cloud and Enterprise, and will not be covered in this course. Instructions can be found on the xref:manual::configuring/users.adoc[user management page] of the TypeDB manual.
 ====
 
 == Managing databases
@@ -155,7 +155,7 @@ def print_database_details(driver: TypeDBDriver) -> None:
 //
 // [NOTE]
 // ====
-// If you are using a TypeDB Core server, you should instead instantiate a driver using the following snippet.
+// If you are using a TypeDB Community Edition server, you should instead instantiate a driver using the following snippet.
 // [,python]
 // ----
 // with TypeDB.core_driver(ADDRESS) as driver:
@@ -173,7 +173,7 @@ def print_database_details(driver: TypeDBDriver) -> None:
 //
 // [NOTE]
 // ====
-// User management features are only available on TypeDB Cloud deployments.
+// User management features are only available in TypeDB Cloud and TypeDB Enterprise.
 // ====
 //
 // == Managing users

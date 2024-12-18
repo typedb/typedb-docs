@@ -221,7 +221,7 @@ Certain adjustments will be made compared to other deployment modes:
 * Minikube only has a single K8s node, so `singlePodPerNode` needs to be set to `false`
 * Minikube's K8s node only has as much CPUs as the local machine:
 `kubectl get node/minikube -o=jsonpath='{.status.allocatable.cpu}'`.
-Therefore, for deploying a cluster with three servers of TypeDB Cloud to a node with 8 vCPUs,
+Therefore, for deploying a cluster with three servers of TypeDB Enterprise to a node with 8 vCPUs,
 the `cpu` can be set to `2` at maximum.
 * Storage size probably needs to be tweaked from default value of `100Gi` (or fully disabled persistent)
   as total storage required is `storage.size` multiplied by `replicas`.
@@ -321,7 +321,7 @@ indicates that `cpu` or `storage.size` <<_helm_configuration_reference,settings>
 
 === One or more pods of TypeDB Enterprise are stuck in `CrashLoopBackOff` state
 
-This might indicate any misconfiguration of TypeDB Cloud.
+This might indicate a misconfiguration of TypeDB Enterprise.
 Please check the logs:
 
 [source,console]
@@ -348,7 +348,7 @@ Configurable settings for Helm package include:
 
 | `image.tag`
 | `2.25.9`
-| The version of TypeDB Cloud to use.
+| The version of TypeDB Enterprise to use.
 
 | `image.pullPolicy`
 | `IfNotPresent`
@@ -409,10 +409,10 @@ in Kubernetes documentation.
 
 | `singlePodPerNode`
 | `true`
-| Whether a pod should share nodes with other TypeDB Cloud instances from the same Helm installation.
+| Whether a pod should share nodes with other TypeDB Enterprise instances from the same Helm installation.
 
 _Warning: changing this to false and making no anti-affinities of your own will allow Kubernetes
-to place multiple cluster servers on the same node, negating the high-availability guarantees of TypeDB Cloud._
+to place multiple cluster servers on the same node, negating the high-availability guarantees of TypeDB Enterprise._
 
 | `podLabels`
 | `{}`
