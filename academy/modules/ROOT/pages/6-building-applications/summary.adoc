@@ -1,6 +1,6 @@
 = Lesson 6: Building applications
 
-== xref:academy::6-building-applications/6.1-driver-setup.adoc[Driver setup]
+== xref:{page-component-version}@academy::6-building-applications/6.1-driver-setup.adoc[Driver setup]
 
 * The official TypeDB Python driver package can be installed with:
 +
@@ -16,7 +16,7 @@ from typedb.driver import TypeDB, SessionType, TransactionType
 from typedb.api.connection.credential import TypeDBCredential
 ----
 
-== xref:academy::6-building-applications/6.2-managing-users-and-databases.adoc[Managing databases]
+== xref:{page-component-version}@academy::6-building-applications/6.2-managing-users-and-databases.adoc[Managing databases]
 
 * The `TypeDB.core_driver` method is used to instantiate a new *driver object*.
 +
@@ -32,7 +32,7 @@ driver: TypeDBDriver = TypeDB.core_driver(ADDRESS)
 driver.databases.create(DATABASE)
 ----
 
-== xref:academy::6-building-applications/6.3-sessions-and-transactions.adoc[Sessions and transactions]
+== xref:{page-component-version}@academy::6-building-applications/6.3-sessions-and-transactions.adoc[Sessions and transactions]
 
 * The `TypeDBDriver.session` method is used to instantiate a new *session object*. The *session type* is specified using the `DATA` and `SCHEMA` values of the `SessionType` enum.
 +
@@ -63,7 +63,7 @@ with TypeDB.core_driver(ADDRESS) as driver:
 transaction.commit()
 ----
 
-== xref:academy::6-building-applications/6.4-executing-queries.adoc[Executing queries]
+== xref:{page-component-version}@academy::6-building-applications/6.4-executing-queries.adoc[Executing queries]
 
 * The `TypeDBTransaction.query` property is used to access *query execution* methods.
 * The `TypeDBTransaction.query.fetch` method is used to execute Fetch queries. It returns an *iterator* of results.
@@ -97,7 +97,7 @@ transaction.query.update(QUERY)
 transaction.query.define(QUERY)
 ----
 
-== xref:academy::6-building-applications/6.5-processing-results.adoc[Processing results]
+== xref:{page-component-version}@academy::6-building-applications/6.5-processing-results.adoc[Processing results]
 
 * Each result of a Fetch query is returned as a JSON-style nested dictionary. The top-level dictionary has fields corresponding to the variables in the `fetch` clause. The second-level dictionary has fields corresponding to the attributes of those variables, in addition to a `type` field containing the type of the variable.
 * Every attribute retrieved as part of a result has the following format:
@@ -127,19 +127,19 @@ transaction.query.define(QUERY)
 
 [cols-3]
 --
-.xref:academy::7-understanding-query-patterns/index.adoc[]
+.xref:{page-component-version}@academy::7-understanding-query-patterns/index.adoc[]
 [.clickable]
 ****
 Learn how to build query patterns utilising advanced elements of TypeQL syntax, and how queries are resolved by TypeDB.
 ****
 
-.xref:drivers::python/api-reference.adoc[Python Driver: Reference]
+.xref:{page-component-version}@drivers::python/api-reference.adoc[Python Driver: Reference]
 [.clickable]
 ****
 Explore the comprehensive API reference for the official TypeDB Python driver.
 ****
 
-.xref:drivers::index.adoc[TypeDB Drivers]
+.xref:{page-component-version}@drivers::index.adoc[TypeDB Drivers]
 [.clickable]
 ****
 Explore the docs for all the official TypeDB drivers, including installation guides, tutorials, and API references.

@@ -16,13 +16,13 @@ You can run TypeDB database servers in the following environments:
 The fully managed service for TypeDB deployments in the cloud.
 ****
 
-.xref:manual::self-managed/index.adoc[TypeDB Community Edition]
+.xref:{page-component-version}@manual::self-managed/index.adoc[TypeDB Community Edition]
 [.clickable]
 ****
 The self-hosted, open-source, free-to-use version of TypeDB.
 ****
 
-.xref:manual::self-managed/enterprise.adoc[TypeDB Enterprise]
+.xref:{page-component-version}@manual::self-managed/enterprise.adoc[TypeDB Enterprise]
 [.clickable]
 ****
 The subscription-based, self-hosted version of TypeDB, designed for enterprise usage.
@@ -51,14 +51,14 @@ A powerful CLI client for TypeDB.
 ////
 [cols-1]
 --
-.xref:drivers::index.adoc[Drivers]
+.xref:{page-component-version}@drivers::index.adoc[Drivers]
 [.clickable]
 ****
-xref:drivers::rust/index.adoc[Rust] |
-xref:drivers::python/index.adoc[Python] |
-xref:drivers::java/index.adoc[Java] |
-xref:drivers::nodejs/index.adoc[Node.js] |
-xref:drivers::cpp/index.adoc[C++]
+xref:{page-component-version}@drivers::rust/index.adoc[Rust] |
+xref:{page-component-version}@drivers::python/index.adoc[Python] |
+xref:{page-component-version}@drivers::java/index.adoc[Java] |
+xref:{page-component-version}@drivers::nodejs/index.adoc[Node.js] |
+xref:{page-component-version}@drivers::cpp/index.adoc[C++]
 ****
 --
 ////
@@ -69,58 +69,58 @@ Learn how to perform common tasks with TypeDB.
 
 [cols-2]
 --
-.xref:manual::connecting/index.adoc[]
+.xref:{page-component-version}@manual::connecting/index.adoc[]
 [.clickable]
 ****
 Connect to a TypeDB server and create a new database.
 // Network connection to TypeDB Community Edition or Cloud, as well as database, session and transaction management.
-// * xref:manual::connecting/connection.adoc[]
-// * xref:manual::connecting/database.adoc[]
-// * xref:manual::connecting/session.adoc[]
-// * xref:manual::connecting/transaction.adoc[]
+// * xref:{page-component-version}@manual::connecting/connection.adoc[]
+// * xref:{page-component-version}@manual::connecting/database.adoc[]
+// * xref:{page-component-version}@manual::connecting/session.adoc[]
+// * xref:{page-component-version}@manual::connecting/transaction.adoc[]
 ****
 
-.xref:manual::defining/index.adoc[]
+.xref:{page-component-version}@manual::defining/index.adoc[]
 [.clickable]
 ****
 Set and modify the schema of a database with a TypeQL query or driver API call.
-// * xref:manual::defining/define.adoc[]
-// * xref:manual::defining/undefine.adoc[]
-// * xref:manual::defining/schema-editing.adoc[]
+// * xref:{page-component-version}@manual::defining/define.adoc[]
+// * xref:{page-component-version}@manual::defining/undefine.adoc[]
+// * xref:{page-component-version}@manual::defining/schema-editing.adoc[]
 ****
 
-.xref:manual::writing/index.adoc[]
+.xref:{page-component-version}@manual::writing/index.adoc[]
 [.clickable]
 ****
 Insert, delete, or update (replace) data in a TypeDB database with TypeQL queries.
-// * xref:manual::writing/insert.adoc[]
-// * xref:manual::writing/delete.adoc[]
-// * xref:manual::writing/update.adoc[]
+// * xref:{page-component-version}@manual::writing/insert.adoc[]
+// * xref:{page-component-version}@manual::writing/delete.adoc[]
+// * xref:{page-component-version}@manual::writing/update.adoc[]
 ****
 
-.xref:manual::reading/index.adoc[]
+.xref:{page-component-version}@manual::reading/index.adoc[]
 [.clickable]
 ****
 Retrieve data as JSONs or stateful objects with TypeQL queries.
-// * xref:manual::reading/fetch.adoc[]
-// * xref:manual::reading/get.adoc[]
-// * xref:manual::reading/infer.adoc[]
+// * xref:{page-component-version}@manual::reading/fetch.adoc[]
+// * xref:{page-component-version}@manual::reading/get.adoc[]
+// * xref:{page-component-version}@manual::reading/infer.adoc[]
 ****
 --
 
 == Sending queries
 
-TypeDB Drivers can be used to query TypeDB directly from within your application. For the TypeDB drivers documentation, see the xref:drivers::index.adoc[Drivers] category.
+TypeDB Drivers can be used to query TypeDB directly from within your application. For the TypeDB drivers documentation, see the xref:{page-component-version}@drivers::index.adoc[Drivers] category.
 
 [cols-2]
 --
-.xref:manual::objects/index.adoc[]
+.xref:{page-component-version}@manual::objects/index.adoc[]
 [.clickable]
 ****
 Guides on connecting to TypeDB Cloud and TypeDB Core deployments using TypeDB Studio, TypeDB Console, and the TypeDB Drivers.
 ****
 
-.xref:manual::bulk-loading/index.adoc[]
+.xref:{page-component-version}@manual::bulk-loading/index.adoc[]
 [.clickable]
 ****
 Guides on creating and deleting databases using TypeDB Studio, TypeDB Console, and the TypeDB Drivers.

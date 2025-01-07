@@ -14,20 +14,20 @@ User management features are available in TypeDB Cloud / Enterprise only.
 
 You can use TypeDB Console or TypeDB driver API for managing users remotely.
 
-Assuming TypeDB Console is xref:home::install-tools.adoc#_console[installed], to connect to TypeDB:
+Assuming TypeDB Console is xref:{page-component-version}@home::install-tools.adoc#_console[installed], to connect to TypeDB:
 
 [source,console]
 ----
 typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
 ----
 
-For more information on how to use TypeDB Console, see the xref:manual::console.adoc[] page.
+For more information on how to use TypeDB Console, see the xref:{page-component-version}@manual::console.adoc[] page.
 
 For more information on user management with TypeDB driver API,
-see the xref:drivers::python/api-reference.adoc#_UserManager[Python],
-xref:drivers::rust/api-reference.adoc#_struct_UserManager[Rust],
-xref:drivers::java/api-reference.adoc#_UserManager[Java],
-xref:drivers::nodejs/api-reference.adoc#_UserManager[Node.js] API Reference pages.
+see the xref:{page-component-version}@drivers::python/api-reference.adoc#_UserManager[Python],
+xref:{page-component-version}@drivers::rust/api-reference.adoc#_struct_UserManager[Rust],
+xref:{page-component-version}@drivers::java/api-reference.adoc#_UserManager[Java],
+xref:{page-component-version}@drivers::nodejs/api-reference.adoc#_UserManager[Node.js] API Reference pages.
 
 [#_first_login]
 == Change password on first login

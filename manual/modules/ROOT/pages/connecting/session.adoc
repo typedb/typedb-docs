@@ -10,14 +10,14 @@ To open a session, you need to choose a session type and an existing database.
 
 A *session* represents an active connection to a specific database on a TypeDB server,
 and it can be of two types: `schema` and `data`.
-The `schema` session type is specifically employed for xref:typeql::queries/define.adoc[Define] and
-xref:typeql::queries/undefine.adoc[Undefine] queries.
+The `schema` session type is specifically employed for xref:{page-component-version}@typeql::queries/define.adoc[Define] and
+xref:{page-component-version}@typeql::queries/undefine.adoc[Undefine] queries.
 
 
 == Open a new session
 
 Before you begin, Make sure to create a new database
-using instructions from the xref:manual::connecting/database.adoc[] page. To open a session to a database, you need to have a connection to the server and know the name of the database.
+using instructions from the xref:{page-component-version}@manual::connecting/database.adoc[] page. To open a session to a database, you need to have a connection to the server and know the name of the database.
 
 [tabs]
 ====
@@ -36,11 +36,11 @@ Console::
 --
 Console controls sessions automatically.
 
-You choose a session type when you open a xref:manual::connecting/transaction.adoc[transaction].
+You choose a session type when you open a xref:{page-component-version}@manual::connecting/transaction.adoc[transaction].
 --
 ====
 
-xref:drivers::index.adoc[TypeDB drivers]
+xref:{page-component-version}@drivers::index.adoc[TypeDB drivers]
 provide manual session control via native API:
 
 [tabs]
@@ -51,8 +51,8 @@ Rust::
 .Open a session
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tag=databases,indent=12]
-include::manual::partial$rust-manual-code.rs[tag=session_open]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tag=databases,indent=12]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tag=session_open]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -64,7 +64,7 @@ Python::
 .Open a session
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tag=session_open]
+include::{page-component-version}@manual::partial$python-manual-code.py[tag=session_open]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -76,7 +76,7 @@ Node.js::
 .Open a session
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tag=session_open]
+include::{page-component-version}@manual::partial$nodejs-manual-code.js[tag=session_open]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -88,7 +88,7 @@ Java::
 .Open a session
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tag=session_open]
+include::{page-component-version}@manual::partial$java-manual-code.java[tag=session_open]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -100,7 +100,7 @@ C#::
 .Open a session
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tag=session_open]
+include::{page-component-version}@manual::partial$csharp-manual-code.cs[tag=session_open]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -112,7 +112,7 @@ C++::
 .Open a session
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tag=session_open]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tag=session_open]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -124,7 +124,7 @@ C::
 .Open a session
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tag=session_open]
+include::{page-component-version}@manual::partial$c-manual-code.c[tag=session_open]
 ----
 
 Where `databaseManager` provides access to all database management methods for the TypeDB server,
@@ -140,7 +140,7 @@ session, see how to xref:connecting/transaction.adoc[open a transaction].
 
 Both Studio and Console manage sessions automatically.
 
-For manual session control, use xref:drivers::index.adoc[TypeDB drivers]:
+For manual session control, use xref:{page-component-version}@drivers::index.adoc[TypeDB drivers]:
 
 [tabs]
 ====
@@ -150,12 +150,12 @@ Rust::
 A session is automatically closed when the variable containing it is dropped from memory.
 
 To explicitly close a session,
-use the xref:drivers::rust/api-reference.adoc#_struct_Session_force_close__[force_close] method:
+use the xref:{page-component-version}@drivers::rust/api-reference.adoc#_struct_Session_force_close__[force_close] method:
 
 .Close a session
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tag=session_close]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tag=session_close]
 ----
 --
 
@@ -163,24 +163,24 @@ Python::
 +
 --
 Use a https://peps.python.org/pep-0343/[context manager] to close a session when it's longer needed,
-or use the xref:drivers::python/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
+or use the xref:{page-component-version}@drivers::python/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
 
 .Close a session
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tag=session_close]
+include::{page-component-version}@manual::partial$python-manual-code.py[tag=session_close]
 ----
 --
 
 Node.js::
 +
 --
-Use the xref:drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
+Use the xref:{page-component-version}@drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
 
 .Close a session
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tag=session_close]
+include::{page-component-version}@manual::partial$nodejs-manual-code.js[tag=session_close]
 ----
 --
 
@@ -189,12 +189,12 @@ Java::
 --
 Use the https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html[Try with resources] statement
 to close a session when it's longer needed, or use the
-xref:drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
+xref:{page-component-version}@drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method to explicitly close a session:
 
 .Close a session
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tag=session_close]
+include::{page-component-version}@manual::partial$java-manual-code.java[tag=session_close]
 ----
 --
 
@@ -204,12 +204,12 @@ C#::
 A session is automatically closed when the variable containing it is dropped from memory.
 
 To explicitly close a session,
-use the xref:drivers::csharp/api-reference.adoc#_void_TypeDB_Driver_Api_ITypeDBSession_Close___[close] method:
+use the xref:{page-component-version}@drivers::csharp/api-reference.adoc#_void_TypeDB_Driver_Api_ITypeDBSession_Close___[close] method:
 
 .Close a session
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tag=session_close]
+include::{page-component-version}@manual::partial$csharp-manual-code.cs[tag=session_close]
 ----
 --
 
@@ -219,12 +219,12 @@ C++::
 A session is automatically closed when the variable containing it is dropped from memory.
 
 To explicitly close a session,
-use the xref:drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method:
+use the xref:{page-component-version}@drivers::java/api-reference.adoc#_TypeDBSession_close__[close] method:
 
 .Close a session
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tag=session_close]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tag=session_close]
 ----
 --
 
@@ -232,12 +232,12 @@ C::
 +
 --
 To close a session,
-use the xref:drivers::c/api-reference.adoc#_session_close[close] method:
+use the xref:{page-component-version}@drivers::c/api-reference.adoc#_session_close[close] method:
 
 .Close a session
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tag=session_close]
+include::{page-component-version}@manual::partial$c-manual-code.c[tag=session_close]
 ----
 --
 ====
@@ -264,13 +264,13 @@ xref:transactions.adoc#_schema_integrity[Schema integrity enforcement] section o
 
 [cols-2]
 --
-.xref:manual::connecting/transaction.adoc[]
+.xref:{page-component-version}@manual::connecting/transaction.adoc[]
 [.clickable]
 ****
 See how to manage transactions in TypeDB.
 ****
 
-.xref:manual::defining/index.adoc[]
+.xref:{page-component-version}@manual::defining/index.adoc[]
 [.clickable]
 ****
 See how to define a schema for your database.

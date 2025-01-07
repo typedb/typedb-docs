@@ -5,10 +5,10 @@
 
 A Define query extends the schema of a database with new schema statements. 
 For a practical guide on how to send a Define query to TypeDB,
-see the xref:manual::defining/define.adoc[] page of the TypeDB Manual.
+see the xref:{page-component-version}@manual::defining/define.adoc[] page of the TypeDB Manual.
 
 // For more information on the limitations of schema manipulations, see the
-// xref:home::acid.adoc#_schema_integrity[Schema integrity enforcement].
+// xref:{page-component-version}@home::acid.adoc#_schema_integrity[Schema integrity enforcement].
 
 [#_syntax]
 == Syntax
@@ -24,21 +24,21 @@ define <schema_definitions>
 ----
 
 where `<schema_definitions>` are valid schema-specific TypeQL statements:
-xref:typeql::statements/sub.adoc[],
-xref:typeql::statements/abstract.adoc[],
-xref:typeql::statements/owns.adoc[],
-xref:typeql::statements/value.adoc[],
-xref:typeql::statements/regex.adoc[],
-xref:typeql::statements/relates.adoc[],
-xref:typeql::statements/plays.adoc[],
-xref:typeql::statements/rule.adoc[],
-and annotations: xref:typeql::statements/key.adoc[] and xref:typeql::statements/unique.adoc[].
+xref:{page-component-version}@typeql::statements/sub.adoc[],
+xref:{page-component-version}@typeql::statements/abstract.adoc[],
+xref:{page-component-version}@typeql::statements/owns.adoc[],
+xref:{page-component-version}@typeql::statements/value.adoc[],
+xref:{page-component-version}@typeql::statements/regex.adoc[],
+xref:{page-component-version}@typeql::statements/relates.adoc[],
+xref:{page-component-version}@typeql::statements/plays.adoc[],
+xref:{page-component-version}@typeql::statements/rule.adoc[],
+and annotations: xref:{page-component-version}@typeql::statements/key.adoc[] and xref:{page-component-version}@typeql::statements/unique.adoc[].
 Schema statements in a `define` clause can't use any variables or values, except for xref:statements/rule.adoc[rules].
 // end::syntax[]
 
 // For more information on defining rules, see the xref:schema/rule-definitions.adoc[] page.
 // For more information on defining types, ownerships, and roleplayers,
-// see below and the xref:typeql::schema/type-definitions.adoc[].
+// see below and the xref:{page-component-version}@typeql::schema/type-definitions.adoc[].
 
 == Behavior
 
@@ -47,7 +47,7 @@ A Define query adds schema statements to an existing schema.
 These statements can add new types and rules,
 or they can add new properties to existing types and replace existing rules.
 Define queries can't change schema statements already existing in a schema, except for
-xref:typeql::statements/index.adoc#_annotation_statements[annotations] and
+xref:{page-component-version}@typeql::statements/index.adoc#_annotation_statements[annotations] and
 xref:statements/rule.adoc[rules].
 
 === Query execution
@@ -66,14 +66,14 @@ A successful Define query returns a promise of an empty response.
 
 == Define types
 
-To define a new type, subtype an existing type with a xref:typeql::statements/sub.adoc[sub] statement.
-Use xref:typeql::statements/owns.adoc[owns] statements to assign an ability to own attribute types.
+To define a new type, subtype an existing type with a xref:{page-component-version}@typeql::statements/sub.adoc[sub] statement.
+Use xref:{page-component-version}@typeql::statements/owns.adoc[owns] statements to assign an ability to own attribute types.
 
-For roles on relations, use xref:typeql::statements/relates.adoc[relates] and
-xref:typeql::statements/plays.adoc[plays] statements.
+For roles on relations, use xref:{page-component-version}@typeql::statements/relates.adoc[relates] and
+xref:{page-component-version}@typeql::statements/plays.adoc[plays] statements.
 
 Simple statements about the same subject can be combined in a
-xref:typeql::statements/index.adoc#_composite_statements[composite statement].
+xref:{page-component-version}@typeql::statements/index.adoc#_composite_statements[composite statement].
 
 .Defining types example
 [,typeql]
@@ -103,9 +103,9 @@ The above example defines four attribute types, three entity types, and a single
 
 == Define rules
 
-include::typeql::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
-Use a xref:typeql::statements/rule.adoc[rule] statement to define a new rule or replace an existing one:
+Use a xref:{page-component-version}@typeql::statements/rule.adoc[rule] statement to define a new rule or replace an existing one:
 
 .Defining a rule example
 [,typeql]
@@ -127,13 +127,13 @@ rule add-view-permission: when {
 
 [cols-2]
 --
-.xref:academy::5-defining-schemas/index.adoc[]
+.xref:{page-component-version}@academy::5-defining-schemas/index.adoc[]
 [.clickable]
 ****
 Learn more about defining a schema in TypeDB Academy.
 ****
 
-.xref:manual::defining/define.adoc[]
+.xref:{page-component-version}@manual::defining/define.adoc[]
 [.clickable]
 ****
 See how to send a Define query to TypeDB.

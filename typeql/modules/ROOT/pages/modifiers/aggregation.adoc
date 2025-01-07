@@ -26,7 +26,7 @@ Aggregation can be used alongside grouping and in subqueries, which affects the 
 [#_count]
 == Usage for counting results
 
-include::typeql::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 For any Get query, to count the number of results returned,
 add the `count` keyword at the end of the query with a semicolon.
@@ -47,7 +47,7 @@ See the next example below.
 
 == Usage for numeric values
 
-include::typeql::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 For `long` or `double` values represented by a value variable or by a concept variable mapped to an attribute,
 we can use aggregation to compute an output based on all returned values.
@@ -66,7 +66,7 @@ sum $s;
 Omitting the variable `$f` in the `get` clause of the above query will result in missing all duplicated values
 of `$s` from the aggregation.
 For more information,
-see the xref:typeql::queries/get.adoc#_number_of_results[number of results] section on the Get query page.
+see the xref:{page-component-version}@typeql::queries/get.adoc#_number_of_results[number of results] section on the Get query page.
 ====
 
 ////
@@ -135,13 +135,13 @@ std $s;
 
 [cols-2]
 --
-.xref:typeql::modifiers/grouping.adoc[]
+.xref:{page-component-version}@typeql::modifiers/grouping.adoc[]
 [.clickable]
 ****
 Learn about results grouping in TypeQL.
 ****
 
-.xref:typeql::queries/get.adoc[]
+.xref:{page-component-version}@typeql::queries/get.adoc[]
 [.clickable]
 ****
 Learn about Get queries in TypeQL.

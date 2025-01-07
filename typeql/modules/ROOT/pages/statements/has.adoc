@@ -1,0 +1,100 @@
+= has
+
+The `has` keyword is used in TypeQL patterns to specify an owner for an attribute.
+
+== Syntax
+
+The syntax of a `has` statement includes:
+
+* Subject -- a concept variable representing a data instance
+* Predicate -- the `has` keyword
+* Object -- an attribute represented by an optional attribute type with a concept variable or literal value
+
+.Syntax
+[,typeql]
+----
+<data-instance> has <attribute>;
+----
+
+== Behavior
+
+TypeQL statements with the `has` keyword can be used in data queries
+to set a constraint of owning a particular attribute.
+
+== Usage in a match pattern
+
+include::typeql::partial$iam-database-links.adoc[]
+
+To match a particular person by the value of the full-name it owns and return an email it owns:
+
+.has statement example
+[,typeql]
+----
+match
+$p isa person, has full-name "Kevin Morrison", has email $e;
+fetch $e;
+----
+
+.See example output
+[%collapsible]
+====
+.Output example
+[,json]
+----
+{ "e": { "value": "kevin.morrison@typedb.com", "type": { "label": "email", "root": "attribute", "value_type": "string" } } }
+----
+====
+
+== Usage in an insert pattern
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Let's insert a new email for an existing person:
+
+.Insert has example
+[,typeql]
+----
+match
+$p isa person, has full-name "Kevin Morrison";
+insert
+$p has email "m.kevin@gmail.com";
+----
+
+By inserting ownership of an attribute that doesn't exist in the database yet, we implicitly create such an attribute.
+
+== Usage in a delete pattern
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Let's delete an ownership of the new email from the same person:
+
+.Delete has example
+[,typeql]
+----
+match
+$p isa person, has full-name "Kevin Morrison", has email $e;
+$e == "m.kevin@gmail.com";
+delete
+$p has $e;
+----
+
+The above example deletes only ownership, but the email attribute itself is still in the database.
+To delete the attribute, use the `isa` statement in a `delete` clause, for example,
+see the xref:typeql::statements/isa.adoc#_in_a_delete_pattern[isa] page.
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::concepts/types.adoc[]
+[.clickable]
+****
+Learn about types in TypeQL.
+****
+
+.xref:typeql::concepts/data-instances.adoc[]
+[.clickable]
+****
+Learn about data instances in TypeQL.
+****
+--

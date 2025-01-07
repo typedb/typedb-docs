@@ -115,12 +115,12 @@ $c has score $d;
 $e ($b, action: $c);
 ----
 
-Thus, in order to determine the return types of variables in a query, TypeDB solves each pattern as a constraint satisfaction problem, in which each statement captures one or more constraints. This is the process of *type inference*. In this example, `$user` only had a single possible return type, but we have previously seen queries in which variables have multiple possible return types, notable in xref:academy::3-reading-data/3.2-fetching-polymorphic-data.adoc[Lesson 3.2].
+Thus, in order to determine the return types of variables in a query, TypeDB solves each pattern as a constraint satisfaction problem, in which each statement captures one or more constraints. This is the process of *type inference*. In this example, `$user` only had a single possible return type, but we have previously seen queries in which variables have multiple possible return types, notable in xref:{page-component-version}@academy::3-reading-data/3.2-fetching-polymorphic-data.adoc[Lesson 3.2].
 
 .Exercise
 [caption=""]
 ====
-We encountered the following Fetch query in xref:academy::3-reading-data/3.5-query-validation.adoc[Lesson 3.5], which retrieves the IDs of orders being sent to a city other than the city of the user that placed the order. The role names have been omitted now, as they are actually unnecessary for this particular query to be interpreted correctly.
+We encountered the following Fetch query in xref:{page-component-version}@academy::3-reading-data/3.5-query-validation.adoc[Lesson 3.5], which retrieves the IDs of orders being sent to a city other than the city of the user that placed the order. The role names have been omitted now, as they are actually unnecessary for this particular query to be interpreted correctly.
 
 [,typeql]
 ----
@@ -143,7 +143,7 @@ By identifying constraints present in the query and comparing them to the bookst
 =====
 [,typeql]
 ----
-include::academy::attachment$bookstore-schema.tql[lines=18..]
+include::{page-component-version}@academy::attachment$bookstore-schema.tql[lines=18..]
 ----
 =====
 
@@ -153,7 +153,7 @@ include::academy::attachment$bookstore-schema.tql[lines=18..]
 The only possible return type for `$destination` is `address`, as it is the only type that plays a role in both `delivery` and `locating`.
 =====
 
-We encountered the following Fetch query in xref:academy::3-reading-data/3.2-fetching-polymorphic-data.adoc[Lesson 3.2], which retrieves the details of any book that a particular user has interacted with via any kind of system action they performed.
+We encountered the following Fetch query in xref:{page-component-version}@academy::3-reading-data/3.2-fetching-polymorphic-data.adoc[Lesson 3.2], which retrieves the details of any book that a particular user has interacted with via any kind of system action they performed.
 
 [,typeql]
 ----
@@ -178,7 +178,7 @@ The possible return types for `$action` are `order` and `reivew`, as they are th
 == Pattern validation
 
 We have seen in
-Lessons xref:academy::3-reading-data/3.5-query-validation.adoc[3.5] and xref:academy::4-writing-data/4.5-data-validation.adoc[4.5] that TypeDB validates queries, both to retrieve and to modify data. This is done by resolving the query's patterns via type inference. Previously in this lesson, we have seen how TypeDB infers return types for each variable in a pattern. Now consider the following Fetch query.
+Lessons xref:{page-component-version}@academy::3-reading-data/3.5-query-validation.adoc[3.5] and xref:{page-component-version}@academy::4-writing-data/4.5-data-validation.adoc[4.5] that TypeDB validates queries, both to retrieve and to modify data. This is done by resolving the query's patterns via type inference. Previously in this lesson, we have seen how TypeDB infers return types for each variable in a pattern. Now consider the following Fetch query.
 
 [,typeql]
 ----
@@ -199,4 +199,4 @@ insert
 $odyssey has stock 20;
 ----
 
-We encountered this invalid query in xref:academy::4-writing-data/4.5-data-validation.adoc[Lesson 4.5]. The problem here is that `ebook` does not own `stock`. This highlights an additional consideration. If we consider just the pattern in the `match` clause, it is perfectly well-formed. It is only when we combine it with the pattern in the `insert` clause that a problem occurs. The `insert` and `delete` clauses of Insert, Delete, and Update queries also contain patterns, in the same way as `match` clauses. When validating a write query with multiple patterns, TypeDB validates those patterns in *conjunction*, so their constituent constraints must _all_ be solved simultaneously.
+We encountered this invalid query in xref:{page-component-version}@academy::4-writing-data/4.5-data-validation.adoc[Lesson 4.5]. The problem here is that `ebook` does not own `stock`. This highlights an additional consideration. If we consider just the pattern in the `match` clause, it is perfectly well-formed. It is only when we combine it with the pattern in the `insert` clause that a problem occurs. The `insert` and `delete` clauses of Insert, Delete, and Update queries also contain patterns, in the same way as `match` clauses. When validating a write query with multiple patterns, TypeDB validates those patterns in *conjunction*, so their constituent constraints must _all_ be solved simultaneously.

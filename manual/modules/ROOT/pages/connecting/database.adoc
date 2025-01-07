@@ -6,13 +6,13 @@ and deleting databases with Studio, Console, or one of the drivers.
 == Understanding database operation
 
 TypeDB stores data in *isolated* databases, each comprising a schema and data.
-//xref:typeql::schema/index.adoc[schema] and xref:typeql::data/index.adoc[data].
+//xref:{page-component-version}@typeql::schema/index.adoc[schema] and xref:{page-component-version}@typeql::data/index.adoc[data].
 These databases operate independently, ensuring that one database cannot affect another.
 Nevertheless, a TypeDB client can connect to and interact with *multiple* databases concurrently.
 
 == Create a new database
 
-Before you begin, make sure to follow the instructions on the xref:manual::connecting/connection.adoc[]
+Before you begin, make sure to follow the instructions on the xref:{page-component-version}@manual::connecting/connection.adoc[]
 page to connect to TypeDB before proceeding. To create a new database, follow the steps below:
 
 [tabs]
@@ -20,8 +20,8 @@ page to connect to TypeDB before proceeding. To create a new database, follow th
 Studio::
 +
 --
-. Open Studio's Database manager window by clicking on the database icon image:home::studio-icons/svg/studio_dbs.svg[width=24] in the top toolbar.
-include::manual::studio.adoc[tag=create_db_studio]
+. Open Studio's Database manager window by clicking on the database icon image::{page-component-version}@home::studio-icons/svg/studio_dbs.svg[width=24] in the top toolbar.
+include::{page-component-version}@manual::studio.adoc[tag=create_db_studio]
 
 The newly created database should appear in the drop-down selector of the top toolbar.
 --
@@ -40,7 +40,7 @@ Where `sample_db` is the name of the database.
 --
 ====
 
-To create a new database programmatically, use xref:drivers::index.adoc[drivers]:
+To create a new database programmatically, use xref:{page-component-version}@drivers::index.adoc[drivers]:
 
 [tabs]
 ====
@@ -49,8 +49,8 @@ Rust::
 --
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tags=databases]
-include::manual::partial$rust-manual-code.rs[tags=create-db]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=databases]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=create-db]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -61,7 +61,7 @@ Python::
 --
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tags=create-db]
+include::{page-component-version}@manual::partial$python-manual-code.py[tags=create-db]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -72,7 +72,7 @@ Node.js::
 --
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tags=create-db]
+include::{page-component-version}@manual::partial$nodejs-manual-code.js[tags=create-db]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -83,7 +83,7 @@ Java::
 --
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tags=create-db]
+include::{page-component-version}@manual::partial$java-manual-code.java[tags=create-db]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -94,7 +94,7 @@ C#::
 --
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tags=create-db]
+include::{page-component-version}@manual::partial$csharp-manual-code.cs[tags=create-db]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -105,7 +105,7 @@ C++::
 --
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tags=create-db]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tags=create-db]
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `DB_NAME` is the name of the database.
@@ -116,7 +116,7 @@ C::
 --
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tags=create-db]
+include::{page-component-version}@manual::partial$c-manual-code.c[tags=create-db]
 ----
 
 Where `databaseManager` provides access to all database management methods for the TypeDB server,
@@ -133,8 +133,8 @@ To delete a database with all its data and schema, follow the steps below:
 Studio::
 +
 --
-. Open Studio's Database manager window by clicking on the database icon image:home::studio-icons/svg/studio_dbs.svg[width=24] in the top toolbar.
-include::manual::studio.adoc[tag=delete_db_studio]
+. Open Studio's Database manager window by clicking on the database icon image::{page-component-version}@home::studio-icons/svg/studio_dbs.svg[width=24] in the top toolbar.
+include::{page-component-version}@manual::studio.adoc[tag=delete_db_studio]
 
 --
 
@@ -150,7 +150,7 @@ Where `sample_db` is the name of the database.
 --
 ====
 
-To delete a database programmatically, use xref:drivers::index.adoc[drivers]:
+To delete a database programmatically, use xref:{page-component-version}@drivers::index.adoc[drivers]:
 
 [tabs]
 ====
@@ -159,8 +159,8 @@ Rust::
 --
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tags=databases, indent=8]
-include::manual::partial$rust-manual-code.rs[tags=delete-db]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=databases, indent=8]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=delete-db]
 ----
 --
 
@@ -169,7 +169,7 @@ Python::
 --
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tags=delete-db]
+include::{page-component-version}@manual::partial$python-manual-code.py[tags=delete-db]
 ----
 --
 
@@ -178,7 +178,7 @@ Node.js::
 --
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tags=delete-db]
+include::{page-component-version}@manual::partial$nodejs-manual-code.js[tags=delete-db]
 ----
 --
 
@@ -187,7 +187,7 @@ Java::
 --
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tags=delete-db]
+include::{page-component-version}@manual::partial$java-manual-code.java[tags=delete-db]
 ----
 --
 
@@ -196,7 +196,7 @@ C#::
 --
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tags=delete-db]
+include::{page-component-version}@manual::partial$csharp-manual-code.cs[tags=delete-db]
 ----
 --
 
@@ -205,7 +205,7 @@ C++::
 --
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tags=delete-db]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tags=delete-db]
 ----
 --
 
@@ -214,7 +214,7 @@ C::
 --
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tags=delete-db]
+include::{page-component-version}@manual::partial$c-manual-code.c[tags=delete-db]
 ----
 --
 ====
@@ -228,8 +228,8 @@ To retrieve a full list of databases on a server, follow the steps below:
 Studio::
 +
 --
-. Open Studio's Database manager window by clicking on the database icon image:home::studio-icons/svg/studio_dbs.svg[width=24] in the top toolbar.
-. Open the drop-down list in the top toolbar next to the database icon image:home::studio-icons/svg/studio_dbs.svg[width=24].
+. Open Studio's Database manager window by clicking on the database icon image::{page-component-version}@home::studio-icons/svg/studio_dbs.svg[width=24] in the top toolbar.
+. Open the drop-down list in the top toolbar next to the database icon image::{page-component-version}@home::studio-icons/svg/studio_dbs.svg[width=24].
 --
 
 Console::
@@ -242,7 +242,7 @@ database list
 --
 ====
 
-To get a list of databases programmatically, use xref:drivers::index.adoc[drivers]:
+To get a list of databases programmatically, use xref:{page-component-version}@drivers::index.adoc[drivers]:
 
 [tabs]
 ====
@@ -251,7 +251,7 @@ Rust::
 --
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tags=list-db]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=list-db]
 ----
 --
 
@@ -260,7 +260,7 @@ Python::
 --
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tags=list-db]
+include::{page-component-version}@manual::partial$python-manual-code.py[tags=list-db]
 ----
 --
 
@@ -269,7 +269,7 @@ Node.js::
 --
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tags=list-db]
+include::{page-component-version}@manual::partial$nodejs-manual-code.js[tags=list-db]
 ----
 --
 
@@ -278,7 +278,7 @@ Java::
 --
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tags=list-db]
+include::{page-component-version}@manual::partial$java-manual-code.java[tags=list-db]
 ----
 --
 
@@ -287,7 +287,7 @@ C#::
 --
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tags=list-db]
+include::{page-component-version}@manual::partial$csharp-manual-code.cs[tags=list-db]
 ----
 --
 
@@ -296,7 +296,7 @@ C++::
 --
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tags=list-db]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tags=list-db]
 ----
 --
 
@@ -305,7 +305,7 @@ C::
 --
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tags=list-db]
+include::{page-component-version}@manual::partial$c-manual-code.c[tags=list-db]
 ----
 --
 ====
@@ -314,13 +314,13 @@ include::manual::partial$c-manual-code.c[tags=list-db]
 
 [cols-2]
 --
-.xref:manual::connecting/session.adoc[]
+.xref:{page-component-version}@manual::connecting/session.adoc[]
 [.clickable]
 ****
 See how to manage sessions in TypeDB.
 ****
 
-.xref:manual::connecting/transaction.adoc[]
+.xref:{page-component-version}@manual::connecting/transaction.adoc[]
 [.clickable]
 ****
 See how to manage transactions in TypeDB.

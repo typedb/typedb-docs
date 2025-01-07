@@ -1,12 +1,12 @@
 = Explanation objects
 
 In this guide, you'll learn how to use driver API methods and stateful objects to programmatically work with explanations. 
-This page assumes you've already followed instructions from the xref:manual::reading/infer.adoc[] page.
+This page assumes you've already followed instructions from the xref:{page-component-version}@manual::reading/infer.adoc[] page.
 
 == Understanding explanations
 
 TypeDB has explainable rule-based data inference feature: explanations represent chains of reasoning that yield a conclusions. The Driver API provides methods to programmatically work with explanations as objects.
-To learn how to use explanations in TypeDB Studio, see the xref:manual::studio.adoc#_explanation[explanation]
+To learn how to use explanations in TypeDB Studio, see the xref:{page-component-version}@manual::studio.adoc#_explanation[explanation]
 section of the TypeDB Studio Manual.
 
 
@@ -25,12 +25,12 @@ Rust::
 .Example
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tag=explainables]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tag=explainables]
 ----
 
 For more information,
-see the xref:drivers::rust/api-reference.adoc#_struct_Explainables[Explainables] and
-xref:drivers::rust/api-reference.adoc#_struct_Explainable[Explainable] classes.
+see the xref:{page-component-version}@drivers::rust/api-reference.adoc#_struct_Explainables[Explainables] and
+xref:{page-component-version}@drivers::rust/api-reference.adoc#_struct_Explainable[Explainable] classes.
 --
 
 Python::
@@ -39,11 +39,11 @@ Python::
 .Example
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tag=explainables]
+include::{page-component-version}@manual::partial$python-manual-code.py[tag=explainables]
 ----
 For more information,
-see the xref:drivers::python/api-reference.adoc#_Explainables[Explainables] and
-xref:drivers::python/api-reference.adoc#_Explainable[Explainable] classes.
+see the xref:{page-component-version}@drivers::python/api-reference.adoc#_Explainables[Explainables] and
+xref:{page-component-version}@drivers::python/api-reference.adoc#_Explainable[Explainable] classes.
 --
 
 Node.js::
@@ -52,11 +52,11 @@ Node.js::
 .Example
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tag=explainables]
+include::{page-component-version}@manual::partial$nodejs-manual-code.js[tag=explainables]
 ----
 For more information,
-see the xref:drivers::nodejs/api-reference.adoc#_Explainables[Explainables] and
-xref:drivers::nodejs/api-reference.adoc#_Explainable[Explainable] classes.
+see the xref:{page-component-version}@drivers::nodejs/api-reference.adoc#_Explainables[Explainables] and
+xref:{page-component-version}@drivers::nodejs/api-reference.adoc#_Explainable[Explainable] classes.
 --
 
 Java::
@@ -65,11 +65,11 @@ Java::
 .Example
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tag=explainables]
+include::{page-component-version}@manual::partial$java-manual-code.java[tag=explainables]
 ----
 For more information,
-see the xref:drivers::java/api-reference.adoc#_ConceptMap_Explainables[Explainables] and
-xref:drivers::java/api-reference.adoc#_ConceptMap_Explainable[Explainable] classes.
+see the xref:{page-component-version}@drivers::java/api-reference.adoc#_ConceptMap_Explainables[Explainables] and
+xref:{page-component-version}@drivers::java/api-reference.adoc#_ConceptMap_Explainable[Explainable] classes.
 --
 
 C#::
@@ -78,11 +78,11 @@ C#::
 .Example
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tag=explainables]
+include::{page-component-version}@manual::partial$csharp-manual-code.cs[tag=explainables]
 ----
 For more information,
-see the xref:drivers::csharp/api-reference.adoc#_IExplainables[IExplainables] and
-xref:drivers::csharp/api-reference.adoc#_IExplainable[IExplainable] classes.
+see the xref:{page-component-version}@drivers::csharp/api-reference.adoc#_IExplainables[IExplainables] and
+xref:{page-component-version}@drivers::csharp/api-reference.adoc#_IExplainable[IExplainable] classes.
 --
 
 C++::
@@ -91,11 +91,11 @@ C++::
 .Example
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tag=explainables]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tag=explainables]
 ----
 For more information,
-see the xref:drivers::cpp/api-reference.adoc#_Explainables[Explainables] and
-xref:drivers::cpp/api-reference.adoc#_Explainable[Explainable] classes.
+see the xref:{page-component-version}@drivers::cpp/api-reference.adoc#_Explainables[Explainables] and
+xref:{page-component-version}@drivers::cpp/api-reference.adoc#_Explainable[Explainable] classes.
 --
 
 C::
@@ -104,7 +104,7 @@ C::
 .Example
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tag=explainables]
+include::{page-component-version}@manual::partial$c-manual-code.c[tag=explainables]
 ----
 --
 ====
@@ -125,12 +125,12 @@ Rust::
 .Example
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tag=explain]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tag=explain]
 ----
 For more information, see the
-xref:drivers::rust/api-reference.adoc#_struct_QueryManager_explain__[Explain query]
+xref:{page-component-version}@drivers::rust/api-reference.adoc#_struct_QueryManager_explain__[Explain query]
 and
-xref:drivers::rust/api-reference.adoc#_struct_Explainable[Explainable class] methods.
+xref:{page-component-version}@drivers::rust/api-reference.adoc#_struct_Explainable[Explainable class] methods.
 --
 
 Python::
@@ -139,12 +139,12 @@ Python::
 .Example
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tag=explain]
+include::{page-component-version}@manual::partial$python-manual-code.py[tag=explain]
 ----
 For more information, see the
-xref:drivers::python/api-reference.adoc#_QueryManager_explain__explainable_ConceptMap_Explainable__options_TypeDBOptions__None[Explain query]
+xref:{page-component-version}@drivers::python/api-reference.adoc#_QueryManager_explain__explainable_ConceptMap_Explainable__options_TypeDBOptions__None[Explain query]
 and
-xref:drivers::python/api-reference.adoc#_Explainable[Explainable class] methods.
+xref:{page-component-version}@drivers::python/api-reference.adoc#_Explainable[Explainable class] methods.
 --
 
 Node.js::
@@ -153,12 +153,12 @@ Node.js::
 .Example
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tag=explain]
+include::{page-component-version}@manual::partial$nodejs-manual-code.js[tag=explain]
 ----
 For more information, see the
-xref:drivers::nodejs/api-reference.adoc#_QueryManager_explain__explainable_Explainable__options_TypeDBOptions[Explain query]
+xref:{page-component-version}@drivers::nodejs/api-reference.adoc#_QueryManager_explain__explainable_Explainable__options_TypeDBOptions[Explain query]
 and
-xref:drivers::nodejs/api-reference.adoc#_Explainable[Explainable class] methods.
+xref:{page-component-version}@drivers::nodejs/api-reference.adoc#_Explainable[Explainable class] methods.
 --
 
 Java::
@@ -167,12 +167,12 @@ Java::
 .Example
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tag=explain]
+include::{page-component-version}@manual::partial$java-manual-code.java[tag=explain]
 ----
 For more information, see the
-xref:drivers::java/api-reference.adoc#_QueryManager_explain__ConceptMap_Explainable[Explain query]
+xref:{page-component-version}@drivers::java/api-reference.adoc#_QueryManager_explain__ConceptMap_Explainable[Explain query]
 and
-xref:drivers::java/api-reference.adoc#_ConceptMap_Explainable[Explainable class] methods.
+xref:{page-component-version}@drivers::java/api-reference.adoc#_ConceptMap_Explainable[Explainable class] methods.
 --
 
 C#::
@@ -181,12 +181,12 @@ C#::
 .Example
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tag=explain]
+include::{page-component-version}@manual::partial$csharp-manual-code.cs[tag=explain]
 ----
 For more information, see the
-xref:drivers::csharp/api-reference.adoc#_IEnumerable__IExplanation___TypeDB_Driver_Api_IQueryManager_Explain___IConceptMap_IExplainable_explainable_[Explain query]
+xref:{page-component-version}@drivers::csharp/api-reference.adoc#_IEnumerable__IExplanation___TypeDB_Driver_Api_IQueryManager_Explain___IConceptMap_IExplainable_explainable_[Explain query]
 and
-xref:drivers::csharp/api-reference.adoc#_IExplainable[IExplainable class] methods.
+xref:{page-component-version}@drivers::csharp/api-reference.adoc#_IExplainable[IExplainable class] methods.
 --
 
 C++::
@@ -195,12 +195,12 @@ C++::
 .Example
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tag=explain]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tag=explain]
 ----
 For more information, see the
-xref:drivers::cpp/api-reference.adoc#_ExplanationIterable_TypeDBQueryManagerexplain___const_Explainable__explainable__const_Options___Options_____const[Explain query]
+xref:{page-component-version}@drivers::cpp/api-reference.adoc#_ExplanationIterable_TypeDBQueryManagerexplain___const_Explainable__explainable__const_Options___Options_____const[Explain query]
 and
-xref:drivers::cpp/api-reference.adoc#_Explainable[Explainable class] methods.
+xref:{page-component-version}@drivers::cpp/api-reference.adoc#_Explainable[Explainable class] methods.
 --
 
 C::
@@ -209,7 +209,7 @@ C::
 .Example
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tag=explain]
+include::{page-component-version}@manual::partial$c-manual-code.c[tag=explain]
 ----
 --
 ====
@@ -228,11 +228,11 @@ Rust::
 .Example
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tag=explanation]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tag=explanation]
 ----
 
 For more information,
-see the xref:drivers::rust/api-reference.adoc#_struct_Explanation[Explanation class] methods.
+see the xref:{page-component-version}@drivers::rust/api-reference.adoc#_struct_Explanation[Explanation class] methods.
 --
 
 Python::
@@ -241,10 +241,10 @@ Python::
 .Example
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tag=explanation]
+include::{page-component-version}@manual::partial$python-manual-code.py[tag=explanation]
 ----
 For more information,
-see the xref:drivers::python/api-reference.adoc#_Explanation[Explanation class] methods.
+see the xref:{page-component-version}@drivers::python/api-reference.adoc#_Explanation[Explanation class] methods.
 --
 
 Node.js::
@@ -253,10 +253,10 @@ Node.js::
 .Example
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tag=explanation]
+include::{page-component-version}@manual::partial$nodejs-manual-code.js[tag=explanation]
 ----
 For more information,
-see the xref:drivers::nodejs/api-reference.adoc#_Explanation[Explanation class] methods.
+see the xref:{page-component-version}@drivers::nodejs/api-reference.adoc#_Explanation[Explanation class] methods.
 --
 
 Java::
@@ -265,10 +265,10 @@ Java::
 .Example
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tag=explanation]
+include::{page-component-version}@manual::partial$java-manual-code.java[tag=explanation]
 ----
 For more information,
-see the xref:drivers::java/api-reference.adoc#_Explanation[Explanation class] methods.
+see the xref:{page-component-version}@drivers::java/api-reference.adoc#_Explanation[Explanation class] methods.
 --
 
 C#::
@@ -277,10 +277,10 @@ C#::
 .Example
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tag=explanation]
+include::{page-component-version}@manual::partial$csharp-manual-code.cs[tag=explanation]
 ----
 For more information,
-see the xref:drivers::csharp/api-reference.adoc#_IExplanation[IExplanation class] methods.
+see the xref:{page-component-version}@drivers::csharp/api-reference.adoc#_IExplanation[IExplanation class] methods.
 --
 
 C++::
@@ -289,10 +289,10 @@ C++::
 .Example
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tag=explanation]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tag=explanation]
 ----
 For more information,
-see the xref:drivers::cpp/api-reference.adoc#_Explanation[Explanation class] methods.
+see the xref:{page-component-version}@drivers::cpp/api-reference.adoc#_Explanation[Explanation class] methods.
 --
 
 C::
@@ -301,7 +301,7 @@ C::
 .Example
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tag=explanation]
+include::{page-component-version}@manual::partial$c-manual-code.c[tag=explanation]
 ----
 --
 ====
@@ -326,12 +326,12 @@ Rust::
 .Example
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
-include::manual::partial$rust-manual-code.rs[tags=explain-get]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=explain-get]
 ----
 
 For more information,
-see the xref:drivers::rust/api-reference.adoc#_struct_Explanation[Explanation class] methods.
+see the xref:{page-component-version}@drivers::rust/api-reference.adoc#_struct_Explanation[Explanation class] methods.
 --
 
 Python::
@@ -340,10 +340,10 @@ Python::
 .Example
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tags=explain-get]
+include::{page-component-version}@manual::partial$python-manual-code.py[tags=explain-get]
 ----
 For more information,
-see the xref:drivers::python/api-reference.adoc#_Explanation[Explanation class] methods.
+see the xref:{page-component-version}@drivers::python/api-reference.adoc#_Explanation[Explanation class] methods.
 --
 
 Node.js::
@@ -352,10 +352,10 @@ Node.js::
 .Example
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tags=explain-get]
+include::{page-component-version}@manual::partial$nodejs-manual-code.js[tags=explain-get]
 ----
 For more information,
-see the xref:drivers::nodejs/api-reference.adoc#_Explanation[Explanation class] methods.
+see the xref:{page-component-version}@drivers::nodejs/api-reference.adoc#_Explanation[Explanation class] methods.
 --
 
 Java::
@@ -364,10 +364,10 @@ Java::
 .Example
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tags=explain-get]
+include::{page-component-version}@manual::partial$java-manual-code.java[tags=explain-get]
 ----
 For more information,
-see the xref:drivers::java/api-reference.adoc#_Explanation[Explanation class] methods.
+see the xref:{page-component-version}@drivers::java/api-reference.adoc#_Explanation[Explanation class] methods.
 --
 
 C#::
@@ -376,10 +376,10 @@ C#::
 .Example
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tags=explain-get]
+include::{page-component-version}@manual::partial$csharp-manual-code.cs[tags=explain-get]
 ----
 For more information,
-see the xref:drivers::csharp/api-reference.adoc#_IExplanation[Explanation class] methods.
+see the xref:{page-component-version}@drivers::csharp/api-reference.adoc#_IExplanation[Explanation class] methods.
 --
 
 C++::
@@ -388,10 +388,10 @@ C++::
 .Example
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tags=explain-get]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tags=explain-get]
 ----
 For more information,
-see the xref:drivers::cpp/api-reference.adoc#_Explanation[Explanation class] methods.
+see the xref:{page-component-version}@drivers::cpp/api-reference.adoc#_Explanation[Explanation class] methods.
 --
 
 C::
@@ -400,7 +400,7 @@ C::
 .Example
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tags=explain-get]
+include::{page-component-version}@manual::partial$c-manual-code.c[tags=explain-get]
 ----
 --
 ====
@@ -409,13 +409,13 @@ include::manual::partial$c-manual-code.c[tags=explain-get]
 
 [cols-2]
 --
-.xref:manual::reading/infer.adoc[]
+.xref:{page-component-version}@manual::reading/infer.adoc[]
 [.clickable]
 ****
 Learn more about how to use inference in TypeDB.
 ****
 
-.xref:academy::3-reading-data/3.3-fetching-inferred-data.adoc[]
+.xref:{page-component-version}@academy::3-reading-data/3.3-fetching-inferred-data.adoc[]
 [.clickable]
 ****
 Check out the Fetching inferred data page of TypeDB Academy.
@@ -424,7 +424,7 @@ Check out the Fetching inferred data page of TypeDB Academy.
 
 [cols-1]
 --
-.xref:drivers::index.adoc[]
+.xref:{page-component-version}@drivers::index.adoc[]
 [.clickable]
 ****
 Learn more about TypeDB drivers: list of available drivers, installation guides, API reference.
@@ -433,4 +433,4 @@ Learn more about TypeDB drivers: list of available drivers, installation guides,
 
 For more information about driver API methods, see the API reference of the relevant driver:
 
-include::manual::reading/get.adoc[tags=drivers-api]
+include::{page-component-version}@manual::reading/get.adoc[tags=drivers-api]

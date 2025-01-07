@@ -48,7 +48,7 @@ brew install --cask typedb/tap/typedb-studio
 ----
 
 Or download and install TypeDB Studio manually:
-include::manual:resources:partial$typedb-studio-latest-links.adoc[tag=mac]
+include::{page-component-version}@manual:resources:partial$typedb-studio-latest-links.adoc[tag=mac]
 --
 
 Linux::
@@ -74,14 +74,14 @@ sudo apt install typedb-studio
 ----
 
 Or download and install TypeDB Studio manually:
-include::manual:resources:partial$typedb-studio-latest-links.adoc[tag=linux]
+include::{page-component-version}@manual:resources:partial$typedb-studio-latest-links.adoc[tag=linux]
 --
 
 Windows::
 +
 --
 Download the installer:
-include::manual:resources:partial$typedb-studio-latest-links.adoc[tag=windows]
+include::{page-component-version}@manual:resources:partial$typedb-studio-latest-links.adoc[tag=windows]
 
 The installation wizard will guide you through the process of installing TypeDB Studio.
 --
@@ -90,15 +90,15 @@ The installation wizard will guide you through the process of installing TypeDB 
 
 === Quickstart
 
-For a 5-minute tutorial on the basics of TypeDB and Studio, visit the xref:home::quickstart.adoc[].
+For a 5-minute tutorial on the basics of TypeDB and Studio, visit the xref:{page-component-version}@home::quickstart.adoc[].
 
-Or, for a complete TypeDB Studio usage guide, visit the xref:manual::studio.adoc[TypeDB Studio Manual].
+Or, for a complete TypeDB Studio usage guide, visit the xref:{page-component-version}@manual::studio.adoc[TypeDB Studio Manual].
 
 
 [#_studio_archive]
 === Use with older TypeDB versions
 
-include::manual::studio.adoc[tags="compat-intro,compat-table"]
+include::{page-component-version}@manual::studio.adoc[tags="compat-intro,compat-table"]
 
 
 [#_console]
@@ -125,7 +125,7 @@ Or download and install manually:
 TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
 . Download the right package for your system: TypeDB Console
-include::manual:resources:partial$typedb-console-latest-links.adoc[tag=mac]
+include::{page-component-version}@manual:resources:partial$typedb-console-latest-links.adoc[tag=mac]
 . Extract the archive and optionally create a symlink:
 +
 [source,console]
@@ -187,7 +187,7 @@ Or download and install manually:
 TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
 . Download the right package for your system: TypeDB Console
-include::manual:resources:partial$typedb-console-latest-links.adoc[tag=linux]
+include::{page-component-version}@manual:resources:partial$typedb-console-latest-links.adoc[tag=linux]
 . Extract the archive and optionally create a symlink:
 +
 [source,console]
@@ -204,7 +204,7 @@ Windows::
 . Ensure Java 11+ is installed. TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
 . Download the archive:
-include::manual:resources:partial$typedb-console-latest-links.adoc[tag=windows]
+include::{page-component-version}@manual:resources:partial$typedb-console-latest-links.adoc[tag=windows]
 . Extract the archive and optionally update your `PATH` environment variable:
 +
 [source,console]
@@ -233,59 +233,59 @@ List all available TypeDB Console commands:
 typedb console --help
 ----
 
-For a complete usage guide, visit the xref:manual::console.adoc[TypeDB Console Manual].
+For a complete usage guide, visit the xref:{page-component-version}@manual::console.adoc[TypeDB Console Manual].
 
 
 [#_console_archive]
 === Use with older TypeDB versions
 
-include::manual::console.adoc[tags="compat-intro,compat-table"]
+include::{page-component-version}@manual::console.adoc[tags="compat-intro,compat-table"]
 
 
 [#_drivers]
 == TypeDB Drivers
 
-Official xref:drivers::index.adoc[driver libraries] for building applications on TypeDB.
+Official xref:{page-component-version}@drivers::index.adoc[driver libraries] for building applications on TypeDB.
 
 [cols-3]
 --
-.image:home::rust.png[,width=30]   xref:drivers::rust/index.adoc[Rust]
+.image::{page-component-version}@home::rust.png[,width=30]   xref:{page-component-version}@drivers::rust/index.adoc[Rust]
 [.clickable]
 ****
 
 ****
 
-.image:home::python.png[,width=30]   xref:drivers::python/index.adoc[Python]
+.image::{page-component-version}@home::python.png[,width=30]   xref:{page-component-version}@drivers::python/index.adoc[Python]
 [.clickable]
 ****
 
 ****
 
-.image:home::nodejs.png[,width=30]   xref:drivers::nodejs/index.adoc[Node.js]
+.image::{page-component-version}@home::nodejs.png[,width=30]   xref:{page-component-version}@drivers::nodejs/index.adoc[Node.js]
 [.clickable]
 ****
 
 ****
 
-.image:home::java.png[,width=30]   xref:drivers::java/index.adoc[Java]
+.image::{page-component-version}@home::java.png[,width=30]   xref:{page-component-version}@drivers::java/index.adoc[Java]
 [.clickable]
 ****
 
 ****
 
-.image:home::csharp.png[,width=30]   xref:drivers::csharp/index.adoc[C#]
+.image::{page-component-version}@home::csharp.png[,width=30]   xref:{page-component-version}@drivers::csharp/index.adoc[C#]
 [.clickable]
 ****
 
 ****
 
-.image:home::cpp.png[,width=30]   xref:drivers::cpp/index.adoc[C++]
+.image::{page-component-version}@home::cpp.png[,width=30]   xref:{page-component-version}@drivers::cpp/index.adoc[C++]
 [.clickable]
 ****
 
 ****
 
-.image:home::c.png[,width=30]   xref:drivers::c/index.adoc[C]
+.image::{page-component-version}@home::c.png[,width=30]   xref:{page-component-version}@drivers::c/index.adoc[C]
 [.clickable]
 ****
 

@@ -19,7 +19,7 @@ powerful CLI tool to manage and query TypeDB databases.
 
 [cols-2]
 --
-.xref:home::install-tools.adoc#_console[Install]
+.xref:{page-component-version}@home::install-tools.adoc#_console[Install]
 [.clickable]
 ****
 See the TypeDB Console installation guide.
@@ -63,7 +63,7 @@ You will be prompted for a password.
 
 [NOTE]
 =====
-For newly deployed clusters, the default username and password are `admin` and `password`. After connecting for the first time, you will be required to xref:manual::configuring/users.adoc#_first_login[change the password] before queries can be run.
+For newly deployed clusters, the default username and password are `admin` and `password`. After connecting for the first time, you will be required to xref:{page-component-version}@manual::configuring/users.adoc#_first_login[change the password] before queries can be run.
 =====
 // end::connect_cloud_console[]
 --
@@ -384,7 +384,7 @@ database delete iam_sample_db
 .iam-schema.tql
 [,typeql]
 ----
-include::drivers::partial$tutorials/iam-schema.tql[lines=17..]
+include::{page-component-version}@drivers::partial$tutorials/iam-schema.tql[lines=17..]
 ----
 ====
 
@@ -394,7 +394,7 @@ include::drivers::partial$tutorials/iam-schema.tql[lines=17..]
 .iam-data.tql
 [,typeql]
 ----
-include::drivers::partial$tutorials/iam-data.tql[lines=17..]
+include::{page-component-version}@drivers::partial$tutorials/iam-data.tql[lines=17..]
 ----
 ====
 

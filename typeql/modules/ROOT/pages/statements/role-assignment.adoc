@@ -27,11 +27,11 @@ TypeQL role assignment statements can be used only in data queries and rules.
 
 Since only relations can have roles, the subject concept variable is implicitly bound to the `relation` type.
 You can specify the type of the concept variable by bounding it explicitly with an
-xref:typeql::statements/isa.adoc[isa statement].
+xref:{page-component-version}@typeql::statements/isa.adoc[isa statement].
 
 == Usage in a match pattern
 
-include::typeql::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 For example, let's find all relations for a user with full-name of `Kevin Morrison`:
 
@@ -59,13 +59,13 @@ $type;
 
 [cols-2]
 --
-.xref:typeql::statements/type.adoc[]
+.xref:{page-component-version}@typeql::statements/type.adoc[]
 [.clickable]
 ****
 Learn more about `type` statement in TypeQL.
 ****
 
-.xref:typeql::concepts/types.adoc[]
+.xref:{page-component-version}@typeql::concepts/types.adoc[]
 [.clickable]
 ****
 Learn about types in TypeQL.

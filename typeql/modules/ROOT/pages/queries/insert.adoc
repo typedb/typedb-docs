@@ -7,7 +7,7 @@ An Insert query is used to insert new data into a database.
 You can insert an instance of a type, assign <<_inserting_ownerships,ownership of an attribute>>,
 or <<_adding_role_players_to_a_relation,add a new role player>> for a relation.
 For a practical guide on how to send an Insert query to TypeDB,
-see the xref:manual::writing/insert.adoc[] page of the TypeDB Manual.
+see the xref:{page-component-version}@manual::writing/insert.adoc[] page of the TypeDB Manual.
 
 == Syntax
 
@@ -22,12 +22,12 @@ An Insert query consists of an optional
 insert <insert_pattern>
 ----
 // end::syntax[]
-where `<insert_pattern>` is a pattern of valid data-specific TypeQL statements including xref:typeql::statements/isa.adoc[],
-xref:typeql::statements/has.adoc[],
-xref:typeql::statements/role-assignment.adoc[role assignment], and xref:typeql::statements/value-assignment.adoc[value assignment]. 
+where `<insert_pattern>` is a pattern of valid data-specific TypeQL statements including xref:{page-component-version}@typeql::statements/isa.adoc[],
+xref:{page-component-version}@typeql::statements/has.adoc[],
+xref:{page-component-version}@typeql::statements/role-assignment.adoc[role assignment], and xref:{page-component-version}@typeql::statements/value-assignment.adoc[value assignment].
 
 The _optional_ `match` clause `<pattern>` can be any valid match pattern: for more information, see the
-xref:typeql::patterns/index.adoc[Patterns] and xref:typeql::statements/index.adoc[Statements] sections.
+xref:{page-component-version}@typeql::patterns/index.adoc[Patterns] and xref:{page-component-version}@typeql::statements/index.adoc[Statements] sections.
 
 [#_behavior]
 == Behavior
@@ -37,10 +37,10 @@ An Insert query inserts new data into a TypeDB database, as specified in its `in
 
 * <<_insert_entity_example,Entities>>, <<_inserting_attributes,attributes>>,
 or <<_inserting_relations,relations>> are inserted using
-xref:typeql::statements/isa.adoc[isa] statements.
-* Ownerships of attributes are inserted using a xref:typeql::statements/has.adoc[has] statement. Note that inserting an ownership of an attribute that doesn't yet exist in a database (with a new value), implicitly inserts such an attribute.
+xref:{page-component-version}@typeql::statements/isa.adoc[isa] statements.
+* Ownerships of attributes are inserted using a xref:{page-component-version}@typeql::statements/has.adoc[has] statement. Note that inserting an ownership of an attribute that doesn't yet exist in a database (with a new value), implicitly inserts such an attribute.
 * Role players are usually assigned as a part of a <<_inserting_relations,relation insertion>> with a
-xref:typeql::statements/role-assignment.adoc[role assignment] statement. 
+xref:{page-component-version}@typeql::statements/role-assignment.adoc[role assignment] statement.
 // end::insert_clause[]
 
 === Query execution
@@ -56,7 +56,7 @@ An Insert query returns a lazy Stream/Iterator of ConceptMap objects with the in
 [#_inserting_data_with_no_matching]
 == Insert without matching
 
-include::typeql::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 To insert new data with no connection to existing database data, we can use an Insert query without a `match` clause:
 
@@ -75,7 +75,7 @@ If there is no such attribute in a database, then it will be created by this que
 
 == Insert with matching
 
-include::typeql::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 To be able to insert new data that is connected to existing concepts,
 use a `match` clause in an Insert query to match the existing data from a database first:
@@ -99,13 +99,13 @@ email attribute.
 [#_insert_entity_example]
 == Insert entities
 
-include::typeql::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
-To insert an entity, use a concept variable followed by an xref:typeql::statements/isa.adoc[isa]
+To insert an entity, use a concept variable followed by an xref:{page-component-version}@typeql::statements/isa.adoc[isa]
 statement with the entity's type (label or variable).
 The `isa` is usually combined with statements to assign attribute ownerships or roles in relations.
 You can use the same concept variable in multiple statements to insert more about the entity
-or combine statements into a xref:typeql::statements/index.adoc#_composite_statements[composite statement].
+or combine statements into a xref:{page-component-version}@typeql::statements/index.adoc#_composite_statements[composite statement].
 
 [NOTE]
 ====
@@ -116,8 +116,8 @@ While it is possible to insert an entity without any attributes owned or roles p
 such an entity can't be easily found in a database or distinguished from other entities of the same type.
 As a best practice, we recommend using the same query to add at least some information about the inserted entity.
 
-You can also use the xref:typeql::statements/key.adoc[@key] or
-xref:typeql::statements/unique.adoc[@unique] annotations for an attribute type ownership schema definition
+You can also use the xref:{page-component-version}@typeql::statements/key.adoc[@key] or
+xref:{page-component-version}@typeql::statements/unique.adoc[@unique] annotations for an attribute type ownership schema definition
 to add constraints that make it much easier to uniquely address instances of this entity type.
 
 .Inserting an entity example
@@ -136,11 +136,11 @@ The above query inserts a `person` entity with the following attributes:
 [#_inserting_attributes]
 == Insert attributes
 
-include::typeql::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 Inserting an attribute requires setting both type and value of a new attribute.
-You can specify the value with a xref:typeql::values/comparators.adoc[comparator] or
-xref:typeql::statements/value-assignment.adoc[] statement.
+You can specify the value with a xref:{page-component-version}@typeql::values/comparators.adoc[comparator] or
+xref:{page-component-version}@typeql::statements/value-assignment.adoc[] statement.
 
 You can insert an attribute explicitly.
 Use a variable followed by a value and `isa` pattern with an attribute type to insert an attribute.
@@ -153,10 +153,10 @@ $s 34 isa size-kb;
 ----
 
 Attributes that are not owned by any other instances are called
-xref:typeql::queries/delete.adoc#_orphaned_attributes[orphaned attributes]
+xref:{page-component-version}@typeql::queries/delete.adoc#_orphaned_attributes[orphaned attributes]
 and aren't very useful to store in a database.
 
-To implicitly insert an attribute, assign an ownership of it with a xref:typeql::statements/has.adoc[has] statement.
+To implicitly insert an attribute, assign an ownership of it with a xref:{page-component-version}@typeql::statements/has.adoc[has] statement.
 If an attribute with the type and value doesn't exist in the database, it is created implicitly.
 
 .Implicit attribute insertion
@@ -178,7 +178,7 @@ Rather than changing a value of an owned attribute,
 you can delete an ownership of it
 and replace with an ownership of another attribute with a different value.
 
-To insert an ownership of an attribute, use a xref:typeql::statements/has.adoc[] statement:
+To insert an ownership of an attribute, use a xref:{page-component-version}@typeql::statements/has.adoc[] statement:
 
 .Inserting ownership
 [,typeql]
@@ -238,14 +238,14 @@ As a result, the matched entity should own six attributes, four of which are of 
 ----
 ====
 
-// See the illustration of the resulted data from xref:manual::studio.adoc[] below.
+// See the illustration of the resulted data from xref:{page-component-version}@manual::studio.adoc[] below.
 //
 // image::john-6-attributes.png[John with 4 emails, role=framed, width = 75%, link=self]
 
 [#_inserting_relations]
 == Insert relations
 
-include::typeql::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 Inserting a relation requires specifying at least one role player.
 
@@ -256,8 +256,8 @@ Inserting a relation without a role player for a role can create an incomplete d
 Like a `marriage` relation with only one known spouse.
 ====
 
-Use a xref:typeql::statements/role-assignment.adoc[] statement with an
-xref:typeql::statements/isa.adoc[isa] statement in an `insert clause` to insert a relation.
+Use a xref:{page-component-version}@typeql::statements/role-assignment.adoc[] statement with an
+xref:{page-component-version}@typeql::statements/isa.adoc[isa] statement in an `insert clause` to insert a relation.
 
 .Inserting a relation
 [,typeql]
@@ -276,12 +276,12 @@ between them with roles `object` and `action` played by the file and operation r
 [#_adding_role_players_to_a_relation]
 == Insert role players
 
-include::typeql::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 To add a new role player for an existing relation,
-match the relation from a database and use a xref:typeql::statements/role-assignment.adoc[] statement
+match the relation from a database and use a xref:{page-component-version}@typeql::statements/role-assignment.adoc[] statement
 with only new roleplayers.
-Don't use an xref:typeql::statements/isa.adoc[] statement with relation type
+Don't use an xref:{page-component-version}@typeql::statements/isa.adoc[] statement with relation type
 as it will insert a new relation instead of adding roles to an existing one.
 
 .Adding a role player
@@ -358,13 +358,13 @@ The relation of `access` type now plays the role of `access` in the inserted rel
 
 [cols-2]
 --
-.xref:academy::4-writing-data/4.1-inserting-simple-data.adoc[]
+.xref:{page-component-version}@academy::4-writing-data/4.1-inserting-simple-data.adoc[]
 [.clickable]
 ****
 Learn more about inserting data into a database in TypeDB Academy.
 ****
 
-.xref:manual::writing/insert.adoc[]
+.xref:{page-component-version}@manual::writing/insert.adoc[]
 [.clickable]
 ****
 See how to send an Insert query to TypeDB.

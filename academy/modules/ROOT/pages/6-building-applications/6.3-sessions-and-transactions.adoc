@@ -62,7 +62,7 @@ The transaction object takes one argument, the *transaction type*, and should be
 
 [WARNING]
 ====
-The fourth combination, a read transaction in a schema session, is deprecated and should not be used. Retrieval of schema types, as featured in xref:academy::3-reading-data/3.4-fetching-schema-types.adoc[Lesson 3.4], can be done using a data session.
+The fourth combination, a read transaction in a schema session, is deprecated and should not be used. Retrieval of schema types, as featured in xref:{page-component-version}@academy::3-reading-data/3.4-fetching-schema-types.adoc[Lesson 3.4], can be done using a data session.
 ====
 
 When opened using a context manager as above, read transactions will be closed automatically. If a write transaction is closed in this way, then the transaction will be rolled back and any data writes will _not_ be persisted to the database. In order to persist changes made during a write transaction, it must be committed by calling its `commit` method, as illustrated in the following code snippet.
@@ -91,4 +91,4 @@ with TypeDB.core_driver(ADDRESS) as driver:
 
 Committing a transaction also closes it on the server, and no further operations are permitted with it afterward. A transaction can also be manually rolled back and closed by calling its `close` method, or rolled back without closing by calling its `rollback` method (allowing further operations).
 
-Unlike a session, a transaction should be short-lived and represents a single atomic unit of work on the database. TypeDB implements the https://en.wikipedia.org/wiki/ACID[ACID guarantees], and uses https://en.wikipedia.org/wiki/Snapshot_isolation[snapshot isolation] and https://en.wikipedia.org/wiki/Optimistic_concurrency_control[optimistic concurrency control] to support concurrent transactions to read and write data without locks. As detailed above, some locks are implemented when a schema session is opened. For information, refer to xref:manual:ROOT:transactions.adoc[].
+Unlike a session, a transaction should be short-lived and represents a single atomic unit of work on the database. TypeDB implements the https://en.wikipedia.org/wiki/ACID[ACID guarantees], and uses https://en.wikipedia.org/wiki/Snapshot_isolation[snapshot isolation] and https://en.wikipedia.org/wiki/Optimistic_concurrency_control[optimistic concurrency control] to support concurrent transactions to read and write data without locks. As detailed above, some locks are implemented when a schema session is opened. For information, refer to xref:{page-component-version}@manual:ROOT:transactions.adoc[].

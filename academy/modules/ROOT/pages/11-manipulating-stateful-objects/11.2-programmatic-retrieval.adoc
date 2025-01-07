@@ -41,7 +41,7 @@ with TypeDB.core_driver(ADDRESS) as driver:
 
 [NOTE]
 ====
-Most API methods that retrieve information from the server require a transaction as an argument and return either iterators or promises. An iterator can be resolved by iterating over it or casting it to a sequence (such as a list), while a promise can be resolved by calling its `resolve` method. The return types of all Python driver methods are documented in the xref:drivers::python/api-reference.adoc[API reference]. TypeDB drivers in other languages have equivalent functionality.
+Most API methods that retrieve information from the server require a transaction as an argument and return either iterators or promises. An iterator can be resolved by iterating over it or casting it to a sequence (such as a list), while a promise can be resolved by calling its `resolve` method. The return types of all Python driver methods are documented in the xref:{page-component-version}@drivers::python/api-reference.adoc[API reference]. TypeDB drivers in other languages have equivalent functionality.
 ====
 
 Once an entity, relation, or attribute type has been retrieved as a stateful object, we can retrieve all instances of the type as stateful objects using the type's `get_instances` method.
@@ -76,9 +76,9 @@ with TypeDB.core_driver(ADDRESS) as driver:
 //             page_counts: Iterator[Attribute] = page_count_type.get_instances(transaction)
 // ----
 
-Sometimes, retrieving data instances this way can be more convenient than issuing a query, but most non-trivial constraints on the data instances to be returned can only be expressed by using a query. More importantly, we can also operate on the type object to insert new instances, as we will see in xref:academy::11-manipulating-stateful-objects/11.3-operating-on-objects.adoc[Lesson 11.3], and to perform programmatic schema migrations.
+Sometimes, retrieving data instances this way can be more convenient than issuing a query, but most non-trivial constraints on the data instances to be returned can only be expressed by using a query. More importantly, we can also operate on the type object to insert new instances, as we will see in xref:{page-component-version}@academy::11-manipulating-stateful-objects/11.3-operating-on-objects.adoc[Lesson 11.3], and to perform programmatic schema migrations.
 
-// Sometimes, retrieving data instances this way can be more convenient than issuing a query, but most non-trivial constraints on the data instances to be returned can only be expressed by using a query. More importantly, we can also operate on the type object to insert new instances, as we will see in xref:academy::11-manipulating-stateful-objects/11.3-operating-on-objects.adoc[Lesson 11.3], and to perform *programmatic schema migrations*, which will be the topic of Lesson 17 (coming soon).
+// Sometimes, retrieving data instances this way can be more convenient than issuing a query, but most non-trivial constraints on the data instances to be returned can only be expressed by using a query. More importantly, we can also operate on the type object to insert new instances, as we will see in xref:{page-component-version}@academy::11-manipulating-stateful-objects/11.3-operating-on-objects.adoc[Lesson 11.3], and to perform *programmatic schema migrations*, which will be the topic of Lesson 17 (coming soon).
 
 .Exercise
 [caption=""]
@@ -97,7 +97,7 @@ You may find it useful to refer to the bookstore's schema.
 =====
 [,typeql]
 ----
-include::academy::attachment$bookstore-schema.tql[lines=18..]
+include::{page-component-version}@academy::attachment$bookstore-schema.tql[lines=18..]
 ----
 =====
 

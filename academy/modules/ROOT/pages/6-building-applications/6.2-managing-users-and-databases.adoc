@@ -30,11 +30,11 @@ There are three key ways we can use a driver object:
 * Manage databases.
 * Open sessions.
 
-We'll cover managing databases in this lesson, and then see how to open sessions in xref:academy::6-building-applications/6.3-sessions-and-transactions.adoc[Lesson 6.3].
+We'll cover managing databases in this lesson, and then see how to open sessions in xref:{page-component-version}@academy::6-building-applications/6.3-sessions-and-transactions.adoc[Lesson 6.3].
 
 [NOTE]
 ====
-User management features are only available in TypeDB Cloud and Enterprise, and will not be covered in this course. Instructions can be found on the xref:manual::configuring/users.adoc[user management page] of the TypeDB manual.
+User management features are only available in TypeDB Cloud and Enterprise, and will not be covered in this course. Instructions can be found on the xref:{page-component-version}@manual::configuring/users.adoc[user management page] of the TypeDB manual.
 ====
 
 == Managing databases
@@ -169,7 +169,7 @@ def print_database_details(driver: TypeDBDriver) -> None:
 // * Manage databases.
 // * Open sessions.
 //
-// We'll cover managing users and databases in this lesson, and then see how to open sessions in xref:academy::6-building-applications/6.3-sessions-and-transactions.adoc[Lesson 6.3]. The credentials used to instantiate the driver object affect the controls that are available to it. Some controls are only available when using an admin's credentials.
+// We'll cover managing users and databases in this lesson, and then see how to open sessions in xref:{page-component-version}@academy::6-building-applications/6.3-sessions-and-transactions.adoc[Lesson 6.3]. The credentials used to instantiate the driver object affect the controls that are available to it. Some controls are only available when using an admin's credentials.
 //
 // [NOTE]
 // ====

@@ -26,7 +26,7 @@ to be valid strings according to the object regular expression.
 
 == Usage in a schema definition
 
-include::typeql::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 Since in Define queries you can't use variables, the subject of a `regex` statement can only be
 an attribute type label.
@@ -45,13 +45,13 @@ visibility sub attribute, value string, regex "^(public|private|closed)$";
 
 [cols-2]
 --
-.xref:typeql::statements/type.adoc[]
+.xref:{page-component-version}@typeql::statements/type.adoc[]
 [.clickable]
 ****
 Learn more about `type` statement in TypeQL.
 ****
 
-.xref:typeql::concepts/types.adoc[]
+.xref:{page-component-version}@typeql::concepts/types.adoc[]
 [.clickable]
 ****
 Learn about types in TypeQL.

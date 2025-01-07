@@ -1,13 +1,13 @@
 = @unique
 
 The `@unique` keyword is an annotation, that can be used with an
-xref:typeql::statements/owns.adoc[owns statement] to specify, that the selected attribute type must be uniquely owned by data instances of a given type.
+xref:{page-component-version}@typeql::statements/owns.adoc[owns statement] to specify, that the selected attribute type must be uniquely owned by data instances of a given type.
 
 == Syntax
 
 The syntax of a `@unique` statement includes:
 
-* xref:typeql::statements/owns.adoc[owns statement]
+* xref:{page-component-version}@typeql::statements/owns.adoc[owns statement]
 * the `@unique` keyword
 
 .Syntax
@@ -29,7 +29,7 @@ That makes every owned attribute unique among all data instances of the subject 
 
 == Usage in a schema definition
 
-include::typeql::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 Since in Define and Undefine queries you can't use variables,
 both subject and object of an owns statement can only be type labels.
@@ -48,13 +48,13 @@ object sub entity, owns object-type @unique;
 
 [cols-2]
 --
-.xref:typeql::statements/type.adoc[]
+.xref:{page-component-version}@typeql::statements/type.adoc[]
 [.clickable]
 ****
 Learn more about `type` statement in TypeQL.
 ****
 
-.xref:typeql::concepts/types.adoc[]
+.xref:{page-component-version}@typeql::concepts/types.adoc[]
 [.clickable]
 ****
 Learn about types in TypeQL.

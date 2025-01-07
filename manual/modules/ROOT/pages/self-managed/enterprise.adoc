@@ -122,9 +122,9 @@ Close the terminal or press kbd:[Ctrl+C].
 == Connecting
 
 To check whether TypeDB Enterprise is working and interact with it, you can connect to it with any
-xref:drivers:ROOT:index.adoc[TypeDB Client].
+xref:{page-component-version}@drivers:ROOT:index.adoc[TypeDB Client].
 
-You can use xref:manual:ROOT:console.adoc[TypeDB Console] from your TypeDB Enterprise directory:
+You can use xref:{page-component-version}@manual:ROOT:console.adoc[TypeDB Console] from your TypeDB Enterprise directory:
 
 [source,console]
 ----
@@ -294,4 +294,4 @@ All nodes must be shut down independently in the same way.
 
 To deploy a TypeDB Enterprise cluster with Kubernetes, we can use the https://helm.sh/[Helm] package manager.
 
-include::manual::partial$kubernetes.adoc[leveloffset=+1]
+include::{page-component-version}@manual::partial$kubernetes.adoc[leveloffset=+1]

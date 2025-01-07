@@ -12,9 +12,9 @@ It can be used in read transactions only, so no new facts get to be persisted in
 
 == How to define a rule
 
-Before you begin, make sure you followed instructions from the xref:manual::reading/get.adoc[] page. Inference uses rules defined in the schema of a database.
+Before you begin, make sure you followed instructions from the xref:{page-component-version}@manual::reading/get.adoc[] page. Inference uses rules defined in the schema of a database.
 Since our schema from the
-xref:manual::defining/define.adoc[] page has no rules in it, let's add a new rule to the schema first:
+xref:{page-component-version}@manual::defining/define.adoc[] page has no rules in it, let's add a new rule to the schema first:
 
 .Simple rule example
 [,typeql]
@@ -28,7 +28,7 @@ when {
 ----
 
 Add the `define` keyword at the beginning and send it as a Define query.
-See xref:manual::defining/define.adoc#_how_to_send_a_define_query[How to send a Define query] for exact instructions.
+See xref:{page-component-version}@manual::defining/define.adoc#_how_to_send_a_define_query[How to send a Define query] for exact instructions.
 
 [#_how_to_send_a_query_with_inference]
 == How to send a query with inference
@@ -42,7 +42,7 @@ The easiest way to send a read query with inference is to use Studio or Console:
 Studio::
 +
 --
-Follow the xref:manual::studio.adoc#_prepare_a_query[Studio manual]
+Follow the xref:{page-component-version}@manual::studio.adoc#_prepare_a_query[Studio manual]
 to connect to TypeDB and select a project folder.
 Then use the steps below:
 
@@ -59,7 +59,7 @@ $u isa user;
 fetch
 $u: name;
 ----
-. Run the query by clicking the image:home::studio-icons/svg/studio_run.svg[width=24]
+. Run the query by clicking the image::{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]
 btn:[Run Query] button.
 --
 
@@ -127,148 +127,148 @@ The resulted Log output should look like this:
 }
 ----
 
-To send a fetch query with inference programmatically, use xref:drivers::index.adoc[drivers]:
+To send a fetch query with inference programmatically, use xref:{page-component-version}@drivers::index.adoc[drivers]:
 
 [tabs]
 ====
 Rust::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
 ++++
 Open a read transaction, and use the
-xref:drivers::rust/api-reference.adoc#_struct_QueryManager_fetch__[transaction.query().fetch()] or
-xref:drivers::rust/api-reference.adoc#_struct_QueryManager_get__[transaction.query().get()]
+xref:{page-component-version}@drivers::rust/api-reference.adoc#_struct_QueryManager_fetch__[transaction.query().fetch()] or
+xref:{page-component-version}@drivers::rust/api-reference.adoc#_struct_QueryManager_get__[transaction.query().get()]
 method to retrieve data with inference:
 ++++
 
 [,rust,indent=0]
 ----
-include::manual::partial$rust-manual-code.rs[tags=databases,indent=8]
-include::manual::partial$rust-manual-code.rs[tags=infer-fetch]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=infer-fetch]
 ----
 --
 
 Python::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
 ++++
 Open a read transaction, and use the
-xref:drivers::python/api-reference.adoc#_QueryManager_fetch__query_str__options_TypeDBOptions__None[transaction.query.fetch()] or
-xref:drivers::python/api-reference.adoc#_QueryManager_get__query_str__options_TypeDBOptions__None[transaction.query.get()]
+xref:{page-component-version}@drivers::python/api-reference.adoc#_QueryManager_fetch__query_str__options_TypeDBOptions__None[transaction.query.fetch()] or
+xref:{page-component-version}@drivers::python/api-reference.adoc#_QueryManager_get__query_str__options_TypeDBOptions__None[transaction.query.get()]
 method to retrieve data with inference:
 ++++
 
 [,python,indent=0]
 ----
-include::manual::partial$python-manual-code.py[tags=infer-fetch]
+include::{page-component-version}@manual::partial$python-manual-code.py[tags=infer-fetch]
 ----
 --
 
 Node.js::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
 ++++
 Open a read transaction, and use the
-xref:drivers::nodejs/api-reference.adoc#_QueryManager_fetch__query_string__options_TypeDBOptions[transaction.query.fetch()] or
-xref:drivers::nodejs/api-reference.adoc#_QueryManager_get__query_string__options_TypeDBOptions[transaction.query.get()]
+xref:{page-component-version}@drivers::nodejs/api-reference.adoc#_QueryManager_fetch__query_string__options_TypeDBOptions[transaction.query.fetch()] or
+xref:{page-component-version}@drivers::nodejs/api-reference.adoc#_QueryManager_get__query_string__options_TypeDBOptions[transaction.query.get()]
 method to retrieve data with inference:
 ++++
 
 [,js,indent=0]
 ----
-include::manual::partial$nodejs-manual-code.js[tags=infer-fetch]
+include::{page-component-version}@manual::partial$nodejs-manual-code.js[tags=infer-fetch]
 ----
 --
 
 Java::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
 ++++
 Open a read transaction, and use the
-xref:drivers::java/api-reference.adoc#_QueryManager_fetch__com_vaticle_typeql_lang_query_TypeQLFetch[transaction.query().fetch()] or
-xref:drivers::java/api-reference.adoc#_QueryManager_get__com_vaticle_typeql_lang_query_TypeQLGet__TypeDBOptions[transaction.query().get()]
+xref:{page-component-version}@drivers::java/api-reference.adoc#_QueryManager_fetch__com_vaticle_typeql_lang_query_TypeQLFetch[transaction.query().fetch()] or
+xref:{page-component-version}@drivers::java/api-reference.adoc#_QueryManager_get__com_vaticle_typeql_lang_query_TypeQLGet__TypeDBOptions[transaction.query().get()]
 method to retrieve data with inference:
 ++++
 
 [,java,indent=0]
 ----
-include::manual::partial$java-manual-code.java[tags=infer-fetch]
+include::{page-component-version}@manual::partial$java-manual-code.java[tags=infer-fetch]
 ----
 --
 
 C#::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
 ++++
 Open a read transaction, and use the
-xref:drivers::csharp/api-reference.adoc#_IEnumerable__JObject___TypeDB_Driver_Api_IQueryManager_Fetch___string_query_[transaction.Query.Fetch()] or
-xref:drivers::csharp/api-reference.adoc#_IEnumerable__IConceptMap___TypeDB_Driver_Api_IQueryManager_Get___string_query_[transaction.query.get()]
+xref:{page-component-version}@drivers::csharp/api-reference.adoc#_IEnumerable__JObject___TypeDB_Driver_Api_IQueryManager_Fetch___string_query_[transaction.Query.Fetch()] or
+xref:{page-component-version}@drivers::csharp/api-reference.adoc#_IEnumerable__IConceptMap___TypeDB_Driver_Api_IQueryManager_Get___string_query_[transaction.query.get()]
 method to retrieve data with inference:
 ++++
 
 [,csharp,indent=0]
 ----
-include::manual::partial$csharp-manual-code.cs[tags=infer-fetch]
+include::{page-component-version}@manual::partial$csharp-manual-code.cs[tags=infer-fetch]
 ----
 --
 
 C++::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
 ++++
 Open a read transaction, and use the
-xref:drivers::cpp/api-reference.adoc#_JSONIterable_TypeDBQueryManagerfetch___const_stdstring__query__const_Options__options__Options_____const[transaction.query.fetch()] or
-xref:drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerget___const_stdstring__query__const_Options__options__Options_____const[transaction.query.get()]
+xref:{page-component-version}@drivers::cpp/api-reference.adoc#_JSONIterable_TypeDBQueryManagerfetch___const_stdstring__query__const_Options__options__Options_____const[transaction.query.fetch()] or
+xref:{page-component-version}@drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerget___const_stdstring__query__const_Options__options__Options_____const[transaction.query.get()]
 method to retrieve data with inference:
 ++++
 
 [,cpp,indent=0]
 ----
-include::manual::partial$cpp-manual-code.cpp[tags=infer-fetch,indent=0]
+include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tags=infer-fetch,indent=0]
 ----
 --
 
 C::
 +
 --
-Follow the xref:manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
 ++++
 Open a read transaction, and use the
-xref:drivers::c/api-reference.adoc#_query_fetch[query_fetch()] or
-xref:drivers::c/api-reference.adoc#_query_get[query_get()]
+xref:{page-component-version}@drivers::c/api-reference.adoc#_query_fetch[query_fetch()] or
+xref:{page-component-version}@drivers::c/api-reference.adoc#_query_get[query_get()]
 method to retrieve data with inference:
 ++++
 
 [,c,indent=0]
 ----
-include::manual::partial$c-manual-code.c[tags=infer-fetch]
+include::{page-component-version}@manual::partial$c-manual-code.c[tags=infer-fetch]
 ----
 --
 ====
@@ -277,19 +277,19 @@ include::manual::partial$c-manual-code.c[tags=infer-fetch]
 
 [cols-2]
 --
-.xref:typeql::queries/get.adoc[]
+.xref:{page-component-version}@typeql::queries/get.adoc[]
 [.clickable]
 ****
 Learn more about Get queries in TypeQL: syntax, behavior, and query examples.
 ****
 
-.xref:typeql::queries/fetch.adoc[]
+.xref:{page-component-version}@typeql::queries/fetch.adoc[]
 [.clickable]
 ****
 Learn more about Fetch queries in TypeQL: syntax, behavior, and query examples.
 ****
 
-.xref:academy::10-using-inference/index.adoc[]
+.xref:{page-component-version}@academy::10-using-inference/index.adoc[]
 [.clickable]
 ****
 Check out the Using inference section of TypeDB Academy.

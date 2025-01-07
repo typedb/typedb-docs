@@ -1,0 +1,95 @@
+= owns
+
+The `owns` keyword is used in TypeQL schema to define an owner type for an attribute type.
+
+== Syntax
+
+The syntax of a `owns` statement includes:
+
+* Subject -- type label of the owner type
+* Predicate -- the `owns` keyword
+* Object -- type label of an attribute type
+
+.Syntax
+[,typeql]
+----
+<type> owns <attribute-type> [<annotation>] [as <overridden-type>];
+----
+
+For more information about annotations, see the
+xref:typeql::statements/key.adoc[] and
+xref:typeql::statements/unique.adoc[] pages.
+
+An optional <<_usage_with_override,override>> can be added at the end.
+
+== Behavior
+
+TypeQL statements with the `owns` keyword can be used only in Define and Undefine queries.
+
+The `owns` keyword adds an ability for the subject type to own attributes of
+the object attribute type to the schema.
+
+== Usage in a schema definition
+
+include::typeql::partial$iam-database-links.adoc[]
+
+Since in Define and Undefine queries you can't use variables,
+both subject and object can only be type labels.
+
+For example, to define a new type `pdf` with an ability to own attributes of the `name` attribute type, use:
+
+.Define query example
+[,typeql]
+----
+define
+pdf sub file, owns name;
+----
+
+To remove the ability to own attributes of the `name` type, but keep the `pdf` type, use:
+
+.Undefine query example
+[,typeql]
+----
+undefine
+pdf owns name;
+----
+
+[#_usage_with_override]
+== Usage with override
+
+include::typeql::partial$iam-database-links.adoc[]
+
+By default, a subtype inherits all attribute types that were defined as owned for its supertype.
+To override an inherited attribute type ownership, use the `as` keyword when defining an ownership.
+The overridden attribute type must be a subtype of the inherited attribute type.
+
+Let's see an example, of a schema, where the `name` attribute type gets overridden by the `full-name` attribute:
+
+.Override owned attribute type example
+[,typeql]
+----
+define
+
+name sub attribute, abstract, value string;
+full-name sub name;
+
+person sub entity, abstract, owns name;
+user sub person, owns full-name as name;
+----
+
+== Learn more
+
+[cols-2]
+--
+.xref:typeql::statements/type.adoc[]
+[.clickable]
+****
+Learn more about `type` statement in TypeQL.
+****
+
+.xref:typeql::concepts/types.adoc[]
+[.clickable]
+****
+Learn about types in TypeQL.
+****
+--

@@ -3,23 +3,23 @@
 
 Log in to https://cloud.typedb.com/[TypeDB Cloud,window=_blank] and deploy a new cluster on the Clusters page.
 
-For self-hosted TypeDB installation and setup, see the xref:manual::self-managed/index.adoc[Self-hosted deployment] page.
+For self-hosted TypeDB installation and setup, see the xref:{page-component-version}@manual::self-managed/index.adoc[Self-hosted deployment] page.
 
 
 == Connect to TypeDB
 
-In this guide, we will use *TypeDB Studio*, the standalone GUI-based client for TypeDB. Ensure Studio is xref:home::install-tools.adoc#_studio[installed], then launch the application.
+In this guide, we will use *TypeDB Studio*, the standalone GUI-based client for TypeDB. Ensure Studio is xref:{page-component-version}@home::install-tools.adoc#_studio[installed], then launch the application.
 
-include::manual::studio.adoc[tag=connect_studio]
+include::{page-component-version}@manual::studio.adoc[tag=connect_studio]
 
 == Create a project
 
-include::manual::studio.adoc[tag=select_project]
+include::{page-component-version}@manual::studio.adoc[tag=select_project]
 
 == Create a new database
 
 To create a new database:
 
-. Click the image:home::studio-icons/svg/studio_dbs.svg[width=24] btn:[Manage Databases] button in the top toolbar.
+. Click the image::{page-component-version}@home::studio-icons/svg/studio_dbs.svg[width=24] btn:[Manage Databases] button in the top toolbar.
 . Enter a name for a new database and click btn:[Create].
-. Select the new database from the btn:[Select Database] dropdown (image:home::studio-icons/database-none.png[]) in the top toolbar.
+. Select the new database from the btn:[Select Database] dropdown (image::{page-component-version}@home::studio-icons/database-none.png[]) in the top toolbar.

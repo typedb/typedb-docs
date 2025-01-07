@@ -1,6 +1,6 @@
 = Lesson 11: Manipulating stateful objects
 
-== xref:academy::11-manipulating-stateful-objects/11.1-retrieval-by-query.adoc[Retrieval by query]
+== xref:{page-component-version}@academy::11-manipulating-stateful-objects/11.1-retrieval-by-query.adoc[Retrieval by query]
 
 * When issued using a TypeDB driver, *Get queries* are used to retrieve *stateful objects*. They comprise a `match` clause and a `get` clause.
 +
@@ -34,7 +34,7 @@ attribute_type: AttributeType = result.get(VARIABLE_6).as_attribute_type()
 get $a, $b, $c;
 ----
 
-== xref:academy::11-manipulating-stateful-objects/11.2-programmatic-retrieval.adoc[Programmatic retrieval]
+== xref:{page-component-version}@academy::11-manipulating-stateful-objects/11.2-programmatic-retrieval.adoc[Programmatic retrieval]
 
 * The `TypeDBTransaction.concepts` property is used to access programmatic *schema type retrieval* methods. Its `get_entity_type`, `get_relation_type`, and `get_attribute_type` methods are used to retrieve entity, relation, and attribute types respectively. These methods return https://en.wikipedia.org/wiki/Futures_and_promises[promises], and must be resolved using their `resolve` methods in order to obtain the responses.
 +
@@ -93,7 +93,7 @@ def cast_thing(thing: Thing) -> Entity | Relation:
         return thing.as_relation()
 ----
 
-== xref:academy::11-manipulating-stateful-objects/11.3-operating-on-objects.adoc[Operating on objects]
+== xref:{page-component-version}@academy::11-manipulating-stateful-objects/11.3-operating-on-objects.adoc[Operating on objects]
 
 * The `EntityType.create`, `RelationType.create`, and `AttributeType.put` methods are used to instantiate entity, relation, and attribute types respectively. When instantiating an attribute, its value must be provided as an argument.
 +
@@ -132,19 +132,19 @@ relation.delete(transaction).resolve()
 
 [cols-3]
 --
-.xref:academy::12-advanced-modeling/index.adoc[]
+.xref:{page-component-version}@academy::12-advanced-modeling/index.adoc[]
 [.clickable]
 ****
 Learn how to eliminate mismatch with applications by using the type-theoretic framework of the PERA model for schema design.
 ****
 
-.xref:manual::objects/index.adoc[Manual: Programming objects]
+.xref:{page-component-version}@manual::objects/index.adoc[Manual: Programming objects]
 [.clickable]
 ****
 Learn more about working with stateful objects in TypeDB, covering schema objects, data objects, and explanation objects.
 ****
 
-.xref:drivers::python/api-reference.adoc[Python Driver: Reference]
+.xref:{page-component-version}@drivers::python/api-reference.adoc[Python Driver: Reference]
 [.clickable]
 ****
 Explore the comprehensive API reference for the official TypeDB Python driver.

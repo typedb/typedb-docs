@@ -18,9 +18,9 @@ https://github.com/typedb/typedb-docs/tree/master/drivers-src/modules/ROOT/parti
 To run this sample application, you'll need:
 
 . TypeDB: either a https://cloud.typedb.com/[TypeDB Cloud,window=_blank] cluster or a self-hosted deployment.
-For TypeDB Community Edition and TypeDB Enterprise installation instructions, see the xref:manual::self-managed/index.adoc[] page.
+For TypeDB Community Edition and TypeDB Enterprise installation instructions, see the xref:{page-component-version}@manual::self-managed/index.adoc[] page.
 . Download the https://cloudsmith.io/~typedb/repos/public-release/packages/?q=cpp&sort=-version[TypeDB C++ driver].
-For the driver installation instructions, see the xref:drivers::cpp/index.adoc[] page.
+For the driver installation instructions, see the xref:{page-component-version}@drivers::cpp/index.adoc[] page.
 
 //#todo Consider adding virtualenv step-by-step guide
 == Includes
@@ -29,7 +29,7 @@ To be able to use the TypeDB C++ driver API in the Sample application, use the f
 
 [,cpp,indent=0]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=import]
+include::{page-component-version}@drivers::partial$tutorials/cpp/main.cpp[tag=import]
 ----
 
 == Default values
@@ -38,7 +38,7 @@ We store default values as constants in the source code:
 
 [,cpp,indent=0]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=constants]
+include::{page-component-version}@drivers::partial$tutorials/cpp/main.cpp[tag=constants]
 ----
 
 where `DB_NAME` -- the name of the database to use;
@@ -53,7 +53,7 @@ a new database setup, and querying.
 
 [,cpp,indent=0]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=main]
+include::{page-component-version}@drivers::partial$tutorials/cpp/main.cpp[tag=main]
 ----
 
 The entire `main()` function code is executed in the context of the <<_typedb_connection,network connection>>,
@@ -66,7 +66,7 @@ The `connectToTypeDB()` function takes `edition` and `addr` as mandatory paramet
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=connection]
+include::{page-component-version}@drivers::partial$tutorials/cpp/main.cpp[tag=connection]
 ----
 
 The `edition` is expected to be an Enum for selecting a TypeDB edition.
@@ -77,7 +77,7 @@ that is initialized with a username and password.
 For our sample application, we have the default credentials for the `admin` account set in the code of the
 `connectToTypeDB` function.
 
-include::partial$tutorials/change-psw.adoc[]
+include::{page-component-version}@partial$tutorials/change-psw.adoc[]
 
 == Database setup
 
@@ -102,7 +102,7 @@ As the final step of the database setup, we <<_testing_a_database,test it>>.
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=db-setup]
+include::{page-component-version}@drivers::partial$tutorials/cpp/main.cpp[tag=db-setup]
 ----
 
 [#_creating_a_database]
@@ -113,7 +113,7 @@ and call functions to <<_defining_a_schema,define its schema>> and <<_loading_in
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=create_new_db]
+include::{page-component-version}@drivers::partial$tutorials/cpp/main.cpp[tag=create_new_db]
 ----
 
 [#_replacing_a_database]
@@ -123,17 +123,17 @@ and call a function to <<_creating_a_database,create a new one>> instead:
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=replace_db]
+include::{page-component-version}@drivers::partial$tutorials/cpp/main.cpp[tag=replace_db]
 ----
 
 [#_defining_a_schema]
 === Defining a schema
 
-We use a xref:typeql::queries/define.adoc[Define query] to define a schema for the newly created database:
+We use a xref:{page-component-version}@typeql::queries/define.adoc[Define query] to define a schema for the newly created database:
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=db-schema-setup]
+include::{page-component-version}@drivers::partial$tutorials/cpp/main.cpp[tag=db-schema-setup]
 ----
 
 The schema for the sample application is stored in the
@@ -145,7 +145,7 @@ file.
 ====
 [,typeql]
 ----
-include::drivers::partial$tutorials/iam-schema.tql[lines=17..]
+include::{page-component-version}@drivers::partial$tutorials/iam-schema.tql[lines=17..]
 ----
 ====
 
@@ -156,11 +156,11 @@ Then we send the contents of the file as a TypeQL Define query and commit the ch
 === Loading initial data
 
 With the schema defined, we can load initial data into our database with the
-xref:typeql::queries/insert.adoc[Insert query]:
+xref:{page-component-version}@typeql::queries/insert.adoc[Insert query]:
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=db-dataset-setup]
+include::{page-component-version}@drivers::partial$tutorials/cpp/main.cpp[tag=db-dataset-setup]
 ----
 
 We read the
@@ -172,7 +172,7 @@ file, send its contents as a single query, and then commit the changes.
 ====
 [,typeql]
 ----
-include::drivers::partial$tutorials/iam-data-single-query.tql[lines=17..]
+include::{page-component-version}@drivers::partial$tutorials/iam-data-single-query.tql[lines=17..]
 ----
 ====
 
@@ -185,7 +185,7 @@ To test the database, we send a query to count the number of users in the databa
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=test-db]
+include::{page-component-version}@drivers::partial$tutorials/cpp/main.cpp[tag=test-db]
 ----
 
 == Query examples
@@ -195,7 +195,7 @@ After database setup is complete, we proceed with querying our database with dif
 
 [,js,indent=0]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=queries]
+include::{page-component-version}@drivers::partial$tutorials/cpp/main.cpp[tag=queries]
 ----
 
 The queries are as follows:
@@ -216,11 +216,11 @@ and returns some meaningful data.
 The main way to retrieve data from a TypeDB database is to use fetching to get values of attributes,
 matched by a pattern.
 
-Let's use a xref:typeql::queries/fetch.adoc[Fetch query] to fetch names and emails for all users in the database:
+Let's use a xref:{page-component-version}@typeql::queries/fetch.adoc[Fetch query] to fetch names and emails for all users in the database:
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=fetch]
+include::{page-component-version}@drivers::partial$tutorials/cpp/main.cpp[tag=fetch]
 ----
 
 We get the response as a stream of JSONs and iterate through it to print all String values from each JSON.
@@ -228,7 +228,7 @@ To print the values, we use the `printJSON()` function:
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=json]
+include::{page-component-version}@drivers::partial$tutorials/cpp/main.cpp[tag=json]
 ----
 
 //#todo Add printing Names and E-mail from a JSON, add multiple names/e-mails implementation
@@ -240,7 +240,7 @@ Let's insert a new user with a `full-name` and `email` attributes to the databas
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=insert]
+include::{page-component-version}@drivers::partial$tutorials/cpp/main.cpp[tag=insert]
 ----
 
 The Insert query returns a stream of ConceptMaps: one for every `insert` clause execution.
@@ -257,7 +257,7 @@ It can be used with or without inference enabled.
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=get]
+include::{page-component-version}@drivers::partial$tutorials/cpp/main.cpp[tag=get]
 ----
 
 We call the function with the inference disabled (`false`) and expect it to return no results, as the query pattern
@@ -286,11 +286,11 @@ The `add-view-permission` rule provides us with some inferred results this time.
 
 Let's replace a path for one of the files with a new path.
 We can do that by deleting ownership of the old path attribute from the file entity
-and assigning it with ownership of the new path attribute with the xref:typeql::queries/update.adoc[Update query]:
+and assigning it with ownership of the new path attribute with the xref:{page-component-version}@typeql::queries/update.adoc[Update query]:
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=update]
+include::{page-component-version}@drivers::partial$tutorials/cpp/main.cpp[tag=update]
 ----
 
 We iterate through the response of the Update query and count the length of it to determine
@@ -303,7 +303,7 @@ We then commit the changes only if the number meets our expectation.
 Finally, let's delete the same file we updated the path for.
 First, we match the file in a Get (or Fetch) query to check how many files get matched to prevent unplanned deletes.
 If the number (or any other relevant parameters) of matched results is as expected,
-we proceed with a xref:typeql::queries/delete.adoc[Delete query] with the same match clause.
+we proceed with a xref:{page-component-version}@typeql::queries/delete.adoc[Delete query] with the same match clause.
 
 By using the same `write` transaction we employ snapshot isolation
 to prevent any other transactions from changing the expected results.
@@ -312,7 +312,7 @@ then our transaction fails upon a commit.
 
 [,cpp]
 ----
-include::drivers::partial$tutorials/cpp/main.cpp[tag=delete]
+include::{page-component-version}@drivers::partial$tutorials/cpp/main.cpp[tag=delete]
 ----
 
 == Learn more
@@ -325,7 +325,7 @@ include::drivers::partial$tutorials/cpp/main.cpp[tag=delete]
 The full source code of this sample application.
 ****
 
-.xref:drivers::cpp/api-reference.adoc[]
+.xref:{page-component-version}@drivers::cpp/api-reference.adoc[]
 [.clickable]
 ****
 The full API reference for the TypeDB C++ driver.

@@ -5,10 +5,10 @@
 
 An Undefine query removes type and rule definition from a schema.
 For a practical guide on how to send an Undefine query to TypeDB,
-see the xref:manual::defining/undefine.adoc[] page of the TypeDB Manual.
+see the xref:{page-component-version}@manual::defining/undefine.adoc[] page of the TypeDB Manual.
 
 // For more information on the limitations of schema manipulation, see the
-// xref:home::acid.adoc#_schema_integrity[Schema integrity enforcement].
+// xref:{page-component-version}@home::acid.adoc#_schema_integrity[Schema integrity enforcement].
 
 [#_syntax]
 == Syntax
@@ -24,20 +24,20 @@ undefine <schema_definitions>
 ----
 
 Where `<schema_definitions>` are valid TypeQL schema-specific statements:
-xref:typeql::statements/sub.adoc[],
-xref:typeql::statements/abstract.adoc[],
-xref:typeql::statements/owns.adoc[],
-xref:typeql::statements/value.adoc[],
-xref:typeql::statements/regex.adoc[],
-xref:typeql::statements/relates.adoc[],
-xref:typeql::statements/plays.adoc[],
-xref:typeql::statements/rule.adoc[],
-and annotations: xref:typeql::statements/key.adoc[] and xref:typeql::statements/unique.adoc[]. Schema statements in a `undefine` clause can't use any variables or values, except for xref:statements/rule.adoc[rules].
+xref:{page-component-version}@typeql::statements/sub.adoc[],
+xref:{page-component-version}@typeql::statements/abstract.adoc[],
+xref:{page-component-version}@typeql::statements/owns.adoc[],
+xref:{page-component-version}@typeql::statements/value.adoc[],
+xref:{page-component-version}@typeql::statements/regex.adoc[],
+xref:{page-component-version}@typeql::statements/relates.adoc[],
+xref:{page-component-version}@typeql::statements/plays.adoc[],
+xref:{page-component-version}@typeql::statements/rule.adoc[],
+and annotations: xref:{page-component-version}@typeql::statements/key.adoc[] and xref:{page-component-version}@typeql::statements/unique.adoc[]. Schema statements in a `undefine` clause can't use any variables or values, except for xref:statements/rule.adoc[rules].
 // end::syntax[]
 
 // For more information on defining rules, see the xref:schema/rule-definitions.adoc[] page.
 // For more information on defining types, ownerships, and roleplayers,
-// see below and the xref:typeql::schema/type-definitions.adoc[].
+// see below and the xref:{page-component-version}@typeql::schema/type-definitions.adoc[].
 
 == Behavior
 
@@ -62,7 +62,7 @@ Undefine queries return a promise of an empty response.
 
 == Undefine types
 
-include::typeql::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 Use a schema statement to delete from a schema in an Undefine query:
 
@@ -80,7 +80,7 @@ entity type `database`.
 
 == Undefine rules
 
-include::typeql::partial$iam-database-links.adoc[]
+include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
 
 To delete a rule, use the `rule` keyword with rule's label:
 
@@ -96,13 +96,13 @@ rule add-view-permission;
 
 [cols-2]
 --
-.xref:academy::5-defining-schemas/index.adoc[]
+.xref:{page-component-version}@academy::5-defining-schemas/index.adoc[]
 [.clickable]
 ****
 Learn more about defining a schema in TypeDB Academy.
 ****
 
-.xref:manual::defining/undefine.adoc[]
+.xref:{page-component-version}@manual::defining/undefine.adoc[]
 [.clickable]
 ****
 See how to send an Undefine query to TypeDB.
