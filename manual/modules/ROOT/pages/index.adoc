@@ -1,11 +1,10 @@
-= TypeDB Manual
+= TypeDB manual
 :keywords: typedb, guides, how, installation, tutorial
 :pageTitle: TypeDB Manual
 :page-aliases: manual::overview.adoc
 :summary: How-to guides and tutorials
 
-Welcome to the TypeDB Manual.
-Here you'll find practice oriented guides on TypeDB operations and configuration, as well as Studio and Console manuals.
+The TypeDB manual contains practice-oriented guides on using TypeDB, covering all aspects of the database lifecycle.
 
 You can run TypeDB database servers in the following environments:
 
@@ -37,13 +36,13 @@ Standalone clients can be used to conveniently work and develop with TypeDB.
 
 [cols-2]
 --
-.xref:manual::studio.adoc[]
+.xref:{page-component-version}@manual::install/overview.adoc[]
 [.clickable]
 ****
-An IDE that facilitates the development process for TypeDB databases.
+Installation guides for TypeDB Core, TypeDB Studio, TypeDB Console, and the TypeDB Drivers.
 ****
 
-.xref:manual::console.adoc[]
+.xref:{page-component-version}@manual::setup/overview.adoc[]
 [.clickable]
 ****
 A powerful CLI client for TypeDB.
@@ -109,7 +108,7 @@ Retrieve data as JSONs or stateful objects with TypeQL queries.
 ****
 --
 
-== Using drivers
+== Sending queries
 
 TypeDB Drivers can be used to query TypeDB directly from within your application. For the TypeDB drivers documentation, see the xref:drivers::index.adoc[Drivers] category.
 
@@ -118,90 +117,64 @@ TypeDB Drivers can be used to query TypeDB directly from within your application
 .xref:manual::objects/index.adoc[]
 [.clickable]
 ****
-Use stateful objects to alter data and schema, as well as explain inferred data.
-// * xref:manual::objects/schema.adoc[]
-// * xref:manual::objects/data.adoc[]
-// * xref:manual::objects/explanation.adoc[]
+Guides on connecting to TypeDB Cloud and TypeDB Core deployments using TypeDB Studio, TypeDB Console, and the TypeDB Drivers.
 ****
 
 .xref:manual::bulk-loading/index.adoc[]
 [.clickable]
 ****
-Best practices for bulk-loading data, during prototyping or migrations.
+Guides on creating and deleting databases using TypeDB Studio, TypeDB Console, and the TypeDB Drivers.
+****
+
+.xref:{page-component-version}@manual::queries/overview.adoc[]
+[.clickable]
+****
+Guides on controlling transactions, issuing queries, and processing responses using TypeDB Studio, TypeDB Console, and the TypeDB Drivers.
 ****
 --
 
+== Database operations
 
-== Configuring TypeDB
-
-Learn how to configure, migrate, and upgrade TypeDB.
-
-[cols-2]
+[cols-3]
 --
-.xref:manual::configuring/config.adoc[Config file]
+.xref:{page-component-version}@manual::schema/overview.adoc[]
 [.clickable]
 ****
-TypeDB configuration via config file parameters.
+Guides on defining different schema components, and on best data modeling practices.
 ****
 
-.xref:manual::configuring/arguments.adoc[CLI arguments]
+.xref:{page-component-version}@manual::writing/overview.adoc[]
 [.clickable]
 ****
-TypeDB configuration via CLI arguments.
+Guides on inserting, modifying, bulk-loading, and importing data.
 ****
 
-.xref:manual::configuring/logs.adoc[Logs]
+.xref:{page-component-version}@manual::reading/overview.adoc[]
 [.clickable]
 ****
-Logs configuration and storage.
-****
-
-.xref:manual::configuring/export.adoc[Export and Import]
-[.clickable]
-****
-Exporting and importing databases in TypeDB.
-****
-
-.xref:manual::configuring/upgrades.adoc[Upgrades]
-[.clickable]
-****
-Upgrading TypeDB version.
-****
-
-.xref:manual::configuring/users.adoc[Users]
-[.clickable]
-****
-User management operations.
+Guides on retrieving data, using functions, and building data pipelines.
 ****
 --
 
-////
-== Migrating to TypeDB
+== Application building
 
-[cols-2]
+[cols-3]
 --
-.xref:manual::studio.adoc[From CSV/XML/JSON]
+.xref:{page-component-version}@manual::maintainance/overview.adoc[]
 [.clickable]
 ****
-
+Guides on all aspects of database maintenance, including migrations, backups, upgrades, exports, and orchestration.
 ****
 
-.xref:manual::console.adoc[From SQL]
+.xref:{page-component-version}@manual::users/overview.adoc[]
 [.clickable]
 ****
-
+Guides on managing databases users and creating access policies with roles and permissions.
 ****
 
-.xref:manual::studio.adoc[From Neo4J]
+.xref:{page-component-version}@manual::troubleshooting/overview.adoc[]
 [.clickable]
 ****
-
-****
-
-.xref:manual::console.adoc[From MongoDB]
-[.clickable]
-****
-
+Troubleshooting guides for common problems and pitfalls.
 ****
 --
-////

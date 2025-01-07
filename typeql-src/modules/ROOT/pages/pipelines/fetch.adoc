@@ -1,0 +1,21 @@
+= Fetch stage
+:page-aliases: {page-component-version}@typeql::queries/fetch.adoc
+
+== Draft example
+
+[,typeql]
+----
+match
+  $group isa group;
+fetch {
+  "name": $group.name,
+  "tags": [$group.tag],
+  "members": [
+    match
+      (group: $group, member: $member) isa group-membership;
+    fetch {
+      "username": $member.username,
+    };
+  ],
+};
+----

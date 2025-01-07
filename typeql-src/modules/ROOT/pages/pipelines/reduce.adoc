@@ -1,0 +1,18 @@
+= Reduce stage
+:page-aliases: {page-component-version}@typeql::modifiers/aggregation.adoc, {page-component-version}@typeql::modifiers/grouping.adoc
+
+== Draft example
+
+[,typeql]
+----
+match
+  $group isa group, has name "<group name>";
+  $member isa person;
+  (group: $group, member: $member) isa group-membership;
+  try { (friend: $member, friend: $friend) isa friendship; };
+reduce $num-friends = count($friend) within $member;
+match
+  $country isa country;
+  (place: $country, located: $member) isa location;
+reduce $num-members = count($member), $avg-friends = mean($num-friends) within $country;
+----

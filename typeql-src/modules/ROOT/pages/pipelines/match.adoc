@@ -1,0 +1,13 @@
+= Match stage
+:page-aliases: {page-component-version}@typeql::patterns/matching.adoc
+
+== Draft example
+
+[,typeql]
+----
+match
+  $person-1 isa person, has name "<name 1>";
+  $person-2 isa person, has name "<name 2>";
+  (friend: $person-1, friend: $mutual-friend) isa friendship;
+  (friend: $person-2, friend: $mutual-friend) isa friendship;
+----

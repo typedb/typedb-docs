@@ -1,101 +1,77 @@
-= TypeQL
+= TypeQL reference
 :keywords: typeql, overview
 :pageTitle: TypeQL overview
 :page-aliases: typeql::overview.adoc
 :summary: A birds-eye view of TypeQL documentation.
 
-Welcome to the *TypeQL* documentation: TypeQL is the query language of TypeDB!
+The TypeQL reference contains a complete reference for the TypeQL query language, used for both defining schemas and manipulating data.
 
 == Introduction
 
-To learn about the principles and design of TypeQL, see our xref:typeql::introduction.adoc[] page.
+For a high-level overview of the TypeQL query language and its features, read the xref:{page-component-version}@typeql::introduction.adoc[introduction].
 
 == Queries
 
-TypeQL queries are distinguished by the purpose they fulfil.
+TypeQL queries for schema and data manipulation differ in structure. Specific query types are used to manipulate the schema, whereas data manipulation queries comprise a sequence of pipeline stages, which operate on streams of data.
 
 [cols-2]
 --
-.xref:typeql::queries/define.adoc[]
+.xref:{page-component-version}@typeql::schema/overview.adoc[]
 [.clickable]
 ****
-A Define query to add types and rules to a schema.
+Reference for Define, Undefine, and Redefine queries for schema manipulation.
 ****
 
-.xref:typeql::queries/undefine.adoc[]
+.xref:{page-component-version}@typeql::pipelines/overview.adoc[]
 [.clickable]
 ****
-An Undefine query to delete types and rules to a schema.
-****
-
-.xref:typeql::queries/insert.adoc[]
-[.clickable]
-****
-An Insert query to add data into a database.
-****
-
-.xref:typeql::queries/delete.adoc[]
-[.clickable]
-****
-A Delete query to delete data from a database.
-****
-
-.xref:typeql::queries/update.adoc[]
-[.clickable]
-****
-An Update query to replace data in a database.
-****
-
-.xref:typeql::queries/fetch.adoc[]
-[.clickable]
-****
-A Fetch query to fetch values and types from a database.
-****
-
-.xref:typeql::queries/get.adoc[]
-[.clickable]
-****
-A Get query to get data and types as stateful objects from a database.
+Reference for building data pipelines, including all read and write pipeline stages.
 ****
 --
 
-== Components
+== Language components
 
-Each query is build from various components.
+Schema queries and data pipelines are built up from a number of components:
+
+- Functions are used to build re-usable abstractions for processing data.
+- Patterns form the body of most schema queries and pipeline stages, made of a combination of statements.
+- Statements are individual constraints that describe schema or data elements.
+- Annotations are used to modify the behaviour of particular statements or pipeline stages.
+- Data elements are stored and processed using a range of value types and value-based operations.
 
 [cols-2]
 --
 .xref:typeql::patterns/index.adoc[Patterns]
 [.clickable]
 ****
-Conjunction, Disjunction, Negation, and Matching patterns.
+Reference for writing functions, including single-return and stream-return.
 ****
 
 .xref:typeql::statements/index.adoc[Statements]
 [.clickable]
 ****
-isa, has, sub, owns, abstract, relates, annotations, etc.
+Reference for query pattern construction using logical operations and optionals.
 ****
 
 .xref:typeql::modifiers/index.adoc[Modifiers]
 [.clickable]
 ****
-Sorting, pagination, aggregation, grouping.
+Reference for all individual TypeQL statements, covering schema and data.
 ****
 
 .xref:typeql::concepts/index.adoc[Concepts]
 [.clickable]
 ****
-Types, data instances, concept variables.
+Reference for all annotations, used for modifying schema and pipeline behaviour.
 ****
 
 .xref:typeql::values/index.adoc[Values]
 [.clickable]
 ****
-Value-types, value variables, comparators, arithmetic, functions.
+Reference for different value types and operations, including primitives, lists, and structs.
 ****
 --
 
-== Terminology
+== Glossary
 
-A list of TypeQL keywords used in clauses, schema statements, and data statements, can be found on our xref:typeql::keywords.adoc[] page.
+For a complete list of TypeQL keywords used at various levels of query construction, consult the xref:{page-component-version}@typeql::keywords.adoc[keyword glossary].
