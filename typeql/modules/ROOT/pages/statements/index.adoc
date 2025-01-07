@@ -1,150 +1,184 @@
 = Statements overview
 :page-aliases: {page-component-version}@typeql::statements/overview.adoc
 
-== Introduction
+A TypeQL statement is a building block of a TypeQL pattern.
+Statements in TypeQL are always end with a semicolon.
+By default, a conjunction combines all statements in a pattern.
+There is a specific syntax to use for a disjunction or negation.
+//# todo Add links to disjunction and negation
 
-== Type definition statements
+== Simple statements
 
-[cols-3]
---
-.xref:{page-component-version}@typeql::statements/entity.adoc[]
-[.clickable]
-****
-Used to define a new entity type.
-****
+A simple statement is the smallest complete TypeQL block that can be used as a pattern in a query.
 
-.xref:{page-component-version}@typeql::statements/relation.adoc[]
-[.clickable]
-****
-Used to define a new relation type.
-****
+Most simple statements have three parts: *Subject Predicate Object*.
+Where the predicate is a TypeQL keyword.
 
-.xref:{page-component-version}@typeql::statements/attribute.adoc[]
-[.clickable]
-****
-Used to define a new attribute type.
-****
+Some notable exceptions are: assignments (xref:{page-component-version}@typeql::statements/role-assignment.adoc[role] and
+xref:{page-component-version}@typeql::statements/value-assignment.adoc[value]),
+annotations (xref:{page-component-version}@typeql::statements/key.adoc[key] and
+xref:{page-component-version}@typeql::statements/unique.adoc[unique]),
+xref:{page-component-version}@typeql::statements/abstract.adoc[abstract],
+xref:{page-component-version}@typeql::statements/value.adoc[value], and
+xref:{page-component-version}@typeql::statements/rule.adoc[rules].
 
-.xref:{page-component-version}@typeql::statements/struct.adoc[]
-[.clickable]
-****
-Used to define a new struct type.
-****
+[#_composite_statements]
+== Composite statements
 
-.xref:{page-component-version}@typeql::statements/fun.adoc[]
-[.clickable]
-****
-Used to define a new function.
-****
---
+Multiple simple statements with the same subject can be combined into a composite statement.
+A composite statement starts with a single subject, and multiple comma-separated simple statements with subject omitted.
 
-== Constraint definition statements
+.See an example
+[%collapsible]
+====
+.Composite statement example
+[,typeql]
+----
+$p isa person, has full-name "Kevin Morrison", has email $e;
+----
 
-[cols-3]
---
-.xref:{page-component-version}@typeql::statements/sub.adoc[]
-[.clickable]
-****
-Used to define the supertype of a type.
-****
+The above example combines simple xref:{page-component-version}@typeql::statements/isa.adoc[] and xref:{page-component-version}@typeql::statements/has.adoc[] statements
+to the same result without repeating the subject (`$p`):
 
-.xref:{page-component-version}@typeql::statements/relates.adoc[]
-[.clickable]
-****
-Used to define a new role for a relation type.
-****
+.Equal simple statements example
+[,typeql]
+----
+$p isa person;
+$p has full-name "Kevin Morrison";
+$p has email $e;
+----
+====
 
-.xref:{page-component-version}@typeql::statements/plays.adoc[]
-[.clickable]
-****
-Used to define a new roleplayer for a role.
-****
+The xref:{page-component-version}@typeql::statements/role-assignment.adoc[role assignment] and
+xref:{page-component-version}@typeql::statements/value-assignment.adoc[value assignment] statements do not require a comma
+when added in a composite statement, as they are used without any additional keyword.
 
-.xref:{page-component-version}@typeql::statements/value.adoc[]
-[.clickable]
-****
-Used to define the value type of an attribute type.
-****
-
-.xref:{page-component-version}@typeql::statements/owns.adoc[]
-[.clickable]
-****
-Used to define a new owner of an attribute type.
-****
-
-.xref:{page-component-version}@typeql::statements/alias.adoc[]
-[.clickable]
-****
-Used to define an alias label for a type.
-****
---
-
-== Instance statements
+== Statement types
 
 [cols-3]
 --
 .xref:{page-component-version}@typeql::statements/isa.adoc[]
 [.clickable]
 ****
-Used to specify the type of a data instance.
-****
 
-.xref:{page-component-version}@typeql::statements/links.adoc[]
-[.clickable]
-****
-Used to specify the roleplayers in a relation.
-****
-
-.xref:{page-component-version}@typeql::statements/has.adoc[]
-[.clickable]
-****
-Used to specify an attribute of an entity or relation.
 ****
 
 .xref:{page-component-version}@typeql::statements/is.adoc[]
 [.clickable]
 ****
-Used to specify that two variables represent the same data instance.
+
 ****
 
-.xref:{page-component-version}@typeql::statements/let-eq.adoc[]
+.xref:{page-component-version}@typeql::statements/has.adoc[]
 [.clickable]
-****
-Used to assign the result of an expression to a variable.
 ****
 
-.xref:{page-component-version}@typeql::statements/let-in.adoc[]
-[.clickable]
-****
-Used to assign a stream or list element to a variable.
 ****
 
-.xref:{page-component-version}@typeql::statements/contains.adoc[]
+.xref:{page-component-version}@typeql::statements/sub.adoc[]
 [.clickable]
-****
-Used to specify that a stream or list contains a data instance.
 ****
 
-.xref:{page-component-version}@typeql::statements/like.adoc[]
+****
+
+.xref:{page-component-version}@typeql::statements/type.adoc[]
 [.clickable]
 ****
-Used to specify that a string matches a specified regex pattern
+
+****
+
+.xref:{page-component-version}@typeql::statements/abstract.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:{page-component-version}@typeql::statements/owns.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:{page-component-version}@typeql::statements/value.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:{page-component-version}@typeql::statements/regex.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:{page-component-version}@typeql::statements/relates.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:{page-component-version}@typeql::statements/plays.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:{page-component-version}@typeql::statements/rule.adoc[]
+[.clickable]
+****
+
 ****
 --
 
-== Identity statements
+// * isa
+// * isa!
+// * is
+// * has
+// * sub
+// * sub!
+// * type
+// * abstract
+// * owns
+// * value
+// * regex
+// * @key
+// * @unique
+// * relates
+// * plays
+// * as
+// * rule (when/then)
+
+[#_annotation_statements]
+=== Annotation statements
 
 [cols-2]
 --
-.xref:{page-component-version}@typeql::statements/label.adoc[]
+.xref:{page-component-version}@typeql::statements/unique.adoc[]
 [.clickable]
-****
-Used to identify a type by its label.
 ****
 
-.xref:{page-component-version}@typeql::statements/iid.adoc[]
+****
+
+.xref:{page-component-version}@typeql::statements/key.adoc[]
 [.clickable]
 ****
-Used to identify a data instance by its internal ID.
+
+****
+--
+
+=== Assignment statements
+
+[cols-2]
+--
+.xref:{page-component-version}@typeql::statements/value-assignment.adoc[]
+[.clickable]
+****
+
+****
+
+.xref:{page-component-version}@typeql::statements/role-assignment.adoc[]
+[.clickable]
+****
+
 ****
 --

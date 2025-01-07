@@ -170,7 +170,7 @@ Rust::
 A transaction is automatically closed when the transaction's variable is dropped from memory.
 
 To explicitly close a transaction,
-use the xref:{page-component-version}@drivers::rust/api-reference.adoc#_struct_Transaction_force_close__[force_close] method:
+use the xref:2.x@drivers::rust/api-reference.adoc#_struct_Transaction_force_close__[force_close] method:
 
 .Close a transaction
 [,rust,indent=0]
@@ -183,7 +183,7 @@ Python::
 +
 --
 Use a https://peps.python.org/pep-0343/[context manager] to close a transaction when it's longer needed,
-or use the xref:{page-component-version}@drivers::python/api-reference.adoc#_TypeDBTransaction_close__[close] method
+or use the xref:2.x@drivers::python/api-reference.adoc#_TypeDBTransaction_close__[close] method
 to explicitly close a transaction:
 
 .Close a transaction
@@ -196,7 +196,7 @@ include::{page-component-version}@manual::partial$python-manual-code.py[tag=tx_c
 Node.js::
 +
 --
-Use the xref:{page-component-version}@drivers::nodejs/api-reference.adoc#_TypeDBTransaction_close__[close] method
+Use the xref:2.x@drivers::nodejs/api-reference.adoc#_TypeDBTransaction_close__[close] method
 to explicitly close a transaction:
 
 .Close a transaction
@@ -211,7 +211,7 @@ Java::
 --
 Use the https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html[Try with resources] statement
 to close a transaction when it's longer needed, or use the
-xref:{page-component-version}@drivers::java/api-reference.adoc#_TypeDBTransaction_close__[close] method to explicitly close a transaction:
+xref:2.x@drivers::java/api-reference.adoc#_TypeDBTransaction_close__[close] method to explicitly close a transaction:
 
 .Close a transaction
 [,java,indent=0]
@@ -226,7 +226,7 @@ C#::
 A transaction is automatically closed when the transaction's variable is dropped from memory.
 
 To explicitly close a transaction,
-use the xref:{page-component-version}@drivers::csharp/api-reference.adoc#_void_TypeDB_Driver_Api_ITypeDBTransaction_Close___[close] method:
+use the xref:2.x@drivers::csharp/api-reference.adoc#_void_TypeDB_Driver_Api_ITypeDBTransaction_Close___[close] method:
 
 .Close a transaction
 [,csharp,indent=0]
@@ -242,7 +242,7 @@ A transaction is automatically closed when the transaction's variable is dropped
 
 To explicitly close a transaction,
 use the
-xref:{page-component-version}@drivers::cpp/api-reference.adoc#_void_TypeDBTransactiononClose___stdfunction__void_const_stdoptional__DriverException______callback_[close]
+xref:2.x@drivers::cpp/api-reference.adoc#_void_TypeDBTransactiononClose___stdfunction__void_const_stdoptional__DriverException______callback_[close]
 method:
 
 .Close a transaction
@@ -258,7 +258,7 @@ C::
 A transaction is automatically closed when the transaction's variable is dropped from memory.
 
 To explicitly close a transaction,
-use the xref:{page-component-version}@drivers::c/api-reference.adoc#_transaction_close[close] function:
+use the xref:2.x@drivers::c/api-reference.adoc#_transaction_close[close] function:
 
 .Close a transaction
 [,c,indent=0]
@@ -311,7 +311,7 @@ Rust::
 +
 --
 To commit a transaction,
-use the xref:{page-component-version}@drivers::rust/api-reference.adoc#_struct_Transaction_commit__[commit] method:
+use the xref:2.x@drivers::rust/api-reference.adoc#_struct_Transaction_commit__[commit] method:
 
 .Commit a transaction
 [,rust,indent=0]
@@ -323,7 +323,7 @@ include::{page-component-version}@manual::partial$rust-manual-code.rs[tag=tx_com
 Python::
 +
 --
-To commit a transaction, use the xref:{page-component-version}@drivers::python/api-reference.adoc#_TypeDBTransaction_commit__[commit] method:
+To commit a transaction, use the xref:2.x@drivers::python/api-reference.adoc#_TypeDBTransaction_commit__[commit] method:
 
 .Commit a transaction
 [,python,indent=0]
@@ -335,7 +335,7 @@ include::{page-component-version}@manual::partial$python-manual-code.py[tag=tx_c
 Node.js::
 +
 --
-To commit a transaction, use the xref:{page-component-version}@drivers::nodejs/api-reference.adoc#_TypeDBTransaction_commit__[commit] method:
+To commit a transaction, use the xref:2.x@drivers::nodejs/api-reference.adoc#_TypeDBTransaction_commit__[commit] method:
 
 .Commit a transaction
 [,js,indent=0]
@@ -347,7 +347,7 @@ include::{page-component-version}@manual::partial$nodejs-manual-code.js[tag=tx_c
 Java::
 +
 --
-To commit a transaction, use the xref:{page-component-version}@drivers::java/api-reference.adoc#_TypeDBTransaction_commit__[commit] method:
+To commit a transaction, use the xref:2.x@drivers::java/api-reference.adoc#_TypeDBTransaction_commit__[commit] method:
 
 .Commit a transaction
 [,java,indent=0]
@@ -360,7 +360,7 @@ C#::
 +
 --
 To commit a transaction, use the
-xref:{page-component-version}@drivers::csharp/api-reference.adoc#_void_TypeDB_Driver_Api_ITypeDBTransaction_Commit___[commit] method:
+xref:2.x@drivers::csharp/api-reference.adoc#_void_TypeDB_Driver_Api_ITypeDBTransaction_Commit___[commit] method:
 
 .Commit a transaction
 [,csharp,indent=0]
@@ -372,7 +372,7 @@ include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tag=tx_com
 C++::
 +
 --
-To commit a transaction, use the xref:{page-component-version}@drivers::cpp/api-reference.adoc#_void_TypeDBTransactioncommit___[commit] method:
+To commit a transaction, use the xref:2.x@drivers::cpp/api-reference.adoc#_void_TypeDBTransactioncommit___[commit] method:
 
 .Commit a transaction
 [,cpp,indent=0]
@@ -384,7 +384,7 @@ include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tag=tx_com
 C::
 +
 --
-To commit a transaction, use the xref:{page-component-version}@drivers::c/api-reference.adoc#_transaction_commit[commit] function:
+To commit a transaction, use the xref:2.x@drivers::c/api-reference.adoc#_transaction_commit[commit] function:
 
 .Commit a transaction
 [,c,indent=0]
