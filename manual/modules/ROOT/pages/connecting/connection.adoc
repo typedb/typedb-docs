@@ -42,7 +42,7 @@ Studio::
 --
 Run Studio and follow instructions below:
 
-include::{page-component-version}@manual::studio.adoc[tag=connect_cloud_studio]
+include::{page-version}@manual::studio.adoc[tag=connect_cloud_studio]
 --
 
 Console::
@@ -50,11 +50,11 @@ Console::
 --
 Run TypeDB Console using the `--cloud` argument to set a list of addresses and ports to connect to:
 
-include::{page-component-version}@manual::console.adoc[tag=connect_cloud_console]
+include::{page-version}@manual::console.adoc[tag=connect_cloud_console]
 --
 ====
 
-For programmatic access, use one of the TypeDB xref:{page-component-version}@drivers::index.adoc[drivers] via native API:
+For programmatic access, use one of the TypeDB xref:{page-version}@drivers::index.adoc[drivers] via native API:
 
 .Drivers
 [tabs]
@@ -65,7 +65,7 @@ Rust::
 .Connect to TypeDB Cloud
 [,rust,indent=0]
 ----
-include::{page-component-version}@manual::partial$rust-manual-code.rs[tag=connect_cloud]
+include::{page-version}@manual::partial$rust-manual-code.rs[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -77,7 +77,7 @@ Python::
 .Connect to TypeDB Cloud
 [,python,indent=0]
 ----
-include::{page-component-version}@manual::partial$python-manual-code.py[tag=connect_cloud]
+include::{page-version}@manual::partial$python-manual-code.py[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -88,7 +88,7 @@ Node.js::
 .Connect to TypeDB Cloud
 [,js,indent=0]
 ----
-include::{page-component-version}@manual::partial$nodejs-manual-code.js[tag=connect_cloud]
+include::{page-version}@manual::partial$nodejs-manual-code.js[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -100,7 +100,7 @@ Java::
 .Connect to TypeDB Cloud
 [,java,indent=0]
 ----
-include::{page-component-version}@manual::partial$java-manual-code.java[tag=connect_cloud]
+include::{page-version}@manual::partial$java-manual-code.java[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -112,7 +112,7 @@ C#::
 .Connect to TypeDB Cloud
 [,csharp,indent=0]
 ----
-include::{page-component-version}@manual::partial$csharp-manual-code.cs[tag=connect_cloud]
+include::{page-version}@manual::partial$csharp-manual-code.cs[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -124,7 +124,7 @@ C++::
 .Connect to TypeDB Cloud
 [,cpp,indent=0]
 ----
-include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tag=connect_cloud]
+include::{page-version}@manual::partial$cpp-manual-code.cpp[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -136,7 +136,7 @@ C::
 .Connect to TypeDB Cloud
 [,c,indent=0]
 ----
-include::{page-component-version}@manual::partial$c-manual-code.c[tag=connect_cloud]
+include::{page-version}@manual::partial$c-manual-code.c[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -160,7 +160,7 @@ Studio::
 --
 Run Studio and follow instructions below:
 
-include::{page-component-version}@manual::studio.adoc[tag=connect_core_studio]
+include::{page-version}@manual::studio.adoc[tag=connect_core_studio]
 --
 
 Console::
@@ -168,11 +168,11 @@ Console::
 --
 Run Console using the `--core` argument to set the address and port to connect to:
 
-include::{page-component-version}@manual::console.adoc[tag=connect_core_console]
+include::{page-version}@manual::console.adoc[tag=connect_core_console]
 --
 ====
 
-For programmatic access, use one of the TypeDB xref:{page-component-version}@drivers::index.adoc[drivers] via native API:
+For programmatic access, use one of the TypeDB xref:{page-version}@drivers::index.adoc[drivers] via native API:
 
 [tabs]
 ====
@@ -182,7 +182,7 @@ Rust::
 .Connect to TypeDB Community Edition
 [,rust,indent=0]
 ----
-include::{page-component-version}@manual::partial$rust-manual-code.rs[tag=connect_core]
+include::{page-version}@manual::partial$rust-manual-code.rs[tag=connect_core]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -194,9 +194,9 @@ Python::
 .Connect to TypeDB Community Edition
 [,python,indent=0]
 ----
-include::{page-component-version}@manual::partial$python-manual-code.py[tag=connect_core]
+include::{page-version}@manual::partial$python-manual-code.py[tag=connect_core]
 ----
-//include::{page-component-version}@manual::partial$python-manual-code.py[tags=driver]
+//include::{page-version}@manual::partial$python-manual-code.py[tags=driver]
 Where `127.0.0.1:1729` is the address and port to connect to.
 --
 
@@ -206,7 +206,7 @@ Node.js::
 .Connect to TypeDB Community Edition
 [,js,indent=0]
 ----
-include::{page-component-version}@manual::partial$nodejs-manual-code.js[tag=connect_core]
+include::{page-version}@manual::partial$nodejs-manual-code.js[tag=connect_core]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -218,7 +218,7 @@ Java::
 .Connect to TypeDB Community Edition
 [,java,indent=0]
 ----
-include::{page-component-version}@manual::partial$java-manual-code.java[tag=connect_core]
+include::{page-version}@manual::partial$java-manual-code.java[tag=connect_core]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -230,7 +230,7 @@ C#::
 .Connect to TypeDB Community Edition
 [,csharp,indent=0]
 ----
-include::{page-component-version}@manual::partial$csharp-manual-code.cs[tag=connect_core]
+include::{page-version}@manual::partial$csharp-manual-code.cs[tag=connect_core]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -242,7 +242,7 @@ C++::
 .Connect to TypeDB Community Edition
 [,cpp,indent=0]
 ----
-include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tag=connect_core]
+include::{page-version}@manual::partial$cpp-manual-code.cpp[tag=connect_core]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -254,7 +254,7 @@ C::
 .Connect to TypeDB Community Edition
 [,c,indent=0]
 ----
-include::{page-component-version}@manual::partial$c-manual-code.c[tag=connect_core]
+include::{page-version}@manual::partial$c-manual-code.c[tag=connect_core]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -278,7 +278,7 @@ Studio::
 --
 Run Studio and follow instructions below:
 
-include::{page-component-version}@manual::studio.adoc[tag=connect_cloud_studio]
+include::{page-version}@manual::studio.adoc[tag=connect_cloud_studio]
 --
 
 Console::
@@ -286,11 +286,11 @@ Console::
 --
 Run TypeDB Console using the `--cloud` argument to set a list of addresses and ports to connect to:
 
-include::{page-component-version}@manual::console.adoc[tag=connect_cloud_console]
+include::{page-version}@manual::console.adoc[tag=connect_cloud_console]
 --
 ====
 
-For programmatic access, use one of the TypeDB xref:{page-component-version}@drivers::index.adoc[drivers] via native API:
+For programmatic access, use one of the TypeDB xref:{page-version}@drivers::index.adoc[drivers] via native API:
 
 .Drivers
 [tabs]
@@ -301,7 +301,7 @@ Rust::
 .Connect to TypeDB Cloud
 [,rust,indent=0]
 ----
-include::{page-component-version}@manual::partial$rust-manual-code.rs[tag=connect_cloud]
+include::{page-version}@manual::partial$rust-manual-code.rs[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -313,7 +313,7 @@ Python::
 .Connect to TypeDB Cloud
 [,python,indent=0]
 ----
-include::{page-component-version}@manual::partial$python-manual-code.py[tag=connect_cloud]
+include::{page-version}@manual::partial$python-manual-code.py[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -324,7 +324,7 @@ Node.js::
 .Connect to TypeDB Cloud
 [,js,indent=0]
 ----
-include::{page-component-version}@manual::partial$nodejs-manual-code.js[tag=connect_cloud]
+include::{page-version}@manual::partial$nodejs-manual-code.js[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -336,7 +336,7 @@ Java::
 .Connect to TypeDB Cloud
 [,java,indent=0]
 ----
-include::{page-component-version}@manual::partial$java-manual-code.java[tag=connect_cloud]
+include::{page-version}@manual::partial$java-manual-code.java[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -348,7 +348,7 @@ C#::
 .Connect to TypeDB Cloud
 [,csharp,indent=0]
 ----
-include::{page-component-version}@manual::partial$csharp-manual-code.cs[tag=connect_cloud]
+include::{page-version}@manual::partial$csharp-manual-code.cs[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -360,7 +360,7 @@ C++::
 .Connect to TypeDB Cloud
 [,cpp,indent=0]
 ----
-include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tag=connect_cloud]
+include::{page-version}@manual::partial$cpp-manual-code.cpp[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -372,7 +372,7 @@ C::
 .Connect to TypeDB Cloud
 [,c,indent=0]
 ----
-include::{page-component-version}@manual::partial$c-manual-code.c[tag=connect_cloud]
+include::{page-version}@manual::partial$c-manual-code.c[tag=connect_cloud]
 ----
 
 Where `127.0.0.1:1729` is the address and port to connect to.
@@ -388,14 +388,14 @@ xref:connecting/transaction.adoc[transactions].
 
 [cols-2]
 --
-.xref:{page-component-version}@manual::connecting/database.adoc[]
+.xref:{page-version}@manual::connecting/database.adoc[]
 [.clickable]
 ****
 See how to create a new database in TypeDB.
 
 ****
 
-.xref:{page-component-version}@manual::connecting/session.adoc[]
+.xref:{page-version}@manual::connecting/session.adoc[]
 [.clickable]
 ****
 See how to manage sessions in TypeDB.

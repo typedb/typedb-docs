@@ -12,7 +12,7 @@ There is no specific syntax to apply conjunctions: conjunctions are applied impl
 <pattern>; <pattern>; [ <pattern>; ... ]
 ----
 
-where each `<pattern>` is _any valid pattern_ and we added `;` to emphasize that patterns _always end_ with `;`. Note, each `<pattern>` itself may be a conjunction of smaller patterns or individual statements: see xref:{page-component-version}@typeql::patterns/matching.adoc[patterns] for more information.
+where each `<pattern>` is _any valid pattern_ and we added `;` to emphasize that patterns _always end_ with `;`. Note, each `<pattern>` itself may be a conjunction of smaller patterns or individual statements: see xref:{page-version}@typeql::patterns/matching.adoc[patterns] for more information.
 
 == Behavior
 
@@ -25,7 +25,7 @@ The ordering of statements in a conjunction is irrelevant, as every statement is
 
 == Usage in a match clause
 
-include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
+include::{page-version}@typeql::partial$iam-database-links.adoc[]
 
 Let's fetch a `path` attribute for every file that a user with full-name "Kevin Morrison" has a permission to modify.
 There are multiple statements we need to combine with a conjunction for them all to be matched by every solution:
@@ -71,19 +71,19 @@ In the above example, all statements in a `match` clause must be True for the so
 
 [cols-2]
 --
-.xref:{page-component-version}@typeql::patterns/disjunction.adoc[]
+.xref:{page-version}@typeql::patterns/disjunction.adoc[]
 [.clickable]
 ****
 Learn more about disjunction in TypeQL.
 ****
 
-.xref:{page-component-version}@typeql::patterns/negation.adoc[]
+.xref:{page-version}@typeql::patterns/negation.adoc[]
 [.clickable]
 ****
 Learn more about negation in TypeQL.
 ****
 
-.xref:{page-component-version}@typeql::statements/index.adoc[]
+.xref:{page-version}@typeql::statements/index.adoc[]
 [.clickable]
 ****
 Learn more about statements in TypeQL patterns.

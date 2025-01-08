@@ -2,7 +2,7 @@
 
 == Disjunctions
 
-By default, all statements in a pattern are joined in a https://en.wikipedia.org/wiki/Logical_conjunction[conjunction]. As we have seen in xref:{page-component-version}@academy::7-understanding-query-patterns/7.1-patterns-as-constraints.adoc[Lesson 7.1], this means that the pattern must be satisfied as a set of simultaneous constraints. If we want to create a https://en.wikipedia.org/wiki/Logical_disjunction[disjunction], we must do so explicitly, as we do in the following Fetch query where we retrieve a list of books that a user "likes". We consider a user to have liked a book if either they have ordered it _or_ they have reviewed it with a score of seven or higher.
+By default, all statements in a pattern are joined in a https://en.wikipedia.org/wiki/Logical_conjunction[conjunction]. As we have seen in xref:{page-version}@academy::7-understanding-query-patterns/7.1-patterns-as-constraints.adoc[Lesson 7.1], this means that the pattern must be satisfied as a set of simultaneous constraints. If we want to create a https://en.wikipedia.org/wiki/Logical_disjunction[disjunction], we must do so explicitly, as we do in the following Fetch query where we retrieve a list of books that a user "likes". We consider a user to have liked a book if either they have ordered it _or_ they have reviewed it with a score of seven or higher.
 
 [,typeql]
 ----
@@ -21,7 +21,7 @@ fetch
 $liked-book: isbn-13;
 ----
 
-We have encountered *blocks* before when we used them to define rules in xref:{page-component-version}@academy::5-defining-schemas/5.4-defining-rules.adoc[Lesson 5.4]. To recap, blocks are delimited by braces and contain patterns. To construct a disjunction within a query pattern, we place each branch of the disjunction inside a block and interleave the blocks with the `or` keyword.
+We have encountered *blocks* before when we used them to define rules in xref:{page-version}@academy::5-defining-schemas/5.4-defining-rules.adoc[Lesson 5.4]. To recap, blocks are delimited by braces and contain patterns. To construct a disjunction within a query pattern, we place each branch of the disjunction inside a block and interleave the blocks with the `or` keyword.
 
 [,typeql]
 ----
@@ -46,7 +46,7 @@ You may find it useful to refer to the bookstore's schema.
 =====
 [,typeql]
 ----
-include::{page-component-version}@academy::attachment$bookstore-schema.tql[lines=18..]
+include::{page-version}@academy::attachment$bookstore-schema.tql[lines=18..]
 ----
 =====
 
@@ -114,7 +114,7 @@ You may find it useful to refer to the bookstore's schema.
 =====
 [,typeql]
 ----
-include::{page-component-version}@academy::attachment$bookstore-schema.tql[lines=18..]
+include::{page-version}@academy::attachment$bookstore-schema.tql[lines=18..]
 ----
 =====
 
@@ -160,7 +160,7 @@ $new-book: isbn-13;
 
 == Identities
 
-We encountered the following query in xref:{page-component-version}@academy::3-reading-data/3.5-query-validation.adoc[Lesson 3.5], in which we have used the `is` keyword. It retrieves the IDs of orders being sent to a city other than the city of the user that placed the order.
+We encountered the following query in xref:{page-version}@academy::3-reading-data/3.5-query-validation.adoc[Lesson 3.5], in which we have used the `is` keyword. It retrieves the IDs of orders being sent to a city other than the city of the user that placed the order.
 
 [,typeql]
 ----
@@ -190,7 +190,7 @@ You may find it useful to refer to the bookstore's schema.
 =====
 [,typeql]
 ----
-include::{page-component-version}@academy::attachment$bookstore-schema.tql[lines=18..]
+include::{page-version}@academy::attachment$bookstore-schema.tql[lines=18..]
 ----
 =====
 

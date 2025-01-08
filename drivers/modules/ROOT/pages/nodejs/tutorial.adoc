@@ -19,9 +19,9 @@ https://github.com/typedb/typedb-docs/tree/master/drivers-src/modules/ROOT/parti
 To run this sample application, you'll need:
 
 . TypeDB: either a https://cloud.typedb.com/[TypeDB Cloud,window=_blank] cluster or a self-hosted deployment.
-For TypeDB Community Edition and TypeDB Enterprise installation instructions, see the xref:{page-component-version}@manual::self-managed/index.adoc[] page.
+For TypeDB Community Edition and TypeDB Enterprise installation instructions, see the xref:{page-version}@manual::self-managed/index.adoc[] page.
 . Node.js and https://www.npmjs.com/package/typedb-driver[TypeDB Node.js driver].
-For the driver installation instructions, see the xref:{page-component-version}@drivers::nodejs/index.adoc[] page.
+For the driver installation instructions, see the xref:{page-version}@drivers::nodejs/index.adoc[] page.
 
 //#todo Consider adding virtualenv step-by-step guide
 == Imported modules
@@ -30,7 +30,7 @@ To be able to use the TypeDB Node.js driver API in the Sample application, use t
 
 [,js,indent=0]
 ----
-include::{page-component-version}@drivers::partial$tutorials/nodejs/sample.js[tag=import]
+include::{page-version}@drivers::partial$tutorials/nodejs/sample.js[tag=import]
 ----
 
 == Default values
@@ -39,7 +39,7 @@ We store default values as constants in the source code:
 
 [,js,indent=0]
 ----
-include::{page-component-version}@drivers::partial$tutorials/nodejs/sample.js[tag=constants]
+include::{page-version}@drivers::partial$tutorials/nodejs/sample.js[tag=constants]
 ----
 
 where `DB_NAME` -- the name of the database to use;
@@ -54,7 +54,7 @@ a new database setup, and querying.
 
 [,js,indent=0]
 ----
-include::{page-component-version}@drivers::partial$tutorials/nodejs/sample.js[tag=main]
+include::{page-version}@drivers::partial$tutorials/nodejs/sample.js[tag=main]
 ----
 
 The entire `main()` function code is executed in the context of the <<_typedb_connection,network connection>>,
@@ -67,7 +67,7 @@ The `connectToTypeDB()` function takes `edition` and `addr` as mandatory paramet
 
 [,js,indent=0]
 ----
-include::{page-component-version}@drivers::partial$tutorials/nodejs/sample.js[tag=connection]
+include::{page-version}@drivers::partial$tutorials/nodejs/sample.js[tag=connection]
 ----
 
 The `edition` is expected to be a String value of either `core` or `cloud` for selecting a TypeDB edition.
@@ -78,7 +78,7 @@ that is initialized with a username and password.
 For our sample application, we have the default credentials for the `admin` account set in the code of the
 `connectToTypeDB` function.
 
-include::{page-component-version}@partial$tutorials/change-psw.adoc[]
+include::{page-version}@partial$tutorials/change-psw.adoc[]
 
 == Database setup
 
@@ -103,7 +103,7 @@ As the final step of the database setup, we <<_testing_a_database,test it>>.
 
 [,js,indent=0]
 ----
-include::{page-component-version}@drivers::partial$tutorials/nodejs/sample.js[tag=db-setup]
+include::{page-version}@drivers::partial$tutorials/nodejs/sample.js[tag=db-setup]
 ----
 
 [#_creating_a_database]
@@ -114,7 +114,7 @@ and call functions to <<_defining_a_schema,define its schema>> and <<_loading_in
 
 [,js,indent=0]
 ----
-include::{page-component-version}@drivers::partial$tutorials/nodejs/sample.js[tag=create_new_db]
+include::{page-version}@drivers::partial$tutorials/nodejs/sample.js[tag=create_new_db]
 ----
 
 [#_replacing_a_database]
@@ -124,17 +124,17 @@ and call a function to <<_creating_a_database,create a new one>> instead:
 
 [,js, indent=0]
 ----
-include::{page-component-version}@drivers::partial$tutorials/nodejs/sample.js[tag=replace_db]
+include::{page-version}@drivers::partial$tutorials/nodejs/sample.js[tag=replace_db]
 ----
 
 [#_defining_a_schema]
 === Defining a schema
 
-We use a xref:{page-component-version}@typeql::queries/define.adoc[Define query] to define a schema for the newly created database:
+We use a xref:{page-version}@typeql::queries/define.adoc[Define query] to define a schema for the newly created database:
 
 [,js,indent=0]
 ----
-include::{page-component-version}@drivers::partial$tutorials/nodejs/sample.js[tag=db-schema-setup]
+include::{page-version}@drivers::partial$tutorials/nodejs/sample.js[tag=db-schema-setup]
 ----
 
 The schema for the sample application is stored in the
@@ -146,7 +146,7 @@ file.
 ====
 [,typeql]
 ----
-include::{page-component-version}@drivers::partial$tutorials/iam-schema.tql[lines=17..]
+include::{page-version}@drivers::partial$tutorials/iam-schema.tql[lines=17..]
 ----
 ====
 
@@ -157,11 +157,11 @@ Then we send the contents of the file as a TypeQL Define query and commit the ch
 === Loading initial data
 
 With the schema defined, we can load initial data into our database with the
-xref:{page-component-version}@typeql::queries/insert.adoc[Insert query]:
+xref:{page-version}@typeql::queries/insert.adoc[Insert query]:
 
 [,js,indent=0]
 ----
-include::{page-component-version}@drivers::partial$tutorials/nodejs/sample.js[tag=db-dataset-setup]
+include::{page-version}@drivers::partial$tutorials/nodejs/sample.js[tag=db-dataset-setup]
 ----
 
 We read the
@@ -173,7 +173,7 @@ file, send its contents as a single query, and then commit the changes.
 ====
 [,typeql]
 ----
-include::{page-component-version}@drivers::partial$tutorials/iam-data-single-query.tql[lines=17..]
+include::{page-version}@drivers::partial$tutorials/iam-data-single-query.tql[lines=17..]
 ----
 ====
 
@@ -186,7 +186,7 @@ To test the database, we send a query to count the number of users in the databa
 
 [,js,indent=0]
 ----
-include::{page-component-version}@drivers::partial$tutorials/nodejs/sample.js[tag=test-db]
+include::{page-version}@drivers::partial$tutorials/nodejs/sample.js[tag=test-db]
 ----
 
 == Query examples
@@ -196,7 +196,7 @@ After database setup is complete, we proceed with querying our database with dif
 
 [,js,indent=0]
 ----
-include::{page-component-version}@drivers::partial$tutorials/nodejs/sample.js[tag=queries]
+include::{page-version}@drivers::partial$tutorials/nodejs/sample.js[tag=queries]
 ----
 
 The queries are as follows:
@@ -217,11 +217,11 @@ and returns some meaningful data.
 The main way to retrieve data from a TypeDB database is to use fetching to get values of attributes,
 matched by a pattern.
 
-Let's use a xref:{page-component-version}@typeql::queries/fetch.adoc[Fetch query] to fetch names and emails for all users in the database:
+Let's use a xref:{page-version}@typeql::queries/fetch.adoc[Fetch query] to fetch names and emails for all users in the database:
 
 [,js,indent=0]
 ----
-include::{page-component-version}@drivers::partial$tutorials/nodejs/sample.js[tag=fetch]
+include::{page-version}@drivers::partial$tutorials/nodejs/sample.js[tag=fetch]
 ----
 
 We get the response as a stream of results, containing JSON,
@@ -237,7 +237,7 @@ Let's insert a new user with a `full-name` and `email` attributes to the databas
 
 [,js,indent=0]
 ----
-include::{page-component-version}@drivers::partial$tutorials/nodejs/sample.js[tag=insert]
+include::{page-version}@drivers::partial$tutorials/nodejs/sample.js[tag=insert]
 ----
 
 The Insert query returns a stream of ConceptMaps: one for every `insert` clause execution.
@@ -255,7 +255,7 @@ Let's retrieve all files available for a user with a `getFilesByUser()` function
 
 [,js,indent=0]
 ----
-include::{page-component-version}@drivers::partial$tutorials/nodejs/sample.js[tag=get]
+include::{page-version}@drivers::partial$tutorials/nodejs/sample.js[tag=get]
 ----
 
 We call the function with the inference disabled (`false`) and expect it to return no results (an empty stream),
@@ -285,11 +285,11 @@ The `add-view-permission` rule provides us with some inferred results this time.
 
 Let's replace a path for one of the files with a new path.
 We can do that by deleting ownership of the old path attribute from the file entity
-and assigning it with ownership of the new path attribute with the xref:{page-component-version}@typeql::queries/update.adoc[Update query]:
+and assigning it with ownership of the new path attribute with the xref:{page-version}@typeql::queries/update.adoc[Update query]:
 
 [,js,indent=0]
 ----
-include::{page-component-version}@drivers::partial$tutorials/nodejs/sample.js[tag=update]
+include::{page-version}@drivers::partial$tutorials/nodejs/sample.js[tag=update]
 ----
 
 We collect the response of the Update query and check the length of it to determine
@@ -302,7 +302,7 @@ We then commit the changes only if the number meets our expectation.
 Finally, let's delete the same file we updated the path for.
 First, we match the file in a Get (or Fetch) query to check how many files get matched to prevent unplanned deletes.
 If the number (or any other relevant parameters) of matched results is as expected,
-we proceed with a xref:{page-component-version}@typeql::queries/delete.adoc[Delete query] with the same match clause.
+we proceed with a xref:{page-version}@typeql::queries/delete.adoc[Delete query] with the same match clause.
 
 By using the same `write` transaction we employ snapshot isolation
 to prevent any other transactions from changing the expected results.
@@ -311,7 +311,7 @@ then our transaction fails upon a commit.
 
 [,js,indent=0]
 ----
-include::{page-component-version}@drivers::partial$tutorials/nodejs/sample.js[tag=delete]
+include::{page-version}@drivers::partial$tutorials/nodejs/sample.js[tag=delete]
 ----
 
 == Learn more

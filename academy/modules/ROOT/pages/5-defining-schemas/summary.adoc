@@ -1,6 +1,6 @@
 = Lesson 5: Defining schemas
 
-== xref:{page-component-version}@academy::5-defining-schemas/5.1-defining-individual-types.adoc[Defining individual types]
+== xref:{page-version}@academy::5-defining-schemas/5.1-defining-individual-types.adoc[Defining individual types]
 
 * *Define queries* are used to define new types, interfaces, and rules. They comprise a `define` clause only. Define queries are run using a *schema session* and *write transaction*.
 +
@@ -41,7 +41,7 @@ attribute-type value boolean;
 entity-type owns attribute-type;
 ----
 
-== xref:{page-component-version}@academy::5-defining-schemas/5.2-defining-type-hierarchies.adoc[Defining type hierarchies]
+== xref:{page-version}@academy::5-defining-schemas/5.2-defining-type-hierarchies.adoc[Defining type hierarchies]
 
 * A *type hierarchy* can be defined by using an existing type instead of a root type in a `sub` statement.
 +
@@ -64,7 +64,7 @@ relation-type relates role as overridden-role;
 ----
 * To define subtypes of an attribute type, that attribute type must be abstract.
 
-== xref:{page-component-version}@academy::5-defining-schemas/5.3-defining-constraints.adoc[Defining constraints]
+== xref:{page-version}@academy::5-defining-schemas/5.3-defining-constraints.adoc[Defining constraints]
 
 * A `regex` statment is used to constrain the values of a string attribute type with a https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/regex/Pattern.html[Java regex pattern]
 +
@@ -86,7 +86,7 @@ entity-type owns attribute-type @key;
 entity-type owns attribute-type @unique;
 ----
 
-== xref:{page-component-version}@academy::5-defining-schemas/5.4-defining-rules.adoc[Defining rules]
+== xref:{page-version}@academy::5-defining-schemas/5.4-defining-rules.adoc[Defining rules]
 
 * A rule definition has three components: a *rule label*, a *condition*, and a *conclusion*. A rule definition begins with the `rule` keyword. The `when` and `then` keywords precede the condition and conclusion *blocks* respectively.
 +
@@ -104,7 +104,7 @@ rule rule-label:
 * A rule must generate either a single new relation or a single new attribute.
 * Every variable in the conclusion must also appear in the condition.
 
-== xref:{page-component-version}@academy::5-defining-schemas/5.5-schema-validation.adoc[Schema validation]
+== xref:{page-version}@academy::5-defining-schemas/5.5-schema-validation.adoc[Schema validation]
 
 * Checks must be passed whenever changes to the schema are made to ensure internal consistency.
 * Making changes that fail a validation check will cause an exception to be thrown.
@@ -114,19 +114,19 @@ rule rule-label:
 
 [cols-3]
 --
-.xref:{page-component-version}@academy::6-building-applications/index.adoc[]
+.xref:{page-version}@academy::6-building-applications/index.adoc[]
 [.clickable]
 ****
 Learn how to build applications on TypeDB, covering database management, transaction control, and result stream processing.
 ****
 
-.xref:{page-component-version}@academy::7-understanding-query-patterns/index.adoc[]
+.xref:{page-version}@academy::7-understanding-query-patterns/index.adoc[]
 [.clickable]
 ****
 Learn how to build query patterns utilising advanced elements of TypeQL syntax, and how queries are resolved by TypeDB.
 ****
 
-.xref:{page-component-version}@manual::defining/index.adoc[Manual: Defining schemas]
+.xref:{page-version}@manual::defining/index.adoc[Manual: Defining schemas]
 [.clickable]
 ****
 Learn more about defining schemas for TypeDB, covering Define queries, Undefine queries, and schema editing.

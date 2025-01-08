@@ -9,14 +9,14 @@ By <<_limit_the_results,limiting>> the query to return the first `x` results,
 processing them, and then sending subsequent queries with an <<_offset_the_results,offset>>, incremented by `x`,
 you can iterate through the entire result set in manageable batches.
 
-xref:{page-component-version}@typeql::modifiers/sorting.adoc[Sorting] the results is strongly advised, but is not mandatory.
+xref:{page-version}@typeql::modifiers/sorting.adoc[Sorting] the results is strongly advised, but is not mandatory.
 Without sorting, the ordering of results is not guaranteed and can be unpredictable.
 Pagination relies on sorting to traverse the full set of results.
 
 [#_offset_the_results]
 === Offset the results
 
-include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
+include::{page-version}@typeql::partial$iam-database-links.adoc[]
 
 Use the `offset` keyword followed by the number of results to skip.
 
@@ -36,7 +36,7 @@ skips the first two results, and returns the rest of results.
 [#_limit_the_results]
 === Limit the number of results
 
-include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
+include::{page-version}@typeql::partial$iam-database-links.adoc[]
 
 Use the `limit` keyword followed by the number of results to return.
 
@@ -54,7 +54,7 @@ so it returns only two almost random names owned by entities of the `person` typ
 
 == Usage
 
-include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
+include::{page-version}@typeql::partial$iam-database-links.adoc[]
 
 Combine `offset` and `limit` to paginate the results of a query.
 By knowing the limit amount, we can use offset to get the full set of results in batches.
@@ -92,13 +92,13 @@ When we receive fewer results than set by the `limit` value, it should be a sign
 
 [cols-2]
 --
-.xref:{page-component-version}@typeql::modifiers/sorting.adoc[]
+.xref:{page-version}@typeql::modifiers/sorting.adoc[]
 [.clickable]
 ****
 Learn about sorting results in TypeQL.
 ****
 
-.xref:{page-component-version}@typeql::modifiers/aggregation.adoc[]
+.xref:{page-version}@typeql::modifiers/aggregation.adoc[]
 [.clickable]
 ****
 Learn about aggregation of query results in TypeQL.

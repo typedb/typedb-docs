@@ -1,10 +1,10 @@
 = Crash course - relational database users
 
-This crash course pathway is designed to give a concise overview of the main aspects of working with TypeDB and TypeQL for users coming from relational databases. If you do not have experience with relational databases, you can check out our xref:{page-component-version}@home::crash-course/index.adoc#_pathways[other pathways] instead. Relational query examples in this crash course use PostgreSQL syntax.
+This crash course pathway is designed to give a concise overview of the main aspects of working with TypeDB and TypeQL for users coming from relational databases. If you do not have experience with relational databases, you can check out our xref:{page-version}@home::crash-course/index.adoc#_pathways[other pathways] instead. Relational query examples in this crash course use PostgreSQL syntax.
 
 [NOTE]
 ====
-If you would like to follow along with the examples in this crash course, make sure you have completed the xref:{page-component-version}@home::crash-course/index.adoc[environment setup].
+If you would like to follow along with the examples in this crash course, make sure you have completed the xref:{page-version}@home::crash-course/index.adoc[environment setup].
 ====
 
 == Coming from relational databases
@@ -65,7 +65,7 @@ While these comparisons are equivalent as far as database theory is concerned, t
 
 == Defining a schema
 
-To define new *types*, we use a *Define query*. The following query defines a new *entity type* `user` along with some *attribute types* for it. Using a `schema` session and `write` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+To define new *types*, we use a *Define query*. The following query defines a new *entity type* `user` along with some *attribute types* for it. Using a `schema` session and `write` transaction, image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
 [,typeql]
 ----
@@ -97,15 +97,15 @@ The above query contains the following TypeQL keywords:
 * `sub`: Used to define a new entity, relation, or attribute type.
 * `entity`: The *root type* from which all entity types are subtyped.
 * `owns`: Used to define an entity or relation type to be the *owner* of an attribute type.
-* `@key`: Used in an `owns` statement to specify a *xref:{page-component-version}@typeql::statements/key.adoc[key attribute]* of an entity or relation type.
+* `@key`: Used in an `owns` statement to specify a *xref:{page-version}@typeql::statements/key.adoc[key attribute]* of an entity or relation type.
 * `attribute`: The root type from which all attribute types are subtyped.
-* `value`: Used to define the *xref:{page-component-version}@typeql::values/value-types.adoc[value type]* of an attribute type. Attribute types must have a value type declared.
+* `value`: Used to define the *xref:{page-version}@typeql::values/value-types.adoc[value type]* of an attribute type. Attribute types must have a value type declared.
 
 In TypeDB, attribute types are defined separately to entity types. This allows attributes to be reused for multiple entity or relation types, as we will see shortly. This is different to in a relational database, where columns are defined along with their tables, and columns cannot be reused in multiple tables.
 
 === Defining relation types
 
-In the next Define query, we define a new *relation type*, which references the existing entity type `user`. Using a `schema` session and `write` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+In the next Define query, we define a new *relation type*, which references the existing entity type `user`. Using a `schema` session and `write` transaction, image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
 [,typeql]
 ----
@@ -140,7 +140,7 @@ Here we have introduced four new TypeQL keywords:
 * `relation`: The root type from which all relation types are subtyped.
 * `relates`: Used to define a *role* for a relation type. Relation types must have at least one role defined.
 * `plays`: Used to define a *roleplayer* for a relation type's role.
-* `regex`: Used to place a *xref:{page-component-version}@typeql::statements/regex.adoc[regex constraint]* on the value of a string attribute type.
+* `regex`: Used to place a *xref:{page-version}@typeql::statements/regex.adoc[regex constraint]* on the value of a string attribute type.
 
 In TypeDB, relation types refer to roleplayers by references rather than values, so we do not need to specify an attribute to be used as the reference value: the role `buyer` directly references the entity type `user` rather than its attribute type `id`.
 
@@ -150,7 +150,7 @@ As with attribute ownerships, roles and roleplayers are also defined separately,
 
 == Inserting data
 
-With a schema defined, we can begin inserting data. To insert data, we use an *Insert query*. The following query inserts three new users into the database. Using a `data` session and `write` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+With a schema defined, we can begin inserting data. To insert data, we use an *Insert query*. The following query inserts three new users into the database. Using a `data` session and `write` transaction, image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
 [,typeql]
 ----
@@ -195,7 +195,7 @@ Variable names are arbitrary and exist only within the scope of the query.
 
 === Inserting relations
 
-In the next query, we insert three new orders. Each one references one of the users we just inserted. Using a `data` session and `write` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+In the next query, we insert three new orders. Each one references one of the users we just inserted. Using a `data` session and `write` transaction, image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
 [,typeql]
 ----
@@ -245,7 +245,7 @@ Each element of the tuple consists of the role that the entity will play, follow
 
 == Reading data
 
-Let's now read the data we inserted. To begin with, we'll retrieve the details of the users we inserted with the following *Fetch query*. Using a `data` session and `read` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+Let's now read the data we inserted. To begin with, we'll retrieve the details of the users we inserted with the following *Fetch query*. Using a `data` session and `read` transaction, image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
 
 [,typeql]
 ----
@@ -307,7 +307,7 @@ Fetch queries always comprise a `match` clause followed by a `fetch` clause. The
 
 === Projections
 
-By modifying the `fetch` clause, we can choose to retrieve only specific attributes, as we do in the following query. Using a `data` session and `read` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+By modifying the `fetch` clause, we can choose to retrieve only specific attributes, as we do in the following query. Using a `data` session and `read` transaction, image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
 
 [,typeql]
 ----
@@ -358,7 +358,7 @@ To retrieve only specific attributes, we list the types of those we want to retr
 
 === Selections
 
-By modifying the `match` clause, we can choose to retrieve the attributes of specific entities only. This is done by adding *constraints*, which are identical in structure to the statements used to insert data. In the next query, we retrieve the name and birthdate of users with a specific ID. Using a `data` session and `read` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+By modifying the `match` clause, we can choose to retrieve the attributes of specific entities only. This is done by adding *constraints*, which are identical in structure to the statements used to insert data. In the next query, we retrieve the name and birthdate of users with a specific ID. Using a `data` session and `read` transaction, image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
 
 [,typeql]
 ----
@@ -397,7 +397,7 @@ Of course, because `id` is a key attribute of `user`, the `match` clause will on
 
 === Reading from relations
 
-In a Fetch query, the `match` clause can contain multiple constraints, and the `fetch` clause can retrieve attributes from multiple entities or relations. Next, we extend the previous query to also retrieve details of the orders placed by this user. Using a `data` session and `read` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+In a Fetch query, the `match` clause can contain multiple constraints, and the `fetch` clause can retrieve attributes from multiple entities or relations. Next, we extend the previous query to also retrieve details of the orders placed by this user. Using a `data` session and `read` transaction, image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
 
 [,typeql]
 ----
@@ -455,7 +455,7 @@ The relation tuple syntax is used both to insert new relations and match existin
 
 == Working with inheritance hierarchies
 
-The entity type `user` and the relation type `order` that we defined previously were declared to be subtypes of the root types `entity` and `relation` respectively by using the `sub` keyword. However, we can also declare types to be subtypes of existing types. In the following query, we define four new entity types in a *type hierarchy* and a new relation type, along with some new attribute types. Using a `schema` session and `write` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+The entity type `user` and the relation type `order` that we defined previously were declared to be subtypes of the root types `entity` and `relation` respectively by using the `sub` keyword. However, we can also declare types to be subtypes of existing types. In the following query, we define four new entity types in a *type hierarchy* and a new relation type, along with some new attribute types. Using a `schema` session and `write` transaction, image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
 [,typeql]
 ----
@@ -494,7 +494,7 @@ define
 Here we have introduced two new TypeQL keywords:
 
 * `abstract`: Used to define an entity, relation, or attribute type to be abstract.
-* `@unique`: Used in an `owns` statement to specify a *xref:{page-component-version}@typeql::statements/unique.adoc[unique attribute]* of an entity or relation type.
+* `@unique`: Used in an `owns` statement to specify a *xref:{page-version}@typeql::statements/unique.adoc[unique attribute]* of an entity or relation type.
 
 This query defines a new type hierarchy of book types, described by an abstract type `book` with three subtypes: `paperback`, `hardback`, and `ebook`. The attribute type ownerships of `book` are automatically inherited by its subtypes. Meanwhile, ownership of `stock` is defined individually at the subtype level. This gives complete control over which data instances are permitted to own which attributes. This also applies to which data instances are permitted to play which roles via `plays` statements, which can likewise be defined at the supertype or subtypes levels.
 
@@ -540,7 +540,7 @@ Additionally, it is necessary to create a separate table for book genres, as a b
 
 === Inserting data into inheritance hierarchies
 
-When inserting data into a type hierarchy, we declare only the exact type of the data instances. For instance, when we insert an entity of type `paperback`, we do not have to also declare that it is of type `book`, as the schema contains the context necessary for the database to infer this. In the following query we insert five books of different types. Using a `data` session and `write` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+When inserting data into a type hierarchy, we declare only the exact type of the data instances. For instance, when we insert an entity of type `paperback`, we do not have to also declare that it is of type `book`, as the schema contains the context necessary for the database to infer this. In the following query we insert five books of different types. Using a `data` session and `write` transaction, image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
 [,typeql]
 ----
@@ -634,7 +634,7 @@ Additionally, there is one book that does not have an ISBN-10, which we represen
 
 === Reading data from inheritance hierarchies
 
-When reading data from type hierarchies, we can match that data using any of its types. In the following query, we retrieve all the attributes of all books. When we match the books, we do not specify which type of book we are looking for, by matching against the supertype `book`. This matches instances of `paperback`, `hardback`, and `ebook`. Using a `data` session and `read` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+When reading data from type hierarchies, we can match that data using any of its types. In the following query, we retrieve all the attributes of all books. When we match the books, we do not specify which type of book we are looking for, by matching against the supertype `book`. This matches instances of `paperback`, `hardback`, and `ebook`. Using a `data` session and `read` transaction, image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
 
 [,typeql]
 ----
@@ -757,7 +757,7 @@ Another advantage of TypeDB's design is that if we define new subtypes of `book`
 
 === Referencing data in inheritance hierarchies
 
-We can also reference existing data in type hierarchies by matching against the supertype when inserting relations that reference that data. In the following query, we insert several new order lines for the orders we create earlier by matching against the supertype `book`. Using a `data` session and `write` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+We can also reference existing data in type hierarchies by matching against the supertype when inserting relations that reference that data. In the following query, we insert several new order lines for the orders we create earlier by matching against the supertype `book`. Using a `data` session and `write` transaction, image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
 [,typeql]
 ----
@@ -785,7 +785,7 @@ In addition to using inheritance hierarchies in our models, we can also make use
 
 These are not possible to model in relational databases, and they are particularly difficult to emulate. Doing so typically involves either adopting a class-inheritance pattern approach as we did previously, or by forgoing referential integrity in the model.
 
-To see how we can use multi-type references in our model, we will define a new type of product to sell in the bookstore: accessories. Using a `schema` session and `write` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+To see how we can use multi-type references in our model, we will define a new type of product to sell in the bookstore: accessories. Using a `schema` session and `write` transaction, image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
 [,typeql]
 ----
@@ -804,7 +804,7 @@ define
   color sub attribute, value string;
 ----
 
-The new `accessory` type owns `price` and `stock`, and plays `order-line:item`, all of which `book` also does. This will enable us to query these common properties of books and accessories together. Next, we will insert some accessories into the database. Using a `data` session and `write` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+The new `accessory` type owns `price` and `stock`, and plays `order-line:item`, all of which `book` also does. This will enable us to query these common properties of books and accessories together. Next, we will insert some accessories into the database. Using a `data` session and `write` transaction, image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
 
 [,typeql]
 ----
@@ -844,7 +844,7 @@ insert
     has quantity 3;
 ----
 
-We can then add orders that mix books and accessories, as we do in the following query. In the same transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+We can then add orders that mix books and accessories, as we do in the following query. In the same transaction, image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
 [,typeql]
 ----
@@ -865,7 +865,7 @@ insert
 
 === Reading data from shared attribute types
 
-To retrieve the attributes from the shared attribute types, we do not specify the type of the entity or relation we are querying. Normally, this would be done using an `isa` statement. In the `match` clause of the following query, we do not include an `isa` statement for `$item`. As a result, the variable `$item` will match any data instance that has both a `price` attribute and a `stock` attribute, the two constraints that have been declared. Finally, we retrieve the price and the stock of each matched item in the `fetch` clause. Using a `data` session and `read` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+To retrieve the attributes from the shared attribute types, we do not specify the type of the entity or relation we are querying. Normally, this would be done using an `isa` statement. In the `match` clause of the following query, we do not include an `isa` statement for `$item`. As a result, the variable `$item` will match any data instance that has both a `price` attribute and a `stock` attribute, the two constraints that have been declared. Finally, we retrieve the price and the stock of each matched item in the `fetch` clause. Using a `data` session and `read` transaction, image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
 
 [,typeql]
 ----
@@ -915,7 +915,7 @@ fetch
 
 === Reading data from shared roles
 
-As when retrieving shared attribute types, we can retrieve data from shared roles by omitting the type of the data instance that plays the role. In the following query, we match any orders made by the user with ID "u0002". Then, in a *xref:{page-component-version}@typeql::queries/fetch.adoc#_subqueries[sub-query]*, we match any items in those orders, regardless of their types. Finally, we retrieve all attributes of both the orders and their constituent items, along with the quantities ordered. Using a `data` session and `read` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+As when retrieving shared attribute types, we can retrieve data from shared roles by omitting the type of the data instance that plays the role. In the following query, we match any orders made by the user with ID "u0002". Then, in a *xref:{page-version}@typeql::queries/fetch.adoc#_subqueries[sub-query]*, we match any items in those orders, regardless of their types. Finally, we retrieve all attributes of both the orders and their constituent items, along with the quantities ordered. Using a `data` session and `read` transaction, image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
 
 [,typeql]
 ----
@@ -1032,7 +1032,7 @@ fetch
 
 == Working with rule inference
 
-In relational databases, abstractions are defined using views. In TypeDB, they are defined with *rules*. Rules form part of the schema and are added to the database with a Define query. The following query defines a new rule, in addition to giving `order-line` ownership of `price`. Using a `schema` session and `write` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
+In relational databases, abstractions are defined using views. In TypeDB, they are defined with *rules*. Rules form part of the schema and are added to the database with a Define query. The following query defines a new rule, in addition to giving `order-line` ownership of `price`. Using a `schema` session and `write` transaction, image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query, then image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *commit* the transaction.
 
 [,typeql]
 ----
@@ -1050,7 +1050,7 @@ define
     };
 ----
 
-This calculates a line total for each order line and assigns it to the line as a `price` attribute using an xref:{page-component-version}@typeql::values/arithmetic.adoc[arithmetic expression]. A rule consists of a *condition* and a *conclusion*, located in the `when` and `then` blocks respectively. Wherever in the data the condition is met, the conclusion is applied. Functionally, the above rule is very similar to the following Insert query, which should _not_ be run.
+This calculates a line total for each order line and assigns it to the line as a `price` attribute using an xref:{page-version}@typeql::values/arithmetic.adoc[arithmetic expression]. A rule consists of a *condition* and a *conclusion*, located in the `when` and `then` blocks respectively. Wherever in the data the condition is met, the conclusion is applied. Functionally, the above rule is very similar to the following Insert query, which should _not_ be run.
 
 [,typeql]
 ----
@@ -1067,7 +1067,7 @@ Unlike Insert queries, which are run once and insert the data on disk, rules are
 
 === Reading inferred data
 
-Inferred data is read in the same way as data on disk, but rule inference must first be enabled. To do so in TypeDB Studio, use the inference toggle (image:{page-component-version}@manual::icons/infer.png[]) in the top toolbar. In the following query, we list the inferred line totals for each order made by user "u0002". Using a `data` session and `read` transaction with inference enabled, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
+Inferred data is read in the same way as data on disk, but rule inference must first be enabled. To do so in TypeDB Studio, use the inference toggle (image:{page-version}@manual::icons/infer.png[]) in the top toolbar. In the following query, we list the inferred line totals for each order made by user "u0002". Using a `data` session and `read` transaction with inference enabled, image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *run* this query.
 
 [,typeql]
 ----
@@ -1157,25 +1157,25 @@ Continue learning how to use TypeDB with TypeDB Academy, or explore other sectio
 
 [cols-2]
 --
-.xref:{page-component-version}@academy::index.adoc[]
+.xref:{page-version}@academy::index.adoc[]
 [.clickable]
 ****
 An end-to-end learning experience for TypeDB and TypeQL, showing how to take advantage of TypeDB's unique features.
 ****
 
-.xref:{page-component-version}@manual::index.adoc[TypeDB manual]
+.xref:{page-version}@manual::index.adoc[TypeDB manual]
 [.clickable]
 ****
 Practice-oriented guides on using TypeDB, including the TypeDB Studio and TypeDB Console manuals.
 ****
 
-.xref:{page-component-version}@drivers::index.adoc[TypeDB drivers]
+.xref:{page-version}@drivers::index.adoc[TypeDB drivers]
 [.clickable]
 ****
 Installation guides, tutorials, and API references for the official TypeDB drivers in all supported languages.
 ****
 
-.xref:{page-component-version}@typeql::index.adoc[TypeQL reference]
+.xref:{page-version}@typeql::index.adoc[TypeQL reference]
 [.clickable]
 ****
 Complete language reference for TypeQL, covering all query types, pattern elements, and keywords.

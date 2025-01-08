@@ -22,7 +22,7 @@ Matching one of the branches is enough for the solution to be returned.
 
 == Disjunction of statements
 
-include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
+include::{page-version}@typeql::partial$iam-database-links.adoc[]
 
 One of the uses of a disjunction is to retrieve instances of different types.
 As a simple and one of the most common examples,
@@ -71,7 +71,7 @@ $name;
 
 == Disjunction in rules
 
-include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
+include::{page-version}@typeql::partial$iam-database-links.adoc[]
 
 Disjunction can be used in a rule condition in the same way as it can be used in a `match` clause.
 
@@ -100,19 +100,19 @@ rule permission-validity: when {
 
 [cols-2]
 --
-.xref:{page-component-version}@typeql::patterns/conjunction.adoc[]
+.xref:{page-version}@typeql::patterns/conjunction.adoc[]
 [.clickable]
 ****
 Learn more about conjunction in TypeQL.
 ****
 
-.xref:{page-component-version}@typeql::patterns/negation.adoc[]
+.xref:{page-version}@typeql::patterns/negation.adoc[]
 [.clickable]
 ****
 Learn more about negation in TypeQL.
 ****
 
-.xref:{page-component-version}@typeql::statements/index.adoc[]
+.xref:{page-version}@typeql::statements/index.adoc[]
 [.clickable]
 ****
 Learn more about statements in TypeQL patterns.

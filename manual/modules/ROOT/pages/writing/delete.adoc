@@ -6,18 +6,18 @@ In this guide, you'll see how to delete data from a database using Studio, Conso
 
 == Understanding Delete queries
 
-A Delete query is used to delete _data_ from a TypeDB database. A `delete` clause is executed once per every result matched by the `match` clause of the same Delete query. For a detailed explanation of the query see the xref:{page-component-version}@typeql::queries/delete.adoc[] page.
+A Delete query is used to delete _data_ from a TypeDB database. A `delete` clause is executed once per every result matched by the `match` clause of the same Delete query. For a detailed explanation of the query see the xref:{page-version}@typeql::queries/delete.adoc[] page.
 
 == Sending Delete queries
 
-Before you begin, make sure you followed the instructions from the xref:{page-component-version}@manual::writing/insert.adoc[] page. The easiest way to send a Delete query is to use Studio or Console:
+Before you begin, make sure you followed the instructions from the xref:{page-version}@manual::writing/insert.adoc[] page. The easiest way to send a Delete query is to use Studio or Console:
 
 [tabs]
 ====
 Studio::
 +
 --
-Follow the xref:{page-component-version}@manual::studio.adoc#_prepare_a_query[Studio manual]
+Follow the xref:{page-version}@manual::studio.adoc#_prepare_a_query[Studio manual]
 to connect to TypeDB and select a project folder.
 Then use the steps below:
 
@@ -35,9 +35,9 @@ $f($u1,$u2) isa friendship;
 delete
 $f isa friendship;
 ----
-. Run the query by clicking the image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]
+. Run the query by clicking the image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]
 btn:[Run Query] button.
-. Commit the changes by clicking the image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit query] button.
+. Commit the changes by clicking the image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit query] button.
 --
 
 Console::
@@ -71,7 +71,7 @@ commit
 --
 ====
 
-To send a Delete query programmatically, use xref:{page-component-version}@drivers::index.adoc[drivers]:
+To send a Delete query programmatically, use xref:{page-version}@drivers::index.adoc[drivers]:
 
 //#todo Check all the code
 [tabs]
@@ -79,7 +79,7 @@ To send a Delete query programmatically, use xref:{page-component-version}@drive
 Rust::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB.
 
 [subs="macros, post_replacements, replacements"]
@@ -92,14 +92,14 @@ method:
 
 [,rust,indent=0]
 ----
-include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=delete]
+include::{page-version}@manual::partial$rust-manual-code.rs[tags=delete]
 ----
 --
 
 Python::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
@@ -112,14 +112,14 @@ method:
 
 [,python,indent=0]
 ----
-include::{page-component-version}@manual::partial$python-manual-code.py[tags=delete]
+include::{page-version}@manual::partial$python-manual-code.py[tags=delete]
 ----
 --
 
 Node.js::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
@@ -132,14 +132,14 @@ method:
 
 [,js, indent=0]
 ----
-include::{page-component-version}@manual::partial$nodejs-manual-code.js[tags=delete]
+include::{page-version}@manual::partial$nodejs-manual-code.js[tags=delete]
 ----
 --
 
 Java::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
@@ -152,14 +152,14 @@ method:
 
 [,java,indent=0]
 ----
-include::{page-component-version}@manual::partial$java-manual-code.java[tags=delete]
+include::{page-version}@manual::partial$java-manual-code.java[tags=delete]
 ----
 --
 
 C#::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
@@ -172,14 +172,14 @@ method:
 
 [,csharp,indent=0]
 ----
-include::{page-component-version}@manual::partial$csharp-manual-code.cs[tags=delete]
+include::{page-version}@manual::partial$csharp-manual-code.cs[tags=delete]
 ----
 --
 
 C++::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
@@ -192,15 +192,15 @@ method:
 
 [,cpp,indent=0]
 ----
-include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tags=options,indent=0]
-include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tags=delete,indent=0]
+include::{page-version}@manual::partial$cpp-manual-code.cpp[tags=options,indent=0]
+include::{page-version}@manual::partial$cpp-manual-code.cpp[tags=delete,indent=0]
 ----
 --
 
 C::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
@@ -213,8 +213,8 @@ method:
 
 [,c,indent=0]
 ----
-include::{page-component-version}@manual::partial$c-manual-code.c[tags=options,indent=0]
-include::{page-component-version}@manual::partial$c-manual-code.c[tags=delete,indent=0]
+include::{page-version}@manual::partial$c-manual-code.c[tags=options,indent=0]
+include::{page-version}@manual::partial$c-manual-code.c[tags=delete,indent=0]
 ----
 --
 ====
@@ -256,19 +256,19 @@ no additional data is deleted and no error is produced.
 
 [cols-2]
 --
-.More about a xref:{page-component-version}@typeql::queries/delete.adoc[]
+.More about a xref:{page-version}@typeql::queries/delete.adoc[]
 [.clickable]
 ****
 Learn more about Delete queries in TypeQL: syntax, behavior, and query examples.
 ****
 
-.xref:{page-component-version}@manual::writing/update.adoc[]
+.xref:{page-version}@manual::writing/update.adoc[]
 [.clickable]
 ****
 Learn how to update or replace data from a database with a single query.
 ****
 
-.xref:{page-component-version}@academy::4-writing-data/index.adoc[]
+.xref:{page-version}@academy::4-writing-data/index.adoc[]
 [.clickable]
 ****
 Check out the Writing data section of TypeDB Academy.

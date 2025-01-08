@@ -103,7 +103,7 @@ $p isa person, has full-name "Bob Fake";
 The object must be the exact type of the instance you are inserting.
 In an `insert` clause, the `isa` keyword has no difference from the `isa!` keyword.
 
-When inserting an attribute, you can provide a value with a xref:{page-component-version}@typeql::statements/value-assignment.adoc[] syntax:
+When inserting an attribute, you can provide a value with a xref:{page-version}@typeql::statements/value-assignment.adoc[] syntax:
 
 .Insert attribute with value assignment example
 [,typeql]
@@ -113,7 +113,7 @@ $f "John Smith" isa full-name;
 ----
 
 When inserting a relation,
-you can provide role players for every role with a xref:{page-component-version}@typeql::statements/role-assignment.adoc[] syntax:
+you can provide role players for every role with a xref:{page-version}@typeql::statements/role-assignment.adoc[] syntax:
 
 .Insert relation with role assignment example
 [,typeql]
@@ -171,13 +171,13 @@ $f isa attribute;
 
 [cols-2]
 --
-.xref:{page-component-version}@typeql::concepts/types.adoc[]
+.xref:{page-version}@typeql::concepts/types.adoc[]
 [.clickable]
 ****
 Learn more about types in TypeQL.
 ****
 
-.xref:{page-component-version}@typeql::concepts/data-instances.adoc[]
+.xref:{page-version}@typeql::concepts/data-instances.adoc[]
 [.clickable]
 ****
 Learn more about data instances in TypeQL.

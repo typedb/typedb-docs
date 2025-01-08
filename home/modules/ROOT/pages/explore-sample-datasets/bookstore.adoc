@@ -9,15 +9,15 @@ Lorem ipsum dolor sit amet
 
 // video::UQbdl35ymOg[youtube,role=framed]
 
-include::{page-component-version}@partial$quick-setup.adoc[]
+include::{page-version}@partial$quick-setup.adoc[]
 
 [#_define_a_schema]
 == Define a schema
 
 A new database needs a schema before we can load any data:
 
-. Ensure the session type toggle (image:{page-component-version}@manual::icons/session-schema.png[]) is set to `schema` and the transaction type toggle (image:{page-component-version}@manual::icons/transaction-write.png[]) is set to `write`.
-. Open a image:{page-component-version}@home::studio-icons/svg/studio_new.svg[width=24] btn:[New Tab] in the btn:[Text Editor] and paste in the following Define query.
+. Ensure the session type toggle (image:{page-version}@manual::icons/session-schema.png[]) is set to `schema` and the transaction type toggle (image:{page-version}@manual::icons/transaction-write.png[]) is set to `write`.
+. Open a image:{page-version}@home::studio-icons/svg/studio_new.svg[width=24] btn:[New Tab] in the btn:[Text Editor] and paste in the following Define query.
 +
 [,typeql]
 ----
@@ -45,8 +45,8 @@ define
     value string,
     regex "^(paid|dispatched|delivered|returned|canceled)$";
 ----
-. Click the image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
-. When the query has completed, click image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit Transaction].
+. Click the image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
+. When the query has completed, click image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit Transaction].
 
 With the schema defined, we can now insert data into the database.
 
@@ -88,14 +88,14 @@ insert
   (order: $order-2, buyer: $user-1) isa purchase;
   (order: $order-6, buyer: $user-2) isa purchase;
 ----
-. Click the image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
-. When the query has completed, click image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit Transaction].
+. Click the image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
+. When the query has completed, click image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit Transaction].
 
 The data should now be persisted in the database, and is ready to be queried.
 
 == Read data
 
-Let's retrieve some details for orders that are currently dispatched. The following Fetch query matches any dispatched orders, and returns the order timestamp, order status, and the name of the buyer. Using a `data` session and `read` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] btn:[run] this query.
+Let's retrieve some details for orders that are currently dispatched. The following Fetch query matches any dispatched orders, and returns the order timestamp, order status, and the name of the buyer. Using a `data` session and `read` transaction, image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] btn:[run] this query.
 
 [,typeql]
 ----
@@ -109,7 +109,7 @@ fetch
 
 == Update data
 
-To update data in a database, we match the existing data, delete it, and then insert new data to replace it. The following Update query updates the status of the order with ID "o0006". Using a `data` session and `write` transaction, image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] btn:[run] this query, then image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] btn:[commit] the transaction.
+To update data in a database, we match the existing data, delete it, and then insert new data to replace it. The following Update query updates the status of the order with ID "o0006". Using a `data` session and `write` transaction, image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] btn:[run] this query, then image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] btn:[commit] the transaction.
 
 [,typeql]
 ----
@@ -132,25 +132,25 @@ Continue learning how to use TypeDB with the Crash Course and TypeDB Academy, or
 
 [cols-2]
 --
-.xref:{page-component-version}@home::crash-course/index.adoc[]
+.xref:{page-version}@home::crash-course/index.adoc[]
 [.clickable]
 ****
 A concise overview of the main aspects of TypeDB and TypeQL, with multiple pathways based on previous database experience.
 ****
 
-.xref:{page-component-version}@academy::index.adoc[]
+.xref:{page-version}@academy::index.adoc[]
 [.clickable]
 ****
 An end-to-end learning experience for TypeDB and TypeQL, showing how to take advantage of TypeDB's unique features.
 ****
 
-.xref:{page-component-version}@manual::index.adoc[TypeDB manual]
+.xref:{page-version}@manual::index.adoc[TypeDB manual]
 [.clickable]
 ****
 Practice-oriented guides on using TypeDB, including the TypeDB Studio and TypeDB Console manuals.
 ****
 
-.xref:{page-component-version}@drivers::index.adoc[TypeDB drivers]
+.xref:{page-version}@drivers::index.adoc[TypeDB drivers]
 [.clickable]
 ****
 Installation guides, tutorials, and API references for the official TypeDB drivers in all supported languages.

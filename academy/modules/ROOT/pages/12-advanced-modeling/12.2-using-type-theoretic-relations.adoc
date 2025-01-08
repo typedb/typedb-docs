@@ -5,7 +5,7 @@ In the previous lesson, we learned how to map application types onto database ty
 
 == Modeling type hierarchies
 
-In xref:{page-component-version}@academy::12-advanced-modeling/12.1-using-dependent-types.adoc[Lesson 12.1], we encountered the following `Review` type.
+In xref:{page-version}@academy::12-advanced-modeling/12.1-using-dependent-types.adoc[Lesson 12.1], we encountered the following `Review` type.
 
 [,python]
 ----
@@ -209,7 +209,7 @@ address sub relation,
 city plays address:city;
 ----
 
-If we were to implement this as it is, then there would be a disparity between the way that users (defined in the above exercise) and addresses reference cities. The object type `city` would play the roles `user:location` and `address:city`, and there is no way we can polymorphically query these two roles without explicitly listing them. However, if we renamed the `address:city` role to `address:location`, then we can query them polymorphically via their shared role name, as we saw in xref:{page-component-version}@academy::7-understanding-query-patterns/7.2-relation-patterns.adoc[Lesson 7.2], using the following pattern.
+If we were to implement this as it is, then there would be a disparity between the way that users (defined in the above exercise) and addresses reference cities. The object type `city` would play the roles `user:location` and `address:city`, and there is no way we can polymorphically query these two roles without explicitly listing them. However, if we renamed the `address:city` role to `address:location`, then we can query them polymorphically via their shared role name, as we saw in xref:{page-version}@academy::7-understanding-query-patterns/7.2-relation-patterns.adoc[Lesson 7.2], using the following pattern.
 
 [,typeql]
 ----

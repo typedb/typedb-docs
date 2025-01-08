@@ -1,5 +1,5 @@
 = Patterns overview
-:page-aliases: {page-component-version}@typeql::patterns/overview.adoc
+:page-aliases: {page-version}@typeql::patterns/overview.adoc
 
 == What is a pattern?
 
@@ -8,7 +8,7 @@ A pattern is a set of declarative constraints. TypeQL uses patterns in its queri
 * In data queries, patterns are used to specify constraints on concepts to be retrieved or processed.
 * In schema queries, we use schema-specific patterns without any variables to define or undefine type definitions.
 
-Patterns are xref:{page-component-version}@typeql::patterns/matching.adoc[built] from xref:{page-component-version}@typeql::statements/index.adoc[statements]
+Patterns are xref:{page-version}@typeql::patterns/matching.adoc[built] from xref:{page-version}@typeql::statements/index.adoc[statements]
 using <<_pattern_operations,pattern operations>>.
 
 [#_pattern_operations]
@@ -16,19 +16,19 @@ using <<_pattern_operations,pattern operations>>.
 
 [cols-3]
 --
-.xref:{page-component-version}@typeql::patterns/conjunction.adoc[]
+.xref:{page-version}@typeql::patterns/conjunction.adoc[]
 [.clickable]
 ****
 Combine statements in a pattern with conjunction.
 ****
 
-.xref:{page-component-version}@typeql::patterns/disjunction.adoc[OR]
+.xref:{page-version}@typeql::patterns/disjunction.adoc[OR]
 [.clickable]
 ****
 Create alternative branches in a pattern with disjunction.
 ****
 
-.xref:{page-component-version}@typeql::patterns/negation.adoc[NOT]
+.xref:{page-version}@typeql::patterns/negation.adoc[NOT]
 [.clickable]
 ****
 Exclude results with a negation pattern.
@@ -39,13 +39,13 @@ Exclude results with a negation pattern.
 
 [cols-2]
 --
-.xref:{page-component-version}@typeql::patterns/matching.adoc[]
+.xref:{page-version}@typeql::patterns/matching.adoc[]
 [.clickable]
 ****
 Pattern-based matching of concepts in a database.
 ****
 
-.xref:{page-component-version}@typeql::queries/index.adoc[Queries]
+.xref:{page-version}@typeql::queries/index.adoc[Queries]
 [.clickable]
 ****
 Patterns are used in queries in various ways.
@@ -57,7 +57,7 @@ Patterns are used in queries in various ways.
 
 You can combine two patterns by joining their statements together in a new pattern.
 All semicolon-separated statements are combined with an implicit
-xref:{page-component-version}@typeql::patterns/conjunction.adoc[conjunction].
+xref:{page-version}@typeql::patterns/conjunction.adoc[conjunction].
 That makes the order of statements irrelevant.
 Hence, it's easy to change the results by adding new constraints to the pattern.
 

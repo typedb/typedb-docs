@@ -4,7 +4,7 @@
 
 In the previous lesson, we saw how we can modify our query to retrieve attributes individually or grouped by owner. In this lesson, we will explore how we can group results in a generalised way using *subqueries*.
 
-In xref:{page-component-version}@academy::7-understanding-query-patterns/7.6-solution-set-semantics.adoc[Lesson 7.6], we encountered the following Fetch query, which was intended to list all books and the promotions they are in, but instead lists only books that are in promotions.
+In xref:{page-version}@academy::7-understanding-query-patterns/7.6-solution-set-semantics.adoc[Lesson 7.6], we encountered the following Fetch query, which was intended to list all books and the promotions they are in, but instead lists only books that are in promotions.
 
 [,typeql]
 ----
@@ -52,7 +52,7 @@ subquery-label: {
 A subquery label can be any string that could be used as a type label. To use a label that is not normally permitted, for instance a reserved keyword or a string containing whitespace, we can enclose it in quotes.
 ====
 
-If we *run* image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] the query above, then we will see it gives the intended results! Let's examine the subquery to see how this works.
+If we *run* image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] the query above, then we will see it gives the intended results! Let's examine the subquery to see how this works.
 
 [,typeql]
 ----
@@ -82,7 +82,7 @@ You may find it useful to refer to the bookstore's schema.
 =====
 [,typeql]
 ----
-include::{page-component-version}@academy::attachment$bookstore-schema.tql[lines=18..]
+include::{page-version}@academy::attachment$bookstore-schema.tql[lines=18..]
 ----
 =====
 
@@ -151,7 +151,7 @@ You may find it useful to refer to the bookstore's schema.
 =====
 [,typeql]
 ----
-include::{page-component-version}@academy::attachment$bookstore-schema.tql[lines=18..]
+include::{page-version}@academy::attachment$bookstore-schema.tql[lines=18..]
 ----
 =====
 
@@ -182,6 +182,6 @@ orders: {
 };
 ----
 
-Because none of the attributes we are retrieving should be multivalued, we can safely retrieve them directly rather than by owner, as explained in xref:{page-component-version}@academy::8-structuring-query-results/8.1-fetching-attributes.adoc[Lesson 8.1]. This is not essential to the solution!
+Because none of the attributes we are retrieving should be multivalued, we can safely retrieve them directly rather than by owner, as explained in xref:{page-version}@academy::8-structuring-query-results/8.1-fetching-attributes.adoc[Lesson 8.1]. This is not essential to the solution!
 =====
 ====

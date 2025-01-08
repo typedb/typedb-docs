@@ -19,11 +19,11 @@ and can be different every time you send the same query to the same database.
 
 Sorting is commonly used alongside pagination.
 In this case, sorting precedes pagination in TypeQL query syntax.
-For example, see the xref:{page-component-version}@typeql::modifiers/pagination.adoc[] page.
+For example, see the xref:{page-version}@typeql::modifiers/pagination.adoc[] page.
 
 == Usage in a Fetch query
 
-include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
+include::{page-version}@typeql::partial$iam-database-links.adoc[]
 
 Let's see an example of sorting results of a Fetch query:
 
@@ -46,7 +46,7 @@ Adding `$n` to the `fetch` clause is possible, but redundant in this case.
 
 == Usage in a Get query
 
-include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
+include::{page-version}@typeql::partial$iam-database-links.adoc[]
 
 Here is an example of a Get query with sorting the results in descending order:
 
@@ -65,13 +65,13 @@ The above Get query returns stateful objects for sorted `full-name` attributes o
 
 [cols-2]
 --
-.xref:{page-component-version}@typeql::modifiers/pagination.adoc[]
+.xref:{page-version}@typeql::modifiers/pagination.adoc[]
 [.clickable]
 ****
 Learn about result pagination in TypeQL.
 ****
 
-.xref:{page-component-version}@typeql::modifiers/aggregation.adoc[]
+.xref:{page-version}@typeql::modifiers/aggregation.adoc[]
 [.clickable]
 ****
 Learn about aggregation of query results in TypeQL.

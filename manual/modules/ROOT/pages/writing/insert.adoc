@@ -9,12 +9,12 @@ In this guide, you'll see how to insert data in a database using Studio, Console
 An Insert query is used to insert data into a TypeDB database.
 An `insert` clause is executed once per every result matched by the `match` clause of the same query.
 If the `match` clause is omitted, then the `insert` clause is executed exactly once. 
-For a detailed explanation of the query see the xref:{page-component-version}@typeql::queries/delete.adoc[] page.
+For a detailed explanation of the query see the xref:{page-version}@typeql::queries/delete.adoc[] page.
 
 [#_how_to_send_an_insert_query]
 == Sending Insert queries
 
-Before you start, make sure you followed the instructions from the xref:{page-component-version}@manual::defining/index.adoc[] section.
+Before you start, make sure you followed the instructions from the xref:{page-version}@manual::defining/index.adoc[] section.
 The easiest way to send an Insert query is to use Studio or Console:
 
 [tabs]
@@ -22,7 +22,7 @@ The easiest way to send an Insert query is to use Studio or Console:
 Studio::
 +
 --
-Follow the xref:{page-component-version}@manual::studio.adoc#_prepare_a_query[Studio manual]
+Follow the xref:{page-version}@manual::studio.adoc#_prepare_a_query[Studio manual]
 to connect to TypeDB and select a project folder.
 Then use the steps below:
 
@@ -38,9 +38,9 @@ $user1 isa user, has name "Alice", has email "alice@typedb.com";
 $user2 isa user, has name "Bob", has email "bob@typedb.com";
 $friendship (friend:$user1, friend: $user2) isa friendship;
 ----
-. Run the query by clicking the image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]
+. Run the query by clicking the image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]
 btn:[Run Query] button.
-. Commit the changes by clicking the image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit query] button.
+. Commit the changes by clicking the image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit query] button.
 --
 
 Console::
@@ -72,14 +72,14 @@ commit
 --
 ====
 
-To send an Insert query programmatically, use xref:{page-component-version}@drivers::index.adoc[drivers]:
+To send an Insert query programmatically, use xref:{page-version}@drivers::index.adoc[drivers]:
 
 [tabs]
 ====
 Rust::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
@@ -92,15 +92,15 @@ method:
 
 [,rust,indent=0]
 ----
-include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=databases,indent=8]
-include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=insert]
+include::{page-version}@manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::{page-version}@manual::partial$rust-manual-code.rs[tags=insert]
 ----
 --
 
 Python::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
@@ -113,14 +113,14 @@ method:
 
 [,python,indent=0]
 ----
-include::{page-component-version}@manual::partial$python-manual-code.py[tags=insert]
+include::{page-version}@manual::partial$python-manual-code.py[tags=insert]
 ----
 --
 
 Node.js::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
@@ -133,14 +133,14 @@ method:
 
 [,js,indent=0]
 ----
-include::{page-component-version}@manual::partial$nodejs-manual-code.js[tags=insert]
+include::{page-version}@manual::partial$nodejs-manual-code.js[tags=insert]
 ----
 --
 
 Java::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
@@ -153,14 +153,14 @@ method:
 
 [,java,indent=0]
 ----
-include::{page-component-version}@manual::partial$java-manual-code.java[tags=insert]
+include::{page-version}@manual::partial$java-manual-code.java[tags=insert]
 ----
 --
 
 C#::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 [subs="macros, post_replacements, replacements"]
 ++++
@@ -172,14 +172,14 @@ method:
 
 [,csharp,indent=0]
 ----
-include::{page-component-version}@manual::partial$csharp-manual-code.cs[tags=insert]
+include::{page-version}@manual::partial$csharp-manual-code.cs[tags=insert]
 ----
 --
 
 C++::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
@@ -192,15 +192,15 @@ method:
 
 [,cpp,indent=0]
 ----
-include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tags=options,indent=0]
-include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tags=insert,indent=0]
+include::{page-version}@manual::partial$cpp-manual-code.cpp[tags=options,indent=0]
+include::{page-version}@manual::partial$cpp-manual-code.cpp[tags=insert,indent=0]
 ----
 --
 
 C::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
@@ -213,8 +213,8 @@ function:
 
 [,c,indent=0]
 ----
-include::{page-component-version}@manual::partial$c-manual-code.c[tags=options,indent=0]
-include::{page-component-version}@manual::partial$c-manual-code.c[tags=insert,indent=0]
+include::{page-version}@manual::partial$c-manual-code.c[tags=options,indent=0]
+include::{page-version}@manual::partial$c-manual-code.c[tags=insert,indent=0]
 ----
 --
 ====
@@ -265,7 +265,7 @@ Both Studio and Console should produce similar results:
 ----
 
 To process the response of an Insert query programmatically,
-you need to collect the response and iterate through it with a xref:{page-component-version}@drivers::index.adoc[TypeDB driver].
+you need to collect the response and iterate through it with a xref:{page-version}@drivers::index.adoc[TypeDB driver].
 The number of iterations is equal to the number of the `insert` clause executions and every iteration returns
 a ConceptMap object with inserted data.
 
@@ -278,7 +278,7 @@ where we commit the transaction only if the number of inserts meets our expectat
 Rust::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
@@ -291,15 +291,15 @@ method:
 
 [,rust,indent=0]
 ----
-include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=databases,indent=8]
-include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=match-insert]
+include::{page-version}@manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::{page-version}@manual::partial$rust-manual-code.rs[tags=match-insert]
 ----
 --
 
 Python::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
@@ -312,14 +312,14 @@ method:
 
 [,python,indent=0]
 ----
-include::{page-component-version}@manual::partial$python-manual-code.py[tags=match-insert]
+include::{page-version}@manual::partial$python-manual-code.py[tags=match-insert]
 ----
 --
 
 Node.js::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
@@ -332,14 +332,14 @@ method:
 
 [,js,indent=0]
 ----
-include::{page-component-version}@manual::partial$nodejs-manual-code.js[tags=match-insert]
+include::{page-version}@manual::partial$nodejs-manual-code.js[tags=match-insert]
 ----
 --
 
 Java::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
@@ -352,14 +352,14 @@ method:
 
 [,java,indent=0]
 ----
-include::{page-component-version}@manual::partial$java-manual-code.java[tags=match-insert]
+include::{page-version}@manual::partial$java-manual-code.java[tags=match-insert]
 ----
 --
 
 C#::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
@@ -372,14 +372,14 @@ method:
 
 [,csharp,indent=0]
 ----
-include::{page-component-version}@manual::partial$csharp-manual-code.cs[tags=match-insert]
+include::{page-version}@manual::partial$csharp-manual-code.cs[tags=match-insert]
 ----
 --
 
 C++::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
@@ -392,15 +392,15 @@ method:
 
 [,cpp,indent=0]
 ----
-include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tags=options,indent=0]
-include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tags=match-insert,indent=0]
+include::{page-version}@manual::partial$cpp-manual-code.cpp[tags=options,indent=0]
+include::{page-version}@manual::partial$cpp-manual-code.cpp[tags=match-insert,indent=0]
 ----
 --
 
 C::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
@@ -413,8 +413,8 @@ function:
 
 [,c,indent=0]
 ----
-include::{page-component-version}@manual::partial$c-manual-code.c[tags=options,indent=0]
-include::{page-component-version}@manual::partial$c-manual-code.c[tags=match-insert,indent=0]
+include::{page-version}@manual::partial$c-manual-code.c[tags=options,indent=0]
+include::{page-version}@manual::partial$c-manual-code.c[tags=match-insert,indent=0]
 ----
 --
 ====
@@ -445,19 +445,19 @@ The response should be a single number.
 
 [cols-2]
 --
-.More about an xref:{page-component-version}@typeql::queries/insert.adoc[]
+.More about an xref:{page-version}@typeql::queries/insert.adoc[]
 [.clickable]
 ****
 Learn more about Insert queries in TypeQL: syntax, behavior, and query examples.
 ****
 
-.xref:{page-component-version}@manual::writing/delete.adoc[]
+.xref:{page-version}@manual::writing/delete.adoc[]
 [.clickable]
 ****
 Learn how to delete data from a database.
 ****
 
-.xref:{page-component-version}@academy::4-writing-data/index.adoc[]
+.xref:{page-version}@academy::4-writing-data/index.adoc[]
 [.clickable]
 ****
 Check out the Writing data section of TypeDB Academy.

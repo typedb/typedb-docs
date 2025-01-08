@@ -10,11 +10,11 @@ An expression describes a computation of a value in a query.
 It can be used only in a `match` clause or a `condition` of a rule
 and can contain any combination of the following elements:
 
-* a xref:{page-component-version}@typeql::concepts/concept-variables.adoc[concept variable] representing an attribute (e.g., `$size-kb`),
-* a xref:{page-component-version}@typeql::values/value-variables.adoc[value variable] (e.g., `?sum`),
+* a xref:{page-version}@typeql::concepts/concept-variables.adoc[concept variable] representing an attribute (e.g., `$size-kb`),
+* a xref:{page-version}@typeql::values/value-variables.adoc[value variable] (e.g., `?sum`),
 * a literal value (e.g., `4`),
-* an xref:{page-component-version}@typeql::values/arithmetic.adoc[arithmetic operation] (e.g., `+`),
-* or a xref:{page-component-version}@typeql::values/functions.adoc[built-in function] (e.g., `max()`).
+* an xref:{page-version}@typeql::values/arithmetic.adoc[arithmetic operation] (e.g., `+`),
+* or a xref:{page-version}@typeql::values/functions.adoc[built-in function] (e.g., `max()`).
 
 .Expression example
 [,typeql]
@@ -50,5 +50,5 @@ In the above example, the value variable `?gb` is bound to the result of a compl
 The expression takes the value of concept variable `$s`, adds it to a value of value variable `?o`,
 then divides the result by `1024`, and finally divides the result by `1024` again.
 
-Arithmetic operations are often used in a combination with xref:{page-component-version}@typeql::values/comparators.adoc[comparators] and
-xref:{page-component-version}@academy::5-defining-schemas/5.4-defining-rules.adoc[rules].
+Arithmetic operations are often used in a combination with xref:{page-version}@typeql::values/comparators.adoc[comparators] and
+xref:{page-version}@academy::5-defining-schemas/5.4-defining-rules.adoc[rules].

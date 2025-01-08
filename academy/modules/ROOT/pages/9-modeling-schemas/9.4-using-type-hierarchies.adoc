@@ -127,7 +127,7 @@ state sub place;
 country sub place;
 ----
 
-Grouping existing types into hierarchies in this way is not always a good idea. As types in the PERA model can only have a single supertype, we must choose our types carefully. The fact the several types exhibit common behaviours is not necessarily an indicator that they are all subtypes of a common supertype, as we can alternatively encode those common behaviours by having the types independently implement the same interfaces. We will see an example of such a case in xref:{page-component-version}@academy::9-modeling-schemas/9.5-composition-over-inheritance.adoc[Lesson 9.5].
+Grouping existing types into hierarchies in this way is not always a good idea. As types in the PERA model can only have a single supertype, we must choose our types carefully. The fact the several types exhibit common behaviours is not necessarily an indicator that they are all subtypes of a common supertype, as we can alternatively encode those common behaviours by having the types independently implement the same interfaces. We will see an example of such a case in xref:{page-version}@academy::9-modeling-schemas/9.5-composition-over-inheritance.adoc[Lesson 9.5].
 
 [IMPORTANT]
 =====

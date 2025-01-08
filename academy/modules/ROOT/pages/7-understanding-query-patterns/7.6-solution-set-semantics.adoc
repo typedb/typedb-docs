@@ -2,7 +2,7 @@
 
 == Simultaneous constraints
 
-In xref:{page-component-version}@academy::7-understanding-query-patterns/7.1-patterns-as-constraints.adoc[Lesson 7.1], we learned how patterns in TypeQL queries are resolved as a set of simultaneous constraints. With that in mind, let's consider the following Fetch query, which is intended to list books and the promotions they are in.
+In xref:{page-version}@academy::7-understanding-query-patterns/7.1-patterns-as-constraints.adoc[Lesson 7.1], we learned how patterns in TypeQL queries are resolved as a set of simultaneous constraints. With that in mind, let's consider the following Fetch query, which is intended to list books and the promotions they are in.
 
 [,typeql]
 ----
@@ -22,7 +22,7 @@ This query does not in fact achieve the desired result. The third statement in t
 ($book, $promotion) isa promotion-inclusion;
 ----
 
-Because the constraints in a pattern must be simultaneously satisfied, this means that if a book is not in _any_ promotion, then it will not be returned. This query does not actually list books and the promotions they are in, rather it lists only books that are in promotions. We'll see how we can retrieve all books _plus_ any promotions they are in by using *subqueries* in xref:{page-component-version}@academy::8-structuring-query-results/8.2-subqueries.adoc[Lesson 8.2].
+Because the constraints in a pattern must be simultaneously satisfied, this means that if a book is not in _any_ promotion, then it will not be returned. This query does not actually list books and the promotions they are in, rather it lists only books that are in promotions. We'll see how we can retrieve all books _plus_ any promotions they are in by using *subqueries* in xref:{page-version}@academy::8-structuring-query-results/8.2-subqueries.adoc[Lesson 8.2].
 
 When composing a query pattern from individual statements, it is important to remember that each constraint must be satisfied individually in order for the whole pattern to be satisfied simultaneously. If we do not bear this in mind, we can run into issues like this where our intent does not match the query we have written.
 
@@ -110,7 +110,7 @@ If we run this query, every pair of books will be returned _twice_. Let's examin
 
 These two results represent the same pair of books, but _The Odyssey_ is matched as `$book-1` in one of them and as `$book-2` in the other, and vice versa for _One Hundred Years of Solitude_. This occurs because the constraints on `$book-1` and `$book-2` are completely symmetrical, so they can each be resolved to the same set of data instances.
 
-In many cases, this kind of result duplication can be avoided by leveraging *key attributes*. We saw how we can define them in xref:{page-component-version}@academy::5-defining-schemas/5.3-defining-constraints.adoc[Lesson 5.3]. Books own key attributes of type `isbn-13`. If we modify our query to ensure state that the ISBN-13 of `$book-1` must be greater than the ISBN-13 of `$book-2`, then each pair of books will only be returned once.
+In many cases, this kind of result duplication can be avoided by leveraging *key attributes*. We saw how we can define them in xref:{page-version}@academy::5-defining-schemas/5.3-defining-constraints.adoc[Lesson 5.3]. Books own key attributes of type `isbn-13`. If we modify our query to ensure state that the ISBN-13 of `$book-1` must be greater than the ISBN-13 of `$book-2`, then each pair of books will only be returned once.
 
 [,typeql]
 ----

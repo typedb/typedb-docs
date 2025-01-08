@@ -16,13 +16,13 @@ contributor sub entity;
 address sub entity;
 promotion sub entity;
 ----
-image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
-Using a *schema* session and a *write* transaction, try *running* image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] this query on a newly created database. After running it, make sure to *commit* image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] the transaction. You should see the four new entity types appear in the *type browser*.
+Using a *schema* session and a *write* transaction, try *running* image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] this query on a newly created database. After running it, make sure to *commit* image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] the transaction. You should see the four new entity types appear in the *type browser*.
 
 When used in a Define query, a `sub` statement defines a new type. The https://en.wikipedia.org/wiki/Subject%E2%80%93verb%E2%80%93object_word_order[subject] of each statement is the new *type label*, and the https://en.wikipedia.org/wiki/Subject%E2%80%93verb%E2%80%93object_word_order[object] is one of the three *root types*: `entity`, `relation`, or `attribute`, indicating which kind of type is being defined.
 
-When `sub` statements are used in a Define query, they are *data definition statements*. This is in contrast to when used in other kinds of query, as we saw in xref:{page-component-version}@academy::3-reading-data/3.4-fetching-schema-types.adoc[Lesson 3.4], in which they are *data manipulation statements*. Define queries comprise only data definition statements, and so cannot contain any variables. The only permitted terms are keywords and type labels.
+When `sub` statements are used in a Define query, they are *data definition statements*. This is in contrast to when used in other kinds of query, as we saw in xref:{page-version}@academy::3-reading-data/3.4-fetching-schema-types.adoc[Lesson 3.4], in which they are *data manipulation statements*. Define queries comprise only data definition statements, and so cannot contain any variables. The only permitted terms are keywords and type labels.
 
 .Exercise
 [caption=""]
@@ -39,7 +39,7 @@ order sub entity;
 review sub entity;
 publication sub entity;
 ----
-image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 =====
 ====
 
@@ -61,7 +61,7 @@ publishing sub relation,
     relates published,
     relates publication;
 ----
-image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
 When used in a Define query, the `relates` keyword defines a new role for a relation type. This query defines the following relation types:
 
@@ -102,7 +102,7 @@ promotion-inclusion sub relation,
     relates promotion,
     relates item;
 ----
-image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 =====
 ====
 
@@ -116,7 +116,7 @@ order plays order-line:order;
 publication plays publishing:publication;
 promotion plays promotion-inclusion:promotion;
 ----
-image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
 When used in a Define query, the `plays` keyword defines a new roleplayer for a relation's role (i.e. a new implementer of a role interface).
 
@@ -141,7 +141,7 @@ address plays delivery:destination,
 user plays locating:located;
 publication plays locating:located;
 ----
-image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 =====
 ====
 
@@ -158,11 +158,11 @@ price sub attribute, value double;
 name sub attribute, value string;
 birth-date sub attribute, value datetime;
 ----
-image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
 When used in a Define query, the `value` keyword defines the value type of an attribute type. When the attribute type is later instantiated, its values must be of the specified value type. There are currently five value types in TypeDB:
 
-include::{page-component-version}@typeql::values/value-types.adoc[tag=value_types]
+include::{page-version}@typeql::values/value-types.adoc[tag=value_types]
 
 More value types will be added in future updates.
 
@@ -190,7 +190,7 @@ street sub attribute, value string;
 start-timestamp sub attribute, value datetime;
 end-timestamp sub attribute, value datetime;
 ----
-image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 =====
 ====
 
@@ -207,7 +207,7 @@ review owns verified;
 order-line owns quantity,
     owns price;
 ----
-image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
 When used in a Define query, the `owns` keyword defines a new attribute owner (i.e. a new implementer of an ownership interface). The syntax is the same for declaring entity types (like `user`) and relation types (like `order-line`) as owners.
 
@@ -236,7 +236,7 @@ promotion owns code,
     owns end-timestamp;
 promotion-inclusion owns discount;
 ----
-image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 =====
 ====
 
@@ -270,6 +270,6 @@ user plays action-execution:executor;
 success sub attribute, value boolean;
 timestamp sub attribute, value datetime;
 ----
-image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 =====
 ====

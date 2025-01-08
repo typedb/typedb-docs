@@ -1,13 +1,13 @@
 = Concepts overview
 :page-no-toc: 1
-:page-aliases: {page-component-version}@typeql::concepts/overview.adoc
+:page-aliases: {page-version}@typeql::concepts/overview.adoc
 
 [#_blank_heading]
 == {blank}
 
 TypeQL can be used for polymorphic queries with patterns containing
-xref:{page-component-version}@typeql::concepts/concept-variables.adoc[concept variables] and
-xref:{page-component-version}@typeql::values/value-variables.adoc[value variables].
+xref:{page-version}@typeql::concepts/concept-variables.adoc[concept variables] and
+xref:{page-version}@typeql::values/value-variables.adoc[value variables].
 A concept variable can represent any type or data instance in a database.
 To limit the set of possible concepts represented by a concept variable,
 add constraints with TypeQL keywords, like `sub`, `isa`, `has`, etc.
@@ -34,19 +34,19 @@ but the variable to the left of it is considered to be a data instance instead o
 
 [cols-3]
 --
-.xref:{page-component-version}@typeql::concepts/types.adoc[]
+.xref:{page-version}@typeql::concepts/types.adoc[]
 [.clickable]
 ****
 Root types and type hierarchy, abstract types.
 ****
 
-.xref:{page-component-version}@typeql::concepts/data-instances.adoc[]
+.xref:{page-version}@typeql::concepts/data-instances.adoc[]
 [.clickable]
 ****
 Data representation in TypeQL.
 ****
 
-.xref:{page-component-version}@typeql::concepts/concept-variables.adoc[]
+.xref:{page-version}@typeql::concepts/concept-variables.adoc[]
 [.clickable]
 ****
 Query variables to represent types and data.

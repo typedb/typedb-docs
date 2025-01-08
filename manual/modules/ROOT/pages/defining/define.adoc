@@ -9,8 +9,8 @@ Console, or one of the drivers.
 == Understanding Define queries
 
 A Define query is used to define the schema of a database or replace existing parts of the schema.
-For a detailed explanation of the query see the xref:{page-component-version}@typeql::queries/define.adoc[] page.
-For an alternative way of editing your schema, see the xref:{page-component-version}@manual::defining/schema-editing.adoc[] page.
+For a detailed explanation of the query see the xref:{page-version}@typeql::queries/define.adoc[] page.
+For an alternative way of editing your schema, see the xref:{page-version}@manual::defining/schema-editing.adoc[] page.
 
 [#_how_to_send_a_define_query]
 == Sending Define queries
@@ -23,7 +23,7 @@ The easiest way to send a Define query is to use Studio or Console:
 Studio::
 +
 --
-Follow the xref:{page-component-version}@manual::studio.adoc#_prepare_a_query[Studio manual]
+Follow the xref:{page-version}@manual::studio.adoc#_prepare_a_query[Studio manual]
 to connect to TypeDB and select a project folder.
 Then use the steps below:
 
@@ -48,15 +48,15 @@ user sub entity,
     plays friendship:friend;
 admin sub user;
 ----
-. Run the query by clicking the image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]
+. Run the query by clicking the image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]
 btn:[Run Query] button.
-. Commit the changes by clicking the image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit query] button.
+. Commit the changes by clicking the image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit query] button.
 --
 
 Console::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[] guide to connect to TypeDB.
+Follow the xref:{page-version}@manual::connecting/connection.adoc[] guide to connect to TypeDB.
 Then use the steps below:
 
 . Open a `schema` session and `write` transaction to the selected database (e.g., `sample_db`):
@@ -90,14 +90,14 @@ commit
 --
 ====
 
-To send a Define query programmatically, use xref:{page-component-version}@drivers::index.adoc[drivers]:
+To send a Define query programmatically, use xref:{page-version}@drivers::index.adoc[drivers]:
 
 [tabs]
 ====
 Rust::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB, then open a `schema` session to the selected database,
 open a `write` transaction, and use the
 xref:2.x@drivers::rust/api-reference.adoc#_struct_QueryManager_define__[`transaction.query().define()`]
@@ -105,15 +105,15 @@ method:
 
 [,rust,indent=0]
 ----
-include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=databases,indent=8]
-include::{page-component-version}@manual::partial$rust-manual-code.rs[tags=define]
+include::{page-version}@manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::{page-version}@manual::partial$rust-manual-code.rs[tags=define]
 ----
 --
 
 Python::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB, then open a `schema` session to the selected database,
 open a `write` transaction, and use the
 xref:2.x@drivers::python/api-reference.adoc#_QueryManager_define{scores}query_str__options_TypeDBOptions[`transaction.query.define()`]
@@ -121,14 +121,14 @@ method:
 
 [,python, indent=0]
 ----
-include::{page-component-version}@manual::partial$python-manual-code.py[tags=define]
+include::{page-version}@manual::partial$python-manual-code.py[tags=define]
 ----
 --
 
 Node.js::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to TypeDB, then open a `schema` session to the selected database,
 open a `write` transaction, and use the
 xref:2.x@drivers::nodejs/api-reference.adoc#_QueryManager_define{scores}query_string__options_TypeDBOptions[`transaction.query.define()`]
@@ -136,14 +136,14 @@ method:
 
 [,js,indent=0]
 ----
-include::{page-component-version}@manual::partial$nodejs-manual-code.js[tags=define]
+include::{page-version}@manual::partial$nodejs-manual-code.js[tags=define]
 ----
 --
 
 Java::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server, then open a `schema` session to the selected database,
 open a `write` transaction, and use the
 xref:2.x@drivers::java/api-reference.adoc#_QueryManager_define__com_vaticle_typeql_lang_query_TypeQLDefine[`transaction.query.define()`]
@@ -151,14 +151,14 @@ method:
 
 [,java,indent=0]
 ----
-include::{page-component-version}@manual::partial$java-manual-code.java[tags=define]
+include::{page-version}@manual::partial$java-manual-code.java[tags=define]
 ----
 --
 
 C#::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server, then open a `schema` session to the selected database,
 open a `write` transaction, and use the
 xref:2.x@drivers::csharp/api-reference.adoc#_VoidPromise_TypeDB_Driver_Api_IQueryManager_Define___string_query_[`transaction.Query.Define()`]
@@ -166,14 +166,14 @@ method:
 
 [,csharp,indent=0]
 ----
-include::{page-component-version}@manual::partial$csharp-manual-code.cs[tags=define]
+include::{page-version}@manual::partial$csharp-manual-code.cs[tags=define]
 ----
 --
 
 C++::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server, then open a `schema` session to the selected database,
 open a `write` transaction, and use the
 xref:2.x@drivers::cpp/api-reference.adoc#_VoidFuture_TypeDBQueryManagerdefine___const_stdstring__query__const_Options__options__Options_____const[`transaction.query.define()`]
@@ -181,15 +181,15 @@ method:
 
 [,cpp,indent=0]
 ----
-include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tags=options,indent=8]
-include::{page-component-version}@manual::partial$cpp-manual-code.cpp[tags=define]
+include::{page-version}@manual::partial$cpp-manual-code.cpp[tags=options,indent=8]
+include::{page-version}@manual::partial$cpp-manual-code.cpp[tags=define]
 ----
 --
 
 C::
 +
 --
-Follow the xref:{page-component-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server, then open a `schema` session to the selected database,
 open a `write` transaction, and use the
 xref:2.x@drivers::c/api-reference.adoc#_query_define[`query_define()`]
@@ -197,8 +197,8 @@ function:
 
 [,c,indent=0]
 ----
-include::{page-component-version}@manual::partial$c-manual-code.c[tags=options,indent=8]
-include::{page-component-version}@manual::partial$c-manual-code.c[tags=define]
+include::{page-version}@manual::partial$c-manual-code.c[tags=options,indent=8]
+include::{page-version}@manual::partial$c-manual-code.c[tags=define]
 ----
 --
 ====
@@ -235,19 +235,19 @@ admin sub user;
 
 [cols-2]
 --
-.xref:{page-component-version}@typeql::queries/define.adoc[]
+.xref:{page-version}@typeql::queries/define.adoc[]
 [.clickable]
 ****
 Learn more about Define queries in TypeQL: syntax, behavior, and query examples.
 ****
 
-.xref:{page-component-version}@manual::writing/index.adoc[]
+.xref:{page-version}@manual::writing/index.adoc[]
 [.clickable]
 ****
 Learn how to write some data to a database with the schema you just defined.
 ****
 
-.xref:{page-component-version}@academy::5-defining-schemas/index.adoc[]
+.xref:{page-version}@academy::5-defining-schemas/index.adoc[]
 [.clickable]
 ****
 Check out the Defining schemas section of TypeDB Academy.

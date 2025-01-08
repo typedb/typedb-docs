@@ -58,7 +58,7 @@ TypeDB 3.0 will introduce a "put" operation, which can be used to insert data on
 
 == Preventing entity duplication
 
-To prevent entities from being duplicated, we can leverage xref:{page-component-version}@typeql::statements/key.adoc[key constraints]. It is normally a good idea to ensure every entity in the schema has a key attribute for the purpose of unique identification. For example, we might make the `isbn-13` attribute a key attribute of `book` (the supertype of `ebook` in this example), and the `name` attribute a key attribute of `contributor` and `company` (the supertype of `publisher`).
+To prevent entities from being duplicated, we can leverage xref:{page-version}@typeql::statements/key.adoc[key constraints]. It is normally a good idea to ensure every entity in the schema has a key attribute for the purpose of unique identification. For example, we might make the `isbn-13` attribute a key attribute of `book` (the supertype of `ebook` in this example), and the `name` attribute a key attribute of `contributor` and `company` (the supertype of `publisher`).
 
 [,typeql]
 ----
@@ -103,7 +103,7 @@ By handling the exception, we can automatically deal with duplicates as they ari
 
 It is generally better to identify relations via their roleplayers rather than by key attributes. This is because relations are most often used to represent references between objects, and so are defined by the objects they link rather than by their properties, if any. Indeed, the `authoring`, `illustrating`, and `publishing` relations do not even have any attributes!
 
-When we insert a relation, we can prevent duplication by using xref:{page-component-version}@typeql::patterns/negation.adoc[negations] to ensure that the relations we are trying to insert don't already exist. Again, it is best to insert each relation in a separate query.
+When we insert a relation, we can prevent duplication by using xref:{page-version}@typeql::patterns/negation.adoc[negations] to ensure that the relations we are trying to insert don't already exist. Again, it is best to insert each relation in a separate query.
 
 [,typeql]
 ----

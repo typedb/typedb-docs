@@ -24,15 +24,15 @@ TypeQL statements with the `sub` keyword can be used in any kind of query.
 
 The `sub` keyword adds a constraint for subject to be a type that is a subtype of the object:
 
-* In xref:{page-component-version}@typeql::queries/index.adoc#_schema_queries[schema queries] --
+* In xref:{page-version}@typeql::queries/index.adoc#_schema_queries[schema queries] --
 the `sub` and `sub!` keywords don't have any difference.
-* In xref:{page-component-version}@typeql::queries/index.adoc#_data_queries[data queries] --
+* In xref:{page-version}@typeql::queries/index.adoc#_data_queries[data queries] --
 the `sub` and `sub!` keywords are used to match either all existing subtypes or only direct subtypes
 of a given type respectively.
 
 == Usage in a schema definition
 
-include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
+include::{page-version}@typeql::partial$iam-database-links.adoc[]
 
 Since in Define and Undefine queries you can't use variables,
 both subject and object can only be type labels in a schema statement.
@@ -50,7 +50,7 @@ pdf sub file;
 
 == Usage in a match pattern
 
-include::{page-component-version}@typeql::partial$iam-database-links.adoc[]
+include::{page-version}@typeql::partial$iam-database-links.adoc[]
 
 In a data query pattern a `sub` statement can be used only in a `match` clause or condition of a rule.
 Both subject and object of a `sub` statement can be concept variables, or one of them can be a type label.
@@ -107,13 +107,13 @@ fetch $type;
 
 [cols-2]
 --
-.xref:{page-component-version}@typeql::statements/type.adoc[]
+.xref:{page-version}@typeql::statements/type.adoc[]
 [.clickable]
 ****
 Learn more about `type` statement in TypeQL.
 ****
 
-.xref:{page-component-version}@typeql::concepts/types.adoc[]
+.xref:{page-version}@typeql::concepts/types.adoc[]
 [.clickable]
 ****
 Learn about types in TypeQL.

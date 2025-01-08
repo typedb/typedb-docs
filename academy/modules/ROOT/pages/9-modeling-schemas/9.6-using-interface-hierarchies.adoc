@@ -76,7 +76,7 @@ year sub attribute, value long;
 
 == Interfaces as types
 
-In the PERA model, interfaces are themselves types, as we saw in xref:{page-component-version}@academy::9-modeling-schemas/9.1-the-pera-model.adoc[Lesson 9.1]. Like the data storing types, interface types are able to form hierarchies. Role hierarchies are derived from their dependent relation type hierarchies, while ownership hierarchies are derived from their dependent attribute type hierarchies. Let's examine an example.
+In the PERA model, interfaces are themselves types, as we saw in xref:{page-version}@academy::9-modeling-schemas/9.1-the-pera-model.adoc[Lesson 9.1]. Like the data storing types, interface types are able to form hierarchies. Role hierarchies are derived from their dependent relation type hierarchies, while ownership hierarchies are derived from their dependent attribute type hierarchies. Let's examine an example.
 
 [,typeql]
 ----
@@ -86,9 +86,9 @@ isbn-13 sub isbn;
 isbn-10 sub isbn;
 ----
 
-As we saw in xref:{page-component-version}@academy::9-modeling-schemas/9.1-the-pera-model.adoc[Lesson 9.1], the `isbn` attribute type exposes an ownership interface, which we'll call `isbn:OWNER` for this discussion. Likewise, `isbn-13` and `isbn-10` expose the interfaces `isbn-13:OWNER` and `isbn-10:OWNER` respectively. As `isbn-13` and `isbn-10` are subtypes of `isbn`, this means that `isbn-13:OWNER` and `isbn-10:OWNER` are subtypes of `isbn:OWNER`.
+As we saw in xref:{page-version}@academy::9-modeling-schemas/9.1-the-pera-model.adoc[Lesson 9.1], the `isbn` attribute type exposes an ownership interface, which we'll call `isbn:OWNER` for this discussion. Likewise, `isbn-13` and `isbn-10` expose the interfaces `isbn-13:OWNER` and `isbn-10:OWNER` respectively. As `isbn-13` and `isbn-10` are subtypes of `isbn`, this means that `isbn-13:OWNER` and `isbn-10:OWNER` are subtypes of `isbn:OWNER`.
 
-Role hierarchies work in a similar way, but have a major difference. Whereas all attribute types have an associated ownership interface, some relation types do not have role interfaces of their own, instead inheriting them from supertypes. We saw this in xref:{page-component-version}@academy::9-modeling-schemas/9.5-composition-over-inheritance.adoc[Lesson 9.5] with the following relation type hierarchy.
+Role hierarchies work in a similar way, but have a major difference. Whereas all attribute types have an associated ownership interface, some relation types do not have role interfaces of their own, instead inheriting them from supertypes. We saw this in xref:{page-version}@academy::9-modeling-schemas/9.5-composition-over-inheritance.adoc[Lesson 9.5] with the following relation type hierarchy.
 
 [,typeql]
 ----
@@ -151,7 +151,7 @@ The implementing object type is `book` and the implemented interface type is `is
 
 [NOTE]
 ====
-As we learned in xref:{page-component-version}@academy::5-defining-schemas/5.5-schema-validation.adoc[Lesson 5.5], if an attribute type is abstract, then any owners must also be abstract. Because the implementation of `isbn:OWNER` is inherited by the subtypes of `book` (which are not themselves abstract), this will result in a violation of schema validation rules, and the schema will not commit! However, we will see how we can use this property to our advantage in xref:{page-component-version}@academy::12-advanced-modeling/12.4-using-interface-contracts.adoc[Lesson 12.4], where we will explore https://en.wikipedia.org/wiki/Design_by_contract[schema design by contract].
+As we learned in xref:{page-version}@academy::5-defining-schemas/5.5-schema-validation.adoc[Lesson 5.5], if an attribute type is abstract, then any owners must also be abstract. Because the implementation of `isbn:OWNER` is inherited by the subtypes of `book` (which are not themselves abstract), this will result in a violation of schema validation rules, and the schema will not commit! However, we will see how we can use this property to our advantage in xref:{page-version}@academy::12-advanced-modeling/12.4-using-interface-contracts.adoc[Lesson 12.4], where we will explore https://en.wikipedia.org/wiki/Design_by_contract[schema design by contract].
 ====
 
 Because implementations are invariant in the interface, this means that we must separately declare implementations of their subtypes if we wish to use them, as [#_footnote_1]#follows#^<<_footnotes,1>>^.
@@ -212,7 +212,7 @@ Here, using `contributor` in the relation tuple matches both `contribution:contr
 (contributor: $person, work: $book) isa! contribution;
 ----
 
-The only thing that changes is the way we query the specific subtypes of the relation type. Even then, we can easily use role inference to omit the roles from the pattern as we saw in xref:{page-component-version}@academy::7-understanding-query-patterns/7.2-relation-patterns.adoc[Lesson 7.2], and use the same queries throughout. Thus, the querying capabilities of the model are the same regardless of whether we inherit or override a role. In fact, this is true of any model involving roles that can be inherited or overridden.
+The only thing that changes is the way we query the specific subtypes of the relation type. Even then, we can easily use role inference to omit the roles from the pattern as we saw in xref:{page-version}@academy::7-understanding-query-patterns/7.2-relation-patterns.adoc[Lesson 7.2], and use the same queries throughout. Thus, the querying capabilities of the model are the same regardless of whether we inherit or override a role. In fact, this is true of any model involving roles that can be inherited or overridden.
 
 However, there is a key difference in the way the roles must be implemented in these two cases. Consider the following definition:
 
