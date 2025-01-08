@@ -1,0 +1,26 @@
+:tabs-sync-option:
+:experimental:
+
+////
+IMPORTANT: When including this partial in a page, the sample dataset name must be specified at the top of that page using a page attribute as follows:
+:sample-dataset-name: bookstore
+This will cause it to be interpolated into the included content.
+////
+
+== Create a sample deployment
+
+Log in to https://cloud.typedb.com/[TypeDB Cloud,window=_blank] and create a new deployment on the deployments page. When prompted to choose a sample dataset, choose the `{sample-dataset-name}` dataset.
+
+== Connect to your deployment
+
+In this guide, we use *TypeDB Studio*, the standalone graphical tool for working with TypeDB. Ensure Studio is xref:{page-version}@manual::install/studio.adoc[installed], then launch the application. To connect to your deployment:
+
+include::{page-version}@manual::setup/studio.adoc[tag=connect_cloud_studio]
+
+== Create a project
+
+include::{page-version}@manual::setup/studio.adoc[tag=select_project]
+
+== Select the sample database
+
+Select the `{sample-dataset-name}` database you created earlier from the btn:[Select Database] dropdown (image:{page-version}@home::studio-icons/database-none.png[]) in the top toolbar.

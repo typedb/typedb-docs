@@ -1,0 +1,22 @@
+# include::schema.tql
+## ^this comment indicates that another file should be included in its entirety
+
+# include::data.tql::tag_name
+## ^this comment indicates that a tagged region from another file should be included
+
+# pipeline::write::start
+## ^this comment marks the beginning of a pipeline
+match ...
+delete ...
+insert ...
+count ...
+# pipeline::write::end
+## ^this comment marks the beginning of a pipeline
+
+# pipeline::read::start
+# tag::tag_name[]
+match $something isa $thing;
+# end::tag_name[]
+# pipeline::read::end
+
+...

@@ -1,0 +1,149 @@
+= Statements
+
+== Introduction
+
+== Type definition statements
+
+[cols-3]
+--
+.xref:{page-version}@typeql::statements/entity.adoc[]
+[.clickable]
+****
+Used to define a new entity type.
+****
+
+.xref:{page-version}@typeql::statements/relation.adoc[]
+[.clickable]
+****
+Used to define a new relation type.
+****
+
+.xref:{page-version}@typeql::statements/attribute.adoc[]
+[.clickable]
+****
+Used to define a new attribute type.
+****
+
+.xref:{page-version}@typeql::statements/struct.adoc[]
+[.clickable]
+****
+Used to define a new struct type.
+****
+
+.xref:{page-version}@typeql::statements/fun.adoc[]
+[.clickable]
+****
+Used to define a new function.
+****
+--
+
+== Constraint definition statements
+
+[cols-3]
+--
+.xref:{page-version}@typeql::statements/sub.adoc[]
+[.clickable]
+****
+Used to define the supertype of a type.
+****
+
+.xref:{page-version}@typeql::statements/relates.adoc[]
+[.clickable]
+****
+Used to define a new role for a relation type.
+****
+
+.xref:{page-version}@typeql::statements/plays.adoc[]
+[.clickable]
+****
+Used to define a new roleplayer for a role.
+****
+
+.xref:{page-version}@typeql::statements/value.adoc[]
+[.clickable]
+****
+Used to define the value type of an attribute type.
+****
+
+.xref:{page-version}@typeql::statements/owns.adoc[]
+[.clickable]
+****
+Used to define a new owner of an attribute type.
+****
+
+.xref:{page-version}@typeql::statements/alias.adoc[]
+[.clickable]
+****
+Used to define an alias label for a type.
+****
+--
+
+== Instance statements
+
+[cols-3]
+--
+.xref:{page-version}@typeql::statements/isa.adoc[]
+[.clickable]
+****
+Used to specify the type of a data instance.
+****
+
+.xref:{page-version}@typeql::statements/links.adoc[]
+[.clickable]
+****
+Used to specify the roleplayers in a relation.
+****
+
+.xref:{page-version}@typeql::statements/has.adoc[]
+[.clickable]
+****
+Used to specify an attribute of an entity or relation.
+****
+
+.xref:{page-version}@typeql::statements/is.adoc[]
+[.clickable]
+****
+Used to specify that two variables represent the same data instance.
+****
+
+.xref:{page-version}@typeql::statements/let-eq.adoc[]
+[.clickable]
+****
+Used to assign the result of an expression to a variable.
+****
+
+.xref:{page-version}@typeql::statements/let-in.adoc[]
+[.clickable]
+****
+Used to assign a stream or list element to a variable.
+****
+
+.xref:{page-version}@typeql::statements/contains.adoc[]
+[.clickable]
+****
+Used to specify that a stream or list contains a data instance.
+****
+
+.xref:{page-version}@typeql::statements/like.adoc[]
+[.clickable]
+****
+Used to specify that a string matches a specified regex pattern
+****
+--
+
+== Identity statements
+
+[cols-2]
+--
+.xref:{page-version}@typeql::statements/label.adoc[]
+[.clickable]
+****
+Used to identify a type by its label.
+****
+
+.xref:{page-version}@typeql::statements/iid.adoc[]
+[.clickable]
+****
+Used to identify a data instance by its internal ID.
+****
+--

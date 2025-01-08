@@ -1,0 +1,11 @@
+= Sort stage
+:page-aliases: {page-version}@typeql::modifiers/sorting.adoc
+
+[,typeql]
+----
+match
+  $page isa page, has page-id "<page id>";
+  $post isa post, has creation-timestamp $created;
+  (page: $page, post: $post) isa posting;
+sort $created desc;
+----
