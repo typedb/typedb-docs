@@ -8,7 +8,7 @@ build:
     deploy-development:
       filter:
         owner: typedb
-        branch: development
+        branch: [2.x, 3.x-development]
       image: vaticle-ubuntu-21.04
       type: foreground
       command: |
@@ -19,7 +19,7 @@ build:
     deploy-production:
       filter:
         owner: typedb
-        branch: master
+        branch: TODO # TODO: [2.x, 3.x-master]
       image: vaticle-ubuntu-21.04
       type: foreground
       command: |
