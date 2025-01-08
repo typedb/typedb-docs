@@ -11,9 +11,9 @@ This guide walks you through the basics of editing `.adoc` files.
 
 == File structure
 
-Top-level folders (`home`, `manual`, `academy`, ...) are *modules*. Each modules content is in `modules/ROOT`.
+Top-level folders (`home`, `manual`, `academy`, ...) are the *modules* of our docs. Each modules has subfolder `modules/ROOT` called the `ROOT` of the module (in theory it could have other submodules ... but we don't use submodules, everything is in `ROOT`).
 
-* Module pages are in `ROOT/pages`
+* The pages of the module are in `ROOT/pages`
 * "Partially included" pages are in `ROOT/partials`
 * Images are in `ROOT/images`
 * Code example are in `ROOT/examples`
@@ -153,7 +153,7 @@ include::**{examplesdir}/tql/typeql_file.tql[tags=region1;region2]**
 
 === Tagging regions and TQL file structure
 
-IMPORTANT: Store all TypeQL code files that are *_meant to be run_* in the `ROOT/examples/tql`. All other files that you want to include from can be stored in
+IMPORTANT: Store all TypeQL code files that are *_meant to be run_* in the `ROOT/examples/tql` of the module you are working on. All other example files can go into `ROOT/examples`.
 
 .typeql_file.tql structure
 ----
