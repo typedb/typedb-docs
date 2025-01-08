@@ -16,7 +16,7 @@ fetch
 $user: name;
 $country: name;
 ----
-image::{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,typeql]
 ----
@@ -28,7 +28,7 @@ fetch
 $user: isbn-13;
 $country: name;
 ----
-image::{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*
 
 [,typeql]
 ----
@@ -40,7 +40,7 @@ fetch
 $book: isbn-13;
 $country: name;
 ----
-image::{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*
 
 The second query is invalid because users do not have ISBN attributes. The third is invalid because books do not have locations. TypeDB validates queries against the *schema*, which sets out which types are able to own each attribute and play each role in relations. This enables the database to determine which queries are semantically sound, and extends to queries of arbitrary complexity, for instance the following query. Try running it to see if it is valid.
 
@@ -57,7 +57,7 @@ not { $destination-city is $user-city; };
 fetch
 $order: id;
 ----
-image::{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*
 
 We will explore exactly how TypeDB validates queries in xref:{page-component-version}@academy::7-understanding-query-patterns/7.1-patterns-as-constraints.adoc[Lesson 7.1].
 

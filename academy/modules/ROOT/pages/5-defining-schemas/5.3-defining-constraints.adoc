@@ -12,7 +12,7 @@ status sub attribute,
     regex "^(paid|dispatched|delivered|returned|canceled)$";
 order owns status;
 ----
-image::{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]image::{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
 Regex constraints apply directly to attributes, regardless of the owning type. In this example, if another entity or relation type owned `status`, it would also be restricted to the preset values.
 
@@ -35,7 +35,7 @@ user owns id @key;
 order owns id @key;
 review owns id @key;
 ----
-image::{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]image::{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-component-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
 When applied to an ownership statement in a Define query, the `@key` and `@unique` annotations apply a key or unique constraint respectively to that ownership. This is different to `regex` statements, which apply to the attribute itself.
 

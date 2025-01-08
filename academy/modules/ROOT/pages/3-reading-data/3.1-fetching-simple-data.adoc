@@ -11,7 +11,7 @@ $book isa paperback;
 fetch
 $book: attribute;
 ----
-image::{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 This is equivalent to the following SQL query.
 
@@ -25,7 +25,7 @@ This TypeQL query comprises two *clauses*: a `match` clause and a `fetch` clause
 
 The `match` clause is equivalent to a *selection* in SQL. It identifies what entity types (tables) we wish to retrieve data from. It can also specify further constraints that the retrieved data must meet, as we'll see shortly. The `fetch` clause is equivalent to a *projection* in SQL. It specifies what attributes (columns) we would like to retrieve for the entities (rows) identified. In this case, we've chosen to retrieve _all_ attributes using the `attribute` keyword.
 
-Using a *data* session and *read* transaction, *run* image::{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] this query. You should see the following result.
+Using a *data* session and *read* transaction, *run* image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] this query. You should see the following result.
 
 [,json]
 ----
@@ -222,7 +222,7 @@ $user isa user;
 fetch
 $user: attribute;
 ----
-image::{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 =====
 ====
 
@@ -237,7 +237,7 @@ $book isa paperback;
 fetch
 $book: title, page-count;
 ----
-image::{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 If we run this query, we see the following result.
 
@@ -345,7 +345,7 @@ $book isa paperback;
 fetch
 $book: isbn-13, price, stock;
 ----
-image::{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 =====
 ====
 
@@ -360,7 +360,7 @@ $book isa paperback, has isbn-13 "9780446310789";
 fetch
 $book: title, page-count;
 ----
-image::{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
@@ -392,7 +392,7 @@ $book has isbn-13 "9780446310789";
 fetch
 $book: title, page-count;
 ----
-image::{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 Try running these two queries. You should get the same results.
 
@@ -415,7 +415,7 @@ $book isa paperback, has title "Great Discoveries in Medicine";
 fetch
 $book: page-count, price;
 ----
-image::{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 With simple statements:
 
@@ -427,7 +427,7 @@ $book has title "Great Discoveries in Medicine";
 fetch
 $book: page-count, price;
 ----
-image::{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 =====
 ====
 
@@ -459,7 +459,7 @@ fetch
 $order: id;
 $line: quantity;
 ----
-image::{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
@@ -528,7 +528,7 @@ $order: id, status;
 $line: quantity;
 $book: price;
 ----
-image::{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 =====
 ====
 
@@ -548,7 +548,7 @@ $line: quantity;
 $courier: name;
 $address: street;
 ----
-image::{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+image:{page-component-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----

@@ -203,18 +203,10 @@ Windows::
 --
 . Ensure Java 11+ is installed. TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
-. Download the archive:
+. Download and unzip the archive:
 include::{page-component-version}@manual:resources:partial$typedb-console-latest-links.adoc[tag=windows]
-. Extract the archive and optionally update your `PATH` environment variable:
+. (Optional) Add the extracted archive path to your `PATH` environment variable.
 +
-[source,console]
-----
-mkdir "C:\Program Files\TypeDB"
-tar xvf "C:\Users\<USERNAME>\Downloads\<ARCHIVE_FILENAME>.zip" -C "C:\Program Files\TypeDB"
-setx /M PATH "%path%;C:\Program Files\TypeDB\<ARCHIVE_FILENAME>"
-----
-
-Open a new terminal window for changes to environment variables to take effect.
 --
 ====
 
@@ -249,43 +241,43 @@ Official xref:{page-component-version}@drivers::index.adoc[driver libraries] for
 
 [cols-3]
 --
-.image::{page-component-version}@home::rust.png[,width=30]   xref:{page-component-version}@drivers::rust/index.adoc[Rust]
+.image:{page-component-version}@home::rust.png[,width=30]   xref:{page-component-version}@drivers::rust/index.adoc[Rust]
 [.clickable]
 ****
 
 ****
 
-.image::{page-component-version}@home::python.png[,width=30]   xref:{page-component-version}@drivers::python/index.adoc[Python]
+.image:{page-component-version}@home::python.png[,width=30]   xref:{page-component-version}@drivers::python/index.adoc[Python]
 [.clickable]
 ****
 
 ****
 
-.image::{page-component-version}@home::nodejs.png[,width=30]   xref:{page-component-version}@drivers::nodejs/index.adoc[Node.js]
+.image:{page-component-version}@home::nodejs.png[,width=30]   xref:{page-component-version}@drivers::nodejs/index.adoc[Node.js]
 [.clickable]
 ****
 
 ****
 
-.image::{page-component-version}@home::java.png[,width=30]   xref:{page-component-version}@drivers::java/index.adoc[Java]
+.image:{page-component-version}@home::java.png[,width=30]   xref:{page-component-version}@drivers::java/index.adoc[Java]
 [.clickable]
 ****
 
 ****
 
-.image::{page-component-version}@home::csharp.png[,width=30]   xref:{page-component-version}@drivers::csharp/index.adoc[C#]
+.image:{page-component-version}@home::csharp.png[,width=30]   xref:{page-component-version}@drivers::csharp/index.adoc[C#]
 [.clickable]
 ****
 
 ****
 
-.image::{page-component-version}@home::cpp.png[,width=30]   xref:{page-component-version}@drivers::cpp/index.adoc[C++]
+.image:{page-component-version}@home::cpp.png[,width=30]   xref:{page-component-version}@drivers::cpp/index.adoc[C++]
 [.clickable]
 ****
 
 ****
 
-.image::{page-component-version}@home::c.png[,width=30]   xref:{page-component-version}@drivers::c/index.adoc[C]
+.image:{page-component-version}@home::c.png[,width=30]   xref:{page-component-version}@drivers::c/index.adoc[C]
 [.clickable]
 ****
 
