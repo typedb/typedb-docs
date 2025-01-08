@@ -1,0 +1,217 @@
+= Optimizing speed
+:page-preamble-card: 1
+
+The speed of bulk loading can be optimised in two ways: by batching queries, and by parellelizing transactions. In this guide, we'll explore these methods.
+
+For the examples shown on this page, we'll load data into a bookstore database. We'll assume the data is pre-formatted into TypeQL files containing _one Insert query per line_. We'll consider data relating to contributors, publishers, and books, in the files `contributors.tql`, `publishers.tql`, and `books.tql` respectively.
+
+.Example queries
+[%collapsible]
+====
+* Example line from `contributors.tql`:
++
+[,typeql]
+----
+insert $contributor isa contributor; $contributor has name "J.R.R. Tolkien";
+----
+* Example line from `publishers.tql`:
++
+[,typeql]
+----
+insert $publisher isa publisher; $publisher has name "Harper Collins";
+----
+* Example line from `books.tql`:
++
+[,typeql]
+----
+match $contributor_1 isa contributor; $contributor_1 has name "J.R.R. Tolkien"; $publisher isa publisher; $publisher has name "Harper Collins"; insert $book isa ebook; $book has isbn-13 "9780008627843"; $book has title "The Hobbit"; $book has page-count 310; $book has price 16.99; $book has isbn-10 "0008627843"; $book has genre "fiction"; $book has genre "fantasy"; (work: $book, author: $contributor_1) isa authoring; (work: $book, illustrator: $contributor_1) isa illustrating; (published: $book, publisher: $publisher) isa publishing;
+----
+====
+
+The Insert queries for books reference contributors and publishers, so all the contributors and publishers must be inserted before we can begin inserting books.
+
+== Batching queries
+
+Normally, transactions are used to represent logically atomic business operations, ensuring that the database is always in a consistent state when read. However, consistency is not typically a requirement until after bulk loading has finished, so we can use transactions to batch queries instead. The commit is the most computationally expensive part of a transaction. Rather than committing after every insert, we can commit inserts in large batches, significantly speeding up the process.
+
+The following code snippets show example implementations of query batching using the TypeDB Python, Node.js, and Java drivers. To begin with, we define iterators that will pipeline the queries into batches for us.
+
+.Imports
+[%collapsible]
+====
+[tabs]
+=====
+Python::
++
+--
+[,python]
+----
+include::attachment$bulk-loading-sample-code.py[tag=imports]
+----
+--
+
+Node.js::
++
+--
+[,typescript]
+----
+include::attachment$bulk-loading-sample-code.ts[tag=imports]
+----
+--
+
+Java::
++
+--
+[,java]
+----
+include::attachment$bulk-loading-sample-code.java[tag=imports]
+----
+--
+=====
+====
+
+
+[tabs]
+====
+Python::
++
+--
+[,python]
+----
+include::attachment$bulk-loading-sample-code.py[tag=def_queries]
+
+
+include::attachment$bulk-loading-sample-code.py[tag=def_batches]
+----
+--
+
+Node.js::
++
+--
+[,ts]
+----
+include::attachment$bulk-loading-sample-code.ts[tag=class_query_iterator]
+
+
+include::attachment$bulk-loading-sample-code.ts[tag=class_batch_iterator]
+----
+--
+
+Java::
++
+--
+[,java]
+----
+include::attachment$bulk-loading-sample-code.java[tag=class_query_iterator]
+
+
+include::attachment$bulk-loading-sample-code.java[tag=class_batch_iterator]
+----
+--
+====
+
+Now we can instantiate and consume a batch iterator from a function that will load the batches into the database. To load each batch, we open a transaction, execute each insert query in the batch, and then commit the transaction.
+
+[tabs]
+====
+Python::
++
+--
+[,python]
+----
+include::attachment$bulk-loading-sample-code.py[tag=def_load_batch]
+
+
+include::attachment$bulk-loading-sample-code.py[tag=def_load_data]
+----
+--
+
+Node.js::
++
+--
+[,ts]
+----
+include::attachment$bulk-loading-sample-code.ts[tag=function_load_batch]
+
+
+include::attachment$bulk-loading-sample-code.ts[tag=function_load_data]
+----
+--
+
+Java::
++
+--
+[,java]
+----
+include::attachment$bulk-loading-sample-code.java[tag=method_load_batch]
+
+
+include::attachment$bulk-loading-sample-code.java[tag=method_load_data]
+----
+--
+====
+
+During a transaction, the changes to the database must be held in memory until the commit. This means that if batches become too large, transactions will be slowed down. As a result, the optimum number of queries per batch depends on the queries being run as well as the configuration of the server. The simpler the queries and the more powerful the server, the larger the optimum batch size.
+
+[IMPORTANT]
+====
+For most applications, the optimum batch size will likely be between 50 and 250 Insert queries.
+====
+
+It is important to note that if any query in the transaction causes an exception to be thrown, the entire transaction will fail. As a result, issuing queries that might fail, such as those leveraging key constraints, can be tricky when batching queries as the batch will need to be re-issued without the query that causes the exception.
+
+== Parallelizing transactions
+
+To further increase the speed of bulk loading, we can open multiple transactions that will be processed on the server in parallel. To do so, our client-side code must utilise either concurrency or parallelism to simultaneously manage the open transactions.
+
+[NOTE]
+====
+Parellelizing transactions requires a more complex approach than is needed for query batching, so it is not recommended to parallelize transactions without also batching queries, as the performance gains will be similar in either individual case. Of course, the best performance is achieved by doing both.
+====
+
+The following code snippets show example implementations of transaction parallelization in combination with query batching using the TypeDB Python, Node.js, and Java drivers. It makes use of some of the code shown previously on this page: the batch iterators for all languages, and the `loadBatch` function for the Node.js example. The ways in which parallel transactions are issued differs significantly between different programming language paradigms:
+
+Using Python:: Python utilizes a https://en.wikipedia.org/wiki/Global_interpreter_lock[global interpreter lock] to guarantee thread safety. In order to parallelize transactions on the server, multiple Python processes must be started using the https://docs.python.org/3/library/multiprocessing.html[multiprocessing module], with each transaction managed by a separate process. In the code snippet below, we use a multiprocessing pool of `batch_loader` functions executed in parallel, with each consuming query batches from a shared queue. We cannot share the same driver and session instances between processes, so must open one of each per process. This is contrary to typical best practice for TypeDB: normally a program should only need one driver and session instance at a time.
+Using Node.js:: JavaScript and TypeScript use https://en.wikipedia.org/wiki/Event_loop[event loops] to enable concurrency by default. To parallelize transactions on the server, we can simply start them serially and await them all at the end of the program. This could consume a large amount of memory if care is not taken, so it is best to limit the number of transactions open at any given time. In the code snippet below, we manage the transactions using the `PromisePool` class. Once the pool has been filled with the maximum number of concurrent transactions, it will block further ones from being added until one of the previous ones has completed.
+Using Java (or other driver languages):: For Java, and most other languages, transactions can be parallelized on the server by making use of multithreading. In the code snippet below, we use a thread pool to schedule multiple batch loaders that will be executed concurrently, consuming query batches from a shared queue. Unlike the Python implementation, the batch loaders can share network resources, so only a single driver and session instance are required.
+
+[tabs]
+====
+Python::
++
+--
+[,python]
+----
+include::attachment$bulk-loading-sample-code.py[tag=def_batch_loader]
+
+
+include::attachment$bulk-loading-sample-code.py[tag=def_load_data_async]
+----
+--
+
+Node.js::
++
+--
+[,ts]
+----
+include::attachment$bulk-loading-sample-code.ts[tag=class_promise_queue]
+
+
+include::attachment$bulk-loading-sample-code.ts[tag=function_load_data_async]
+----
+--
+
+Java::
++
+--
+[,java]
+----
+include::attachment$bulk-loading-sample-code.java[tag=method_schedule_batch_loader]
+
+
+include::attachment$bulk-loading-sample-code.java[tag=method_load_data_async]
+----
+--
+====
+
+There are additional considerations when parallelizing transactions. Because the data in each batch will be inserted simultaneously, it is essential to ensure that data is only loaded when data dependencies are already in place. In the above examples, we ensure that all the contributors and publishers are loaded before we attempt to load books by creating one batch iterator and one loading pool per file. Handling exceptions thrown by problematic queries is also harder.

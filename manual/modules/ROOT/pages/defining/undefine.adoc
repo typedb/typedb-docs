@@ -1,0 +1,207 @@
+= Undefine query
+:tabs-sync-option:
+:experimental:
+:scores: __
+
+In this guide, you'll see how to use an Undefine query to undefine types and rules in a database schema using Studio,
+Console, or one of the drivers.
+
+== Understanding Undefine queries
+
+A Undefine query is used to delete type and rule definitions from a schema. For a detailed explanation of the query see the xref:{page-version}@typeql::queries/undefine.adoc[] page. For an alternative way of editing your schema, see the xref:{page-version}@manual::defining/schema-editing.adoc[] page.
+
+== Sending Undefine queries
+
+Before you begin, ensure you've followed the instructions from the xref:defining/define.adoc[] page. The easiest way to send an Undefine query is to use Studio or Console:
+
+[tabs]
+====
+Studio::
++
+--
+Follow the xref:{page-version}@manual::studio.adoc#_prepare_a_query[Studio manual]
+to connect to TypeDB and select a project folder.
+Then use the steps below:
+
+//Follow the instructions from the xref:connecting/connection.adoc[] page to connect to TypeDB:
+//page to connect Studio to TypeDB and select a project folder, then:
+
+. Use a drop-down list in the top toolbar to select a database.
+. Switch to `schema` session and `write` transaction types.
+. Open a new tab and insert or type in a Undefine query, for example:
++
+.TypeQL Undefine query
+[,typeql]
+----
+undefine admin sub user;
+----
+. Run the query by clicking the image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]
+btn:[Run Query] button.
+. Commit the changes by clicking the image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit query] button.
+--
+
+Console::
++
+--
+Follow the xref:{page-version}@manual::connecting/connection.adoc[] guide to connect to TypeDB.
+Then use the steps below:
+
+. Open a `schema` session and `write` transaction to the selected database (e.g., `sample_db`):
++
+[,bash]
+----
+transaction sample_db schema write
+----
+. Send the Undefine query:
++
+[,bash]
+----
+undefine admin sub user;
+----
++
+Push btn:[Enter] twice to send the query.
+. Commit the changes:
++
+[,bash]
+----
+commit
+----
+--
+====
+
+To send a Undefine query programmatically, use xref:{page-version}@drivers::index.adoc[drivers]:
+
+[tabs]
+====
+Rust::
++
+--
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to a TypeDB server, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:2.x@drivers::rust/api-reference.adoc#_struct_QueryManager_undefine__[`transaction.query.undefine()`]
+method:
+
+[,rust,indent=0]
+----
+include::{page-version}@manual::partial$rust-manual-code.rs[tags=databases,indent=8]
+include::{page-version}@manual::partial$rust-manual-code.rs[tags=undefine]
+----
+--
+
+Python::
++
+--
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to a TypeDB server, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:2.x@drivers::python/api-reference.adoc#_QueryManager_undefine{scores}query_str__options_TypeDBOptions[`transaction.query.undefine()`]
+method:
+
+[,python,indent=0]
+----
+include::{page-version}@manual::partial$python-manual-code.py[tags=undefine]
+----
+--
+
+Node.js::
++
+--
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to a TypeDB server, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:2.x@drivers::nodejs/api-reference.adoc#_QueryManager_undefine__query_string__options_TypeDBOptions[`transaction.query.undefine()`]
+method:
+
+[,js,indent=0]
+----
+include::{page-version}@manual::partial$nodejs-manual-code.js[tags=undefine]
+----
+--
+
+Java::
++
+--
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to a TypeDB server, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:2.x@drivers::java/api-reference.adoc#_QueryManager_undefine__com_vaticle_typeql_lang_query_TypeQLUndefine[`transaction.query().undefine()`]
+method:
+
+[,java,indent=0]
+----
+include::{page-version}@manual::partial$java-manual-code.java[tags=undefine]
+----
+--
+
+C#::
++
+--
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to a TypeDB server, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:2.x@drivers::csharp/api-reference.adoc#_VoidPromise_TypeDB_Driver_Api_IQueryManager_Undefine___string_query_[`transaction.Query.Undefine()`]
+method:
+
+[,csharp,indent=0]
+----
+include::{page-version}@manual::partial$csharp-manual-code.cs[tags=options]
+include::{page-version}@manual::partial$csharp-manual-code.cs[tags=undefine]
+----
+--
+
+C++::
++
+--
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to a TypeDB server, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:2.x@drivers::cpp/api-reference.adoc#_VoidFuture_TypeDBQueryManagerundefine___const_stdstring__query__const_Options__options__Options_____const[`transaction.query.undefine()`]
+method:
+
+[,cpp,indent=0]
+----
+include::{page-version}@manual::partial$cpp-manual-code.cpp[tags=options]
+include::{page-version}@manual::partial$cpp-manual-code.cpp[tags=undefine]
+----
+--
+
+C::
++
+--
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to a TypeDB server, then open a `schema` session to the selected database,
+open a `write` transaction, and use the
+xref:2.x@drivers::c/api-reference.adoc#_query_undefine[`query_undefine()`]
+function:
+
+[,cpp,indent=0]
+----
+include::{page-version}@manual::partial$c-manual-code.c[tags=options]
+include::{page-version}@manual::partial$c-manual-code.c[tags=undefine]
+----
+--
+====
+
+== Learn more
+
+[cols-2]
+--
+.xref:{page-version}@typeql::queries/undefine.adoc[]
+[.clickable]
+****
+Learn more about Undefine queries in TypeQL: syntax, behavior, and query examples.
+****
+
+.xref:{page-version}@manual::writing/index.adoc[]
+[.clickable]
+****
+Learn how to write some data to a database with the schema you just truncated.
+****
+
+.xref:{page-version}@academy::5-defining-schemas/index.adoc[]
+[.clickable]
+****
+Check out the Defining schemas section of TypeDB Academy.
+****
+--

@@ -1,0 +1,194 @@
+= Update query
+:Summary: Updating data in a TypeDB database.
+:keywords: typeql, typedb, query, update, replace, insert, delete
+:pageTitle: Update query
+
+An Update query is used to replace data in a TypeDB database.
+This query deletes and then inserts data based on a given `match`, `delete`, and `insert` patterns.
+For a practical guide on how to send an Update query to TypeDB,
+see the xref:{page-version}@manual::writing/update.adoc[] page of the TypeDB Manual.
+
+== Syntax
+
+// tag::syntax[]
+An Update query consists of a
+<<_match_clause,match>>,
+<<_delete_clause,delete>>, and
+<<_insert_clause,insert>> clauses:
+
+[,typeql]
+----
+match <pattern>
+delete <delete_pattern>
+insert <insert_pattern>
+----
+// end::syntax[]
+where both `<delete_pattern>` and `<insert_pattern>` are patterns of valid data-specific TypeQL statements including
+xref:{page-version}@typeql::statements/isa.adoc[],
+xref:{page-version}@typeql::statements/has.adoc[],
+xref:{page-version}@typeql::statements/role-assignment.adoc[role assignment], and
+xref:{page-version}@typeql::statements/value-assignment.adoc[value assignment].
+
+The _mandatory_ `match` clause `<pattern>` can be any valid match pattern: for more information, see the
+xref:{page-version}@typeql::patterns/index.adoc[Patterns] and xref:{page-version}@typeql::statements/index.adoc[Statements] sections.
+
+== Behavior
+
+[#_match_clause]
+[#_insert_clause]
+[#_delete_clause]
+An Update query first deletes and then inserts data instances, ownerships, or role player assignments to a database.
+The results of the `match` clause in an Update query will be used for the variables in its subsequent
+`delete` and `insert` clauses.
+For more information and examples of the latter clauses,
+see the xref:{page-version}@typeql::queries/delete.adoc[] and xref:{page-version}@typeql::queries/insert.adoc[] page.
+
+Note that inserted data _need not be a direct replacement_ for the data deleted by the same query.
+You can insert a new concept instead of a deleted one with either the same variable or a new one.
+
+=== Query execution
+
+The `insert` clause is executed after the `delete` clause of the same query and uses the same matched result
+from the `match` clause. For an Update query to succeed the following must be satisfied:
+
+* Data that is assumed to exist `insert` must not be deleted in the preceding `delete` clause.
+For example, deleting an entity and then trying to insert ownership of an attribute to that deleted entity
+(and without inserting a new entity its place).
+* Inserted data must not violate a schema of a database.
+
+=== Query response
+
+An Update query returns a lazy Stream/Iterator of ConceptMap with the inserted data.
+
+== Update ownerships
+
+include::{page-version}@typeql::partial$iam-database-links.adoc[]
+
+In many cases, the desired effect is to change the value of an owned attribute.
+Attributes are immutable, and we can't change a value of an attribute.
+But we can replace ownership: delete ownership of the old attribute and add a new one.
+
+.Replacing ownership
+[,typeql]
+----
+match
+$p isa person,
+    has full-name "Masako Holley",
+    has email $email;
+delete
+$p has $email;
+insert
+$p has email "m.holley@typedb.com";
+----
+
+The above query does the following:
+
+. Matches all `person` entities (`$p`) that have the `full-name` attribute with the value of `Masako Holley`
+amd have some `$email` of type `email`.
+. Deletes from `$p` ownership of its matched `email` attribute.
+. Makes `$p` the owner of the `email` attribute with the value of `m.holley@typedb.com`.
+
+If there are more than one `$email` found for `Masako Holley` person,
+than there will be more than one result for the `match` clause.
+Both `delete` and `insert` clauses will be executed once for every matched result (for every `$email`).
+Inserting multiple ownerships of the same attribute for the same owner produces the same result as inserting one.
+
+[NOTE]
+====
+The old `email` attribute with the value of `masako.holley@typedb.com` will still exist,
+but it will no longer be owned by the person entity.
+====
+
+If you want to narrow down the matched results to a single unique entity,
+consider specifying xref:{page-version}@typeql::statements/unique.adoc[uniqueness annotation]
+for some of its attribute ownerships.
+
+[#_delete_attribute]
+== Update attributes
+
+include::{page-version}@typeql::partial$iam-database-links.adoc[]
+
+Deleting an attribute deletes ownership of it from all its owners.
+We can insert a new attribute instead of a deleted one without a problem,
+because we match all data with a `match` clause pattern before we start deleting and inserting.
+
+.Replacing attribute
+[,typeql]
+----
+match
+$p isa person, has full-name $n;
+$n contains "inappropriate word";
+delete
+$n isa full-name;
+insert
+$p has full-name "deleted";
+----
+
+The above query:
+
+. Finds all `person` entities (`$p`) with at least one owned `full-name` attribute (`$n`).
+. Filters `$n` (and consequently `$p`) to only those that contain the substring `inappropriate word`.
+. Removes these `full-name` attributes that contain the substring from a database.
+. Makes `$p` the owner of the `full-name` attribute with the value of `deleted`.
+
+Assuming there are some matches,
+after running the above query, there will be a single `full-name` attribute with a value of `deleted`,
+which is owned by the matched entities.
+Any `full-name` attributes which contained the substring `inappropriate word` will no longer exist in the database.
+
+== Update role players
+
+include::{page-version}@typeql::partial$iam-database-links.adoc[]
+
+To replace a role player, we combine the steps for deleting a role player with extending the relation:
+
+[,typeql]
+----
+match
+$p isa person, has full-name "Pearle Goodman";
+$a_write isa action, has name "modify_file";
+$a_read isa action, has name "view_file";
+$ac_write (object: $o, action: $a_write) isa access;
+$ac_read (object: $o, action: $a_read) isa access;
+$pe (subject: $p, access: $ac_write) isa permission;
+delete
+$pe (access: $ac_write);
+insert
+$pe (access: $ac_read);
+----
+
+The above query does the following:
+
+. Finds the `person` entity (`$p`) with the `full-name` of `Pearle Goodman`.
+. Finds the `action` entity (`$a_write`) with the `name` of `modify_file`).
+. Finds the `action` entity (`$a_read`)  with the `name` of `read_file`).
+. Finds all `access` relations (`$ac_write`) that relate any `object` (as `object`) to `$a_write` (as `action`).
+. Finds all `access` relations (`$ac_read`) that relate any `object` (as `object`) to `$a_read` (as `action`).
+. Finds all permissions (`$pe`) that relate `$p` (as `subject`) to `$ac_write` (as `access`).
+. Removes all write accesses (`$ac_write`) as a player of the `access` role in matching permission relations
+(`$pe`).
+. Adds all read accesses (`$ac_read`) as a player of the `access` role in matching permission relations (`$pe`).
+
+In short, all of Pearle Goodman's permissions with the `modify_file` access
+become permissions with the `view_file` access.
+
+After running the above query, all matched `access` relations `$ac_write` with `$a_write` as `action` still
+exist but no longer play a role in the matched `permission` relations.
+
+== Learn more
+
+[cols-2]
+--
+.xref:{page-version}@academy::4-writing-data/4.4-updating-data.adoc[]
+[.clickable]
+****
+Learn more about updating/replacing data in a database in TypeDB Academy.
+****
+
+.xref:{page-version}@manual::writing/update.adoc[]
+[.clickable]
+****
+See how to send an Update query to TypeDB.
+****
+--
+

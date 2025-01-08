@@ -1,0 +1,47 @@
+= Built-in functions
+
+Unlike arithmetic operations, built-in functions use values provided as input arguments to return the resulted value.
+The value taken as arguments can be provided in the form of concept variables, value variable, or literal values.
+
+== Min / Max functions
+
+Use the `max()` function to find the maximum value out of all provided input arguments,
+or the `min()` to find the minimum.
+
+.Example
+[,typeql]
+----
+?maximum = max(100, $x, ?a);
+----
+
+== Ceil / Floor
+
+Use the `ceil()` function to round up the input value, or the `floor()` to round down.
+
+.Example
+[,typeql]
+----
+?int = floor(100.7);
+----
+
+== Round function
+
+Use the `round()` function to round the input value up to a closest integer (half-way up).
+
+.Example
+[,typeql]
+----
+?int = round(100.7);
+----
+
+== Abs function
+
+Use the `abs()` function to produce an absolute value of the input value.
+
+.Example
+[,typeql]
+----
+?x = abs($s - 1000);
+----
+
+The above example bound the `?x` value variable to the absolute value of subtraction of `1000` from the value of `$s`.

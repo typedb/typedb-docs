@@ -1,0 +1,62 @@
+= Connecting to TypeDB
+:page-no-toc: 1
+
+[#_blank_heading]
+== {blank}
+
+////
+TypeDB accepts connections via gRPC based
+https://github.com/typedb/typedb-protocol[TypeDB RPC protocol,window=_blank].
+It is implemented by TypeDB drivers and TypeDB clients.
+////
+
+//To connect to TypeDB, you can use any TypeDB client or driver.
+See below practical guides on how to connect to TypeDB with different clients and drivers.
+
+////
+TypeDB clients are able to connect to TypeDB via gRPC based TypeDB protocol and provide an interface for using them.
+Among TypeDB clients, there are libraries called TypeDB drivers,
+that provide driver API for native programmatic access to TypeDB.
+
+All TypeDB clients are able to connect to TypeDB, use encryption and authentication, manage sessions and transactions,
+use high availability and load-balancing features, send any valid TypeQL queries, and stream responses.
+////
+
+[cols-2]
+--
+.xref:{page-version}@manual::connecting/connection.adoc[]
+[.clickable]
+****
+Establishing a network connection to TypeDB.
+****
+
+.xref:connecting/database.adoc[]
+[.clickable]
+****
+Creating a new database in TypeDB.
+****
+
+.xref:{page-version}@manual::connecting/session.adoc[]
+[.clickable]
+****
+Managing sessions in TypeDB.
+****
+
+.xref:{page-version}@manual::connecting/transaction.adoc[]
+[.clickable]
+****
+Managing transactions in TypeDB.
+****
+
+.xref:{page-version}@home::install-tools.adoc#_studio[TypeDB Studio]
+[.clickable]
+****
+Install TypeDB Studio.
+****
+
+.xref:{page-version}@home::install-tools.adoc#_console[TypeDB Console]
+[.clickable]
+****
+Install TypeDB Console.
+****
+--

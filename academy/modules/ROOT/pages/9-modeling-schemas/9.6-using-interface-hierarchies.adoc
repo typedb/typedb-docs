@@ -1,0 +1,300 @@
+= Lesson 9.6: Using interface hierarchies
+:page-preamble-card: 1
+
+In the previous lesson, we improved the type hierarchies in our book data model by using the principle of composition over inheritance. In this lesson, we'll explore the behaviour of interface hierarchies and see how they can be used to adapt our model in different ways.
+
+.Data table
+[%collapsible]
+====
+[%header,format=csv]
+|===
+include::attachment$books.csv[]
+|===
+====
+
+.Lesson 9.5 schema
+[%collapsible]
+====
+[,typeql]
+----
+define
+book sub entity,
+    abstract,
+    owns isbn-13,
+    owns isbn-10,
+    owns title,
+    owns page-count,
+    owns genre,
+    owns price,
+    plays contribution:work,
+    plays publishing:published;
+paperback sub book,
+    owns stock;
+hardback sub book,
+    owns stock;
+ebook sub book;
+contributor sub entity,
+    owns name,
+    plays contribution:contributor;
+publisher sub entity,
+    owns name,
+    plays publishing:publisher;
+place sub entity,
+    abstract,
+    owns name,
+    plays locating:location,
+    plays locating:located;
+city sub place,
+    plays publishing:location;
+state sub place;
+country sub place;
+contribution sub relation,
+    relates contributor,
+    relates work;
+authoring sub contribution;
+editing sub contribution;
+illustrating sub contribution;
+publishing sub relation,
+    relates publisher,
+    relates published,
+    relates location,
+    owns year;
+locating sub relation,
+    relates located,
+    relates location;
+isbn-13 sub attribute, value string;
+isbn-10 sub attribute, value string;
+title sub attribute, value string;
+page-count sub attribute, value long;
+genre sub attribute, value string;
+price sub attribute, value double;
+stock sub attribute, value long;
+name sub attribute, value string;
+year sub attribute, value long;
+----
+====
+
+== Interfaces as types
+
+In the PERA model, interfaces are themselves types, as we saw in xref:{page-version}@academy::9-modeling-schemas/9.1-the-pera-model.adoc[Lesson 9.1]. Like the data storing types, interface types are able to form hierarchies. Role hierarchies are derived from their dependent relation type hierarchies, while ownership hierarchies are derived from their dependent attribute type hierarchies. Let's examine an example.
+
+[,typeql]
+----
+define
+isbn sub attribute, abstract, value string;
+isbn-13 sub isbn;
+isbn-10 sub isbn;
+----
+
+As we saw in xref:{page-version}@academy::9-modeling-schemas/9.1-the-pera-model.adoc[Lesson 9.1], the `isbn` attribute type exposes an ownership interface, which we'll call `isbn:OWNER` for this discussion. Likewise, `isbn-13` and `isbn-10` expose the interfaces `isbn-13:OWNER` and `isbn-10:OWNER` respectively. As `isbn-13` and `isbn-10` are subtypes of `isbn`, this means that `isbn-13:OWNER` and `isbn-10:OWNER` are subtypes of `isbn:OWNER`.
+
+Role hierarchies work in a similar way, but have a major difference. Whereas all attribute types have an associated ownership interface, some relation types do not have role interfaces of their own, instead inheriting them from supertypes. We saw this in xref:{page-version}@academy::9-modeling-schemas/9.5-composition-over-inheritance.adoc[Lesson 9.5] with the following relation type hierarchy.
+
+[,typeql]
+----
+define
+contribution sub relation,
+    relates contributor,
+    relates work;
+authoring sub contribution;
+editing sub contribution;
+illustrating sub contribution;
+----
+
+Here `contribution` defines two interfaces: `contribution:contributor` and `contribution:work`, and these are also inherited by its subtypes, which have no roles of their own. This means that all four relation types expose these same two interfaces. Consider the following instead.
+
+[,typeql]
+----
+define
+contribution sub relation,
+    relates contributor,
+    relates work;
+authoring sub contribution,
+    relates author as contributor;
+editing sub contribution,
+    relates editor as contributor;
+illustrating sub contribution,
+    relates illustrator as contributor;
+----
+
+Here `authoring`, `editing`, and `illustrating` each expose a new interface: `authoring:author`, `editing:editor`, and `illustrating:illustrator` respectively. These interfaces *override* the interface `contribution:contributor`, meaning that it is no longer exposed by the subtypes of `contributor`. Because the newly defined interfaces override an interface from the parent type, these interfaces `authoring:author`, `editing:editor`, and `illustrating:illustrator` are subtypes of the parent interface `contribution:contributor`. Meanwhile, the interface `contribution:work` is still exposed by all four relation types.
+
+== Interface variance
+
+The way in which interface implementations are inherited is determined by their https://en.wikipedia.org/wiki/Covariance_and_contravariance_(computer_science)[variance]. Interface implementations, as defined in `owns` and `plays` statements, are:
+
+* *Covariant* in the implementing object type. This means that the statement _also_ applies to subtypes of the object type by inheritance.
+* *Invariant* in the implemented interface type. This means that the statement does _not_ also apply to subtypes of the interface type.
+
+Let's consider the following example, featuring two `plays` statements.
+
+[,typeql]
+----
+define
+book plays contribution:work;
+contributor plays contribution:contributor;
+----
+
+In the first statement, the implementing object type is `book` and the implemented interface type is `contribution:work`. The object type has three subtypes `paperback`, `hardback`, and `ebook`, and they _also_ implement `contribution:work` by inheritance because the statement is covariant in `book`.
+
+In the second statement, the implementing object type is `contributor` and the implemented interface type is `contribution:contributor`. The interface type has three subtypes `authoring:author`, `editing:editor`, and `illustrating:illustrator`, but `contributor` does _not_ also implement them because the statement is invariant in `contribution:contributor`.
+
+Let's consider another example, this time with an `owns` statement.
+
+[,typeql]
+----
+define
+book owns isbn;
+----
+
+The implementing object type is `book` and the implemented interface type is `isbn:OWNER`. This time, both have subtypes. The object type has three subtypes `paperback`, `hardback`, and `ebook`, and they _also_ implement `isbn:OWNER`. Meanwhile, the interface type has two subtypes `isbn-13:OWNER` and `isbn-10:OWNER`, and `book` does _not_ also implement them (nor do its subtypes).
+
+[NOTE]
+====
+As we learned in xref:{page-version}@academy::5-defining-schemas/5.5-schema-validation.adoc[Lesson 5.5], if an attribute type is abstract, then any owners must also be abstract. Because the implementation of `isbn:OWNER` is inherited by the subtypes of `book` (which are not themselves abstract), this will result in a violation of schema validation rules, and the schema will not commit! However, we will see how we can use this property to our advantage in xref:{page-version}@academy::12-advanced-modeling/12.4-using-interface-contracts.adoc[Lesson 12.4], where we will explore https://en.wikipedia.org/wiki/Design_by_contract[schema design by contract].
+====
+
+Because implementations are invariant in the interface, this means that we must separately declare implementations of their subtypes if we wish to use them, as [#_footnote_1]#follows#^<<_footnotes,1>>^.
+
+[,typeql]
+----
+define
+contributor plays authoring:author;
+contributor plays editing:editor;
+contributor plays illustrating:illustrator;
+book owns isbn-13;
+book owns isbn-10;
+----
+
+== Using role overrides effectively
+
+Earlier in this lesson, we encountered two possible design strategies for the subtypes of `contribution`: one in which the subtypes inherit the role `contribution:contributor`, and one in which the role was overridden with specialized subtypes. The two strategies result in identical querying capabilities. When the role is inherited, we can query `contribution` and its subtypes with the following patterns:
+
+* To describe an instance of `contribution` or one of its subtypes:
++
+[,typeql]
+----
+(contributor: $person, work: $book) isa contribution;
+----
+* To describe an instance of a specific subtype of contribution (e.g. `authoring`):
++
+[,typeql]
+----
+(contributor: $person, work: $book) isa authoring;
+----
+* To describe an instance of `contribution` only, not one of its subtypes:
++
+[,typeql]
+----
+(contributor: $person, work: $book) isa! contribution;
+----
+
+When the role is overridden, we can do the same with the following patterns instead:
+
+* To describe an instance of `contribution` or one of its subtypes:
++
+[,typeql]
+----
+(contributor: $person, work: $book) isa contribution;
+----
++
+Here, using `contributor` in the relation tuple matches both `contribution:contributor` and its subtypes by inheritance polymorphism.
+* To describe an instance of a specific subtype of contribution (e.g. `authoring`):
++
+[,typeql]
+----
+(author: $person, work: $book) isa authoring;
+----
+* To describe an instance of `contribution` only, not one of its subtypes:
++
+[,typeql]
+----
+(contributor: $person, work: $book) isa! contribution;
+----
+
+The only thing that changes is the way we query the specific subtypes of the relation type. Even then, we can easily use role inference to omit the roles from the pattern as we saw in xref:{page-version}@academy::7-understanding-query-patterns/7.2-relation-patterns.adoc[Lesson 7.2], and use the same queries throughout. Thus, the querying capabilities of the model are the same regardless of whether we inherit or override a role. In fact, this is true of any model involving roles that can be inherited or overridden.
+
+However, there is a key difference in the way the roles must be implemented in these two cases. Consider the following definition:
+
+[,typeql]
+----
+define
+contributor plays contribution:contributor;
+----
+
+If `contribution:contributor` is inherited by the subtypes of `contribution`, then `contributor` will be able to play the role in those relation types as well, as they will all expose the same role interface. Conversely, if the role is overridden in the subtypes of `contribution`, then `contributor` will not be able to play roles in the subtypes as the `plays` statement is invariant in the role, as we saw above.
+
+As a result, when building a relation type hierarchy, the primary factor to consider when deciding whether to inherit or override a role is whether roleplayers of the relation supertype should also be roleplayers of the relation subtypes. In this particular case, anyone capable of making a contribution to a book is also able to author, edit, or illustrate a book, by definition. As such, it makes most sense for the subtypes of `contribution` to inherit the role `contribution:contributor` rather than override it.
+
+In other cases, it may be more appropriate to override roles. The following schema excerpt for a filesystem access management model is such an example. Here, we ensure that all users are able to execute system actions, but only admins are able to execute them with admin privileges.
+
+[,typeql]
+----
+define
+user sub entity,
+    plays action-execution:executor;
+admin sub user,
+    plays privileged-execution:priveleged-executor;
+action-execution sub relation,
+    relates action,
+    relates executor;
+privileged-execution sub action-execution,
+    relates privileged-executor as executor;
+----
+
+[#_footnotes]
+== Footnotes
+
+1. <<_footnote_1,^>> In some cases, it might seem cumbersome to have to explicitly define each implementation of an interface's subtypes, but the invariance is essential to prevent logical fallacies in data model. Consider the following set of facts:
++
+--
+* All humans are animals.
+* All geese are animals.
+* All animals can join animal groups.
+* All flocks are animal groups.
+* All geese can join flocks.
+
+Now consider the following deduction:
+
+* All animals can join animal groups, and all flocks are animal groups, therefore all animals can join flocks.
+
+If this deduction were correct, it would allow humans to join flocks, despite the fact that only geese should be able to join flocks! The deduction is obviously fallacious, specifically by https://en.wikipedia.org/wiki/Affirming_the_consequent[affirming the consequent]. Now consider if we translated our list of facts into TypeQL. It might look something like this:
+
+// The type-theoretic version
+// [,typeql]
+// ----
+// define
+// animal sub entity, abstract;
+// human sub animal;
+// goose sub animal;
+// animal-group sub relation,
+//     relates group-member;
+// flock sub animal-group,
+//     relates flock-member as group-member;
+// animal plays animal-group:group-member;
+// goose plays flock:flock-member;
+// ----
+
+[,typeql]
+----
+define
+animal sub entity, abstract;
+human sub animal;                             # all humans are animals
+goose sub animal;                             # all geese are animals
+animal-group sub entity, abstract;
+group-membership sub relation,
+    abstract,
+    relates group,
+    relates group-member;
+animal-group plays group-membership:group;
+animal plays group-membership:group-member;   # all animals can join animal groups
+flock sub animal-group;                       # all flocks are animal groups
+flock-membership sub group-membership,
+    relates flock as group,
+    relates flock-member as group-member;
+flock plays flock-membership:flock;
+goose plays flock-membership:flock-member;    # all geese can join flocks
+----
+
+If definitions of interface implementations were covariant in the interface type instead of invariant, then `animal`, and all of its subtypes including `human`, would inherit the ability to play `flock-membership:flock-member`!
+--

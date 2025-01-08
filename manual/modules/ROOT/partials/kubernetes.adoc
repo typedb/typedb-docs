@@ -9,7 +9,7 @@
 [#_initial_setup]
 == Initial Setup
 
-First, create a secret to access TypeDB Cloud image on Docker Hub:
+First, create a secret to access TypeDB Enterprise image on Docker Hub:
 
 [source,console]
 ----
@@ -30,13 +30,13 @@ helm repo add typedb https://repo.typedb.com/repository/helm/
 == Encryption setup (optional)
 //*Create in-flight encryption certificates (optional)*
 
-This step is necessary if you wish to deploy TypeDB Cloud with in-flight encryption support.
+This step is necessary if you wish to deploy TypeDB Enterprise with in-flight encryption support.
 There are two certificates that need to be configured: external certificate (TLS) and internal certificate (Curve).
 The certificates need to be generated and then added to Kubernetes Secrets.
 
 An external certificate can either be obtained from trusted third party providers such as
 https://www.cloudflare.com/[CloudFlare] or https://letsencrypt.org/[letsencrypt.org].
-Alternatively, it is also possible to generate it manually with a tool we provide with TypeDB Cloud
+Alternatively, it is also possible to generate it manually with a tool we provide with TypeDB Enterprise
 in the `tool` directory:
 
 [source,console]
@@ -56,9 +56,9 @@ The `encryption-gen.jar` generates three directories:
 
 All files from the directory
 named after external domain shall be copied to the proper directory on every server in a cluster.
-By default, they are stored in `/server/conf/encryption` inside the TypeDB Cloud main directory.
+By default, they are stored in `/server/conf/encryption` inside the TypeDB Enterprise main directory.
 For example, `typedb-cloud-all-mac-x86_64-2.25.12/server/conf/encryption`.
-The path to each file is configured in the `encryption` section of the TypeDB Cloud config file.
+The path to each file is configured in the `encryption` section of the TypeDB Enterprise config file.
 
 Once the external and internal certificates are all generated, we can upload it to Kubernetes Secrets.
 Navigate into the directory with cluster certificates and run:
@@ -221,7 +221,7 @@ Certain adjustments will be made compared to other deployment modes:
 * Minikube only has a single K8s node, so `singlePodPerNode` needs to be set to `false`
 * Minikube's K8s node only has as much CPUs as the local machine:
 `kubectl get node/minikube -o=jsonpath='{.status.allocatable.cpu}'`.
-Therefore, for deploying a cluster with three servers of TypeDB Cloud to a node with 8 vCPUs,
+Therefore, for deploying a cluster with three servers of TypeDB Enterprise to a node with 8 vCPUs,
 the `cpu` can be set to `2` at maximum.
 * Storage size probably needs to be tweaked from default value of `100Gi` (or fully disabled persistent)
   as total storage required is `storage.size` multiplied by `replicas`.
@@ -262,7 +262,7 @@ kubectl describe sts typedb-cloud
 ----
 
 It should show `Pods Status` field as `Running` for all the nodes after a few minutes
-after deploying a TypeDB Cloud cluster.
+after deploying a TypeDB Enterprise cluster.
 
 You can connect to a pod:
 
@@ -304,7 +304,7 @@ executing `kubectl get secret/private-docker-hub`. Correct state looks like this
  private-docker-hub   kubernetes.io/dockerconfigjson   1      11d
 ----
 
-=== One or more pods of TypeDB Cloud are stuck in `Pending` state
+=== One or more pods of TypeDB Enterprise are stuck in `Pending` state
 
 This might mean pods requested more resources than available.
 To check if that's the case, run on a stuck pod (e.g. `typedb-cloud-0`):
@@ -319,9 +319,9 @@ Error message similar to
 `0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.`
 indicates that `cpu` or `storage.size` <<_helm_configuration_reference,settings>> need to be decreased.
 
-=== One or more pods of TypeDB Cloud are stuck in `CrashLoopBackOff` state
+=== One or more pods of TypeDB Enterprise are stuck in `CrashLoopBackOff` state
 
-This might indicate any misconfiguration of TypeDB Cloud.
+This might indicate a misconfiguration of TypeDB Enterprise.
 Please check the logs:
 
 [source,console]
@@ -348,7 +348,7 @@ Configurable settings for Helm package include:
 
 | `image.tag`
 | `2.25.9`
-| The version of TypeDB Cloud to use.
+| The version of TypeDB Enterprise to use.
 
 | `image.pullPolicy`
 | `IfNotPresent`
@@ -363,12 +363,12 @@ in Kubernetes documentation.
 
 | `exposed`
 | `false`
-| Whether TypeDB Cloud supports connections via public IP/hostname (outside of Kubernetes network).
+| Whether TypeDB Enterprise supports connections via public IP/hostname (outside of Kubernetes network).
 
 | `serviceAnnotations`
 | `null`
 | Kubernetes annotations to be added to the Kubernetes services responsible for directing traffic
-to the TypeDB Cloud pods.
+to the TypeDB Enterprise pods.
 
 | `tolerations`
 | `[]`
@@ -409,10 +409,10 @@ in Kubernetes documentation.
 
 | `singlePodPerNode`
 | `true`
-| Whether a pod should share nodes with other TypeDB Cloud instances from the same Helm installation.
+| Whether a pod should share nodes with other TypeDB Enterprise instances from the same Helm installation.
 
 _Warning: changing this to false and making no anti-affinities of your own will allow Kubernetes
-to place multiple cluster servers on the same node, negating the high-availability guarantees of TypeDB Cloud._
+to place multiple cluster servers on the same node, negating the high-availability guarantees of TypeDB Enterprise._
 
 | `podLabels`
 | `{}`
@@ -423,7 +423,7 @@ in Kubernetes documentation.
 
 | `servers`
 | `3`
-| Number of TypeDB Cloud servers to run.
+| Number of TypeDB Enterprise servers to run.
 
 | `resources`
 | `{}`
@@ -434,15 +434,15 @@ in Kubernetes documentation.
 
 | `storage.size`
 | `100Gi`
-| How much disk space should be allocated for each TypeDB Cloud server.
+| How much disk space should be allocated for each TypeDB Enterprise server.
 
 | `storage.persistent`
 | `true`
-| Whether TypeDB Cloud should use a persistent volume to store data.
+| Whether TypeDB Enterprise should use a persistent volume to store data.
 
 | `encryption.enabled`
 | `false`
-| Whether TypeDB Cloud uses an in-flight encryption.
+| Whether TypeDB Enterprise uses an in-flight encryption.
 
 | `encryption.externalGRPC`
 |
@@ -462,7 +462,7 @@ in Kubernetes documentation.
 
 | `logstash.enabled`
 | `false`
-| Whether TypeDB Cloud pushes logs into Logstash
+| Whether TypeDB Enterprise pushes logs into Logstash
 
 | `logstash.uri`
 | `""`
@@ -471,4 +471,4 @@ in Kubernetes documentation.
 
 = Current Limitations
 
-TypeDB Cloud doesn't support dynamic reconfiguration of server count without restarting all the servers.
+TypeDB Enterprise doesn't support dynamic reconfiguration of server count without restarting all the servers.

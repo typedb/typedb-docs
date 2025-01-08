@@ -1,0 +1,150 @@
+= Preventing duplication
+:page-preamble-card: 1
+
+When bulk loading data to a database, data can easily end up being duplicated if the source of the data is not properly cleaned. Let's consider the following JSON object describing a book, which we'd like to insert into a bookstore database, likely one of thousands of similar books.
+
+[,json]
+----
+{
+    "ISBN-13": "9780008627843",
+    "ISBN-10": "0008627843",
+    "Title": "The Hobbit",
+    "Format": "ebook",
+    "Authors": ["J.R.R. Tolkien"],
+    "Editors": [],
+    "Illustrators": ["J.R.R. Tolkien"],
+    "Other contributors": [],
+    "Publisher": "Harper Collins",
+    "Page count": 310,
+    "Genres": ["fiction", "fantasy"],
+    "Price": 16.99
+}
+----
+
+We might insert it into the database with the following query.
+
+[,typeql]
+----
+insert
+$book isa ebook;
+$book has isbn-13 "9780008627843";
+$book has title "The Hobbit";
+$book has page-count 310;
+$book has price 16.99;
+$book has isbn-10 "0008627843";
+$book has genre "fiction";
+$book has genre "fantasy";
+$contributor_1 isa contributor;
+$contributor_1 has name "J.R.R. Tolkien";
+(work: $book, author: $contributor_1) isa authoring;
+(work: $book, illustrator: $contributor_1) isa illustrating;
+$publisher isa publisher;
+$publisher has name "Harper Collins";
+(published: $book, publisher: $publisher) isa publishing;
+----
+
+This query would work fine in isolation, but could result in data duplication when run alongside other queries during bulk loading:
+
+- If more than one book in the dataset is written by Tolkien, then there will be multiple corresponding `contributor` instances inserted.
+- If more than one book in the dataset is written is published by Harper Collins, then there will be multiple corresponding `publisher` instances inserted.
+- If the Hobbit appears more than once in the dataset (due to poor quality data), then there will be multiple corresponding `book` entities inserted.
+
+In this guide, we'll see how we can prevent duplication of entities by leveraging key constraints, and duplication of relations by using conditional inserts.
+
+[NOTE]
+====
+TypeDB 3.0 will introduce a "put" operation, which can be used to insert data only if it doesn't already exist. This will allow the above example data to be inserted in a single highly performant query, with each entity or relation being inserted only if it doesn't exist already. To learn more about this and other powerful new features, see the https://typedb.com/blog/typedb-3-roadmap[TypeDB 3.0 roadmap].
+====
+
+== Preventing entity duplication
+
+To prevent entities from being duplicated, we can leverage xref:{page-version}@typeql::statements/key.adoc[key constraints]. It is normally a good idea to ensure every entity in the schema has a key attribute for the purpose of unique identification. For example, we might make the `isbn-13` attribute a key attribute of `book` (the supertype of `ebook` in this example), and the `name` attribute a key attribute of `contributor` and `company` (the supertype of `publisher`).
+
+[,typeql]
+----
+define
+book owns isbn-13 @key;
+contributor owns name @key;
+company owns name @key;
+----
+
+Now if we insert an entity that would violate a key constraint, the database will throw an exception, preventing the data from being duplicated. It is best to insert each entity in a separate query, as follows, so that it is clear which entity has violated its key constraint. This way, the exception can be properly handled.
+
+[,typeql]
+----
+insert
+$contributor isa contributor;
+$contributor has name "J.R.R. Tolkien";
+----
+
+[,typeql]
+----
+insert
+$publisher isa publisher;
+$publisher has name "Harper Collins";
+----
+
+[,typeql]
+----
+insert
+$book isa ebook;
+$book has isbn-13 "9780008627843";
+$book has title "The Hobbit";
+$book has page-count 310;
+$book has price 16.99;
+$book has isbn-10 "0008627843";
+$book has genre "fiction";
+$book has genre "fantasy";
+----
+
+By handling the exception, we can automatically deal with duplicates as they arise, likely by simply skipping the duplicated insert and moving to the next data instance.
+
+== Preventing relation duplication
+
+It is generally better to identify relations via their roleplayers rather than by key attributes. This is because relations are most often used to represent references between objects, and so are defined by the objects they link rather than by their properties, if any. Indeed, the `authoring`, `illustrating`, and `publishing` relations do not even have any attributes!
+
+When we insert a relation, we can prevent duplication by using xref:{page-version}@typeql::patterns/negation.adoc[negations] to ensure that the relations we are trying to insert don't already exist. Again, it is best to insert each relation in a separate query.
+
+[,typeql]
+----
+match
+$contributor isa contributor;
+$contributor has name "J.R.R. Tolkien";
+$book isa ebook;
+$book has isbn-13 "9780008627843";
+not {
+    (work: $book, author: $contributor) isa authoring;
+};
+insert
+(work: $book, author: $contributor) isa authoring;
+----
+
+[,typeql]
+----
+match
+$contributor isa contributor;
+$contributor has name "J.R.R. Tolkien";
+$book isa ebook;
+$book has isbn-13 "9780008627843";
+not {
+    (work: $book, illustrator: $contributor) isa illustrating;
+};
+insert
+(work: $book, illustrator: $contributor) isa illustrating;;
+----
+
+[,typeql]
+----
+match
+$publisher isa publisher;
+$publisher has name "Harper Collins";
+$book isa ebook;
+$book has isbn-13 "9780008627843";
+not {
+    (published: $book, publisher: $publisher) isa publishing;
+};
+insert
+(published: $book, publisher: $publisher) isa publishing;
+----
+
+While entities are independent of each other and can be inserted in any order, it's important to insert the relations only when the roleplayers are already inserted, otherwise no insert will occur.

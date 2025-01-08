@@ -1,0 +1,95 @@
+= Get started
+:keywords: typedb, typeql, clients, documentation, overview
+:pageTitle: Get started
+:summary: Getting started with TypeDB
+:page-layout: landing
+// :page-preamble-card: 1
+
+// tag::rust-rewrite[]
+[NOTE]
+====
+https://typedb.com/blog/typedb-3-roadmap[TypeDB 3.0] is coming soon, written in Rust! Get updates in our https://typedb.com?dialog=newsletter[newsletter,window=_blank] or Discord https://typedb.com/discord[chat server,window=_blank].
+====
+// end::rust-rewrite[]
+
+Quick links to get up and running with TypeDB.
+
+[.link-panel.clickable]
+--
+image::{page-version}@home::rocket-launch-thin.svg[rocket,54,54]
+
+https://cloud.typedb.com[Launch TypeDB Cloud →]
+
+Deploy and manage TypeDB database servers on a dedicated cloud platform.
+--
+
+[.link-panel.clickable]
+--
+image::{page-version}@home::screwdriver-wrench-thin.svg[tools,54,54]
+
+xref:{page-version}@home::install-tools.adoc[Install tools →]
+
+Install clients and language drivers to communicate with a TypeDB database server.
+--
+
+[.link-panel.clickable]
+--
+image::{page-version}@home::forward-thin.svg[quickstart,54,54]
+
+xref:{page-version}@home::quickstart.adoc[Quickstart →]
+
+In 5 minutes, set up TypeDB and begin querying it.
+--
+
+[.link-panel.clickable]
+--
+image::{page-version}@home::sparkles.svg[sparkles,54,54]
+
+xref:{page-version}@home::crash-course/index.adoc[Crash course →]
+
+Explore the key ingredients of TypeDB in our crash course.
+--
+
+
+// == Comparisons
+//
+// Coming from a relational, document or graph database background? These guides are for you.
+//
+// [cols-3]
+// --
+// .https://example.com[Relational]
+// [.clickable]
+// ****
+// A TypeDB learning experience tailored for an SQL background.
+// ****
+//
+// .https://example.com[Document]
+// [.clickable]
+// ****
+// A detailed comparison between TypeDB and document stores.
+// ****
+//
+// .https://example.com[Graph]
+// [.clickable]
+// ****
+// An in-depth guide about how TypeDB compares to graph databases.
+// ****
+// --
+
+
+== Self-managed deployments
+
+[cols-2]
+--
+.xref:{page-version}@manual::self-managed/index.adoc[TypeDB Community Edition]
+[.clickable]
+****
+The self-hosted, open-source, free-to-use version of TypeDB.
+****
+
+.xref:{page-version}@manual::self-managed/enterprise.adoc[TypeDB Enterprise]
+[.clickable]
+****
+The subscription-based, self-hosted version of TypeDB, designed for enterprise usage.
+****
+--

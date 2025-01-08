@@ -1,0 +1,60 @@
+= Formatting data
+:page-no-toc: 1
+
+[#_blank_heading]
+== {blank}
+
+During bulk loading, data is often sourced from text files, most often in CSV or JSON format. Before it can be loaded, it must be formatted into a TypeQL query. This is best done by using scripts that build the queries from the data files. Let's consider the following JSON object, which describes a book to be loaded into a bookstore database.
+
+[,json]
+----
+{
+    "ISBN-13": "9780008627843",
+    "ISBN-10": "0008627843",
+    "Title": "The Hobbit",
+    "Format": "ebook",
+    "Authors": ["J.R.R. Tolkien"],
+    "Editors": [],
+    "Illustrators": ["J.R.R. Tolkien"],
+    "Other contributors": [],
+    "Publisher": "Harper Collins",
+    "Page count": 310,
+    "Genres": ["fiction", "fantasy"],
+    "Price": 16.99
+}
+----
+
+We might format it into an Insert query using the following Python function.
+
+[,python]
+----
+include::attachment$bulk-loading-data-format-example.py[tag=def_build_book_query]
+----
+
+When called with the above JSON object, the function will return the following TypeQL query string.
+
+[,typeql]
+----
+insert
+$book isa ebook;
+$book has isbn-13 "9780008627843";
+$book has title "The Hobbit";
+$book has page-count 310;
+$book has price 16.99;
+$book has isbn-10 "0008627843";
+$book has genre "fiction";
+$book has genre "fantasy";
+$contributor_1 isa contributor;
+$contributor_1 has name "J.R.R. Tolkien";
+(work: $book, author: $contributor_1) isa authoring;
+(work: $book, illustrator: $contributor_1) isa illustrating;
+$publisher isa publisher;
+$publisher has name "Harper Collins";
+(published: $book, publisher: $publisher) isa publishing;
+----
+
+We have employed a few strategies to help generate the query:
+
+* Rather than using xref:{page-version}@typeql::statements/index.adoc[composite statements], we only use simple statements. This makes queries easier to construct and debug.
+* Because a book might have multiple contributors, we automatically generate variable bindings for them by taking the string `"$contributor_"` and appending a number. This is a useful way of building a query that includes multiple similar variables.
+* We build the query up as a list of statements and then join them into a string at the end. This helps prevent errors from occurring.
