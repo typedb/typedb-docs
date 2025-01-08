@@ -8,14 +8,14 @@ build:
     deploy-development:
       filter:
         owner: typedb
-        branch: [2.x, 3.x-development]
+        branch: TODO # TODO
       image: vaticle-ubuntu-21.04
       type: foreground
       command: |
         export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
         export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
         export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN
-        bazel run @vaticle_dependencies//tool/release:docs -- $FACTORY_OWNER typedb-docs-web development $FACTORY_REPO content $FACTORY_COMMIT
+        bazel run @vaticle_dependencies//tool/release:docs -- $FACTORY_OWNER typedb-docs-web $FACTORY_BRANCH $FACTORY_REPO content $FACTORY_COMMIT
     deploy-production:
       filter:
         owner: typedb
