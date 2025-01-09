@@ -56,7 +56,7 @@ WARNING: This means that addition of durations to datetimes is not commutative.
 2024-02-29T12:00:00 + P1M + P1D == 2024-03-30T12:00:00
 
 2024-02-29T12:00:00 + P1D + P1M == 2024-04-01T12:00:00
-# 2024-02-29T12:00:00 + P1D == 2024-03-01T12:00:00
+# This is because 2024-02-29T12:00:00 + P1D == 2024-03-01T12:00:00
 
 # London DST change occurred on 2024-03-31 01:00:00 GMT
 2024-03-30T12:00:00 Europe/London + P1D == 2024-03-31T12:00:00 
