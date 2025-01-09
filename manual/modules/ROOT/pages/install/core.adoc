@@ -12,13 +12,17 @@ include::{page-version}@manual::partial$docker.adoc[tags=run]
 
 include::{page-version}@manual::partial$docker.adoc[tags=run-info]
 
-include::{page-version}@manual::partial$docker.adoc[tag=stop]
-
 include::{page-version}@manual::partial$docker.adoc[tag=start]
 
+include::{page-version}@manual::partial$docker.adoc[tag=stop]
+
+[#_manual]
 == Manual install
 
-- a link to the latest release note
-- a link to the latest versions for Mac, Windows, and Linux, on all architecture
+include::{page-version}@manual::partial$distribution.adoc[tag=core-manual-install]
 
-- add a note that console requires java for now install java
+=== Run
+
+include::{page-version}@manual::partial$distribution.adoc[tag=core-run]
+
+include::{page-version}@manual::partial$distribution.adoc[tag=core-stop]
