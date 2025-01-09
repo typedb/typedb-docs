@@ -3,11 +3,210 @@
 :pageTitle: TypeDB Manual
 :page-aliases: {page-version}@manual::overview.adoc
 :summary: How-to guides and tutorials
-:page-layout: landing
 
 [IMPORTANT]
 ====
-The TypeDB 3.0 Manual is currently under construction and will be published soon. xref:2.x@home::index.adoc[Browse TypeDB 2.x docs].
+The TypeDB 3.0 Manual is currently under construction and more will be published soon. xref:2.x@home::index.adoc[Browse TypeDB 2.x docs].
 ====
 
-include::home::get-started.adoc[tags=get-started-links]
+Welcome to the TypeDB Manual.
+Here you'll find practice oriented guides on TypeDB operations and configuration, as well as Studio and Console manuals.
+
+You can run TypeDB database servers in the following environments:
+
+[cols-2]
+--
+.https://cloud.typedb.com[TypeDB Cloud]
+[.clickable]
+****
+The fully managed service for TypeDB deployments in the cloud.
+****
+
+.xref:{page-version}@manual::self-managed/index.adoc[TypeDB Community Edition]
+[.clickable]
+****
+The self-hosted, open-source, free-to-use version of TypeDB.
+****
+
+.xref:{page-version}@manual::self-managed/enterprise.adoc[TypeDB Enterprise]
+[.clickable]
+****
+The subscription-based, self-hosted version of TypeDB, designed for enterprise usage.
+****
+--
+
+
+// == Standalone clients
+//
+// Standalone clients can be used to conveniently work and develop with TypeDB.
+//
+// [cols-2]
+// --
+// .xref:{page-version}@manual::studio.adoc[]
+// [.clickable]
+// ****
+// An IDE that facilitates the development process for TypeDB databases.
+// ****
+//
+// .xref:{page-version}@manual::console.adoc[]
+// [.clickable]
+// ****
+// A powerful CLI client for TypeDB.
+// ****
+// --
+////
+[cols-1]
+--
+.xref:drivers::index.adoc[Drivers]
+[.clickable]
+****
+xref:drivers::rust/index.adoc[Rust] |
+xref:drivers::python/index.adoc[Python] |
+xref:drivers::java/index.adoc[Java] |
+xref:drivers::nodejs/index.adoc[Node.js] |
+xref:drivers::cpp/index.adoc[C++]
+****
+--
+////
+
+// == Using TypeDB
+//
+// Learn how to perform common tasks with TypeDB.
+//
+// [cols-2]
+// --
+// .xref:{page-version}@manual::connecting/index.adoc[]
+// [.clickable]
+// ****
+// Connect to a TypeDB server and create a new database.
+// // Network connection to TypeDB Community Edition or Cloud, as well as database, session and transaction management.
+// // * xref:{page-version}@manual::connecting/connection.adoc[]
+// // * xref:{page-version}@manual::connecting/database.adoc[]
+// // * xref:{page-version}@manual::connecting/session.adoc[]
+// // * xref:{page-version}@manual::connecting/transaction.adoc[]
+// ****
+//
+// .xref:{page-version}@manual::defining/index.adoc[]
+// [.clickable]
+// ****
+// Set and modify the schema of a database with a TypeQL query or driver API call.
+// // * xref:{page-version}@manual::defining/define.adoc[]
+// // * xref:{page-version}@manual::defining/undefine.adoc[]
+// // * xref:{page-version}@manual::defining/schema-editing.adoc[]
+// ****
+//
+// .xref:{page-version}@manual::writing/index.adoc[]
+// [.clickable]
+// ****
+// Insert, delete, or update (replace) data in a TypeDB database with TypeQL queries.
+// // * xref:{page-version}@manual::writing/insert.adoc[]
+// // * xref:{page-version}@manual::writing/delete.adoc[]
+// // * xref:{page-version}@manual::writing/update.adoc[]
+// ****
+//
+// .xref:{page-version}@manual::reading/index.adoc[]
+// [.clickable]
+// ****
+// Retrieve data as JSONs or stateful objects with TypeQL queries.
+// // * xref:{page-version}@manual::reading/fetch.adoc[]
+// // * xref:{page-version}@manual::reading/get.adoc[]
+// // * xref:{page-version}@manual::reading/infer.adoc[]
+// ****
+// --
+//
+// == Using drivers
+//
+// TypeDB Drivers can be used to query TypeDB directly from within your application. For the TypeDB drivers documentation, see the xref:drivers::index.adoc[Drivers] category.
+//
+// [cols-2]
+// --
+// .xref:{page-version}@manual::objects/index.adoc[]
+// [.clickable]
+// ****
+// Use stateful objects to alter data and schema, as well as explain inferred data.
+// // * xref:{page-version}@manual::objects/schema.adoc[]
+// // * xref:{page-version}@manual::objects/data.adoc[]
+// // * xref:{page-version}@manual::objects/explanation.adoc[]
+// ****
+//
+// .xref:{page-version}@manual::bulk-loading/index.adoc[]
+// [.clickable]
+// ****
+// Best practices for bulk-loading data, during prototyping or migrations.
+// ****
+// --
+//
+//
+// == Configuring TypeDB
+//
+// Learn how to configure, migrate, and upgrade TypeDB.
+//
+// [cols-2]
+// --
+// .xref:{page-version}@manual::configuring/config.adoc[Config file]
+// [.clickable]
+// ****
+// TypeDB configuration via config file parameters.
+// ****
+//
+// .xref:{page-version}@manual::configuring/arguments.adoc[CLI arguments]
+// [.clickable]
+// ****
+// TypeDB configuration via CLI arguments.
+// ****
+//
+// .xref:{page-version}@manual::configuring/logs.adoc[Logs]
+// [.clickable]
+// ****
+// Logs configuration and storage.
+// ****
+//
+// .xref:{page-version}@manual::configuring/export.adoc[Export and Import]
+// [.clickable]
+// ****
+// Exporting and importing databases in TypeDB.
+// ****
+//
+// .xref:{page-version}@manual::configuring/upgrades.adoc[Upgrades]
+// [.clickable]
+// ****
+// Upgrading TypeDB version.
+// ****
+//
+// .xref:{page-version}@manual::configuring/users.adoc[Users]
+// [.clickable]
+// ****
+// User management operations.
+// ****
+// --
+
+////
+== Migrating to TypeDB
+
+[cols-2]
+--
+.xref:{page-version}@manual::studio.adoc[From CSV/XML/JSON]
+[.clickable]
+****
+
+****
+
+.xref:{page-version}@manual::console.adoc[From SQL]
+[.clickable]
+****
+
+****
+
+.xref:{page-version}@manual::studio.adoc[From Neo4J]
+[.clickable]
+****
+
+****
+
+.xref:{page-version}@manual::console.adoc[From MongoDB]
+[.clickable]
+****
+
+****
+--
+////
