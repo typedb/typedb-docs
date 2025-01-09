@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 // end::import[]
@@ -27,12 +28,12 @@ public class Main {
     }
 
     private static final Edition TYPEDB_EDITION = Edition.CORE;
-    private static final String CLOUD_USERNAME = "admin";
-    private static final String CLOUD_PASSWORD = "password";
+    private static final String USERNAME = "admin";
+    private static final String PASSWORD = "password";
     // end::constants[]
     // tag::main[]
     public static void main(String[] args) {
-        try (TypeDBDriver driver = connectToTypeDB(TYPEDB_EDITION, SERVER_ADDR)) {
+        try (TypeDBDriver driver = connectToTypeDB(TYPEDB_EDITION, SERVER_ADDR, USERNAME, PASSWORD)) {
             if (dbSetup(driver, DB_NAME, false)) {
                 System.out.println("Setup complete.");
                 queries(driver, DB_NAME);
@@ -75,17 +76,21 @@ public class Main {
         boolean deleted = deleteFile(driver, dbName, new_path);
     }
     // end::queries[]
-    // tag::connection[]
-    private static TypeDBDriver connectToTypeDB(Edition edition, String addr) {
+    private static TypeDBDriver connectToTypeDB(Edition edition, String uri, String username, String password) {
         if (edition == Edition.CORE) {
-            return TypeDB.coreDriver(addr);
+            // tag::driver_new_core[]
+            Driver driver = TypeDB.coreDriver(uri, new Credentials(username, password), new DriverOptions(false, null));
+            // end::driver_new_core[]
+            return driver;
         };
         if (edition == Edition.CLOUD) {
-            return TypeDB.cloudDriver(addr, new TypeDBCredential(CLOUD_USERNAME, CLOUD_PASSWORD, true ));
+            // tag::driver_new_cloud[]
+            Driver driver = TypeDB.cloudDriver(Set.of(uri), new Credentials(username, password), new DriverOptions(false, null));
+            // end::driver_new_cloud[]
+            return driver;
         };
         return null;
     }
-    // end::connection[]
     // tag::fetch[]
     private static List<JSON> fetchAllUsers(TypeDBDriver driver, String dbName) {
         try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.DATA)) {

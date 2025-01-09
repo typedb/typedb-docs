@@ -19,8 +19,8 @@ enum Edition {
 }
 
 static TYPEDB_EDITION: Edition = Edition::Core;
-static CLOUD_USERNAME: &str = "admin";
-static CLOUD_PASSWORD: &str = "password";
+static USERNAME: &str = "admin";
+static PASSWORD: &str = "password";
 // end::constants[]
 // tag::fetch[]
 fn fetch_all_users(driver: Connection, db_name: String) -> Result<Vec<JSON>, Box<dyn Error>> {
@@ -238,16 +238,30 @@ fn queries(driver: Connection, db_name: String) -> Result<(), Box<dyn Error>> {
     };
 }
 // end::queries[]
-// tag::connection[]
-fn connect_to_TypeDB(edition: &Edition, addr: &str) -> Result<Connection, typedb_driver::Error> {
+fn connect_to_TypeDB(edition: &Edition, uri: impl AsRef<str>, username: impl AsRef<str>, password: impl AsRef<str>) -> Result<Connection, typedb_driver::Error> {
     match edition {
-        Edition::Core => return Connection::new_core(addr),
+        Edition::Core => {
+            // tag::driver_new_core[]
+            let driver = TypeDBDriver::new_core(
+                &uri,
+                Credentials::new(&username, &password),
+                DriverOptions::new(false, None).unwrap(),
+            );
+            // end::driver_new_core[]
+            driver
+        },
         Edition::Cloud => {
-            return Connection::new_cloud(&[addr], Credential::with_tls(CLOUD_USERNAME, CLOUD_PASSWORD, None)?)
+            // tag::driver_new_cloud[]
+            let driver = TypeDBDriver::new_cloud(
+                &vec![&uri],
+                Credentials::new(&username, &password),
+                DriverOptions::new(false, None).unwrap(),
+            );
+            // end::driver_new_cloud[]
+            driver
         }
     };
 }
-// end::connection[]
 // tag::create_new_db[]
 fn create_database(driver: &Connection, db_name: String) -> Result<bool, Box<dyn Error>> {
     let databases = DatabaseManager::new(driver.to_owned());
@@ -374,7 +388,7 @@ pub fn db_setup(driver: Connection, db_name: String, db_reset: bool) -> Result<b
 // tag::main[]
 fn main() -> Result<(), Box<dyn Error>> {
     println!("Sample App");
-    let driver = connect_to_TypeDB(&TYPEDB_EDITION, SERVER_ADDR)?;
+    let driver = connect_to_TypeDB(&TYPEDB_EDITION, SERVER_ADDR, USERNAME, PASSWORD)?;
     match db_setup(driver.clone(), DB_NAME.to_owned(), false) {
         Ok(_) => match queries(driver, DB_NAME.to_owned()) {
             Ok(_) => {

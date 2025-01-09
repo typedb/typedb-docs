@@ -1,1 +1,104 @@
-= TypeDB Core
+= TypeDB Community Edition
+
+Connecting to TypeDB CE requires:
+
+* `address` and `port` of the server (defaults: `127.0.0.1` and `1729`)
+* a valid `username` and `password` (default credentials: `admin` and `password`)
+* optionally, a valid TLS certificate for in-flight encryption (not used here)
+
+[tabs]
+====
+Studio::
++
+--
+// TODO: re-add
+// Run Studio and follow instructions below:
+//
+// include::../setup/studio.adoc[tag=connect_core_studio]
+--
+
+Console::
++
+--
+// Run Console using the `--core` argument to set the address and port to connect to:
+//
+// include::../setup/console.adoc[tag=connect_core_console]
+--
+====
+
+For programmatic access, use one of the TypeDB xref:{page-component-version}@drivers::overview.adoc[drivers] via the network API:
+
+[tabs]
+====
+Rust::
++
+--
+[,rust,indent=0]
+----
+            let uri = format!("{}:{}", address, port);
+include::{page-version}@drivers::partial$tutorials/rust/src/main.rs[tags=driver_new_core]
+----
+
+--
+
+Python::
++
+--
+[,python,indent=0]
+----
+        uri = f"{address}:{port}"
+include::{page-version}@drivers::partial$tutorials/python/sample.py[tags=driver_new_core]
+----
+//include::partial$python-manual-code.py[tags=driver]
+--
+
+Java::
++
+--
+[,java,indent=0]
+----
+            uri = String.format("%s:%s", address, port)
+include::{page-version}@drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tags=driver_new_core]
+----
+
+--
+
+Node.js::
++
+--
+[,js,indent=0]
+----
+Coming soon!
+----
+--
+
+C#::
++
+--
+[,csharp,indent=0]
+----
+Coming soon!
+----
+
+--
+
+C++::
++
+--
+[,cpp,indent=0]
+----
+Coming soon!
+----
+
+--
+
+C::
++
+--
+[,c,indent=0]
+----
+Coming soon!
+----
+
+--
+====
