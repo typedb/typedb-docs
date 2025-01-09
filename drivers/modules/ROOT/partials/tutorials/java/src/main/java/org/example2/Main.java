@@ -85,7 +85,7 @@ public class Main {
         };
         if (edition == Edition.CLOUD) {
             // tag::driver_new_cloud[]
-            Driver driver = TypeDB.cloudDrive(Set.of(uri), new Credentials(username, password), new DriverOptions(false, null));
+            Driver driver = TypeDB.cloudDriver(Set.of(uri), new Credentials(username, password), new DriverOptions(false, null));
             // end::driver_new_cloud[]
             return driver;
         };

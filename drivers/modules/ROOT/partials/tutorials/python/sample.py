@@ -238,9 +238,9 @@ def connect_to_TypeDB(edition, uri, username=USERNAME, password=PASSWORD):
         # end::driver_new_core[]
         return driver
     if edition is Edition.Cloud:
-        # tag::driver_new_cloud
+        # tag::driver_new_cloud[]
         driver = TypeDB.cloud_driver([uri], Credentials(username, password), DriverOptions(False, None))
-        # end::driver_new_cloud
+        # end::driver_new_cloud[]
         return driver
 
 
