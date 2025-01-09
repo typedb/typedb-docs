@@ -14,8 +14,8 @@ class Edition(Enum):
     Core = 2
 
 TYPEDB_EDITION = Edition.Core
-CLOUD_USERNAME = "admin"
-CLOUD_PASSWORD = "password"
+USERNAME = "admin"
+PASSWORD = "password"
 # end::constants[]
 
 
@@ -231,14 +231,17 @@ def delete_file(driver, db_name, path):
 # end::delete[]
 
 
-# tag::connection[]
-def connect_to_TypeDB(edition, addr, username=CLOUD_USERNAME, password=CLOUD_PASSWORD):
+def connect_to_TypeDB(edition, uri, username=USERNAME, password=PASSWORD):
     if edition is Edition.Core:
-        return TypeDB.core_driver(addr)
+        # tag::driver_new_core[]
+        driver = TypeDB.core_driver(uri, Credentials(username, password), DriverOptions(False, None))
+        # end::driver_new_core[]
+        return driver
     if edition is Edition.Cloud:
-        credentials = TypeDBCredential(username, password, tls_enabled=True)
-        return TypeDB.cloud_driver(addr, credentials)
-# end::connection[]
+        # tag::driver_new_cloud
+        driver = TypeDB.cloud_driver([uri], Credentials(username, password), DriverOptions(False, None))
+        # end::driver_new_cloud
+        return driver
 
 
 # tag::queries[]

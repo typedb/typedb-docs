@@ -8,8 +8,8 @@
 // tag::constants[]
 #define SERVER_ADDR "127.0.0.1:1729"
 #define DB_NAME "sample_app_db"
-#define CLOUD_USERNAME "admin"
-#define CLOUD_PASSWORD "password"
+#define USERNAME "admin"
+#define PASSWORD "password"
 #define FAILED() check_error_may_print(__FILE__, __LINE__)
 
 typedef enum { CORE, CLOUD } edition;
@@ -498,8 +498,8 @@ Connection* connectToTypeDB(edition typedb_edition, const char* addr) {
         connection = connection_open_core(addr);
     } else {
         Credential* credential = credential_new(
-            CLOUD_USERNAME,
-            CLOUD_PASSWORD,
+            USERNAME,
+            PASSWORD,
             "path/to/tls_root_ca",
             true);
         const char* addrs[] = {addr, NULL};
