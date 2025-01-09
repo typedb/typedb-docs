@@ -1,2 +1,29 @@
 = TypeDB Core installation
 :page-aliases: {page-version}@home::install/core.adoc
+
+== Docker
+
+Install
+```
+podman pull typedb/typedb:{version}
+```
+
+Run
+```
+podman volume create typedb-data
+podman create --name typedb -v typedb-data:/opt/typedb-all-linux-arm64/server/data -p 1729:1729 --platform linux/arm64 typedb/typedb:3.0.0
+podman start typedb
+podman stop typedb
+```
+
+```
+typedb-all-linux-arm64 / linux/arm64
+typedb-all-linux-x86_64 / linux/amd64
+```
+
+== Manual install
+
+- a link to the latest release note
+- a link to the latest versions for Mac, Windows, and Linux, on all architecture
+
+- add a note that console requires java for now install java
