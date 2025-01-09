@@ -1,0 +1,13 @@
+insert
+  $b isa user,
+    has username "bob",
+    has email "bob@typedb.com",
+    has relationship-status "single";
+
+  $a isa user,
+    has username "alice",
+    has email "alice@typedb.com",
+    has relationship-status "married";
+
+  $f isa friendship,
+    links (friend: $a, friend: $b);
