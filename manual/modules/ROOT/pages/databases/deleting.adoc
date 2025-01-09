@@ -9,8 +9,10 @@ Console::
 --
 Run the following command:
 
-[source,bash]
+[,bash]
+----
 database delete social_network
+----
 
 Where `social_network` is the name of the database.
 --
@@ -27,9 +29,11 @@ To delete a database programmatically:
 Rust::
 +
 --
-[source,rust]
+[,rust]
+----
 let database = driver.databases().get("social_network").await?;
 let result = database.delete().await;
+----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `"social_network"` is the name of the database.
 --
@@ -37,8 +41,10 @@ Where `driver` is an instance of a driver, connected to TypeDB, and `"social_net
 Python::
 +
 --
-[source,python]
+[,python]
+----
 driver.databases.get("social_network").delete()
+----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `"social_network"` is the name of the database.
 --
@@ -46,8 +52,10 @@ Where `driver` is an instance of a driver, connected to TypeDB, and `"social_net
 Java::
 +
 --
-[source,java]
+[,java]
+----
 driver.databases().get("social_network").delete();
+----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `"social_network"` is the name of the database.
 --
