@@ -7,7 +7,6 @@
 :page-preamble-card: 1
 :page-aliases: {page-version}@manual::console.adoc
 
-
 // tag::body[]
 [.float-group]
 --
@@ -157,7 +156,7 @@ For newly deployed clusters, the default username and password are `admin` and `
 Community Edition::
 +
 --
-// tag::connect_core_console[]
+// tag::connect_ce_console[]
 .Connect to TypeDB Community Edition
 [source,console]
 ----
@@ -173,7 +172,7 @@ for example, `10.0.0.5:1729`.
 =====
 The default username and password are `admin` and `password`. After connecting for the first time, you will be able to xref:{page-version}@manual::configuring/users.adoc#_first_login[change the password].
 =====
-// end::connect_core_console[]
+// end::connect_ce_console[]
 --
 ====
 
@@ -585,7 +584,7 @@ However, this impacts the appearance of other applications.
 [#_command_line_arguments]
 === Console CLI arguments
 
-The following arguments can be used when you invoke TypeDB Console:
+The following arguments can be used when invoking TypeDB Console:
 
 .Command line arguments
 [cols=".^3,^.^1,5"]
