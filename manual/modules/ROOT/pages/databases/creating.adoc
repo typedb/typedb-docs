@@ -9,7 +9,7 @@ Console::
 --
 Run the following command:
 
-[source]
+[source,bash]
 database create social_network
 
 Where `social_network` is the name of the database.
@@ -27,7 +27,7 @@ To create a new database programmatically:
 Rust::
 +
 --
-[source]
+[source,rust]
 let result = driver.databases().create("social_network").await;
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `"social_network"` is the name of the database.
@@ -36,7 +36,7 @@ Where `driver` is an instance of a driver, connected to TypeDB, and `"social_net
 Python::
 +
 --
-[source]
+[source,python]
 driver.databases.create("social_network")
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `"social_network"` is the name of the database.
@@ -45,7 +45,7 @@ Where `driver` is an instance of a driver, connected to TypeDB, and `"social_net
 Java::
 +
 --
-[source]
+[source,java]
 driver.databases().create("social_network");
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `"social_network"` is the name of the database.
