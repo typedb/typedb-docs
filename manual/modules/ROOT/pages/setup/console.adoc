@@ -5,6 +5,7 @@
 :tabs-sync-option:
 :experimental:
 :page-preamble-card: 1
+:page-aliases: {page-version}@manual::console.adoc
 
 
 // tag::body[]
@@ -15,6 +16,8 @@ image::drivers::console.png[TypeDB Console hero image, role="right", width = 50%
   +
 TypeDB Console is a standalone TypeDB client with a command line interface (CLI). It serves as a lightweight and
 powerful CLI tool to manage and query TypeDB databases.
+
+It is the default client distributed with TypeDB, but it can also be installed separately.
 --
 
 [cols-2]
