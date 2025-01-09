@@ -28,13 +28,13 @@ define
     plays employment:employee;
 
   relation social-relation @abstract,
-    relates related;
+    relates related @card(0..);
 
   relation friendship sub social-relation,
-    relates friend as related;
+    relates friend as related @card(0..);
 
   relation family sub social-relation,
-    relates relative as related;
+    relates relative as related @card(0..);
 
   relation relationship sub social-relation,
     relates partner as related,
@@ -93,7 +93,7 @@ define
     plays commenting:parent,
     plays reaction:parent;
 
-  relation interaction, @abstract,
+  relation interaction @abstract,
     relates subject,
     relates content;
 
@@ -136,7 +136,7 @@ define
     relates parent as place,
     relates city as located;
 
-  attribute id, @abstract, value string;
+  attribute id @abstract, value string;
   attribute page-id @abstract, sub id,;
   attribute username sub page-id;
   attribute group-id sub page-id;
