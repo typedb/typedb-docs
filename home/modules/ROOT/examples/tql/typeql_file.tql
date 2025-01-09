@@ -1,7 +1,7 @@
-# include::schema.tql
+# include::home::schema.tql
 ## ^this comment indicates that another file should be included in its entirety
 
-# include::data.tql::tag_name
+# include::home::data.tql::tag_name
 ## ^this comment indicates that a tagged region from another file should be included
 
 # pipeline::write::start

@@ -1,6 +1,6 @@
 = Editing Guide
 :keywords: typedb, docathon
-:pageTitle: HTML title goes here
+:pageTitle: HTML title
 :summary: This page is about editing the docs.
 
 (This text, before the first heading, is called the "preamble" and introduces the page.)
@@ -70,6 +70,21 @@ Page links:
 .xref:{page-version}@MODULE_NAME::PAGE_NAME.adoc[]
 .xref:{page-version}@home::crash-course.adoc[]       // Example of prev line
 ----
+
+== Page attributes
+
+The above `+{page-version}+` is page attribute, which will get replaced by its assigned value (check out the `antora.yml` of the `home` module ... its value is `3.x`).
+
+You can set page-local attribute just under the page title:
+----
+= Page title
+:keywords: typedb, docathon
+:pageTitle: HTML title
+:summary: This page is about editing the docs.
+:page-aliases: {page-version}@home::25-queries.adoc
+----
+
+IMPORTANT: Set page aliases to ensure the version selector finds the correct corresponding 2.x pages.
 
 == Text formatting
 
