@@ -1,1 +1,27 @@
 = Datetime
+
+An ISO 8601 compliant date and time type. 
+
+== Syntax
+
+A datetime literal consists of a date fragment and a time fragment, separated by the character `T`.
+
+The date fragment consists of the following values, separated by a `-`:
+
+* either a four-digit year or a sign with any number of digits for the year (e.g. `+252525` meaning year 252525),
+* a two-digit month of the year,
+* and a two-digit day of that month.
+
+The time fragment consists of the following values, separated by `:`:
+
+* a two-digit hour between `00` and `24`,
+* a two-digit minute between `00` and `59`,
+* a two-digit second between `00` and `60` with up to nine digits after the decimal point.
+
+[,typeql]
+.Example datetime literals
+----
+2024-03-30T12:00:00
++802701-09-21T12:34:56.789
+----
+
