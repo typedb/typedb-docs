@@ -1,0 +1,61 @@
+= Deleting databases
+
+To delete a database, connect to TypeDB and follow the steps below:
+
+[tabs]
+====
+Console::
++
+--
+Run the following command:
+
+[source,bash]
+database delete social_network
+
+Where `social_network` is the name of the database.
+--
+
+Studio::
++
+NOTE: Coming soon.
+====
+
+To delete a database programmatically:
+
+[tabs]
+====
+Rust::
++
+--
+[source,rust]
+let database = driver.databases().get("social_network").await?;
+let result = database.delete().await;
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `"social_network"` is the name of the database.
+--
+
+Python::
++
+--
+[source,python]
+driver.databases.get("social_network").delete()
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `"social_network"` is the name of the database.
+--
+
+Java::
++
+--
+[source,java]
+driver.databases().get("social_network").delete();
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `"social_network"` is the name of the database.
+--
+
+Node.js::
+C#::
+C++::
+C::
++
+NOTE: Coming soon.
+====

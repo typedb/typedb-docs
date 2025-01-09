@@ -1,0 +1,173 @@
+define
+  entity content @abstract,
+    owns id @key;
+
+  entity page @abstract, sub content,
+    owns page-id,
+    owns name,
+    owns bio,
+    owns profile-picture,
+    plays posting:page,
+    plays following:page;
+
+  entity profile @abstract, sub page,
+    owns username,
+    plays group-membership:member,
+    plays location:located,
+    plays content-engagement:author,
+    plays following:follower;
+
+  entity user sub profile,
+    owns email,
+    owns phone,
+    owns relationship-status,
+    plays friendship:friend,
+    plays family:relative,
+    plays relationship:partner,
+    plays marriage:spouse,
+    plays employment:employee;
+
+  relation social-relation @abstract,
+    relates related;
+
+  relation friendship sub social-relation,
+    relates friend as related;
+
+  relation family sub social-relation,
+    relates relative as related;
+
+  relation relationship sub social-relation,
+    relates partner as related,
+    owns start-date;
+
+  relation marriage sub relationship,
+    relates spouse as partner,
+    owns exact-date,
+    plays location:located;
+
+  entity organisation sub profile,
+    owns tag,
+    plays employment:employer;
+
+  entity company sub organisation;
+  entity charity sub organisation;
+
+  relation employment,
+    relates employer,
+    relates employee,
+    owns start-date,
+    owns end-date;
+
+  entity group sub page,
+    owns group-id,
+    owns tag,
+    plays group-membership:group;
+
+  relation group-membership,
+    relates group,
+    relates member,
+    owns start-timestamp,
+    owns end-timestamp;
+
+  entity post @abstract, sub content,
+    owns post-id,
+    owns post-text,
+    owns creation-timestamp,
+    owns tag,
+    plays posting:post,
+    plays commenting:parent,
+    plays reaction:parent,
+    plays location:located;
+
+  entity text-post sub post;
+
+  entity image-post sub post,
+    owns post-image;
+
+  entity comment sub content,
+    owns comment-id,
+    owns comment-text,
+    owns creation-timestamp,
+    owns tag,
+    plays commenting:comment,
+    plays commenting:parent,
+    plays reaction:parent;
+
+  relation interaction, @abstract,
+    relates subject,
+    relates content;
+
+  relation content-engagement @abstract, sub interaction,
+    relates author as subject;
+
+  relation posting sub content-engagement,
+    relates page as content,
+    relates post;
+
+  relation commenting sub content-engagement,
+    relates parent as content,
+    relates comment;
+
+  relation reaction sub content-engagement,
+    relates parent as content,
+    owns emoji,
+    owns creation-timestamp;
+
+  relation following,
+    relates follower,
+    relates page;
+
+  entity place,
+    owns place-id,
+    owns name,
+    plays location:place;
+
+  entity country sub place,
+    plays city-location:parent;
+
+  entity city sub place,
+    plays city-location:city;
+
+  relation location,
+    relates place,
+    relates located;
+
+  relation city-location sub location,
+    relates parent as place,
+    relates city as located;
+
+  attribute id, @abstract, value string;
+  attribute page-id @abstract, sub id,;
+  attribute username sub page-id;
+  attribute group-id sub page-id;
+  attribute post-id sub id;
+  attribute comment-id sub id;
+  attribute place-id sub id;
+
+  attribute name, value string;
+  attribute email, value string;
+  attribute phone, value string;
+  attribute relationship-status, value string @regex("^(single|married|other)$");
+  attribute lattitude, value double;
+  attribute longitude, value double;
+
+  attribute event-date @abstract, value datetime;
+  attribute start-date sub event-date;
+  attribute end-date sub event-date;
+  attribute exact-date @abstract, sub event-date;
+
+  attribute payload @abstract, value string;
+  attribute text-payload @abstract, sub payload;
+  attribute image-payload @abstract, sub payload;
+  attribute bio sub text-payload;
+  attribute comment-text sub text-payload;
+  attribute post-text sub text-payload;
+  attribute post-image sub image-payload;
+  attribute profile-picture sub image-payload;
+
+  attribute tag, value string;
+  attribute emoji, value string @regex("^(like|love|funny|surprise|sad|angry)$");
+
+  attribute creation-timestamp, value datetime;
+  attribute start-timestamp, value datetime;
+  attribute end-timestamp, value datetime;

@@ -1,0 +1,362 @@
+= Editing Guide
+:keywords: typedb, docathon
+:pageTitle: HTML title
+:summary: This page is about editing the docs.
+
+(This text, before the first heading, is called the "preamble" and introduces the page.)
+
+== What is this guide?
+
+This guide walks you through the basics of editing `.adoc` files.
+
+== File structure
+
+Top-level folders (`home`, `manual`, `academy`, ...) are the *component* of our docs. Each modules has subfolder `modules/ROOT` called the `ROOT` of the module (in theory it could have other submodules ... but we don't use non-trivial modules, everything is in the `ROOT` module of the component).
+
+* The pages of the module are in `ROOT/pages`
+* "Partially included" pages are in `ROOT/partials`
+* Images are in `ROOT/images`
+* Code example are in `ROOT/examples`
+* **Runnable** TypeQL code examples are in `ROOT/examples/tql`
+
+=== Navigation bar
+
+IMPORTANT: If you want your page to correctly show up in the navigation bar, edit the file `ROOT/partials/nav-main.adoc`.
+
+== Section titles
+
+----
+== Level 1
+Text.
+----
+
+----
+=== Level 2
+Text.
+----
+
+----
+==== Level 3
+Text.
+----
+
+== Links
+
+=== Creating anchors
+
+----
+[[anchor-1]]
+== Level 1
+
+Some text with [[anchor-2]]anchor.
+----
+
+=== Creating links
+
+----
+<<anchor-1>>,
+<<anchor-1,Click here>>,
+----
+Same as:
+----
+xref:anchor-2[],
+xref:anchor-2[Click here].
+----
+
+External:
+----
+http://xy.z
+http://xy.z[Click here]
+----
+
+Page links:
+----
+.xref:{page-version}@MODULE_NAME::PAGE_NAME.adoc[]
+.xref:{page-version}@home::crash-course.adoc[]       // Example of prev line
+----
+
+== Page attributes
+
+The above `+{page-version}+` is page attribute, which will get replaced by its assigned value (check out the `antora.yml` of the `home` module ... its value is `3.x`).
+
+You can set page-local attribute just under the page title:
+----
+= Page title
+:keywords: typedb, docathon
+:pageTitle: HTML title
+:summary: This page is about editing the docs.
+:page-aliases: {page-version}@home::25-queries.adoc
+----
+
+IMPORTANT: Set page aliases to ensure the version selector finds the correct corresponding 2.x pages.
+
+== Text formatting
+
+----
+normal, _italic_, *bold*, `code`, `formatted _code_`, `+literal _code+`
+----
+
+----
+``double quoted'', `single quoted'.
+----
+
+----
+normal, ^super^, ~sub~.
+----
+
+----
+[big]#large#, [red]#large#, [.line-through]#wrong#, [.custom-css]#custom#
+----
+
+----
+// Some comment that won't show on final page
+----
+
+== Lists
+
+------
+* Level 1 item of an unordered list
+** Level 2, ... up to 5
+*** Lists can be indented. Leading whitespace isn't significant.
++
+----
+  $ some code to execute in Level 3
+----
+------
+
+To include complex content, unindent it and
+put the list **continuation** sign `+` on the line
+between it and the list item.
+
+== Code blocks
+
+.Code block with subtitle
+------
+[[anchor-to-block]]     // Optional (remove comment)
+[,language]             // Optional (remove comment)
+.Subtitle of code block // Optional (remove comment)
+----
+$ mkdir example
+$ cd example
+----
+------
+
+== Include
+
+=== Including other .adoc files
+
+[subs=+quotes]
+----
+include::**PATH/file.adoc[attributes]**
+----
+
+See below for some examples.
+
+=== Including code into code blocks
+
+.Include code from a different file
+[,typeql,indent=0,subs=+quotes]
+------
+----
+// Include entire file
+include::**{examplesdir}/tql/typeql_file.tql[]**
+// Same but versioned
+include::**{page-version}@home::example$tql/typeql_file.tql[]**
+
+// Include single region + indent
+include::**{examplesdir}/tql/typeql_file.tql[tags=tagged_region,indent=8]**
+// Include multiple regions
+include::**{examplesdir}/tql/typeql_file.tql[tags=region1;region2]**
+----
+------
+
+=== Tagging regions and TQL file structure
+
+IMPORTANT: Store all TypeQL code files that are *_meant to be run_* in the `ROOT/examples/tql` of the module you are working on. All other example files can go into `ROOT/examples`.
+
+.typeql_file.tql structure
+----
+# include::schema.tql
+## ^this comment indicates that another file should be included in its entirety
+
+# include::data.tql::tag_name
+## ^this comment indicates that a tagged region from another file should be included
+
+# pipeline::write::start
+## ^this comment marks the beginning of a pipeline
+match ...
+delete ...
+insert ...
+count ...
+# pipeline::write::end
+## ^this comment marks the beginning of a pipeline
+
+# pipeline::read::start
+# tag::tag_name[]
+match $something isa $thing;
+# end::tag_name[]
+# pipeline::read::end
+
+...
+----
+
+IMPORTANT: After resolving includes, the file should be runnable end-to-end (executing one pipeline after the other).
+
+NOTE: other files also support tagged regions of course.
+
+== Blocks
+
+Blocks group content.
+----
+--
+Content
+
+more content
+
+in the same block
+--
+----
+
+=== Tiles
+
+
+To following creates two column layout of **tiles**:
+----
+[cols-2]
+.Title
+****
+Some text
+****
+
+// Tiles can be links
+.xref:{page-component-version}@manual::install/studio.adoc[Install]
+[.clickable]
+****
+More text
+****
+
+// Including external links
+.link:https://github.com/typedb/typedb-studio/[GitHub,window=_blank]
+[.clickable]
+****
+More text
+****
+----
+
+We also have `[cols-3]`.
+
+=== Tabs
+
+----
+[tabs]
+====
+Tab1::
++
+Some text
+
+Tab2::
++
+--
+Other text
+
+in block
+--
+====
+----
+
+=== Notes, warnings, etc.
+
+----
+[NOTE]
+--
+Note that notes note things.
+--
+----
+
+or simply:
+
+----
+NOTE: Note that notes note things
+----
+
+=== Custom format blocks
+
+----
+[.float-group]
+--
+image::{page-component-version}@drivers::studio/studio.png[Image title, role="right", width = 50%, window=_blank, link=self]
+
++
+Some text in the same block.
+--
+----
+
+== Images and button-like text
+
+=== Inline image
+
+----
+Text ... image:{page-component-version}@home::studio-icons/svg/studio_projects.svg[width=24] ... more text
+----
+
+Text button style:
+----
+Text ... btn:[Open Project Directory] ... more text
+----
+
+Boxed button style:
+----
+kbd:[Ctrl+C]
+----
+
+=== Block image
+
+See custom format blocks above.
+
+== Tables
+
+=== Simple table
+
+----
+.Subtitle of table  // Optional (remove comment)
+[options="header"]  // Optional (remove comment)
+|===
+| Relational term | TypeDB term
+| Row (in table without FKs) | Entity
+| Row (in table with FKs) | Relation
+| Value (in a data column) | Attribute
+|===
+----
+
+=== Controlled width proportions
+
+----
+[cols="2,8", options="header"]
+|===
+| Relational term | TypeDB term
+| Row (in table without FKs) | Entity
+| Row (in table with FKs) | Relation
+| Value (in a data column) | Attribute
+|===
+----
+
+=== Center text
+
+----
+[cols="^~,^~", options="header"]
+|===
+| Relational term | TypeDB term
+| Row (in table without FKs) | Entity
+| Row (in table with FKs) | Relation
+| Value (in a data column) | Attribute
+|===
+----
+
+(here `~` is "auto-width", could also write `+cols="^2,^8"+` for example)
+
+https://docs.asciidoctor.org/asciidoc/latest/tables/build-a-basic-table/[See here for more]
+
+
+
+
+

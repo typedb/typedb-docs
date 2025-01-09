@@ -1,0 +1,24 @@
+= Insert stage
+:page-aliases: {page-version}@typeql::queries/insert.adoc
+
+== Draft examples
+
+[,typeql]
+----
+insert
+  $group isa group,
+    has group-id "<group id>",
+    has name "<name>",
+    has bio "<bio>",
+    has profile-picture "<uuid>";
+----
+
+[,typeql]
+----
+match
+  $person isa person, has username "<username>";
+  $group isa group, has group-id "<group id>";
+insert
+  (group: $group, member: $person) isa group-membership,
+    has rank "member";
+----

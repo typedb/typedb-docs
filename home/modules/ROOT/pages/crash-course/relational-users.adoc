@@ -99,7 +99,7 @@ The above query contains the following TypeQL keywords:
 * `owns`: Used to define an entity or relation type to be the *owner* of an attribute type.
 * `@key`: Used in an `owns` statement to specify a *xref:{page-version}@typeql::statements/key.adoc[key attribute]* of an entity or relation type.
 * `attribute`: The root type from which all attribute types are subtyped.
-* `value`: Used to define the *xref:{page-version}@typeql::values/value-types.adoc[value type]* of an attribute type. Attribute types must have a value type declared.
+* `value`: Used to define the *xref:{page-version}@typeql::values/primitives.adoc[value type]* of an attribute type. Attribute types must have a value type declared.
 
 In TypeDB, attribute types are defined separately to entity types. This allows attributes to be reused for multiple entity or relation types, as we will see shortly. This is different to in a relational database, where columns are defined along with their tables, and columns cannot be reused in multiple tables.
 

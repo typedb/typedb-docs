@@ -1,0 +1,97 @@
+= Pipeline stages
+:page-aliases: {page-version}@typeql::modifiers/overview.adoc, {page-version}@typeql::queries/overview.adoc
+
+== Introduction
+
+== Data manipulation stages
+
+[cols-3]
+--
+.xref:{page-version}@typeql::pipelines/match.adoc[]
+[.clickable]
+****
+Used to match existing data instances in the database.
+****
+
+.xref:{page-version}@typeql::pipelines/fetch.adoc[]
+[.clickable]
+****
+Used to format the output of a data pipeline into JSON.
+****
+
+.xref:{page-version}@typeql::pipelines/insert.adoc[]
+[.clickable]
+****
+Used to add new data instances into the database.
+****
+
+.xref:{page-version}@typeql::pipelines/delete.adoc[]
+[.clickable]
+****
+Used to remove existing data instances from the database.
+****
+
+.xref:{page-version}@typeql::pipelines/update.adoc[]
+[.clickable]
+****
+Used to modify existing data instances in the database.
+****
+
+.xref:{page-version}@typeql::pipelines/put.adoc[]
+[.clickable]
+****
+Used to add new data instances to the database if they do not already exist.
+****
+--
+
+== Stream manipulation stages
+
+[cols-3]
+--
+.xref:{page-version}@typeql::pipelines/select.adoc[]
+[.clickable]
+****
+Used to keep specified variables for each element of the data stream and remove the rest.
+****
+
+.xref:{page-version}@typeql::pipelines/require.adoc[]
+[.clickable]
+****
+Used to remove elements from the data stream that do not contain specified optional variables.
+****
+
+.xref:{page-version}@typeql::pipelines/sort.adoc[]
+[.clickable]
+****
+Used to order the elements of the data stream based on the value of specified variables.
+****
+
+.xref:{page-version}@typeql::pipelines/limit.adoc[]
+[.clickable]
+****
+Used to keep a specified number of elements of the data stream and remove the rest.
+****
+
+.xref:{page-version}@typeql::pipelines/offset.adoc[]
+[.clickable]
+****
+Used to remove a specified number of elements from the data stream.
+****
+
+.xref:{page-version}@typeql::pipelines/reduce.adoc[]
+[.clickable]
+****
+Used to perform reduction operations on the data stream according to specified groupings.
+****
+--
+
+== Special stages
+
+[cols-1]
+--
+.xref:{page-version}@typeql::pipelines/with.adoc[]
+[.clickable]
+****
+Used to define functions on an ad-hoc basis for use in the data pipeline.
+****
+--
