@@ -1,0 +1,85 @@
+= TypeDB Documentation
+:keywords: typedb, typeql, clients, documentation, overview
+:pageTitle: TypeDB Documentation
+:page-aliases: {page-version}@home::overview.adoc
+:summary: A birds-eye view of all documentation for TypeDB, TypeQL, and TypeDB Clients
+:page-layout: landing
+// :page-preamble-card: 1
+
+// tag::rust-rewrite[]
+[NOTE]
+====
+https://typedb.com/blog/typedb-3-roadmap[TypeDB 3.0] is coming soon, written in Rust! Get updates in our https://typedb.com?dialog=newsletter[newsletter,window=_blank] or https://typedb.com/discord[Discord chat server,window=_blank].
+====
+// end::rust-rewrite[]
+
+Here you'll find ways to get started, understand core concepts, and explore a variety of resources to help you get the most from TypeDB. We recommend joining our https://typedb.com/discord[Discord chat server] for help along the way.
+// Programming languages have evolved rapidly, but database models have failed to keep up. Modern applications use complex layered architectures to manage data as a result. TypeDB resolves this with a completely new, highly expressive database paradigm.
+//
+// == Why choose TypeDB?
+//
+// - xref:{page-version}@typeql::concepts/types.adoc[Type hierarchy]: TypeDB models are described by types, defined in a schema as templates for data instances, analogous to classes.
+// - https://typedb.com/features#modern-language[Near-natural language]: TypeQL reads close to natural language. Domain experts and non-technical users alike can quickly grasp the intent of a query.
+// - https://typedb.com/fundamentals/functions-3-0[Functional database programming]: TypeDB 3.0 provides functions for modular database programming, enabling powerful abstractions of query logic.
+// - xref:{page-version}@manual::transactions.adoc[ACID-compliant transactions]: TypeDB provides robust data integrity guarantees. Transactions are atomic, consistent, isolated, and durable.
+// - https://cloud.typedb.com[Fully-managed cloud deployment]: TypeDB Cloud allows you to scale and manage databases easily, without needing to worry about infrastructure.
+
+[.link-panel.clickable]
+--
+image::{page-version}@home::seedling-thin.svg[seedling,54,54]
+
+xref:{page-version}@home::get-started.adoc[Get Started →]
+
+Just getting started with TypeDB? Your journey begins here.
+--
+
+[.link-panel.clickable]
+--
+image::{page-version}@home::database-thin.svg[database,48,54]
+
+xref:{page-version}@manual::index.adoc[Database Manual →]
+
+Learn core TypeDB concepts, including connecting, loading data, configuration and more.
+--
+
+[.link-panel.clickable]
+--
+image::{page-version}@home::gear-complex-code-thin.svg[code,54,54]
+
+xref:{page-version}@drivers::index.adoc[Client Drivers →]
+
+Installation guides and API reference for TypeDB's official client drivers.
+--
+
+[.link-panel.clickable]
+--
+image::{page-version}@home::book-open-thin.svg[book,48,54]
+
+xref:{page-version}@typeql::index.adoc[TypeQL Reference →]
+
+Reference documentation containing the details of TypeQL, the query language of TypeDB.
+--
+
+
+== Further learning
+
+[cols-3]
+--
+.xref:{page-version}@academy::index.adoc[TypeDB Academy]
+[.clickable]
+****
+The comprehensive TypeDB learning experience.
+****
+
+.https://typedb.com/philosophy[Why use TypeDB?]
+[.clickable]
+****
+This article explains the motive behind the technology.
+****
+
+.https://typedb.com/discord[Chat Server]
+[.clickable]
+****
+Join our vibrant TypeDB community on Discord. New faces are always welcome!
+****
+--

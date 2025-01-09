@@ -1,0 +1,125 @@
+= Lesson 9.2: Determining object types
+
+== Determining entity types
+
+Data might come from a variety of sources, from tabulated data files to real-time data streams from microservices. In this lesson, we'll examine how we might go about modeling tabulated book data for the bookstore database using the PERA model, as shown here.
+
+.Data table
+[%collapsible]
+====
+[%header,format=csv]
+|===
+include::attachment$books.csv[]
+|===
+====
+
+The first step is to determine what entity types exist in the data. If we examine the data table, it might appear that each row represents a book entity and every value in that row represents an attribute of the book. This would be a perfectly valid model, but it wouldn't be particularly expressive.
+
+[,typeql]
+----
+define
+book sub entity,
+    owns isbn-13,
+    owns isbn-10,
+    owns title,
+    owns format,
+    owns author,
+    owns editor,
+    owns illustrator,
+    owns other-contributor,
+    owns publisher,
+    owns year,
+    owns city,
+    owns state,
+    owns country,
+    owns page-count,
+    owns genre,
+    owns price,
+    owns stock;
+----
+
+[NOTE]
+====
+For simplicity, throughout most of Lesson 9, we'll be omitting the attribute type definitions in schema definitions where not required.
+====
+
+The lack of expressivity causes several problems. Consider, for instance, if we had an author that was listed as having published different books under different names, as often is the case. We would not be able to tell which names (and therefore books) corresponded to the same author. Similarly, if two different authors published books under the same name, we would not be able to tell that they were written by different authors.
+
+In order to distinguish cases like these, we need a notion of *identity* for authors. The identity of a concept is independent of any properties it has. In this case, an author remains the same author no matter what different names they are known by, and two authors are not the same person simply because they have the same name. Concepts with identities are generally best categorised as belonging to *entity types*. This would indicate that authors should be entities, and we can apply the same logic to editors, illustrators, and other contributors. We can also apply it to publishers, cities, states, and countries, when considering the following:
+
+* A publisher may have multiple https://en.wikipedia.org/wiki/Imprint_(trade_name)[imprints].
+* Two cities may have the same name.
+* A state or country may change its name.
+
+These facts indicate that these concepts have identities not determined by their names (or any other property), and so should likewise be considered entities.
+
+[,typeql]
+----
+define
+book sub entity,
+    owns isbn-13,
+    owns isbn-10,
+    owns title,
+    owns format,
+    owns year,
+    owns page-count,
+    owns genre,
+    owns price,
+    owns stock;
+author sub entity,
+    owns name;
+editor sub entity,
+    owns name;
+illustrator sub entity,
+    owns name;
+other-contributor sub entity,
+    owns name;
+publisher sub entity,
+    owns name;
+city sub entity,
+    owns name;
+state sub entity,
+    owns name;
+country sub entity,
+    owns name;
+----
+
+Here we've made use of *interface polymorphism* to have several unrelated types implement ownership of `name`.
+
+== Determining relation types
+
+Now that properties have been moved from `book` to other entity types, we need a way of recording the *dependencies* between `book` and those types so that we can query those properties. For instance, we need a way to record the dependency between a book and an author, indicating that the author wrote the book, allowing us to retrieve the author's name from the book. We establish these dependencies with *relation types*. To begin with, we'll link each entity type to `book` using a relation type. It is fairly evident how we should do so for some of those types.
+
+[,typeql]
+----
+define
+contribution sub relation,
+    relates contributor,
+    relates work;
+publishing sub relation,
+    relates publisher,
+    relates published;
+book plays contribution:work,
+    plays publishing:published;
+author plays contribution:contributor;
+editor plays contribution:contributor;
+illustrator plays contribution:contributor;
+other-contributor plays contribution:contributor;
+publisher plays publishing:publisher;
+----
+
+Once again, we've leveraged interface polymorphism to re-use the same `contribution` relation types to represent the interdependencies between `book` and several contributor types: `author`, `editor`, `illustrator`, and `other-contributor`.
+
+However, the connection from `city`, `state`, and `country` to `book` is less obvious. What should this relation be? Examining the dataset, we can tell that these fields refer to the location in which the book was published. As such, it makes sense that the `publishing` relation is appropriate, and it follows that we should extend `publishing` to be a *ternary relation type* to account for this.
+
+[,typeql]
+----
+define
+publishing relates location,
+    owns year;
+city plays publishing:location;
+state plays publishing:location;
+country plays publishing:location;
+----
+
+We have also moved the `year` attribute from `book` to `publishing`, as it is more accurately a property of the publication event than it is the book itself. This is a good first iteration, but there are still many ways this model can be improved. We'll explore them in the next few lessons.

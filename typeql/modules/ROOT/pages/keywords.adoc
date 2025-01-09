@@ -1,0 +1,185 @@
+= Keywords
+:Summary: Keyword glossary for TypeQL.
+:keywords: typeql, keywords, glossary, isa, sub, has, owns, plays, relates
+:pageTitle: Keywords
+
+The source of truth for the TypeQL keywords and grammar is the *ANTLR v.4* specification file:
+https://github.com/typedb/typeql/blob/master/grammar/TypeQL.g4[TypeQL.g4,window=_blank].
+
+[#_clause_keywords]
+== Clauses
+
+Clause keywords declare a start of a query's clause:
+
+`define`::
+Starts a `define` clause of a xref:{page-version}@typeql::queries/define.adoc[].
+
+`undefine`::
+Starts an `undefine` clause of a xref:{page-version}@typeql::queries/undefine.adoc[]
+
+`match`::
+Starts a `match` clause that xref:{page-version}@typeql::patterns/matching.adoc[matches existing data] by a pattern in an
+xref:{page-version}@typeql::queries/insert.adoc[Insert],
+xref:{page-version}@typeql::queries/delete.adoc[Delete],
+xref:{page-version}@typeql::queries/update.adoc[Update],
+xref:{page-version}@typeql::queries/fetch.adoc[Fetch], or
+xref:{page-version}@typeql::queries/get.adoc[Get] query.
+
+`insert`::
+Starts an `insert` clause of an xref:{page-version}@typeql::queries/insert.adoc[].
+
+`delete`::
+Starts a `delete` clause of a xref:{page-version}@typeql::queries/delete.adoc[].
+
+`fetch`::
+Starts a `fetch` clause of a xref:{page-version}@typeql::queries/fetch.adoc[].
+
+`get`::
+Starts a `get` clause of a xref:{page-version}@typeql::queries/get.adoc[].
+
+== Schema statements
+
+Schema statement keywords used inside a clause of a query as a part of a data pattern or a schema definition:
+//Schema statements are used to specify types in both data queries and schema queries.
+
+`sub`::
+Adds a constraint on a type to be any subtype of a given type. +
+For more information, see the xref:{page-version}@typeql::statements/sub.adoc[] page.
+
+`sub!`::
+Adds a constraint on a type to be a direct subtype of a given type. +
+For more information, see the xref:{page-version}@typeql::statements/sub.adoc[] page.
+
+`type`::
+Adds a constraint on a type to be an exact type by its label. +
+For more information, see the xref:{page-version}@typeql::statements/type.adoc[] page.
+
+`abstract`::
+Specify that a given type is an abstract type. +
+For more information, see the xref:{page-version}@typeql::statements/abstract.adoc[] page.
+
+`owns`::
+Specify that a type can own attributes of a given attribute type. +
+For more information, see the xref:{page-version}@typeql::statements/owns.adoc[] page.
+
+`value`::
+Specify a value type of an attribute type. +
+For more information, see the xref:{page-version}@typeql::statements/value.adoc[] page.
+
+`relates`::
+Add a new role for a relation. +
+For more information, see the xref:{page-version}@typeql::statements/relates.adoc[] page.
+
+`plays`::
+Specify that a given type can play a given role (in a given relation). +
+For more information, see the xref:{page-version}@typeql::statements/plays.adoc[] page.
+
+`@key`::
+Add a key constraint to ownership of a given attribute type by a type. +
+For more information, see the xref:{page-version}@typeql::statements/key.adoc[] page.
+
+`@unique`::
+Add a uniqueness constraint to ownership of a given attribute type by a type. +
+For more information, see the xref:{page-version}@typeql::statements/unique.adoc[] page.
+
+`regex`::
+Specify a regular expression that limits values of a given attribute type. +
+For more information, see the xref:{page-version}@typeql::statements/regex.adoc[] page.
+
+`as`::
+Override an inherited attribute type ownership or role playing ability. +
+For more information, see the xref:{page-version}@typeql::statements/owns.adoc#_usage_with_override[owns] and
+xref:{page-version}@typeql::statements/plays.adoc#_usage_with_override[plays] pages respectively.
+
+`when`::
+Specify a condition of a xref:{page-version}@typeql::statements/rule.adoc[rule].
+
+`then`::
+Specify a conclusion of a xref:{page-version}@typeql::statements/rule.adoc[rule].
+
+== Data statements
+
+Data statement keywords used inside a clause of a data query as a part of a data pattern:
+//Data statements are only used in data query patterns.
+
+`isa`::
+Adds a constraint for a data instance to be an instance of a type.
+Takes into account type inference. +
+For more information, see the xref:{page-version}@typeql::statements/isa.adoc[] page.
+
+`isa!`::
+Adds a constraint for a data instance to be an instance of a type.
+Does not take into account type inference. +
+For more information, see the xref:{page-version}@typeql::statements/isa.adoc[] page.
+
+`is`::
+Adds a constraint for two concept variables to be equal both by value and type. +
+For more information, see the xref:{page-version}@typeql::statements/isa.adoc[] page.
+
+`has`::
+Adds a constraint for an ownership of a given attribute by a given data instance. +
+For more information, see the xref:{page-version}@typeql::statements/has.adoc[] page.
+
+=== Modifiers
+
+`offset`::
+Offset the result of a query by the specified number of results. +
+See an xref:{page-version}@typeql::modifiers/pagination.adoc[example].
+
+`limit`::
+Limit the result of a query by the specified number of results. +
+See an xref:{page-version}@typeql::modifiers/pagination.adoc[example].
+
+`sort`::
+Sort the results of a query. +
+See an xref:{page-version}@typeql::modifiers/sorting.adoc[example].
+
+=== Logic
+
+`or`::
+Specify a disjunction between two blocks of statements surrounded by curly brackets. +
+For more information, see the xref:{page-version}@typeql::patterns/disjunction.adoc[] page.
+
+`not`::
+Specify a negation of a block of statements surrounded by curly brackets. +
+For more information, see the xref:{page-version}@typeql::patterns/negation.adoc[] page.
+
+=== Value comparators
+
+`==`, `!=`, `>`, `<`, `>=`, `+<=+`, `like`, `contains`::
+Specify the result of comparison to be true. +
+For more information, see the xref:{page-version}@typeql::values/comparators.adoc[] page.
+
+=== Aggregation
+
+`group`::
+Group results by a given variable. +
+For more information, see the xref:{page-version}@typeql::modifiers/grouping.adoc[] page.
+
+`count`::
+Count the number of results. +
+For more information, see the xref:{page-version}@typeql::modifiers/aggregation.adoc#_count[Aggregation] page.
+
+`max`::
+Find the maximum value of a given variable. +
+For more information, see the xref:{page-version}@typeql::modifiers/aggregation.adoc[Aggregation] page.
+
+`min`::
+Find the minimum value of a given variable. +
+For more information, see the xref:{page-version}@typeql::modifiers/aggregation.adoc[Aggregation] page.
+
+`mean`::
+Find average value of a given variable. +
+For more information, see the xref:{page-version}@typeql::modifiers/aggregation.adoc[Aggregation] page.
+
+`median`::
+Find median value of a given variable. +
+For more information, see the xref:{page-version}@typeql::modifiers/aggregation.adoc[Aggregation] page.
+
+`std`::
+Find standard deviation of values for a given variable. +
+For more information, see the xref:{page-version}@typeql::modifiers/aggregation.adoc[Aggregation] page.
+
+`sum`::
+Find the sum of values for a given variable. +
+For more information, see the xref:{page-version}@typeql::modifiers/aggregation.adoc[Aggregation] page.

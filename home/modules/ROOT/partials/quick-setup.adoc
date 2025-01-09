@@ -1,0 +1,25 @@
+:tabs-sync-option:
+:experimental:
+
+Log in to https://cloud.typedb.com/[TypeDB Cloud,window=_blank] and deploy a new cluster on the Clusters page.
+
+For self-hosted TypeDB installation and setup, see the xref:{page-version}@manual::self-managed/index.adoc[Self-hosted deployment] page.
+
+
+== Connect to TypeDB
+
+In this guide, we will use *TypeDB Studio*, the standalone GUI-based client for TypeDB. Ensure Studio is xref:{page-version}@home::install-tools.adoc#_studio[installed], then launch the application.
+
+include::{page-version}@manual::studio.adoc[tag=connect_studio]
+
+== Create a project
+
+include::{page-version}@manual::studio.adoc[tag=select_project]
+
+== Create a new database
+
+To create a new database:
+
+. Click the image:{page-version}@home::studio-icons/svg/studio_dbs.svg[width=24] btn:[Manage Databases] button in the top toolbar.
+. Enter a name for a new database and click btn:[Create].
+. Select the new database from the btn:[Select Database] dropdown (image:{page-version}@home::studio-icons/database-none.png[]) in the top toolbar.

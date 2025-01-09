@@ -1,0 +1,285 @@
+= Install tools
+:keywords: setup, install, deploy, typedb, core, cloud, enterprise, download, server, linux, mac, windows, docker, arm, arm64, x86, x86_64, client, driver, studio, console
+:page-aliases: {page-version}@home::install/overview.adoc, {page-version}@home::install/console.adoc, {page-version}@home::install/studio.adoc
+:pageTitle: Install tools
+:summary: Install and run TypeDB server or client for Linux, macOS, Windows, or Cloud.
+
+
+You can connect to TypeDB and begin developing in several ways.
+
+[cols-3]
+--
+.xref:#_studio[]
+[.clickable]
+****
+A GUI tool for developing with TypeDB.
+****
+
+.xref:#_console[]
+[.clickable]
+****
+A command-line tool for interacting with TypeDB.
+****
+
+.xref:#_drivers[]
+[.clickable]
+****
+SDKs to programmatically query & manage TypeDB.
+****
+--
+
+
+[#_studio]
+== TypeDB Studio
+
+Install a powerful GUI tool that facilitates development on TypeDB with a schema manager, result visualizer, and more.
+
+[tabs]
+====
+macOS::
++
+--
+Install TypeDB Studio using Homebrew:
+
+[source,console]
+----
+brew tap typedb/tap
+brew install --cask typedb/tap/typedb-studio
+----
+
+Or download and install TypeDB Studio manually:
+include::{page-version}@manual:resources:partial$typedb-studio-latest-links.adoc[tag=mac]
+--
+
+Linux::
++
+--
+Install TypeDB Studio using `apt`:
+
+. Add the TypeDB repository:
++
+[source,console]
+----
+sudo apt install software-properties-common apt-transport-https gpg
+gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 17507562824cfdcc
+gpg --export 17507562824cfdcc | sudo tee /etc/apt/trusted.gpg.d/typedb.gpg > /dev/null
+echo "deb https://repo.typedb.com/public/public-release/deb/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/typedb.list > /dev/null
+sudo apt update
+----
+. Install the application:
++
+[source,console]
+----
+sudo apt install typedb-studio
+----
+
+Or download and install TypeDB Studio manually:
+include::{page-version}@manual:resources:partial$typedb-studio-latest-links.adoc[tag=linux]
+--
+
+Windows::
++
+--
+Download the installer:
+include::{page-version}@manual:resources:partial$typedb-studio-latest-links.adoc[tag=windows]
+
+The installation wizard will guide you through the process of installing TypeDB Studio.
+--
+====
+
+
+=== Quickstart
+
+For a 5-minute tutorial on the basics of TypeDB and Studio, visit the xref:{page-version}@home::quickstart.adoc[].
+
+Or, for a complete TypeDB Studio usage guide, visit the xref:{page-version}@manual::studio.adoc[TypeDB Studio Manual].
+
+
+[#_studio_archive]
+=== Use with older TypeDB versions
+
+include::{page-version}@manual::studio.adoc[tags="compat-intro,compat-table"]
+
+
+[#_console]
+== TypeDB Console
+
+Install a lightweight and powerful CLI tool to manage and query your TypeDB databases.
+
+[tabs]
+====
+macOS::
++
+--
+Install TypeDB Console using Homebrew:
+
+[source,console]
+----
+brew tap typedb/tap
+brew install typedb/tap/typedb
+----
+
+Or download and install manually:
+
+. Ensure Java 11+ is installed.
+TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
+https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
+. Download the right package for your system: TypeDB Console
+include::{page-version}@manual:resources:partial$typedb-console-latest-links.adoc[tag=mac]
+. Extract the archive and optionally create a symlink:
++
+[source,console]
+----
+sudo mkdir /opt/typedb
+unzip ~/Downloads/<ARCHIVE_FILENAME>.zip -d /opt/typedb
+ln -s /opt/typedb/<ARCHIVE_FILENAME>/typedb /usr/local/bin/typedb
+----
+--
+
+Linux::
++
+--
+Install TypeDB Console using APT:
+
+. Add the TypeDB repository:
++
+[source,console]
+----
+sudo apt install software-properties-common apt-transport-https gpg
+gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 17507562824cfdcc
+gpg --export 17507562824cfdcc | sudo tee /etc/apt/trusted.gpg.d/typedb.gpg > /dev/null
+echo "deb https://repo.typedb.com/public/public-release/deb/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/typedb.list > /dev/null
+sudo apt update
+----
+. Ensure Java 11+ is installed:
++
+[source,console]
+----
+sudo apt install default-jre
+----
++
+TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
+https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
+. Install `typedb`:
++
+[source,console]
+----
+sudo apt install typedb
+----
++
+If you had an older version (≤`2.25.5`) of `typedb` installed, you might first need to uninstall older packages to avoid
+conflicts:
++
+[source,console]
+----
+sudo apt remove typedb-server typedb-bin typedb-console
+----
+////
+The `typedb-server` and `typedb-console` packages are updated more often than `typedb-bin`, so their
+version numbers might differ. By default, APT will look for the exact same version of `typedb-bin`,
+resulting in an error. To prevent this, use `apt show`, as shown above, to find a compatible version first, and then
+invoke an `apt install` command with the specific version for every package.
+////
+
+Or download and install manually:
+
+. Ensure Java 11+ is installed.
+TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
+https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
+. Download the right package for your system: TypeDB Console
+include::{page-version}@manual:resources:partial$typedb-console-latest-links.adoc[tag=linux]
+. Extract the archive and optionally create a symlink:
++
+[source,console]
+----
+mkdir /opt/typedb
+tar -xzf ~/Downloads/<ARCHIVE_FILENAME>.tar.gz -C /opt/typedb
+ln -s /opt/typedb/<ARCHIVE_FILENAME>/typedb /usr/local/bin/typedb
+----
+--
+
+Windows::
++
+--
+. Ensure Java 11+ is installed. TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
+https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
+. Download and unzip the archive:
+include::{page-version}@manual:resources:partial$typedb-console-latest-links.adoc[tag=windows]
+. (Optional) Add the extracted archive path to your `PATH` environment variable.
++
+--
+====
+
+
+=== Quickstart
+
+Run TypeDB Console:
+[source,console]
+----
+typedb console
+----
+
+List all available TypeDB Console commands:
+[source,console]
+----
+typedb console --help
+----
+
+For a complete usage guide, visit the xref:{page-version}@manual::console.adoc[TypeDB Console Manual].
+
+
+[#_console_archive]
+=== Use with older TypeDB versions
+
+include::{page-version}@manual::console.adoc[tags="compat-intro,compat-table"]
+
+
+[#_drivers]
+== TypeDB Drivers
+
+Official xref:{page-version}@drivers::index.adoc[driver libraries] for building applications on TypeDB.
+
+[cols-3]
+--
+.image:{page-version}@home::rust.png[,width=30]   xref:{page-version}@drivers::rust/index.adoc[Rust]
+[.clickable]
+****
+
+****
+
+.image:{page-version}@home::python.png[,width=30]   xref:{page-version}@drivers::python/index.adoc[Python]
+[.clickable]
+****
+
+****
+
+.image:{page-version}@home::nodejs.png[,width=30]   xref:{page-version}@drivers::nodejs/index.adoc[Node.js]
+[.clickable]
+****
+
+****
+
+.image:{page-version}@home::java.png[,width=30]   xref:{page-version}@drivers::java/index.adoc[Java]
+[.clickable]
+****
+
+****
+
+.image:{page-version}@home::csharp.png[,width=30]   xref:{page-version}@drivers::csharp/index.adoc[C#]
+[.clickable]
+****
+
+****
+
+.image:{page-version}@home::cpp.png[,width=30]   xref:{page-version}@drivers::cpp/index.adoc[C++]
+[.clickable]
+****
+
+****
+
+.image:{page-version}@home::c.png[,width=30]   xref:{page-version}@drivers::c/index.adoc[C]
+[.clickable]
+****
+
+****
+--
