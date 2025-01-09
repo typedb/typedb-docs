@@ -51,7 +51,7 @@ define
     plays location:located;
 
   relation social-relation @abstract,
-    relates related;
+    relates related @card(0..);
 
   relation friendship sub social-relation,
     relates friend as related;
@@ -164,7 +164,7 @@ define
     plays commenting:parent,
     plays reaction:parent;
 
-  relation interaction, @abstract,
+  relation interaction @abstract,
     relates subject,
     relates content;
 
@@ -260,7 +260,7 @@ define
     relates parent as place,
     relates landmark as located;
 
-  attribute id, @abstract, value string;
+  attribute id @abstract, value string;
   attribute page-id @abstract, sub id,;
   attribute username sub page-id;
   attribute group-id sub page-id;
