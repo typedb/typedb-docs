@@ -1,1 +1,65 @@
 = Duration
+
+An ISO 8601 compliant duration type. 
+
+== Syntax
+
+A duration literal starts with the character `P` (for _period_) followed by one or more values.
+Character `T` separates the date and time portions of the duration literal, similarly to the ISO 8601 datetime format.
+
+Date value unit designators:
+
+* `Y`: years,
+* `M`: months,
+* `W`: weeks,
+* `D`: days.
+
+Time value unit designators:
+
+* `H`: hours,
+* `M`: minutes,
+* `S`: seconds.
+
+WARNING: As per the standard, weeks cannot be specified alongside other units.
+
+Seconds can be specified as a decimal fraction, with precision up to nanoseconds (9 digits after the decimal point). Values for all other
+units are expected to be integers.
+
+[,typeql]
+.examples
+----
+P12W # 12 weeks
+P1Y2M3DT4H5M6.789S # 1 year, 2 months, 3 days, 4 hours, 5 minutes, 6 seconds and 789 milliseconds
+# P1W1D # not allowed
+
+# Even though `M` can mean either months or minutes, they are disambiguated by the time designator `T`
+P1M # one month
+PT1M # one minute
+----
+
+== Storage representation
+
+A duration value is stored as three integer parts: 32 bits of months, 32 bits of days, and 64 bits of nanoseconds. In particular, no
+conversion between the parts is performed: `P1D` is not always equal to `PT24H`, nor can `P1M` be converted to any fixed number of days
+without having a date as a frame of reference.
+
+== In expressions
+
+When adding to or subtracting from a datetime or a datetime-tz value, first the months are added, then the days, and finally the
+nanoseconds. These operations respect daylight saving changes, and other timezone changes where relevant.
+
+WARNING: This means that addition of durations to datetimes is not commutative.
+
+[,typeql]
+----
+2024-02-29T12:00:00 + P1M1D == 2024-03-30T12:00:00
+2024-02-29T12:00:00 + P1M + P1D == 2024-03-30T12:00:00
+
+2024-02-29T12:00:00 + P1D + P1M == 2024-04-01T12:00:00
+# 2024-02-29T12:00:00 + P1D == 2024-03-01T12:00:00
+
+# London DST change occurred on 2024-03-31 01:00:00 GMT
+2024-03-30T12:00:00 Europe/London + P1D == 2024-03-31T12:00:00 
+2024-03-30T12:00:00 Europe/London + PT24H == 2024-03-31T13:00:00 
+----
+
