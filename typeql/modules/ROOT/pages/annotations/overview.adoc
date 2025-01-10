@@ -2,6 +2,9 @@
 
 == Introduction
 
+Annotations are useful language constructs that start with an `@`. It can be used to manage definitions constraints.
+// TODO: ... or modify queries behavior.
+
 == Cardinality constraints
 
 [cols-3]
@@ -9,19 +12,22 @@
 .xref:{page-version}@typeql::annotations/card.adoc[]
 [.clickable]
 ****
-Used to specify cardinality ranges for roles and ownerships.
+Used
+include::{page-version}@typeql::annotations/card.adoc[tags=overview]
 ****
 
 .xref:{page-version}@typeql::annotations/cascade.adoc[]
 [.clickable]
 ****
-Used to specify behaviour when deleting a relation's roleplayers.
+Used
+include::{page-version}@typeql::annotations/cascade.adoc[tags=overview]
 ****
 
 .xref:{page-version}@typeql::annotations/independent.adoc[]
 [.clickable]
 ****
-Used to prevent attributes without owners from being deleted automatically.
+Used
+include::{page-version}@typeql::annotations/independent.adoc[tags=overview]
 ****
 --
 
@@ -32,25 +38,29 @@ Used to prevent attributes without owners from being deleted automatically.
 .xref:{page-version}@typeql::annotations/abstract.adoc[]
 [.clickable]
 ****
-Used to specify that a type or role is abstract.
+Used
+include::{page-version}@typeql::annotations/abstract.adoc[tags=overview]
 ****
 
 .xref:{page-version}@typeql::annotations/key.adoc[]
 [.clickable]
 ****
-Used to specify key attributes for entities and relations.
+Used
+include::{page-version}@typeql::annotations/key.adoc[tags=overview]
 ****
 
 .xref:{page-version}@typeql::annotations/subkey.adoc[]
 [.clickable]
 ****
-Used to specify composite keys built from multiple attributes.
+Used
+include::{page-version}@typeql::annotations/subkey.adoc[tags=overview]
 ****
 
 .xref:{page-version}@typeql::annotations/unique.adoc[]
 [.clickable]
 ****
-Used to specify unique attributes for entities and relations.
+Used
+include::{page-version}@typeql::annotations/unique.adoc[tags=overview]
 ****
 --
 
@@ -61,24 +71,28 @@ Used to specify unique attributes for entities and relations.
 .xref:{page-version}@typeql::annotations/values.adoc[]
 [.clickable]
 ****
-Used to specify a set of permitted values for attributes.
+Used
+include::{page-version}@typeql::annotations/values.adoc[tags=overview]
 ****
 
 .xref:{page-version}@typeql::annotations/range.adoc[]
 [.clickable]
 ****
-Used to specify a range of permitted values for attributes.
+Used
+include::{page-version}@typeql::annotations/range.adoc[tags=overview]
 ****
 
 .xref:{page-version}@typeql::annotations/regex.adoc[]
 [.clickable]
 ****
-Used to specify a regex pattern for permitted values of attributes.
+Used
+include::{page-version}@typeql::annotations/regex.adoc[tags=overview]
 ****
 
 .xref:{page-version}@typeql::annotations/distinct.adoc[]
 [.clickable]
 ****
-Used to restrict an owned list of attributes to distinct values.
+Used
+include::{page-version}@typeql::annotations/distinct.adoc[tags=overview]
 ****
 --

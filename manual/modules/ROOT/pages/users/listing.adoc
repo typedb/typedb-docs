@@ -1,6 +1,6 @@
-= Updating password
+= Listing users
 
-To update a user's password, connect to TypeDB and follow the steps below:
+To list all users, connect to TypeDB and follow the steps below:
 
 [tabs]
 ====
@@ -11,10 +11,9 @@ Run the following command:
 
 [,bash]
 ----
-user password-update <username>
+user list
 ----
 
-Where `<username>` is the name of the user.
 --
 
 Studio::
@@ -22,7 +21,7 @@ Studio::
 NOTE: Coming soon.
 ====
 
-To update a user's password programmatically:
+To list all users programmatically:
 
 [tabs]
 ====
@@ -31,8 +30,7 @@ Rust::
 --
 [,rust]
 ----
-let user = driver.users().get("<username>").await?;
-let result = user.update_password("<password>").await;
+let user = driver.users().list().await?;
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `"<username>"` is the name of the user.
@@ -43,7 +41,7 @@ Python::
 --
 [,python]
 ----
-driver.users.get("<username>").update_password("<password>")
+driver.users.list()
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `"<username>"` is the name of the user.
@@ -54,7 +52,7 @@ Java::
 --
 [,java]
 ----
-driver.users().get("<username>").updatePassword("<password>");
+driver.users().list();
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `"<username>"` is the name of the user.

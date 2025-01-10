@@ -1,2 +1,28 @@
-= TypeDB CE
+= TypeDB Community Edition
 :page-aliases: {page-version}@home::install/core.adoc
+
+[#_manual]
+== Distribution archive
+
+include::{page-version}@manual::partial$distribution.adoc[tag=core-manual-install]
+
+=== Run
+
+include::{page-version}@manual::partial$distribution.adoc[tag=core-run]
+
+include::{page-version}@manual::partial$distribution.adoc[tag=core-stop]
+
+[#_docker]
+== Docker
+
+include::{page-version}@manual::partial$docker.adoc[tag=install]
+
+=== Run
+
+include::{page-version}@manual::partial$docker.adoc[tags=run]
+
+include::{page-version}@manual::partial$docker.adoc[tags=run-info]
+
+include::{page-version}@manual::partial$docker.adoc[tag=start]
+
+include::{page-version}@manual::partial$docker.adoc[tag=stop]

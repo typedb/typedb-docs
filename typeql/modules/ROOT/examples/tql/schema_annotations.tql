@@ -1,31 +1,43 @@
+// tag::define-keyword[]
 define
-  entity content @abstract,
-    owns id @key;
+// end::define-keyword[]
+// tag::abstract-entity[]
+  entity element @abstract;
+// end::abstract-entity[]
+
+  entity content @abstract, sub root,
+    owns id @key,
+    owns is-visible,
+    plays subscription:content;
 
   entity page @abstract, sub content,
     owns page-id,
     owns name,
     owns bio,
     owns profile-picture,
+    owns badge,
     plays posting:page,
+    plays viewing:viewed,
     plays following:page;
 
   entity profile @abstract, sub page,
     owns username,
-    plays group-membership:member,
     plays location:located,
+    plays viewing:viewer,
     plays content-engagement:author,
-    plays following:follower;
+    plays following:follower,
+    plays subscription:subscriber;
 
   entity user sub profile,
+    owns gender,
+    owns language,
     owns email,
     owns phone @regex("^\d{10,15}$") @unique,
-    owns relationship-status,
     plays friendship:friend,
     plays family:relative,
-    plays relationship:partner,
-    plays marriage:spouse,
-    plays employment:employee;
+    plays parentship:parent,
+    plays parentship:child,
+    plays siblingship:sibling;
 
   relation social-relation @abstract,
     relates related @card(0..);
@@ -36,53 +48,35 @@ define
   relation family sub social-relation,
     relates relative as related @card(0..1000);
 
-  relation relationship sub social-relation,
-    relates partner as related,
-    owns start-date;
+  relation parentship sub family,
+    relates parent @card(1..2),
+    relates child @card(1..);
 
-  relation marriage sub relationship,
-    relates spouse as partner,
-    owns exact-date,
-    plays location:located;
-
-  entity organisation sub profile,
-    owns tag,
-    plays employment:employer;
-
-  entity company sub organisation;
-  entity charity sub organisation;
-
-  relation employment,
-    relates employer,
-    relates employee,
-    owns start-date,
-    owns end-date;
-
-  entity group sub page,
-    owns group-id,
-    owns tag,
-    plays group-membership:group;
-
-  relation group-membership,
-    relates group,
-    relates member,
-    owns start-timestamp,
-    owns end-timestamp;
+  relation siblingship sub family,
+    relates sibling @card(2..);
 
   entity post @abstract, sub content,
     owns post-id,
     owns post-text,
     owns creation-timestamp,
+    owns language,
     owns tag,
+    owns post-date,
     plays posting:post,
     plays commenting:parent,
     plays reaction:parent,
-    plays location:located;
+    plays location:located,
+    plays viewing:viewed;
 
   entity text-post sub post;
 
   entity image-post sub post,
     owns post-image;
+
+  entity video-post sub post,
+    owns post-video;
+
+  entity live-video-post sub video-post;
 
   entity comment sub content,
     owns comment-id,
@@ -93,9 +87,15 @@ define
     plays commenting:parent,
     plays reaction:parent;
 
+// tag::abstract-relation[]
   relation interaction @abstract,
     relates subject @abstract,
     relates content;
+
+  relation viewing sub interaction,
+    relates viewer as subject,
+    relates viewed as content;
+// end::abstract-relation[]
 
   relation content-engagement @abstract, sub interaction,
     relates author as subject;
@@ -117,57 +117,42 @@ define
     relates follower,
     relates page;
 
-  entity place,
-    owns place-id,
-    owns name,
-    plays location:place;
+  relation subscription,
+    relates subscriber,
+    relates content;
 
-  entity country sub place,
-    plays city-location:parent;
-
-  entity city sub place,
-    plays city-location:city;
-
-  relation location,
-    relates place,
-    relates located;
-
-  relation city-location sub location,
-    relates parent as place,
-    relates city as located;
-
+// tag::abstract-attribute[]
   attribute id @abstract, value string;
   attribute page-id @abstract, sub id;
   attribute username sub page-id;
-  attribute group-id sub page-id;
+// end::abstract-attribute[]
   attribute post-id sub id;
   attribute comment-id sub id;
-  attribute place-id sub id;
 
   attribute name, value string;
+  attribute gender, value string @values("male", "female", "other");
+// tag::independent-attribute[]
+  attribute language @independent, value string;
+// end::independent-attribute[]
   attribute email, value string @regex("^\w+@\w+\.\w+$");
   attribute phone, value string;
-  attribute relationship-status, value string @values("single", "married", "other");
-  attribute lattitude, value double;
-  attribute longitude, value double;
-
-  attribute event-date @abstract, value datetime;
-  attribute start-date sub event-date;
-  attribute end-date sub event-date;
-  attribute exact-date @abstract, sub event-date;
 
   attribute payload @abstract, value string;
   attribute text-payload @abstract, sub payload;
-  attribute image-payload @abstract, sub payload;
+  attribute media-payload @abstract, sub payload;
+  attribute image-payload @abstract, sub media-payload;
+  attribute video-payload @abstract, sub media-payload;
   attribute bio sub text-payload;
-  attribute comment-text sub text-payload;
+  attribute profile-picture sub image-payload;
   attribute post-text sub text-payload;
   attribute post-image sub image-payload;
-  attribute profile-picture sub image-payload;
+  attribute post-video sub video-payload;
+  attribute comment-text sub text-payload;
 
   attribute tag, value string;
   attribute emoji, value string @values("like", "love", "funny", "surprise", "sad", "angry");
+  attribute badge, value string;
 
   attribute creation-timestamp, value datetime @range(1970-01-01T00:00:00..);
-  attribute start-timestamp, value datetime;
-  attribute end-timestamp, value datetime;
+
+  attribute is-visible, value boolean;

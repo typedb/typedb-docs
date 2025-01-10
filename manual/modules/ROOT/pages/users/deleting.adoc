@@ -1,3 +1,69 @@
 = Deleting users
 
-NOTE: coming soon.
+To delete a user, connect to TypeDB and follow the steps below:
+
+[tabs]
+====
+Console::
++
+--
+Run the following command:
+
+[,bash]
+----
+user delete <username>
+----
+
+Where `<username>` is the name of the user.
+--
+
+Studio::
++
+NOTE: Coming soon.
+====
+
+To delete a user programmatically:
+
+[tabs]
+====
+Rust::
++
+--
+[,rust]
+----
+let user = driver.users().get("<username>").await?;
+let result = user.delete().await;
+----
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `"<username>"` is the name of the user.
+--
+
+Python::
++
+--
+[,python]
+----
+driver.users.get("<username>").delete()
+----
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `"<username>"` is the name of the user.
+--
+
+Java::
++
+--
+[,java]
+----
+driver.users().get("<username>").delete();
+----
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `"<username>"` is the name of the user.
+--
+
+Node.js::
+C#::
+C++::
+C::
++
+NOTE: Coming soon.
+====
