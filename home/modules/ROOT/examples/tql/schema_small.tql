@@ -151,7 +151,7 @@ define
   attribute lattitude, value double;
   attribute longitude, value double;
 
-  attribute event-date @abstract, value datetime @range(1970-01-01T00:00:00..);
+  attribute event-date @abstract, value datetime;
   attribute start-date sub event-date;
   attribute end-date sub event-date;
   attribute exact-date @abstract, sub event-date;
@@ -168,6 +168,6 @@ define
   attribute tag, value string;
   attribute emoji, value string @values("like", "love", "funny", "surprise", "sad", "angry");
 
-  attribute creation-timestamp, value datetime;
+  attribute creation-timestamp, value datetime @range(1970-01-01T00:00:00..);
   attribute start-timestamp, value datetime;
   attribute end-timestamp, value datetime;
