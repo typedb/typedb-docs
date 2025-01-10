@@ -1,8 +1,67 @@
 = Creating users
 
-Use the following command to create a new user in TypeDB Console:
+To create a new user, connect to TypeDB and follow the steps below:
 
-```
-> user create <username>
-Password: <password>
-```
+[tabs]
+====
+Console::
++
+--
+Run the following command:
+
+[,bash]
+----
+user create <username>
+----
+
+--
+
+Studio::
++
+NOTE: Coming soon.
+====
+
+To create a new user programmatically:
+
+[tabs]
+====
+Rust::
++
+--
+[,rust]
+----
+let result = driver.users().create("<username>").await;
+----
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `"<username>"` is the name of the user.
+--
+
+Python::
++
+--
+[,python]
+----
+driver.users.create("<username>")
+----
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `"<username>"` is the name of the user.
+--
+
+Java::
++
+--
+[,java]
+----
+driver.users().create("<username>");
+----
+
+Where `driver` is an instance of a driver, connected to TypeDB, and `"<username>"` is the name of the user.
+--
+
+Node.js::
+C#::
+C++::
+C::
++
+NOTE: Coming soon.
+====
