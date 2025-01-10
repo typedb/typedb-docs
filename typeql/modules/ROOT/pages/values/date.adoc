@@ -1,1 +1,34 @@
 = Date
+
+An ISO 8601 compliant date type. 
+
+== Syntax
+
+The date literal consists of the following values, separated by a `-`:
+
+* either a four-digit year or a sign with any number of digits for the year (e.g. `+252525` meaning year 252525),
+* a two-digit month of the year,
+* and a two-digit day of that month.
+
+[,typeql]
+.Example date literals
+----
+2024-03-30
++802701-09-21
+----
+
+=== Defining a date valued attribute
+
+[,typeql]
+----
+define
+  attribute publish-date value date;
+----
+
+=== Inserting a date valued attribute
+
+[,typeql]
+----
+insert
+  $_ isa publish-date 2025-01-10;
+----
