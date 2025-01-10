@@ -1,1 +1,26 @@
 = `iid` statement
+
+The constraint `$c iid <IID>` matches the stored concept with the provided internal ID (IID).
+
+== Inserting IIDs
+
+When a concept is inserted, it is assigned an IID automatically.
+
+[,typeql]
+----
+insert $person isa person;
+----
+
+.Example TypeDB Console output
+----
+   --------
+    $x | iid 0x1f0005000000000000012f isa person
+   --------
+----
+
+== Matching IIDs
+
+[,typeql]
+----
+match $x iid 0x1f0005000000000000012f;
+----

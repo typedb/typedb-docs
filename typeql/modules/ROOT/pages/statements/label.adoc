@@ -1,2 +1,20 @@
 = `label` statement
 :page-aliases: {page-version}@typeql::statements/type.adoc
+
+The constraint `$t label <LABEL>` matches all types `$t` that have the label (name) `<LABEL>`.
+
+== Defining type labels
+
+The `label` keyword is only used when matching on a type label. The type label is created automatically when the type is defined.
+
+[,typeql]
+----
+define entity person;
+----
+
+== Matching type labels
+
+[,typeql]
+----
+match $t label person;
+----
