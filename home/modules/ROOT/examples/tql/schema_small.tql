@@ -94,7 +94,7 @@ define
     plays reaction:parent;
 
   relation interaction @abstract,
-    relates subject,
+    relates subject @abstract,
     relates content;
 
   relation content-engagement @abstract, sub interaction,

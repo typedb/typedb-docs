@@ -1,5 +1,11 @@
+// tag::define-keyword[]
 define
-  entity content @abstract,
+// end::define-keyword[]
+// tag::abstract-entity[]
+  entity element @abstract;
+// end::abstract-entity[]
+
+  entity content @abstract, sub root,
     owns id @key,
     owns is-visible,
     plays subscription:content;
@@ -10,15 +16,12 @@ define
     owns bio,
     owns profile-picture,
     owns badge,
-    owns is-active,
     plays posting:page,
     plays viewing:viewed,
     plays following:page;
 
   entity profile @abstract, sub page,
     owns username,
-    owns can-publish,
-    plays group-membership:member,
     plays location:located,
     plays viewing:viewer,
     plays content-engagement:author,
@@ -30,25 +33,11 @@ define
     owns language,
     owns email,
     owns phone @regex("^\d{10,15}$") @unique,
-    owns relationship-status,
-    owns page-visibility,
-    owns post-visibility,
-    plays birth:born,
     plays friendship:friend,
     plays family:relative,
     plays parentship:parent,
     plays parentship:child,
-    plays siblingship:sibling,
-    plays relationship:partner,
-    plays engagement:fiance,
-    plays marriage:spouse,
-    plays employment:employee,
-    plays education:attendee;
-
-  relation birth,
-    relates born,
-    owns birth-date,
-    plays location:located;
+    plays siblingship:sibling;
 
   relation social-relation @abstract,
     relates related @card(0..);
@@ -66,81 +55,20 @@ define
   relation siblingship sub family,
     relates sibling @card(2..);
 
-  relation relationship sub social-relation,
-    relates partner as related,
-    owns start-date;
-
-  relation engagement sub relationship,
-    relates fiance as partner,
-    owns engagement-date,
-    plays location:located;
-
-  relation marriage sub relationship,
-    relates spouse as partner,
-    owns marriage-date,
-    plays location:located;
-
-  entity organisation sub profile,
-    owns tag,
-    plays employment:employer;
-
-  entity company sub organisation;
-  entity charity sub organisation;
-
-  entity educational-institute sub organisation,
-    plays education:institute;
-
-  entity school sub educational-institute;
-  entity college sub educational-institute;
-  entity university sub educational-institute;
-
-  relation employment,
-    relates employer,
-    relates employee,
-    owns start-date,
-    owns end-date,
-    owns description;
-
-  relation education,
-    relates institute,
-    relates attendee,
-    owns start-date,
-    owns end-date,
-    owns description;
-
-  entity group sub page,
-    owns group-id,
-    owns tag,
-    owns page-visibility,
-    owns post-visibility,
-    plays group-membership:group;
-
-  relation group-membership,
-    relates group,
-    relates member,
-    owns rank,
-    owns badge,
-    owns start-timestamp,
-    owns end-timestamp;
-
   entity post @abstract, sub content,
     owns post-id,
     owns post-text,
     owns creation-timestamp,
     owns language,
     owns tag,
-    owns post-visibility,
+    owns post-date,
     plays posting:post,
-    plays sharing:original-post,
     plays commenting:parent,
     plays reaction:parent,
     plays location:located,
     plays viewing:viewed;
 
   entity text-post sub post;
-
-  entity shared-post sub post,
-    plays sharing:shared-post;
 
   entity image-post sub post,
     owns post-image;
@@ -149,11 +77,6 @@ define
     owns post-video;
 
   entity live-video-post sub video-post;
-
-  entity poll-post sub post,
-    owns question,
-    owns answer,
-    plays response:poll;
 
   entity comment sub content,
     owns comment-id,
@@ -164,13 +87,15 @@ define
     plays commenting:parent,
     plays reaction:parent;
 
+// tag::abstract-relation[]
   relation interaction @abstract,
-    relates subject,
+    relates subject @abstract,
     relates content;
 
   relation viewing sub interaction,
     relates viewer as subject,
     relates viewed as content;
+// end::abstract-relation[]
 
   relation content-engagement @abstract, sub interaction,
     relates author as subject;
@@ -178,10 +103,6 @@ define
   relation posting sub content-engagement,
     relates page as content,
     relates post;
-
-  relation sharing sub content-engagement,
-    relates original-post as content,
-    relates shared-post;
 
   relation commenting sub content-engagement,
     relates parent as content,
@@ -192,11 +113,6 @@ define
     owns emoji,
     owns creation-timestamp;
 
-  relation response sub content-engagement,
-    relates poll as content,
-    owns answer,
-    owns creation-timestamp;
-
   relation following,
     relates follower,
     relates page;
@@ -205,85 +121,19 @@ define
     relates subscriber,
     relates content;
 
-  entity place,
-    owns place-id,
-    owns name,
-    plays location:place;
-
-  entity region sub place,
-    plays region-location:parent-region,
-    plays region-location:child-region,
-    plays country-location:region;
-
-  entity country sub place,
-    owns language,
-    plays country-location:country,
-    plays state-location:country,
-    plays city-location:parent,
-    plays landmark-location:parent;
-
-  entity state sub place,
-    plays state-location:state,
-    plays city-location:parent,
-    plays landmark-location:parent;
-
-  entity city sub place,
-    plays city-location:city,
-    plays landmark-location:parent;
-
-  entity landmark sub place,
-    owns lattitude,
-    owns longitude,
-    plays landmark-location:landmark;
-
-  relation location,
-    relates place,
-    relates located;
-
-  relation region-location sub location,
-    relates parent-region as place,
-    relates child-region as located;
-
-  relation country-location sub location,
-    relates region as place,
-    relates country as located;
-
-  relation state-location sub location,
-    relates country as place,
-    relates state as located;
-
-  relation city-location sub location,
-    relates parent as place,
-    relates city as located;
-
-  relation landmark-location sub location,
-    relates parent as place,
-    relates landmark as located;
-
+// tag::abstract-attribute[]
   attribute id @abstract, value string;
   attribute page-id @abstract, sub id;
   attribute username sub page-id;
-  attribute group-id sub page-id;
+// end::abstract-attribute[]
   attribute post-id sub id;
   attribute comment-id sub id;
-  attribute place-id sub id;
 
   attribute name, value string;
   attribute gender, value string @values("male", "female", "other");
   attribute language @independent, value string;
   attribute email, value string @regex("^\w+@\w+\.\w+$");
   attribute phone, value string;
-  attribute relationship-status, value string @values("single", "relationship", "engaged", "married", "complicated");
-  attribute lattitude, value double;
-  attribute longitude, value double;
-
-  attribute event-date @abstract, value datetime @range(1970-01-01T00:00:00..);
-  attribute start-date sub event-date;
-  attribute end-date sub event-date;
-  attribute exact-date @abstract, sub event-date;
-  attribute birth-date sub exact-date;
-  attribute engagement-date sub exact-date;
-  attribute marriage-date sub exact-date;
 
   attribute payload @abstract, value string;
   attribute text-payload @abstract, sub payload;
@@ -291,28 +141,16 @@ define
   attribute image-payload @abstract, sub media-payload;
   attribute video-payload @abstract, sub media-payload;
   attribute bio sub text-payload;
-  attribute description sub text-payload;
   attribute profile-picture sub image-payload;
   attribute post-text sub text-payload;
   attribute post-image sub image-payload;
   attribute post-video sub video-payload;
-  attribute question sub text-payload;
-  attribute answer sub text-payload;
   attribute comment-text sub text-payload;
 
   attribute tag, value string;
-  attribute rank, value string @values("member", "moderator", "admin", "owner");
   attribute emoji, value string @values("like", "love", "funny", "surprise", "sad", "angry");
   attribute badge, value string;
 
-  attribute creation-timestamp, value datetime;
-  attribute start-timestamp, value datetime;
-  attribute end-timestamp, value datetime;
-
-  attribute visibility @abstract, value string;
-  attribute page-visibility sub visibility, value string @values("public", "private");
-  attribute post-visibility sub visibility, value string @values("default", "public", "private");
+  attribute creation-timestamp, value datetime @range(1970-01-01T00:00:00..);
 
   attribute is-visible, value boolean;
-  attribute is-active, value boolean;
-  attribute can-publish, value boolean;
