@@ -19,7 +19,7 @@ define
 
   entity user sub profile,
     owns email,
-    owns phone,
+    owns phone @regex("^\d{10,15}$") @unique,
     owns relationship-status,
     plays friendship:friend,
     plays family:relative,
@@ -34,7 +34,7 @@ define
     relates friend as related @card(0..);
 
   relation family sub social-relation,
-    relates relative as related @card(0..);
+    relates relative as related @card(0..1000);
 
   relation relationship sub social-relation,
     relates partner as related,
@@ -137,7 +137,7 @@ define
     relates city as located;
 
   attribute id @abstract, value string;
-  attribute page-id @abstract, sub id,;
+  attribute page-id @abstract, sub id;
   attribute username sub page-id;
   attribute group-id sub page-id;
   attribute post-id sub id;
@@ -145,13 +145,13 @@ define
   attribute place-id sub id;
 
   attribute name, value string;
-  attribute email, value string;
+  attribute email, value string @regex("^\w+@\w+\.\w+$");
   attribute phone, value string;
-  attribute relationship-status, value string @regex("^(single|married|other)$");
+  attribute relationship-status, value string @values("single", "married", "other");
   attribute lattitude, value double;
   attribute longitude, value double;
 
-  attribute event-date @abstract, value datetime;
+  attribute event-date @abstract, value datetime @range(1970-01-01T00:00:00..);
   attribute start-date sub event-date;
   attribute end-date sub event-date;
   attribute exact-date @abstract, sub event-date;
@@ -166,7 +166,7 @@ define
   attribute profile-picture sub image-payload;
 
   attribute tag, value string;
-  attribute emoji, value string @regex("^(like|love|funny|surprise|sad|angry)$");
+  attribute emoji, value string @values("like", "love", "funny", "surprise", "sad", "angry");
 
   attribute creation-timestamp, value datetime;
   attribute start-timestamp, value datetime;

@@ -29,7 +29,7 @@ define
     owns gender,
     owns language,
     owns email,
-    owns phone,
+    owns phone @regex("^\d{10,15}$") @unique,
     owns relationship-status,
     owns page-visibility,
     owns post-visibility,
@@ -54,17 +54,17 @@ define
     relates related @card(0..);
 
   relation friendship sub social-relation,
-    relates friend as related;
+    relates friend as related @card(0..);
 
   relation family sub social-relation,
-    relates relative as related;
+    relates relative as related @card(0..1000);
 
   relation parentship sub family,
-    relates parent,
-    relates child;
+    relates parent @card(1..2),
+    relates child @card(1..);
 
   relation siblingship sub family,
-    relates sibling;
+    relates sibling @card(2..);
 
   relation relationship sub social-relation,
     relates partner as related,
@@ -261,7 +261,7 @@ define
     relates landmark as located;
 
   attribute id @abstract, value string;
-  attribute page-id @abstract, sub id,;
+  attribute page-id @abstract, sub id;
   attribute username sub page-id;
   attribute group-id sub page-id;
   attribute post-id sub id;
@@ -269,15 +269,15 @@ define
   attribute place-id sub id;
 
   attribute name, value string;
-  attribute gender, value string @regex("^(male|female|other)$");
-  attribute language, value string;
-  attribute email, value string;
+  attribute gender, value string @values("male", "female", "other");
+  attribute language @independent, value string;
+  attribute email, value string @regex("^\w+@\w+\.\w+$");
   attribute phone, value string;
-  attribute relationship-status, value string @regex("^(single|relationship|engaged|married|complicated)$");
+  attribute relationship-status, value string @values("single", "relationship", "engaged", "married", "complicated");
   attribute lattitude, value double;
   attribute longitude, value double;
 
-  attribute event-date @abstract, value datetime;
+  attribute event-date @abstract, value datetime @range(1970-01-01T00:00:00..);
   attribute start-date sub event-date;
   attribute end-date sub event-date;
   attribute exact-date @abstract, sub event-date;
@@ -301,8 +301,8 @@ define
   attribute comment-text sub text-payload;
 
   attribute tag, value string;
-  attribute rank, value string @regex("^(member|moderator|admin|owner)$");
-  attribute emoji, value string @regex("^(like|love|funny|surprise|sad|angry)$");
+  attribute rank, value string @values("member", "moderator", "admin", "owner");
+  attribute emoji, value string @values("like", "love", "funny", "surprise", "sad", "angry");
   attribute badge, value string;
 
   attribute creation-timestamp, value datetime;
@@ -310,8 +310,8 @@ define
   attribute end-timestamp, value datetime;
 
   attribute visibility @abstract, value string;
-  attribute page-visibility sub visibility, value string @regex("^(public|private)$");
-  attribute post-visibility sub visibility, value string @regex("^(default|public|private)$");
+  attribute page-visibility sub visibility, value string @values("public", "private");
+  attribute post-visibility sub visibility, value string @values("default", "public", "private");
 
   attribute is-visible, value boolean;
   attribute is-active, value boolean;
