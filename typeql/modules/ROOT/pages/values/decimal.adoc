@@ -5,7 +5,7 @@ A fixed point signed decimal number with 64 bits tothe left of the decimal point
 == Storage representation
 
 A decimal number is stored as a 64-bit signed integer part, and an unsigned 19-digit fractional part. As a consequence, the range of values
-for decimal is from -2^63^ to 2^63^-10^-19^ (inclusive).
+for decimal is from &minus;2^63^ to 2^63^ &minus; 10^&minus;19^ (inclusive).
 
 === Defining a decimal valued attribute
 
