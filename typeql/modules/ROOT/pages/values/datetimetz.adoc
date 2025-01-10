@@ -1,1 +1,40 @@
 = DatetimeTZ
+
+An ISO 8601 compliant date and time type. 
+
+== Syntax
+
+A datetime-tz literal consists of a .xref:{page-version}@typeql::values/datetime.adoc[datetime] followed by
+a time zone specification.
+
+A time zone may be specified in two formats:
+
+* the ISO 8601 time offset from UTC: `±HH`, `±HH:MM`, `±HHMM`, or `Z`;
+* the IANA time zone database TZ identifier (usually `<Area>/<Location>`, e.g. `Europe/London`).
+
+The IANA TZ identifier is separated from the datetime by a space character.
+
+[,typeql]
+.Example datetime-tz literals
+----
+2024-03-30T12:00:00Z
++802701-09-21T12:34:56.789+01
+1887-12-22T17:29 Asia/Kolkata
+1920-04-26T16:30+01
+----
+
+=== Defining a datetime-tz valued attribute
+
+[,typeql]
+----
+define
+  attribute scheduled-meeting-time value datetime-tz;
+----
+
+=== Inserting a datetime-tz valued attribute
+
+[,typeql]
+----
+insert
+  $_ isa scheduled-meeting-time 2025-01-10T12:34:56 Europe/London;
+----

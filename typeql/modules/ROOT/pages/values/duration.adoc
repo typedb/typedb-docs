@@ -28,11 +28,17 @@ units are expected to be integers.
 [,typeql]
 .Example duration literals
 ----
-P12W # 12 weeks
-P1Y2M3DT4H5M6.789S # 1 year, 2 months, 3 days, 4 hours, 5 minutes, 6 seconds and 789 milliseconds
-# P1W1D # not allowed
+# 12 weeks
+P12W
 
-# Even though `M` can mean either months or minutes, they are disambiguated by the time designator `T`
+# 1 year, 2 months, 3 days, 4 hours, 5 minutes, 6 seconds, and 789 milliseconds
+P1Y2M3DT4H5M6.789S
+
+# not allowed
+# P1W1D
+
+# Even though `M` can mean either months or minutes,
+# they are disambiguated by the time designator `T`
 P1M # one month
 PT1M # one minute
 ----
@@ -45,21 +51,55 @@ without having a date as a frame of reference.
 
 == In expressions
 
-When adding to or subtracting from a datetime or a datetime-tz value, first the months are added, then the days, and finally the
+When adding to or subtracting from a datetime or a datetime-tz value, first the months part is added, then the days, and finally the
 nanoseconds. These operations respect daylight saving changes, and other timezone changes where relevant.
 
-WARNING: This means that addition of durations to datetimes is not commutative.
+[WARNING]
+====
+This means that addition of durations to datetimes is not commutative.
 
 [,typeql]
 ----
-2024-02-29T12:00:00 + P1M1D == 2024-03-30T12:00:00
-2024-02-29T12:00:00 + P1M + P1D == 2024-03-30T12:00:00
+# 29th of Februrary + 1 month and 1 day = 29th of March + 1 day = 30th of March
+2024-02-29T12:00:00 + P1M1D == 2024-02-29T12:00:00 + P1M + P1D == 2024-03-30T12:00:00
 
+# 29th of Februrary + 1 day + 1 month = 1st of March + 1 month = 1st of April
 2024-02-29T12:00:00 + P1D + P1M == 2024-04-01T12:00:00
-# This is because 2024-02-29T12:00:00 + P1D == 2024-03-01T12:00:00
+----
 
+To avoid confusion, it is generally recommended to compute the duration value first, then add it to or subtract it from the datetime.
+====
+
+If adding a month would make the day of the month invalid, the last day of the resulting month is used instead.
+
+[,typeql]
+----
+# 31st of January + 1 month = 28th of February, not 31st of February or 3rd of March
+2025-01-31T14:00:00Z + P1M == 2025-02-28T14:00:00Z
+----
+
+When used with a value of type datetime-tz, arithmetic operations with duration respect local timezone changes (e.g. daylight saving time).
+
+[,typeql]
+----
 # London DST change occurred on 2024-03-31 01:00:00 GMT
 2024-03-30T12:00:00 Europe/London + P1D == 2024-03-31T12:00:00 
 2024-03-30T12:00:00 Europe/London + PT24H == 2024-03-31T13:00:00 
+----
+
+=== Defining a duration valued attribute
+
+[,typeql]
+----
+define
+  attribute event-cadence value duration;
+----
+
+== Inserting a duration valued attribute
+
+[,typeql]
+----
+insert
+  $_ isa event-cadence P1M; # same local time on the same day of every month
 ----
 

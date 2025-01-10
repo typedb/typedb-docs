@@ -1,6 +1,6 @@
 = Datetime
 
-An ISO 8601 compliant date and time type. 
+An ISO 8601 compliant date and time type with time zone information.
 
 == Syntax
 
@@ -25,3 +25,18 @@ The time fragment consists of the following values, separated by `:`:
 +802701-09-21T12:34:56.789
 ----
 
+=== Defining a datetime valued attribute
+
+[,typeql]
+----
+define
+  attribute local-sunset value datetime;
+----
+
+=== Inserting a datetime valued attribute
+
+[,typeql]
+----
+insert
+  $_ isa local-sunset 2025-01-10T16:13;
+----
