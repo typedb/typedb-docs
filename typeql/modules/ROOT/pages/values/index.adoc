@@ -1,1 +1,43 @@
 = Value types
+
+[%header,cols="1,1,2"]
+|===
+|Name
+|TypeQL
+|Description
+
+|xref:{page-version}@typeql::values/boolean.adoc[Boolean]
+|`boolean`
+|A logical boolean (`true` / `false`).
+
+|xref:{page-version}@typeql::values/integer.adoc[Integer]
+|`integer`
+|A 64-bit signed integer.
+
+|xref:{page-version}@typeql::values/double.adoc[Double]
+|`double`
+|A double precision IEEE 754 floating point number.
+
+|xref:{page-version}@typeql::values/decimal.adoc[Decimal]
+|`decimal`
+|A fixed point signed decimal number.
+
+|xref:{page-version}@typeql::values/string.adoc[String]
+|`string`
+|A UTF-8 character string type.
+
+|xref:{page-version}@typeql::values/date.adoc[Date]
+|`date`
+|An ISO 8601 compliant date type. 
+
+|xref:{page-version}@typeql::values/datetime.adoc[Datetime]
+|`datetime`
+|An ISO 8601 compliant date and time type. 
+
+|xref:{page-version}@typeql::values/datetimetz.adoc[DatetimeTZ]
+|`datetime-tz`
+|An ISO 8601 compliant date and time type with time zone information.
+
+|xref:{page-version}@typeql::values/duration.adoc[Duration]
+|`duration`
+|An ISO 8601 compliant duration type. 
