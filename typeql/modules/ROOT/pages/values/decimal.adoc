@@ -1,3 +1,25 @@
 = Decimal
 
 A fixed point signed decimal number with 64 bits tothe left of the decimal point and 19 decimal digits of precision after the point.
+
+== Storage representation
+
+A decimal number is stored as a 64-bit signed integer part, and an unsigned 19-digit fractional part. As a consequence, the range of values
+for decimal is from -2^63^ to 2^63^-10^-19^ (inclusive).
+
+=== Defining a decimal valued attribute
+
+[,typeql]
+----
+define
+  attribute account-balance value decimal;
+----
+
+== Inserting a decimal valued attribute
+
+[,typeql]
+----
+insert
+  $_ isa account-balance 0.02dec;
+----
+

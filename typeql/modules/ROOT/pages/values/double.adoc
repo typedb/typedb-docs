@@ -1,3 +1,21 @@
 = Double
 
 A double precision IEEE 754 floating point number.
+
+=== Defining a double valued attribute
+
+[,typeql]
+----
+define
+include::{page-version}@home::example$tql/schema_large.tql[tags=double-attrs]
+----
+
+== Inserting a double valued attribute
+
+[,typeql]
+----
+insert
+  $_ isa latitude 11.373333;
+  $_ isa longitude 142.591667;
+----
+

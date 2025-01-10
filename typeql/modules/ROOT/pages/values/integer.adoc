@@ -1,3 +1,20 @@
 = Integer
 
 A 64-bit signed integer.
+
+=== Defining an integer valued attribute
+
+[,typeql]
+----
+define
+  attribute total-likes value integer;
+----
+
+== Inserting an integer valued attribute
+
+[,typeql]
+----
+insert
+  $_ isa total-likes 42;
+----
+

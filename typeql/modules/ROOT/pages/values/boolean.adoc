@@ -1,1 +1,20 @@
 = Boolean
+
+A logical boolean (`true` / `false`).
+
+=== Defining a boolean valued attribute
+
+[,typeql]
+----
+define
+  attribute shipped value boolean;
+----
+
+== Inserting a boolean valued attribute
+
+[,typeql]
+----
+insert
+  $_ isa shipped false;
+----
+
