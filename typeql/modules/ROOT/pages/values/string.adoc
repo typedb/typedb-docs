@@ -1,1 +1,21 @@
 = String
+
+A UTF-8 character string type.
+
+=== Defining a string valued attribute
+
+[,typeql]
+----
+define
+  attribute name value string;
+----
+
+== Inserting a string valued attribute
+
+[,typeql]
+----
+insert
+  $_ isa name "John";
+----
+
+
