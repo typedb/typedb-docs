@@ -277,7 +277,7 @@ define
 # tag::double-attrs[]
   attribute latitude, value double;
   attribute longitude, value double;
-# tag::double-attrs[]
+# end::double-attrs[]
 
   attribute event-date @abstract, value datetime;
   attribute start-date sub event-date;
