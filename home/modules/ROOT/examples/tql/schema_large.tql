@@ -232,7 +232,7 @@ define
     plays landmark-location:parent;
 
   entity landmark sub place,
-    owns lattitude,
+    owns latitude,
     owns longitude,
     plays landmark-location:landmark;
 
@@ -274,7 +274,7 @@ define
   attribute email, value string @regex("^\w+@\w+\.\w+$");
   attribute phone, value string;
   attribute relationship-status, value string @values("single", "relationship", "engaged", "married", "complicated");
-  attribute lattitude, value double;
+  attribute latitude, value double;
   attribute longitude, value double;
 
   attribute event-date @abstract, value datetime;
