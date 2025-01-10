@@ -5,6 +5,79 @@
 Annotations are useful language constructs that start with an `@`. It can be used to manage definitions constraints.
 // TODO: ... or modify queries behavior.
 
+=== Syntax
+
+Annotations are applied to the latest statement before their declaration:
+
+.A type's annotation
+[,typeql]
+----
+<type label> @annotation;
+----
+
+.A type value's annotation
+[,typeql]
+----
+<type label> value <value type> @annotation;
+----
+
+.A type plays' annotation
+[,typeql]
+----
+<type label> plays <role type label> @annotation;
+----
+
+==== Arguments
+
+Some annotations accept arguments of different types:
+
+.Annotations with a single scalar argument
+[,typeql]
+----
+@annotation(5)
+@annotation("TypeDB!")
+----
+
+.Annotations with multiple arguments
+[,typeql]
+----
+@annotation(0, 1, 2, 3, 4, 5)
+@annotation("Welcome", "to", "TypeDB", "!")
+----
+
+.Annotations with a range argument
+[,typeql]
+----
+@annotation(0..10)
+@annotation("a".."z")
+@annotation(1..)
+----
+
+==== Combining with other statements
+
+Annotation definition is a regular statement and can be followed by other statements after a comma:
+
+[,typeql]
+----
+<type label> @annotation, value <value type> @annotation, plays <role type label> @annotation;
+----
+
+However, it is possible to chain multiple annotations for a single statement:
+
+[,typeql]
+----
+<type label> @annotation1 @annotation2 @annotation3;
+----
+
+Which is an equivalent of:
+
+[,typeql]
+----
+<type label> @annotation1;
+<type label> @annotation2;
+<type label> @annotation3;
+----
+
 == Cardinality constraints
 
 [cols-3]

@@ -10,10 +10,10 @@ to specify behaviour when deleting a relation's roleplayers.
 .Syntax
 [,typeql]
 ----
-<type label> relates <type label> @cascade;
+<type label> relates <role type label> @cascade;
 ----
 
-The `@cascade` annotation doesn't accept any arguments, so after the `cascade` keyword always follows either a comma or a semicolon.
+`@cascade` annotation does not accept any arguments.
 
 == Usage
 

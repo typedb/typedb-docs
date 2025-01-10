@@ -5,3 +5,80 @@
 to specify a set of permitted values for attributes.
 // end::overview[]
 
+== Syntax
+
+.Value annotation syntax
+[,typeql]
+----
+<type label> value <value type> @values(arg);
+<type label> value <value type> @values(arg0, arg1, ..., argN);
+----
+
+.Ownership annotation syntax
+[,typeql]
+----
+<type label> owns <attribute type label> @values(arg0);
+<type label> owns <attribute type label> @values(arg0, arg1, ..., argN);
+----
+
+`@values` annotation can be defined for either an attribute type or an ownership.
+
+`@values` annotation requires at least one argument. Multiple arguments can be specified, separated by commas. Arguments should be of the same value type as `<attribute type label>`. Please refer to <<_value_types>> for the list of accepted value types.
+
+== Usage
+
+// TODO
+
+
+[#_references]
+== References
+
+[#_value_types]
+=== Supported value types
+
+`@values` annotation is applicable only to comparable value types, thus it is supported by all built-in TypeQL value types.
+
+.Supported value types
+[cols=".^1,^.^1,1"]
+|===
+^| Value type ^| Supported? ^| Comment
+| `boolean`
+| ✓
+|
+
+| `integer`
+| ✓
+|
+
+| `double`
+| ✓
+|
+
+| `decimal`
+| ✓
+|
+
+| `string`
+| ✓
+|
+
+| `date`
+| ✓
+|
+
+| `datetime`
+| ✓
+|
+
+| `datetime-tz`
+| ✓
+|
+
+| `duration`
+| ✓
+|
+
+// | `struct`
+// |
+// | Custom value types do not currently support comparison
+|===

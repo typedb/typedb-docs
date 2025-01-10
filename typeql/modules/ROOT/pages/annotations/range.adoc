@@ -4,3 +4,84 @@
 // tag::overview[]
 to specify a range of permitted values for attributes.
 // end::overview[]
+
+== Syntax
+
+.Value annotation syntax
+[,typeql]
+----
+<type label> value <value type> @range(N..M);
+<type label> value <value type> @range(N..);
+<type label> value <value type> @range(..M);
+----
+
+.Ownership annotation syntax
+[,typeql]
+----
+<type label> owns <attribute type label> @range(N..M);
+<type label> owns <attribute type label> @range(N..);
+<type label> owns <attribute type label> @range(..M);
+----
+
+`@range` annotation can be defined for either an attribute type or an ownership.
+
+`@range` annotation accepts either a range argument or a single scalar argument. Arguments should be of the same value type as `<attribute type label>`. Please refer to <<_value_types>> for the list of accepted value types.
+
+Partially unbounded ranges `N..` and `..M` do not have upper and lower bounds respectively.
+
+== Usage
+
+// TODO
+
+[#_references]
+== References
+
+[#_value_types]
+=== Supported value types
+
+`@range` annotation is applicable only to ordered value types.
+
+.Supported value types
+[cols=".^1,^.^1,1"]
+|===
+^| Value type ^| Supported? ^| Comment
+| `boolean`
+| ✓
+|
+
+| `integer`
+| ✓
+|
+
+| `double`
+| ✓
+|
+
+| `decimal`
+| ✓
+|
+
+| `string`
+| ✓
+|
+
+| `date`
+| ✓
+|
+
+| `datetime`
+| ✓
+|
+
+| `datetime-tz`
+| ✓
+|
+
+| `duration`
+| ✗
+|
+
+// | `struct`
+// |
+// | Custom value types do not currently support ordering
+|===

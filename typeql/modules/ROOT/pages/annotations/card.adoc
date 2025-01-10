@@ -4,3 +4,104 @@
 // tag::overview[]
 to specify cardinality ranges for roles and ownerships.
 // end::overview[]
+
+== Syntax
+
+.Range argument syntax
+[,typeql]
+----
+<type label> <capability> <type label 2> @card(N..M);
+<type label> <capability> <type label 2> @card(N..);
+----
+
+.Single scalar argument syntax
+[,typeql]
+----
+<type label> <capability> <type label 2> @card(N);
+----
+
+`@card` can be defined for any `<capability>` of: `owns`, `relates`, or `plays`.
+
+`@card` annotation accepts either a range argument or a single scalar argument. The arguments should be of `integer` value type.
+
+Partially unbounded range `N..` has an infinite upper bound.
+
+Minimal lower bound is `0` and should be explicitly specified: `0..M` instead of `..M`.
+
+A single scalar argument `N` is a shorthand for `N..N` and means "exactly N".
+
+== Usage
+
+// TODO: Update for ordered / unordered when lists are implemented
+Every capability has a default cardinality constraint, which value can be accessed in <<_default_cardinality>>.
+
+When a `@card` annotation is defined, the default constraint is overridden with the value from the annotation's arguments.
+
+`Cardinality` constraint regulates the amount of capabilities a type instance can have. For example, the following definition means that an instance of type `page` should have at least one and up to three `name` s:
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;card-owns-13]
+----
+
+At the same time, it can play a role `posting:page` an unlimited number of times for any relations:
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;card-plays-0inf]
+----
+
+However, an instance of `posting` relation type can only have up to a thousand `page` s:
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;card-relates-01k]
+----
+
+=== Subtyping
+
+// TODO: Put somewhere in a common place and reference it
+Similarly to inherited type constraints, capability constraints also affect subtypes from both sides. For example, the following query defines that:
+
+* a `page` instance should have from 1 to 3 names;
+* a `profile` instance, inheriting capabilities and their constraints from `page`, should have from 1 to 3 names;
+* a `user` instance should have exactly 1 first name and can have up to 2 surnames (as `first-name` and `surname` are both `name` s).
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;card-owns-13;profile-sub-page;user-owns-name;name-subattributes]
+----
+
+Thus, the following statements based on this schema are valid:
+
+* it's impossible to insert a `page`, a `profile`, or a `user` without a name;
+* it's impossible to insert a `page` or a `profile` at all, because they don't own a non-abstract name;
+* an instance of a `user` can be inserted with just a first name;
+* an instance of a `user` cannot be inserted with more than two surnames.
+
+[#_references]
+== References
+
+[#_default_cardinality]
+.Default capabilities cardinality
+[cols=".^1,^.^1"]
+|===
+^| Capability ^| Cardinality
+| `owns`
+| `card(0..1)`
+
+// TODO: Uncomment when ordering is introduced
+// | `owns[]`
+// | `card(0..)`
+
+| `relates`
+| `card(0..1)`
+
+// TODO: Uncomment when ordering is introduced
+// | `relates[]`
+// | `card(0..)`
+
+| `plays`
+| `card(0..)`
+
+|===

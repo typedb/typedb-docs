@@ -19,11 +19,11 @@ to restrict an owned list of attributes to distinct values.
 <type label> owns <type label>[] @distinct;
 ----
 
-The `@distinct` annotation doesn't accept any arguments, so after the `distinct` keyword always follows either a comma or a semicolon.
+`@distinct` annotation does not accept any arguments.
 
 == Usage
 
-TypeQL statements with the `@distinct` annotation are used to define a `distinct` constraint for an ordered type capability (i.e., to declare that a list of capabilities is distinct and contains only distinct values).
+TypeQL statements with `@distinct` annotation are used to define a `distinct` constraint for an ordered type capability (i.e., to declare that a list of capabilities is distinct and contains only distinct values).
 
 // TODO: Add reference to lists
 

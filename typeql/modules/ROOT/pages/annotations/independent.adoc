@@ -13,11 +13,11 @@ to prevent attributes without owners from being deleted automatically.
 <type label> @independent;
 ----
 
-The `@independent` annotation doesn't accept any arguments, so after the `independent` keyword always follows either a comma or a semicolon.
+`@independent` annotation does not accept any arguments.
 
 == Usage
 
-TypeQL statements with the `@independent` annotation are used to define an `independent` constraint for an attribute type, making the type independent.
+TypeQL statements with `@independent` annotation are used to define an `independent` constraint for an attribute type, making the type independent.
 
 // TODO: Add a link to attributes and their dependency on existing owners
 Default dependence of attributes (instances of attribute types) on their owners means:

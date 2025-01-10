@@ -6,3 +6,43 @@
 to specify a regex pattern for permitted values of attributes.
 // end::overview[]
 
+== Syntax
+
+.Value annotation syntax
+[,typeql]
+----
+<type label> value <value type> @regex("<regular expression>");
+----
+
+.Ownership annotation syntax
+[,typeql]
+----
+<type label> owns <attribute type label> @regex("<regular expression>");
+----
+
+`@regex` annotation can be defined for either an attribute type or an ownership.
+
+`@range` annotation accepts a single string argument containing a regular expression.
+
+== Usage
+// TODO:
+// `@regex` annotation adds a constraint on values of attributes of a given attribute type
+// to be valid strings according to the object regular expression.
+//
+// == Usage in a schema definition
+//
+// include::{page-version}@typeql::partial$iam-database-links.adoc[]
+//
+// Since in Define queries you can't use variables, the subject of a `regex` statement can only be
+// an attribute type label.
+//
+// For example, to define a new attribute type `visibility` with a value type of `string`,
+// and values to be limited to `public`, `private`, or `closed`, use:
+//
+// .Define query regex example
+// [,typeql]
+// ----
+// define
+// visibility sub attribute, value string, regex "^(public|private|closed)$";
+// ----
+

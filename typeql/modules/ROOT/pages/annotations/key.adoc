@@ -5,3 +5,16 @@
 // tag::overview[]
 to specify key attributes for entities and relations.
 // end::overview[]
+
+== Syntax
+
+.Syntax
+[,typeql]
+----
+<type label> owns <attribute type label> @key;
+----
+
+`@key` annotation does not accept any arguments.
+
+== Usage
+

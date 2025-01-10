@@ -6,7 +6,7 @@ define
 
   entity page @abstract, sub content,
     owns page-id,
-    owns name,
+    owns name @card(0..3),
     owns bio,
     owns profile-picture,
     owns badge,
@@ -177,7 +177,7 @@ define
 
   relation posting sub content-engagement,
     relates page as content,
-    relates post;
+    relates post @card(0..1000);
 
   relation sharing sub content-engagement,
     relates original-post as content,

@@ -14,12 +14,11 @@ to specify that a type is abstract.
 <type label> @abstract;
 ----
 
-The `@abstract` annotation doesn't accept any arguments, so after the `abstract` keyword always follows either a comma or a semicolon.
+`@abstract` annotation does not accept any arguments.
 
 == Usage
-TypeQL statements with the `@abstract` annotation are used to define an `abstract` constraint for a type (i.e., to declare that a type is abstract).
 
-An abstract type cannot be used to insert a data instance but can be used to create a subtype or to query (for its subtypes).
+When defined for a type, `@abstract` annotation puts a constraint on this type, making it abstract. An abstract type cannot be used to insert a data instance but can be used to create a subtype or to query (for its subtypes).
 
 [,typeql]
 ----
@@ -28,7 +27,7 @@ include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-k
 
 === Subtyping
 
-`abstract` constraint is not inheritable. It makes all the subtypes of an abstract type concrete, which allows the creation of their instances.
+`Abstract` constraint is not inheritable. It makes all the subtypes of an abstract type concrete, which allows the creation of their instances.
 
 It is possible to define an abstract subtype of an abstract type.
 
