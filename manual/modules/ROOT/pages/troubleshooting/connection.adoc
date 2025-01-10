@@ -1,1 +1,25 @@
 = Connection problems
+
+This page contains the most common issues that may be encountered during development with respect to connecting to a TypeDB server.
+
+== Connection refused
+
+```
+$ ./typedb console --core localhost:1729 --username admin --password password
+tcp connect error: Connection refused (os error 61)
+```
+
+Receiving this error message from Console or Driver indicates that they are unable to establish a connection to the server for some reason. The most common reason could be:
+
+- The server is either not running for some reason
+- The server is configured at a different host or port to what the client is attempting to connect to
+- The connection is blocked by a firewall
+
+== TLS error
+
+```
+$ ./typedb console --core localhost:1729 --username admin --password password
+Connecting to HTTPS without TLS enabled
+```
+
+Receiving this error message from Console or Driver indicates that TLS is not properly configured from the Console / Driver side. See the appropriate documentation as to how they can be enabled respectively.
