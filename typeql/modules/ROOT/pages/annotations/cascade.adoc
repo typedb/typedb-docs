@@ -1,1 +1,23 @@
 = `@cascade` annotation
+
+`@cascade` annotation is used
+// tag::overview[]
+to specify behaviour when deleting a relation's roleplayers.
+// end::overview[]
+
+== Syntax
+
+.Syntax
+[,typeql]
+----
+<type label> relates <type label> @cascade;
+----
+
+The `@cascade` annotation doesn't accept any arguments, so after the `cascade` keyword always follows either a comma or a semicolon.
+
+== Usage
+
+[NOTE]
+====
+`@cascade` is not yet introduced in TypeDB. Coming soon!
+====

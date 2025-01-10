@@ -131,7 +131,9 @@ define
 
   attribute name, value string;
   attribute gender, value string @values("male", "female", "other");
+// tag::independent-attribute[]
   attribute language @independent, value string;
+// end::independent-attribute[]
   attribute email, value string @regex("^\w+@\w+\.\w+$");
   attribute phone, value string;
 

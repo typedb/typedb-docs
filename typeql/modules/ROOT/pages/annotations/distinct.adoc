@@ -1,1 +1,33 @@
 = `@distinct` annotation
+
+`@distinct` annotation is used
+// tag::overview[]
+to restrict an owned list of attributes to distinct values.
+// end::overview[]
+
+== Syntax
+
+.Relates syntax
+[,typeql]
+----
+<type label> relates <type label>[] @distinct;
+----
+
+.Owns syntax
+[,typeql]
+----
+<type label> owns <type label>[] @distinct;
+----
+
+The `@distinct` annotation doesn't accept any arguments, so after the `distinct` keyword always follows either a comma or a semicolon.
+
+== Usage
+
+TypeQL statements with the `@distinct` annotation are used to define a `distinct` constraint for an ordered type capability (i.e., to declare that a list of capabilities is distinct and contains only distinct values).
+
+// TODO: Add reference to lists
+
+[NOTE]
+====
+Ordered capabilities, lists and their annotations like `@distinct` are not yet introduced in TypeDB. Coming soon!
+====
