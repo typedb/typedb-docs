@@ -1,0 +1,371 @@
+= Crash course
+
+TypeDB brings together powerful programming concepts with the performance of modern database systems. The result is a new type of database experience: let's have a first look at what that means!
+
+== Manage your data with types
+
+In TypeDB, data is stored in *types*, which can be either
+
+* *entity* types (e.g., a type of all the ``user``s in your app)
+* *relation* types (e.g., all the ``friendship``s between users)
+* *attribute* types (e.g., the ``username``s of ``user``s, or the ``start_date``s of ``friendship``s)
+
+TypeDB's type system unifies concepts from relational, document, and graph DBMSs, blending them with a modern programming paradigm. Let's see how that works!
+
+== Query-programming style of TypeDB
+
+The query language of TypeDB is *TypeQL*. It combines declarative and functional **programming concepts** with the simplicity of **natural language**. Here's a simple TypeQL query to get us started:
+
+[,typeql]
+----
+match
+  $alex isa user, has username "grothendieck_25";
+  friendship (friend: $alex, friend: $friend-of-alex);
+reduce $alex-friend-count = count;
+----
+
+This query returns the count of how many friends the user `$alex` has (identified by their username `"grothendieck_25"`). This works in two stages:
+
+1. First, the `match` stage outputs all *answers* for the database that satisfy the given statements about ``$alex`` and the ``$friend-of-alex`` variable. This means we output all possible data combinations for those variables!
+
+2. Second, the `reduce` stage takes all these answer combinations and counts them, outputting a single number assigned to the variable `$alex-friend-count`.
+
+Here is a slightly more complex query, that extends the query with further stages.
+
+[,typeql]
+----
+match
+  $alex isa user, has username "grothendieck_25";
+  friendship (friend: $alex, friend: $friend-of-alex);
+reduce $alex-friend-count = count;
+match
+  $other-user isa user, has username $other-name;
+  friendship (friend: $other-user, friend: $friend-of-other-user);
+reduce $other-friend-count = count
+  groupby $other-name, $alex-friend-count;
+match
+  $alex-friend-count < $other-friend-count;
+select $other-name;
+----
+
+This query now has 6 stages in total:
+
+* In the first two stages, as before, we determine the count of Alex' friends and assigns that count to the variable ``$alex-friend-count``.
+* But now the query _continues_: in stage 3, the matches all ``$other-user``s with their respective usernames, ``$other-name``, and their friends. In stage 4, we again count the answers but this time we first group answers by (unique combinations of) `$other-name` and `$alex-friend-count` before we do the count per-group.
+* In stage 5, we impose an additional condition on the answers of the previous stage (which will be thruples of `$other-friend-count`, `$other-name`, and `$alex-friend-count`). This filters out all the answer that don't satisfy the condition!
+* Finally, we only select the username `$other-name` from each answer to be returned to us. This will gives us all the usernames of user who have more friends than Alex!
+
+Combining multiple query stages into a single query pipeline is _fun_. But the resulting query now has quite a bit of logically repetitive code. Let's see a final, and most advanced version of the very same query:
+
+[,typeql]
+----
+with fun friend_count($user) -> integer:
+  match friendship (friend: $user, friend: $friend-of-user);
+  return count;
+match
+  $alex isa user, has username "grothendieck_25";
+  $other-user isa user, has username $other-name;
+  friend_count($alex) < friend_count($other-user);
+select $other-name;
+----
+
+This yields a concise and readable query: by using the `fun` keyword we can define a helper function that abstracts a key part of our query logic. Functions are a most powerful tool in TypeQL (drumroll... stateful recursion!). Importantly, they use just the same syntax as queries, and so incur zero mental overhead.
+
+// By stateful recursion I mean e.g. recursive path finding that keeps track of path length
+
+== Defining your types schema
+
+The types `user` and `username` in the above queries don't come out of nowhere: in order to query data in types, you first need to define those types. Types are defined with `define` queries like so:
+
+[,typeql]
+----
+define
+  entity user, owns username;
+  attribute username, value string;
+----
+
+Similarly, if we were to add a `friendship` type to our schema we would define:
+
+[,typeql]
+----
+define
+  relation friendship, relates friend @card(2);
+  user plays friendship:friend;
+----
+
+* The first line of the query introduces the relation type friendship with a `friend` *role* (programmer-lingo: think "`interface`"). It also states that each friendship requires exactly _two_ friends to be instantiated (`card` abbreviates "`cardinality`").
+* The second line states that users can play the role of friends in friendships (programmer-lingo: think the type `user` implements the `friend` interface).
+
+
+Relation types, like entity types, are types of "`first-class objects`" in our type system. In particular, they too can have attributes (or may play roles in other relations types).
+
+[,typeql]
+----
+define
+  attribute start-date, value datetime;
+  friendship owns start-date @card(0..1);
+----
+
+This defines a `start-date` attribute and then declares each friendship own zero or one start date (note that this is the default cardinality so it may actually be omitted here).
+
+Type cardinality, `@card`, is a first example of a so-called *annotation*, which make schema statements more specific. Here is another useful annotation, which specifies that the username of a user should uniquely identify a user (i.e., it is a _key attribute_):
+
+[,typeql]
+----
+define user owns username @key;
+----
+
+Importantly, different types may own the _same_ attributes; and, similarly, different types may play the _same_ role of a relation type. This flexibility of connecting types is a central feature of data modeling with TypeDB.
+
+[,typeql]
+----
+define
+  entity company-account,
+    owns username @key,
+    plays friendship:friend;
+----
+
+TypeDB's type system re-thinks data models from first principles: it modularizes schemas into their "atomic" components. For example, you can add or remove ownership at any point in time, or edit specific annotations. This makes it easy to migrate and combine data, and programmatically re-structure your database if necessary.
+
+== Working with data
+
+Having defined the types in our schema, we are ready to create data in our database. To begin, let's insert some user with the following `insert` query:
+
+[,typeql]
+----
+insert $x isa user;
+----
+
+This works, but is pretty useless: it inserts a user entity in the type `user`, but gives no information about it—as a consequence we would have trouble retrieving or working with that object, as it has no distinguishing features (except, it will have an automatically assigned "`internal id`", or *iid*, which every object, i.e., entity or relation, gets assigned when created!).
+
+The following is better:
+
+[,typeql]
+----
+insert $x isa user, has username "grothendieck_25";
+----
+
+We can also combine multiple insertions in the same `insert` query like so:
+
+[,typeql]
+----
+insert
+  $x isa user, has username "grothendieck_25";
+  $y isa user, has username "deligne_p";
+----
+
+This inserts two users at the same time. Recall, that we set usernames to be a key attribute of our users, so you would (rightfully) expect the following query to fail:
+
+[,typeql]
+----
+insert
+  $x isa user, has username "name_123";
+  $y user, has username "name_123";
+----
+
+So far so good, but how can we insert friendships? The issue here, that we need to _refer_ to users to instantiate our friendship (recall: each friendship takes two friends). But that's why we have *variables*! On an empty database, we can write:
+
+[,typeql]
+----
+insert
+  $x isa user, has username "grothendieck_25";
+  $y isa user, has username "deligne_p";
+  friendship (friend: $x, friend: $y);
+----
+
+In fact, you may equivalently replace the last line by `$z isa friendship ( ... )` if you so wish: this would enable you to refer to the `friendship` relation via the variable `$z` later on!
+
+This is nice, but what about the case when users already exist in our database? Well, `insert` can be just another query pipeline stage:
+
+[,typeql]
+----
+match
+  $x isa user, has username "grothendieck_25";
+  $y isa user, has username "deligne_p";
+insert
+  friendship (friend: $x, friend: $y);
+----
+
+Easy!
+
+Really, deleting and updating data works in a similar vein: all such data *write* operations can be used as pipeline stages, and they all use essentially the same declarative statement-by-statement syntax. For example, the following pipeline, sets a user's status to "banned", then deletes all friendships of that user, and then flags all friends of that user as being "under review" if they themselves have (at least) one friend whose account is under review.
+
+[,typeql]
+----
+match
+  $user isa user, has username "bad_user";
+insert
+  $user has status "banned";
+match
+  $fship isa friendship (friend: $user, friend: $friend);
+delete
+  $fship;
+match
+  friendship (friend: $friend, friend: $friend-of-friend);
+  $friend-of-friend has status "under-review";
+insert
+  $friend has status "under-review";
+----
+
+== Database management 101
+
+The time has come to actually get to work. Recall from the xref:{page-version}@home::quickstart.adoc[Quickstart], the first two steps of the TypeQB workflow are always as follows:
+
+1. Ensure that your **TypeDB server** is running.
+1. From the **TypeDB client** of your choice, establish a connection to the server.
+
+Next up, let us create a database. The workflow here will depend on your client, but is easy in either case.
+
+[tabs]
+====
+Studio::
++
+--
+Use the database management button on the top left.
+--
+
+Console::
++
+--
+To list existing database use:
+----
+$ database list
+----
+To create a new database called `my-db` use
+----
+$ database create my-db
+----
+To delete a database use
+----
+$ database delete my-db
+----
+--
+
+Python::
++
+--
+After connecting with
+[,typeql]
+----
+driver = TypeDB.core_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
+----
+you can create a database with:
+----
+driver.databases.create(database)
+----
+and delete a database with:
+----
+driver.databases.get(database).delete()
+----
+--
+
+
+Rust::
++
+--
+NOTE: coming soon.
+--
+====
+
+== Running queries in transactions
+
+Now that we've learned the ropes of TypeQL, and have  actually _run_ them.
+
+The next step are now **open a transaction** for an existing database, run queries in it, and close or commit the transaction when done. In TypeDB, running queries always requires acquiring a transaction. There are three types of transactions:
+
+* *Schema* transactions allow you to run schema definition queries (like the `define` queries that we've seen above).
+* *Write* transactions allow you to send query pipelines that may write data (i.e., they contain "`write stages`" like the `insert` or `delete` stages that we have seen above)
+* *Read* transactions allow you to send query pipelines that only read data (i.e., they contain only "`read stages`" like the `match`, `reduce`, or `select` stages that we have seen above).
+
+How to open a transaction and run a query will depend on your client.
+
+[tabs]
+====
+Studio::
++
+--
+Select your transaction type in the top menu of Studio, open your query file, then click the run button.
+--
+
+Console::
++
+--
+Open the transaction with
+----
+transaction my-db <TYPE>
+----
+where `<TYPE>` can be one of `schema`, `write`, or `read`.
+
+Then run your queries in the newly opened prompt! Use
+----
+commit
+----
+if you want to commit changes.
+--
+
+Python::
++
+--
+Open a transaction and send a query with
+----
+with driver.transaction(database, TransactionType.<TYPE>) as tx:
+    response = tx.query(<QUERY>).resolve()
+----
+where `<TYPE>` can be one of `SCHEMA`, `WRITE`, or `READ`. Use
+----
+tx.commit()
+----
+if you want to commit changes.
+--
+
+
+Rust::
++
+--
+NOTE: Coming soon.
+--
+====
+
+
+== Functions and query composition
+
+schema functions vs helper functions
+
+more examples
+
+match P; match Q; vs match P
+
+== Optional patterns and variables
+
+NOTE: Coming soon.
+
+== What next?
+
+Continue learning how to use TypeDB with TypeDB Academy, or explore other sections of the documentation.
+
+[cols-2]
+--
+.xref:{page-version}@academy::index.adoc[]
+[.clickable]
+****
+An end-to-end learning experience for TypeDB and TypeQL, showing how to take advantage of TypeDB's unique features.
+****
+
+.xref:{page-version}@manual::index.adoc[TypeDB manual]
+[.clickable]
+****
+Practice-oriented guides on using TypeDB, including the TypeDB Studio and TypeDB Console manuals.
+****
+
+.xref:{page-version}@drivers::index.adoc[TypeDB drivers]
+[.clickable]
+****
+Installation guides, tutorials, and API references for the official TypeDB drivers in all supported languages.
+****
+
+.xref:{page-version}@typeql::index.adoc[TypeQL reference]
+[.clickable]
+****
+Complete language reference for TypeQL, covering all query types, pattern elements, and keywords.
+****
+--
