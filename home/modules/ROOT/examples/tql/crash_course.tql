@@ -149,7 +149,7 @@ select $other-name;
 # end::intro2[]
 
 # tag::intro3[]
-with fun friend_count($user) -> integer:
+with fun friend_count($user: user) -> integer:
   match friendship (friend: $user, friend: $friend-of-user);
   return count;
 match
