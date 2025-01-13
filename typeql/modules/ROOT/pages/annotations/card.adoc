@@ -44,7 +44,7 @@ When a `@card` annotation is defined, the default constraint is overridden with 
 include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;card-owns-13]
 ----
 
-At the same time, it can play a role `posting:page` an unlimited number of times for any relations:
+At the same time, it can play role `posting:page` an unlimited number of times for any relations:
 
 [,typeql]
 ----
@@ -65,7 +65,7 @@ Similarly to inherited type constraints, capability constraints also affect subt
 
 * a `page` instance should have from 1 to 3 names;
 * a `profile` instance, inheriting capabilities and their constraints from `page`, should have from 1 to 3 names;
-* a `user` instance should have exactly 1 first name and can have up to 2 surnames (as `first-name` and `surname` are both `name` s).
+* a `user` instance should have exactly 1 first name and can have up to 2 surnames (note that `first-name` and `surname` are both `name` s).
 
 [,typeql]
 ----
@@ -83,6 +83,10 @@ Thus, the following statements based on this schema are valid:
 == References
 
 [#_default_cardinality]
+=== Default capabilities cardinality
+
+The following cardinality constraints are set for capabilities by default if no `@card` annotations are declared:
+
 .Default capabilities cardinality
 [cols=".^1,^.^1"]
 |===

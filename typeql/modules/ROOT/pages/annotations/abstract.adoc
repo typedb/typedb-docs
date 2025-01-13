@@ -27,9 +27,7 @@ include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-k
 
 === Subtyping
 
-`Abstract` constraint is not inheritable. It makes all the subtypes of an abstract type concrete, which allows the creation of their instances.
-
-It is possible to define an abstract subtype of an abstract type.
+`Abstract` constraint is not inheritable. It makes all the subtypes of an abstract type concrete by default, which allows the creation of their instances. It is also possible to define an abstract subtype of an abstract type.
 
 [,typeql]
 ----
