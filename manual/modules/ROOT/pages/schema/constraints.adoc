@@ -1,1 +1,51 @@
 = Defining constraints
+
+In this guide, you'll see how to use a Define query to define constraints for types and type capabilities.
+
+== Understanding constraints
+
+Constraints define limitations for types and their capabilities, enabling more precise control over the data in the schema.
+
+Think of type declarations as blueprints for constructing a building—they define the overall structure. Constraints, on the other hand, are the building codes and regulations that ensure every room, window, and door meets specific standards for safety and functionality.
+
+For example, this schema definition is an overall description of what the database is about and what's the structure of the data is expected:
+
+[,typeql]
+----
+include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;entities;attributes]
+----
+
+However, this schema allows the data to be quite messy:
+
+- There can coexist general `content` s and more general `page` s, `profile` s, and `user` s.
+- `id` s can be duplicated.
+- Generally, there can be an unspecified number of `name` s for a `page` and, thus, a `user`.
+- `phone` and `email` values are not regulated.
+- ... and some other possible unanswered questions.
+
+Different databases have different approaches for solving these issues. Some expect external coding for complex validations.
+
+TypeDB aims to simplify the complexities of schema declaration and data control and uses its constraint system to cover the most of necessary data limitations, allowing it to be a part of the schema: direct, flexible, and easy to read.
+
+Using xref:{page-version}@typeql::annotations/overview.adoc[annotations], it's possible to define an unlimited number of cardinality, modality, and value constraints directly in the schema:
+
+[,typeql]
+----
+include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;entities-annotations;attributes-annotations]
+----
+
+Try referring to xref:{page-version}@typeql::annotations/overview.adoc[Annotations] to access the whole list of data constraints available in TypeDB and understanding what each of the annotations above means.
+
+.See the details
+[%collapsible]
+====
+- `@abstract` makes a type abstract, not allowing it to have instances.
+- `@key` makes `id` and all its subtypes unique, single, and mandatory identifiers of any instance of the `content`.
+- `@card` puts a cardinality constraint, restricting the of `name` s for a `profile`.
+- `@regex` enforces a format for string data stored in all `email` s in the schema and all `phone` s owned by `user` s.
+- `@unique` enforces all `user` 's `phone` s to have unique values.
+- `@independent` allows storing `language` s without references from owners, preserving this limited (by the number of languages in the world) data for statistics.
+====
+
+By applying constraints, you can ensure that your database not only organizes information but also guarantees its correctness, consistency, and integrity.
+

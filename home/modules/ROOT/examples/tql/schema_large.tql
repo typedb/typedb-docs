@@ -6,7 +6,7 @@ define
 
   entity page @abstract, sub content,
     owns page-id,
-    owns name @card(0..3),
+    owns name,
     owns bio,
     owns profile-picture,
     owns badge,
@@ -17,6 +17,7 @@ define
 
   entity profile @abstract, sub page,
     owns username,
+    owns name @card(0..3),
     owns can-publish,
     plays group-membership:member,
     plays location:located,
@@ -271,7 +272,7 @@ define
   attribute name value string;
   attribute gender value string @values("male", "female", "other");
   attribute language @independent, value string;
-  attribute email value string @regex("^\w+@\w+\.\w+$");
+  attribute email value string @regex("^.*@\w+\.\w+$");
   attribute phone value string;
   attribute relationship-status value string @values("single", "relationship", "engaged", "married", "complicated");
 # tag::double-attrs[]

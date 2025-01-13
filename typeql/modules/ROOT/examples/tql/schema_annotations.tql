@@ -188,7 +188,7 @@ define
   attribute language @independent, value string;
 // end::independent-attribute[]
 // tag::regex-value[]
-  attribute email value string @regex("^\w+@\w+\.\w+$");
+  attribute email value string @regex("^.*@\w+\.\w+$");
 // end::regex-value[]
 // tag::phone-attribute[]
   attribute phone value string;

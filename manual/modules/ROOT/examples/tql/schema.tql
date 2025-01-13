@@ -1,0 +1,40 @@
+// tag::define-keyword[]
+define
+// end::define-keyword[]
+// tag::entities[]
+  entity content owns id;
+  entity page sub content,
+    owns page-id,
+    owns name;
+  entity profile sub page,
+    owns username;
+  entity user sub profile,
+    owns email,
+    owns phone,
+    owns language;
+
+// end::entities[]
+
+// tag::entities-annotations[]
+  content @abstract, owns id @key;
+  page @abstract;
+  profile @abstract, owns name @card(0..3);
+  user owns phone @regex("^\d{8,15}$") @unique;
+// end::entities-annotations[]
+
+// tag::attributes[]
+  attribute id value string;
+  attribute page-id sub id;
+  attribute username sub page-id;
+  attribute name value string;
+  attribute email value string;
+  attribute phone value string;
+  attribute language value string;
+// end::attributes[]
+
+// tag::attributes-annotations[]
+  attribute id @abstract;
+  attribute page-id @abstract;
+  attribute email value string @regex("^.*@\w+\.\w+$");
+  attribute language @independent;
+// end::attributes-annotations[]

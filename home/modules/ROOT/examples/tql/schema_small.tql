@@ -4,7 +4,7 @@ define
 
   entity page @abstract, sub content,
     owns page-id,
-    owns name @card(0..3),
+    owns name,
     owns bio,
     owns profile-picture,
     plays posting:page,
@@ -12,6 +12,7 @@ define
 
   entity profile @abstract, sub page,
     owns username,
+    owns name @card(0..3),
     plays group-membership:member,
     plays location:located,
     plays content-engagement:author,
