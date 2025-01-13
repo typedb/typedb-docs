@@ -42,3 +42,7 @@ In the following example, an instance of the `phone` type can contain any `strin
 ----
 include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;phone-attribute;regex-owns]
 ----
+
+== Limitations
+
+Is only compatible with xref:{page-version}@typeql::values/string.adoc[`string` value type].

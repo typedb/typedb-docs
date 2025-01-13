@@ -6,9 +6,12 @@ define
 // end::abstract-entity[]
 
   entity content @abstract, sub root,
-    owns id @key,
     owns is-visible,
     plays subscription:content;
+
+// tag::key[]
+  entity content owns id @key;
+// end::key[]
 
   entity page @abstract, sub content,
     owns page-id,
@@ -52,7 +55,14 @@ define
 // tag::regex-owns[]
   entity user owns phone @regex("^\d{10,15}$");
 // end::regex-owns[]
+// tag::unique[]
   entity user owns phone @unique;
+// end::unique[]
+
+// tag::unique-sub-entity[]
+  entity uk-user sub user, owns uk-phone;
+  entity usa-user sub user, owns usa-phone;
+// end::unique-sub-entity[]
 
 // tag::user-owns-name[]
   entity user sub profile,
@@ -157,6 +167,9 @@ define
   attribute page-id @abstract, sub id;
   attribute username sub page-id;
 // end::abstract-attribute[]
+// tag::key-attribute[]
+  attribute id value string;
+// end::key-attribute[]
   attribute post-id sub id;
   attribute comment-id sub id;
 
@@ -180,6 +193,11 @@ define
 // tag::phone-attribute[]
   attribute phone value string;
 // end::phone-attribute[]
+// tag::phone-sub-attributes[]
+  phone @abstract;
+  attribute uk-phone sub phone;
+  attribute usa-phone sub phone;
+// end::phone-sub-attributes[]
 
   attribute payload @abstract, value string;
   attribute text-payload @abstract, sub payload;
@@ -193,6 +211,9 @@ define
   attribute post-video sub video-payload;
   attribute comment-text sub text-payload;
 
+# TODO: Add the following lines to schema_large and schema_small when the definition bug is fixed
+#  latitude value double @range(-90.0..90.0);
+#  longitude value double @range(-180.0..180.0);
 // tag::range-value[]
   attribute latitude value double @range(-90.0..90.0);
 // end::range-value[]

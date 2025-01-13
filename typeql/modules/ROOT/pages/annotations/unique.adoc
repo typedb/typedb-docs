@@ -18,5 +18,86 @@ The `@unique` annotation does not accept any arguments.
 
 == Usage
 
+The `@unique` annotation can be defined for an ownership to put the `unique` constraint on it.
+The `unique` constraint means that no two instances (owners) of the owner type can have instances (attributes) of the attribute type with the same value.
+That makes every owned attribute unique by value among all instances of the owner type **and its subtypes**.
 
+For example, the following statement defines that every `user` should have a unique `phone`:
 
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;phone-attribute;unique]
+----
+
+With this constraint, no instance of `user` can share the same `phone` value.
+It would also affect the following schema extension:
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;phone-sub-attributes;unique-sub-entity]
+----
+
+With the `unique` constraint on the `phone`, there is a protection ensuring that:
+- Any `user` can only have one unique `phone`.
+- A `uk-user` cannot have a `uk-phone` with the same value as a `usa-user` 's `usa-phone`.
+
+If there is a need to restrict uniqueness within subtypes (e.g., allowing `uk-user` and `usa-user` to have phones with overlapping values, but still unique within their respective regions), the `unique` constraint should be applied directly to the subtype ownerships instead.
+
+== Limitations
+
+Cannot be used with the xref:{page-version}@typeql::annotations/key.adoc[`@key` annotation] as they both produce the `unique` constraint.
+
+See <<_value_types>> for the list of supported value types.
+
+[#_references]
+== References
+
+[#_value_types]
+=== Supported value types
+
+The `@unique` annotation is applicable only to uniquely hashable value types.
+
+.Supported value types
+[cols=".^1,^.^1,1"]
+|===
+^| Value type ^| Supported? ^| Comment
+| `boolean`
+| ✓
+|
+
+| `integer`
+| ✓
+|
+
+| `decimal`
+| ✓
+|
+
+| `string`
+| ✓
+|
+
+| `date`
+| ✓
+|
+
+| `datetime`
+| ✓
+|
+
+| `datetime-tz`
+| ✓
+|
+
+| `duration`
+| ✓
+|
+
+| `double`
+| ✗
+| Double values cannot guarantee unique hashing
+
+// | `struct`
+// |
+// | Custom value types do not currently support unique hashing
+|===

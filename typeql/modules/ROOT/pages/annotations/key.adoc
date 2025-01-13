@@ -18,3 +18,20 @@ The `@key` annotation does not accept any arguments.
 
 == Usage
 
+The `@key` annotation is used to mark an owned attribute as a key, which in fact declares two constraints:
+
+- The xref:{page-version}@typeql::annotations/unique.adoc[unique] constraint as an equivalent of `@unique`.
+- The xref:{page-version}@typeql::annotations/card.adoc[cardinality] constraint as an equivalent of `@card(1)`.
+
+For example, the following statement declares that any `content` should have exactly one key `id` with a unique (across all `content` s) value:
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;key;key-attribute]
+----
+
+== Limitations
+
+Cannot be used with the xref:{page-version}@typeql::annotations/unique.adoc[`@unique` annotation] the xref:{page-version}@typeql::annotations/card.adoc[`@card` annotation] as it produces same constraints.
+
+See xref:{page-version}@typeql::annotations/unique.adoc#_value_types[`unique` annotation supported value types] for the list of supported value types.

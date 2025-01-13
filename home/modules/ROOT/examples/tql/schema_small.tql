@@ -150,8 +150,6 @@ define
   attribute relationship-status value string @values("single", "married", "other");
   attribute latitude value double;
   attribute longitude value double;
-  latitude value double;
-  longitude value double;
 
   attribute event-date @abstract, value datetime;
   attribute start-date sub event-date;
