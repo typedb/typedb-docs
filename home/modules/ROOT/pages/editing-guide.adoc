@@ -71,8 +71,8 @@ http://xy.z[Click here]
 
 Page links:
 ----
-.xref:{page-version}@MODULE_NAME::PAGE_NAME.adoc[]
-.xref:{page-version}@home::crash-course.adoc[]       // Example of prev line
+xref:{page-version}@MODULE_NAME::PAGE_NAME.adoc[]
+xref:{page-version}@home::crash-course.adoc[]       // Example of prev line
 ----
 
 == Page attributes
@@ -268,9 +268,9 @@ in block
 
 ----
 [NOTE]
---
+====
 Note that notes note things.
---
+====
 ----
 
 or simply:
