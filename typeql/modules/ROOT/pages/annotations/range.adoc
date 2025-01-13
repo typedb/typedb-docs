@@ -23,15 +23,32 @@ to specify a range of permitted values for attributes.
 <type label> owns <attribute type label> @range(..M);
 ----
 
-The `@range` annotation can be defined for either an attribute type or an ownership.
+The `@range` annotation can be defined for either an attribute type's value type or an ownership.
 
-The `@range` annotation accepts either a range argument or a single scalar argument. Arguments must match the value type of `<attribute type label>`. See <<_value_types>> for the list of supported value types.
+The `@range` annotation accepts either a range argument or a single scalar argument.
+Arguments must match the value type of `<attribute type label>`.
+See <<_value_types>> for the list of supported value types.
 
 Partially unbounded ranges `N..` and `..M` represent ranges without an upper and lower bounds, respectively.
 
 == Usage
 
-// TODO: Add usage examples and additional details
+The `@range` annotation adds a constraint on values of attributes of a given attribute type to be within the specified range.
+
+include::{page-version}@typeql::annotations/values.adoc[tags=values-and-owns-annotations-description-values]
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;range-value]
+----
+
+include::{page-version}@typeql::annotations/values.adoc[tags=values-and-owns-annotations-description-owns]
+In the following example, an instance of the `creation-timestamp` type can contain any value, but a `post` can have (`has`) only the `creation-timestamp` s with the suitable values.
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;creation-timestamp-attribute;range-owns]
+----
 
 [#_references]
 == References

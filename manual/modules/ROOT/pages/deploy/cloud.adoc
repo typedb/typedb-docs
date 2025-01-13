@@ -1,11 +1,21 @@
 = TypeDB Cloud
-:page-aliases: {page-version}@home::install/cloud-self-hosted.adoc
+:page-aliases: {page-version}@home::install/cloud.adoc
 
 TypeDB Cloud is our platform for automatically deploying TypeDB onto the cloud provider of your choice.
 
-To deploy with TypeDB Cloud, you will first need to sign up for an account at https://cloud.typedb.com/sign-up.
-Once you have done so, navigate to the Clusters page hit the Deploy button to go to the cluster deployment page.
-From that page, you'll be able to configure your cluster, and then deploy it.
+== Deploying a cluster
+
+1. Sign up for TypeDB Cloud at https://cloud.typedb.com/sign-up
+2. Navigate to the **Clusters** dashboard and deploy a cluster
+3. Configure your cluster, and click **Deploy**
+
+== Cluster configuration
+
+Paid clusters can be configured during deployment to select different technical specifications.
+We offer a series of recommended configurations,
+or you can enable advanced configuration for more options.
+
+== After deploying
 
 Once your cluster is deployed, you will be able to set the password for the default `admin` user.
 Make sure to save this password somewhere safe, as you will need it to access your cluster.

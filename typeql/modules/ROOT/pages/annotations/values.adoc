@@ -21,14 +21,35 @@ to specify a set of permitted values for attributes.
 <type label> owns <attribute type label> @values(arg0, arg1, ..., argN);
 ----
 
-The `@values` annotation can be defined for either an attribute type or an ownership.
+The `@values` annotation can be defined for either an attribute type's value type or an ownership.
 
-The `@values` annotation requires at least one argument. Multiple arguments can be specified, separated by commas. Arguments should be of the same value type as `<attribute type label>`. Please refer to <<_value_types>> for the list of accepted value types.
+The `@values` annotation requires at least one argument.
+Multiple arguments can be specified, separated by commas.
+Arguments should be of the same value type as `<attribute type label>`.
+Please refer to <<_value_types>> for the list of accepted value types.
 
 == Usage
 
-// TODO
+The `@values` annotation adds a constraint on values of attributes of a given attribute type to be within the specified set of allowed values.
 
+// tag::values-and-owns-annotations-description-values[]
+When defined for an attribute type's value type, the annotation creates a constraint for any attribute of this attribute type.
+// end::values-and-owns-annotations-description-values[]
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;values-value]
+----
+
+// tag::values-and-owns-annotations-description-owns[]
+When defined for an ownership, the annotation creates a constraint for any attribute of this attribute type owned by the owner type.
+// end::values-and-owns-annotations-description-owns[]
+In the following example, an instance of the `emoji` type can contain any value, but a `reaction` can have (`has`) only the `emoji` s with the suitable values.
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;emoji-attribute;values-owns]
+----
 
 [#_references]
 == References

@@ -126,7 +126,7 @@ define
   entity post @abstract, sub content,
     owns post-id,
     owns post-text,
-    owns creation-timestamp,
+    owns creation-timestamp @range(1970-01-01T00:00:00..),
     owns language,
     owns tag,
     owns post-visibility,
@@ -189,7 +189,7 @@ define
 
   relation reaction sub content-engagement,
     relates parent as content,
-    owns emoji,
+    owns emoji @values("like", "love", "funny", "surprise", "sad", "angry"),
     owns creation-timestamp;
 
   relation response sub content-engagement,
@@ -268,16 +268,18 @@ define
   attribute comment-id sub id;
   attribute place-id sub id;
 
-  attribute name, value string;
-  attribute gender, value string @values("male", "female", "other");
+  attribute name value string;
+  attribute gender value string @values("male", "female", "other");
   attribute language @independent, value string;
-  attribute email, value string @regex("^\w+@\w+\.\w+$");
-  attribute phone, value string;
-  attribute relationship-status, value string @values("single", "relationship", "engaged", "married", "complicated");
+  attribute email value string @regex("^\w+@\w+\.\w+$");
+  attribute phone value string;
+  attribute relationship-status value string @values("single", "relationship", "engaged", "married", "complicated");
 # tag::double-attrs[]
-  attribute latitude, value double;
-  attribute longitude, value double;
+  attribute latitude value double;
+  attribute longitude value double;
 # end::double-attrs[]
+  latitude value double @range(-90.0..90.0);
+  longitude value double @range(-180.0..180.0);
 
   attribute event-date @abstract, value datetime;
   attribute start-date sub event-date;
@@ -302,19 +304,19 @@ define
   attribute answer sub text-payload;
   attribute comment-text sub text-payload;
 
-  attribute tag, value string;
-  attribute rank, value string @values("member", "moderator", "admin", "owner");
-  attribute emoji, value string @values("like", "love", "funny", "surprise", "sad", "angry");
-  attribute badge, value string;
+  attribute tag value string;
+  attribute rank value string @values("member", "moderator", "admin", "owner");
+  attribute emoji value string;
+  attribute badge value string;
 
-  attribute creation-timestamp, value datetime @range(1970-01-01T00:00:00..);
-  attribute start-timestamp, value datetime;
-  attribute end-timestamp, value datetime;
+  attribute creation-timestamp value datetime;
+  attribute start-timestamp value datetime;
+  attribute end-timestamp value datetime;
 
   attribute visibility @abstract, value string;
   attribute page-visibility sub visibility, value string @values("public", "private");
   attribute post-visibility sub visibility, value string @values("default", "public", "private");
 
-  attribute is-visible, value boolean;
-  attribute is-active, value boolean;
-  attribute can-publish, value boolean;
+  attribute is-visible value boolean;
+  attribute is-active value boolean;
+  attribute can-publish value boolean;

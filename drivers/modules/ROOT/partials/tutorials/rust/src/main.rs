@@ -1,13 +1,12 @@
 // tag::code[]
 // tag::import[]
-use std::{error::Error, fs, io};
+use std::{error::Error, fs, io, os, process};
+use std::io::{BufRead, Write};
 
-use typedb_driver::{
-    answer::{ConceptMap, JSON},
-    concept::{Attribute, Concept, Value},
-    Connection, Credential, DatabaseManager, Error as TypeDBError, Options, Promise, Session, SessionType,
-    TransactionType,
-};
+use futures_util::stream::TryStreamExt;
+use futures_util::StreamExt;
+use typedb_driver::{answer::{ConceptRow, JSON}, Credentials, DriverOptions, Error as TypeDBError, TransactionType, TypeDBDriver};
+
 // end::import[]
 // tag::constants[]
 static DB_NAME: &str = "sample_app_db";
@@ -21,391 +20,357 @@ enum Edition {
 static TYPEDB_EDITION: Edition = Edition::Core;
 static USERNAME: &str = "admin";
 static PASSWORD: &str = "password";
+
 // end::constants[]
 // tag::fetch[]
-fn fetch_all_users(driver: Connection, db_name: String) -> Result<Vec<JSON>, Box<dyn Error>> {
-    let databases = DatabaseManager::new(driver);
-    let session = Session::new(databases.get(db_name)?, SessionType::Data)?;
-    let tx = session.transaction(TransactionType::Read)?;
-    let iterator = tx.query().fetch("match $u isa user; fetch $u: full-name, email;")?;
-    let mut count = 0;
-    let mut result = vec![];
-    for item in iterator {
-        count += 1;
-        let json = item?;
-        println!("User #{}: {}", count.to_string(), json.to_string());
-        result.push(json);
+async fn fetch_all_users(driver: &TypeDBDriver, db_name: &str) -> Result<Vec<JSON>, Box<dyn Error>> {
+    let tx = driver.transaction(db_name, TransactionType::Read).await?;
+    let response = tx.query("match $u isa user; fetch { 'phone': $u.phone, 'email': $u.email };").await?;
+    let documents = response.into_documents().try_collect::<Vec<_>>().await?;
+    let mut documents_json = vec![];
+    for (index, document) in documents.into_iter().enumerate() {
+        let as_json = document.into_json();
+        println!("User #{}: {}", index, &as_json);
+        documents_json.push(as_json);
     }
-    if result.len() > 0 {
-        Ok(result)
+    if documents_json.len() > 0 {
+        Ok(documents_json)
     } else {
         Err(Box::new(TypeDBError::Other("Error: No users found in a database.".to_string())))
     }
 }
+
 // end::fetch[]
 // tag::insert[]
-fn insert_new_user(
-    driver: Connection,
-    db_name: String,
-    new_name: &str,
+async fn insert_new_user(
+    driver: &TypeDBDriver,
+    db_name: &str,
     new_email: &str,
-) -> Result<Vec<ConceptMap>, Box<dyn Error>> {
-    let databases = DatabaseManager::new(driver);
-    let session = Session::new(databases.get(db_name)?, SessionType::Data)?;
-    let tx = session.transaction(TransactionType::Write)?;
-    let iterator = tx.query().insert(&format!(
-        "insert $p isa person, has full-name $fn, has email $e; $fn == '{}'; $e == '{}';",
-        new_name, new_email
-    ))?;
-    let mut result = vec![];
-    for item in iterator {
-        let concept_map = item?;
-        let name = unwrap_string(concept_map.get("fn").unwrap().clone());
-        let email = unwrap_string(concept_map.get("e").unwrap().clone());
-        println!("Added new user. Name: {}, E-mail: {}", name, email);
-        result.push(concept_map);
+    new_phone: &str,
+    new_username: &str,
+) -> Result<Vec<ConceptRow>, Box<dyn Error>> {
+    let tx = driver.transaction(db_name, TransactionType::Write).await?;
+    let response = tx.query(&format!(
+        "insert $u isa user, has $e, has $p, has $username; $e isa email '{}'; $p isa phone '{}'; $username isa username '{}';",
+        new_email, new_phone, new_username
+    )).await?;
+    let rows = response.into_rows().try_collect::<Vec<_>>().await?;
+    for row in &rows {
+        let email = row.get("e").unwrap().try_get_string().unwrap();
+        let phone = row.get("p").unwrap().try_get_string().unwrap();
+        println!("Added new user. Phone: {}, E-mail: {}", phone, email);
     }
-    if result.len() > 0 {
-        let _ = tx.commit().resolve();
-        Ok(result)
+    if rows.len() > 0 {
+        tx.commit().await?;
+        Ok(rows)
     } else {
-        Err(Box::new(TypeDBError::Other("Error: No users found in a database.".to_string())))
+        Err(Box::new(TypeDBError::Other("Error: No new users created.".to_string())))
     }
 }
+
 // end::insert[]
 // tag::get[]
-fn get_files_by_user(
-    driver: Connection,
-    db_name: String,
-    name: &str,
-    inference: bool,
-) -> Result<Vec<(usize, ConceptMap)>, Box<dyn Error>> {
-    let databases = DatabaseManager::new(driver);
-    let session = Session::new(databases.get(db_name)?, SessionType::Data)?;
-    let tx = session.transaction_with_options(TransactionType::Read, Options::new().infer(inference))?;
-    let users = tx
-        .query()
-        .get(&format!("match $u isa user, has full-name '{}'; get;", name))?
-        .map(|x| x.unwrap())
-        .collect::<Vec<_>>();
-    let response;
-    if users.len() > 1 {
-        return Err(Box::new(TypeDBError::Other("Found more than one user with that name.".to_string())));
-    } else if users.len() == 1 {
-        response = tx
-            .query()
-            .get(&format!(
-                "match
-                    $fn == '{}';
-                    $u isa user, has full-name $fn;
-                    $p($u, $pa) isa permission;
-                    $o isa object, has path $fp;
-                    $pa($o, $va) isa access;
-                    $va isa action, has name 'view_file';
-                    get $fp; sort $fp asc;
-                    ",
-                name
-            ))?
-            .map(|x| x.unwrap())
-            .enumerate()
-            .collect::<Vec<_>>();
-        for (count, file) in &response {
-            println!("File #{}: {}", count + 1, unwrap_string(file.get("fp").unwrap().clone()));
-        }
-        if response.len() == 0 {
-            println!("No files found. Try enabling inference.");
-        }
-        return Ok(response);
-    } else {
-        return Err(Box::new(TypeDBError::Other("No users found with that name.".to_string())));
+async fn get_direct_relatives_by_email(
+    driver: &TypeDBDriver,
+    db_name: &str,
+    email: &str,
+) -> Result<Vec<ConceptRow>, Box<dyn Error>> {
+    let tx = driver.transaction(db_name, TransactionType::Read).await?;
+    let rows = tx
+        .query(&format!("match $u isa user, has email '{}';", email)).await?
+        .into_rows()
+        .try_collect::<Vec<_>>()
+        .await?;
+    if rows.len() != 1 {
+        return Err(Box::new(TypeDBError::Other(format!("Found {} users with email {}, expected 1.", rows.len(), email))));
     }
+    let relative_emails = tx
+        .query(&format!(
+            "match
+                $e == '{}';
+                $u isa user, has email $e;
+                $family isa family ($u, $relative);
+                $relative has username $username;
+                not {{ $u is $relative; }};
+                select $username;
+                sort $username asc;
+                ",
+            email
+        )).await?
+        .into_rows()
+        .try_collect::<Vec<_>>()
+        .await?;
+    for (count, row) in relative_emails.iter().enumerate() {
+        println!("Relative #{}: {}", count + 1, row.get("username").unwrap().try_get_string().unwrap());
+    }
+    Ok(relative_emails)
 }
+
+
+// end::insert[]
+// tag::get[]
+async fn get_all_relatives_by_email(
+    driver: &TypeDBDriver,
+    db_name: &str,
+    email: &str,
+) -> Result<Vec<ConceptRow>, Box<dyn Error>> {
+    let tx = driver.transaction(db_name, TransactionType::Read).await?;
+    let rows = tx
+        .query(&format!("match $u isa user, has email '{}';", email)).await?
+        .into_rows()
+        .try_collect::<Vec<_>>()
+        .await?;
+    if rows.len() != 1 {
+        return Err(Box::new(TypeDBError::Other(format!("Found {} users with email {}, expected 1.", rows.len(), email))));
+    }
+    let relative_emails = tx
+        .query(&format!(
+            "match
+                $u isa user, has email $e;
+                $e == '{}';
+                let $relative in all_relatives($u);
+                not {{ $u is $relative; }};
+                $relative has username $username;
+                select $username;
+                sort $username asc;
+                ",
+            email
+        )).await?
+        .into_rows()
+        .try_collect::<Vec<_>>()
+        .await?;
+    for (count, row) in relative_emails.iter().enumerate() {
+        println!("Relative #{}: {}", count + 1, row.get("username").unwrap().try_get_string().unwrap());
+    }
+    Ok(relative_emails)
+}
+
 // end::get[]
 // tag::update[]
-fn update_filepath(
-    driver: Connection,
-    db_name: String,
-    old_path: &str,
-    new_path: &str,
-) -> Result<Vec<ConceptMap>, Box<dyn Error>> {
-    let databases = DatabaseManager::new(driver);
-    let session = Session::new(databases.get(db_name)?, SessionType::Data)?;
-    let tx = session.transaction(TransactionType::Write)?;
-    let response = tx
-        .query()
-        .update(&format!(
-            "match
-                $f isa file, has path $old_path;
-                $old_path = '{old}';
-                delete
-                $f has $old_path;
-                insert
-                $f has path $new_path;
-                $new_path = '{new}';",
-            old = old_path,
-            new = new_path
-        ))?
-        .map(|x| x.unwrap())
-        .collect::<Vec<_>>();
-    if response.len() > 0 {
-        let _ = tx.commit().resolve();
-        println!("Total number of paths updated: {}", response.len());
-        return Ok(response);
-    } else if response.len() == 0 {
-        println!("No matched paths: nothing to update");
-        return Ok(response);
-    } else {
-        return Err(Box::new(TypeDBError::Other("Impossible query response.".to_string())));
-    }
+async fn update_phone_by_email(
+    driver: &TypeDBDriver,
+    db_name: &str,
+    email: &str,
+    old_phone: &str,
+    new_phone: &str,
+) -> Result<Vec<ConceptRow>, Box<dyn Error>> {
+    let tx = driver.transaction(db_name, TransactionType::Write).await?;
+    let rows = tx
+        .query(&format!(
+            "match $u isa user, has email '{email}', has phone $phone; $phone == '{old_phone}';
+            delete $phone of $u;
+            insert $u has phone '{new_phone}';",
+        ))
+        .await?
+        .into_rows()
+        .try_collect::<Vec<_>>()
+        .await?;
+    tx.commit().await?;
+    println!("Total number of users updated: {}", rows.len());
+    return Ok(rows);
 }
+
 // end::update[]
 // tag::delete[]
-fn delete_file(driver: Connection, db_name: String, path: &str) -> Result<(), Box<dyn Error>> {
-    let databases = DatabaseManager::new(driver);
-    let session = Session::new(databases.get(db_name)?, SessionType::Data)?;
-    let tx = session.transaction(TransactionType::Write)?;
-    let files = tx
-        .query()
-        .get(&format!(
-            "match
-                $f isa file, has path '{}';
-                get;",
-            path
-        ))?
-        .map(|x| x.unwrap())
-        .collect::<Vec<_>>();
-    if files.len() == 1 {
-        let response = tx
-            .query()
-            .delete(&format!(
-                "match
-                    $f isa file, has path '{path}';
-                    delete
-                    $f isa file;
-                    "
-            ))
-            .resolve();
-        match response {
-            Ok(_) => {
-                println!("File has been deleted.");
-                Ok(())
-            }
-            Err(_) => return Err(Box::new(TypeDBError::Other("Error: Failed to delete.".to_string()))),
-        }
-    } else {
-        return Err(Box::new(TypeDBError::Other(
-            format!("Wrong number of files to delete: {}", files.len()).to_string(),
-        )));
-    }
+async fn delete_user_by_email(driver: &TypeDBDriver, db_name: &str, email: &str) -> Result<(), Box<dyn Error>> {
+    let tx = driver.transaction(db_name, TransactionType::Write).await?;
+    let rows = tx.query(&format!(
+        "match $u isa user, has email '{email}';
+        delete $u;"
+    ))
+        .await?
+        .into_rows()
+        .try_collect::<Vec<_>>()
+        .await?;
+    println!("Deleted {} users", rows.len());
+    Ok(())
 }
+
 // end::delete[]
 // tag::queries[]
-fn queries(driver: Connection, db_name: String) -> Result<(), Box<dyn Error>> {
-    println!("Request 1 of 6: Fetch all users as JSON objects with full names and emails");
-    let users = fetch_all_users(driver.clone(), db_name.clone());
-    assert!(users?.len() == 3);
+async fn queries(driver: &TypeDBDriver, db_name: &str) -> Result<(), Box<dyn Error>> {
+    println!("\nRequest 1 of 5: Fetch all users as JSON objects with emails and phone numbers");
+    let users = fetch_all_users(driver, db_name).await?;
+    assert_eq!(users.len(), 3);
 
-    let new_name = "Jack Keeper";
-    let new_email = "jk@typedb.com";
-    println!("Request 2 of 6: Add a new user with the full-name {} and email {}", new_name, new_email);
-    let new_user = insert_new_user(driver.clone(), db_name.clone(), new_name, new_email);
-    assert!(new_user?.len() == 1);
+    let new_user_phone = "17778889999";
+    let new_user_email = "k.koolidge@typedb.com";
+    let new_user_username = "k-koolidge";
+    println!("\nRequest 2 of 6: Add a new user with the email {} and phone {}", new_user_email, new_user_phone);
+    let new_user = insert_new_user(driver, db_name, new_user_email, new_user_phone, new_user_username).await?;
+    assert_eq!(new_user.len(), 1);
 
-    let infer = false;
-    let name = "Kevin Morrison";
-    println!("Request 3 of 6: Find all files that the user {} has access to view (no inference)", name);
-    let no_files = get_files_by_user(driver.clone(), db_name.clone(), name, infer);
-    assert!(no_files?.len() == 0);
+    let kevin_email = "kevin.morrison@typedb.com";
+    println!("\nRequest 3 of 6: Find all direct relatives of a user with email {}", kevin_email);
+    let direct_relatives = get_direct_relatives_by_email(driver, db_name, kevin_email).await?;
+    assert_eq!(direct_relatives.len(), 1);
 
-    let infer = true;
-    println!("Request 4 of 6: Find all files that the user {} has access to view (with inference)", name);
-    let files = get_files_by_user(driver.clone(), db_name.clone(), name, infer);
-    assert!(files?.len() == 10);
+    let old_kevin_phone = "110000000";
+    let new_kevin_phone = "110000002";
+    println!("\nRequest 4 of 5: Update the phone of a of user with email {} from {} to {}", kevin_email, old_kevin_phone, new_kevin_phone);
+    let updated_users = update_phone_by_email(driver, db_name, kevin_email, old_kevin_phone, new_kevin_phone).await?;
+    assert!(updated_users.len() == 1);
 
-    let old_path = "lzfkn.java";
-    let new_path = "lzfkn2.java";
-    println!("Request 5 of 6: Update the path of a file from {} to {}", old_path, new_path);
-    let updated_files = update_filepath(driver.clone(), db_name.clone(), old_path, new_path);
-    assert!(updated_files?.len() == 1);
-
-    let path = "lzfkn2.java";
-    println!("Request 6 of 6: Delete the file with path {}", path);
-    let deleted = delete_file(driver.clone(), db_name.clone(), path);
-
-    match deleted {
-        Ok(_) => return Ok(()),
-        Err(_) => return Err(Box::new(TypeDBError::Other("Application terminated unexpectedly".to_string()))),
-    };
+    println!("\nRequest 5 of 5: Delete the user with email {}", new_user_email);
+    delete_user_by_email(driver, db_name, new_user_email).await
 }
+
+// WARNING: keep when changing the AsRef and signatures, ensure they aren't required as-is for code snippets throughout docs
 // end::queries[]
-fn connect_to_TypeDB(edition: &Edition, uri: impl AsRef<str>, username: impl AsRef<str>, password: impl AsRef<str>) -> Result<Connection, typedb_driver::Error> {
+async fn driver_connect(
+    edition: &Edition,
+    uri: &str,
+    username: impl AsRef<str>,
+    password: impl AsRef<str>,
+) -> Result<TypeDBDriver, typedb_driver::Error> {
     match edition {
         Edition::Core => {
             // tag::driver_new_core[]
             let driver = TypeDBDriver::new_core(
                 &uri,
-                Credentials::new(&username, &password),
+                Credentials::new(username.as_ref(), password.as_ref()),
                 DriverOptions::new(false, None).unwrap(),
-            );
+            ).await;
             // end::driver_new_core[]
             driver
-        },
+        }
         Edition::Cloud => {
             // tag::driver_new_cloud[]
             let driver = TypeDBDriver::new_cloud(
                 &vec![&uri],
-                Credentials::new(&username, &password),
-                DriverOptions::new(false, None).unwrap(),
-            );
+                Credentials::new(username.as_ref(), password.as_ref()),
+                DriverOptions::new(true, None).unwrap(),
+            ).await;
             // end::driver_new_cloud[]
             driver
         }
-    };
+    }
 }
+
 // tag::create_new_db[]
-fn create_database(driver: &Connection, db_name: String) -> Result<bool, Box<dyn Error>> {
-    let databases = DatabaseManager::new(driver.to_owned());
+async fn create_database(driver: &TypeDBDriver, db_name: impl AsRef<str>) -> Result<bool, Box<dyn Error>> {
     print!("Creating a new database...");
-    let result = databases.create(&db_name);
+    let result = driver.databases().create(db_name.as_ref()).await;
     match result {
-        Ok(_) => {
-            println!("OK");
-        }
-        Err(_) => return Err(Box::new(TypeDBError::Other("Failed to create a DB.".to_string()))),
+        Ok(_) => println!("OK"),
+        Err(err) => return Err(Box::new(TypeDBError::Other(format!("Failed to create a DB, due to: {}", err)))),
     };
-    {
-        let schema_session = Session::new(databases.get(&db_name)?, SessionType::Schema)?;
-        db_schema_setup(&schema_session, "iam-schema.tql".to_string())?;
-    }
-    {
-        let data_session = Session::new(databases.get(&db_name)?, SessionType::Data)?;
-        db_dataset_setup(&data_session, "iam-data-single-query.tql".to_string())?;
-    }
+    db_schema_setup(driver, db_name.as_ref(), "schema_small.tql").await?;
+    db_dataset_setup(driver, db_name.as_ref(), "data_small_single_query.tql").await?;
     return Ok(true);
 }
+
 // end::create_new_db[]
 // tag::replace_db[]
-fn replace_database(driver: &Connection, db_name: String) -> Result<bool, Box<dyn Error>> {
-    let databases = DatabaseManager::new(driver.to_owned());
+async fn replace_database(driver: &TypeDBDriver, db_name: &str) -> Result<bool, Box<dyn Error>> {
     print!("Deleting an existing database...");
-    let deletion_result = databases.get(&db_name)?.delete();
+    let deletion_result = driver.databases().get(db_name).await?.delete().await;
     match deletion_result {
         Ok(_) => println!("OK"),
-        Err(_) => return Err(Box::new(TypeDBError::Other("Failed to delete a database.".to_string()))),
+        Err(err) => return Err(Box::new(TypeDBError::Other(format!("Failed to delete a database, due to: {}", err))))
     };
-    let creation_result = create_database(&driver, db_name);
+    let creation_result = create_database(&driver, db_name).await;
     match creation_result {
         Ok(_) => return Ok(true),
-        Err(_) => return Err(Box::new(TypeDBError::Other("Failed to create a new database.".to_string()))),
+        Err(err) => return Err(Box::new(TypeDBError::Other(format!("Failed to create a new database, due to: {}", err))))
     };
 }
 // end::replace_db[]
 
 // tag::db-schema-setup[]
-fn db_schema_setup(schema_session: &Session, schema_file: String) -> Result<(), TypeDBError> {
-    let tx = schema_session.transaction(TransactionType::Write)?;
-    let data = fs::read_to_string(schema_file)?; // "iam-schema.tql"
+async fn db_schema_setup(driver: &TypeDBDriver, db_name: &str, schema_file_path: &str) -> Result<(), TypeDBError> {
+    let tx = driver.transaction(db_name, TransactionType::Schema).await?;
+    let schema_query = fs::read_to_string(schema_file_path)
+        .map_err(|err| TypeDBError::Other(format!("Error loading file content from '{schema_file_path}', due to: {}", err)))?;
     print!("Defining schema...");
-    let response = tx.query().define(&data).resolve();
-    tx.commit().resolve()?;
+    let response = tx.query(&schema_query).await?;
+    assert!(response.is_ok());
+    tx.commit().await?;
     println!("OK");
-    return response;
+    Ok(())
 }
+
 // end::db-schema-setup[]
 // tag::db-dataset-setup[]
-fn db_dataset_setup(data_session: &Session, data_file: String) -> Result<(), Box<dyn Error>> {
-    let tx = data_session.transaction(TransactionType::Write)?;
-    let data = fs::read_to_string(data_file)?; // "iam-data-single-query.tql"
+async fn db_dataset_setup(driver: &TypeDBDriver, db_name: &str, data_file_path: &str) -> Result<(), Box<dyn Error>> {
+    let tx = driver.transaction(db_name, TransactionType::Write).await?;
+    let data = fs::read_to_string(data_file_path)
+        .map_err(|err| TypeDBError::Other(format!("Error loading file content from '{data_file_path}', due to: {}", err)))?;
     print!("Loading data...");
-    let response = tx.query().insert(&data)?;
-    let result = response.collect::<Vec<_>>();
-    tx.commit().resolve()?;
+    let response = tx.query(&data).await?;
+    assert!(response.is_row_stream());
+    let results = response.into_rows().try_collect::<Vec<_>>().await?;
+    assert!(results.len() > 0);
+    tx.commit().await?;
     println!("OK");
-    Ok({
-        drop(result);
-    })
+    Ok(())
 }
+
 // end::db-dataset-setup[]
 // tag::test-db[]
-fn db_check(data_session: &Session) -> Result<bool, Box<dyn Error>> {
-    let tx = data_session.transaction(TransactionType::Write)?;
-    let test_query = "match $u isa user; get $u; count;";
+async fn validate_data(driver: &TypeDBDriver, db_name: &str) -> Result<bool, Box<dyn Error>> {
+    let tx = driver.transaction(db_name, TransactionType::Read).await?;
+    let count_query = "match $u isa user; reduce $count = count;";
     print!("Testing the database...");
-    let response = tx.query().get_aggregate(test_query).resolve();
-    let result = match response?.ok_or("Error: unexpected test query response.")? {
-        Value::Long(value) => value,
-        _ => unreachable!(),
-    };
-    if result == 3 {
+    let response = tx.query(count_query).await?;
+    assert!(response.is_row_stream());
+    let row = response.into_rows().next().await.unwrap()?;
+    let count = row.get("count").unwrap().try_get_integer().unwrap();
+    if count == 3 {
         println!("OK");
         Ok(true)
     } else {
-        Err(Box::new(TypeDBError::Other("Test failed. Terminating...".to_string())))
+        Err(Box::new(TypeDBError::Other(format!("Validation failed, unexpected number of users: {}. Terminating...", count))))
     }
 }
+
 // end::test-db[]
 // tag::db-setup[]
-pub fn db_setup(driver: Connection, db_name: String, db_reset: bool) -> Result<bool, Box<dyn Error>> {
-    let databases = DatabaseManager::new(driver.to_owned());
-    println!("Setting up the database: {}", &db_name);
-    if databases.contains(&db_name)? {
+async fn db_setup(driver: &TypeDBDriver, db_name: &str, db_reset: bool) -> Result<bool, Box<dyn Error>> {
+    println!("Setting up the database: {}", db_name);
+    if driver.databases().contains(db_name).await? {
         if db_reset {
-            match replace_database(&driver, db_name.clone()) {
-                Ok(_) => (),
-                Err(e) => {
-                    eprintln!("Error: {:#?}", e);
-                    std::process::exit(1);
-                }
-            }
+            replace_database(&driver, db_name).await?;
         } else {
-            let mut answer = String::new();
             print!("Found a pre-existing database. Do you want to replace it? (Y/N) ");
-            io::Write::flush(&mut io::stdout()).unwrap();
-            io::stdin().read_line(&mut answer).expect("Failed to read a line");
+            io::stdout().flush()?;
+            let answer = io::stdin().lock().lines().next().unwrap().unwrap();
             if answer.trim().to_lowercase() == "y" {
-                match replace_database(&driver, db_name.clone()) {
-                    Ok(_) => (),
-                    Err(e) => {
-                        eprintln!("Error: {:#?}", e);
-                        std::process::exit(1);
-                    }
-                }
+                replace_database(&driver, db_name).await?;
             } else {
                 println!("Reusing an existing database.");
             }
         }
     } else {
         // No such database found on the server
-        let _ = create_database(&driver, db_name.clone());
+        create_database(&driver, db_name).await?;
     }
-    let data_session = Session::new(databases.get(db_name.clone())?, SessionType::Data)?;
-    match db_check(&data_session) {
-        Ok(_) => return Ok(true),
-        Err(x) => return Err(x),
-    }
+    validate_data(&driver, db_name).await
 }
+
 // end::db-setup[]
 // tag::main[]
-fn main() -> Result<(), Box<dyn Error>> {
+#[tokio::main]
+async fn main() {
     println!("Sample App");
-    let driver = connect_to_TypeDB(&TYPEDB_EDITION, SERVER_ADDR, USERNAME, PASSWORD)?;
-    match db_setup(driver.clone(), DB_NAME.to_owned(), false) {
-        Ok(_) => match queries(driver, DB_NAME.to_owned()) {
-            Ok(_) => {
-                return Ok(());
-            }
-            Err(x) => return Err(x),
-        },
-        Err(_) => return Err(Box::new(TypeDBError::Other("DB setup failed.".to_string()))),
-    };
+    let driver = driver_connect(&TYPEDB_EDITION, SERVER_ADDR, USERNAME, PASSWORD).await
+        .map_err(|err| {
+            println!("{err}");
+            process::exit(1);
+        })
+        .unwrap();
+    db_setup(&driver, DB_NAME, false).await
+        .map_err(|err| {
+            println!("{err}");
+            process::exit(1);
+        })
+        .unwrap();
+    queries(&driver, DB_NAME).await
+        .map_err(|err| {
+            println!("{err}");
+            process::exit(1);
+        })
+        .unwrap();
 }
 // end::main[]
-// tag::string[]
-fn unwrap_string(concept: Concept) -> String {
-    match concept {
-        Concept::Attribute(Attribute { value: Value::String(value), .. }) => value,
-        _ => unreachable!(),
-    }
-}
-// end::string[]
 // end::code[]
