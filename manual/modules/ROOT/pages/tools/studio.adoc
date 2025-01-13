@@ -67,11 +67,6 @@ image::{page-version}@home::studio-connect-cloud.png[TypeDB Studio connect windo
 . Click btn:[Manage Cloud Addresses] button.
 . Add address and port for at least one server from your TypeDB Cloud deployment, then close the Address Management window.
 . Fill in the `Username` and `Password` fields with valid user credentials.
-+
-[NOTE]
-=====
-For newly created deployments, the default username and password are `admin` and `password`. After connecting for the first time, you will be required to change the password before queries can be run.
-=====
 . Turn on the `Enable TLS` option and leave the `CA Certificate` field empty. For self-hosted deployments, encryption parameters may vary.
 . Click `Connect`.
 // end::connect_cloud_studio[]

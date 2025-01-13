@@ -150,11 +150,9 @@ typedb console --cloud=<server-address> --username=<username> --password --tls-e
 
 You will be prompted for a password.
 
-[NOTE]
-=====
-For newly deployed clusters, the default username and password are `admin` and `password`.
-After connecting for the first time, you will be required to xref:{page-version}@manual::configuring/users.adoc#_first_login[change the password] before queries can be run.
-=====
+The `--cloud` argument is used to set the TypeDB Cloud server address and port to connect to,
+for example, `\https://abcdef-0.cluster.typedb.com:80`.
+
 // end::connect_cloud_console[]
 --
 
