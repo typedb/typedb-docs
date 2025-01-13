@@ -22,7 +22,8 @@ to specify cardinality ranges for roles and ownerships.
 
 The `@card` annotation can be defined for any `<capability>` of: `owns`, `relates`, or `plays`.
 
-It accepts either a range argument or a single scalar argument. Arguments must be integers.
+It accepts either a range argument or a single scalar argument.
+Arguments must be integers.
 
 - A partially unbounded range `N..` has an infinite upper bound.
 - The minimal lower bound is `0` and must be explicitly specified (e.g., use `0..M` instead of `..M`).
@@ -35,7 +36,8 @@ Every capability has a default `cardinality` constraint, accessible in <<_defaul
 
 When defined, the `@card` annotation overrides the default constraint with the specified arguments.
 
-The `cardinality` constraint regulates the number of capabilities a type instance can have. For example, the following definition specifies that an instance of the `page` type must have at least one and no more than three `name`s:
+The `cardinality` constraint regulates the number of capabilities a type instance can have.
+For example, the following definition specifies that an instance of the `page` type must have at least one and no more than three `name`s:
 
 [,typeql]
 ----
@@ -59,7 +61,8 @@ include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-k
 === Subtyping
 
 // TODO: Put somewhere in a common place and reference it
-Similarly to inherited type constraints, capability constraints also affect subtypes from both sides. For example, the following query defines that:
+Similarly to inherited type constraints, capability constraints also affect subtypes from both sides.
+For example, the following query defines that:
 
 - A `page` instance must have between 1 and 3 names.
 - A `profile` instance (subtype of `page`) inherits the same constraint and must have between 1 and 3 names.

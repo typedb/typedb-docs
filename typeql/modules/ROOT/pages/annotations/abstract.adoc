@@ -18,7 +18,9 @@ The `@abstract` annotation does not accept any arguments.
 
 == Usage
 
-When defined for a type, the `@abstract` annotation enforces the `abstract` constraint, making the type abstract. An abstract type cannot be used to insert data instances. However, it can be used to create subtypes or as a query target (to retrieve its subtypes).
+When defined for a type, the `@abstract` annotation enforces the `abstract` constraint, making the type abstract.
+An abstract type cannot be used to insert data instances.
+However, it can be used to create subtypes or as a query target (to retrieve its subtypes).
 
 [,typeql]
 ----
@@ -27,7 +29,9 @@ include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-k
 
 === Subtyping
 
-The `@abstract` constraint is not inheritable. This means all subtypes of an abstract type are concrete by default, enabling the creation of their instances. However, it is possible to define an abstract subtype of an abstract type.
+The `@abstract` constraint is not inheritable.
+This means all subtypes of an abstract type are concrete by default, enabling the creation of their instances.
+However, it is possible to define an abstract subtype of an abstract type.
 
 [,typeql]
 ----
@@ -46,7 +50,8 @@ define
 === Specialization of role types
 
 // TODO: Add a hyperlink to "relates as"
-Similarly, abstract role types cannot be instantiated. A concrete sub role type can be defined using **specialization** (keyword `as`).
+Similarly, abstract role types cannot be instantiated.
+A concrete sub role type can be defined using **specialization** (keyword `as`).
 
 [,typeql]
 ----

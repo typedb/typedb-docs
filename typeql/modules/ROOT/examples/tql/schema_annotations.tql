@@ -43,12 +43,16 @@ define
     owns gender,
     owns language,
     owns email,
-    owns phone @regex("^\d{10,15}$") @unique,
     plays friendship:friend,
     plays family:relative,
     plays parentship:parent,
     plays parentship:child,
     plays siblingship:sibling;
+
+// tag::regex-owns[]
+  entity user owns phone @regex("^\d{10,15}$");
+// end::regex-owns[]
+  entity user owns phone @unique;
 
 // tag::user-owns-name[]
   entity user sub profile,
@@ -75,7 +79,6 @@ define
   entity post @abstract, sub content,
     owns post-id,
     owns post-text,
-    owns creation-timestamp,
     owns language,
     owns tag,
     owns post-date,
@@ -84,6 +87,10 @@ define
     plays reaction:parent,
     plays location:located,
     plays viewing:viewed;
+
+// tag::range-owns[]
+  entity post owns creation-timestamp @range(1970-01-01T00:00:00..);
+// end::range-owns[]
 
   entity text-post sub post;
 
@@ -131,8 +138,11 @@ define
 
   relation reaction sub content-engagement,
     relates parent as content,
-    owns emoji,
     owns creation-timestamp;
+
+// tag::values-owns[]
+  relation reaction owns emoji @values("like", "love", "funny", "surprise", "sad", "angry");
+// end::values-owns[]
 
   relation following,
     relates follower,
@@ -150,21 +160,26 @@ define
   attribute post-id sub id;
   attribute comment-id sub id;
 
-
 // tag::name-attribute[]
-  attribute name, value string;
+  attribute name value string;
 // end::name-attribute[]
 // tag::name-subattributes[]
   attribute name @abstract, value string;
   attribute first-name sub name;
   attribute surname sub name;
 // end::name-subattributes[]
-  attribute gender, value string @values("male", "female", "other");
+// tag::values-value[]
+  attribute gender value string @values("male", "female", "other");
+// end::values-value[]
 // tag::independent-attribute[]
   attribute language @independent, value string;
 // end::independent-attribute[]
-  attribute email, value string @regex("^\w+@\w+\.\w+$");
-  attribute phone, value string;
+// tag::regex-value[]
+  attribute email value string @regex("^\w+@\w+\.\w+$");
+// end::regex-value[]
+// tag::phone-attribute[]
+  attribute phone value string;
+// end::phone-attribute[]
 
   attribute payload @abstract, value string;
   attribute text-payload @abstract, sub payload;
@@ -178,10 +193,18 @@ define
   attribute post-video sub video-payload;
   attribute comment-text sub text-payload;
 
-  attribute tag, value string;
-  attribute emoji, value string @values("like", "love", "funny", "surprise", "sad", "angry");
-  attribute badge, value string;
+// tag::range-value[]
+  attribute latitude value double @range(-90.0..90.0);
+// end::range-value[]
 
-  attribute creation-timestamp, value datetime @range(1970-01-01T00:00:00..);
+  attribute tag value string;
+// tag::emoji-attribute[]
+  attribute emoji value string;
+// end::emoji-attribute[]
+  attribute badge value string;
+
+// tag::creation-timestamp-attribute[]
+  attribute creation-timestamp, value datetime;
+// end::creation-timestamp-attribute[]
 
   attribute is-visible, value boolean;

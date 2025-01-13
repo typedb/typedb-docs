@@ -72,7 +72,7 @@ define
   entity post @abstract, sub content,
     owns post-id,
     owns post-text,
-    owns creation-timestamp,
+    owns creation-timestamp @range(1970-01-01T00:00:00..),
     owns tag,
     plays posting:post,
     plays commenting:parent,
@@ -110,7 +110,7 @@ define
 
   relation reaction sub content-engagement,
     relates parent as content,
-    owns emoji,
+    owns emoji @values("like", "love", "funny", "surprise", "sad", "angry"),
     owns creation-timestamp;
 
   relation following,
@@ -144,12 +144,14 @@ define
   attribute comment-id sub id;
   attribute place-id sub id;
 
-  attribute name, value string;
-  attribute email, value string @regex("^\w+@\w+\.\w+$");
-  attribute phone, value string;
-  attribute relationship-status, value string @values("single", "married", "other");
-  attribute latitude, value double;
-  attribute longitude, value double;
+  attribute name value string;
+  attribute email value string @regex("^\w+@\w+\.\w+$");
+  attribute phone value string;
+  attribute relationship-status value string @values("single", "married", "other");
+  attribute latitude value double;
+  attribute longitude value double;
+  latitude value double @range(-90.0..90.0);
+  longitude value double @range(-180.0..180.0);
 
   attribute event-date @abstract, value datetime;
   attribute start-date sub event-date;
@@ -165,9 +167,9 @@ define
   attribute post-image sub image-payload;
   attribute profile-picture sub image-payload;
 
-  attribute tag, value string;
-  attribute emoji, value string @values("like", "love", "funny", "surprise", "sad", "angry");
+  attribute tag value string;
+  attribute emoji value string;
 
-  attribute creation-timestamp, value datetime @range(1970-01-01T00:00:00..);
-  attribute start-timestamp, value datetime;
-  attribute end-timestamp, value datetime;
+  attribute creation-timestamp value datetime;
+  attribute start-timestamp value datetime;
+  attribute end-timestamp value datetime;
