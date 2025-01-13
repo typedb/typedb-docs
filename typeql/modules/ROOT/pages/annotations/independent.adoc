@@ -17,7 +17,9 @@ The `@independent` annotation does not accept any arguments.
 
 == Usage
 
-The `@independent` annotation enforces the `independent` constraint for an attribute type, allowing the type to exist independently of an owner.
+// tag::description[]
+The `@independent` annotation enforces the `independent` constraint for an attribute type, allowing instances of the type to exist independently of their owner.
+// end::description[]
 
 // TODO: Add a reference to attributes and their dependency on existing owners
 
@@ -38,3 +40,7 @@ include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-k
 ----
 include::{page-version}@typeql::example$tql/data_annotations.tql[tags=insert-keyword;independent-attribute;]
 ----
+
+=== Subtyping
+
+The `independent` constraint is inherited. This means that all subtypes of an independent type are also independent, and it cannot be changed.

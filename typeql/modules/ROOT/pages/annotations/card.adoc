@@ -34,9 +34,13 @@ Arguments must be integers.
 // TODO: Update for ordered/unordered when lists are implemented
 Every capability has a default `cardinality` constraint, accessible in <<_default_cardinality>>.
 
-When defined, the `@card` annotation overrides the default constraint with the specified arguments.
+// tag::description[]
+When defined, the `@card` annotation overrides the default `cardinality` with the specified arguments.
+// end::description[]
 
+// tag::description[]
 The `cardinality` constraint regulates the number of capabilities a type instance can have.
+// end::description[]
 For example, the following definition specifies that an instance of the `page` type must have at least one and no more than three `name`s:
 
 [,typeql]
@@ -58,6 +62,7 @@ However, an instance of the `posting` relation type can have up to a thousand `p
 include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;card-relates-01k]
 ----
 
+[#subtyping]
 === Subtyping
 
 // TODO: Put somewhere in a common place and reference it

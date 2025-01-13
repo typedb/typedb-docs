@@ -18,9 +18,11 @@ The `@abstract` annotation does not accept any arguments.
 
 == Usage
 
+// tag::description[]
 When defined for a type, the `@abstract` annotation enforces the `abstract` constraint, making the type abstract.
-An abstract type cannot be used to insert data instances.
-However, it can be used to create subtypes or as a query target (to retrieve its subtypes).
+An abstract type cannot be a direct type for an instance.
+Thus, a concrete subtype is required for instances creation, and an abstract type can be used as a query target to retrieve information about its subtypes.
+// end::description[]
 
 [,typeql]
 ----
@@ -29,7 +31,7 @@ include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-k
 
 === Subtyping
 
-The `@abstract` constraint is not inheritable.
+The `abstract` constraint is not inherited.
 This means all subtypes of an abstract type are concrete by default, enabling the creation of their instances.
 However, it is possible to define an abstract subtype of an abstract type.
 

@@ -1,13 +1,15 @@
 = Defining constraints
 
-In this guide, you'll see how to use a Define query to define constraints for types and type capabilities.
+In this guide, you'll see how to use define queries to define constraints for types and type capabilities.
 
 == Understanding constraints
 
-Constraints define limitations for types and their capabilities, enabling more precise control over the data in the schema.
+Constraints define limitations and extra behavior for types and their capabilities, enabling more precise control over the data in the schema.
 
-Think of type declarations as blueprints for constructing a building—they define the overall structure. Constraints, on the other hand, are the building codes and regulations that ensure every room, window, and door meets specific standards for safety and functionality.
+Think of type declarations as blueprints for constructing a building—they define the overall structure.
+Constraints, on the other hand, are the building codes and regulations that ensure every room, window, and door meets specific standards for safety and functionality.
 
+[#_type_schema]
 For example, this schema definition is an overall description of what the database is about and what's the structure of the data is expected:
 
 [,typeql]
@@ -23,18 +25,22 @@ However, this schema allows the data to be quite messy:
 - `phone` and `email` values are not regulated.
 - ... and some other possible unanswered questions.
 
-Different databases have different approaches for solving these issues. Some expect external coding for complex validations.
+Different databases have different approaches for solving these issues.
+Some expect external coding for complex validations.
 
 TypeDB aims to simplify the complexities of schema declaration and data control and uses its constraint system to cover the most of necessary data limitations, allowing it to be a part of the schema: direct, flexible, and easy to read.
+
+[#annotations_constraints]
+=== Annotations for constraints definition
 
 Using xref:{page-version}@typeql::annotations/overview.adoc[annotations], it's possible to define an unlimited number of cardinality, modality, and value constraints directly in the schema:
 
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;entities-annotations;attributes-annotations]
+include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;entities-annotations;attributes-type-annotations;attributes-value-annotations]
 ----
 
-Try referring to xref:{page-version}@typeql::annotations/overview.adoc[Annotations] to access the whole list of data constraints available in TypeDB and understanding what each of the annotations above means.
+Try referring to xref:{page-version}@typeql::annotations/overview.adoc[TypeQL Annotations] to access the whole list of data constraints available in TypeDB and understanding what each of the annotations above means.
 
 .See the details
 [%collapsible]
@@ -48,4 +54,125 @@ Try referring to xref:{page-version}@typeql::annotations/overview.adoc[Annotatio
 ====
 
 By applying constraints, you can ensure that your database not only organizes information but also guarantees its correctness, consistency, and integrity.
+
+[#_type_constraints]
+=== Type constraints
+
+The <<#annotations_constraints, previous example>> contains a number of annotations, and some of them follow type declarations:
+
+[,typeql]
+----
+include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;entities-type-annotations;attributes-type-annotations]
+----
+
+These constraints relate to types as the whole and are generally simple: instances of these types should respect the defined constraints.
+
+.@abstract description
+[%collapsible]
+====
+include::{page-version}@typeql::annotations/abstract.adoc[tags=description]
+====
+
+.@independent description
+[%collapsible]
+====
+include::{page-version}@typeql::annotations/independent.adoc[tags=description]
+====
+
+[#_value_type_constraints]
+=== Value type constraints
+
+Value type constraints are similar to <<_type_constraints, type constraints>>, but are set for value types of attribute types:
+
+[,typeql]
+----
+include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;attributes-value-annotations]
+----
+
+These constraints act similar to type constraints: values of these attributes should respect the defined constraints.
+
+.@regex description
+[%collapsible]
+====
+include::{page-version}@typeql::annotations/regex.adoc[tags=description]
+====
+
+=== Capability constraints
+
+Similarly, capability constraints follow capabilities (`owns`, `relates`, `plays`) definitions:
+
+[,typeql]
+----
+include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;entities-cap-annotations]
+----
+
+These are a little more complicated, but are more powerful. While <<_type_constraints, type constraints>> and <<_value_type_constraints, value type constraints>> target any instance of a type, these constraints target:
+
+- Owners and attributes in `has`.
+- Relations, roles, and roleplayers in `links`.
+
+By defining these constraints, only specific pairs of entities, relations, and attributes are affected or restricted, and you are flexible in combining these constraints to have an elegant and robust schema.
+
+.@card description
+[%collapsible]
+====
+include::{page-version}@typeql::annotations/card.adoc[tags=description]
+====
+
+.@unique description
+[%collapsible]
+====
+include::{page-version}@typeql::annotations/unique.adoc[tags=description]
+====
+
+=== Subtyping
+
+Subtyping is a powerful instrument in TypeDB and becomes even more powerful with constraints. While it is possible to predict the effect of a constraint on a subtype based on its description, it can be a little tricky at first.
+
+It is recommended to refer to xref:{page-version}@manual::schema/types.adoc[type definition] to understand how subtyping generally works before proceeding.
+
+Please note that more details and examples of subtyping behavior is available on each xref:{page-version}@typeql::annotations/overview.adoc[annotation's page]. Visit these pages in case of struggles in understanding of the explanations below.
+
+==== Type constraints
+An instance should comply to all the constraints of its types (type and supertypes). The following are the explanations of subtyping behaviour based on the <<_type_constraints, type constraints descriptions>> and the <<_type_schema, example>> from the first section:
+
+.@abstract subtyping
+[%collapsible]
+====
+Let's consider an instance of the `user`. It should comply to the `abstract` constraints of:
+
+- `content`
+- `page`
+- `profile`
+
+The <<_type_constraints, constraint's description>> restricts direct instances of types, and `user`, while being a `content`, a `page`, and a `profile`, has the `user` as its direct type. Thus, the constraint is satisfied, and this instance can exist.
+
+At the same time, there can not be instances of the mentioned supertypes.
+====
+
+.@independent description
+[%collapsible]
+====
+Let's consider 2 instances of a `slavic-language sub language`. They should comply to the `independent` constraint of the `language`. The first attribute is owned by multiple owners, while the second is left unowned.
+
+The <<_type_constraints, constraint's description>> allows independent attributes to exist without owners (or restricts the attributes to get deleted without owners). Thus, both attributes can exist.
+
+However, the second attribute will get deleted if there will be no `independent` constraints affecting its types.
+====
+
+==== Value type constraints
+A value should comply to all the constraints of its attribute's types (type and supertypes). The following are the explanations of subtyping behaviour based on the <<_value_type_constraints, value type constraints descriptions>> and the <<_type_schema, example>> from the first section:
+
+.@regex subtyping
+[%collapsible]
+====
+Let's consider an instance of a `typedb-email sub email, value string @regex("^.*@typedb\.com$")` and an instance of a `personal-email sub email`.
+
+In order to comply to the `regex` constraints, values of both instances should be valid email addresses based on the `email` 's regular expression. Additionally, the domain of `typedb-email` 's value should be "typedb.com", while `personal-email` can be any "*.*", including "typedb.com".
+====
+
+==== Capabilities constraints
+// TODO
+
+
 

@@ -30,6 +30,9 @@ For example, the following statement declares that any `content` should have exa
 include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;key;key-attribute]
 ----
 
+=== Subtyping
+Refer to xref:{page-version}@typeql::annotations/unique.adoc#subtyping[unique constraint subtyping] and xref:{page-version}@typeql::annotations/card.adoc#subtyping[card constraint subtyping] for the respective constraints' subtyping behavior.
+
 == Limitations
 
 Cannot be used with the xref:{page-version}@typeql::annotations/unique.adoc[`@unique` annotation] the xref:{page-version}@typeql::annotations/card.adoc[`@card` annotation] as it produces same constraints.

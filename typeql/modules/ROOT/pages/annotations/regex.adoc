@@ -26,7 +26,9 @@ The `@range` annotation accepts a single string argument containing a regular ex
 
 == Usage
 
+// tag::description[]
 The `@regex` annotation adds a constraint on values of attributes of a given attribute type to be valid strings according to the regular expression.
+// end::description[]
 
 include::{page-version}@typeql::annotations/values.adoc[tags=values-and-owns-annotations-description-values]
 
@@ -35,6 +37,7 @@ include::{page-version}@typeql::annotations/values.adoc[tags=values-and-owns-ann
 include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;regex-value]
 ----
 
+[#_example_owns]
 include::{page-version}@typeql::annotations/values.adoc[tags=values-and-owns-annotations-description-owns]
 In the following example, an instance of the `phone` type can contain any `string` value, but a `user` can have (`has`) only the `phone` s with the suitable values.
 
@@ -42,6 +45,18 @@ In the following example, an instance of the `phone` type can contain any `strin
 ----
 include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;phone-attribute;regex-owns]
 ----
+
+=== Subtyping
+
+The `regex` constraint put on an attribute types' value type is inherited.
+include::{page-version}@typeql::annotations/values.adoc[tags=value-constraints-subtyping]
+
+A subtype can introduce another `regex` constraint to combine it with the inherited one and create a subset of allowed values based on the intersection of the specified regular expressions.
+
+=== Subtyping for ownerships
+The `regex` constraint put on an ownership should be respected by all the sub attribute types owned by this owner. This way, any instance of any subtype of the `phone` <<#_example_owns, owned by>> any instance of any subtype of the `user` should comply to the defined `regex`.
+
+Ownerships of these subtypes can have their own `regex` constraints, and they will be respected similarly down the inheritance line.
 
 == Limitations
 

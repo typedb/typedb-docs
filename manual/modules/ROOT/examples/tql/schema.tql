@@ -22,6 +22,18 @@ define
   user owns phone @regex("^\d{8,15}$") @unique;
 // end::entities-annotations[]
 
+// tag::entities-type-annotations[]
+  content @abstract;
+  page @abstract;
+  profile @abstract;
+// end::entities-type-annotations[]
+
+// tag::entities-cap-annotations[]
+  content owns id @key;
+  profile owns name @card(0..3);
+  user owns phone @regex("^\d{8,15}$") @unique;
+// end::entities-cap-annotations[]
+
 // tag::attributes[]
   attribute id value string;
   attribute page-id sub id;
@@ -32,9 +44,13 @@ define
   attribute language value string;
 // end::attributes[]
 
-// tag::attributes-annotations[]
+// tag::attributes-type-annotations[]
   attribute id @abstract;
   attribute page-id @abstract;
+// end::attributes-type-annotations[]
+// tag::attributes-value-annotations[]
   attribute email value string @regex("^.*@\w+\.\w+$");
+// end::attributes-value-annotations[]
+// tag::attributes-type-annotations[]
   attribute language @independent;
-// end::attributes-annotations[]
+// end::attributes-type-annotations[]

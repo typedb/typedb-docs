@@ -42,6 +42,7 @@ include::{page-version}@typeql::annotations/values.adoc[tags=values-and-owns-ann
 include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;range-value]
 ----
 
+[#_example_owns]
 include::{page-version}@typeql::annotations/values.adoc[tags=values-and-owns-annotations-description-owns]
 In the following example, an instance of the `creation-timestamp` type can contain any value, but a `post` can have (`has`) only the `creation-timestamp` s with the suitable values.
 
@@ -49,6 +50,18 @@ In the following example, an instance of the `creation-timestamp` type can conta
 ----
 include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;creation-timestamp-attribute;range-owns]
 ----
+
+=== Subtyping for attribute types' values
+
+The `range` constraint put on an attribute types' value type is inherited.
+include::{page-version}@typeql::annotations/values.adoc[tags=value-constraints-subtyping]
+
+A subtype can introduce an even stricter constraint to allow only a subrange of the inherited range for its values.
+
+=== Subtyping for ownerships
+The `range` constraint put on an ownership should be respected by all the sub attribute types owned by this owner. This way, any instance of any subtype of the `creation-timestamp` <<#_example_owns, owned by>> any instance of any subtype of the `post` should comply to the defined `range`.
+
+Ownerships of these subtypes can have their own `range` constraints, and they will be respected similarly down the inheritance line.
 
 == Limitations
 
