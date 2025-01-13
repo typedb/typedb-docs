@@ -80,6 +80,10 @@ Valid statements based on this schema include:
 - A `user` instance can be inserted with just a first name.
 - A `user` instance cannot have more than two surnames.
 
+== Limitations
+
+Cannot be used with the xref:{page-version}@typeql::annotations/key.adoc[`@key` annotation] as they both produce `cardinality` constraints.
+
 [#_references]
 == References
 

@@ -9,7 +9,7 @@ They can be used to enforce constraints on definitions.
 It is possible to define an unlimited number of annotations of different kinds for a type.
 However, only one definition of a specific annotation (e.g., `@a`) can exist for a type at a time.
 
-- Defining `@a` while `@b` is already defined results in both `@a` and `@b` being defined.
+- Defining `@a` while `@b` is already defined results in both `@a` and `@b` being defined (with a couple of exceptions like `@key` and `@unique`).
 - Defining `@a` when `@a` is already defined makes no changes.
 - Defining `@a(x)` when `@a(y)` is already defined replaces `@a(y)` with `@a(x)`.
 

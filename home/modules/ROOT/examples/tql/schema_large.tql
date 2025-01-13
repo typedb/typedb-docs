@@ -278,8 +278,6 @@ define
   attribute latitude value double;
   attribute longitude value double;
 # end::double-attrs[]
-  latitude value double @range(-90.0..90.0);
-  longitude value double @range(-180.0..180.0);
 
   attribute event-date @abstract, value datetime;
   attribute start-date sub event-date;
