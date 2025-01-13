@@ -1,2 +1,43 @@
 = Transactions
 :page-aliases: {page-version}@home::acid.adoc, {page-version}@manual::connecting/session.adoc, {page-version}@manual::connecting/transaction.adoc
+
+== Transaction types
+
+TypeDB transactions come in 3 flavors:
+
+* read
+* write
+* schema
+
+all transactions operate over snapshots of the database, providing a consistent view regardless of concurrent transactions' operations.
+
+TypeDB transactions provide ACID guarantees up to snapshot isolation.
+
+== Read
+
+Read transactions can execute only read queries, and will error when provided data update queries or schema mutation queries.
+
+They are the most lightweight and should be used whenever possible. Any number of read transactions can be opened concurrently,
+and they will never fail to open even when write or schema transactions are open.
+
+== Write
+
+Write transactions can execute read queries and data update queries, and will error when provided schema mutation queries.
+
+Write transactions can be opened concurrently to other write transactions, and read transactions. They may fail on commit,
+as required to enforce data consistency and isolation, such as when two write transactions concurrently update same piece of data and commit.
+
+== Schema
+
+Schema transactions can execute any type of query: read, data update, and schema mutation queries.
+
+Schema transactions are exclusive against other schema transactions, and write transactions. Existing open write
+transactions will block schema transactions from opening. Similarly, a schema transaction will block write transactions from
+opening. This prevents the data from mutating while the schema is being updated.
+
+Schema transactions can mutate both data and schema at the same time, allowing atomic migrations from one database state to another.
+
+== Executing queries
+
+All transactions have an identical API to submit queries.
+
