@@ -6,20 +6,18 @@ xref::{page-version}@typeql::pipelines/match.adoc[match clause].
 
 == Syntax
 
-A conjunction is represented by a sequence of patterns, each terminated by a semicolon, enclosed in braces. Like any pattern, the
-conjunction is also terminated by a semicolon.
+A conjunction is represented by a sequence of patterns, each terminated by a semicolon.
+
+[,typeql]
+----
+<pattern>; <pattern>; [ <pattern>; ... ]
+----
+
+Optionally, the conjunction may be enclosed in braces. In that case, like any pattern, the conjunction is also terminated by a semicolon.
 
 [,typeql]
 ----
 { <pattern>; <pattern>; [ <pattern>; ... ] };
-----
-
-When used as a part of a match clause, the braces and the terminating semicolon can be omitted:
-
-[,typeql]
-----
-match
-  <pattern>; <pattern>; [ <pattern>; ... ]
 ----
 
 == Example
