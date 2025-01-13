@@ -1,0 +1,18 @@
+insert
+    $u1 isa user,
+        has username "masako-holley",
+        has phone "185800100011",
+        has email "masako.holley@typedb.com";
+
+    $u2 isa user,
+        has username "pearle-goodman",
+        has phone "171255522222",
+        has email "pearle.goodman@typedb.com";
+
+    $u3 isa user,
+        has username "kevin-morrison",
+        has phone "110000000",
+        has email "kevin.morrison@typedb.com";
+
+    $relatives1 isa family (relative: $u1, relative: $u2);
+    $relatives2 isa family (relative: $u2, relative: $u3);

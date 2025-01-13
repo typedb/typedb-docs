@@ -1,0 +1,356 @@
+= Crash course
+
+TypeDB brings together powerful programming concepts with the features and performance of modern database systems. The result is a new kind of database experience, which we'll outline in this crash course.
+
+== Storing data in types
+
+In TypeDB, data is stored in *types*, which can be either
+
+* *entity* types (e.g., a type of all the ``user``s in your app)
+* *relation* types (e.g., all the ``friendship``s of users)
+* *attribute* types (e.g., the ``username``s of ``user``s, or the ``start_date``s of ``friendship``s)
+
+// When something `isa <type>` it means it is a data object (a.k.a. **instance**) of that type. Data instances may depend on/reference other instance: namely, a relation references other entity or relation instances (its **role-players**) and an attribute references a single entity or relation instance (its **owner**).
+
+TypeDB's type system unifies concepts from relational, document, and graph DBMSs, blending them with a modern programming paradigm. Let's see how that works!
+
+[[read]]
+== "`Query-programming`" with TypeDB
+
+The query language of TypeDB is *TypeQL*. It combines **declarative** and **functional programming** concepts with the simplicity of **natural language**. Here's a simple TypeQL query to get us started:
+
+[,typeql]
+----
+include::{page-version}@home::example$tql/crash_course.tql[tags=intro1]
+----
+
+This query returns the count of how many friends the user `$alex` has (identified by their username `"grothendieck_25"`). Note that the query works in two *stages*:
+
+1. First, the `match` stage outputs all *answers* from the database that satisfy the given statements about ``$alex``, the ``$friend-of-alex``, and the ``$friendship`` of them. This means we output all possible data combinations for those three variables found in the database!
+
+2. Second, the `reduce` stage takes all these answer combinations and counts them, outputting a single number assigned to the variable `$alex-friend-count`.
+
+[NOTE]
+====
+The pattern `$var isa <type>` means the variable `$var` represents a data object (a.k.a. *instance*) of type `<type>`. A data instance may be independent, or it may reference other instances. For example, a relation can reference other instances called its *role players*. An attribute can reference a single other instance called its *owner*.
+
+TypeQL has special statements to capture references between instances, like `$relation isa <type> (<role>: $player);` or `$owner has <type> $attribute`.
+====
+
+Here is a slightly more complex query, that extends the preceding query with further stages.
+
+[,typeql]
+----
+include::{page-version}@home::example$tql/crash_course.tql[tags=intro2]
+----
+
+This query now has 6 stages in total:
+
+* *Stage 1 and 2*. As before, in the first two stages we determine the count of Alex' friends and assign that count to the variable ``$alex-friend-count``.
+* *Stage 3 and 4*. At this point the query _continues_: the query matches all ``$other-user``s with their respective usernames, ``$other-name``, and their friends. In stage 4, we again count the answers but this time we first group answers by (unique combinations of) `$other-name` and `$alex-friend-count` before we do the count per-group.
+* *Stage 5*. This stage imposes an additional condition on the answers of the previous stage (which will be answer triples of `$other-friend-count`, `$other-name`, and `$alex-friend-count`). This filters out all the answers that don't satisfy the condition!
+* *Stage 6*. Finally, we only select the username `$other-name` from each answer to be returned to us. This will gives us all the usernames of user who have more friends than Alex!
+
+Combining multiple query stages into a single query pipeline is _fun_. But the resulting query now has quite a bit of logically repetitive code. Let's see a final, and most advanced version of the very same query:
+
+[,typeql]
+----
+include::{page-version}@home::example$tql/crash_course.tql[tags=intro3]
+----
+
+This yields a concise and readable query: by using the `fun` keyword we can define a helper function that abstracts a key part of our query logic. Functions are a most powerful tool in TypeQL (drumroll... stateful recursion!). Importantly, they use just the same syntax as queries, and so incur zero mental overhead.
+
+// By stateful recursion I mean e.g. recursive path finding that keeps track of path length
+
+[[schema]]
+== Defining your type schema
+
+The types `user` and `username` in the above queries don't come out of nowhere: in order to query data in types, you first need to define those types. Types are defined with `define` queries like so:
+
+[,typeql]
+----
+include::{page-version}@home::example$tql/crash_course.tql[tags=schema1]
+----
+
+Similarly, if we were to add a `friendship` type to our schema we would define:
+
+[,typeql]
+----
+include::{page-version}@home::example$tql/crash_course.tql[tags=schema2]
+----
+
+* The first line of the query introduces the relation type friendship with a `friend` *role* (programmer-lingo: think "`interface`"). It also states that each friendship requires exactly _two_ friends to be instantiated (`card` abbreviates "`cardinality`").
+* The second line states that users can play the role of friends in friendships (programmer-lingo: think the type `user` implements the `friend` interface).
+
+
+Relation types, like entity types, are types of "`first-class objects`" in our type system. In particular, they too can have attributes (or may play roles in other relations types).
+
+[,typeql]
+----
+include::{page-version}@home::example$tql/crash_course.tql[tags=schema3]
+----
+
+This defines a `start-date` attribute and then declares each friendship own zero or one start date (note that this is the default cardinality so it may actually be omitted here).
+
+Type cardinality, `@card`, is a first example of a so-called *annotation*, which make schema statements more specific. It can also be applied to attribute ownership. The next example illustrates this together with another useful annotation, `@key` (which, in this case, specifies that the username of a user should uniquely identify a user, i.e., it is a _key attribute_).
+
+[,typeql]
+----
+include::{page-version}@home::example$tql/crash_course.tql[tags=schema4]
+----
+
+Importantly, different types may own the _same_ attributes; and, similarly, different types may play the _same_ role of a relation type. This flexibility of connecting types is a central feature of data modeling with TypeDB.
+
+[,typeql]
+----
+include::{page-version}@home::example$tql/crash_course.tql[tags=schema5]
+----
+
+Finally, yet another fundamental and powerful feature of TypeDB's type system is *subtyping*: analogous to  modern programming language features, this gives us the ability to organize our types hierarchically:
+
+[,typeql]
+----
+include::{page-version}@home::example$tql/crash_course.tql[tags=schema6]
+----
+
+TypeDB's type system re-thinks data models from first principles: it modularizes schemas into their "atomic" components. For example, you can add or remove ownership at any point in time, or edit specific annotations. This makes it easy to migrate and combine data, and programmatically re-structure your database if necessary. There is much more to explore, but we refer to the xref:{page-version}@manual::schema/index.adoc[Schema Manual] for further details.
+
+[[CRUD]]
+== CRUD operations
+
+Having defined the types in our schema, we are ready to create data in our database. To begin, let's insert some user with the following `insert` query:
+
+[,typeql]
+----
+include::{page-version}@home::example$tql/crash_course.tql[tags=CRUD1]
+----
+
+This can work, but is pretty useless: it inserts a user entity in the type `user`, but gives no information about that entity (in fact, the query will *fail* if `username` is set to be `@key` attribute of user). As a consequence we would have trouble retrieving or working with that entity, as it has no distinguishing features (except, it will have an automatically assigned "`internal id`", or *iid*, which every data instance gets assigned when created).
+
+The following is better:
+
+[,typeql]
+----
+include::{page-version}@home::example$tql/crash_course.tql[tags=CRUD2]
+----
+
+We can also combine multiple insertions in the same `insert` query like so:
+
+[,typeql]
+----
+include::{page-version}@home::example$tql/crash_course.tql[tags=CRUD3]
+----
+
+This inserts two users at the same time. Recall, that we set usernames to be a key attribute of our users, so you would (rightfully) expect the following query to *fail*:
+
+[,typeql]
+----
+include::{page-version}@home::example$tql/crash_course.tql[tags=CRUD4]
+----
+
+So far so good, but how can we insert friendships? The issue here, that we need to _refer_ to users to instantiate our friendship (recall: each friendship takes two friends). But that's why we have *variables*! On an empty database, we can write:
+
+[,typeql]
+----
+include::{page-version}@home::example$tql/crash_course.tql[tags=CRUD5]
+----
+
+In fact, you may equivalently replace the last line by `$z isa friendship ( ... )` if you so wish: this would enable you to refer to the `friendship` relation via the variable `$z` later on!
+
+This is nice, but what about the case when users already exist in our database? Well, `insert` can be just another query pipeline stage:
+
+[,typeql]
+----
+include::{page-version}@home::example$tql/crash_course.tql[tags=CRUD6]
+----
+
+Easy!
+
+Really, deleting and updating data works in a similar vein: all such data *write* operations can be used as pipeline stages, and they all use essentially the same declarative statement-by-statement syntax. For example, the following pipeline, adds "VIP" to a user's status, then traverses all friendships of that user, and marks friends as VIPs themselves if they now have more than five VIP friends.
+
+[,typeql]
+----
+include::{page-version}@home::example$tql/crash_course.tql[tags=complex_CRUD2]
+----
+
+See the xref:{page-version}@manual::CRUD/index.adoc[CRUD manual] for more.
+
+== Database management 101
+
+The time has come to actually run our queries. Recall from the xref:{page-version}@home::quickstart.adoc[Quickstart], the first two steps of the TypeQB workflow are always as follows:
+
+1. Ensure that your **TypeDB server** is running.
+1. From the **TypeDB client** of your choice, establish a connection to the server.
+
+Next up, let us create a database. The workflow here will depend on your client, but is easy in either case.
+
+[tabs]
+====
+Studio::
++
+--
+After opening a project, use the database management button (image:{page-component-version}@home::studio-icons/svg/studio_dbs.svg[width=24]) to create and manage databases.
+
+See the xref:{page-version}@manual::tools/studio.adoc[Studio Manual] for more.
+--
+
+Console::
++
+--
+To list existing database use:
+----
+$ database list
+----
+To create a new database called `my-db` use
+----
+$ database create my-db
+----
+To delete a database use
+----
+$ database delete my-db
+----
+--
+
+Python::
++
+--
+After connecting with
+[,python]
+----
+driver = TypeDB.core_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
+----
+you can create a database with:
+[,python]
+----
+driver.databases.create(database)
+----
+and delete a database with:
+[,python]
+----
+driver.databases.get(database).delete()
+----
+--
+
+
+Rust::
++
+--
+[NOTE]
+======
+Coming soon.
+======
+--
+====
+
+== Running queries with transactions
+
+In order to run our queries, the next step is to **open a transaction** for an existing database. We can run multiple queries in single a transaction, and then commit the transaction to persist our changes when done. In TypeDB, running queries always requires acquiring a transaction. There are three types of transactions:
+
+* *Schema* transactions allow you to run schema definition queries (like the `define` queries that we've seen above).
+* *Write* transactions allow you to send query pipelines that may write data (i.e., they contain "`write stages`" like the `insert` or `delete` stages that we have seen above)
+* *Read* transactions allow you to send query pipelines that only read data (i.e., they contain only "`read stages`" like the `match`, `reduce`, or `select` stages that we have seen above).
+
+How to open a transaction and run a query will depend on your client.
+
+[tabs]
+====
+Studio::
++
+--
+Select your database using the database selector (image:{page-component-version}@home::studio-icons/database-none.png[width=128]), then select your transaction type in the top menu.
+
+Open your query file. Then click the run button to run your query. Finally, use the commit button (image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24]) to persist any changes made.
+--
+
+Console::
++
+--
+Open the transaction with
+----
+transaction my-db <TYPE>
+----
+where `<TYPE>` can be one of `schema`, `write`, or `read`.
+
+Then run your queries in the newly opened prompt. Use
+----
+commit
+----
+if you want to commit changes.
+--
+
+Python::
++
+--
+Open a transaction and send a query with
+----
+with driver.transaction(database, TransactionType.<TYPE>) as tx:
+    response = tx.query(<QUERY>).resolve()
+----
+where `<TYPE>` can be one of `SCHEMA`, `WRITE`, or `READ`. Use
+----
+tx.commit()
+----
+if you want to commit changes.
+--
+
+
+Rust::
++
+--
+[NOTE]
+======
+Coming soon.
+======
+--
+====
+
+You may now try running queries in this course in the following order:
+
+1. Define a schema as outlined in the <<schema,schema section>>. Use `schema` transactions for your queries and don't forget to commit any changes made.
+
+1. Insert data instances into the types of your schema as explained in the <<CRUD,CRUD section>>. Use `write` transactions for your queries and don't forget to commit any changes you want to persists.
+
+1. Read your data using query pipelines like those in the <<read,pipeline section>>.
+
+
+== Beyond the basics: functions and query composition
+
+// schema functions vs helper functions
+// more examples
+// match P; match Q; vs match P
+
+[NOTE]
+====
+Coming soon.
+====
+
+== What next?
+
+Continue learning how to use TypeDB with TypeDB Academy, or explore other sections of the documentation.
+
+[cols-2]
+--
+.xref:{page-version}@academy::index.adoc[]
+[.clickable]
+****
+An end-to-end learning experience for TypeDB and TypeQL, showing how to take advantage of TypeDB's unique features.
+****
+
+.xref:{page-version}@manual::index.adoc[TypeDB manual]
+[.clickable]
+****
+Practice-oriented guides on using TypeDB, including the TypeDB Studio and TypeDB Console manuals.
+****
+
+.xref:{page-version}@drivers::index.adoc[TypeDB drivers]
+[.clickable]
+****
+Installation guides, tutorials, and API references for the official TypeDB drivers in all supported languages.
+****
+
+.xref:{page-version}@typeql::index.adoc[TypeQL reference]
+[.clickable]
+****
+Complete language reference for TypeQL, covering all query types, pattern elements, and keywords.
+****
+--

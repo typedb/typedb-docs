@@ -1,0 +1,160 @@
+# pipeline::schema::start
+# tag::schema1[]
+define
+  entity user, owns username, owns status;
+  attribute username, value string;
+  attribute status, value string;
+# end::schema1[]
+# pipeline::schema::end
+
+# pipeline::schema::start
+# tag::schema2[]
+define
+  relation friendship, relates friend @card(2);
+  user plays friendship:friend;
+# end::schema2[]
+# pipeline::schema::end
+
+# pipeline::schema::start
+# tag::schema3[]
+define
+  attribute start-date, value datetime;
+  friendship owns start-date @card(0..1);
+# end::schema3[]
+# pipeline::schema::end
+
+# pipeline::schema::start
+# tag::schema4[]
+define
+  user owns status @card(0..);  # as many status attributes as you wish
+  user owns username @key;
+# end::schema4[]
+# pipeline::schema::end
+
+# pipeline::schema::start
+# tag::schema5[]
+define
+  entity organization,
+    owns username,
+    owns status,
+    plays friendship:friend;
+# end::schema5[]
+# pipeline::schema::end
+
+# pipeline::schema::start
+# tag::schema6[]
+define
+  entity company sub organization;    # subtypes will inherit ownership and role
+  entity university sub organization; # playing capabilities from their supertype
+# end::schema6[]
+# pipeline::schema::end
+
+# pipeline::write::start
+# tag::CRUD1[]
+insert $x isa user;
+# end::CRUD1[]
+# pipeline::write::end[fail]
+
+# pipeline::write::start
+# tag::CRUD2[]
+insert $x isa user, has username "user_0";
+# end::CRUD2[]
+
+# tag::CRUD3[]
+insert
+  $x isa user, has username "user_1";
+  $y isa user;
+  $y has username "user_2";  # we can separate `isa` and `has`
+# end::CRUD3[]
+# pipeline::write::end
+
+# pipeline::write::start
+# tag::CRUD4[]
+insert
+  $x isa user, has username "user_3";
+  $y isa user, has username "user_3";
+# end::CRUD4[]
+# pipeline::write::end[fail]
+
+# pipeline::write::start
+# tag::CRUD5[]
+insert
+  $x isa user, has username "grothendieck_25";
+  $y isa user, has username "hartshorne";
+  friendship (friend: $x, friend: $y);
+# end::CRUD5[]
+
+# tag::CRUD6[]
+match
+  $u0 isa user, has username "user_0";
+  $u1 isa user, has username "user_1";
+  $u2 isa user, has username "user_2";
+insert
+  friendship (friend: $u0, friend: $u1);
+  friendship (friend: $u0, friend: $u2);
+  friendship (friend: $u1, friend: $u2);
+# end::CRUD6[]
+# pipeline::write::end
+
+# tag::complex_CRUD[]
+match
+  $user isa user, has username "user_0";
+insert
+  $user has status "<banned>";
+match
+  $friend isa user;
+  $friendship isa friendship (friend: $user, friend: $friend);
+delete
+  $friendship;
+match
+  friendship (friend: $friend, friend: $friend-of-friend);
+  $friend-of-friend has status "<banned>";
+insert
+  $friend has status "<banned>";
+# end::complex_CRUD[]
+
+# tag::complex_CRUD2[]
+match
+  $user isa user, has username "user_0";
+insert $user has status "VIP";
+match
+  friendship (friend: $user, friend: $friend);
+  friendship (friend: $friend, friend: $friend-of-friend);
+  $friend-of-friend has status "VIP";
+reduce $VIP-friend-count = count groupby $friend;
+match $VIP-friend-count > 5;
+insert $friend has status "VIP";
+# end::complex_CRUD2[]
+
+# tag::intro1[]
+match
+  $alex isa user, has username "grothendieck_25";
+  $friendship isa friendship (friend: $alex, friend: $friend-of-alex);
+reduce $alex-friend-count = count;
+# end::intro1[]
+
+# tag::intro2[]
+match
+  $alex isa user, has username "grothendieck_25";
+  friendship (friend: $alex, friend: $friend-of-alex); # can omit variable
+reduce $alex-friend-count = count;
+match
+  $other-user isa user, has username $other-name;
+  friendship (friend: $other-user, friend: $friend-of-other-user);
+reduce $other-friend-count = count
+  groupby $other-name, $alex-friend-count;
+match
+  $alex-friend-count < $other-friend-count;
+select $other-name;
+# end::intro2[]
+
+# tag::intro3[]
+with fun friend_count($user: user) -> integer:
+  match friendship (friend: $user, friend: $friend-of-user);
+  return count;
+match
+  $alex isa user, has username "grothendieck_25";
+  $other-user isa user, has username $other-name;
+  friend_count($alex) < friend_count($other-user);
+select $other-name;
+# end::intro3[]
