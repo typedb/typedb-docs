@@ -2,8 +2,14 @@
 
 == Introduction
 
-Annotations are useful language constructs that start with an `@`. It can be used to manage definitions constraints.
-// TODO: ... or modify queries behavior.
+Annotations are useful language constructs that begin with an `@`. They can be used to enforce constraints on definitions.
+// TODO: "or to modify query behavior".
+
+It is possible to define an unlimited number of annotations of different kinds for a type. However, only one definition of a specific annotation (e.g., `@a`) can exist for a type at a time.
+
+- Defining `@a` while `@b` is already defined results in both `@a` and `@b` being defined.
+- Defining `@a` when `@a` is already defined makes no changes.
+- Defining `@a(x)` when `@a(y)` is already defined replaces `@a(y)` with `@a(x)`.
 
 === Syntax
 

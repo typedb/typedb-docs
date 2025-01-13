@@ -1,6 +1,6 @@
 = `@range` annotation
 
-`@range` annotation is used
+The `@range` annotation is used
 // tag::overview[]
 to specify a range of permitted values for attributes.
 // end::overview[]
@@ -23,15 +23,15 @@ to specify a range of permitted values for attributes.
 <type label> owns <attribute type label> @range(..M);
 ----
 
-`@range` annotation can be defined for either an attribute type or an ownership.
+The `@range` annotation can be defined for either an attribute type or an ownership.
 
-`@range` annotation accepts either a range argument or a single scalar argument. Arguments should be of the same value type as `<attribute type label>`. Please refer to <<_value_types>> for the list of accepted value types.
+The `@range` annotation accepts either a range argument or a single scalar argument. Arguments must match the value type of `<attribute type label>`. See <<_value_types>> for the list of supported value types.
 
-Partially unbounded ranges `N..` and `..M` do not have upper and lower bounds respectively.
+Partially unbounded ranges `N..` and `..M` represent ranges without an upper and lower bounds, respectively.
 
 == Usage
 
-// TODO
+// TODO: Add usage examples and additional details
 
 [#_references]
 == References
@@ -39,7 +39,7 @@ Partially unbounded ranges `N..` and `..M` do not have upper and lower bounds re
 [#_value_types]
 === Supported value types
 
-`@range` annotation is applicable only to ordered value types.
+The `@range` annotation is applicable only to value types with a defined ordering for their values.
 
 .Supported value types
 [cols=".^1,^.^1,1"]

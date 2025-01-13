@@ -1,7 +1,7 @@
 = `@regex` annotation
 :page-aliases: {page-version}@typeql::statements/regex.adoc
 
-`@regex` annotation is used
+The `@regex` annotation is used
 // tag::overview[]
 to specify a regex pattern for permitted values of attributes.
 // end::overview[]
@@ -20,9 +20,9 @@ to specify a regex pattern for permitted values of attributes.
 <type label> owns <attribute type label> @regex("<regular expression>");
 ----
 
-`@regex` annotation can be defined for either an attribute type or an ownership.
+The `@regex` annotation can be defined for either an attribute type or an ownership.
 
-`@range` annotation accepts a single string argument containing a regular expression.
+The `@range` annotation accepts a single string argument containing a regular expression.
 
 == Usage
 // TODO:

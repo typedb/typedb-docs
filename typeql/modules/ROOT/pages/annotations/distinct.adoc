@@ -1,6 +1,6 @@
 = `@distinct` annotation
 
-`@distinct` annotation is used
+The `@distinct` annotation is used
 // tag::overview[]
 to restrict an owned list of attributes to distinct values.
 // end::overview[]
@@ -19,15 +19,14 @@ to restrict an owned list of attributes to distinct values.
 <type label> owns <type label>[] @distinct;
 ----
 
-`@distinct` annotation does not accept any arguments.
+The `@distinct` annotation does not accept any arguments.
 
 == Usage
 
-TypeQL statements with `@distinct` annotation are used to define a `distinct` constraint for an ordered type capability (i.e., to declare that a list of capabilities is distinct and contains only distinct values).
-
-// TODO: Add reference to lists
+The `@distinct` annotation enforces the `distinct` constraint for an ordered type capability. This constraint ensures that lists contain only distinct values.
+// TODO: Add a reference to lists and their behavior
 
 [NOTE]
 ====
-Ordered capabilities, lists and their annotations like `@distinct` are not yet introduced in TypeDB. Coming soon!
+Ordered capabilities, lists, and related annotations like `@distinct` are not yet available in TypeDB. Coming soon!
 ====

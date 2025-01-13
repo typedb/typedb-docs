@@ -1,6 +1,6 @@
 = `@values` annotation
 
-`@values` annotation is used
+The `@values` annotation is used
 // tag::overview[]
 to specify a set of permitted values for attributes.
 // end::overview[]
@@ -21,9 +21,9 @@ to specify a set of permitted values for attributes.
 <type label> owns <attribute type label> @values(arg0, arg1, ..., argN);
 ----
 
-`@values` annotation can be defined for either an attribute type or an ownership.
+The `@values` annotation can be defined for either an attribute type or an ownership.
 
-`@values` annotation requires at least one argument. Multiple arguments can be specified, separated by commas. Arguments should be of the same value type as `<attribute type label>`. Please refer to <<_value_types>> for the list of accepted value types.
+The `@values` annotation requires at least one argument. Multiple arguments can be specified, separated by commas. Arguments should be of the same value type as `<attribute type label>`. Please refer to <<_value_types>> for the list of accepted value types.
 
 == Usage
 
@@ -36,7 +36,7 @@ to specify a set of permitted values for attributes.
 [#_value_types]
 === Supported value types
 
-`@values` annotation is applicable only to comparable value types, thus it is supported by all built-in TypeQL value types.
+The `@values` annotation is applicable only to comparable value types, thus it is supported by all built-in TypeQL value types.
 
 .Supported value types
 [cols=".^1,^.^1,1"]

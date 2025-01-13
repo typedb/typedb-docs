@@ -1,57 +1,55 @@
 = `@card` annotation
 
-`@card` annotation is used
+The `@card` annotation is used
 // tag::overview[]
 to specify cardinality ranges for roles and ownerships.
 // end::overview[]
 
 == Syntax
 
-.Range argument syntax
+.Range Argument Syntax
 [,typeql]
 ----
 <type label> <capability> <type label 2> @card(N..M);
 <type label> <capability> <type label 2> @card(N..);
 ----
 
-.Single scalar argument syntax
+.Single Scalar Argument Syntax
 [,typeql]
 ----
 <type label> <capability> <type label 2> @card(N);
 ----
 
-`@card` can be defined for any `<capability>` of: `owns`, `relates`, or `plays`.
+The `@card` annotation can be defined for any `<capability>` of: `owns`, `relates`, or `plays`.
 
-`@card` annotation accepts either a range argument or a single scalar argument. The arguments should be of `integer` value type.
+It accepts either a range argument or a single scalar argument. Arguments must be integers.
 
-Partially unbounded range `N..` has an infinite upper bound.
-
-Minimal lower bound is `0` and should be explicitly specified: `0..M` instead of `..M`.
-
-A single scalar argument `N` is a shorthand for `N..N` and means "exactly N".
+- A partially unbounded range `N..` has an infinite upper bound.
+- The minimal lower bound is `0` and must be explicitly specified (e.g., use `0..M` instead of `..M`).
+- A single scalar argument `N` is shorthand for `N..N` and means "exactly N".
 
 == Usage
 
-// TODO: Update for ordered / unordered when lists are implemented
-Every capability has a default cardinality constraint, which value can be accessed in <<_default_cardinality>>.
+// TODO: Update for ordered/unordered when lists are implemented
+Every capability has a default `cardinality` constraint, accessible in <<_default_cardinality>>.
 
-When a `@card` annotation is defined, the default constraint is overridden with the value from the annotation's arguments.
+When defined, the `@card` annotation overrides the default constraint with the specified arguments.
 
-`Cardinality` constraint regulates the amount of capabilities a type instance can have. For example, the following definition means that an instance of type `page` should have at least one and up to three `name` s:
+The `cardinality` constraint regulates the number of capabilities a type instance can have. For example, the following definition specifies that an instance of the `page` type must have at least one and no more than three `name`s:
 
 [,typeql]
 ----
 include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;card-owns-13]
 ----
 
-At the same time, it can play role `posting:page` an unlimited number of times for any relations:
+At the same time, the `page` type can play the `posting:page` role an unlimited number of times:
 
 [,typeql]
 ----
 include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;card-plays-0inf]
 ----
 
-However, an instance of `posting` relation type can only have up to a thousand `page` s:
+However, an instance of the `posting` relation type can have up to a thousand `page` instances:
 
 [,typeql]
 ----
@@ -63,31 +61,31 @@ include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-k
 // TODO: Put somewhere in a common place and reference it
 Similarly to inherited type constraints, capability constraints also affect subtypes from both sides. For example, the following query defines that:
 
-* a `page` instance should have from 1 to 3 names;
-* a `profile` instance, inheriting capabilities and their constraints from `page`, should have from 1 to 3 names;
-* a `user` instance should have exactly 1 first name and can have up to 2 surnames (note that `first-name` and `surname` are both `name` s).
+- A `page` instance must have between 1 and 3 names.
+- A `profile` instance (subtype of `page`) inherits the same constraint and must have between 1 and 3 names.
+- A `user` instance can own exactly 1 first name and up to 2 surnames (`first-name` and `surname` are subtypes of `name`).
 
 [,typeql]
 ----
 include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;card-owns-13;profile-sub-page;user-owns-name;name-subattributes]
 ----
 
-Thus, the following statements based on this schema are valid:
+Valid statements based on this schema include:
 
-* it's impossible to insert a `page`, a `profile`, or a `user` without a name;
-* it's impossible to insert a `page` or a `profile` at all, because they don't own a non-abstract name;
-* an instance of a `user` can be inserted with just a first name;
-* an instance of a `user` cannot be inserted with more than two surnames.
+- It is impossible to insert a `page`, `profile`, or `user` without a name.
+- It is impossible to insert a `page` or `profile` because they do not own non-abstract names.
+- A `user` instance can be inserted with just a first name.
+- A `user` instance cannot have more than two surnames.
 
 [#_references]
 == References
 
 [#_default_cardinality]
-=== Default capabilities cardinality
+=== Default Capability Cardinalities
 
-The following cardinality constraints are set for capabilities by default if no `@card` annotations are declared:
+The following `cardinality` constraints are set for capabilities by default if no `@card` annotations are declared:
 
-.Default capabilities cardinality
+.Default Capability Cardinalities
 [cols=".^1,^.^1"]
 |===
 ^| Capability ^| Cardinality

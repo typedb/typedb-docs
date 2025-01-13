@@ -1,6 +1,6 @@
 = `@independent` annotation
 
-`@independent` annotation is used
+The `@independent` annotation is used
 // tag::overview[]
 to prevent attributes without owners from being deleted automatically.
 // end::overview[]
@@ -13,19 +13,19 @@ to prevent attributes without owners from being deleted automatically.
 <type label> @independent;
 ----
 
-`@independent` annotation does not accept any arguments.
+The `@independent` annotation does not accept any arguments.
 
 == Usage
 
-TypeQL statements with `@independent` annotation are used to define an `independent` constraint for an attribute type, making the type independent.
+The `@independent` annotation enforces the `independent` constraint for an attribute type, allowing the type to exist independently of an owner.
 
-// TODO: Add a link to attributes and their dependency on existing owners
-Default dependence of attributes (instances of attribute types) on their owners means:
+// TODO: Add a reference to attributes and their dependency on existing owners
 
-* they cannot be inserted without a `has`;
-* they get deleted following the deletion of their owners.
+By default, attributes (instances of attribute types) depend on their owners:
+* Attributes cannot be inserted without a `has` clause.
+* Attributes are automatically deleted when their owners are deleted.
 
-In contrast, instances of independent attribute types can exist by themselves.
+In contrast, attributes of independent types can exist without owners.
 
 .Independent attribute types definition
 [,typeql]

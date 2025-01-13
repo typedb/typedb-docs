@@ -1,7 +1,7 @@
 = `@abstract` annotation
 :page-aliases: {page-version}@typeql::statements/abstract.adoc
 
-`@abstract` annotation is used
+The `@abstract` annotation is used
 // tag::overview[]
 to specify that a type is abstract.
 // end::overview[]
@@ -14,11 +14,11 @@ to specify that a type is abstract.
 <type label> @abstract;
 ----
 
-`@abstract` annotation does not accept any arguments.
+The `@abstract` annotation does not accept any arguments.
 
 == Usage
 
-When defined for a type, `@abstract` annotation puts a constraint on this type, making it abstract. An abstract type cannot be used to insert a data instance but can be used to create a subtype or to query (for its subtypes).
+When defined for a type, the `@abstract` annotation enforces the `abstract` constraint, making the type abstract. An abstract type cannot be used to insert data instances. However, it can be used to create subtypes or as a query target (to retrieve its subtypes).
 
 [,typeql]
 ----
@@ -27,26 +27,26 @@ include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-k
 
 === Subtyping
 
-`Abstract` constraint is not inheritable. It makes all the subtypes of an abstract type concrete by default, which allows the creation of their instances. It is also possible to define an abstract subtype of an abstract type.
+The `@abstract` constraint is not inheritable. This means all subtypes of an abstract type are concrete by default, enabling the creation of their instances. However, it is possible to define an abstract subtype of an abstract type.
 
 [,typeql]
 ----
 include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;abstract-attribute]
 ----
 
-However, it is impossible to define an abstract subtype of a concrete type.
+It is impossible to define an abstract subtype of a concrete type.
 
-.A wrong definition!
+.Wrong definition!
 [,typeql]
 ----
 define
   attribute categorized-username @abstract, sub username;
 ----
 
-=== Role types specialization
+=== Specialization of role types
 
 // TODO: Add a hyperlink to "relates as"
-Similarly, abstract role types cannot be instantiated, and a concrete sub role type can be defined using **specialization** (keyword `as`).
+Similarly, abstract role types cannot be instantiated. A concrete sub role type can be defined using **specialization** (keyword `as`).
 
 [,typeql]
 ----
