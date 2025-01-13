@@ -1,2 +1,35 @@
 = Conjunctions
 :page-aliases: {page-version}@typeql::patterns/conjunction.adoc
+
+A conjunction of patterns requires all its constituent patterns to match its concepts. It is most commonly encountered as the body of a
+xref::{page-version}@typeql::pipelines/match.adoc[match clause].
+
+== Syntax
+
+A conjunction is represented by a sequence of patterns, each terminated by a semicolon, enclosed in braces. Like any pattern, the
+conjunction is also terminated by a semicolon.
+
+[,typeql]
+----
+{ <pattern>; <pattern>; [ <pattern>; ... ] };
+----
+
+When used as a part of a match clause, the braces and the terminating semicolon can be omitted:
+
+[,typeql]
+----
+match
+  <pattern>; <pattern>; [ <pattern>; ... ]
+----
+
+== Example
+
+The following conjunction matches all users with name `Bob Dylan`:
+
+[,typeql,indent=0]
+----
+include::{page-version}@typeql::example$tql/conjunction.tql[tags=conjunction-example]
+----
+
+This is a conjunction of two patterns: it must match some concept `$u` that is an instance of type `user`, _and_ `$u` must have an attribute
+of type `name` with value `"Bob Dylan"`.

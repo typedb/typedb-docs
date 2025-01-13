@@ -1,0 +1,9 @@
+# pipeline::read::start
+match
+# tag::conjunction-example[]
+{
+  $u isa user;
+  $u has name "Bob Dylan";
+};
+# end::conjunction-example[]
+# pipeline::read::end
