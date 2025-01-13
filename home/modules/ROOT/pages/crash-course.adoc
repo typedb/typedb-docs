@@ -14,6 +14,7 @@ In TypeDB, data is stored in *types*, which can be either
 
 TypeDB's type system unifies concepts from relational, document, and graph DBMSs, blending them with a modern programming paradigm. Let's see how that works!
 
+[[read]]
 == "`Query-programming`" with TypeDB
 
 The query language of TypeDB is *TypeQL*. It combines **declarative** and **functional programming** concepts with the simplicity of **natural language**. Here's a simple TypeQL query to get us started:
@@ -114,6 +115,7 @@ include::{page-version}@home::example$tql/crash_course.tql[tags=schema6]
 
 TypeDB's type system re-thinks data models from first principles: it modularizes schemas into their "atomic" components. For example, you can add or remove ownership at any point in time, or edit specific annotations. This makes it easy to migrate and combine data, and programmatically re-structure your database if necessary. There is much more to explore, but we refer to the xref:{page-version}@manual::schema/index.adoc[Schema Manual] for further details.
 
+[[CRUD]]
 == CRUD operations
 
 Having defined the types in our schema, we are ready to create data in our database. To begin, let's insert some user with the following `insert` query:
