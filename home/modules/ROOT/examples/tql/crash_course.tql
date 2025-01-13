@@ -42,11 +42,11 @@ define
 # pipeline::schema::end
 
 # pipeline::schema::start
-# tag::schema5[]
+# tag::schema6[]
 define
   entity company sub organization;    # subtypes will inherit ownership and role
   entity university sub organization; # playing capabilities from their supertype
-# end::schema5[]
+# end::schema6[]
 # pipeline::schema::end
 
 # pipeline::write::start
