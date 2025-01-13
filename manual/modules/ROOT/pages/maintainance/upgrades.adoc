@@ -1,2 +1,22 @@
 = Upgrading
-:page-aliases: {page-version}@manual::configuring/upgrades.adoc
+
+In this guide, you'll learn how to upgrade to a newer version of TypeDB while preserving your data.
+
+There are two mechanisms in which data can be preserved during a server upgrade:
+
+* If the new version has the same data format as the old one, it should be done by reusing or copying the data directory.
+* Otherwise, it should be done by using the export/import tool, which would take care of migrating the data into the new format.
+
+== Preserve data by copying the directory
+
+To do this, simply shut down the servers of the old version, and copy the database to migrate from the data
+directory (set with the `--storage.data` command line argument) into the data directory of the new
+TypeDB server installation.
+
+Alternatively, just start the new server making sure it uses the same
+*data directory* path as the old one.
+
+[#_export_and_import]
+== Preserve data using the export/import tool
+
+NOTE: coming soon.
