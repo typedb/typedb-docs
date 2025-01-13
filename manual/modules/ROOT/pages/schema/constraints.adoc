@@ -28,7 +28,7 @@ However, this schema allows the data to be quite messy:
 Different databases have different approaches for solving these issues.
 Some expect external coding for complex validations.
 
-TypeDB aims to simplify the complexities of schema declaration and data control and uses its constraint system to cover the most of necessary data limitations, allowing it to be a part of the schema: direct, flexible, and easy to read.
+TypeDB aims to simplify the complexities of schema declaration and data control and uses its constraint system to cover the most necessary data limitations, allowing it to be a part of the schema: direct, flexible, and easy to read.
 
 [#annotations_constraints]
 === Annotations for constraints definition
@@ -97,6 +97,7 @@ These constraints act similar to type constraints: values of these attributes sh
 include::{page-version}@typeql::annotations/regex.adoc[tags=description]
 ====
 
+[#_capability_constraints]
 === Capability constraints
 
 Similarly, capability constraints follow capabilities (`owns`, `relates`, `plays`) definitions:
@@ -106,7 +107,8 @@ Similarly, capability constraints follow capabilities (`owns`, `relates`, `plays
 include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;entities-cap-annotations]
 ----
 
-These are a little more complicated, but are more powerful. While <<_type_constraints, type constraints>> and <<_value_type_constraints, value type constraints>> target any instance of a type, these constraints target:
+These are a little more complicated, but are more powerful.
+While <<_type_constraints, type constraints>> and <<_value_type_constraints, value type constraints>> target any instance of a type, these constraints target:
 
 - Owners and attributes in `has`.
 - Relations, roles, and roleplayers in `links`.
@@ -127,25 +129,31 @@ include::{page-version}@typeql::annotations/unique.adoc[tags=description]
 
 === Subtyping
 
-Subtyping is a powerful instrument in TypeDB and becomes even more powerful with constraints. While it is possible to predict the effect of a constraint on a subtype based on its description, it can be a little tricky at first.
+Subtyping is a powerful instrument in TypeDB and becomes even more powerful with constraints.
+While it is possible to predict the effect of a constraint on a subtype based on its description, it can be a little tricky at first.
 
 It is recommended to refer to xref:{page-version}@manual::schema/types.adoc[type definition] to understand how subtyping generally works before proceeding.
 
-Please note that more details and examples of subtyping behavior is available on each xref:{page-version}@typeql::annotations/overview.adoc[annotation's page]. Visit these pages in case of struggles in understanding of the explanations below.
+Please note that more details and examples of subtyping behavior is available on each xref:{page-version}@typeql::annotations/overview.adoc[annotation's page].
+Visit these pages in case of struggles in understanding of the explanations below.
 
 ==== Type constraints
-An instance should comply to all the constraints of its types (type and supertypes). The following are the explanations of subtyping behaviour based on the <<_type_constraints, type constraints descriptions>> and the <<_type_schema, example>> from the first section:
+
+An instance should comply to all the constraints of its types (type and supertypes).
+The following are the explanations of subtyping behaviour based on the <<_type_constraints, type constraints descriptions>> and the <<annotations_constraints, example>> from the first section:
 
 .@abstract subtyping
 [%collapsible]
 ====
-Let's consider an instance of the `user`. It should comply to the `abstract` constraints of:
+Let's consider an instance of the `user`.
+It should comply to the `abstract` constraints of:
 
 - `content`
 - `page`
 - `profile`
 
-The <<_type_constraints, constraint's description>> restricts direct instances of types, and `user`, while being a `content`, a `page`, and a `profile`, has the `user` as its direct type. Thus, the constraint is satisfied, and this instance can exist.
+The <<_type_constraints, constraint's description>> restricts direct instances of types, and `user`, while being a `content`, a `page`, and a `profile`, has the `user` as its direct type.
+Thus, the constraint is satisfied, and this instance can exist.
 
 At the same time, there can not be instances of the mentioned supertypes.
 ====
@@ -153,26 +161,59 @@ At the same time, there can not be instances of the mentioned supertypes.
 .@independent description
 [%collapsible]
 ====
-Let's consider 2 instances of a `slavic-language sub language`. They should comply to the `independent` constraint of the `language`. The first attribute is owned by multiple owners, while the second is left unowned.
+Let's consider 2 instances of a `slavic-language sub language`.
+They should comply to the `independent` constraint of the `language`.
+The first attribute is owned by multiple owners, while the second is left unowned.
 
-The <<_type_constraints, constraint's description>> allows independent attributes to exist without owners (or restricts the attributes to get deleted without owners). Thus, both attributes can exist.
+The <<_type_constraints, constraint's description>> allows independent attributes to exist without owners (or restricts the attributes to get deleted without owners).
+Thus, both attributes can exist.
 
 However, the second attribute will get deleted if there will be no `independent` constraints affecting its types.
 ====
 
 ==== Value type constraints
-A value should comply to all the constraints of its attribute's types (type and supertypes). The following are the explanations of subtyping behaviour based on the <<_value_type_constraints, value type constraints descriptions>> and the <<_type_schema, example>> from the first section:
+
+A value should comply to all the constraints of its attribute's types (type and supertypes).
+The following are the explanations of subtyping behaviour based on the <<_value_type_constraints, value type constraints descriptions>> and the <<annotations_constraints, example>> from the first section:
 
 .@regex subtyping
 [%collapsible]
 ====
 Let's consider an instance of a `typedb-email sub email, value string @regex("^.*@typedb\.com$")` and an instance of a `personal-email sub email`.
 
-In order to comply to the `regex` constraints, values of both instances should be valid email addresses based on the `email` 's regular expression. Additionally, the domain of `typedb-email` 's value should be "typedb.com", while `personal-email` can be any "*.*", including "typedb.com".
+In order to comply to the `regex` constraints, values of both instances should be valid email addresses based on the `email` 's regular expression.
+Additionally, the domain of `typedb-email` 's value should be "typedb.com", while `personal-email` can be any "*.*", including "typedb.com".
 ====
 
 ==== Capabilities constraints
-// TODO
 
+For a capability constraint `<type label 1> <capability> <type label 2> @<constraint>`:
 
+- Every instance of `<type label 1>` or its subtypes owning/relating/playing `<type label 2>` should comply to `<constraint>`.
+- Every instance of `<type label 2>` or its subtypes owned/related/played by `<type label 1>` should comply to `<constraint>`.
 
+The details of the constraint define the actual meaning of this rule.
+The following are the explanations of subtyping behaviour based on the <<_capability_constraints, capability constraints descriptions>> and the <<annotations_constraints, example>> from the first section:
+
+.@card subtyping
+[%collapsible]
+====
+Let's rewind the schema for `user owns name` ownership:
+
+[,typeql]
+----
+include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;all-owns-name]
+----
+
+It is possible to extend this schema to any direction (e.g., by creating new concrete subtypes of the `page` and the `profile`), so let's describe general rules based on this schema:
+
+- Not any `content` can have a `name`.
+- Only `page` s can have a `name`.
+- `page` s generally can have an infinite number of `name` s.
+- A `profile` can have an infinite number of `name` s based on the `page` s constraint.
+However, it should also comply to the constraint of `profile`, which limits this number to up to three `name` s.
+- A `user` should comply to both cardinality constraints from `profile` and `page`.
+Thus, it can have only up to three names.
+
+Refer to xref:{page-version}@typeql::annotations/card.adoc[@card annotation] for a more complex example!
+====

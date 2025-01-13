@@ -17,7 +17,7 @@ define
 
 // tag::entities-annotations[]
   content @abstract, owns id @key;
-  page @abstract;
+  page @abstract, owns name @card(0..);
   profile @abstract, owns name @card(0..3);
   user owns phone @regex("^\d{8,15}$") @unique;
 // end::entities-annotations[]
@@ -30,9 +30,18 @@ define
 
 // tag::entities-cap-annotations[]
   content owns id @key;
+  page owns name @card(0..);
   profile owns name @card(0..3);
   user owns phone @regex("^\d{8,15}$") @unique;
 // end::entities-cap-annotations[]
+
+// tag::all-owns-name[]
+  entity content;
+  entity page sub content, owns name @card(0..);
+  entity profile sub page, owns name @card(0..3);
+  entity user sub profile;
+  attribute name value string;
+// end::all-owns-name[]
 
 // tag::attributes[]
   attribute id value string;
