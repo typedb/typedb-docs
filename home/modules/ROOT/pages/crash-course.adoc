@@ -33,7 +33,7 @@ This query returns the count of how many friends the user `$alex` has (identifie
 ====
 The pattern `$var isa <type>` means the variable `$var` represents a data object (a.k.a. *instance*) of type `<type>`. A data instance may be independent, or it may reference other instances. For example, a relation can reference other instances called its *role players*. An attribute can reference a single other instance called its *owner*.
 
-TypeQL has special statements to declaratively capture references between instances, like `$relation isa <type> (<role>: $player);` or `$owner has <type> $attribute`.
+TypeQL has special statements to capture references between instances, like `$relation isa <type> (<role>: $player);` or `$owner has <type> $attribute`.
 ====
 
 Here is a slightly more complex query, that extends the preceding query with further stages.
@@ -45,10 +45,10 @@ include::{page-version}@home::example$tql/crash_course.tql[tags=intro2]
 
 This query now has 6 stages in total:
 
-* As before, in the first two stages we determine the count of Alex' friends and assign that count to the variable ``$alex-friend-count``.
-* At this point the query _continues_: in stage 3, the matches all ``$other-user``s with their respective usernames, ``$other-name``, and their friends. In stage 4, we again count the answers but this time we first group answers by (unique combinations of) `$other-name` and `$alex-friend-count` before we do the count per-group.
-* In stage 5, we impose an additional condition on the answers of the previous stage (which will be thruples of `$other-friend-count`, `$other-name`, and `$alex-friend-count`). This filters out all the answer that don't satisfy the condition!
-* Finally, we only select the username `$other-name` from each answer to be returned to us. This will gives us all the usernames of user who have more friends than Alex!
+* *Stage 1 and 2*. As before, in the first two stages we determine the count of Alex' friends and assign that count to the variable ``$alex-friend-count``.
+* *Stage 3 and 4*. At this point the query _continues_: the query matches all ``$other-user``s with their respective usernames, ``$other-name``, and their friends. In stage 4, we again count the answers but this time we first group answers by (unique combinations of) `$other-name` and `$alex-friend-count` before we do the count per-group.
+* *Stage 5*. This stage imposes an additional condition on the answers of the previous stage (which will be answer triples of `$other-friend-count`, `$other-name`, and `$alex-friend-count`). This filters out all the answers that don't satisfy the condition!
+* *Stage 6*. Finally, we only select the username `$other-name` from each answer to be returned to us. This will gives us all the usernames of user who have more friends than Alex!
 
 Combining multiple query stages into a single query pipeline is _fun_. But the resulting query now has quite a bit of logically repetitive code. Let's see a final, and most advanced version of the very same query:
 
@@ -105,7 +105,14 @@ Importantly, different types may own the _same_ attributes; and, similarly, diff
 include::{page-version}@home::example$tql/crash_course.tql[tags=schema5]
 ----
 
-TypeDB's type system re-thinks data models from first principles: it modularizes schemas into their "atomic" components. For example, you can add or remove ownership at any point in time, or edit specific annotations. This makes it easy to migrate and combine data, and programmatically re-structure your database if necessary.
+Finally, yet another fundamental and powerful feature of TypeDB's type system is *subtyping*: analogous to  modern programming language features, this gives us the ability to organize our types hierarchically:
+
+[,typeql]
+----
+include::{page-version}@home::example$tql/crash_course.tql[tags=schema6]
+----
+
+TypeDB's type system re-thinks data models from first principles: it modularizes schemas into their "atomic" components. For example, you can add or remove ownership at any point in time, or edit specific annotations. This makes it easy to migrate and combine data, and programmatically re-structure your database if necessary. There is much more to explore, but we refer to the xref:{page-version}@manual::schema/index.adoc[Schema Manual] for further details.
 
 == CRUD operations
 
@@ -116,7 +123,7 @@ Having defined the types in our schema, we are ready to create data in our datab
 include::{page-version}@home::example$tql/crash_course.tql[tags=CRUD1]
 ----
 
-This works, but is pretty useless: it inserts a user entity in the type `user`, but gives no information about it—as a consequence we would have trouble retrieving or working with that entity, as it has no distinguishing features (except, it will have an automatically assigned "`internal id`", or *iid*, which every data instance gets assigned when created!).
+This can work, but is pretty useless: it inserts a user entity in the type `user`, but gives no information about that entity (in fact, the query will *fail* if `username` is set to be `@key` attribute of user). As a consequence we would have trouble retrieving or working with that entity, as it has no distinguishing features (except, it will have an automatically assigned "`internal id`", or *iid*, which every data instance gets assigned when created).
 
 The following is better:
 
@@ -132,7 +139,7 @@ We can also combine multiple insertions in the same `insert` query like so:
 include::{page-version}@home::example$tql/crash_course.tql[tags=CRUD3]
 ----
 
-This inserts two users at the same time. Recall, that we set usernames to be a key attribute of our users, so you would (rightfully) expect the following query to fail:
+This inserts two users at the same time. Recall, that we set usernames to be a key attribute of our users, so you would (rightfully) expect the following query to *fail*:
 
 [,typeql]
 ----
@@ -245,9 +252,9 @@ How to open a transaction and run a query will depend on your client.
 Studio::
 +
 --
-Select your database using the database selector (image:{page-component-version}@home::studio-icons/database-none.png[width=72]), then select your transaction type in the top menu.
+Select your database using the database selector (image:{page-component-version}@home::studio-icons/database-none.png[width=128]), then select your transaction type in the top menu.
 
-Open your query file. Then click the run button to run your query. Use the commit button (image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24]).
+Open your query file. Then click the run button to run your query. Finally, use the commit button (image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24]) to persist any changes made.
 --
 
 Console::
@@ -289,7 +296,7 @@ NOTE: Coming soon.
 --
 ====
 
-You may now try running queries in the following order:
+You may now try running queries in this course in the following order:
 
 1. Define a schema as outlined in the <<schema,schema section>>. Use `schema` transactions for your queries and don't forget to commit any changes made.
 
