@@ -1,1 +1,21 @@
 = `attribute` statement
+
+The statement `attribute <LABEL>` is used to identify the `<LABEL>` as a type of kind `attribute`.
+
+== Defining attributes
+
+The `attribute` keyword can be used to define a type of kind `attribute`.
+
+[,typeql]
+----
+define attribute name;
+----
+
+== Matching attributes
+
+The `attribute` keyword can be used to match all types of kind `attribute`.
+
+[,typeql]
+----
+match attribute $a;
+----

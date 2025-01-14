@@ -8,13 +8,13 @@ When a concept is inserted, it is assigned an IID automatically.
 
 [,typeql]
 ----
-insert $person isa person;
+insert $user isa user;
 ----
 
 .Example TypeDB Console output
 ----
    --------
-    $x | iid 0x1f0005000000000000012f isa person
+    $x | iid 0x1f0005000000000000012f isa user
    --------
 ----
 

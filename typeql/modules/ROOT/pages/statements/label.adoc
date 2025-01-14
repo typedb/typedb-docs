@@ -9,12 +9,12 @@ The `label` keyword is only used when matching on a type label. The type label i
 
 [,typeql]
 ----
-define entity person;
+define entity user;
 ----
 
 == Matching type labels
 
 [,typeql]
 ----
-match $t label person;
+match $t label user;
 ----

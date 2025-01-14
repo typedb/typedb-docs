@@ -1,1 +1,21 @@
 = `entity` statement
+
+The statement `entity <LABEL>` is used to identify the `<LABEL>` as a type of kind `entity`.
+
+== Defining entities
+
+The `entity` keyword can be used to define a type of kind `entity`.
+
+[,typeql]
+----
+define entity user;
+----
+
+== Matching entities
+
+The `entity` keyword can be used to match all types of kind `entity`.
+
+[,typeql]
+----
+match entity $e;
+----

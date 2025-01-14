@@ -1,1 +1,21 @@
 = `relation` statement
+
+The statement `relation <LABEL>` is used to identify the `<LABEL>` as a type of kind `relation`.
+
+== Defining relations
+
+The `relation` keyword can be used to define a type of kind `relation`.
+
+[,typeql]
+----
+define relation parentship;
+----
+
+== Matching relations
+
+The `relation` keyword can be used to match all types of kind `relation`.
+
+[,typeql]
+----
+match relation $r;
+----
