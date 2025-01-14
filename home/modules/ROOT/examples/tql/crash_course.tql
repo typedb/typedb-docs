@@ -83,7 +83,9 @@ insert
   $y isa user, has username "hartshorne";
   friendship (friend: $x, friend: $y);
 # end::CRUD5[]
+# pipeline::write::end
 
+# pipeline::write::start
 # tag::CRUD6[]
 match
   $u0 isa user, has username "user_0";
