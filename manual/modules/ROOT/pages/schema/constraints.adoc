@@ -55,6 +55,39 @@ Try referring to xref:{page-version}@typeql::annotations/overview.adoc[TypeQL An
 
 By applying constraints, you can ensure that your database not only organizes information but also guarantees its correctness, consistency, and integrity.
 
+[#default_constraints]
+=== Default constraints
+
+Some constraints are mandatory and are generated automatically if no <<overriding_constraints, overriding value>> is specified.
+
+Currently, the only auto-generated constraint is `cardinality`, which is required for any `owns`, `relates`, or `plays` capability.
+Refer to xref:{page-version}@typeql::annotations/card.adoc[@card annotation] for more details.
+
+[#combining_constraints]
+=== Combining constraints
+
+Constraints in TypeDB are cumulative, meaning that every constraint must be respected simultaneously.
+Defined constraints do not relax or interact with one another in a way that reduces their enforcement.
+
+For instance, consider an attribute type's value type with the following constraints (whether explicitly declared or inherited through subtyping):
+
+- Regular expression: `^.*@\w+\.\w+$`
+- Regular expression: `^.*@typedb.com$`
+- Values set: `(alice@typedb.org, bob@typedb.com, cal)`
+
+Combining these constraints, the only permissible value is `bob@typedb.com`.
+
+[#overriding_constraints]
+=== Redefining and overriding constraints
+
+A single declaration cannot have multiple constraints **defined** of the same kind, which is also true for xref:{page-version}@typeql::annotations/overview.adoc[annotations].
+Constraints can be <<combining_constraints, combined>> as a result of subtyping and specialization, but a statement like `type @card(X) @card(X) @card(X)` will always result in `type @card(X)`, and `type @card(X) @card(Y)` is an invalid definition.
+A defined constraint, which value should be changed, can be xref:{page-version}@typeql::schema/redefine.adoc[redefined].
+
+**Overriding** is an operation of hiding a <<default_constraints, default constraint value>> by defining explicit constraints.
+
+== Constraint kinds
+
 [#_type_constraints]
 === Type constraints
 
@@ -127,7 +160,7 @@ include::{page-version}@typeql::annotations/card.adoc[tags=description]
 include::{page-version}@typeql::annotations/unique.adoc[tags=description]
 ====
 
-=== Subtyping
+== Subtyping
 
 Subtyping is a powerful instrument in TypeDB and becomes even more powerful with constraints.
 While it is possible to predict the effect of a constraint on a subtype based on its description, it can be a little tricky at first.
@@ -137,7 +170,7 @@ It is recommended to refer to xref:{page-version}@manual::schema/types.adoc[type
 Please note that more details and examples of subtyping behavior is available on each xref:{page-version}@typeql::annotations/overview.adoc[annotation's page].
 Visit these pages in case of struggles in understanding of the explanations below.
 
-==== Type constraints
+=== Type constraints
 
 An instance should comply to all the constraints of its types (type and supertypes).
 The following are the explanations of subtyping behaviour based on the <<_type_constraints, type constraints descriptions>> and the <<annotations_constraints, example>> from the first section:
@@ -171,7 +204,7 @@ Thus, both attributes can exist.
 However, the second attribute will get deleted if there will be no `independent` constraints affecting its types.
 ====
 
-==== Value type constraints
+=== Value type constraints
 
 A value should comply to all the constraints of its attribute's types (type and supertypes).
 The following are the explanations of subtyping behaviour based on the <<_value_type_constraints, value type constraints descriptions>> and the <<annotations_constraints, example>> from the first section:
@@ -185,7 +218,7 @@ In order to comply to the `regex` constraints, values of both instances should b
 Additionally, the domain of `typedb-email` 's value should be "typedb.com", while `personal-email` can be any "*.*", including "typedb.com".
 ====
 
-==== Capabilities constraints
+=== Capability constraints
 
 For a capability constraint `<type label 1> <capability> <type label 2> @<constraint>`:
 
@@ -215,5 +248,19 @@ However, it should also comply to the constraint of `profile`, which limits this
 - A `user` should comply to both cardinality constraints from `profile` and `page`.
 Thus, it can have only up to three names.
 
-Refer to xref:{page-version}@typeql::annotations/card.adoc[@card annotation] for a more complex example!
+Refer to xref:{page-version}@typeql::annotations/card.adoc[@card annotation] for a more complex example.
 ====
+
+== Common issues
+
+=== <<default_constraints>> are implicitly set for defined capabilities whenever there is no explicitly defined constraint
+
+E.g., the <<annotations_constraints, following schema>> requires `@card(0..)` specification for `page owns name`, because the default cardinality would not allow `page` s and, thus, `profile` s to have 2 or 3 `name` s.
+
+At the same time, `user` s will only have two cardinality constraints for their names: `0..` and `0..3` as the ownership is inherited.
+However, if you were to set a `user owns name` again, a default cardinality constraint would be generated for this ownership, and `user` would need to comply to three cardinality constraints for `name` s.
+
+[,typeql]
+----
+include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;all-owns-name-cards]
+----

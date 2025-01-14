@@ -37,9 +37,11 @@ define
 
 // tag::all-owns-name[]
   entity content;
+// tag::all-owns-name-cards[]
   entity page sub content, owns name @card(0..);
   entity profile sub page, owns name @card(0..3);
   entity user sub profile;
+// end::all-owns-name-cards[]
   attribute name value string;
 // end::all-owns-name[]
 
