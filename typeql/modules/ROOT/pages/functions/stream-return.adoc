@@ -1,1 +1,66 @@
-= Stream return functions
+= Stream-return functions
+
+Stream-return functions can return an unlimited number of results (rows).
+
+== Syntax
+
+Stream-return functions can be identified by their return type containing curly braces `{}`.
+
+.Stream-return scalar function return format
+[,typeql]
+----
+{ <return type> }
+----
+
+.Stream-return tuple function return format
+[,typeql]
+----
+{ <return type 0>, ..., <return type N> }
+----
+
+== Usage
+
+Stream-return functions are defined and called like any other function.
+To retrieve the results of the called function, considering that the number of results for a single call is undefined, use the keyword `in`.
+
+[#scalar_functions]
+=== Scalar functions
+
+Stream-return scalar functions are used to return multiple results for one expression: a variable or a function call.
+The following examples illustrate simple usages of functions for retrieving a stream of `type` s and a stream of `integer` s.
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_functions.tql[tags=fun-stream-scalar-return-type]
+----
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_functions.tql[tags=fun-stream-scalar-return-value]
+----
+
+To retrieve the results of such functions calls, the following read query can be used:
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/read_functions.tql[tags=fun-stream-scalar-return-type]
+----
+
+=== Tuple functions
+
+// tag::tuple-functions-description[]
+It is possible to add another dimension to the returned type and enumerate a number of results returned from a function using commas.
+Tuples can contain any combinations of scalar returned values.
+// end::tuple-functions-description[]
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_functions.tql[tags=fun-stream-tuple-return-type]
+----
+
+To retrieve the results of such functions calls, the following read query can be used:
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/read_functions.tql[tags=fun-stream-tuple-return-type]
+----

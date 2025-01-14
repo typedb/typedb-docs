@@ -1,1 +1,120 @@
 = Writing functions
+
+== Syntax
+
+=== Declaration
+
+Functions in TypeQL are declared using the keyword `fun`.
+A function declaration consists of:
+
+- A function signature:
+* A function name.
+* Optional arguments.
+* A return type.
+- A read pipeline as the function's body.
+- A return statement that produces results of the specified return type.
+
+.Function Declaration Syntax
+[,typeql]
+----
+fun <function name>(<optional arguments>) -> <return types>:
+<read pipeline>
+return <statement>
+----
+
+- `<function name>` is a valid not reserved and not used TypeQL xref:{page-version}@typeql::expressions/literals.adoc[literal].
+- `<optional arguments>` are specified in the form `$<variable>: <variable type>` and are separated by commas.
+- `<return types>` consists of at least one `<return type>` and can be:
+* a xref:{page-version}@typeql::functions/stream-return.adoc[stream-return].
+* a xref:{page-version}@typeql::functions/single-return.adoc[single-return].
+- `<return type>` and `<variable type>` can be built-in, user-defined, or value types.
+- `<read pipeline>` includes any read xref:{page-version}@typeql::pipelines/index.adoc[pipeline].
+- `<statement>` may consist of variables and xref:{page-version}@typeql::expressions/function_calls.adoc[function calls], whether built-in or user-defined:
+* Scalar single-return: `$a`.
+* Tuple single-return: `$a, $b, f1(), f2($a)`.
+* Scalar stream-return: `{ $a }`.
+* Tuple stream-return: `{ $a, $b, f1(), f2($a) }`.
+
+=== Calling
+
+Function can be called in a query expression similarly to most of the modern programming languages:
+
+.Function Calling Syntax
+[,typeql]
+----
+<function name>(<optional arguments>)
+----
+
+`<optional arguments>` are specified in the form `$<variable>` and are separated by commas.
+
+== Usage
+
+[#query_level_functions]
+=== Using Functions at Query-Level
+
+Functions can be defined temporarily at the query level using the `with` clause.
+Such functions exist only for the duration of the query and are not persisted in the database.
+
+Multiple `with` clauses can be used, each defining a single function.
+All `with` clauses must precede the query pipeline.
+
+.Querying with Functions
+[,typeql]
+----
+with <f1() declaration>
+with <f2() declaration>
+...
+with <fN() declaration>
+match
+  $f1 = f1();
+  $f2 = f2();
+  ...
+  $fN = fN();
+----
+
+For example, the following read pipeline defines and uses a temporary function using the `with` clause:
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/read_functions.tql[tag=with-fun]
+----
+
+=== Using Functions in Define Queries
+
+In addition to <<query_level_functions, temporary query-level functions>>, functions can be persisted in schemas.
+Replace the keyword `with` with `define` and execute the query in a schema transaction:
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_functions.tql[tags=define-keyword;with-fun-defined]
+----
+
+Once persisted, these functions can be called directly in read queries:
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/read_functions.tql[tag=with-fun-match]
+----
+
+== Learn More
+
+[cols=3]
+--
+.xref:{page-version}@typeql::pipelines/index.adoc[]
+[.clickable]
+****
+Learn more about function bodies - pipelines.
+****
+
+.xref:{page-version}@typeql::functions/stream-return.adoc[]
+[.clickable]
+****
+Understand how to work with stream-return functions.
+****
+
+.xref:{page-version}@typeql::functions/single-return.adoc[]
+[.clickable]
+****
+Explore single-return functions and their usage.
+****
+--

@@ -1,1 +1,116 @@
 = Single-return functions
+
+Single-return functions return 0 or 1 rows as results of their execution.
+
+== Syntax
+
+Single-return functions can be identified by their return type not containing curly braces `{}`.
+
+.Single-return scalar function return format
+[,typeql]
+----
+<return type>
+----
+
+.Single-return tuple function return format
+[,typeql]
+----
+<return type 0>, ..., <return type N>
+----
+
+== Usage
+
+Single-return functions are defined and called like any other function.
+To retrieve the results of the called function, a simple assignment is enough (however, a general `in` used for xref:{page-version}@typeql::functions/stream-return.adoc[streamed] results is also allowed).
+
+=== Transforming stream-returns to single-returns
+
+TypeQL pipelines generally produce streams of results as not every query always returns a specific number of answers.
+For example, the following example uses a query with a number of results based on the actual data and does not depend on schema constraints:
+
+[#_transforming_general_example]
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/read_functions.tql[tags=match-users]
+----
+
+There are two main ways of transforming streams into single results: aggregation and stream modification.
+
+==== Aggregation
+
+// TODO: Add reference to built-in functions
+A common case of single-return functions usage is calling for built-in aggregation functions.
+These aggregations are usually scalar single-return functions by themselves, so calling them to aggregate a stream is a natural operation.
+
+.Example of an aggregate function used in a scalar function
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_functions.tql[tags=fun-aggregate-single-scalar-return]
+----
+
+.Example of an aggregate function used in a tuple function
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_functions.tql[tags=fun-aggregate-single-tuple-return]
+----
+
+==== Stream modification
+
+Imagine having function based on a query from <<_transforming_general_example, the previous example>>.
+As already discussed, this function should return a stream of answers.
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_functions.tql[tags=fun-stream-users]
+----
+
+To make sure that there is maximum one result for a function, an instruction for picking this one result in case of ambiguity is required.
+TypeQL supports two stream modification keywords for these purposes:
+
+- `first`
+- `last`
+
+With the `first` keyword, only the first result will be consumed from the stream.
+It can be used in cases when only the first answer is needed or when there cannot be more than one answer.
+
+With the `last` keyword, the whole stream is consumed, and only its last answer is returned.
+
+.Example of a stream modification
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_functions.tql[tags=fun-stream-users-with-first]
+----
+
+[#scalar_functions]
+=== Scalar functions
+
+Single-return scalar functions are used to return a single result for one expression: a variable or a function call.
+The following example illustrate simple usages of functions for retrieving an `integer`.
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_functions.tql[tags=fun-single-scalar-return-value]
+----
+
+To retrieve the results of such functions calls, the following read query can be used:
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/read_functions.tql[tags=fun-single-scalar-return-value]
+----
+
+=== Tuple functions
+
+include::{page-version}@typeql::functions/stream-return.adoc[tags=tuple-functions-description]
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_functions.tql[tags=with-fun-defined]
+----
+
+To retrieve the results of such functions calls, the following read query can be used:
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/read_functions.tql[tags=with-fun-match]
+----
