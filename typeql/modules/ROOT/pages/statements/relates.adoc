@@ -1,1 +1,35 @@
 = `relates` statement
+
+The statement `<RELATION LABEL> relates <LABEL>` is used to identify the `<LABEL>` as a role type related by `<RELATION LABEL>`.
+
+== Defining role types
+
+The `relates` keyword can be used to define a role type for a relation type.
+
+[,typeql]
+----
+define relation parentship relates parent;
+----
+
+== Matching role types
+
+The `relates` keyword can be used to match all role types related by a relation type.
+
+[,typeql]
+----
+match parentship relates $r;
+----
+
+Or to match all relation types for a role type with a label <LABEL>.
+
+[,typeql]
+----
+match $r relates parent;
+----
+
+Note that a scope can be used to have more specific results. The previous query can return results for different role types with the same `<LABEL>`, while the following example returns only relation types with the specified scope.
+
+[,typeql]
+----
+match $r relates parentship:parent;
+----

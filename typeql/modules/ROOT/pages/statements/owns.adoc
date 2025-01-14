@@ -1,1 +1,28 @@
 = `owns` statement
+
+The statement `<LABEL> owns <ATTRIBUTE LABEL>` is used to identify the `<LABEL>` type as an owner of `<ATTRIBUTE LABEL>`.
+
+== Defining owners
+
+The `owns` keyword can be used to define a type as an owner of an attribute type.
+
+[,typeql]
+----
+define entity user owns email;
+----
+
+== Matching owners
+
+The `owns` keyword can be used to match all attribute types a type is owning.
+
+[,typeql]
+----
+match user owns $a;
+----
+
+Or to match all owning types for a <LABEL>.
+
+[,typeql]
+----
+match $o owns email;
+----

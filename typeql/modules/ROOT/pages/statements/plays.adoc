@@ -1,1 +1,36 @@
 = `plays` statement
+
+The statement `<LABEL> plays <SCOPED ROLE LABEL>` is used to identify the `<LABEL>` type as a roleplayer of `<SCOPED ROLE LABEL>`.
+
+== Defining roleplayers
+
+The `plays` keyword can be used to define a type as a roleplayer of a role type.
+Note that a scope is required to resolve role type names ambiguity.
+
+[,typeql]
+----
+define entity user plays parentship:parent;
+----
+
+== Matching roleplayers
+
+The `plays` keyword can be used to match all role types a type is playing.
+
+[,typeql]
+----
+match user plays $r;
+----
+
+Or to match all roleplaying types for a <LABEL>.
+
+[,typeql]
+----
+match $rp plays parent;
+----
+
+Note that a scope can be used to have more specific results. The previous query can return results for different role types with the same `<LABEL>`, while the following example returns only relation types with the specified scope.
+
+[,typeql]
+----
+match $rp plays parentship:parent;
+----
