@@ -1,1 +1,92 @@
-= Schema structure
+= Schema modeling
+
+This page covers the most important aspects of TypeDB schemas.
+
+== Understanding the data model
+
+In TypeDB, data is stored in types. There are three kinds of types that exhibit three different, fundamental behaviors of data:
+
+1. Entity types store data instances (simply called *entities*) that can be inserted independently of any other data. For example, a new `user` entity may be created at any point.
+1. Relation types store data instances (simply called *relations*) that reference, and thereby _connect_, other data instance (called *role players* in a relation). For example, a new `friendship` relation may be created only with reference to, say, two users acting as friends in that relation.
+1. Attribute types store data instances (simply called *attributes*) that are associated with a literal value (e.g., a `string`, `integer`, etc.). Attributes, by default, also must reference a single data instance (called the *owner*) unless the type is annotated as "`independent`".
+
+Data instances in TypeDB adhere to the common programming principle that "`references cannot outlive the data that they point to`":
+
+* Relations will be removed if their role players are removed (more precisely, if the number of role players falls below what is allowed by the schema).
+* Attributes will be removed if their owners are removed (expect the case of independent attributes mentioned above).
+
+The logical dependency of data is a guiding principle in TypeDB schema design. However, there are various means of modifying it (e.g., by allowing attributes to be independent, or by enforcing attributes and relations to act as "`keys`" for other data).
+
+[NOTE]
+====
+For the curious reader: there is no concept of an "`independent`" relation as this is, in essence, the concept of an entity.
+====
+
+[[capabilities]]
+== Type capabilities
+
+Relations organize their set of role players by so-called *role types* (also simply called "`roles`"): each role player is of a specific role type. However, there might be one than one player of the same type in the same relation. _But which data instances are allowed in the roles in a given type of relation?_ And similarly for attributes: _which data instances can act as owners of attributes of a given type?_
+
+These questions are answered by the schema, through the specification of so-called *capabilities*.
+
+*  We can specify that a type has *player* capability of a role. For example,
++
+[,typeql]
+.Specify that users can act as friends
+----
+define user plays friendship:friend;
+----
++
+which literally means that users can act as friends in friendship relations.
+
+* We can specify that a type has *owner* capability of an attribute. For example,
++
+[,typeql]
+.Specify that users can act as username owners
+----
+define user owns username;
+----
++
+which literally means that users can act as owners of username attributes.
+
+[NOTE]
+====
+It is important to highlight that multiple different types can have the same capability. For example, both users and bots could plays the role of friends and/or own usernames.
+
+In terms of programming principles, you can understand having capabilities as database analog of implementing https://en.wikipedia.org/wiki/Trait_(computer_programming)[traits]: like types, traits organize data instances into subcollections; unlike types, you cannot directly instantiate a trait.
+====
+
+Note all types kinds are created equal:
+
+* Entity and relations types (together also referred to as *object* types) _can have capabilities_.
+* Attribute types are considered mere association of values to objects: they _cannot have capabilities_
+
+== Subtyping and inheritance
+
+A key ingredient of any modern type system is *subtyping*, i.e., the ability to cast instances from one type into another. Subtyping is a key feature of schema modeling in TypeDB: it allows us to specialize and hierarchically organize types and their data instance. For example,
+[,typeql]
+.Create an entity type `admin` as a subtype of `user`
+----
+define entity admin sub user;
+----
+Subtyping behave in the intuitive way:
+
+* If we were to query for user instances, we would also find all admin instances
+* If we were to query for admin instance, we would not find those users that are not admins.
+
+[NOTE]
+====
+Subtyping hierarchies in TypeDB are "`single-inheritance`", i.e., every type has a single direct supertype. This choice simplifies data models and avoids the https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem[diamond problem]. Every data instance has exactly one
+
+To model non-tree-like hierarchies the user can exploit the capability system of TypeDB (i.e. "`traits`").
+====
+
+An important aspect of subtyping is the *inheritance* of capabilities. In general, _all_ capabilities of the supertype are inherited by the subtype. However, further capabilities may be specified for the subtype that are not shared with the supertype. For example,
+[,typeql]
+----
+define admin owns access-level;
+----
+
+There _are_ ways to hide supertype capabilities from subtypes, by setting these capabilities to be xref:{page-version}@typeql::annotations/abstract.adoc[abstract] (coming soon).
+// TODO
+

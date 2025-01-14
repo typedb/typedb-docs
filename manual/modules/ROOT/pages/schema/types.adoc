@@ -1,1 +1,142 @@
 = Defining types
+
+This page explains how to define types and type capabilities in TypeDB schemas.
+
+== Schema definition queries
+
+All schema (un)definitions in TypeDB are run in `schema` xref:{page-version}@manual::queries/transactions.adoc[transactions]. There are three kinds of schema definition queries:
+
+* `define <statements>`. A `define` query define types and their capabilities, subtyping, as well as more specific annotations on those statements.
+* `undefine <statements>`. An `undefine` query can be used to remove definitions of type, their capabilities, subtyping, and statement annotations.
+* `redefine <statement>`. A `redefine` query can be used to change a _single_ statement at a time, overwriting any analogous previously defined statement.
+
+== Entity Types
+
+Entity types are first defined using the `entity` keyword.
+[,typeql]
+----
+define entity user;
+----
+
+Subtypes of entity types are always entity types themselves, and can be introduced using the `sub` keyword.
+[,typeql]
+----
+define entity admin sub user;
+----
+
+xref:{page-version}@manual::schema/schema_structure.adoc#capabilities[Capabilities] of entity types are defined as before using the `plays` and `owns` keywords.
+
+== Relation Types
+
+Relation types are first defined using the `relation` keyword
+[,typeql]
+----
+define
+  relation friendship,
+    relates friend @card(2);
+----
+Here, `@card(2)` is an example of annotation, specifying that there will be exactly two friends in each friendship relation. Without this annotation the role cardinality would default to `@card(0..1)` (allowing between 0 and 1 friend). See xref:{page-version}@manual::schema/constraints.adoc[annotations] for more.
+
+Subtypes of relation types are always relation types themselves, and can be introduced using the `sub` keyword.
+
+* Relation subtypes can *specialize* the roles of their supertype using the `as` keyword.
+* Otherwise, if a role is not specialized, relations subtypes automatically inherit that role.
+
+For example
+[,typeql]
+----
+define
+  relation close-friendship sub friendship; # inherits friend role
+  relation best-friendship sub frienship, # specializes friend role
+    relates best-friend as friend @card(1),
+    relates other-friend as friend @card(1);
+----
+This defines "`close friendship`" and "`best-friendship`" relations as a subtype of our friendship relations above.
+
+Note that unlike friendship relations, the subtype of best-friendships contains asymmetric relations (indeed, unfortunately, if A is the best friend of B this need not imply that B is the best friend of A). In general, a single role can be specialized into any number of roles, as long as role cardinalities are compatible.
+
+[NOTE]
+====
+In the above example, the cardinality annotations `@card(1)` can be omitted, as they can be inferred by the model checker.
+====
+
+xref:{page-version}@manual::schema/schema_structure.adoc#capabilities[Capabilities] of relation types are defined as before using the `plays` and `owns` keywords.
+
+== Attribute types
+
+Attribute types are first defined using the `attribute` keyword, and they must be supplied with a value type using the `value` keyword (unless, they are annotated as being `@abstract`, see xref:{page-version}@manual::schema/constraints.adoc[annotations])
+[,typeql]
+----
+define
+  attribute id,
+    value string;
+----
+
+Subtypes of attributes types are always attributes types themselves, and inherit the value type of its supertype (if set; otherwise, a new value type can be set). For example:
+[,typeql]
+----
+define
+  attribute comment-id sub id;
+----
+
+[NOTE]
+====
+Recall that attributes do not play roles or own other attributes.
+====
+
+== Undefining definitions
+
+Any of the above statements can be undefined, however this uses special syntax. For example
+[,typeql]
+----
+undefine entity admin;
+----
+will completely remove the admin from your schema, and with it all capabilities of the admin type.
+
+[NOTE]
+====
+Removing a type from your schema will, in general, only succeed if there are no data instance in the type *_and_* no other definitions depend on the type (i.e., the type appears neither in another type's capability nor as another type's supertype).
+====
+
+If we instead write
+[,typeql]
+----
+undefine sub user from admin;
+----
+then this removes `admin` having `user` as its supertype, but it _does not_ remove the type `admin` itself.
+
+Similarly, writing
+[,typql]
+----
+undefine plays friendship:friend from user;
+----
+removes the friend capability from the user type, but leaves the type itself intact. And
+[,typql]
+----
+undefine owns username from user;
+----
+removes the capability of owning usernames.
+
+== Redefining definitions
+
+TypeDB also allows concise redefinitions of single statements. For example, after we define
+[,typeql]
+----
+define
+  entity user;
+  entity admin sub user;
+  entity superuser sub user;
+----
+we may redefine:
+[,typeql]
+----
+redefine admin sub superuser;
+----
+This will turn the initial `tree-like` type hierarchy into a linear type hierarchy, where `admin < superuser < user`.
+
+Re-define semantics are the most complex of all three definition query. However, the simple key property of redefine is: after a successful redefinition, the re-defined statement holds fully, replacing any conflicting prior statement.
+
+[NOTE]
+====
+While both `define` and `undefine` can be following by multiple statements, `redefine` can be followed by only a single statements. The reason for this is that the order of redefinitions may affect the resulting model; by working with single statements, we avoid this ambiguity.
+====

@@ -51,7 +51,6 @@ define
 
 # pipeline::write::start
 # tag::CRUD1[]
-insert $x isa user;
 # end::CRUD1[]
 # pipeline::write::end[fail]
 
@@ -70,9 +69,6 @@ insert
 
 # pipeline::write::start
 # tag::CRUD4[]
-insert
-  $x isa user, has username "user_3";
-  $y isa user, has username "user_3";
 # end::CRUD4[]
 # pipeline::write::end[fail]
 
