@@ -1,3 +1,9 @@
+# pipeline::schema::start
+define
+  entity user, owns name;
+  attribute name, value string;
+# pipeline::schema::end
+
 # pipeline::read::start
 match
 # tag::conjunction-example[]
