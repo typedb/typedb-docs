@@ -71,36 +71,36 @@ define
 
 // tag::fun-stream-return-type[]
   fun user_phones($user: user) -> { phone }:
-  match
-    $user has phone $phone;
-  return { $phone };
+    match
+      $user has phone $phone;
+    return { $phone };
 // end::fun-stream-return-type[]
 
 // tag::fun-stream-return-value[]
   fun add_streamed($x: integer, $y: integer) -> { integer }:
-  match
-    let $z = $x + $y;
-  return { $z };
+    match
+      let $z = $x + $y;
+    return { $z };
 // end::fun-stream-return-value[]
 
 // tag::fun-single-return-value[]
   fun add($x: integer, $y: integer) -> integer:
-  match
-    let $z = $x + $y;
-  return first $z;
+    match
+      let $z = $x + $y;
+    return first $z;
 // end::fun-single-return-value[]
 
 // tag::fun-aggregate-single-return[]
   fun mean_karma() -> double:
-  match
-    $user isa user, has karma $karma;
-  return mean($karma);
+    match
+      $user isa user, has karma $karma;
+    return mean($karma);
 // end::fun-aggregate-single-return[]
 
 // tag::fun-aggregate-single-tuple-return[]
   fun karma_sum_and_sum_squares() -> double, double:
-  match
-    $karma isa karma;
-    let $karma-squared = $karma * $karma;
-  return sum($karma), sum($karma-squared);
-// tag::fun-aggregate-single-tuple-return[]
+    match
+      $karma isa karma;
+      let $karma-squared = $karma * $karma;
+    return sum($karma), sum($karma-squared);
+// end::fun-aggregate-single-tuple-return[]

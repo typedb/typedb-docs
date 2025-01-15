@@ -6,7 +6,7 @@ This page explains how to define types and type capabilities in TypeDB schemas.
 
 All schema (un)definitions in TypeDB are run in `schema` xref:{page-version}@manual::queries/transactions.adoc[transactions]. There are three kinds of schema definition queries:
 
-* `define <statements>`. A `define` query define types and their capabilities, subtyping, as well as more specific annotations on those statements.
+* `define <statements>`. A `define` query defines types and their capabilities, subtyping, as well as more specific annotations on those statements.
 * `undefine <statements>`. An `undefine` query can be used to remove definitions of type, their capabilities, subtyping, and statement annotations.
 * `redefine <statement>`. A `redefine` query can be used to change a _single_ statement at a time, overwriting any analogous previously defined statement.
 

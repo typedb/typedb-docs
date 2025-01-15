@@ -1,10 +1,168 @@
 = Defining functions
 
-In this guide, you'll see how to use define queries to define functions.
+This page explains how to define functions within TypeDB schemas.
 
 == Understanding functions
 
 include::{page-version}@typeql::functions/index.adoc[tag=description]
-// TODO: fill
 
-Refer to xref:{page-version}@typeql::functions/index.adoc[TypeQL documentation] to explore the complete syntax documentation and more usage examples of TypeDB functions.
+Functions can be defined in a schema and later used in queries to:
+
+- Reduce code duplication by encapsulating common logic within functions.
+- Simplify complex TypeQL queries for improved readability and maintenance.
+- Share reusable query logic with other developers.
+
+While this page focuses on defining functions in schemas, it is also possible to create temporary functions for one-time query execution.
+Refer to the xref:{page-version}@typeql::functions/index.adoc[TypeQL documentation] for comprehensive information and additional usage examples.
+
+== Function definition queries
+
+Similar to xref:{page-version}@manual::schema/types.adoc[type definitions], functions can be stored in a database schema using `schema` xref:{page-version}@manual::queries/transactions.adoc[transactions].
+Three types of schema definition queries are available for working with functions:
+
+* `define <function declaration>`.
+A `define` query adds a new function to the schema for future use.
+
+* `undefine fun <function name>`.
+An `undefine` query removes a function from the schema.
+
+* `redefine <function declaration>`.
+A `redefine` query updates an existing function in the schema.
+
+=== Arithmetic functions
+
+The simplest functions perform arithmetic operations.
+For example, the following query defines a function that accepts two integers and returns their sum.
+The xref:{page-version}@typeql::functions/writing.adoc[function declaration] has several key components:
+
+[#_function_basics]
+- The `fun` keyword, indicating the start of a function declaration.
+- The function name.
+- A list of arguments, including their variable names and types.
+- The return type: `{}` denotes a xref:{page-version}@typeql::functions/stream.adoc[stream function], as it can return multiple results.
+- The function body, which contains a read xref:{page-version}@typeql::pipelines/index.adoc[pipeline] and a `return` statement with valid xref:{page-version}@typeql::statements/index.adoc[TypeQL expressions].
+
+[#_stream_arithmetic_example]
+.Stream arithmetic function definition
+[,typeql]
+----
+include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;fun-stream-return-value]
+----
+
+If you are certain that `$z` will only match a single value (or if only one value is needed), the `first` or `last` keywords can be used to ensure the function returns a xref:{page-version}@typeql::functions/single.adoc[single result].
+
+.Single arithmetic function definition
+[,typeql]
+----
+include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;fun-single-return-value]
+----
+
+=== Querying for types
+
+Since TypeDB has a strong emphasis on types, functions can also return types.
+For example, the following function retrieves all `phone` attributes associated with a specific `user`:
+
+[#_stream_example]
+.Stream function definition returning types
+[,typeql]
+----
+include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;fun-stream-return-type]
+----
+
+=== Functions within functions and tuple outputs
+
+As described in <<#_function_basics, the function syntax basics>>, return statements can include any valid TypeQL expressions.
+This allows functions to call other functions.
+Additionally, multiple expressions can be combined to return a tuple of results instead of a single scalar value.
+
+For example, the following function uses two built-in aggregation function calls to produce a tuple result:
+
+.Tuple function definition with inner function calls
+[,typeql]
+----
+include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;fun-aggregate-single-tuple-return]
+----
+
+[NOTE]
+====
+The output type here is not a stream because each tuple component is derived from an aggregation, which produces a single result.
+====
+
+Refer to <<using_functions>> for more details on calling functions.
+
+=== Function undefinition
+
+To undefine a function from a schema, you only need its name, which uniquely identifies it.
+The following query removes <<_stream_arithmetic_example, a function defined earlier>>:
+
+[,typeql]
+----
+include::{page-version}@manual::example$tql/undefine_schema.tql[tags=undefine-keyword;fun-stream-return-value-undefined]
+----
+
+=== Function redefinition
+
+To redefine an existing function, use the same `define` syntax with the `redefine` keyword.
+The query below updates <<_stream_example, a previously defined function>> to accept a `username` instead of a specific `user`:
+
+[#_redefine_example]
+[,typeql]
+----
+include::{page-version}@manual::example$tql/redefine_schema.tql[tags=redefine-keyword;fun-stream-return-type-redefined]
+----
+
+[NOTE]
+====
+You can only redefine existing functions.
+The function name must remain the same.
+To change the name, define a new function and undefine the old one.
+====
+
+[#using_functions]
+== Using functions
+
+Functions can be called in queries as other xref:{page-version}@typeql::statements/index.adoc[statements].
+As shown in previous examples, to call a function, reference its name and pass the required arguments (if applicable) within parentheses.
+
+For functions returning a single result, use a simple assignment to bind the output variable to the function's result:
+
+[,typeql]
+----
+include::{page-version}@manual::example$tql/read_queries.tql[tag=fun-single-scalar-return-value]
+----
+
+[NOTE]
+====
+The xref:{page-version}@typeql::statements/let-eq.adoc[`let` keyword] is required for value assignment in this example.
+====
+
+For functions returning a stream, use xref:{page-version}@typeql::statements/let-in.adoc[`let ... in` statements] to bind variables:
+
+[,typeql]
+----
+include::{page-version}@manual::example$tql/read_queries.tql[tag=fun-stream-scalar-return-type]
+----
+
+.Practice Task
+[%collapsible]
+====
+How would you call this function after <<_redefine_example, redefining it>>?
+
+.Answer
+[%collapsible]
+=====
+[,typeql]
+----
+user_phones("Bob")
+----
+=====
+====
+
+To handle tuple results, bind the appropriate number of variables to unpack the function’s output:
+
+[,typeql]
+----
+include::{page-version}@manual::example$tql/read_queries.tql[tag=fun-stream-tuple-return-type]
+----
+
+For further details, refer to the xref:{page-version}@typeql::functions/index.adoc[TypeQL documentation].

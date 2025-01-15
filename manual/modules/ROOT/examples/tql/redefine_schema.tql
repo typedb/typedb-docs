@@ -1,0 +1,11 @@
+// tag::redefine-keyword[]
+redefine
+// end::redefine-keyword[]
+
+// tag::fun-stream-return-type-redefined[]
+  fun user_phones($username-value: string) -> { phone }:
+    match
+      $user isa user, has username $username, has phone $phone;
+      $username == $username-value;
+    return { $phone };
+// end::fun-stream-return-type-redefined[]

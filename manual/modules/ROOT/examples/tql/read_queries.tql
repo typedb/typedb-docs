@@ -1,0 +1,15 @@
+// tag::fun-stream-scalar-return-type[]
+match
+  $user isa user;
+  let $phone in user_phones($user);
+// end::fun-stream-scalar-return-type[]
+
+// tag::fun-stream-tuple-return-type[]
+match
+  let $karma, $karma-squared in karma_sum_and_sum_squares();
+// end::fun-stream-tuple-return-type[]
+
+// tag::fun-single-scalar-return-value[]
+match
+  let $answer = add(2016, 9);
+// end::fun-single-scalar-return-value[]
