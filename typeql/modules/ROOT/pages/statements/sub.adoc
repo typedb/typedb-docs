@@ -2,13 +2,22 @@
 
 The statement `<LABEL> sub <SUPERTYPE LABEL>` is used to identify the `<LABEL>` type as a subtype of `<SUPERTYPE LABEL>`.
 
-== Defining subtypes
+== Defining subtyping
 
 The `sub` keyword can be used to define a type as a subtype of another type.
 
 [,typeql]
 ----
 define user sub profile;
+----
+
+== Undefining subtyping
+
+The `sub` keyword can be used to undefine a type's subtyping of a type.
+
+[,typeql]
+----
+undefine sub profile from user;
 ----
 
 == Matching

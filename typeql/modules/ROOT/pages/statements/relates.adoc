@@ -11,6 +11,17 @@ The `relates` keyword can be used to define a role type for a relation type.
 define parentship relates parent;
 ----
 
+// TODO: Redefining when ordering is introduced
+
+== Undefining role types
+
+The `relates` keyword can be used to undefine a role type from a relation.
+
+[,typeql]
+----
+undefine relates parent from parentship;
+----
+
 == Matching
 
 === Matching related role types

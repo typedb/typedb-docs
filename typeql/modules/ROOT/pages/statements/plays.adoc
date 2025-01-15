@@ -12,6 +12,15 @@ Note that a scope is required to resolve role type names ambiguity.
 define user plays parentship:parent;
 ----
 
+== Undefining roleplayers
+
+The `plays` keyword can be used to undefine a type's role.
+
+[,typeql]
+----
+undefine plays parentship:parent from user;
+----
+
 == Matching
 
 === Matching played role types

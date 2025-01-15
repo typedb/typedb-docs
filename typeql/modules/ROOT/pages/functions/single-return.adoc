@@ -31,7 +31,7 @@ For example, the following example uses a query with a number of results based o
 [#_transforming_general_example]
 [,typeql]
 ----
-include::{page-version}@typeql::example$tql/read_functions.tql[tags=match-users]
+include::{page-version}@typeql::example$tql/read_statements_functions.tql[tags=match-users]
 ----
 
 There are two main ways of transforming streams into single results: aggregation and stream modification.
@@ -45,13 +45,13 @@ These aggregations are usually scalar single-return functions by themselves, so 
 .Example of an aggregate function used in a scalar function
 [,typeql]
 ----
-include::{page-version}@typeql::example$tql/schema_functions.tql[tags=fun-aggregate-single-scalar-return]
+include::{page-version}@typeql::example$tql/schema_statements_functions.tql[tags=fun-aggregate-single-scalar-return]
 ----
 
 .Example of an aggregate function used in a tuple function
 [,typeql]
 ----
-include::{page-version}@typeql::example$tql/schema_functions.tql[tags=fun-aggregate-single-tuple-return]
+include::{page-version}@typeql::example$tql/schema_statements_functions.tql[tags=fun-aggregate-single-tuple-return]
 ----
 
 ==== Stream modification
@@ -61,7 +61,7 @@ As already discussed, this function should return a stream of answers.
 
 [,typeql]
 ----
-include::{page-version}@typeql::example$tql/schema_functions.tql[tags=fun-stream-users]
+include::{page-version}@typeql::example$tql/schema_statements_functions.tql[tags=fun-stream-users]
 ----
 
 To make sure that there is maximum one result for a function, an instruction for picking this one result in case of ambiguity is required.
@@ -78,7 +78,7 @@ With the `last` keyword, the whole stream is consumed, and only its last answer 
 .Example of a stream modification
 [,typeql]
 ----
-include::{page-version}@typeql::example$tql/schema_functions.tql[tags=fun-stream-users-with-first]
+include::{page-version}@typeql::example$tql/schema_statements_functions.tql[tags=fun-stream-users-with-first]
 ----
 
 [#scalar_functions]
@@ -89,14 +89,14 @@ The following example illustrate simple usages of functions for retrieving an `i
 
 [,typeql]
 ----
-include::{page-version}@typeql::example$tql/schema_functions.tql[tags=fun-single-scalar-return-value]
+include::{page-version}@typeql::example$tql/schema_statements_functions.tql[tags=fun-single-scalar-return-value]
 ----
 
 To retrieve the results of such functions calls, the following read query can be used:
 
 [,typeql]
 ----
-include::{page-version}@typeql::example$tql/read_functions.tql[tags=fun-single-scalar-return-value]
+include::{page-version}@typeql::example$tql/read_statements_functions.tql[tags=fun-single-scalar-return-value]
 ----
 
 === Tuple functions
@@ -105,12 +105,12 @@ include::{page-version}@typeql::functions/stream-return.adoc[tags=tuple-function
 
 [,typeql]
 ----
-include::{page-version}@typeql::example$tql/schema_functions.tql[tags=with-fun-defined]
+include::{page-version}@typeql::example$tql/schema_statements_functions.tql[tags=with-fun-defined]
 ----
 
 To retrieve the results of such functions calls, the following read query can be used:
 
 [,typeql]
 ----
-include::{page-version}@typeql::example$tql/read_functions.tql[tags=with-fun-match]
+include::{page-version}@typeql::example$tql/read_statements_functions.tql[tags=with-fun-match]
 ----

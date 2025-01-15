@@ -76,7 +76,7 @@ For example, the following read pipeline defines and uses a temporary function u
 
 [,typeql]
 ----
-include::{page-version}@typeql::example$tql/read_functions.tql[tag=with-fun]
+include::{page-version}@typeql::example$tql/read_statements_functions.tql[tag=with-fun]
 ----
 
 === Using Functions in Define Queries
@@ -86,14 +86,14 @@ Replace the keyword `with` with `define` and execute the query in a schema trans
 
 [,typeql]
 ----
-include::{page-version}@typeql::example$tql/schema_functions.tql[tags=define-keyword;with-fun-defined]
+include::{page-version}@typeql::example$tql/schema_statements_functions.tql[tags=define-keyword;with-fun-defined]
 ----
 
 Once persisted, these functions can be called directly in read queries:
 
 [,typeql]
 ----
-include::{page-version}@typeql::example$tql/read_functions.tql[tag=with-fun-match]
+include::{page-version}@typeql::example$tql/read_statements_functions.tql[tag=with-fun-match]
 ----
 
 == Learn More

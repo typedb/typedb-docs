@@ -2,13 +2,24 @@
 
 The statement `<LABEL> owns <ATTRIBUTE LABEL>` is used to identify the `<LABEL>` type as an owner of `<ATTRIBUTE LABEL>`.
 
-== Defining owner types
+== Defining ownership
 
 The `owns` keyword can be used to define a type as an owner of an attribute type.
 
 [,typeql]
 ----
 define user owns email;
+----
+
+// TODO: Redefining when ordering is introduced
+
+== Undefining ownership
+
+The `owns` keyword can be used to undefine a type's ownership of an attribute type.
+
+[,typeql]
+----
+undefine owns email from user;
 ----
 
 == Matching

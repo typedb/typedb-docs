@@ -8,13 +8,24 @@ define
     owns name;
   entity profile sub page,
     owns username;
+// tag::entity-user[]
   entity user sub profile,
-    owns email,
     owns phone,
-    owns language,
-    owns karma;
+    owns karma,
+    plays parentship:parent,
+    plays parentship:child;
+// end::entity-user[]
 
 // end::entities[]
+
+// tag::entity-user-breakdown[]
+  entity user;
+  user sub profile;
+  user owns phone;
+  user owns karma;
+  user plays parentship:parent;
+  user plays parentship:child;
+// end::entity-user-breakdown[]
 
 // tag::entities-annotations[]
   content @abstract, owns id @key;
@@ -51,21 +62,13 @@ define
   attribute page-id sub id;
   attribute username sub page-id;
   attribute name value string;
-  attribute email value string;
   attribute phone value string;
-  attribute language value string;
   attribute karma value double;
 // end::attributes[]
 
 // tag::attributes-type-annotations[]
   attribute id @abstract;
   attribute page-id @abstract;
-// end::attributes-type-annotations[]
-// tag::attributes-value-annotations[]
-  attribute email value string @regex("^.*@\w+\.\w+$");
-// end::attributes-value-annotations[]
-// tag::attributes-type-annotations[]
-  attribute language @independent;
 // end::attributes-type-annotations[]
 
 

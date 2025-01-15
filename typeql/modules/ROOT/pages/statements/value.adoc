@@ -1,1 +1,32 @@
 = `value` statement
+
+The statement `<LABEL> value <VALUE TYPE>` is used to identify `<VALUE TYPE>` as the value type of the `<LABEL>` attribute type.
+
+`<VALUE TYPE>` should be a built-in or a user-defined xref:{page-version}@typeql::values/index.adoc[value type].
+
+== Defining attribute type's value types
+
+The `value` keyword can be used to define a value type of an attribute type.
+
+[,typeql]
+----
+define name value string;
+----
+
+== Undefining attribute type's value type
+
+The `value` keyword can be used to undefine an attribute type's value type.
+
+[,typeql]
+----
+undefine value string from name;
+----
+
+== Matching
+
+The `value` keyword can be used to match all attribute types with a value type.
+
+[,typeql]
+----
+match $a value string;
+----

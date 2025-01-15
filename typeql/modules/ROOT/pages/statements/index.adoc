@@ -1,6 +1,40 @@
 = Statements
+:page-aliases: {page-version}@typeql::statements/overview.adoc
 
-== Introduction
+A TypeQL statement is a building block of a TypeQL pattern.
+Statements in TypeQL are always end with a semicolon.
+
+== Simple statements
+
+A simple statement is the smallest complete TypeQL block that can be used as a pattern in a query.
+
+Most simple statements have two or three parts: `<PREDICATE> <SUBJECT>`, `<SUBJECT> <PREDICATE>` or `<SUBJECT> <PREDICATE> <OBJECT>`, where `<PREDICATE>` is a TypeQL keyword. However, there can be other more complex statements like xref:{page-version}@typeql::statements/let-in.adoc[].
+
+[#_composite_statements]
+== Composite statements
+
+Multiple simple statements with the same subject can be combined into a composite statement.
+A composite statement starts with a single subject, and multiple comma-separated simple statements with subject omitted.
+
+.See an example
+[%collapsible]
+====
+.Composite statement example
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_statements_functions.tql[tags=define-keyword;entity-user]
+----
+
+The above example combines simple xref:{page-version}@typeql::statements/entity.adoc[`entity`], xref:{page-version}@typeql::statements/sub.adoc[`sub`], xref:{page-version}@typeql::statements/owns.adoc[`owns`], and xref:{page-version}@typeql::statements/plays.adoc[`plays`] statements to the same result without repeating the subject:
+
+.Equal simple statements example
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/schema_statements_functions.tql[tags=define-keyword;entity-user-breakdown]
+----
+====
+
+The comma separation is required before a `<PREDICATE>` if its `<SUBJECT>` already has another `<PREDICATE>` on its right side. Note how first two predicates do not require a comma in the previous example.
 
 == Type definition statements
 
