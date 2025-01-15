@@ -73,67 +73,67 @@ define
 
 
 // tag::fun-stream-scalar-return-type[]
-fun user_phones($user: user) -> { phone }:
-  match
-    $user has phone $phone;
-  return { $phone };
+  fun user_phones($user: user) -> { phone }:
+    match
+      $user has phone $phone;
+    return { $phone };
 // end::fun-stream-scalar-return-type[]
 
 // tag::fun-stream-tuple-return-type[]
-fun all_users_and_phones() -> { user, phone, string }:
-  match
-    $user isa user, has phone $phone;
-    let $phone-value = $phone;
-  return { $user, $phone, $phone-value };
+  fun all_users_and_phones() -> { user, phone, string }:
+    match
+      $user isa user, has phone $phone;
+      let $phone-value = $phone;
+    return { $user, $phone, $phone-value };
 // end::fun-stream-tuple-return-type[]
 
 // tag::fun-stream-scalar-return-value[]
-fun add_streamed($x: integer, $y: integer) -> { integer }:
-  match
-    let $z = $x + $y;
-  return { $z };
+  fun add_streamed($x: integer, $y: integer) -> { integer }:
+    match
+      let $z = $x + $y;
+    return { $z };
 // end::fun-stream-scalar-return-value[]
 
 // tag::fun-single-scalar-return-value[]
-fun add($x: integer, $y: integer) -> integer:
-  match
-    let $z = $x + $y;
-  return first $z;
+  fun add($x: integer, $y: integer) -> integer:
+    match
+      let $z = $x + $y;
+    return first $z;
 // end::fun-single-scalar-return-value[]
 
 // tag::fun-aggregate-single-scalar-return[]
-fun mean_karma() -> double:
-  match
-    $user isa user, has karma $karma;
-  return mean($karma);
+  fun mean_karma() -> double:
+    match
+      $user isa user, has karma $karma;
+    return mean($karma);
 // end::fun-aggregate-single-scalar-return[]
 
 // tag::fun-aggregate-single-tuple-return[]
-fun karma_sum_and_sum_squares() -> double, double:
-  match
-    $karma isa karma;
-    let $karma-squared = $karma * $karma;
-  return sum($karma), sum($karma-squared);
+  fun karma_sum_and_sum_squares() -> double, double:
+    match
+      $karma isa karma;
+      let $karma-squared = $karma * $karma;
+    return sum($karma), sum($karma-squared);
 // end::fun-aggregate-single-tuple-return[]
 
 // tag::with-fun-defined[]
-fun karma_with_squared_value($user: user) -> karma, double:
-  match
-    $user has karma $karma;
-    let $karma-squared = $karma * $karma;
-  return first $karma, $karma-squared;
+  fun karma_with_squared_value($user: user) -> karma, double:
+    match
+      $user has karma $karma;
+      let $karma-squared = $karma * $karma;
+    return first $karma, $karma-squared;
 // end::with-fun-defined[]
 
 // tag::fun-stream-users[]
-fun users() -> { user }:
-  match
-    $user isa user;
-  return { $user };
+  fun users() -> { user }:
+    match
+      $user isa user;
+    return { $user };
 // end::fun-stream-users[]
 
 // tag::fun-stream-users-with-first[]
-fun first_user() -> user:
-  match
-    $user isa user;
-  return first $user;
+  fun first_user() -> user:
+    match
+      $user isa user;
+    return first $user;
 // end::fun-stream-users-with-first[]

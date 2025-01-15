@@ -1,0 +1,10 @@
+// tag::redefine-keyword[]
+redefine
+// end::redefine-keyword[]
+
+// tag::with-fun-redefined[]
+  fun karma_with_squared_value($karma: karma) -> double:
+    match
+      let $karma-squared = $karma * $karma;
+    return first $karma-squared;
+// end::with-fun-redefined[]

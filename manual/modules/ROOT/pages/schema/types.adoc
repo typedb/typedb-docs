@@ -35,7 +35,7 @@ define
   relation friendship,
     relates friend @card(2);
 ----
-Here, `@card(2)` is an example of annotation, specifying that there will be exactly two friends in each friendship relation. Without this annotation the role cardinality would default to `@card(0..1)` (allowing between 0 and 1 friend). See xref:{page-version}@manual::schema/constraints.adoc[annotations] for more.
+Here, `@card(2)` is an example of annotation, specifying that there will be exactly two friends in each friendship relation. Without this annotation the role cardinality would default to `@card(0..1)` (allowing between 0 and 1 friend). See xref:{page-version}@manual::schema/annotations.adoc[annotations] for more.
 
 Subtypes of relation types are always relation types themselves, and can be introduced using the `sub` keyword.
 
@@ -64,7 +64,7 @@ xref:{page-version}@manual::schema/schema_structure.adoc#capabilities[Capabiliti
 
 == Attribute types
 
-Attribute types are first defined using the `attribute` keyword, and they must be supplied with a value type using the `value` keyword (unless, they are annotated as being `@abstract`, see xref:{page-version}@manual::schema/constraints.adoc[annotations])
+Attribute types are first defined using the `attribute` keyword, and they must be supplied with a value type using the `value` keyword (unless, they are annotated as being `@abstract`, see xref:{page-version}@manual::schema/annotations.adoc[annotations])
 [,typeql]
 ----
 define

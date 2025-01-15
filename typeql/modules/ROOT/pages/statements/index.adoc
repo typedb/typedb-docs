@@ -8,7 +8,8 @@ Statements in TypeQL are always end with a semicolon.
 
 A simple statement is the smallest complete TypeQL block that can be used as a pattern in a query.
 
-Most simple statements have two or three parts: `<PREDICATE> <SUBJECT>`, `<SUBJECT> <PREDICATE>` or `<SUBJECT> <PREDICATE> <OBJECT>`, where `<PREDICATE>` is a TypeQL keyword. However, there can be other more complex statements like xref:{page-version}@typeql::statements/let-in.adoc[].
+Most simple statements have two or three parts: `<PREDICATE> <SUBJECT>`, `<SUBJECT> <PREDICATE>` or `<SUBJECT> <PREDICATE> <OBJECT>`, where `<PREDICATE>` is a TypeQL keyword.
+However, there can be other more complex statements like xref:{page-version}@typeql::statements/let-in.adoc[].
 
 [#_composite_statements]
 == Composite statements
@@ -34,7 +35,13 @@ include::{page-version}@typeql::example$tql/schema_statements_functions.tql[tags
 ----
 ====
 
-The comma separation is required before a `<PREDICATE>` if its `<SUBJECT>` already has another `<PREDICATE>` on its right side. Note how first two predicates do not require a comma in the previous example.
+The comma separation is required before a `<PREDICATE>` if its `<SUBJECT>` already has another `<PREDICATE>` on its right side.
+
+[NOTE]
+====
+The first two predicates in the example above do not require a comma.
+However, every simple statement can be separated by commas if preferred.
+====
 
 == Type definition statements
 

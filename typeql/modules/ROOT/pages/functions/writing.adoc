@@ -49,6 +49,11 @@ Function can be called in a query expression similarly to most of the modern pro
 
 == Usage
 
+=== Ambiguity
+
+Every function should have a unique name.
+It's not allowed to declare two functions with the same name even if they have totally different arguments and return types.
+
 [#query_level_functions]
 === Using Functions at Query-Level
 
@@ -79,7 +84,9 @@ For example, the following read pipeline defines and uses a temporary function u
 include::{page-version}@typeql::example$tql/read_statements_functions.tql[tag=with-fun]
 ----
 
-=== Using Functions in Define Queries
+=== Using Functions in definition queries
+
+==== Define
 
 In addition to <<query_level_functions, temporary query-level functions>>, functions can be persisted in schemas.
 Replace the keyword `with` with `define` and execute the query in a schema transaction:
@@ -94,6 +101,24 @@ Once persisted, these functions can be called directly in read queries:
 [,typeql]
 ----
 include::{page-version}@typeql::example$tql/read_statements_functions.tql[tag=with-fun-match]
+----
+
+==== Redefine
+
+Everything except for the function name can be redefined using `redefine` queries.
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/redefine_statements_functions.tql[tags=redefine-keyword;with-fun-redefined]
+----
+
+==== Undefine
+
+To undefine a function, specify the `fun` keyword and its name.
+
+[,typeql]
+----
+include::{page-version}@typeql::example$tql/undefine_statements_functions.tql[tags=undefine-keyword;with-fun-undefined]
 ----
 
 == Learn More
