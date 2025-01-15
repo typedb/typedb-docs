@@ -33,14 +33,14 @@ TypeDB aims to simplify the complexities of schema declaration and data control 
 [#annotations_constraints]
 === Annotations for constraints definition
 
-Using xref:{page-version}@typeql::annotations/overview.adoc[annotations], it's possible to define an unlimited number of cardinality, modality, and value constraints directly in the schema:
+Using xref:{page-version}@typeql::annotations/index.adoc[annotations], it's possible to define an unlimited number of cardinality, modality, and value constraints directly in the schema:
 
 [,typeql]
 ----
 include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;entities-annotations;attributes-type-annotations;attributes-value-annotations]
 ----
 
-Try referring to xref:{page-version}@typeql::annotations/overview.adoc[TypeQL Annotations] to access the whole list of data constraints available in TypeDB and understanding what each of the annotations above means.
+Try referring to xref:{page-version}@typeql::annotations/index.adoc[TypeQL Annotations] to access the whole list of data constraints available in TypeDB and understanding what each of the annotations above means.
 
 .See the details
 [%collapsible]
@@ -80,7 +80,7 @@ Combining these constraints, the only permissible value is `bob@typedb.com`.
 [#overriding_constraints]
 === Redefining and overriding constraints
 
-A single declaration cannot have multiple constraints **defined** of the same kind, which is also true for xref:{page-version}@typeql::annotations/overview.adoc[annotations].
+A single declaration cannot have multiple constraints **defined** of the same kind, which is also true for xref:{page-version}@typeql::annotations/index.adoc[annotations].
 Constraints and annotations can be <<combining_constraints, combined>> as a result of subtyping and specialization, but a statement like `type @card(X) @card(X) @card(X)` will always result in `type @card(X)`, and `type @card(X) @card(Y)` is an invalid definition.
 A defined annotations, which value should be changed, can be xref:{page-version}@typeql::schema/redefine.adoc[redefined].
 
@@ -167,7 +167,7 @@ While it is possible to predict the effect of an annotations on a subtype based 
 
 It is recommended to refer to xref:{page-version}@manual::schema/types.adoc[type definition] to understand how subtyping generally works before proceeding.
 
-Please note that more details and examples of subtyping behavior is available on each xref:{page-version}@typeql::annotations/overview.adoc[annotation's page].
+Please note that more details and examples of subtyping behavior is available on each xref:{page-version}@typeql::annotations/index.adoc[annotation's page].
 Visit these pages in case of struggles in understanding of the explanations below.
 
 === Type annotations
