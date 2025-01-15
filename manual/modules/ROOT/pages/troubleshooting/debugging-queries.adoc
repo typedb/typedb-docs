@@ -20,7 +20,16 @@ In complex pipelines, it is often useful to truncate your query to specific stag
 reduce $c = count; # outputs answer count of incoming pipeline
 ----
 
+== Limiting queries
+
+If query executes indefinitely and does not return results, a sanity check that it can potentially produce at least one result in a reasonable time is always a good idea:
+
+[,typeql]
+----
+...      # incoming pipeline
+limit 1; # stops the execution after consuming one answer
+----
+
 == Asking for help
 
 If you have trouble debugging your query, do not easy to ask question on our https://typedb.com/discord[Discord server].
-

@@ -1,1 +1,62 @@
 = Stopping queries
+
+If a query runs indefinitely, you may need to stop it before proceeding with xref:{page-version}@manual::troubleshooting/debugging-queries.adoc[debugging].
+This page provides general guidelines for safely terminating queries in different TypeDB clients.
+
+[#query_interruption]
+== Is it safe to interrupt queries?
+
+Yes.
+Read queries do not alter the database and can be stopped safely at any time.
+Schema and write queries also do not affect the database until they are <<commit_interruption, committed>>, making it safe to terminate them as well.
+
+
+// TODO: Write docs about transaction timeout when it actually works and can be specified through options...
+// == Transaction timeout
+//
+// Every transaction opens with a default transaction timeout, which value is ... minutes. // TODO: reference options page with default server values?
+//
+
+== Stop a query through TypeDB clients
+
+[NOTE]
+====
+Currently, queries cannot be stopped while execution.
+Coming soon!
+====
+// TODO: Write when implemented
+//
+// Select TypeDB client below, and follow the instructions:
+//
+// [tabs]
+// ====
+// Console::
+// +
+// --
+// // TODO
+// --
+//
+// Studio::
+// +
+// --
+// // TODO
+// --
+//
+// Driver::
+// +
+// --
+// // TODO
+// --
+// ====
+
+== Nothing Works?
+
+If other methods fail, you can stop or kill the server.
+The recovery mechanism will resolve any disruptions caused by this action, ensuring that the server restarts as a fully functional TypeDB instance with no corruption.
+
+[#commit_interruption]
+== Is it safe to interrupt commits?
+
+Yes.
+Although it is not recommended, interrupting a commit process (e.g., by killing the server) is handled by the recovery mechanism.
+The database will remain in the correct state it was in before the commit, ensuring data integrity.
