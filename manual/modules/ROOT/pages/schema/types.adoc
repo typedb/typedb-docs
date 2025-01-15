@@ -134,7 +134,7 @@ redefine admin sub superuser;
 ----
 This will turn the initial `tree-like` type hierarchy into a linear type hierarchy, where `admin < superuser < user`.
 
-Re-define semantics are the most complex of all three definition query. However, the simple key property of redefine is: after a successful redefinition, the re-defined statement holds fully, replacing any conflicting prior statement.
+Re-define semantics are the most complex of all three definition queries. However, the simple key property of redefine is: after a successful redefinition, the re-defined statement holds fully, replacing any conflicting prior statement.
 
 [NOTE]
 ====

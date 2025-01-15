@@ -1,2 +1,102 @@
 = Bulk loading
 :page-aliases: {page-version}@manual::bulk-loading/overview.adoc, {page-version}@manual::bulk-loading/formatting-data.adoc, {page-version}@manual::bulk-loading/preventing-duplication.adoc, {page-version}@manual::bulk-loading/optimizing-speed.adoc
+
+This page covers basics of loading large amounts of data ("`bulk loading`")  into a TypeDB database.
+
+== Parallelization
+
+To load data in bulk, we can make use of both client-side and server-side parallelization.
+
+* Client-side parallelization means you will be sending queries from parallel processes running on the same client, or, from multiple clients at the same time. Client-side parallelization is controlled by your application code.
+* Server-side parallelization means that TypeDB parallelizes reads and write, allowing parallel data access in the database. Server-side parallelization is controlled by TypeDB: by default, TypeDB tries to parallelize requests as much as possible.
+
+== Examples
+
+Client-side parallelization can make use of existing paralellization framework in your programming language.
+
+[tabs]
+====
+Python::
++
+--
+To parallelize client-side, you can use the `multiprocessing` library.
+[,python]
+----
+pool = multiprocessing.Pool(number_of_clients)
+for i in range(number_of_clients):
+    r = pool.apply_async(loader_function, (data_chunk[i]))
+----
+The `loader_function` contains your logic for the following steps:
+
+1. Divide the assigned chunk of data into batches (or chunks may come structured in batches to begin with), see <<batching, batching>> below.
+1. Connect to the database by creating a driver object.
+1. For each batch in the chunk, open a transaction and sent the inserts of that batch. Then commit the transaction.
+--
+
+Rust::
++
+--
+Coming soon.
+--
+====
+
+== Considerations
+
+When loading large datasets into TypeDB the following points are useful to keep in mind.
+
+[[batching]]
+=== Batching queries
+
+Transactions represent the steps in which your databases changes. However, there is a cost associated to opening and committing/closing a transaction. Therefore, it makes sense to *batch* multiple data inserts in the same transaction.
+
+On the other hand, batching too many inserts in the same transaction can lead to a long-running transaction, which might lead to a slow-down if another transaction is waiting on the former transaction. The optimal number of inserts per transaction will be application-specific, but as a rule of thumb, 100-1000 inserts per transaction is a reasonable number in a bulk loading scenario (with 30us per insert, this will means your transaction run in around ~10ms, though complex reads might affect this estimate).
+
+=== Deferring query resolution
+
+When sending a query using an open transaction, you are returned a _promise_ of a result (not an immediate result). This allows code execution to continue, without being held up by awaiting the result.
+
+For optimized performance it makes sense to batch the query resolution process: first, send a batch of queries to saturate server-side parallelization; then, loop through the batch of promises, resolving each of them respectively.
+
+[NOTE]
+====
+Note that this tip only applies if you need the results of your queries. In case you don't, you do not need resolve them at all: simply commit the transaction to ensure all queries have run to completion.
+====
+
+=== Duplication
+
+A major concern when loading large amounts of data is duplication. A simple way to avoid duplication is to count data before inserting.
+
+[,typeql]
+.Avoid inserting the same user twice
+----
+match
+  $x isa user, has username "john_1";
+reduce $c = count;
+match $c == 0; // make sure the count is 0
+insert
+  $x isa user, has username "john_1";
+----
+
+In most cases, it is equivalent and much more concise to use TypeQL's built-in `put` logic:
+
+[,typeql]
+.Not yet implemented // coming soon
+----
+put $x isa user, has username "john_1";
+----
+
+=== Data dependencies
+
+When batching and parallelizing be aware of data dependencies: for example, you can only insert a friendship between two users, if:
+
+* either, the friendship is inserted as part of the same insert query as the users,
+* or, the friendship is inserted as part of insert query is run _after_ the insert query for the users but in the _same transaction_,
+* or, the friendship insert is part of a separated transaction that starts _after the transaction inserting the users has successfully committed_.
+
+== Roadmap
+
+[NOTE]
+====
+A dedicated bulk-loading mechanism for TypeDB is on the roadmap for 2025.
+====
+

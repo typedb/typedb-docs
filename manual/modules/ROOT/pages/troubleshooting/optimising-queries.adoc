@@ -1,1 +1,115 @@
-= Optimising queries
+= Optimizing queries
+
+== TypeDB's optimizer
+
+The built-in optimizer of TypeDB will decide the optimal order of evaluation of your query on a *per-stage* basis, while also respecting the boundaries of subqueries (created via `or`, `not`, or function calls). This gives user direct control over the evaluation order in their queries. For example, the query
+
+[,typeql]
+----
+match
+  $x isa user;
+  $x has username "john_1";
+----
+and the query pipeline
+
+[,typeql]
+----
+match
+  $x isa user;
+match
+  $x has username "john_1";
+----
+are semantically equivalent (i.e., they yield the same results), but the first query will likely run much faster than the second query.
+
+1. In the first query, the optimizer will optimize evaluation order of the first (and only) `match` stage: it'll decide that it is most efficient to first look up all entities with `username` equal to `"john_1"` and then filter the result to contain only `user` entities.
+1. The second query comprises two stages, to be executed one after the other: the database will first retrieve _all_ users, thus constructing a very large set of answers. Only in the second stage to we filter this set to contain only users with `username` equal to `"john_1"`.
+
+In other words, the second query suffers from have _large intermediate results_.
+
+== Avoiding large intermediate results
+
+A standard method for avoiding large intermediate results is to declare/enforce constraints as early as possible: this is also known as *predicate-pushdown*. The above queries provide an example of this principle.
+
+In TypeQL predicate-pushdown is extended to the principle of *data-predicate-locality*: create data only at the stage where you need it, jointly with all applicable predicates. Pipelines give you fine-grained control for ensure that data is created where you need it. For example, a schematic pipeline of the form:
+[,typeql]
+----
+<match($a,$b)>
+<processing($b)>
+<processing($a,$b)>
+----
+could be rewritten to be of the form
+[,typeql]
+----
+<match($b)>
+<processing($b)>
+<match($a,$b)>
+<processing($a,$b)>
+----
+This defers matching of data to-be-stored in the variables `$a` until after we have finished processing `$b` (assuming the latter is fully independent of results for `$a`).
+
+== Optimizing branches
+
+Another source of sub-optimality in queries comes from the usage of `or`-branches, and could be called *pattern-pushdown*. TypeDB performs minimal transformation of your `or`-branches, assuming that each disjunction is meant to be a *branching point* of your query, at which a set of nested subqueries is retrieved.
+
+Thus, when working with branches, we should ensure that data is retrieved a minimal number of times. Schematically, this can be understood as follows: the query
+[,typeql]
+----
+match
+  <root-pattern>;
+  { <expensive-pattern1>; <cond1>; }
+  or { <expensive-pattern1>; <cond2>; }
+  or { <expensive-pattern2>; };
+----
+is equivalent to the pattern
+[,typeql]
+----
+match
+  <root-pattern>;
+  { <expensive-pattern1>; { <cond1>; } or { <cond2>; }; }
+  or { <expensive-pattern2>; };
+----
+We expect the second query to run faster, as it evaluates the `<expensive-pattern1>` only in one subquery (which itself has two further subqueries).
+
+== Optimizing negations
+
+Negations, especially nested negations, can be extremely expensive query operates: indeed, to ensure that something does not exist, we usually must search the entire to domain of possibilities. It is therefor paramount, to reduce the "`size of the domain`" prior to using negation. For example, the query
+[,typeql]
+----
+match
+  $x isa user;
+  not {
+    $y isa user;
+    not { friendship ($x, $y) };
+  };
+limit 1;
+----
+does the following:
+
+> Find me a user `$x` for which there does not exist a user `$y` that is not friends with `$y`.
+
+This can equivalently be achieved by the following query:
+[,typeql]
+----
+match
+  $x isa user;
+  friendship ($x, $y);
+reduce $f_count = count groupby $x;
+sort $f_count desc;
+limit 1;
+match $f_count == user_count(); # function returning user count
+----
+While the first query needs to consider data whose size is quadratic in the number of users, the second query considers data linear in the size of friendships.
+
+== Optimizing recursive functions
+
+[NOTE]
+====
+Coming soon.
+====
+
+== Roadmap
+
+[NOTE]
+====
+While the above advice is timeless in any case, future versions of TypeDB may apply more aggressive query transformation techniques that will shift the burden of optimizing nested subqueries from the user further to the database.
+====

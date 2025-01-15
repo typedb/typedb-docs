@@ -1,0 +1,26 @@
+= Debugging queries
+
+This page summarizes general steps and ideas for debugging TypeDB queries.
+
+== Locating errors
+
+When your query returns an error, the TypeDB server will report a stacktrace of error messages; you will find the most relevant message on the top of that trace.
+
+* In the case of a syntax error, the error message will indicate the line and character position where the error ocurred. If you don't immediately see what's wrong with your query, double-check your syntax with the help of the xref:{page-version}@typeql::index.adoc[TypeQL language reference].
+
+* In other cases, the error message should give an indication of which logical conflicts caused the error in the database. A natural debugging approach is to isolate the part of the query that you believe caused that conflict, and then make the necessary changes before returning to your larger query.
+
+== Dissecting stages
+
+In complex pipelines, it is often useful to truncate your query to specific stages. This allows you to inspect "`intermediate results`". You can output results for specific variables of those stages using the `select` operator. It is also often useful to simply output the number of results of (a part of) your pipeline via the `reduce` operator:
+
+[,typeql]
+----
+...                # incoming pipeline
+reduce $c = count; # outputs answer count of incoming pipeline
+----
+
+== Asking for help
+
+If you have trouble debugging your query, do not easy to ask question on our https://typedb.com/discord[Discord server].
+
