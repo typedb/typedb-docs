@@ -25,15 +25,15 @@ return <statement>
 - `<function name>` is a valid not reserved and not used TypeQL xref:{page-version}@typeql::expressions/literals.adoc[literal].
 - `<optional arguments>` are specified in the form `$<variable>: <variable type>` and are separated by commas.
 - `<return types>` consists of at least one `<return type>` and can be:
-* a xref:{page-version}@typeql::functions/stream-return.adoc[stream-return].
-* a xref:{page-version}@typeql::functions/single-return.adoc[single-return].
+* a xref:{page-version}@typeql::functions/stream.adoc[stream].
+* a xref:{page-version}@typeql::functions/single.adoc[single].
 - `<return type>` and `<variable type>` can be built-in, user-defined, or value types.
 - `<read pipeline>` includes any read xref:{page-version}@typeql::pipelines/index.adoc[pipeline].
 - `<statement>` may consist of variables and xref:{page-version}@typeql::expressions/function_calls.adoc[function calls], whether built-in or user-defined:
-* Scalar single-return: `$a`.
-* Tuple single-return: `$a, $b, f1(), f2($a)`.
-* Scalar stream-return: `{ $a }`.
-* Tuple stream-return: `{ $a, $b, f1(), f2($a) }`.
+* Scalar: `$a`.
+* Tuple: `$a, $b, f1(), f2($a)`.
+* Scalar stream: `{ $a }`.
+* Tuple stream: `{ $a, $b, f1(), f2($a) }`.
 
 === Calling
 
@@ -106,15 +106,15 @@ include::{page-version}@typeql::example$tql/read_statements_functions.tql[tag=wi
 Learn more about function bodies - pipelines.
 ****
 
-.xref:{page-version}@typeql::functions/stream-return.adoc[]
+.xref:{page-version}@typeql::functions/stream.adoc[]
 [.clickable]
 ****
-Understand how to work with stream-return functions.
+Understand how to work with stream functions.
 ****
 
-.xref:{page-version}@typeql::functions/single-return.adoc[]
+.xref:{page-version}@typeql::functions/single.adoc[]
 [.clickable]
 ****
-Explore single-return functions and their usage.
+Explore single functions and their usage.
 ****
 --

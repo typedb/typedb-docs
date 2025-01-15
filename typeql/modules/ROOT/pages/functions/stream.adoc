@@ -1,18 +1,18 @@
-= Stream-return functions
+= Stream functions
 
-Stream-return functions can return an unlimited number of results (rows).
+Stream functions can return an unlimited number of results (rows).
 
 == Syntax
 
-Stream-return functions can be identified by their return type containing curly braces `{}`.
+Stream functions can be identified by their return type containing curly braces `{}`.
 
-.Stream-return scalar function return format
+.Scalar stream function return format
 [,typeql]
 ----
 { <return type> }
 ----
 
-.Stream-return tuple function return format
+.Tuple stream function return format
 [,typeql]
 ----
 { <return type 0>, ..., <return type N> }
@@ -20,13 +20,13 @@ Stream-return functions can be identified by their return type containing curly 
 
 == Usage
 
-Stream-return functions are defined and called like any other function.
+Stream functions are defined and called like any other function.
 To retrieve the results of the called function, considering that the number of results for a single call is undefined, use the keyword `in`.
 
 [#scalar_functions]
 === Scalar functions
 
-Stream-return scalar functions are used to return multiple results for one expression: a variable or a function call.
+Stream  scalar functions are used to return multiple results for one expression: a variable or a function call.
 The following examples illustrate simple usages of functions for retrieving a stream of `type` s and a stream of `integer` s.
 
 [,typeql]

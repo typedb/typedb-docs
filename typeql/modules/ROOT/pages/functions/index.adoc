@@ -14,8 +14,8 @@ The following table illustrates the types of functions based on two dimensions: 
 [cols="^.1,^.2,^.2",options="header"]
 |===
 |  **Rows/Columns** | Up to 1 column | Multiple columns
-| **Up to 1 row** | Single-return scalar (`$a`) | Single-return tuple (`$a, $b`)
-| **Multiple rows** | Stream-return scalar (`{ $a }`) | Stream-return tuple (`{ $a, $b }`)
+| **Up to 1 row** | scalar function (`$a`) | tuple function (`$a, $b`)
+| **Multiple rows** | scalar stream function (`{ $a }`) | tuple stream function (`{ $a, $b }`)
 |===
 
 == Explore functions
@@ -37,6 +37,6 @@ Learn how to work with stream-return functions.
 .xref:{page-version}@typeql::functions/single-return.adoc[]
 [.clickable]
 ****
-Learn how to work with single-return functions.
+Learn how to work with single functions.
 ****
 --

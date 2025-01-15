@@ -1,18 +1,18 @@
-= Single-return functions
+= Single functions
 
-Single-return functions return 0 or 1 rows as results of their execution.
+Single functions (or just functions) return 0 or 1 rows as output of their execution.
 
 == Syntax
 
-Single-return functions can be identified by their return type not containing curly braces `{}`.
+Single functions can be identified by their return type not containing curly braces `{}`.
 
-.Single-return scalar function return format
+.Scalar function return format
 [,typeql]
 ----
 <return type>
 ----
 
-.Single-return tuple function return format
+.Tuple function return format
 [,typeql]
 ----
 <return type 0>, ..., <return type N>
@@ -20,10 +20,10 @@ Single-return functions can be identified by their return type not containing cu
 
 == Usage
 
-Single-return functions are defined and called like any other function.
-To retrieve the results of the called function, a simple assignment is enough (however, a general `in` used for xref:{page-version}@typeql::functions/stream-return.adoc[streamed] results is also allowed).
+Single functions are defined and called like any other function.
+To retrieve the results of the called function, a simple assignment is enough (however, a general `in` used for xref:{page-version}@typeql::functions/stream.adoc[streamed] results is also allowed).
 
-=== Transforming stream-returns to single-returns
+=== Transforming stream outputs to single outputs
 
 TypeQL pipelines generally produce streams of results as not every query always returns a specific number of answers.
 For example, the following example uses a query with a number of results based on the actual data and does not depend on schema constraints:
@@ -39,8 +39,8 @@ There are two main ways of transforming streams into single results: aggregation
 ==== Aggregation
 
 // TODO: Add reference to built-in functions
-A common case of single-return functions usage is calling for built-in aggregation functions.
-These aggregations are usually scalar single-return functions by themselves, so calling them to aggregate a stream is a natural operation.
+A common case of single functions usage is calling for built-in aggregation functions.
+These aggregations are usually scalar single functions by themselves, so calling them to aggregate a stream is a natural operation.
 
 .Example of an aggregate function used in a scalar function
 [,typeql]
@@ -84,7 +84,7 @@ include::{page-version}@typeql::example$tql/schema_statements_functions.tql[tags
 [#scalar_functions]
 === Scalar functions
 
-Single-return scalar functions are used to return a single result for one expression: a variable or a function call.
+Scalar single functions are used to return a single result for one expression: a variable or a function call.
 The following example illustrate simple usages of functions for retrieving an `integer`.
 
 [,typeql]
@@ -101,7 +101,7 @@ include::{page-version}@typeql::example$tql/read_statements_functions.tql[tags=f
 
 === Tuple functions
 
-include::{page-version}@typeql::functions/stream-return.adoc[tags=tuple-functions-description]
+include::{page-version}@typeql::functions/stream.adoc[tags=tuple-functions-description]
 
 [,typeql]
 ----
