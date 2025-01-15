@@ -9,26 +9,31 @@ Note that a scope is required to resolve role type names ambiguity.
 
 [,typeql]
 ----
-define entity user plays parentship:parent;
+define user plays parentship:parent;
 ----
 
-== Matching roleplayers
+== Matching
 
-The `plays` keyword can be used to match all role types a type is playing.
+=== Matching played role types
+
+The `plays` keyword can be used to match all role types a type plays.
 
 [,typeql]
 ----
 match user plays $r;
 ----
 
-Or to match all roleplaying types for a <LABEL>.
+=== Matching roleplayer types
+
+The `plays` keyword can be used to match all roleplayer types for a role type with a label `<LABEL>`.
 
 [,typeql]
 ----
 match $rp plays parent;
 ----
 
-Note that a scope can be used to have more specific results. The previous query can return results for different role types with the same `<LABEL>`, while the following example returns only relation types with the specified scope.
+Note that a scope can be used to have more specific results.
+The previous query can return results for different role types with the same `<LABEL>`, while the following example returns only relation types with the specified scope.
 
 [,typeql]
 ----

@@ -1,1 +1,54 @@
 = `sub` statement
+
+The statement `<LABEL> sub <SUPERTYPE LABEL>` is used to identify the `<LABEL>` type as a subtype of `<SUPERTYPE LABEL>`.
+
+== Defining subtypes
+
+The `sub` keyword can be used to define a type as a subtype of another type.
+
+[,typeql]
+----
+define user sub profile;
+----
+
+== Matching
+
+=== Matching supertypes
+
+The `sub` keyword can be used to match all supertypes of a type.
+This will result in all the transitive supertypes, including supertypes of its supertype.
+
+[,typeql]
+----
+match user sub $t;
+----
+
+==== Matching declared supertypes
+
+The `sub!` keyword can be used to match only a declared supertype of a type.
+This will result in only the types with defined `sub` statements, excluding the subtypes of these types.
+
+[,typeql]
+----
+match user sub! $t;
+----
+
+=== Matching subtypes
+
+The `sub` keyword can be used to match all subtypes of a `<SUPERTYPE LABEL>`.
+This will result in all the transitive subtypes, including subtypes of its subtypes.
+
+[,typeql]
+----
+match $t sub profile;
+----
+
+==== Matching declared subtypes
+
+The `sub!` keyword can be used to match only declared subtypes of a type.
+This will result in only the types with defined `sub` statements, excluding the subtypes of these types.
+
+[,typeql]
+----
+match $t sub! profile;
+----
