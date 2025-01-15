@@ -32,6 +32,22 @@ This will result in all the transitive supertypes, including supertypes of its s
 match user sub $t;
 ----
 
+.Example TypeDB Console output
+[%collapsible]
+====
+----
+   --------
+    $t | type content
+   --------
+    $t | type page
+   --------
+    $t | type profile
+   --------
+    $t | type user
+   --------
+----
+====
+
 ==== Matching declared supertypes
 
 The `sub!` keyword can be used to match only a declared supertype of a type.
@@ -41,6 +57,16 @@ This will result in only the types with defined `sub` statements, excluding the 
 ----
 match user sub! $t;
 ----
+
+.Example TypeDB Console output
+[%collapsible]
+====
+----
+   --------
+    $t | type profile
+   --------
+----
+====
 
 === Matching subtypes
 
@@ -52,6 +78,32 @@ This will result in all the transitive subtypes, including subtypes of its subty
 match $t sub profile;
 ----
 
+.Example TypeDB Console output
+[%collapsible]
+====
+----
+   --------
+    $t | type profile
+   --------
+    $t | type user
+   --------
+    $t | type organisation
+   --------
+    $t | type company
+   --------
+    $t | type charity
+   --------
+    $t | type educational-institute
+   --------
+    $t | type school
+   --------
+    $t | type college
+   --------
+    $t | type university
+   --------
+----
+====
+
 ==== Matching declared subtypes
 
 The `sub!` keyword can be used to match only declared subtypes of a type.
@@ -61,3 +113,15 @@ This will result in only the types with defined `sub` statements, excluding the 
 ----
 match $t sub! profile;
 ----
+
+.Example TypeDB Console output
+[%collapsible]
+====
+----
+   --------
+    $t | type user
+   --------
+    $t | type organisation
+   --------
+----
+====
