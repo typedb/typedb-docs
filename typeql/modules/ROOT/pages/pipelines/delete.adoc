@@ -1,17 +1,40 @@
 = Delete stage
 :page-aliases: {page-version}@typeql::queries/delete.adoc
 
-== Draft example
+A delete stage deletes data from the database. Deletable data includes instances of types, ownerships of attributes, and role players of
+relations.
+
+== Syntax
+
+The body of a delete stage is a sequence of delete statements.
+
+[,typeql]
+----
+delete ( <variable> | has <variable> of <variable> | links <variable> of <variable> ); [ ... ]
+----
+
+== Behavior
+
+* Bare variables delete the instances they refer to from the database. 
+* xref:{page-version}@typeql::statements/has.adoc[Delete has statements] delete ownerships of attributes.
+* xref:{page-version}@typeql::statements/links.adoc[Delete links statements] delete role players from relations.
+
+== Execution
+
+The delete stage must be preceded by other stages. The body of the delete clause is executed once for each input row. The output is then a
+stream of input rows with the deleted concepts removed.
+
+== Example
 
 [,typeql]
 ----
 match
-  $person-1 isa person, has username "<username 1>";
-  $person-2 isa person, has username "<username 2>";
-  $relationship isa relationship,
-    links (partner: $person-1, partner: $person-2);
+  $person isa person, has name "<name>";
+  $group isa group, has group-id "<group id>";
+  $membership isa group-membership(group: $group, member: $person) has rank $rank;
+  $rank == "member";
 delete
-  $relationship;
-insert
-  (fiance: $person-1, fiance: $person-2) isa engagement;
+  has $rank of $membership;
+  links $person of $membership;
+  $group;
 ----
