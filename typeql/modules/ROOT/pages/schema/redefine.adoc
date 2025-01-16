@@ -1,7 +1,51 @@
 = Redefine query
 
-
 Redefine queries are used
 // tag::overview[]
-to modify existing types, constraints, or functions in the schema.
+to modify existing types, type traits, or functions in the schema.
 // end::overview[]
+
+== Syntax
+
+Redefine queries start with the `redefine` keyword following by xref:{page-version}@typeql::schema/define.adoc[definition statements] of the define queries format.
+
+[,typeql]
+----
+redefine
+  <define statement>
+----
+
+== Redefining types
+
+Redefine queries can be used to modify types and type traits.
+
+For clarity and precision, only one redefinition is allowed per query.
+If the query includes zero or multiple definitions that differ from the current schema, an error will be returned.
+
+.Redefining type's sub
+[,typeql]
+----
+redefine user sub page;
+----
+
+.Redefining attribute type's value type
+[,typeql]
+----
+redefine karma value integer;
+----
+
+.Redefining value type's annotation with arguments
+[,typeql]
+----
+redefine email value string @regex("^.*@typedb\.com$");
+----
+
+.Redefining type trait's annotation with arguments
+[,typeql]
+----
+redefine redefine post owns tag @card(0..5);
+----
+
+== Redefining functions
+
+include::{page-version}@typeql::page$functions/writing.adoc[tag=redefine]
