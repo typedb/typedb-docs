@@ -1,1 +1,31 @@
 = Output formats
+
+At present, TypeDB supports two different output formats for data pipelines.
+
+
+[NOTE]
+====
+If you would like this list to be extended with your favorite data formats, drop us a message on our
+https://typedb.com/discord[Discord,window=_blank] community server!
+====
+
+== Concept rows
+
+Concept rows are TypeDB's native data format. All xref:{page-version}@typeql::pipelines/index.adoc[data pipeline stages] (except for the `fetch` stage) take streams of concepts as inputs and output streams of concept rows themselves.
+
+A concept row is an association of named variables (the "`column names`") to concepts, i.e., type labels, data instances, or literal values. A concept row may be written of the form
+
+.Schematic format of concept rows
+----
+{ $var_1=concept, $var_2=concept, ..., $var_n }
+----
+When working with optional variables in data pipelines, concept assignment may be left empty, indicated by `()`, e.g.:
+
+.A concept row with an empty (third) variable
+----
+{ $var_1=type_label, $var_2=3.1415, $var_3=(), $var_4=0x001 }
+----
+
+== JSON
+
+JSON outputs can be produce using a `fetch` stage in a data pipeline.

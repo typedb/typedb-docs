@@ -1,2 +1,134 @@
 = Disjunctions
 :page-aliases: {page-version}@typeql::patterns/disjunction.adoc
+
+Disjunctive patterns can be used in `match` stages. They allow queries to match several cases (or "`branches`") of patterns in parallel.
+
+== Syntax
+
+[,typeql]
+----
+{ <pattern1> } or { <pattern2> } [ or { <pattern3> } ... ] ;
+----
+
+The individual blocks `{ <pattern-i> }` of a disjunction are called it *branches*.
+
+[NOTE]
+====
+It is worth highlighting that, like all patterns, disjunctions can be chained, e.g.:
+[,typeql]
+----
+{ <p1> } or { <p2> };
+{ <p3> } or { <p4> };
+----
+Moreover, since disjunctions are themselves patterns, they can also be nested, e.g.:
+[,typeql]
+----
+{ <p1> }
+or {
+  { <p2> }
+  or { <p1> };
+};
+----
+====
+
+== Behavior
+
+Disjunctions may appear in `match` stages, where they behave as follows.
+
+* *Optionality*. An output variable whose xref:{page-version}@typeql::patterns/index.adoc[scope] is the branch of a disjunction becomes an xref:{page-version}@typeql::data_model.adoc[optional] variable. This means the variable may be left empty `()` in the output of the match stage. For example:
++
+--
+[,typeql]
+----
+match
+  $x isa $user;
+  { $x has email $e; } or { $x has phone $p; };
+select $e, $p;
+----
+will return users that have either mobile phone or email attributes. The output rows of this match stage may be of the form
+----
+{ $e="some@other.com", $p=() }
+{ $e=(), $p="+1234" }
+{ $e=(), $p="+1235" }
+{ $e="none@other.com", $p=() }
+----
+--
+
+* *Satisfaction*. A disjunction pattern is satisfied if one of its branches is satisfied, while variables bound in the other branches are left empty. For example,
++
+--
+[,typeql]
+----
+match
+  $x isa $user;
+  { $x has email $e; } or { $x has phone $p; } or { $x has address $a; }
+----
+may output
+----
+{ $e="some@other.com", $p=(), $a=() }
+{ $e=(), $p="+1234", $a=() }
+{ $e=(), $p=(), $a="1 Big Street, New City, NC1234" }
+----
+but will never output
+----
+{ $e=(), $p="+1234", $a="1 Big Street, New City, NC1234" }
+----
+--
+
+* *Deduplication*. Outputs do not get duplicated if they satisfy multiple branches of the disjunction at the same time (in other words, branches are not executed "one after the other"). For example, the query
++
+--
+[,typeql]
+----
+match
+  $x isa $user; $y isa $user;
+  { following(follower: $x, followed: $y); }
+  or { following(follower: $y, followed:$x); };
+----
+will output each `{ $x=..., $y=... }` row exactly once, even if both `$x` follows `$y` and `$y` follows `$x`.
+----
+{ $x=0x1, $y=0x3 }
+{ $x=0x7, $y=0x2 }
+----
+where each row satisfies both branches at the same time.
+--
+
+== Validation
+
+Recall that each variable must have a xref:{page-version}@typeql::patterns/index.adoc[unique scope]. Therefore, the following pattern would be invalid.
+[,typeql]
+----
+match
+  $x isa $user;
+  { following(follower: $x, followed: $y); }
+  or { following(follower: $y, followed:$x); };
+----
+Indeed, the variable `$y` does _not_ have a unique scope: it appears at the top-level of both branches of the disjunction.
+
+== Examples
+
+1. Retrieve phone numbers of a specific user if available
++
+--
+[,typeql]
+----
+match
+  $x isa user, has username "john_1";
+  { $x has phone $p; } or { not { $x has phone $np } };
+----
+Note that `$p` and `$np` have different variable names to ensure the xref:{page-version}@typeql::patterns/index.adoc[unique scope principle].
+--
+
+1. Retrieve friends and friends of friends of a user;
++
+--
+[,typeql]
+----
+match
+  $x isa user, has username "john_1";
+  $y isa user;
+  { friendship($x, $y); }
+  or { friendship($x, $z); friendship($z, $y); };
+select $x, $y; # omit $z from results
+----
+--

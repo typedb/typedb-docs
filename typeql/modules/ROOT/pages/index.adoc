@@ -97,7 +97,11 @@ Which statements can be used depends on the stage we are in.
 A _key distinction_ between stages and their statements is whether statements contain variables or not.
 
 * Statements without variables are called *definitions*.
-* Statements with variables are called (elementary) *patterns*. Elementary patterns can be combined into larger pattern by *pattern operations*, such as *conjunction* ("`chaining`"), *disjunction* ("`branching`"), *negation* ("`exclusion`"), etc.
+* Statements with variables are called (elementary) *patterns*.
+
+Patterns can be combined into larger patterns by xref:{page-version}@typeql::[*pattern operations*], such as *conjunction* ("`chaining`"), *disjunction* ("`branching`"), *negation* ("`exclusion`"), etc.
+
+=== Definition vs pattern statements
 
 Definitions and patterns play distinct roles in TypeQL.
 
@@ -120,7 +124,7 @@ match
 ----
 The former query introduces types, while the latter will query for types. The general idea here is as follows.
 
-=== Definitions
+=== Definition statements
 
 Definitions in schema queries concern:
 
@@ -128,7 +132,7 @@ Definitions in schema queries concern:
 * *trait* definitions, introducing player or owner traits (via `plays` and `owns` keywords). Player traits allow type instances to be referred to as players in roles of relations. Owner traits allow type instances to be referred to as
 * *subtyping* definitions, declare types to be subtypes of other types (via the keyword `sub`). Traits of supertypes are inherited by subtypes.
 
-=== Patterns
+=== Pattern statements
 
 In contrast, in patterns we support a wide variety of syntax, including for:
 
@@ -140,7 +144,7 @@ In contrast, in patterns we support a wide variety of syntax, including for:
 
 === Annotations
 
-The semantics of many statements can be further modified with the use of *annotations*.
+The semantics of many statements can be further modified with the use of *annotations* (which applies both to definition statements and pattern statements).
 
 === References
 

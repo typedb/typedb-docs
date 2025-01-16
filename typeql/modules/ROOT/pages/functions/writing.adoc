@@ -105,12 +105,14 @@ include::{page-version}@typeql::example$tql/read_statements_functions.tql[tag=wi
 
 ==== Redefine
 
-Everything except for the function name can be redefined using `redefine` queries.
+// tag::redefine[]
+Everything except for the function name can be redefined using redefine queries.
 
 [,typeql]
 ----
 include::{page-version}@typeql::example$tql/redefine_statements_functions.tql[tags=redefine-keyword;with-fun-redefined]
 ----
+// end::redefine[]
 
 ==== Undefine
 
