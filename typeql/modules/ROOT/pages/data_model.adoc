@@ -1,6 +1,6 @@
 = Data and query model
 
-This page gives a brief overview of TypeDB's type system and query model.
+This page gives a brief technical overview of TypeDB's type system and query model.
 
 == Type system
 
@@ -24,7 +24,7 @@ Instances of entity types, simply called entities, can be created _indepdently_,
 11. *Relation types*, specified using the keyword `relation`, and are required to have at least one *associated role type* specified with the keyword `relates`.
 +
 --
-Instances of relation types may reference (or "link") zero or more data instances for each associated role type, called their *players* of that role (these data instance must have types with corresponding *player capability*).
+Instances of relation types may reference (or "link") zero or more data instances for each associated role type, called their *players* of that role (these data instance must have types with corresponding *player trait*).
 
 For example, a friendship relations may link two friends (implemented by, say, two user entities).
 
@@ -33,7 +33,7 @@ Relations without role players will be removed (no "`dangling relations`").
 11. *Attribute types*, specified using the keyword `attribute`, and required to have an *associated value type* (either structured or primitive) specified with the keyword `value`.
 +
 --
-Instances of attribute types carry an *associated value* of the associated value type. They may also reference other data instances, called their *owners* (these data instances must have direct types with the corresponding *owner capability*). Two attributes are considered equal if they have the same associate value and have the same (origin) type.
+Instances of attribute types carry an *associated value* of the associated value type. They may also reference other data instances, called their *owners* (these data instances must have direct types with the corresponding *owner trait*). Two attributes are considered equal if they have the same associate value and have the same (origin) type.
 
 Attributes without owners will be removed (no "`dangling attributes`", unless the attribute type is marked as independent).
 --
@@ -57,26 +57,26 @@ Two instances of a value type are equal exactly when their literal values are eq
 Coming soon.
 ====
 
-=== Type capabilities
+=== Type traits
 
-Entity types can have capabilities, i.e. play roles or own attribute types. This allows us to create connections of entities with other data.
+Entity types can have traits, i.e. play roles or own attribute types. This allows us to create connections of entities with other data.
 
-Relation types can also have capabilities, i.e. play roles or own attribute types. This, for example, allows the creation of nested relations (i.e., relations playing roles in other relations).
+Relation types can also have traits, i.e. play roles or own attribute types. This, for example, allows the creation of nested relations (i.e., relations playing roles in other relations).
 
-Since entity and relation types together make up "`first-class`" types in TypeDB's type system (when it comes to type capabilities) they are, together, also referred to as *object types*, whose instances are data *objects*.
+Since entity and relation types together make up "`first-class`" types in TypeDB's type system (when it comes to type traits) they are, together, also referred to as *object types*, whose instances are data *objects*.
 
-Attributes cannot have capabilities; they are merely typed associations of values to objects.
+Attributes cannot have traits; they are merely typed associations of values to objects.
 
 === Subtyping
 
 Entity types, relation types, and attribute types can be defined to subtype other types (which themselves must be, respectively, entity types, relationt types, or attributes types). This allows implicit casting of data instances from the subtype into the supertype.
 
-== Types, capabilities, subtyping
+== Definitions
 
-User-defined types, their capabilities, and their subtyping structure, are created and modified through xref:{page-version}@typeql::introduction.adoc#statements[definition statements] in xref:{page-version}@typeql::introduction.adoc#queries[schema queries].
+User-defined types, their traits, and their subtyping structure, are created and modified through xref:{page-version}@typeql::introduction.adoc#statements[definition statements] in xref:{page-version}@typeql::introduction.adoc#queries[schema queries].
 
 
-== Variables in patterns
+== Patterns and variables
 
 In any valid TypeQL xref:{page-version}@typeql::introduction.adoc#queries[data pipeline], there are four categories of variables appearing in xref:{page-version}@typeql::introduction.adoc#statements[statements]. Any variable (unambiguously) belongs to exactly one of those four categories.
 
@@ -114,7 +114,7 @@ implies that `$type` is a type variable.
 Coming soon.
 ====
 
-== Variable modes in matches
+== Match stage and variable modes
 
 Given a `match` stage in a data pipeline, each variable in that stage can appear in one of the following three modes.
 

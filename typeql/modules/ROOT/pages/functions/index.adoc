@@ -12,10 +12,29 @@ Functions calls can be nested, recursive, negated, and they natively embed into 
 The following table illustrates the types of functions based on two dimensions: number of rows and number of columns returned.
 
 [cols="^.1,^.2,^.2",options="header"]
+.Categorizing functions based on their output type
 |===
-|  **Rows/Columns** | Up to 1 column | Multiple columns
-| **Up to 1 row** | scalar function (`$a`) | tuple function (`$a, $b`)
-| **Multiple rows** | scalar stream function (`{ $a }`) | tuple stream function (`{ $a, $b }`)
+|  **Rows/Columns** | 1 column | Multiple columns
+| **Up to 1 row** | scalar function
+
+type signature `... -> A`
+
+returns `$a`
+| tuple function
+
+type signature `... -> A, B`
+
+returns `$a, $b`
+| **Multiple rows** | (scalar) stream function
+
+type signature `... -> { A }`
+
+returns `{ $a }`
+| (tuple) stream function
+
+type signature `... -> { A, B }`
+
+returns `{ $a, $b }`
 |===
 
 == Explore functions
@@ -28,15 +47,15 @@ The following table illustrates the types of functions based on two dimensions: 
 Learn how to write functions.
 ****
 
-.xref:{page-version}@typeql::functions/stream-return.adoc[]
+.xref:{page-version}@typeql::functions/stream.adoc[]
 [.clickable]
 ****
 Learn how to work with stream-return functions.
 ****
 
-.xref:{page-version}@typeql::functions/single-return.adoc[]
+.xref:{page-version}@typeql::functions/single.adoc[]
 [.clickable]
 ****
-Learn how to work with single functions.
+Learn how to work with scalar functions.
 ****
 --

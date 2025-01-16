@@ -10,17 +10,17 @@ to specify cardinality ranges for roles and ownerships.
 .Range Argument Syntax
 [,typeql]
 ----
-<type label> <capability> <type label 2> @card(N..M);
-<type label> <capability> <type label 2> @card(N..);
+<type label> <trait> <type label 2> @card(N..M);
+<type label> <trait> <type label 2> @card(N..);
 ----
 
 .Single Scalar Argument Syntax
 [,typeql]
 ----
-<type label> <capability> <type label 2> @card(N);
+<type label> <trait> <type label 2> @card(N);
 ----
 
-The `@card` annotation can be defined for any `<capability>` of: `owns`, `relates`, or `plays`.
+The `@card` annotation can be defined for any `<trait>` of: `owns`, `relates`, or `plays`.
 
 It accepts either a range argument or a single scalar argument.
 Arguments must be integers.
@@ -32,14 +32,14 @@ Arguments must be integers.
 == Usage
 
 // TODO: Update for ordered/unordered when lists are implemented
-Every capability has a default `cardinality` constraint, accessible in <<_default_cardinality>>.
+Every trait has a default `cardinality` constraint, accessible in <<_default_cardinality>>.
 
 // tag::description[]
 When defined, the `@card` annotation overrides the default `cardinality` with the specified arguments.
 // end::description[]
 
 // tag::description[]
-The `cardinality` constraint regulates the number of capabilities a type instance can have.
+The `cardinality` constraint regulates the number of traits a type instance can have.
 // end::description[]
 For example, the following definition specifies that an instance of the `page` type must have at least one and no more than three `name`s:
 
@@ -66,7 +66,7 @@ include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-k
 === Subtyping
 
 // TODO: Put somewhere in a common place and reference it
-Similarly to inherited type constraints, capability constraints also affect subtypes from both sides.
+Similarly to inherited type constraints, trait constraints also affect subtypes from both sides.
 For example, the following query defines that:
 
 - A `page` instance must have between 1 and 3 names.
@@ -93,14 +93,14 @@ Cannot be used with the xref:{page-version}@typeql::annotations/key.adoc[`@key` 
 == References
 
 [#_default_cardinality]
-=== Default Capability Cardinalities
+=== Default trait cardinalities
 
-The following `cardinality` constraints are set for capabilities by default if no `@card` annotations are declared:
+The following `cardinality` constraints are set for traits by default if no `@card` annotations are declared:
 
-.Default Capability Cardinalities
+.Default Trait Cardinalities
 [cols=".^1,^.^1"]
 |===
-^| Capability ^| Cardinality
+^| Trait ^| Cardinality
 | `owns`
 | `card(0..1)`
 

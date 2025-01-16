@@ -1,12 +1,14 @@
 = Statements
 :page-aliases: {page-version}@typeql::statements/overview.adoc
 
+This reference covers the usage of statements in TypeQL.
+
 A TypeQL statement is a building block of a TypeQL pattern.
 Statements in TypeQL are always end with a semicolon.
 
 == Simple statements
 
-A simple statement is the smallest complete TypeQL block that can be used as a pattern in a query.
+A simple statement is the smallest pattern that can be in a TyepQL query.
 
 Most simple statements have two or three parts: `<PREDICATE> <SUBJECT>`, `<SUBJECT> <PREDICATE>` or `<SUBJECT> <PREDICATE> <OBJECT>`, where `<PREDICATE>` is a TypeQL keyword.
 However, there can be other more complex statements like xref:{page-version}@typeql::statements/let-in.adoc[].
@@ -43,49 +45,31 @@ The first two predicates in the example above do not require a comma.
 However, every simple statement can be separated by commas if preferred.
 ====
 
-== Type definition statements
+== Definition statements
 
-[cols-3]
+Definition statements do not contain variables. Most definition statements can also be used as pattern statements.
+
+=== Type definitions
+
+==== Entity definitions
+
+[cols-1]
 --
 .xref:{page-version}@typeql::statements/entity.adoc[]
 [.clickable]
 ****
 Used to define a new entity type.
 ****
+--
 
+==== Relation definitions
+
+[cols-2]
+--
 .xref:{page-version}@typeql::statements/relation.adoc[]
 [.clickable]
 ****
 Used to define a new relation type.
-****
-
-.xref:{page-version}@typeql::statements/attribute.adoc[]
-[.clickable]
-****
-Used to define a new attribute type.
-****
-
-.xref:{page-version}@typeql::statements/struct.adoc[]
-[.clickable]
-****
-Used to define a new struct type.
-****
-
-.xref:{page-version}@typeql::statements/fun.adoc[]
-[.clickable]
-****
-Used to define a new function.
-****
---
-
-== Constraint definition statements
-
-[cols-3]
---
-.xref:{page-version}@typeql::statements/sub.adoc[]
-[.clickable]
-****
-Used to define the supertype of a type.
 ****
 
 .xref:{page-version}@typeql::statements/relates.adoc[]
@@ -93,11 +77,16 @@ Used to define the supertype of a type.
 ****
 Used to define a new role for a relation type.
 ****
+--
 
-.xref:{page-version}@typeql::statements/plays.adoc[]
+==== Attribute definitions
+
+[cols-2]
+--
+.xref:{page-version}@typeql::statements/attribute.adoc[]
 [.clickable]
 ****
-Used to define a new roleplayer for a role.
+Used to define a new attribute type.
 ****
 
 .xref:{page-version}@typeql::statements/value.adoc[]
@@ -105,13 +94,40 @@ Used to define a new roleplayer for a role.
 ****
 Used to define the value type of an attribute type.
 ****
+--
+
+==== Struct definitions
+
+[cols-2]
+--
+.xref:{page-version}@typeql::statements/struct.adoc[]
+[.clickable]
+****
+Coming soon
+****
+--
+
+=== Trait definitions
+
+[cols-2]
+--
+.xref:{page-version}@typeql::statements/plays.adoc[]
+[.clickable]
+****
+Used to define a new roleplayer for a role.
+****
 
 .xref:{page-version}@typeql::statements/owns.adoc[]
 [.clickable]
 ****
 Used to define a new owner of an attribute type.
 ****
+--
 
+=== Subtyping definitions
+
+[cols-1]
+--
 .xref:{page-version}@typeql::statements/alias.adoc[]
 [.clickable]
 ****
@@ -119,7 +135,33 @@ Used to define an alias label for a type.
 ****
 --
 
-== Instance statements
+=== Function definitions
+
+[cols-1]
+--
+.xref:{page-version}@typeql::statements/fun.adoc[]
+[.clickable]
+****
+Coming soon
+****
+--
+
+=== Type alias definitions
+
+[cols-1]
+--
+.xref:{page-version}@typeql::statements/alias.adoc[]
+[.clickable]
+****
+Used to define an alias label for a type.
+****
+--
+
+== Pattern statements
+
+Pattern statements are statements that contain variables. Most definition statements can also be used as pattern statements, and will not be repeated in this section (see pages above for their pattern usage).
+
+=== Typing statements
 
 [cols-3]
 --
@@ -140,13 +182,13 @@ Used to specify the roleplayers in a relation.
 ****
 Used to specify an attribute of an entity or relation.
 ****
+--
 
-.xref:{page-version}@typeql::statements/is.adoc[]
-[.clickable]
-****
-Used to specify that two variables represent the same data instance.
-****
 
+=== Assignments
+
+[cols-2]
+--
 .xref:{page-version}@typeql::statements/let-eq.adoc[]
 [.clickable]
 ****
@@ -157,6 +199,17 @@ Used to assign the result of an expression to a variable.
 [.clickable]
 ****
 Used to assign a stream or list element to a variable.
+****
+--
+
+=== Comparisons
+
+[cols-2]
+--
+.xref:{page-version}@typeql::statements/is.adoc[]
+[.clickable]
+****
+Used to specify that two variables represent the same data instance.
 ****
 
 .xref:{page-version}@typeql::statements/contains.adoc[]
@@ -172,7 +225,7 @@ Used to specify that a string matches a specified regex pattern
 ****
 --
 
-== Identity statements
+=== Data identity statements
 
 [cols-2]
 --

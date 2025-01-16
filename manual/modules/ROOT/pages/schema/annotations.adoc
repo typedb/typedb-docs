@@ -1,10 +1,10 @@
 = Defining annotations
 
-This page explains how to use define queries to define annotations for types and type capabilities.
+This page explains how to use define queries to define annotations for types and type traits.
 
 == Understanding annotations
 
-Annotations define constraints and extra behavior for types and their capabilities, enabling more precise control over the data in the schema.
+Annotations define constraints and extra behavior for types and their traits, enabling more precise control over the data in the schema.
 
 Think of type declarations as blueprints for constructing a building—they define the overall structure.
 Annotations, on the other hand, are the building codes and regulations that ensure every room, window, and door meets specific standards for safety and functionality.
@@ -60,7 +60,7 @@ By applying annotations, you can ensure that your database not only organizes in
 
 Some constraints are mandatory and are generated automatically if no <<overriding_constraints, overriding value>> is specified.
 
-Currently, the only auto-generated constraint is `cardinality`, which is required for any `owns`, `relates`, or `plays` capability.
+Currently, the only auto-generated constraint is `cardinality`, which is required for any `owns`, `relates`, or `plays` trait.
 Refer to xref:{page-version}@typeql::annotations/card.adoc[@card annotation] for more details.
 
 [#combining_constraints]
@@ -130,10 +130,10 @@ These annotations act similar to type annotations: values of these attributes sh
 include::{page-version}@typeql::annotations/regex.adoc[tags=description]
 ====
 
-[#_capability_annotations]
-=== Capability annotations
+[#_trait_annotations]
+=== Trait annotations
 
-Similarly, capability annotations follow capabilities (`owns`, `relates`, `plays`) definitions:
+Similarly, trait annotations follow traits (`owns`, `relates`, `plays`) definitions:
 
 [,typeql]
 ----
@@ -218,15 +218,15 @@ In order to comply to the `regex` constraints, values of both instances should b
 Additionally, the domain of `typedb-email` 's value should be "typedb.com", while `personal-email` can be any "*.*", including "typedb.com".
 ====
 
-=== Capability annotations
+=== Trait annotations
 
-For a capability annotation `<type label 1> <capability> <type label 2> @<annotation>`:
+For a trait annotation `<type label 1> <trait> <type label 2> @<annotation>`:
 
 - Every instance of `<type label 1>` or its subtypes owning/relating/playing `<type label 2>` should comply to the `<annotation>` 's constraint.
 - Every instance of `<type label 2>` or its subtypes owned/related/played by `<type label 1>` should comply to the `<annotation>` 's constraint.
 
 The details of the constraint define the actual meaning of this rule.
-The following are the explanations of subtyping behaviour based on the <<_capability_annotations, capability constraints descriptions>> and the <<annotations_constraints, example>> from the first section:
+The following are the explanations of subtyping behaviour based on the <<_trait_annotations, trait constraints descriptions>> and the <<annotations_constraints, example>> from the first section:
 
 .@card subtyping
 [%collapsible]
@@ -253,7 +253,7 @@ Refer to xref:{page-version}@typeql::annotations/card.adoc[@card annotation] for
 
 == Common issues
 
-=== <<default_constraints>> are implicitly set for defined capabilities whenever there is no explicitly defined constraint
+=== <<default_constraints>> are implicitly set for defined traits whenever there is no explicitly defined constraint
 
 E.g., the <<annotations_constraints, following schema>> requires `@card(0..)` specification for `page owns name`, because the default cardinality would not allow `page` s and, thus, `profile` s to have 2 or 3 `name` s.
 

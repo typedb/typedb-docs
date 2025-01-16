@@ -1,13 +1,19 @@
 = Match stage
 :page-aliases: {page-version}@typeql::patterns/matching.adoc
 
-== Draft example
+A match stage performs pattern-based data retrieval and filtering. It takes input data assigned variables and verifies that this data satisfies the patterns in the body of the stage, while producing new results for any additional variables that the pattern
+
+== Syntax
 
 [,typeql]
 ----
-match
-  $person-1 isa person, has name "<name 1>";
-  $person-2 isa person, has name "<name 2>";
-  (friend: $person-1, friend: $mutual-friend) isa friendship;
-  (friend: $person-2, friend: $mutual-friend) isa friendship;
+match <pattern> [ <pattern> ... ]
 ----
+
+== Behavior
+
+== Execution
+
+== Validation
+
+== Examples

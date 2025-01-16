@@ -6,14 +6,9 @@ Annotations are useful language constructs that begin with an `@`.
 They can be used to enforce constraints on definitions.
 // TODO: "or to modify query behavior".
 
-It is possible to define an unlimited number of annotations of different kinds for a type.
-However, only one definition of a specific annotation (e.g., `@a`) can exist for a type at a time.
 
-- Defining `@a` while `@b` is already defined results in both `@a` and `@b` being defined (with a couple of exceptions like `@key` and `@unique`).
-- Defining `@a` when `@a` is already defined makes no changes.
-- Defining `@a(x)` when `@a(y)` is already defined replaces `@a(y)` with `@a(x)`.
 
-=== Syntax
+== Syntax
 
 Annotations are applied to the latest statement before their declaration:
 
@@ -85,6 +80,15 @@ Which is an equivalent of:
 <type label> @annotation2;
 <type label> @annotation3;
 ----
+
+== Behavior
+
+It is possible to define an unlimited number of annotations of different kinds for a type.
+However, only one definition of a specific kind of annotation can exist for a type at a time (e.g., `@a(X)` and `@a(Y)` cannot co-exist in the schema).
+
+- Defining `@a` while `@b` is already defined results in both `@a` and `@b` being defined (with a couple of exceptions like `@key` and `@unique`).
+- Defining `@a` when `@a` is already defined makes no changes.
+- Defining `@a(x)` when `@a(y)` is already defined replaces `@a(y)` with `@a(x)`.
 
 == Cardinality constraints
 

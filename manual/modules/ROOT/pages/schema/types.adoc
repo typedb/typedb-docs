@@ -1,16 +1,16 @@
 = Defining types
 
-This page explains how to define types and type capabilities in TypeDB schemas.
+This page explains how to define types and type traits in TypeDB schemas.
 
 == Schema definition queries
 
 All schema (un)definitions in TypeDB are run in `schema` xref:{page-version}@manual::queries/transactions.adoc[transactions]. There are three kinds of schema definition queries:
 
-* `define <statements>`. A `define` query defines types and their capabilities, subtyping, as well as more specific annotations on those statements.
-* `undefine <statements>`. An `undefine` query can be used to remove definitions of type, their capabilities, subtyping, and statement annotations.
+* `define <statements>`. A `define` query defines types and their traits, subtyping, as well as more specific annotations on those statements.
+* `undefine <statements>`. An `undefine` query can be used to remove definitions of type, their traits, subtyping, and statement annotations.
 * `redefine <statement>`. A `redefine` query can be used to change a _single_ statement at a time, overwriting any analogous previously defined statement.
 
-== Entity Types
+== Entity types
 
 Entity types are first defined using the `entity` keyword.
 [,typeql]
@@ -24,11 +24,11 @@ Subtypes of entity types are always entity types themselves, and can be introduc
 define entity admin sub user;
 ----
 
-xref:{page-version}@manual::schema/schema_structure.adoc#capabilities[Capabilities] of entity types are defined as before using the `plays` and `owns` keywords.
+xref:{page-version}@manual::schema/schema_structure.adoc#traits[Traits] of entity types are defined as before using the `plays` and `owns` keywords.
 
-== Relation Types
+== Relation types
 
-Relation types are first defined using the `relation` keyword
+Relation types are first defined using the `relation` keyword.
 [,typeql]
 ----
 define
@@ -47,7 +47,7 @@ For example
 ----
 define
   relation close-friendship sub friendship; # inherits friend role
-  relation best-friendship sub frienship, # specializes friend role
+  relation best-friendship sub friendship, # specializes friend role
     relates best-friend as friend @card(1),
     relates other-friend as friend @card(1);
 ----
@@ -60,7 +60,7 @@ Note that unlike friendship relations, the subtype of best-friendships contains 
 In the above example, the cardinality annotations `@card(1)` can be omitted, as they can be inferred by the model checker.
 ====
 
-xref:{page-version}@manual::schema/schema_structure.adoc#capabilities[Capabilities] of relation types are defined as before using the `plays` and `owns` keywords.
+xref:{page-version}@manual::schema/schema_structure.adoc#traits[Traits] of relation types are defined as before using the `plays` and `owns` keywords.
 
 == Attribute types
 
@@ -86,16 +86,16 @@ Recall that attributes do not play roles or own other attributes.
 
 == Undefining definitions
 
-Any of the above statements can be undefined, however this uses special syntax. For example
+Any of the above statements can be undefined. For example
 [,typeql]
 ----
 undefine entity admin;
 ----
-will completely remove the admin from your schema, and with it all capabilities of the admin type.
+will completely remove the admin from your schema, and with it all traits of the admin type.
 
 [NOTE]
 ====
-Removing a type from your schema will, in general, only succeed if there are no data instance in the type *_and_* no other definitions depend on the type (i.e., the type appears neither in another type's capability nor as another type's supertype).
+Removing a type from your schema will, in general, only succeed if there are no data instance in the type *_and_* no other definitions depend on the type (i.e., the type appears neither in another type's trait nor as another type's supertype).
 ====
 
 If we instead write
@@ -110,12 +110,12 @@ Similarly, writing
 ----
 undefine plays friendship:friend from user;
 ----
-removes the friend capability from the user type, but leaves the type itself intact. And
+removes the friend trait from the user type, but leaves the type itself intact. And
 [,typql]
 ----
 undefine owns username from user;
 ----
-removes the capability of owning usernames.
+removes the trait of owning usernames.
 
 == Redefining definitions
 

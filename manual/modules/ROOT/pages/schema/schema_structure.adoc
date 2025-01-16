@@ -22,14 +22,14 @@ The logical dependency of data is a guiding principle in TypeDB schema design. H
 For the curious reader: there is no concept of an "`independent`" relation as this is, in essence, the concept of an entity.
 ====
 
-[[capabilities]]
-== Type capabilities
+[[traits]]
+== Type traits
 
 Relations organize their set of role players by so-called *role types* (also simply called "`roles`"): each role player is of a specific role type. However, there might be one than one player of the same type in the same relation. _But which data instances are allowed in the roles in a given type of relation?_ And similarly for attributes: _which data instances can act as owners of attributes of a given type?_
 
-These questions are answered by the schema, through the specification of so-called *capabilities*.
+These questions are answered by the schema, through the specification of so-called *traits*.
 
-*  We can specify that a type has *player* capability of a role. For example,
+*  We can specify that a type has a *player* trait (for a specific role of a relation type). For example,
 +
 [,typeql]
 .Specify that users can act as friends
@@ -39,7 +39,7 @@ define user plays friendship:friend;
 +
 which literally means that users can act as friends in friendship relations.
 
-* We can specify that a type has *owner* capability of an attribute. For example,
+* We can specify that a type has an *owner* trait (for a specific attributes). For example,
 +
 [,typeql]
 .Specify that users can act as username owners
@@ -51,15 +51,15 @@ which literally means that users can act as owners of username attributes.
 
 [NOTE]
 ====
-It is important to highlight that multiple different types can have the same capability. For example, both users and bots could plays the role of friends and/or own usernames.
+It is important to highlight that multiple different types can have the same trait. For example, both users and bots could plays the role of friends and/or own usernames.
 
-In terms of programming principles, you can understand having capabilities as database analog of implementing https://en.wikipedia.org/wiki/Trait_(computer_programming)[traits]: like types, traits organize data instances into subcollections; unlike types, you cannot directly instantiate a trait.
+In terms of programming principles, you can understand having traits as database analog of implementing https://en.wikipedia.org/wiki/Trait_(computer_programming)[traits]: like types, traits organize data instances into subcollections; unlike types, you cannot directly instantiate a trait.
 ====
 
 Note all types kinds are created equal:
 
-* Entity and relations types (together also referred to as *object* types) _can have capabilities_.
-* Attribute types are considered mere association of values to objects: they _cannot have capabilities_
+* Entity and relations types (together also referred to as *object* types) _can have traits_.
+* Attribute types are considered mere association of values to objects: they _cannot have traits_
 
 == Subtyping and inheritance
 
@@ -78,15 +78,15 @@ Subtyping behave in the intuitive way:
 ====
 Subtyping hierarchies in TypeDB are "`single-inheritance`", i.e., every type has a single direct supertype. This choice simplifies data models and avoids the https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem[diamond problem]. Every data instance has exactly one
 
-To model non-tree-like hierarchies the user can exploit the capability system of TypeDB (i.e. "`traits`").
+To model non-tree-like hierarchies the user can exploit the trait system of TypeDB.
 ====
 
-An important aspect of subtyping is the *inheritance* of capabilities. In general, _all_ capabilities of the supertype are inherited by the subtype. However, further capabilities may be specified for the subtype that are not shared with the supertype. For example,
+An important aspect of subtyping is the *inheritance* of traits. In general, _all_ traits of the supertype are inherited by the subtype. However, further traits may be specified for the subtype that are not shared with the supertype. For example,
 [,typeql]
 ----
 define admin owns access-level;
 ----
 
-There _are_ ways to hide supertype capabilities from subtypes, by setting these capabilities to be xref:{page-version}@typeql::annotations/abstract.adoc[abstract] (coming soon).
+There _are_ ways to hide supertype traits from subtypes, by setting these traits to be xref:{page-version}@typeql::annotations/abstract.adoc[abstract] (coming soon).
 // TODO
 
