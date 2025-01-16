@@ -33,16 +33,16 @@ A standard method for avoiding large intermediate results is to declare/enforce 
 In TypeQL predicate-pushdown is extended to the principle of *data-predicate-locality*: create data only at the stage where you need it, jointly with all applicable predicates. Pipelines give you fine-grained control for ensure that data is created where you need it. For example, a schematic pipeline of the form:
 [,typeql]
 ----
-<match($a,$b)>
+<match_data($a,$b)>
 <processing($b)>
 <processing($a,$b)>
 ----
 could be rewritten to be of the form
 [,typeql]
 ----
-<match($b)>
+<match_data($b)>
 <processing($b)>
-<match($a,$b)>
+<match_data($a,$b)>
 <processing($a,$b)>
 ----
 This defers matching of data to-be-stored in the variables `$a` until after we have finished processing `$b` (assuming the latter is fully independent of results for `$a`).

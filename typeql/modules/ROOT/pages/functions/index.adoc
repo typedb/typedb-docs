@@ -14,27 +14,31 @@ The following table illustrates the types of functions based on two dimensions: 
 [cols="^.1,^.2,^.2",options="header"]
 .Categorizing functions based on their output type
 |===
-|  **Rows/Columns** | 1 column | Multiple columns
-| **Up to 1 row** | scalar function
+|  | *Single output type* | *Tuple of output types*
+| *output*
+
+*up to 1 row* | scalar function
 
 type signature `... -> A`
 
-returns `$a`
+returns single `$a`
 | tuple function
 
 type signature `... -> A, B`
 
-returns `$a, $b`
-| **Multiple rows** | (scalar) stream function
+returns tuple `$a, $b`
+| *output*
+
+*multiple rows* | (scalar) stream function
 
 type signature `... -> { A }`
 
-returns `{ $a }`
+returns stream `{ $a }`
 | (tuple) stream function
 
 type signature `... -> { A, B }`
 
-returns `{ $a, $b }`
+returns stream `{ $a, $b }`
 |===
 
 == Explore functions
