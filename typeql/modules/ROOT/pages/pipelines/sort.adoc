@@ -1,7 +1,7 @@
-= Sort stage
+= Sort operator
 :page-aliases: {page-version}@typeql::modifiers/sorting.adoc
 
-A sort stage sorts the input stream based on the variables and their sort order.
+The sort operator sorts the input stream based on the variables and their sort order.
 
 NOTE: Sorting requires the server to fetch all results, sort them, then proceed in the pipeline. This may have significant query performance
 impact.
