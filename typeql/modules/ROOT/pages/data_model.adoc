@@ -1,8 +1,17 @@
 = Data and query model
 
-This page gives a brief overview of TypeDB's data and query model.
+This page gives a brief overview of TypeDB's type system and query model.
 
 == Type system
+
+=== Data and direct types
+
+All data in TypeDB has a type. Due to subtyping, data may have more than one type (for example, an entity of type admin may also be of type user). However, all data in TypeDB's type system has a unique unambigous *direct type*.
+
+* For data *instances*, i.e. data stored in the database, the direct type is determined at the time of creation of the data. For example, `insert $x isa user` will create an entity of root type `admin`.
+* For data *literals* (like `1`, `1.0`, `true`) the direct type is identified from syntax: for example `1` will be an integer, whereas `1.0` is a double. In some cases implicit and explicit casts can be applied (coming soon).
+
+=== Type taxonomy
 
 TypeDB's type system distinguishes types as follows.
 
@@ -11,22 +20,22 @@ TypeDB's type system distinguishes types as follows.
 +
 --
 Instances of entity types, simply called entities, can be created _indepdently_, i.e., without reference to other data instance.
-
-Entity types can have capabilities, i.e. play roles or own attribute types. This allows us to create connections between
 --
-11. *Relation types*, specified using the keyword `relation`, and require to have at least one *associated role type* specified with the keyword `relates`.
+11. *Relation types*, specified using the keyword `relation`, and are required to have at least one *associated role type* specified with the keyword `relates`.
 +
 --
-Instances of relation types reference (or "link") other data instances, called their *role players*. For example, a friendship relations may link two friends (implemented by, say, two user entities). Relations without role players will be removed (no "`dangling relations`").
+Instances of relation types may reference (or "link") zero or more data instances for each associated role type, called their *players* of that role (these data instance must have types with corresponding *player capability*).
 
-Relation types can have capabilities, i.e. play roles or own attribute types.
+For example, a friendship relations may link two friends (implemented by, say, two user entities).
+
+Relations without role players will be removed (no "`dangling relations`").
 --
 11. *Attribute types*, specified using the keyword `attribute`, and required to have an *associated value type* (either structured or primitive) specified with the keyword `value`.
 +
 --
-Instances of attribute types carry an associated value of the associated type. They also come with references to their *owners*. Attributes without owners will be removed (no "`dangling attributes`", unless the attribute type is marked as independent.)
+Instances of attribute types carry an *associated value* of the associated value type. They may also reference other data instances, called their *owners* (these data instances must have direct types with the corresponding *owner capability*). Two attributes are considered equal if they have the same associate value and have the same (origin) type.
 
-Two attributes are considered equal if they have the same associate value and have the same (origin) type.
+Attributes without owners will be removed (no "`dangling attributes`", unless the attribute type is marked as independent).
 --
 11. *Structured value types*, specified using the keyword `struct` and used in the context of defining attribute types via the keyword `value`.
 +
@@ -48,9 +57,24 @@ Two instances of a value type are equal exactly when their literal values are eq
 Coming soon.
 ====
 
-== User definitions
+=== Type capabilities
 
-User-defined types are created and modified through xref:{page-version}@typeql::introduction.adoc#statements[definition statements] in xref:{page-version}@typeql::introduction.adoc#queries[schema queries].
+Entity types can have capabilities, i.e. play roles or own attribute types. This allows us to create connections of entities with other data.
+
+Relation types can also have capabilities, i.e. play roles or own attribute types. This, for example, allows the creation of nested relations (i.e., relations playing roles in other relations).
+
+Since entity and relation types together make up "`first-class`" types in TypeDB's type system (when it comes to type capabilities) they are, together, also referred to as *object types*, whose instances are data *objects*.
+
+Attributes cannot have capabilities; they are merely typed associations of values to objects.
+
+=== Subtyping
+
+Entity types, relation types, and attribute types can be defined to subtype other types (which themselves must be, respectively, entity types, relationt types, or attributes types). This allows implicit casting of data instances from the subtype into the supertype.
+
+== Types, capabilities, subtyping
+
+User-defined types, their capabilities, and their subtyping structure, are created and modified through xref:{page-version}@typeql::introduction.adoc#statements[definition statements] in xref:{page-version}@typeql::introduction.adoc#queries[schema queries].
+
 
 == Variables in patterns
 

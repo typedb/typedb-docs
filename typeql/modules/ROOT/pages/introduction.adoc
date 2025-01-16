@@ -8,8 +8,10 @@ This page gives an overview of the TypeQL query language. For an overview of the
 
 The main way of interacting with your TypeDB database is through queries written in *TypeQL*, the query language of TypeDB. Queries fall into two categories.
 
-1. *Schema queries* comprise a *single stage*, indicated by the corresponding keywords shown in the <<table1, table>> below. Schema queries modify the schema of your database, and produces no outputs.
-1. *Data pipelines* may comprise *multiple stages*, indicated by the keywords shown in the <<table1, table>> below. Data pipelines read and write data from the database, and always return outputs (though the set of outputs may be empty).
+1. *Schema queries* comprise a *single stage*, indicated by the corresponding keywords shown in the <<table1, table>> below. Schema queries modify the schema of your database, and produce no outputs except for a confirmation of success.
+1. *Data pipelines* may comprise *multiple stages*, indicated by the keywords shown in the <<table1, table>> below. Data pipelines read and write data from the database, and always output of the read or written data (though the set of outputs may be empty).
+
+<<table1, Table 1>> also mentions *functions*: functions are data pipeline templates that take typed input arguments. This allows users to build powerful query abstractions. Functions *cannot write or delete* data, and thus they cannot contain write stages like `insert` or `delete`.
 
 [[table1]]
 [cols="^~,^~,^~" , options="header"]
@@ -53,8 +55,6 @@ The main way of interacting with your TypeDB database is through queries written
 | yes
 |===
 
-Table 1 also mentions *functions*: functions are data pipeline templates that take typed input arguments. Functions *cannot write or delete* data, and thus they cannot contain write stages like `insert` or `delete`.
-
 [cols-2]
 --
 .xref:{page-version}@typeql::schema/index.adoc[]
@@ -82,25 +82,24 @@ Reference for writing all types of functions.
 [[statements]]
 == Statements and patterns
 
-The body of a stage comprises appropriate statement *statements*. For example:
+The body of a stage comprises *statements*. For example:
 
 * The body of a `define` stage comprises statements such as `user owns username`.
 * The body of a `match` stage comprises statements such as `$u has username $n` or `$type owns username`.
 
-Which statements can be used depends on the stage.
+Which statements can be used depends on the stage we are in.
 
-A _key distinction_ between statements is whether they contain variables or not.
+A _key distinction_ between stages and their statements is whether statements contain variables or not.
 
 * Statements without variables are called *definitions*.
 * Statements with variables are called (elementary) *patterns*. Elementary patterns can be combined into larger pattern by *pattern operations*, such as *conjunction* ("`chaining`"), *disjunction* ("`branching`"), *negation* ("`exclusion`"), etc.
 
-[NOTE]
-====
-1. *_Schema queries always work with (lists of) definitions._*
-1. *_Data pipelines always work with patterns._*
-====
+Definitions and patterns play distinct roles in TypeQL.
 
-As a simple example, compare:
+1. *_Schema queries always work with (lists of) definitions._*
+1. *_Data pipelines (and functions) always work with patterns._*
+
+As a simple example of this distinction, compare:
 [,typeql]
 ----
 define
@@ -114,15 +113,31 @@ match
   $some-type plays $some-role;
   friendship relates $some-role;
 ----
+The former query introduces types, while the latter will query for types. The general idea here is as follows.
 
-Definitions in schema queries concern type, inheritance, and capability definitions. In contrast, patterns support a wide variety of syntax, including for:
+=== Definitions
 
-* References between data instance via attribute ownerships and relations (e.g., `has`, `links`, and anonymous versions thereof)
+Definitions in schema queries concern:
+
+* *type* definitions, introducing new types via the appropriate keyword (`entity`, `relation` + `relates`, `attribute` + `value`). Types are referred to by a unique type *labels*; multiple aliases of the latter can be introduced (coming soon).
+* *capability* definitions, introducing player or owner capabilities (via `plays` and `owns` keywords). Player capabilities allow type instances to be referred to as players in roles of relations. Owner capabilities allow type instances to be referred to as
+* *subtyping* definitions, declare types to be subtypes of other types (via the keyword `sub`). Capabilities of supertypes are inherited by subtypes.
+
+=== Patterns
+
+In contrast, in patterns we support a wide variety of syntax, including for:
+
+* *Retrieving types* based on label, capabilities, and inheritance.
+* *Retrieving data* in types, e.g. based on references between data instance such as attribute ownerships and relation linkages (via keywords such as `has`, `links`, and anonymous versions thereof)
 * Function calls (`let $a, $b in <FUN-CALL>`)
 * Computation with values (`let $x = <EXPR>`)
 * ... and many more.
 
+=== Annotations
+
 The semantics of many statements can be further modified with the use of *annotations*.
+
+=== References
 
 [cols-2]
 --
@@ -144,8 +159,6 @@ Reference for all individual TypeQL statements, covering schema and data.
 Annotations modify the semantics of specific TypeQL statements.
 ****
 --
-
-The TypeQL reference contains a complete reference for the TypeQL query language, used for both defining schemas and manipulating data.
 
 == Expressions and value types
 
