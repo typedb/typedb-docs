@@ -1,6 +1,23 @@
 = Sort stage
 :page-aliases: {page-version}@typeql::modifiers/sorting.adoc
 
+A sort stage sorts the input stream based on the variables and their sort order.
+
+NOTE: Sorting requires the server to fetch all results, sort them, then proceed in the pipeline. This may have significant query performance
+impact.
+
+== Syntax
+
+The sort direction may be specified explicitly to be ascending (`asc`) or descending (`desc`). The default sort direction when not specified
+is ascending.
+
+[,typeql]
+----
+sort <var> [asc|desc] [ , <var> [asc|desc] ... ];
+----
+
+== Example
+
 [,typeql]
 ----
 match

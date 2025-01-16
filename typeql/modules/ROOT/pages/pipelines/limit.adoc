@@ -1,6 +1,17 @@
 = Limit stage
 :page-aliases: {page-version}@typeql::modifiers/pagination.adoc
 
+A limit stage stops producing rows after the specified row limit has been reached.
+
+== Syntax
+
+[,typeql]
+----
+limit <number>;
+----
+
+== Example
+
 [,typeql]
 ----
 match

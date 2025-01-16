@@ -1,5 +1,16 @@
 = Offset stage
 
+An offset stage skips rows until the specified number has been skipped, then produces the remaining rows as normal.
+
+== Syntax
+
+[,typeql]
+----
+offset <number>;
+----
+
+== Example
+
 [,typeql]
 ----
 match
@@ -7,6 +18,6 @@ match
   (employer: $company, employee: $person) isa employment,
     has start-date $start;
 sort $start desc;
-offset 1;
-limit 1;
+offset 10;
+limit 10;
 ----
