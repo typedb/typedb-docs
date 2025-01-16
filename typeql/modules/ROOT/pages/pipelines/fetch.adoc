@@ -1,7 +1,198 @@
 = Fetch stage
 :page-aliases: {page-version}@typeql::queries/fetch.adoc
 
-== Draft example
+Fetch is primarily used to convert row answers into document (JSON) answers.
+
+[#syntax]
+== Syntax
+
+A fetch stage can follow any other stage that produces rows (e.g., xref:{page-version}@typeql::pipelines/match.adoc[match], xref:{page-version}@typeql::pipelines/insert.adoc[insert]). It starts with the keyword `fetch` followed by curly braces `{}` with a fetch body inside of it. The `fetch` clause is **terminal**, meaning that it cannot be followed by any other pipeline stage.
+
+.Pipeline syntax
+[,typeql]
+----
+<pipeline stages>
+fetch {
+ <fetch body>
+};
+----
+
+Where fetch body is either an all attributes statement:
+
+.Fetch with an all attributes statement based body
+[,typeql]
+----
+fetch {
+ $<var>.*
+};
+----
+
+Or a set of key-value statements:
+
+.Fetch with a key-value based body
+[,typeql]
+----
+fetch {
+ "<key 0>": <some fetch statement 0>,
+ ...
+ "<key N>": <some fetch statement N>
+};
+----
+
+These statements should be separated by commas. Comma at the end of the last statement is optional.
+
+=== Key-value based body
+
+`<key N>` is an arbitrary string literal.
+
+`<some fetch statement N>` can be one of:
+
+.Fetch value
+[,typeql]
+----
+fetch {
+  "key": $x
+};
+----
+
+.Fetch expression
+[,typeql]
+----
+fetch {
+  "key": <expression>
+};
+----
+
+.Fetch an attribute of type
+[,typeql]
+----
+fetch {
+  "key": $x.A
+};
+----
+
+.Fetch multiple attributes of type (when cardinality is not limited by 1)
+[,typeql]
+----
+fetch {
+  "key": [ $x.A ]
+};
+----
+
+// TODO: Uncomment when ordering is introduced
+// .Fetch attributes of an ordered attribute type
+// [,typeql]
+// ----
+// fetch {
+//   "key": $x.A[]
+// };
+// ----
+
+.Fetch a scalar single function result
+[,typeql]
+----
+fetch {
+  "key": fun(...)
+};
+----
+
+.Fetch a scalar stream or single function result
+[,typeql]
+----
+fetch {
+  "key": [ fun(...) ]
+};
+----
+
+.Fetch an inner fetch result
+[,typeql]
+----
+fetch {
+  "key": [
+    <read pipeline>
+    fetch {
+      <inner fetch body>
+    }
+  ]
+};
+----
+
+.Fetch an anonymous function scalar result
+[,typeql]
+----
+fetch {
+  "key": (
+    <read pipeline>
+    return <return statement>
+  )
+};
+----
+
+[NOTE]
+====
+The `<return statement>` can contain either a single or a stream function return statement. However, the parentheses `()` should be used only for scalar results.
+
+See xref:{page-version}@typeql::functions/index.adoc[] for more information about function returns.
+====
+
+.Fetch an anonymous function returning aggregates
+[,typeql]
+----
+fetch {
+  "key": [
+    <read pipeline>
+    return <AGG 0>, ..., <AGG N>;
+  ]
+};
+----
+
+.This is a short hand for...
+[%collapsible]
+====
+.Composite statement example
+[,typeql]
+----
+fetch {
+  "key": [
+    <read pipeline>
+    reduce $_0? = <AGG 1>, ... , $_n? = <AGG N>;
+    return first $_0, ..., $_n;
+  ]
+};
+----
+====
+
+.Fetch a nested document
+[,typeql]
+----
+fetch {
+  "key": {
+    <fetch body>
+  }
+};
+----
+
+== Understanding fetch
+
+Fetch implements translation from classical rows to both more human-friendly and more REST API-friendly documents:
+
+- The structure of the output documents is identical to the structure of the fetch query.
+- The structure of the fetch query is flexible and fully controlled by users.
+- The output documents can be passed to any application that expects JSON inputs.
+
+[NOTE]
+====
+As it is a document, the order of keys is not guaranteed.
+====
+
+== Usage
+
+Refer to <<syntax>> to explore different ways of `fetch` usage. The following example demonstrates a single `fetch` stage containing different values.
+
+[NOTE]
+====
+Every sub statement inside this `fetch` stage can be written as separate `fetch` es and can be considered as separate examples.
+====
 
 [,typeql]
 ----
@@ -10,12 +201,115 @@ match
 fetch {
   "name": $group.name,
   "tags": [$group.tag],
+  "nested": {
+    "double nested": {
+      "tags": [$group.tag]
+    }
+  },
+  "general mean karma": mean_karma(),
   "members": [
     match
       (group: $group, member: $member) isa group-membership;
     fetch {
-      "username": $member.username,
+      "member information": { $member.* },
     };
   ],
+  "first username": (
+    match
+      (group: $group, member: $member) isa group-membership;
+      $member has username $username;
+    return first $username;
+  ),
+  "all usernames": [
+    match
+      (group: $group, member: $member) isa group-membership;
+      $member has username $username;
+    return { $username };
+  ],
+  "members mean karma": [
+    match
+      (group: $group, member: $member) isa group-membership;
+      $member has karma $karma;
+    return mean($karma);
+  ]
 };
 ----
+
+.Example TypeDB Console output
+[%collapsible]
+====
+If two groups are inserted, the result of the query will contain two documents:
+
+----
+{
+    "all usernames": [
+        "Bob",
+        "Alice"
+    ],
+    "first username": "Bob",
+    "general mean karma": 3.2,
+    "members": [
+        {
+            "member information": {
+                "email": "bob@typedb.com",
+                "karma": 2,
+                "username": "Bob"
+            }
+        },
+        {
+            "member information": {
+                "email": "alice@typedb.com",
+                "karma": 4.4,
+                "username": "Alice"
+            }
+        }
+    ],
+    "members mean karma": [ 3.2 ],
+    "name": "UK hiking",
+    "nested": {
+        "double nested": {
+            "tags": [
+                "Hiking",
+                "UK"
+            ]
+        }
+    },
+    "tags": [
+        "Hiking",
+        "UK"
+    ]
+}
+{
+    "all usernames": [ "Bob" ],
+    "first username": "Bob",
+    "general mean karma": 3.2,
+    "members": [
+        {
+            "member information": {
+                "email": "bob@typedb.com",
+                "karma": 2,
+                "username": "Bob"
+            }
+        }
+    ],
+    "members mean karma": [ 2 ],
+    "name": "UK boxing",
+    "nested": {
+        "double nested": {
+            "tags": [
+                "Boxing",
+                "UK"
+            ]
+        }
+    },
+    "tags": [
+        "Boxing",
+        "UK"
+    ]
+}
+----
+[NOTE]
+=====
+Notice that `"general mean karma"` is the same for two output documents as the function call is not bounded to `match`.
+=====
+====

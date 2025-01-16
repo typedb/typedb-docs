@@ -48,7 +48,7 @@ define
     plays location:located;
 
   entity organisation sub profile,
-    owns tag,
+    owns tag @card(0..100),
     plays employment:employer;
 
   entity company sub organisation;
@@ -62,7 +62,7 @@ define
 
   entity group sub page,
     owns group-id,
-    owns tag,
+    owns tag @card(0..100),
     plays group-membership:group;
 
   relation group-membership,
@@ -75,7 +75,7 @@ define
     owns post-id,
     owns post-text,
     owns creation-timestamp @range(1970-01-01T00:00:00..),
-    owns tag,
+    owns tag @card(0..10),
     plays posting:post,
     plays commenting:parent,
     plays reaction:parent,
@@ -90,7 +90,7 @@ define
     owns comment-id,
     owns comment-text,
     owns creation-timestamp,
-    owns tag,
+    owns tag @card(0..5),
     plays commenting:comment,
     plays commenting:parent,
     plays reaction:parent;

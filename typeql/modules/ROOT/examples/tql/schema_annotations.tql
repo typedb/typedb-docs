@@ -90,7 +90,7 @@ define
     owns post-id,
     owns post-text,
     owns language,
-    owns tag,
+    owns tag @card(0..10),
     owns post-date,
     plays posting:post,
     plays commenting:parent,
@@ -116,7 +116,7 @@ define
     owns comment-id,
     owns comment-text,
     owns creation-timestamp,
-    owns tag,
+    owns tag @card(0..5),
     plays commenting:comment,
     plays commenting:parent,
     plays reaction:parent;
