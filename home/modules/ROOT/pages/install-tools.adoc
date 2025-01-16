@@ -1,6 +1,6 @@
 = Install tools
 :keywords: setup, install, deploy, typedb, core, cloud, enterprise, download, server, linux, mac, windows, docker, arm, arm64, x86, x86_64, client, driver, studio, console
-:page-aliases: {page-version}@home::install/overview.adoc, {page-version}@home::install/console.adoc, {page-version}@home::install/studio.adoc
+:page-aliases: {page-version}@home::install/overview.adoc, {page-version}@home::install/console.adoc, {page-version}@home::install/studio.adoc, {page-version}@home::install.adoc
 :pageTitle: Install tools
 :summary: Install and run TypeDB server or client for Linux, macOS, Windows, or Cloud.
 
@@ -9,16 +9,16 @@ You can connect to TypeDB and begin developing in several ways.
 
 [cols-3]
 --
-.xref:#_studio[]
-[.clickable]
-****
-A GUI tool for developing with TypeDB.
-****
-
 .xref:#_console[]
 [.clickable]
 ****
 A command-line tool for interacting with TypeDB.
+****
+
+.xref:#_studio[]
+[.clickable]
+****
+A GUI tool for developing with TypeDB.
 ****
 
 .xref:#_drivers[]
@@ -27,78 +27,6 @@ A command-line tool for interacting with TypeDB.
 SDKs to programmatically query & manage TypeDB.
 ****
 --
-
-
-[#_studio]
-== TypeDB Studio
-
-Install a powerful GUI tool that facilitates development on TypeDB.
-
-[tabs]
-====
-macOS::
-+
---
-Install TypeDB Studio using Homebrew:
-
-[source,console]
-----
-brew tap typedb/tap
-brew install --cask typedb/tap/typedb-studio
-----
-
-Or download and install TypeDB Studio manually:
-include::{page-version}@manual:resources:partial$typedb-studio-latest-links.adoc[tag=mac]
---
-
-Linux::
-+
---
-Install TypeDB Studio using `apt`:
-
-. Add the TypeDB repository:
-+
-[source,console]
-----
-sudo apt install software-properties-common apt-transport-https gpg
-gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 17507562824cfdcc
-gpg --export 17507562824cfdcc | sudo tee /etc/apt/trusted.gpg.d/typedb.gpg > /dev/null
-echo "deb https://repo.typedb.com/public/public-release/deb/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/typedb.list > /dev/null
-sudo apt update
-----
-. Install the application:
-+
-[source,console]
-----
-sudo apt install typedb-studio
-----
-
-Or download and install TypeDB Studio manually:
-include::{page-version}@manual:resources:partial$typedb-studio-latest-links.adoc[tag=linux]
---
-
-Windows::
-+
---
-Download the installer:
-include::{page-version}@manual:resources:partial$typedb-studio-latest-links.adoc[tag=windows]
-
-The installation wizard will guide you through the process of installing TypeDB Studio.
---
-====
-
-
-=== Quickstart
-
-For a 5-minute tutorial on the basics of TypeDB and Studio, visit the xref:{page-version}@home::quickstart.adoc[].
-
-Or, for a complete TypeDB Studio usage guide, visit the xref:{page-version}@manual::studio.adoc[TypeDB Studio Manual].
-
-
-[#_studio_archive]
-=== Use with older TypeDB versions
-
-include::{page-version}@manual::studio.adoc[tags="compat-intro,compat-table"]
 
 
 [#_console]
@@ -225,13 +153,85 @@ List all available TypeDB Console commands:
 typedb console --help
 ----
 
-For a complete usage guide, visit the xref:{page-version}@manual::console.adoc[TypeDB Console Manual].
+For a complete usage guide, visit the xref:{page-version}@manual::tools/console.adoc[TypeDB Console Manual].
 
 
 [#_console_archive]
 === Use with older TypeDB versions
 
-include::{page-version}@manual::console.adoc[tags="compat-intro,compat-table"]
+include::{page-version}@manual::tools/console.adoc[tags="compat-intro,compat-table"]
+
+
+[#_studio]
+== TypeDB Studio
+
+Install a powerful GUI tool that facilitates development on TypeDB.
+
+[tabs]
+====
+macOS::
++
+--
+Install TypeDB Studio using Homebrew:
+
+[source,console]
+----
+brew tap typedb/tap
+brew install --cask typedb/tap/typedb-studio
+----
+
+Or download and install TypeDB Studio manually:
+include::{page-version}@manual:resources:partial$typedb-studio-latest-links.adoc[tag=mac]
+--
+
+Linux::
++
+--
+Install TypeDB Studio using `apt`:
+
+. Add the TypeDB repository:
++
+[source,console]
+----
+sudo apt install software-properties-common apt-transport-https gpg
+gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 17507562824cfdcc
+gpg --export 17507562824cfdcc | sudo tee /etc/apt/trusted.gpg.d/typedb.gpg > /dev/null
+echo "deb https://repo.typedb.com/public/public-release/deb/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/typedb.list > /dev/null
+sudo apt update
+----
+. Install the application:
++
+[source,console]
+----
+sudo apt install typedb-studio
+----
+
+Or download and install TypeDB Studio manually:
+include::{page-version}@manual:resources:partial$typedb-studio-latest-links.adoc[tag=linux]
+--
+
+Windows::
++
+--
+Download the installer:
+include::{page-version}@manual:resources:partial$typedb-studio-latest-links.adoc[tag=windows]
+
+The installation wizard will guide you through the process of installing TypeDB Studio.
+--
+====
+
+
+=== Quickstart
+
+For a 5-minute tutorial on the basics of TypeDB and Studio, visit the xref:{page-version}@home::quickstart.adoc[].
+
+Or, for a complete TypeDB Studio usage guide, visit the xref:{page-version}@manual::tools/studio.adoc[TypeDB Studio Manual].
+
+
+[#_studio_archive]
+=== Use with older TypeDB versions
+
+include::{page-version}@manual::tools/studio.adoc[tags="compat-intro,compat-table"]
 
 
 [#_drivers]
@@ -241,7 +241,7 @@ Official xref:{page-version}@drivers::index.adoc[driver libraries] for building 
 
 [IMPORTANT]
 ====
-The TypeDB Driver 3.0 docs are currently under construction and will be published soon. xref:2.x@home::index.adoc[Browse TypeDB 2.x docs].
+The TypeDB Driver 3.0 docs are currently under construction and will be published soon. https://github.com/typedb/typedb-driver[View the typedb-driver README on GitHub].
 ====
 
 //

@@ -741,30 +741,25 @@ Coming soon.
 [#_version_compatibility]
 == Version Compatibility
 
-// tag::latest-compatibility[]
-[cols="^.^2,^.^1,^.^2,^.^2"]
+// tag::compat-intro[]
+For older TypeDB versions, you'll need a compatible version of TypeDB Console. Select the correct TypeDB Console version
+from the version compatibility table, and download it from
+https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%5Etypedb-console&sort=-version[Cloudsmith].
+
+// end::compat-intro[]
+
+// tag::compat-table[]
+.Version compatibility table
+[%collapsible]
+====
+[cols="^.^2,^.^2,^.^2"]
 |===
-| TypeDB Console | Protocol encoding version | TypeDB Community Edition | TypeDB
+| TypeDB Console | TypeDB | TypeDB Community Edition
 
-| https://github.com/vaticle/typedb-console/releases/tag/3.0.0[3.0.0]
-| 4
-| 3.0.0
-| 3.0.0
-
+| https://github.com/typedb/typedb-console/releases/tag/3.0.2[3.0.2]
+| 3.0.0 to 3.0.2
+| 3.0.0 to 3.0.2
 |===
-// end::latest-compatibility[]
-
-// TODO: Uncomment block start (uncomment this block and remove the TODO lines when needed)
-// // tag::older-compatibility[]
-// .See older versions
-// [%collapsible]
-// ====
-// [cols="^.^2,^.^1,^.^2,^.^2"]
-// |===
-// | TypeDB Console | Protocol encoding version | TypeDB Core | TypeDB Cloud
-//
-// |===
-// ====
-// TODO: Uncomment block end ^
-// end::older-compatibility[]
+====
+// end::compat-table[]
 // end::body[]
