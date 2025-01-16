@@ -5,7 +5,7 @@
 :tabs-sync-option:
 :experimental:
 
-In 5 minutes, set up TypeDB and use sample code to run your first queries.
+In 3 minutes, set up TypeDB to run your first queries.
 
 // video::UQbdl35ymOg[youtube,role=framed]
 
@@ -22,14 +22,13 @@ Your cluster will be created in a few seconds and the *Connect to your cluster* 
 [#_connect_cluster]
 == Connect to your cluster
 
-In the *Connect to your cluster* dialog, click *TypeDB Studio*. The dialog will contain instructions to install TypeDB Studio, which can also be found xref:{page-version}@home::install-tools.adoc[here].
+In the *Connect to your cluster* dialog, click *TypeDB Console*. The dialog will contain instructions to install TypeDB Console, which can also be found xref:{page-version}@home::install-tools.adoc[here]. Install TypeDB Console, if you haven't already.
 
-Once your cluster is online and its sample data has been loaded in, the *Connect to your cluster* dialog will display the
-*connection string* for your cluster.
+Once your cluster is online, the *Connect to your cluster* dialog will display the
+*connection command* for your cluster.
 
-. Copy the connection string and save it in a secure location. You'll need it each time you want to connect to your cluster.
-. Open TypeDB Studio. The *Connect to TypeDB* dialog will appear.
-. Paste in the copied connection string and click *Connect*. Once this is done, you're ready to begin developing with TypeDB!
+. Copy the connection command and save it in a secure location. You'll need it each time you want to connect to your cluster - specifically, you'll need the generated username and password.
+. Simply run the copied command in a terminal window. You'll see a `>` in your terminal. Once this is done, you're ready to begin developing with TypeDB!
 
 [NOTE]
 ====
@@ -40,13 +39,16 @@ You'll be connected as the default database user, which is created with admin pr
 [#_next_steps]
 == Next steps
 
-You can now use TypeDB Studio to explore the sample dataset you loaded. Or, for a deeper dive, try the
-xref:{page-version}@home::crash-course/index.adoc[TypeDB Crash Course], an interactive tutorial for you to learn all of
-the key features of TypeDB.
+// You can now use TypeDB Console to explore the sample dataset you loaded. Or, for a deeper dive, try the
+// xref:{page-version}@home::crash-course/index.adoc[TypeDB Crash Course], an interactive tutorial for you to learn all of
+// the key features of TypeDB.
+
+You can now proceed to the xref:{page-version}@home::crash-course.adoc[TypeDB Crash Course], an interactive
+tutorial for you to learn all of the key features of TypeDB! Keep your Console terminal open - you'll need it for this exercise.
 
 [cols-3]
 --
-.xref:{page-version}@home::crash-course/index.adoc[]
+.xref:{page-version}@home::crash-course.adoc[]
 [.clickable]
 ****
 Take a deep dive into TypeDB.

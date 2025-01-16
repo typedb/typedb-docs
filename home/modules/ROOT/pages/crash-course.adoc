@@ -186,14 +186,6 @@ Next up, let us create a database. The workflow here will depend on your client,
 
 [tabs]
 ====
-Studio::
-+
---
-After opening a project, use the database management button (image:{page-component-version}@home::studio-icons/svg/studio_dbs.svg[width=24]) to create and manage databases.
-
-See the xref:{page-version}@manual::tools/studio.adoc[Studio Manual] for more.
---
-
 Console::
 +
 --
@@ -231,7 +223,6 @@ driver.databases.get(database).delete()
 ----
 --
 
-
 Rust::
 +
 --
@@ -239,6 +230,14 @@ Rust::
 ======
 Coming soon.
 ======
+--
+
+Studio::
++
+--
+After opening a project, use the database management button (image:{page-component-version}@home::studio-icons/svg/studio_dbs.svg[width=24]) to create and manage databases.
+
+See the xref:{page-version}@manual::tools/studio.adoc[Studio Manual] for more.
 --
 ====
 
@@ -254,14 +253,6 @@ How to open a transaction and run a query will depend on your client.
 
 [tabs]
 ====
-Studio::
-+
---
-Select your database using the database selector (image:{page-component-version}@home::studio-icons/database-none.png[width=128]), then select your transaction type in the top menu.
-
-Open your query file. Then click the run button to run your query. Finally, use the commit button (image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24]) to persist any changes made.
---
-
 Console::
 +
 --
@@ -293,7 +284,6 @@ tx.commit()
 if you want to commit changes.
 --
 
-
 Rust::
 +
 --
@@ -301,6 +291,14 @@ Rust::
 ======
 Coming soon.
 ======
+--
+
+Studio::
++
+--
+Select your database using the database selector (image:{page-component-version}@home::studio-icons/database-none.png[width=128]), then select your transaction type in the top menu.
+
+Open your query file. Then click the run button to run your query. Finally, use the commit button (image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24]) to persist any changes made.
 --
 ====
 
