@@ -470,7 +470,7 @@ include::{page-version}@home::example$tql/schema_small.tql[]
 .data.tql
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/console_data.tql[]
+include::{page-version}@manual::example$tql/insert_data.tql[tags=simple-insert]
 ----
 ====
 
@@ -502,15 +502,13 @@ Streaming documents...
 {
     "user": {
         "email": "bob@typedb.com",
-        "relationship-status": "single",
-        "username": "bob"
+        "username": "Bob"
     }
 }
 {
     "user": {
         "email": "alice@typedb.com",
-        "relationship-status": "married",
-        "username": "alice"
+        "username": "Alice"
     }
 }
 
