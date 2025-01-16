@@ -2,23 +2,38 @@
 
 This reference covers the usage of patterns in TypeQL.
 
+== Scopes and operations
+
+Pattern comprise statements containing variables. Given a pattern, the *scope* of a variable is:
+
+* the block `{ ... }` in which variable appears at top-level (i.e., not nested in further `{...}`) but it does not appear outside of the block,
+* or, the entire pattern itself if the variable appears at the top-level of the pattern itself.
+
+A key principle of valid TypeQL pattern is:
+
+> *_Every variable must have a unique scope._*
+
+While a statement by itself is an (elementary) patterns, *operations* allow us to construct larger and more interesting patterns from smaller ones, and they create new scopes of variables.
+
+== Operation reference
+
 [cols-3]
 --
 .xref:{page-version}@typeql::patterns/conjunctions.adoc[]
 [.clickable]
 ****
-Usage of conjunctions, to combine patterns into a single query pattern.
+Use of conjunctions to join patterns into a single query pattern that combines all given constraints.
 ****
 
 .xref:{page-version}@typeql::patterns/disjunction.adoc[]
 [.clickable]
 ****
-Usage of disjunctions, to allow for several branches in a query to be executed in parallel.
+Use of disjunctions to allow for several branches in a query to be executed in parallel.
 ****
 
 .xref:{page-version}@typeql::patterns/negations.adoc[]
 [.clickable]
 ****
-Usage of negations, to exclude patterns from your query results.
+Use of negations to exclude patterns from your query results.
 ****
 --

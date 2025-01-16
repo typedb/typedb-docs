@@ -6,11 +6,12 @@ This page gives a brief technical overview of TypeDB's type system and query mod
 
 === Data and direct types
 
-All data in TypeDB has a type. Due to subtyping, data may have more than one type (for example, an entity of type admin may also be of type user). However, all data in TypeDB's type system has a unique unambigous *direct type*.
+All data in TypeDB has a type. Due to subtyping, data may have more than one type (for example, an entity of type `admin` may also be of type `user`). However, all data in TypeDB's type system has a unique unambigous *direct type*.
 
-* For data *instances*, i.e. data stored in the database, the direct type is determined at the time of creation of the data. For example, `insert $x isa user` will create an entity of root type `admin`.
-* For data *literals* (like `1`, `1.0`, `true`) the direct type is identified from syntax: for example `1` will be an integer, whereas `1.0` is a double. In some cases implicit and explicit casts can be applied (coming soon).
+* For data *instances*, i.e. data stored in the database, the direct type is determined at the time of creation of the data. For example, `insert $x isa user` will create an entity of direct type `admin`.
+* For data *literals* (like `1`, `1.0`, `true`) the direct type is identified based on syntax: for example `1` will be an `integer`, whereas `1.0` is a `double`. (Note that when working with expressions of a certain type, implicit and explicit casts may be applied.)
 
+[[taxonomy]]
 === Type taxonomy
 
 TypeDB's type system distinguishes types as follows.
@@ -73,12 +74,13 @@ Entity types, relation types, and attribute types can be defined to subtype othe
 
 == Definitions
 
-User-defined types, their traits, and their subtyping structure, are created and modified through xref:{page-version}@typeql::introduction.adoc#statements[definition statements] in xref:{page-version}@typeql::introduction.adoc#queries[schema queries].
+User-defined types, their traits, and their subtyping structure, are created and modified through xref:{page-version}@typeql::index.adoc#statements[definition statements] in xref:{page-version}@typeql::index.adoc#queries[schema queries].
 
 
+[[variables]]
 == Patterns and variables
 
-In any valid TypeQL xref:{page-version}@typeql::introduction.adoc#queries[data pipeline], there are four categories of variables appearing in xref:{page-version}@typeql::introduction.adoc#statements[statements]. Any variable (unambiguously) belongs to exactly one of those four categories.
+In any valid TypeQL xref:{page-version}@typeql::index.adoc#queries[data pipeline], there are four categories of variables appearing in xref:{page-version}@typeql::index.adoc#statements[statements]. Any variable (unambiguously) belongs to exactly one of those four categories.
 
 1. *Instance variables*, represent data instances from your database. Instance variables are identified by their usage in statements. For example:
 +
@@ -114,6 +116,7 @@ implies that `$type` is a type variable.
 Coming soon.
 ====
 
+[[modes]]
 == Match stage and variable modes
 
 Given a `match` stage in a data pipeline, each variable in that stage can appear in one of the following three modes.
