@@ -107,14 +107,14 @@ Indeed, the variable `$y` does _not_ have a unique scope: it appears at the top-
 
 == Examples
 
-1. Retrieve phone numbers of a specific user if available
+1. Retrieve phone numbers of a specific user _if available_:
 +
 --
 [,typeql]
 ----
 match
   $x isa user, has username "john_1";
-  { $x has phone $p; } or { not { $x has phone $np } };
+  { $x has phone $p; } or { not { $x has phone $np; }; };
 ----
 Note that `$p` and `$np` have different variable names to ensure the xref:{page-version}@typeql::patterns/index.adoc[unique scope principle].
 --
