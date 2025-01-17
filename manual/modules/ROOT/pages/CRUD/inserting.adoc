@@ -8,12 +8,27 @@ In this guide, you'll see how to insert data in a database using Studio, Console
 An insert stage is used to insert data into a TypeDB database.
 
 It can be used as a single query, then the insertion will happen exactly once.
-Also, it can be a stage of a xref:{page-version}@typeql::pipelines/index.adoc[pipeline] with potentially multiple input rows from the previous pipeline stage (e.g., a xref:{page-version}@typeql::pipelines/insert.adoc[`match` stage]).
+Also, it can be a stage of a xref:{page-version}@typeql::pipelines/index.adoc[pipeline] with potentially multiple input rows from the previous pipeline stage (e.g., a xref:{page-version}@typeql::pipelines/match.adoc[`match` stage]).
 
 Refer to the xref:{page-version}@typeql::pipelines/insert.adoc[] page for detailed explanation and more examples.
 
 [#_how_to_send_an_insert_query]
 == Sending insert queries
+
+[NOTE]
+====
+The examples below can be combined with the following schema file. A part of this file is defined in the respective xref:{page-version}@manual::schema/index.adoc[definition guides].
+[[schema-include]]
+.See the schema.tql
+[%collapsible]
+=====
+.schema.tql
+[,typeql]
+----
+include::{page-version}@home::example$tql/schema_small.tql[]
+----
+=====
+====
 
 The easiest way to send an insert query is to use Studio or Console:
 
@@ -474,4 +489,4 @@ include::{page-version}@manual::example$tql/match_insert_data.tql[tags=simple-ma
 include::{page-version}@manual::example$tql/read_queries.tql[tags=reduce-count-general]
 ----
 
-The response should contain a concept with a single integer number;
+The response should contain a concept with a single integer number.

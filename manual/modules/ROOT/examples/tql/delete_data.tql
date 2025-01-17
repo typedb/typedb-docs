@@ -1,0 +1,8 @@
+// tag::simple-delete[]
+match
+  $u1 isa user, has name "Bob";
+  $u2 isa user, has name "Charlie";
+  $f isa friendship, links (friend: $u1, friend: $u2);
+delete
+  $f;
+// end::simple-delete[]
