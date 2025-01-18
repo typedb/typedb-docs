@@ -174,3 +174,14 @@ define
   attribute creation-timestamp value datetime;
   attribute start-timestamp value datetime;
   attribute end-timestamp value datetime;
+
+  fun all_relatives($user: user) -> { user }:
+    match
+      $relative isa user;
+      {
+        family (relative: $user, relative: $relative);
+      } or {
+        let $intermediate in all_relatives($user);
+        family (relative: $intermediate, relative: $relative);
+      };
+      return { $relative };
