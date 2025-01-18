@@ -1,6 +1,27 @@
 = Query answers
 :page-aliases: {page-version}@manual::objects/data.adoc, {page-version}@manual::objects/explanation.adoc, {page-version}@manual::objects/overview.adoc, {page-version}@manual::objects/schema.adoc
 
+[IMPORTANT]
+====
+Under construction.
+====
+
+This page gives a brief overview of answer types returned by the server when running queries.
+
+== Query types
+
+xref:{page-version}@typeql::index.adoc#queries[Data pipelines] produce query answers. Currently TypeDB supports two answers formats: concept rows (the native TypeDB format) and JSON.
+
+In contrast, xref:{page-version}@typeql::index.adoc#queries[schema queries] do not produce answers, but only return success/failures notifications.
+
+== Concept rows
+
+Any valid data pipeline not ending with a `fetch` stage will produce answers in xref:{page-version}@manual::CRUD/outputs.adoc[concept row format].
+
+== JSON
+
+A data pipeline ending with a `fetch` stage will produce JSON answers.
+
 
 
 // TODO: Can use this form of showing how to send queries in different clients! Uncomment the whole thing until the "TODO END"!
