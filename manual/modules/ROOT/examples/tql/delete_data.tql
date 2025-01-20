@@ -1,8 +1,43 @@
-// tag::simple-delete[]
+#// tag::simple-delete[]
+#match
+#  $u1 isa user, has name "Bob";
+#  $u2 isa user, has name "Charlie";
+#  $f isa friendship, links (friend: $u1, friend: $u2);
+#delete
+#  $f;
+#// end::simple-delete[]
+
+
+// tag::match-keyword[]
 match
-  $u1 isa user, has name "Bob";
-  $u2 isa user, has name "Charlie";
-  $f isa friendship, links (friend: $u1, friend: $u2);
+// end::match-keyword[]
+// tag::match-single-user[]
+  $u isa user, has username "User";
+// end::match-single-user[]
+// tag::match-users-email[]
+  $a isa user, has username "Alice", has email $email;
+// end::match-users-email[]
+// tag::match-users-friendship[]
+  $b isa user, has username "Bob", has email "bob@typedb.com";
+  $c isa user, has username "Charlie", has email "charlie@typedb.com";
+  $f isa friendship, links (friend: $b, friend: $c);
+// end::match-users-friendship[]
+
+// tag::delete-keyword[]
 delete
-  $f;
-// end::simple-delete[]
+// end::delete-keyword[]
+// tag::delete-single-user[]
+  $u;
+// end::delete-single-user[]
+// tag::delete-users-email[]
+  has $email of $a;
+// end::delete-users-email[]
+// tag::delete-single-email[]
+  $email;
+// end::delete-single-email[]
+// tag::delete-users-friendship[]
+  links ($b, $c) of $f;
+// end::delete-users-friendship[]
+// tag::delete-single-user-friendship[]
+  links ($b) of $f;
+// end::delete-single-user-friendship[]

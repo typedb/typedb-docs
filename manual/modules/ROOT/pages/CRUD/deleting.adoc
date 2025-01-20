@@ -1,19 +1,22 @@
 = Deleting data
 :page-aliases: {page-version}@manual::writing/delete.adoc
 
-In this guide, you'll see how to delete data from a database using Studio, Console, or one of the drivers.
+This page explains how to delete data from a TypeDB database.
 
 == Understanding delete pipeline stages
 
-A delete stage is used to delete data from a TypeDB database. It can be used in a xref:{page-version}@typeql::pipelines/index.adoc[pipeline] to operate variables declared on a preceding `match` stage.
+A delete stage is used to delete data from a TypeDB database.
+It can be used in a xref:{page-version}@typeql::pipelines/index.adoc[pipeline] to operate variables declared on a preceding `match` stage.
 
-Refer to the xref:{page-version}@typeql::pipelines/insert.adoc[] page for detailed explanation and more examples.
+Refer to the xref:{page-version}@typeql::pipelines/delete.adoc[] page for detailed explanation and more examples.
 
-== Sending delete queries
+== Sending delete pipelines
 
 [NOTE]
 ====
-The examples below can be combined with the following schema file. A part of this file is defined in the respective xref:{page-version}@manual::schema/index.adoc[definition manuals]. Also, the data deleted in these examples is inserted in the xref:{page-version}@manual::CRUD/inserting.adoc[insertion manual].
+The examples below can be combined with the following schema file.
+A part of this file is defined in the respective xref:{page-version}@manual::schema/index.adoc[definition manuals].
+Also, the data deleted in these examples is inserted in the xref:{page-version}@manual::CRUD/inserting.adoc[insertion manual].
 
 [[schema-include]]
 .See the schema.tql
@@ -27,226 +30,128 @@ include::{page-version}@home::example$tql/schema_small.tql[]
 =====
 ====
 
-The easiest way to send an insert query is to use Studio or Console:
+=== Delete an instance
 
-[tabs]
-====
-Studio::
-+
---
-Follow the xref:{page-version}@manual::studio.adoc#_connect_to_typedb[Studio manual]
-to connect to TypeDB and select a project folder.
-Then use the steps below:
+To delete data, open a `write` xref:{page-version}@manual::queries/transactions.adoc[transaction].
+This allows you to read and write data to your database while keeping the schema secure.
 
-. Use a drop-down list in the top toolbar to select a database.
-. Switch to the `write` transaction type.
-. Open a new tab and insert or type in an insert stage, for example:
-+
-.TypeQL Delete query
+Every deletion begins with an `delete`, but also requires some input, so a preceding `match` stage is needed to produce concepts incoming to the `delete` stage.
+The logic is similar to xref:{page-version}@manual::CRUD/inserting.adoc#match_insert[inserting data based on a match]: the variables, declared in the `match` stage, can be used in the `delete` stage to control the deletion process.
+
+Similarly, multiple statements can be combined to delete multiple instances or connections.
+
+To delete a type instance (an xref:{page-version}@typeql::statements/entity.adoc[entity], a xref:{page-version}@typeql::statements/relation.adoc[relation], or an xref:{page-version}@typeql::statements/attribute.adoc[attribute]), declare a `$var` for this instance and add `delete $var`:
+
+[#_user_deletion]
+.User deletion example
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/delete_data.tql[tags=simple-delete]
+include::{page-version}@manual::example$tql/delete_data.tql[tags=match-keyword;match-single-user;delete-keyword;delete-single-user]
 ----
-. Run the query by clicking the image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]
-btn:[Run Query] button.
-. Commit the changes by clicking the image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit query] button.
---
 
-Console::
-+
---
-. Open a `write` transaction to the selected database (e.g., `sample_db`):
-+
-[,bash]
-----
-transaction sample_db data write
-----
-. Send the delete query:
-+
-[,bash]
-----
-include::{page-version}@manual::example$tql/delete_data.tql[tags=simple-delete
-----
-+
-Push btn:[Enter] twice to send the query.
-. Commit the changes:
-+
-[,bash]
-----
-commit
-----
---
+The following pipeline will act in two stages:
+
+- The first stage will match all `user` s with `username` "User" (as `username` is a key in the <<schema-include, schema>>, you can be ensured that only one `user` will be found).
+- The second stage will delete the matched `user` s (the only `user` with `username` "User").
+
+[NOTE]
+====
+Take into account that default relations and attributes without certain xref:{page-version}@typeql::annotations/index.adoc[annotations] can be cleaned up on commit if they are not relating or owned by any other instance, so deleting a single entity can lead for more cascading cleanups.
+[#_independent_example]
+For example, the xref:{page-version}@typeql::annotations/independent.adoc[`@independent` annotation] can help preserving attributes (`username`) in the database even if their owners are deleted.
 ====
 
-To send a delete query programmatically, use xref:{page-version}@drivers::index.adoc[drivers]:
+Similarly to xref:{page-version}@manual::CRUD/inserting.adoc#constraints_verification_time[`insert` stages], `delete` s have the same sets of data constraints to check after every operation or before a commit.
 
-[tabs]
+=== Delete an instance's ownership
+
+To delete only a specific trait instance, mention what you want to delete and what instance it relates to.
+In case of an ownership instance, write an expression like `has $attribute of $owner` using the xref:{page-version}@typeql::statements/has.adoc[`has`] statement and the xref:{page-version}@typeql::keywords.adoc[keyword] `of` pointing to the owner:
+
+[#_email_has_deletion]
+.User's ownership of an attribute deletion example
+[,typeql]
+----
+include::{page-version}@manual::example$tql/delete_data.tql[tags=match-keyword;match-users-email;delete-keyword;delete-users-email]
+----
+
+[NOTE]
 ====
-Rust::
-+
---
-Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to a TypeDB server.
+This query only deletes the `has` between `$email` and `$a`, not the attribute itself!
+However, if `email` s are <<_independent_example, not `@independent`>> and there will be no users with this `email` on commit, the attribute will also be deleted.
+====
 
-[subs="macros, post_replacements, replacements"]
-++++
-Open a write transaction to the selected database and use the
-xref:{page-version}@drivers::rust/api-reference.adoc#_struct_Transaction_query__[transaction.query()]
-method:
-++++
+The verbose way to delete both the ownership and the attribute is:
 
-// TODO: Reference a single partials file.
-[,rust,indent=0]
+.User's ownership of an attribute with the attribute itself deletion example
+[,typeql]
 ----
-let transaction = driver.transaction(DB_NAME, TransactionType::Write).await.unwrap();
-{
-    let delete_query = r#"
-include::{page-version}@manual::example$tql/delete_data.tql[tags=simple-delete]
-    "#;
-    let _answer = transaction.query(delete_query).await.unwrap();
-    transaction.commit().await.unwrap();
-}
+include::{page-version}@manual::example$tql/delete_data.tql[tags=match-keyword;match-users-email;delete-keyword;delete-users-email;delete-single-email]
 ----
---
 
-Python::
-+
---
-Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to a TypeDB server.
+However, it is redundant as the deletion of an instance also deletes all its connections.
+Thus, it can be written as:
 
-[subs="macros, post_replacements, replacements"]
-++++
-Open a write transaction to the selected database and use the
-xref:{page-version}@drivers::python/api-reference.adoc#_Transaction_query[transaction.query()]
-method:
-++++
-
-// TODO: Reference a single partials file.
-[,python,indent=0]
+[#_email_deletion]
+.Deletion of an attribute example
+[,typeql]
 ----
-with driver.transaction(DB_NAME, TransactionType.WRITE) as tx:
-    delete_query = """
-include::{page-version}@manual::example$tql/delete_data.tql[tags=simple-delete]
-    """
-    tx.query(delete_query).resolve()
-    tx.commit()
+include::{page-version}@manual::example$tql/delete_data.tql[tags=match-keyword;match-users-email;delete-keyword;delete-single-email]
 ----
---
 
-Java::
-+
---
-Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
-to connect the `driver` to a TypeDB server.
+=== Delete a relation connection
 
-[subs="macros, post_replacements, replacements"]
-++++
-Open a write transaction to the selected database and use the
-xref:{page-version}@drivers::java/api-reference.adoc#_Transaction_query__java_lang_String[transaction.query()]
-method:
-++++
+Similarly, a connection between a relation and its roleplayers can be deleted.
+A single role or multiple roles can be deleted using the following query:
 
-// TODO: Reference a single partials file.
-[,java,indent=0]
+.Deletion of a relation linking example
+[,typeql]
 ----
-try (TypeDBTransaction tx = session.transaction(DB_NAME, Transaction.Type.WRITE)) {
-    String deleteQuery = """
-include::{page-version}@manual::example$tql/delete_data.tql[tags=simple-delete]
-    """;
-    tx.query(deleteQuery).resolve();
-    tx.commit();
-}
+include::{page-version}@manual::example$tql/delete_data.tql[tags=match-keyword;match-users-friendship;delete-keyword;delete-users-friendship;delete-single-user-friendship]
 ----
---
 
-// TODO: Update and reintroduce
-// Node.js::
-// +
-// --
-// Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
-// to connect the `driver` to a TypeDB server.
-//
-// [subs="macros, post_replacements, replacements"]
-// ++++
-// Open a data session to the selected database,
-// open a write transaction, and use the
-// xref:2.x@drivers::nodejs/api-reference.adoc#_QueryManager_delete__query_string__options_TypeDBOptions[transaction.query.delete()]
-// method:
-// ++++
-//
-// [,js, indent=0]
-// ----
-// include::{page-version}@manual::partial$nodejs-manual-code.js[tags=delete]
-// ----
-// --
-
-// TODO: Update and reintroduce
-// C#::
-// +
-// --
-// Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
-// to connect the `driver` to a TypeDB server.
-//
-// [subs="macros, post_replacements, replacements"]
-// ++++
-// Open a data session to the selected database,
-// open a write transaction, and use the
-// xref:2.x@drivers::csharp/api-reference.adoc#_VoidPromise_TypeDB_Driver_Api_IQueryManager_Delete___string_query_[transaction.Query.Delete()]
-// method:
-// ++++
-//
-// [,csharp,indent=0]
-// ----
-// include::{page-version}@manual::partial$csharp-manual-code.cs[tags=delete]
-// ----
-// --
-
-// TODO: Update and reintroduce
-// C++::
-// +
-// --
-// Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
-// to connect the `driver` to a TypeDB server.
-//
-// [subs="macros, post_replacements, replacements"]
-// ++++
-// Open a data session to the selected database,
-// open a write transaction, and use the
-// xref:2.x@drivers::cpp/api-reference.adoc#_VoidFuture_TypeDBQueryManagermatchDelete___const_stdstring__query__const_Options__options__Options_____const[transaction.query.delete()]
-// method:
-// ++++
-//
-// [,cpp,indent=0]
-// ----
-// include::{page-version}@manual::partial$cpp-manual-code.cpp[tags=options,indent=0]
-// include::{page-version}@manual::partial$cpp-manual-code.cpp[tags=delete,indent=0]
-// ----
-// --
-
-// TODO: Update and reintroduce
-// C::
-// +
-// --
-// Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
-// to connect the `driver` to a TypeDB server.
-//
-// [subs="macros, post_replacements, replacements"]
-// ++++
-// Open a data session to the selected database,
-// open a write transaction, and use the
-// xref:2.x@drivers::c/api-reference.adoc#_query_delete[query_delete()]
-// method:
-// ++++
-//
-// [,c,indent=0]
-// ----
-// include::{page-version}@manual::partial$c-manual-code.c[tags=options,indent=0]
-// include::{page-version}@manual::partial$c-manual-code.c[tags=delete,indent=0]
-// ----
-// --
+[NOTE]
+====
+The `has` and `links` keywords are optional, but sometimes required for ambiguity resolution and are generally better for readability.
 ====
 
 == Response interpretation
 
-// TODO: ???
+A delete stage takes the input from the previous pipeline stages, processes the deletions and returns the concepts left from the input. All the deleted concepts are not shown in the output. This way, another pipeline stage can take this as an input and continue data processing.
+
+For example, the <<_user_deletion, example of a `user` instance deletion>> where there are no concepts left for the output produces the following TypeDB Console's response:
+
+.Result with empty columns
+[,typeql]
+----
+No columns to show
+----
+
+At the same time, <<_email_has_deletion, a `has` deletion>> does not affect the output, as both concepts are still in the database until a commit:
+
+.Result after a `has` deletion
+[,typeql]
+----
+   ------------
+    $email | alice@typedb.com isa email
+    $u     | iid 0x1e00030000000000000002 isa user
+   ------------
+----
+
+However, if you <<_email_deletion, delete the `email` itself>>:
+
+.Result after an attribute deletion
+[,typeql]
+----
+   ------------
+    $u     | iid 0x1e00030000000000000002 isa user
+   ------------
+----
+
+== Preserving or reverting changes
+
+include::{page-version}@manual::page$CRUD/inserting.adoc[tag=preserving-reverting-changes]
+
+== Having troubles?
+
+include::{page-version}@manual::page$CRUD/inserting.adoc[tag=having-troubles]
