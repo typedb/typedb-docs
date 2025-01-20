@@ -10,7 +10,7 @@ The body of a delete stage is a sequence of delete statements.
 
 [,typeql]
 ----
-delete ( <variable> | has <variable> of <variable> | links <variable> of <variable> ); [ ... ]
+delete ( <variable> | has <variable> of <variable> | links ( <variable> [ , ... ] ) of <variable> ); [ ... ]
 ----
 
 == Behavior
@@ -35,6 +35,6 @@ match
   $rank == "member";
 delete
   has $rank of $membership;
-  links $person of $membership;
+  links ($person) of $membership;
   $group;
 ----
