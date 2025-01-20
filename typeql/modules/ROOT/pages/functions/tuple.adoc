@@ -1,6 +1,6 @@
-= Scalar functions
+= Scalar and tuple functions
 
-Single functions (or just functions) return 0 or 1 rows as output of their execution.
+Scalar and tuple functions are xref:{page-version}@typeql::functions/index.adoc#fun_types[function types] which return at most one row of outputs.
 
 == Syntax
 
@@ -9,13 +9,13 @@ Single functions can be identified by their return type not containing curly bra
 .Scalar function return format
 [,typeql]
 ----
-<return type>
+<return-type>
 ----
 
 .Tuple function return format
 [,typeql]
 ----
-<return type 0>, ..., <return type N>
+<return-type-0>, ..., <return-type-N>
 ----
 
 == Usage

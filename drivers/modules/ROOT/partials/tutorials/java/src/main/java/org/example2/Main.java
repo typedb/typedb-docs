@@ -1,11 +1,16 @@
 package org.example2;
 // tag::code[]
 // tag::import[]
-import com.vaticle.typedb.driver.api.*;
-import com.vaticle.typedb.driver.api.answer.ConceptMap;
-import com.vaticle.typedb.driver.TypeDB;
-import com.vaticle.typedb.driver.api.answer.JSON;
-import com.vaticle.typedb.driver.common.exception.TypeDBDriverException;
+
+import com.typedb.driver.TypeDB;
+import com.typedb.driver.api.Credentials;
+import com.typedb.driver.api.Driver;
+import com.typedb.driver.api.DriverOptions;
+import com.typedb.driver.api.Transaction;
+import com.typedb.driver.api.answer.ConceptRow;
+import com.typedb.driver.api.answer.JSON;
+import com.typedb.driver.common.exception.TypeDBDriverException;
+import com.typedb.driver.jni.TypeDBDriver;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,6 +20,8 @@ import java.util.List;
 import java.util.Set;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.stream.Collectors;
+
 // end::import[]
 // tag::class-main[]
 public class Main {
@@ -23,17 +30,18 @@ public class Main {
     private static final String SERVER_ADDR = "127.0.0.1:1729";
 
     public enum Edition {
-    CORE,
-    CLOUD
+        CORE,
+        CLOUD
     }
 
     private static final Edition TYPEDB_EDITION = Edition.CORE;
     private static final String USERNAME = "admin";
     private static final String PASSWORD = "password";
+
     // end::constants[]
     // tag::main[]
     public static void main(String[] args) {
-        try (TypeDBDriver driver = connectToTypeDB(TYPEDB_EDITION, SERVER_ADDR, USERNAME, PASSWORD)) {
+        try (Driver driver = driverConnect(TYPEDB_EDITION, SERVER_ADDR, USERNAME, PASSWORD)) {
             if (dbSetup(driver, DB_NAME, false)) {
                 System.out.println("Setup complete.");
                 queries(driver, DB_NAME);
@@ -44,185 +52,183 @@ public class Main {
             e.printStackTrace();
         }
     }
+
     // end::main[]
     // tag::queries[]
-    private static void queries(TypeDBDriver driver, String dbName) {
-        System.out.println("Request 1 of 6: Fetch all users as JSON objects with full names and emails");
+    private static void queries(Driver driver, String dbName) throws TypeDBDriverException {
+        System.out.println("Request 1 of 6: Fetch all users as JSON objects with emails and phone numbers");
         List<JSON> users = fetchAllUsers(driver, dbName);
 
-        String name = "Jack Keeper";
-        String email = "jk@typedb.com";
-        String secondRequestMessage = String.format("Request 2 of 6: Request 2 of 6: Add a new user with the full-name \"%s\" and email \"%s\"", name, email);
-        System.out.println(secondRequestMessage);
-        List<ConceptMap> newUser = insertNewUser(driver, dbName, name, email);
+        String new_user_phone = "17778889999";
+        String new_user_email = "k.koolidge@typedb.com";
+        String new_user_username = "k-koolidge";
+        System.out.printf("Request 2 of 6: Request 2 of 6: Add a new user with the email '%s' and phone '%s'\n", new_user_email, new_user_phone);
+        List<ConceptRow> newUsers = insertNewUser(driver, dbName, new_user_email, new_user_phone, new_user_username);
 
-        String nameKevin = "Kevin Morrison";
-        String thirdRequestMessage = String.format("Request 3 of 6: Find all files that the user \"%s\" has access to view (no inference)", nameKevin);
-        System.out.println(thirdRequestMessage);
-        List<ConceptMap> no_files = getFilesByUser(driver, dbName, nameKevin, false);
+        String kevinEmail = "kevin.morrison@typedb.com";
+        System.out.printf("Request 3 of 6: Find direct relatives of a user with email %s\n", kevinEmail);
+        List<ConceptRow> directRelatives = getDirectRelativesByEmail(driver, dbName, kevinEmail);
 
-        String fourthRequestMessage = String.format("Request 4 of 6: Find all files that the user \"%s\" has access to view (with inference)", nameKevin);
-        System.out.println(fourthRequestMessage);
-        List<ConceptMap> files = getFilesByUser(driver, dbName, nameKevin, true);
+        System.out.printf("Request 4 of 6:Request 4 of 6: Transitively find all relatives of a user with email %s\n", kevinEmail);
+        List<ConceptRow> files = getAllRelativesByEmail(driver, dbName, kevinEmail);
 
-        String old_path = "lzfkn.java";
-        String new_path = "lzfkn2.java";
-        String fifthRequestMessage = String.format("Request 5 of 6: Update the path of a file from \"%s\" to \"%s\"", old_path, new_path);
-        System.out.println(fifthRequestMessage);
-        List<ConceptMap> updated_files = updateFilePath(driver, dbName, old_path, new_path);
+        String oldKevinPhone = "110000000";
+        String newKevinPhone = "110000002";
+        System.out.printf("Request 5 of 6: Update the phone of a of user with email %s from %s to %s\n", kevinEmail, oldKevinPhone, newKevinPhone);
+        List<ConceptRow> updatedUsers = updatePhoneByEmail(driver, dbName, kevinEmail, oldKevinPhone, newKevinPhone);
 
-        String sixthRequestMessage = String.format("Request 6 of 6: Delete the file with path \"%s\"", new_path);
-        System.out.println(sixthRequestMessage);
-        boolean deleted = deleteFile(driver, dbName, new_path);
+        System.out.printf("Request 6 of 6: Delete the user with email \"%s\"%n", new_user_email);
+        deleteUserByEmail(driver, dbName, new_user_email);
     }
+
     // end::queries[]
-    private static TypeDBDriver connectToTypeDB(Edition edition, String uri, String username, String password) {
+    private static Driver driverConnect(Edition edition, String uri, String username, String password) throws TypeDBDriverException {
         if (edition == Edition.CORE) {
             // tag::driver_new_core[]
-            Driver driver = TypeDB.coreDriver(uri, new Credentials(username, password), new DriverOptions(false, null));
+            Driver driver = TypeDB.coreDriver(
+                    uri,
+                    new Credentials(username, password),
+                    new DriverOptions(false, null)
+            );
             // end::driver_new_core[]
             return driver;
-        };
+        }
+        ;
         if (edition == Edition.CLOUD) {
             // tag::driver_new_cloud[]
-            Driver driver = TypeDB.cloudDriver(Set.of(uri), new Credentials(username, password), new DriverOptions(false, null));
+            Driver driver = TypeDB.cloudDriver(
+                    Set.of(uri),
+                    new Credentials(username, password),
+                    new DriverOptions(true, null)
+            );
             // end::driver_new_cloud[]
             return driver;
-        };
+        }
+        ;
         return null;
     }
+
     // tag::fetch[]
-    private static List<JSON> fetchAllUsers(TypeDBDriver driver, String dbName) {
-        try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.DATA)) {
-            try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.READ)) {
-                String query = "match $u isa user; fetch $u: full-name, email;";
-                List<JSON> answers = tx.query().fetch(query).toList();
-                answers.forEach(json -> System.out.println("JSON: " + json.toString()));
-                return answers;
-            }
+    private static List<JSON> fetchAllUsers(Driver driver, String dbName) throws TypeDBDriverException {
+        try (Transaction tx = driver.transaction(dbName, Transaction.Type.READ)) {
+            String query = "match $u isa user; fetch { 'phone': $u.phone, 'email': $u.email };";
+            List<JSON> answers = tx.query(query).resolve().asConceptDocuments().stream().collect(Collectors.toList());
+            answers.forEach(json -> System.out.println("JSON: " + json.toString()));
+            return answers;
         }
     }
+
     // end::fetch[]
     // tag::insert[]
-    public static List<ConceptMap> insertNewUser(TypeDBDriver driver, String dbName, String name, String email) {
-        try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.DATA)) {
-            try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
-                String query = String.format(
-                        "insert $p isa person, has full-name $fn, has email $e; $fn \"%s\"; $e \"%s\";", name, email);
-                List<ConceptMap> response = tx.query().insert(query).toList();
-                tx.commit();
-                for (ConceptMap conceptMap : response) {
-                    String fullName = conceptMap.get("fn").asAttribute().getValue().asString();
-                    String emailAddress = conceptMap.get("e").asAttribute().getValue().asString();
-                    System.out.println("Added new user. Name: " + fullName + ", E-mail: " + emailAddress);
-                }
-                return response;
+    public static List<ConceptRow> insertNewUser(Driver driver, String dbName, String newEmail, String newPhone, String newUsername) throws TypeDBDriverException {
+        try (Transaction tx = driver.transaction(dbName, Transaction.Type.WRITE)) {
+            String query = String.format(
+                    "insert $u isa user, has $e, has $p, has $username; $e isa email '%s'; $p isa phone '%s'; $username isa username '%s';",
+                    newEmail, newPhone, newUsername
+            );
+            List<ConceptRow> response = tx.query(query).resolve().asConceptRows().stream().collect(Collectors.toList());
+            tx.commit();
+            for (ConceptRow conceptMap : response) {
+                String phone = conceptMap.get("p").tryGetString().get();
+                String email = conceptMap.get("e").tryGetString().get();
+                System.out.println("Added new user. Phone: " + phone + ", E-mail: " + email);
             }
+            return response;
         }
     }
+
     // end::insert[]
     // tag::get[]
-    public static List<ConceptMap> getFilesByUser(TypeDBDriver driver, String dbName, String name, boolean inference) {
-        List<ConceptMap> filePaths = new ArrayList<>();
-        TypeDBOptions options = new TypeDBOptions().infer(inference);
-        try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.DATA);
-             TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.READ, options)) {
-
-            String userQuery = String.format("match $u isa user, has full-name '%s'; get;", name);
-            List<ConceptMap> users = tx.query().get(userQuery).toList();
-
-            if (users.size() > 1) {
-                System.out.println("Error: Found more than one user with that name.");
+    public static List<ConceptRow> getDirectRelativesByEmail(Driver driver, String dbName, String email) throws TypeDBDriverException {
+        try (Transaction tx = driver.transaction(dbName, Transaction.Type.READ)) {
+            List<ConceptRow> users = tx.query(String.format("match $u isa user, has email '%s';", email)).resolve().asConceptRows()
+                    .stream().collect(Collectors.toList());
+            if (users.size() != 1) {
+                System.out.printf("Error: Found %d users with email %s, expected 1", users.size(), email);
                 return null;
-            } else if (users.size() == 1) {
-                String fileQuery = String.format("""
-                                                match
-                                                $fn '%s';
-                                                $u isa user, has full-name $fn;
-                                                $p($u, $pa) isa permission;
-                                                $o isa object, has path $fp;
-                                                $pa($o, $va) isa access;
-                                                $va isa action, has name 'view_file';
-                                                get $fp;""", name);
-                tx.query().get(fileQuery).forEach(filePaths::add);
-                filePaths.forEach(path -> System.out.println("File: " + path.get("fp").asAttribute().getValue().toString()));
-                if (filePaths.isEmpty()) {
-                    System.out.println("No files found. Try enabling inference.");
-                }
-                return filePaths;
             } else {
-                System.out.println("Warning: No users found with that name.");
-                return null;
+                String fileQuery = String.format(
+                        "match " +
+                                "$e == '%s';" +
+                                "$u isa user, has email $e;" +
+                                "$family isa family ($u, $relative);" +
+                                "$relative has username $username;" +
+                                "not { $u is $relative; };" +
+                                "select $username;" +
+                                "sort $username asc;",
+                        email
+                );
+                List<ConceptRow> rows = tx.query(fileQuery).resolve().asConceptRows().stream().collect(Collectors.toList());
+                rows.forEach(row -> System.out.println("Relative: " + row.get("username").tryGetString().get()));
+                return rows;
             }
-        } catch (TypeDBDriverException e) {
-            e.printStackTrace();
-            return null;
         }
     }
     // end::get[]
-    // tag::update[]
-    public static List<ConceptMap> updateFilePath(TypeDBDriver driver, String dbName, String oldPath, String newPath) {
-        List<ConceptMap> response = new ArrayList<>();
-        try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.DATA);
-             TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
-            String query = String.format("""
-                                        match
-                                        $f isa file, has path $old_path;
-                                        $old_path = '%s';
-                                        delete
-                                        $f has $old_path;
-                                        insert
-                                        $f has path '%s';""", oldPath, newPath);
-            response = tx.query().update(query).toList();
-            if (!response.isEmpty()) {
-                tx.commit();
-                System.out.println(String.format("Total number of paths updated: %s", response.size()));
-                return response;
-            } else {
-                System.out.println("No matched paths: nothing to update");
-            }
 
-        } catch (TypeDBDriverException e) {
-            e.printStackTrace();
+    public static List<ConceptRow> getAllRelativesByEmail(Driver driver, String dbName, String email) throws TypeDBDriverException {
+        try (Transaction tx = driver.transaction(dbName, Transaction.Type.READ)) {
+            List<ConceptRow> users = tx.query(String.format("match $u isa user, has email '%s';", email)).resolve().asConceptRows()
+                    .stream().collect(Collectors.toList());
+            if (users.size() != 1) {
+                System.out.printf("Error: Found %d users with email %s, expected 1", users.size(), email);
+                return null;
+            } else {
+                String fileQuery = String.format(
+                        "match "+
+                        "$u isa user, has email $e;" +
+                        "$e == '%s';" +
+                        "let $relative in all_relatives($u);" +
+                        "not { $u is $relative; };" +
+                        "$relative has username $username;" +
+                        "select $username;" +
+                        "sort $username asc;",
+                        email
+                );
+                List<ConceptRow> rows = tx.query(fileQuery).resolve().asConceptRows().stream().collect(Collectors.toList());
+                rows.forEach(row -> System.out.println("Relative: " + row.get("username").tryGetString().get()));
+                return rows;
+            }
         }
-        return response;
     }
+
+    // tag::update[]
+    public static List<ConceptRow> updatePhoneByEmail(Driver driver, String dbName, String email, String oldPhone, String newPhone) throws TypeDBDriverException {
+        List<ConceptRow> rows = new ArrayList<>();
+        try (Transaction tx = driver.transaction(dbName, Transaction.Type.WRITE)) {
+            String query = String.format(
+                    "match $u isa user, has email '%s', has phone $phone; $phone == '%s';" +
+                    "delete $phone of $u;" +
+                    "insert $u has phone '%s';",
+                    email, oldPhone, newPhone);
+            rows = tx.query(query).resolve().asConceptRows().stream().collect(Collectors.toList());
+            tx.commit();
+            System.out.printf("Total number of paths updated: %d%n", rows.size());
+        }
+        return rows;
+    }
+
     // end::update[]
     // tag::delete[]
-    public static boolean deleteFile(TypeDBDriver driver, String dbName, String path) {
-        try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.DATA);
-             TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
-
-            String query = String.format("match $f isa file, has path '%s'; get;", path);
-            List<ConceptMap> response = tx.query().get(query).toList();
-
-            if (response.size() == 1) {
-                tx.query().delete(String.format("match $f isa file, has path '%s'; delete $f isa file;", path)).resolve();
-                tx.commit();
-                System.out.println("The file has been deleted.");
-                return true;
-            } else if (response.size() > 1) {
-                System.out.println("Matched more than one file with the same path. No files were deleted.");
-                return false;
-            } else {
-                System.out.println("No files matched in the database. No files were deleted.");
-                return false;
-            }
-        } catch (TypeDBDriverException e) {
-            e.printStackTrace();
-            return false;
+    public static void deleteUserByEmail(Driver driver, String dbName, String email) throws TypeDBDriverException {
+        try (Transaction tx = driver.transaction(dbName, Transaction.Type.WRITE)) {
+            String query = String.format("match $u isa user, has email '%s'; delete $u;", email);
+            List<ConceptRow> rows = tx.query(query).resolve().asConceptRows().stream().collect(Collectors.toList());
+            tx.commit();
+            System.out.printf("Deleted %d users", rows.size());
         }
     }
+
     // end::delete[]
     // tag::db-setup[]
-    private static boolean dbSetup(TypeDBDriver driver, String dbName, boolean dbReset) {
+    private static boolean dbSetup(Driver driver, String dbName, boolean dbReset) throws TypeDBDriverException {
         System.out.println("Setting up the database: " + dbName);
         if (driver.databases().contains(dbName)) {
             if (dbReset) {
                 if (!replaceDatabase(driver, dbName)) {
                     return false;
                 }
-            } else{
+            } else {
                 System.out.println("Found a pre-existing database. Do you want to replace it? (Y/N) ");
                 String answer;
                 try {
@@ -240,92 +246,91 @@ public class Main {
                 }
             }
         } else { // No such database found on the server
-            if (!createDatabase(driver,dbName)) {
+            if (!createDatabase(driver, dbName)) {
                 System.out.println("Failed to create a new database. Terminating...");
                 return false;
             }
         }
         if (driver.databases().contains(dbName)) {
-            try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.DATA)) {
-                return dbCheck(session);
-            }
+            return validateData(driver, dbName);
         } else {
             System.out.println("Database not found. Terminating...");
             return false;
         }
     }
+
     // end::db-setup[]
     // tag::create_new_db[]
-    private static boolean createDatabase(TypeDBDriver driver, String dbName) {
+    private static boolean createDatabase(Driver driver, String dbName) throws TypeDBDriverException {
         System.out.print("Creating a new database...");
         driver.databases().create(dbName);
         System.out.println("OK");
-        try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.SCHEMA)) {
-            dbSchemaSetup(session);
-        }
-        try (TypeDBSession session = driver.session(dbName, TypeDBSession.Type.DATA)) {
-            dbDatasetSetup(session);
-        }
+        dbSchemaSetup(driver, dbName);
+        dbDatasetSetup(driver, dbName);
         return true;
     }
+
     // end::create_new_db[]
     // tag::replace_db[]
-    private static boolean replaceDatabase(TypeDBDriver driver, String dbName) {
+    private static boolean replaceDatabase(Driver driver, String dbName) throws TypeDBDriverException {
         System.out.print("Deleting an existing database...");
         driver.databases().get(dbName).delete();  // Delete the database if it exists already
         System.out.println("OK");
-        if (createDatabase(driver,dbName)) {
+        if (createDatabase(driver, dbName)) {
             return true;
         } else {
             System.out.println("Failed to create a new database. Terminating...");
             return false;
         }
     }
+
     // end::replace_db[]
     // tag::db-schema-setup[]
-    private static void dbSchemaSetup(TypeDBSession session) {
-        String schemaFile = "iam-schema.tql";
-        try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
+    private static void dbSchemaSetup(Driver driver, String dbName) throws TypeDBDriverException {
+        String schemaFile = "schema_small.tql";
+        try (Transaction tx = driver.transaction(dbName, Transaction.Type.SCHEMA)) {
             String defineQuery = new String(Files.readAllBytes(Paths.get(schemaFile)));
             System.out.print("Defining schema...");
-            tx.query().define(defineQuery).resolve();
+            tx.query(defineQuery).resolve();
             tx.commit();
             System.out.println("OK");
         } catch (IOException e) {
             throw new RuntimeException("Failed to read the schema file.", e);
         }
     }
+
     // end::db-schema-setup[]
     // tag::db-dataset-setup[]
-    private static void dbDatasetSetup(TypeDBSession session) {
-        String dataFile = "iam-data-single-query.tql";
-        try (TypeDBTransaction tx = session.transaction(TypeDBTransaction.Type.WRITE)) {
+    private static void dbDatasetSetup(Driver driver, String dbName) throws TypeDBDriverException {
+        String dataFile = "data_small_single_query.tql";
+        try (Transaction tx = driver.transaction(dbName, Transaction.Type.WRITE)) {
             String insertQuery = new String(Files.readAllBytes(Paths.get(dataFile)));
             System.out.print("Loading data...");
-            tx.query().insert(insertQuery).toList();
+            tx.query(insertQuery).resolve();
             tx.commit();
             System.out.println("OK");
         } catch (IOException e) {
             throw new RuntimeException("Failed to read the data file.", e);
         }
     }
+
     // end::db-dataset-setup[]
-    // tag::test-db[]
-    private static boolean dbCheck(TypeDBSession session) {
-        try (TypeDBTransaction transaction = session.transaction(TypeDBTransaction.Type.READ)) {
-            String testQuery = "match $u isa user; get $u; count;";
-            System.out.print("Testing the database...");
-            long result = transaction.query().getAggregate(testQuery).resolve().get().asLong();
-            if (result == 3) {
+    // tag::validate-db[]
+    private static boolean validateData(Driver driver, String dbName) throws TypeDBDriverException {
+        try (Transaction transaction = driver.transaction(dbName, Transaction.Type.READ)) {
+            String countQuery = "match $u isa user; reduce $count = count;";
+            System.out.print("Validating the dataset...");
+            long count = transaction.query(countQuery).resolve().asConceptRows().next().get("count").tryGetInteger().get();
+            if (count == 3) {
                 System.out.println("Passed");
                 return true;
             } else {
-                System.out.println("Failed the test with the result: " + result + "\n Expected result: 3.");
+                System.out.printf("Validation failed, unexpected number of users: %d. Terminating...\n", count);
                 return false;
             }
         }
     }
-    // end::test-db[]
+    // end::validate-db[]
 }
 // tag::class-main[]
 // tag::code[]

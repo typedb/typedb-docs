@@ -1,0 +1,9 @@
+// tag::simple-match-insert[]
+// tag::simple-match[]
+match
+  $u isa user, has username "Bob";
+// end::simple-match[]
+insert
+  $new-u isa user, has username "Charlie", has email "charlie@typedb.com";
+  $f isa friendship, links (friend: $u, friend: $new-u);
+// end::simple-match-insert[]

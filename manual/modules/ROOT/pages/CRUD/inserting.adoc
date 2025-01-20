@@ -1,2 +1,492 @@
 = Inserting data
 :page-aliases: {page-version}@manual::writing/insert.adoc
+
+In this guide, you'll see how to insert data in a database using Studio, Console, or one of the drivers.
+
+== Understanding insert pipeline stages
+
+An insert stage is used to insert data into a TypeDB database.
+
+It can be used as a single query, then the insertion will happen exactly once.
+Also, it can be a stage of a xref:{page-version}@typeql::pipelines/index.adoc[pipeline] with potentially multiple input rows from the previous pipeline stage (e.g., a xref:{page-version}@typeql::pipelines/match.adoc[`match` stage]).
+
+Refer to the xref:{page-version}@typeql::pipelines/insert.adoc[] page for detailed explanation and more examples.
+
+[#_how_to_send_an_insert_query]
+== Sending insert queries
+
+[NOTE]
+====
+The examples below can be combined with the following schema file. A part of this file is defined in the respective xref:{page-version}@manual::schema/index.adoc[definition guides].
+[[schema-include]]
+.See the schema.tql
+[%collapsible]
+=====
+.schema.tql
+[,typeql]
+----
+include::{page-version}@home::example$tql/schema_small.tql[]
+----
+=====
+====
+
+The easiest way to send an insert query is to use Studio or Console:
+
+[tabs]
+====
+Studio::
++
+--
+Follow the xref:{page-version}@manual::studio.adoc#_connect_to_typedb[Studio manual]
+to connect to TypeDB and select a project folder.
+Then use the steps below:
+
+. Use a drop-down list in the top toolbar to select a database.
+. Switch to the `write` transaction type.
+. Open a new tab and insert or type in an insert stage, for example:
++
+.TypeQL insert stage
+[,typeql]
+----
+include::{page-version}@manual::example$tql/insert_data.tql[tags=simple-insert]
+----
+. Run the query by clicking the image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]
+btn:[Run Query] button.
+. Commit the changes by clicking the image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit query] button.
+--
+
+Console::
++
+--
+. Open a `write` transaction to the selected database (e.g., `sample_db`):
++
+[,bash]
+----
+transaction sample_db write
+----
+. Send the insert query:
++
+[,typeql]
+----
+include::{page-version}@manual::example$tql/insert_data.tql[tags=simple-insert]
+----
++
+Push btn:[Enter] twice to send the query.
+. Commit the changes:
++
+[,bash]
+----
+commit
+----
+--
+====
+
+To send an insert stage programmatically, use xref:{page-version}@drivers::index.adoc[drivers]:
+
+[tabs]
+====
+Rust::
++
+--
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to a TypeDB server.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a write transaction to the selected database and use the
+xref:{page-version}@drivers::rust/api-reference.adoc#_struct_Transaction_query__[transaction.query()]
+method:
+++++
+
+// TODO: Reference a single partials file.
+[,rust,indent=0]
+----
+let transaction = driver.transaction(DB_NAME, TransactionType::Write).await.unwrap();
+{
+    let insert_query = r#"
+include::{page-version}@manual::example$tql/insert_data.tql[tags=simple-insert]
+    "#;
+    let _answer = transaction.query(insert_query).await.unwrap();
+    transaction.commit().await.unwrap();
+}
+----
+--
+
+Python::
++
+--
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to a TypeDB server.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a write transaction to the selected database and use the
+xref:{page-version}@drivers::python/api-reference.adoc#_Transaction_query[transaction.query()]
+method:
+++++
+
+// TODO: Reference a single partials file.
+[,python,indent=0]
+----
+with driver.transaction(DB_NAME, TransactionType.WRITE) as tx:
+    insert_query = """
+include::{page-version}@manual::example$tql/insert_data.tql[tags=simple-insert]
+    """
+    tx.query(insert_query).resolve()
+    tx.commit()
+----
+--
+
+Java::
++
+--
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to a TypeDB server.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a write transaction to the selected database and use the
+xref:{page-version}@drivers::java/api-reference.adoc#_Transaction_query__java_lang_String[transaction.query()]
+method:
+++++
+
+// TODO: Reference a single partials file.
+[,java,indent=0]
+----
+try (TypeDBTransaction tx = session.transaction(DB_NAME, Transaction.Type.WRITE)) {
+    String insertQuery = """
+include::{page-version}@manual::example$tql/insert_data.tql[tags=simple-insert]
+    """;
+    tx.query(insertQuery).resolve();
+    tx.commit();
+}
+----
+--
+
+// TODO: Update and reintroduce
+// Node.js::
+// +
+// --
+// Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
+// to connect the `driver` to a TypeDB server.
+//
+// [subs="macros, post_replacements, replacements"]
+// ++++
+// Open a data session to the selected database,
+// open a write transaction, and use the
+// xref:2.x@drivers::nodejs/api-reference.adoc#_QueryManager_insert__query_string__options_TypeDBOptions[transaction.query.insert()]
+// method:
+// ++++
+//
+// [,js,indent=0]
+// ----
+// include::{page-version}@manual::partial$nodejs-manual-code.js[tags=insert]
+// ----
+// --
+
+// TODO: Update and reintroduce
+// C#::
+// +
+// --
+// Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
+// to connect the `driver` to a TypeDB server.
+// [subs="macros, post_replacements, replacements"]
+// ++++
+// Open a data session to the selected database,
+// open a write transaction, and use the
+// xref:2.x@drivers::csharp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerinsert___const_stdstring__query__const_Options__options__Options_____const[`transaction.Query.Insert()]
+// method:
+// ++++
+//
+// [,csharp,indent=0]
+// ----
+// include::{page-version}@manual::partial$csharp-manual-code.cs[tags=insert]
+// ----
+// --
+
+// TODO: Update and reintroduce
+// C++::
+// +
+// --
+// Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
+// to connect the `driver` to a TypeDB server.
+//
+// [subs="macros, post_replacements, replacements"]
+// ++++
+// Open a data session to the selected database,
+// open a write transaction, and use the
+// xref:2.x@drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerinsert___const_stdstring__query__const_Options__options__Options_____const[`transaction.query.insert()`]
+// method:
+// ++++
+//
+// [,cpp,indent=0]
+// ----
+// include::{page-version}@manual::partial$cpp-manual-code.cpp[tags=options,indent=0]
+// include::{page-version}@manual::partial$cpp-manual-code.cpp[tags=insert,indent=0]
+// ----
+// --
+
+// TODO: Update and reintroduce
+// C::
+// +
+// --
+// Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
+// to connect the `driver` to a TypeDB server.
+//
+// [subs="macros, post_replacements, replacements"]
+// ++++
+// Open a data session to the selected database,
+// open a write transaction, and use the
+// xref:2.x@drivers::c/api-reference.adoc#_query_insert[`query_insert()`]
+// function:
+// ++++
+//
+// [,c,indent=0]
+// ----
+// include::{page-version}@manual::partial$c-manual-code.c[tags=options,indent=0]
+// include::{page-version}@manual::partial$c-manual-code.c[tags=insert,indent=0]
+// ----
+// --
+====
+
+== Response interpretation
+
+An insert stage returns all concepts that got inserted into the database as a stream of concept rows.
+
+Let's say we send the following query with an insert stage following a match stage:
+
+.Match-insert example
+[,typeql]
+----
+include::{page-version}@manual::example$tql/match_insert_data.tql[tags=simple-match-insert]
+----
+
+With the data inserted earlier on this page, we should match only one such user with the name "Bob".
+That leads to inserting one new user and one relevant relation.
+If multiple matches are made by the match clause, then the insert clause runs for each of them.
+
+To check the number of times an insert stage gets executed, you can either <<_check_the_response, check its response>>
+or <<_estimate_the_number_of_inserts_with_a_read_query, send a read query>> with the same matching pattern.
+
+[#_check_the_response]
+//=== The response
+
+You can check the response of an insert stage to see what was inserted just like a result of a read stage.
+
+The response is a stream (interpreted as an iterator in some programming languages) of concept rows.
+A collected stream of concept rows can be interpreted as a table with a header containing variables and a number of rows with respective concept answers for each variable.
+
+The easiest way to check the response for a query is to use a TypeDB client: Studio or Console.
+Send the above match-insert stage the same way as the <<_how_to_send_an_insert_query, previous query>>.
+
+Both Studio and Console should produce similar results (`iid`s and order may differ):
+
+[,typeql]
+----
+   ------------
+    $f     | iid 0x1f00020000000000000001 isa friendship
+    $new-u | iid 0x1e00030000000000000003 isa user
+    $u     | iid 0x1e00030000000000000000 isa user
+   ------------
+----
+
+To process the response of an insert stage programmatically, you need to collect the response and iterate through it with a xref:{page-version}@drivers::index.adoc[TypeDB driver].
+The number of iterations is equal to the number of the returned concept rows.
+
+Let's see an example of programmatically processing the response, where we commit the transaction only if the number of inserts meets our expectation.
+
+[tabs]
+====
+Rust::
++
+--
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to a TypeDB server.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a write transaction to the selected database and use the
+xref:{page-version}@drivers::rust/api-reference.adoc#_struct_Transaction_query__[transaction.query()]
+method:
+++++
+
+// TODO: Reference a single partials file.
+[,rust,indent=0]
+----
+let transaction = driver.transaction(DB_NAME, TransactionType::Write).await.unwrap();
+{
+    let match_insert_query = r#"
+include::{page-version}@manual::example$tql/match_insert_data.tql[tags=simple-match-insert]
+    "#;
+    let answer = transaction.query(match_insert_query).await.unwrap();
+    let rows: Vec<ConceptRow> = answer.into_rows().try_collect().await.unwrap();
+    for row in rows {
+        let variable_concept = row.get(VAR_NAME).unwrap();
+        println!("Returned concept: {}", variable_concept);
+    }
+}
+----
+--
+
+Python::
++
+--
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to a TypeDB server.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a write transaction to the selected database and use the
+xref:{page-version}@drivers::python/api-reference.adoc#_Transaction_query[transaction.query()]
+method:
+++++
+
+// TODO: Reference a single partials file.
+[,python,indent=0]
+----
+with driver.transaction(DB_NAME, TransactionType.WRITE) as tx:
+    match_insert_query = """
+include::{page-version}@manual::example$tql/match_insert_data.tql[tags=simple-match-insert]
+    """
+    answer = tx.query(match_insert_query).resolve()
+    rows = list(answer.as_concept_rows())
+    for row in rows:
+        variable_concept = row.get(VAR_NAME)
+        print(f"Returned concept: {variable_concept}")
+----
+--
+
+Java::
++
+--
+Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
+to connect the `driver` to a TypeDB server.
+
+[subs="macros, post_replacements, replacements"]
+++++
+Open a write transaction to the selected database and use the
+xref:{page-version}@drivers::java/api-reference.adoc#_Transaction_query__java_lang_String[transaction.query()]
+method:
+++++
+
+// TODO: Reference a single partials file.
+[,java,indent=0]
+----
+try (TypeDBTransaction tx = session.transaction(DB_NAME, Transaction.Type.WRITE)) {
+    String matchInsertQuery = """
+include::{page-version}@manual::example$tql/match_insert_data.tql[tags=simple-match-insert]
+    """;
+    QueryAnswer answer = tx.query(matchInsertQuery).resolve();
+    List<ConceptRow> rows = entityAnswer.asConceptRows().stream().collect(Collectors.toList());
+    for (ConceptRow row : rows) {
+        Concept variableConcept = row.get(VAR_NAME);
+        System.out.printf("Returned concept: %s%n", variableConcept);
+    }
+}
+----
+--
+
+// TODO: Update and reintroduce
+// Node.js::
+// +
+// --
+// Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
+// to connect the `driver` to a TypeDB server.
+//
+// [subs="macros, post_replacements, replacements"]
+// ++++
+// Open a data session to the selected database,
+// open a write transaction, and use the
+// xref:2.x@drivers::nodejs/api-reference.adoc#_QueryManager_insert__query_string__options_TypeDBOptions[transaction.query.insert()]
+// method:
+// ++++
+//
+// [,js,indent=0]
+// ----
+// include::{page-version}@manual::partial$nodejs-manual-code.js[tags=match-insert]
+// ----
+// --
+
+// TODO: Update and reintroduce
+// C#::
+// +
+// --
+// Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
+// to connect the `driver` to a TypeDB server.
+//
+// [subs="macros, post_replacements, replacements"]
+// ++++
+// Open a data session to the selected database,
+// open a write transaction, and use the
+// xref:2.x@drivers::csharp/api-reference.adoc#_IEnumerable__IConceptMap___TypeDB_Driver_Api_IQueryManager_Insert___string_query_[`transaction.query.insert()`]
+// method:
+// ++++
+//
+// [,csharp,indent=0]
+// ----
+// include::{page-version}@manual::partial$csharp-manual-code.cs[tags=match-insert]
+// ----
+// --
+
+// TODO: Update and reintroduce
+// C++::
+// +
+// --
+// Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
+// to connect the `driver` to a TypeDB server.
+//
+// [subs="macros, post_replacements, replacements"]
+// ++++
+// Open a data session to the selected database,
+// open a write transaction, and use the
+// xref:2.x@drivers::cpp/api-reference.adoc#_ConceptMapIterable_TypeDBQueryManagerinsert___const_stdstring__query__const_Options__options__Options_____const[`transaction.query.insert()`]
+// method:
+// ++++
+//
+// [,cpp,indent=0]
+// ----
+// include::{page-version}@manual::partial$cpp-manual-code.cpp[tags=options,indent=0]
+// include::{page-version}@manual::partial$cpp-manual-code.cpp[tags=match-insert,indent=0]
+// ----
+// --
+
+// TODO: Update and reintroduce
+// C::
+// +
+// --
+// Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
+// to connect the `driver` to a TypeDB server.
+//
+// [subs="macros, post_replacements, replacements"]
+// ++++
+// Open a data session to the selected database,
+// open a write transaction, and use the
+// xref:2.x@drivers::c/api-reference.adoc#_query_insert[`query_insert()`]
+// function:
+// ++++
+//
+// [,c,indent=0]
+// ----
+// include::{page-version}@manual::partial$c-manual-code.c[tags=options,indent=0]
+// include::{page-version}@manual::partial$c-manual-code.c[tags=match-insert,indent=0]
+// ----
+// --
+====
+
+[#_estimate_the_number_of_inserts_with_a_read_query]
+== Estimation with a read query
+
+You can estimate the number of inserts made by an insert stage with a `match` clause by running a preliminary query with the same `match` clause in the same transaction.
+Read queries can be used in any transaction type including `write`.
+Snapshot isolation prevents other transactions from influencing the results, so do not be scared of experimenting!
+
+The most direct approach is to append a `reduce` stage after reusing the same `match` stage to get the count of answers returned.
+
+.Checking the number of matched results
+[,typeql]
+----
+include::{page-version}@manual::example$tql/match_insert_data.tql[tags=simple-match]
+include::{page-version}@manual::example$tql/read_queries.tql[tags=reduce-count-general]
+----
+
+The response should contain a concept with a single integer number.

@@ -1,0 +1,6 @@
+// tag::simple-insert[]
+insert
+  $a isa user, has username "Alice", has email "alice@typedb.com";
+  $b isa user, has username "Bob", has email "bob@typedb.com";
+  (friend: $a, friend: $b) isa friendship;
+// end::simple-insert[]

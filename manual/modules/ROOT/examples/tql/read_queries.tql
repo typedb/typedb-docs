@@ -13,3 +13,9 @@ match
 match
   let $answer = add(2016, 9);
 // end::fun-single-scalar-return-value[]
+
+
+// tag::reduce-count-general[]
+reduce
+  $result-count = count;
+// end::reduce-count-general[]

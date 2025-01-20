@@ -1,2 +1,70 @@
 = Negations
 :page-aliases: {page-version}@typeql::patterns/negation.adoc
+
+Negations can be used to exclude certain subpatterns from your query results.
+
+== Syntax
+
+[,typeql]
+----
+not { <pattern> };
+----
+
+The patterns inside a negated is called the *excluded pattern*.
+
+[NOTE]
+====
+Like all patterns, negations can be chained, e.g.:
+[,typeql]
+----
+not { <p1> };
+not { <p2> };
+----
+which is equivalent to a negated disjunction `not { { <p1> } or { <p2> }; };`.
+
+Since negations are themselves patterns, they can also be nested, e.g.:
+[,typeql]
+----
+not {
+  <p1>
+  not { <p2> };
+};
+----
+====
+
+== Behavior
+
+Negations may appear in `match` stages of data pipelines or functions, where they behave as follows.
+
+* *Internal variables*. Variable whose scope lies inside an excluded pattern are not returned as part of the stage's output (i.e., such variables are xref:{page-version}@typeql::data_model.adoc#modes[internal] variables).
+* *Satisfaction*. A pattern with a negation will return those outputs which satisfy the pattern outside the negation, but do not satisfy the excluded pattern for _any_ choice of internal variables in that pattern.
+* *Recursion*. When using recursive function with negations care need to be taken that evaluation of the negation does not depend on the recursive function call itself (in other words, TypeDB works with https://en.wikipedia.org/wiki/Stratification_(mathematics)#In_mathematical_logic[stratified negation]).
+
+== Examples
+
+1. Retrieve users without friends
++
+--
+[,typeql]
+----
+match
+  $x isa user, has username $name;
+  not { friendship($x, $y); };
+----
+--
+
+1. Retrieve users without friends that have no friends
++
+--
+[,typeql]
+----
+match
+  $x isa user, has username $name;
+  not { friendship($x, $y);
+    not { friendship($y, $z); };
+  };
+----
+[NOTE]
+====
+Negated queries (especially nested negations) can become xref:{page-version}@manual::troubleshooting/optimising-queries.adoc[expensive].
+--
