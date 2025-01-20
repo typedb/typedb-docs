@@ -1,6 +1,44 @@
-= Read
+= Reading data
 
-[IMPORTANT]
+This page explains how to read data from a TypeDB database.
+
+// TODO: Should we mention schema?
+
+== Understanding read pipelines
+
+A read pipeline is a pipeline performing only read operations. It can consist of one xref:{page-version}@typeql::pipelines/match.adoc[`match` stage] or different combinations of xref:{page-version}@typeql::pipelines/match.adoc[`match`], xref:{page-version}@typeql::pipelines/select.adoc[`select`], xref:{page-version}@typeql::pipelines/sort.adoc[`sort`], xref:{page-version}@typeql::pipelines/fetch.adoc[`fetch`] stages and other operators.
+
+Most of the read stages produce concept rows (the only exception is <<_fetch, fetch>>), which allows connecting them in an extensible pipeline. These operations be executed in any of the `schema`, `write`, or `read` xref:{page-version}@manual::queries/transactions.adoc[transactions].
+
+Refer to the xref:{page-version}@typeql::pipelines/match.adoc[] page for a detailed explanation and additional examples.
+
+// TODO: Place somewhere
+Refer to the xref:{page-version}@typeql::pipelines/index.adoc[] page to explore more types of read pipelines.
+
+== Using match stages
+
+[#_schema_note]
+[NOTE]
 ====
-Under construction.
+The examples below can be combined with the following schema file.
+A part of this file is defined in the respective xref:{page-version}@manual::schema/index.adoc[definition manuals].
+Also, the data queried in these examples is inserted in the xref:{page-version}@manual::CRUD/inserting.adoc[insertion manual].
+
+[[schema-include]]
+.See the schema.tql
+[%collapsible]
+=====
+.schema.tql
+[,typeql]
+----
+include::{page-version}@home::example$tql/schema_small.tql[]
+----
+=====
 ====
+
+// TODO
+
+[#_fetch]
+== Using fetch stages
+
+// TODO
