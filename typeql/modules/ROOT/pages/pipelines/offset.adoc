@@ -11,13 +11,18 @@ offset <number>;
 
 == Example
 
+Retrieve all people employed by the company, sorted by employment start time from earliest to latest.
+Skip first 10, then return the following 10.
+
+This can be thought as retrieving the second page with 10 employees per page.
+
 [,typeql]
 ----
 match
-  $person isa person, has username "<username>";
+  $company isa company, has company-name "<name>";
   (employer: $company, employee: $person) isa employment,
     has start-date $start;
-sort $start desc;
+sort $start;
 offset 10;
 limit 10;
 ----

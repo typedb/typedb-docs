@@ -1,2 +1,152 @@
 = Inserting data
 :page-aliases: {page-version}@manual::writing/insert.adoc
+
+This page explains how to insert data in a TypeDB database.
+
+== Understanding insert pipeline stages
+
+An insert stage is used to insert data into a database.
+It is usually executed in `write` xref:{page-version}@manual::queries/transactions.adoc[transactions].
+
+It can be used as a single query, meaning the insertion will occur exactly once.
+Alternatively, it can be a stage in a xref:{page-version}@typeql::pipelines/index.adoc[pipeline], potentially with multiple input rows from the preceding stage (e.g., a xref:{page-version}@typeql::pipelines/match.adoc[`match` stage]).
+
+Refer to the xref:{page-version}@typeql::pipelines/insert.adoc[] page for a detailed explanation and additional examples.
+
+== Sending insert pipelines
+
+[#_schema_note]
+[NOTE]
+====
+The examples below can be combined with the following schema file.
+A part of this file is defined in the respective xref:{page-version}@manual::schema/index.adoc[definition guides].
+[[schema-include]]
+.See the schema.tql
+[%collapsible]
+=====
+.schema.tql
+[,typeql]
+----
+include::{page-version}@home::example$tql/schema_small.tql[]
+----
+=====
+====
+
+=== Insert an instance
+
+To insert data, open a `write` xref:{page-version}@manual::queries/transactions.adoc[transaction].
+This allows you to read and write data to your database while keeping the schema secure.
+
+Every insertion begins with an `insert`.
+Similar to xref:{page-version}@manual::schema/types.adoc[type definition], multiple statements can be combined to insert multiple instances and establish connections between them.
+
+To insert a type instance (an xref:{page-version}@typeql::statements/entity.adoc[entity], a xref:{page-version}@typeql::statements/relation.adoc[relation], or an xref:{page-version}@typeql::statements/attribute.adoc[attribute]), use the xref:{page-version}@typeql::statements/isa.adoc[`isa` keyword]:
+
+.User insertion example
+[,typeql]
+----
+insert $u isa user;
+----
+
+All data inserted into a database is verified against the xref:{page-version}@manual::schema/schema_structure.adoc[schema] constraints (e.g., existence of supertypes, traits, annotations, etc.).
+[#constraints_verification_time]
+Some verifications occur during query execution ("operation time"), while others wait until commit for your convenience.
+For example, the above query works with a minimal schema like this:
+
+.Minimal schema for the user insertion example
+[,typeql]
+----
+define entity user;
+----
+
+However, if the <<_schema_note, full example schema>> is used, a xref:{page-version}@typeql::annotations/key.adoc[key attribute] is required for every inserted user, so it is impossible to use this insert query only.
+
+=== Insert an instance with ownership
+
+To insert both an entity and an owned attribute, combine xref:{page-version}@typeql::statements/isa.adoc[`isa`] and xref:{page-version}@typeql::statements/has.adoc[`has`] statements in a single xref:{page-version}@typeql::expressions/index.adoc[expression]:
+
+.User with a key insertion example
+[,typeql]
+----
+include::{page-version}@manual::example$tql/insert_data.tql[tags=insert-keyword;insert-single-user]
+----
+
+.Why is username a key?
+[%collapsible]
+====
+If you explore the <<_schema_note, schema>>, you'll see that `user` s inherit an abstract key attribute `id` from `content`.
+While abstract attributes cannot have instances, this definition states that any `id` owned by a `content` is a key attribute.
+At the same time, `username` is an attribute with a supertype `id`, meaning it is an `id`.
+It is also inherited by `user` s from `profile`.
+Thus, a `username` can serve as a `user` 's key: a unique and singular identifier!
+====
+
+=== Insert a relation
+
+Similarly, multiple users can be inserted and connected through a relation.
+To insert a relation, use the xref:{page-version}@typeql::statements/links.adoc[`links` keyword], specifying roleplayers with the `(role: $var)` format.
+The expression can also be simplified to an anonymous relation with a short declaration (see the full syntax in the <<match_insert, next example>>):
+
+.Friendship with two friends insertion example
+[,typeql]
+----
+include::{page-version}@manual::example$tql/insert_data.tql[tags=insert-keyword;insert-users-friendship]
+----
+
+[#match_insert]
+== Inserting data based on a match
+
+Using pipelines, you can match and modify your data in multiple stages, creating complex queries and automations.
+A simple example is an `insert` stage based on results of a `match` stage.
+
+Suppose we send the following query with an insert stage following a match stage:
+
+.Match-insert example
+[,typeql]
+----
+include::{page-version}@manual::example$tql/match_insert_data.tql[tags=simple-match-insert]
+----
+
+With the data inserted earlier on this page, we should match only one user with the username "Bob".
+This results in inserting one new user and one relevant relation.
+If multiple matches are made by the match clause, the insert clause executes for each match (in our case, this would lead to an error due to a duplicate key "Charlie," but it might be useful in other scenarios).
+If no matches are made, nothing is inserted.
+
+Refer to xref:{page-version}@typeql::pipelines/index.adoc[] for more information.
+
+== Response interpretation
+
+An insert stage returns all concepts inserted into the database as a stream of concept rows.
+A collected stream of concept rows can be interpreted as a table with a header containing variables and rows with respective concept answers for each variable.
+This lets you verify if the result meets your expectations.
+
+For example, the following is a snapshot of a TypeDB Console's response to the <<match_insert, previous query>> (`iid` s may vary):
+
+.Match-insert example's result
+[,typeql]
+----
+   ------------
+    $f     | iid 0x1f00020000000000000001 isa friendship
+    $new-u | iid 0x1e00030000000000000003 isa user
+    $u     | iid 0x1e00030000000000000000 isa user
+   ------------
+----
+
+== Preserving or reverting changes
+// tag::preserving-reverting-changes[]
+Do not forget to **commit** your transaction to preserve the changes.
+As <<constraints_verification_time, mentioned earlier>>, some data constraints are only validated upon commit.
+This means you might discover inconsistencies in your data during the commit process, and the commit will be rejected.
+
+While most validations occur during operation time to keep data synchronized, commit-time validations are necessary to allow flexible data modifications.
+For example, validating inserted data against xref:{page-version}@typeql::annotations/card.adoc[cardinality] during operation time could block modifications entirely.
+
+If you want to abort your changes, simply close the transaction or perform a rollback.
+Refer to xref:{page-version}@manual::queries/transactions.adoc[] for more details.
+// end::preserving-reverting-changes[]
+
+== Having troubles?
+
+// tag::having-troubles[]
+Refer to the xref:{page-version}@manual::troubleshooting/debugging-queries.adoc[] page for common debugging tips.
+// end::having-troubles[]

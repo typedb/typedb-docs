@@ -1,6 +1,6 @@
 = Stream functions
 
-Stream functions can return an unlimited number of results (rows).
+Stream functions are xref:{page-version}@typeql::functions/index.adoc#fun_types[function types] which return zero or more output rows.
 
 == Syntax
 
@@ -9,13 +9,13 @@ Stream functions can be identified by their return type containing curly braces 
 .Scalar stream function return format
 [,typeql]
 ----
-{ <return type> }
+{ <return-type> }
 ----
 
 .Tuple stream function return format
 [,typeql]
 ----
-{ <return type 0>, ..., <return type N> }
+{ <return-type-0>, ..., <return-type-N> }
 ----
 
 == Usage

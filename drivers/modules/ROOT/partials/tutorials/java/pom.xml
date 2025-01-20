@@ -9,8 +9,8 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>19</maven.compiler.source>
-        <maven.compiler.target>19</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -23,9 +23,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.vaticle.typedb</groupId>
+            <groupId>com.typedb</groupId>
             <artifactId>typedb-driver</artifactId>
-            <version>2.26.6</version>
+            <version>3.0.0</version>
         </dependency>
     </dependencies>
 

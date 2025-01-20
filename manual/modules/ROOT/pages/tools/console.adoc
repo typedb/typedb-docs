@@ -169,13 +169,13 @@ typedb console --core=<server-address> --username=<username> --password
 You will be prompted for a password.
 
 The `--core` argument is used to set the TypeDB Community Edition server IP address and port to connect to, for example, `10.0.0.5:1729`.
+// end::connect_ce_console[]
 
 [NOTE]
 =====
 The default username and password are `admin` and `password`.
 After connecting for the first time, you will be able to xref:{page-version}@manual::configuring/users.adoc#_first_login[change the password].
 =====
-// end::connect_ce_console[]
 --
 ====
 
@@ -470,7 +470,7 @@ include::{page-version}@home::example$tql/schema_small.tql[]
 .data.tql
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/console_data.tql[]
+include::{page-version}@manual::example$tql/insert_data.tql[tags=simple-insert]
 ----
 ====
 
@@ -502,15 +502,13 @@ Streaming documents...
 {
     "user": {
         "email": "bob@typedb.com",
-        "relationship-status": "single",
-        "username": "bob"
+        "username": "Bob"
     }
 }
 {
     "user": {
         "email": "alice@typedb.com",
-        "relationship-status": "married",
-        "username": "alice"
+        "username": "Alice"
     }
 }
 

@@ -189,7 +189,7 @@ async fn delete_user_by_email(driver: &TypeDBDriver, db_name: &str, email: &str)
 // end::delete[]
 // tag::queries[]
 async fn queries(driver: &TypeDBDriver, db_name: &str) -> Result<(), Box<dyn Error>> {
-    println!("\nRequest 1 of 5: Fetch all users as JSON objects with emails and phone numbers");
+    println!("\nRequest 1 of 6: Fetch all users as JSON objects with emails and phone numbers");
     let users = fetch_all_users(driver, db_name).await?;
     assert_eq!(users.len(), 3);
 
@@ -201,17 +201,21 @@ async fn queries(driver: &TypeDBDriver, db_name: &str) -> Result<(), Box<dyn Err
     assert_eq!(new_user.len(), 1);
 
     let kevin_email = "kevin.morrison@typedb.com";
-    println!("\nRequest 3 of 6: Find all direct relatives of a user with email {}", kevin_email);
+    println!("\nRequest 3 of 6: Find direct relatives of a user with email {}", kevin_email);
     let direct_relatives = get_direct_relatives_by_email(driver, db_name, kevin_email).await?;
     assert_eq!(direct_relatives.len(), 1);
 
+    println!("\nRequest 4 of 6: Transitively find all relatives of a user with email {}", kevin_email);
+    let all_relatives = get_all_relatives_by_email(driver, db_name, kevin_email).await?;
+    assert_eq!(all_relatives.len(), 2);
+
     let old_kevin_phone = "110000000";
     let new_kevin_phone = "110000002";
-    println!("\nRequest 4 of 5: Update the phone of a of user with email {} from {} to {}", kevin_email, old_kevin_phone, new_kevin_phone);
+    println!("\nRequest 5 of 6: Update the phone of a of user with email {} from {} to {}", kevin_email, old_kevin_phone, new_kevin_phone);
     let updated_users = update_phone_by_email(driver, db_name, kevin_email, old_kevin_phone, new_kevin_phone).await?;
     assert!(updated_users.len() == 1);
 
-    println!("\nRequest 5 of 5: Delete the user with email {}", new_user_email);
+    println!("\nRequest 6 of 6: Delete the user with email {}", new_user_email);
     delete_user_by_email(driver, db_name, new_user_email).await
 }
 
@@ -307,11 +311,11 @@ async fn db_dataset_setup(driver: &TypeDBDriver, db_name: &str, data_file_path: 
 }
 
 // end::db-dataset-setup[]
-// tag::test-db[]
+// tag::validate-db[]
 async fn validate_data(driver: &TypeDBDriver, db_name: &str) -> Result<bool, Box<dyn Error>> {
     let tx = driver.transaction(db_name, TransactionType::Read).await?;
     let count_query = "match $u isa user; reduce $count = count;";
-    print!("Testing the database...");
+    print!("Validating the dataset...");
     let response = tx.query(count_query).await?;
     assert!(response.is_row_stream());
     let row = response.into_rows().next().await.unwrap()?;
@@ -324,7 +328,7 @@ async fn validate_data(driver: &TypeDBDriver, db_name: &str) -> Result<bool, Box
     }
 }
 
-// end::test-db[]
+// end::validate-db[]
 // tag::db-setup[]
 async fn db_setup(driver: &TypeDBDriver, db_name: &str, db_reset: bool) -> Result<bool, Box<dyn Error>> {
     println!("Setting up the database: {}", db_name);

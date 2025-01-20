@@ -1,12 +1,62 @@
 = With stage
 
+The `with` stage in a data pipeline allows the local declaration of function, which can be used as part of the pipeline.
+
+== Syntax
+
 [,typeql]
 ----
-with
-  fun num-friends($person: person) -> long:
-    (friend: $person, friend: $friend) isa friendship;
-  return count($friend);
-match
-  $person isa person, has name "<name>";
-  $num-friends = num-friends($person);
+with <function-declaration>
+... # continue pipeline
 ----
+
+where `<function-declaration>` is a xref:{page-version}@typeql::functions/writing.adoc#declaration[function declaration].
+
+== Behavior
+
+// TODO: is this true?
+* The `with` stages in a data pipeline must precede any other kind of stage (together, all `with` stages are referred to as the pipeline *preamble*)
+* `with` stages *must* be followed by other data pipeline stages, i.e. `with` stages by themselves do not consitute a valid data pipeline.
+* Function declarations in the preamble of a data pipeline are only valid within that pipeline (declared functions may be called in `match` and `fetch` stages).
+
+== Validation
+
+The usual function validation applies to the function declaration in a with clause.
+
+== Examples
+
+
+1. Find users with more friends than a specific user and return their usernames
++
+[,typeql]
+----
+with fun friend_count($user: user) -> long:
+  match friendship($user, $x)
+  return count;
+match
+  $user1 isa user, has username "<name>";
+  $user2 isa user, has username $name;
+  friend_count($user1) < friend_count($user2);
+select $name;
+----
+
+
+1. Return all "`popular`" users in the database
++
+[,typeql]
+----
+with fun friend_count($user: user) -> long:
+  match friendship($user, $x)
+  return count;
+with fun popular_users() -> { user }:
+  match
+    $x isa user;
+    friend_count($x) > 500;
+  return { $x };
+match
+  let $y in popular_users();
+  $y has username $pop_name;
+select $pop_name;
+----
+
+

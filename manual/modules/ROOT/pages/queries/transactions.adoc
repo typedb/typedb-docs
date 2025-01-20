@@ -1,43 +1,162 @@
 = Transactions
 :page-aliases: {page-version}@home::acid.adoc, {page-version}@manual::connecting/session.adoc, {page-version}@manual::connecting/transaction.adoc
 
-== Transaction types
+== Transactionality
 
-TypeDB transactions come in 3 flavors:
+TypeDB transactions come in 3 flavors: *read*, *write*, and *schema* transactions.
 
-* read
-* write
-* schema
-
-all transactions operate over snapshots of the database, providing a consistent view regardless of concurrent transactions' operations.
+All transactions operate over snapshots of the database, providing a consistent view regardless of concurrent transactions' operations.
 
 TypeDB transactions provide ACID guarantees up to snapshot isolation.
 
-== Read
+== Read transactions
 
 Read transactions can execute only read queries, and will error when provided data update queries or schema mutation queries.
 
-They are the most lightweight and should be used whenever possible. Any number of read transactions can be opened concurrently,
-and they will never fail to open even when write or schema transactions are open.
+They are the most lightweight and should be used whenever possible. *Any number of read transactions can be opened concurrently*, and they will never fail to open even when write or schema transactions are open.
 
-== Write
+== Write transactions
 
 Write transactions can execute read queries and data update queries, and will error when provided schema mutation queries.
 
-Write transactions can be opened concurrently to other write transactions, and read transactions. They may fail on commit,
-as required to enforce data consistency and isolation, such as when two write transactions concurrently update same piece of data and commit.
+Write transactions can be opened concurrently to other write transactions, and read transactions. *They may fail on commit*, as required to enforce data consistency and isolation, such as when two write transactions concurrently update same piece of data and commit.
 
-== Schema
+.Example
+[caption=""]
+====
+We open transaction 1, modifies the attribute value of an entity, and then commits the transaction.
+
+We open transaction 2 while transaction 1 is still running (i.e. hasn't been committed yet).
+They modify the same attribute value and commit their changes after transaction 1 has been commit.
+In this case, the commit of transaction 2 will fail.
+====
+
+== Schema transactions
 
 Schema transactions can execute any type of query: read, data update, and schema mutation queries.
 
-Schema transactions are exclusive against other schema transactions, and write transactions. Existing open write
-transactions will block schema transactions from opening. Similarly, a schema transaction will block write transactions from
-opening. This prevents the data from mutating while the schema is being updated.
+Schema transactions are exclusive against other schema transactions, and write transactions.
+Existing open write transactions will block schema transactions from opening.
+Similarly, a schema transaction will block write transactions from opening.
+This prevents the data from mutating while the schema is being updated.
 
 Schema transactions can mutate both data and schema at the same time, allowing atomic migrations from one database state to another.
 
-== Executing queries
+== Executing queries in transaction
 
-All transactions have an identical API to submit queries.
+All transactions types have an identical API to submit queries.
 
+[tabs]
+====
+Console::
++
+--
+Open the transaction with
+
+----
+transaction my-db <TYPE>
+----
+
+where `<TYPE>` can be one of `schema`, `write`, or `read`.
+
+Then run your queries in the newly opened prompt, using enters for newlines and double enters for query submissions.
+Use
+
+----
+commit
+----
+
+if you want to commit changes.
+--
+
+Python::
++
+--
+Open a transaction and send a query with
+
+[,python,indent=0]
+----
+with driver.transaction(<DATABASE NAME>, TransactionType.<TYPE>) as transaction:
+    answer = transaction.query(<QUERY>).resolve()
+----
+
+where:
+
+- `<QUERY>` and `<DATABASE NAME>` are `str` s.
+- `<TYPE>` can be one of `SCHEMA`, `WRITE`, or `READ`.
+
+Use
+
+[,python,indent=0]
+----
+transaction.commit()
+----
+
+if you want to commit changes.
+--
+
+Rust::
++
+--
+Open a transaction and send a query with
+
+[,rust,indent=0]
+----
+let transaction = driver.transaction(<DATABASE NAME>, TransactionType::<TYPE>).await.unwrap();
+{
+    let answer = transaction.query(<QUERY>).await.unwrap();
+}
+----
+
+where:
+
+- `<QUERY>` and `<DATABASE NAME>` are `&str` s.
+- `<TYPE>` can be one of `Schema`, `Write`, or `Read`.
+
+Use
+
+[,rust,indent=0]
+----
+    transaction.commit().await.unwrap();
+----
+
+if you want to commit changes.
+--
+
+Java::
++
+--
+Open a transaction and send a query with
+
+[,java,indent=0]
+----
+ try (TypeDBTransaction transaction = session.transaction(<DATABASE NAME>, Transaction.Type.<TYPE>)) {
+     transaction.query(<QUERY>).resolve();
+ }
+----
+
+where:
+
+- `<QUERY>` and `<DATABASE NAME>` are `String` s.
+- `<TYPE>` can be one of `SCHEMA`, `WRITE`, or `READ`.
+
+Use
+
+[,java,indent=0]
+----
+transaction.commit();
+----
+
+if you want to commit changes.
+--
+
+Studio::
++
+--
+Select your database using the database selector (image:{page-component-version}@home::studio-icons/database-none.png[width=128]), then select your transaction type in the top menu.
+
+Open your query file.
+Then click the run button to run your query.
+Finally, use the commit button (image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24]) to persist any changes made.
+--
+====

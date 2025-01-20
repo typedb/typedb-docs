@@ -9,6 +9,7 @@ If you would like this list to be extended with your favorite data formats, drop
 https://typedb.com/discord[Discord,window=_blank] community server!
 ====
 
+[[crows]]
 == Concept rows
 
 Concept rows are TypeDB's native data format. All xref:{page-version}@typeql::pipelines/index.adoc[data pipeline stages] (except for the `fetch` stage) take streams of concepts as inputs and output streams of concept rows themselves.
@@ -26,6 +27,7 @@ When working with optional variables in data pipelines, concept assignment may b
 { $var_1=type_label, $var_2=3.1415, $var_3=(), $var_4=0x001 }
 ----
 
+[[JSON]]
 == JSON
 
 JSON outputs can be produce using a `fetch` stage in a data pipeline.

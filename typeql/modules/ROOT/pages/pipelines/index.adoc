@@ -4,7 +4,13 @@
 // TODO: this page should say something about how stages combine
 // and give examples of how inputs and outputs are passed
 
-This reference covers the usage of pipelines in TypeQL.
+This reference covers the usage of data pipelines in TypeQL. Data pipeline read and modify data in stages.
+
+[[pipeline_kinds]]
+== Pipeline kinds
+
+* A *write pipeline* may comprise stages that modify data in the database (such as `insert` or `delete`).
+* A *read pipeline* only comprises stages that read data from the database but do not modify it.
 
 == Data manipulation stages
 

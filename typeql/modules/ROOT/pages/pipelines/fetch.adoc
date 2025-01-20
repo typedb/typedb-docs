@@ -185,6 +185,8 @@ Fetch implements translation from classical rows to both more human-friendly and
 As it is a document, the order of keys is not guaranteed.
 ====
 
+Fetch generates a document for each input row. When a variable from previous pipeline stages is referenced, the result is calculated individually based on the content of each row. However, if an unbounded subquery or function is used within fetch, the same result will be applied to all output documents, as it is executed identically for every row.
+
 == Usage
 
 Refer to <<syntax>> to explore different ways of `fetch` usage. The following example demonstrates a single `fetch` stage containing different values.

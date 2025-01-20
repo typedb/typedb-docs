@@ -12,12 +12,15 @@ limit <number>;
 
 == Example
 
+Match all friends of friends of a given person, sorted by the number of mutual friends, highest to lowest. Return first 10.
+
 [,typeql]
 ----
 match
   $person isa person, has username "<username>";
-  (friend: $person, friend: $friend) isa friendship;
-  (friend: $friend, friend: $possible-friend) isa friendship;
+  friendship (friend: $person, friend: $friend);
+  friendship (friend: $friend, friend: $possible-friend);
+  not { friendship (friend: $person, friend: $possible-friend); };
 reduce $num-mutuals = count($friend) within $possible-friend;
 sort $num-mutuals;
 limit 10;

@@ -2,13 +2,15 @@
 
 This page gives a brief technical overview of TypeDB's type system and query model.
 
+In short, TypeDB's data model based on a *type system* (with _single-inheritance_ subtyping and _trait-based_ referencing). Its query model builds on this type system, and extends it by allowing users to chain together queries and data operations in *data pipelines*.
+
 == Type system
 
 === Data and direct types
 
 All data in TypeDB has a type. Due to subtyping, data may have more than one type (for example, an entity of type `admin` may also be of type `user`). However, all data in TypeDB's type system has a unique unambigous *direct type*.
 
-* For data *instances*, i.e. data stored in the database, the direct type is determined at the time of creation of the data. For example, `insert $x isa user` will create an entity of direct type `admin`.
+* For data *instances*, i.e. data stored in the database, the direct type is determined at the time of creation of the data. For example, `insert $x isa admin` will create an entity of direct type `admin`, whereas `insert $x isa user` will create an entity of direct type `user`.
 * For data *literals* (like `1`, `1.0`, `true`) the direct type is identified based on syntax: for example `1` will be an `integer`, whereas `1.0` is a `double`. (Note that when working with expressions of a certain type, implicit and explicit casts may be applied.)
 
 [[taxonomy]]
@@ -76,11 +78,75 @@ Entity types, relation types, and attribute types can be defined to subtype othe
 
 User-defined types, their traits, and their subtyping structure, are created and modified through xref:{page-version}@typeql::index.adoc#statements[definition statements] in xref:{page-version}@typeql::index.adoc#queries[schema queries].
 
+== Data pipelines
+
+=== Concept rows
+
+A concept row is an association of named variables (the "`column names`") to concepts, i.e., type labels, data instances, or literal values:
+
+.Schematic format of concept rows
+----
+{ $var_1=concept, $var_2=concept, ..., $var_n }
+----
+When working with optional variables in data pipelines, concept assignment may be left empty, indicated by `()`, e.g.:
+
+.A concept row with an empty (third) variable
+----
+{ $var_1=type_label, $var_2=3.1415, $var_3=(), $var_4=0x001 }
+----
+
+=== Stages
+
+Data pipelines are chains of *stages*: each stage gets an input stream of concepts row, and outputs itself a stream of concept rows. The first stage in a pipeline gets the *unit row* `{}` as its single input (note: this is _not_ an empty stream).
+
+There are two classes of stages:
+
+* *Stateful* stages, like `match` or `insert`, are stages whose execution results depend on the state of (i.e. the data in) the database.
+* *Stateless* stages, like `reduce` or `select`, only depend on the input stream and can thus be executed without querying the database.
+
+=== Queries vs types
+
+The `match` stage is the only data pipeline stage which filters and retrieves data using TypeQL patterns: patterns are a direct counterpart to TypeDB's type system and expresses typing and reference constraints of data.
+
+[NOTE]
+====
+For the curious reader: TypeDB adheres to the principle of "`queries as types`" (an analog of https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence[propositions as types]). This means, patterns in `match` stage are really types (of the data that the stage retrieves). For example, a TypeQL conjunction
+[,typeql]
+----
+match
+  $field1 isa type1;
+  $field2 isa type2;
+----
+may be thought of as a *struct* (or "`product`") type:
+[,rust]
+----
+struct query_answers {
+  field1: type1,
+  field2: type2,
+}
+----
+Similarly, a TypeQL disjunction
+[,typeql]
+----
+match
+  { $option1 isa type1; }
+  or { $option2 isa type2; };
+----
+may be thought of as a *enum* (or "`sum`") type:
+[,rust]
+----
+enum query_answers {
+  option1(type1),
+  option2(type2),
+}
+----
+TypeQL's patterns provide an elegant way of producing yet more general composite types in this way.
+====
 
 [[variables]]
-== Patterns and variables
+== Variables categories
 
-In any valid TypeQL xref:{page-version}@typeql::index.adoc#queries[data pipeline], there are four categories of variables appearing in xref:{page-version}@typeql::index.adoc#statements[statements]. Any variable (unambiguously) belongs to exactly one of those four categories.
+Stages in TypeQL xref:{page-version}@typeql::index.adoc#queries[data pipeline] will contain xref:{page-version}@typeql::index.adoc#statements[statements] with variables. Any variable in a stage belongs to exactly one of four categories.
 
 1. *Instance variables*, represent data instances from your database. Instance variables are identified by their usage in statements. For example:
 +
@@ -117,9 +183,9 @@ Coming soon.
 ====
 
 [[modes]]
-== Match stage and variable modes
+== Variable modes
 
-Given a `match` stage in a data pipeline, each variable in that stage can appear in one of the following three modes.
+Each variable in a stage can appear in one of the following three modes.
 
 * *Input* (or "`bound`") variables are variables that are bound in a preceding stage. For example,
 +
@@ -128,7 +194,7 @@ Given a `match` stage in a data pipeline, each variable in that stage can appear
 ----
 match $x isa user, has age 33;
 limit 1;
-match friendship ($y, $x);  # $x is an input at this stage
+match friendship ($y, $x);  # $x is an input for this stage
 ----
 --
 * *Output* variables are unbound variables that are part of the present stage's output (at least in one `or`-branch of the query). For example, in the query

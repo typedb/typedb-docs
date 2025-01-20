@@ -49,7 +49,7 @@ The xref:{page-version}@typeql::functions/writing.adoc[function declaration] has
 include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;fun-stream-return-value]
 ----
 
-If you are certain that `$z` will only match a single value (or if only one value is needed), the `first` or `last` keywords can be used to ensure the function returns a xref:{page-version}@typeql::functions/single.adoc[single result].
+If you are certain that `$z` will only match a single value (or if only one value is needed), the `first` or `last` keywords can be used to ensure the function returns a xref:{page-version}@typeql::functions/tuple.adoc[single result].
 
 .Single arithmetic function definition
 [,typeql]

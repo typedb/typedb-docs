@@ -1,18 +1,73 @@
-= Reduce stage
+= Reduce operator
 :page-aliases: {page-version}@typeql::modifiers/aggregation.adoc, {page-version}@typeql::modifiers/grouping.adoc
 
-== Draft example
+== Reduce
+
+=== Syntax
+
+[,typeql]
+----
+reduce <var> = <operator> [( <var> )] [ , ... ];
+----
+
+TypeQL supports the following reduce operators:
+
+* `count` -- total number of answers, or, when used with a variable, number of distinct values of the variable,
+* `max` -- the *maximum* value of the variable,
+* `min` -- the *minimum* value of the variable,
+* `mean` -- the *arithmetic mean* of the values of the variable,
+* `median` -- the *median* value of the variable,
+* `std` -- the *sample standard deviation* of the values of the variable,
+* `sum` -- the sum of the values of the variable.
+
+=== Examples
+
+Count the number of logins since `<datetime>`:
 
 [,typeql]
 ----
 match
-  $group isa group, has name "<group name>";
-  $member isa person;
-  (group: $group, member: $member) isa group-membership;
-  try { (friend: $member, friend: $friend) isa friendship; };
-reduce $num-friends = count($friend) within $member;
+  $user isa user, has last-login >= <datetime>;
+reduce $logins = count;
+----
+
+Get disk usage statistics of the files:
+
+[,typeql]
+----
 match
-  $country isa country;
-  (place: $country, located: $member) isa location;
-reduce $num-members = count($member), $avg-friends = mean($num-friends) within $country;
+  $file isa file, has size-kb $s;
+reduce $total = sum($s), $mean = mean($s), $max = max($s);
+----
+
+== Grouping
+
+When `groupby` is used within a reduce, the answer stream is subdivided into groups based on the value of the grouping variable. The
+reduction is then performed separately within each such group. The output of a `reduce` with `groupby` is a stream of rows, one for each
+value of the grouping variable.
+
+=== Syntax
+
+[,typeql]
+----
+reduce <var> = <operator> [( <var> )] [ , ... ] groupby <var>;
+----
+
+=== Example
+
+Get the number of users per country:
+
+[,typeql]
+----
+match
+  $user isa user;
+  located($user, $place);
+  {
+    $country isa country;
+    $place is $country;
+  } or {
+    located($place, $country);
+    $country isa country;
+  };
+reduce $logins = count;
 ----
