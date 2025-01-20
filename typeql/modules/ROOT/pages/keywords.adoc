@@ -1,185 +1,299 @@
-= Keywords
-:Summary: Keyword glossary for TypeQL.
-:keywords: typeql, keywords, glossary, isa, sub, has, owns, plays, relates
-:pageTitle: Keywords
+= Keyword glossary
 
-The source of truth for the TypeQL keywords and grammar is the *ANTLR v.4* specification file:
-https://github.com/typedb/typeql/blob/master/grammar/TypeQL.g4[TypeQL.g4,window=_blank].
-
-[#_clause_keywords]
-== Clauses
-
-Clause keywords declare a start of a query's clause:
+== Schema queries
 
 `define`::
-Starts a `define` clause of a xref:typeql::queries/define.adoc[].
+Denotes the beginning of a xref:{page-component-version}@typeql::schema/define.adoc[], used to add new types, constraints, or functions to the schema.
 
 `undefine`::
-Starts an `undefine` clause of a xref:typeql::queries/undefine.adoc[]
+Denotes the beginning of a xref:{page-component-version}@typeql::schema/undefine.adoc[], used to remove existing types, constraints, or functions from the schema.
+
+`redefine`::
+Denotes the beginning of a xref:{page-component-version}@typeql::schema/redefine.adoc[], used to modify existing types, constraints, or functions in the schema.
+
+== Data pipeline stages
+
+=== Data manipulation stages
 
 `match`::
-Starts a `match` clause that xref:typeql::patterns/matching.adoc[matches existing data] by a pattern in an
-xref:typeql::queries/insert.adoc[Insert],
-xref:typeql::queries/delete.adoc[Delete],
-xref:typeql::queries/update.adoc[Update],
-xref:typeql::queries/fetch.adoc[Fetch], or
-xref:typeql::queries/get.adoc[Get] query.
-
-`insert`::
-Starts an `insert` clause of an xref:typeql::queries/insert.adoc[].
-
-`delete`::
-Starts a `delete` clause of a xref:typeql::queries/delete.adoc[].
+Denotes the beginning of a xref:{page-component-version}@typeql::pipelines/match.adoc[] in a data pipeline, sed to match existing data instances in the database.
 
 `fetch`::
-Starts a `fetch` clause of a xref:typeql::queries/fetch.adoc[].
+Denotes the beginning of a xref:{page-component-version}@typeql::pipelines/fetch.adoc[] in a data pipeline, used to format the output of a data pipeline into JSON.
 
-`get`::
-Starts a `get` clause of a xref:typeql::queries/get.adoc[].
+`insert`::
+Denotes the beginning of an xref:{page-component-version}@typeql::pipelines/insert.adoc[] in a data pipeline, used to add new data instances into the database.
 
-== Schema statements
+`delete`::
+Denotes the beginning of a xref:{page-component-version}@typeql::pipelines/delete.adoc[] in a data pipeline, used to remove existing data instances from the database.
 
-Schema statement keywords used inside a clause of a query as a part of a data pattern or a schema definition:
-//Schema statements are used to specify types in both data queries and schema queries.
+`update`::
+Denotes the beginning of an xref:{page-component-version}@typeql::pipelines/update.adoc[] in a data pipeline, used to modify existing data instances in the database.
 
-`sub`::
-Adds a constraint on a type to be any subtype of a given type. +
-For more information, see the xref:typeql::statements/sub.adoc[] page.
+`put`::
+Denotes the beginning of a xref:{page-component-version}@typeql::pipelines/put.adoc[] in a data pipeline, used to add new data instances to the database if they do not already exist.
 
-`sub!`::
-Adds a constraint on a type to be a direct subtype of a given type. +
-For more information, see the xref:typeql::statements/sub.adoc[] page.
+=== Stream manipulation stages
 
-`type`::
-Adds a constraint on a type to be an exact type by its label. +
-For more information, see the xref:typeql::statements/type.adoc[] page.
+`select`::
+Denotes the beginning of a xref:{page-component-version}@typeql::pipelines/select.adoc[] in a data pipeline, used to keep specified variables for each element of the data stream and remove the rest.
 
-`abstract`::
-Specify that a given type is an abstract type. +
-For more information, see the xref:typeql::statements/abstract.adoc[] page.
-
-`owns`::
-Specify that a type can own attributes of a given attribute type. +
-For more information, see the xref:typeql::statements/owns.adoc[] page.
-
-`value`::
-Specify a value type of an attribute type. +
-For more information, see the xref:typeql::statements/value.adoc[] page.
-
-`relates`::
-Add a new role for a relation. +
-For more information, see the xref:typeql::statements/relates.adoc[] page.
-
-`plays`::
-Specify that a given type can play a given role (in a given relation). +
-For more information, see the xref:typeql::statements/plays.adoc[] page.
-
-`@key`::
-Add a key constraint to ownership of a given attribute type by a type. +
-For more information, see the xref:typeql::statements/key.adoc[] page.
-
-`@unique`::
-Add a uniqueness constraint to ownership of a given attribute type by a type. +
-For more information, see the xref:typeql::statements/unique.adoc[] page.
-
-`regex`::
-Specify a regular expression that limits values of a given attribute type. +
-For more information, see the xref:typeql::statements/regex.adoc[] page.
-
-`as`::
-Override an inherited attribute type ownership or role playing ability. +
-For more information, see the xref:typeql::statements/owns.adoc#_usage_with_override[owns] and
-xref:typeql::statements/plays.adoc#_usage_with_override[plays] pages respectively.
-
-`when`::
-Specify a condition of a xref:typeql::statements/rule.adoc[rule].
-
-`then`::
-Specify a conclusion of a xref:typeql::statements/rule.adoc[rule].
-
-== Data statements
-
-Data statement keywords used inside a clause of a data query as a part of a data pattern:
-//Data statements are only used in data query patterns.
-
-`isa`::
-Adds a constraint for a data instance to be an instance of a type.
-Takes into account type inference. +
-For more information, see the xref:typeql::statements/isa.adoc[] page.
-
-`isa!`::
-Adds a constraint for a data instance to be an instance of a type.
-Does not take into account type inference. +
-For more information, see the xref:typeql::statements/isa.adoc[] page.
-
-`is`::
-Adds a constraint for two concept variables to be equal both by value and type. +
-For more information, see the xref:typeql::statements/isa.adoc[] page.
-
-`has`::
-Adds a constraint for an ownership of a given attribute by a given data instance. +
-For more information, see the xref:typeql::statements/has.adoc[] page.
-
-=== Modifiers
-
-`offset`::
-Offset the result of a query by the specified number of results. +
-See an xref:typeql::modifiers/pagination.adoc[example].
-
-`limit`::
-Limit the result of a query by the specified number of results. +
-See an xref:typeql::modifiers/pagination.adoc[example].
+`require`::
+Denotes the beginning of a xref:{page-component-version}@typeql::pipelines/require.adoc[] in a data pipeline, used to remove elements from the data stream that do not contain specified optional variables.
 
 `sort`::
-Sort the results of a query. +
-See an xref:typeql::modifiers/sorting.adoc[example].
+Denotes the beginning of a xref:{page-component-version}@typeql::pipelines/sort.adoc[] in a data pipeline, used to order the elements of the data stream based on the value of specified variables.
 
-=== Logic
+`limit`::
+Denotes the beginning of a xref:{page-component-version}@typeql::pipelines/limit.adoc[] in a data pipeline, used to keep a specified number of elements of the data stream and remove the rest.
+
+`offset`::
+Denotes the beginning of an xref:{page-component-version}@typeql::pipelines/offset.adoc[] in a data pipeline, used to remove a specified number of elements from the data stream.
+
+`reduce`::
+Denotes the beginning of a xref:{page-component-version}@typeql::pipelines/reduce.adoc[] in a data pipeline, used to perform reduction operations on the data stream according to specified groupings.
+
+=== Special stages
+
+`with`::
+Denotes the beginning of a xref:{page-component-version}@typeql::pipelines/with.adoc[] in a data pipeline, used to define functions on an ad-hoc basis for use in the data pipeline.
+
+== Pattern logic
 
 `or`::
-Specify a disjunction between two blocks of statements surrounded by curly brackets. +
-For more information, see the xref:typeql::patterns/disjunction.adoc[] page.
+Constructs a xref:{page-component-version}@typeql::patterns/disjunctions.adoc[disjunction] in a query pattern.
 
 `not`::
-Specify a negation of a block of statements surrounded by curly brackets. +
-For more information, see the xref:typeql::patterns/negation.adoc[] page.
+Constructs a xref:{page-component-version}@typeql::patterns/negations.adoc[negation] in a query pattern.
 
-=== Value comparators
+`try`::
+Constructs an xref:{page-component-version}@typeql::patterns/optionals.adoc[optional] in a query pattern.
 
-`==`, `!=`, `>`, `<`, `>=`, `+<=+`, `like`, `contains`::
-Specify the result of comparison to be true. +
-For more information, see the xref:typeql::values/comparators.adoc[] page.
+== Statements
 
-=== Aggregation
+=== Type definition statements
 
-`group`::
-Group results by a given variable. +
-For more information, see the xref:typeql::modifiers/grouping.adoc[] page.
+`entity`::
+Constructs an xref:{page-component-version}@typeql::statements/entity.adoc[], used to define a new entity type.
+
+`relation`::
+Constructs a xref:{page-component-version}@typeql::statements/relation.adoc[], used to define a new relation type.
+
+`attribute`::
+Constructs an xref:{page-component-version}@typeql::statements/attribute.adoc[], used to define a new attribute type.
+
+`struct`::
+Constructs a xref:{page-component-version}@typeql::statements/struct.adoc[], used to define a new struct type.
+
+`fun`::
+Constructs a xref:{page-component-version}@typeql::statements/fun.adoc[], used to to define a new function.
+
+=== Constraint definition statements
+
+`sub` / `sub!`::
+Constructs a xref:{page-component-version}@typeql::statements/sub.adoc[], used to define the supertype of a type.
+
+`relates` / `relates ... as`::
+Constructs a xref:{page-component-version}@typeql::statements/relates.adoc[], used to define a new role for a relation type.
+
+`plays`::
+Constructs a xref:{page-component-version}@typeql::statements/plays.adoc[], used to define a new roleplayer for a role.
+
+`value`::
+Constructs a xref:{page-component-version}@typeql::statements/value.adoc[], used to  define the value type of an attribute type.
+
+`owns`::
+Constructs an xref:{page-component-version}@typeql::statements/owns.adoc[], used to define a new owner of an attribute type.
+
+`alias`::
+Constructs an xref:{page-component-version}@typeql::statements/alias.adoc[], used to define an alias label for a type.
+
+=== Instance statements
+
+`isa` / `isa!`::
+Constructs an xref:{page-component-version}@typeql::statements/isa.adoc[], used to specify the type of a data instance.
+
+`links`::
+Constructs a xref:{page-component-version}@typeql::statements/links.adoc[], used to specify the roleplayers in a relation.
+
+`has`::
+Constructs a xref:{page-component-version}@typeql::statements/has.adoc[], used to specify an attribute of an entity or relation.
+
+`is`::
+Constructs an xref:{page-component-version}@typeql::statements/is.adoc[], used to specify that two variables represent the same data instance.
+
+`let ... =`::
+Constructs a xref:{page-component-version}@typeql::statements/let-eq.adoc[], used to assign the result of an expression to a variable.
+
+`let ... in`::
+Constructs a xref:{page-component-version}@typeql::statements/let-in.adoc[], used to assign a stream or list element to a variable.
+
+`contains`::
+Constructs a xref:{page-component-version}@typeql::statements/contains.adoc[], used to specify that a stream or list contains a data instance, or that a string contains a specified substring.
+
+`like`::
+Constructs a xref:{page-component-version}@typeql::statements/like.adoc[], used to specify that a string matches a specified regex pattern.
+
+=== Identity statements
+
+`label`::
+Constructs a xref:{page-component-version}@typeql::statements/label.adoc[], used to identify a type by its label.
+
+`iid`::
+Constructs an xref:{page-component-version}@typeql::statements/iid.adoc[], used to identify a data instance by its internal ID.
+
+== Annotations
+
+=== Cardinality constraints
+
+`@card`::
+Describes a xref:{page-component-version}@typeql::annotations/card.adoc[], used to specify cardinality ranges for roles and ownerships.
+
+`@cascade`::
+Describes a xref:{page-component-version}@typeql::annotations/cascade.adoc[], used to specify behaviour when deleting a relation's roleplayers.
+
+`@independent`::
+Describes an xref:{page-component-version}@typeql::annotations/independent.adoc[], used to prevent attributes without owners from being deleted automatically.
+
+=== Modality constraints
+
+`@abstract`::
+Describes an xref:{page-component-version}@typeql::annotations/abstract.adoc[], used to specify that a type or role is abstract.
+
+`@key`::
+Describes a xref:{page-component-version}@typeql::annotations/key.adoc[], used to specify key attributes for entities and relations.
+
+`@subkey`::
+Describes a xref:{page-component-version}@typeql::annotations/subkey.adoc[], used to specify composite keys built from multiple attributes.
+
+`@unique`::
+Describes a xref:{page-component-version}@typeql::annotations/unique.adoc[], used to specify unique attributes for entities and relations.
+
+=== Value constraints
+
+`@values`::
+Describes a xref:{page-component-version}@typeql::annotations/values.adoc[], used to specify a set of permitted values for attributes.
+
+`@range`::
+Describes a xref:{page-component-version}@typeql::annotations/range.adoc[], used to specify a range of permitted values for attributes.
+
+`@regex`::
+Describes a xref:{page-component-version}@typeql::annotations/regex.adoc[], used to specify a regex pattern for permitted values of attributes.
+
+`@distinct`::
+Describes a xref:{page-component-version}@typeql::annotations/distinct.adoc[], used to restrict an owned list of attributes to distinct values.
+
+== Reductions
+
+`check`::
+Reduces the stream to a boolean value, indicating whether it contains any elements. See xref:{page-component-version}@typeql::values/reductions.adoc[] for more information.
+
+`first`::
+Reduces the stream to the first occurrence of a specified variable. See xref:{page-component-version}@typeql::values/reductions.adoc[] for more information.
 
 `count`::
-Count the number of results. +
-For more information, see the xref:typeql::modifiers/aggregation.adoc#_count[Aggregation] page.
+Reduces the stream to the number of occurrences of a specified variable. See xref:{page-component-version}@typeql::values/reductions.adoc[] for more information.
 
 `max`::
-Find the maximum value of a given variable. +
-For more information, see the xref:typeql::modifiers/aggregation.adoc[Aggregation] page.
+Reduces the stream to the maximum value of a specified variable. See xref:{page-component-version}@typeql::values/reductions.adoc[] for more information.
 
 `min`::
-Find the minimum value of a given variable. +
-For more information, see the xref:typeql::modifiers/aggregation.adoc[Aggregation] page.
+Reduces the stream to the minimum value of a specified variable. See xref:{page-component-version}@typeql::values/reductions.adoc[] for more information.
 
 `mean`::
-Find average value of a given variable. +
-For more information, see the xref:typeql::modifiers/aggregation.adoc[Aggregation] page.
+Reduces the stream to the arithmetic mean of a specified variable. See xref:{page-component-version}@typeql::values/reductions.adoc[] for more information.
 
 `median`::
-Find median value of a given variable. +
-For more information, see the xref:typeql::modifiers/aggregation.adoc[Aggregation] page.
+Reduces the stream to the median of a specified variable. See xref:{page-component-version}@typeql::values/reductions.adoc[] for more information.
 
 `std`::
-Find standard deviation of values for a given variable. +
-For more information, see the xref:typeql::modifiers/aggregation.adoc[Aggregation] page.
+Reduces the stream to the (population) standard deviation of a given variable. See xref:{page-component-version}@typeql::values/reductions.adoc[] for more information.
 
 `sum`::
-Find the sum of values for a given variable. +
-For more information, see the xref:typeql::modifiers/aggregation.adoc[Aggregation] page.
+Reduces the stream to the sum over a specified variable. See xref:{page-component-version}@typeql::values/reductions.adoc[] for more information.
+
+`list`::
+Reduces the stream to a list of occurrences of a specified variable. See xref:{page-component-version}@typeql::values/reductions.adoc[] for more information.
+
+== Value types
+
+`boolean`::
+Declares the values of an attribute type to be booleans. See xref:{page-component-version}@typeql::values/value-types.adoc[] for more information.
+
+`long`::
+Declares the values of an attribute type to be 64-bit signed integers. See xref:{page-component-version}@typeql::values/value-types.adoc[] for more information.
+
+`double`::
+Declares the values of an attribute type to be 64-bit floating point numbers. See xref:{page-component-version}@typeql::values/value-types.adoc[] for more information.
+
+`decimal`::
+Declares the values of an attribute type to be decimals, comprising a 64-bit signed integer component and 64-bit unsigned component representing up to 19 decimal places. See xref:{page-component-version}@typeql::values/value-types.adoc[] for more information.
+
+`datetime-tz`::
+Declares the values of an attribute type to be nanosecond-precision ISO timestamps with timezones. See xref:{page-component-version}@typeql::values/value-types.adoc[] for more information.
+
+`datetime`::
+Declares the values of an attribute type to be nanosecond-precision ISO timestamps without timezones. See xref:{page-component-version}@typeql::values/value-types.adoc[] for more information.
+
+`date`::
+Declares the values of an attribute type to be ISO dates. See xref:{page-component-version}@typeql::values/value-types.adoc[] for more information.
+
+`duration`::
+Declares the values of an attribute type to be ISO durations. See xref:{page-component-version}@typeql::values/value-types.adoc[] for more information.
+
+`string`::
+Declares the values of an attribute type to be variable length UTF-8 encoded strings. See xref:{page-component-version}@typeql::values/value-types.adoc[] for more information.
+
+== Built-in functions
+
+`round(...)`::
+Rounding function, returns the provided numeric argument rounded to the nearest integer. See xref:{page-component-version}@typeql::values/operators.adoc[] for more information.
+
+`ceil(...)`::
+Ceiling function, returns the provided numeric argument rounded to the nearest greater integer. See xref:{page-component-version}@typeql::values/operators.adoc[] for more information.
+
+`floor(...)`::
+Floor function, returns the provided numeric argument rounded to the nearest lesser integer. See xref:{page-component-version}@typeql::values/operators.adoc[] for more information.
+
+`abs(...)`::
+Modulus function, returns the absolute value of the provided numeric argument. See xref:{page-component-version}@typeql::values/operators.adoc[] for more information.
+
+`length(...)`::
+Length function, returns the length of the provided list argument. See xref:{page-component-version}@typeql::values/operators.adoc[] for more information.
+
+`min(...)`::
+Minimum function, returns the minimum value of the provided list argument. See xref:{page-component-version}@typeql::values/operators.adoc[] for more information.
+
+`max(...)`::
+Maximum function, returns the maximum value of the provided list argument. See xref:{page-component-version}@typeql::values/operators.adoc[] for more information.
+
+== Literals
+
+`true`::
+Represents the boolean literal "true".
+
+`false`::
+Represents the boolean literal "false".
+
+== Miscellaneous
+
+`asc`::
+Used to specify ascending order for xref:{page-component-version}@typeql::pipelines/sort.adoc[Sort stages] in data pipelines.
+
+`desc`::
+Used to specify descending order for xref:{page-component-version}@typeql::pipelines/sort.adoc[Sort stages] in data pipelines.
+
+`return`::
+Denotes the return signature of a function. See xref:{page-component-version}@typeql::functions/writing.adoc[] for more information.
+
+`of`::
+Used to remove ownership of attributes and players of roles in xref:{page-component-version}@typeql::pipelines/delete.adoc[Delete stages] of data pipelines.
+
+`from`::
+Used to remove capabilities, role specialisation, and annotations in xref:{page-component-version}@typeql::schema/undefine.adoc[Undefine queries].
+
+`in`::
+Used to access stream or list elements. See xref:{page-component-version}@typeql::statements/let-in.adoc[] for more information.
+
+`as`::
+Used to specialise a role. See xref:{page-component-version}@typeql::statements/relates.adoc[] for more information.

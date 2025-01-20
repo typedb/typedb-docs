@@ -8,15 +8,10 @@ Welcome to the TypeDB driver documentation!
 
 == Introduction
 
-TypeDB accepts client connections via gRPC based
-https://github.com/typedb/typedb-protocol[TypeDB driver RPC,window=_blank] protocol.
-
-To build an application capable of connecting to TypeDB, we can use one of the
-existing libraries implementing it, called TypeDB drivers, or we can implement it ourselves as a new driver.
+To build an application on TypeDB, we need to use a TypeDB language driver to communicate with the server.
 
 [#_typedb_drivers]
-A TypeDB driver is a library that implements *TypeDB driver RPC* protocol and provides a language-specific native API.
-TypeDB drivers are available for some of the most popular programming languages: Rust, Python, Java, Node.js, and C++.
+TypeDB drivers implement the https://github.com/typedb/typedb-protocol[TypeDB RPC protocol,window=_blank] and provide language-specific native APIs. They are available for some of the most popular programming languages: Rust, Python, Node.js, Java, Node.js, C#, C++, and C.
 
 [#_driver_api]
 == Rust driver
@@ -26,19 +21,19 @@ TypeDB drivers are available for some of the most popular programming languages:
 .xref:drivers::rust/index.adoc[Overview]
 [.clickable]
 ****
-Basic information, Installation instructions, and version compatibility.
+Basic information, installation instructions, and version compatibility.
 ****
 
-.xref:drivers::rust/tutorial.adoc[Tutorial]
+.xref:{page-component-version}@drivers::rust/tutorial.adoc[Tutorial]
 [.clickable]
 ****
-The sample application tutorial for the Rust driver.
+A simple tutorial illustrating a small sample application.
 ****
 
-.xref:drivers::rust/api-reference.adoc[API reference]
+.xref:{page-component-version}@drivers::rust/api-reference.adoc[API reference]
 [.clickable]
 ****
-The full API reference for the TypeDB Rust driver.
+A complete API reference.
 ****
 --
 
@@ -49,19 +44,19 @@ The full API reference for the TypeDB Rust driver.
 .xref:drivers::python/index.adoc[Overview]
 [.clickable]
 ****
-Basic information, Installation instructions, and version compatibility.
+Basic information, installation instructions, and version compatibility.
 ****
 
-.xref:drivers::python/tutorial.adoc[Tutorial]
+.xref:{page-component-version}@drivers::python/tutorial.adoc[Tutorial]
 [.clickable]
 ****
-The sample application tutorial for the Python driver.
+A simple tutorial illustrating a small sample application.
 ****
 
-.xref:drivers::python/api-reference.adoc[API reference]
+.xref:{page-component-version}@drivers::python/api-reference.adoc[API reference]
 [.clickable]
 ****
-The full API reference for the TypeDB Python driver.
+A complete API reference.
 ****
 --
 
@@ -72,19 +67,19 @@ The full API reference for the TypeDB Python driver.
 .xref:drivers::nodejs/index.adoc[Overview]
 [.clickable]
 ****
-Basic information, Installation instructions, and version compatibility.
+Basic information, installation instructions, and version compatibility.
 ****
 
-.xref:drivers::nodejs/tutorial.adoc[Tutorial]
+.xref:{page-component-version}@drivers::nodejs/tutorial.adoc[Tutorial]
 [.clickable]
 ****
-The sample application tutorial for the Node.js driver.
+A simple tutorial illustrating a small sample application.
 ****
 
-.xref:drivers::nodejs/api-reference.adoc[API reference]
+.xref:{page-component-version}@drivers::nodejs/api-reference.adoc[API reference]
 [.clickable]
 ****
-The full API reference for the TypeDB Node.js driver.
+A complete API reference.
 ****
 --
 
@@ -95,19 +90,19 @@ The full API reference for the TypeDB Node.js driver.
 .xref:drivers::java/index.adoc[Overview]
 [.clickable]
 ****
-Basic information, Installation instructions, and version compatibility.
+Basic information, installation instructions, and version compatibility.
 ****
 
-.xref:drivers::java/tutorial.adoc[Tutorial]
+.xref:{page-component-version}@drivers::java/tutorial.adoc[Tutorial]
 [.clickable]
 ****
-The sample application tutorial for the Java driver.
+A simple tutorial illustrating a small sample application.
 ****
 
-.xref:drivers::java/api-reference.adoc[API reference]
+.xref:{page-component-version}@drivers::java/api-reference.adoc[API reference]
 [.clickable]
 ****
-The full API reference for the TypeDB Java driver.
+A complete API reference.
 ****
 --
 
@@ -118,19 +113,19 @@ The full API reference for the TypeDB Java driver.
 .xref:drivers::csharp/index.adoc[Overview]
 [.clickable]
 ****
-Basic information, Installation instructions, and version compatibility.
+Basic information, installation instructions, and version compatibility.
 ****
 
-.xref:drivers::csharp/tutorial.adoc[Tutorial]
+.xref:{page-component-version}@drivers::csharp/tutorial.adoc[Tutorial]
 [.clickable]
 ****
-The sample application tutorial for the C# driver.
+A simple tutorial illustrating a small sample application.
 ****
 
-.xref:drivers::csharp/api-reference.adoc[API reference]
+.xref:{page-component-version}@drivers::csharp/api-reference.adoc[API reference]
 [.clickable]
 ****
-The full API reference for the TypeDB C# driver.
+A complete API reference.
 ****
 --
 
@@ -141,19 +136,19 @@ The full API reference for the TypeDB C# driver.
 .xref:drivers::cpp/index.adoc[Overview]
 [.clickable]
 ****
-Basic information, Installation instructions, and version compatibility.
+Basic information, installation instructions, and version compatibility.
 ****
 
-.xref:drivers::cpp/tutorial.adoc[Tutorial]
+.xref:{page-component-version}@drivers::cpp/tutorial.adoc[Tutorial]
 [.clickable]
 ****
-The sample application tutorial for the C++ driver.
+A simple tutorial illustrating a small sample application.
 ****
 
-.xref:drivers::cpp/api-reference.adoc[API reference]
+.xref:{page-component-version}@drivers::cpp/api-reference.adoc[API reference]
 [.clickable]
 ****
-The full API reference for the TypeDB C++ driver.
+A complete API reference.
 ****
 --
 
@@ -164,46 +159,35 @@ The full API reference for the TypeDB C++ driver.
 .xref:drivers::c/index.adoc[Overview]
 [.clickable]
 ****
-Basic information, Installation instructions, and version compatibility.
+Basic information, installation instructions, and version compatibility.
 ****
 
-.xref:drivers::c/tutorial.adoc[Tutorial]
+.xref:{page-component-version}@drivers::c/tutorial.adoc[Tutorial]
 [.clickable]
 ****
-The sample application tutorial for the C driver.
+A simple tutorial illustrating a small sample application.
 ****
 
-.xref:drivers::c/api-reference.adoc[API reference]
+.xref:{page-component-version}@drivers::c/api-reference.adoc[API reference]
 [.clickable]
 ****
-The full API reference for the TypeDB C driver.
+A complete API reference.
 ****
 --
 
 == Driver architecture
 
-TypeDB drivers share a common architecture and capabilities.
-The key components have to do with providing an API, opening and managing connections, sessions, and transactions,
-as well as validating and sending queries, processing responses.
+TypeDB drivers share a common architecture and capabilities. The key components are providing a native-language API, opening and managing connections, controlling transactions, validating and sending queries, and processing responses. TypeDB servers accept client connections via gRPC based on the https://github.com/typedb/typedb-protocol[TypeDB protocol,window=_blank].
 
-The following diagram illustrates the structure of a typical TypeDB driver.
+The following diagram illustrates the structure of a TypeDB driver.
 
-image::client-structure.png[Structure of a TypeDB driver, role=framed, width = 75%, link=self]
-
-////
-.See the dependency graph
-[%collapsible]
-====
-image::package-structure.png[]
-====
-////
-
-Simply put, the main components of any TypeDB driver are the classes and methods to establish a connection to a TypeDB
-database, execute queries, and process responses.
+image::{page-component-version}@drivers::client-structure.png[Structure of a TypeDB driver, role=framed, width = 75%, link=self]
 
 [NOTE]
 ====
-The Java, Python, and C/C++/C# drivers are implemented as wrappers on top of the Rust driver via an FFI interface.
+The Java, Python, C#, C++, and C drivers are implemented as wrappers on top of the Rust driver via an FFI interface.
 The Node.js driver is implemented independently.
 Prior to version `2.24.0` all drivers were implemented independently.
 ====
+
+
