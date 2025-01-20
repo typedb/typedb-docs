@@ -2,27 +2,25 @@
 
 Connecting to TypeDB CE requires:
 
-* `address` and `port` of the server (defaults: `127.0.0.1` and `1729`)
-* a valid `username` and `password` (default credentials: `admin` and `password`)
-* optionally, a valid TLS certificate for in-flight encryption (not used here)
+* The `address` and `port` of the server - defaults are `127.0.0.1` and `1729`
+* A valid `username` and `password` - default credentials are `admin` and `password`
 
 [tabs]
 ====
 Studio::
 +
 --
-// TODO: re-add
-// Run Studio and follow instructions below:
-//
-// include::../setup/studio.adoc[tag=connect_core_studio]
+Run Studio and follow instructions below:
+
+include::../tools/studio.adoc[tag=connect_ce_studio]
 --
 
 Console::
 +
 --
-// Run Console using the `--core` argument to set the address and port to connect to:
-//
-// include::../setup/console.adoc[tag=connect_core_console]
+Run Console using the `--core` argument:
+
+include::../tools/console.adoc[tag=connect_ce_console]
 --
 ====
 
