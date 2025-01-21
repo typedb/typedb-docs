@@ -69,5 +69,5 @@ match
     located($place, $country);
     $country isa country;
   };
-reduce $logins = count;
+reduce $logins = count groupby $country;
 ----
