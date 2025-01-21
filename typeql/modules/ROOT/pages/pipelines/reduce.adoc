@@ -61,13 +61,12 @@ Get the number of users per country:
 ----
 match
   $user isa user;
-  located($user, $place);
+  $country isa country;
   {
-    $country isa country;
-    $place is $country;
+    located($user, $country);
   } or {
+    located($user, $place);
     located($place, $country);
-    $country isa country;
   };
 reduce $logins = count groupby $country;
 ----
