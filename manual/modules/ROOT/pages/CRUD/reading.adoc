@@ -6,14 +6,13 @@ This page explains how to read data from a TypeDB database.
 
 == Understanding read pipelines
 
-A read pipeline is a pipeline performing only read operations. It can consist of one xref:{page-version}@typeql::pipelines/match.adoc[`match` stage] or different combinations of xref:{page-version}@typeql::pipelines/match.adoc[`match`], xref:{page-version}@typeql::pipelines/select.adoc[`select`], xref:{page-version}@typeql::pipelines/sort.adoc[`sort`], xref:{page-version}@typeql::pipelines/fetch.adoc[`fetch`] stages and other operators.
+A read pipeline is a pipeline performing only read operations.
+It can consist of one xref:{page-version}@typeql::pipelines/match.adoc[`match` stage] or different combinations of xref:{page-version}@typeql::pipelines/match.adoc[`match`], xref:{page-version}@typeql::pipelines/select.adoc[`select`], xref:{page-version}@typeql::pipelines/sort.adoc[`sort`], xref:{page-version}@typeql::pipelines/fetch.adoc[`fetch`] stages and other operators.
 
-Most of the read stages produce concept rows (the only exception is <<_fetch, fetch>>), which allows connecting them in an extensible pipeline. These operations be executed in any of the `schema`, `write`, or `read` xref:{page-version}@manual::queries/transactions.adoc[transactions].
+Most of the read stages produce concept rows (the only exception is <<_fetch, fetch>>), which allows connecting them in an extensible pipeline.
+These operations be executed in any of the `schema`, `write`, or `read` xref:{page-version}@manual::queries/transactions.adoc[transactions].
 
-Refer to the xref:{page-version}@typeql::pipelines/match.adoc[] page for a detailed explanation and additional examples.
-
-// TODO: Place somewhere
-Refer to the xref:{page-version}@typeql::pipelines/index.adoc[] page to explore more types of read pipelines.
+Refer to the xref:{page-version}@typeql::pipelines/index.adoc[] page to explore all types of read pipelines and possible operations with them.
 
 == Using match stages
 
@@ -36,9 +35,184 @@ include::{page-version}@home::example$tql/schema_small.tql[]
 =====
 ====
 
-// TODO
+You can query your data using TypeQL's xref:{page-version}@typeql::pipelines/match.adoc[`match` keyword] the same way you xref:{page-version}@manual::CRUD/inserting.adoc[insert] it.
+As usual, multiple statements can be combined to declare multiple variables and establish connections between them.
+
+=== Read an instance
+
+To read type instances (an xref:{page-version}@typeql::statements/entity.adoc[entity], a xref:{page-version}@typeql::statements/relation.adoc[relation], or an xref:{page-version}@typeql::statements/attribute.adoc[attribute]), use the xref:{page-version}@typeql::statements/isa.adoc[`isa` keyword]:
+
+.Users reading example
+[,typeql]
+----
+include::{page-version}@manual::example$tql/read_queries.tql[tags=match-user]
+----
+
+This simple query will return all the `user` s in the database.
+
+.Example TypeDB Console output
+[%collapsible]
+====
+----
+   --------
+    $u | iid 0x1e00030000000000000002 isa user
+   --------
+    $u | iid 0x1e00030000000000000003 isa user
+   --------
+    $u | iid 0x1e00030000000000000004 isa user
+   --------
+    $u | iid 0x1e00030000000000000005 isa user
+   --------
+----
+====
+
+=== Read specific instances
+
+Combining statements, it is possible to add more constraints to the `match`.
+For example, the following query searches for all `user` s with a specific `username` using the xref:{page-version}@typeql::statements/has.adoc[`has` statement] (which can be interpreted as "the `user` with a specific `username`" as this attribute is a xref:{page-version}@typeql::annotations/key.adoc[key]):
+
+[#_specific_users_example]
+.Specific users reading example
+[,typeql]
+----
+include::{page-version}@manual::example$tql/read_queries.tql[tags=match-single-user]
+----
+
+.Example TypeDB Console output
+[%collapsible]
+====
+----
+   --------
+    $u | iid 0x1e00030000000000000005 isa user
+   --------
+----
+====
+
+=== Read attributes and values
+
+Attributes and their values can be read in a similar way.
+By variablizing the attribute part of the <<_specific_users_example, previous example>>, it's easy to get all `user` s and their `username` s.
+You can also use anonymous variables (`$_`) if they are not needed in the output:
+
+[#_specific_users_example]
+.Matching all users' usernames example
+[,typeql]
+----
+include::{page-version}@manual::example$tql/read_queries.tql[tags=match-user-usernames-anonymous]
+----
+
+[NOTE]
+====
+While the same result for our schema could be achieved through:
+
+.Matching all usernames example
+[,typeql]
+----
+include::{page-version}@manual::example$tql/read_queries.tql[tags=match-usernames]
+----
+
+the original query makes sure that these `username` s are owned by other instances, not just exist in the database.
+====
+
+.Example TypeDB Console output
+[%collapsible]
+====
+----
+   --------
+    $n | Alice isa username
+   --------
+    $n | Bob isa username
+   --------
+    $n | Charlie isa username
+   --------
+    $n | User isa username
+   --------
+----
+====
+
+While the attribute is variablized, it is also possible to put the same constraints from the <<_specific_users_example, specific user search example>> on it.
+For instance, we can use the same attribute variable twice in two compatible statements:
+
+.Specific users reading with variablized attribute example
+[,typeql]
+----
+include::{page-version}@manual::example$tql/read_queries.tql[tags=match-single-user-attribute-var]
+----
+
+.Example TypeDB Console output
+[%collapsible]
+====
+----
+   --------
+    $n | User isa username
+    $u | iid 0x1e00030000000000000005 isa user
+   --------
+----
+====
+
+To achieve the same result, we could also compare the attribute variable's value with the used constant:
+
+.Specific users reading with variablized attribute and value comparison example
+[,typeql]
+----
+include::{page-version}@manual::example$tql/read_queries.tql[tags=match-single-user-attribute-var-compare]
+----
+
+.Example TypeDB Console output
+[%collapsible]
+====
+----
+   --------
+    $n | User isa username
+    $u | iid 0x1e00030000000000000005 isa user
+   --------
+----
+====
+
+Alternatively, we could declare a value variable using the xref:{page-version}@typeql::statements/let-eq.adoc[`let` statement], and integrate comparison into the owner instance declaration:
+
+.Specific users reading using value variables example
+[,typeql]
+----
+include::{page-version}@manual::example$tql/read_queries.tql[tags=match-single-user-value-var]
+----
+
+[NOTE]
+====
+Here, `$n` will be a value variable, not an attribute variable, so it's cleaner to compare with it instead of binding from the previous examples. Try comparing the outputs of this and the previous examples.
+====
+
+.Example TypeDB Console output
+[%collapsible]
+====
+----
+   --------
+    $n | User
+    $u | iid 0x1e00030000000000000005 isa user
+   --------
+----
+====
+
+=== Read relations
+
+// TODO: WIP
+
+Refer to the xref:{page-version}@typeql::pipelines/match.adoc[] page for a detailed explanation and additional examples.
 
 [#_fetch]
-== Using fetch stages
+== Converting output to JSON documents
+
+Results of most of (and all read) pipeline stages in TypeDB can be converted into documents of the JSON format using `fetch`.
+The main purpose of it is to present the data in a more readable format and export it for connecting with other applications.
+However, this powerful tool not only allows you to flexibly structure your output based on variables, but also to perform subquerying operations, function calls, reference instance's attributes, and much more.
+
+[NOTE]
+====
+You can use `fetch` after any stage producing rows, even if you xref:{page-version}@manual::CRUD/inserting.adoc[insert] or xref:{page-version}@manual::CRUD/deleting.adoc[delete] data.
+====
+
+For example, the previous query
+
+Refer to xref:{page-version}@typeql::pipelines/fetch.adoc[] for more details and usage examples.
 
 // TODO

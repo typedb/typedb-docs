@@ -30,8 +30,6 @@ include::{page-version}@home::example$tql/schema_small.tql[]
 =====
 ====
 
-=== Delete an instance
-
 To delete data, open a `write` xref:{page-version}@manual::queries/transactions.adoc[transaction].
 This allows you to read and write data to your database while keeping the schema secure.
 
@@ -39,6 +37,8 @@ Every deletion begins with an `delete`, but also requires some input, so a prece
 The logic is similar to xref:{page-version}@manual::CRUD/inserting.adoc#match_insert[inserting data based on a match]: the variables, declared in the `match` stage, can be used in the `delete` stage to control the deletion process.
 
 Similarly, multiple statements can be combined to delete multiple instances or connections.
+
+=== Delete an instance
 
 To delete a type instance (an xref:{page-version}@typeql::statements/entity.adoc[entity], a xref:{page-version}@typeql::statements/relation.adoc[relation], or an xref:{page-version}@typeql::statements/attribute.adoc[attribute]), declare a `$var` for this instance and add `delete $var`:
 

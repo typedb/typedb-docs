@@ -1,12 +1,121 @@
 // tag::match-user[]
 match
-  $user isa user;
+  $u isa user;
 // end::match-user[]
+
+// tag::match-single-user[]
+match
+  $u isa user, has username "User";
+// end::match-single-user[]
+
+// tag::match-user-usernames-anonymous[]
+match
+  $_ isa user, has username $n;
+// end::match-user-usernames-anonymous[]
+
+// tag::match-usernames[]
+match
+  $n isa username;
+// end::match-usernames[]
+
+// tag::match-single-user-attribute-var[]
+match
+  $n isa username "User";
+  $u isa user, has username $n;
+// end::match-single-user-attribute-var[]
+
+
+// tag::match-single-user-attribute-var-compare[]
+match
+  $n isa username;
+  $n == "User";
+  $u isa user, has username $n;
+// end::match-single-user-attribute-var-compare[]
+
+
+// tag::match-single-user-value-var[]
+match
+  let $n = "User";
+  $u isa user, has username == $n;
+// end::match-single-user-value-var[]
+
+
+// tag::match-users-friendship[]
+match
+  $a isa user, has username "Alice", has email "alice@typedb.com";
+  $b isa user, has username "Bob", has email "bob@typedb.com";
+  $f isa friendship, links (friend: $a, friend: $b);
+// end::match-users-friendship[]
+
+####
+   --------
+    $a | iid 0x1e00030000000000000002 isa user
+    $b | iid 0x1e00030000000000000003 isa user
+    $f | iid 0x1f00020000000000000000 isa friendship
+   --------
+####
+
+// tag::match-users-friendship-roleless[]
+match
+  $a isa user, has username "Alice", has email "alice@typedb.com";
+  $b isa user, has username "Bob", has email "bob@typedb.com";
+  $f isa friendship, links ($a, $b);
+// end::match-users-friendship-roleless[]
+
+####
+   --------
+    $a | iid 0x1e00030000000000000002 isa user
+    $b | iid 0x1e00030000000000000003 isa user
+    $f | iid 0x1f00020000000000000000 isa friendship
+   --------
+####
+
+// tag::match-users-friendship-users-only[]
+match
+  $a isa user, has username "Alice", has email "alice@typedb.com";
+  $b isa user, has username "Bob", has email "bob@typedb.com";
+  ($a, $b) isa friendship;
+// end::match-users-friendship-users-only[]
+
+####
+   --------
+    $a | iid 0x1e00030000000000000002 isa user
+    $b | iid 0x1e00030000000000000003 isa user
+   --------
+####
+
+// tag::match-users-friendship-anonymous[]
+match
+  $a isa user, has username "Alice", has email "alice@typedb.com";
+  $b isa user, has username "Bob", has email "bob@typedb.com";
+  $_ isa friendship, links ($a, $b);
+// end::match-users-friendship-anonymous[]
+
+####
+   --------
+    $a | iid 0x1e00030000000000000002 isa user
+    $b | iid 0x1e00030000000000000003 isa user
+   --------
+####
+
+// tag::match-users-friendship-select[]
+match
+  $a isa user, has username "Alice", has email "alice@typedb.com";
+  $b isa user, has username "Bob", has email "bob@typedb.com";
+  $f isa friendship, links (friend: $a, friend: $b);
+select $f; # or reversed: "select $a, $b;"
+// end::match-users-friendship-select[]
+
+####
+   --------
+    $f | iid 0x1f00020000000000000000 isa friendship
+   --------
+####
 
 // tag::fun-stream-scalar-return-type[]
 match
-  $user isa user;
-  let $phone in user_phones($user);
+  $u isa user;
+  let $phone in user_phones($u);
 // end::fun-stream-scalar-return-type[]
 
 // tag::fun-stream-tuple-return-type[]
