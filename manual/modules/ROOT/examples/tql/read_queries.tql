@@ -3,6 +3,18 @@ match
   $u isa user;
 // end::match-user[]
 
+// tag::match-user-fetch[]
+match
+  $u isa user;
+fetch {
+  "user information": {
+    "username": $u.username,
+    "emails": [ $u.email ]
+  },
+  "all user attributes": { $u.* }
+};
+// end::match-user-fetch[]
+
 // tag::match-single-user[]
 match
   $u isa user, has username "User";
@@ -12,6 +24,15 @@ match
 match
   $_ isa user, has username $n;
 // end::match-user-usernames-anonymous[]
+
+// tag::match-user-usernames-fetch[]
+match
+  $u isa user, has username $n;
+fetch {
+  "user email": $u.email,
+  "matched username": $n
+};
+// end::match-user-usernames-fetch[]
 
 // tag::match-usernames[]
 match
@@ -40,6 +61,13 @@ match
 // end::match-single-user-value-var[]
 
 
+// tag::match-users-and-names-sorted[]
+match
+ $u isa user, has username $n;
+sort $n desc;
+// end::match-users-and-names-sorted[]
+
+
 // tag::match-users-friendship[]
 match
   $a isa user, has username "Alice", has email "alice@typedb.com";
@@ -47,13 +75,6 @@ match
   $f isa friendship, links (friend: $a, friend: $b);
 // end::match-users-friendship[]
 
-####
-   --------
-    $a | iid 0x1e00030000000000000002 isa user
-    $b | iid 0x1e00030000000000000003 isa user
-    $f | iid 0x1f00020000000000000000 isa friendship
-   --------
-####
 
 // tag::match-users-friendship-roleless[]
 match
@@ -62,13 +83,6 @@ match
   $f isa friendship, links ($a, $b);
 // end::match-users-friendship-roleless[]
 
-####
-   --------
-    $a | iid 0x1e00030000000000000002 isa user
-    $b | iid 0x1e00030000000000000003 isa user
-    $f | iid 0x1f00020000000000000000 isa friendship
-   --------
-####
 
 // tag::match-users-friendship-users-only[]
 match
@@ -77,12 +91,6 @@ match
   ($a, $b) isa friendship;
 // end::match-users-friendship-users-only[]
 
-####
-   --------
-    $a | iid 0x1e00030000000000000002 isa user
-    $b | iid 0x1e00030000000000000003 isa user
-   --------
-####
 
 // tag::match-users-friendship-anonymous[]
 match
@@ -91,12 +99,6 @@ match
   $_ isa friendship, links ($a, $b);
 // end::match-users-friendship-anonymous[]
 
-####
-   --------
-    $a | iid 0x1e00030000000000000002 isa user
-    $b | iid 0x1e00030000000000000003 isa user
-   --------
-####
 
 // tag::match-users-friendship-select[]
 match
@@ -105,12 +107,6 @@ match
   $f isa friendship, links (friend: $a, friend: $b);
 select $f; # or reversed: "select $a, $b;"
 // end::match-users-friendship-select[]
-
-####
-   --------
-    $f | iid 0x1f00020000000000000000 isa friendship
-   --------
-####
 
 // tag::fun-stream-scalar-return-type[]
 match
