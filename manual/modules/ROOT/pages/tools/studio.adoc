@@ -59,9 +59,25 @@ Select TypeDB edition below, and follow the instructions:
 Cloud::
 +
 --
-image::{page-version}@home::studio-connect-cloud.png[TypeDB Studio connect window, role=right, width = 50%, link=self]
-
 // tag::connect_cloud_studio[]
+. In the TypeDB Cloud website, navigate to your cluster and click *Connect*. Then, click *TypeDB Studio*.
+. The *Connect to your cluster* dialog will display the *connection URI* for your cluster, with a placeholder: `<db_password>`.
+. In TypeDB Studio, click btn:[Connect to TypeDB] in the top right corner.
+. Select `TypeDB Cloud`. Copy in the Connection URI, and replace `<db_password>` with your actual password. Consider saving this connection URI in a secure location.
+.
+. Select `TypeDB Cloud`.
+. Click btn:[Manage Cloud Addresses] button.
+. Add address and port for at least one server from your TypeDB Cloud deployment, then close the Address Management window.
+. Fill in the `Username` and `Password` fields with valid user credentials.
+. Turn on the `Enable TLS` option and leave the `CA Certificate` field empty. For self-hosted deployments, encryption parameters may vary.
+. Click `Connect`.
+// end::connect_cloud_studio[]
+--
+
+Enterprise::
++
+--
+// tag::connect_enterprise_studio[]
 . Click btn:[Connect to TypeDB] on the right side of the top toolbar.
 . Switch the `Server` field drop-down to `TypeDB Cloud`.
 . Click btn:[Manage Cloud Addresses] button.
@@ -72,15 +88,14 @@ image::{page-version}@home::studio-connect-cloud.png[TypeDB Studio connect windo
 // end::connect_cloud_studio[]
 --
 
-Core::
+Community Edition::
 +
 --
-image::{page-version}@home::studio-connect-core.png[TypeDB Studio connect window, role=right, width = 50%, link=self]
-
-// tag::connect_ce_studio[]
+// tag::connect_enterprise_studio[]
 . Click btn:[Connect to TypeDB] on the right side of the top toolbar.
 . Make sure the `TypeDB Core` option is selected in the `Server` field.
 . Enter the address and port of the server to connect to (e.g. `localhost:1729`).
+. Fill in the `Username` and `Password` fields with valid user credentials.
 . Click btn:[Connect].
 // end::connect_ce_studio[]
 --

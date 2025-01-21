@@ -81,7 +81,7 @@ insert
 insert
   $x isa user, has username "grothendieck_25";
   $y isa user, has username "hartshorne";
-  friendship (friend: $x, friend: $y);
+  friendship (friend: $x, friend: $y); # alternatively: $z isa friendship (friend: $x, friend: $y);
 # end::CRUD5[]
 # pipeline::write::end
 
