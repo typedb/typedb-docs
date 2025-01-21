@@ -20,6 +20,18 @@ match
   $u isa user, has username "User";
 // end::match-single-user[]
 
+// tag::match-user-or-user[]
+match
+  $u isa user;
+  { $u has username "User"; } or { $u has email "alice@typedb.com"; };
+// end::match-user-or-user[]
+
+// tag::match-user-no-emails[]
+match
+  $u isa user;
+  not { $u has email $_; };
+// end::match-user-no-emails[]
+
 // tag::match-user-usernames-anonymous[]
 match
   $_ isa user, has username $n;
@@ -45,7 +57,6 @@ match
   $u isa user, has username $n;
 // end::match-single-user-attribute-var[]
 
-
 // tag::match-single-user-attribute-var-compare[]
 match
   $n isa username;
@@ -53,20 +64,17 @@ match
   $u isa user, has username $n;
 // end::match-single-user-attribute-var-compare[]
 
-
 // tag::match-single-user-value-var[]
 match
   let $n = "User";
   $u isa user, has username == $n;
 // end::match-single-user-value-var[]
 
-
 // tag::match-users-and-names-sorted[]
 match
  $u isa user, has username $n;
 sort $n desc;
 // end::match-users-and-names-sorted[]
-
 
 // tag::match-users-friendship[]
 match
@@ -75,14 +83,12 @@ match
   $f isa friendship, links (friend: $a, friend: $b);
 // end::match-users-friendship[]
 
-
 // tag::match-users-friendship-roleless[]
 match
   $a isa user, has username "Alice", has email "alice@typedb.com";
   $b isa user, has username "Bob", has email "bob@typedb.com";
   $f isa friendship, links ($a, $b);
 // end::match-users-friendship-roleless[]
-
 
 // tag::match-users-friendship-users-only[]
 match
@@ -91,14 +97,12 @@ match
   ($a, $b) isa friendship;
 // end::match-users-friendship-users-only[]
 
-
 // tag::match-users-friendship-anonymous[]
 match
   $a isa user, has username "Alice", has email "alice@typedb.com";
   $b isa user, has username "Bob", has email "bob@typedb.com";
   $_ isa friendship, links ($a, $b);
 // end::match-users-friendship-anonymous[]
-
 
 // tag::match-users-friendship-select[]
 match
@@ -107,6 +111,14 @@ match
   $f isa friendship, links (friend: $a, friend: $b);
 select $f; # or reversed: "select $a, $b;"
 // end::match-users-friendship-select[]
+
+// tag::match-user-emails-supertypes[]
+match
+  $_ isa $owner-type, has $attribute-type $_;
+  $attribute-type label email;
+  not { $owner-type sub! $_; };
+// end::match-user-emails-supertypes[]
+
 
 // tag::fun-stream-scalar-return-type[]
 match

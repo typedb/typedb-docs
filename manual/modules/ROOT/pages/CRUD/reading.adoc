@@ -270,6 +270,83 @@ include::{page-version}@manual::example$tql/read_queries.tql[tags=match-users-fr
 ----
 ====
 
+=== Negate, conjunct, and disjunct
+
+All the examples you saw so far use only xref:{page-version}@typeql::patterns/conjunctions.adoc[conjunctions]: while writing multiple statements with semicolons between them and any additional syntax shown below, these conditions are combined to produce the result (there is a logical "AND" between them).
+
+It is possible to `match` a broader range of results using xref:{page-version}@typeql::patterns/disjunctions.adoc[disjunctions] (logical "OR"):
+
+.Matching with disjunction example
+[,typeql]
+----
+include::{page-version}@manual::example$tql/read_queries.tql[tags=match-user-or-user]
+----
+
+[NOTE]
+====
+Note that multiple semicolons are required: one semicolon for each single statement and a final semicolon to finalize the disjunction.
+====
+
+.Example TypeDB Console output
+[%collapsible]
+====
+----
+   --------
+    $u | iid 0x1e00030000000000000002 isa user
+   --------
+    $u | iid 0x1e00030000000000000005 isa user
+   --------
+----
+====
+
+Similarly, xref:{page-version}@typeql::patterns/negations.adoc[negations] (logical "NOT") to reverse the declared constraint.
+The following example returns all `user` s without `email` s:
+
+.Matching with negation example
+[,typeql]
+----
+include::{page-version}@manual::example$tql/read_queries.tql[tags=match-user-no-emails]
+----
+
+.Example TypeDB Console output
+[%collapsible]
+====
+----
+   --------
+    $u | iid 0x1e00030000000000000005 isa user
+   --------
+----
+====
+
+Combine negations, conjunctions, and disjunctions.
+However, be aware that an inefficient query with lots of negations and disjunctions may take time to execute.
+See xref:{page-version}@typeql::patterns/index.adoc[] for more details about patterns.
+
+=== Read types
+
+Types from database schemas are also available for `match` ing and retrieving.
+To bind a variable to a type, use type-related statements and variablize the respective side.
+The following example query retrieves the root types (types without supertypes) of the owners of attributes of type labelled `email`, using the xref:{page-version}@typeql::statements/isa.adoc[`isa` statement], the xref:{page-version}@typeql::statements/label.adoc[`label` statement], and the xref:{page-version}@typeql::statements/sub.adoc[`sub!` statement]:
+
+.Matching types example
+[,typeql]
+----
+include::{page-version}@manual::example$tql/read_queries.tql[tags=match-user-emails-supertypes]
+----
+
+.Example TypeDB Console output
+[%collapsible]
+====
+----
+   ---------------------
+    $attribute-type | type email
+    $owner-type     | type content
+   ---------------------
+----
+====
+
+The full list of statements, including the ones available for `match` ing, is available xref:{page-version}@typeql::statements/index.adoc[here].
+
 Refer to the xref:{page-version}@typeql::pipelines/match.adoc[] page for a detailed explanation and additional examples.
 
 == Operating on outputs
@@ -448,3 +525,7 @@ Wrapping `null` s in lists produces empty lists `[ ]`, while the `.*` command ma
 ====
 
 Refer to xref:{page-version}@typeql::pipelines/fetch.adoc[] to explore all applications of `fetch`, its syntax, and more examples with subqueries, functions, and much more.
+
+== Having troubles?
+
+include::{page-version}@manual::page$CRUD/inserting.adoc[tag=having-troubles]

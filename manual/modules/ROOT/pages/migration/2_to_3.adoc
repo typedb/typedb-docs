@@ -1,6 +1,66 @@
 = TypeDB 2.x to 3.0
 
-[IMPORTANT]
+TypeDB 3.0 introduces a great number of changes to almost every aspect of the database.
+On this page, you can find the list of significant changes you may want to be aware of, as well as server and driver update recommendations.
+
+* TypeQL syntax *
+
+When updating the version, it is reasonable to consider the effort required for the migration.
+This page will help you to understand the process complexities, highlight the main differences and ways of their resolving.
+
+== Major changes
+
+[NOTE]
 ====
-Under construction.
+The following section contains only **changed** TypeDB 2.x elements, not all the new features of TypeDB 3.0.
 ====
+
+Click on a feature from this list to access its updated documentation with details and examples.
+
+=== TypeDB and TypeQL
+
+* Sessions are removed.
+Now, after connecting to TypeDB, you only need to open a `schema`, `write`, or `read` xref:{page-version}@manual::queries/transactions.adoc[transaction].
+* `long` is renamed to xref:{page-version}@typeql::values/integer.adoc[`integer`]
+* xref:{page-version}@typeql::pipelines/fetch.adoc[`fetch`]'s syntax is now in sync with output JSON documents
+* xref:{page-version}@typeql::schema/undefine.adoc[`undefine`] and xref:{page-version}@typeql::pipelines/delete.adoc[`delete`] have an updated syntax to "point" to the undefined and deleted things to avoid misinterpretations
+* xref:{page-version}@typeql::annotations/abstract.adoc[`abstract`] and xref:{page-version}@typeql::annotations/regex.adoc[`regex`] are now xref:{page-version}@typeql::annotations/index.adoc[@annotations]
+
+=== TypeDB Drivers
+
+* The API has been significantly simplified for smoother UX and better maintenance.
+Now, all schema and data fetching and modifications are performed through a single `transaction.query("your query")` interface.
+- No more `query().insert()` and `query().define()`
+- No more `concept.delete()` or `concept.getHas()`
+- Type structure is preserved (`Thing` is renamed to `Instance`), casts are available, and it is possible to retrieve something simple as a type's label or an attribute's value, that are sent with the type itself.
+
+== Migration tool
+
+[NOTE]
+====
+Coming soon!
+====
+
+[#_temporarily_missing]
+== Temporarily missing features
+
+This section contains the list of features that were introduced in 2.x, but are still under development in 3.x.
+Be assured that they are coming very soon!
+However, take into account that some of your processes can be blocked if you previously relied on these features, but want to update now.
+
+=== TypeDB and TypeQL
+
+* Database import and export
+* Configuration files (use CLI instead)
+* Transaction Options
+* `update` queries (use `delete` + `insert` instead)
+* `contains` and `like` operators for `string` s
+* Scaling for Cloud and Enterprise
+
+=== TypeDB Drivers
+
+* Node.js, C, C++, C# are not yet introduced.
+
+== Having troubles?
+
+Refer to the xref:{page-version}@manual::troubleshooting/index.adoc[] page for troubleshooting recommendations.
