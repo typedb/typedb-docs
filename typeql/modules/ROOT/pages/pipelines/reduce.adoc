@@ -7,7 +7,7 @@
 
 [,typeql]
 ----
-reduce <var> = <operator> [( <var> )] [ , ... ];
+reduce <var> = <operator> [ (<var>) ] [ , ... ];
 ----
 
 TypeQL supports the following reduce operators:
@@ -50,7 +50,7 @@ value of the grouping variable.
 
 [,typeql]
 ----
-reduce <var> = <operator> [( <var> )] [ , ... ] groupby <var>;
+reduce <var> = <operator> [ (<var>) ] [ , ... ] groupby <var>;
 ----
 
 === Example
