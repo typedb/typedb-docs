@@ -135,10 +135,12 @@ include::{page-version}@typeql::example$tql/read_statements_functions.tql[tag=wi
 In addition to <<query_level_functions, temporary query-level functions>>, functions can be persisted in schemas.
 Replace the keyword `with` with `define` and execute the query in a schema transaction:
 
+// tag::define[]
 [,typeql]
 ----
 include::{page-version}@typeql::example$tql/schema_statements_functions.tql[tags=define-keyword;with-fun-defined]
 ----
+// end::define[]
 
 Once persisted, these functions can be called directly in read queries:
 
@@ -160,12 +162,14 @@ include::{page-version}@typeql::example$tql/redefine_statements_functions.tql[ta
 
 ==== Undefine
 
+// tag::undefine[]
 To undefine a function, specify the `fun` keyword and its name.
 
 [,typeql]
 ----
 include::{page-version}@typeql::example$tql/undefine_statements_functions.tql[tags=undefine-keyword;with-fun-undefined]
 ----
+// end::undefine[]
 
 == Learn More
 

@@ -2,6 +2,8 @@
 
 The statement `<RELATION LABEL> relates <LABEL>` is used to identify the `<LABEL>` as a role type related by `<RELATION LABEL>`.
 
+It can be extended to `<RELATION LABEL> relates <LABEL> as <SPECIALIZED LABEL>` to specify specialization between two role types. `SPECIALIZED LABEL>` should be inherited by `<RELATION LABEL>` from a supertype. `<LABEL>` becomes a subtype of `<SPECIALIZED LABEL>`, and the `<RELATION LABEL>` instances do no longer accept roleplayers of `<SPECIALIZED LABEL>`. `<LABEL>` is called **specializing relates**, and `<SPECIALIZED LABEL>` is called **specialized relates**.
+
 == Defining role types
 
 The `relates` keyword can be used to define a role type for a relation type.
@@ -11,7 +13,25 @@ The `relates` keyword can be used to define a role type for a relation type.
 define parentship relates parent;
 ----
 
+=== Defining specializing role types
+
+The `relates ... as` construction can be used to define a role type specializing an inherited role type.
+
+[,typeql]
+----
+define fathership relates father as parent;
+----
+
 // TODO: Redefining when ordering is introduced
+
+=== Redefining specializing role types
+
+The `relates ... as` construction can be used to define a role type specializing an inherited role type.
+
+[,typeql]
+----
+redefine fathership relates father as child;
+----
 
 == Undefining role types
 
@@ -20,6 +40,15 @@ The `relates` keyword can be used to undefine a role type from a relation.
 [,typeql]
 ----
 undefine relates parent from parentship;
+----
+
+=== Undefining role types specialization
+
+The `relates ... as` construction can be used to undefine a role type specialization.
+
+[,typeql]
+----
+undefine as parent from fathership relates father;
 ----
 
 == Matching

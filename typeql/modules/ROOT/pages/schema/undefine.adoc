@@ -5,3 +5,144 @@ Undefine queries are used
 // tag::overview[]
 to remove existing types, constraints, or functions from the schema.
 // end::overview[]
+
+== Syntax
+
+Undefine queries start with the `undefine` keyword following by undefinition statements.
+
+[,typeql]
+----
+undefine
+  <undefinition statements>
+----
+
+Undefinition statements are similar to definition statements, but they have a different structure to highlight which part of the definition is to be undefined, in some cases using the `from` keyword.
+
+.Type undefinition statement
+[,typeql]
+----
+<label>;
+----
+
+.Trait undefinition statement
+[,typeql]
+----
+<trait definition> from <label or trait>;
+----
+
+.Annotation undefinition statement
+[,typeql]
+----
+<@annotation> from <label or trait>;
+----
+
+.Function undefinition statement
+[,typeql]
+----
+fun <function name>;
+----
+
+Statements should be separated by semicolons.
+Schema statements in an undefine query cannot use variables or values.
+
+== Behavior
+
+An undefine query removes the parts of the schema specified in its undefine clause, including types, traits, annotations, and functions.
+Undefining a type also undefines all its traits and annotations.
+Undefining a trait also undefines all its traits and annotations.
+
+An error is returned (on execution or on commit), and no changes are preserved, if:
+
+- There is no existing definition to undefine.
+- The query results in an invalid schema.
+
+[#_statements_behavior]
+=== Statements
+
+* xref:{page-version}@typeql::statements/relates.adoc[`relates ... from` statements] undefine existing relates and role types.
+* xref:{page-version}@typeql::statements/relates.adoc[`as ... from relates` statements] undefine existing relates specializations.
+* xref:{page-version}@typeql::statements/plays.adoc[`plays ... from` statements] undefine existing roleplayings.
+* xref:{page-version}@typeql::statements/owns.adoc[`owns ... from` statements] undefine existing ownerships.
+* xref:{page-version}@typeql::statements/value.adoc[`value ... from` statements] undefine existing attribute types' value types.
+* xref:{page-version}@typeql::statements/sub.adoc[`sub ... from` statements] undefine existing subtyping connections.
+* xref:{page-version}@typeql::annotations/index.adoc[`@annotation ... from` statements] undefine existing annotations.
+Only the type of the annotation is required, so annotations with arguments can be undefined without their arguments specification.
+* xref:{page-version}@typeql::statements/fun.adoc[`fun ...` statements] undefine existing functions.
+
+== Examples
+
+=== Undefining types
+
+.Undefining a type
+[,typeql]
+----
+undefine user;
+----
+
+.Undefining types
+[,typeql]
+----
+undefine parentship; email;
+----
+
+=== Undefining traits
+
+.Undefining relation type's relates
+[,typeql]
+----
+undefine relates child from parentship;
+----
+
+.Undefining relation type's subtyping
+[,typeql]
+----
+undefine sub parentship from fathership;
+----
+
+.Undefining relates specialization
+[,typeql]
+----
+undefine as parent from fathership relates father;
+----
+
+.Undefining type's roleplaying
+[,typeql]
+----
+undefine plays parentship:parent from user;
+----
+
+.Undefining attribute type's value type
+[,typeql]
+----
+undefine value string from email;
+----
+
+.Undefining type's ownership
+[,typeql]
+----
+undefine owns email from user;
+----
+
+=== Undefining annotations
+
+.Undefining type's annotation without arguments
+[,typeql]
+----
+undefine @abstract from parentship;
+----
+
+.Undefining value type's annotation with arguments
+[,typeql]
+----
+undefine @regex from email value string;
+----
+
+.Undefining type's ownership's annotation with arguments
+[,typeql]
+----
+undefine @card from user owns email;
+----
+
+=== Undefining functions
+
+include::{page-version}@typeql::page$functions/writing.adoc[tag=undefine]
