@@ -33,6 +33,7 @@ Click on a feature below for detailed documentation and examples.
 * **Updated Query Syntax:**
 - xref:{page-version}@typeql::schema/undefine.adoc[`undefine`] and xref:{page-version}@typeql::pipelines/delete.adoc[`delete`] now explicitly "point" to their removed targets, reducing ambiguity.
 - xref:{page-version}@typeql::pipelines/fetch.adoc[`fetch`] syntax aligns with JSON output formatting.
+- xref:{page-version}@typeql::pipelines/match.adoc[`match`] produces visible row-like results itself (similarly to xref:{page-version}@typeql::pipelines/insert.adoc[`insert`], etc): no more `get` s!
 * **Annotations and Statements Consolidated:** xref:{page-version}@typeql::annotations/abstract.adoc[`abstract`] and xref:{page-version}@typeql::annotations/regex.adoc[`regex`] are now grouped under xref:{page-version}@typeql::annotations/index.adoc[@annotations].
 * **Default Cardinalities:**
 - Default cardinalities are applied to `owns`, `relates`, and `plays` if not explicitly defined.

@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -70,7 +69,7 @@ public class Main {
         List<ConceptRow> directRelatives = getDirectRelativesByEmail(driver, dbName, kevinEmail);
 
         System.out.printf("Request 4 of 6:Request 4 of 6: Transitively find all relatives of a user with email %s\n", kevinEmail);
-        List<ConceptRow> files = getAllRelativesByEmail(driver, dbName, kevinEmail);
+        List<ConceptRow> allRelatives = getAllRelativesByEmail(driver, dbName, kevinEmail);
 
         String oldKevinPhone = "110000000";
         String newKevinPhone = "110000002";
@@ -82,6 +81,7 @@ public class Main {
     }
 
     // end::queries[]
+    // tag::connection[]
     private static Driver driverConnect(Edition edition, String uri, String username, String password) throws TypeDBDriverException {
         if (edition == Edition.CORE) {
             // tag::driver_new_core[]
@@ -93,7 +93,6 @@ public class Main {
             // end::driver_new_core[]
             return driver;
         }
-        ;
         if (edition == Edition.CLOUD) {
             // tag::driver_new_cloud[]
             Driver driver = TypeDB.cloudDriver(
@@ -104,9 +103,9 @@ public class Main {
             // end::driver_new_cloud[]
             return driver;
         }
-        ;
         return null;
     }
+    // end::connection[]
 
     // tag::fetch[]
     private static List<JSON> fetchAllUsers(Driver driver, String dbName) throws TypeDBDriverException {
@@ -138,7 +137,7 @@ public class Main {
     }
 
     // end::insert[]
-    // tag::get[]
+    // tag::match[]
     public static List<ConceptRow> getDirectRelativesByEmail(Driver driver, String dbName, String email) throws TypeDBDriverException {
         try (Transaction tx = driver.transaction(dbName, Transaction.Type.READ)) {
             List<ConceptRow> users = tx.query(String.format("match $u isa user, has email '%s';", email)).resolve().asConceptRows()
@@ -147,7 +146,7 @@ public class Main {
                 System.out.printf("Error: Found %d users with email %s, expected 1", users.size(), email);
                 return null;
             } else {
-                String fileQuery = String.format(
+                String relativesQuery = String.format(
                         "match " +
                                 "$e == '%s';" +
                                 "$u isa user, has email $e;" +
@@ -158,14 +157,15 @@ public class Main {
                                 "sort $username asc;",
                         email
                 );
-                List<ConceptRow> rows = tx.query(fileQuery).resolve().asConceptRows().stream().collect(Collectors.toList());
+                List<ConceptRow> rows = tx.query(relativesQuery).resolve().asConceptRows().stream().collect(Collectors.toList());
                 rows.forEach(row -> System.out.println("Relative: " + row.get("username").tryGetString().get()));
                 return rows;
             }
         }
     }
-    // end::get[]
 
+    // end::match[]
+    // tag::match-function[]
     public static List<ConceptRow> getAllRelativesByEmail(Driver driver, String dbName, String email) throws TypeDBDriverException {
         try (Transaction tx = driver.transaction(dbName, Transaction.Type.READ)) {
             List<ConceptRow> users = tx.query(String.format("match $u isa user, has email '%s';", email)).resolve().asConceptRows()
@@ -174,32 +174,33 @@ public class Main {
                 System.out.printf("Error: Found %d users with email %s, expected 1", users.size(), email);
                 return null;
             } else {
-                String fileQuery = String.format(
-                        "match "+
-                        "$u isa user, has email $e;" +
-                        "$e == '%s';" +
-                        "let $relative in all_relatives($u);" +
-                        "not { $u is $relative; };" +
-                        "$relative has username $username;" +
-                        "select $username;" +
-                        "sort $username asc;",
+                String relativesQuery = String.format(
+                        "match " +
+                                "$u isa user, has email $e;" +
+                                "$e == '%s';" +
+                                "let $relative in all_relatives($u);" +
+                                "not { $u is $relative; };" +
+                                "$relative has username $username;" +
+                                "select $username;" +
+                                "sort $username asc;",
                         email
                 );
-                List<ConceptRow> rows = tx.query(fileQuery).resolve().asConceptRows().stream().collect(Collectors.toList());
+                List<ConceptRow> rows = tx.query(relativesQuery).resolve().asConceptRows().stream().collect(Collectors.toList());
                 rows.forEach(row -> System.out.println("Relative: " + row.get("username").tryGetString().get()));
                 return rows;
             }
         }
     }
 
+    // end::match-function[]
     // tag::update[]
     public static List<ConceptRow> updatePhoneByEmail(Driver driver, String dbName, String email, String oldPhone, String newPhone) throws TypeDBDriverException {
         List<ConceptRow> rows = new ArrayList<>();
         try (Transaction tx = driver.transaction(dbName, Transaction.Type.WRITE)) {
             String query = String.format(
                     "match $u isa user, has email '%s', has phone $phone; $phone == '%s';" +
-                    "delete $phone of $u;" +
-                    "insert $u has phone '%s';",
+                            "delete $phone of $u;" +
+                            "insert $u has phone '%s';",
                     email, oldPhone, newPhone);
             rows = tx.query(query).resolve().asConceptRows().stream().collect(Collectors.toList());
             tx.commit();
@@ -332,5 +333,5 @@ public class Main {
     }
     // end::validate-db[]
 }
-// tag::class-main[]
-// tag::code[]
+// end::class-main[]
+// end::code[]

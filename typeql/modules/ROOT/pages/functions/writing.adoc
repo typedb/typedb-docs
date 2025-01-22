@@ -101,7 +101,7 @@ It's not allowed to declare two functions with the same name even if they have t
 [#query_level_functions]
 === Using Functions at Query-Level
 
-Functions can be defined temporarily at the query level using the `with` clause.
+Functions can be defined temporarily at the query level using the `with` clause, becoming a xref:{page-version}@typeql::pipelines/with.adoc[with pipeline stage].
 Such functions exist only for the duration of the query and are not persisted in the database.
 
 Multiple `with` clauses can be used, each defining a single function.

@@ -1,0 +1,344 @@
+= Python driver tutorial
+:keywords: typedb, typeql, tutorial, python, quickstart, start, sample, example, application, app
+:pageTitle: Python driver tutorial
+:summary: A sample application using TypeDB Python driver.
+:page-preamble-card: 1
+
+[IMPORTANT]
+====
+Under construction.
+====
+
+In this tutorial, we'll build a sample application with the Python driver capable of basic interaction with TypeDB:
+
+* Connect to a TypeDB server,
+* Manage databases and transactions,
+* Send different types of queries.
+
+Follow the steps below or see the
+https://github.com/typedb/typedb-docs/tree/3.x-master/drivers/modules/ROOT/partials/tutorials/python/sample.py[full source code,window=_blank].
+
+.See the full source code
+[%collapsible]
+====
+[,java,indent=0]
+----
+include::{page-version}@drivers::partial$tutorials/python/sample.py[tag=code]
+----
+====
+
+== Environment setup
+
+To run this sample application, you'll need:
+
+. TypeDB: either a https://cloud.typedb.com/[TypeDB Cloud,window=_blank] cluster or a self-hosted deployment.
+For installation instructions, see the xref:{page-version}@manual::deploy/index.adoc[] page.
+. Python and https://pypi.org/project/typedb-driver/[TypeDB Python driver].
+For the driver installation instructions, see the xref:{page-version}@drivers::python/index.adoc[] page.
+
+Use `pip` for the Python driver installation:
+
+[source,console]
+----
+pip install typedb-driver
+----
+
+//#todo Consider adding virtualenv step-by-step guide
+
+== Imported modules
+
+To be able to use the TypeDB Python driver API in the Sample application, use the following import statements:
+
+[,python,indent=0]
+----
+include::{page-version}@drivers::partial$tutorials/python/sample.py[tag=import]
+----
+
+== Default values
+
+We store default values as constants in the source code:
+
+[,python,indent=0]
+----
+include::{page-version}@drivers::partial$tutorials/python/sample.py[tag=constants]
+----
+
+where `DB_NAME` -- the name of the database to use;
+`SERVER_ADDR` -- address of the TypeDB server to connect to;
+`TYPEDB_EDITION` -- TypeDB Community Edition or Cloud edition selector;
+`USERNAME`/`PASSWORD` -- authentication credentials.
+
+== Program structure
+
+The main workflow of this sample application includes establishing a connection to TypeDB, performing a new database setup, and querying.
+
+[,python,indent=0]
+----
+include::{page-version}@drivers::partial$tutorials/python/sample.py[tag=main]
+----
+
+The entire `main()` function code is executed in the context of the <<_typedb_connection,network connection>>, represented by the `driver` object that is returned by the function.
+
+[#_typedb_connection]
+== TypeDB connection
+
+The `connect_to_TypeDB()` function takes `edition` and `addr` as mandatory parameters.
+
+[,python]
+----
+include::{page-version}@drivers::partial$tutorials/python/sample.py[tag=connection]
+----
+
+The `edition` is expected to be an Enum for selecting a TypeDB edition.
+Depending on the TypeDB edition selected, this function initializes either a TypeDB Community Edition or a TypeDB Cloud / Enterprise connection.
+
+TypeDB connections require objects of the `Credentials` (authentication credentials) and `DriverOptions` (driver-specific connection options like TLS settings) classes.
+For our sample application, we have the default values set for all editions.
+
+== Database setup
+
+To set up a TypeDB database, we need to make sure that it exists and has the correct schema and data.
+First, we check whether a database with the provided name already exists on the server.
+
+If such a database doesn't exist, we <<_creating_a_database,create a new database>>,
+<<_defining_a_schema,define its schema>>, and <<_loading_initial_data,load initial data>>.
+
+[NOTE]
+====
+To prevent data loss, avoid deleting an existing database without confirmation from a user.
+====
+
+If a database with the specified name already exists, we check whether we need to replace it.
+To do so, we check the `db_reset` parameter, and, if it's `False`, ask for an input from a user.
+If any of the two suggesting replacement of the database is acceptable, we replace the database by deleting the existing database and then <<_creating_a_database,creating a new one>>.
+
+As the final step of the database setup, we <<_testing_a_database,test it>>.
+
+[,python]
+----
+include::{page-version}@drivers::partial$tutorials/python/sample.py[tag=db-setup]
+----
+
+[#_creating_a_database]
+=== Creating a new database
+
+We create a new database with the specified name (`sample_app_db` by default) and call functions to <<_defining_a_schema,define its schema>> and <<_loading_initial_data,load initial data>>.
+
+[,python]
+----
+include::{page-version}@drivers::partial$tutorials/python/sample.py[tag=create_new_db]
+----
+
+[#_replacing_a_database]
+=== Replacing a database
+
+We delete a database with the specified name (`sample_app_db` by default) and call a function to <<_creating_a_database,create a new one>> instead:
+
+[,python]
+----
+include::{page-version}@drivers::partial$tutorials/python/sample.py[tag=replace_db]
+----
+
+[#_defining_a_schema]
+=== Defining a schema
+
+We use a xref:{page-version}@typeql::schema/define.adoc[define query] to define a schema for the newly created database:
+
+[,python]
+----
+include::{page-version}@drivers::partial$tutorials/python/sample.py[tag=db-schema-setup]
+----
+
+The schema for the sample application is stored in the
+https://github.com/typedb/typedb-docs/tree/3.x-master/drivers/modules/ROOT/partials/tutorials/schema.tql[schema.tql,window=_blank]
+file.
+
+.See the full schema
+[%collapsible]
+====
+[,typeql]
+----
+include::{page-version}@drivers::partial$tutorials/schema.tql[lines=15..]
+----
+====
+
+We use a database name passed as a parameter to open a transaction.
+Then we send the contents of the file as a TypeQL define query and commit the changes made by the transaction.
+
+[#_loading_initial_data]
+=== Loading initial data
+
+With the schema defined, we can load initial data into our database with the
+xref:{page-version}@typeql::pipelines/insert.adoc[insert query]:
+
+[,python]
+----
+include::{page-version}@drivers::partial$tutorials/python/sample.py[tag=db-dataset-setup]
+----
+
+We read the
+https://github.com/typedb/typedb-docs/tree/3.x-master/drivers/modules/ROOT/partials/tutorials/data_small_single_query.tql[data_small_single_query.tql,window=_blank]
+file, send its contents as a single query, and then commit the changes.
+
+.See the full insert query
+[%collapsible]
+====
+[,typeql]
+----
+include::{page-version}@drivers::partial$tutorials/data_small_single_query.tql[lines=15..]
+----
+====
+
+[#_testing_a_database]
+=== Testing a database
+
+With the <<_defining_a_schema,schema defined>> and <<_loading_initial_data,data loaded>>, we test our database to make sure it's ready.
+To test the database, we send a query to count the number of users in the database:
+
+[,python]
+----
+include::{page-version}@drivers::partial$tutorials/python/sample.py[tag=test-db]
+----
+
+== Query examples
+
+After database setup is complete, we proceed with querying our database with different types of queries in the
+`queries()` function:
+
+[,python,indent=0]
+----
+include::{page-version}@drivers::partial$tutorials/python/sample.py[tag=queries]
+----
+
+The queries are as follows:
+
+. <<_fetch,Fetch query>> -- to retrieve information in a JSON format
+. <<_insert,Insert query>> -- to insert new data into the database
+. <<_match,Match query>> -- to retrieve data from the database as rows
+. <<_match_function,Match query with a function call>> -- to retrieve data from the database as rows using functions
+// TODO: Replace Insert + Delete by Update when introduced
+// . <<_update,Update query>> -- to replace data in the database
+. <<_update,Delete + Insert queries>> -- to replace data in the database
+. <<_delete,Delete query>> -- to delete data from the database
+
+Every query is implemented as a function that includes some output of the query response and returns some meaningful data.
+
+[#_fetch]
+=== Fetch query
+
+Fetching allows you to retrieve data from a TypeDB database as JSON documents.
+
+Let's use a xref:{page-version}@typeql::pipelines/fetch.adoc[fetch pipeline] to fetch `phone` s and `email` s for all `user` s in the database:
+
+[,python]
+----
+include::{page-version}@drivers::partial$tutorials/python/sample.py[tag=fetch]
+----
+
+We collect response in a list and store it in the `users` variable that is returned by the function.
+We iterate through the list and print the results from every JSON (`dict`) in the list.
+
+Since we know that there is only one name and one email every time, we can print only the first element every time.
+In general case, there can be multiple attributes of the same type owned, so we need to consider iterating through all returned values returned for every attribute in every JSON.
+That can be done as in the following example:
+
+.Printing JSON for any number of attributes fetched
+[,python]
+----
+for i, JSON in enumerate(users, start=0):
+    print(f"User #{i + 1} —", end="")
+    for result in JSON['u']['full-name']:
+        print(f" Full-name:", result['value'], end="")
+    for result in JSON['u']['email']:
+        print(f" E-mail:", result['value'], end="")
+    print()
+----
+
+[#_insert]
+=== Insert query
+
+Let's insert a new `user` with `username`, `phone`, and `email` attributes to the database.
+
+[,python]
+----
+include::{page-version}@drivers::partial$tutorials/python/sample.py[tag=insert]
+----
+
+The insert query returns an `Iterator` of `ConceptRow` s: one for every `insert` clause execution.
+We collect the `Iterator` to a list to store the inserted data.
+Then we commit the changes, print `phone` s and `email` s by iterating though the list of `ConceptRow` s, and return the stored list.
+
+Since the insert query has no `match` clause, the `insert` clause is executed exactly once.
+Insert queries always return an `ConceptRowIterator`, where every `ConceptRow` represents an inserted result: a column name (a variable name) and its concept.
+
+[#_match]
+=== Match query
+
+If we don't need to convert the result into a JSON document, we can use a single xref:{page-version}@typeql::pipelines/match.adoc[match stage], which returns `ConceptRow` s similarly to <<_insert, insert>>.
+
+Let's retrieve all direct relatives for a `user` using its `email`.
+
+[,python]
+----
+include::{page-version}@drivers::partial$tutorials/python/sample.py[tag=get]
+----
+
+The `get_direct_relatives_by_email()` function checks that there is only one `user` matched with the `email` provided by an input parameter.
+It then executes the query to find the relatives, collects the results, and iterates through them to print the `username` of every matched relative.
+
+[#_match_function]
+=== Match query with a function call
+
+Let's change the query a little to get not only direct relatives, but all relatives of a `user`.
+Additionally, let's use a TypeDB function called `all_relatives` that we previously defined in the schema.
+
+[,java,indent=0]
+----
+include::{page-version}@drivers::partial$tutorials/python/sample.py[tag=match-function]
+----
+
+[#_update]
+=== Update query
+
+[NOTE]
+====
+xref:{page-version}@typeql::pipelines/update.adoc[Update stages] are still in development in 3.0, so you can use xref:{page-version}@typeql::pipelines/delete.adoc[delete] + xref:{page-version}@typeql::pipelines/insert.adoc[insert].
+====
+
+Let's replace a `phone` of one of the `user` s by a new one.
+We can do that by deleting ownership of the old path attribute from the file entity and assigning it with ownership of the new path attribute:
+
+[,python]
+----
+include::{page-version}@drivers::partial$tutorials/python/sample.py[tag=update]
+----
+
+Here, you can notice how both `delete` and `insert` pipeline stages reuse the same variable from the first `match` stage. Executing both write stages in a single transaction isolates these changes from other transactions: there won't be any point of time for other TypeDB users where they won't see a `user` s `phone`. Moreover,
+if any other transaction makes a conflicting change before we commit this transaction, then our transaction fails upon a commit.
+
+[#_delete]
+=== Delete query
+
+Finally, let's delete a `user` by a given `email`. It can be simply done by a single statement inside a `match`, and a very short `delete` operation.
+
+[,python]
+----
+include::{page-version}@drivers::partial$tutorials/python/sample.py[tag=delete]
+----
+
+== Learn more
+
+[cols-2]
+--
+.link:https://github.com/typedb/typedb-docs/tree/3.x-master/drivers/modules/ROOT/partials/tutorials/python/sample.py[Source code,window=_blank]
+[.clickable]
+****
+The full source code of this sample application.
+****
+
+.xref:{page-version}@drivers::python/api-reference.adoc[]
+[.clickable]
+****
+The full API reference for the TypeDB Python driver.
+****
+--

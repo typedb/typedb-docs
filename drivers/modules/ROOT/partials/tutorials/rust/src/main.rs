@@ -69,7 +69,7 @@ async fn insert_new_user(
 }
 
 // end::insert[]
-// tag::get[]
+// tag::match[]
 async fn get_direct_relatives_by_email(
     driver: &TypeDBDriver,
     db_name: &str,
@@ -107,8 +107,8 @@ async fn get_direct_relatives_by_email(
 }
 
 
-// end::insert[]
-// tag::get[]
+// end::match[]
+// tag::match-function[]
 async fn get_all_relatives_by_email(
     driver: &TypeDBDriver,
     db_name: &str,
@@ -145,7 +145,7 @@ async fn get_all_relatives_by_email(
     Ok(relative_emails)
 }
 
-// end::get[]
+// end::match-function[]
 // tag::update[]
 async fn update_phone_by_email(
     driver: &TypeDBDriver,
@@ -221,6 +221,7 @@ async fn queries(driver: &TypeDBDriver, db_name: &str) -> Result<(), Box<dyn Err
 
 // WARNING: keep when changing the AsRef and signatures, ensure they aren't required as-is for code snippets throughout docs
 // end::queries[]
+// tag::connection[]
 async fn driver_connect(
     edition: &Edition,
     uri: &str,
@@ -254,6 +255,7 @@ async fn driver_connect(
         }
     }
 }
+// end::connection[]
 
 // tag::create_new_db[]
 async fn create_database(driver: &TypeDBDriver, db_name: impl AsRef<str>) -> Result<bool, Box<dyn Error>> {
@@ -356,6 +358,7 @@ async fn db_setup(driver: &TypeDBDriver, db_name: &str, db_reset: bool) -> Resul
     validate_data(&driver, db_name).await
 }
 // end::db-setup[]
+
 // tag::main[]
 #[tokio::main]
 async fn main() {
