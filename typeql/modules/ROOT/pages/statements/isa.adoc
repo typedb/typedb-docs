@@ -1,1 +1,55 @@
 = `isa` statement
+
+The statement `<var> isa <type>` is used to ...
+
+== Inserting instance of type
+
+The `isa` keyword can be used to create a new instance of a given type.
+
+[,typeql]
+----
+insert $person isa person;
+----
+
+== Deleting instance of type
+
+The `isa` keyword is not used to delete an instance of type. Simply delete the variable that is bound to the instance.
+
+[,typeql]
+----
+delete $person;
+----
+
+== Matching
+
+=== Matching instances of a type
+
+The `isa` keyword can be used to match all instances of a given type and its subtypes.
+
+[,typeql]
+----
+match $person isa person;
+----
+
+The `isa!` keyword can be used to match all instances of a type _excluding subtypes._
+
+[,typeql]
+----
+match $person isa! person;
+----
+
+=== Matching owner types
+
+The `isa` keyword can be used to match all types of an instance.
+
+[,typeql]
+----
+match $person isa $type;
+----
+
+The `isa!` keyword can be used to match the exact type of an instance.
+
+[,typeql]
+----
+match $person isa! $type;
+----
