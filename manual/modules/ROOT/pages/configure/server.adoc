@@ -7,7 +7,8 @@
 [#_options]
 == Configuration options
 
-TypeDB uses command line arguments for server configuration. To access the list of acceptable arguments, run locally:
+TypeDB uses command line arguments for server configuration.
+To access the list of acceptable arguments, run locally:
 
 [source,console]
 ----
@@ -44,6 +45,10 @@ typedb server --server.address=0.0.0.0:1730
 
 See the respective section of <<_command_line_arguments>> below for details.
 
+==== Encryption
+
+If encryption is required, but there are no certificate authorities available on the machine, refer to xref:{page-version}@manual::configure/encryption.adoc[] for encryption certification recommendations.
+
 [#_storage]
 === Storage
 
@@ -62,7 +67,7 @@ See the respective section of <<_command_line_arguments>> below for details.
 === Diagnostics
 
 TypeDB optionally reports anonymous diagnostics to guide the development and optimisation of TypeDB.
-This data includes unexpected errors and occasional system status updates for number and size of databases, as well as numbers of transactions and queries executed per hour.
+This data includes unex pected errors and occasional system status updates for number and size of databases, as well as numbers of transactions and queries executed per hour.
 
 To see what information is being reported, enable and access the monitoring Web page of the server (e.g. `localhost:4104/diagnostics?format=json`).
 

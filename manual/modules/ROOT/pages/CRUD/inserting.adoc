@@ -32,13 +32,13 @@ include::{page-version}@home::example$tql/schema_small.tql[]
 =====
 ====
 
-=== Insert an instance
-
 To insert data, open a `write` xref:{page-version}@manual::queries/transactions.adoc[transaction].
 This allows you to read and write data to your database while keeping the schema secure.
 
 Every insertion begins with an `insert`.
 Similar to xref:{page-version}@manual::schema/types.adoc[type definition], multiple statements can be combined to insert multiple instances and establish connections between them.
+
+=== Insert an instance
 
 To insert a type instance (an xref:{page-version}@typeql::statements/entity.adoc[entity], a xref:{page-version}@typeql::statements/relation.adoc[relation], or an xref:{page-version}@typeql::statements/attribute.adoc[attribute]), use the xref:{page-version}@typeql::statements/isa.adoc[`isa` keyword]:
 

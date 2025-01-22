@@ -7,7 +7,7 @@
 
 [,typeql]
 ----
-reduce <var> = <operator> [( <var> )] [ , ... ];
+reduce <var> = <operator> [ (<var>) ] [ , ... ];
 ----
 
 TypeQL supports the following reduce operators:
@@ -50,7 +50,7 @@ value of the grouping variable.
 
 [,typeql]
 ----
-reduce <var> = <operator> [( <var> )] [ , ... ] groupby <var>;
+reduce <var> = <operator> [ (<var>) ] [ , ... ] groupby <var>;
 ----
 
 === Example
@@ -61,13 +61,12 @@ Get the number of users per country:
 ----
 match
   $user isa user;
-  located($user, $place);
+  $country isa country;
   {
-    $country isa country;
-    $place is $country;
+    located($user, $country);
   } or {
+    located($user, $place);
     located($place, $country);
-    $country isa country;
   };
-reduce $logins = count;
+reduce $logins = count groupby $country;
 ----

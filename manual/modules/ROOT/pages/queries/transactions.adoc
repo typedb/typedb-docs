@@ -13,22 +13,24 @@ TypeDB transactions provide ACID guarantees up to snapshot isolation.
 
 Read transactions can execute only read queries, and will error when provided data update queries or schema mutation queries.
 
-They are the most lightweight and should be used whenever possible. *Any number of read transactions can be opened concurrently*, and they will never fail to open even when write or schema transactions are open.
+They are the most lightweight and should be used whenever possible. *Any number of read transactions can be opened concurrently*, and they
+will never fail to open even when write or schema transactions are open.
 
 == Write transactions
 
 Write transactions can execute read queries and data update queries, and will error when provided schema mutation queries.
 
-Write transactions can be opened concurrently to other write transactions, and read transactions. *They may fail on commit*, as required to enforce data consistency and isolation, such as when two write transactions concurrently update same piece of data and commit.
+Write transactions can be opened concurrently to other write transactions, and read transactions. *They may fail on commit*, as required to
+enforce data consistency and isolation, such as when two write transactions concurrently update same piece of data and commit.
 
-.Example
+.Example conflict
 [caption=""]
 ====
-We open transaction 1, modifies the attribute value of an entity, and then commits the transaction.
+We open transaction 1 and modify the owned attribute of an entity.
 
-We open transaction 2 while transaction 1 is still running (i.e. hasn't been committed yet).
-They modify the same attribute value and commit their changes after transaction 1 has been commit.
-In this case, the commit of transaction 2 will fail.
+We then open transaction 2 before transaction 1 has been committed, and modify the same ownership.
+
+If we commit first transaction 1, then transaction 2, the commit of transaction 2 will fail.
 ====
 
 == Schema transactions
@@ -48,6 +50,17 @@ All transactions types have an identical API to submit queries.
 
 [tabs]
 ====
+Studio::
++
+--
+Select your database using the database selector (image:{page-component-version}@home::studio-icons/database-none.png[width=128]), then
+select your transaction type in the top menu.
+
+Open your query file.
+Run the query by clicking the image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
+Finally, use the commit button (image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24]) to persist any changes made.
+--
+
 Console::
 +
 --
@@ -66,7 +79,8 @@ Use
 commit
 ----
 
-if you want to commit changes.
+if you want to commit changes, or press kbd:[Ctrl+C] (interrupt) or kbd:[Ctrl+D] (end of input) to terminate the transaction without
+committing.
 --
 
 Python::
@@ -148,15 +162,5 @@ transaction.commit();
 ----
 
 if you want to commit changes.
---
-
-Studio::
-+
---
-Select your database using the database selector (image:{page-component-version}@home::studio-icons/database-none.png[width=128]), then select your transaction type in the top menu.
-
-Open your query file.
-Then click the run button to run your query.
-Finally, use the commit button (image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24]) to persist any changes made.
 --
 ====

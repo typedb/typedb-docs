@@ -1,6 +1,6 @@
 // tag::code[]
 // tag::import[]
-use std::{error::Error, fs, io, os, process};
+use std::{error::Error, fs, io, process};
 use std::io::{BufRead, Write};
 
 use futures_util::stream::TryStreamExt;
@@ -167,7 +167,7 @@ async fn update_phone_by_email(
         .await?;
     tx.commit().await?;
     println!("Total number of users updated: {}", rows.len());
-    return Ok(rows);
+    Ok(rows)
 }
 
 // end::update[]
@@ -227,22 +227,26 @@ async fn driver_connect(
     username: impl AsRef<str>,
     password: impl AsRef<str>,
 ) -> Result<TypeDBDriver, typedb_driver::Error> {
+    let username = username.as_ref();
+    let password = password.as_ref();
     match edition {
         Edition::Core => {
+            #[allow(clippy::let_and_return, reason = "tutorial readability")]
             // tag::driver_new_core[]
             let driver = TypeDBDriver::new_core(
                 &uri,
-                Credentials::new(username.as_ref(), password.as_ref()),
+                Credentials::new(username, password),
                 DriverOptions::new(false, None).unwrap(),
             ).await;
             // end::driver_new_core[]
             driver
         }
         Edition::Cloud => {
+            #[allow(clippy::let_and_return, reason = "tutorial readability")]
             // tag::driver_new_cloud[]
             let driver = TypeDBDriver::new_cloud(
                 &vec![&uri],
-                Credentials::new(username.as_ref(), password.as_ref()),
+                Credentials::new(username, password),
                 DriverOptions::new(true, None).unwrap(),
             ).await;
             // end::driver_new_cloud[]
@@ -351,7 +355,6 @@ async fn db_setup(driver: &TypeDBDriver, db_name: &str, db_reset: bool) -> Resul
     }
     validate_data(&driver, db_name).await
 }
-
 // end::db-setup[]
 // tag::main[]
 #[tokio::main]
