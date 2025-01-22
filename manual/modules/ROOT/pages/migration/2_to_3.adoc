@@ -1,6 +1,6 @@
 = TypeDB 2.x to 3.0
 
-TypeDB 3.0 introduces a great number of changes to almost every aspect of the database.
+TypeDB 3.0 not only becomes significantly faster, but introduces a great number of changes to almost every aspect of the database.
 On this page, you can find the list of significant changes you may want to be aware of, as well as server and driver update recommendations.
 
 * TypeQL syntax *
@@ -8,11 +8,26 @@ On this page, you can find the list of significant changes you may want to be aw
 When updating the version, it is reasonable to consider the effort required for the migration.
 This page will help you to understand the process complexities, highlight the main differences and ways of their resolving.
 
+== General recommendations
+
+=== Preparation
+1. Explore the <<_temporarily_missing, missing features>> list before starting the migration. There might be features you require right after updating, so you might need to wait for a newer 3.x version of TypeDB.
+1. Refer to <<_major_changes, major changes>> to understand the scope of modifications for your database.
+1. You can export your schema and data from an old version of TypeDB following this xref:2.x@manual::configuring/export.adoc[manual].
+1. Instructions and tools for data migration are still in progress. This means that you cannot currently fully migrate a production database. **Coming soon!**
+1. (optionally) Check out and follow the updated xref:{page-version}@home::quickstart.adoc[] to refresh the basics of TypeDB and TypeQL with the 3.0 refinements.
+1. Follow the xref:{page-version}@manual::configure/index.adoc[configuration manual] and further pages for setting up a 3.0 database. The process does not differ much from 2.x.
+1. Manually update your schema definition file, adjusting it based on the error messages while applying it to a 3.0 database. The list of <<_major_changes, major changes>> will help you understand the most common issues of this process.
+- Rules used in your schema should be rewritten to functions. Refer to the xref:{page-version}@typeql::functions/index.adoc[functions documentation] and the xref:{page-version}@manual::schema/functions.adoc[related manual] to understand the new way of abstracting your query logic.
+1. (optionally) update your drivers referencing the xref:{page-version}@drivers::index.adoc[Drivers manual] and taking into account the list of <<_major_changes_drivers, major driver changes>>.
+
+
+[#_major_changes]
 == Major changes
 
 [NOTE]
 ====
-The following section contains only **changed** TypeDB 2.x elements, not all the new features of TypeDB 3.0.
+The following section contains only **changed** TypeDB 2.x elements, not all the new features of TypeDB 3.0. Explore other sections of the xref:{page-version}@manual::index.adoc[Manual] and the xref:{page-version}@typeql::index.adoc[TypeQL Documentation], check out the https://github.com/typedb/typedb/releases[release notes], and stay tuned for the upcoming blogs featuring new exciting things available in TypeDB!
 ====
 
 Click on a feature from this list to access its updated documentation with details and examples.
@@ -20,11 +35,17 @@ Click on a feature from this list to access its updated documentation with detai
 === TypeDB and TypeQL
 
 * Sessions are removed.
-Now, after connecting to TypeDB, you only need to open a `schema`, `write`, or `read` xref:{page-version}@manual::queries/transactions.adoc[transaction].
+Now, after connecting to TypeDB, you only need to open a `schema`, `write`, or `read` xref:{page-version}@manual::queries/transactions.adoc[transaction]
 * `long` is renamed to xref:{page-version}@typeql::values/integer.adoc[`integer`]
-* xref:{page-version}@typeql::pipelines/fetch.adoc[`fetch`]'s syntax is now in sync with output JSON documents
+* Authorization and user management is now available in all editions of TypeDB.
+Follow the xref:{page-version}@manual::connect/index.adoc[] to get the default credentials (if applicable)
 * xref:{page-version}@typeql::schema/undefine.adoc[`undefine`] and xref:{page-version}@typeql::pipelines/delete.adoc[`delete`] have an updated syntax to "point" to the undefined and deleted things to avoid misinterpretations
+* xref:{page-version}@typeql::pipelines/fetch.adoc[`fetch`]'s syntax is now in sync with output JSON documents
 * xref:{page-version}@typeql::annotations/abstract.adoc[`abstract`] and xref:{page-version}@typeql::annotations/regex.adoc[`regex`] are now xref:{page-version}@typeql::annotations/index.adoc[@annotations]
+* All `owns`, `relates`, and `plays` now have a default cardinality xref:{page-version}@manual::schema/annotations.adoc[constraint] set when defining them without an explicit xref:{page-version}@typeql::annotations/card.adoc[`@card`] annotation.
+While default `plays` cardinality is `@card(0..)` (unlimited), default values for `owns` and `relates` equal to `@card(0..1)`, which will allow only up to 1 attribute or roleplayer instances.
+Please, set cardinalities explicitly for the traits expecting multiple instances: this will save your data from corruption and let the database know how to optimize your work in multiple ways.
+* Rules are substituted by xref:{page-version}@typeql::functions/index.adoc[functions].
 
 === TypeDB Drivers
 
@@ -33,13 +54,6 @@ Now, all schema and data fetching and modifications are performed through a sing
 - No more `query().insert()` and `query().define()`
 - No more `concept.delete()` or `concept.getHas()`
 - Type structure is preserved (`Thing` is renamed to `Instance`), casts are available, and it is possible to retrieve something simple as a type's label or an attribute's value, that are sent with the type itself.
-
-== Migration tool
-
-[NOTE]
-====
-Coming soon!
-====
 
 [#_temporarily_missing]
 == Temporarily missing features
@@ -61,6 +75,7 @@ However, take into account that some of your processes can be blocked if you pre
 
 * Node.js, C, C++, C# are not yet introduced.
 
+[#_having_troubles]
 == Having troubles?
 
 Refer to the xref:{page-version}@manual::troubleshooting/index.adoc[] page for troubleshooting recommendations.
