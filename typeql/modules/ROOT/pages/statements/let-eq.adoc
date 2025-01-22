@@ -1,2 +1,13 @@
 = `let ... =` statement
 :page-aliases: {page-version}@typeql::statements/value-assignment.adoc, {page-version}@typeql::values/value-variables.adoc
+
+The statement `let <VAR> = <EXPRESSION>` assigns the result of a single valued expression `<EXPRESSION>` to the variable `<VAR>`.
+
+The expression can be a literal, an arithmetic expression, or a single valued function call.
+
+If the function returns a tuple, multiple variables must be specified on the left hand side of the assignment.
+
+[,typeql]
+----
+let $x, $y = minmax($a, $b);
+----
