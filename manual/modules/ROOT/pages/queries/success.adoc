@@ -26,7 +26,7 @@ to connect to TypeDB and select a project folder.
 Then use the steps below:
 
 . Use a drop-down list in the top toolbar to select a database.
-. Switch to the `write` transaction type.
+. Select the desired transaction type.
 . Open a new tab and insert or type in an insert stage, for example:
 +
 . Run the query by clicking the image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
@@ -73,23 +73,23 @@ match
 Console::
 +
 --
-Open a session of the desired type (`read`, `write`, or `schema`):
+Start a transaction of the desired type (`read`, `write`, or `schema`):
 
 [,bash]
 ----
-> transaction sample_db write
-sample_db::write>
+> transaction sample_db read
+sample_db::read>
 ----
 
 Each concept row is printed as a table where the left column is the variable name, and the right is the variable's value in the row.
 
 [,bash]
 ----
-sample_db::write> match
-                    $user1 has username $name1;
-                    $user2 has username $name2;
-                    friendship ($user1, $user2);
-                    $name1 < $name2;
+sample_db::read> match
+                   $user1 has username $name1;
+                   $user2 has username $name2;
+                   friendship ($user1, $user2);
+                   $name1 < $name2;
 
 Finished validation and compilation...
 Streaming answers...
@@ -138,7 +138,7 @@ method to send the query:
 
 [,rust,indent=0]
 ----
-let transaction = driver.transaction(DB_NAME, TransactionType::Write).await.unwrap()?;
+let transaction = driver.transaction(DB_NAME, TransactionType::Read).await.unwrap()?;
 let query = "
   match
     $user1 has username $name1;
@@ -168,7 +168,7 @@ method to send the query:
 
 [,python,indent=0]
 ----
-with driver.transaction(DB_NAME, TransactionType.WRITE) as tx:
+with driver.transaction(DB_NAME, TransactionType.READ) as tx:
     query = """
       match
         $user1 has username $name1;
@@ -191,14 +191,14 @@ to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
 ++++
-Open a write transaction to the selected database and use the
+Open a transaction to the selected database and use the
 xref:{page-version}@drivers::java/api-reference.adoc#_Transaction_query__java_lang_String[transaction.query()]
 method:
 ++++
 
 [,java,indent=0]
 ----
-try (TypeDBTransaction tx = session.transaction(DB_NAME, Transaction.Type.WRITE)) {
+try (TypeDBTransaction tx = driver.transaction(DB_NAME, Transaction.Type.READ)) {
     String query = """
       match
         $user1 has username $name1;
@@ -230,7 +230,7 @@ to connect to TypeDB and select a project folder.
 Then use the steps below:
 
 . Use a drop-down list in the top toolbar to select a database.
-. Switch to the `write` transaction type.
+. Select the desired transaction type.
 . Open a new tab and insert or type in an insert stage, for example:
 +
 . Run the query by clicking the image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
@@ -283,12 +283,12 @@ fetch {
 Console::
 +
 --
-Open a session of the desired type (`read`, `write`, or `schema`):
+Open a transaction of the desired type (`read`, `write`, or `schema`):
 
 [,bash]
 ----
-> transaction sample_db write
-sample_db::write>
+> transaction sample_db read
+sample_db::read>
 ----
 
 Each output is printed as a valid JSON object with the format specified by the fetch query.
@@ -319,16 +319,6 @@ Streaming documents...
 
 Finished. Total answers: 2
 ----
-
-If you made any changes and are ready to commit, simply type `commit`:
-
-[,bash]
-----
-sample_db::write> commit
-Transaction changes committed
-----
-
-If you wish to close the transaction without committing instead, you can press kbd:[Ctrl+C] (interrupt) or kbd:[Ctrl+D] (end of input).
 --
 ====
 
@@ -349,7 +339,7 @@ method to send the query:
 
 [,rust,indent=0]
 ----
-let transaction = driver.transaction(DB_NAME, TransactionType::Write).await.unwrap()?;
+let transaction = driver.transaction(DB_NAME, TransactionType::Read).await.unwrap()?;
 let query = "
   match
     $user1 has username $name1;
@@ -383,7 +373,7 @@ method to send the query:
 
 [,python,indent=0]
 ----
-with driver.transaction(DB_NAME, TransactionType.WRITE) as tx:
+with driver.transaction(DB_NAME, TransactionType.READ) as tx:
     query = """
       match
         $user1 has username $name1;
@@ -410,14 +400,14 @@ to connect the `driver` to a TypeDB server.
 
 [subs="macros, post_replacements, replacements"]
 ++++
-Open a write transaction to the selected database and use the
+Open a transaction to the selected database and use the
 xref:{page-version}@drivers::java/api-reference.adoc#_Transaction_query__java_lang_String[transaction.query()]
 method:
 ++++
 
 [,java,indent=0]
 ----
-try (TypeDBTransaction tx = session.transaction(DB_NAME, Transaction.Type.WRITE)) {
+try (TypeDBTransaction tx = driver.transaction(DB_NAME, Transaction.Type.READ)) {
     String query = """
       match
         $user1 has username $name1;
