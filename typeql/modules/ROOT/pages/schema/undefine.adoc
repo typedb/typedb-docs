@@ -137,10 +137,12 @@ undefine @abstract from parentship;
 undefine @regex from email value string;
 ----
 
-.Undefining type's ownership's annotation with arguments
+.Undefining type's and type's ownership's annotations
 [,typeql]
 ----
-undefine @card from user owns email;
+undefine
+  @card from user owns email;
+  @independent from email;
 ----
 
 === Undefining functions
