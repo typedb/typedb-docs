@@ -50,6 +50,17 @@ All transactions types have an identical API to submit queries.
 
 [tabs]
 ====
+Studio::
++
+--
+Select your database using the database selector (image:{page-component-version}@home::studio-icons/database-none.png[width=128]), then
+select your transaction type in the top menu.
+
+Open your query file.
+Run the query by clicking the image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
+Finally, use the commit button (image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24]) to persist any changes made.
+--
+
 Console::
 +
 --
@@ -68,7 +79,8 @@ Use
 commit
 ----
 
-if you want to commit changes.
+if you want to commit changes, or press kbd:[Ctrl+C] (interrupt) or kbd:[Ctrl+D] (end of input) to terminate the transaction without
+committing.
 --
 
 Python::
@@ -150,15 +162,5 @@ transaction.commit();
 ----
 
 if you want to commit changes.
---
-
-Studio::
-+
---
-Select your database using the database selector (image:{page-component-version}@home::studio-icons/database-none.png[width=128]), then select your transaction type in the top menu.
-
-Open your query file.
-Then click the run button to run your query.
-Finally, use the commit button (image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24]) to persist any changes made.
 --
 ====
