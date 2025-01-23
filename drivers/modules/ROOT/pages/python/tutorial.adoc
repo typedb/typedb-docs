@@ -216,9 +216,7 @@ The queries are as follows:
 . <<_insert,Insert query>> -- to insert new data into the database
 . <<_match,Match query>> -- to retrieve data from the database as rows
 . <<_match_function,Match query with a function call>> -- to retrieve data from the database as rows using functions
-// TODO: Replace Insert + Delete by Update when introduced
-// . <<_update,Update query>> -- to replace data in the database
-. <<_update,Delete + Insert queries>> -- to replace data in the database
+. <<_update,Update query>> -- to replace data in the database
 . <<_delete,Delete query>> -- to delete data from the database
 
 Every query is implemented as a function that includes some output of the query response and returns some meaningful data.
@@ -297,13 +295,9 @@ Additionally, let's use a TypeDB function called `all_relatives` that we previou
 include::{page-version}@drivers::partial$tutorials/python/sample.py[tag=match-function]
 ----
 
+// TODO: Rewrite this once update stages are introduced
 [#_update]
 === Update query
-
-[NOTE]
-====
-xref:{page-version}@typeql::pipelines/update.adoc[Update stages] are still in development in 3.0, so you can use xref:{page-version}@typeql::pipelines/delete.adoc[delete] + xref:{page-version}@typeql::pipelines/insert.adoc[insert].
-====
 
 Let's replace a `phone` of one of the `user` s by a new one.
 We can do that by deleting ownership of the old path attribute from the file entity and assigning it with ownership of the new path attribute:
