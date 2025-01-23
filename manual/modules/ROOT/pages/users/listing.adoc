@@ -33,7 +33,7 @@ Rust::
 --
 [,rust]
 ----
-let user = driver.users().list().await?;
+let user = driver.users().all().await?;
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `"<username>"` is the name of the user.
@@ -44,7 +44,7 @@ Python::
 --
 [,python]
 ----
-driver.users.list()
+driver.users.all()
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `"<username>"` is the name of the user.
@@ -55,7 +55,7 @@ Java::
 --
 [,java]
 ----
-driver.users().list();
+driver.users().all();
 ----
 
 Where `driver` is an instance of a driver, connected to TypeDB, and `"<username>"` is the name of the user.
