@@ -219,8 +219,8 @@ async fn queries(driver: &TypeDBDriver, db_name: &str) -> Result<(), Box<dyn Err
     delete_user_by_email(driver, db_name, new_user_email).await
 }
 
-// WARNING: keep when changing the AsRef and signatures, ensure they aren't required as-is for code snippets throughout docs
 // end::queries[]
+// WARNING: keep when changing the AsRef and signatures, ensure they aren't required as-is for code snippets throughout docs
 // tag::connection[]
 async fn driver_connect(
     edition: &Edition,
@@ -265,7 +265,7 @@ async fn create_database(driver: &TypeDBDriver, db_name: impl AsRef<str>) -> Res
         Ok(_) => println!("OK"),
         Err(err) => return Err(Box::new(TypeDBError::Other(format!("Failed to create a DB, due to: {}", err)))),
     };
-    db_schema_setup(driver, db_name.as_ref(), "schema_small.tql").await?;
+    db_schema_setup(driver, db_name.as_ref(), "schema.tql").await?;
     db_dataset_setup(driver, db_name.as_ref(), "data_small_single_query.tql").await?;
     return Ok(true);
 }

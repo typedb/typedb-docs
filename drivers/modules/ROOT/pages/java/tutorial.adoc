@@ -81,7 +81,7 @@ The `edition` is expected to be an Enum for selecting a TypeDB edition.
 Depending on the TypeDB edition selected, this function initializes either a TypeDB Community Edition or a TypeDB Cloud / Enterprise connection.
 
 TypeDB connections require objects of the `Credentials` (authentication credentials) and `DriverOptions` (driver-specific connection options like TLS settings) classes.
-For our sample application, we have the default values set for all editions.
+For our sample application, we have suitable default alues set for all editions.
 
 == Database setup
 
@@ -144,6 +144,7 @@ file.
 .See the full schema
 [%collapsible]
 ====
+.schema.tql
 [,typeql]
 ----
 include::{page-version}@drivers::partial$tutorials/schema.tql[lines=15..]
@@ -171,6 +172,7 @@ file, send its contents as a single query, and then commit the changes.
 .See the full insert query
 [%collapsible]
 ====
+.data_small_single_query.tql
 [,typeql]
 ----
 include::{page-version}@drivers::partial$tutorials/data_small_single_query.tql[lines=15..]
@@ -241,7 +243,7 @@ We collect the `Iterator` to a list to store the inserted data.
 Then we commit the changes, print `phone` s and `email` s by iterating though the list of `ConceptRow` s, and return the stored list.
 
 Since the insert query has no `match` clause, the `insert` clause is executed exactly once.
-Insert queries always return an `ConceptRowIterator`, where every `ConceptRow` represents an inserted result: a column name (a variable name) and its concept.
+Insert queries always return an `ConceptRowIterator`, where every `ConceptRow` represents an inserted result: column names (variable names) and their respective concepts.
 
 [#_match]
 === Match query

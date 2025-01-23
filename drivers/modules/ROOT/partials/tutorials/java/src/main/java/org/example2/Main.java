@@ -15,10 +15,11 @@ import com.typedb.driver.jni.TypeDBDriver;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Set;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 // end::import[]
@@ -288,7 +289,7 @@ public class Main {
     // end::replace_db[]
     // tag::db-schema-setup[]
     private static void dbSchemaSetup(Driver driver, String dbName) throws TypeDBDriverException {
-        String schemaFile = "schema_small.tql";
+        String schemaFile = "schema.tql";
         try (Transaction tx = driver.transaction(dbName, Transaction.Type.SCHEMA)) {
             String defineQuery = new String(Files.readAllBytes(Paths.get(schemaFile)));
             System.out.print("Defining schema...");

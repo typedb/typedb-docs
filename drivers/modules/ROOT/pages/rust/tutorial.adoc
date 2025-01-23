@@ -5,11 +5,6 @@
 :tabs-sync-option:
 :page-preamble-card: 1
 
-[IMPORTANT]
-====
-Under construction.
-====
-
 In this tutorial, we'll build a sample application with the Rust driver capable of basic interaction with TypeDB:
 
 * Connect to a TypeDB server,
@@ -36,13 +31,17 @@ To run this sample application, you'll need:
 For installation instructions, see the xref:{page-version}@manual::deploy/index.adoc[] page.
 . Rust, cargo, and https://crates.io/crates/typedb-driver[TypeDB Rust driver].
 For the driver installation instructions, see the xref:{page-version}@drivers::rust/index.adoc[] page.
+If you see "unstable features"-related errors while running the example, to update cargo through `rustup update`.
 
-The Sample application below is synchronous for simplicity, so make sure to add `sync` feature either in the `Cargo.toml` or via the following command:
+The Sample application below is asynchronous.
+Make sure to add the driver crate either in the `Cargo.toml` or via the following command:
 
 [source,console]
 ----
-cargo add typedb-driver -F sync
+cargo add typedb-driver
 ----
+
+Add `-F sync` to the line above if you want to use a sync version of the driver for your applications.
 
 //#todo Consider adding virtualenv step-by-step guide
 == Imported modules
@@ -93,7 +92,7 @@ The `edition` is expected to be an Enum for selecting a TypeDB edition.
 Depending on the TypeDB edition selected, this function initializes either a TypeDB Community Edition or a TypeDB Cloud / Enterprise connection.
 
 TypeDB connections require objects of the `Credentials` (authentication credentials) and `DriverOptions` (driver-specific connection options like TLS settings) classes.
-For our sample application, we have the default values set for all editions.
+For our sample application, we have suitable default alues set for all editions.
 
 == Database setup
 
@@ -156,6 +155,7 @@ file.
 .See the full schema
 [%collapsible]
 ====
+.schema.tql
 [,typeql]
 ----
 include::{page-version}@drivers::partial$tutorials/schema.tql[lines=15..]
@@ -183,6 +183,7 @@ file, send its contents as a single query, and then commit the changes.
 .See the full insert query
 [%collapsible]
 ====
+.data_small_single_query.tql
 [,typeql]
 ----
 include::{page-version}@drivers::partial$tutorials/data_small_single_query.tql[lines=15..]
@@ -253,7 +254,7 @@ We collect the stream to a vector to store the inserted data.
 Then we print `phone` s and `email` s by iterating though the vector of `ConceptRow` s, commit the changes, and return the stored vector.
 
 Since the insert query has no `match` clause, the `insert` clause is executed exactly once.
-Insert queries always return `ConceptRow` s, which represent an inserted result: a column name (a variable name) and its concept.
+Insert queries always return `ConceptRow` s, which represent an inserted result: column names (variable names) and their respective concepts.
 
 [#_match]
 === Match query
@@ -298,13 +299,15 @@ We can do that by deleting ownership of the old path attribute from the file ent
 include::{page-version}@drivers::partial$tutorials/rust/src/main.rs[tag=update]
 ----
 
-Here, you can notice how both `delete` and `insert` pipeline stages reuse the same variable from the first `match` stage. Executing both write stages in a single transaction isolates these changes from other transactions: there won't be any point of time for other TypeDB users where they won't see a `user` s `phone`. Moreover,
-if any other transaction makes a conflicting change before we commit this transaction, then our transaction fails upon a commit.
+Here, you can notice how both `delete` and `insert` pipeline stages reuse the same variable from the first `match` stage.
+Executing both write stages in a single transaction isolates these changes from other transactions: there won't be any point of time for other TypeDB users where they won't see a `user` s `phone`.
+Moreover, if any other transaction makes a conflicting change before we commit this transaction, then our transaction fails upon a commit.
 
 [#_delete]
 === Delete query
 
-Finally, let's delete a `user` by a given `email`. It can be simply done by a single statement inside a `match`, and a very short `delete` operation.
+Finally, let's delete a `user` by a given `email`.
+It can be simply done by a single statement inside a `match`, and a very short `delete` operation.
 
 [,rust]
 ----
