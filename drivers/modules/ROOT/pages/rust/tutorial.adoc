@@ -92,7 +92,7 @@ The `edition` is expected to be an Enum for selecting a TypeDB edition.
 Depending on the TypeDB edition selected, this function initializes either a TypeDB Community Edition or a TypeDB Cloud / Enterprise connection.
 
 TypeDB connections require objects of the `Credentials` (authentication credentials) and `DriverOptions` (driver-specific connection options like TLS settings) classes.
-For our sample application, we have suitable default alues set for all editions.
+For our sample application, we have suitable default values set for all editions.
 
 == Database setup
 
@@ -108,7 +108,7 @@ To prevent data loss, avoid deleting an existing database without confirmation f
 ====
 
 If a database with the specified name already exists, we check whether we need to replace it.
-To do so, we check the `db_reset` parameter, and, if it's `False`, ask for an input from a user.
+To do so, we check the `db_reset` parameter, and, if it's `false`, ask for an input from a user.
 If any of the two suggesting replacement of the database is acceptable, we replace the database by deleting the existing database and then <<_creating_a_database,creating a new one>>.
 
 As the final step of the database setup, we <<_testing_a_database,test it>>.

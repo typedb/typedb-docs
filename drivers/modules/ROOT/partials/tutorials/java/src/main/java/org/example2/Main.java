@@ -62,14 +62,14 @@ public class Main {
         String new_user_phone = "17778889999";
         String new_user_email = "k.koolidge@typedb.com";
         String new_user_username = "k-koolidge";
-        System.out.printf("Request 2 of 6: Request 2 of 6: Add a new user with the email '%s' and phone '%s'\n", new_user_email, new_user_phone);
+        System.out.printf("Request 2 of 6: Add a new user with the email '%s' and phone '%s'\n", new_user_email, new_user_phone);
         List<ConceptRow> newUsers = insertNewUser(driver, dbName, new_user_email, new_user_phone, new_user_username);
 
         String kevinEmail = "kevin.morrison@typedb.com";
         System.out.printf("Request 3 of 6: Find direct relatives of a user with email %s\n", kevinEmail);
         List<ConceptRow> directRelatives = getDirectRelativesByEmail(driver, dbName, kevinEmail);
 
-        System.out.printf("Request 4 of 6:Request 4 of 6: Transitively find all relatives of a user with email %s\n", kevinEmail);
+        System.out.printf("Request 4 of 6: Transitively find all relatives of a user with email %s\n", kevinEmail);
         List<ConceptRow> allRelatives = getAllRelativesByEmail(driver, dbName, kevinEmail);
 
         String oldKevinPhone = "110000000";
@@ -126,14 +126,14 @@ public class Main {
                     "insert $u isa user, has $e, has $p, has $username; $e isa email '%s'; $p isa phone '%s'; $username isa username '%s';",
                     newEmail, newPhone, newUsername
             );
-            List<ConceptRow> response = tx.query(query).resolve().asConceptRows().stream().collect(Collectors.toList());
+            List<ConceptRow> answers = tx.query(query).resolve().asConceptRows().stream().collect(Collectors.toList());
             tx.commit();
-            for (ConceptRow conceptMap : response) {
-                String phone = conceptMap.get("p").tryGetString().get();
-                String email = conceptMap.get("e").tryGetString().get();
+            for (ConceptRow row : answers) {
+                String phone = row.get("p").tryGetString().get();
+                String email = row.get("e").tryGetString().get();
                 System.out.println("Added new user. Phone: " + phone + ", E-mail: " + email);
             }
-            return response;
+            return answers;
         }
     }
 
@@ -205,7 +205,7 @@ public class Main {
                     email, oldPhone, newPhone);
             rows = tx.query(query).resolve().asConceptRows().stream().collect(Collectors.toList());
             tx.commit();
-            System.out.printf("Total number of paths updated: %d%n", rows.size());
+            System.out.printf("Total number of phones updated: %d%n", rows.size());
         }
         return rows;
     }
