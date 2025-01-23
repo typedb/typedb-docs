@@ -15,11 +15,11 @@ import com.typedb.driver.jni.TypeDBDriver;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.stream.Collectors;
 
 // end::import[]
@@ -62,15 +62,15 @@ public class Main {
         String new_user_phone = "17778889999";
         String new_user_email = "k.koolidge@typedb.com";
         String new_user_username = "k-koolidge";
-        System.out.printf("Request 2 of 6: Request 2 of 6: Add a new user with the email '%s' and phone '%s'\n", new_user_email, new_user_phone);
+        System.out.printf("Request 2 of 6: Add a new user with the email '%s' and phone '%s'\n", new_user_email, new_user_phone);
         List<ConceptRow> newUsers = insertNewUser(driver, dbName, new_user_email, new_user_phone, new_user_username);
 
         String kevinEmail = "kevin.morrison@typedb.com";
         System.out.printf("Request 3 of 6: Find direct relatives of a user with email %s\n", kevinEmail);
         List<ConceptRow> directRelatives = getDirectRelativesByEmail(driver, dbName, kevinEmail);
 
-        System.out.printf("Request 4 of 6:Request 4 of 6: Transitively find all relatives of a user with email %s\n", kevinEmail);
-        List<ConceptRow> files = getAllRelativesByEmail(driver, dbName, kevinEmail);
+        System.out.printf("Request 4 of 6: Transitively find all relatives of a user with email %s\n", kevinEmail);
+        List<ConceptRow> allRelatives = getAllRelativesByEmail(driver, dbName, kevinEmail);
 
         String oldKevinPhone = "110000000";
         String newKevinPhone = "110000002";
@@ -82,6 +82,7 @@ public class Main {
     }
 
     // end::queries[]
+    // tag::connection[]
     private static Driver driverConnect(Edition edition, String uri, String username, String password) throws TypeDBDriverException {
         if (edition == Edition.CORE) {
             // tag::driver_new_core[]
@@ -93,7 +94,6 @@ public class Main {
             // end::driver_new_core[]
             return driver;
         }
-        ;
         if (edition == Edition.CLOUD) {
             // tag::driver_new_cloud[]
             Driver driver = TypeDB.cloudDriver(
@@ -104,9 +104,9 @@ public class Main {
             // end::driver_new_cloud[]
             return driver;
         }
-        ;
         return null;
     }
+    // end::connection[]
 
     // tag::fetch[]
     private static List<JSON> fetchAllUsers(Driver driver, String dbName) throws TypeDBDriverException {
@@ -126,19 +126,19 @@ public class Main {
                     "insert $u isa user, has $e, has $p, has $username; $e isa email '%s'; $p isa phone '%s'; $username isa username '%s';",
                     newEmail, newPhone, newUsername
             );
-            List<ConceptRow> response = tx.query(query).resolve().asConceptRows().stream().collect(Collectors.toList());
+            List<ConceptRow> answers = tx.query(query).resolve().asConceptRows().stream().collect(Collectors.toList());
             tx.commit();
-            for (ConceptRow conceptMap : response) {
-                String phone = conceptMap.get("p").tryGetString().get();
-                String email = conceptMap.get("e").tryGetString().get();
+            for (ConceptRow row : answers) {
+                String phone = row.get("p").tryGetString().get();
+                String email = row.get("e").tryGetString().get();
                 System.out.println("Added new user. Phone: " + phone + ", E-mail: " + email);
             }
-            return response;
+            return answers;
         }
     }
 
     // end::insert[]
-    // tag::get[]
+    // tag::match[]
     public static List<ConceptRow> getDirectRelativesByEmail(Driver driver, String dbName, String email) throws TypeDBDriverException {
         try (Transaction tx = driver.transaction(dbName, Transaction.Type.READ)) {
             List<ConceptRow> users = tx.query(String.format("match $u isa user, has email '%s';", email)).resolve().asConceptRows()
@@ -147,7 +147,7 @@ public class Main {
                 System.out.printf("Error: Found %d users with email %s, expected 1", users.size(), email);
                 return null;
             } else {
-                String fileQuery = String.format(
+                String relativesQuery = String.format(
                         "match " +
                                 "$e == '%s';" +
                                 "$u isa user, has email $e;" +
@@ -158,14 +158,15 @@ public class Main {
                                 "sort $username asc;",
                         email
                 );
-                List<ConceptRow> rows = tx.query(fileQuery).resolve().asConceptRows().stream().collect(Collectors.toList());
+                List<ConceptRow> rows = tx.query(relativesQuery).resolve().asConceptRows().stream().collect(Collectors.toList());
                 rows.forEach(row -> System.out.println("Relative: " + row.get("username").tryGetString().get()));
                 return rows;
             }
         }
     }
-    // end::get[]
 
+    // end::match[]
+    // tag::match-function[]
     public static List<ConceptRow> getAllRelativesByEmail(Driver driver, String dbName, String email) throws TypeDBDriverException {
         try (Transaction tx = driver.transaction(dbName, Transaction.Type.READ)) {
             List<ConceptRow> users = tx.query(String.format("match $u isa user, has email '%s';", email)).resolve().asConceptRows()
@@ -174,36 +175,37 @@ public class Main {
                 System.out.printf("Error: Found %d users with email %s, expected 1", users.size(), email);
                 return null;
             } else {
-                String fileQuery = String.format(
-                        "match "+
-                        "$u isa user, has email $e;" +
-                        "$e == '%s';" +
-                        "let $relative in all_relatives($u);" +
-                        "not { $u is $relative; };" +
-                        "$relative has username $username;" +
-                        "select $username;" +
-                        "sort $username asc;",
+                String relativesQuery = String.format(
+                        "match " +
+                                "$u isa user, has email $e;" +
+                                "$e == '%s';" +
+                                "let $relative in all_relatives($u);" +
+                                "not { $u is $relative; };" +
+                                "$relative has username $username;" +
+                                "select $username;" +
+                                "sort $username asc;",
                         email
                 );
-                List<ConceptRow> rows = tx.query(fileQuery).resolve().asConceptRows().stream().collect(Collectors.toList());
+                List<ConceptRow> rows = tx.query(relativesQuery).resolve().asConceptRows().stream().collect(Collectors.toList());
                 rows.forEach(row -> System.out.println("Relative: " + row.get("username").tryGetString().get()));
                 return rows;
             }
         }
     }
 
+    // end::match-function[]
     // tag::update[]
     public static List<ConceptRow> updatePhoneByEmail(Driver driver, String dbName, String email, String oldPhone, String newPhone) throws TypeDBDriverException {
         List<ConceptRow> rows = new ArrayList<>();
         try (Transaction tx = driver.transaction(dbName, Transaction.Type.WRITE)) {
             String query = String.format(
                     "match $u isa user, has email '%s', has phone $phone; $phone == '%s';" +
-                    "delete $phone of $u;" +
-                    "insert $u has phone '%s';",
+                            "delete $phone of $u;" +
+                            "insert $u has phone '%s';",
                     email, oldPhone, newPhone);
             rows = tx.query(query).resolve().asConceptRows().stream().collect(Collectors.toList());
             tx.commit();
-            System.out.printf("Total number of paths updated: %d%n", rows.size());
+            System.out.printf("Total number of phones updated: %d%n", rows.size());
         }
         return rows;
     }
@@ -287,7 +289,7 @@ public class Main {
     // end::replace_db[]
     // tag::db-schema-setup[]
     private static void dbSchemaSetup(Driver driver, String dbName) throws TypeDBDriverException {
-        String schemaFile = "schema_small.tql";
+        String schemaFile = "schema.tql";
         try (Transaction tx = driver.transaction(dbName, Transaction.Type.SCHEMA)) {
             String defineQuery = new String(Files.readAllBytes(Paths.get(schemaFile)));
             System.out.print("Defining schema...");
@@ -332,5 +334,5 @@ public class Main {
     }
     // end::validate-db[]
 }
-// tag::class-main[]
-// tag::code[]
+// end::class-main[]
+// end::code[]

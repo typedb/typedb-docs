@@ -1,0 +1,32 @@
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+insert
+    $u1 isa user,
+        has username "masako-holley",
+        has phone "185800100011",
+        has email "masako.holley@typedb.com";
+
+    $u2 isa user,
+        has username "pearle-goodman",
+        has phone "171255522222",
+        has email "pearle.goodman@typedb.com";
+
+    $u3 isa user,
+        has username "kevin-morrison",
+        has phone "110000000",
+        has email "kevin.morrison@typedb.com";
+
+    $relatives1 isa family (relative: $u1, relative: $u2);
+    $relatives2 isa family (relative: $u2, relative: $u3);

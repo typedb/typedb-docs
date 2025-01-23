@@ -1,1 +1,13 @@
 = `let ... in` statement
+
+The statement `let <VAR> in <EXPRESSION>` assigns the results of a stream valued expression `<EXPRESSION>` to the variable `<VAR>`,
+one at a time.
+
+The expression can only be a call to a function that returns a stream of answers.
+
+If each tuple in the stream contains more than one value, multiple variables must be specified of the left hand side of the assignment.
+
+[,typeql]
+----
+let $year, $company in past-employments($person);
+----

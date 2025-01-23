@@ -4,11 +4,11 @@
 This reference covers the usage of statements in TypeQL.
 
 A TypeQL statement is a building block of a TypeQL pattern.
-Statements in TypeQL are always end with a semicolon.
+Statements in TypeQL always end with a semicolon.
 
 == Simple statements
 
-A simple statement is the smallest pattern that can be in a TyepQL query.
+A simple statement is the smallest pattern that can be in a TypeQL query.
 
 Most simple statements have two or three parts: `<PREDICATE> <SUBJECT>`, `<SUBJECT> <PREDICATE>` or `<SUBJECT> <PREDICATE> <OBJECT>`, where `<PREDICATE>` is a TypeQL keyword.
 However, there can be other more complex statements like xref:{page-version}@typeql::statements/let-in.adoc[].

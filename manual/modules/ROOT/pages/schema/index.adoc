@@ -1,9 +1,31 @@
 = Schema manual
 :page-aliases: {page-version}@manual::defining/overview.adoc
 
-This manual covers:
+These manuals will guide you how to work with schemas in TypeDB.
 
-* The basics of xref:{page-version}@manual::schema/schema_structure.adoc[schema modeling] with TypeDB
-* Defining xref:{page-version}@manual::schema/types.adoc[types] in your schema
-* Refining type definitions with xref:{page-version}@manual::schema/annotations.adoc[annotations]
-* Defining xref:{page-version}@manual::schema/functions.adoc[schema functions]
+[cols-2]
+--
+.xref:{page-version}@manual::schema/schema_structure.adoc[]
+[.clickable]
+****
+Understand TypeDB schemas.
+****
+
+.xref:{page-version}@manual::schema/types.adoc[]
+[.clickable]
+****
+Explore how to declare types, their traits and constraints.
+****
+
+.xref:{page-version}@manual::schema/annotations.adoc[]
+[.clickable]
+****
+Learn and declare more granular constraints with annotations.
+****
+
+.xref:{page-version}@manual::schema/functions.adoc[]
+[.clickable]
+****
+Create custom functions for future usage in TypeDB.
+****
+--
