@@ -1,15 +1,22 @@
 = Update stage
 :page-aliases: {page-version}@typeql::queries/update.adoc
 
-== Draft example
+[NOTE]
+====
+Coming soon.
+====
 
-[,typeql]
-----
-match
-  $person isa person, has username "<username>";
-  $group isa group, has group-id "<group id>";
-  $membership isa group-membership,
-    links (group: $group, member: $person);
-update
-  $membership has rank "moderator";
-----
+For data updates, combine xref:{page-version}@typeql::pipelines/delete.adoc[delete] and xref:{page-version}@typeql::pipelines/insert.adoc[insert] stages.
+
+// == Draft example
+//
+// [,typeql]
+// ----
+// match
+//   $person isa person, has username "<username>";
+//   $group isa group, has group-id "<group id>";
+//   $membership isa group-membership,
+//     links (group: $group, member: $person);
+// update
+//   $membership has rank "moderator";
+// ----
