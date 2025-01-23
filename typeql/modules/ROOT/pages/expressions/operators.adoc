@@ -1,2 +1,16 @@
 = Operators
 :page-aliases: {page-version}@typeql::values/arithmetic.adoc, {page-version}@typeql::values/functions.adoc
+
+[%header,cols="^1,^1,5"]
+|===
+|Precedence
+|Operator
+|Name
+
+|1 |`^` |exponentiation (power)
+|2 |`*` |multiplication
+|2 |`/` |division
+|2 |`%` |modulo (remainder)
+|3 |`+` |addition
+|3 |`-` |subtraction
+|===
