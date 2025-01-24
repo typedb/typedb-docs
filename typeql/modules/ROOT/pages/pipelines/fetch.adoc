@@ -6,7 +6,9 @@ Fetch is primarily used to convert row answers into document (JSON) answers.
 [#syntax]
 == Syntax
 
-A fetch stage can follow any other stage that produces rows (e.g., xref:{page-version}@typeql::pipelines/match.adoc[match], xref:{page-version}@typeql::pipelines/insert.adoc[insert]). It starts with the keyword `fetch` followed by curly braces `{}` with a fetch body inside of it. The `fetch` clause is **terminal**, meaning that it cannot be followed by any other pipeline stage.
+A fetch stage can follow any other stage that produces rows (e.g., xref:{page-version}@typeql::pipelines/match.adoc[match], xref:{page-version}@typeql::pipelines/insert.adoc[insert]).
+It starts with the keyword `fetch` followed by curly braces `{}` with a fetch body inside of it.
+The `fetch` clause is **terminal**, meaning that it cannot be followed by any other pipeline stage.
 
 .Pipeline syntax
 [,typeql]
@@ -39,7 +41,8 @@ fetch {
 };
 ----
 
-These statements should be separated by commas. Comma at the end of the last statement is optional.
+These statements should be separated by commas.
+Comma at the end of the last statement is optional.
 
 === Key-value based body
 
@@ -92,7 +95,7 @@ fetch {
 [,typeql]
 ----
 fetch {
-  "key": fun(...)
+  "key": <fun name>(...)
 };
 ----
 
@@ -100,7 +103,7 @@ fetch {
 [,typeql]
 ----
 fetch {
-  "key": [ fun(...) ]
+  "key": [ <fun name>(...) ]
 };
 ----
 
@@ -130,7 +133,8 @@ fetch {
 
 [NOTE]
 ====
-The `<return statement>` can contain either a single or a stream function return statement. However, the parentheses `()` should be used only for scalar results.
+The `<return statement>` can contain either a single or a stream function return statement.
+However, the parentheses `()` should be used only for scalar results.
 
 See xref:{page-version}@typeql::functions/index.adoc[] for more information about function returns.
 ====
@@ -172,7 +176,7 @@ fetch {
 };
 ----
 
-== Understanding fetch
+== Behavior
 
 Fetch implements translation from classical rows to both more human-friendly and more REST API-friendly documents:
 
@@ -185,11 +189,14 @@ Fetch implements translation from classical rows to both more human-friendly and
 As it is a document, the order of keys is not guaranteed.
 ====
 
-Fetch generates a document for each input row. When a variable from previous pipeline stages is referenced, the result is calculated individually based on the content of each row. However, if an unbounded subquery or function is used within fetch, the same result will be applied to all output documents, as it is executed identically for every row.
+Fetch generates a document for each input row.
+When a variable from previous pipeline stages is referenced, the result is calculated individually based on the content of each row.
+However, if an unbounded subquery or function is used within fetch, the same result will be applied to all output documents, as it is executed identically for every row.
 
 == Usage
 
-Refer to <<syntax>> to explore different ways of `fetch` usage. The following example demonstrates a single `fetch` stage containing different values.
+Refer to <<syntax>> to explore different ways of `fetch` usage.
+The following example demonstrates a single `fetch` stage containing different values.
 
 [NOTE]
 ====
@@ -310,8 +317,9 @@ If two groups are inserted, the result of the query will contain two documents:
     ]
 }
 ----
+
 [NOTE]
 =====
-Notice that `"general mean karma"` is the same for two output documents as the function call is not bounded to `match`.
+Notice that `"general mean karma"` is the same for two output documents as the function call is not bounded to the `match`.
 =====
 ====
