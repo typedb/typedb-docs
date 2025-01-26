@@ -1,14 +1,63 @@
 = Query errors
 
-[IMPORTANT]
-====
-Under construction.
-====
-
 This page gives a brief overview of errors returned by the server when running queries.
 
 == Syntax errors
 
+The output similar to the following is produced when a syntax error is encountered.
+
+[,typeql]
+----
+[TQL03] TypeQL Error: There is a syntax error at 2:15:
+    define
+-->   created sub attribute, value datetime;
+    ~~~~~~~~~~~~~~^
+      updated sub attribute, value datetime;
+Expected TYPE.
+Caused: Error in usage of TypeQL.
+Caused: [TSV7] Query parsing failed.
+----
+
+Syntax errors _never_ terminate transactions.
+
 == Validation errors
 
+Most constraints, such as type capabilities and value constraints, are validated immediately as the data is inserted or deleted.
+To avoid entering incomplete state, the transaction is terminated and all changes are lost.
+
+.Example validation error
+[,typeql]
+----
+[CNT6] Constraint '^user.$' has been violated: value '"Bob"' does not match the regex.
+Caused: [DVL7] Constraint on attribute type 'username' was violated.
+Caused: [COW5] Concept write failed due to a data validation error.
+Caused: [WEX1] Write execution failed due to a concept write error.
+Caused: [PEX6] Error executing write operation.
+Caused: [QEX14] Error while execution write pipeline.
+----
+
+
+Some constraints, such as cardinality, are only validated when the data is committed. If an error is encountered during commit,
+the transaction is terminated and all changes are lost.
+
+.Example commit error
+[,typeql]
+----
+[CNT5] Constraint '@card(1..2)' has been violated: found 0 instances.
+Caused: [DVL11] Instance [1F00 0000 0000 0000 0000 00] of relation type 'friendship' has a relates constraint violation for role type 'friendship:friend'.
+Caused: [COW5] Concept write failed due to a data validation error.
+Caused: [DCT2] Data commit error.
+----
+
 == Isolation errors
+
+If two concurrent transaction modify the same data, the one that commits later may fail if the changes cannot be unambiguously resolved.
+The transaction is still terminated and all data is lost.
+
+.Sample isolation error
+----
+[STC2] Commit in database 'test' failed with isolation conflict: Transaction uses a lock held by a concurrent commit.
+Caused: [SST1] Snapshot commit failed due to storage commit error.
+Caused: [DCT4] Snapshot error.
+Caused: [TSV5] Data transaction commit failed.
+----
