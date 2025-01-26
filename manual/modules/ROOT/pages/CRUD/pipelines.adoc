@@ -1,15 +1,87 @@
 = Complex pipelines
 :page-aliases: {page-version}@manual::reading/fetch.adoc, {page-version}@manual::reading/get.adoc
 
-[IMPORTANT]
-====
-Under construction.
-====
+== Preamble and functions
 
-== Building read pipelines
+A pipeline may define local functions in its xref:{page-version}@typeql::pipelines/with.adoc[preamble]. The functions defined in
+the preamble are not available in other pipelines.
 
-== Building write pipelines
+Functions are effectively read pipeline templates, which makes them a powerful tool to abstract read query logic.
+Each function call is treated as its own subquery that is executed for every row in the input.
 
-== Using functions
+This allows, for example, a `reduce` to be used within a match.
 
-Functions are variablized read pipeline templates, which makes them a powerful tool to abstract read query logic
+[,typeql]
+----
+with
+  fun num_mutuals($user1: user, $user2: user) -> integer:
+    match
+      friendship ($user1, $mutual);
+      friendship ($user2, $mutual);
+    return count;
+match
+  $user1 isa user, has name $name1;
+  $user2 isa user, has name $name2;
+  let $num_mutuals = count_mutuals($user1, $user2);
+----
+
+== Non-terminal stages
+
+Most TypeQL stages can be chained at will. Usually a query pipeline begins with a 
+xref:{page-version}@typeql::pipelines/match.adoc[match] stage, then those initial matches are processed and refined in subsequent stages.
+
+If a stage performs any writes (xref:{page-version}@typeql::pipelines/insert.adoc[insert],
+//xref:{page-version}@typeql::pipelines/update.adoc[update],
+//xref:{page-version}@typeql::pipelines/put.adoc[put],
+xref:{page-version}@typeql::pipelines/delete.adoc[delete]), all writes are completed before the next stage is executed.
+You may then match the newly inserted data, or rely on the deleted data not producing matches, in the later stages.
+
+For example, if we want to update the list of suggested friends for any user who just changed their location:
+
+[,typeql]
+----
+match
+  $user isa user, has name "<NAME>", has location $old_location;
+  $old_location == "<LOCATION>";
+insert 
+  $new_location "<NEW LOCATION>" isa location;
+  $user has location $new_location;
+delete
+  has $old_location of $user;
+match
+  $new_neighbor isa user, has location $new_location;
+  not { $new_neighbor is $user; };
+  let $num_mutuals = count_mutuals($user, $new_neighbor);
+  $num_mutuals >= 3;
+sort $num_mutuals desc;
+limit 10;
+insert 
+  suggested_friend (user: $user, friend: $new_neighbor);
+----
+
+== Fetch
+
+A xref:{page-version}@typeql::pipelines/fetch.adoc[fetch] stage converts each concept row in the input stream into a JSON-like document 
+according to the provided schema.
+
+As it does not produce concept rows, the fetch clause must be the final stage in the pipeline.
+
+In this example, we use a subquery to produced a JSON list of the user's "top 10" friends.
+
+[,typeql]
+----
+match
+  $user isa user;
+fetch {
+  "name": $user.name,
+  "location": $user.location,
+  "friends": [
+    match
+      friendship ($user, $friend), has num_public_interactions $public_interactions;
+      $friend has name $username;
+    sort $public_interactions desc;
+    limit 10;
+    return { $username };
+  ],
+};
+----
