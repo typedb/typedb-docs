@@ -1,6 +1,11 @@
 = Operators
 :page-aliases: {page-version}@typeql::values/arithmetic.adoc, {page-version}@typeql::values/functions.adoc
 
+Arithmetic operator expressions allow computation of new values. Attributes are treated as pure values when used in an arithmetic operator
+expression.
+
+== Quick reference
+
 [%header,cols="^1,^1,5"]
 |===
 |Precedence
@@ -14,3 +19,10 @@
 |3 |`+` |addition
 |3 |`-` |subtraction
 |===
+
+Parentheses (`()`) may be used to override the precedence. The sub-expressions in parentheses are always evaluated first.
+
+[,typeql]
+----
+(1 + 2) * 3 == 9
+----
