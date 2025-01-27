@@ -17,6 +17,7 @@ curl::
 ----
 curl --request POST \
     --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/deploy \
+    --header 'Authorization: Bearer {ACCESS-TOKEN}' \
     --json '{"id":"api-cluster","serverCount":1,"storageSizeGB":10,"provider":"gcp","region":"europe-west2","isFree":true,"machineType":"c2d-highcpu-2","storageType":"standard-rwo","version":"3.0.2"}'
 ----
 
@@ -47,7 +48,8 @@ Request:
 [source]
 ----
 curl --request GET \
-    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID
+    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID \
+    --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
 
 Example Response:
@@ -108,7 +110,8 @@ Request:
 [source]
 ----
 curl --request POST \
-    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend
+    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend \
+    --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
 
 === Resume
@@ -120,6 +123,7 @@ Request:
 [source]
 ----
 curl --request POST \
-    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume
+    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume \
+    --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
 
