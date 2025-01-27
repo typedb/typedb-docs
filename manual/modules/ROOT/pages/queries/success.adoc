@@ -5,7 +5,7 @@ This page gives a brief overview of answer types returned by the server when run
 
 == Query types
 
-xref:{page-version}@typeql::index.adoc#queries[Data pipelines] produce query answers. Currently TypeDB supports two answers formats: concept
+xref:{page-version}@typeql::index.adoc#queries[Data pipelines] produce query answers. Currently, TypeDB supports two answers formats: concept
 rows (the native TypeDB format) and JSON.
 
 In contrast, xref:{page-version}@typeql::index.adoc#queries[schema queries] do not produce answers, but only return success/failures
@@ -193,7 +193,7 @@ to connect the `driver` to a TypeDB server.
 ++++
 Open a transaction to the selected database and use the
 xref:{page-version}@drivers::java/api-reference.adoc#_Transaction_query__java_lang_String[transaction.query()]
-method:
+method to send the query:
 ++++
 
 [,java,indent=0]
@@ -402,7 +402,7 @@ to connect the `driver` to a TypeDB server.
 ++++
 Open a transaction to the selected database and use the
 xref:{page-version}@drivers::java/api-reference.adoc#_Transaction_query__java_lang_String[transaction.query()]
-method:
+method to send the query:
 ++++
 
 [,java,indent=0]

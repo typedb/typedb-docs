@@ -20,7 +20,7 @@ will never fail to open even when write or schema transactions are open.
 
 Write transactions can execute read queries and data update queries, and will error when provided schema mutation queries.
 
-Write transactions can be opened concurrently to other write transactions, and read transactions. *They may fail on commit*, as required to
+Write transactions can be opened concurrently to other write transactions and read transactions. *They may fail on commit*, as required to
 enforce data consistency and isolation, such as when two write transactions concurrently update same piece of data and commit.
 
 .Example conflict
@@ -37,7 +37,7 @@ If we commit first transaction 1, then transaction 2, the commit of transaction 
 
 Schema transactions can execute any type of query: read, data update, and schema mutation queries.
 
-Schema transactions are exclusive against other schema transactions, and write transactions.
+Schema transactions are exclusive against other schema and write transactions.
 Existing open write transactions will block schema transactions from opening.
 Similarly, a schema transaction will block write transactions from opening.
 This prevents the data from mutating while the schema is being updated.
