@@ -1,0 +1,125 @@
+= TypeDB Cloud API Reference
+
+== Clusters
+
+=== Deploy
+
+To deploy a cluster, send a `POST` request to the
+`/api/org/ORG_ID/projects/PROJECT_ID/clusters/deploy` endpoint,
+where `ORG_ID` and `PROJECT_ID` are the IDs of the project and org in which you want to make the cluster -
+when you first create your organization, it will have a project called `default`
+
+[tabs]
+====
+curl::
++
+[source]
+----
+curl --request POST \
+    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/deploy \
+    --json '{"id":"api-cluster","serverCount":1,"storageSizeGB":10,"provider":"gcp","region":"europe-west2","isFree":true,"machineType":"c2d-highcpu-2","storageType":"standard-rwo","version":"3.0.2"}'
+----
+
+Request Body::
++
+[source]
+----
+{
+    "id":"api-cluster",
+    "serverCount":1,
+    "storageSizeGB":10,
+    "provider":"gcp",
+    "region":"europe-west2",
+    "isFree":true,
+    "machineType":"c2d-highcpu-2",
+    "storageType":"standard-rwo",
+    "version":"3.0.2"
+}
+----
+====
+
+=== Get
+
+To get information about a cluster, issue a `GET` request to the
+`/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID` endpoint.
+
+Request:
+[source]
+----
+curl --request GET \
+    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID
+----
+
+Example Response:
+[source]
+----
+{
+  "getCluster": {
+    "cluster": {
+      "id": "tmp",
+      "serverCount": 1,
+      "storageGb": "10",
+      "typedbCloudVersion": {
+        "version": "3.0.2",
+        "singleNodeOnly": true
+      },
+      "createdAt": "1737651270155",
+      "status": "SUSPENDED",
+      "isAdminUserInitialized": false,
+      "project": {
+        "id": "default",
+        "name": "Default"
+      },
+      "provider": {
+        "id": "gcp",
+        "name": "Google Cloud Platform"
+      },
+      "region": {
+        "id": "gcp-europe-west2",
+        "continentName": "Europe",
+        "continentOrdinal": 2,
+        "countryCode": "GB",
+        "locationName": "United Kingdom",
+        "vendorId": "europe-west2"
+      },
+      "machineType": {
+        "vendorId": "c2d-highcpu-2",
+        "cpu": 2,
+        "ramGb": 4,
+        "isFree": true
+      },
+      "storageType": {
+        "vendorId": "standard-rwo",
+        "minGb": 10,
+        "maxGb": 1000,
+        "iops": "3000 IOPS + 6/GiB, up to 16000"
+      }
+    }
+  }
+}
+----
+
+=== Suspend
+
+To suspend a cluster, issue a `POST` request to the
+`/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend` endpoint.
+
+Request:
+[source]
+----
+curl --request POST \
+    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend
+----
+
+=== Resume
+
+To resume a cluster, issue a `POST` request to the
+`/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume` endpoint.
+
+Request:
+[source]
+----
+curl --request POST \
+    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume
+----
+

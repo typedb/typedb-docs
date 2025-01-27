@@ -1,0 +1,52 @@
+= TypeDB Cloud Administration API
+
+The TypeDB Cloud administration API can be used to perform certain
+actions programmatically, rather than through the TypeDB Cloud website.
+
+To use the API, you will need to sign up for a free TypeDB Cloud account at
+https://cloud.typedb.com/sign-up.
+
+== Generating an API Token
+
+API Tokens can be generated from your https://cloud.typedb.com/settings[account settings] page.
+After it's generated, you will be shown its Client ID and Client Secret,
+which you will use to authenticate against the API
+
+[WARNING]
+====
+Make sure to save the client secret somewhere safe - you will only see it when
+you first generate the token, and will be unable to use the token without it
+====
+
+== Connecting to the API
+
+Once you have your client ID and client secret,
+you will need to exchange these for a short-lived access token used to query the API.
+
+. Make a `POST` request to `https://typedb.com/api/cloud/auth`,
+with the client ID and client secret in a Basic authorization header, separated by a `:`
++
+[source]
+----
+curl --request POST \
+    --url https://typedb.com/api/cloud/auth \
+    --header 'Authorization: Basic {CLIENT-ID}:{CLIENT-SECRET}'
+----
+The response body will be your access token
++
+[NOTE]
+====
+Your access token will expire after 1 hour.
+When it does, you will need to perform this process again to get a new token.
+====
+. Make an API request using your access token
+by placing that token in a Bearer authorization header.
+The following example will get information about a cluster called `my-cluster`,
+in a project called `default`, in an organization called `my-org`.
++
+[source]
+----
+curl --request GET \
+    --url https://cloud.typedb.com/api/org/my-org/projects/default/cluster/my-cluster \
+    --header 'Authorization: Bearer {ACCESS-TOKEN}'
+----
