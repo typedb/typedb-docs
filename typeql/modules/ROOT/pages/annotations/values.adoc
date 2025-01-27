@@ -55,7 +55,7 @@ include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-k
 
 The `values` constraint put on an attribute types' value type is inherited.
 // tag::value-constraints-subtyping[]
-This means that values of all subtypes of a constrained type are also constrained, and it cannot be changed.
+This means that values of all subtypes of a constrained type are also constrained, and this constraint cannot be relaxed from the subtypes.
 // end::value-constraints-subtyping[]
 
 A subtype can introduce an even stricter constraint to allow only a subset of the inherited set of allowed values.
