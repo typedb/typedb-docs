@@ -2,18 +2,16 @@
 
 This page explains how to define functions within TypeDB schemas.
 
-== Understanding functions
+== Overview
 
 include::{page-version}@typeql::functions/index.adoc[tag=description]
 
-Functions can be defined in a schema and later used in queries to:
+Functions can be defined in two ways:
 
-- Reduce code duplication by encapsulating common logic within functions.
-- Simplify complex TypeQL queries for improved readability and maintenance.
-- Share reusable query logic with other developers.
+1. We can define functions with "`globally`" in the schema of your database. Functions defined in the schema can be used in any data pipeline.
+1. Or, we can define functions "`locally`" as part of a specific data pipeline. Such functions can only be called from within their parent pipeline.
 
-While this page focuses on defining functions in schemas, it is also possible to create temporary functions for one-time query execution.
-Refer to the xref:{page-version}@typeql::functions/index.adoc[TypeQL documentation] for comprehensive information and additional usage examples.
+The function definition syntax in both cases is identical. This page focuses on defining functions in schemas. For local functions in data pipeline see the xref:{page-version}@typeql::pipelines/with.adoc[with stage] reference.
 
 == Function definition queries
 
