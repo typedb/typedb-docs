@@ -10,15 +10,15 @@ to specify a set of permitted values for attributes.
 .Value annotation syntax
 [,typeql]
 ----
-<type label> value <value type> @values(arg);
-<type label> value <value type> @values(arg0, arg1, ..., argN);
+<type label> value <value type> @values(value);
+<type label> value <value type> @values(value0, value1, ..., valueN);
 ----
 
 .Ownership annotation syntax
 [,typeql]
 ----
-<type label> owns <attribute type label> @values(arg0);
-<type label> owns <attribute type label> @values(arg0, arg1, ..., argN);
+<type label> owns <attribute type label> @values(value0);
+<type label> owns <attribute type label> @values(value0, value1, ..., valueN);
 ----
 
 The `@values` annotation can be defined for either an attribute type's value type or an ownership.
