@@ -32,7 +32,9 @@ SDKs to programmatically query & manage TypeDB.
 [#_console]
 == TypeDB Console
 
-Install a lightweight and powerful CLI tool to manage and query your TypeDB databases.
+TypeDB Console is a lightweight and powerful CLI tool to manage and query your TypeDB databases.
+
+=== Installation
 
 [tabs]
 ====
@@ -139,15 +141,15 @@ include::{page-version}@manual:resources:partial$typedb-console-latest-links.ado
 ====
 
 
-=== Quickstart
+=== Using Console
 
-Run TypeDB Console:
+Launch TypeDB Console with the command:
 [source,console]
 ----
 typedb console
 ----
 
-List all available TypeDB Console commands:
+To list all available TypeDB Console command use:
 [source,console]
 ----
 typedb console --help
@@ -155,17 +157,12 @@ typedb console --help
 
 For a complete usage guide, visit the xref:{page-version}@manual::tools/console.adoc[TypeDB Console Manual].
 
-
-[#_console_archive]
-=== Use with older TypeDB versions
-
-include::{page-version}@manual::tools/console.adoc[tags="compat-intro,compat-table"]
-
-
 [#_studio]
 == TypeDB Studio
 
-Install a powerful GUI tool that facilitates development on TypeDB.
+TypeDB Studio is a powerful GUI tool that facilitates development on TypeDB.
+
+=== Installation
 
 [tabs]
 ====
@@ -221,28 +218,20 @@ The installation wizard will guide you through the process of installing TypeDB 
 ====
 
 
-=== Quickstart
+=== Using Studio
 
-For a 5-minute tutorial on the basics of TypeDB and Studio, visit the xref:{page-version}@home::quickstart.adoc[].
+TypeDB Studio allows users to:
 
-Or, for a complete TypeDB Studio usage guide, visit the xref:{page-version}@manual::tools/studio.adoc[TypeDB Studio Manual].
+* Open a project folder containing their TypeQL files.
+* Connect to a TypeDB database and view the database schema.
+* Run TypeQL queries on your database and display query results.
 
-
-[#_studio_archive]
-=== Use with older TypeDB versions
-
-include::{page-version}@manual::tools/studio.adoc[tags="compat-intro,compat-table"]
-
+For a complete TypeDB Studio usage guide, visit the xref:{page-version}@manual::tools/studio.adoc[TypeDB Studio Manual].
 
 [#_drivers]
 == TypeDB Drivers
 
-Official xref:{page-version}@drivers::index.adoc[driver libraries] for building applications on TypeDB.
-
-[IMPORTANT]
-====
-The TypeDB Driver 3.0 docs are currently under construction and will be published soon. https://github.com/typedb/typedb-driver[View the typedb-driver README on GitHub].
-====
+See the dedicated xref:{page-version}@drivers::index.adoc[Driver documentation] for details on installation and usage of language drivers for TypeDB.
 
 //
 // [cols-3]

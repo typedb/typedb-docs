@@ -1,20 +1,16 @@
 = TypeDB Community Edition
 
+== Preliminaries
+
 Connecting to TypeDB CE requires:
 
 * The `address` and `port` of the server - defaults are `127.0.0.1` and `1729`
 * A valid `username` and `password` - default credentials are `admin` and `password`
 
+== Connecting your client
+
 [tabs]
 ====
-Studio::
-+
---
-Run Studio and follow instructions below:
-
-include::../tools/studio.adoc[tag=connect_ce_studio]
---
-
 Console::
 +
 --
@@ -22,7 +18,17 @@ Run Console using the `--core` argument:
 
 include::../tools/console.adoc[tag=connect_ce_console]
 --
+
+Studio::
++
+--
+Run Studio and follow instructions below:
+
+include::../tools/studio.adoc[tag=connect_ce_studio]
+--
 ====
+
+== Connecting your application
 
 For programmatic access, use one of the TypeDB xref:{page-component-version}@drivers::overview.adoc[drivers] via the network API:
 
@@ -64,39 +70,24 @@ include::{page-version}@drivers::partial$tutorials/java/src/main/java/org/exampl
 Node.js::
 +
 --
-[,js,indent=0]
-----
-Coming soon!
-----
+NOTE: Coming soon.
 --
 
 C#::
 +
 --
-[,csharp,indent=0]
-----
-Coming soon!
-----
-
+NOTE: Coming soon.
 --
 
 C++::
 +
 --
-[,cpp,indent=0]
-----
-Coming soon!
-----
-
+NOTE: Coming soon.
 --
 
 C::
 +
 --
-[,c,indent=0]
-----
-Coming soon!
-----
-
+NOTE: Coming soon.
 --
 ====

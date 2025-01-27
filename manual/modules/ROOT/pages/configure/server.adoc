@@ -5,10 +5,10 @@
 :page-aliases: {page-version}@manual::configuring/arguments.adoc, {page-version}@manual::configuring/config.adoc, {page-version}@manual::configuring/logs.adoc, {page-version}@manual::configuring/overview.adoc
 
 [#_options]
-== Configuration options
+== Command line configuration
 
-TypeDB uses command line arguments for server configuration.
-To access the list of acceptable arguments, run locally:
+TypeDB can use command line arguments for server configuration.
+For a full list of acceptable arguments run:
 
 [source,console]
 ----
@@ -20,17 +20,15 @@ or see <<_command_line_arguments>> below.
 All CLI arguments must:
 
 * start with the double dash prefix `--`,
-* be separated from their value (if any) by:
-** an equals sign (`=`),
-** or a whitespace.
+* be separated from their value (if any) either by an equals sign (`=`) or a whitespace (` `).
 
 [NOTE]
 =====
-Coming soon: config file!
+Coming soon: configuration via config files.
 =====
 
 [#_overview]
-== Configuration overview
+== Configuration options
 
 [#_server]
 === Server
@@ -74,7 +72,7 @@ To see what information is being reported, enable and access the monitoring Web 
 To configure diagnostics reporting and monitoring, see the respective section of <<_command_line_arguments>> below.
 
 [#_log]
-=== Log
+=== Logging
 
 [NOTE]
 =====
@@ -82,7 +80,7 @@ Coming soon.
 =====
 
 [#_machine_requirements]
-== Host machine requirements
+== Host machine configuration
 
 // TODO: This section is copied from the 2.x docs. Update for 3.x!
 // The minimum host machine configuration for running a single TypeDB database is 4 (v)CPUs, 10 GB memory, with SSD.
@@ -129,11 +127,8 @@ ulimit -n
 
 We recommend this is increased to at least `50 000`.
 
-[#_references]
-== References
-
 [#_command_line_arguments]
-=== TypeDB CLI arguments
+== Reference
 
 The following arguments can be used for TypeDB configuration:
 

@@ -24,39 +24,21 @@ The main way of interacting with your TypeDB database is through queries written
 |===
 | Query type | Stage keywords | Multi-stage?
 | *Schema queries* |
-`define`
+schema stages
 
-`undefine`
-
-`redefine`
+(`define`, `undefine`, `redefine`)
 | no
 | *Data pipelines* |
-`match`
+read _and_ write stages
 
-`insert`
+(`match`, `select`, `sort`, `reduce`,
 
-`delete`
-
-`select`
-
-`sort`
-
-`reduce`
-
-...
-
+`insert`, `delete`, ...)
 | yes
 | *Functions* |
-`match`
+read stages
 
-`select`
-
-`sort`
-
-`reduce`
-
-...
-
+(`match`, `select`, `sort`, `reduce`, ...)
 | yes
 |===
 

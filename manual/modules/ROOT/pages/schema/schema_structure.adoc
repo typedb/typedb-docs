@@ -2,7 +2,7 @@
 
 This page covers the most important aspects of TypeDB schemas.
 
-== Understanding the data model
+== Overview
 
 In TypeDB, data is stored in types. There are three kinds of types that exhibit three different, fundamental behaviors of data:
 
@@ -22,14 +22,16 @@ The logical dependency of data is a guiding principle in TypeDB schema design. H
 For the curious reader: there is no concept of an "`independent`" relation as this is, in essence, the concept of an entity.
 ====
 
+See the xref:{page-version}@typeql::data_model.adoc[data model reference] for a technical overview of TypeDB's data model.
+
 [[traits]]
 == Type traits
 
-Relations organize their set of role players by so-called *role types* (also simply called "`roles`"): each role player is of a specific role type. However, there might be one than one player of the same type in the same relation. _But which data instances are allowed in the roles in a given type of relation?_ And similarly for attributes: _which data instances can act as owners of attributes of a given type?_
+=== Role player traits
 
-These questions are answered by the schema, through the specification of so-called *traits*.
+Relations organize their set of role players by so-called *role types* (also simply called "`roles`"): each role player is of a specific role type. _But which types of data instances are allowed in the roles of a relation?_
 
-*  We can specify that a type has a *player* trait (for a specific role of a relation type). For example,
+*  We can specify that a type has a *player* trait (for a specific role of a relation type) in the schema. For example,
 +
 [,typeql]
 .Specify that users can act as friends
@@ -39,7 +41,11 @@ define user plays friendship:friend;
 +
 which literally means that users can act as friends in friendship relations.
 
-* We can specify that a type has an *owner* trait (for a specific attributes). For example,
+=== Ownership traits
+
+We can similarly ask for attributes: _which data instances can act as owners of attributes of a given type?_
+
+* We can specify that a type has an *owner* trait (for a specific attributes) in the schema. For example,
 +
 [,typeql]
 .Specify that users can act as username owners
@@ -56,7 +62,9 @@ It is important to highlight that multiple different types can have the same tra
 In terms of programming principles, you can understand having traits as database analog of implementing https://en.wikipedia.org/wiki/Trait_(computer_programming)[traits]: like types, traits organize data instances into subcollections; unlike types, you cannot directly instantiate a trait.
 ====
 
-Note all types kinds are created equal:
+=== Only object types have traits
+
+Not all types kinds are created equal:
 
 * Entity and relations types (together also referred to as *object* types) _can have traits_.
 * Attribute types are considered mere association of values to objects: they _cannot have traits_

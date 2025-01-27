@@ -1,5 +1,7 @@
 = TypeDB Enterprise
 
+== Preliminaries
+
 Connecting to TypeDB Enterprise requires:
 
 * A running TypeDB Enterprise cluster.
@@ -7,16 +9,10 @@ Connecting to TypeDB Enterprise requires:
 * A valid `username` and `password`.
 * A valid TLS certificate for in-flight encryption.
 
+== Connecting your client
+
 [tabs]
 ====
-Studio::
-+
---
-Run Studio and follow instructions below:
-
-include::../tools/studio.adoc[tag=connect_cloud_studio]
---
-
 Console::
 +
 --
@@ -24,7 +20,17 @@ Run Console using the `--cloud` argument to set the address and port to connect 
 
 include::../tools/console.adoc[tag=connect_cloud_console]
 --
+
+Studio::
++
+--
+Run Studio and follow instructions below:
+
+include::../tools/studio.adoc[tag=connect_cloud_studio]
+--
 ====
+
+== Connecting your application
 
 For programmatic access, use one of the TypeDB xref:{page-component-version}@drivers::overview.adoc[drivers] via the network API:
 
@@ -66,39 +72,24 @@ include::{page-version}@drivers::partial$tutorials/java/src/main/java/org/exampl
 Node.js::
 +
 --
-[,js,indent=0]
-----
-Coming soon!
-----
+NOTE: Coming soon.
 --
 
 C#::
 +
 --
-[,csharp,indent=0]
-----
-Coming soon!
-----
-
+NOTE: Coming soon.
 --
 
 C++::
 +
 --
-[,cpp,indent=0]
-----
-Coming soon!
-----
-
+NOTE: Coming soon.
 --
 
 C::
 +
 --
-[,c,indent=0]
-----
-Coming soon!
-----
-
+NOTE: Coming soon.
 --
 ====

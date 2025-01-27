@@ -4,13 +4,15 @@
 
 
 This page is an installation guide for TypeDB Enterprise, a self-hosted deployment of TypeDB.
+
+TypeDB Enterprise is distributed and installed separately from other editions of TypeDB and requires a license.
 You can get a license for it from our sales team: contact us via
 mailto:cloud@typedb.com[e-mail,window=_blank] or
 https://typedb.com/deploy?dialog=contact[contact form,window=_blank].
 
 [IMPORTANT]
 ====
-TypeDB is available as a fully managed cloud service with no installation required at
+TypeDB is also available as a fully managed cloud service with no installation required at
 https://cloud.typedb.com/[cloud.typedb.com,window=_blank].
 ====
 
@@ -20,13 +22,7 @@ TypeDB Enterprise runs on macOS, Linux, and Windows.
 
 == Download and Install
 
-TypeDB Enterprise is distributed and installed separately from other editions of TypeDB.
-
-Request access to the TypeDB Enterprise distribution repositories from the TypeDB team.
-You can do that via technical support, using the contact details from your contract, or through our
-https://typedb.com/discord[Discord,window=_blank] server.
-
-Then install it with <<_using_docker,Docker>> or via manual
+Install your TypeDB Enterprise distribution with <<_using_docker,Docker>> or via manual
 <<_manual_download_and_installation,download and installation>>.
 
 You can deploy a cluster of TypeDB Enterprise servers
@@ -91,9 +87,7 @@ docker stop typedb
 [#_manual_download_and_installation]
 === Manual installation
 
-Make sure to have access to the main repository: https://repo.typedb.com.
-
-Download the https://cloudsmith.io/~typedb/repos/private-release/packages/?q=cloud&sort=-version[latest release],
+Download the https://cloudsmith.io/~typedb/repos/private-release/packages/?q=cloud&sort=-version[latest release] (you need access to the private release repository),
 unzip it in a location on your machine that is easily accessible via terminal.
 
 If TypeDB doesn't have a distribution you need, please open an issue
@@ -120,9 +114,9 @@ Close the terminal or press kbd:[Ctrl+C].
 == Connecting
 
 To check whether TypeDB Enterprise is working and interact with it, you can connect to it with any
-xref:{page-version}@drivers:ROOT:index.adoc[TypeDB Client].
+xref:{page-version}@manual::tools/index.adoc[TypeDB Client].
 
-You can use xref:{page-version}@manual:ROOT:console.adoc[TypeDB Console] from your TypeDB Enterprise directory:
+You can use xref:{page-version}@manual::tools/console.adoc[TypeDB Console] from your TypeDB Enterprise directory:
 
 [source,console]
 ----
@@ -138,6 +132,8 @@ docker exec -ti typedb-cloud bash -c '/opt/typedb-cloud-all-linux-x86_64/typedb 
 
 [#_deploying_manually]
 == Deploying manually
+
+=== Multi-server setup
 
 While it's possible to run TypeDB Enterprise in a single-server mode, a highly available and fault-tolerant
 production-grade setup includes setting up multiple servers to connect and form a cluster.
@@ -165,7 +161,7 @@ ports `1729`, `1730`, `1731` would turn into:
 * `31729`, `31730`, `31731`.
 ====
 
-=== Starting
+=== Starting servers
 
 TypeDB Enterprise servers working in a cluster shall be configured specifically to know all servers in the cluster (peers).
 This could be done through `peers` key in the server config, or with command-line arguments when starting the server.
@@ -281,14 +277,14 @@ and `external-host-3` hostnames to communicate with TypeDB Enterprise; inter-ser
 private network using ports `1730` and `1731`.
 ====
 
-=== Stopping
+=== Stopping servers
 
 Stopping TypeDB Enterprise is done the same way as on a single server:
 to stop TypeDB Enterprise, close the terminal or press kbd:[Ctrl+C].
 All nodes must be shut down independently in the same way.
 
 [#_deploying_with_kubernetes]
-== Kubernetes
+== Deploying with Kubernetes
 
 To deploy a TypeDB Enterprise cluster with Kubernetes, we can use the https://helm.sh/[Helm] package manager.
 

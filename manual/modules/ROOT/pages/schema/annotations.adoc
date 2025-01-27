@@ -2,258 +2,126 @@
 
 This page explains how to use define queries to define annotations for types and type traits.
 
-== Understanding annotations
+== Overview
 
-Annotations define constraints and extra behavior for types and their traits, enabling more precise control over the data in the schema.
-
-Think of type declarations as blueprints for constructing a building—they define the overall structure.
-Annotations, on the other hand, are the building codes and regulations that ensure every room, window, and door meets specific standards for safety and functionality.
+Annotations define constraints and specialized behavior for types and their traits, enabling more precise control over how data must behave in your database.
 
 [#_type_schema]
-For example, this schema definition is an overall description of what the database is about and what's the structure of the data is expected:
-
+.Example schema
+[%collapsible]
+====
+As an example, consider the following schema
 [,typeql]
 ----
 include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;entities;attributes]
 ----
+====
 
-However, this schema allows the data to be quite messy:
+In the schema above we may have the following:
 
-- There can coexist general `content` s and more general `page` s, `profile` s, and `user` s.
-- `id` s can be duplicated.
-- Generally, there can be an unspecified number of `name` s for a `page` and, thus, a `user`.
-- `phone` and `email` values are not regulated.
-- ... and some other possible unanswered questions.
+- We may have general `content` data objects side by side with more specialized `page` s, `profile` s, and `user` s.
+- `id` s can be duplicated, i.e. need not be unique per content.
+- There can be any number of `name` s for a `page` and, thus, a `user`.
+- `phone` and `email` values do not adhere to specific formats.
+- ...
 
-Different databases have different approaches for solving these issues.
-Some expect external coding for complex validations.
+None of these behaviors may be desirable. TypeDB addresses the issue through a unified annotation mechanism. Annotation, prefixed with `@`, can be *added to schema definition* statements like the ones above. The following list summarizes some of the most common  annotations:
 
-TypeDB aims to simplify the complexities of schema declaration and data control and uses its constraint system to cover the most necessary data limitations, allowing it to be a part of the schema: direct, flexible, and easy to read.
-
-[#annotations_constraints]
-=== Annotations for constraints definition
-
-Using xref:{page-version}@typeql::annotations/index.adoc[annotations], it's possible to define an unlimited number of cardinality, modality, and value constraints directly in the schema:
-
+- `@key` ensures attributes act as keys to data. E.g.
++
+--
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;entities-annotations;attributes-type-annotations;attributes-value-annotations]
+content owns id @key;
 ----
+--
+- `@regex` enforces string values to adhere to specific regular expressions. E.g.,
++
+--
+[,typeql]
+----
+user owns phone @regex("^\d{8,15}$");
+----
+--
+- `@unique` enforce attributes uniquely identify their owner. E.g.,
++
+--
+[,typeql]
+----
+user owns phone @unique;
+----
+--
+- `@card` restricts cardinality, i.e., the number of data instances allowed in a specific context. E.g.,
++
+--
+[,typeql]
+----
+profile owns username @card(1..1);
+----
+--
+- `@abstract` disallows inserting data instances into types. E.g.,
++
+--
+[,typeql]
+----
+content @abstract;
+----
+--
+- `@independent` allows storing attributes without owners. E.g.
++
+--
+[,typeql]
+----
+attribute language @independent;
+----
+--
 
-Try referring to xref:{page-version}@typeql::annotations/index.adoc[TypeQL Annotations] to access the whole list of data constraints available in TypeDB and understanding what each of the annotations above means.
+See the xref:{page-version}@typeql::annotations/index.adoc[TypeQL Annotation reference] for a full list of available annotations.
+[#annotations_constraints]
 
-.See the details
-[%collapsible]
-====
-- `@abstract` makes a type abstract, not allowing it to have instances.
-- `@key` makes `id` and all its subtypes unique, single, and mandatory identifiers of any instance of the `content`.
-- `@card` puts a cardinality constraint, restricting the of `name` s for a `profile`.
-- `@regex` enforces a format for string data stored in all `email` s in the schema and all `phone` s owned by `user` s.
-- `@unique` enforces all `user` 's `phone` s to have unique values.
-- `@independent` allows storing `language` s without references from owners, preserving this limited (by the number of languages in the world) data for statistics.
-====
-
-By applying annotations, you can ensure that your database not only organizes information but also guarantees its correctness, consistency, and integrity.
+== Annotation semantics
 
 [#default_constraints]
-=== Default constraints
+=== Default behaviors
 
-Some constraints are mandatory and are generated automatically if no <<overriding_constraints, overriding value>> is specified.
+Schema definitions may have default behavior if no annotation is specified.
 
-Currently, the only auto-generated constraint is `cardinality`, which is required for any `owns`, `relates`, or `plays` trait.
-Refer to xref:{page-version}@typeql::annotations/card.adoc[@card annotation] for more details.
+* Role player references of relation types default to `@card(0..1)` behavior (a relation may link 0 or 1 role player).
+* Role player traits of other types default to `@card(0..)` behavior (an object may play a specific role in 0 or more relations).
+* Attribute ownership traits of  default to `@card(0..1)` behavior (an object may own a specific attribute 0 or 1 times).
+
+See xref:{page-version}@typeql::annotations/card.adoc[@card annotation] for more details.
+
+[#overriding_constraints]
+=== Redefining constraints
+
+A single declaration *cannot have multiple different annotations* of the same kind. For example:
+
+* `<statement> @card(X) @card(X) @card(X)` will always result in `type @card(X)`.
+* `<statement> @card(X) @card(Y)` is an invalid definition.
+
+A defined annotations whose value should be changed can be xref:{page-version}@typeql::schema/redefine.adoc[redefined].
+
+[NOTE]
+====
+Constraints and annotations can also be <<combining_constraints, combined>> as a result of subtyping and specialization.
+====
 
 [#combining_constraints]
-=== Combining constraints
+=== Combining annotations
 
 Constraints in TypeDB are cumulative, meaning that every constraint must be respected simultaneously.
 Constraints defined through annotations do not relax or interact with one another in a way that reduces their enforcement.
 
-For instance, consider an attribute type's value type with the following constraints (whether explicitly declared or inherited through subtyping):
-
-- Regular expression: `^.*@\w+\.\w+$`
-- Regular expression: `^.*@typedb.com$`
-- Values set: `(alice@typedb.org, bob@typedb.com, cal)`
-
-Combining these constraints, the only permissible value is `bob@typedb.com`.
-
-[#overriding_constraints]
-=== Redefining and overriding constraints
-
-A single declaration cannot have multiple constraints **defined** of the same kind, which is also true for xref:{page-version}@typeql::annotations/index.adoc[annotations].
-Constraints and annotations can be <<combining_constraints, combined>> as a result of subtyping and specialization, but a statement like `type @card(X) @card(X) @card(X)` will always result in `type @card(X)`, and `type @card(X) @card(Y)` is an invalid definition.
-A defined annotations, which value should be changed, can be xref:{page-version}@typeql::schema/redefine.adoc[redefined].
-
-**Overriding** is an operation of hiding a <<default_constraints, default constraint value>> by defining explicit constraints.
-
-== Annotation kinds
-
-[#_type_annotations]
-=== Type annotations
-
-The <<#annotations_constraints, previous example>> contains a number of annotations, and some of them follow type declarations:
-
-[,typeql]
-----
-include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;entities-type-annotations;attributes-type-annotations]
-----
-
-These annotations relate to types as the whole and are generally simple: instances of these types should respect the defined constraints.
-
-.@abstract description
-[%collapsible]
-====
-include::{page-version}@typeql::annotations/abstract.adoc[tags=description]
-====
-
-.@independent description
-[%collapsible]
-====
-include::{page-version}@typeql::annotations/independent.adoc[tags=description]
-====
-
-[#_value_type_annotations]
-=== Value type annotations
-
-Value type annotations are similar to <<_type_annotations, type constraints>>, but are set for value types of attribute types:
-
-[,typeql]
-----
-include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;attributes-value-annotations]
-----
-
-These annotations act similar to type annotations: values of these attributes should respect the defined constraints.
-
-.@regex description
-[%collapsible]
-====
-include::{page-version}@typeql::annotations/regex.adoc[tags=description]
-====
-
-[#_trait_annotations]
-=== Trait annotations
-
-Similarly, trait annotations follow traits (`owns`, `relates`, `plays`) definitions:
-
-[,typeql]
-----
-include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;entities-cap-annotations]
-----
-
-These are a little more complicated, but are more powerful.
-While <<_type_annotations, type annotations>> and <<_value_type_annotations, value type annotations>> target any instance of a type, these annotations target:
-
-- Owners and attributes in `has`.
-- Relations, roles, and roleplayers in `links`.
-
-By defining these annotations, only specific pairs of entities, relations, and attributes are affected or restricted, and you are flexible in combining these annotations to have an elegant and robust schema.
-
-.@card description
-[%collapsible]
-====
-include::{page-version}@typeql::annotations/card.adoc[tags=description]
-====
-
-.@unique description
-[%collapsible]
-====
-include::{page-version}@typeql::annotations/unique.adoc[tags=description]
-====
-
 == Subtyping
 
-Subtyping is a powerful instrument in TypeDB and becomes even more powerful with annotations.
-While it is possible to predict the effect of an annotations on a subtype based on its description, it can be a little tricky at first.
+Subtyping is a powerful instrument in TypeDB and becomes even more powerful with annotations. As a general rule, subtypes inherit the behavior of their supertypes, but they may further specialize this behavior (e.g., through additional annotations).
 
-It is recommended to refer to xref:{page-version}@manual::schema/types.adoc[type definition] to understand how subtyping generally works before proceeding.
+See the xref:{page-version}@typeql::annotations/index.adoc[annotation reference] for further details.
 
-Please note that more details and examples of subtyping behavior is available on each xref:{page-version}@typeql::annotations/index.adoc[annotation's page].
-Visit these pages in case of struggles in understanding of the explanations below.
+== Intricacies
 
-=== Type annotations
-
-An instance should comply to all the annotations of its types (type and supertypes).
-The following are the explanations of subtyping behaviour based on the <<_type_annotations, type annotations descriptions>> and the <<annotations_constraints, example>> from the first section:
-
-.@abstract subtyping
-[%collapsible]
-====
-Let's consider an instance of the `user`.
-It should comply to the `abstract` constraints of:
-
-- `content`
-- `page`
-- `profile`
-
-The <<_type_annotations, constraint's description>> restricts direct instances of types, and `user`, while being a `content`, a `page`, and a `profile`, has the `user` as its direct type.
-Thus, the constraint is satisfied, and this instance can exist.
-
-At the same time, there can not be instances of the mentioned supertypes.
-====
-
-.@independent description
-[%collapsible]
-====
-Let's consider 2 instances of a `slavic-language sub language`.
-They should comply to the `independent` constraint of the `language`.
-The first attribute is owned by multiple owners, while the second is left unowned.
-
-The <<_type_annotations, constraint's description>> allows independent attributes to exist without owners (or restricts the attributes to get deleted without owners).
-Thus, both attributes can exist.
-
-However, the second attribute will get deleted if there will be no `independent` constraints affecting its types.
-====
-
-=== Value type annotations
-
-A value should comply to all the constraints of its attribute's types (type and supertypes).
-The following are the explanations of subtyping behaviour based on the <<_value_type_annotations, value type constraints descriptions>> and the <<annotations_constraints, example>> from the first section:
-
-.@regex subtyping
-[%collapsible]
-====
-Let's consider an instance of a `typedb-email sub email, value string @regex("^.*@typedb\.com$")` and an instance of a `personal-email sub email`.
-
-In order to comply to the `regex` constraints, values of both instances should be valid email addresses based on the `email` 's regular expression.
-Additionally, the domain of `typedb-email` 's value should be "typedb.com", while `personal-email` can be any "*.*", including "typedb.com".
-====
-
-=== Trait annotations
-
-For a trait annotation `<type label 1> <trait> <type label 2> @<annotation>`:
-
-- Every instance of `<type label 1>` or its subtypes owning/relating/playing `<type label 2>` should comply to the `<annotation>` 's constraint.
-- Every instance of `<type label 2>` or its subtypes owned/related/played by `<type label 1>` should comply to the `<annotation>` 's constraint.
-
-The details of the constraint define the actual meaning of this rule.
-The following are the explanations of subtyping behaviour based on the <<_trait_annotations, trait constraints descriptions>> and the <<annotations_constraints, example>> from the first section:
-
-.@card subtyping
-[%collapsible]
-====
-Let's rewind the schema for `user owns name` ownership:
-
-[,typeql]
-----
-include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;all-owns-name]
-----
-
-It is possible to extend this schema to any direction (e.g., by creating new concrete subtypes of the `page` and the `profile`), so let's describe general rules based on this schema:
-
-- Not any `content` can have a `name`.
-- Only `page` s can have a `name`.
-- `page` s generally can have an infinite number of `name` s.
-- A `profile` can have an infinite number of `name` s based on the `page` s constraint.
-However, it should also comply to the constraint of `profile`, which limits this number to up to three `name` s.
-- A `user` should comply to both cardinality constraints from `profile` and `page`.
-Thus, it can have only up to three names.
-
-Refer to xref:{page-version}@typeql::annotations/card.adoc[@card annotation] for a more complex example.
-====
-
-== Common issues
-
-=== <<default_constraints>> are implicitly set for defined traits whenever there is no explicitly defined constraint
+*<<default_constraints>> are implicitly set for defined traits whenever there is no explicitly defined constraint*
 
 E.g., the <<annotations_constraints, following schema>> requires `@card(0..)` specification for `page owns name`, because the default cardinality would not allow `page` s and, thus, `profile` s to have 2 or 3 `name` s.
 

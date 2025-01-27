@@ -217,6 +217,30 @@ in the same block
 --
 ----
 
+Depending on the block type, different markers are used in antora (`--`, `====`, `+****+`).
+
+=== Blocks in blocks
+
+Use different length of markers:
+----
+======
+Outer content
+====
+Inner content
+====
+======
+----
+
+=== Collapsible
+
+----
+.Title of collapsible block
+[%collapsible]
+====
+Collapsible content
+====
+----
+
 === Tiles
 
 

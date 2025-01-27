@@ -2,7 +2,12 @@
 
 This page gives a brief technical overview of TypeDB's type system and query model.
 
-In short, TypeDB's data model based on a *type system* (with _single-inheritance_ subtyping and _trait-based_ referencing). Its query model builds on this type system, and extends it by allowing users to chain together queries and data operations in *data pipelines*.
+In short, TypeDB's data model is based on a *type system* built from two key ingredients:
+
+* a _single-inheritance_ subtyping system
+* a _trait-based_ reference system.
+
+TypeDB's query model is tailored to this type system, directly expressing subtyping and references in its query statements, but also  allowing users to chain together queries and data operations into powerful *multi-stage data pipelines* for all types of workloads.
 
 == Type system
 
