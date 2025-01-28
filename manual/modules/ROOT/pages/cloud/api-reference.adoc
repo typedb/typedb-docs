@@ -56,49 +56,46 @@ Example Response:
 [source]
 ----
 {
-  "getCluster": {
-    "cluster": {
-      "id": "tmp",
-      "serverCount": 1,
-      "storageGb": "10",
-      "typedbCloudVersion": {
-        "version": "3.0.2",
-        "singleNodeOnly": true
-      },
-      "createdAt": "1737651270155",
-      "status": "SUSPENDED",
-      "isAdminUserInitialized": false,
-      "project": {
-        "id": "default",
-        "name": "Default"
-      },
-      "provider": {
-        "id": "gcp",
-        "name": "Google Cloud Platform"
-      },
-      "region": {
-        "id": "gcp-europe-west2",
-        "continentName": "Europe",
-        "continentOrdinal": 2,
-        "countryCode": "GB",
-        "locationName": "United Kingdom",
-        "vendorId": "europe-west2"
-      },
-      "machineType": {
-        "vendorId": "c2d-highcpu-2",
-        "cpu": 2,
-        "ramGb": 4,
-        "isFree": true
-      },
-      "storageType": {
-        "vendorId": "standard-rwo",
-        "minGb": 10,
-        "maxGb": 1000,
-        "iops": "3000 IOPS + 6/GiB, up to 16000"
-      }
-    }
+  "id": "tmp",
+  "serverCount": 1,
+  "storageGb": "10",
+  "typedbCloudVersion": {
+    "version": "3.0.2",
+    "singleNodeOnly": true
+  },
+  "createdAt": "1737651270155",
+  "status": "SUSPENDED",
+  "isAdminUserInitialized": false,
+  "project": {
+    "id": "default",
+    "name": "Default"
+  },
+  "provider": {
+    "id": "gcp",
+    "name": "Google Cloud Platform"
+  },
+  "region": {
+    "id": "gcp-europe-west2",
+    "continentName": "Europe",
+    "continentOrdinal": 2,
+    "countryCode": "GB",
+    "locationName": "United Kingdom",
+    "vendorId": "europe-west2"
+  },
+  "machineType": {
+    "vendorId": "c2d-highcpu-2",
+    "cpu": 2,
+    "ramGb": 4,
+    "isFree": true
+  },
+  "storageType": {
+    "vendorId": "standard-rwo",
+    "minGb": 10,
+    "maxGb": 1000,
+    "iops": "3000 IOPS + 6/GiB, up to 16000"
   }
 }
+
 ----
 
 === Suspend
