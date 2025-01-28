@@ -2,44 +2,37 @@
 
 This page explains how to read data from a TypeDB database.
 
-// TODO: Should we mention schema?
+== Overview
 
-== Understanding read pipelines
+A read query in TypeDB is also called a *read pipeline*. A read pipeline may comprise multiple *stages*, that retrieve and operate on data.
 
-A read pipeline is a pipeline performing only read operations.
-It can consist of one xref:{page-version}@typeql::pipelines/match.adoc[`match` stage] or different combinations of xref:{page-version}@typeql::pipelines/match.adoc[`match`], xref:{page-version}@typeql::pipelines/select.adoc[`select`], xref:{page-version}@typeql::pipelines/sort.adoc[`sort`], xref:{page-version}@typeql::pipelines/fetch.adoc[`fetch`], and other stages and operators.
+* A `match` stage retrieves data based on a supplied pattern.
+* Stages like `sort`, `reduce`, `limit`, ... operate on data.
 
-Most of the read stages produce concept rows (the only exception is <<_fetch, fetch>>), which allows connecting them in an extensible pipeline.
-These operations can be executed in any of the `schema`, `write`, or `read` xref:{page-version}@manual::queries/transactions.adoc[transactions].
+A read pipeline may comprise different combinations of stages (refer to the xref:{page-version}@typeql::pipelines/index.adoc[] for a full list). It should always start with a `match` stage (not counting any preamble `with` stages used to make function definitions).
 
-Refer to the xref:{page-version}@typeql::pipelines/index.adoc[] page to explore all types of read pipelines and possible operations with them.
+Most of the read stages produce concept rows and also take concept rows as inputs: this allows stages to be chained together, with the output of one stage being fed as input to the next stage. The only exception is <<_fetch, fetch>>, which produces JSON documents, and can therefore only appear at the end of a pipeline.
 
-== Using match stages
+Read pipelines can be executed in any of the `schema`, `write`, or `read` xref:{page-version}@manual::queries/transactions.adoc[transaction kinds].
 
-[#_schema_note]
+== Using match: the basics
+
+TypeQL queries retrieve data by matching *patterns*. Patterns comprise one or more statements containing variables. Match stages return _all combinations_ of data for their variables that satisfy the pattern (note that this only applies to "`free`" variables, i.e. those which are not bound by previous stages).
+
 [NOTE]
 ====
-The examples below can be combined with the following schema file.
-A part of this file is defined in the respective xref:{page-version}@manual::schema/index.adoc[definition manuals].
-Also, the data queried in these examples is inserted in the xref:{page-version}@manual::CRUD/inserting.adoc[insertion manual].
-
-[[schema-include]]
-.See the schema.tql
-[%collapsible]
-=====
-.schema.tql
-[,typeql]
-----
-include::{page-version}@home::example$tql/schema_small.tql[]
-----
-=====
+Patterns can also be combined into larger patterns by conjunction with `;`, disjuction with `or`, and negation with `not`. See the xref:{page-version}@typeql::patterns/index.adoc[pattern reference] for more.
 ====
 
-You can query your data using TypeQL's xref:{page-version}@typeql::pipelines/match.adoc[`match` keyword] the same way you xref:{page-version}@manual::CRUD/inserting.adoc[insert] it.
-As usual, multiple statements can be combined to declare multiple variables and establish connections between them.
+When retrieving data from the database there is a basic distinction to keep in mind:
+
+* *objects*, i.e. entities and relations, do not have a value that can be returned from the database; instead only their database-intrinstic representation, xref:{page-version}@typeql::data_model.adoc#representation[IID], is returned to the client.
+* *attributes* have both an IID and a (human readable) *value* that can be returned to the client.
+
+In the examples below, both cases will be illustrated.
 
 [#_read_instance]
-=== Read an instance
+=== Reading objects
 
 To read type instances (an xref:{page-version}@typeql::statements/entity.adoc[entity], a xref:{page-version}@typeql::statements/relation.adoc[relation], or an xref:{page-version}@typeql::statements/attribute.adoc[attribute]), use the xref:{page-version}@typeql::statements/isa.adoc[`isa` keyword]:
 
@@ -67,8 +60,6 @@ This simple query will return all the `user` s in the database.
 ----
 ====
 
-=== Read specific instances
-
 Combining statements, it is possible to add more constraints to the `match`.
 For example, the following query searches for all `user` s with a specific `username` using the xref:{page-version}@typeql::statements/has.adoc[`has` statement] (which can be interpreted as "the `user` with a specific `username` " as this attribute is a xref:{page-version}@typeql::annotations/key.adoc[key]):
 
@@ -89,7 +80,78 @@ include::{page-version}@manual::example$tql/read_queries.tql[tags=match-single-u
 ----
 ====
 
-=== Read attributes and values
+Similar to entity objects, we may also query for relation
+
+.Matching relation linking two instances with specific roles example
+[,typeql]
+----
+include::{page-version}@manual::example$tql/read_queries.tql[tags=match-users-friendship]
+----
+
+.Example TypeDB Console output
+[%collapsible]
+====
+----
+   --------
+    $a | iid 0x1e00030000000000000002 isa user
+    $b | iid 0x1e00030000000000000003 isa user
+    $f | iid 0x1f00020000000000000000 isa friendship
+   --------
+----
+====
+
+If you are sure that these two `user` s can only play specific roles in a `friendship` or your intent is to query for any roles these `user`s play in a relation, the query can be simplified:
+
+.Matching relation linking two instances of any roles example
+[,typeql]
+----
+include::{page-version}@manual::example$tql/read_queries.tql[tags=match-users-friendship]
+----
+
+.Example TypeDB Console output
+[%collapsible]
+====
+----
+   --------
+    $a | iid 0x1e00030000000000000002 isa user
+    $b | iid 0x1e00030000000000000003 isa user
+    $f | iid 0x1f00020000000000000000 isa friendship
+   --------
+----
+====
+
+TypeDB and TypeQL also support further simplification in case you are interested in only the `user` s, so the `friendship` between them is not needed in the output:
+
+[#_matching_relation_linking_without_var_example]
+.Matching relation linking two instances without a variable example
+[,typeql]
+----
+include::{page-version}@manual::example$tql/read_queries.tql[tags=match-users-friendship-users-only]
+----
+
+[NOTE]
+====
+It is an equivalent of the anonymous variable usage:
+
+.Matching relation linking two instances with an anonymous variable example
+[,typeql]
+----
+include::{page-version}@manual::example$tql/read_queries.tql[tags=match-users-friendship-anonymous]
+----
+====
+
+.Example TypeDB Console output
+[%collapsible]
+====
+----
+   --------
+    $a | iid 0x1e00030000000000000002 isa user
+    $b | iid 0x1e00030000000000000003 isa user
+   --------
+----
+====
+
+=== Reading attributes and values
 
 Attributes and their values can be read in a similar way.
 By variablizing the attribute part of the <<_specific_users_example, previous example>>, it's easy to get all `user` s and their `username` s.
@@ -104,7 +166,7 @@ include::{page-version}@manual::example$tql/read_queries.tql[tags=match-user-use
 
 [NOTE]
 ====
-While the same result for our schema could be achieved through:
+Equivalently, we could query
 
 .Matching all usernames example
 [,typeql]
@@ -112,7 +174,7 @@ While the same result for our schema could be achieved through:
 include::{page-version}@manual::example$tql/read_queries.tql[tags=match-usernames]
 ----
 
-the original query ensures that these `username` s are owned by other instances, not just exist in the database.
+(The queries may only differ in the case of independent attributes, as these may not be owned, and ownership is required by the first version of the query.)
 ====
 
 .Example TypeDB Console output
@@ -195,86 +257,35 @@ Try comparing the outputs of this and the previous examples.
 ----
 ====
 
-=== Read relations
+=== Reading type labels
 
-Similarly to xref:{page-version}@manual::CRUD/inserting.adoc[insertion], matching relations based on their roleplayers supports multiple formats, suitable for different goals and approaches.
+Types from database schemas are also available for `match` ing and retrieving.
+To bind a variable to a type, use type-related statements and variablize the respective side.
+The following example query retrieves the root types (types without supertypes) of the owners of attributes of type labelled `email`, using the xref:{page-version}@typeql::statements/isa.adoc[`isa` statement], the xref:{page-version}@typeql::statements/label.adoc[`label` statement], and the xref:{page-version}@typeql::statements/sub.adoc[`sub!` statement]:
 
-The most explicit way to bind a variable with a relation is:
-
-.Matching relation linking two instances with specific roles example
+.Matching types example
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-users-friendship]
+include::{page-version}@manual::example$tql/read_queries.tql[tags=match-user-emails-supertypes]
 ----
 
 .Example TypeDB Console output
 [%collapsible]
 ====
 ----
-   --------
-    $a | iid 0x1e00030000000000000002 isa user
-    $b | iid 0x1e00030000000000000003 isa user
-    $f | iid 0x1f00020000000000000000 isa friendship
-   --------
+   ---------------------
+    $attribute-type | type email
+    $owner-type     | type content
+   ---------------------
 ----
 ====
 
-If you are sure that these two `user` s can only play specific roles in a `friendship` or your intent is to query for any roles these `user`s play in a relation, the query can be simplified:
+Refer to the xref:{page-version}@typeql::pipelines/match.adoc[] page for a detailed explanation and additional examples.
+A full list of statements, including the ones available for `match` ing, is available xref:{page-version}@typeql::statements/index.adoc[here].
 
-.Matching relation linking two instances of any roles example
-[,typeql]
-----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-users-friendship]
-----
+== Matching composite patterns
 
-.Example TypeDB Console output
-[%collapsible]
-====
-----
-   --------
-    $a | iid 0x1e00030000000000000002 isa user
-    $b | iid 0x1e00030000000000000003 isa user
-    $f | iid 0x1f00020000000000000000 isa friendship
-   --------
-----
-====
-
-TypeDB and TypeQL also support further simplification in case you are interested in only the `user` s, so the `friendship` between them is not needed in the output:
-
-[#_matching_relation_linking_without_var_example]
-.Matching relation linking two instances without a variable example
-[,typeql]
-----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-users-friendship-users-only]
-----
-
-[NOTE]
-====
-It is an equivalent of the anonymous variable usage:
-
-.Matching relation linking two instances with an anonymous variable example
-[,typeql]
-----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-users-friendship-anonymous]
-----
-====
-
-.Example TypeDB Console output
-[%collapsible]
-====
-----
-   --------
-    $a | iid 0x1e00030000000000000002 isa user
-    $b | iid 0x1e00030000000000000003 isa user
-   --------
-----
-====
-
-=== Negate, conjunct, and disjunct
-
-All the examples you saw so far use only xref:{page-version}@typeql::patterns/conjunctions.adoc[conjunctions]: while writing multiple statements with semicolons between them and any additional syntax shown below, these conditions are combined to produce the result (there is a logical "AND" between them).
-
-It is possible to `match` a broader range of results using xref:{page-version}@typeql::patterns/disjunctions.adoc[disjunctions] (logical "OR"):
+In the examples above we have already seen the use of `not` subpatterns. This pattern constructor, together with the disjunction constructor `or`, provide powerful ways to combine patterns.
 
 .Matching with disjunction example
 [,typeql]
@@ -318,43 +329,13 @@ include::{page-version}@manual::example$tql/read_queries.tql[tags=match-user-no-
 ----
 ====
 
-Combine negations, conjunctions, and disjunctions.
-However, be aware that an inefficient query with lots of negations and disjunctions may take time to execute.
 See xref:{page-version}@typeql::patterns/index.adoc[] for more details about patterns.
 
-=== Read types
+== Pipelining stages
 
-Types from database schemas are also available for `match` ing and retrieving.
-To bind a variable to a type, use type-related statements and variablize the respective side.
-The following example query retrieves the root types (types without supertypes) of the owners of attributes of type labelled `email`, using the xref:{page-version}@typeql::statements/isa.adoc[`isa` statement], the xref:{page-version}@typeql::statements/label.adoc[`label` statement], and the xref:{page-version}@typeql::statements/sub.adoc[`sub!` statement]:
+Let's now discuss how to use the matched results in pipeline stages.
 
-.Matching types example
-[,typeql]
-----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-user-emails-supertypes]
-----
-
-.Example TypeDB Console output
-[%collapsible]
-====
-----
-   ---------------------
-    $attribute-type | type email
-    $owner-type     | type content
-   ---------------------
-----
-====
-
-The full list of statements, including the ones available for `match` ing, is available xref:{page-version}@typeql::statements/index.adoc[here].
-
-Refer to the xref:{page-version}@typeql::pipelines/match.adoc[] page for a detailed explanation and additional examples.
-
-== Operating on outputs
-
-For now, we only covered single `match` stages.
-However, it is possible to use the matched results in the following pipeline stages for further actions (e.g., in an xref:{page-version}@manual::CRUD/inserting.adoc[insert] or xref:{page-version}@manual::CRUD/deleting.adoc[delete] pipelines) or results modifications.
-
-It is frequently useful to get only a specific set of variables instead of everything that is matched in the constraint declarations.
+For example, it is frequently useful to get only a specific set of variables instead of everything that is matched in the constraint declarations.
 To select the necessary variables from the <<_matching_relation_linking_without_var_example, previous example>>, use the xref:{page-version}@typeql::pipelines/select.adoc[select operator]:
 
 .Selecting variables example
@@ -404,14 +385,14 @@ include::{page-version}@manual::example$tql/read_queries.tql[tags=match-users-an
 As the mentioned operators can reuse the variables from previous pipeline stages and produce their own results, it is a common approach to combine multiple stages in complex pipelines.
 Continue exploring pipelines in the xref:{page-version}@manual::CRUD/pipelines.adoc[] manual.
 
-Refer to xref:{page-version}@typeql::pipelines/index.adoc[] to explore all pipeline stages and operators.
+The above example only cover simple 2-stage pipelines; in theory, there are now boundaries set for how you may combine stages. See xref:{page-version}@manual::CRUD/pipelines.adoc[] for more examples.
 
 [#_fetch]
 == Converting output to JSON documents
 
-Results of most of (and all read) pipeline stages in TypeDB can be converted into documents of the JSON format using `fetch`.
-The main purpose of it is to present the data in a more readable format and export it for connecting with other applications.
-However, this powerful tool not only allows you to flexibly structure your output based on variables, but also to perform subquerying operations, xref:{page-version}@manual::schema/functions.adoc[function] calls, reference instance's attributes, and much more.
+Results of read pipeline stages in TypeDB can be converted into documents of the JSON format using `fetch`.
+The main purpose is to export the data in a format that's easily readable by other appplications.
+But `fetch` not only allows you to flexibly structure your output based on variables, but also to perform subquerying operations, xref:{page-version}@manual::schema/functions.adoc[function] calls, reference instance's attributes, and much more.
 
 [NOTE]
 ====
@@ -451,6 +432,8 @@ include::{page-version}@manual::example$tql/read_queries.tql[tags=match-user-use
 ----
 ====
 
+Note the body of the `fetch` stage "`declares`" the structure of the output documents.
+
 [NOTE]
 ====
 The example above shows the difference between matching using attributes and accessing attributes.
@@ -460,11 +443,7 @@ However, the query execution would return an error if the `fetch` stage was comp
 To achieve this, you can try accessing attributes of an attribute.
 ====
 
-As you can see, every symbol after the `fetch` keyword declares the structure of the output documents.
-This way, it's possible to specify any level of nesting required.
-Similarly, you can achieve returning lists of attributes (it is even required if the cardinality of the ownership is not limited by 1).
-
-The following is an example of documents nesting and lists usage.
+The following is an example of document nesting and JSON list usage.
 We also produce an additional document containing every existing attribute of the instance using `.*`.
 
 .Creating a document of users with nesting and lists example
@@ -519,9 +498,9 @@ include::{page-version}@manual::example$tql/read_queries.tql[tags=match-user-fet
 
 [NOTE]
 ====
-As you can see in this example, the missing `email` is represented differently.
+Note how the missing `email` is represented as an empty list: wrapping empty results in lists produces empty lists `[ ]` instead of JSON ``null``s.
 
-Wrapping `null` s in lists produces empty lists `[ ]`, while the `.*` command matches only existing attributes, thus, does not mention `null` s.
+The `.*` command matches only existing attributes, thus, does not mention `null` s.
 ====
 
 Refer to xref:{page-version}@typeql::pipelines/fetch.adoc[] to explore all applications of `fetch`, its syntax, and more examples with subqueries, functions, and much more.

@@ -1,10 +1,10 @@
 = `plays` statement
 
-The statement `<LABEL> plays <SCOPED ROLE LABEL>` is used to identify the `<LABEL>` type as a roleplayer of `<SCOPED ROLE LABEL>`.
+The statement `<LABEL> plays <SCOPED ROLE LABEL>` is used to identify the `<LABEL>` type as a role player of `<SCOPED ROLE LABEL>`.
 
-== Defining roleplayers
+== Defining role players
 
-The `plays` keyword can be used to define a type as a roleplayer of a role type.
+The `plays` keyword can be used to define a type as a role player of a role type.
 Note that a scope is required to resolve role type names ambiguity.
 
 [,typeql]
@@ -12,7 +12,7 @@ Note that a scope is required to resolve role type names ambiguity.
 define user plays parentship:parent;
 ----
 
-== Undefining roleplayers
+== Undefining role players
 
 The `plays` keyword can be used to undefine a type's role.
 
@@ -32,9 +32,9 @@ The `plays` keyword can be used to match all role types a type plays.
 match user plays $r;
 ----
 
-=== Matching roleplayer types
+=== Matching role player types
 
-The `plays` keyword can be used to match all roleplayer types for a role type with a label `<LABEL>`.
+The `plays` keyword can be used to match all role player types for a role type with a label `<LABEL>`.
 
 [,typeql]
 ----

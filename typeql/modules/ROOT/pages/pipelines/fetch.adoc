@@ -218,26 +218,26 @@ fetch {
   "general mean karma": mean_karma(),
   "members": [
     match
-      (group: $group, member: $member) isa group-membership;
+      group-membership (group: $group, member: $member);
     fetch {
       "member information": { $member.* },
     };
   ],
   "first username": (
     match
-      (group: $group, member: $member) isa group-membership;
+      group-membership (group: $group, member: $member);
       $member has username $username;
     return first $username;
   ),
   "all usernames": [
     match
-      (group: $group, member: $member) isa group-membership;
+      group-membership (group: $group, member: $member);
       $member has username $username;
     return { $username };
   ],
   "members mean karma": [
     match
-      (group: $group, member: $member) isa group-membership;
+      group-membership (group: $group, member: $member);
       $member has karma $karma;
     return mean($karma);
   ]

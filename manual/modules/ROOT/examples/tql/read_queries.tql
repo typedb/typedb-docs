@@ -94,7 +94,7 @@ match
 match
   $a isa user, has username "Alice", has email "alice@typedb.com";
   $b isa user, has username "Bob", has email "bob@typedb.com";
-  ($a, $b) isa friendship;
+  friendship ($a, $b);
 // end::match-users-friendship-users-only[]
 
 // tag::match-users-friendship-anonymous[]

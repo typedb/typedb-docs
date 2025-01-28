@@ -27,7 +27,7 @@ return <return-statement>
 - `<optional-arguments>` is a list of zero of more typed variables, written in the format `$a : A, $b : B, ...`
 - `<return-types>` consists of at least one `<return-type>` and can be:
 * a xref:{page-version}@typeql::functions/stream.adoc[stream] tuple type, written in the format `{ A, B, ... }`.
-* a xref:{page-version}@typeql::functions/tuple.adoc[tuple] type, written in the format `A, B, ...`.
+* a xref:{page-version}@typeql::functions/scalar.adoc[tuple] type, written in the format `A, B, ...`.
 
 +
 [NOTE]
@@ -187,7 +187,7 @@ Learn more about function bodies - pipelines.
 Understand how to work with stream functions.
 ****
 
-.xref:{page-version}@typeql::functions/tuple.adoc[]
+.xref:{page-version}@typeql::functions/scalar.adoc[]
 [.clickable]
 ****
 Explore single functions and their usage.

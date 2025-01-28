@@ -1,9 +1,0 @@
-match
-  $u isa user;
-  $f isa file;
-  $a isa action;
-  ($u, $f, $a) isa permission;
-fetch
-  $u as "User": name;
-  $f as "File": path;
-  $a as "Action": name;

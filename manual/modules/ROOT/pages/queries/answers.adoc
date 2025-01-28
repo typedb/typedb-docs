@@ -283,12 +283,9 @@ Python::
 Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
-[subs="macros, post_replacements, replacements"]
-++++
 Open a transaction to the selected database and use the
-xref:{page-version}@drivers::python/api-reference.adoc#_Transaction_query[transaction.query()]
+xref:{page-version}@drivers::python/api-reference.adoc[transaction.query()]
 method to send the query:
-++++
 
 [,python,indent=0]
 ----

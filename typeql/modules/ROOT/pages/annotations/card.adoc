@@ -39,7 +39,7 @@ When defined, the `@card` annotation overrides the default `cardinality` with th
 // end::description[]
 
 // tag::description[]
-The `cardinality` constraint regulates the number of traits a type instance can have.
+The `cardinality` constraint regulates the number of data instances that can appear in a specific context (like owning an attribute).
 // end::description[]
 For example, the following definition specifies that an instance of the `page` type must have at least one and no more than three `name`s:
 

@@ -1,8 +1,0 @@
-match
-  $p isa person, has name $name;
-  $f isa file, has path $path;
-  $read isa action, has name "read";
-  (subject: $p, object: $f, action: $read) isa permission;
-fetch
-  $name;
-  $path;

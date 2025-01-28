@@ -8,5 +8,5 @@ insert
 // tag::insert-users-friendship[]
   $a isa user, has username "Alice", has email "alice@typedb.com";
   $b isa user, has username "Bob", has email "bob@typedb.com";
-  (friend: $a, friend: $b) isa friendship;
+  friendship (friend: $a, friend: $b);
 // end::insert-users-friendship[]
