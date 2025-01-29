@@ -8,25 +8,49 @@
 This page is a stub.
 ====
 
-Data::
+Data concept ("`concept`")::
 +
 --
-some text
+Anything a variables can hold (see "`Variable`")
 
 Data instance ("`instance`")::
-some text
+Data (of a schema-defined type) stored in the database.
 
 Data value ("`value`")::
-some text
+Literal value that is computed on-the-fly or extracted from attribute.
+
+Type label ("`label`")::
+String value that identifies a type.
+
+Data list ("`list`")::
+A list (finite, ordered set) of instances and/or values.
+--
+
+Variable::
++
+--
+Identifier that can hold data.
+
+Instance variable::
+Variables that holds an instance.
+
+Value variable::
+Variable that holds a value.
+
+Type variable::
+Variable that holds a type label.
+
+List variable::
+Variable that holds a list.
 --
 
 Trait::
 +
 --
-Entity and relation type can have traits as defined in the schema.
+Traits determine classes of types whose instance can be used as reference in instances of other types.
 
-Player trait::
-some text
+Role player trait ("`player trait`")::
+
 
 Owner trait::
 some text
@@ -36,20 +60,35 @@ some text
 Type::
 +
 ****
-Entity and relation type can have traits as defined in the schema.
+Types organized data into categories, allowing us to declare category-specific data operations and structures.
 
 User-defined type::
 +
-*****
-Entity and relation type can have traits as defined in the schema.
+******
+Types defined in the schema.
 
-Player trait::
-some text
+Entity type::
+...
 
-Owner trait::
-some text
+Relation type::
+...
+
+Attribute type::
+...
+
+Structured value type ("`struct type`")::
+...
 ******
 
-Owner trait::
-some text
+Built-in type::
++
+******
+Entity and relation type can have traits as defined in the schema.
+
+Primitive type::
+...
+
+List types::
+...
+******
 ****
