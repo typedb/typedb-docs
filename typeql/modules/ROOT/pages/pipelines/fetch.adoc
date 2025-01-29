@@ -13,9 +13,9 @@ The `fetch` clause is **terminal**, meaning that it cannot be followed by any ot
 .Pipeline syntax
 [,typeql]
 ----
-<pipeline stages>
+<pipeline_stages>
 fetch {
- <fetch body>
+ <fetch_body>
 };
 ----
 
@@ -112,7 +112,7 @@ fetch {
 ----
 fetch {
   "key": [
-    <read pipeline>
+    <read_pipeline>
     fetch {
       <inner fetch body>
     }
@@ -125,7 +125,7 @@ fetch {
 ----
 fetch {
   "key": (
-    <read pipeline>
+    <read_pipeline>
     return <return statement>
   )
 };
@@ -144,7 +144,7 @@ See xref:{page-version}@typeql::functions/index.adoc[] for more information abou
 ----
 fetch {
   "key": [
-    <read pipeline>
+    <read_pipeline>
     return <AGG 0>, ..., <AGG N>;
   ]
 };
@@ -158,7 +158,7 @@ fetch {
 ----
 fetch {
   "key": [
-    <read pipeline>
+    <read_pipeline>
     reduce $_0? = <AGG 1>, ... , $_n? = <AGG N>;
     return first $_0, ..., $_n;
   ]

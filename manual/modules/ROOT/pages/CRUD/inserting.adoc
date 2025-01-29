@@ -5,11 +5,9 @@ This page explains how to insert data in a TypeDB database.
 
 == Overview
 
-An insert stage is used to insert data into a database.
-It is usually executed in `write` xref:{page-version}@manual::queries/transactions.adoc[transactions].
+Data in TypeDB is inserted using `insert` stages in *write pipelines*, which can executed in `write` (or `schema`) xref:{page-version}@manual::queries/transactions.adoc[transactions].
 
-It can be used as a single query, meaning the insertion will occur exactly once.
-Alternatively, it can be a stage in a xref:{page-version}@typeql::pipelines/index.adoc[pipeline], potentially with multiple input rows from the preceding stage (e.g., a xref:{page-version}@typeql::pipelines/match.adoc[`match` stage]).
+Inserts can be performed as part of a single-stage query, in which case the data insert will occur exactly once. Inserts can also be part of multi-stage a xref:{page-version}@typeql::pipelines/index.adoc[pipelines], potentially with multiple input rows from the preceding stage (e.g., a xref:{page-version}@typeql::pipelines/match.adoc[`match` stage]), in which case we perform one data insert for each input row.
 
 Refer to the xref:{page-version}@typeql::pipelines/insert.adoc[] page for a detailed explanation and additional examples.
 
@@ -18,8 +16,8 @@ Refer to the xref:{page-version}@typeql::pipelines/insert.adoc[] page for a deta
 To insert data, open a `write` xref:{page-version}@manual::queries/transactions.adoc[transaction].
 This allows you to read and write data to your database while keeping the schema secure.
 
-Every insertion begins with an `insert`.
-Multiple insert statements can be combined within the same `insert` stage and the same variable may appear in multiple statements (but the variable will refer to the same data in all those statements).
+Insert stages begin with the keyword `insert`.
+Multiple statements can be combined within the same `insert` stage and the same variable may appear in multiple statements (but the variable will refer to the same data in all those statements).
 
 == Insert statements
 

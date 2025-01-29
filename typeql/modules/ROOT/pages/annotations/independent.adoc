@@ -24,6 +24,7 @@ The `@independent` annotation enforces the `independent` constraint for an attri
 // TODO: Add a reference to attributes and their dependency on existing owners
 
 By default, attributes (instances of attribute types) depend on their owners:
+
 * Attributes cannot be inserted without a `has` clause.
 * Attributes are automatically deleted when their owners are deleted.
 
@@ -35,7 +36,7 @@ In contrast, attributes of independent types can exist without owners.
 include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-keyword;independent-attribute;]
 ----
 
-.Independent attributes insertion
+.Inserting independent attributes
 [,typeql]
 ----
 include::{page-version}@typeql::example$tql/data_annotations.tql[tags=insert-keyword;independent-attribute;]

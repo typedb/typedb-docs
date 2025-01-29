@@ -19,7 +19,7 @@ A function declaration consists of:
 [,typeql]
 ----
 fun <function-name> ( <optional-arguments> ) -> <return-types>:
-<read-pipeline>
+<read_pipeline>
 return <return-statement>
 ----
 
@@ -34,7 +34,7 @@ return <return-statement>
 ====
 The types `A, B, ...` above can be either user-defined types (e.g. an entity type `user`) or primitive value types (e.g. `boolean`).
 ====
-- `<read-pipeline>` includes any read xref:{page-version}@typeql::pipelines/index.adoc[pipeline].
+- `<read_pipeline>` includes any read xref:{page-version}@typeql::pipelines/index.adoc[pipeline].
 - `<return-statement>` may consist of variables, xref:{page-version}@typeql::expressions/function_calls.adoc[function calls], and built-in reductions:
 * Scalar return statements are of the form
 `$a;`.
