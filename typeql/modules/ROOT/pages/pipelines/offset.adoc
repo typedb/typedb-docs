@@ -20,7 +20,7 @@ This can be thought as retrieving the second page with 10 employees per page.
 ----
 match
   $company isa company, has company-name "<name>";
-  (employer: $company, employee: $person) isa employment,
+  employment (employer: $company, employee: $person),
     has start-date $start;
 sort $start;
 offset 10;

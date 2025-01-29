@@ -3,21 +3,78 @@
 
 This page gives a brief overview of answer types returned by the server when running queries.
 
-== Query types
+== Query and answer types
 
-xref:{page-version}@typeql::index.adoc#queries[Data pipelines] produce query answers. Currently TypeDB supports two answers formats: concept
-rows (the native TypeDB format) and JSON.
+xref:{page-version}@typeql::index.adoc#queries[Data pipelines] produce query answers. Currently TypeDB supports two answers formats:
+
+1. xref:{page-version}@manual::CRUD/outputs.adoc#crows[Concept
+rows] (the native TypeDB format). Any valid data pipeline not ending with a `fetch` stage will produce answers in concept row
+format.
+2. xref:{page-version}@manual::CRUD/outputs.adoc#JSON[JSON] documents. A data pipeline ending with a `fetch` stage will produce JSON answers.
 
 In contrast, xref:{page-version}@typeql::index.adoc#queries[schema queries] do not produce answers, but only return success/failures
 notifications.
 
-== Concept rows
+== Answers in clients
 
-Any valid data pipeline not ending with a `fetch` stage will produce answers in xref:{page-version}@manual::CRUD/outputs.adoc#crows[concept row
-format].
+=== Concept row answers
 
 [tabs]
+======
+Console::
++
+--
+Start a transaction of the desired type (`read`, `write`, or `schema`):
+
+[,bash]
+----
+> transaction sample_db read
+sample_db::read>
+----
+
+When running a query in TypeDB Console, each concept row is printed as a table where the left column is the variable name, and the right is the variable's value in the row.
+
+.Sample query and output
+[%collapsible]
 ====
+[,bash]
+----
+sample_db::read> match
+                   $user1 has username $name1;
+                   $user2 has username $name2;
+                   friendship ($user1, $user2);
+                   $name1 < $name2;
+
+Finished validation and compilation...
+Streaming answers...
+
+   ------------
+    $name1 | user1 isa username
+    $name2 | user2 isa username
+    $user1 | iid 0x1e00000000000000000014 isa user
+    $user2 | iid 0x1e00000000000000000015 isa user
+   ------------
+    $name1 | user1 isa username
+    $name2 | user3 isa username
+    $user1 | iid 0x1e00000000000000000014 isa user
+    $user2 | iid 0x1e00000000000000000016 isa user
+   ------------
+
+Finished. Total answers: 2
+----
+====
+
+If you made any changes and are ready to commit, simply type `commit`:
+
+[,bash]
+----
+sample_db::write> commit
+Transaction changes committed
+----
+
+If you wish to close the transaction without committing instead, you can press kbd:[Ctrl+C] (interrupt) or kbd:[Ctrl+D] (end of input).
+--
+
 Studio::
 +
 --
@@ -45,6 +102,8 @@ match
 Each concept row is printed as a table where the left column is the variable name, and the right is the variable's value in the row.
 
 .Sample output
+[%collapsible]
+====
 [,typeql]
 ----
 ## Running>
@@ -67,13 +126,18 @@ match
    ------------
 ## Completed
 ----
-
+====
 --
+======
 
+=== JSON answers
+
+[tabs]
+======
 Console::
 +
 --
-Start a transaction of the desired type (`read`, `write`, or `schema`):
+Open a transaction of the desired type (`read`, `write`, or `schema`):
 
 [,bash]
 ----
@@ -81,45 +145,105 @@ Start a transaction of the desired type (`read`, `write`, or `schema`):
 sample_db::read>
 ----
 
-Each concept row is printed as a table where the left column is the variable name, and the right is the variable's value in the row.
+Each output is printed as a valid JSON object with the format specified by the fetch query.
 
+.Sample query and output
+[%collapsible]
+====
 [,bash]
 ----
-sample_db::read> match
-                   $user1 has username $name1;
-                   $user2 has username $name2;
-                   friendship ($user1, $user2);
-                   $name1 < $name2;
+test::read> match
+                $user1 has username $name1;
+                $user2 has username $name2;
+                friendship ($user1, $user2);
+                $name1 < $name2;
+            fetch {
+                "friend1": $name1,
+                "friend2": $name2,
+            };
 
 Finished validation and compilation...
-Streaming answers...
+Streaming documents...
 
-   ------------
-    $name1 | user1 isa username
-    $name2 | user2 isa username
-    $user1 | iid 0x1e00000000000000000014 isa user
-    $user2 | iid 0x1e00000000000000000015 isa user
-   ------------
-    $name1 | user1 isa username
-    $name2 | user3 isa username
-    $user1 | iid 0x1e00000000000000000014 isa user
-    $user2 | iid 0x1e00000000000000000016 isa user
-   ------------
+{
+    "friend1": "user1",
+    "friend2": "user2"
+}
+{
+    "friend1": "user1",
+    "friend2": "user3"
+}
 
 Finished. Total answers: 2
 ----
-
-If you made any changes and are ready to commit, simply type `commit`:
-
-[,bash]
-----
-sample_db::write> commit
-Transaction changes committed
-----
-
-If you wish to close the transaction without committing instead, you can press kbd:[Ctrl+C] (interrupt) or kbd:[Ctrl+D] (end of input).
---
 ====
+--
+
+Studio::
++
+--
+Follow the xref:{page-version}@manual::studio.adoc#_connect_to_typedb[Studio manual]
+to connect to TypeDB and select a project folder.
+Then use the steps below:
+
+. Use a drop-down list in the top toolbar to select a database.
+. Select the desired transaction type.
+. Open a new tab and insert or type in an insert stage, for example:
++
+. Run the query by clicking the image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
+. Commit the changes by clicking the image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit query] button.
+
+.Sample query
+[,typeql]
+----
+match
+  $user1 has username $name1;
+  $user2 has username $name2;
+  friendship($user1, $user2);
+  $name1 < $name2;
+fetch {
+    "friend1": $name1,
+    "friend2": $name2,
+};
+----
+
+Each output is printed as a valid JSON object with the format specified by the fetch query.
+
+.Sample output
+[%collapsible]
+====
+[,typeql]
+----
+## Running>
+match
+    $user1 has username $name1;
+    $user2 has username $name2;
+    friendship ($user1, $user2);
+    $name1 < $name2;
+fetch {
+    "friend1": $name1,
+    "friend2": $name2,
+};
+
+## Result> Success.
+{
+    "friend1": "user1",
+    "friend2": "user2"
+}
+{
+    "friend1": "user1",
+    "friend2": "user3"
+}
+## Completed
+----
+====
+
+--
+======
+
+== Answers in drivers
+
+=== Concept rows answers
 
 [tabs]
 ====
@@ -159,12 +283,9 @@ Python::
 Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
-[subs="macros, post_replacements, replacements"]
-++++
 Open a transaction to the selected database and use the
-xref:{page-version}@drivers::python/api-reference.adoc#_Transaction_query[transaction.query()]
+xref:{page-version}@drivers::python/api-reference.adoc[transaction.query()]
 method to send the query:
-++++
 
 [,python,indent=0]
 ----
@@ -193,7 +314,7 @@ to connect the `driver` to a TypeDB server.
 ++++
 Open a transaction to the selected database and use the
 xref:{page-version}@drivers::java/api-reference.adoc#_Transaction_query__java_lang_String[transaction.query()]
-method:
+method to send the query:
 ++++
 
 [,java,indent=0]
@@ -215,113 +336,7 @@ Where `answers` is an iterator yielding ``ConceptRow``s, where each concept row 
 --
 ====
 
-== JSON (Concept documents)
-
-A data pipeline ending with a `fetch` stage will produce JSON answers.
-
-
-[tabs]
-====
-Studio::
-+
---
-Follow the xref:{page-version}@manual::studio.adoc#_connect_to_typedb[Studio manual]
-to connect to TypeDB and select a project folder.
-Then use the steps below:
-
-. Use a drop-down list in the top toolbar to select a database.
-. Select the desired transaction type.
-. Open a new tab and insert or type in an insert stage, for example:
-+
-. Run the query by clicking the image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
-. Commit the changes by clicking the image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] btn:[Commit query] button.
-
-.Sample query
-[,typeql]
-----
-match
-  $user1 has username $name1;
-  $user2 has username $name2;
-  friendship($user1, $user2);
-  $name1 < $name2;
-fetch {
-    "friend1": $name1,
-    "friend2": $name2,
-};
-----
-
-Each output is printed as a valid JSON object with the format specified by the fetch query.
-
-.Sample output
-[,typeql]
-----
-## Running>
-match
-    $user1 has username $name1;
-    $user2 has username $name2;
-    friendship ($user1, $user2);
-    $name1 < $name2;
-fetch {
-    "friend1": $name1,
-    "friend2": $name2,
-};
-
-## Result> Success.
-{
-    "friend1": "user1",
-    "friend2": "user2"
-}
-{
-    "friend1": "user1",
-    "friend2": "user3"
-}
-## Completed
-----
-
---
-
-Console::
-+
---
-Open a transaction of the desired type (`read`, `write`, or `schema`):
-
-[,bash]
-----
-> transaction sample_db read
-sample_db::read>
-----
-
-Each output is printed as a valid JSON object with the format specified by the fetch query.
-
-[,bash]
-----
-test::read> match
-                $user1 has username $name1;
-                $user2 has username $name2;
-                friendship ($user1, $user2);
-                $name1 < $name2;
-            fetch {
-                "friend1": $name1,
-                "friend2": $name2,
-            };
-            
-Finished validation and compilation...
-Streaming documents...
-
-{
-    "friend1": "user1",
-    "friend2": "user2"
-}
-{
-    "friend1": "user1",
-    "friend2": "user3"
-}
-
-Finished. Total answers: 2
-----
---
-====
-
+=== JSON answers
 [tabs]
 ====
 Rust::
@@ -402,7 +417,7 @@ to connect the `driver` to a TypeDB server.
 ++++
 Open a transaction to the selected database and use the
 xref:{page-version}@drivers::java/api-reference.adoc#_Transaction_query__java_lang_String[transaction.query()]
-method:
+method to send the query:
 ++++
 
 [,java,indent=0]

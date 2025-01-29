@@ -2,7 +2,12 @@
 
 This page gives a brief technical overview of TypeDB's type system and query model.
 
-In short, TypeDB's data model based on a *type system* (with _single-inheritance_ subtyping and _trait-based_ referencing). Its query model builds on this type system, and extends it by allowing users to chain together queries and data operations in *data pipelines*.
+In short, TypeDB's data model is based on a *type system* built from two key ingredients:
+
+* a _single-inheritance_ subtyping system, allowing a type to specialize to zero or more subtypes.
+* a _trait-based_ reference system, allowing instances to refer to other instances.
+
+TypeDB's query model is tailored to this type system, directly expressing subtyping and references in its query statements, but also  allowing users to chain together queries and data operations into powerful *multi-stage data pipelines* for all types of workloads.
 
 == Type system
 
@@ -60,7 +65,7 @@ Two instances of a value type are equal exactly when their literal values are eq
 Coming soon.
 ====
 
-=== Type traits
+=== Type traits and "`objects vs attributes`"
 
 Entity types can have traits, i.e. play roles or own attribute types. This allows us to create connections of entities with other data.
 
@@ -73,6 +78,13 @@ Attributes cannot have traits; they are merely typed associations of values to o
 === Subtyping
 
 Entity types, relation types, and attribute types can be defined to subtype other types (which themselves must be, respectively, entity types, relationt types, or attributes types). This allows implicit casting of data instances from the subtype into the supertype.
+
+[[representation]]
+=== Internal representation
+
+Types are, in essence, identified by their labels (stored as strings).
+
+Data instances (i.e., entities, relation, are attributes) are stored using database intrinsic represenations called *instance identifiers* (**IID**s) which encodes their direct type. IIDs are usually printed in hexadecimal format: `0x0123...`. For attributes, TypeDB also stored their associated *value*; attributes can be used at query time for comparisons and computations by casting them to their underlying values.
 
 == Definitions
 
@@ -104,6 +116,7 @@ There are two classes of stages:
 * *Stateful* stages, like `match` or `insert`, are stages whose execution results depend on the state of (i.e. the data in) the database.
 * *Stateless* stages, like `reduce` or `select`, only depend on the input stream and can thus be executed without querying the database.
 
+[[queries_as_types]]
 === Queries vs types
 
 The `match` stage is the only data pipeline stage which filters and retrieves data using TypeQL patterns: patterns are a direct counterpart to TypeDB's type system and expresses typing and reference constraints of data.
@@ -236,14 +249,25 @@ match
 will return exactly the set of users (instead of a copy of the same user for each of their friends).
 --
 
+== Functional query model
 
-== Query evaluation
+In many simple cases, TypeQL query semantics can be intuitively understood (see, e.g, the <<queries_as_types,queries as types>> examples above): in essence, a `match` stage outputs *all combinations of data* that satisfy the pattern.
 
-Queries are evaluated in two stages:
+Query semantics become more complicated in the presence of functions, since these can be called in a (mutually) recursive fashion. In this case, we require that:
+
+.Function stratification principle
+> If function 1 is called in the body function 2 from within the scope of a negation, then the evaluation of function 1 must be independent of that of function 2 (i.e., there must not be a chain of functions calls that calls function 2 from function 1).
+
+The principle ensure that there is a layering ("`stratification`") of function call evaluation which guarantees queries have well-defined semantics.
+
+[NOTE]
+====
+Readers familiar with logic programming à la Datalog will recognize the above principle as related to that of *stratified negation*. Indeed, the functional query programming model is a generalization of classical logic programming, replacing https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence[propositions with types].
+====
+
+== Pipeline evaluation
+
+Data pipelines are evaluated in two stages:
 
 1. *Type inference*. TypeDB will double-check which combinations of types are valid given the constraints in your query. If a non-type variable cannot be assigned a type, the query will fail at this stage with a type inference error.
 1. *Stage-by-stage evaluation*. Stage in the data pipeline are evaluated one after the other. In each case, for each output row from the previous stage the present stage, will produce n output rows (n may be zero), and pass each such row, after augmenting it with its own input, as an input row to the next stage.
-
-=== Recursive queries
-
-Recursive queries are evaluated in accordance with the principles of stratified negation.

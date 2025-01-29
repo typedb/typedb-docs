@@ -10,12 +10,12 @@ In TypeDB, data is stored in *types*, which can be either
 * *relation* types (e.g., all the ``friendship``s of users)
 * *attribute* types (e.g., the ``username``s of ``user``s, or the ``start_date``s of ``friendship``s)
 
-Data objects (instances) may reference other instances. A relation references other entities or relations, which we call role players. An attribute is owned by a single entity or relation, which we call its owner. Makes sense, right?
+Data objects (instances) may reference other instances. A relation references other entities or relations, which we call its role players. An attribute is owned by a single entity or relation, which we call its owner. Makes sense, right?
 
-TypeDB's type system unifies concepts from relational, document, and graph DBMSs, blending them with a modern programming paradigm. Let's see how that works!
+TypeDB's type system unifies concepts from relational, document, and graph DBMSs, blending them with a modern programming paradigm. Let's see how this plays out for writing queries.
 
 [[read]]
-== "`Query-programming`" with TypeDB
+== "`Query programming`" with TypeDB
 
 The query language of TypeDB is *TypeQL*. It combines declarative and functional programming concepts with the simplicity of natural language. Here's a simple TypeQL query to get us started:
 
@@ -26,7 +26,7 @@ include::{page-version}@home::example$tql/crash_course.tql[tags=intro1]
 
 This query returns the count of how many friends the user `$alex` has (identified by their username `"grothendieck_25"`). Note that the query works in two stages:
 
-1. First, the `match` stage outputs all answers from the database that satisfy these statements. This means we output all possible data combinations for those three variables in the database!
+1. First, the `match` stage outputs all answers from the database that satisfy the statements in the body of the stage. This means we output all possible data combinations from the database for the three used variables!
 
 2. Second, the `reduce` stage counts these answer combinations, outputs a single number, and assigns it to the variable `$alex-friend-count`.
 
@@ -78,9 +78,8 @@ Similarly, if we were to add a `friendship` type to our schema we would define:
 include::{page-version}@home::example$tql/crash_course.tql[tags=schema2]
 ----
 
-* *Line 1*: Introduce the relation type `friendship` with a `friend` *role* (programmer-lingo: think "`interface`"). Declare that each friendship requires exactly two friends (`card` is short for "`cardinality`").
-* *Line 2*: Users can play the role of friends in friendships (more programmer-lingo: the type `user` implements the `friend` interface).
-
+* *Line 1*: Introduce the relation type `friendship` with a `friend` *_role_* (programmer-lingo: think "`trait`" that can then be "`implemented`" by other types). Declare that each friendship requires exactly two friends (`card` is short for "`cardinality`", and is a first example of a *annotation*: annotations make schema statements more specific - more on that later).
+* *Line 2*: Users can play the role of friends in friendships (more programmer-lingo: the type `user` implements the "`friend-role`" trait).
 
 Relation types, like entity types, are types of "`first-class objects`" in our type system. In particular, they too can have attributes (or may play roles in other relation types).
 
@@ -89,9 +88,9 @@ Relation types, like entity types, are types of "`first-class objects`" in our t
 include::{page-version}@home::example$tql/crash_course.tql[tags=schema3]
 ----
 
-This defines a `start-date` attribute and then declares each friendship owns zero or one start dates. This is the default cardinality, so you don't actually need `@card` here at all.
+This defines a `start-date` attribute and then declares each friendship may own a `start_date` (yet more programmer-lingo: the type `friendship` implements the "`start-date-owner`" trait). Moreover, the `@card` annotation specifies that friendships own between zero or one start dates. This is the default cardinality, so you don't actually need `@card` here at all.
 
-`@card` is an *annotation*. Annotations make schema statements more specific - more on that later. `@card` can also be applied to attribute ownership. The next example illustrates this together with another useful annotation, `@key` (which, in this case, specifies that the username of a user should uniquely identify a user, i.e., it is a _key attribute_).
+The next example illustrates usage of "`unbounded`" cardinality together with another useful annotation, `@key` (which, in this case, specifies that the username of a user should uniquely identify a user, i.e., it is a _key attribute_).
 
 [,typeql]
 ----
@@ -180,8 +179,8 @@ See the xref:{page-version}@manual::CRUD/index.adoc[CRUD manual] for more.
 
 The time has come to actually run our queries. Recall from the xref:{page-version}@home::quickstart.adoc[Quickstart], the first two steps of the TypeQB workflow are always as follows:
 
-1. Ensure that your **TypeDB server** is running.
-1. From the **TypeDB client** of your choice, establish a connection to the server.
+1. Ensure that your xref:{page-version}@home::quickstart.adoc#_create_free_cluster[**TypeDB cluster**] is running.
+1. From the **TypeDB client** of your choice, establish a xref:{page-version}@home::quickstart.adoc#_connect_cluster[connection] to the server.
 
 Next up, let us create a database. The workflow here will depend on your client, but is easy in either case.
 

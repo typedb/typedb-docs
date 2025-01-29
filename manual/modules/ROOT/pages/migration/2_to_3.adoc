@@ -51,7 +51,7 @@ Check out some read queries examples xref:{page-version}@manual::CRUD/reading.ad
 - Default `plays` cardinality: `@card(0..)` (unlimited).
 - Default `owns` and `relates` cardinality: `@card(0..1)` (up to one instance).
 Explicitly define cardinalities for traits expecting multiple instances to avoid data corruption and optimize database performance.
-* **Rules Replaced:** Rules are now replaced by xref:{page-version}@typeql::functions/index.adoc[functions], requiring explicit functions execution instead of inference, but offering more abstraction and flexibility.
+* **Rules and Inference Replaced:** Rules are now replaced by xref:{page-version}@typeql::functions/index.adoc[functions], requiring explicit functions execution instead of inference, but offering more abstraction and flexibility.
 
 [#_major_changes_drivers]
 === TypeDB Drivers
@@ -83,6 +83,11 @@ Take into account that some of your processes can be blocked if you previously r
 === TypeDB Drivers
 
 * Node.js, C, C++, and C# drivers are not yet available.
+
+=== TypeDB Studio
+
+* **Graph visualizer** has been disabled due to incoming migration to an xref:{page-version}@manual::tools/code.adoc[IDE plugin]. Please consider using side tools for graph visualization if required.
+* **Type browser** is temporarily unavailable and planned to be reimplemented in the xref:{page-version}@manual::tools/code.adoc[IDE plugin].
 
 [#_having_troubles]
 == Having troubles?

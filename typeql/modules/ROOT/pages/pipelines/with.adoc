@@ -1,13 +1,13 @@
 = With stage
 
-The `with` stage in a data pipeline allows the local declaration of function, which can be used as part of the pipeline.
+The `with` stage in a data pipeline allows the local declaration of functions, which can then be used as part of the pipeline.
 
 == Syntax
 
 [,typeql]
 ----
 with <function-declaration>
-... # continue pipeline
+... # continue pipeline, may call functions in patterns
 ----
 
 where `<function-declaration>` is a xref:{page-version}@typeql::functions/writing.adoc#declaration[function declaration].

@@ -19,7 +19,7 @@ A function declaration consists of:
 [,typeql]
 ----
 fun <function-name> ( <optional-arguments> ) -> <return-types>:
-<read-pipeline>
+<read_pipeline>
 return <return-statement>
 ----
 
@@ -27,14 +27,14 @@ return <return-statement>
 - `<optional-arguments>` is a list of zero of more typed variables, written in the format `$a : A, $b : B, ...`
 - `<return-types>` consists of at least one `<return-type>` and can be:
 * a xref:{page-version}@typeql::functions/stream.adoc[stream] tuple type, written in the format `{ A, B, ... }`.
-* a xref:{page-version}@typeql::functions/tuple.adoc[tuple] type, written in the format `A, B, ...`.
+* a xref:{page-version}@typeql::functions/scalar.adoc[tuple] type, written in the format `A, B, ...`.
 
 +
 [NOTE]
 ====
 The types `A, B, ...` above can be either user-defined types (e.g. an entity type `user`) or primitive value types (e.g. `boolean`).
 ====
-- `<read-pipeline>` includes any read xref:{page-version}@typeql::pipelines/index.adoc[pipeline].
+- `<read_pipeline>` includes any read xref:{page-version}@typeql::pipelines/index.adoc[pipeline].
 - `<return-statement>` may consist of variables, xref:{page-version}@typeql::expressions/function_calls.adoc[function calls], and built-in reductions:
 * Scalar return statements are of the form
 `$a;`.
@@ -187,7 +187,7 @@ Learn more about function bodies - pipelines.
 Understand how to work with stream functions.
 ****
 
-.xref:{page-version}@typeql::functions/tuple.adoc[]
+.xref:{page-version}@typeql::functions/scalar.adoc[]
 [.clickable]
 ****
 Explore single functions and their usage.

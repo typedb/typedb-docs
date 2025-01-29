@@ -13,7 +13,7 @@ Undefine queries start with the `undefine` keyword following by undefinition sta
 [,typeql]
 ----
 undefine
-  <undefinition statements>
+  <undefinition_statements>
 ----
 
 Undefinition statements are similar to definition statements, but they have a different structure to highlight which part of the definition is to be undefined, in some cases using the `from` keyword.
@@ -27,13 +27,13 @@ Undefinition statements are similar to definition statements, but they have a di
 .Trait undefinition statement
 [,typeql]
 ----
-<trait definition> from <label or trait>;
+<trait_definition> from <type_label>;
 ----
 
 .Annotation undefinition statement
 [,typeql]
 ----
-<@annotation> from <label or trait>;
+<@annotation> from <type_label_or_trait>;
 ----
 
 .Function undefinition statement

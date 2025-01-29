@@ -2,7 +2,7 @@
 
 The statement `<RELATION LABEL> relates <LABEL>` is used to identify the `<LABEL>` as a role type related by `<RELATION LABEL>`.
 
-It can be extended to `<RELATION LABEL> relates <LABEL> as <SPECIALIZED LABEL>` to specify specialization between two role types. `SPECIALIZED LABEL>` should be inherited by `<RELATION LABEL>` from a supertype. `<LABEL>` becomes a subtype of `<SPECIALIZED LABEL>`, and the `<RELATION LABEL>` instances do no longer accept roleplayers of `<SPECIALIZED LABEL>`. `<LABEL>` is called **specializing relates**, and `<SPECIALIZED LABEL>` is called **specialized relates**.
+It can be extended to `<RELATION LABEL> relates <LABEL> as <SPECIALIZED LABEL>` to specify specialization between two role types. `SPECIALIZED LABEL>` should be inherited by `<RELATION LABEL>` from a supertype. `<LABEL>` becomes a subtype of `<SPECIALIZED LABEL>`, and the `<RELATION LABEL>` instances do no longer accept role players of `<SPECIALIZED LABEL>`. `<LABEL>` is called **specializing relates**, and `<SPECIALIZED LABEL>` is called **specialized relates**.
 
 == Defining role types
 

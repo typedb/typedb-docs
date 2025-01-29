@@ -1,21 +1,17 @@
 = TypeDB Cloud
 
+== Preliminaries
+
 Connecting to TypeDB Cloud requires:
 
 * A cluster deployed through https://cloud.typedb.com?org_action=/clusters/deploy[TypeDB Cloud]
 * The `address` and `port` of the server - these can be found on the page for your cluster
 * A valid `username` and `password` - you should have set the password for the `admin` user while setting up your cluster
 
+== Connecting your client
+
 [tabs]
 ====
-Studio::
-+
---
-Run Studio and follow instructions below:
-
-include::../tools/studio.adoc[tag=connect_cloud_studio]
---
-
 Console::
 +
 --
@@ -23,7 +19,17 @@ Run Console using the `--cloud` argument:
 
 include::../tools/console.adoc[tag=connect_cloud_console]
 --
+
+Studio::
++
+--
+Run Studio and follow instructions below:
+
+include::../tools/studio.adoc[tag=connect_cloud_studio]
+--
 ====
+
+== Connecting your application
 
 For programmatic access, use one of the TypeDB xref:{page-component-version}@drivers::overview.adoc[drivers] via the network API:
 
@@ -48,7 +54,6 @@ Python::
         uri = f"{address}:{port}"
 include::{page-version}@drivers::partial$tutorials/python/sample.py[tags=driver_new_cloud]
 ----
-//include::partial$python-manual-code.py[tags=driver]
 --
 
 Java::
@@ -65,39 +70,24 @@ include::{page-version}@drivers::partial$tutorials/java/src/main/java/org/exampl
 Node.js::
 +
 --
-[,js,indent=0]
-----
-Coming soon!
-----
+NOTE: Coming soon.
 --
 
 C#::
 +
 --
-[,csharp,indent=0]
-----
-Coming soon!
-----
-
+NOTE: Coming soon.
 --
 
 C++::
 +
 --
-[,cpp,indent=0]
-----
-Coming soon!
-----
-
+NOTE: Coming soon.
 --
 
 C::
 +
 --
-[,c,indent=0]
-----
-Coming soon!
-----
-
+NOTE: Coming soon.
 --
 ====

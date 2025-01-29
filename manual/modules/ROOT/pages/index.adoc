@@ -4,10 +4,6 @@
 :page-aliases: {page-version}@manual::overview.adoc
 :summary: How-to guides and tutorials
 
-[NOTE]
-====
-The TypeDB 3.0 Manual is currently under construction. More material will be published soon. Join our https://typedb.com/discord[Discord chat server] to stay updated.
-====
 
 Welcome to the TypeDB Manual.
 Here you'll find practice oriented guides on TypeDB operations and configuration, as well as Studio and Console manuals.
@@ -16,19 +12,19 @@ You can run TypeDB database servers in the following environments:
 
 [cols-2]
 --
-.xref:{page-version}@manual::deploy/cloud.adoc[TypeDB Cloud]
+.xref:{page-version}@manual::install/cloud.adoc[TypeDB Cloud]
 [.clickable]
 ****
 The fully managed service for TypeDB deployments in the cloud.
 ****
 
-.xref:{page-version}@manual::deploy/CE.adoc[TypeDB Community Edition]
+.xref:{page-version}@manual::install/CE.adoc[TypeDB Community Edition]
 [.clickable]
 ****
 The self-hosted, open-source, free-to-use version of TypeDB.
 ****
 
-.xref:{page-version}@manual::deploy/enterprise.adoc[TypeDB Enterprise]
+.xref:{page-version}@manual::install/enterprise.adoc[TypeDB Enterprise]
 [.clickable]
 ****
 The subscription-based, self-hosted version of TypeDB, designed for enterprise usage.

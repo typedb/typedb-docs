@@ -10,15 +10,15 @@ to specify a set of permitted values for attributes.
 .Value annotation syntax
 [,typeql]
 ----
-<type label> value <value type> @values(arg);
-<type label> value <value type> @values(arg0, arg1, ..., argN);
+<type label> value <value type> @values(value);
+<type label> value <value type> @values(value0, value1, ..., valueN);
 ----
 
 .Ownership annotation syntax
 [,typeql]
 ----
-<type label> owns <attribute type label> @values(arg0);
-<type label> owns <attribute type label> @values(arg0, arg1, ..., argN);
+<type label> owns <attribute type label> @values(value0);
+<type label> owns <attribute type label> @values(value0, value1, ..., valueN);
 ----
 
 The `@values` annotation can be defined for either an attribute type's value type or an ownership.
@@ -55,7 +55,7 @@ include::{page-version}@typeql::example$tql/schema_annotations.tql[tags=define-k
 
 The `values` constraint put on an attribute types' value type is inherited.
 // tag::value-constraints-subtyping[]
-This means that values of all subtypes of a constrained type are also constrained, and it cannot be changed.
+This means that values of all subtypes of a constrained type are also constrained, and this constraint cannot be relaxed from the subtypes.
 // end::value-constraints-subtyping[]
 
 A subtype can introduce an even stricter constraint to allow only a subset of the inherited set of allowed values.

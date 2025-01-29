@@ -469,7 +469,7 @@ public abstract class ErrorMessage extends com.vaticle.typedb.common.exception.E
         public static final ThingWrite DELETE_RELATION_CONSTRAINT_TOO_MANY =
                 new ThingWrite(32, "Could not perform delete of role players due to multiple relation constraints being present for relation '%s'.");
         public static final ThingWrite DELETE_ROLEPLAYER_NOT_PRESENT =
-                new ThingWrite(33, "Could not delete roleplayer '%s' as relation '%s' does not relate it.");
+                new ThingWrite(33, "Could not delete role player '%s' as relation '%s' does not relate it.");
         public static final ThingWrite ILLEGAL_VALUE_CONSTRAINT_IN_INSERT =
                 new ThingWrite(34, "Illegal value constraint found in the insert query on variable '%s'. Value variables are only permitted to specify attribute values.");
         public static final ThingWrite ILLEGAL_UNBOUND_TYPE_VAR_IN_INSERT =

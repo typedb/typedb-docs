@@ -106,12 +106,12 @@ undefine sub user from admin;
 then this removes `admin` having `user` as its supertype, but it _does not_ remove the type `admin` itself.
 
 Similarly, writing
-[,typql]
+[,typeql]
 ----
 undefine plays friendship:friend from user;
 ----
 removes the friend trait from the user type, but leaves the type itself intact. And
-[,typql]
+[,typeql]
 ----
 undefine owns username from user;
 ----

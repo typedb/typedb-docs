@@ -2,45 +2,64 @@
 
 This page explains how to define functions within TypeDB schemas.
 
-== Understanding functions
+== Overview
 
 include::{page-version}@typeql::functions/index.adoc[tag=description]
 
-Functions can be defined in a schema and later used in queries to:
+Functions can be defined in two ways:
 
-- Reduce code duplication by encapsulating common logic within functions.
-- Simplify complex TypeQL queries for improved readability and maintenance.
-- Share reusable query logic with other developers.
+1. We can define functions with "`globally`" in the schema of your database. Functions defined in the schema can be used in any data pipeline.
+1. Or, we can define functions "`locally`" as part of a specific data pipeline. Such functions can only be called from within their parent pipeline.
 
-While this page focuses on defining functions in schemas, it is also possible to create temporary functions for one-time query execution.
-Refer to the xref:{page-version}@typeql::functions/index.adoc[TypeQL documentation] for comprehensive information and additional usage examples.
+The function definition syntax in both cases is identical. This page focuses on defining functions in schemas. For local functions in data pipeline see the xref:{page-version}@typeql::pipelines/with.adoc[with stage] reference.
 
-== Function definition queries
+== Defining functions
 
 Similar to xref:{page-version}@manual::schema/types.adoc[type definitions], functions can be stored in a database schema using `schema` xref:{page-version}@manual::queries/transactions.adoc[transactions].
 Three types of schema definition queries are available for working with functions:
 
-* `define <function declaration>`.
+* `define fun <function_name> <function_signature>: <function_body>`.
 A `define` query adds a new function to the schema for future use.
 
-* `undefine fun <function name>`.
+* `undefine fun <function_name>`.
 An `undefine` query removes a function from the schema.
 
-* `redefine <function declaration>`.
+* `redefine <function_name> <function_signature>: <function_body>`.
 A `redefine` query updates an existing function in the schema.
 
-=== Arithmetic functions
+=== Function signatures
 
-The simplest functions perform arithmetic operations.
-For example, the following query defines a function that accepts two integers and returns their sum.
-The xref:{page-version}@typeql::functions/writing.adoc[function declaration] has several key components:
+Function signatures determine:
 
-[#_function_basics]
-- The `fun` keyword, indicating the start of a function declaration.
-- The function name.
-- A list of arguments, including their variable names and types.
-- The return type: `{}` denotes a xref:{page-version}@typeql::functions/stream.adoc[stream function], as it can return multiple results.
-- The function body, which contains a read xref:{page-version}@typeql::pipelines/index.adoc[pipeline] and a `return` statement with valid xref:{page-version}@typeql::statements/index.adoc[TypeQL expressions].
+* The tuple of typed input variables, e.g., `$x : user, $y : string, $z : bool` (these variables can then be used in the function body)
+* The tuple of output types, e.g. `post, integer, integer`, which can either be a *stream* of output tuples (indicated by surrounding brackets `{ ... }`) or a *scalar* tuple, meaning the function return _at most_ one tuple.
+
+.Example signatures
+[,typeql]
+----
+( $x : user, $y : string, $z : bool ) -> post, integer, integer      # scalar output
+( $x : user, $y : string, $z : bool ) -> { post, integer, integer }  # stream output
+( ) -> integer                                                       # empty input
+----
+
+=== Function body
+
+The function body comprises
+
+- A TypeQL xref:{page-version}@typeql::pipelines/index.adoc[read pipeline] (which may have multiple stages, like `match`, `sort`, `reduce`)
+- A *return statement* starting with the keyword `return`
+
+For xref:{page-version}@typeql::functions/stream.adoc[stream functions], `return` will be followed simply by a `<tuple>` of variables that are to be returned.
+
+For xref:{page-version}@typeql::functions/scalar.adoc[scalar functions], the `return` statements will contain some sort of reduction of the answer set to (zero or) one answer:
+
+- `return first <tuple>` returns the first answer only, and similarly, `return last ...` returns the last.
+- `return <aggr>, ...` returns a built-in aggregation result (like sums, counts, means, ...)
+
+
+== Examples
+
+=== Computing values
 
 [#_stream_arithmetic_example]
 .Stream arithmetic function definition
@@ -49,7 +68,7 @@ The xref:{page-version}@typeql::functions/writing.adoc[function declaration] has
 include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;fun-stream-return-value]
 ----
 
-If you are certain that `$z` will only match a single value (or if only one value is needed), the `first` or `last` keywords can be used to ensure the function returns a xref:{page-version}@typeql::functions/tuple.adoc[single result].
+If you are certain that `$z` will only match a single value (or if only one value is needed), the `first` or `last` keywords can be used to ensure the function returns a xref:{page-version}@typeql::functions/scalar.adoc[scalar result].
 
 .Single arithmetic function definition
 [,typeql]
@@ -57,30 +76,21 @@ If you are certain that `$z` will only match a single value (or if only one valu
 include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;fun-single-return-value]
 ----
 
-=== Querying for types
-
-Since TypeDB has a strong emphasis on types, functions can also return types.
-For example, the following function retrieves all `phone` attributes associated with a specific `user`:
+=== Querying for data instances
 
 [#_stream_example]
-.Stream function definition returning types
+.Stream function definition returning data instances
 [,typeql]
 ----
 include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;fun-stream-return-type]
 ----
 
-=== Functions within functions and tuple outputs
-
-As described in <<#_function_basics, the function syntax basics>>, return statements can include any valid TypeQL expressions.
-This allows functions to call other functions.
-Additionally, multiple expressions can be combined to return a tuple of results instead of a single scalar value.
-
-For example, the following function uses two built-in aggregation function calls to produce a tuple result:
+=== Functions within functions
 
 .Tuple function definition with inner function calls
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;fun-aggregate-single-tuple-return]
+include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;fun-square;fun-aggregate-single-tuple-return]
 ----
 
 [NOTE]
@@ -89,6 +99,8 @@ The output type here is not a stream because each tuple component is derived fro
 ====
 
 Refer to <<using_functions>> for more details on calling functions.
+
+== Modifying functions
 
 === Function undefinition
 
@@ -119,7 +131,7 @@ To change the name, define a new function and undefine the old one.
 ====
 
 [#using_functions]
-== Using functions
+== Calling functions from patterns
 
 Functions can be called in queries as other xref:{page-version}@typeql::statements/index.adoc[statements].
 As shown in previous examples, to call a function, reference its name and pass the required arguments (if applicable) within parentheses.
@@ -143,21 +155,6 @@ For functions returning a stream, use xref:{page-version}@typeql::statements/let
 include::{page-version}@manual::example$tql/read_queries.tql[tag=fun-stream-scalar-return-type]
 ----
 
-.Practice Task
-[%collapsible]
-====
-How would you call this function after <<_redefine_example, redefining it>>?
-
-.Answer
-[%collapsible]
-=====
-[,typeql]
-----
-user_phones("Bob")
-----
-=====
-====
-
 To handle tuple results, bind the appropriate number of variables to unpack the function’s output:
 
 [,typeql]
@@ -166,3 +163,9 @@ include::{page-version}@manual::example$tql/read_queries.tql[tag=fun-stream-tupl
 ----
 
 For further details, refer to the xref:{page-version}@typeql::functions/index.adoc[TypeQL documentation].
+
+[IMPORTANT]
+====
+The arguments in a function call are *positional* (i.e., arguments in the function call in a pattern are lined up with function arguments in its defined function signature).
+Assigning a function output tuples to variables in a patterns is also positional.
+====

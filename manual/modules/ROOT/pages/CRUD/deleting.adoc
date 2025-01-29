@@ -3,44 +3,32 @@
 
 This page explains how to delete data from a TypeDB database.
 
-== Understanding delete pipeline stages
+== Overview
 
 A delete stage is used to delete data from a TypeDB database.
 It can be used in a xref:{page-version}@typeql::pipelines/index.adoc[pipeline] to operate variables declared on a preceding `match` stage.
 
 Refer to the xref:{page-version}@typeql::pipelines/delete.adoc[] page for detailed explanation and more examples.
 
-== Sending delete pipelines
-
-[NOTE]
-====
-The examples below can be combined with the following schema file.
-A part of this file is defined in the respective xref:{page-version}@manual::schema/index.adoc[definition manuals].
-Also, the data deleted in these examples is inserted in the xref:{page-version}@manual::CRUD/inserting.adoc[insertion manual].
-
-[[schema-include]]
-.See the schema.tql
-[%collapsible]
-=====
-.schema.tql
-[,typeql]
-----
-include::{page-version}@home::example$tql/schema_small.tql[]
-----
-=====
-====
+== Running deletes
 
 To delete data, open a `write` xref:{page-version}@manual::queries/transactions.adoc[transaction].
 This allows you to read and write data to your database while keeping the schema secure.
 
-Every deletion begins with an `delete`, but also requires some input, so a preceding `match` stage is needed to produce concepts incoming to the `delete` stage.
-The logic is similar to xref:{page-version}@manual::CRUD/inserting.adoc#match_insert[inserting data based on a match]: the variables, declared in the `match` stage, can be used in the `delete` stage to control the deletion process.
+Delete stages begin with the `delete` keyword. They also require input data: for each row in the input the delete statements in the body of the delete stage will be executed.
 
-Similarly, multiple statements can be combined to delete multiple instances or connections.
+A delete stage produces output rows by removing from each input row the concepts that are deleted when applying the stage's delete statements to that input.
 
-=== Delete an instance
+[NOTE]
+====
+In some circumstances, when a data instance is deleted for one input row, it may still appear in other input rows in non-deleted form. Using deleted instances after they were deleted will lead to a runtime error.
+====
 
-To delete a type instance (an xref:{page-version}@typeql::statements/entity.adoc[entity], a xref:{page-version}@typeql::statements/relation.adoc[relation], or an xref:{page-version}@typeql::statements/attribute.adoc[attribute]), declare a `$var` for this instance and add `delete $var`:
+== Delete statements
+
+=== Deleting instances
+
+To delete a data instance (an xref:{page-version}@typeql::statements/entity.adoc[entity], a xref:{page-version}@typeql::statements/relation.adoc[relation], or an xref:{page-version}@typeql::statements/attribute.adoc[attribute]), declare a `$var` for this instance and add `delete $var`:
 
 [#_user_deletion]
 .User deletion example
@@ -49,23 +37,26 @@ To delete a type instance (an xref:{page-version}@typeql::statements/entity.adoc
 include::{page-version}@manual::example$tql/delete_data.tql[tags=match-keyword;match-single-user;delete-keyword;delete-single-user]
 ----
 
-The following pipeline will act in two stages:
+The pipeline will act in two stages:
 
-- The first stage will match all `user` s with `username` "User" (as `username` is a key in the <<schema-include, schema>>, you can be ensured that only one `user` will be found).
-- The second stage will delete the matched `user` s (the only `user` with `username` "User").
+- The first stage will match all `user` s with `username` "User"
+- The second stage will delete the matched `user` s
 
 [NOTE]
 ====
-Take into account that default relations and attributes without certain xref:{page-version}@typeql::annotations/index.adoc[annotations] can be cleaned up on commit if they are not relating or owned by any other instance, so deleting a single entity can lead for more cascading cleanups.
+Deletes may cascade: when deleting instance, relations and attributes that reference these instance may be cleaned up on commit.
+
+* relations without role players will be cleaned up.
+* attributes without owners will be cleaned up (unless their attribute type is marked as independent).
+
 [#_independent_example]
 For example, the xref:{page-version}@typeql::annotations/independent.adoc[`@independent` annotation] can help preserving attributes (`username`) in the database even if their owners are deleted.
 ====
 
-Similarly to xref:{page-version}@manual::CRUD/inserting.adoc#constraints_verification_time[`insert` stages], `delete` s have the same sets of data constraints to check after every operation or before a commit.
 
-=== Delete an instance's ownership
+=== Delete ownership references
 
-To delete only a specific trait instance, mention what you want to delete and what instance it relates to.
+To delete only a specific ownership reference, connecting an attribute to an owner, mention what you want to delete and what instance it relates to.
 In case of an ownership instance, write an expression like `has $attribute of $owner` using the xref:{page-version}@typeql::statements/has.adoc[`has`] statement and the xref:{page-version}@typeql::keywords.adoc[keyword] `of` pointing to the owner:
 
 [#_email_has_deletion]
@@ -77,31 +68,13 @@ include::{page-version}@manual::example$tql/delete_data.tql[tags=match-keyword;m
 
 [NOTE]
 ====
-This query only deletes the `has` between `$email` and `$a`, not the attribute itself!
-However, if `email` s are <<_independent_example, not `@independent`>> and there will be no users with this `email` on commit, the attribute will also be deleted.
+This query only deletes the owner reference between `$email` and `$a`, not the attribute itself!
+However, if `email` s are <<_independent_example, not `@independent`>> and there are no users with this `email` on commit, the attribute will be cleaned up.
 ====
 
-The verbose way to delete both the ownership and the attribute is:
+=== Delete player references
 
-.User's ownership of an attribute with the attribute itself deletion example
-[,typeql]
-----
-include::{page-version}@manual::example$tql/delete_data.tql[tags=match-keyword;match-users-email;delete-keyword;delete-users-email;delete-single-email]
-----
-
-However, it is redundant as the deletion of an instance also deletes all its connections.
-Thus, it can be written as:
-
-[#_email_deletion]
-.Deletion of an attribute example
-[,typeql]
-----
-include::{page-version}@manual::example$tql/delete_data.tql[tags=match-keyword;match-users-email;delete-keyword;delete-single-email]
-----
-
-=== Delete a relation connection
-
-Similarly, a connection between a relation and its roleplayers can be deleted.
+Similarly, a connection between a relation and its role players can be deleted.
 A single role or multiple roles can be deleted using the following query:
 
 .Deletion of a relation linking example
@@ -112,12 +85,12 @@ include::{page-version}@manual::example$tql/delete_data.tql[tags=match-keyword;m
 
 [NOTE]
 ====
-The `has` and `links` keywords are optional, but sometimes required for ambiguity resolution and are generally better for readability.
+The `has` and `links` keywords are, in face, optional in `delete` stages. They may sometimes be required for ambiguity resolution and generally improve readability.
 ====
 
 == Response interpretation
 
-A delete stage takes the input from the previous pipeline stages, processes the deletions and returns the concepts left from the input. All the deleted concepts are not shown in the output. This way, another pipeline stage can take this as an input and continue data processing.
+A delete stage takes the input from the previous pipeline stages, processes the deletions and returns the concepts remaining from the input. Deleted concepts are not shown in the produced output row. This way, another pipeline stage can take this as an input and continue data processing.
 
 For example, the <<_user_deletion, example of a `user` instance deletion>> where there are no concepts left for the output produces the following TypeDB Console's response:
 

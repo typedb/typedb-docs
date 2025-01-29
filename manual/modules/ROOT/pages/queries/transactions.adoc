@@ -3,46 +3,43 @@
 
 == Transactionality
 
-TypeDB transactions come in 3 flavors: *read*, *write*, and *schema* transactions.
+TypeDB transactions come in 3 flavors: *read*, *write*, and *schema* transactions. All transactions operate over *snapshots* of the database, providing a consistent view regardless of the operations performed in concurrent transactions.
 
-All transactions operate over snapshots of the database, providing a consistent view regardless of concurrent transactions' operations.
-
-TypeDB transactions provide ACID guarantees up to snapshot isolation.
+TypeDB transactions provide *ACID guarantees* up to snapshot isolation.
 
 == Read transactions
 
 Read transactions can execute only read queries, and will error when provided data update queries or schema mutation queries.
 
-They are the most lightweight and should be used whenever possible. *Any number of read transactions can be opened concurrently*, and they
+* They are the most lightweight and should be used whenever possible.
+* *Any number of read transactions can be opened concurrently*, and they
 will never fail to open even when write or schema transactions are open.
 
 == Write transactions
 
 Write transactions can execute read queries and data update queries, and will error when provided schema mutation queries.
 
-Write transactions can be opened concurrently to other write transactions, and read transactions. *They may fail on commit*, as required to
-enforce data consistency and isolation, such as when two write transactions concurrently update same piece of data and commit.
+* Write transactions can be opened concurrently to other write transactions and read transactions.
+* Write transactions *may fail on commit*, as required to enforce data consistency and isolation, such as when two write transactions concurrently update same piece of data and commit.
 
-.Example conflict
+.Example of conflicting writes
 [caption=""]
 ====
-We open transaction 1 and modify the owned attribute of an entity.
+1. We open transaction 1 and modify the owned attribute of an entity.
 
-We then open transaction 2 before transaction 1 has been committed, and modify the same ownership.
+2. We then open transaction 2 before transaction 1 has been committed, and modify the same ownership.
 
-If we commit first transaction 1, then transaction 2, the commit of transaction 2 will fail.
+3. If we commit first transaction 1, then transaction 2, the commit of transaction 2 will fail.
 ====
 
 == Schema transactions
 
-Schema transactions can execute any type of query: read, data update, and schema mutation queries.
+Schema transactions can execute any type of query: read, data update, and schema mutation queries. They thus _subsume_ the previous two transaction types.
 
-Schema transactions are exclusive against other schema transactions, and write transactions.
-Existing open write transactions will block schema transactions from opening.
-Similarly, a schema transaction will block write transactions from opening.
+* Schema transactions are *exclusive* both against other schema transactions and write transactions. Existing open write transactions will block schema transactions from opening. Similarly, a schema transaction will block write transactions from opening.
 This prevents the data from mutating while the schema is being updated.
 
-Schema transactions can mutate both data and schema at the same time, allowing atomic migrations from one database state to another.
+* Schema transactions can *mutate both data and schema* at the same time, allowing atomic migrations from one database state to another.
 
 == Executing queries in transaction
 

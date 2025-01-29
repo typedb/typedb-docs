@@ -1,6 +1,8 @@
 = Installation problems
 
-== The server does not start with error `version 'GLIBC_2.25' not found`
+== GLIBC not found
+
+*The server does not start with error `version 'GLIBC_2.25' not found`*
 
 TypeDB for Linux currently requires glibc v2.25 or later. Updating your Linux distribution may resolve this issue.
 
@@ -19,6 +21,6 @@ the newest version ships with glibc >=2.25.
 
 TIP: Alpine Linux does not ship with glibc by default. Additional setup is required to run TypeDB server on Alpine Linux.
 
-== My issue is not addressed here
+== New issues
 
 Send us a message on https://discord.com/channels/665254494820368395/983762496798204024[Discord]!

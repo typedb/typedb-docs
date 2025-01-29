@@ -6,14 +6,16 @@ Fetch is primarily used to convert row answers into document (JSON) answers.
 [#syntax]
 == Syntax
 
-A fetch stage can follow any other stage that produces rows (e.g., xref:{page-version}@typeql::pipelines/match.adoc[match], xref:{page-version}@typeql::pipelines/insert.adoc[insert]). It starts with the keyword `fetch` followed by curly braces `{}` with a fetch body inside of it. The `fetch` clause is **terminal**, meaning that it cannot be followed by any other pipeline stage.
+A fetch stage can follow any other stage that produces rows (e.g., xref:{page-version}@typeql::pipelines/match.adoc[match], xref:{page-version}@typeql::pipelines/insert.adoc[insert]).
+It starts with the keyword `fetch` followed by curly braces `{}` with a fetch body inside of it.
+The `fetch` clause is **terminal**, meaning that it cannot be followed by any other pipeline stage.
 
 .Pipeline syntax
 [,typeql]
 ----
-<pipeline stages>
+<pipeline_stages>
 fetch {
- <fetch body>
+ <fetch_body>
 };
 ----
 
@@ -33,13 +35,14 @@ Or a set of key-value statements:
 [,typeql]
 ----
 fetch {
- "<key 0>": <some fetch statement 0>,
+ "<key_0>": <some_fetch_statement_0>,
  ...
- "<key N>": <some fetch statement N>
+ "<key_N>": <some_fetch_statement_N>
 };
 ----
 
-These statements should be separated by commas. Comma at the end of the last statement is optional.
+These statements should be separated by commas.
+Comma at the end of the last statement is optional.
 
 === Key-value based body
 
@@ -92,7 +95,7 @@ fetch {
 [,typeql]
 ----
 fetch {
-  "key": fun(...)
+  "key": <fun name>(...)
 };
 ----
 
@@ -100,7 +103,7 @@ fetch {
 [,typeql]
 ----
 fetch {
-  "key": [ fun(...) ]
+  "key": [ <fun name>(...) ]
 };
 ----
 
@@ -109,7 +112,7 @@ fetch {
 ----
 fetch {
   "key": [
-    <read pipeline>
+    <read_pipeline>
     fetch {
       <inner fetch body>
     }
@@ -122,7 +125,7 @@ fetch {
 ----
 fetch {
   "key": (
-    <read pipeline>
+    <read_pipeline>
     return <return statement>
   )
 };
@@ -130,7 +133,8 @@ fetch {
 
 [NOTE]
 ====
-The `<return statement>` can contain either a single or a stream function return statement. However, the parentheses `()` should be used only for scalar results.
+The `<return statement>` can contain either a single or a stream function return statement.
+However, the parentheses `()` should be used only for scalar results.
 
 See xref:{page-version}@typeql::functions/index.adoc[] for more information about function returns.
 ====
@@ -140,7 +144,7 @@ See xref:{page-version}@typeql::functions/index.adoc[] for more information abou
 ----
 fetch {
   "key": [
-    <read pipeline>
+    <read_pipeline>
     return <AGG 0>, ..., <AGG N>;
   ]
 };
@@ -154,7 +158,7 @@ fetch {
 ----
 fetch {
   "key": [
-    <read pipeline>
+    <read_pipeline>
     reduce $_0? = <AGG 1>, ... , $_n? = <AGG N>;
     return first $_0, ..., $_n;
   ]
@@ -172,7 +176,7 @@ fetch {
 };
 ----
 
-== Understanding fetch
+== Behavior
 
 Fetch implements translation from classical rows to both more human-friendly and more REST API-friendly documents:
 
@@ -185,11 +189,14 @@ Fetch implements translation from classical rows to both more human-friendly and
 As it is a document, the order of keys is not guaranteed.
 ====
 
-Fetch generates a document for each input row. When a variable from previous pipeline stages is referenced, the result is calculated individually based on the content of each row. However, if an unbounded subquery or function is used within fetch, the same result will be applied to all output documents, as it is executed identically for every row.
+Fetch generates a document for each input row.
+When a variable from previous pipeline stages is referenced, the result is calculated individually based on the content of each row.
+However, if an unbounded subquery or function is used within fetch, the same result will be applied to all output documents, as it is executed identically for every row.
 
 == Usage
 
-Refer to <<syntax>> to explore different ways of `fetch` usage. The following example demonstrates a single `fetch` stage containing different values.
+Refer to <<syntax>> to explore different ways of `fetch` usage.
+The following example demonstrates a single `fetch` stage containing different values.
 
 [NOTE]
 ====
@@ -211,26 +218,26 @@ fetch {
   "general mean karma": mean_karma(),
   "members": [
     match
-      (group: $group, member: $member) isa group-membership;
+      group-membership (group: $group, member: $member);
     fetch {
       "member information": { $member.* },
     };
   ],
   "first username": (
     match
-      (group: $group, member: $member) isa group-membership;
+      group-membership (group: $group, member: $member);
       $member has username $username;
     return first $username;
   ),
   "all usernames": [
     match
-      (group: $group, member: $member) isa group-membership;
+      group-membership (group: $group, member: $member);
       $member has username $username;
     return { $username };
   ],
   "members mean karma": [
     match
-      (group: $group, member: $member) isa group-membership;
+      group-membership (group: $group, member: $member);
       $member has karma $karma;
     return mean($karma);
   ]
@@ -310,8 +317,9 @@ If two groups are inserted, the result of the query will contain two documents:
     ]
 }
 ----
+
 [NOTE]
 =====
-Notice that `"general mean karma"` is the same for two output documents as the function call is not bounded to `match`.
+Notice that `"general mean karma"` is the same for two output documents as the function call is not bounded to the `match`.
 =====
 ====

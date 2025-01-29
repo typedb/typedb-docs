@@ -20,8 +20,8 @@ The `@unique` annotation does not accept any arguments.
 
 // tag::description[]
 The `@unique` annotation can be defined for an ownership to put the `unique` constraint on it.
-The `unique` constraint means that no two instances (owners) of the owner type can have instances (attributes) of the attribute type with the same value.
-That makes every owned attribute unique by value among all instances of the owner type **and its subtypes**.
+The `unique` constraint means that no two instances of the owner type (owners) can have instances of the attribute type (attributes) with the same _value._
+That makes every owned attribute unique _by value_ among all instances of the owner type **and its subtypes**.
 // end::description[]
 
 For example, the following statement defines that every `user` should have a unique `phone`:
@@ -66,7 +66,7 @@ See <<_value_types>> for the list of supported value types.
 The `@unique` annotation is applicable only to uniquely hashable value types.
 
 .Supported value types
-[cols=".^1,^.^1,1"]
+[cols=".^1,^.^1,3"]
 |===
 ^| Value type ^| Supported? ^| Comment
 | `boolean`
@@ -103,7 +103,7 @@ The `@unique` annotation is applicable only to uniquely hashable value types.
 
 | `double`
 | ✗
-| Double values cannot guarantee unique hashing
+| Constraining `double` attributes by exact value is error-prone and as such disallowed
 
 // | `struct`
 // |

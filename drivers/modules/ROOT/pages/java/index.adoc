@@ -84,7 +84,7 @@ As it is quite verbose, you can use the following steps to set the minimum log l
 == Quickstart
 
 See below an example of Java code that connects to a local TypeDB server,
-creates a database, process driver errors, defines a schema, inserts some data, and then reads it.
+creates a database, processes driver errors, defines a schema, inserts some data, and then reads that data.
 
 // TODO: Can we somehow import the example from `typedb-driver/java`, which is produced in `core_example`?
 [%collapsible]
@@ -359,5 +359,5 @@ include::{page-version}@drivers::partial$drivers2discord.adoc[]
 
 [NOTE]
 ====
-Switch to 2.x documentation for even older versions.
+2.x and 3.x versions are not compatible. Switch to 2.x documentation for even older versions.
 ====

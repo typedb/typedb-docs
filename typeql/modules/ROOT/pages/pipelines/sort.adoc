@@ -25,6 +25,6 @@ Retrieve all posts on a given page, sorted from newest to oldest.
 match
   $page isa page, has page-id "<page id>";
   $post isa post, has creation-timestamp $created;
-  (page: $page, post: $post) isa posting;
+  posting (page: $page, post: $post);
 sort $created desc;
 ----

@@ -97,7 +97,7 @@ Constructs a xref:{page-version}@typeql::statements/sub.adoc[], used to define t
 Constructs a xref:{page-version}@typeql::statements/relates.adoc[], used to define a new role for a relation type.
 
 `plays`::
-Constructs a xref:{page-version}@typeql::statements/plays.adoc[], used to define a new roleplayer for a role.
+Constructs a xref:{page-version}@typeql::statements/plays.adoc[], used to define a new role player for a role.
 
 `value`::
 Constructs a xref:{page-version}@typeql::statements/value.adoc[], used to  define the value type of an attribute type.
@@ -114,7 +114,7 @@ Constructs an xref:{page-version}@typeql::statements/alias.adoc[], used to defin
 Constructs an xref:{page-version}@typeql::statements/isa.adoc[], used to specify the type of a data instance.
 
 `links`::
-Constructs a xref:{page-version}@typeql::statements/links.adoc[], used to specify the roleplayers in a relation.
+Constructs a xref:{page-version}@typeql::statements/links.adoc[], used to specify the role players in a relation.
 
 `has`::
 Constructs a xref:{page-version}@typeql::statements/has.adoc[], used to specify an attribute of an entity or relation.
@@ -150,7 +150,7 @@ Constructs an xref:{page-version}@typeql::statements/iid.adoc[], used to identif
 Describes a xref:{page-version}@typeql::annotations/card.adoc[], used to specify cardinality ranges for roles and ownerships.
 
 `@cascade`::
-Describes a xref:{page-version}@typeql::annotations/cascade.adoc[], used to specify behaviour when deleting a relation's roleplayers.
+Describes a xref:{page-version}@typeql::annotations/cascade.adoc[], used to specify behaviour when deleting a relation's role players.
 
 `@independent`::
 Describes an xref:{page-version}@typeql::annotations/independent.adoc[], used to prevent attributes without owners from being deleted automatically.
@@ -186,86 +186,86 @@ Describes a xref:{page-version}@typeql::annotations/distinct.adoc[], used to res
 == Reductions
 
 `check`::
-Reduces the stream to a boolean value, indicating whether it contains any elements. See xref:{page-version}@typeql::values/reductions.adoc[] for more information.
+Reduces the stream to a boolean value, indicating whether it contains any elements. See xref:{page-version}@typeql::pipelines/reduce.adoc[] for more information.
 
 `first`::
-Reduces the stream to the first occurrence of a specified variable. See xref:{page-version}@typeql::values/reductions.adoc[] for more information.
+Reduces the stream to the first occurrence of a specified variable. See xref:{page-version}@typeql::pipelines/reduce.adoc[] for more information.
 
 `count`::
-Reduces the stream to the number of occurrences of a specified variable. See xref:{page-version}@typeql::values/reductions.adoc[] for more information.
+Reduces the stream to the number of occurrences of a specified variable. See xref:{page-version}@typeql::pipelines/reduce.adoc[] for more information.
 
 `max`::
-Reduces the stream to the maximum value of a specified variable. See xref:{page-version}@typeql::values/reductions.adoc[] for more information.
+Reduces the stream to the maximum value of a specified variable. See xref:{page-version}@typeql::pipelines/reduce.adoc[] for more information.
 
 `min`::
-Reduces the stream to the minimum value of a specified variable. See xref:{page-version}@typeql::values/reductions.adoc[] for more information.
+Reduces the stream to the minimum value of a specified variable. See xref:{page-version}@typeql::pipelines/reduce.adoc[] for more information.
 
 `mean`::
-Reduces the stream to the arithmetic mean of a specified variable. See xref:{page-version}@typeql::values/reductions.adoc[] for more information.
+Reduces the stream to the arithmetic mean of a specified variable. See xref:{page-version}@typeql::pipelines/reduce.adoc[] for more information.
 
 `median`::
-Reduces the stream to the median of a specified variable. See xref:{page-version}@typeql::values/reductions.adoc[] for more information.
+Reduces the stream to the median of a specified variable. See xref:{page-version}@typeql::pipelines/reduce.adoc[] for more information.
 
 `std`::
-Reduces the stream to the (population) standard deviation of a given variable. See xref:{page-version}@typeql::values/reductions.adoc[] for more information.
+Reduces the stream to the (population) standard deviation of a given variable. See xref:{page-version}@typeql::pipelines/reduce.adoc[] for more information.
 
 `sum`::
-Reduces the stream to the sum over a specified variable. See xref:{page-version}@typeql::values/reductions.adoc[] for more information.
+Reduces the stream to the sum over a specified variable. See xref:{page-version}@typeql::pipelines/reduce.adoc[] for more information.
 
 `list`::
-Reduces the stream to a list of occurrences of a specified variable. See xref:{page-version}@typeql::values/reductions.adoc[] for more information.
+Reduces the stream to a list of occurrences of a specified variable. See xref:{page-version}@typeql::pipelines/reduce.adoc[] for more information.
 
 == Value types
 
 `boolean`::
-Declares the values of an attribute type to be booleans. See xref:{page-version}@typeql::values/primitives.adoc[] for more information.
+Declares the values of an attribute type to be booleans. See xref:{page-version}@typeql::values/index.adoc[] for more information.
 
 `long`::
-Declares the values of an attribute type to be 64-bit signed integers. See xref:{page-version}@typeql::values/primitives.adoc[] for more information.
+Declares the values of an attribute type to be 64-bit signed integers. See xref:{page-version}@typeql::values/index.adoc[] for more information.
 
 `double`::
-Declares the values of an attribute type to be 64-bit floating point numbers. See xref:{page-version}@typeql::values/primitives.adoc[] for more information.
+Declares the values of an attribute type to be 64-bit floating point numbers. See xref:{page-version}@typeql::values/index.adoc[] for more information.
 
 `decimal`::
-Declares the values of an attribute type to be decimals, comprising a 64-bit signed integer component and 64-bit unsigned component representing up to 19 decimal places. See xref:{page-version}@typeql::values/primitives.adoc[] for more information.
+Declares the values of an attribute type to be decimals, comprising a 64-bit signed integer component and 64-bit unsigned component representing up to 19 decimal places. See xref:{page-version}@typeql::values/index.adoc[] for more information.
 
 `datetime-tz`::
-Declares the values of an attribute type to be nanosecond-precision ISO timestamps with timezones. See xref:{page-version}@typeql::values/primitives.adoc[] for more information.
+Declares the values of an attribute type to be nanosecond-precision ISO timestamps with timezones. See xref:{page-version}@typeql::values/index.adoc[] for more information.
 
 `datetime`::
-Declares the values of an attribute type to be nanosecond-precision ISO timestamps without timezones. See xref:{page-version}@typeql::values/primitives.adoc[] for more information.
+Declares the values of an attribute type to be nanosecond-precision ISO timestamps without timezones. See xref:{page-version}@typeql::values/index.adoc[] for more information.
 
 `date`::
-Declares the values of an attribute type to be ISO dates. See xref:{page-version}@typeql::values/primitives.adoc[] for more information.
+Declares the values of an attribute type to be ISO dates. See xref:{page-version}@typeql::values/index.adoc[] for more information.
 
 `duration`::
-Declares the values of an attribute type to be ISO durations. See xref:{page-version}@typeql::values/primitives.adoc[] for more information.
+Declares the values of an attribute type to be ISO durations. See xref:{page-version}@typeql::values/index.adoc[] for more information.
 
 `string`::
-Declares the values of an attribute type to be variable length UTF-8 encoded strings. See xref:{page-version}@typeql::values/primitives.adoc[] for more information.
+Declares the values of an attribute type to be variable length UTF-8 encoded strings. See xref:{page-version}@typeql::values/index.adoc[] for more information.
 
 == Built-in functions
 
 `round(...)`::
-Rounding function, returns the provided numeric argument rounded to the nearest integer. See xref:{page-version}@typeql::values/operators.adoc[] for more information.
+Rounding function, returns the provided numeric argument rounded to the nearest integer. See xref:{page-version}@typeql::expressions/operators.adoc[] for more information.
 
 `ceil(...)`::
-Ceiling function, returns the provided numeric argument rounded to the nearest greater integer. See xref:{page-version}@typeql::values/operators.adoc[] for more information.
+Ceiling function, returns the provided numeric argument rounded to the nearest greater integer. See xref:{page-version}@typeql::expressions/operators.adoc[] for more information.
 
 `floor(...)`::
-Floor function, returns the provided numeric argument rounded to the nearest lesser integer. See xref:{page-version}@typeql::values/operators.adoc[] for more information.
+Floor function, returns the provided numeric argument rounded to the nearest lesser integer. See xref:{page-version}@typeql::expressions/operators.adoc[] for more information.
 
 `abs(...)`::
-Modulus function, returns the absolute value of the provided numeric argument. See xref:{page-version}@typeql::values/operators.adoc[] for more information.
+Modulus function, returns the absolute value of the provided numeric argument. See xref:{page-version}@typeql::expressions/operators.adoc[] for more information.
 
 `length(...)`::
-Length function, returns the length of the provided list argument. See xref:{page-version}@typeql::values/operators.adoc[] for more information.
+Length function, returns the length of the provided list argument. See xref:{page-version}@typeql::expressions/operators.adoc[] for more information.
 
 `min(...)`::
-Minimum function, returns the minimum value of the provided list argument. See xref:{page-version}@typeql::values/operators.adoc[] for more information.
+Minimum function, returns the minimum value of the provided list argument. See xref:{page-version}@typeql::expressions/operators.adoc[] for more information.
 
 `max(...)`::
-Maximum function, returns the maximum value of the provided list argument. See xref:{page-version}@typeql::values/operators.adoc[] for more information.
+Maximum function, returns the maximum value of the provided list argument. See xref:{page-version}@typeql::expressions/operators.adoc[] for more information.
 
 == Literals
 

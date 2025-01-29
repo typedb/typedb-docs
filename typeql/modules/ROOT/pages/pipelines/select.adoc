@@ -16,6 +16,6 @@ select <var> [ , <var> ... ];
 ----
 match
   $group isa group, has group-id "<group id>";
-  (group: $group, member: $member) isa group-membership, has rank "member";
+  group-membership (group: $group, member: $member), has rank "member";
 select $member;
 ----

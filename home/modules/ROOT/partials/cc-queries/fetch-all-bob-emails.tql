@@ -1,7 +1,0 @@
-match
-  $u isa user;
-  $n isa name;
-  $u has $n;
-  $n == "Bob";
-fetch
-  $u: name, email;

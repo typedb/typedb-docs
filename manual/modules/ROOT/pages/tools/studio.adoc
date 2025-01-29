@@ -1,4 +1,4 @@
-= Using TypeDB Studio
+= TypeDB Studio
 :page-aliases: {page-version}@manual::studio.adoc
 :keywords: typedb, client, studio, visualizer, IDE, editor, purple
 :pageTitle: TypeDB Studio
@@ -15,7 +15,6 @@ TypeDB Studio is a graphical tool for managing and querying TypeDB databases.
 
 With Studio, developers can efficiently manage databases, execute queries, and explore query results,
 all within a unified environment.
-It has a first-class xref:{page-version}@typeql::index.adoc[TypeQL] support, as well as a type browser, type editor, and query result visualizer.
 --
 
 [cols-2]
@@ -26,10 +25,10 @@ It has a first-class xref:{page-version}@typeql::index.adoc[TypeQL] support, as 
 The GitHub repository with the source code and release notes.
 ****
 
-.xref:{page-version}@manual::install/studio.adoc[Install]
+.xref:{page-version}@home::install-tools.adoc#_studio[Install]
 [.clickable]
 ****
-The TypeDB Studio installation guide.
+Download and install the latest version of TypeDB Studio.
 ****
 --
 
@@ -412,5 +411,10 @@ https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%5Etypedb-
 | 3.0.0 to 3.0.2
 | 3.0.0 to 3.0.2
 |===
+
+[NOTE]
+=====
+2.x and 3.x versions are not compatible.
+=====
 ====
 // end::compat-table[]

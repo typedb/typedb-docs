@@ -1,9 +1,0 @@
-define
-  rule view-permission: when {
-    (subject: $s, object: $o, action: $a) isa permission;
-    $a isa action, has name $n;
-    { $n == "write"; } or { $n == "full"; };
-    $read isa action, has name "read";
-  } then {
-    (subject: $s, object: $o, action: $read) isa permission;
-  };
