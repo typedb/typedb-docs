@@ -36,6 +36,7 @@ Click on a feature below for detailed documentation and examples.
 
 * **Sessions Removed:** Connections to TypeDB now only require opening a `schema`, `write`, or `read` xref:{page-version}@manual::queries/transactions.adoc[transaction].
 * **Integer Value Type Renamed:** `long` is now xref:{page-version}@typeql::values/integer.adoc[`integer`].
+* **Kinds Introduced:** no more predefined root types and their subtyping through `person sub entity`, `friendship sub relation`, or `name sub attribute`. Each new type should be declared with an explicit kind: `entity person`, `relation friendship`, and `attribute name`. Check out xref:{page-version}@manual::schema/schema_structure.adoc[] for more.
 * **Expanded User Management:** Authorization and user management are now included in all TypeDB editions.
 Default credentials, if applicable, can be found in the xref:{page-version}@manual::connect/index.adoc[Connection Manual].
 * **Updated Query Syntax:**
