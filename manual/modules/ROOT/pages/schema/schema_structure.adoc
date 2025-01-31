@@ -77,16 +77,16 @@ A key ingredient of any modern type system is *subtyping*, i.e., the ability to 
 ----
 define entity admin sub user;
 ----
-Subtyping behave in the intuitive way:
+Subtyping behaves exactly as expected:
 
 * If we were to query for user instances, we would also find all admin instances
 * If we were to query for admin instance, we would not find those users that are not admins.
 
 [NOTE]
 ====
-Subtyping hierarchies in TypeDB are "`single-inheritance`", i.e., every type has a single direct supertype. This choice simplifies data models and avoids the https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem[diamond problem]. Every data instance has exactly one
+Subtyping hierarchies in TypeDB are "`single-inheritance`", i.e., every type has a single direct supertype. This choice simplifies data models and avoids the https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem[diamond problem].
 
-To model non-tree-like hierarchies the user can exploit the trait system of TypeDB.
+To model "`non-tree-like`" hierarchies you can exploit the trait system of TypeDB.
 ====
 
 An important aspect of subtyping is the *inheritance* of traits. In general, _all_ traits of the supertype are inherited by the subtype. However, further traits may be specified for the subtype that are not shared with the supertype. For example,
