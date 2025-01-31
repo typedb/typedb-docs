@@ -39,6 +39,104 @@ Request Body::
 ----
 ====
 
+.Valid Values
+|===
+| `id` | The cluster's ID must be unique within its project,
+and consist only of lowercase alphanumeric characters, optionally separated by underscores and hyphens.
+| `serverCount` | An integer value between 1 and 9. Some versions of TypeDB will only accept 1.
+| `storageSizeGB` | An integer value between 10 and 1000.
+| `provider` | Must be either `gcp`, `aws`, or `azure`
+| `isFree` | If set to `true`, must use a valid free machine type, and have at most 1 server and 10GB of storage.
+If set to false, there must be a valid payment method on the organization
+| `region` | See below
+| `machineType` | See below
+| `storageType` | See below
+| `version` | See below
+|===
+
+.Machine Types
+[options="header"]
+|===
+| Provider | Machine Types    | Free Available | Regions
+| GCP      | c2d-highcpu-2    | Yes           a|
+* europe-west2
+* europe-west3
+* us-west4
+* us-east1
+|          | c2d-highcpu-4    | No            a|
+* europe-west2
+* europe-west3
+* us-west4
+* us-east1
+|          | c2d-highcpu-8    | No            a|
+* europe-west2
+* europe-west3
+* us-west4
+* us-east1
+|          | c2d-highcpu-16   | No            a|
+* europe-west2
+* europe-west3
+* us-west4
+* us-east1
+| AWS      | c7g.large        | Yes           a|
+* eu-west-2
+|          | c7g.xlarge       | No            a|
+* eu-west-2
+|          | c7g.2xlarge      | No            a|
+* eu-west-2
+|          | c7g.4xlarge      | No            a|
+* eu-west-2
+|          | c8g.large        | Yes           a|
+* us-west-2
+* us-east-1
+* eu-central-1
+|          | c8g.xlarge       | No            a|
+* us-west-2
+* us-east-1
+* eu-central-1
+|          | c8g.2xlarge      | No            a|
+* us-west-2
+* us-east-1
+* eu-central-1
+|          | c8g.4xlarge      | No            a|
+* us-west-2
+* us-east-1
+* eu-central-1
+| Azure    | Standard_F2s_v2  | Yes           a|
+* East US
+* West US 3
+* Germany West Central
+|          | Standard_F4s_v2  | No            a|
+* East US
+* West US 3
+* Germany West Central
+|          | Standard_F8s_v2  | No            a|
+* East US
+* West US 3
+* Germany West Central
+|          | Standard_F16s_v2 | No            a|
+* East US
+* West US 3
+* Germany West Central
+|===
+
+.Storage Types
+[options="header"]
+|===
+| Provider | Storage Type
+| GCP      | standard-rwo
+| AWS      | gp2
+| Azure    | default
+|===
+
+.Versions
+[options="header"]
+|===
+| Version  | Multi-node support
+| 2.29.3   | Yes
+| 3.0.2    | No
+|===
+
 === Get
 
 To get information about a cluster, issue a `GET` request to the
@@ -56,45 +154,21 @@ Example Response:
 [source]
 ----
 {
-  "id": "tmp",
-  "serverCount": 1,
-  "storageGb": "10",
-  "typedbCloudVersion": {
-    "version": "3.0.2",
-    "singleNodeOnly": true
-  },
-  "createdAt": "1737651270155",
-  "status": "SUSPENDED",
-  "isAdminUserInitialized": false,
-  "project": {
-    "id": "default",
-    "name": "Default"
-  },
-  "provider": {
-    "id": "gcp",
-    "name": "Google Cloud Platform"
-  },
-  "region": {
-    "id": "gcp-europe-west2",
-    "continentName": "Europe",
-    "continentOrdinal": 2,
-    "countryCode": "GB",
-    "locationName": "United Kingdom",
-    "vendorId": "europe-west2"
-  },
-  "machineType": {
-    "vendorId": "c2d-highcpu-2",
-    "cpu": 2,
-    "ramGb": 4,
-    "isFree": true
-  },
-  "storageType": {
-    "vendorId": "standard-rwo",
-    "minGb": 10,
-    "maxGb": 1000,
-    "iops": "3000 IOPS + 6/GiB, up to 16000"
-  }
+    "id":"new-cluster",
+    "serverCount":1,
+    "storageSizeGB":10,
+    "isFree":true,
+    "status":"running",
+    "createdAt":1738256490070,
+    "organization":"new-organization",
+    "project":"default",
+    "version":"3.0.2",
+    "provider":"gcp",
+    "region":"europe-west2",
+    "machineType":"c2d-highcpu-2",
+    "storageType":"standard-rwo"
 }
+
 
 ----
 
