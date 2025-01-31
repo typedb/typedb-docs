@@ -129,8 +129,8 @@ public class Main {
             List<ConceptRow> answers = tx.query(query).resolve().asConceptRows().stream().collect(Collectors.toList());
             tx.commit();
             for (ConceptRow row : answers) {
-                String phone = row.get("p").tryGetString().get();
-                String email = row.get("e").tryGetString().get();
+                String phone = row.get("p").get().tryGetString().get();
+                String email = row.get("e").get().tryGetString().get();
                 System.out.println("Added new user. Phone: " + phone + ", E-mail: " + email);
             }
             return answers;
@@ -159,7 +159,7 @@ public class Main {
                         email
                 );
                 List<ConceptRow> rows = tx.query(relativesQuery).resolve().asConceptRows().stream().collect(Collectors.toList());
-                rows.forEach(row -> System.out.println("Relative: " + row.get("username").tryGetString().get()));
+                rows.forEach(row -> System.out.println("Relative: " + row.get("username").get().tryGetString().get()));
                 return rows;
             }
         }
@@ -187,7 +187,7 @@ public class Main {
                         email
                 );
                 List<ConceptRow> rows = tx.query(relativesQuery).resolve().asConceptRows().stream().collect(Collectors.toList());
-                rows.forEach(row -> System.out.println("Relative: " + row.get("username").tryGetString().get()));
+                rows.forEach(row -> System.out.println("Relative: " + row.get("username").get().tryGetString().get()));
                 return rows;
             }
         }
@@ -322,7 +322,7 @@ public class Main {
         try (Transaction transaction = driver.transaction(dbName, Transaction.Type.READ)) {
             String countQuery = "match $u isa user; reduce $count = count;";
             System.out.print("Validating the dataset...");
-            long count = transaction.query(countQuery).resolve().asConceptRows().next().get("count").tryGetInteger().get();
+            long count = transaction.query(countQuery).resolve().asConceptRows().next().get("count").get().tryGetInteger().get();
             if (count == 3) {
                 System.out.println("Passed");
                 return true;

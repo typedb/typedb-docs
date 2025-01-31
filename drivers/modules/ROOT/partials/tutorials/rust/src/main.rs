@@ -56,8 +56,8 @@ async fn insert_new_user(
     )).await?;
     let rows = response.into_rows().try_collect::<Vec<_>>().await?;
     for row in &rows {
-        let email = row.get("e").unwrap().try_get_string().unwrap();
-        let phone = row.get("p").unwrap().try_get_string().unwrap();
+        let email = row.get("e").unwrap().unwrap().try_get_string().unwrap();
+        let phone = row.get("p").unwrap().unwrap().try_get_string().unwrap();
         println!("Added new user. Phone: {}, E-mail: {}", phone, email);
     }
     if rows.len() > 0 {
@@ -101,7 +101,7 @@ async fn get_direct_relatives_by_email(
         .try_collect::<Vec<_>>()
         .await?;
     for (count, row) in relative_emails.iter().enumerate() {
-        println!("Relative #{}: {}", count + 1, row.get("username").unwrap().try_get_string().unwrap());
+        println!("Relative #{}: {}", count + 1, row.get("username").unwrap().unwrap().try_get_string().unwrap());
     }
     Ok(relative_emails)
 }
@@ -140,7 +140,7 @@ async fn get_all_relatives_by_email(
         .try_collect::<Vec<_>>()
         .await?;
     for (count, row) in relative_emails.iter().enumerate() {
-        println!("Relative #{}: {}", count + 1, row.get("username").unwrap().try_get_string().unwrap());
+        println!("Relative #{}: {}", count + 1, row.get("username").unwrap().unwrap().try_get_string().unwrap());
     }
     Ok(relative_emails)
 }
@@ -325,7 +325,7 @@ async fn validate_data(driver: &TypeDBDriver, db_name: &str) -> Result<bool, Box
     let response = tx.query(count_query).await?;
     assert!(response.is_row_stream());
     let row = response.into_rows().next().await.unwrap()?;
-    let count = row.get("count").unwrap().try_get_integer().unwrap();
+    let count = row.get("count").unwrap().unwrap().try_get_integer().unwrap();
     if count == 3 {
         println!("OK");
         Ok(true)
