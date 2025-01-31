@@ -47,6 +47,10 @@ Default credentials, if applicable, can be found in the xref:{page-version}@manu
 However, it is still easy to differentiate their declaration with the new xref:{page-version}@typeql::statements/let-eq.adoc[`let` keyword].
 Check out some read queries examples xref:{page-version}@manual::CRUD/reading.adoc[here].
 * **Annotations and Statements Consolidated:** xref:{page-version}@typeql::annotations/abstract.adoc[`abstract`] and xref:{page-version}@typeql::annotations/regex.adoc[`regex`] are now grouped under xref:{page-version}@typeql::annotations/index.adoc[@annotations].
+[#_specialize]
+* **Smoother trait specialization:**
+- It is possible to redefine already inherited `owns` and `plays` on subtypes, adding more annotations to them.
+- As before, use the `as` keyword to xref:{page-version}@typeql::statements/relates.adoc[specialize a `relates`].
 * **Default Cardinalities:**
 - Default cardinalities are applied to `owns`, `relates`, and `plays` if not explicitly defined.
 - Default `plays` cardinality: `@card(0..)` (unlimited).
@@ -79,6 +83,7 @@ Take into account that some of your processes can be blocked if you previously r
 * Transaction options.
 * `update` queries (use `delete` + `insert` as a workaround).
 * `contains` and `like` operators for `string` s.
+* Instantiation restriction for inherited `owns` and `plays` (used to `as`). A better way is planned to be released in the future (NOTE: you don't need the `as` keyword to <<#_specialize, specialize>> an ownership of an inherited super attribute type with an ownership of its subtype).
 * Scaling support for Cloud and Enterprise editions.
 
 === TypeDB Drivers
