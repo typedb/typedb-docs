@@ -4,10 +4,16 @@
 
 === Deploy
 
+Required Access Level: `write` to `org/ORG_ID/projects/PROJECT_ID`
+
 To deploy a cluster, send a `POST` request to the
 `/api/org/ORG_ID/projects/PROJECT_ID/clusters/deploy` endpoint,
 where `ORG_ID` and `PROJECT_ID` are the IDs of the project and org in which you want to make the cluster -
 when you first create your organization, it will have a project called `default`
+
+Clusters deployed through the API will have a default user with the username `admin` and the password `password`.
+We recommend xref:{page-version}@manual::users/passwords.adoc[updating the default password] before using the cluster -
+which can also be done through the TypeDB Cloud UI by clicking the "Connect" button on the cluster's page.
 
 [tabs]
 ====
@@ -39,8 +45,35 @@ Request Body::
 ----
 ====
 
-.Valid Values
+Example Response:
+[source]
+----
+{
+    "id":"new-cluster",
+    "serverCount":1,
+    "storageSizeGB":10,
+    "isFree":true,
+    "status":"starting",
+    "createdAt":1738256490070,
+    "organization":"new-organization",
+    "project":"default",
+    "version":"3.0.2",
+    "provider":"gcp",
+    "region":"europe-west2",
+    "machineType":"c2d-highcpu-2",
+    "storageType":"standard-rwo",
+    "servers": [
+        {
+          "address": "abc123-0.cluster.typedb.com:80",
+          "status": "pending"
+        }
+    ]
+}
+----
+
+[options="header"]
 |===
+| Field | Allowed Values
 | `id` | The cluster's ID must be unique within its project,
 and consist only of lowercase alphanumeric characters, optionally separated by underscores and hyphens.
 | `serverCount` | An integer value between 1 and 9. Some versions of TypeDB will only accept 1.
@@ -48,13 +81,13 @@ and consist only of lowercase alphanumeric characters, optionally separated by u
 | `provider` | Must be either `gcp`, `aws`, or `azure`
 | `isFree` | If set to `true`, must use a valid free machine type, and have at most 1 server and 10GB of storage.
 If set to false, there must be a valid payment method on the organization
-| `region` | See below
-| `machineType` | See below
-| `storageType` | See below
-| `version` | See below
+| `region` | See <<regionsmachinetypes,below>>
+| `machineType` | See <<regionsmachinetypes,below>>
+| `storageType` | See <<storagetypes,below>>
+| `version` | See <<versions,below>>
 |===
 
-.Machine Types
+[#regionsmachinetypes]
 [options="header"]
 |===
 | Provider | Machine Types    | Free Available | Regions
@@ -120,7 +153,7 @@ If set to false, there must be a valid payment method on the organization
 * Germany West Central
 |===
 
-.Storage Types
+[#storagetypes]
 [options="header"]
 |===
 | Provider | Storage Type
@@ -129,15 +162,17 @@ If set to false, there must be a valid payment method on the organization
 | Azure    | default
 |===
 
-.Versions
+[#versions]
 [options="header"]
 |===
 | Version  | Multi-node support
 | 2.29.3   | Yes
-| 3.0.2    | No
+| 3.0.5    | No
 |===
 
 === Get
+
+Required Access Level: `read` to `org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID`
 
 To get information about a cluster, issue a `GET` request to the
 `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID` endpoint.
@@ -166,13 +201,19 @@ Example Response:
     "provider":"gcp",
     "region":"europe-west2",
     "machineType":"c2d-highcpu-2",
-    "storageType":"standard-rwo"
+    "storageType":"standard-rwo",
+    "servers": [
+        {
+          "address": "abc123-0.cluster.typedb.com:80",
+          "status": "running"
+        }
+    ]
 }
-
-
 ----
 
 === Suspend
+
+Required Access Level: `write` to `org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID`
 
 To suspend a cluster, issue a `POST` request to the
 `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend` endpoint.
@@ -185,7 +226,35 @@ curl --request POST \
     --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
 
+Example Response:
+[source]
+----
+{
+    "id":"new-cluster",
+    "serverCount":1,
+    "storageSizeGB":10,
+    "isFree":true,
+    "status":"suspending",
+    "createdAt":1738256490070,
+    "organization":"new-organization",
+    "project":"default",
+    "version":"3.0.2",
+    "provider":"gcp",
+    "region":"europe-west2",
+    "machineType":"c2d-highcpu-2",
+    "storageType":"standard-rwo",
+    "servers": [
+        {
+          "address": "abc123-0.cluster.typedb.com:80",
+          "status": "running"
+        }
+    ]
+}
+----
+
 === Resume
+
+Required Access Level: `write` to `org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID`
 
 To resume a cluster, issue a `POST` request to the
 `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume` endpoint.
@@ -198,3 +267,69 @@ curl --request POST \
     --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
 
+Example Response:
+[source]
+----
+{
+    "id":"new-cluster",
+    "serverCount":1,
+    "storageSizeGB":10,
+    "isFree":true,
+    "status":"resuming",
+    "createdAt":1738256490070,
+    "organization":"new-organization",
+    "project":"default",
+    "version":"3.0.2",
+    "provider":"gcp",
+    "region":"europe-west2",
+    "machineType":"c2d-highcpu-2",
+    "storageType":"standard-rwo",
+    "servers": [
+        {
+          "address": "abc123-0.cluster.typedb.com:80",
+          "status": "pending"
+        }
+    ]
+}
+----
+
+=== Destroy
+
+Required Access Level: `admin` to `org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID`
+
+To destroy a cluster, issue a `DELETE` request to the
+`/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID` endpoint.
+
+Request:
+[source]
+----
+curl --request DELETE \
+    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID \
+    --header 'Authorization: Bearer {ACCESS-TOKEN}'
+----
+
+Example Response:
+[source]
+----
+{
+    "id":"new-cluster",
+    "serverCount":1,
+    "storageSizeGB":10,
+    "isFree":true,
+    "status":"destroying",
+    "createdAt":1738256490070,
+    "organization":"new-organization",
+    "project":"default",
+    "version":"3.0.2",
+    "provider":"gcp",
+    "region":"europe-west2",
+    "machineType":"c2d-highcpu-2",
+    "storageType":"standard-rwo",
+    "servers": [
+        {
+          "address": "abc123-0.cluster.typedb.com:80",
+          "status": "running"
+        }
+    ]
+}
+----
