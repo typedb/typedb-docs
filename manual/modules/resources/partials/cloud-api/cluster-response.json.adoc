@@ -1,0 +1,55 @@
+// tag::single[]
+[source,json]
+----
+{
+    "id": string,
+    "serverCount": number,
+    "storageSizeGB": number,
+    "isFree": boolean,
+    "status": string,
+    "createdAt": number,
+    "organization": string,
+    "project": string,
+    "version": string,
+    "provider": string,
+    "region": string,
+    "machineType": string,
+    "storageType": string,
+    "servers": [
+        {
+          "address": string,
+          "status": string
+        }
+    ]
+}
+----
+// end::single[]
+// tag::list[]
+[source,json]
+----
+[
+    {
+        "id": string,
+        "serverCount": number,
+        "storageSizeGB": number,
+        "isFree": boolean,
+        "status": string,
+        "createdAt": number,
+        "organization": string,
+        "project": string,
+        "version": string,
+        "provider": string,
+        "region": string,
+        "machineType": string,
+        "storageType": string,
+        "servers": [
+            {
+              "address": string,
+              "status": string
+            }
+        ]
+    }
+]
+----
+// end::list[]
+

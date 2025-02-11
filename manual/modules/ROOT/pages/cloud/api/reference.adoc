@@ -1,35 +1,54 @@
 = TypeDB Cloud API Reference
+:page-toclevels: 2
+
+[#accesslevels]
+== Access levels
+
+[options="header"]
+|===
+| Project access level | Available cluster actions
+| Admin                | Destroy
+| Write                | Deploy, Suspend, Resume
+| Read                 | Get, List
+|===
 
 == Clusters
 
 === Deploy
 
-Required Access Level: `write` to `org/ORG_ID/projects/PROJECT_ID`
+[cols="h,3a"]
+|===
+| Required access | *write* to `org/ORG_ID/projects/PROJECT_ID`
+| Method          | `POST`
+| URL             | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/deploy`
+| Request body    | include::{page-version}@manual:resources:partial$cloud-api/cluster-deploy.json.adoc[]
+| Response body   | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=single]
+|===
 
-To deploy a cluster, send a `POST` request to the
-`/api/org/ORG_ID/projects/PROJECT_ID/clusters/deploy` endpoint,
-where `ORG_ID` and `PROJECT_ID` are the IDs of the project and org in which you want to make the cluster -
-when you first create your organization, it will have a project called `default`
-
+[NOTE]
+====
 Clusters deployed through the API will have a default user with the username `admin` and the password `password`.
 We recommend xref:{page-version}@manual::users/passwords.adoc[updating the default password] before using the cluster -
 which can also be done through the TypeDB Cloud UI by clicking the "Connect" button on the cluster's page.
+====
+
+*Example request:*
 
 [tabs]
 ====
 curl::
 +
-[source]
+[source,console]
 ----
 curl --request POST \
     --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/deploy \
     --header 'Authorization: Bearer {ACCESS-TOKEN}' \
-    --json '{"id":"api-cluster","serverCount":1,"storageSizeGB":10,"provider":"gcp","region":"europe-west2","isFree":true,"machineType":"c2d-highcpu-2","storageType":"standard-rwo","version":"3.0.2"}'
+    --json '{"id":"api-cluster","serverCount":1,"storageSizeGB":10,"provider":"gcp","region":"europe-west2","isFree":true,"machineType":"c2d-highcpu-2","storageType":"standard-rwo","version":"3.0.5"}'
 ----
 
 Request Body::
 +
-[source]
+[source,json]
 ----
 {
     "id":"api-cluster",
@@ -40,16 +59,16 @@ Request Body::
     "isFree":true,
     "machineType":"c2d-highcpu-2",
     "storageType":"standard-rwo",
-    "version":"3.0.2"
+    "version":"3.0.5"
 }
 ----
 ====
 
-Example Response:
-[source]
+*Example response:*
+[source,json]
 ----
 {
-    "id":"new-cluster",
+    "id":"api-cluster",
     "serverCount":1,
     "storageSizeGB":10,
     "isFree":true,
@@ -57,7 +76,7 @@ Example Response:
     "createdAt":1738256490070,
     "organization":"new-organization",
     "project":"default",
-    "version":"3.0.2",
+    "version":"3.0.5",
     "provider":"gcp",
     "region":"europe-west2",
     "machineType":"c2d-highcpu-2",
@@ -76,84 +95,115 @@ Example Response:
 | Field | Allowed Values
 | `id` | The cluster's ID must be unique within its project,
 and consist only of lowercase alphanumeric characters, optionally separated by underscores and hyphens.
-| `serverCount` | An integer value between 1 and 9. Some versions of TypeDB will only accept 1.
+| `serverCount` | An odd integer value between 1 and 9.
+TypeDB version 3.0 and onwards can currently only have one server.
 | `storageSizeGB` | An integer value between 10 and 1000.
 | `provider` | Must be either `gcp`, `aws`, or `azure`
 | `isFree` | If set to `true`, must use a valid free machine type, and have at most 1 server and 10GB of storage.
-If set to false, there must be a valid payment method on the organization
+You may only have one free cluster per organization.
+
+If set to `false`, there must be a valid payment method on the organization.
 | `region` | See <<regionsmachinetypes,below>>
 | `machineType` | See <<regionsmachinetypes,below>>
 | `storageType` | See <<storagetypes,below>>
-| `version` | See <<versions,below>>
+| `version` a| Currently available versions are:
+
+* `2.29.3`
+* `3.0.5`
 |===
 
 [#regionsmachinetypes]
+.GCP regions and machine types
+[%collapsible]
+====
 [options="header"]
 |===
-| Provider | Machine Types    | Free Available | Regions
-| GCP      | c2d-highcpu-2    | Yes           a|
+| Machine Types    | Free Available | Regions
+| c2d-highcpu-2    | Yes            |
 * europe-west2
 * europe-west3
 * us-west4
 * us-east1
-|          | c2d-highcpu-4    | No            a|
+| c2d-highcpu-4    | No             |
 * europe-west2
 * europe-west3
 * us-west4
 * us-east1
-|          | c2d-highcpu-8    | No            a|
+| c2d-highcpu-8    | No             |
 * europe-west2
 * europe-west3
 * us-west4
 * us-east1
-|          | c2d-highcpu-16   | No            a|
+| c2d-highcpu-16   | No             |
 * europe-west2
 * europe-west3
 * us-west4
 * us-east1
-| AWS      | c7g.large        | Yes           a|
+|===
+====
+
+.AWS regions and machine types
+[%collapsible]
+====
+[options="header",cols=",,a"]
+|===
+| Machine Types    | Free Available | Regions
+| c7g.large        | Yes            |
 * eu-west-2
-|          | c7g.xlarge       | No            a|
+| c7g.xlarge       | No             |
 * eu-west-2
-|          | c7g.2xlarge      | No            a|
+| c7g.2xlarge      | No             |
 * eu-west-2
-|          | c7g.4xlarge      | No            a|
+| c7g.4xlarge      | No             |
 * eu-west-2
-|          | c8g.large        | Yes           a|
+| c8g.large        | Yes            |
 * us-west-2
 * us-east-1
 * eu-central-1
-|          | c8g.xlarge       | No            a|
+| c8g.xlarge       | No             |
 * us-west-2
 * us-east-1
 * eu-central-1
-|          | c8g.2xlarge      | No            a|
+| c8g.2xlarge      | No             |
 * us-west-2
 * us-east-1
 * eu-central-1
-|          | c8g.4xlarge      | No            a|
+| c8g.4xlarge      | No             |
 * us-west-2
 * us-east-1
 * eu-central-1
-| Azure    | Standard_F2s_v2  | Yes           a|
+|===
+====
+
+.Azure regions and machine types
+[%collapsible]
+====
+[options="header",cols=",,a"]
+|===
+| Machine Types    | Free Available | Regions
+| Standard_F2s_v2  | Yes            |
 * East US
 * West US 3
 * Germany West Central
-|          | Standard_F4s_v2  | No            a|
+| Standard_F4s_v2  | No             |
 * East US
 * West US 3
 * Germany West Central
-|          | Standard_F8s_v2  | No            a|
+| Standard_F8s_v2  | No             |
 * East US
 * West US 3
 * Germany West Central
-|          | Standard_F16s_v2 | No            a|
+| Standard_F16s_v2 | No             |
 * East US
 * West US 3
 * Germany West Central
 |===
+====
 
+.Storage Types
 [#storagetypes]
+[%collapsible]
+====
 [options="header"]
 |===
 | Provider | Storage Type
@@ -161,32 +211,29 @@ If set to false, there must be a valid payment method on the organization
 | AWS      | gp2
 | Azure    | default
 |===
-
-[#versions]
-[options="header"]
-|===
-| Version  | Multi-node support
-| 2.29.3   | Yes
-| 3.0.5    | No
-|===
+====
 
 === Get
 
-Required Access Level: `read` to `org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID`
+[cols="h,3a"]
+|===
+| Required access | *read* to `org/ORG_ID/projects/PROJECT_ID`
+| Method          | `GET`
+| URL             | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID`
+| Request body    | None
+| Response body   | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=single]
+|===
 
-To get information about a cluster, issue a `GET` request to the
-`/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID` endpoint.
-
-Request:
-[source]
+*Example request:*
+[source,console]
 ----
 curl --request GET \
     --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID \
     --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
 
-Example Response:
-[source]
+*Example response:*
+[source,json]
 ----
 {
     "id":"new-cluster",
@@ -197,7 +244,7 @@ Example Response:
     "createdAt":1738256490070,
     "organization":"new-organization",
     "project":"default",
-    "version":"3.0.2",
+    "version":"3.0.5",
     "provider":"gcp",
     "region":"europe-west2",
     "machineType":"c2d-highcpu-2",
@@ -211,23 +258,91 @@ Example Response:
 }
 ----
 
+=== List
+
+[cols="h,3a"]
+|===
+| Required access | *read* to `org/ORG_ID/projects/PROJECT_ID`
+| Method          | `GET`
+| URL             | `/api/org/ORG_ID/projects/PROJECT_ID/clusters`
+| Request body    | None
+| Response body   | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=list]
+|===
+
+*Example request:*
+[source,console]
+----
+curl --request GET \
+    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters \
+    --header 'Authorization: Bearer {ACCESS-TOKEN}'
+----
+
+*Example response:*
+[source,json]
+----
+[
+    {
+        "id":"new-cluster",
+        "serverCount":1,
+        "storageSizeGB":10,
+        "isFree":true,
+        "status":"running",
+        "createdAt":1738256490070,
+        "organization":"new-organization",
+        "project":"default",
+        "version":"3.0.5",
+        "provider":"gcp",
+        "region":"europe-west2",
+        "machineType":"c2d-highcpu-2",
+        "storageType":"standard-rwo",
+        "servers": [
+            {
+              "address": "abc123-0.cluster.typedb.com:80",
+              "status": "running"
+            }
+        ]
+    },
+    {
+        "id":"cluster-two",
+        "serverCount":1,
+        "storageSizeGB":10,
+        "isFree":false,
+        "status":"suspended",
+        "createdAt":1738256490090,
+        "organization":"new-organization",
+        "project":"default",
+        "version":"3.0.5",
+        "provider":"aws",
+        "region":"eu-west-2",
+        "machineType":"c7g.large",
+        "storageType":"gp2",
+        "servers": []
+    }
+]
+----
+
+
 === Suspend
 
-Required Access Level: `write` to `org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID`
+[cols="h,3a"]
+|===
+| Required access | *write* to `org/ORG_ID/projects/PROJECT_ID`
+| Method          | `POST`
+| URL             | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend`
+| Request body    | None
+| Response body   | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=single]
+|===
 
-To suspend a cluster, issue a `POST` request to the
-`/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend` endpoint.
-
-Request:
-[source]
+*Example request:*
+[source,console]
 ----
 curl --request POST \
     --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend \
     --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
 
-Example Response:
-[source]
+*Example response:*
+[source,json]
 ----
 {
     "id":"new-cluster",
@@ -238,7 +353,7 @@ Example Response:
     "createdAt":1738256490070,
     "organization":"new-organization",
     "project":"default",
-    "version":"3.0.2",
+    "version":"3.0.5",
     "provider":"gcp",
     "region":"europe-west2",
     "machineType":"c2d-highcpu-2",
@@ -254,21 +369,25 @@ Example Response:
 
 === Resume
 
-Required Access Level: `write` to `org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID`
+[cols="h,3a"]
+|===
+| Required access | *write* to `org/ORG_ID/projects/PROJECT_ID`
+| Method          | `POST`
+| URL             | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume`
+| Request body    | None
+| Response body   | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=single]
+|===
 
-To resume a cluster, issue a `POST` request to the
-`/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume` endpoint.
-
-Request:
-[source]
+*Request:*
+[source,console]
 ----
 curl --request POST \
     --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume \
     --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
 
-Example Response:
-[source]
+*Example response:*
+[source,json]
 ----
 {
     "id":"new-cluster",
@@ -279,7 +398,7 @@ Example Response:
     "createdAt":1738256490070,
     "organization":"new-organization",
     "project":"default",
-    "version":"3.0.2",
+    "version":"3.0.5",
     "provider":"gcp",
     "region":"europe-west2",
     "machineType":"c2d-highcpu-2",
@@ -295,21 +414,25 @@ Example Response:
 
 === Destroy
 
-Required Access Level: `admin` to `org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID`
+[cols="h,3a"]
+|===
+| Required access | *admin* to `org/ORG_ID/projects/PROJECT_ID`
+| Method          | `DELETE`
+| URL             | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID`
+| Request body    | None
+| Response body   | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=single]
+|===
 
-To destroy a cluster, issue a `DELETE` request to the
-`/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID` endpoint.
-
-Request:
-[source]
+*Example request:*
+[source,console]
 ----
 curl --request DELETE \
     --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID \
     --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
 
-Example Response:
-[source]
+*Example response:*
+[source,json]
 ----
 {
     "id":"new-cluster",
@@ -320,7 +443,7 @@ Example Response:
     "createdAt":1738256490070,
     "organization":"new-organization",
     "project":"default",
-    "version":"3.0.2",
+    "version":"3.0.5",
     "provider":"gcp",
     "region":"europe-west2",
     "machineType":"c2d-highcpu-2",

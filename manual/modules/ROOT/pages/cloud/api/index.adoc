@@ -8,45 +8,79 @@ https://cloud.typedb.com/sign-up.
 
 == Generating an API Token
 
-API Tokens can be generated from your https://cloud.typedb.com/?org_action=settings[organization settings] page.
-After it's generated, you will be shown its Client ID and Client Secret,
-which you will use to authenticate against the API
+1. Visit your https://cloud.typedb.com/?org_action=/settings[organization settings] page,
+scroll to the API tokens section, and click "Generate API Token".
+
+2. Give your API token a descriptive name, and appropriate permissions in your chosen project.
+See the xref:{page-version}@manual::cloud/api/reference.adoc#accesslevels[API reference] for detailed permission info.
+
+3. Generate your API token and copy the displayed client ID and client secret for later use when authenticating.
 
 [WARNING]
 ====
 Make sure to save the client secret somewhere safe - you will only see it when
-you first generate the token, and will be unable to use the token without it
+you first generate the token, and will be unable to use the token without it.
 ====
 
-== Connecting to the API
+== Accessing the API
 
 Once you have your client ID and client secret,
 you will need to exchange these for a short-lived access token used to query the API.
 
 . Make a `POST` request to `https://typedb.com/api/cloud/auth`,
-with the client ID and client secret in a Basic authorization header, separated by a `:`
+with the client ID and client secret in a Basic authorization header, separated by a `:`.
 +
-[source]
+[source,console]
 ----
 curl --request POST \
     --url https://typedb.com/api/cloud/auth \
     --header 'Authorization: Basic {CLIENT-ID}:{CLIENT-SECRET}'
 ----
-The response body will be your access token
+The response body will be your access token.
 +
 [NOTE]
 ====
-Your access token will expire after 1 hour.
-When it does, you will need to perform this process again to get a new token.
+For security, your access token will expire after 1 hour.
 ====
-. Make an API request using your access token
-by placing that token in a Bearer authorization header.
-The following example will get information about a cluster called `my-cluster`,
-in a project called `default`, in an organization called `my-org`.
+. Make an API request to list clusters in the project you selected for your API token.
+The example below targets the `default` project in an organization called `my-org`.
+You will use the access token you generated in the previous step to authenticate this request.
 +
-[source]
+[source,console]
 ----
 curl --request GET \
-    --url https://cloud.typedb.com/api/org/my-org/projects/default/cluster/my-cluster \
+    --url https://cloud.typedb.com/api/org/my-org/projects/default/clusters \
     --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
+It will return information about the cluster in a JSON format, as below
++
+[source,json]
+----
+[
+    {
+        "id":"my-cluster",
+        "serverCount":1,
+        "storageSizeGB":10,
+        "isFree":true,
+        "status":"running",
+        "createdAt":1738256490070,
+        "organization":"my-org",
+        "project":"default",
+        "version":"3.0.5",
+        "provider":"gcp",
+        "region":"europe-west2",
+        "machineType":"c2d-highcpu-2",
+        "storageType":"standard-rwo",
+        "servers": [
+            {
+              "address": "abc123-0.cluster.typedb.com:80",
+              "status": "running"
+            }
+        ]
+    }
+]
+----
+
+Now that you know how to query the API,
+check out the xref:{page-version}@manual::cloud/api/reference.adoc[API reference]
+for more detail on what you can do with it.
