@@ -1,6 +1,7 @@
 import re
 import sys
 import json
+from dataclasses import dataclass
 from pathlib import Path
 from typedb.driver import TypeDB, Driver, TransactionType, Credentials, DriverOptions
 from enum import Enum
@@ -14,14 +15,25 @@ PASSWORD = "password"
 TEST_DB_NAME = "sample_app_db"
 SERVER_ADDR = "127.0.0.1:1729"
 
-
 class Edition(Enum):
     Cloud = 1
     Core = 2
 
-
 TYPEDB_EDITION = Edition.Core
 
+@dataclass
+class ParsedTransaction:
+    queries: List[str]
+    type: str
+    config: Dict[str, str]
+
+    def __hash__(self):
+        return hash((tuple(self.queries), self.type, frozenset(self.config.items())))
+
+    def __repr__(self):
+        return (f"ParsedTransaction(type={self.type}, "
+                f"queries={self.queries}, "
+                f"config={self.config})")
 
 def create_driver(edition: Edition, uri: str, username: str = USERNAME, password: str = PASSWORD) -> Driver:
     if edition is Edition.Core:
@@ -81,28 +93,72 @@ def run_counted_queries(driver: Driver, queries: List[str], expected_count: int,
         return count
 
 
-def test_transactions(test_attribute: str, test_entrypoint: str, parsed_code_blocks: List[Dict[str, Union[str, Dict[str, str]]]]) -> None:
+def run_transaction(parsed_transaction: ParsedTransaction):
+    print(f"running {parsed_transaction}")
+    return None
+
+def test_transactions_in_order(test_attribute: str, test_entrypoint: str, parsed_transactions: List[ParsedTransaction], adoc_path: str) -> None:
     linear_mode = True if test_attribute == "linear" else False
-    # TODO
+    if linear_mode:
+        # run transactions in linear order
+        for parsed_transaction in parsed_transactions:
+            run_transaction(parsed_transaction)
+    else:
+        # populate name lookup table
+        name_lookup = {}
+        for (i,parsed_transaction) in enumerate(parsed_transactions):
+            if parsed_transaction.config["name"]:
+                name = parsed_transaction.config["name"]
+                if not name_lookup[name]:
+                    name_lookup[name] = i
+                else:
+                    raise ValueError(f"[{adoc_path}]: Detected duplicate transaction name: {name}")
+
+        # Now run transactions in custom order
+        remaining_indices = set(range(0, len(parsed_transactions)))
+        completed_indices = set()
+        current_transaction_index = name_lookup[test_entrypoint] if name_lookup[test_entrypoint] else None
+
+        if not current_transaction_index:
+            raise ValueError(f"[{adoc_path}]: Didn't find test entrypoint {test_entrypoint}")
+
+        while True:
+            if current_transaction_index in completed_indices:
+                raise ValueError(f"[{adoc_path}]: attempted to execute the same transaction (with index #{current_transaction_index}) twice")
+
+            if current_transaction_index >= len(parsed_transactions):
+                raise ValueError(f"[{adoc_path}]: tried to execute beyond last transaction before completion of all other transactions")
+
+            current_transaction = parsed_transactions[current_transaction_index]
+            run_transaction(current_transaction)
+            remaining_indices.remove(current_transaction_index)
+            completed_indices.add(current_transaction_index)
+
+            if current_transaction.config["jump_to"]:
+                current_transaction_index = name_lookup[current_transaction.config["jump_to"]]
+            if len(remaining_indices) == 0:
+                break
+            current_transaction += 1
+
     return None
 
 
-def parse_attributes(attr_string: str, adoc_path: str) -> Dict[str, str]:
-    attributes = {}
-    attr_string = attr_string.strip().lstrip('[').rstrip(']').strip()
+def parse_config(config_str: str, adoc_path: str) -> Dict[str, str]:
+    config = {}
+    config_str = config_str.strip().lstrip('[').rstrip(']').strip()
 
-    if not attr_string:
-        return attributes
+    if not config_str:
+        return config
 
-    parts = [p.strip() for p in attr_string.split(',')]
+    parts = [p.strip() for p in config_str.split(',')]
     for part in parts:
         if not part:
             continue
         if '=' not in part:
             raise ValueError(f"[Adoc: {adoc_path}]: Provided attribute '{part}' is not in key=value form.")
         key, val = part.split('=', 1)
-        attributes[key.strip()] = val.strip()
-    return attributes
+        config[key.strip()] = val.strip()
+    return config
 
 
 def extract_adoc_attributes(adoc_path: str) -> Tuple[str, str]:
@@ -134,11 +190,11 @@ def extract_adoc_attributes(adoc_path: str) -> Tuple[str, str]:
     return test_attribute, test_entrypoint
 
 
-def parse_transactions_from_adoc(adoc_path: str) -> List[Dict[str, Union[str, List[str]]]]:
+def parse_transactions_from_adoc(adoc_path: str) -> List[ParsedTransaction]:
     parsed_transactions = []
     in_transaction = False
     in_query = False
-    transaction_attributes = {}
+    transaction_config = {}
 
     with open(adoc_path, 'r', encoding='utf-8') as f:
         lines = f.readlines()
@@ -153,7 +209,9 @@ def parse_transactions_from_adoc(adoc_path: str) -> List[Dict[str, Union[str, Li
                 raise ValueError( f"[Adoc: {adoc_path}#{line_number}]: Found //#!open while already in a transaction block. Nested transactions not supported.")
             in_transaction = True
             attr_str = start_match.group(1)  # e.g. "[key=val, ...]"
-            transaction_attributes = parse_attributes(attr_str, adoc_path)
+            transaction_config = parse_config(attr_str, adoc_path)
+            if not transaction_config["type"]:
+                raise ValueError( f"[Adoc: {adoc_path}#{line_number}]: Any transaction needs a type")
             transaction_queries = []
             line_number += 1
             continue
@@ -163,13 +221,12 @@ def parse_transactions_from_adoc(adoc_path: str) -> List[Dict[str, Union[str, Li
                 if not transaction_queries:
                     raise ValueError( f"[Adoc: {adoc_path}#{line_number}]: Found empty transaction")
                 parsed_transactions.append({
-                    "queries": transaction_queries,
-                    "attributes": transaction_attributes
+                    ParsedTransaction(transaction_queries, transaction_config["type"], transaction_config)
                 })
                 if in_query:
                     raise ValueError( f"[Adoc: {adoc_path}#{line_number}]: Trying to //#!commit while still in //#!start(ed) query")
                 in_transaction = False
-                transaction_attributes = {}
+                transaction_config = {}
                 transaction_queries = []
                 line_number += 1
                 continue
@@ -229,31 +286,31 @@ def parse_transactions_from_adoc(adoc_path: str) -> List[Dict[str, Union[str, Li
 
     if in_transaction:
         raise ValueError(
-            f"[Adoc: {adoc_path}#{line_number}]: Reached end of file but a //#!commit was never found for the last block.")
+            f"[Adoc: {adoc_path}#{line_number}]: Reached end of file but transaction was completed with //#!commit")
 
     return parsed_transactions
 
 
-def parse_adoc_for_code_tests(adoc_path: str) -> Tuple[str, str, List[Dict[str, Union[str, Dict[str, str]]]]]:
+def parse_adoc_for_code_tests(adoc_path: str) -> Tuple[str, str, List[ParsedTransaction]]:
     test_attribute, test_entrypoint = extract_adoc_attributes(adoc_path)
-    parsed_code_blocks = parse_transactions_from_adoc(adoc_path)
-    return test_attribute, test_entrypoint, parsed_code_blocks
+    parsed_transactions = parse_transactions_from_adoc(adoc_path)
+    return test_attribute, test_entrypoint, parsed_transactions
 
 
 def test_file(adoc_path: str) -> None:
 
     # Parse
     try:
-        test_attribute, test_entrypoint, parsed_code_blocks = parse_adoc_for_code_tests(adoc_path)
+        test_attribute, test_entrypoint, parsed_transactions = parse_adoc_for_code_tests(adoc_path)
         # Print or return as needed. For now, just print in JSON
-        print(json.dumps(parsed_code_blocks, indent=2))
+        print(parsed_transactions)
     except Exception as e:
         print(f"ERROR: {e}")
         sys.exit(1)
 
     # Test
     try:
-        test_transactions(test_attribute, test_entrypoint, parsed_code_blocks)
+        test_transactions_in_order(test_attribute, test_entrypoint, parsed_transactions, adoc_path)
     except Exception as e:
         print(f"ERROR: {e}")
         sys.exit(1)
