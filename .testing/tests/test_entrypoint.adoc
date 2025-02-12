@@ -1,0 +1,72 @@
+= Crash course
+:test-typeql: true
+:test-entrypoint: cc_schema
+
+[[read]]
+== "`Query programming`" with TypeDB
+
+The query language of TypeDB is *TypeQL*. It combines declarative and functional programming concepts with the simplicity of natural language. Here's a simple TypeQL query to get us started:
+
+//#!start[name=cc_schema, type=schema]
+//#!tql
+[,typeql]
+----
+define
+  entity user, owns username, owns status;
+  attribute username, value string;
+  attribute status, value string;
+----
+//#!end
+
+//#!tql[name=schema2]
+[,typeql]
+----
+define
+  relation friendship, relates friend @card(2);
+  user plays friendship:friend;
+----
+
+
+//#!tql[name=schema3]
+[,typeql]
+----
+define
+  relation friendship, relates friend @card(2);
+  user plays friendship:friend;
+----
+
+//#!tql[name=write1]
+[,typeql]
+----
+insert $x isa user;
+----
+
+//#!tql[name=write2]
+[,typeql]
+----
+insert
+  $x isa user, has username "user_3";
+  $y isa user, has username "user_3";
+----
+
+//#!tql[name=write3]
+[,typeql]
+----
+insert
+  $x isa user, has username "user_1";
+  $y isa user;
+  $y has username "user_2";  # we can separate `isa` and `has`
+----
+
+//#!tql[name=write4]
+[,typeql]
+----
+match
+  $u0 isa user, has username "user_0";
+  $u1 isa user, has username "user_1";
+  $u2 isa user, has username "user_2";
+insert
+  friendship (friend: $u0, friend: $u1);
+  friendship (friend: $u0, friend: $u2);
+  friendship (friend: $u1, friend: $u2);
+----
