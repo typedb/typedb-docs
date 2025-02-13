@@ -1,22 +1,22 @@
 import importlib
 import sys
-from typing import Dict
+from typing import Dict, List
 from parser.parser import parse_programs
 
 
-def parse_adoc_config(adoc_path: str, key_names: Dict[str, str]) -> Dict[str, str]:
+def parse_adoc_config(adoc_path: str, key_names: List[str]) -> Dict[str, str]:
     adoc_config = {}
 
     with open(adoc_path, 'r', encoding='utf-8') as f:
         for line in f:
-            for key in key_names.keys():
-                if line.strip().startswith(f':{key_names[key]}:'):
-                    parts = line.strip().split(f':{key_names[key]}:', 1)
+            for key in key_names:
+                if line.strip().startswith(f':{key}:'):
+                    parts = line.strip().split(f':{key}:', 1)
                     adoc_config[key] = parts[1].strip()
-            if len(adoc_config.keys()) == len(key_names.keys()):
+            if len(adoc_config.keys()) == len(key_names):
                 break
 
-    for key in key_names.keys():
+    for key in key_names:
         if not adoc_config.get(key):
             adoc_config[key] = None
 
@@ -25,7 +25,7 @@ def parse_adoc_config(adoc_path: str, key_names: Dict[str, str]) -> Dict[str, st
 
 def test_one_file(runner, lang: str, adoc_path: str) -> None:
     # Parse
-    adoc_config = parse_adoc_config(adoc_path, runner.ADOC_CONFIG_NAMES)
+    adoc_config = parse_adoc_config(adoc_path, runner.ADOC_CONFIG_KEYS)
 
     # Test
     try:
@@ -51,14 +51,11 @@ if __name__ == "__main__":
         module = importlib.import_module(f'runners.{lang}_runner')
         runner_class = getattr(module, f'{lang.capitalize()}Runner')
         runner = runner_class()
-    except Exception as e:
-        print(f"ERROR: {e}")
+    except ModuleNotFoundError as e:
+        print(f"Unsupported language: {lang}. msg: {e}")
         sys.exit(1)
-    except ModuleNotFoundError:
-        print(f"Unsupported language: {lang}")
-        sys.exit(1)
-    except AttributeError:
-        print(f"Runner class for language '{lang}' not found")
+    except AttributeError as e:
+        print(f"Runner class for language '{lang}' not found. msg: {e}")
         sys.exit(1)
 
     if sys.argv[2]:

@@ -1,11 +1,16 @@
 = Crash course
 :title: Crash Course
-:test-typeql: linear
+:test-tql: custom
+:test-entrypoint: schema_start
 
 TypeDB brings together powerful programming concepts with the features and performance of modern database systems. We believe the result is a novel database experience - and after taking this 15-minute crash course, we hope you'll agree.
 
 == Storing data in types
 
+This queries will actually be run last ... check .adoc source, which has the `:test-entrypoint:` attribute set.
+
+//!program[lang=tql, type=read, name=read_start]
+//!++
 [,typeql]
 ----
 match
@@ -13,7 +18,11 @@ match
   $friendship isa friendship (friend: $alex, friend: $friend-of-alex);
 reduce $alex-friend-count = count;
 ----
+//!--
 
+The next query is run in the same transaction.
+
+//!++
 [,typeql]
 ----
 match
@@ -29,7 +38,13 @@ match
   $alex-friend-count < $other-friend-count;
 select $other-name;
 ----
+//!--
+//!run
 
+Here, we committed, and start a new transaction (see source).
+
+//!program[lang=tql, type=read]
+//!++
 [,typeql]
 ----
 with fun friend_count($user: user) -> integer:
@@ -41,9 +56,15 @@ match
   friend_count($alex) < friend_count($other-user);
 select $other-name;
 ----
+//!--
+//!run
 
 == Schema
 
+This is actually the entrypoint of the page.
+
+//!program[lang=tql, type=schema, name=schema_start]
+//!++
 [,typeql]
 ----
 define
@@ -51,32 +72,43 @@ define
   attribute username, value string;
   attribute status, value string;
 ----
+//!--
 
-Similarly, if we were to add a `friendship` type to our schema we would define:
+The next queries are still part of the same transaction
 
+//!++
 [,typeql]
 ----
 define
   relation friendship, relates friend @card(2);
   user plays friendship:friend;
 ----
+//!--
 
-[,typeql]
-----
+There could be some hidden queries as well (check the .adoc source!)
+
+//!++
+////
 define
   attribute start-date, value datetime;
   friendship owns start-date @card(0..1);
-----
+////
+//!--
 
+...or parts of queries can be hidden
+
+//!++
+////
+define
+////
 [,typeql]
 ----
-define
   user owns status @card(0..);  # as many status attributes as you wish
   user owns username @key;
 ----
+//!--
 
-Importantly, different types may own the same attributes; and, similarly, different types may play the same role of a relation type. This flexibility of connecting types is a central feature of data modeling with TypeDB.
-
+//!++
 [,typeql]
 ----
 define
@@ -85,30 +117,48 @@ define
     owns status,
     plays friendship:friend;
 ----
+//!--
+//!run
 
-Finally, yet another fundamental and powerful feature of TypeDB's type system is *subtyping*: analogous to modern programming language features, this gives us the ability to organize our types hierarchically:
+Here we start a new transactions
 
+//!program[lang=tql, type=schema]
+//!++
 [,typeql]
 ----
 define
   entity company sub organization;    # subtypes will inherit ownership and role
   entity university sub organization; # playing traits from their supertype
 ----
+//!--
+//!run
 
 == Insert data
 
+This inserts are run in separate transactions (one of them will actually fail!). The last will jump back up to the read queries above.
+
+This first query will fail actually! (Check the code)
+
+//!program[lang=tql, type=write, fail_at=commit]
+//!++
 [,typeql]
 ----
 insert $x isa user;
 ----
+//!--
+//!run
 
+//!program[lang=tql, type=write]
+//!++
 [,typeql]
 ----
 insert $x isa user, has username "user_0";
 ----
+//!--
+//!run
 
-We can insert multiple values in a single `insert` query like so:
-
+//!program[lang=tql, type=write]
+//!++
 [,typeql]
 ----
 insert
@@ -116,14 +166,24 @@ insert
   $y isa user;
   $y has username "user_2";  # we can separate `isa` and `has`
 ----
+//!--
+//!run
 
+While a previous programs fails at commit, this one fails at runtime:
+
+//!program[lang=tql, type=write, fail_at=runtime]
+//!++
 [,typeql]
 ----
 insert
   $x isa user, has username "user_3";
   $y isa user, has username "user_3";
 ----
+//!--
+//!run
 
+//!program[lang=tql, type=write]
+//!++
 [,typeql]
 ----
 insert
@@ -131,11 +191,11 @@ insert
   $y isa user, has username "hartshorne";
   friendship (friend: $x, friend: $y); # alternatively: $z isa friendship (friend: $x, friend: $y);
 ----
+//!--
+//!run
 
-And now we've inserted two new users with a `friendship` relation between them.
-
-What if we want to create a `friendship` relation between two existing users already in the database? That's a two-stage query pipeline - (1) retrieve them with `match`; (2) `insert` the new `friendship`.
-
+//!program[lang=tql, type=write]
+//!++
 [,typeql]
 ----
 match
@@ -147,7 +207,13 @@ insert
   friendship (friend: $u0, friend: $u2);
   friendship (friend: $u1, friend: $u2);
 ----
+//!--
+//!run
 
+We can also check specific counts:
+
+//!program[lang=tql, type=write, count=0, jump=read_start]
+//!++
 [,typeql]
 ----
 match
@@ -161,5 +227,5 @@ reduce $VIP-friend-count = count groupby $friend;
 match $VIP-friend-count > 5;
 insert $friend has status "VIP";
 ----
-
-See the xref:{page-version}@manual::CRUD/index.adoc[CRUD manual] for more.
+//!--
+//!run

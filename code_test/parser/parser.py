@@ -1,10 +1,5 @@
 import re
-import sys
-import json
 from dataclasses import dataclass
-from pathlib import Path
-from typedb.driver import TypeDB, Driver, TransactionType, Credentials, DriverOptions
-from enum import Enum
 from typing import List, Dict, Tuple, Union
 
 # Parser config
@@ -12,8 +7,6 @@ PROGRAM_START_MARKER = "program"
 PROGRAM_END_MARKER = "run"
 CODE_BLOCK_START_MARKER = "++"
 CODE_BLOCK_END_MARKER = "--"
-TEST_ATTRIBUTE = "test-typeql"
-TEST_ENTRYPOINT = "test-entrypoint"
 
 @dataclass
 class ParsedProgram:
@@ -25,8 +18,9 @@ class ParsedProgram:
         return hash((tuple(self.blocks), self.lang, frozenset(self.config.items())))
 
     def __repr__(self):
-        return (f"ParsedProgram(lang={self.lang}, "
-                f"blocks={self.blocks}, "
+        blocks_repr = "[\n" + "\n==block-separator==\n".join(str(block) for block in self.blocks) + "\n]"
+        return (f"\nParsedProgram(lang={self.lang},\n"
+                f"blocks={blocks_repr},\n"
                 f"config={self.config})")
 
 
@@ -79,9 +73,7 @@ def parse_programs(adoc_path: str, language: str) -> List[ParsedProgram]:
             if line.strip().startswith(f'//!{PROGRAM_END_MARKER}'):
                 if not program_code_blocks:
                     raise ValueError( f"[Adoc: {adoc_path}#{line_number}]: Found empty program (i.e. no code blocks)")
-                parsed_programs.append({
-                    ParsedProgram(program_code_blocks, program_config["lang"], program_config)
-                })
+                parsed_programs.append(ParsedProgram(program_code_blocks, program_config["lang"], program_config))
                 if in_code_block:
                     raise ValueError( f"[Adoc: {adoc_path}#{line_number}]: Cannot run without closing code blocks")
                 in_program = False
