@@ -1,8 +1,100 @@
 = TypeDB Cloud API Reference
 :page-toclevels: 2
 
+== Authorization
+
+=== Token Exchange
+
+Exchange an API token's client ID and client secret for a short-lived access token to authenticate against the API.
+
+[cols="h,3a"]
+|===
+| Required access          | None
+| Method                   | `POST`
+| URL                      | `https://cloud.typedb.com/api/auth`
+| Request body             | None
+| Request headers          | `Authorization: Basic CLIENT_ID:CLIENT_SECRET`
+| Successful response body |
+[source]
+----
+string
+----
+| Error response body |
+[source,json]
+----
+{
+  "error": {
+    "code": number,
+    "message": string,
+    "errors": [
+      {
+        "message": string,
+        "domain": string,
+        "reason": string
+      }
+    ]
+  }
+}
+----
+| Possible response codes |
+* 200: OK
+* 400: Bad Request
+|===
+
+*Example request:*
+[tabs]
+====
+curl::
++
+[source,console]
+----
+curl --request POST \
+    --url https://cloud.typedb.com/api/auth \
+    --header 'Authorization: Basic {CLIENT_ID}:{CLIENT_SECRET}'
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "https://cloud.typedb.com/api/auth"
+
+headers = {
+    "Authorization": "Basic {CLIENT_ID}:{CLIENT_SECRET}"
+}
+
+response = requests.post(url, headers=headers)
+----
+
+Rust::
++
+[source,rust]
+----
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+    let resp = client
+        .post("https://cloud.typedb.com/api/auth")
+        .header(reqwest::header::AUTHORIZATION, "Basic {CLIENT_ID}:{CLIENT_SECRET}")
+        .send().await;
+    Ok(())
+}
+----
+====
+
+*Example response:*
+[source]
+----
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+----
+
 [#accesslevels]
-== Access levels
+=== API Token Access Levels
+
+When generating your API token, you will grant it a certain access level to a project of your choice.
+It will be able to perform the actions within that project as described below:
 
 [options="header"]
 |===
@@ -18,11 +110,21 @@
 
 [cols="h,3a"]
 |===
-| Required access | *write* to `org/ORG_ID/projects/PROJECT_ID`
-| Method          | `POST`
-| URL             | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/deploy`
-| Request body    | include::{page-version}@manual:resources:partial$cloud-api/cluster-deploy.json.adoc[]
-| Response body   | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=single]
+| Required access          | *write* to `org/ORG_ID/projects/PROJECT_ID`
+| Method                   | `POST`
+| URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/deploy`
+| Request body             | include::{page-version}@manual:resources:partial$cloud-api/cluster-deploy.json.adoc[]
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+| Successful response body | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=single]
+| Error response body      | include::{page-version}@manual:resources:partial$cloud-api/error-response.json.adoc[]
+| Possible response codes  |
+* 200: OK
+* 400: Bad Request
+* 401: Unauthorized
+* 403: Forbidden
+* 404: Not Found
+* 409: Conflict
+* 500: Internal Server Error
 |===
 
 [NOTE]
@@ -44,6 +146,72 @@ curl --request POST \
     --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/deploy \
     --header 'Authorization: Bearer {ACCESS-TOKEN}' \
     --json '{"id":"api-cluster","serverCount":1,"storageSizeGB":10,"provider":"gcp","region":"europe-west2","isFree":true,"machineType":"c2d-highcpu-2","storageType":"standard-rwo","version":"3.0.5"}'
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/deploy[https://cloud.typedb.com/api/auth]"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+
+body = {
+    "id": "api-cluster",
+    "serverCount": 1,
+    "storageSizeGB": 10,
+    "provider": "gcp",
+    "region": "europe-west2",
+    "isFree": true,
+    "machineType": "c2d-highcpu-2",
+    "storageType": "standard-rwo",
+    "version": "3.0.5"
+}
+
+response = requests.post(url, headers=headers, json=body)
+----
+
+Rust::
++
+[source,rust]
+----
+struct ClusterDeploy {
+    id: String,
+    serverCount: i32,
+    storageSizeGB: i32,
+    provider: String,
+    region: String,
+    isFree: bool,
+    machineType: String,
+    storageType: String,
+    version: String
+}
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let clusterDeploy = ClusterDeploy {
+        id: "api-cluster".into(),
+        serverCount: 1,
+        storageSizeGB: 10,
+        provider: "gcp".into(),
+        region: "europe-west2".into(),
+        isFree: true,
+        machineType: "c2d-highcpu-2".into(),
+        storageType: "standard-rwo".into(),
+        version: "3.0.5".into()
+    };
+    let client = reqwest::Client::new();
+    let resp = client
+        .post("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/deploy")
+        .header(reqwest::header::AUTHORIZATION, "Bearer: {ACCESS-TOKEN}")
+        .body(clusterDeploy)
+        .send().await;
+    Ok(())
+}
 ----
 
 Request Body::
@@ -217,20 +385,65 @@ If set to `false`, there must be a valid payment method on the organization.
 
 [cols="h,3a"]
 |===
-| Required access | *read* to `org/ORG_ID/projects/PROJECT_ID`
-| Method          | `GET`
-| URL             | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID`
-| Request body    | None
-| Response body   | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=single]
+| Required access          | *read* to `org/ORG_ID/projects/PROJECT_ID`
+| Method                   | `GET`
+| URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID`
+| Request body             | None
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+| Successful response body | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=single]
+| Error response body      | include::{page-version}@manual:resources:partial$cloud-api/error-response.json.adoc[]
+| Possible response codes  |
+* 200: OK
+* 400: Bad Request
+* 401: Unauthorized
+* 403: Forbidden
+* 404: Not Found
+* 500: Internal Server Error
 |===
 
 *Example request:*
+
+[tabs]
+====
+curl::
++
 [source,console]
 ----
 curl --request GET \
     --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID \
     --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+
+response = requests.get(url, headers=headers)
+----
+
+Rust::
++
+[source,rust]
+----
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+    let resp = client
+        .get("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID")
+        .header(reqwest::header::AUTHORIZATION, "Bearer: {ACCESS-TOKEN}")
+        .send().await;
+    Ok(())
+}
+----
+====
 
 *Example response:*
 [source,json]
@@ -262,20 +475,65 @@ curl --request GET \
 
 [cols="h,3a"]
 |===
-| Required access | *read* to `org/ORG_ID/projects/PROJECT_ID`
-| Method          | `GET`
-| URL             | `/api/org/ORG_ID/projects/PROJECT_ID/clusters`
-| Request body    | None
-| Response body   | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=list]
+| Required access          | *read* to `org/ORG_ID/projects/PROJECT_ID`
+| Method                   | `GET`
+| URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters`
+| Request body             | None
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+| Successful response body | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=list]
+| Error response body      | include::{page-version}@manual:resources:partial$cloud-api/error-response.json.adoc[]
+| Possible response codes  |
+* 200: OK
+* 400: Bad Request
+* 401: Unauthorized
+* 403: Forbidden
+* 404: Not Found
+* 500: Internal Server Error
 |===
 
 *Example request:*
+
+[tabs]
+====
+curl::
++
 [source,console]
 ----
 curl --request GET \
     --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters \
     --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+
+response = requests.get(url, headers=headers)
+----
+
+Rust::
++
+[source,rust]
+----
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+    let resp = client
+        .get("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters")
+        .header(reqwest::header::AUTHORIZATION, "Bearer: {ACCESS-TOKEN}")
+        .send().await;
+    Ok(())
+}
+----
+====
 
 *Example response:*
 [source,json]
@@ -326,20 +584,65 @@ curl --request GET \
 
 [cols="h,3a"]
 |===
-| Required access | *write* to `org/ORG_ID/projects/PROJECT_ID`
-| Method          | `POST`
-| URL             | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend`
-| Request body    | None
-| Response body   | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=single]
+| Required access          | *write* to `org/ORG_ID/projects/PROJECT_ID`
+| Method                   | `POST`
+| URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend`
+| Request body             | None
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+| Successful response body | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=single]
+| Error response body      | include::{page-version}@manual:resources:partial$cloud-api/error-response.json.adoc[]
+| Possible response codes  |
+* 200: OK
+* 400: Bad Request
+* 401: Unauthorized
+* 403: Forbidden
+* 404: Not Found
+* 500: Internal Server Error
 |===
 
 *Example request:*
+
+[tabs]
+====
+curl::
++
 [source,console]
 ----
 curl --request POST \
     --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend \
     --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+
+response = requests.post(url, headers=headers)
+----
+
+Rust::
++
+[source,rust]
+----
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+    let resp = client
+        .post("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend")
+        .header(reqwest::header::AUTHORIZATION, "Bearer: {ACCESS-TOKEN}")
+        .send().await;
+    Ok(())
+}
+----
+====
 
 *Example response:*
 [source,json]
@@ -371,20 +674,65 @@ curl --request POST \
 
 [cols="h,3a"]
 |===
-| Required access | *write* to `org/ORG_ID/projects/PROJECT_ID`
-| Method          | `POST`
-| URL             | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume`
-| Request body    | None
-| Response body   | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=single]
+| Required access          | *write* to `org/ORG_ID/projects/PROJECT_ID`
+| Method                   | `POST`
+| URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume`
+| Request body             | None
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+| Successful response body | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=single]
+| Error response body      | include::{page-version}@manual:resources:partial$cloud-api/error-response.json.adoc[]
+| Possible response codes  |
+* 200: OK
+* 400: Bad Request
+* 401: Unauthorized
+* 403: Forbidden
+* 404: Not Found
+* 500: Internal Server Error
 |===
 
-*Request:*
+*Example request:*
+
+[tabs]
+====
+curl::
++
 [source,console]
 ----
 curl --request POST \
     --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume \
     --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+
+response = requests.post(url, headers=headers)
+----
+
+Rust::
++
+[source,rust]
+----
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+    let resp = client
+        .post("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume")
+        .header(reqwest::header::AUTHORIZATION, "Bearer: {ACCESS-TOKEN}")
+        .send().await;
+    Ok(())
+}
+----
+====
 
 *Example response:*
 [source,json]
@@ -416,20 +764,65 @@ curl --request POST \
 
 [cols="h,3a"]
 |===
-| Required access | *admin* to `org/ORG_ID/projects/PROJECT_ID`
-| Method          | `DELETE`
-| URL             | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID`
-| Request body    | None
-| Response body   | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=single]
+| Required access          | *admin* to `org/ORG_ID/projects/PROJECT_ID`
+| Method                   | `DELETE`
+| URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID`
+| Request body             | None
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+| Successful response body | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=single]
+| Error response body      | include::{page-version}@manual:resources:partial$cloud-api/error-response.json.adoc[]
+| Possible response codes  |
+* 200: OK
+* 400: Bad Request
+* 401: Unauthorized
+* 403: Forbidden
+* 404: Not Found
+* 500: Internal Server Error
 |===
 
 *Example request:*
+
+[tabs]
+====
+curl::
++
 [source,console]
 ----
 curl --request DELETE \
     --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID \
     --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+
+response = requests.delete(url, headers=headers)
+----
+
+Rust::
++
+[source,rust]
+----
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+    let resp = client
+        .delete("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID")
+        .header(reqwest::header::AUTHORIZATION, "Bearer: {ACCESS-TOKEN}")
+        .send().await;
+    Ok(())
+}
+----
+====
 
 *Example response:*
 [source,json]

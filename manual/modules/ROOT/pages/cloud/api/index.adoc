@@ -6,36 +6,56 @@ actions programmatically, rather than through the TypeDB Cloud website.
 To use the API, you will need to sign up for a free TypeDB Cloud account at
 https://cloud.typedb.com/sign-up.
 
-== Generating an API Token
+== Generate an API Token
 
 1. Visit your https://cloud.typedb.com/?org_action=/settings[organization settings] page,
 scroll to the API tokens section, and click "Generate API Token".
 
-2. Give your API token a descriptive name, and appropriate permissions in your chosen project.
-See the xref:{page-version}@manual::cloud/api/reference.adoc#accesslevels[API reference] for detailed permission info.
+2. Give your API token a descriptive name, and appropriate access to your chosen project.
+See the xref:{page-version}@manual::cloud/api/reference.adoc#accesslevels[API reference] for detailed access level info.
 
 3. Generate your API token and copy the displayed client ID and client secret for later use when authenticating.
 
-[WARNING]
+[IMPORTANT]
 ====
 Make sure to save the client secret somewhere safe - you will only see it when
 you first generate the token, and will be unable to use the token without it.
 ====
 
-== Accessing the API
+== Access the API
 
 Once you have your client ID and client secret,
 you will need to exchange these for a short-lived access token used to query the API.
 
-. Make a `POST` request to `https://typedb.com/api/cloud/auth`,
+. Make a `POST` request to `https://cloud.typedb.com/api/auth`,
 with the client ID and client secret in a Basic authorization header, separated by a `:`.
++
+[tabs]
+====
+curl::
 +
 [source,console]
 ----
 curl --request POST \
-    --url https://typedb.com/api/cloud/auth \
+    --url https://cloud.typedb.com/api/auth \
     --header 'Authorization: Basic {CLIENT-ID}:{CLIENT-SECRET}'
 ----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "https://cloud.typedb.com/api/auth"
+
+headers = {
+    "Authorization": "Basic {CLIENT-ID}:{CLIENT-SECRET}"
+}
+
+response = requests.get(url, headers=headers)
+----
+====
 The response body will be your access token.
 +
 [NOTE]
@@ -46,13 +66,33 @@ For security, your access token will expire after 1 hour.
 The example below targets the `default` project in an organization called `my-org`.
 You will use the access token you generated in the previous step to authenticate this request.
 +
+[tabs]
+====
+curl::
++
 [source,console]
 ----
 curl --request GET \
-    --url https://cloud.typedb.com/api/org/my-org/projects/default/clusters \
+    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters \
     --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
-It will return information about the cluster in a JSON format, as below
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "https://cloud.typedb.com/api/org/my-org/projects/default/clusters"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+
+response = requests.get(url, headers=headers)
+----
+====
+It will return information about the clusters in a JSON format, as below
 +
 [source,json]
 ----
@@ -81,6 +121,22 @@ It will return information about the cluster in a JSON format, as below
 ]
 ----
 
-Now that you know how to query the API,
-check out the xref:{page-version}@manual::cloud/api/reference.adoc[API reference]
-for more detail on what you can do with it.
+== Next Steps
+
+Now that you know how to list the clusters in your project from the API,
+you can explore TypeDB Cloud further, either through further API use or back on the website.
+
+[cols-2]
+--
+.https://cloud.typedb.com[TypeDB Cloud,window=_blank]
+[.clickable]
+****
+Head back to TypeDB Cloud to keep exploring there.
+****
+
+.xref:{page-version}@manual::cloud/api/reference.adoc[]
+[.clickable]
+****
+View the API reference for more detail on what you can do with it.
+****
+--
