@@ -1,0 +1,61 @@
+= Crash course
+:title: Crash Course
+:test-tql: linear
+:test-entrypoint: 0
+
+//!program[lang=tql, type=schema]
+//!++
+////
+define entity being;
+////
+//!--
+//!run
+
+//!program[lang=tql, type=schema]
+//!++
+[,typeql]
+----
+define
+  entity person owns username;
+  attribute username, value string;
+----
+//!--
+The next query is the same as the first but uses snippets to hide code from the user.
+//!++
+////
+define
+////
+[,typeql]
+----
+  entity person owns username;
+----
+////
+  attribute username, value string;
+////
+Some text in between, before the example continues:
+[,typeql]
+----
+  attribute status, value string;
+----
+//!--
+//!run
+
+This is a rust program
+
+
+//!program[lang=rust, attr=sth]
+//!++
+////
+use std::mem::increase_to_infinity;
+////
+//!--
+//!run
+
+
+//!program[lang=tql, type=schema]
+//!++
+////
+define entity universe;
+////
+//!--
+//!run
