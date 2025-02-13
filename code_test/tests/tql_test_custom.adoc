@@ -1,13 +1,13 @@
 = Crash course
 :title: Crash Course
 :test-tql: custom
-:test-tql-entry: schema_start
+:test-entrypoint: schema_start
 
 TypeDB brings together powerful programming concepts with the features and performance of modern database systems. We believe the result is a novel database experience - and after taking this 15-minute crash course, we hope you'll agree.
 
 == Storing data in types
 
-This queries will actually be run last ... check .adoc source, which has the `:test-tql-entry:` attribute set.
+This queries will actually be run last ... check .adoc source, which has the `:test-entrypoint:` attribute set.
 
 //!program[lang=tql, type=read, name=read_start]
 //!++
@@ -194,17 +194,6 @@ insert
 //!--
 //!run
 
-Small rust program in between
-//!program[lang=rust]
-//!++
-[,rust]
-----
-fn main() {
-    println!("Hello, world!");
-}
-----
-//!--
-//!run
 //!program[lang=tql, type=write]
 //!++
 [,typeql]

@@ -3,11 +3,11 @@ from enum import Enum
 from typing import List, Dict, Tuple, Union
 from parser.parser import ParsedProgram
 
-# Poor man's grammar (keywords used in .adoc files)
+# Poor man's testing grammar (keywords used in .adoc files)
 ## .adoc attribute keys and values
 ADOC_TEST_KEY = "test-tql"
 ADOC_ENTRYPOINT_KEY = "test-entrypoint"
-ADOC_CONFIG_KEYS = [ADOC_TEST_KEY, ADOC_ENTRYPOINT_KEY]
+ADOC_CONFIG_KEYS = [ADOC_TEST_KEY, ADOC_ENTRYPOINT_KEY] # first item should be the test key
 TEST_MODE_LINEAR_VAL = "linear"
 TEST_MODE_CUSTOM_VAL = "custom"
 MODE_LIST = [TEST_MODE_LINEAR_VAL, TEST_MODE_CUSTOM_VAL]

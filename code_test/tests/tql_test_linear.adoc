@@ -1,7 +1,7 @@
 = Crash course
 :title: Crash Course
 :test-tql: linear
-:test-tql-entry: 0
+:test-entrypoint: 0
 
 //!program[lang=tql, type=schema]
 //!++
@@ -35,7 +35,7 @@ define
 Some text in between, before the example continues:
 [,typeql]
 ----
-  attribute status, value string
+  attribute status, value string;
 ----
 //!--
 //!run
