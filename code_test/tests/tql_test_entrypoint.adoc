@@ -1,0 +1,165 @@
+= Crash course
+:title: Crash Course
+:test-typeql: linear
+
+TypeDB brings together powerful programming concepts with the features and performance of modern database systems. We believe the result is a novel database experience - and after taking this 15-minute crash course, we hope you'll agree.
+
+== Storing data in types
+
+[,typeql]
+----
+match
+  $alex isa user, has username "grothendieck_25";
+  $friendship isa friendship (friend: $alex, friend: $friend-of-alex);
+reduce $alex-friend-count = count;
+----
+
+[,typeql]
+----
+match
+  $alex isa user, has username "grothendieck_25";
+  friendship (friend: $alex, friend: $friend-of-alex); # can omit variable
+reduce $alex-friend-count = count;
+match
+  $other-user isa user, has username $other-name;
+  friendship (friend: $other-user, friend: $friend-of-other-user);
+reduce $other-friend-count = count
+  groupby $other-name, $alex-friend-count;
+match
+  $alex-friend-count < $other-friend-count;
+select $other-name;
+----
+
+[,typeql]
+----
+with fun friend_count($user: user) -> integer:
+  match friendship (friend: $user, friend: $friend-of-user);
+  return count;
+match
+  $alex isa user, has username "grothendieck_25";
+  $other-user isa user, has username $other-name;
+  friend_count($alex) < friend_count($other-user);
+select $other-name;
+----
+
+== Schema
+
+[,typeql]
+----
+define
+  entity user, owns username, owns status;
+  attribute username, value string;
+  attribute status, value string;
+----
+
+Similarly, if we were to add a `friendship` type to our schema we would define:
+
+[,typeql]
+----
+define
+  relation friendship, relates friend @card(2);
+  user plays friendship:friend;
+----
+
+[,typeql]
+----
+define
+  attribute start-date, value datetime;
+  friendship owns start-date @card(0..1);
+----
+
+[,typeql]
+----
+define
+  user owns status @card(0..);  # as many status attributes as you wish
+  user owns username @key;
+----
+
+Importantly, different types may own the same attributes; and, similarly, different types may play the same role of a relation type. This flexibility of connecting types is a central feature of data modeling with TypeDB.
+
+[,typeql]
+----
+define
+  entity organization,
+    owns username,
+    owns status,
+    plays friendship:friend;
+----
+
+Finally, yet another fundamental and powerful feature of TypeDB's type system is *subtyping*: analogous to modern programming language features, this gives us the ability to organize our types hierarchically:
+
+[,typeql]
+----
+define
+  entity company sub organization;    # subtypes will inherit ownership and role
+  entity university sub organization; # playing traits from their supertype
+----
+
+== Insert data
+
+[,typeql]
+----
+insert $x isa user;
+----
+
+[,typeql]
+----
+insert $x isa user, has username "user_0";
+----
+
+We can insert multiple values in a single `insert` query like so:
+
+[,typeql]
+----
+insert
+  $x isa user, has username "user_1";
+  $y isa user;
+  $y has username "user_2";  # we can separate `isa` and `has`
+----
+
+[,typeql]
+----
+insert
+  $x isa user, has username "user_3";
+  $y isa user, has username "user_3";
+----
+
+[,typeql]
+----
+insert
+  $x isa user, has username "grothendieck_25";
+  $y isa user, has username "hartshorne";
+  friendship (friend: $x, friend: $y); # alternatively: $z isa friendship (friend: $x, friend: $y);
+----
+
+And now we've inserted two new users with a `friendship` relation between them.
+
+What if we want to create a `friendship` relation between two existing users already in the database? That's a two-stage query pipeline - (1) retrieve them with `match`; (2) `insert` the new `friendship`.
+
+[,typeql]
+----
+match
+  $u0 isa user, has username "user_0";
+  $u1 isa user, has username "user_1";
+  $u2 isa user, has username "user_2";
+insert
+  friendship (friend: $u0, friend: $u1);
+  friendship (friend: $u0, friend: $u2);
+  friendship (friend: $u1, friend: $u2);
+----
+
+[,typeql]
+----
+match
+  $user isa user, has username "user_0";
+insert $user has status "VIP";
+match
+  friendship (friend: $user, friend: $friend);
+  friendship (friend: $friend, friend: $friend-of-friend);
+  $friend-of-friend has status "VIP";
+reduce $VIP-friend-count = count groupby $friend;
+match $VIP-friend-count > 5;
+insert $friend has status "VIP";
+----
+
+See the xref:{page-version}@manual::CRUD/index.adoc[CRUD manual] for more.
