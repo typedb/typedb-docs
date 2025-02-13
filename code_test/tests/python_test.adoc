@@ -1,0 +1,30 @@
+= Crash course
+:title: Crash Course
+:test-python: yes
+
+//!program[lang=tql, type=schema]
+//!++
+////
+define entity being;
+////
+//!--
+//!run
+
+//!program[lang=python]
+//!++
+[,python]
+----
+print("hello")
+----
+//!--
+The next query is the same as the first but uses snippets to hide code from the user.
+//!++
+////
+if 1 == 1:
+////
+[,python]
+----
+  print("1 == 1")
+----
+//!--
+//!run
