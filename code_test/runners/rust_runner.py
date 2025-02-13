@@ -5,7 +5,7 @@ from parser.parser import ParsedProgram
 
 # Poor man's testing grammar (keywords used in .adoc files)
 ## .adoc attribute keys and values
-ADOC_TEST_KEY = "test-python"
+ADOC_TEST_KEY = "test-rust"
 ADOC_CONFIG_KEYS = [ADOC_TEST_KEY]
 
 
