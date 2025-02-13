@@ -5,41 +5,45 @@
 
 === Token Exchange
 
-Exchange an API token's client ID and client secret for a short-lived access token to authenticate against the API.
+Exchange an API token's client ID and client secret for a short-lived access token to authenticate against the rest of the API.
 
 [cols="h,3a"]
 |===
 | Required access          | None
 | Method                   | `POST`
-| URL                      | `https://cloud.typedb.com/api/auth`
+| URL                      | `/api/auth`
 | Request body             | None
 | Request headers          | `Authorization: Basic CLIENT_ID:CLIENT_SECRET`
-| Successful response body |
+|===
+
+*Responses:*
+
+.200: OK
+[%collapsible]
+====
+This response will contain only the access token
+
+Response format:
+
 [source]
 ----
 string
 ----
-| Error response body |
-[source,json]
-----
-{
-  "error": {
-    "code": number,
-    "message": string,
-    "errors": [
-      {
-        "message": string,
-        "domain": string,
-        "reason": string
-      }
-    ]
-  }
-}
-----
-| Possible response codes |
-* 200: OK
-* 400: Bad Request
-|===
+====
+
+.400: Bad Request
+[%collapsible]
+====
+Possible causes:
+
+* Incorrectly formatted request (e.g. Authorization header missing a token)
+* Invalid client ID
+* Invalid client secret
+
+Response format:
+
+include::{page-version}@manual:resources:partial$cloud-api/error-response.json.adoc[]
+====
 
 *Example request:*
 [tabs]
@@ -115,17 +119,11 @@ It will be able to perform the actions within that project as described below:
 | URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/deploy`
 | Request body             | include::{page-version}@manual:resources:partial$cloud-api/cluster-deploy.json.adoc[]
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
-| Successful response body | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=single]
-| Error response body      | include::{page-version}@manual:resources:partial$cloud-api/error-response.json.adoc[]
-| Possible response codes  |
-* 200: OK
-* 400: Bad Request
-* 401: Unauthorized
-* 403: Forbidden
-* 404: Not Found
-* 409: Conflict
-* 500: Internal Server Error
 |===
+
+*Responses:*
+
+include::{page-version}@manual:resources:partial$cloud-api/response-details.adoc[tags="200-single,400,401,403,404,409,500"]
 
 [NOTE]
 ====
@@ -284,7 +282,7 @@ If set to `false`, there must be a valid payment method on the organization.
 .GCP regions and machine types
 [%collapsible]
 ====
-[options="header"]
+[options="header",cols=",,a"]
 |===
 | Machine Types    | Free Available | Regions
 | c2d-highcpu-2    | Yes            |
@@ -368,7 +366,7 @@ If set to `false`, there must be a valid payment method on the organization.
 |===
 ====
 
-.Storage Types
+.Storage types
 [#storagetypes]
 [%collapsible]
 ====
@@ -390,16 +388,11 @@ If set to `false`, there must be a valid payment method on the organization.
 | URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID`
 | Request body             | None
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
-| Successful response body | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=single]
-| Error response body      | include::{page-version}@manual:resources:partial$cloud-api/error-response.json.adoc[]
-| Possible response codes  |
-* 200: OK
-* 400: Bad Request
-* 401: Unauthorized
-* 403: Forbidden
-* 404: Not Found
-* 500: Internal Server Error
 |===
+
+*Responses:*
+
+include::{page-version}@manual:resources:partial$cloud-api/response-details.adoc[tags="200-single,400,401,403,404,500"]
 
 *Example request:*
 
@@ -480,16 +473,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 | URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters`
 | Request body             | None
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
-| Successful response body | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=list]
-| Error response body      | include::{page-version}@manual:resources:partial$cloud-api/error-response.json.adoc[]
-| Possible response codes  |
-* 200: OK
-* 400: Bad Request
-* 401: Unauthorized
-* 403: Forbidden
-* 404: Not Found
-* 500: Internal Server Error
 |===
+
+*Responses:*
+
+include::{page-version}@manual:resources:partial$cloud-api/response-details.adoc[tags="200-list,400,401,403,404,500"]
 
 *Example request:*
 
@@ -589,16 +577,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 | URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend`
 | Request body             | None
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
-| Successful response body | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=single]
-| Error response body      | include::{page-version}@manual:resources:partial$cloud-api/error-response.json.adoc[]
-| Possible response codes  |
-* 200: OK
-* 400: Bad Request
-* 401: Unauthorized
-* 403: Forbidden
-* 404: Not Found
-* 500: Internal Server Error
 |===
+
+*Responses:*
+
+include::{page-version}@manual:resources:partial$cloud-api/response-details.adoc[tags="200-single,400,401,403,404,500"]
 
 *Example request:*
 
@@ -679,16 +662,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 | URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume`
 | Request body             | None
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
-| Successful response body | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=single]
-| Error response body      | include::{page-version}@manual:resources:partial$cloud-api/error-response.json.adoc[]
-| Possible response codes  |
-* 200: OK
-* 400: Bad Request
-* 401: Unauthorized
-* 403: Forbidden
-* 404: Not Found
-* 500: Internal Server Error
 |===
+
+*Responses:*
+
+include::{page-version}@manual:resources:partial$cloud-api/response-details.adoc[tags="200-single,400,401,403,404,500"]
 
 *Example request:*
 
@@ -769,16 +747,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 | URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID`
 | Request body             | None
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
-| Successful response body | include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=single]
-| Error response body      | include::{page-version}@manual:resources:partial$cloud-api/error-response.json.adoc[]
-| Possible response codes  |
-* 200: OK
-* 400: Bad Request
-* 401: Unauthorized
-* 403: Forbidden
-* 404: Not Found
-* 500: Internal Server Error
 |===
+
+*Responses:*
+
+include::{page-version}@manual:resources:partial$cloud-api/response-details.adoc[tags="200-single,400,401,403,404,500"]
 
 *Example request:*
 

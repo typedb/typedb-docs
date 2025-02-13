@@ -1,0 +1,106 @@
+// tag::200-single[]
+.200: OK
+[%collapsible]
+====
+
+Response format:
+
+include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=single]
+====
+// end::200-single[]
+
+// tag::200-list[]
+.200: OK
+[%collapsible]
+====
+
+Response format:
+
+include::{page-version}@manual:resources:partial$cloud-api/cluster-response.json.adoc[tags=list]
+====
+// end::200-list[]
+
+// tag::400[]
+.400: Bad Request
+[%collapsible]
+====
+Possible causes:
+
+* Incorrectly formatted request (e.g. Authorization header missing a token)
+
+Response format:
+
+include::{page-version}@manual:resources:partial$cloud-api/error-response.json.adoc[]
+====
+// end::400[]
+
+// tag::401[]
+.401: Unauthorized
+[%collapsible]
+====
+Possible causes:
+
+* Invalid token
+* Expired token
+
+Response format:
+
+include::{page-version}@manual:resources:partial$cloud-api/error-response.json.adoc[]
+====
+// end::401[]
+
+// tag::403[]
+.403: Forbidden
+[%collapsible]
+====
+Possible causes:
+
+* The supplied access token lacks the required access level for the request
+
+Response format:
+
+include::{page-version}@manual:resources:partial$cloud-api/error-response.json.adoc[]
+====
+// end::403[]
+
+// tag::404[]
+.404: Not Found
+[%collapsible]
+====
+Possible causes:
+
+* One or more resources referenced in the request could not be found
+
+Response format:
+
+include::{page-version}@manual:resources:partial$cloud-api/error-response.json.adoc[]
+====
+// end::404[]
+
+// tag::409[]
+.409: Not Found
+[%collapsible]
+====
+Possible causes:
+
+* Attempting to create a resource with an already-in-use ID
+
+Response format:
+
+include::{page-version}@manual:resources:partial$cloud-api/error-response.json.adoc[]
+====
+// end::409[]
+
+// tag::500[]
+.500: Internal Server Error
+[%collapsible]
+====
+Possible causes:
+
+* An unexpected error prevented TypeDB Cloud from serving your request
+
+Response format:
+
+include::{page-version}@manual:resources:partial$cloud-api/error-response.json.adoc[]
+====
+// end::500[]

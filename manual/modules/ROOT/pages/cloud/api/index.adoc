@@ -27,7 +27,7 @@ you first generate the token, and will be unable to use the token without it.
 Once you have your client ID and client secret,
 you will need to exchange these for a short-lived access token used to query the API.
 
-. Make a `POST` request to `https://cloud.typedb.com/api/auth`,
+. Make a `POST` request to `\https://cloud.typedb.com/api/auth`,
 with the client ID and client secret in a Basic authorization header, separated by a `:`.
 +
 [tabs]
@@ -53,7 +53,22 @@ headers = {
     "Authorization": "Basic {CLIENT-ID}:{CLIENT-SECRET}"
 }
 
-response = requests.get(url, headers=headers)
+response = requests.post(url, headers=headers)
+----
+
+Rust::
++
+[source,rust]
+----
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+    let resp = client
+        .post("https://cloud.typedb.com/api/auth")
+        .header(reqwest::header::AUTHORIZATION, "Basic {CLIENT_ID}:{CLIENT_SECRET}")
+        .send().await;
+    Ok(())
+}
 ----
 ====
 The response body will be your access token.
@@ -90,6 +105,21 @@ headers = {
 }
 
 response = requests.get(url, headers=headers)
+----
+
+Rust::
++
+[source,rust]
+----
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+    let resp = client
+        .get("https://cloud.typedb.com/api/org/my-org/projects/default/clusters")
+        .header(reqwest::header::AUTHORIZATION, "Bearer: {ACCESS-TOKEN}")
+        .send().await;
+    Ok(())
+}
 ----
 ====
 It will return information about the clusters in a JSON format, as below
