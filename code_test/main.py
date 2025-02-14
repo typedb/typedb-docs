@@ -46,7 +46,7 @@ def test_programs_in_file(runner, lang: str, adoc_path: str, adoc_config):
         parsed_programs = parse_programs(adoc_path, lang)
         runner.test_programs(parsed_programs, adoc_path, adoc_config)
         logger.info(f"RESULTS: {runner.success_count} SUCCESSFUL, {runner.failure_count} FAILED")
-        return runner.failure_count > 0
+        return runner.failure_count == 0
     except Exception as e:
         print(f"ERROR: {e}")
         sys.exit(1)
@@ -57,7 +57,7 @@ def test_one_file(runner, lang: str, adoc_path: str):
     if runner.check_config(adoc_config):
         test_programs_in_file(runner, lang, adoc_path, adoc_config)
     else:
-        logger.info(f"[{adoc_path}]: Bad adoc attributes in provided file.")
+        logger.info(f"[{adoc_path}]: Bad adoc attributes in file.")
 
 
 def test_all_files(runner, lang: str):
@@ -70,13 +70,14 @@ def test_all_files(runner, lang: str):
                     adoc_config = parse_adoc_config(adoc_path, runner.adoc_keys)
                     if adoc_config[runner.adoc_keys[0]] is not None:
                         if runner.check_config(adoc_config):
-                            logger.info(f"TESTING Bad adoc attributes in provided file.")
+                            logger.info(f"TESTING FILE {adoc_path}")
                             if not test_programs_in_file(runner, lang, adoc_path, adoc_config):
                                 files_with_failures.append(adoc_path)
                         else:
                             logger.info(f"Bad adoc attributes in file.")
 
-    logger.info(f"SUMMARY: {len(files_with_failures)} file(s) had test failures:\n>> " + "\n>> ".join(files_with_failures))
+    logger.info(f"SUMMARY: {len(files_with_failures)} file(s) had test failures" + "".join(["\n>> " + file for file in files_with_failures]))
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
