@@ -2,6 +2,7 @@ import io
 import sys
 from typing import List, Dict, Tuple, Union
 from code_test.parser.parser import ParsedProgram
+from code_test.runners.base_runner import BaseRunner
 import logging
 logger = logging.getLogger('main')
 
@@ -11,16 +12,9 @@ ADOC_TEST_KEY = "test-python"
 ADOC_CONFIG_KEYS = [ADOC_TEST_KEY]
 
 
-class PythonRunner:
+class PythonRunner(BaseRunner):
     def __init__(self):
-        # Required
-        self.adoc_keys = ADOC_CONFIG_KEYS
-        self.success_count = 0
-        self.failure_count = 0
-
-    def reset_counts(self):
-        self.success_count = 0
-        self.failure_count = 0
+        super().__init__(adoc_keys=ADOC_CONFIG_KEYS)
 
     def check_config(self, adoc_config: Dict[str, str]):
         if adoc_config.get(ADOC_TEST_KEY) not in ["yes", "true"]:
@@ -53,6 +47,7 @@ class PythonRunner:
 
     def test_programs(self, parsed_programs: List[ParsedProgram], adoc_path: str, config: Dict[str, str]):
         self.reset_counts()
+        self.reset_local_databases()
 
         for (i, parsed_program) in enumerate(parsed_programs):
             self.test_program(parsed_program, i, adoc_path)

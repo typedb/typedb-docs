@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO,
 
 # Directories to code test
 DIRECTORIES = [
-    os.path.join(os.path.dirname(__file__), "tests"),
+    # os.path.join(os.path.dirname(__file__), "tests"),
     os.path.join(os.path.dirname(__file__), "../home/modules/ROOT/pages"),
     os.path.join(os.path.dirname(__file__), "../manual/modules/ROOT/pages"),
     os.path.join(os.path.dirname(__file__), "../typeql/modules/ROOT/pages"),
@@ -63,6 +63,7 @@ def test_one_file(runner, lang: str, adoc_path: str):
 
 def test_all_files(runner, lang: str):
     files_with_failures = []
+    files_tested_counter = 0
     for directory in DIRECTORIES:
         for root, _, files in os.walk(directory):
             for file in files:
@@ -74,10 +75,11 @@ def test_all_files(runner, lang: str):
                             logger.info(f"TESTING FILE {adoc_path}")
                             if not test_programs_in_file(runner, lang, adoc_path, adoc_config):
                                 files_with_failures.append(adoc_path)
+                            files_tested_counter += 1
                         else:
                             logger.info(f"Bad adoc attributes in file.")
 
-    logger.info(f"SUMMARY: {len(files_with_failures)} file(s) had test failures" + "".join(["\n>> " + file for file in files_with_failures]))
+    logger.info(f"SUMMARY: {files_tested_counter} file(s) tested, {len(files_with_failures)} file(s) had test failures" + "".join(["\n>> " + file for file in files_with_failures]))
 
 
 if __name__ == "__main__":
