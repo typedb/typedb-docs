@@ -185,16 +185,12 @@ class TqlRunner:
         self.setup_db(reset=True)  # Resets the database
         self.reset_counts()
 
-        if config[ADOC_TEST_KEY] not in MODE_LIST:
-            raise ValueError(f"[{adoc_path}]: Invalid test mode (can be 'linear' or 'custom')")
-
-        linear_mode = True if config[ADOC_TEST_KEY] == TEST_MODE_LINEAR_VAL else False
-        if linear_mode:
+        if config[ADOC_TEST_KEY] == TEST_MODE_LINEAR_VAL:
             # run programs in linear order
             for (i, parsed_program) in enumerate(parsed_programs):
                 self.test_program(parsed_program, i, adoc_path)
 
-        else:
+        elif config[ADOC_TEST_KEY] == TEST_MODE_CUSTOM_VAL:
             # populate name lookup table
             name_lookup = {}
             for (i,parsed_program) in enumerate(parsed_programs):
@@ -209,6 +205,7 @@ class TqlRunner:
             remaining_indices = set(range(0, len(parsed_programs)))
             completed_indices = set()
             if name_lookup.get(config[ADOC_ENTRYPOINT_KEY]):
+                logger.info(f"[{adoc_path}] [INFO: Page entry point is '{config[ADOC_ENTRYPOINT_KEY]}']")
                 current_program_index = name_lookup[config[ADOC_ENTRYPOINT_KEY]]
             else:
                 raise ValueError(f"[{adoc_path}]: Didn't find declared test entry point")
@@ -227,6 +224,7 @@ class TqlRunner:
 
                 if current_program.config.get(PROGRAM_JUMP_KEY):
                     if name_lookup.get(current_program.config[PROGRAM_JUMP_KEY]) is not None:
+                        logger.info(f"[{adoc_path}] [INFO: jumping to '{current_program.config[PROGRAM_JUMP_KEY]}']")
                         current_program_index = name_lookup[current_program.config[PROGRAM_JUMP_KEY]]
                         continue
                     else:
