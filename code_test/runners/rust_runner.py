@@ -1,7 +1,7 @@
 import subprocess
 import os
 from typing import List, Dict
-from parser.parser import ParsedProgram
+from code_test.parser.parser import ParsedProgram
 import logging
 logger = logging.getLogger('main')
 
