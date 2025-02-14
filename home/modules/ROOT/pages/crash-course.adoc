@@ -370,21 +370,21 @@ async fn main() -> Result<(), Box<dyn Error>> {
 ////
 After connecting with
 //!++
-[,python]
+[,rust]
 ----
 let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
 ----
 //!--
 you can create a database with:
 //!++
-[,python]
+[,rust]
 ----
 driver.databases().create(db_name).await?;
 ----
 //!--
 and delete a database with:
 //!++
-[,python]
+[,rust]
 ----
 driver.databases().get(db_name).await?.delete().await?;
 ----
@@ -451,11 +451,13 @@ with driver.transaction(database, TransactionType.SCHEMA) as tx:
 ////
 //!run
 Open a transaction and send a query with
+[,python]
 ----
 with driver.transaction(database, TransactionType.<TYPE>) as tx:
     response = tx.query(<QUERY>).resolve()
 ----
 where `<TYPE>` can be one of `SCHEMA`, `WRITE`, or `READ`. Use
+[,python]
 ----
     tx.commit()
 ----
@@ -486,11 +488,13 @@ Ok(())
 ////
 //!run
 Open a transaction and send a query with
+[,rust]
 ----
 let tx = driver.transaction(db_name, TransactionType::<TYPE>).await?;
 tx.query(<QUERY>).await?;
 ----
 where `<TYPE>` can be one of `SCHEMA`, `WRITE`, or `READ`. Use
+[,rust]
 ----
 tx.commit().await?;
 ----
