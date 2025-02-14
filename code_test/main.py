@@ -8,7 +8,7 @@ from parser.parser import parse_programs
 # Logging config
 logger = logging.getLogger('main')
 logging.basicConfig(level=logging.INFO,
-                    format="%(asctime)s [%(filename)s:%(lineno)03d]: %(message)s",
+                    format="%(asctime)s: %(message)s",
                     datefmt="%Y-%m-%d %H:%M:%S")
 
 
@@ -98,9 +98,9 @@ if __name__ == "__main__":
         sys.exit(1)
 
     if len(sys.argv) > 2:
-        logger.info(f"Starting testing in single file mode")
+        logger.info(f"START: testing {lang} in single file mode")
         file_path = sys.argv[2]
         test_one_file(runner, lang, file_path)
     else:
-        logger.info(f"Starting testing in multi-file mode")
+        logger.info(f"START: testing {lang} in multi-file mode")
         test_all_files(runner, lang)
