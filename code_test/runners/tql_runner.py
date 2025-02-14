@@ -8,7 +8,7 @@ logger = logging.getLogger('main')
 # Poor man's testing grammar (keywords used in .adoc files)
 ## .adoc attribute keys and values
 ADOC_TEST_KEY = "test-tql"
-ADOC_ENTRYPOINT_KEY = "test-entrypoint"
+ADOC_ENTRYPOINT_KEY = "test-tql-entry"
 ADOC_CONFIG_KEYS = [ADOC_TEST_KEY, ADOC_ENTRYPOINT_KEY] # first item should be the test key
 TEST_MODE_LINEAR_VAL = "linear"
 TEST_MODE_CUSTOM_VAL = "custom"

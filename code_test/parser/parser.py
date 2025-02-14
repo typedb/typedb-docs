@@ -101,7 +101,12 @@ def parse_programs(adoc_path: str, language: str) -> List[ParsedProgram]:
 
             if line.strip().startswith('////'):
                 original_line = line_number
+                individual_code_block = False
                 line_number += 1
+
+                if not in_code_block:
+                    individual_code_block = True
+                    query_lines: List[str] = []
 
                 while True:
                     if line_number >= len(lines):
@@ -112,6 +117,10 @@ def parse_programs(adoc_path: str, language: str) -> List[ParsedProgram]:
                         break
                     query_lines.append(lines[line_number].rstrip())
                     line_number += 1
+
+                if individual_code_block:
+                    program_code_blocks.append("\n".join(query_lines))
+                    query_lines = []
 
                 continue
 
