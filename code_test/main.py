@@ -2,8 +2,8 @@ import importlib
 import logging
 import sys
 import os
-from typing import Dict, List
-from parser.parser import parse_programs
+from typing import Dict, List, Optional
+from code_test.parser.parser import parse_programs
 
 # Logging config
 logger = logging.getLogger('main')
@@ -23,8 +23,8 @@ DIRECTORIES = [
 ]
 
 
-def parse_adoc_config(adoc_path: str, key_names: List[str]) -> Dict[str, str]:
-    adoc_config = {}
+def parse_adoc_config(adoc_path: str, key_names: List[str]) -> Dict[str, Optional[str]]:
+    adoc_config: Dict[str, Optional[str]] = {}
 
     with open(adoc_path, 'r', encoding='utf-8') as f:
         for line in f:
@@ -41,7 +41,8 @@ def parse_adoc_config(adoc_path: str, key_names: List[str]) -> Dict[str, str]:
 
     return adoc_config
 
-def test_programs_in_file(runner, lang: str, adoc_path: str, adoc_config):
+
+def test_programs_in_file(runner, lang: str, adoc_path: str, adoc_config: Dict[str, Optional[str]]):
     try:
         parsed_programs = parse_programs(adoc_path, lang)
         runner.test_programs(parsed_programs, adoc_path, adoc_config)
@@ -87,7 +88,7 @@ if __name__ == "__main__":
     lang = sys.argv[1]
 
     try:
-        module = importlib.import_module(f'runners.{lang}_runner')
+        module = importlib.import_module(f'code_test.runners.{lang}_runner')
         runner_class = getattr(module, f'{lang.capitalize()}Runner')
         runner = runner_class()
     except ModuleNotFoundError as e:

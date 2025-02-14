@@ -1,7 +1,7 @@
 import io
 import sys
 from typing import List, Dict, Tuple, Union
-from parser.parser import ParsedProgram
+from code_test.parser.parser import ParsedProgram
 import logging
 logger = logging.getLogger('main')
 

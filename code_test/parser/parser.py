@@ -25,7 +25,7 @@ class ParsedProgram:
 
 
 def parse_config(config_str: str, adoc_path: str) -> Dict[str, str]:
-    config = {}
+    config: Dict[str, str] = {}
     config_str = config_str.strip().lstrip('[').rstrip(']').strip()
 
     if not config_str:
@@ -65,7 +65,7 @@ def parse_programs(adoc_path: str, language: str) -> List[ParsedProgram]:
                 raise ValueError( f"[Adoc: {adoc_path}#{line_number}]: Any program needs a language attribute 'lang'")
             if program_config["lang"] == language:
                 in_program = True
-                program_code_blocks = []
+                program_code_blocks: List[str] = []
             line_number += 1
             continue
 
@@ -86,7 +86,7 @@ def parse_programs(adoc_path: str, language: str) -> List[ParsedProgram]:
                 if in_code_block:
                     raise ValueError( f"[Adoc: {adoc_path}#{line_number}]: Found nested code block")
                 in_code_block = True
-                query_lines = []
+                query_lines: List[str] = []
                 line_number += 1
                 continue
 
