@@ -2,6 +2,8 @@ from typedb.driver import TypeDB, Driver, TransactionType, Credentials, DriverOp
 from enum import Enum
 from typing import List, Dict, Tuple, Union
 from parser.parser import ParsedProgram
+import logging
+logger = logging.getLogger('main')
 
 # Poor man's testing grammar (keywords used in .adoc files)
 ## .adoc attribute keys and values
@@ -36,7 +38,12 @@ class FailureMode(Enum):
 
 class TqlRunner:
     def __init__(self):
-        self.ADOC_CONFIG_KEYS = ADOC_CONFIG_KEYS
+        # Required
+        self.adoc_keys = ADOC_CONFIG_KEYS
+        self.success_count = 0
+        self.failure_count = 0
+
+        # Tql specific
         self.edition = Edition.Core
         self.username = "admin"
         self.password = "password"
@@ -60,6 +67,19 @@ class TqlRunner:
         if reset:
             self.delete_db()
         self.driver.databases.create(self.db)
+        return True
+
+    def reset_counts(self):
+        self.success_count = 0
+        self.failure_count = 0
+
+    def check_config(self, adoc_config: Dict[str, str]):
+        if adoc_config.get(ADOC_TEST_KEY) not in ["linear", "custom"]:
+            logger.info(f"adoc attribute :{ADOC_TEST_KEY}: must be set to either 'linear' or 'custom'")
+            return False
+        elif adoc_config[ADOC_TEST_KEY] == "custom" and adoc_config.get(ADOC_ENTRYPOINT_KEY) is None:
+            logger.info(f"adoc attribute :{ADOC_ENTRYPOINT_KEY}: must be set to some program name for 'custom' test")
+            return False
         return True
 
     def run_failing_queries(self, queries: List[str], type: TransactionType) -> str:
@@ -87,24 +107,25 @@ class TqlRunner:
                 promises = []
                 results = []
                 for q in queries:
-                    promises += [tx.query(q)]
+                    promises.append(tx.query(q))
                 for p in promises:
                     results.append(p.resolve())
-                if counted:
-                    result = list(results[-1].as_concept_rows())
-                    count = result[0].get(count_var_name).get_integer()
                 if rollback:
                     tx.rollback()
+                    tx.close()
+                elif type == TransactionType.READ:
                     tx.close()
                 else:
                     tx.commit()
                 if counted:
+                    result = list(results[-1].as_concept_rows())
+                    count = result[0].get(count_var_name).get_integer()
                     return count
             except Exception as e:
                 raise Exception(f"{e}") from e
 
     def run_program(self, parsed_program: ParsedProgram, adoc_path: str):
-        print(f"\n...... NOW RUNNING {parsed_program}")
+        # logger.info(f"... program source:\n{parsed_program}")
 
         type = None
         if parsed_program.config.get(PROGRAM_TRANSACTION_TYPE_KEY):
@@ -150,8 +171,19 @@ class TqlRunner:
 
         return None
 
+    def test_program(self, parsed_program: ParsedProgram, index: int, adoc_path: str):
+        try:
+            logger.info(f"[{adoc_path}] Running program #{index} ...")
+            self.run_program(parsed_program, adoc_path)
+            logger.info(f"[{adoc_path}] ... SUCCESS")
+            self.success_count += 1
+        except Exception as e:
+            logger.info(f"[{adoc_path}] ... ERROR:\n{e}")
+            self.failure_count += 1
+
     def test_programs(self, parsed_programs: List[ParsedProgram], adoc_path: str, config: Dict[str, str]) -> None:
         self.setup_db(reset=True)  # Resets the database
+        self.reset_counts()
 
         if config[ADOC_TEST_KEY] not in MODE_LIST:
             raise ValueError(f"[{adoc_path}]: Invalid test mode (can be 'linear' or 'custom')")
@@ -160,10 +192,7 @@ class TqlRunner:
         if linear_mode:
             # run programs in linear order
             for (i, parsed_program) in enumerate(parsed_programs):
-                try:
-                    self.run_program(parsed_program, adoc_path)
-                except Exception as e:
-                    raise ValueError(f"[{adoc_path}]: failed testing program #{i} with, caused by:\n--> {e}")
+                self.test_program(parsed_program, i, adoc_path)
 
         else:
             # populate name lookup table
@@ -192,7 +221,7 @@ class TqlRunner:
                     raise ValueError(f"[{adoc_path}]: Finished execution at end of page before running all programs")
 
                 current_program = parsed_programs[current_program_index]
-                self.run_program(current_program, adoc_path)
+                self.test_program(current_program, current_program_index, adoc_path)
                 remaining_indices.remove(current_program_index)
                 completed_indices.add(current_program_index)
 
