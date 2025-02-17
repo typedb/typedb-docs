@@ -253,12 +253,9 @@ Rust::
 Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
-[subs="macros, post_replacements, replacements"]
-++++
 Open a transaction to the selected database and use the
-xref:{page-version}@drivers::rust/api-reference.adoc#_struct_Transaction_query__[transaction.query()]
+xref:{page-version}@drivers::rust/api-reference.adoc#_struct_Transaction_query_[transaction.query()]
 method to send the query:
-++++
 
 [,rust,indent=0]
 ----
@@ -284,7 +281,7 @@ Follow the xref:{page-version}@manual::connecting/connection.adoc[connection gui
 to connect the `driver` to a TypeDB server.
 
 Open a transaction to the selected database and use the
-xref:{page-version}@drivers::python/api-reference.adoc[transaction.query()]
+xref:{page-version}@drivers::python/api-reference.adoc#_Transaction_query_query_str[transaction.query()]
 method to send the query:
 
 [,python,indent=0]
@@ -310,12 +307,9 @@ Java::
 Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
-[subs="macros, post_replacements, replacements"]
-++++
 Open a transaction to the selected database and use the
-xref:{page-version}@drivers::java/api-reference.adoc#_Transaction_query__java_lang_String[transaction.query()]
+xref:{page-version}@drivers::java/api-reference.adoc#_Transaction_query_java_lang_String[transaction.query()]
 method to send the query:
-++++
 
 [,java,indent=0]
 ----
@@ -345,12 +339,9 @@ Rust::
 Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
-[subs="macros, post_replacements, replacements"]
-++++
 Open a transaction to the selected database and use the
-xref:{page-version}@drivers::rust/api-reference.adoc#_struct_Transaction_query__[transaction.query()]
+xref:{page-version}@drivers::rust/api-reference.adoc#_struct_Transaction_query_[transaction.query()]
 method to send the query:
-++++
 
 [,rust,indent=0]
 ----
@@ -379,12 +370,9 @@ Python::
 Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
 to connect the `driver` to a TypeDB server.
 
-[subs="macros, post_replacements, replacements"]
-++++
 Open a transaction to the selected database and use the
-xref:{page-version}@drivers::python/api-reference.adoc#_Transaction_query[transaction.query()]
+xref:{page-version}@drivers::python/api-reference.adoc#_Transaction_query_query_str[transaction.query()]
 method to send the query:
-++++
 
 [,python,indent=0]
 ----
@@ -410,15 +398,12 @@ Each `ConceptDocument` is equivalent to a JSON and can be serialized as such.
 Java::
 +
 --
-Follow the xref:{page-version}@manual::connecting/connection.adoc[connection guide]
+Follow the xref:{page-version}@manual::connecting/connection.adoc#_Transaction_query_java_lang_String[connection guide]
 to connect the `driver` to a TypeDB server.
 
-[subs="macros, post_replacements, replacements"]
-++++
 Open a transaction to the selected database and use the
-xref:{page-version}@drivers::java/api-reference.adoc#_Transaction_query__java_lang_String[transaction.query()]
+xref:{page-version}@drivers::java/api-reference.adoc[transaction.query()]
 method to send the query:
-++++
 
 [,java,indent=0]
 ----

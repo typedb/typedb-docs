@@ -1,4 +1,5 @@
 = Defining types
+:test-tql: linear
 
 This page explains how to define types and type traits in TypeDB schemas.
 
@@ -13,28 +14,35 @@ All schema (un)definitions in TypeDB are run in `schema` xref:{page-version}@man
 == Entity types
 
 Entity types are first defined using the `entity` keyword.
+//!program[lang=tql, type=schema]
+//!++
 [,typeql]
 ----
 define entity user;
 ----
+//!--
 
 Subtypes of entity types are always entity types themselves, and can be introduced using the `sub` keyword.
+//!++
 [,typeql]
 ----
 define entity admin sub user;
 ----
+//!--
 
 xref:{page-version}@manual::schema/schema_structure.adoc#traits[Traits] of entity types are defined as before using the `plays` and `owns` keywords.
 
 == Relation types
 
 Relation types are first defined using the `relation` keyword.
+//!++
 [,typeql]
 ----
 define
   relation friendship,
     relates friend @card(2);
 ----
+//!--
 Here, `@card(2)` is an example of annotation, specifying that there will be exactly two friends in each friendship relation. Without this annotation the role cardinality would default to `@card(0..1)` (allowing between 0 and 1 friend). See xref:{page-version}@manual::schema/annotations.adoc[annotations] for more.
 
 Subtypes of relation types are always relation types themselves, and can be introduced using the `sub` keyword.
@@ -43,6 +51,7 @@ Subtypes of relation types are always relation types themselves, and can be intr
 * Otherwise, if a role is not specialized, relations subtypes automatically inherit that role.
 
 For example
+//!++
 [,typeql]
 ----
 define
@@ -51,6 +60,7 @@ define
     relates best-friend as friend @card(1),
     relates other-friend as friend @card(1);
 ----
+//!--
 This defines "`close friendship`" and "`best-friendship`" relations as a subtype of our friendship relations above.
 
 Note that unlike friendship relations, the subtype of best-friendships contains asymmetric relations (indeed, unfortunately, if A is the best friend of B this need not imply that B is the best friend of A). In general, a single role can be specialized into any number of roles, as long as role cardinalities are compatible.
@@ -65,32 +75,69 @@ xref:{page-version}@manual::schema/schema_structure.adoc#traits[Traits] of relat
 == Attribute types
 
 Attribute types are first defined using the `attribute` keyword, and they must be supplied with a value type using the `value` keyword (unless, they are annotated as being `@abstract`, see xref:{page-version}@manual::schema/annotations.adoc[annotations])
+//!++
 [,typeql]
 ----
 define
   attribute id,
     value string;
 ----
+//!--
 
 Subtypes of attributes types are always attributes types themselves, and inherit the value type of its supertype (if set; otherwise, a new value type can be set). For example:
+//!++
 [,typeql]
 ----
 define
   attribute comment-id sub id;
 ----
+//!--
+//!run
 
 [NOTE]
 ====
 Recall that attributes do not play roles or own other attributes.
 ====
 
+== Type traits
+
+To implement a "`role player trait`" (which enables type instances to be used as players in a given role type) use the keyword `plays`. To implement an "`ownership trait`" (which enables type instances to be used as owners for a given attribute type) use the keyword `owns`. For example,
+
+//!program[lang=tql, type=schema]
+//!++
+[,typeql]
+----
+define
+  user plays friendship:friend,
+    owns id;
+----
+//!--
+
+defines that `user` instances may act as friends in friendship relations, and ownd ids. Since ``admin``s are users, these traits get inherited! However, ``admin`` may have additional more specialized traits:
+
+//!++
+[,typeql]
+----
+define
+  attribute access-level, value integer;
+  admin plays best-friendship:best-friend,
+    plays best-friendship:other-friend,
+    owns access-level;
+----
+//!--
+//!run
+
 == Undefining definitions
 
 Any of the above statements can be undefined. For example
+//!program[lang=tql, type=schema, rollback=yes]
+//!++
 [,typeql]
 ----
-undefine entity admin;
+undefine admin;
 ----
+//!--
+//!run
 will completely remove the admin from your schema, and with it all traits of the admin type.
 
 [NOTE]
@@ -99,27 +146,38 @@ Removing a type from your schema will, in general, only succeed if there are no 
 ====
 
 If we instead write
+//!program[lang=tql, type=schema]
+//!++
 [,typeql]
 ----
 undefine sub user from admin;
 ----
+//!--
 then this removes `admin` having `user` as its supertype, but it _does not_ remove the type `admin` itself.
 
 Similarly, writing
+//!++
 [,typeql]
 ----
 undefine plays friendship:friend from user;
 ----
+//!--
 removes the friend trait from the user type, but leaves the type itself intact. And
 [,typeql]
+//!++
 ----
-undefine owns username from user;
+undefine owns id from user;
 ----
+//!--
 removes the trait of owning usernames.
 
+//!run
+
 == Redefining definitions
+//!program[lang=tql, type=schema]
 
 TypeDB also allows concise redefinitions of single statements. For example, after we define
+//!++
 [,typeql]
 ----
 define
@@ -127,11 +185,14 @@ define
   entity admin sub user;
   entity superuser sub user;
 ----
+//!--
 we may redefine:
+//!++
 [,typeql]
 ----
 redefine admin sub superuser;
 ----
+//!--
 This will turn the initial `tree-like` type hierarchy into a linear type hierarchy, where `admin < superuser < user`.
 
 Re-define semantics are the most complex of all three definition queries. However, the simple key property of redefine is: after a successful redefinition, the re-defined statement holds fully, replacing any conflicting prior statement.
@@ -140,3 +201,5 @@ Re-define semantics are the most complex of all three definition queries. Howeve
 ====
 While both `define` and `undefine` can be following by multiple statements, `redefine` can be followed by only a single statements. The reason for this is that the order of redefinitions may affect the resulting model; by working with single statements, we avoid this ambiguity.
 ====
+
+//!run

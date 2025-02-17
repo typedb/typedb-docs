@@ -114,6 +114,8 @@ class TqlRunner:
                     tx.rollback()
                     tx.close()
                 elif type == TransactionType.READ:
+                    for r in results:
+                        list_result = list(r.as_concept_rows())
                     tx.close()
                 else:
                     tx.commit()
@@ -125,7 +127,7 @@ class TqlRunner:
                 raise Exception(f"{e}") from e
 
     def run_program(self, parsed_program: ParsedProgram, adoc_path: str):
-        # logger.info(f"... program source:\n{parsed_program}")
+        logger.info(f"... program source:\n{parsed_program}")
 
         type = None
         if parsed_program.config.get(PROGRAM_TRANSACTION_TYPE_KEY):
@@ -173,7 +175,10 @@ class TqlRunner:
 
     def test_program(self, parsed_program: ParsedProgram, index: int, adoc_path: str):
         try:
-            logger.info(f"[{adoc_path}] Running program #{index} ...")
+            if parsed_program.config.get(PROGRAM_NAME_KEY):
+                logger.info(f"[{adoc_path}] Running program '{parsed_program.config[PROGRAM_NAME_KEY]}' ...")
+            else:
+                logger.info(f"[{adoc_path}] Running program #{index} ...")
             self.run_program(parsed_program, adoc_path)
             logger.info(f"[{adoc_path}] ... SUCCESS")
             self.success_count += 1

@@ -1,4 +1,5 @@
 = Defining functions
+:test-tql: linear
 
 This page explains how to define functions within TypeDB schemas.
 
@@ -18,14 +19,34 @@ The function definition syntax in both cases is identical. This page focuses on 
 Similar to xref:{page-version}@manual::schema/types.adoc[type definitions], functions can be stored in a database schema using `schema` xref:{page-version}@manual::queries/transactions.adoc[transactions].
 Three types of schema definition queries are available for working with functions:
 
-* `define fun <function_name> <function_signature>: <function_body>`.
-A `define` query adds a new function to the schema for future use.
+* *Defining a new function*:
++
+--
+[,typeql]
+----
+define <function_name> <function_signature>:
+  <function_body>
+----
+--
 
-* `undefine fun <function_name>`.
-An `undefine` query removes a function from the schema.
+* *Undefining an existing function*:
++
+--
+[,typeql]
+----
+undefine <function_name>;
+----
+--
 
-* `redefine <function_name> <function_signature>: <function_body>`.
-A `redefine` query updates an existing function in the schema.
+* *Modifying an existing definition*:
++
+--
+[,typeql]
+----
+redefine <function_name> <function_signature>:
+  <function_body>
+----
+--
 
 === Function signatures
 
@@ -62,36 +83,85 @@ For xref:{page-version}@typeql::functions/scalar.adoc[scalar functions], the `re
 === Computing values
 
 [#_stream_arithmetic_example]
-.Stream arithmetic function definition
+The following function match `$z` to be the sum of two integer arguments `$x` and `$y`.
+
+//!program[lang=tql, type=schema]
+//!++
 [,typeql]
+.Stream function definition
 ----
-include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;fun-stream-return-value]
+define
+  fun add_streamed($x: integer, $y: integer) -> { integer }:
+    match
+      let $z = $x + $y;
+    return { $z };
 ----
+//!--
+//!run
 
 If you are certain that `$z` will only match a single value (or if only one value is needed), the `first` or `last` keywords can be used to ensure the function returns a xref:{page-version}@typeql::functions/scalar.adoc[scalar result].
 
-.Single arithmetic function definition
+//!program[lang=tql, type=schema]
+//!++
+.Scalar function definition
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;fun-single-return-value]
+define
+  fun add($x: integer, $y: integer) -> integer:
+    match
+      let $z = $x + $y;
+    return first $z;
 ----
+//!--
+//!run
 
 === Querying for data instances
 
 [#_stream_example]
 .Stream function definition returning data instances
+//!program[lang=tql, type=schema]
+////
+define
+  attribute phone, value string;
+  entity user, owns phone;
+////
+//!++
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;fun-stream-return-type]
+define
+  fun user_phones($user: user) -> { phone }:
+    match
+      $user has phone $phone;
+    return { $phone };
 ----
+//!--
+//!run
 
 === Functions within functions
 
 .Tuple function definition with inner function calls
+//!program[lang=tql, type=schema, name=cast_issue]
+////
+define
+  attribute karma @independent, value double;
+////
+// TODO: this example needs fixing (will fix later examples)
+//!++
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;fun-square;fun-aggregate-single-tuple-return]
+define
+  fun square($x: double) -> double:
+    match
+      let $z = $x * $x;
+    return first $z;
+  fun karma_sum_and_sum_squared() -> double, double:
+    match
+      $karma isa karma;
+      let $karma-squared = square($karma);
+    return sum($karma), sum($karma-squared);
 ----
+//!--
+//!run
 
 [NOTE]
 ====
@@ -107,21 +177,38 @@ Refer to <<using_functions>> for more details on calling functions.
 To undefine a function from a schema, you only need its name, which uniquely identifies it.
 The following query removes <<_stream_arithmetic_example, a function defined earlier>>:
 
+//!program[lang=tql, type=schema]
+//!++
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/undefine_schema.tql[tags=undefine-keyword;fun-stream-return-value-undefined]
+undefine
+  fun add_streamed;
 ----
+//!--
+//!run
 
 === Function redefinition
 
 To redefine an existing function, use the same `define` syntax with the `redefine` keyword.
 The query below updates <<_stream_example, a previously defined function>> to accept a `username` instead of a specific `user`:
 
+//!program[lang=tql, type=schema, rollback=yes]
+////
+define attribute username, value string; user owns username;
+////
+//!++
 [#_redefine_example]
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/redefine_schema.tql[tags=redefine-keyword;fun-stream-return-type-redefined]
+redefine
+  fun user_phones($username-value: string) -> { phone }:
+    match
+      $user isa user, has username $username, has phone $phone;
+      $username == $username-value;
+    return { $phone };
 ----
+//!--
+//!run
 
 [NOTE]
 ====
@@ -138,10 +225,15 @@ As shown in previous examples, to call a function, reference its name and pass t
 
 For functions returning a single result, use a simple assignment to bind the output variable to the function's result:
 
+//!program[lang=tql, type=read]
+//!++
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/read_queries.tql[tag=fun-single-scalar-return-value]
+match
+  let $answer = add(2016, 9);
 ----
+//!--
+//!run
 
 [NOTE]
 ====
@@ -150,17 +242,28 @@ The xref:{page-version}@typeql::statements/let-eq.adoc[`let` keyword] is require
 
 For functions returning a stream, use xref:{page-version}@typeql::statements/let-in.adoc[`let ... in` statements] to bind variables:
 
+//!program[lang=tql, type=read]
+//!++
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/read_queries.tql[tag=fun-stream-scalar-return-type]
+match
+  $u isa user;
+  let $phone in user_phones($u);
 ----
+//!--
+//!run
 
 To handle tuple results, bind the appropriate number of variables to unpack the function’s output:
 
+//!program[lang=tql, type=read, name=i_fail_bc_of_earlier_failure]
+//!++
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/read_queries.tql[tag=fun-stream-tuple-return-type]
+match
+  let $karma, $karma-squared in karma_sum_and_sum_squared();
 ----
+//!--
+//!run
 
 For further details, refer to the xref:{page-version}@typeql::functions/index.adoc[TypeQL documentation].
 

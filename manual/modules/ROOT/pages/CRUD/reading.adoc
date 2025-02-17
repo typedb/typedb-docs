@@ -1,4 +1,26 @@
 = Reading data
+:test-tql: linear
+
+//!program[lang=tql, type=schema]
+////
+define
+  entity user;
+  attribute email, value string;
+  attribute username, value string;
+  user owns email, owns username;
+  relation friendship, relates friend @card(0..2);
+  user plays friendship:friend;
+////
+////
+insert
+  $a isa user, has username "A", has email "A@gmail.com";
+  $b isa user, has username "B", has email "B@gmail.com";
+  $c isa user, has username "C", has email "C@gmail.com";
+  $d isa user, has username "D", has email "D@gmail.com";
+  friendship($a, $b);
+  friendship($c, $b);
+////
+//!run
 
 This page explains how to read data from a TypeDB database.
 
@@ -36,11 +58,16 @@ In the examples below, both cases will be illustrated.
 
 To read type instances (an xref:{page-version}@typeql::statements/entity.adoc[entity], a xref:{page-version}@typeql::statements/relation.adoc[relation], or an xref:{page-version}@typeql::statements/attribute.adoc[attribute]), use the xref:{page-version}@typeql::statements/isa.adoc[`isa` keyword]:
 
+//!program[lang=tql, type=read]
+//!++
 .Users reading example
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-user]
+match
+  $u isa user;
 ----
+//!--
+//!run
 
 This simple query will return all the `user` s in the database.
 
@@ -63,12 +90,17 @@ This simple query will return all the `user` s in the database.
 Combining statements, it is possible to add more constraints to the `match`.
 For example, the following query searches for all `user` s with a specific `username` using the xref:{page-version}@typeql::statements/has.adoc[`has` statement] (which can be interpreted as "the `user` with a specific `username` " as this attribute is a xref:{page-version}@typeql::annotations/key.adoc[key]):
 
+//!program[lang=tql, type=read]
+//!++
 [#_specific_users_example]
 .Specific users reading example
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-single-user]
+match
+  $u isa user, has username "User";
 ----
+//!--
+//!run
 
 .Example TypeDB Console output
 [%collapsible]
@@ -82,11 +114,18 @@ include::{page-version}@manual::example$tql/read_queries.tql[tags=match-single-u
 
 Similar to entity objects, we may also query for relation
 
+//!program[lang=tql, type=read]
+//!++
 .Matching relation linking two instances with specific roles example
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-users-friendship]
+match
+  $a isa user, has username "Alice", has email "alice@typedb.com";
+  $b isa user, has username "Bob", has email "bob@typedb.com";
+  $f isa friendship, links (friend: $a, friend: $b);
 ----
+//!--
+//!run
 
 .Example TypeDB Console output
 [%collapsible]
@@ -102,11 +141,18 @@ include::{page-version}@manual::example$tql/read_queries.tql[tags=match-users-fr
 
 If you are sure that these two `user` s can only play specific roles in a `friendship` or your intent is to query for any roles these `user`s play in a relation, the query can be simplified:
 
+//!program[lang=tql, type=read]
+//!++
 .Matching relation linking two instances of any roles example
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-users-friendship]
+match
+  $a isa user, has username "Alice", has email "alice@typedb.com";
+  $b isa user, has username "Bob", has email "bob@typedb.com";
+  $f isa friendship, links (friend: $a, friend: $b);
 ----
+//!--
+//!run
 
 .Example TypeDB Console output
 [%collapsible]
@@ -122,22 +168,36 @@ include::{page-version}@manual::example$tql/read_queries.tql[tags=match-users-fr
 
 TypeDB and TypeQL also support further simplification in case you are interested in only the `user` s, so the `friendship` between them is not needed in the output:
 
+//!program[lang=tql, type=read]
+//!++
 [#_matching_relation_linking_without_var_example]
 .Matching relation linking two instances without a variable example
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-users-friendship-users-only]
+match
+  $a isa user, has username "Alice", has email "alice@typedb.com";
+  $b isa user, has username "Bob", has email "bob@typedb.com";
+  friendship ($a, $b);
 ----
+//!--
+//!run
 
 [NOTE]
 ====
-It is an equivalent of the anonymous variable usage:
+This is equivalent to using anonymous variable usage:
 
+//!program[lang=tql, type=read]
+//!++
 .Matching relation linking two instances with an anonymous variable example
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-users-friendship-anonymous]
+match
+  $a isa user, has username "Alice", has email "alice@typedb.com";
+  $b isa user, has username "Bob", has email "bob@typedb.com";
+  $_ isa friendship, links ($a, $b);
 ----
+//!--
+//!run
 ====
 
 .Example TypeDB Console output
@@ -157,22 +217,32 @@ Attributes and their values can be read in a similar way.
 By variablizing the attribute part of the <<_specific_users_example, previous example>>, it's easy to get all `user` s and their `username` s.
 You can also use anonymous variables (`$_`) if they are not needed in the output:
 
+//!program[lang=tql, type=read]
+//!++
 [#_specific_users_example]
 .Matching all users' usernames example
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-user-usernames-anonymous]
+match
+  $_ isa user, has username $n;
 ----
+//!--
+//!run
 
 [NOTE]
 ====
 Equivalently, we could query
 
-.Matching all usernames example
+//!program[lang=tql, type=read]
+//!++
+.Matching all usernames
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-usernames]
+match
+  $n isa username;
 ----
+//!--
+//!run
 
 (The queries may only differ in the case of independent attributes, as these may not be owned, and ownership is required by the first version of the query.)
 ====
@@ -196,11 +266,17 @@ include::{page-version}@manual::example$tql/read_queries.tql[tags=match-username
 While the attribute is variablized, it is also possible to put the same constraints from the <<_specific_users_example, specific user search example>> on it.
 For instance, we can use the same attribute variable twice in two compatible statements:
 
-.Specific users reading with variablized attribute example
+//!program[lang=tql, type=read]
+//!++
+.Specific users reading with variablized attribute
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-single-user-attribute-var]
+match
+  $n isa username "User";
+  $u isa user, has username $n;
 ----
+//!--
+//!run
 
 .Example TypeDB Console output
 [%collapsible]
@@ -215,11 +291,18 @@ include::{page-version}@manual::example$tql/read_queries.tql[tags=match-single-u
 
 To achieve the same result, we could also compare the attribute variable's value with the used constant:
 
-.Specific users reading with variablized attribute and value comparison example
+//!program[lang=tql, type=read]
+//!++
+.Specific users reading with variablized attribute and value comparison
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-single-user-attribute-var-compare]
+match
+  $n isa username;
+  $n == "User";
+  $u isa user, has username $n;
 ----
+//!--
+//!run
 
 .Example TypeDB Console output
 [%collapsible]
@@ -234,11 +317,17 @@ include::{page-version}@manual::example$tql/read_queries.tql[tags=match-single-u
 
 Alternatively, we could declare a value variable using the xref:{page-version}@typeql::statements/let-eq.adoc[`let` statement], and integrate comparison into the owner instance declaration:
 
+//!program[lang=tql, type=read]
+//!++
 .Specific users reading using value variables example
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-single-user-value-var]
+match
+  let $n = "User";
+  $u isa user, has username == $n;
 ----
+//!--
+//!run
 
 [NOTE]
 ====
@@ -263,11 +352,18 @@ Types from database schemas are also available for `match` ing and retrieving.
 To bind a variable to a type, use type-related statements and variablize the respective side.
 The following example query retrieves the root types (types without supertypes) of the owners of attributes of type labelled `email`, using the xref:{page-version}@typeql::statements/isa.adoc[`isa` statement], the xref:{page-version}@typeql::statements/label.adoc[`label` statement], and the xref:{page-version}@typeql::statements/sub.adoc[`sub!` statement]:
 
+//!program[lang=tql, type=read]
+//!++
 .Matching types example
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-user-emails-supertypes]
+match
+  $_ isa $owner-type, has $attribute-type $_;
+  $attribute-type label email;
+  not { $owner-type sub! $_; };
 ----
+//!--
+//!run
 
 .Example TypeDB Console output
 [%collapsible]
@@ -287,11 +383,17 @@ A full list of statements, including the ones available for `match` ing, is avai
 
 In the examples above we have already seen the use of `not` subpatterns. This pattern constructor, together with the disjunction constructor `or`, provide powerful ways to combine patterns.
 
+//!program[lang=tql, type=read]
+//!++
 .Matching with disjunction example
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-user-or-user]
+match
+  $u isa user;
+  { $u has username "User"; } or { $u has email "alice@typedb.com"; };
 ----
+//!--
+//!run
 
 [NOTE]
 ====
@@ -313,11 +415,17 @@ Note that multiple semicolons are required: one semicolon for each single statem
 Similarly, xref:{page-version}@typeql::patterns/negations.adoc[negations] (logical "NOT") to reverse the declared constraint.
 The following example returns all `user` s without `email` s:
 
+//!program[lang=tql, type=read]
+//!++
 .Matching with negation example
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-user-no-emails]
+match
+  $u isa user;
+  not { $u has email $_; };
 ----
+//!--
+//!run
 
 .Example TypeDB Console output
 [%collapsible]
@@ -338,11 +446,19 @@ Let's now discuss how to use the matched results in pipeline stages.
 For example, it is frequently useful to get only a specific set of variables instead of everything that is matched in the constraint declarations.
 To select the necessary variables from the <<_matching_relation_linking_without_var_example, previous example>>, use the xref:{page-version}@typeql::pipelines/select.adoc[select operator]:
 
+//!program[lang=tql, type=read]
+//!++
 .Selecting variables example
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-users-friendship-select]
+match
+  $a isa user, has username "Alice", has email "alice@typedb.com";
+  $b isa user, has username "Bob", has email "bob@typedb.com";
+  $f isa friendship, links (friend: $a, friend: $b);
+select $f; # or reversed: "select $a, $b;"
 ----
+//!--
+//!run
 
 .Example TypeDB Console output
 [%collapsible]
@@ -356,11 +472,17 @@ include::{page-version}@manual::example$tql/read_queries.tql[tags=match-users-fr
 
 To sort the outputs by chosen variables, use the xref:{page-version}@typeql::pipelines/sort.adoc[sort operator]:
 
+//!program[lang=tql, type=read]
+//!++
 .Sorting results in descending order example
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-users-and-names-sorted]
+match
+ $u isa user, has username $n;
+sort $n desc;
 ----
+//!--
+//!run
 
 .Example TypeDB Console output
 [%collapsible]
@@ -403,11 +525,20 @@ Fetch receives a number of input rows and converts each row into a document of t
 
 For example, you can simply label all the matched results and address their attributes (if applicable):
 
+//!program[lang=tql, type=read]
+//!++
 .Creating a document of users example
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-user-usernames-fetch]
+match
+  $u isa user, has username $n;
+fetch {
+  "user email": $u.email,
+  "matched username": $n
+};
 ----
+//!--
+//!run
 
 .Example TypeDB Console output
 [%collapsible]
@@ -446,11 +577,23 @@ To achieve this, you can try accessing attributes of an attribute.
 The following is an example of document nesting and JSON list usage.
 We also produce an additional document containing every existing attribute of the instance using `.*`.
 
+//!program[lang=tql, type=read]
+//!++
 .Creating a document of users with nesting and lists example
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/read_queries.tql[tags=match-user-fetch]
+match
+  $u isa user;
+fetch {
+  "user information": {
+    "username": $u.username,
+    "emails": [ $u.email ]
+  },
+  "all user attributes": { $u.* }
+};
 ----
+//!--
+//!run
 
 .Example TypeDB Console output
 [%collapsible]

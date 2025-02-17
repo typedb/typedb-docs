@@ -1,6 +1,8 @@
 import re
 from dataclasses import dataclass
 from typing import List, Dict, Tuple, Union
+import logging
+logger = logging.getLogger('main')
 
 # Parser config
 PROGRAM_START_MARKER = "program"
@@ -53,6 +55,7 @@ def parse_programs(adoc_path: str, language: str) -> List[ParsedProgram]:
 
     line_number = 0
     while line_number < len(lines):
+        # logger.info(f"parsing line {line_number}")
         line = lines[line_number].rstrip('\n')
 
         program_opened = re.match(r'^\s*//!' + PROGRAM_START_MARKER + r'(\[.+?\])', line)
@@ -124,7 +127,7 @@ def parse_programs(adoc_path: str, language: str) -> List[ParsedProgram]:
 
                 continue
 
-            if line.strip().startswith('----'):
+            if line.strip().startswith('----') and in_code_block:
                 original_line = line_number
                 line_number += 1
 

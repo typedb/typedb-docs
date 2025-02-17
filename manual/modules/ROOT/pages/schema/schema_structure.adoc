@@ -1,4 +1,5 @@
 = Schema modeling
+:test-tql: linear
 
 This page covers the most important aspects of TypeDB schemas.
 
@@ -26,6 +27,7 @@ See the xref:{page-version}@typeql::data_model.adoc[data model reference] for a 
 
 [[traits]]
 == Type traits
+//!program[lang=tql, type=schema]
 
 === Role player traits
 
@@ -33,13 +35,20 @@ Relations organize their set of role players by so-called *role types* (also sim
 
 *  We can specify that a type has a *player* trait (for a specific role of a relation type) in the schema. For example,
 +
+--
+//!++
 [,typeql]
 .Specify that users can act as friends
 ----
 define user plays friendship:friend;
 ----
-+
+////
+entity user;
+relation friendship, relates friend @card(2);
+////
+//!--
 which literally means that users can act as friends in friendship relations.
+--
 
 === Ownership traits
 
@@ -47,13 +56,19 @@ We can similarly ask for attributes: _which data instances can act as owners of 
 
 * We can specify that a type has an *owner* trait (for a specific attributes) in the schema. For example,
 +
+--
+//!++
 [,typeql]
 .Specify that users can act as username owners
 ----
 define user owns username;
 ----
-+
+////
+attribute username, value string;
+////
+//!--
 which literally means that users can act as owners of username attributes.
+--
 
 [NOTE]
 ====
@@ -72,11 +87,14 @@ Not all types kinds are created equal:
 == Subtyping and inheritance
 
 A key ingredient of any modern type system is *subtyping*, i.e., the ability to cast instances from one type into another. Subtyping is a key feature of schema modeling in TypeDB: it allows us to specialize and hierarchically organize types and their data instance. For example,
+//!++
 [,typeql]
 .Create an entity type `admin` as a subtype of `user`
 ----
 define entity admin sub user;
 ----
+//!--
+
 Subtyping behaves exactly as expected:
 
 * If we were to query for user instances, we would also find all admin instances
@@ -90,11 +108,17 @@ To model "`non-tree-like`" hierarchies you can exploit the trait system of TypeD
 ====
 
 An important aspect of subtyping is the *inheritance* of traits. In general, _all_ traits of the supertype are inherited by the subtype. However, further traits may be specified for the subtype that are not shared with the supertype. For example,
+//!++
 [,typeql]
 ----
 define admin owns access-level;
 ----
+////
+attribute access-level, value integer;
+////
+//!--
 
 There _are_ ways to hide supertype traits from subtypes, by setting these traits to be xref:{page-version}@typeql::annotations/abstract.adoc[abstract] (coming soon).
 // TODO
 
+//!run

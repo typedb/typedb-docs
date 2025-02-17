@@ -1,5 +1,6 @@
 = Inserting data
 :page-aliases: {page-version}@manual::writing/insert.adoc
+:test-tql: linear
 
 This page explains how to insert data in a TypeDB database.
 
@@ -28,19 +29,30 @@ Let's give a brief overview of what kinds of statements can be used in an insert
 
 To create new data instances we can use `isa` statements. The following simple query creates a new data instance of type `user`:
 
+//!program[lang=tql, type=schema]
+////
+define entity user, plays friendship:friend;
+relation friendship, relates friend @card(0..2);
+////
+//!++
 [,typeql]
 .Inserting a user entity
 ----
 insert $x isa user;
 ----
+//!--
 
 We may also create relations:
 
+//!++
 [,typeql]
 .Inserting a friendship relation (without role players)
 ----
 insert $f isa friendship;
 ----
+//!--
+//!run
+
 Note, to persist in the database, a relation would need at least one role player (see <<links,player insertion>> below).
 
 Similarly, attributes can only be created using `isa` independently of owners when marked as `@independent` in the schema.
@@ -50,6 +62,11 @@ Similarly, attributes can only be created using `isa` independently of owners wh
 
 Connections of attributes to their "`owner`" data instances can be inserted using `has` statements.
 
+//!program[lang=tql, type=schema]
+////
+define attribute username, value string; user owns username;
+////
+//!++
 [,typeql]
 .Inserting a single user and a username for that user
 ----
@@ -57,15 +74,19 @@ insert
   $x isa user;
   $x has username "User";
 ----
+//!--
 
 This can be further shortened to:
 
+//!++
 [,typeql]
 .Inserting a single user together with their username
 ----
 insert
   $x isa user, has username "User";
 ----
+//!--
+//!run
 
 [NOTE]
 ====
@@ -77,41 +98,70 @@ If the `username` attribute `"User"` does not yet exist when running the above, 
 
 Connections of relations to their "`role players`" data instances can be created using `links` statements.
 
+//!program[lang=tql, type=write]
+//!++
 [,typeql]
 .Inserting users, a friendship, and links between users via that friendship
 ----
 insert
   $x isa user, has username "User_1";
-  $y isa user, has username "User_2";
+  $y isa user, has username "Bob";
   $f isa friendship;
   $f links (friend: $x, friend: $y);
 ----
+//!--
 
 The last line can be further shortened to:
 
+//!++
+////
+insert
+  $x isa user, has username "User_1";
+  $y isa user, has username "Bob";
+////
 [,typeql]
 .Relation constructor syntax
 ----
   $f isa friendship (friend: $x, friend: $y);
 ----
+//!--
 
 We can even keep the friendship instance anonymous (i.e., not assign it to a variable) if we do not need it otherwise, by simply writing:
 
+//!++
+////
+insert
+  $x isa user, has username "User_1";
+  $y isa user, has username "Bob";
+////
 [,typeql]
 .Anonymous relation constructor syntax
 ----
   friendship (friend: $x, friend: $y);
 ----
+//!--
+//!run
 
 == Inserting with data pipelines
 
 Most commonly, `insert` stages are use as part of data pipelines. This let's us first retrieve specific data, which we can then augment with new data.
 
+//!program[lang=tql, type=schema]
+////
+define attribute email, value string; user owns email;
+////
+//!++
 .Match-insert pipeline example
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/match_insert_data.tql[tags=simple-match-insert]
+match
+  $u isa user, has username "Bob";
+insert
+  $new-u isa user, has username "Charlie", has email "charlie@typedb.com";
+  $f isa friendship, links (friend: $u, friend: $new-u);
 ----
+//!--
+//!run
 
 The first stage of the pipeline retrieves the users called `"Bob"` from the database. For each answer of the first stage, the second stage is then executed: this inserts a new user called `"Charlie"`
 

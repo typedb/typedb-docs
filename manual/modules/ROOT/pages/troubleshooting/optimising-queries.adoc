@@ -72,7 +72,7 @@ We expect the second query to run faster, as it evaluates the `<expensive-patter
 
 == Optimizing negations
 
-Negations, especially nested negations, can be extremely expensive query operates: indeed, to ensure that something does not exist, we usually must search the entire to domain of possibilities. It is therefor paramount, to reduce the "`size of the domain`" prior to using negation. For example, the query
+Negations, especially nested negations, can be extremely expensive query operates: indeed, to ensure that something does not exist, we usually must search the entire to domain of possibilities. It is therefore paramount to reduce the "`size of the domain`" prior to using negation. For example, the query
 [,typeql]
 ----
 match

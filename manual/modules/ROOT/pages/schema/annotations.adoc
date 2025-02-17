@@ -1,8 +1,10 @@
 = Defining annotations
+:test-tql: linear
 
 This page explains how to use define queries to define annotations for types and type traits.
 
 == Overview
+//!program[lang=tql, type=schema]
 
 Annotations define constraints and specialized behavior for types and their traits, enabling more precise control over how data must behave in your database.
 
@@ -11,10 +13,32 @@ Annotations define constraints and specialized behavior for types and their trai
 [%collapsible]
 ====
 As an example, consider the following schema
+//!++
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;entities;attributes]
+define
+  entity content owns id;
+  entity page sub content,
+    owns page-id,
+    owns name;
+  entity profile sub page,
+    owns username;
+  entity user sub profile,
+    owns email,
+    owns phone,
+    owns language,
+    owns karma;
+
+  attribute id value string;
+  attribute page-id sub id;
+  attribute username sub page-id;
+  attribute name value string;
+  attribute email value string;
+  attribute phone value string;
+  attribute language value string;
+  attribute karma value double;
 ----
+//!--
 ====
 
 In the schema above we may have the following:
@@ -30,54 +54,86 @@ None of these behaviors may be desirable. TypeDB addresses the issue through a u
 - `@key` ensures attributes act as keys to data. E.g.
 +
 --
+//!++
+////
+define
+////
 [,typeql]
 ----
 content owns id @key;
 ----
+//!--
 --
 - `@regex` enforces string values to adhere to specific regular expressions. E.g.,
 +
 --
+//!++
+////
+define
+////
 [,typeql]
 ----
 user owns phone @regex("^\d{8,15}$");
 ----
+//!--
 --
 - `@unique` enforce attributes uniquely identify their owner. E.g.,
 +
 --
+//!++
+////
+define
+////
 [,typeql]
 ----
 user owns phone @unique;
 ----
+//!--
 --
 - `@card` restricts cardinality, i.e., the number of data instances allowed in a specific context. E.g.,
 +
 --
+//!++
+////
+define
+////
 [,typeql]
 ----
 profile owns username @card(1..1);
 ----
+//!--
 --
 - `@abstract` disallows inserting data instances into types. E.g.,
 +
 --
+//!++
+////
+define
+////
 [,typeql]
 ----
 content @abstract;
 ----
+//!--
 --
 - `@independent` allows storing attributes without owners. E.g.
 +
 --
+//!++
+////
+define
+////
 [,typeql]
 ----
 attribute language @independent;
 ----
+//!--
 --
 
 See the xref:{page-version}@typeql::annotations/index.adoc[TypeQL Annotation reference] for a full list of available annotations.
 [#annotations_constraints]
+
+//!run
 
 == Annotation semantics
 
@@ -119,7 +175,7 @@ Subtyping is a powerful instrument in TypeDB and becomes even more powerful with
 
 See the xref:{page-version}@typeql::annotations/index.adoc[annotation reference] for further details.
 
-== Intricacies
+== Default behaviors
 
 *<<default_constraints>> are implicitly set for defined traits whenever there is no explicitly defined constraint*
 
@@ -128,7 +184,14 @@ E.g., the <<annotations_constraints, following schema>> requires `@card(0..)` sp
 At the same time, `user` s will only have two cardinality constraints for their names: `0..` and `0..3` as the ownership is inherited.
 However, if you were to set a `user owns name` again, a default cardinality constraint would be generated for this ownership, and `user` would need to comply to three cardinality constraints for `name` s.
 
+//!program[lang=tql, type=schema]
+//!++
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/schema.tql[tags=define-keyword;all-owns-name-cards]
+define
+  entity page sub content, owns name @card(0..);
+  entity profile sub page, owns name @card(0..3);
+  entity user sub profile;
 ----
+//!--
+//!run

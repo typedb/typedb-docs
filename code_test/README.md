@@ -7,12 +7,18 @@
 Here's a sample .adoc file illustrating the syntax for writing valid testable code.
 
 ```adoc
-== Page Title
+= Page Title
 :test-tql: (linear | custom)
 // When custom order is chosen you can specify an entrypoint:
 [:test-tql-entry: <LABEL>] 
 
-//!program[lang=tql, type=<TYPE>, [fail_at=<FAILURE>,] [count=<NUM>,] [name=<LABEL>,] [jump=<LABEL>,]]
+Intro.
+
+== First section
+
+Text. Then start a program (a.k.a. TypeDB transaction) with the following Antora comment. 
+
+//!program[lang=tql, type=<TYPE>, [name=<LABEL>], [fail_at=<FAILURE>,] [count=<NUM>,] [name=<LABEL>,] [jump=<LABEL>,] [reset=yes,] [rollback=yes,]]
 
 Some text. Each 'code block' will be tested as a single query.
 
@@ -37,27 +43,41 @@ Yet more text. Invisible and visible code can be combined in the same block!
 ////
 [,typql]
 ----
-<Visiable part of query>
+<Visible part of query>
 ----
 //!--
-
-Words. words. words.
-
-<more-code-blocks-as-needed>
 
 Once we are done with our transaction:
 
 //!run
 
-Further transactions to follow:
+Here's a much shorter transaction:
+
+//!program[lang=tql, type=write]
+//!++
+[,typeql]
+----
+insert $x isa person, has name "John";
+----
+//!--
+//!run
+
+More text.
+
+== Section 2
+
+Words. words. words.
 
 <more-programs>
 ```
 where
-* `<TYPE>` can be `read, write, schema` 
-* `<FAILURE>` can be `runtime, commit`
-* `<NUM>` is an integer representing expected answer count
-* `<LABEL>` is a label for the program (used for entrypoints and jumping around)
+* `type=<TYPE>` can be `read, write, schema` 
+* `name=<LABEL>` names the program
+* `fail_at=<FAILURE>` can be `runtime, commit`
+* `count=<NUM>` is an integer representing expected answer count
+* `jump=<LABEL>` is a label for the program (used for entrypoints and jumping around)
+* `reset=yes` resets the database before running the program
+* `rollback=yes` rolls backs the transaction instead of committing
 * A single program will be executed as a **single transaction** (with each code block being an individual query)
 
 ### For other languages

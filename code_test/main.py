@@ -84,7 +84,7 @@ def test_all_files(runner, lang: str):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python parse_code_test.py <lang> [<path-to-file>]\n(lang can be 'tql', 'rust', 'python')")
+        print("Usage: python -m code_test.main <lang> [<path-to-file>]")
         sys.exit(1)
 
     lang = sys.argv[1]
