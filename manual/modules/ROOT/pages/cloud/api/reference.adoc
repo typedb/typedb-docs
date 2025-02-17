@@ -76,6 +76,8 @@ Rust::
 +
 [source,rust]
 ----
+use reqwest;
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
@@ -164,7 +166,7 @@ body = {
     "storageSizeGB": 10,
     "provider": "gcp",
     "region": "europe-west2",
-    "isFree": true,
+    "isFree": True,
     "machineType": "c2d-highcpu-2",
     "storageType": "standard-rwo",
     "version": "3.0.5"
@@ -177,6 +179,10 @@ Rust::
 +
 [source,rust]
 ----
+use reqwest;
+use serde::Serialize;
+
+#[derive(Serialize)]
 struct ClusterDeploy {
     id: String,
     serverCount: i32,
@@ -191,7 +197,7 @@ struct ClusterDeploy {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let clusterDeploy = ClusterDeploy {
+    let cluster_deploy = ClusterDeploy {
         id: "api-cluster".into(),
         serverCount: 1,
         storageSizeGB: 10,
@@ -205,8 +211,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let resp = client
         .post("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/deploy")
-        .header(reqwest::header::AUTHORIZATION, "Bearer: {ACCESS-TOKEN}")
-        .body(clusterDeploy)
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
+        .json(&cluster_deploy)
         .send().await;
     Ok(())
 }
@@ -431,7 +437,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let resp = client
         .get("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID")
-        .header(reqwest::header::AUTHORIZATION, "Bearer: {ACCESS-TOKEN}")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
         .send().await;
     Ok(())
 }
@@ -511,12 +517,14 @@ Rust::
 +
 [source,rust]
 ----
+use reqwest;
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let resp = client
         .get("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters")
-        .header(reqwest::header::AUTHORIZATION, "Bearer: {ACCESS-TOKEN}")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
         .send().await;
     Ok(())
 }
@@ -615,12 +623,14 @@ Rust::
 +
 [source,rust]
 ----
+use reqwest;
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let resp = client
         .post("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend")
-        .header(reqwest::header::AUTHORIZATION, "Bearer: {ACCESS-TOKEN}")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
         .send().await;
     Ok(())
 }
@@ -700,12 +710,14 @@ Rust::
 +
 [source,rust]
 ----
+use reqwest;
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let resp = client
         .post("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume")
-        .header(reqwest::header::AUTHORIZATION, "Bearer: {ACCESS-TOKEN}")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
         .send().await;
     Ok(())
 }
@@ -785,12 +797,14 @@ Rust::
 +
 [source,rust]
 ----
+use reqwest;
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let resp = client
         .delete("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID")
-        .header(reqwest::header::AUTHORIZATION, "Bearer: {ACCESS-TOKEN}")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
         .send().await;
     Ok(())
 }

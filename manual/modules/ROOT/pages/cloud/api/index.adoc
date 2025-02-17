@@ -60,6 +60,8 @@ Rust::
 +
 [source,rust]
 ----
+use reqwest;
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
@@ -111,12 +113,14 @@ Rust::
 +
 [source,rust]
 ----
+use reqwest;
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let resp = client
         .get("https://cloud.typedb.com/api/org/my-org/projects/default/clusters")
-        .header(reqwest::header::AUTHORIZATION, "Bearer: {ACCESS-TOKEN}")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
         .send().await;
     Ok(())
 }
