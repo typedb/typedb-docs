@@ -1,152 +1,211 @@
 import re
 from dataclasses import dataclass
-from typing import List, Dict, Tuple, Union
+from typing import List, Dict
 import logging
 logger = logging.getLogger('main')
+# To see debug log, set logging level to debug in main.py
 
-# Parser config
-PROGRAM_START_MARKER = "program"
-PROGRAM_END_MARKER = "run"
-CODE_BLOCK_START_MARKER = "++"
-CODE_BLOCK_END_MARKER = "--"
+# Language specific parser config
+MARKERS = {
+    "typeql": {
+        "test_start": "#!test",  # may have options, e.g. '#!test[write, reset, count=3]', see README.md
+        "hidden_segment_start": "#{{",
+        "hidden_segment_end": "#}}",
+        "segment_separator": "#---",  # used to separate non-hidden queries
+    },
+    "python": {
+        "test_start": "#!test",
+        "hidden_segment_start": "#{{",
+        "hidden_segment_end": "#}}",
+        "segment_separator": "#---",
+    },
+    "rust": {
+        "test_start": "//!test",
+        "hidden_segment_start": "//{{",
+        "hidden_segment_end": "//}}",
+        "segment_separator": "//---",
+    }
+}
 
 @dataclass
-class ParsedProgram:
-    blocks: List[str]
+class ParsedTest:
+    segments: List[str]
     lang: str
     config: Dict[str, str]
 
     def __hash__(self):
-        return hash((tuple(self.blocks), self.lang, frozenset(self.config.items())))
+        return hash((tuple(self.segments), self.lang, frozenset(self.config.items())))
 
     def __repr__(self):
-        blocks_repr = "[\n" + "\n==block-separator==\n".join(str(block) for block in self.blocks) + "\n]"
+        blocks_repr = "[\n" + "\n--- new segment ---\n".join(str(block) for block in self.segments) + "\n]"
         return (f"\nParsedProgram(lang={self.lang},\n"
                 f"blocks={blocks_repr},\n"
                 f"config={self.config})")
 
 
-def parse_config(config_str: str, adoc_path: str) -> Dict[str, str]:
-    config: Dict[str, str] = {}
-    config_str = config_str.strip().lstrip('[').rstrip(']').strip()
+class Parser:
+    def __init__(self, adoc_path, language):
+        # Stateless data
+        self.adoc_path = adoc_path
+        self.language = language
+        self.parsed_tests = []
 
-    if not config_str:
+        # Parser states
+        self.line_number = 0
+        self.in_language_block = False  # an 'Antora' language block are similar
+        self.in_test = False  # a test started with a test marker
+        self.in_segment = False  # a code segment (e.g. individual query)
+
+        # Stateful data
+        self.current_test_config: Dict[str, str] = {}
+        self.current_test_segments: List[str] = []
+        self.current_segment_code: List[str] = []
+
+    def error(self, message: str):
+        raise ValueError(f"[{self.adoc_path} line {self.line_number}]: {message}")
+
+    def parse_test_config(self, config_str: str) -> Dict[str, str]:
+        config: Dict[str, str] = {}
+        config_str = config_str.strip().lstrip('[').rstrip(']').strip()
+
+        if not config_str:
+            return config
+
+        attributes = [p.strip() for p in config_str.split(',')]
+        for attribute in attributes:
+            if not attribute:
+                continue
+            if '=' in attribute:
+                key, val = attribute.split('=', 1)
+                config[key.strip()] = val.strip()
+            else:
+                config[attribute] = ""
         return config
 
-    parts = [p.strip() for p in config_str.split(',')]
-    for part in parts:
-        if not part:
-            continue
-        if '=' not in part:
-            raise ValueError(f"[Adoc: {adoc_path}]: Provided attribute '{part}' is not in key=value form.")
-        key, val = part.split('=', 1)
-        config[key.strip()] = val.strip()
-    return config
+    def retrieve_include(self, include_str: str):
+        from code_test.main import MODULE_DIRECTORIES
+        include_match = re.match(r'^.+?@(.+?)::example\$(.+?)\[(.+?)\]', include_str)
+
+        module_name: str = include_match.group(1)
+        file_rel_path: str = include_match.group(2)
+        file_path: str = MODULE_DIRECTORIES[module_name] + "/examples/" + file_rel_path
+
+        tags_match: str = include_match.group(3)
+        tags: List[str] = []
+        if tags_match.startswith('tag='):
+            tags = [tags_match.split('=')[1]]
+        if tags_match.startswith('tags='):
+            tags = tags_match.split('=')[1].split(';')
+
+        with open(file_path, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+
+        tagged_lines = []
+        for line in lines:
 
 
-def parse_programs(adoc_path: str, language: str) -> List[ParsedProgram]:
-    parsed_programs = []
-    in_program = False
-    in_code_block = False
-    program_config = {}
+    def finalize_current_segment(self):
+        if self.current_segment_code:
+            segment_source = "\n".join(self.current_segment_code)
+            self.current_test_segments.append(segment_source)
+        self.current_segment_code = []
 
-    with open(adoc_path, 'r', encoding='utf-8') as f:
-        lines = f.readlines()
+    def reset_current_test(self):
+        self.current_test_config = {}
+        self.current_test_segments = []
+        self.current_segment_code = []
 
-    line_number = 0
-    while line_number < len(lines):
-        # logger.info(f"parsing line {line_number}")
-        line = lines[line_number].rstrip('\n')
+    def finalize_current_test(self):
+        self.finalize_current_segment()
+        self.parsed_tests.append(ParsedTest(self.current_test_segments, self.language, self.current_test_config))
+        self.reset_current_test()
 
-        program_opened = re.match(r'^\s*//!' + PROGRAM_START_MARKER + r'(\[.+?\])', line)
-        if program_opened:
-            if in_program:
-                raise ValueError( f"[Adoc: {adoc_path}#{line_number}]: Nested programs not supported.")
-            attr_str = program_opened.group(1)  # e.g. "[key=val, ...]"
-            program_config = parse_config(attr_str, adoc_path)
-            if not program_config["lang"]:
-                raise ValueError( f"[Adoc: {adoc_path}#{line_number}]: Any program needs a language attribute 'lang'")
-            if program_config["lang"] == language:
-                in_program = True
-                program_code_blocks: List[str] = []
-            line_number += 1
-            continue
+    def parse_tests(self) -> List[ParsedTest]:
+        with open(self.adoc_path, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
 
-        if in_program:
-            if line.strip().startswith(f'//!{PROGRAM_END_MARKER}'):
-                if not program_code_blocks:
-                    raise ValueError( f"[Adoc: {adoc_path}#{line_number}]: Found empty program (i.e. no code blocks)")
-                parsed_programs.append(ParsedProgram(program_code_blocks, program_config["lang"], program_config))
-                if in_code_block:
-                    raise ValueError( f"[Adoc: {adoc_path}#{line_number}]: Cannot run without closing code blocks")
-                in_program = False
-                program_config = {}
-                program_code_blocks = []
-                line_number += 1
+        while self.line_number < len(lines):
+            line = lines[self.line_number].rstrip('\n')
+
+            if line.startswith('[') and line.endswith(']') and line.find(self.language) > 0:
+                logger.debug(f"line {self.line_number}: found language block start")
+                if self.in_language_block:
+                    self.error("Nested language block found")
+                self.in_language_block = True
+                # Forward to start, and then skip it
+                self.line_number += 2
                 continue
 
-            if line.strip().startswith(f'//!{CODE_BLOCK_START_MARKER}'):
-                if in_code_block:
-                    raise ValueError( f"[Adoc: {adoc_path}#{line_number}]: Found nested code block")
-                in_code_block = True
-                query_lines: List[str] = []
-                line_number += 1
+            if self.in_language_block:
+                if line.startswith('----'):
+                    logger.debug(f"line {self.line_number}: found language block end")
+                    if self.in_segment:
+                        self.error("Unfinished segment at code block end")
+
+                    self.finalize_current_test()
+                    self.in_test = False
+                    self.in_language_block = False
+                    self.line_number += 1
+                    continue
+
+            test_start_line = re.match(r'^\s*' + re.escape(MARKERS[self.language]['test_start']) + r'(\[.+?\])?', line)
+
+            if self.in_language_block and test_start_line:
+                logger.debug(f"line {self.line_number}: found test start")
+                if self.in_segment:
+                    self.error("Unfinished segment at test start")
+
+                if self.in_test:
+                    self.finalize_current_test()
+
+                self.in_test = True
+
+                config_str = test_start_line.group(1)
+                if config_str is not None:
+                    self.current_test_config = self.parse_test_config(config_str)
+                else:
+                    self.current_test_config = {}
+                self.line_number += 1
                 continue
 
-            if line.strip().startswith(f'//!{CODE_BLOCK_END_MARKER}'):
-                if not query_lines:
-                    raise ValueError( f"[Adoc: {adoc_path}#{line_number}]: Found empty query")
-                program_code_blocks.append("\n".join(query_lines))
-                in_code_block = False
-                query_lines = []
-                line_number += 1
+            if self.in_language_block and self.in_test:
+                if line.startswith(MARKERS[self.language]['hidden_segment_start']):
+                    logger.debug(f"line {self.line_number}: found hidden segment start")
+                    if self.in_segment:
+                        self.error("Nested hidden segment found.")
+                    self.finalize_current_segment()
+                    self.in_segment = True
+
+                elif line.startswith(MARKERS[self.language]['hidden_segment_end']):
+                    logger.debug(f"line {self.line_number}: found hidden segment end")
+                    if not self.in_segment:
+                        self.error("No hidden segment to end found.")
+                    self.finalize_current_segment()
+                    self.in_segment = False
+
+                elif line.startswith(MARKERS[self.language]['segment_separator']):
+                    logger.debug(f"line {self.line_number}: found segment separator")
+                    if self.in_segment:
+                        self.error("Cannot separate in a hidden segment")
+                    self.finalize_current_segment()
+
+                elif line.startswith("include::"):
+                    logger.debug(f"line {self.line_number}: found include")
+                    included_lines = self.retrieve_include(line)
+                    for included_line in included_lines:
+                        self.current_segment_code.append(included_line.rstrip("\n"))
+
+                else:
+                    logger.debug(f"line {self.line_number}: found code, adding to current segment")
+                    self.current_segment_code.append(line)
+
+                self.line_number += 1
                 continue
 
-            if line.strip().startswith('////'):
-                original_line = line_number
-                individual_code_block = False
-                line_number += 1
+            logger.debug(f"line {self.line_number}: skipping")
+            self.line_number += 1
 
-                if not in_code_block:
-                    individual_code_block = True
-                    query_lines: List[str] = []
+        if self.in_language_block:
+            self.error("Found unclosed Antora code block at EOF")
 
-                while True:
-                    if line_number >= len(lines):
-                        raise ValueError(f"[Adoc: {adoc_path}#{original_line}]: unclosed code snippet '////'.")
-                        break
-                    if lines[line_number].strip().startswith('////'):
-                        line_number += 1
-                        break
-                    query_lines.append(lines[line_number].rstrip())
-                    line_number += 1
-
-                if individual_code_block:
-                    program_code_blocks.append("\n".join(query_lines))
-                    query_lines = []
-
-                continue
-
-            if line.strip().startswith('----') and in_code_block:
-                original_line = line_number
-                line_number += 1
-
-                while True:
-                    if line_number >= len(lines):
-                        raise ValueError(f"[Adoc: {adoc_path}#{original_line}]: unclosed code block '----'.")
-                        break
-                    if lines[line_number].strip().startswith('----'):
-                        line_number += 1
-                        break
-                    query_lines.append(lines[line_number].rstrip())
-                    line_number += 1
-
-                continue
-
-        line_number += 1
-
-    if in_program:
-        raise ValueError(
-            f"[Adoc: {adoc_path}#{line_number}]: Program wasn't closed by end of file (use '//!run')")
-
-    return parsed_programs
+        return self.parsed_tests

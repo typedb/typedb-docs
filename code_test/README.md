@@ -8,9 +8,9 @@ Here's a sample .adoc file illustrating the syntax for writing valid testable co
 
 ```adoc
 = Page Title
-:test-tql: (linear | custom)
+:test-typeql: (linear | custom)
 // When custom order is chosen you can specify an entrypoint:
-[:test-tql-entry: <LABEL>] 
+[:test-typeql-entry: <LABEL>] 
 
 Intro.
 
@@ -18,7 +18,7 @@ Intro.
 
 Text. Then start a program (a.k.a. TypeDB transaction) with the following Antora comment. 
 
-//!program[lang=tql, type=<TYPE>, [name=<LABEL>], [fail_at=<FAILURE>,] [count=<NUM>,] [name=<LABEL>,] [jump=<LABEL>,] [reset=yes,] [rollback=yes,]]
+//!program[lang=typeql, type=<TYPE>, [name=<LABEL>], [fail_at=<FAILURE>,] [count=<NUM>,] [name=<LABEL>,] [jump=<LABEL>,] [reset=yes,] [rollback=yes,]]
 
 Some text. Each 'code block' will be tested as a single query.
 
@@ -53,7 +53,7 @@ Once we are done with our transaction:
 
 Here's a much shorter transaction:
 
-//!program[lang=tql, type=write]
+//!program[lang=typeql, type=write]
 //!++
 [,typeql]
 ----

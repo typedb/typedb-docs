@@ -7,6 +7,31 @@
 
 TypeDB brings together powerful programming concepts with the features and performance of modern database systems. We believe the result is a novel database experience - and after taking this 15-minute crash course, we hope you'll agree.
 
+xref:{page-version}@home::./
+
+[,typeql]
+----
+#!ordered
+#{{
+define
+  entity user, owns username;
+  attribute username, value string;
+#}}
+#{{
+insert
+  $p isa user, has username "Peter";
+  $q isa user, has username "Quip";
+#}}
+#!!2
+# Simple read query
+match
+  { $p has username "Peter"; }
+  or { $p has username "Quip"; };
+#{{
+include::{page-version}@home::example$tql/crash_course.tql[tags=intro1]
+#}}
+----
+
 == Storing data in types
 
 In TypeDB, data is stored in *types*, which can be either

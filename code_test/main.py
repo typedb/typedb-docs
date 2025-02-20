@@ -3,24 +3,24 @@ import logging
 import sys
 import os
 from typing import Dict, List, Optional
-from code_test.parser.parser import parse_programs
+from code_test.parser.parser import Parser, ParsedTest
 
 # Logging config
 logger = logging.getLogger('main')
-logging.basicConfig(level=logging.INFO,
+logging.basicConfig(level=logging.DEBUG,
                     format="%(asctime)s: %(message)s",
                     datefmt="%Y-%m-%d %H:%M:%S")
 
 
 # Directories to code test
-DIRECTORIES = [
+MODULE_DIRECTORIES = {
     # os.path.join(os.path.dirname(__file__), "tests"),
-    os.path.join(os.path.dirname(__file__), "../home/modules/ROOT/pages"),
-    os.path.join(os.path.dirname(__file__), "../manual/modules/ROOT/pages"),
-    os.path.join(os.path.dirname(__file__), "../typeql/modules/ROOT/pages"),
-    os.path.join(os.path.dirname(__file__), "../drivers/modules/ROOT/pages"),
-    os.path.join(os.path.dirname(__file__), "../academy/modules/ROOT/pages")
-]
+    "home": os.path.join(os.path.dirname(__file__), "../home/modules/ROOT"),
+    "manual": os.path.join(os.path.dirname(__file__), "../manual/modules/ROOT"),
+    "typeql": os.path.join(os.path.dirname(__file__), "../typeql/modules/ROOT"),
+    "drivers": os.path.join(os.path.dirname(__file__), "../drivers/modules/ROOT"),
+    "academy": os.path.join(os.path.dirname(__file__), "../academy/modules/ROOT")
+}
 
 
 def parse_adoc_config(adoc_path: str, key_names: List[str]) -> Dict[str, Optional[str]]:
@@ -44,10 +44,12 @@ def parse_adoc_config(adoc_path: str, key_names: List[str]) -> Dict[str, Optiona
 
 def test_programs_in_file(runner, lang: str, adoc_path: str, adoc_config: Dict[str, Optional[str]]):
     try:
-        parsed_programs = parse_programs(adoc_path, lang)
-        runner.test_programs(parsed_programs, adoc_path, adoc_config)
-        logger.info(f"RESULTS: {runner.success_count} SUCCESSFUL, {runner.failure_count} FAILED")
-        return runner.failure_count == 0
+        parser = Parser(adoc_path, lang)
+        parsed_tests = parser.parse_tests()
+        print(parsed_tests)
+        # runner.test_programs(parsed_programs, adoc_path, adoc_config)
+        # logger.info(f"RESULTS: {runner.success_count} SUCCESSFUL, {runner.failure_count} FAILED")
+        # return runner.failure_count == 0
     except Exception as e:
         print(f"ERROR: {e}")
         sys.exit(1)
@@ -64,8 +66,8 @@ def test_one_file(runner, lang: str, adoc_path: str):
 def test_all_files(runner, lang: str):
     files_with_failures = []
     files_tested_counter = 0
-    for directory in DIRECTORIES:
-        for root, _, files in os.walk(directory):
+    for directory in MODULE_DIRECTORIES.values():
+        for root, _, files in os.walk(directory + "/pages"):
             for file in files:
                 if file.endswith(".adoc"):
                     adoc_path = os.path.relpath(os.path.join(root, file))

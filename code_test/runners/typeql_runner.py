@@ -1,18 +1,21 @@
 from typedb.driver import TypeDB, Driver, TransactionType, Credentials, DriverOptions
 from enum import Enum
 from typing import List, Dict, Tuple, Union
-from code_test.parser.parser import ParsedProgram
+from code_test.parser.parser import ParsedTest
 import logging
 logger = logging.getLogger('main')
+# To see debug log, set logging level to debug in main.py
+
 
 # Poor man's testing grammar (keywords used in .adoc files)
 ## .adoc attribute keys and values
-ADOC_TEST_KEY = "test-tql"
-ADOC_ENTRYPOINT_KEY = "test-tql-entry"
-ADOC_CONFIG_KEYS = [ADOC_TEST_KEY, ADOC_ENTRYPOINT_KEY] # first item should be the test key
-TEST_MODE_LINEAR_VAL = "linear"
-TEST_MODE_CUSTOM_VAL = "custom"
+ADOC_TEST_KEY = "test-typeql"
+ADOC_ENTRYPOINT_KEY = "test-typeql-entry"
+ADOC_CONFIG_KEYS = [ADOC_TEST_KEY, ADOC_ENTRYPOINT_KEY]  # first item should be the test key
+TEST_MODE_LINEAR_VAL = "linear"  # Run examples linearly from top to bottom
+TEST_MODE_CUSTOM_VAL = "custom"  # Jump around in examples in custom order
 MODE_LIST = [TEST_MODE_LINEAR_VAL, TEST_MODE_CUSTOM_VAL]
+
 ## program attribute keys and values
 PROGRAM_NAME_KEY = "name"
 PROGRAM_RESET_KEY = "reset"
@@ -36,7 +39,7 @@ class FailureMode(Enum):
     NoFailure = 3
 
 
-class TqlRunner:
+class TypeqlRunner:
     def __init__(self):
         # Required
         self.adoc_keys = ADOC_CONFIG_KEYS
@@ -126,7 +129,7 @@ class TqlRunner:
             except Exception as e:
                 raise Exception(f"{e}") from e
 
-    def run_program(self, parsed_program: ParsedProgram, adoc_path: str):
+    def run_program(self, parsed_program: ParsedTest, adoc_path: str):
         logger.info(f"... program source:\n{parsed_program}")
 
         type = None
@@ -161,19 +164,19 @@ class TqlRunner:
                     ref_failure_mode = FailureMode.Runtime
                 case x if x == PROGRAM_FAIL_COMMIT_VAL:
                     ref_failure_mode = FailureMode.Commit
-            failure_mode = self.run_failing_queries(parsed_program.blocks, type)
+            failure_mode = self.run_failing_queries(parsed_program.segments, type)
             if failure_mode != ref_failure_mode:
                 raise RuntimeError(f"[{adoc_path}]: Failure mode: expected {ref_failure_mode} but got {failure_mode}")
         elif counted == True:
-            count = self.run_queries(parsed_program.blocks, type, counted, rollback)
+            count = self.run_queries(parsed_program.segments, type, counted, rollback)
             if count != reference_count:
                 raise RuntimeError(f"[{adoc_path}]: Query count: expected {reference_count} but got {count}")
         else:
-            self.run_queries(parsed_program.blocks, type, counted, rollback)
+            self.run_queries(parsed_program.segments, type, counted, rollback)
 
         return None
 
-    def test_program(self, parsed_program: ParsedProgram, index: int, adoc_path: str):
+    def test_program(self, parsed_program: ParsedTest, index: int, adoc_path: str):
         try:
             if parsed_program.config.get(PROGRAM_NAME_KEY):
                 logger.info(f"[{adoc_path}] Running program '{parsed_program.config[PROGRAM_NAME_KEY]}' ...")
@@ -186,7 +189,7 @@ class TqlRunner:
             logger.info(f"[{adoc_path}] ... ERROR:\n{e}")
             self.failure_count += 1
 
-    def test_programs(self, parsed_programs: List[ParsedProgram], adoc_path: str, config: Dict[str, str]) -> None:
+    def test_programs(self, parsed_programs: List[ParsedTest], adoc_path: str, config: Dict[str, str]) -> None:
         self.setup_db(reset=True)  # Resets the database
         self.reset_counts()
 

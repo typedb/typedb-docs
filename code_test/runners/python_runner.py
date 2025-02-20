@@ -1,7 +1,7 @@
 import io
 import sys
 from typing import List, Dict, Tuple, Union
-from code_test.parser.parser import ParsedProgram
+from code_test.parser.parser import ParsedTest
 from code_test.runners.base_runner import BaseRunner
 import logging
 logger = logging.getLogger('main')
@@ -22,8 +22,8 @@ class PythonRunner(BaseRunner):
             return False
         return True
 
-    def run_program(self, parsed_program: ParsedProgram, adoc_path: str):
-        source_code = "\n".join(parsed_program.blocks)
+    def run_program(self, parsed_program: ParsedTest, adoc_path: str):
+        source_code = "\n".join(parsed_program.segments)
         # logger.info(f"Source:\n{source_code}")
 
         old_stdout = sys.stdout
@@ -35,7 +35,7 @@ class PythonRunner(BaseRunner):
         sys.stdout = old_stdout
         # logger.info(f"Output:\n{output}")
 
-    def test_program(self, parsed_program: ParsedProgram, index: int, adoc_path: str):
+    def test_program(self, parsed_program: ParsedTest, index: int, adoc_path: str):
         try:
             logger.info(f"[{adoc_path}] Running program #{index} ...")
             self.run_program(parsed_program, adoc_path)
@@ -45,7 +45,7 @@ class PythonRunner(BaseRunner):
             logger.info(f"[{adoc_path}] ... ERROR:\n{e}")
             self.failure_count += 1
 
-    def test_programs(self, parsed_programs: List[ParsedProgram], adoc_path: str, config: Dict[str, str]):
+    def test_programs(self, parsed_programs: List[ParsedTest], adoc_path: str, config: Dict[str, str]):
         self.reset_counts()
         self.reset_local_databases()
 

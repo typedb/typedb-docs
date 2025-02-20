@@ -2,7 +2,7 @@ import subprocess
 import os
 import shutil
 from typing import List, Dict
-from code_test.parser.parser import ParsedProgram
+from code_test.parser.parser import ParsedTest
 from code_test.runners.base_runner import BaseRunner
 import logging
 
@@ -27,11 +27,11 @@ class RustRunner(BaseRunner):
             return False
         return True
 
-    def run_program(self, parsed_program: ParsedProgram, adoc_path: str):
+    def run_program(self, parsed_program: ParsedTest, adoc_path: str):
         if not self.temp_dir:
             raise RuntimeError("No temporary directory set. Make sure to run inside test_programs().")
 
-        source_code = "\n".join(parsed_program.blocks)
+        source_code = "\n".join(parsed_program.segments)
         main_rs_path = os.path.join(self.temp_dir, "src", "main.rs")
 
         os.makedirs(os.path.dirname(main_rs_path), exist_ok=True)
@@ -53,7 +53,7 @@ class RustRunner(BaseRunner):
         except Exception as e:
             raise RuntimeError(f"Execution error:\n{e}")
 
-    def test_program(self, parsed_program: ParsedProgram, index: int, adoc_path: str):
+    def test_program(self, parsed_program: ParsedTest, index: int, adoc_path: str):
         try:
             logger.info(f"[{adoc_path}] Running program #{index} ...")
             self.run_program(parsed_program, adoc_path)
@@ -63,7 +63,7 @@ class RustRunner(BaseRunner):
             logger.info(f"[{adoc_path}] ... ERROR:\n{e}")
             self.failure_count += 1
 
-    def test_programs(self, parsed_programs: List[ParsedProgram], adoc_path: str, config: Dict[str, str]):
+    def test_programs(self, parsed_programs: List[ParsedTest], adoc_path: str, config: Dict[str, str]):
         self.reset_counts()
         self.reset_local_databases()
 
