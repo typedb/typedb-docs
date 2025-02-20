@@ -3,13 +3,13 @@
 :test-tql: custom
 :test-tql-entry: schema_start
 
-TypeDB brings together powerful programming concepts with the features and performance of modern database systems. We believe the result is a novel database experience - and after taking this 15-minute crash course, we hope you'll agree.
+TypeDB brings together powerful testming concepts with the features and performance of modern database systems. We believe the result is a novel database experience - and after taking this 15-minute crash course, we hope you'll agree.
 
 == Storing data in types
 
 This queries will actually be run last ... check .adoc source, which has the `:test-tql-entry:` attribute set.
 
-//!program[lang=tql, type=read, name=read_start]
+//!test[lang=tql, type=read, name=read_start]
 //!++
 [,typeql]
 ----
@@ -43,7 +43,7 @@ select $other-name;
 
 Here, we committed, and start a new transaction (see source).
 
-//!program[lang=tql, type=read]
+//!test[lang=tql, type=read]
 //!++
 [,typeql]
 ----
@@ -63,7 +63,7 @@ select $other-name;
 
 This is actually the entrypoint of the page.
 
-//!program[lang=tql, type=schema, name=schema_start]
+//!test[lang=tql, type=schema, name=schema_start]
 //!++
 [,typeql]
 ----
@@ -122,7 +122,7 @@ define
 
 Here we start a new transactions
 
-//!program[lang=tql, type=schema]
+//!test[lang=tql, type=schema]
 //!++
 [,typeql]
 ----
@@ -139,7 +139,7 @@ This inserts are run in separate transactions (one of them will actually fail!).
 
 This first query will fail actually! (Check the code)
 
-//!program[lang=tql, type=write, fail_at=commit]
+//!test[lang=tql, type=write, fail_at=commit]
 //!++
 [,typeql]
 ----
@@ -148,7 +148,7 @@ insert $x isa user;
 //!--
 //!run
 
-//!program[lang=tql, type=write]
+//!test[lang=tql, type=write]
 //!++
 [,typeql]
 ----
@@ -157,7 +157,7 @@ insert $x isa user, has username "user_0";
 //!--
 //!run
 
-//!program[lang=tql, type=write]
+//!test[lang=tql, type=write]
 //!++
 [,typeql]
 ----
@@ -169,9 +169,9 @@ insert
 //!--
 //!run
 
-While a previous programs fails at commit, this one fails at runtime:
+While a previous tests fails at commit, this one fails at runtime:
 
-//!program[lang=tql, type=write, fail_at=runtime]
+//!test[lang=tql, type=write, fail_at=runtime]
 //!++
 [,typeql]
 ----
@@ -182,7 +182,7 @@ insert
 //!--
 //!run
 
-//!program[lang=tql, type=write]
+//!test[lang=tql, type=write]
 //!++
 [,typeql]
 ----
@@ -194,8 +194,8 @@ insert
 //!--
 //!run
 
-Small rust program in between
-//!program[lang=rust]
+Small rust test in between
+//!test[lang=rust]
 //!++
 [,rust]
 ----
@@ -206,7 +206,7 @@ fn main() {
 //!--
 //!run
 
-//!program[lang=tql, type=write]
+//!test[lang=tql, type=write]
 //!++
 [,typeql]
 ----
@@ -224,7 +224,7 @@ insert
 
 We can also check specific counts:
 
-//!program[lang=tql, type=write, count=0, jump=read_start]
+//!test[lang=tql, type=write, count=0, jump=read_start]
 //!++
 [,typeql]
 ----

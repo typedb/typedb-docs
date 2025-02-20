@@ -16,16 +16,18 @@ TEST_MODE_LINEAR_VAL = "linear"  # Run examples linearly from top to bottom
 TEST_MODE_CUSTOM_VAL = "custom"  # Jump around in examples in custom order
 MODE_LIST = [TEST_MODE_LINEAR_VAL, TEST_MODE_CUSTOM_VAL]
 
-## program attribute keys and values
-PROGRAM_NAME_KEY = "name"
-PROGRAM_RESET_KEY = "reset"
-PROGRAM_TRANSACTION_TYPE_KEY = "type"
-PROGRAM_ROLLBACK_KEY = "rollback"
-PROGRAM_JUMP_KEY = "jump"
-PROGRAM_FAIL_KEY = "fail_at"
-PROGRAM_FAIL_COMMIT_VAL = "commit"
-PROGRAM_FAIL_RUNTIME_VAL = "runtime"
-PROGRAM_COUNT_KEY = "count"
+## Test attributes: keys and values
+TEST_NAME_KEY = "name"
+TEST_RESET_KEY = "reset"
+TEST_TXN_SCHEMA_KEY = "schema"
+TEST_TXN_WRITE_KEY = "write"
+TEST_TXN_READ_KEY = "read"
+TEST_ROLLBACK_KEY = "rollback"
+TEST_COUNT_KEY = "count"
+TEST_JUMP_KEY = "jump"
+TEST_FAIL_KEY = "fail_at"
+TEST_FAIL_COMMIT_VAL = "commit"
+TEST_FAIL_RUNTIME_VAL = "runtime"
 
 
 class Edition(Enum):
@@ -81,7 +83,7 @@ class TypeqlRunner:
             logger.info(f"adoc attribute :{ADOC_TEST_KEY}: must be set to either 'linear' or 'custom'")
             return False
         elif adoc_config[ADOC_TEST_KEY] == "custom" and adoc_config.get(ADOC_ENTRYPOINT_KEY) is None:
-            logger.info(f"adoc attribute :{ADOC_ENTRYPOINT_KEY}: must be set to some program name for 'custom' test")
+            logger.info(f"adoc attribute :{ADOC_ENTRYPOINT_KEY}: must be set to some test name for 'custom' test")
             return False
         return True
 
@@ -129,118 +131,115 @@ class TypeqlRunner:
             except Exception as e:
                 raise Exception(f"{e}") from e
 
-    def run_program(self, parsed_program: ParsedTest, adoc_path: str):
-        logger.info(f"... program source:\n{parsed_program}")
+    def run_test(self, parsed_test: ParsedTest, adoc_path: str):
+        logger.info(f"... test source:\n{parsed_test}")
 
         type = None
-        if parsed_program.config.get(PROGRAM_TRANSACTION_TYPE_KEY):
-            match parsed_program.config[PROGRAM_TRANSACTION_TYPE_KEY]:
-                case "schema":
-                    type = TransactionType.SCHEMA
-                case "write":
-                    type = TransactionType.WRITE
-                case "read":
-                    type = TransactionType.READ
-
+        if parsed_test.config.get(TEST_TXN_SCHEMA_KEY):
+            type = TransactionType.SCHEMA
+        elif parsed_test.config.get(TEST_TXN_WRITE_KEY):
+            type = TransactionType.WRITE
+        elif parsed_test.config.get(TEST_TXN_READ_KEY):
+            type = TransactionType.READ
         if type is None:
-            raise ValueError(f"[{adoc_path}]: Missing '{PROGRAM_TRANSACTION_TYPE_KEY}' attribute from program")
+            raise ValueError(f"[{adoc_path}]: Missing transaction type from test, see README.md")
 
         rollback = False
-        if parsed_program.config.get(PROGRAM_ROLLBACK_KEY):
+        if parsed_test.config.get(TEST_ROLLBACK_KEY):
             rollback = True
 
-        if parsed_program.config.get(PROGRAM_RESET_KEY):
+        if parsed_test.config.get(TEST_RESET_KEY):
             self.setup_db(reset=True)
 
         counted = False
-        if parsed_program.config.get(PROGRAM_COUNT_KEY):
-            reference_count = int(parsed_program.config[PROGRAM_COUNT_KEY])
+        if parsed_test.config.get(TEST_COUNT_KEY):
+            reference_count = int(parsed_test.config[TEST_COUNT_KEY])
             counted = True
 
-        if parsed_program.config.get(PROGRAM_FAIL_KEY):
+        if parsed_test.config.get(TEST_FAIL_KEY):
             ref_failure_mode = FailureMode.NoFailure
-            match parsed_program.config[PROGRAM_FAIL_KEY]:
-                case x if x == PROGRAM_FAIL_RUNTIME_VAL:
+            match parsed_test.config[TEST_FAIL_KEY]:
+                case x if x == TEST_FAIL_RUNTIME_VAL:
                     ref_failure_mode = FailureMode.Runtime
-                case x if x == PROGRAM_FAIL_COMMIT_VAL:
+                case x if x == TEST_FAIL_COMMIT_VAL:
                     ref_failure_mode = FailureMode.Commit
-            failure_mode = self.run_failing_queries(parsed_program.segments, type)
+            failure_mode = self.run_failing_queries(parsed_test.segments, type)
             if failure_mode != ref_failure_mode:
                 raise RuntimeError(f"[{adoc_path}]: Failure mode: expected {ref_failure_mode} but got {failure_mode}")
         elif counted == True:
-            count = self.run_queries(parsed_program.segments, type, counted, rollback)
+            count = self.run_queries(parsed_test.segments, type, counted, rollback)
             if count != reference_count:
                 raise RuntimeError(f"[{adoc_path}]: Query count: expected {reference_count} but got {count}")
         else:
-            self.run_queries(parsed_program.segments, type, counted, rollback)
+            self.run_queries(parsed_test.segments, type, counted, rollback)
 
         return None
 
-    def test_program(self, parsed_program: ParsedTest, index: int, adoc_path: str):
+    def test_test(self, parsed_test: ParsedTest, index: int, adoc_path: str):
         try:
-            if parsed_program.config.get(PROGRAM_NAME_KEY):
-                logger.info(f"[{adoc_path}] Running program '{parsed_program.config[PROGRAM_NAME_KEY]}' ...")
+            if parsed_test.config.get(TEST_NAME_KEY):
+                logger.info(f"[{adoc_path}]: Running test '{parsed_test.config[TEST_NAME_KEY]}' ...")
             else:
-                logger.info(f"[{adoc_path}] Running program #{index} ...")
-            self.run_program(parsed_program, adoc_path)
+                logger.info(f"[{adoc_path}]: Running test #{index} ...")
+            self.run_test(parsed_test, adoc_path)
             logger.info(f"[{adoc_path}] ... SUCCESS")
             self.success_count += 1
         except Exception as e:
             logger.info(f"[{adoc_path}] ... ERROR:\n{e}")
             self.failure_count += 1
 
-    def test_programs(self, parsed_programs: List[ParsedTest], adoc_path: str, config: Dict[str, str]) -> None:
+    def test_tests(self, parsed_tests: List[ParsedTest], adoc_path: str, config: Dict[str, str]) -> None:
         self.setup_db(reset=True)  # Resets the database
         self.reset_counts()
 
         if config[ADOC_TEST_KEY] == TEST_MODE_LINEAR_VAL:
-            # run programs in linear order
-            for (i, parsed_program) in enumerate(parsed_programs):
-                self.test_program(parsed_program, i, adoc_path)
+            # run tests in linear order
+            for (i, parsed_test) in enumerate(parsed_tests):
+                self.test_test(parsed_test, i, adoc_path)
 
         elif config[ADOC_TEST_KEY] == TEST_MODE_CUSTOM_VAL:
             # populate name lookup table
             name_lookup = {}
-            for (i,parsed_program) in enumerate(parsed_programs):
-                if parsed_program.config.get(PROGRAM_NAME_KEY):
-                    name = parsed_program.config[PROGRAM_NAME_KEY]
+            for (i,parsed_test) in enumerate(parsed_tests):
+                if parsed_test.config.get(TEST_NAME_KEY):
+                    name = parsed_test.config[TEST_NAME_KEY]
                     if not name_lookup.get(name):
                         name_lookup[name] = i
                     else:
-                        raise ValueError(f"[{adoc_path}]: Detected duplicate program name: {name}")
+                        raise ValueError(f"[{adoc_path}]: Detected duplicate test name: {name}")
 
-            # Now run programs in custom order
-            remaining_indices = set(range(0, len(parsed_programs)))
+            # Now run tests in custom order
+            remaining_indices = set(range(0, len(parsed_tests)))
             completed_indices = set()
             if name_lookup.get(config[ADOC_ENTRYPOINT_KEY]):
                 logger.info(f"[{adoc_path}] [INFO: Page entry point is '{config[ADOC_ENTRYPOINT_KEY]}']")
-                current_program_index = name_lookup[config[ADOC_ENTRYPOINT_KEY]]
+                current_test_index = name_lookup[config[ADOC_ENTRYPOINT_KEY]]
             else:
                 raise ValueError(f"[{adoc_path}]: Didn't find declared test entry point")
 
             while True:
-                if current_program_index in completed_indices:
-                    raise ValueError(f"[{adoc_path}]: Attempted to execute the same program (number {current_program_index} on the page) twice")
+                if current_test_index in completed_indices:
+                    raise ValueError(f"[{adoc_path}]: Attempted to execute the same test (number {current_test_index} on the page) twice")
 
-                if current_program_index >= len(parsed_programs):
-                    raise ValueError(f"[{adoc_path}]: Finished execution at end of page before running all programs")
+                if current_test_index >= len(parsed_tests):
+                    raise ValueError(f"[{adoc_path}]: Finished execution at end of page before running all tests")
 
-                current_program = parsed_programs[current_program_index]
-                self.test_program(current_program, current_program_index, adoc_path)
-                remaining_indices.remove(current_program_index)
-                completed_indices.add(current_program_index)
+                current_test = parsed_tests[current_test_index]
+                self.test_test(current_test, current_test_index, adoc_path)
+                remaining_indices.remove(current_test_index)
+                completed_indices.add(current_test_index)
 
-                if current_program.config.get(PROGRAM_JUMP_KEY):
-                    if name_lookup.get(current_program.config[PROGRAM_JUMP_KEY]) is not None:
-                        logger.info(f"[{adoc_path}] [INFO: jumping to '{current_program.config[PROGRAM_JUMP_KEY]}']")
-                        current_program_index = name_lookup[current_program.config[PROGRAM_JUMP_KEY]]
+                if current_test.config.get(TEST_JUMP_KEY):
+                    if name_lookup.get(current_test.config[TEST_JUMP_KEY]) is not None:
+                        logger.info(f"[{adoc_path}] [INFO: jumping to '{current_test.config[TEST_JUMP_KEY]}']")
+                        current_test_index = name_lookup[current_test.config[TEST_JUMP_KEY]]
                         continue
                     else:
-                        raise ValueError(f"[{adoc_path}]: No program named {current_program.config[PROGRAM_JUMP_KEY]} to jump to.")
+                        raise ValueError(f"[{adoc_path}]: No test named {current_test.config[TEST_JUMP_KEY]} to jump to.")
 
                 if len(remaining_indices) == 0:
                     break
 
-                current_program_index += 1
+                current_test_index += 1
 
         return None

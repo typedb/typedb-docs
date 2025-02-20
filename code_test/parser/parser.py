@@ -38,7 +38,7 @@ class ParsedTest:
 
     def __repr__(self):
         blocks_repr = "[\n" + "\n--- new segment ---\n".join(str(block) for block in self.segments) + "\n]"
-        return (f"\nParsedProgram(lang={self.lang},\n"
+        return (f"\nParsedTest(lang={self.lang},\n"
                 f"blocks={blocks_repr},\n"
                 f"config={self.config})")
 
@@ -82,7 +82,8 @@ class Parser:
                 config[attribute] = ""
         return config
 
-    def retrieve_include(self, include_str: str):
+    def retrieve_antora_include(self, include_str: str):
+        # Parse Antora include
         from code_test.main import MODULE_DIRECTORIES
         include_match = re.match(r'^.+?@(.+?)::example\$(.+?)\[(.+?)\]', include_str)
 
@@ -97,12 +98,44 @@ class Parser:
         if tags_match.startswith('tags='):
             tags = tags_match.split('=')[1].split(';')
 
+        # Read tagged lines from Antora include
         with open(file_path, 'r', encoding='utf-8') as f:
             lines = f.readlines()
 
-        tagged_lines = []
-        for line in lines:
+        tagged_lines: Dict[str, List[str]] = {}
+        current_tag = None
+        for (i, line) in enumerate(lines):
+            line = line.rstrip('\n')
+            logging.debug(f"Checking line {i}: {line}")
+            if current_tag is None:
+                tag_match = re.match(r'.*?tag::(.+?)\[', line)
+                if tag_match:
+                    tag = tag_match.group(1)
+                    if tag in tags:
+                        current_tag = tag
+                        if tag in tagged_lines.keys():
+                            self.error(f"Duplicate tag")
+                        tagged_lines[tag] = []
+            else:
+                end_match = re.match(r'.*?end::(.+?)\[', line)
+                if end_match:
+                    tag = end_match.group(1)
+                    if tag == current_tag:
+                        current_tag = None
+                    else:
+                        self.error(f"Include has mismatch tag {current_tag}")
+                if current_tag is not None:
+                    tagged_lines[current_tag].append(line)
 
+        logging.debug(f"Finished checking lines. Found {tagged_lines}")
+
+        output_lines = []
+        for tag in tags:
+            if tagged_lines.get(tag) is None:
+                self.error(f"Include is missing tag {tag}")
+            output_lines += tagged_lines[tag]
+
+        return output_lines
 
     def finalize_current_segment(self):
         if self.current_segment_code:
@@ -191,7 +224,7 @@ class Parser:
 
                 elif line.startswith("include::"):
                     logger.debug(f"line {self.line_number}: found include")
-                    included_lines = self.retrieve_include(line)
+                    included_lines = self.retrieve_antora_include(line)
                     for included_line in included_lines:
                         self.current_segment_code.append(included_line.rstrip("\n"))
 

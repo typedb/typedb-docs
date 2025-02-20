@@ -2,7 +2,7 @@
 :title: Crash Course
 :test-rust: yes
 
-//!program[lang=tql, type=schema]
+//!test[lang=tql, type=schema]
 //!++
 ////
 define entity being;
@@ -10,7 +10,7 @@ define entity being;
 //!--
 //!run
 
-//!program[lang=rust]
+//!test[lang=rust]
 //!++
 [,rust]
 ----

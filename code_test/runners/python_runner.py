@@ -22,8 +22,8 @@ class PythonRunner(BaseRunner):
             return False
         return True
 
-    def run_program(self, parsed_program: ParsedTest, adoc_path: str):
-        source_code = "\n".join(parsed_program.segments)
+    def run_test(self, parsed_test: ParsedTest, adoc_path: str):
+        source_code = "\n".join(parsed_test.segments)
         # logger.info(f"Source:\n{source_code}")
 
         old_stdout = sys.stdout
@@ -35,19 +35,19 @@ class PythonRunner(BaseRunner):
         sys.stdout = old_stdout
         # logger.info(f"Output:\n{output}")
 
-    def test_program(self, parsed_program: ParsedTest, index: int, adoc_path: str):
+    def test_test(self, parsed_test: ParsedTest, index: int, adoc_path: str):
         try:
-            logger.info(f"[{adoc_path}] Running program #{index} ...")
-            self.run_program(parsed_program, adoc_path)
+            logger.info(f"[{adoc_path}] Running test #{index} ...")
+            self.run_test(parsed_test, adoc_path)
             logger.info(f"[{adoc_path}] ... SUCCESS")
             self.success_count += 1
         except Exception as e:
             logger.info(f"[{adoc_path}] ... ERROR:\n{e}")
             self.failure_count += 1
 
-    def test_programs(self, parsed_programs: List[ParsedTest], adoc_path: str, config: Dict[str, str]):
+    def test_tests(self, parsed_tests: List[ParsedTest], adoc_path: str, config: Dict[str, str]):
         self.reset_counts()
         self.reset_local_databases()
 
-        for (i, parsed_program) in enumerate(parsed_programs):
-            self.test_program(parsed_program, i, adoc_path)
+        for (i, parsed_test) in enumerate(parsed_tests):
+            self.test_test(parsed_test, i, adoc_path)

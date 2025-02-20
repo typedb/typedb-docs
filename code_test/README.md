@@ -16,9 +16,9 @@ Intro.
 
 == First section
 
-Text. Then start a program (a.k.a. TypeDB transaction) with the following Antora comment. 
+Text. Then start a test (a.k.a. TypeDB transaction) with the following Antora comment. 
 
-//!program[lang=typeql, type=<TYPE>, [name=<LABEL>], [fail_at=<FAILURE>,] [count=<NUM>,] [name=<LABEL>,] [jump=<LABEL>,] [reset=yes,] [rollback=yes,]]
+//!test[lang=typeql, type=<TYPE>, [name=<LABEL>], [fail_at=<FAILURE>,] [count=<NUM>,] [name=<LABEL>,] [jump=<LABEL>,] [reset=yes,] [rollback=yes,]]
 
 Some text. Each 'code block' will be tested as a single query.
 
@@ -53,7 +53,7 @@ Once we are done with our transaction:
 
 Here's a much shorter transaction:
 
-//!program[lang=typeql, type=write]
+//!test[lang=typeql, type=write]
 //!++
 [,typeql]
 ----
@@ -68,17 +68,17 @@ More text.
 
 Words. words. words.
 
-<more-programs>
+<more-tests>
 ```
 where
 * `type=<TYPE>` can be `read, write, schema` 
-* `name=<LABEL>` names the program
+* `name=<LABEL>` names the test
 * `fail_at=<FAILURE>` can be `runtime, commit`
 * `count=<NUM>` is an integer representing expected answer count
-* `jump=<LABEL>` is a label for the program (used for entrypoints and jumping around)
-* `reset=yes` resets the database before running the program
+* `jump=<LABEL>` is a label for the test (used for entrypoints and jumping around)
+* `reset=yes` resets the database before running the test
 * `rollback=yes` rolls backs the transaction instead of committing
-* A single program will be executed as a **single transaction** (with each code block being an individual query)
+* A single test will be executed as a **single transaction** (with each code block being an individual query)
 
 ### For other languages
 
@@ -89,7 +89,7 @@ Same as for TypeQL, but with less configuration options for now:
 
 Some Text
 
-//!program[lang=rust]
+//!test[lang=rust]
 ...
 ```
 

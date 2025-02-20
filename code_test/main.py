@@ -42,12 +42,12 @@ def parse_adoc_config(adoc_path: str, key_names: List[str]) -> Dict[str, Optiona
     return adoc_config
 
 
-def test_programs_in_file(runner, lang: str, adoc_path: str, adoc_config: Dict[str, Optional[str]]):
+def test_tests_in_file(runner, lang: str, adoc_path: str, adoc_config: Dict[str, Optional[str]]):
     try:
         parser = Parser(adoc_path, lang)
         parsed_tests = parser.parse_tests()
         print(parsed_tests)
-        # runner.test_programs(parsed_programs, adoc_path, adoc_config)
+        # runner.test_tests(parsed_tests, adoc_path, adoc_config)
         # logger.info(f"RESULTS: {runner.success_count} SUCCESSFUL, {runner.failure_count} FAILED")
         # return runner.failure_count == 0
     except Exception as e:
@@ -58,7 +58,7 @@ def test_programs_in_file(runner, lang: str, adoc_path: str, adoc_config: Dict[s
 def test_one_file(runner, lang: str, adoc_path: str):
     adoc_config = parse_adoc_config(adoc_path, runner.adoc_keys)
     if runner.check_config(adoc_config):
-        test_programs_in_file(runner, lang, adoc_path, adoc_config)
+        test_tests_in_file(runner, lang, adoc_path, adoc_config)
     else:
         logger.info(f"[{adoc_path}]: Bad adoc attributes in file.")
 
@@ -75,7 +75,7 @@ def test_all_files(runner, lang: str):
                     if adoc_config[runner.adoc_keys[0]] is not None:
                         if runner.check_config(adoc_config):
                             logger.info(f"TESTING FILE {adoc_path}")
-                            if not test_programs_in_file(runner, lang, adoc_path, adoc_config):
+                            if not test_tests_in_file(runner, lang, adoc_path, adoc_config):
                                 files_with_failures.append(adoc_path)
                             files_tested_counter += 1
                         else:

@@ -27,11 +27,11 @@ class RustRunner(BaseRunner):
             return False
         return True
 
-    def run_program(self, parsed_program: ParsedTest, adoc_path: str):
+    def run_test(self, parsed_test: ParsedTest, adoc_path: str):
         if not self.temp_dir:
-            raise RuntimeError("No temporary directory set. Make sure to run inside test_programs().")
+            raise RuntimeError("No temporary directory set. Make sure to run inside test_tests().")
 
-        source_code = "\n".join(parsed_program.segments)
+        source_code = "\n".join(parsed_test.segments)
         main_rs_path = os.path.join(self.temp_dir, "src", "main.rs")
 
         os.makedirs(os.path.dirname(main_rs_path), exist_ok=True)
@@ -53,17 +53,17 @@ class RustRunner(BaseRunner):
         except Exception as e:
             raise RuntimeError(f"Execution error:\n{e}")
 
-    def test_program(self, parsed_program: ParsedTest, index: int, adoc_path: str):
+    def test_test(self, parsed_test: ParsedTest, index: int, adoc_path: str):
         try:
-            logger.info(f"[{adoc_path}] Running program #{index} ...")
-            self.run_program(parsed_program, adoc_path)
+            logger.info(f"[{adoc_path}] Running test #{index} ...")
+            self.run_test(parsed_test, adoc_path)
             logger.info(f"[{adoc_path}] ... SUCCESS")
             self.success_count += 1
         except Exception as e:
             logger.info(f"[{adoc_path}] ... ERROR:\n{e}")
             self.failure_count += 1
 
-    def test_programs(self, parsed_programs: List[ParsedTest], adoc_path: str, config: Dict[str, str]):
+    def test_tests(self, parsed_tests: List[ParsedTest], adoc_path: str, config: Dict[str, str]):
         self.reset_counts()
         self.reset_local_databases()
 
@@ -92,8 +92,8 @@ futures-util = "0.3.31"
         os.makedirs(src_dir, exist_ok=True)
 
         try:
-            for i, parsed_program in enumerate(parsed_programs):
-                self.test_program(parsed_program, i, adoc_path)
+            for i, parsed_test in enumerate(parsed_tests):
+                self.test_test(parsed_test, i, adoc_path)
         finally:
             if os.path.isdir(self.temp_dir):
                 shutil.rmtree(self.temp_dir)

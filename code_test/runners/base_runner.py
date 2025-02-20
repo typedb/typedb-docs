@@ -28,13 +28,13 @@ class BaseRunner(ABC):
         pass
 
     @abstractmethod
-    def run_program(self, parsed_program, adoc_path: str):
+    def run_test(self, parsed_test, adoc_path: str):
         pass
 
     @abstractmethod
-    def test_program(self, parsed_program, index: int, adoc_path: str):
+    def test_test(self, parsed_test, index: int, adoc_path: str):
         pass
 
     @abstractmethod
-    def test_programs(self, parsed_programs, adoc_path: str, config: Dict[str, str]):
+    def test_tests(self, parsed_tests, adoc_path: str, config: Dict[str, str]):
         pass
