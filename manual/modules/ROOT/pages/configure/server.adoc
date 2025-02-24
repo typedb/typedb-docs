@@ -10,7 +10,7 @@
 TypeDB can use command line arguments for server configuration.
 For a full list of acceptable arguments run:
 
-[source,console]
+[source,bash]
 ----
 typedb server --help
 ----
@@ -36,7 +36,7 @@ Coming soon: configuration via config files.
 The `server` section of the configuration contains network and encryption options.
 For example, a server can be booted up on `0.0.0.0:1730` by using this command:
 
-[source,console]
+[source,bash]
 ----
 typedb server --server.address=0.0.0.0:1730
 ----
@@ -120,7 +120,7 @@ To support large data volumes, it is important to check the open file limit the 
 Some Unix distributions default to `1024` open file descriptors.
 This can be checked with the following command:
 
-[source,console]
+[source,bash]
 ----
 ulimit -n
 ----

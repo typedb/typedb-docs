@@ -1,7 +1,7 @@
 // tag::install-homebrew[]
 To install TypeDB via Homebrew:
 
-[source,console]
+[source,bash]
 ----
 brew tap typedb/tap
 brew install typedb/tap/typedb
@@ -15,7 +15,7 @@ https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_bl
 +
 To check the Java SDK version:
 +
-[source,console]
+[source,bash]
 ----
 /usr/libexec/java_home -V
 ----
@@ -26,7 +26,7 @@ https://en.wikipedia.org/wiki/Rosetta_(software)[Rosetta, window=_blank].
 
 . Extract the archive with TypeDB into a new directory:
 +
-[source,console]
+[source,bash]
 ----
 sudo mkdir /opt/typedb
 unzip ~/Downloads/<filename>.zip -d /opt/typedb
@@ -35,7 +35,7 @@ unzip ~/Downloads/<filename>.zip -d /opt/typedb
 Where `<filename>` is the name of the archive.
 . Add a symlink to the TypeDB executable in the `/usr/local/bin` directory:
 +
-[source,console]
+[source,bash]
 ----
 ln -s /opt/typedb/<filename>/typedb /usr/local/bin/typedb
 ----
@@ -44,7 +44,7 @@ ln -s /opt/typedb/<filename>/typedb /usr/local/bin/typedb
 
 // tag::start[]
 
-[source,console]
+[source,bash]
 ----
 typedb server
 ----

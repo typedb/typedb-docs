@@ -120,35 +120,38 @@ class TypeqlRunner:
                     tx.close()
                 elif type == TransactionType.READ:
                     for r in results:
-                        list_result = list(r.as_concept_rows())
+                        consumed_iterator = list(r.as_concept_rows())
                     tx.close()
                 else:
                     tx.commit()
                 if counted:
-                    result = list(results[-1].as_concept_rows())
-                    count = result[0].get(count_var_name).get_integer()
+                    if type == TransactionType.READ:
+                        count = consumed_iterator[0].get(count_var_name).get_integer()
+                    else:
+                        last_result = list(results[-1].as_concept_rows())
+                        count = last_result[0].get(count_var_name).get_integer()
                     return count
             except Exception as e:
                 raise Exception(f"{e}") from e
 
     def run_test(self, parsed_test: ParsedTest, adoc_path: str):
-        logger.info(f"... test source:\n{parsed_test}")
+        logger.debug(f"... test source:\n{parsed_test}")
 
         type = None
-        if parsed_test.config.get(TEST_TXN_SCHEMA_KEY):
+        if parsed_test.config.get(TEST_TXN_SCHEMA_KEY) is not None:
             type = TransactionType.SCHEMA
-        elif parsed_test.config.get(TEST_TXN_WRITE_KEY):
+        elif parsed_test.config.get(TEST_TXN_WRITE_KEY) is not None:
             type = TransactionType.WRITE
-        elif parsed_test.config.get(TEST_TXN_READ_KEY):
+        elif parsed_test.config.get(TEST_TXN_READ_KEY) is not None:
             type = TransactionType.READ
         if type is None:
             raise ValueError(f"[{adoc_path}]: Missing transaction type from test, see README.md")
 
         rollback = False
-        if parsed_test.config.get(TEST_ROLLBACK_KEY):
+        if parsed_test.config.get(TEST_ROLLBACK_KEY) is not None:
             rollback = True
 
-        if parsed_test.config.get(TEST_RESET_KEY):
+        if parsed_test.config.get(TEST_RESET_KEY) is not None:
             self.setup_db(reset=True)
 
         counted = False
@@ -175,7 +178,7 @@ class TypeqlRunner:
 
         return None
 
-    def test_test(self, parsed_test: ParsedTest, index: int, adoc_path: str):
+    def try_test(self, parsed_test: ParsedTest, index: int, adoc_path: str):
         try:
             if parsed_test.config.get(TEST_NAME_KEY):
                 logger.info(f"[{adoc_path}]: Running test '{parsed_test.config[TEST_NAME_KEY]}' ...")
@@ -188,14 +191,14 @@ class TypeqlRunner:
             logger.info(f"[{adoc_path}] ... ERROR:\n{e}")
             self.failure_count += 1
 
-    def test_tests(self, parsed_tests: List[ParsedTest], adoc_path: str, config: Dict[str, str]) -> None:
+    def try_tests(self, parsed_tests: List[ParsedTest], adoc_path: str, config: Dict[str, str]) -> None:
         self.setup_db(reset=True)  # Resets the database
         self.reset_counts()
 
         if config[ADOC_TEST_KEY] == TEST_MODE_LINEAR_VAL:
-            # run tests in linear order
+            # try tests in linear order
             for (i, parsed_test) in enumerate(parsed_tests):
-                self.test_test(parsed_test, i, adoc_path)
+                self.try_test(parsed_test, i, adoc_path)
 
         elif config[ADOC_TEST_KEY] == TEST_MODE_CUSTOM_VAL:
             # populate name lookup table
@@ -225,7 +228,7 @@ class TypeqlRunner:
                     raise ValueError(f"[{adoc_path}]: Finished execution at end of page before running all tests")
 
                 current_test = parsed_tests[current_test_index]
-                self.test_test(current_test, current_test_index, adoc_path)
+                self.try_test(current_test, current_test_index, adoc_path)
                 remaining_indices.remove(current_test_index)
                 completed_indices.add(current_test_index)
 

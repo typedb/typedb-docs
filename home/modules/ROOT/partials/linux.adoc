@@ -2,7 +2,7 @@
 
 . Add the TypeDB repository:
 +
-[source,console]
+[source,bash]
 ----
 sudo apt install software-properties-common apt-transport-https gpg
 gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 17507562824cfdcc
@@ -12,7 +12,7 @@ sudo apt update
 ----
 . Ensure Java 11+ is installed:
 +
-[source,console]
+[source,bash]
 ----
 sudo apt install default-jre
 ----
@@ -21,7 +21,7 @@ TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
 . Install TypeDB:
 +
-[source,console]
+[source,bash]
 ----
 sudo apt install typedb
 ----
@@ -29,7 +29,7 @@ sudo apt install typedb
 If you had an older version (≤`2.25.5`) of TypeDB installed, you might first need to uninstall older packages to avoid
 conflicts:
 +
-[source,console]
+[source,bash]
 ----
 sudo apt remove typedb-server typedb-bin typedb-console
 ----
@@ -49,7 +49,7 @@ https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_bl
 
 . Extract the archive with TypeDB into a new directory:
 +
-[source,console]
+[source,bash]
 ----
 mkdir /opt/typedb
 tar -xzf ~/Downloads/<filename>.tar.gz -C /opt/typedb
@@ -58,7 +58,7 @@ tar -xzf ~/Downloads/<filename>.tar.gz -C /opt/typedb
 Where `<filename>` is the name of the archive.
 . Add a symlink to the TypeDB executable in the `/usr/local/bin` directory:
 +
-[source,console]
+[source,bash]
 ----
 ln -s /opt/typedb/<filename>/typedb /usr/local/bin/typedb
 ----
@@ -68,7 +68,7 @@ ln -s /opt/typedb/<filename>/typedb /usr/local/bin/typedb
 // tag::start[]
 To run TypeDB Community Edition installed locally:
 
-[source,console]
+[source,bash]
 ----
 typedb server
 ----

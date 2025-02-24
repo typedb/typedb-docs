@@ -29,7 +29,7 @@ class RustRunner(BaseRunner):
 
     def run_test(self, parsed_test: ParsedTest, adoc_path: str):
         if not self.temp_dir:
-            raise RuntimeError("No temporary directory set. Make sure to run inside test_tests().")
+            raise RuntimeError("No temporary directory set. Make sure to run inside try_tests().")
 
         source_code = "\n".join(parsed_test.segments)
         main_rs_path = os.path.join(self.temp_dir, "src", "main.rs")
@@ -53,7 +53,7 @@ class RustRunner(BaseRunner):
         except Exception as e:
             raise RuntimeError(f"Execution error:\n{e}")
 
-    def test_test(self, parsed_test: ParsedTest, index: int, adoc_path: str):
+    def try_test(self, parsed_test: ParsedTest, index: int, adoc_path: str):
         try:
             logger.info(f"[{adoc_path}] Running test #{index} ...")
             self.run_test(parsed_test, adoc_path)
@@ -63,7 +63,7 @@ class RustRunner(BaseRunner):
             logger.info(f"[{adoc_path}] ... ERROR:\n{e}")
             self.failure_count += 1
 
-    def test_tests(self, parsed_tests: List[ParsedTest], adoc_path: str, config: Dict[str, str]):
+    def try_tests(self, parsed_tests: List[ParsedTest], adoc_path: str, config: Dict[str, str]):
         self.reset_counts()
         self.reset_local_databases()
 
@@ -93,7 +93,7 @@ futures-util = "0.3.31"
 
         try:
             for i, parsed_test in enumerate(parsed_tests):
-                self.test_test(parsed_test, i, adoc_path)
+                self.try_test(parsed_test, i, adoc_path)
         finally:
             if os.path.isdir(self.temp_dir):
                 shutil.rmtree(self.temp_dir)

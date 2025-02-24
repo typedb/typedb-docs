@@ -4,37 +4,218 @@
 :test-tql-entry: schema_start
 :test-python: yes
 :test-rust: yes
+:experimental:
 
 TypeDB brings together powerful programming concepts with the features and performance of modern database systems. We believe the result is a novel database experience - and after taking this 15-minute crash course, we hope you'll agree.
 
-xref:{page-version}@home::./
+== Database management 101
 
-[,typeql]
+Before we get started, ensure that xref:{page-version}@home::quickstart.adoc#_create_free_cluster[**TypeDB**] is running as detailed in the xref:{page-version}@home::quickstart.adoc[Quickstart], and have the server's address and user credentials at hand. Now, let's connect to TypeDB and create your first database!
+
+The workflow here will depend on your client, but is straight-forward in either case. If you are new to TypeDB, we recommend trying TypeDB via *TypeDB Console*. But you can also access TypeDB via various *language drivers* and TypeDB's graphical user interface, *TypeDB Studio*, in this course.
+
+[tabs]
+====
+Console::
++
+--
+Start TypeDB Console and connect to TypeDB with the following terminal command:
+[,bash]
 ----
-#!ordered
-#{{
-define
-  entity user, owns username;
-  attribute username, value string;
-#}}
-#{{
-insert
-  $p isa user, has username "Peter";
-  $q isa user, has username "Quip";
-#}}
-#!!2
-# Simple read query
-match
-  { $p has username "Peter"; }
-  or { $p has username "Quip"; };
-#{{
-include::{page-version}@home::example$tql/crash_course.tql[tags=intro1]
-#}}
+$ typedb console --core=<address> --username=<username> --password
 ----
+You will be prompted for a password and afterwards be presented with the *server-level interface* of Console. To create a new database called `my_test_db` use the command:
+[,console]
+----
+database create my_test_db
+----
+You can similarly delete a database with the command `database delete my_test_db`. To see a list of all available databases use `database list`.
+--
 
-== Storing data in types
+Python::
++
+--
+To connect to TypeDB, use the `core_driver` functionality from the `TypeDB` module. This will return `Driver` object that can be used to manage databases as shown in the script below.
+[,python]
+----
+#{{
+from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions
 
-In TypeDB, data is stored in *types*, which can be either
+user = "admin"
+pw = "password"
+address = "127.0.0.1:1729"
+database = "test"
+
+#}}
+# Connect to TypeDB server
+driver = TypeDB.core_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
+
+# Create a database
+driver.databases.create(database)
+
+# Delete the database just created
+driver.databases.get(database).delete()
+----
+--
+
+Rust::
++
+--
+[,rust]
+----
+//{{
+use typedb_driver::{Credentials, DriverOptions, TransactionType, TypeDBDriver};
+use std::error::Error;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn Error>> {
+    let address = "127.0.0.1:1729";
+    let user = "admin";
+    let pw = "password";
+    let db_name = "test";
+
+//}}
+    // Connect to TypeDB server
+    let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
+
+    // Create a database
+    driver.driver.databases().create(db_name).await?;
+
+    // Delete the database just created
+    driver.databases().get(db_name).await?.delete().await?;
+//{{
+    Ok(())
+}
+//}}
+----
+--
+
+Studio::
++
+--
+After opening a project, use the database management button (image:{page-component-version}@home::studio-icons/svg/studio_dbs.svg[width=24]) to create and manage databases.
+
+See the xref:{page-version}@manual::tools/studio.adoc[Studio Manual] for more.
+--
+====
+
+== Working with transactions
+
+In order to run our queries in TypeDB, you need to **open a transaction** for an existing database. Transactions are the "units of work" that we apply to our database: we can run multiple queries in single a transaction, and may commit the transaction to persist the changes done by its queries. Transactions are always required in TypeDB - you can't run a query without one, even if your queries do not modify the database.
+
+There are three types of transactions:
+
+* *Schema* transactions allow you to run any type of queries, including queries that modify the database schema.
+* *Write* transactions allow you to send query pipelines that may write data.
+* *Read* transactions allow you to send query pipelines that only read data.
+
+How to open a transaction and run a query in it will depend on your client, but is again very straight-forward.
+
+[tabs]
+====
+Console::
++
+--
+From Console's server-level interface, you can open a `schema` transaction with the command:
+[,console]
+----
+transaction my_test_db schema
+----
+This will open a new *transaction-level interface*. In it, you will be able to run queries. You can similarly open `write` or `read` transactions. To commit a transaction use the transaction-level command:
+[,console]
+----
+commit
+----
+You may similarly use `close` to close a transaction without committing changes.
+--
+
+Python::
++
+--
+[,python]
+----
+#{{
+from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions
+
+user = "admin"
+pw = "password"
+address = "127.0.0.1:1729"
+database = "my_test_db"
+
+driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
+
+# Some transaction type
+transaction_type = TransactionType.SCHEMA
+
+# Sample query
+query = "define entity user;"
+
+#}}
+# Open a transaction
+with driver.transaction(database, transaction_type) as tx:
+
+    # Send a query
+    response = tx.query(query).resolve()
+
+    # Commit your changes
+    tx.commit()
+----
+--
+
+Rust::
++
+--
+[,rust]
+----
+//{{
+use typedb_driver::{Credentials, DriverOptions, TransactionType, TypeDBDriver};
+use std::error::Error;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn Error>> {
+    let address = "127.0.0.1:1729";
+    let user = "admin";
+    let pw = "password";
+    let db_name = "test";
+
+    // Connect to TypeDB server
+    let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
+
+    // Sample transaction type
+    let transaction_type = TransactionType::Schema;
+
+    // Sample query
+    let query = "define entity user;";
+
+//}}
+    // Open a transaction
+    let tx = driver.transaction(db_name, transaction_type).await?;
+
+    // Send a query
+    let response = tx.query(query).await?;
+
+    // Commit your changes
+    tx.commit().await?;
+//{{
+
+    Ok(())
+}
+//}}
+----
+--
+
+Studio::
++
+--
+Select your database using the database selector (image:{page-component-version}@home::studio-icons/database-none.png[width=128]), then select your transaction type in the top menu.
+
+Open your query file. Then click the run button to run your query. Finally, use the commit button (image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24]) to persist any changes made.
+--
+====
+
+== TypeDB's data model at a glance
+
+Before we define a database schema for our newly created database, let's have a quick look at TypeDB's data model. In TypeDB, data is stored in *types*, which can be either
 
 * *entity* types (e.g., a type of all the ``user``s in your app)
 * *relation* types (e.g., all the ``friendship``s of users)
@@ -44,112 +225,132 @@ Data objects (instances) may reference other instances. A relation references ot
 
 TypeDB's type system unifies concepts from relational, document, and graph DBMSs, blending them with a modern programming paradigm. Let's see how this plays out for writing queries.
 
-[[read]]
-== "`Query programming`" with TypeDB
-
-The query language of TypeDB is *TypeQL*. It combines declarative and functional programming concepts with the simplicity of natural language. Here's a simple TypeQL query to get us started:
-
-//!program[lang=tql, type=read, name=read_start]
-//!++
-[,typeql]
-----
-match
-  $alex isa user, has username "grothendieck_25";
-  $friendship isa friendship (friend: $alex, friend: $friend-of-alex);
-reduce $alex-friend-count = count;
-----
-//!--
-//!run
-
-This query returns the count of how many friends the user `$alex` has (identified by their username `"grothendieck_25"`). Note that the query works in two stages:
-
-1. First, the `match` stage outputs all answers from the database that satisfy the statements in the body of the stage. This means we output all possible data combinations from the database for the three used variables!
-
-2. Second, the `reduce` stage counts these answer combinations, outputs a single number, and assigns it to the variable `$alex-friend-count`.
-
-[NOTE]
-====
-The pattern `$var isa <type>` means the variable `$var` represents a data object (instance) of type `<type>`. An instance may be independent, or it may reference other instances.
-
-TypeQL has special statements to capture references between instances, like `$relation isa <type> (<role>: $player);` or `$owner has <type> $attribute`.
-====
-
-Here's an example of a slightly more complex query.
-
-//!program[lang=tql, type=read]
-//!++
-[,typeql]
-----
-match
-  $alex isa user, has username "grothendieck_25";
-  friendship (friend: $alex, friend: $friend-of-alex); # can omit variable
-reduce $alex-friend-count = count;
-match
-  $other-user isa user, has username $other-name;
-  friendship (friend: $other-user, friend: $friend-of-other-user);
-reduce $other-friend-count = count
-  groupby $other-name, $alex-friend-count;
-match
-  $alex-friend-count < $other-friend-count;
-select $other-name;
-----
-//!--
-//!run
-
-The goal of this query is to find users with more friends than Alex. It has 6 stages:
-
-* *Stage 1 and 2: Count Alex' friends* - and assign the output to ``$alex-friend-count``.
-* *Stage 3 and 4: Count all other users' friends*. Match all ``$other-user``s with their respective usernames, ``$other-name``, and their friends. Group the answers by unique combinations of `$other-name` and `$alex-friend-count`. Finally, ``count`` them.
-* *Stage 5 and 6: List users with more friends than Alex*. Introduce a condition - `$alex-friend-count < $other-friend-count` - and return only the results that satisfy it. `select` the username: `$other-name`.
-
-Isn't that neat? Combining multiple query stages into a single query pipeline is powerful. However, the resulting query now has quite a bit of repetitive code. Let's optimize it using a helper function.
-
-(Don't worry. This is not an exercise for the reader. We've optimized it for you.)
-
-//!program[lang=tql, type=read]
-//!++
-[,typeql]
-----
-with fun friend_count($user: user) -> integer:
-  match friendship (friend: $user, friend: $friend-of-user);
-  return count;
-match
-  $alex isa user, has username "grothendieck_25";
-  $other-user isa user, has username $other-name;
-  friend_count($alex) < friend_count($other-user);
-select $other-name;
-----
-//!--
-//!run
-
-We've just defined a helper function using the `fun` keyword that abstracts a key part of our query logic. Functions use the same syntax as queries, so they're easy to write.
-
 [[schema]]
 == Defining your type schema
 
-The types `user` and `username` in the above queries don't come out of nowhere: in order to query data in types, you first need to define them. Types are defined with `define` queries like so:
+The types `user` and `username` in the above queries don't come out of nowhere: in order to query data in types, you first need to define them. Types are defined with `define` queries like so.
 
-//!program[lang=tql, type=schema, name=schema_start]
-//!++
-[,typeql]
-----
+////
+tag::define1[]
 define
   entity user, owns username, owns status;
   attribute username, value string;
   attribute status, value string;
-----
-//!--
-
-Similarly, if we were to add a `friendship` type to our schema we would define:
-
-//!++
-[,typeql]
-----
+end::define1[]
+tag::define2[]
 define
   relation friendship, relates friend @card(2);
   user plays friendship:friend;
+end::define2[]
+////
+
+[tabs]
+====
+Console::
++
+--
+After opening a transaction as discussed above, paste the following query into the transaction-level console interface:
+[,typeql]
 ----
-//!--
+#!test[schema]
+include::./crash-course.adoc[tag=define1]
+----
+
+Press kbd:[Enter] _twice_ to send the query. Similarly, send the following second query:
+[,typeql]
+----
+#!test[schema]
+include::./crash-course.adoc[tag=define2]
+----
+
+Finally, commit the transaction by typing `commit` and press kbd:[Enter].
+--
+
+Python::
++
+--
+[,python]
+----
+#{{
+from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions
+
+user = "admin"
+pw = "password"
+address = "127.0.0.1:1729"
+database = "my_test_db"
+
+driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
+
+# Some transaction type
+transaction_type = TransactionType.SCHEMA
+
+# Sample query
+query = "define entity user;"
+
+#}}
+# Open a transaction
+with driver.transaction(database, transaction_type) as tx:
+
+    # Send a query
+    response = tx.query(query).resolve()
+
+    # Commit your changes
+    tx.commit()
+----
+--
+
+Rust::
++
+--
+[,rust]
+----
+//{{
+use typedb_driver::{Credentials, DriverOptions, TransactionType, TypeDBDriver};
+use std::error::Error;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn Error>> {
+    let address = "127.0.0.1:1729";
+    let user = "admin";
+    let pw = "password";
+    let db_name = "test";
+
+    // Connect to TypeDB server
+    let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
+
+    // Sample transaction type
+    let transaction_type = TransactionType::Schema;
+
+    // Sample query
+    let query = "define entity user;";
+
+//}}
+    // Open a transaction
+    let tx = driver.transaction(db_name, transaction_type).await?;
+
+    // Send a query
+    let response = tx.query(query).await?;
+
+    // Commit your changes
+    tx.commit().await?;
+//{{
+
+    Ok(())
+}
+//}}
+----
+--
+
+Studio::
++
+--
+Select your database using the database selector (image:{page-component-version}@home::studio-icons/database-none.png[width=128]), then select your transaction type in the top menu.
+
+Open your query file. Then click the run button to run your query. Finally, use the commit button (image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24]) to persist any changes made.
+--
+====
+
+Let us dissect the second query in a bit more detail.
 
 * *Line 1*: Introduce the relation type `friendship` with a `friend` *_role_* (programmer-lingo: think "`trait`" that can then be "`implemented`" by other types). Declare that each friendship requires exactly two friends (`card` is short for "`cardinality`", and is a first example of a *annotation*: annotations make schema statements more specific - more on that later).
 * *Line 2*: Users can play the role of friends in friendships (more programmer-lingo: the type `user` implements the "`friend-role`" trait).
@@ -315,234 +516,83 @@ insert $friend has status "VIP";
 
 See the xref:{page-version}@manual::CRUD/index.adoc[CRUD manual] for more.
 
-== Database management 101
 
-The time has come to actually run our queries. Recall from the xref:{page-version}@home::quickstart.adoc[Quickstart], the first two steps of the TypeQB workflow are always as follows:
 
-1. Ensure that your xref:{page-version}@home::quickstart.adoc#_create_free_cluster[**TypeDB cluster**] is running.
-1. From the **TypeDB client** of your choice, establish a xref:{page-version}@home::quickstart.adoc#_connect_cluster[connection] to the server.
+[[read]]
+== "`Query programming`" with TypeDB
 
-Next up, let us create a database. The workflow here will depend on your client, but is easy in either case.
+The query language of TypeDB is *TypeQL*. It combines declarative and functional programming concepts with the simplicity of natural language. Here's a simple TypeQL query to get us started:
 
-[tabs]
+[,typeql]
+----
+match
+  $alex isa user, has username "grothendieck_25";
+  $friendship isa friendship (friend: $alex, friend: $friend-of-alex);
+reduce $alex-friend-count = count;
+----
+
+This query returns the count of how many friends the user `$alex` has (identified by their username `"grothendieck_25"`). Note that the query works in two stages:
+
+1. First, the `match` stage outputs all answers from the database that satisfy the statements in the body of the stage. This means we output all possible data combinations from the database for the three used variables!
+
+2. Second, the `reduce` stage counts these answer combinations, outputs a single number, and assigns it to the variable `$alex-friend-count`.
+
+[NOTE]
 ====
-Console::
-+
---
-To list existing databases use:
-----
-$ database list
-----
-To create a new database called `my-db` use
-----
-$ database create my-db
-----
-To delete a database use
-----
-$ database delete my-db
-----
---
+The pattern `$var isa <type>` means the variable `$var` represents a data object (instance) of type `<type>`. An instance may be independent, or it may reference other instances.
 
-Python::
-+
---
-//!program[lang=python]
-////
-from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions
-user = "admin"
-pw = "password"
-address = "127.0.0.1:1729"
-database = "test"
-////
-After connecting with
+TypeQL has special statements to capture references between instances, like `$relation isa <type> (<role>: $player);` or `$owner has <type> $attribute`.
+====
+
+Here's an example of a slightly more complex query.
+
+//!program[lang=tql, type=read]
 //!++
-[,python]
+[,typeql]
 ----
-driver = TypeDB.core_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
-----
-//!--
-you can create a database with:
-//!++
-[,python]
-----
-driver.databases.create(database)
-----
-//!--
-and delete a database with:
-//!++
-[,python]
-----
-driver.databases.get(database).delete()
+match
+  $alex isa user, has username "grothendieck_25";
+  friendship (friend: $alex, friend: $friend-of-alex); # can omit variable
+reduce $alex-friend-count = count;
+match
+  $other-user isa user, has username $other-name;
+  friendship (friend: $other-user, friend: $friend-of-other-user);
+reduce $other-friend-count = count
+  groupby $other-name, $alex-friend-count;
+match
+  $alex-friend-count < $other-friend-count;
+select $other-name;
 ----
 //!--
 //!run
---
 
-Rust::
-+
---
-//!program[lang=rust]
-////
-use typedb_driver::{Credentials, DriverOptions, TransactionType, TypeDBDriver};
-use std::error::Error;
+The goal of this query is to find users with more friends than Alex. It has 6 stages:
 
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn Error>> {
-    let address = "127.0.0.1:1729";
-    let user = "admin";
-    let pw = "password";
-    let db_name = "test";
-////
-After connecting with
+* *Stage 1 and 2: Count Alex' friends* - and assign the output to ``$alex-friend-count``.
+* *Stage 3 and 4: Count all other users' friends*. Match all ``$other-user``s with their respective usernames, ``$other-name``, and their friends. Group the answers by unique combinations of `$other-name` and `$alex-friend-count`. Finally, ``count`` them.
+* *Stage 5 and 6: List users with more friends than Alex*. Introduce a condition - `$alex-friend-count < $other-friend-count` - and return only the results that satisfy it. `select` the username: `$other-name`.
+
+Isn't that neat? Combining multiple query stages into a single query pipeline is powerful. However, the resulting query now has quite a bit of repetitive code. Let's optimize it using a helper function.
+
+(Don't worry. This is not an exercise for the reader. We've optimized it for you.)
+
+//!program[lang=tql, type=read]
 //!++
-[,rust]
+[,typeql]
 ----
-let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
+with fun friend_count($user: user) -> integer:
+  match friendship (friend: $user, friend: $friend-of-user);
+  return count;
+match
+  $alex isa user, has username "grothendieck_25";
+  $other-user isa user, has username $other-name;
+  friend_count($alex) < friend_count($other-user);
+select $other-name;
 ----
 //!--
-you can create a database with:
-//!++
-[,rust]
-----
-driver.databases().create(db_name).await?;
-----
-//!--
-and delete a database with:
-//!++
-[,rust]
-----
-driver.databases().get(db_name).await?.delete().await?;
-----
-//!--
-////
-    Ok(())
-}
-////
 //!run
---
 
-Studio::
-+
---
-After opening a project, use the database management button (image:{page-component-version}@home::studio-icons/svg/studio_dbs.svg[width=24]) to create and manage databases.
-
-See the xref:{page-version}@manual::tools/studio.adoc[Studio Manual] for more.
---
-====
-
-== Running queries with transactions
-
-In order to run our queries, the next step is to **open a transaction** for an existing database. We can run multiple queries in single a transaction, and then commit the transaction to persist our changes when done. Transactions are required in TypeDB - you can't run a query without one. There are three types of transactions:
-
-* *Schema* transactions allow you to run schema definition queries (like the `define` queries that we've seen above).
-* *Write* transactions allow you to send query pipelines that may write data (i.e., they contain "`write stages`" like the `insert` or `delete` stages that we have seen above)
-* *Read* transactions allow you to send query pipelines that only read data (i.e., they contain only "`read stages`" like the `match`, `reduce`, or `select` stages that we have seen above).
-
-How to open a transaction and run a query will depend on your client.
-
-[tabs]
-====
-Console::
-+
---
-Open the transaction with
-----
-transaction my-db <TYPE>
-----
-where `<TYPE>` can be one of `schema`, `write`, or `read`.
-
-Then run your queries in the newly opened prompt. Use
-----
-commit
-----
-if you want to commit changes.
---
-
-Python::
-+
---
-//!program[lang=python]
-////
-from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions
-user = "admin"
-pw = "password"
-address = "127.0.0.1:1729"
-database = "test"
-driver = TypeDB.core_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
-driver.databases.create(database)
-with driver.transaction(database, TransactionType.SCHEMA) as tx:
-    response = tx.query("define entity something;").resolve()
-    tx.commit()
-////
-//!run
-Open a transaction and send a query with
-[,python]
-----
-with driver.transaction(database, TransactionType.<TYPE>) as tx:
-    response = tx.query(<QUERY>).resolve()
-----
-where `<TYPE>` can be one of `SCHEMA`, `WRITE`, or `READ`. Use
-[,python]
-----
-    tx.commit()
-----
-if you want to commit your changes.
---
-
-Rust::
-+
---
-//!program[lang=rust]
-////
-use typedb_driver::{Credentials, DriverOptions, TransactionType, TypeDBDriver};
-use std::error::Error;
-
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn Error>> {
-let address = "127.0.0.1:1729";
-let user = "admin";
-let pw = "password";
-let db_name = "test";
-let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
-driver.databases().create(db_name).await?;
-let tx = driver.transaction(db_name, TransactionType::Schema).await?;
-tx.query("define entity something;").await?;
-tx.commit().await?;
-Ok(())
-}
-////
-//!run
-Open a transaction and send a query with
-[,rust]
-----
-let tx = driver.transaction(db_name, TransactionType::<TYPE>).await?;
-tx.query(<QUERY>).await?;
-----
-where `<TYPE>` can be one of `SCHEMA`, `WRITE`, or `READ`. Use
-[,rust]
-----
-tx.commit().await?;
-----
-if you want to commit your changes.
---
-
-Studio::
-+
---
-Select your database using the database selector (image:{page-component-version}@home::studio-icons/database-none.png[width=128]), then select your transaction type in the top menu.
-
-Open your query file. Then click the run button to run your query. Finally, use the commit button (image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24]) to persist any changes made.
---
-====
-
-Do you take a hands-on approach to learning? If so, try running queries in this course in the following order:
-
-. Define a schema as outlined in the <<schema,schema section>>. Use `schema` transactions for your queries and don't forget to commit any changes made.
-
-. Insert data instances into the types of your schema as explained in the <<CRUD,CRUD section>>. Use `write` transactions for your queries and don't forget to commit any changes you want to persists.
-
-. Read your data using query pipelines like those in the <<read,pipeline section>>.
-
+We've just defined a helper function using the `fun` keyword that abstracts a key part of our query logic. Functions use the same syntax as queries, so they're easy to write.
 
 == Beyond the basics: functions and query composition
 

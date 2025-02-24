@@ -35,7 +35,7 @@ class PythonRunner(BaseRunner):
         sys.stdout = old_stdout
         # logger.info(f"Output:\n{output}")
 
-    def test_test(self, parsed_test: ParsedTest, index: int, adoc_path: str):
+    def try_test(self, parsed_test: ParsedTest, index: int, adoc_path: str):
         try:
             logger.info(f"[{adoc_path}] Running test #{index} ...")
             self.run_test(parsed_test, adoc_path)
@@ -45,9 +45,9 @@ class PythonRunner(BaseRunner):
             logger.info(f"[{adoc_path}] ... ERROR:\n{e}")
             self.failure_count += 1
 
-    def test_tests(self, parsed_tests: List[ParsedTest], adoc_path: str, config: Dict[str, str]):
+    def try_tests(self, parsed_tests: List[ParsedTest], adoc_path: str, config: Dict[str, str]):
         self.reset_counts()
         self.reset_local_databases()
 
         for (i, parsed_test) in enumerate(parsed_tests):
-            self.test_test(parsed_test, i, adoc_path)
+            self.try_test(parsed_test, i, adoc_path)

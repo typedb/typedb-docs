@@ -4,9 +4,12 @@
 
 [,typeql]
 ----
-#!test[schema, count=4]
+#!test[schema]
 #{{
-include::{page-version}@home::example$tql/crash_course.tql[tags=intro1]
+define attribute name, value string;
+#}}
+#{{
+define entity person, owns name;
 #}}
 #!test[write]
 #{{
@@ -14,12 +17,20 @@ insert
   $p isa person, has name "Peter";
   $q isa person, has name "Quip";
 #}}
+#!test[write, rollback]
+#{{
+insert
+  $p isa person, has name "Peter2";
+  $q isa person, has name "Quip2";
+#}}
+#!test[read]
 # Regular comment
 match
  $a isa person;
 #---
 match
- $a isa username;
+ $n isa name;
+#!test[read, count=2]
 #{{
 match
  $a isa person;
@@ -28,6 +39,8 @@ match
 #}}
 ----
 
+This will not be executed as it has no `#!test` marker.
+
 [,typeql]
 ----
   entity person owns username;
@@ -35,8 +48,10 @@ match
 
 [,typeql]
 ----
-#!test[read]
-#!!1
+#!test[write, fail_at=runtime]
+insert
+  $p isa person, has name 11;
+#!test[read, count=1]
 match
-  entity person owns username;
+  $type owns name;
 ----

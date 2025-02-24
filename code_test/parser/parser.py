@@ -5,7 +5,7 @@ import logging
 logger = logging.getLogger('main')
 # To see debug log, set logging level to debug in main.py
 
-# Language specific parser config
+# !!! Keep this synced with typedb-docs-web hidden-code.js MARKERS !!!
 MARKERS = {
     "typeql": {
         "test_start": "#!test",  # may have options, e.g. '#!test[write, reset, count=3]', see README.md
@@ -38,9 +38,9 @@ class ParsedTest:
 
     def __repr__(self):
         blocks_repr = "[\n" + "\n--- new segment ---\n".join(str(block) for block in self.segments) + "\n]"
-        return (f"\nParsedTest(lang={self.lang},\n"
-                f"blocks={blocks_repr},\n"
-                f"config={self.config})")
+        return (f"ParsedTest(lang={self.lang},\n"
+                f"config={self.config},\n"
+                f"segments={blocks_repr})")
 
 
 class Parser:
@@ -106,7 +106,7 @@ class Parser:
         current_tag = None
         for (i, line) in enumerate(lines):
             line = line.rstrip('\n')
-            logging.debug(f"Checking line {i}: {line}")
+            # logging.debug(f"... include scan of line {i}: {line}")
             if current_tag is None:
                 tag_match = re.match(r'.*?tag::(.+?)\[', line)
                 if tag_match:
@@ -127,7 +127,7 @@ class Parser:
                 if current_tag is not None:
                     tagged_lines[current_tag].append(line)
 
-        logging.debug(f"Finished checking lines. Found {tagged_lines}")
+        logging.debug(f"... finished scanning included file, resolved tags: {tagged_lines}")
 
         output_lines = []
         for tag in tags:
@@ -150,7 +150,8 @@ class Parser:
 
     def finalize_current_test(self):
         self.finalize_current_segment()
-        self.parsed_tests.append(ParsedTest(self.current_test_segments, self.language, self.current_test_config))
+        if self.current_test_segments:
+            self.parsed_tests.append(ParsedTest(self.current_test_segments, self.language, self.current_test_config))
         self.reset_current_test()
 
     def parse_tests(self) -> List[ParsedTest]:

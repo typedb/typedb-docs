@@ -5,7 +5,7 @@
 
 . Extract the archive with TypeDB into a new directory:
 +
-[source,console]
+[source,bash]
 ----
 mkdir "C:\Program Files\TypeDB"
 tar xvf "C:\Users\username\Downloads\<filename>.zip" -C "C:\Program Files\TypeDB"
@@ -14,7 +14,7 @@ tar xvf "C:\Users\username\Downloads\<filename>.zip" -C "C:\Program Files\TypeDB
 Where `<filename>` is the name of the archive.
 . Update the `PATH` environment variable:
 +
-[source,console]
+[source,bash]
 ----
 setx /M PATH "%path%;C:\Program Files\TypeDB\<filename>"
 ----
@@ -25,7 +25,7 @@ Restart the terminal window for the changes to environment variables to take eff
 
 // tag::start[]
 
-[source,console]
+[source,bash]
 ----
 typedb server
 ----

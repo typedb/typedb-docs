@@ -43,7 +43,7 @@ macOS::
 --
 Install TypeDB Console using Homebrew:
 
-[source,console]
+[source,bash]
 ----
 brew tap typedb/tap
 brew install typedb/tap/typedb
@@ -58,7 +58,7 @@ https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_bl
 include::{page-version}@manual:resources:partial$typedb-console-latest-links.adoc[tag=mac]
 . Extract the archive and optionally create a symlink:
 +
-[source,console]
+[source,bash]
 ----
 sudo mkdir /opt/typedb
 unzip ~/Downloads/<ARCHIVE_FILENAME>.zip -d /opt/typedb
@@ -73,7 +73,7 @@ Install TypeDB Console using APT:
 
 . Add the TypeDB repository:
 +
-[source,console]
+[source,bash]
 ----
 sudo apt install software-properties-common apt-transport-https gpg
 gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 17507562824cfdcc
@@ -83,7 +83,7 @@ sudo apt update
 ----
 . Ensure Java 11+ is installed:
 +
-[source,console]
+[source,bash]
 ----
 sudo apt install default-jre
 ----
@@ -92,7 +92,7 @@ TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
 https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
 . Install `typedb`:
 +
-[source,console]
+[source,bash]
 ----
 sudo apt install typedb
 ----
@@ -100,7 +100,7 @@ sudo apt install typedb
 If you had an older version (≤`2.25.5`) of `typedb` installed, you might first need to uninstall older packages to avoid
 conflicts:
 +
-[source,console]
+[source,bash]
 ----
 sudo apt remove typedb-server typedb-bin typedb-console
 ----
@@ -120,7 +120,7 @@ https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_bl
 include::{page-version}@manual:resources:partial$typedb-console-latest-links.adoc[tag=linux]
 . Extract the archive and optionally create a symlink:
 +
-[source,console]
+[source,bash]
 ----
 mkdir /opt/typedb
 tar -xzf ~/Downloads/<ARCHIVE_FILENAME>.tar.gz -C /opt/typedb
@@ -144,13 +144,13 @@ include::{page-version}@manual:resources:partial$typedb-console-latest-links.ado
 === Using Console
 
 Launch TypeDB Console with the command:
-[source,console]
+[source,bash]
 ----
 typedb console
 ----
 
 To list all available TypeDB Console command use:
-[source,console]
+[source,bash]
 ----
 typedb console --help
 ----
@@ -171,7 +171,7 @@ macOS::
 --
 Install TypeDB Studio using Homebrew:
 
-[source,console]
+[source,bash]
 ----
 brew tap typedb/tap
 brew install --cask typedb/tap/typedb-studio
@@ -188,7 +188,7 @@ Install TypeDB Studio using `apt`:
 
 . Add the TypeDB repository:
 +
-[source,console]
+[source,bash]
 ----
 sudo apt install software-properties-common apt-transport-https gpg
 gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 17507562824cfdcc
@@ -198,7 +198,7 @@ sudo apt update
 ----
 . Install the application:
 +
-[source,console]
+[source,bash]
 ----
 sudo apt install typedb-studio
 ----

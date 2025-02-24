@@ -32,9 +32,9 @@ class BaseRunner(ABC):
         pass
 
     @abstractmethod
-    def test_test(self, parsed_test, index: int, adoc_path: str):
+    def try_test(self, parsed_test, index: int, adoc_path: str):
         pass
 
     @abstractmethod
-    def test_tests(self, parsed_tests, adoc_path: str, config: Dict[str, str]):
+    def try_tests(self, parsed_tests, adoc_path: str, config: Dict[str, str]):
         pass

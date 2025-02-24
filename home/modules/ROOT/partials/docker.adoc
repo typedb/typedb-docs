@@ -10,7 +10,7 @@ it from https://github.com/typedb/typedb/tags[source code,window=_blank] with Ba
 // tag::install[]
 To pull the latest TypeDB Community Edition Docker image:
 
-[source,console]
+[source,bash]
 ----
 docker pull vaticle/typedb:latest
 ----
@@ -24,7 +24,7 @@ see the link:https://github.com/typedb/typedb/releases[Releases,window=_blank] p
 // tag::run[]
 To create a new Docker container with TypeDB Community Edition server:
 
-[source,console]
+[source,bash]
 ----
 docker volume create typedb-data
 docker create --name typedb -v typedb-data:/opt/typedb-all-linux-x86_64/server/data -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
@@ -38,7 +38,7 @@ Where `typedb` is the name of the container, and `typedb-data` is the name of th
 // tag::start[]
 To start the created Docker container, or restart a stopped container:
 
-[source,console]
+[source,bash]
 ----
 docker start typedb
 ----
@@ -47,7 +47,7 @@ docker start typedb
 // tag::stop[]
 To stop a running Docker container:
 
-[source,console]
+[source,bash]
 ----
 docker stop typedb
 ----

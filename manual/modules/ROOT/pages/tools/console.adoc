@@ -60,7 +60,7 @@ For other versions, see the
 https://cloudsmith.io/~typedb/repos/public-release/packages/?q=format%3Araw+name%3A%5Etypedb-console-mac&sort=-version[Downloads repository] page.
 . Extract the archive into a new directory:
 +
-[source,console]
+[source,bash]
 ----
 $ sudo mkdir /opt/typedb-console
 $ unzip ~/Downloads/<filename>.zip -d /opt/typedb-console
@@ -69,7 +69,7 @@ $ unzip ~/Downloads/<filename>.zip -d /opt/typedb-console
 Where `<filename>` is the name of the archive.
 . Add a symlink to the TypeDB Console executable in the `/usr/local/bin` directory:
 +
-[source,console]
+[source,bash]
 ----
 $ ln -s /opt/typedb-console/<filename>/typedb /usr/local/bin/typedb
 ----
@@ -85,7 +85,7 @@ For other versions, see the
 https://cloudsmith.io/~typedb/repos/public-release/packages/?q=format%3Araw+name%3A%5Etypedb-console-linux&sort=-version[Downloads repository] page.
 . Extract the archive into a new directory:
 +
-[source,console]
+[source,bash]
 ----
 $ mkdir /opt/typedb-console
 $ tar -xzf ~/Downloads/<filename>.tar.gz -C /opt/typedb-console
@@ -94,7 +94,7 @@ $ tar -xzf ~/Downloads/<filename>.tar.gz -C /opt/typedb-console
 Where `<filename>` is the name of the archive.
 . Add a symlink to the TypeDB Console executable in the `/usr/local/bin` directory:
 +
-[source,console]
+[source,bash]
 ----
 $ ln -s /opt/typedb-console/<filename>/typedb /usr/local/bin/typedb
 ----
@@ -111,7 +111,7 @@ https://cloudsmith.io/~typedb/repos/public-release/packages/?q=format%3Araw+name
 
 . Extract the archive into a new directory:
 +
-[source,console]
+[source,bash]
 ----
 $ mkdir "C:\Program Files\TypeDB Console"
 $ tar xvf "C:\Users\username\Downloads\<filename>.zip" -C "C:\Program Files\TypeDB Console"
@@ -120,7 +120,7 @@ $ tar xvf "C:\Users\username\Downloads\<filename>.zip" -C "C:\Program Files\Type
 Where `<filename>` is the name of the archive.
 . Update the `PATH` environment variable:
 +
-[source,console]
+[source,bash]
 ----
 $ setx /M PATH "%path%;C:\Program Files\TypeDB Console\<filename>"
 ----
@@ -143,7 +143,7 @@ Cloud / Enterprise::
 --
 // tag::connect_cloud_console[]
 .Connect to TypeDB Cloud or TypeDB Enterprise
-[source,console]
+[source,bash]
 ----
 typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
 ----
@@ -161,7 +161,7 @@ Community Edition::
 --
 // tag::connect_ce_console[]
 .Connect to TypeDB Community Edition
-[source,console]
+[source,bash]
 ----
 typedb console --core=<server-address> --username=<username> --password
 ----
@@ -230,7 +230,7 @@ The following example illustrates how to create a database, define a schema, and
 
 . Run Console in the interactive mode and <<_connect_to_typedb,connect>> it to TypeDB:
 +
-[source,console]
+[source,bash]
 ----
 typedb console --username=<username> --password
 ----
@@ -270,7 +270,7 @@ The above example creates a database with the name `sample_db`, defines a simple
 You can run Console commands using the `--command` argument:
 
 [,bash]
-[source,console]
+[source,bash]
 ----
 typedb console --command=<command1> --command=<command2>
 ----
@@ -281,7 +281,7 @@ via the command line arguments.
 Run the following command in a terminal to start TypeDB and execute queries:
 
 [,bash]
-[source,console]
+[source,bash]
 ----
 typedb console --username=<username> --password \
 --command="database create sample_db" \
@@ -330,7 +330,7 @@ For the full list of commands, see the <<_references>> below.
 
 To use a script file with commands, run Console with the `--script` argument and a path to the script file:
 
-[source,console]
+[source,bash]
 ----
 typedb console --script=<script-file-path>
 ----
@@ -364,7 +364,7 @@ database delete test
 Execute the script with TypeDB Console:
 
 .Run script.txt
-[source,console]
+[source,bash]
 ----
 typedb console --username=<username> --password --script=<PATH/script.txt>
 ----
@@ -540,7 +540,7 @@ Linux::
 Use `locale -a` to list all installed locales, and use `export` to set the environment.
 For example, to use `en_US.UTF-8` run:
 
-[source,console]
+[source,bash]
 ----
 bash export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8
 ----
@@ -552,7 +552,7 @@ macOS::
 Use `locale -a` to list all installed locales, and use `export` to set the environment.
 For example, to use `en_US.UTF-8` run:
 
-[source,console]
+[source,bash]
 ----
 bash export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8
 ----

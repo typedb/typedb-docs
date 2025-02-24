@@ -9,75 +9,46 @@ Here's a sample .adoc file illustrating the syntax for writing valid testable co
 ```adoc
 = Page Title
 :test-typeql: (linear | custom)
-// When custom order is chosen you can specify an entrypoint:
 [:test-typeql-entry: <LABEL>] 
 
 Intro.
 
 == First section
 
-Text. Then start a test (a.k.a. TypeDB transaction) with the following Antora comment. 
+Text. 
 
-//!test[lang=typeql, type=<TYPE>, [name=<LABEL>], [fail_at=<FAILURE>,] [count=<NUM>,] [name=<LABEL>,] [jump=<LABEL>,] [reset=yes,] [rollback=yes,]]
-
-Some text. Each 'code block' will be tested as a single query.
-
-////
-<Invisible query a.k.a. code block>
-////
-
-More text. Here's a simple visible block
-
-//!++
-[,typql]
-----
-<Visible query a.k.a. code block>
-----
-//!--
-
-Yet more text. Invisible and visible code can be combined in the same block!
-
-//!++
-////
-<Invisible part of query>
-////
-[,typql]
-----
-<Visible part of query>
-----
-//!--
-
-Once we are done with our transaction:
-
-//!run
-
-Here's a much shorter transaction:
-
-//!test[lang=typeql, type=write]
-//!++
 [,typeql]
 ----
-insert $x isa person, has name "John";
+#!test[<TYPE>[, reset] [, rollback] [, fail_at=<FAILURE>] [, count=<NUM>] [, jump=<LABEL>] [, name=<LABEL>]]
+#{{
+<HIDDEN-QUERY>
+#}}
+#{{
+<HIDDEN-QUERY>
+#}}
+#!test[<TYPE>, ...]
+#{{
+<HIDDEN-QUERY>
+#}}
+<VISIBLE-QUERY>
+#!test[<TYPE>, ...]
+<VISIBLE-QUERY>
+#!---
+<VISIBLE-QUERY>
 ----
-//!--
-//!run
 
 More text.
-
-== Section 2
-
-Words. words. words.
-
-<more-tests>
 ```
+
 where
-* `type=<TYPE>` can be `read, write, schema` 
-* `name=<LABEL>` names the test
+* Tests represent individual transactions (we commit/close at the end of each test)
+* `<TYPE>` can be `read, write, schema` 
+* `reset` resets the database before running the test
+* `rollback` rolls backs the transaction instead of committing it
 * `fail_at=<FAILURE>` can be `runtime, commit`
 * `count=<NUM>` is an integer representing expected answer count
+* `name=<LABEL>` names the test
 * `jump=<LABEL>` is a label for the test (used for entrypoints and jumping around)
-* `reset=yes` resets the database before running the test
-* `rollback=yes` rolls backs the transaction instead of committing
 * A single test will be executed as a **single transaction** (with each code block being an individual query)
 
 ### For other languages
@@ -89,8 +60,16 @@ Same as for TypeQL, but with less configuration options for now:
 
 Some Text
 
+[,rust]
+----
 //!test[lang=rust]
-...
+//{{
+<HIDDEN-CODE-SEGMENT>
+//}}
+<VISIBLE-CODE-SEGMENT>
+----
+
+More text.
 ```
 
 NOTE: Entrypoints and jumping around isn't supported for languages other than TypeQL
@@ -121,4 +100,4 @@ Type check with `mypy code_test/main.py` (need to install `mypy`)
 
 ### Modules
 
-The folder name (`code_test`) is the python module's name, so renaming the folder requires renaming `import` statements as well.
+The folder name (`code_test`) is the python module's name, so renaming the folder requires renaming `import` statements in the code as well (IntelliJ's refactoring might be able to handle it).

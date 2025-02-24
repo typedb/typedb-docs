@@ -38,7 +38,7 @@ Make sure to use `docker login` first to authenticate.
 
 To pull the TypeDB Enterprise Docker image, run:
 
-[source,console]
+[source,bash]
 ----
 docker pull vaticle/typedb-cloud:latest
 ----
@@ -47,7 +47,7 @@ Use `docker create` to create a new container with the downloaded image.
 By default, a TypeDB Enterprise server is expected to be running on port `1729`.
 To ensure that data is preserved even when the container is killed or restarted, use Docker volumes:
 
-[source,console]
+[source,bash]
 ----
 docker create --name typedb -p 1729:1729 \
     -v $(pwd)/db/data:/opt/typedb-cloud-all-linux-x86_64/server/data \
@@ -65,21 +65,21 @@ The port number is configurable. For example, you could configure TypeDB Enterpr
 
 To start the Docker container, or restart a stopped container:
 
-[source,console]
+[source,bash]
 ----
 docker start typedb
 ----
 
 To check the containers running:
 
-[source,console]
+[source,bash]
 ----
 docker ps
 ----
 
 To stop the Docker container:
 
-[source,console]
+[source,bash]
 ----
 docker stop typedb
 ----
@@ -100,7 +100,7 @@ To start TypeDB Enterprise manually:
 1. Navigate into the directory with the unpacked files of TypeDB Enterprise.
 2. Run:
 +
-[source,console]
+[source,bash]
 ----
 ./typedb server
 ----
@@ -118,14 +118,14 @@ xref:{page-version}@manual::tools/index.adoc[TypeDB Client].
 
 You can use xref:{page-version}@manual::tools/console.adoc[TypeDB Console] from your TypeDB Enterprise directory:
 
-[source,console]
+[source,bash]
 ----
 ./typedb console --cloud 127.0.0.1:1729 --username admin --password
 ----
 
 To run TypeDB Console from a Docker container, run:
 
-[source,console]
+[source,bash]
 ----
 docker exec -ti typedb-cloud bash -c '/opt/typedb-cloud-all-linux-x86_64/typedb console --cloud 127.0.0.1:1729 --username admin --password'
 ----
@@ -175,7 +175,7 @@ The first machine with the IP address of `10.0.0.1`.
 
 To run TypeDB Enterprise server #1:
 
-[source,console]
+[source,bash]
 ----
 ./typedb server \
     --server.address=10.0.0.1:1729 \
@@ -199,7 +199,7 @@ The first machine with the IP address of `10.0.0.2`.
 
 To run TypeDB Enterprise server #2:
 
-[source,console]
+[source,bash]
 ----
 ./typedb server \
     --server.address=10.0.0.2:1729 \
@@ -223,7 +223,7 @@ The first machine with the IP address of `10.0.0.3`.
 
 To run TypeDB Enterprise server #3:
 
-[source,console]
+[source,bash]
 ----
 ./typedb server \
     --server.address=10.0.0.3:1729 \
@@ -253,7 +253,7 @@ TypeDB Enterprise also supports using different IP addresses for client and serv
 The relevant external hostname should be passed as arguments using the `--server.address` and
 `--server.peers` flags as below.
 
-[source,console]
+[source,bash]
 ----
 ./typedb server \
     --server.address=external-host-1:1729 \
