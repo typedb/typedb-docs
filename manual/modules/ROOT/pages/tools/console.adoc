@@ -249,6 +249,9 @@ commit
 
 The above example creates a database with the name `sample_db`, defines a simple schema with a single `user` type, then inserts a single instance of the type into the database.
 
+Pasting a block of console commands together is also possible, and equivalent to submitting a script to the console at that point.
+This is particularly useful when document examples with self-contained transaction operations, and schema and data queries.
+
 [#_non_interactive_mode]
 == Non-interactive mode
 
