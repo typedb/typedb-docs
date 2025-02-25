@@ -1,7 +1,6 @@
 # tag::code[]
 # tag::import[]
 from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions
-from enum import Enum
 # end::import[]
 
 
@@ -9,11 +8,6 @@ from enum import Enum
 DB_NAME = "sample_app_db"
 SERVER_ADDR = "127.0.0.1:1729"
 
-class Edition(Enum):
-    Cloud = 1
-    Core = 2
-
-TYPEDB_EDITION = Edition.Core
 USERNAME = "admin"
 PASSWORD = "password"
 # end::constants[]
@@ -222,17 +216,11 @@ def delete_user_by_email(driver, db_name, email):
 
 
 # tag::connection[]
-def driver_connect(edition, uri, username=USERNAME, password=PASSWORD):
-    if edition is Edition.Core:
-        # tag::driver_new_core[]
-        driver = TypeDB.core_driver(uri, Credentials(username, password), DriverOptions(False, None))
-        # end::driver_new_core[]
-        return driver
-    if edition is Edition.Cloud:
-        # tag::driver_new_cloud[]
-        driver = TypeDB.cloud_driver([uri], Credentials(username, password), DriverOptions(False, None))
-        # end::driver_new_cloud[]
-        return driver
+def driver_connect(uri, username=USERNAME, password=PASSWORD):
+    # tag::driver_new[]
+    driver = TypeDB.driver(uri, Credentials(username, password), DriverOptions(False, None))
+    # end::driver_new[]
+    return driver
 # end::connection[]
 
 
@@ -273,7 +261,7 @@ def queries(driver, db_name):
 
 # tag::main[]
 def main():
-    with driver_connect(TYPEDB_EDITION, SERVER_ADDR) as driver:
+    with driver_connect(SERVER_ADDR) as driver:
         if db_setup(driver, DB_NAME, db_reset=False):
             queries(driver, DB_NAME)
         else:

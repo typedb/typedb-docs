@@ -64,7 +64,6 @@ include::{page-version}@drivers::partial$tutorials/rust/src/main.rs[tag=constant
 
 where `DB_NAME` -- the name of the database to use;
 `SERVER_ADDR` -- address of the TypeDB server to connect to;
-`TYPEDB_EDITION` -- TypeDB Community Edition or Cloud edition selector;
 `USERNAME`/`PASSWORD` -- authentication credentials.
 
 == Program structure
@@ -81,18 +80,15 @@ The entire `main()` function code is executed in the context of the <<_typedb_co
 [#_typedb_connection]
 == TypeDB connection
 
-The `driver_connect()` function takes `edition`, `uri`, and the credentials as mandatory parameters.
+The `driver_connect()` function takes `uri`, and the credentials as mandatory parameters.
 
 [,rust]
 ----
 include::{page-version}@drivers::partial$tutorials/rust/src/main.rs[tag=connection]
 ----
 
-The `edition` is expected to be an Enum for selecting a TypeDB edition.
-Depending on the TypeDB edition selected, this function initializes either a TypeDB Community Edition or a TypeDB Cloud / Enterprise connection.
-
 TypeDB connections require objects of the `Credentials` (authentication credentials) and `DriverOptions` (driver-specific connection options like TLS settings) classes.
-For our sample application, we have suitable default values set for all editions.
+For our sample application, the default values are set.
 
 == Database setup
 

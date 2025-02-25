@@ -35,7 +35,7 @@ You can similarly delete a database with the command `database delete my_test_db
 Python::
 +
 --
-To connect to TypeDB, use the `core_driver` functionality from the `TypeDB` module. This will return `Driver` object that can be used to manage databases as shown in the script below.
+To connect to TypeDB, use the `driver` functionality from the `TypeDB` module. This will return `Driver` object that can be used to manage databases as shown in the script below.
 [,python]
 ----
 #{{
@@ -48,7 +48,7 @@ database = "test"
 
 #}}
 # Connect to TypeDB server
-driver = TypeDB.core_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
+driver = TypeDB.driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
 
 # Create a database
 driver.databases.create(database)
@@ -76,7 +76,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
 //}}
     // Connect to TypeDB server
-    let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
+    let driver = TypeDBDriver::new(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
 
     // Create a database
     driver.driver.databases().create(db_name).await?;
@@ -142,7 +142,7 @@ pw = "password"
 address = "127.0.0.1:1729"
 database = "my_test_db"
 
-driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
+driver = TypeDB.driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
 
 # Some transaction type
 transaction_type = TransactionType.SCHEMA
@@ -179,7 +179,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let db_name = "test";
 
     // Connect to TypeDB server
-    let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
+    let driver = TypeDBDriver::new(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
 
     // Sample transaction type
     let transaction_type = TransactionType::Schema;
@@ -288,7 +288,7 @@ pw = "password"
 address = "127.0.0.1:1729"
 database = "my_test_db"
 
-driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
+driver = TypeDB.driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
 
 #}}
 # Define entity and attribute types
@@ -330,7 +330,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let db_name = "test";
 
     // Connect to TypeDB server
-    let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
+    let driver = TypeDBDriver::new(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
 
 //}}
     // Define entity and attribute types
@@ -458,7 +458,7 @@ pw = "password"
 address = "127.0.0.1:1729"
 database = "my_test_db"
 
-driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
+driver = TypeDB.driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
 
 #}}
 # Define a start-date attribute for the friendship relation type
@@ -506,7 +506,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let db_name = "test";
 
     // Connect to TypeDB server
-    let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
+    let driver = TypeDBDriver::new(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
 
 //}}
     // Define a start-date attribute for the friendship relation type
@@ -608,7 +608,7 @@ pw = "password"
 address = "127.0.0.1:1729"
 database = "my_test_db"
 
-driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
+driver = TypeDB.driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
 
 #}}
 # Define subtypes of organizations
@@ -650,7 +650,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let db_name = "test";
 
     // Connect to TypeDB server
-    let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
+    let driver = TypeDBDriver::new(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
 
 //}}
     // Define subtypes of organizations
@@ -785,7 +785,7 @@ pw = "password"
 address = "127.0.0.1:1729"
 database = "my_test_db"
 
-driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
+driver = TypeDB.driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
 
 #}}
 # Try to insert a user without username (will fail)
@@ -847,7 +847,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let db_name = "test";
 
     // Connect to TypeDB server
-    let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
+    let driver = TypeDBDriver::new(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
 
 //}}
     // Try to insert a user without username (will fail)
@@ -970,7 +970,7 @@ pw = "password"
 address = "127.0.0.1:1729"
 database = "my_test_db"
 
-driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
+driver = TypeDB.driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
 
 #}}
 # Insert two new users and a friendship between them
@@ -1013,7 +1013,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let db_name = "test";
 
     // Connect to TypeDB server
-    let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
+    let driver = TypeDBDriver::new(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
 
 //}}
     // Insert two new users and a friendship between them
@@ -1132,7 +1132,7 @@ pw = "password"
 address = "127.0.0.1:1729"
 database = "my_test_db"
 
-driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
+driver = TypeDB.driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
 
 #}}
 # A complex data pipeline
@@ -1175,7 +1175,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let db_name = "test";
 
     // Connect to TypeDB server
-    let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
+    let driver = TypeDBDriver::new(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
 
 //}}
     // A complex data pipeline
@@ -1266,7 +1266,7 @@ pw = "password"
 address = "127.0.0.1:1729"
 database = "my_test_db"
 
-driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
+driver = TypeDB.driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
 
 #}}
 # Find a specific user, their friends, and count their friends
@@ -1302,7 +1302,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let db_name = "test";
 
     // Connect to TypeDB server
-    let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
+    let driver = TypeDBDriver::new(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
 
 //}}
     // Find a specific user, their friends, and count their friends
@@ -1398,7 +1398,7 @@ pw = "password"
 address = "127.0.0.1:1729"
 database = "my_test_db"
 
-driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
+driver = TypeDB.driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
 
 #}}
 # Find users with more friends that Alex
@@ -1434,7 +1434,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let db_name = "test";
 
     // Connect to TypeDB server
-    let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
+    let driver = TypeDBDriver::new(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
 
 //}}
     // Find users with more friends that Alex
@@ -1518,7 +1518,7 @@ pw = "password"
 address = "127.0.0.1:1729"
 database = "my_test_db"
 
-driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
+driver = TypeDB.driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
 
 #}}
 # Find users with more friends that Alex
@@ -1554,7 +1554,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let db_name = "test";
 
     // Connect to TypeDB server
-    let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
+    let driver = TypeDBDriver::new(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
 
 //}}
     // Find users with more friends that Alex

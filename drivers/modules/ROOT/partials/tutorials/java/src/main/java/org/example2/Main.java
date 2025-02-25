@@ -2,16 +2,6 @@ package org.example2;
 // tag::code[]
 // tag::import[]
 
-import com.typedb.driver.TypeDB;
-import com.typedb.driver.api.Credentials;
-import com.typedb.driver.api.Driver;
-import com.typedb.driver.api.DriverOptions;
-import com.typedb.driver.api.Transaction;
-import com.typedb.driver.api.answer.ConceptRow;
-import com.typedb.driver.api.answer.JSON;
-import com.typedb.driver.common.exception.TypeDBDriverException;
-import com.typedb.driver.jni.TypeDBDriver;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -19,7 +9,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 // end::import[]
@@ -29,19 +18,13 @@ public class Main {
     private static final String DB_NAME = "sample_app_db";
     private static final String SERVER_ADDR = "127.0.0.1:1729";
 
-    public enum Edition {
-        CORE,
-        CLOUD
-    }
-
-    private static final Edition TYPEDB_EDITION = Edition.CORE;
     private static final String USERNAME = "admin";
     private static final String PASSWORD = "password";
 
     // end::constants[]
     // tag::main[]
     public static void main(String[] args) {
-        try (Driver driver = driverConnect(TYPEDB_EDITION, SERVER_ADDR, USERNAME, PASSWORD)) {
+        try (Driver driver = driverConnect(SERVER_ADDR, USERNAME, PASSWORD)) {
             if (dbSetup(driver, DB_NAME, false)) {
                 System.out.println("Setup complete.");
                 queries(driver, DB_NAME);
@@ -83,28 +66,11 @@ public class Main {
 
     // end::queries[]
     // tag::connection[]
-    private static Driver driverConnect(Edition edition, String uri, String username, String password) throws TypeDBDriverException {
-        if (edition == Edition.CORE) {
-            // tag::driver_new_core[]
-            Driver driver = TypeDB.coreDriver(
-                    uri,
-                    new Credentials(username, password),
-                    new DriverOptions(false, null)
-            );
-            // end::driver_new_core[]
-            return driver;
-        }
-        if (edition == Edition.CLOUD) {
-            // tag::driver_new_cloud[]
-            Driver driver = TypeDB.cloudDriver(
-                    Set.of(uri),
-                    new Credentials(username, password),
-                    new DriverOptions(true, null)
-            );
-            // end::driver_new_cloud[]
-            return driver;
-        }
-        return null;
+    private static Driver driverConnect(String uri, String username, String password) throws TypeDBDriverException {
+        // tag::driver_new[]
+        Driver driver = TypeDB.driver(uri, new Credentials(username, password), new DriverOptions(false, null));
+        // end::driver_new[]
+        return driver;
     }
     // end::connection[]
 

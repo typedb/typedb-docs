@@ -12,12 +12,6 @@ use typedb_driver::{answer::{ConceptRow, JSON}, Credentials, DriverOptions, Erro
 static DB_NAME: &str = "sample_app_db";
 static SERVER_ADDR: &str = "127.0.0.1:1729";
 
-enum Edition {
-    Core,
-    Cloud,
-}
-
-static TYPEDB_EDITION: Edition = Edition::Core;
 static USERNAME: &str = "admin";
 static PASSWORD: &str = "password";
 
@@ -222,37 +216,21 @@ async fn queries(driver: &TypeDBDriver, db_name: &str) -> Result<(), Box<dyn Err
 // WARNING: keep when changing the AsRef and signatures, ensure they aren't required as-is for code snippets throughout docs
 // tag::connection[]
 async fn driver_connect(
-    edition: &Edition,
     uri: &str,
     username: impl AsRef<str>,
     password: impl AsRef<str>,
 ) -> Result<TypeDBDriver, typedb_driver::Error> {
     let username = username.as_ref();
     let password = password.as_ref();
-    match edition {
-        Edition::Core => {
-            #[allow(clippy::let_and_return, reason = "tutorial readability")]
-            // tag::driver_new_core[]
-            let driver = TypeDBDriver::new_core(
-                &uri,
-                Credentials::new(username, password),
-                DriverOptions::new(false, None).unwrap(),
-            ).await;
-            // end::driver_new_core[]
-            driver
-        }
-        Edition::Cloud => {
-            #[allow(clippy::let_and_return, reason = "tutorial readability")]
-            // tag::driver_new_cloud[]
-            let driver = TypeDBDriver::new_cloud(
-                &vec![&uri],
-                Credentials::new(username, password),
-                DriverOptions::new(true, None).unwrap(),
-            ).await;
-            // end::driver_new_cloud[]
-            driver
-        }
-    }
+    #[allow(clippy::let_and_return, reason = "tutorial readability")]
+    // tag::driver_new[]
+    let driver = TypeDBDriver::new(
+        &uri,
+        Credentials::new(username, password),
+        DriverOptions::new(false, None).unwrap(),
+    ).await;
+    // end::driver_new[]
+    driver
 }
 // end::connection[]
 
@@ -362,7 +340,7 @@ async fn db_setup(driver: &TypeDBDriver, db_name: &str, db_reset: bool) -> Resul
 #[tokio::main]
 async fn main() {
     println!("Sample App");
-    let driver = driver_connect(&TYPEDB_EDITION, SERVER_ADDR, USERNAME, PASSWORD).await
+    let driver = driver_connect(SERVER_ADDR, USERNAME, PASSWORD).await
         .map_err(|err| {
             println!("{err}");
             process::exit(1);

@@ -19,7 +19,7 @@ class BaseRunner(ABC):
         self.failure_count = 0
 
     def reset_local_databases(self):
-        driver = TypeDB.core_driver(address=self.uri, credentials=Credentials(self.username,self.password), driver_options=DriverOptions())
+        driver = TypeDB.driver(address=self.uri, credentials=Credentials(self.username,self.password), driver_options=DriverOptions())
         for database in driver.databases.all():
             database.delete()
 

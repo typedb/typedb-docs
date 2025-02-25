@@ -30,11 +30,6 @@ TEST_FAIL_COMMIT_VAL = "commit"
 TEST_FAIL_RUNTIME_VAL = "runtime"
 
 
-class Edition(Enum):
-    Cloud = 1
-    Core = 2
-
-
 class FailureMode(Enum):
     Runtime = 1
     Commit = 2
@@ -49,7 +44,6 @@ class TypeqlRunner:
         self.failure_count = 0
 
         # Tql specific
-        self.edition = Edition.Core
         self.username = "admin"
         self.password = "password"
         self.db = "docs_test"
@@ -57,12 +51,7 @@ class TypeqlRunner:
         self.driver = self.create_driver()
 
     def create_driver(self) -> Driver:
-        if self.edition is Edition.Core:
-            driver = TypeDB.core_driver(self.uri, Credentials(self.username, self.password), DriverOptions(False, None))
-            return driver
-        if self.edition is Edition.Cloud:
-            driver = TypeDB.cloud_driver([self.uri], Credentials(self.username, self.password), DriverOptions(False, None))
-            return driver
+        return TypeDB.driver(self.uri, Credentials(self.username, self.password), DriverOptions(False, None))
 
     def delete_db(self):
         if self.driver.databases.contains(self.db):
