@@ -130,32 +130,8 @@ Restart the terminal window for the changes to environment variables to take eff
 
 TypeDB Console can connect to TypeDB CE, TypeDB Cloud instances, or TypeDB Enterprise deployments.
 Running TypeDB Console initiates a network connection to a TypeDB server.
-//
-// [tabs]
-// ====
-// Cloud / Enterprise::
-// +
-// --
-// // tag::connect_cloud_console[]
-// .Connect to TypeDB Cloud or TypeDB Enterprise
-// [source,console]
-// ----
-// typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
-// ----
-//
-// You will be prompted for a password.
-//
-// The `--cloud` argument is used to set the TypeDB Cloud server address and port to connect to,
-// for example, `\https://abcdef-0.cluster.typedb.com:80`.
-//
-// // end::connect_cloud_console[]
-// --
-//
-// Community Edition::
-// +
-// --
-// // tag::connect_ce_console[]
-// .Connect to TypeDB Community Edition
+
+.Connect to TypeDB
 [source,console]
 ----
 typedb console --address=<server-address> --username=<username>
@@ -163,16 +139,11 @@ typedb console --address=<server-address> --username=<username>
 
 You will be prompted for a password.
 
-// The `--core` argument is used to set the TypeDB Community Edition server IP address and port to connect to, for example, `10.0.0.5:1729`.
-// // end::connect_ce_console[]
-
 [NOTE]
 =====
 The default username and password are `admin` and `password`.
 After connecting for the first time, you will be able to xref:{page-version}@manual::configuring/users.adoc#_first_login[change the password].
 =====
-// --
-// ====
 
 As a result, you get a welcome message from TypeDB Console followed by a command line prompt.
 
