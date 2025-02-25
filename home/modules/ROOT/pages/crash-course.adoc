@@ -364,7 +364,7 @@ Open your query file. Then click the run button to run your query. Finally, use 
 
 Let us dissect the second query in a bit more detail.
 
-* In the first line of the query we introduce the relation type `friendship` with a `friend` role (*programmer-lingo*: think _trait_ that can then be "`implemented`" by other types). In the same line, we also declare that each friendship requires _exactly two friends_ when created (`card` is short for "`cardinality`", and is a first example of an *annotation*. Annotations make schema statements much more specific - but more on that later).
+* In the first line of the query we introduce the relation type `friendship` with a `friend` role (*programmer-lingo*: think _trait_ that can then be "`implemented`" by other types). In the same line, we also declare that each friendship requires _exactly two friends_ when created (`card` is short for "`cardinality`", and is a first example of an *annotation*. Annotations make schema statements much more specific - but more on that in a moment).
 * In the second line, we then define that users _can play_ the role of friends in friendships (more *programmer-lingo*: the type `user` _implements_ the "`friend-role`" trait).
 
 Let's see a few more definition queries to get a feel of database schemas in TypeDB.
@@ -900,7 +900,7 @@ Console::
 +
 --
 
-In order to insert a friendship, we need to refer to users that will play the role of friends in the friendship (recall: each friendship takes two friends as specified in the schema; feel free to experiment though, and see what error messages TypeDB will give you when trying to insert triple friendships). That's where variables come into play.
+In order to insert a friendship, we need to refer to users that will play the role of friends in the friendship (recall: each friendship takes two friends as specified in the schema; feel free to experiment though, and see what error messages TypeDB will give you when trying to insert triple friendships). That's where variables come into play! Let's run the following query:
 
 ////
 [,typeql]
@@ -909,19 +909,18 @@ In order to insert a friendship, we need to refer to users that will play the ro
 insert
   $x isa user, has username "grothendieck_25";
   $y isa user, has username "hartshorne";
-  friendship (friend: $x, friend: $y); # alternatively: $z isa friendship (friend: $x, friend: $y);
+  friendship (friend: $x, friend: $y);
 # end::insert5[]
 ----
 ////
 [,typeql]
 ----
-#!test[write, db=my_test_db, fail_at=runtime]
+#!test[write, db=my_test_db]
 include::./crash-course.adoc[tag=insert5]
 ----
+This inserts two new users with a `friendship` relation between them. The last line is a shorthand, and could itself be written as `$f isa friendship (friend: $x, friend: $y);` if you'd want to further use the variable `$f`.
 
-This inserts two new users with a `friendship` relation between them.
-
-What if we want to create a `friendship` relation between two existing users already in the database? That's a two-stage query pipeline - (1) retrieve them with `match`; (2) `insert` the new `friendship`.
+But what if we want to create a `friendship` relation between two existing users already in the database? That requires a two-stage *query pipeline* - (1) retrieve the user with a `match` *stage*; (2) `insert` the new `friendship`. We will discuss pipelines in more detail below; for now let's just run one:
 
 ////
 [,typeql]
@@ -940,11 +939,12 @@ insert
 ////
 [,typeql]
 ----
-#!test[write, db=my_test_db, fail_at=runtime]
+#!test[write, db=my_test_db]
 include::./crash-course.adoc[tag=insert6]
 ----
+This query first matches three existing users, and inserts three new friendships between them.
 
-Don't forget to commit your changes whenever you want to persist changes. Now it's your turn: feel free to similarly create a university, and enrol some of your users in it (using `enrolment` relations).
+Don't forget to commit your changes whenever you want to persist changes. Feel free to insert more data, e.g., create a university and enrol some of your users in it using our `enrolment` relations!
 --
 
 Python::
@@ -963,12 +963,12 @@ database = "my_test_db"
 driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
 
 #}}
-# Try to insert a user without username (will fail)
+# Insert two new users and a friendship between them
 query_5 = f"""
 include::./crash-course.adoc[tag=insert5]
 """
 
-# Insert a user with username
+# Insert three friendships between existing users
 query_6 = f"""
 include::./crash-course.adoc[tag=insert6]
 """
@@ -978,8 +978,8 @@ include::./crash-course.adoc[tag=insert6]
 with driver.transaction(database, TransactionType.WRITE) as tx:
 
     # Send queries
-    tx.query(query_2).resolve()
-    tx.query(query_3).resolve()
+    tx.query(query_5).resolve()
+    tx.query(query_6).resolve()
 
     # Commit your changes
     tx.commit()
@@ -1006,12 +1006,12 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
 
 //}}
-    // Try to insert a user without username (will fail)
+    // Insert two new users and a friendship between them
     query_5 = r#"
 include::./crash-course.adoc[tag=insert5]
     "#;
 
-    // Insert a user with username
+    // Insert three friendships between existing users
     query_6 = r#"
 include::./crash-course.adoc[tag=insert6]
     "#;
@@ -1042,168 +1042,32 @@ Open your query file. Then click the run button to run your query. Finally, use 
 --
 ====
 
-Easy!
+Inserting data is easy!
 
-Deleting and updating data work in a similar vein, with one generalization: deleting and updating requires us to first *match* the data that we want to delete or update. This brings us to the topic of *data pipelines*.
+And deleting and updating data works in a similar vein, with one additional detail: deleting and updating _requires_ us to first `match` the data that we want to delete or update, whereas for inserts we saw that this was optional. This brings us to the topic of *data pipelines*.
 
-Just like in functional programming, where you can "`map`" and "`operate`" on an iterator of data, pipelines in TypeDB allow you do chain data operations together. For example:
+== Data pipelines in 100 seconds
 
-* First read some data from the database;
-* Feed this data into an update operation that updates some of the data;
-* Now, the update operation (similar to other `write` operations like `insert` and `delete`) returns the data it operated one and see we could use this data
+Just like in functional programming, where you can "`map`" and "`operate`" on an iterator of data and _chain_ these operations in a modular way, pipelines in TypeDB allow you to step-wise (or, rather, "`stage-wise`") compose database operations. For example, you could:
 
-all data write operations can be used as pipeline stages, and they all use essentially the same declarative statement-by-statement syntax. For example, the following pipeline adds "VIP" to a user's status, then traverses all friendships of that user, and marks friends as VIPs themselves if they now have more than five VIP friends.
+* First read some data from the database using a `match` stage;
+* Then feed the data you are reading into an insert operation that creates additional data;
+* Now, the insert operation (similar to other `write` operations like `update` and `delete`) itself returns data and this output data can be feed into another stage; for example, a further `match` stage that retrieves further connected data and that we may want to operate on in a "`next step`".
+
+We can continue chaining pipeline stages in this way, with the output data of one stage becoming the input data of the next stage. Let's see an example of this in practice.
+
+
 [tabs]
 ====
 Console::
 +
 --
-
-In order to insert a friendship, we need to refer to users that will play the role of friends in the friendship (recall: each friendship takes two friends as specified in the schema; feel free to experiment though, and see what error messages TypeDB will give you when trying to insert triple friendships). That's where variables come into play.
-
-////
-[,typeql]
-----
-# tag::insert5[]
-insert
-  $x isa user, has username "grothendieck_25";
-  $y isa user, has username "hartshorne";
-  friendship (friend: $x, friend: $y); # alternatively: $z isa friendship (friend: $x, friend: $y);
-# end::insert5[]
-----
-////
-[,typeql]
-----
-#!test[write, db=my_test_db, fail_at=runtime]
-include::./crash-course.adoc[tag=insert5]
-----
-
-This inserts two new users with a `friendship` relation between them.
-
-What if we want to create a `friendship` relation between two existing users already in the database? That's a two-stage query pipeline - (1) retrieve them with `match`; (2) `insert` the new `friendship`.
+The following pipeline adds "VIP" to a user's status, then traverses all friendships of that user, and marks friends as VIPs themselves if they now have more than three VIP friends.
 
 ////
 [,typeql]
 ----
-# tag::insert6[]
-match
-  $u0 isa user, has username "user_0";
-  $u1 isa user, has username "user_1";
-  $u2 isa user, has username "user_2";
-insert
-  friendship (friend: $u0, friend: $u1);
-  friendship (friend: $u0, friend: $u2);
-  friendship (friend: $u1, friend: $u2);
-# end::insert6[]
-----
-////
-[,typeql]
-----
-#!test[write, db=my_test_db, fail_at=runtime]
-include::./crash-course.adoc[tag=insert6]
-----
-
-Don't forget to commit your changes whenever you want to persist changes. Now it's your turn: feel free to similarly create a university, and enrol some of your users in it (using `enrolment` relations).
---
-
-Python::
-+
---
-[,python]
-----
-#{{
-from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions
-
-user = "admin"
-pw = "password"
-address = "127.0.0.1:1729"
-database = "my_test_db"
-
-driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
-
-#}}
-# Try to insert a user without username (will fail)
-query_5 = f"""
-include::./crash-course.adoc[tag=insert5]
-"""
-
-# Insert a user with username
-query_6 = f"""
-include::./crash-course.adoc[tag=insert6]
-"""
-
-
-# Open a transaction
-with driver.transaction(database, TransactionType.WRITE) as tx:
-
-    # Send queries
-    tx.query(query_2).resolve()
-    tx.query(query_3).resolve()
-
-    # Commit your changes
-    tx.commit()
-----
---
-
-Rust::
-+
---
-[,rust]
-----
-//{{
-use typedb_driver::{Credentials, DriverOptions, TransactionType, TypeDBDriver};
-use std::error::Error;
-
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn Error>> {
-    let address = "127.0.0.1:1729";
-    let user = "admin";
-    let pw = "password";
-    let db_name = "test";
-
-    // Connect to TypeDB server
-    let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
-
-//}}
-    // Try to insert a user without username (will fail)
-    query_5 = r#"
-include::./crash-course.adoc[tag=insert5]
-    "#;
-
-    // Insert a user with username
-    query_6 = r#"
-include::./crash-course.adoc[tag=insert6]
-    "#;
-
-    // Open a transaction
-    let tx = driver.transaction(db_name, TransactionType::Write).await?;
-
-    // Send queries
-    let _ = tx.query(query_5).await?;
-    let _ = tx.query(query_6).await?;
-
-    // Commit your changes
-    tx.commit().await?;
-//{{
-
-    Ok(())
-}
-//}}
-----
---
-
-Studio::
-+
---
-Select your database using the database selector (image:{page-component-version}@home::studio-icons/database-none.png[width=128]), then select your transaction type in the top menu.
-
-Open your query file. Then click the run button to run your query. Finally, use the commit button (image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24]) to persist any changes made.
---
-====
-
-//!++
-[,typeql]
-----
+# tag::insert7[]
 match
   $user isa user, has username "user_0";
 insert $user has status "VIP";
@@ -1212,20 +1076,145 @@ match
   friendship (friend: $friend, friend: $friend-of-friend);
   $friend-of-friend has status "VIP";
 reduce $VIP-friend-count = count groupby $friend;
-match $VIP-friend-count > 5;
+match $VIP-friend-count > 3;
 insert $friend has status "VIP";
+# end::insert7[]
 ----
-//!--
-//!run
+////
+[,typeql]
+----
+#!test[write, db=my_test_db]
+include::./crash-course.adoc[tag=insert7]
+----
+Notice how the variable `$user` is re-used through the first three stages of the pipeline. While running the above query will return 0 answers if no friends of `"user_0"` have more than 2 "`VIP`" status friends themselves the pipeline still did some work. Let's verify this:
+////
+[,typeql]
+----
+# tag::insert8[]
+match
+  $user isa user, has status "VIP", has username $username;
+select $username;
+# end::insert8[]
+----
+////
+[,typeql]
+----
+#!test[write, db=my_test_db, count=1]
+include::./crash-course.adoc[tag=insert8]
+----
+The query first matches users with "`VIP`" status and their usernames, and then _selects_ only the username: `select` is *"`stream manipulation`"* stage with manipulates the data stream in a pipeline without calling back to the databases: in the case of `select`, this manipulation simply removes all non-selected variables from our results. (Try deleting the last line and comparing answers produced by the database.) The `reduce` stage in the previous example works similarly!
 
-See the xref:{page-version}@manual::CRUD/index.adoc[CRUD manual] for more.
+As always, don't forget to `commit` the changes that you want to persist.
+--
+
+Python::
++
+--
+[,python]
+----
+#{{
+from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions
+
+user = "admin"
+pw = "password"
+address = "127.0.0.1:1729"
+database = "my_test_db"
+
+driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
+
+#}}
+# A complex data pipeline
+query_7 = f"""
+include::./crash-course.adoc[tag=insert7]
+"""
+
+# Verify the pipeline did some work
+query_8 = f"""
+include::./crash-course.adoc[tag=insert8]
+"""
+
+
+# Open a transaction
+with driver.transaction(database, TransactionType.WRITE) as tx:
+
+    # Send queries
+    tx.query(query_7).resolve()
+    tx.query(query_8).resolve()
+
+    # Commit your changes
+    tx.commit()
+----
+--
+
+Rust::
++
+--
+[,rust]
+----
+//{{
+use typedb_driver::{Credentials, DriverOptions, TransactionType, TypeDBDriver};
+use std::error::Error;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn Error>> {
+    let address = "127.0.0.1:1729";
+    let user = "admin";
+    let pw = "password";
+    let db_name = "test";
+
+    // Connect to TypeDB server
+    let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
+
+//}}
+    // A complex data pipeline
+    query_7 = r#"
+include::./crash-course.adoc[tag=insert7]
+    "#;
+
+    // Verify the pipeline did some work
+    query_8 = r#"
+include::./crash-course.adoc[tag=insert8]
+    "#;
+
+    // Open a transaction
+    let tx = driver.transaction(db_name, TransactionType::Write).await?;
+
+    // Send queries
+    let _ = tx.query(query_7).await?;
+    let _ = tx.query(query_8).await?;
+
+    // Commit your changes
+    tx.commit().await?;
+//{{
+
+    Ok(())
+}
+//}}
+----
+--
+
+Studio::
++
+--
+Select your database using the database selector (image:{page-component-version}@home::studio-icons/database-none.png[width=128]), then select your transaction type in the top menu.
+
+Open your query file. Then click the run button to run your query. Finally, use the commit button (image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24]) to persist any changes made.
+--
+====
+
+[NOTE]
+====
+All read and write stages (`match`, `select`, `insert`, `delete`, `update`, ...) are can be pipelined; with the only exception being the `fetch` stage as this returns JSON documents (and not "`concept rows`", TypeDB's internal answer format). In contrast, schema queries (like `define`, `undefine`, `redefine`) do not return answers, and thus cannot be used in pipelines.
+====
+
+For a full rundown of pipeline stages, see the xref:{page-version}@manual::CRUD/index.adoc[CRUD manual]!
 
 
 
 [[read]]
 == "`Query programming`" with TypeDB
 
-The query language of TypeDB is *TypeQL*. It combines declarative and functional programming concepts with the simplicity of natural language. Here's a simple TypeQL query to get us started:
+The query language of TypeDB is *TypeQL* (did we mention this?). It combines declarative and functional programming concepts with the simplicity of natural language. Let's see
 
 [,typeql]
 ----
