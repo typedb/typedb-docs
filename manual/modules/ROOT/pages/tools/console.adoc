@@ -402,9 +402,12 @@ Successfully deleted database.
 ====
 
 [#_run_a_query_from_a_file]
-== Run a query from a file
+== Run query(ies) from a file
 
 To run a series of TypeQL queries stored in a file from _within_ a REPL, use the `source <filename>` command.
+Each query should be separated with an empty newline. Note that this means long queries
+cannot be split over multiple lines containing empty lines. Use comments instead.
+
 This command is available from the <<_transaction_level>> REPL:
 
 .Interactive mode source usage example
