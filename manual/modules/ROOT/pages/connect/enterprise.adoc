@@ -41,7 +41,7 @@ Rust::
 --
 [,rust,indent=0]
 ----
-            let uri = format!("{}:{}", address, port);
+    let uri = format!("{}:{}", address, port);
 include::{page-version}@drivers::partial$tutorials/rust/src/main.rs[tags=driver_new]
 ----
 
@@ -52,7 +52,7 @@ Python::
 --
 [,python,indent=0]
 ----
-        uri = f"{address}:{port}"
+    uri = f"{address}:{port}"
 include::{page-version}@drivers::partial$tutorials/python/sample.py[tags=driver_new]
 ----
 --
@@ -62,7 +62,7 @@ Java::
 --
 [,java,indent=0]
 ----
-            uri = String.format("%s:%s", address, port)
+        uri = String.format("%s:%s", address, port)
 include::{page-version}@drivers::partial$tutorials/java/src/main/java/org/example2/Main.java[tags=driver_new]
 ----
 
