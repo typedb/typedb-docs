@@ -37,13 +37,9 @@ See the Console's downloadable packages.
 
 == Install
 
-Make sure Java 11+ is installed.
-TypeDB Console supports https://jdk.java.net[OpenJDK,window=_blank] and
-https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
-
 [NOTE]
 =====
-Java dependency is expected to be removed in 2025.
+If using versions previous to 3.1.0, you will need to install Java 11+.
 =====
 
 For installation instructions, follow the steps below for your OS:
@@ -132,60 +128,58 @@ Restart the terminal window for the changes to environment variables to take eff
 [#_connect_to_typedb]
 == Connect to TypeDB
 
-TypeDB Console can connect to all editions of TypeDB.
+TypeDB Console can connect to TypeDB CE, TypeDB Cloud instances, or TypeDB Enterprise deployments.
 Running TypeDB Console initiates a network connection to a TypeDB server.
-Use command line arguments to set connection parameters (if unset Console will try to connect to a TypeDB Community Edition server at the address `localhost:1729`):
-
-[tabs]
-====
-Cloud / Enterprise::
-+
---
-// tag::connect_cloud_console[]
-.Connect to TypeDB Cloud or TypeDB Enterprise
-[source,bash]
+//
+// [tabs]
+// ====
+// Cloud / Enterprise::
+// +
+// --
+// // tag::connect_cloud_console[]
+// .Connect to TypeDB Cloud or TypeDB Enterprise
+// [source,console]
+// ----
+// typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
+// ----
+//
+// You will be prompted for a password.
+//
+// The `--cloud` argument is used to set the TypeDB Cloud server address and port to connect to,
+// for example, `\https://abcdef-0.cluster.typedb.com:80`.
+//
+// // end::connect_cloud_console[]
+// --
+//
+// Community Edition::
+// +
+// --
+// // tag::connect_ce_console[]
+// .Connect to TypeDB Community Edition
+[source,console]
 ----
-typedb console --cloud=<server-address> --username=<username> --password --tls-enabled=true
+typedb console --address=<server-address> --username=<username>
 ----
 
 You will be prompted for a password.
 
-The `--cloud` argument is used to set the TypeDB Cloud server address and port to connect to,
-for example, `\https://abcdef-0.cluster.typedb.com:80`.
-
-// end::connect_cloud_console[]
---
-
-Community Edition::
-+
---
-// tag::connect_ce_console[]
-.Connect to TypeDB Community Edition
-[source,bash]
-----
-typedb console --core=<server-address> --username=<username> --password
-----
-
-You will be prompted for a password.
-
-The `--core` argument is used to set the TypeDB Community Edition server IP address and port to connect to, for example, `10.0.0.5:1729`.
-// end::connect_ce_console[]
+// The `--core` argument is used to set the TypeDB Community Edition server IP address and port to connect to, for example, `10.0.0.5:1729`.
+// // end::connect_ce_console[]
 
 [NOTE]
 =====
 The default username and password are `admin` and `password`.
 After connecting for the first time, you will be able to xref:{page-version}@manual::configuring/users.adoc#_first_login[change the password].
 =====
---
-====
+// --
+// ====
 
 As a result, you get a welcome message from TypeDB Console followed by a command line prompt.
 
 ----
-Welcome to TypeDB Console. You are now in TypeDB Wonderland!
-Copyright (C) Vaticle
+Welcome to TypeDB Console.
 
->
+>>
 ----
 
 See full list of available CLI arguments in the <<_command_line_arguments>> reference section below.
@@ -220,6 +214,24 @@ For a full list of commands on the Transaction level, see the <<_transaction_lev
 To send a query, while in Transaction level, type in or insert a TypeQL query and push btn:[Enter] twice.
 ====
 
+[WARNING]
+====
+As of version 3.1.0, the command to open a transaction differs:
+
+The new command, as of version 3.1.0:
+
+[source]
+----
+>> transaction read sample_db
+----
+
+Previously, before version 3.1.0:
+[source]
+----
+>> transaction sample_db read
+----
+====
+
 When opening a transaction, you can specify transaction options.
 For a full list of transaction options, see the <<_transaction_options>>.
 
@@ -232,7 +244,7 @@ The following example illustrates how to create a database, define a schema, and
 +
 [source,bash]
 ----
-typedb console --username=<username> --password
+typedb console --address=<server-address> --username=<username>
 ----
 
 . Now, run the following command to create a database:
@@ -246,8 +258,9 @@ This command opens a Transaction level REPL.
 Use it to send a define query and commit changes:
 +
 ----
-transaction sample_db schema
+transaction schema sample_db
 define entity user;
+
 commit
 ----
 
@@ -257,8 +270,9 @@ To send a query in the Transaction level, push btn:[Enter] *twice*, as a single 
 . Insert data with a `write` transaction:
 +
 ----
-transaction sample_db write
+transaction write sample_db
 insert $u isa user;
+
 commit
 ----
 
@@ -283,13 +297,13 @@ Run the following command in a terminal to start TypeDB and execute queries:
 [,bash]
 [source,bash]
 ----
-typedb console --username=<username> --password \
+typedb console --address=<server-address> --username=<username> \
 --command="database create sample_db" \
 --command="database list" \
---command="transaction sample_db schema" \
+--command="transaction schema sample_db" \
 --command="define entity user;" \
 --command="commit" \
---command="transaction sample_db write" \
+--command="transaction write sample_db" \
 --command='insert $u isa user;' \
 --command="commit"
 ----
@@ -300,25 +314,24 @@ typedb console --username=<username> --password \
 .Output
 ----
 + database create sample_db
-Database 'sample_db' created
+Successfully created database.
 + database list
 sample_db
-test
-+ transaction sample_db schema
++ transaction schema sample_db
 ++ define entity user;
-Success
+Finished schema query.
 ++ commit
-Transaction changes committed
-+ transaction sample_db write
+Successfully committed transaction.
++ transaction write sample_db
 ++ insert $u isa user;
-Finished validation and compilation...
-Finished writes. Streaming answers...
-
+Finished write query validation and compilation...
+Finished writes. Streaming rows...
    --------
-    $u | iid 0x1e00000000000000000000 isa user
+    $u | isa user, iid 0x1e00000000000000000000
    --------
-
 Finished. Total answers: 1
+++ commit
+Successfully committed transaction.
 ----
 ====
 
@@ -335,41 +348,47 @@ To use a script file with commands, run Console with the `--script` argument and
 typedb console --script=<script-file-path>
 ----
 
+By convention, console __**s**__cripts, which can manipulate transactions and server state, use the `.tqls` extension.
+In contrast, files containing only TypeQL queries normally use the `.tql` extension.
+
 [NOTE]
 ====
-Each line in the script file is interpreted as one command, so multiline queries are not available in this mode.
-You can overcome this limitation, by calling a TypeQL query from a file with the `source` command.
-For example, see the <<_run_a_query_from_a_file>> section below.
+Scripts use the exact same format as the interactive REPL. This means queries in the script must be terminated with an empty newline.
 ====
 
 [#_script_example]
 Prepare the script to run and save it to a local file.
-For example, let's try the following `script.txt` file:
+For example, let's try the following `script.tqls` file:
 
-.script.txt
+.script.tqls
 ----
 database create test
-transaction test schema
-    define entity user owns name; attribute name value string;
+transaction schema test
+    define
+      entity user owns name;
+      attribute name value string;
+
     commit
-transaction test write
+transaction write test
     insert $u isa user, has name "Bob";
+
     commit
-transaction test read
+transaction read test
     match $u isa user, has name $n; select $n;
+
     close
 database delete test
 ----
 
 Execute the script with TypeDB Console:
 
-.Run script.txt
+.Run script.tqls
 [source,bash]
 ----
-typedb console --username=<username> --password --script=<PATH/script.txt>
+typedb console --username=<username> --password --script=<PATH/script.tqls>
 ----
 
-Where `<PATH/script.txt>` is the path to the file and the filename.
+Where `<PATH/script.tqls>` is the path to the file and the filename.
 
 .See the output
 [%collapsible]
@@ -377,59 +396,55 @@ Where `<PATH/script.txt>` is the path to the file and the filename.
 .Output
 ----
 + database create test
-Database 'test' created
-+ transaction test schema
+Successfully created database.
++ transaction schema test
 ++ define entity user owns name; attribute name value string;
-Success
+Finished schema query.
 ++ commit
-Transaction changes committed
-+ transaction test write
+Successfully committed transaction.
++ transaction write test
 ++ insert $u isa user, has name "Bob";
-Finished validation and compilation...
-Finished writes. Streaming answers...
-
+Finished write query validation and compilation...
+Finished writes. Streaming rows...
    --------
-    $u | iid 0x1e00000000000000000000 isa user
+    $u | isa user, iid 0x1e00000000000000000000
    --------
-
 Finished. Total answers: 1
 ++ commit
-Transaction changes committed
-+ transaction test read
+Successfully committed transaction.
++ transaction read test
 ++ match $u isa user, has name $n; select $n;
-Finished validation and compilation...
-Streaming answers...
-
+Finished read query validation and compilation...
+Streaming rows...
    --------
-    $n | Bob isa name
+    $n | isa name "Bob"
    --------
-
 Finished. Total answers: 1
 ++ close
 Transaction closed
 + database delete test
-Database 'test' deleted
+Successfully deleted database.
 ----
 ====
 
 [#_run_a_query_from_a_file]
 == Run a query from a file
 
-To run a TypeQL query stored in a file, use the `source <filename>` command.
+To run a series of TypeQL queries stored in a file from _within_ a REPL, use the `source <filename>` command.
 This command is available from the <<_transaction_level>> REPL:
 
 .Interactive mode source usage example
 ----
-transaction sample_db schema
+transaction schema sample_db
 source schema.tql
 commit
 ----
 
-The `schema.tql` file should be located in the working directory, when you run TypeDB Console, and contain a valid define query.
+The `schema.tql` file should be located in the working directory or be an absolute path.
 
-=== Script using query files examples
+=== Combining scripts and query files
 
-For example, let's use the following script file to:
+Let's use a script file to:
 
 * Create the `sample_db` database
 * Load the schema form the xref:schema-include[schema.tql,window=_blank] file in a schema transaction
@@ -440,14 +455,15 @@ For example, let's use the following script file to:
 .Script file
 ----
 database create sample_db
-transaction sample_db schema
+transaction schema sample_db
     source schema.tql
     commit
-transaction sample_db write
+transaction write sample_db
     source data.tql
     commit
-transaction sample_db read
+transaction read sample_db
     match $u isa user; fetch { "user": { $u.* } };
+
     close
 database delete sample_db
 ----
@@ -470,7 +486,7 @@ include::{page-version}@home::example$tql/schema_small.tql[]
 .data.tql
 [,typeql]
 ----
-include::{page-version}@manual::example$tql/insert_data.tql[tags=simple-insert]
+include::{page-version}@home::example$tql/data_small_single_query.tql[]
 ----
 ====
 
@@ -483,40 +499,47 @@ Run the script with TypeDB Console using the `--script` argument, as you did bef
 .Output
 ----
 + database create sample_db
-Database 'sample_db' created
-+ transaction sample_db schema
+Successfully created database.
++ transaction schema sample_db
 ++ source schema.tql
-Finished writes
+Successfully executed 1 queries.
 ++ commit
-Transaction changes committed
-+ transaction sample_db write
+Successfully committed transaction.
++ transaction write sample_db
 ++ source data.tql
-Finished writes
+Successfully executed 1 queries.
 ++ commit
-Transaction changes committed
-+ transaction sample_db read
+Successfully committed transaction.
++ transaction read sample_db
 ++ match $u isa user; fetch { "user": { $u.* } };
-Finished validation and compilation...
+Finished read query validation and compilation...
 Streaming documents...
-
 {
-    "user": {
-        "email": "bob@typedb.com",
-        "username": "Bob"
-    }
+  "user": {
+    "username": "masako-holley",
+    "email": "masako.holley@typedb.com",
+    "phone": "185800100011"
+  }
 }
 {
-    "user": {
-        "email": "alice@typedb.com",
-        "username": "Alice"
-    }
+  "user": {
+    "email": "pearle.goodman@typedb.com",
+    "username": "pearle-goodman",
+    "phone": "171255522222"
+  }
 }
-
-Finished. Total answers: 2
+{
+  "user": {
+    "phone": "110000000",
+    "username": "kevin-morrison",
+    "email": "kevin.morrison@typedb.com"
+  }
+}
+Finished. Total answers: 3
 ++ close
 Transaction closed
 + database delete sample_db
-Database 'sample_db' deleted
+
 ----
 ====
 
@@ -581,21 +604,10 @@ The following arguments can be used when invoking TypeDB Console:
 [cols=".^3,^.^1,5"]
 |===
 ^| Argument ^| Alias ^| Description
-
-3+^| TypeDB Community Edition specific
-| `--core=<address>`
+| `--address=<address>`
 |
 | Address to which Console will connect to: IP address and IP port separated by colon.
-Default value: `localhost:1729`. +
-(*TypeDB Community Edition only*)
-
-3+^| TypeDB Cloud / Enterprise specific
-| `--cloud=<address>`
-|
-| Address to which Console will connect to. +
-(*TypeDB Cloud / Enterprise only*)
-
-3+^| Common
+Note that by default, TLS is enabled, which will require an `https://` endpoint.
 | `--help`
 | `-h`
 | Show help message.
@@ -604,25 +616,26 @@ Default value: `localhost:1729`. +
 |
 | Username. +
 
-| `--password`
+| `--password=<password>`
 |
-| Enable a password prompt. +
+| Explicitly pass in the password (not recommended). Interactive sessions should let the console safely request for the password. +
 
-| `--tls-enabled`
+| `--tls-disabled`
 |
-| Whether to connect with TLS encryption. +
+| Disable TLS connections. For TypeDB Cloud deployments, there is **no reason to use this setting** as they can only operate with network TLS encryption.
+Typically used for development or local work. **When using this option, username/password will be sent over the network in plaintext**.
 
 | `--tls-root-ca=<path>`
 |
-| Path to the TLS root CA file. +
+| Path to the TLS root CA file, when the server is using self-managed certificates. +
 
 | `--command=<commands>`
 |
-| Commands to run in the Console, without interactive mode.
+| Commands to run in the Console, without interactive mode. Repeated invocations will be run in the order provided.
 
 | `--script=<script>`
 |
-| Script with commands to run in the Console, without interactive mode.
+| Script with commands to run in the Console, without interactive mode. Repeated invocations will be run in order provided Repeated invocations will be run in the order provided.
 
 | `--version`
 | `-V`
@@ -661,12 +674,12 @@ Use these commands at the <<_server_level,Server level>> of TypeDB's <<_REPL,REP
 | `user list`
 | List all users on the server. +
 
-| `user create <username>`
-| Create a user with the name `<username>` on the server. +
+| `user create <username> [password]`
+| Create a user with the name `<username>` on the server. When the password is omitted, it will be safely requested from the user. +
 
 | `user password-update <username> [new-password]`
 a| [#_change_password]
-Set password for the user with the name `username`. +
+Set password for the user with the name `username`. When the new password is omitted, it will be safely requested from the user. +
 
 | `user delete <username>`
 | Delete a user with the name `<username>` on the server. +
@@ -735,6 +748,15 @@ Push btn:[Enter] twice (once more on a new line) to send a query.
 =====
 Coming soon.
 =====
+
+[#_navigation]
+== Navigation
+
+TypeDB console has several commonly-used REPl features:
+
+1. Use the UP and DOWN arrows to navigate the current REPL's history - server and transaction histories are retained separately
+2. Type in a search prefix, then use UP and DOWN arrows to search the history for previous commands that share the written prefix
+3. Use ctrl+r to search through history for a specific term or phrase
 
 [#_version_compatibility]
 == Version Compatibility
