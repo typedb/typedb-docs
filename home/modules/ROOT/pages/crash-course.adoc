@@ -121,7 +121,7 @@ From Console's server-level interface, you can open a `schema` transaction with 
 ----
 transaction schema my_test_db
 ----
-This will open a new *transaction-level interface*. In it, you will be able to run queries. You can similarly open `write` or `read` transactions. To commit a transaction use the transaction-level command:
+This will open a new *transaction-level interface*. In it, you will be able to run queries. You can similarly open `write` or `read` transactions. To close a transaction use the transaction-level command:
 [,console]
 ----
 close
@@ -215,15 +215,17 @@ Open your query file. Then click the run button to run your query. Finally, use 
 
 == TypeDB's data model at a glance
 
-Before we define a database schema for our newly created database, let's have a quick look at TypeDB's data model. In TypeDB, data is stored in *types*, which can be either
+Before we define a database schema for our newly created database, let's have a quick look at TypeDB's data model. In TypeDB, data is stored in *types*, which can be either:
 
-* *entity* types (e.g., a type of all the ``user``s in your app)
-* *relation* types (e.g., all the ``friendship``s of users)
-* *attribute* types (e.g., the ``username``s of ``user``s, or the ``start_date``s of ``friendship``s)
+* *entity* types (e.g., a type of all the ``user``'s in your app)
+* *relation* types (e.g., all the ``friendship``'s of users)
+* *attribute* types (e.g., the ``username``'s of ``user``'s, or the ``start_date``'s of ``friendship``'s)
 
-Stored data objects are called *instances* of types, and instance may reference other instances. This simple mechanism of "`referencing`" underpins the distinction of entity, relation, and attribute types above. For example, to create a relation instance we will reference multiple other entities or relations, which we call the relation's *role players*. Similarly, to create attribute instance we will reference a single entity or relation instances, which we call the attribute's *owner*. Makes sense, right?
+Stored data objects are called *instances* of types, and instances may reference other instances. This simple mechanism of "`referencing`" underpins the distinction of entity, relation, and attribute types above.
 
-TypeDB's data model is conceptually simple, but at the same time extremely systematic and flexible. This allows our type system to unify concepts from *relational*, *document*, and *graph* DBMSs, blending them with a modern typed programming paradigm. Now, let's write our first queries and see how this plays out!
+For example, to create a relation instance we must reference multiple other entities or relations, which we call the relation's *role players*. Similarly, to create attribute instance we will reference a single entity or relation instances, which we call the attribute's *owner*. Makes sense, right?
+
+TypeDB's data model is conceptually simple, but at the same time extremely systematic and flexible. This is what enables TypeDB's type system to unify concepts from *relational*, *document*, and *graph* DBMSs, and blend them with a modern typed programming paradigm. Now, let's write our first queries!
 
 
 [NOTE]
@@ -235,20 +237,19 @@ A quick *tip* if you are using Console for this course. Queries on this page can
 [[schema]]
 == Defining your type schema
 
-Let's define a simple database schema: we want to store ``user``'s and ``username``'s in our database and, in addition, let's also record ``friendship``'s between users. Such types in our type schema are defined with `define` queries like so.
+Let's define a simple database schema: we want to store ``user``'s and their ``username``'s in our database and, in addition, let's also record ``friendship``'s between users. Types in our database schema are defined with `define` queries as follows.
 
 [tabs]
 ====
 Console::
 +
 --
-From the server-level interface open a schema transaction with the command `transaction schema my_test_db` as discussed above. Then paste the following query into the transaction-level console interface:
+From the server-level interface open a schema transaction with the command `transaction schema my_test_db` as explained above. Then paste the following query into the transaction-level console interface:
 ////
 tag::define1[]
 define
-  entity user, owns username, owns status;
+  entity user, owns username;
   attribute username, value string;
-  attribute status, value string;
 end::define1[]
 ////
 [,typeql]
@@ -271,7 +272,7 @@ end::define2[]
 include::./crash-course.adoc[tag=define2]
 ----
 
-Finally, commit the transaction by typing `commit` and press kbd:[Enter].
+Finally, commit the transaction by typing `commit` and press kbd:[Enter]. You have just defined the first few types in your database schema, congratulations!
 --
 
 Python::
@@ -370,17 +371,19 @@ Open your query file. Then click the run button to run your query. Finally, use 
 
 Let us dissect the second query in a bit more detail.
 
-* In the first line of the query we introduce the relation type `friendship` with a `friend` role (*programmer-lingo*: think _trait_ that can then be "`implemented`" by other types). In the same line, we also declare that each friendship requires _exactly two friends_ when created (`card` is short for "`cardinality`", and is a first example of an *annotation*. Annotations make schema statements much more specific - but more on that in a moment).
-* In the second line, we then define that users _can play_ the role of friends in friendships (more *programmer-lingo*: the type `user` _implements_ the "`friend-role`" trait).
+* In the first line of the query we introduce the relation type `friendship` with a `friend` *role* (in _programmer lingo_: think of a role as a *trait* that other types can implement). In the same line, we also declare that each friendship requires _exactly two friends_ when created (`card` is short for "`cardinality`", and is a first example of an *annotation*. Annotations make schema statements much more specific - but more on that in a moment).
+* In the second line, we then define that users *can play* the role of friends in friendships (in _programmer lingo_: the type `user` *implements* the "`friend-role`" trait).
 
-Let's see a few more definition queries to get a feel of database schemas in TypeDB.
+It's worth pointing out that roles are only one of two kinds of traits that types may implement, the other being *ownership*: for example, in our first query above we defined that the `user` type "`implements the username owner trait`". These traits make our life very easy as we'll see, especially when dealing with type hierarchies!
+
+Let's write a few more definition queries to get a feel of database schemas in TypeDB.
 
 [tabs]
 ====
 Console::
 +
 --
-First, note that relation types, like entity types, are types of "`first-class objects`" in our type system. In particular, they too can have attributes (or may play roles in other relation types). For example, run the following query:
+First, note that relation types, like entity types, are types of "`first-class objects`" in our type system. In particular, they too can own attributes (and may play roles in other relation types). As an example, let's run the following query:
 
 ////
 [,typeql]
@@ -398,16 +401,17 @@ define
 include::./crash-course.adoc[tag=define3]
 ----
 
-This defines a `start-date` attribute and then declares each friendship may own a `start_date` (yet more programmer-lingo: the type `friendship` implements the "`start-date-owner`" trait). The `@card` annotation specifies that friendships own _between_ zero or one start dates. This is the default cardinality, so you don't actually need `@card` here at all.
+This defines a `start-date` attribute and then declares each friendship may own a `start_date` (i.e., the type `friendship` implements the "`start-date owner`" trait). The definition is followed by a `@card` annotation, which specifies that friendships own _between_ zero or one start dates. In fact, this is the default cardinality, so you don't actually need `@card` here at all.
 
-The next query illustrates usage of "`unbounded`" cardinality together with another useful annotation, `@key` (which, in this case, specifies that the username of a user should uniquely identify a user, i.e., it is a _key attribute_).
+The next query illustrates usage of "`unbounded`" cardinality together with another useful annotation, `@key` (which, in this case, specifies that the `username` of a `user` should uniquely identify a user, i.e., it is a _key attribute_).
 
 ////
 [,typeql]
 ----
 # tag::define4[]
 define
-  user owns status @card(0..);  # as many status attributes as you wish
+  attribute status, value string;
+  user owns status @card(0..);
   user owns username @key;
 # end::define4[]
 ----
@@ -438,7 +442,7 @@ define
 include::./crash-course.adoc[tag=define5]
 ----
 
-As before, don't forget to commit the transaction by typing `commit` and press kbd:[Enter].
+As before, don't forget to commit the transaction by typing `commit` and pressing kbd:[Enter].
 --
 
 Python::
@@ -548,13 +552,13 @@ Open your query file. Then click the run button to run your query. Finally, use 
 ====
 
 
-Finally, yet another fundamental and powerful feature of TypeDB's type system is *subtyping*: analogous to modern programming language features, this gives us the ability to organize our types hierarchically. The next example illustrates this briefly.
+Finally, yet another fundamental and powerful feature of TypeDB's type system is *subtyping*. Analogous to modern programming language features, this gives us the ability to organize our types hierarchically. The next example illustrates how this works.
 [tabs]
 ====
 Console::
 +
 --
-Let's define two types that specialize our earlier `organization` type: namely, we'll define `company` and `university` as special cases, i.e., subtypes of `organization`. The keyword to define subtypings is `sub`.  the following query:
+Let's define two types that specialize our earlier `organization` type: namely, we'll define `company` and `university` as special cases, i.e., subtypes of `organization`. The keyword to define subtypings is `sub`. Run the following query:
 ////
 [,typeql]
 ----
@@ -570,7 +574,7 @@ define
 #!test[schema, db=my_test_db]
 include::./crash-course.adoc[tag=define6]
 ----
-Note that we haven't defined any traits for companies and universities; indeed, all traits of the supertype `organization` are automatically inherited. That doesn't stop from defining new traits for our subtypes, of course:
+Note that we haven't defined any traits for companies and universities; indeed, all traits of the supertype `organization` are automatically *inherited*! That doesn't stop from defining new traits for our subtypes, of course:
 ////
 [,typeql]
 ----
@@ -588,7 +592,7 @@ define
 #!test[schema, db=my_test_db]
 include::./crash-course.adoc[tag=define7]
 ----
-Run the above query, and don't forget to commit the transaction by typing `commit` and press kbd:[Enter].
+Run the above query, and don't forget to commit the transaction by typing `commit` and pressing kbd:[Enter].
 --
 
 Python::
@@ -686,7 +690,7 @@ Open your query file. Then click the run button to run your query. Finally, use 
 ====
 
 
-TypeDB's type system re-thinks data models from first principles: it modularizes schemas into their "atomic" components. For example, you can add or remove ownership at any point in time, or edit specific annotations. This makes it easy to migrate and combine data, and programmatically re-structure your database if necessary. There is much more to explore, but we refer to the xref:{page-version}@manual::schema/index.adoc[Schema Manual] for further details.
+TypeDB's type system re-thinks data models from first principles: it modularizes schemas into their "atomic" components. For example, you can add or remove roles and ownerships at any point in time, or edit specific annotations. This makes it easy to migrate and combine data, and programmatically re-structure your database if necessary. There is much more to explore, but we refer to the xref:{page-version}@manual::schema/index.adoc[Schema Manual] for more details.
 
 [[CRUD]]
 == CRUD operations
@@ -713,7 +717,7 @@ insert $x isa user;
 #!test[write, db=my_test_db, fail_at=commit]
 include::./crash-course.adoc[tag=insert1]
 ----
-Try to `commit` this query - the commit will fail! Indeed, we are trying to insert a `user` without a username here but declared usernames to be a key attribute earlier in `user owns username @key`. In fact, even if it worked, it would be pretty useless: we are trying to insert an entity with type `user`, but we give no information about that entity and thus no way to refer to the entity. So our schema keeps us accountable in this case.
+Try to `commit` this query - the commit _*will fail*_! Indeed, we are trying to insert a `user` without a username here, but we declared usernames to be a key attribute earlier when we defined `user owns username @key`. (In fact, even if the `insert` query above worked, it would be pretty useless: we are trying to insert an entity with type `user`, but we give no information about that entity and thus no way to refer to the entity. So our schema keeps us accountable in this case.)
 
 The following is more meaningful:
 ////
@@ -738,7 +742,7 @@ We can insert multiple values in a single `insert` query like so:
 insert
   $x isa user, has username "user_1";
   $y isa user;
-  $y has username "user_2";  # we can separate `isa` and `has`
+  $y has username "user_2";  # can split `isa` and `has` across different statements
 # end::insert3[]
 ----
 ////
@@ -747,9 +751,9 @@ insert
 #!test[write, db=my_test_db]
 include::./crash-course.adoc[tag=insert3]
 ----
-This inserts two users at the same time. Time to `commit` your queries again, to persist your changes.
+This query inserts two users at the same time. Time to commit your queries again to persist your changes: type `commit` and press kbd:[Enter].
 
-Finally, since we set usernames to be a `@key` attribute of our users, would - rightfully - expect the following query to fail:
+Finally, since we set usernames to be a `@key` attribute of our users, we would - rightfully - expect the following query to fail:
 ////
 [,typeql]
 ----
@@ -765,7 +769,7 @@ insert
 #!test[write, db=my_test_db, fail_at=runtime]
 include::./crash-course.adoc[tag=insert4]
 ----
-And it does fail (already at runtime of the query), because the key `"user_3"` would be claimed by two distinct `user` instances.
+And it does fail: this time, it already fails at runtime, i.e., even before committing the transaction. Indeed, because the key `"user_3"` would be claimed by two distinct `user` instances no matter what, we can immediately invalidate the transaction.
 --
 
 Python::
@@ -896,9 +900,9 @@ Open your query file. Then click the run button to run your query. Finally, use 
 --
 ====
 
-This illustrates how we can insert simple entities with attributes, and what to look out for in terms of having to conform with our database schema.
+This illustrates how we can insert simple entities with attributes, and how TypeDB keeps us accountable to follow the definitions in the database schema.
 
-So far so good. Next question: what about relations? Let's have a look!
+So far so good. Next question: what about inserting relations? Well, let's have a go!
 
 [tabs]
 ====
@@ -906,7 +910,7 @@ Console::
 +
 --
 
-In order to insert a friendship, we need to refer to users that will play the role of friends in the friendship (recall: each friendship takes two friends as specified in the schema; feel free to experiment though, and see what error messages TypeDB will give you when trying to insert triple friendships). That's where variables come into play! Let's run the following query:
+In order to insert a friendship, we need to refer to users that will play the role of friends in the friendship (recall: each friendship takes _exactly two_ friends as specified in the schema; feel free to experiment though, and see what error messages TypeDB will give you when trying to insert triple friendships). That's where variables come into play! Let's run the following query:
 
 ////
 [,typeql]
@@ -924,7 +928,7 @@ insert
 #!test[write, db=my_test_db]
 include::./crash-course.adoc[tag=insert5]
 ----
-This inserts two new users with a `friendship` relation between them. The last line is a shorthand, and could itself be written as `$f isa friendship (friend: $x, friend: $y);` if you'd want to further use the variable `$f`.
+This query inserts two new users with a `friendship` relation between them. The last line is a shorthand, and could itself be written as `$f isa friendship (friend: $x, friend: $y);` if you'd want to further use the variable `$f`; but otherwise it's convenient to simply omit it.
 
 But what if we want to create a `friendship` relation between two existing users already in the database? That requires a two-stage *query pipeline* - (1) retrieve the user with a `match` *stage*; (2) `insert` the new `friendship`. We will discuss pipelines in more detail below; for now let's just run one:
 
@@ -1048,16 +1052,16 @@ Open your query file. Then click the run button to run your query. Finally, use 
 --
 ====
 
-Inserting data is easy!
+TL;DR Inserting data is easy!
 
 And deleting and updating data works in a similar vein, with one additional detail: deleting and updating _requires_ us to first `match` the data that we want to delete or update, whereas for inserts we saw that this was optional. This brings us to the topic of *data pipelines*.
 
 == Data pipelines in 100 seconds
 
-Just like in functional programming, where you can "`map`" and "`operate`" on an iterator of data and _chain_ these operations in a modular way, pipelines in TypeDB allow you to step-wise (or, rather, "`stage-wise`") compose database operations. For example, you could:
+Just like in functional programming, where you can "`map`" and "`operate`" on an iterator of data and _chain_ these operations step-by-step, pipelines in TypeDB allow you to step-wise (or, rather, "`stage-wise`") compose database operations. For example, you could:
 
 * First read some data from the database using a `match` stage;
-* Then feed the data you are reading into an insert operation that creates additional data;
+* Then feed the data you are reading into an `insert` operation that creates additional data;
 * Now, the insert operation (similar to other `write` operations like `update` and `delete`) itself returns data and this output data can be fed into yet another stage. For example, we could add a further `match` stage that retrieves further connected data and that we may want to operate on in a "`next step`". This is illustrated in the example below.
 
 We can continue chaining pipeline stages in this way, with the output data of one stage becoming the input data of the next stage. But let's see some code first.
@@ -1092,7 +1096,7 @@ insert $friend has status "VIP";
 #!test[write, db=my_test_db]
 include::./crash-course.adoc[tag=insert7]
 ----
-Notice how the variable `$user` is re-used through the first three stages of the pipeline. Also note how `match` stages are used both to retrieve new data and to filter data; both of these operations neatly fall into TypeQL's declarative pattern language.
+Notice how the variable `$user` is re-used throughout the first three stages of the pipeline. Also note how `match` stages are used both to retrieve new data and to filter data; both of these operations neatly fall into TypeQL's declarative pattern language.
 
 Running the above pipeline will return 0 answers if no friends of `"user_0"` have more than 3 "`VIP`" status friends themselves. Nonetheless, the pipeline still did some work. Let's verify this:
 ////
@@ -1110,7 +1114,7 @@ select $username;
 #!test[read, db=my_test_db, count=1]
 include::./crash-course.adoc[tag=insert8]
 ----
-The query first matches users with "`VIP`" status and their usernames, and then _selects_ only the username: `select` is *"`stream manipulation`"* stage with manipulates the data stream in a pipeline without calling back to the databases: in the case of `select`, this manipulation simply removes all non-selected variables from our results. (Try deleting the last line and comparing answers produced by the database.) The `reduce` stage in the previous example works similarly!
+The query first matches users with "`VIP`" status and their usernames, and then _selects_ only the username. Here, `select` is *"`stream manipulation`"* stage (meaning it manipulates the data stream in a pipeline without calling back to the databases). In the case of `select`, this manipulation simply removes all non-selected variables from our results. (Try deleting the last line and comparing answers produced by the database.) The `reduce` stage in the previous example works similarly!
 
 As always, don't forget to `commit` the changes that you want to persist.
 --
@@ -1222,9 +1226,9 @@ For a full rundown of pipeline stages, see the xref:{page-version}@manual::CRUD/
 [[read]]
 == "`Query programming`" with TypeDB
 
-We've seen how to define expressive database schemas in TypeDB, and how to insert connected data into the database. Now let's turn to the simplest, but most ubiquitous database operation: reading data!
+We've seen how to define detailed database schemas, and how to insert connected data into the database. Now let's turn to the simplest, but most ubiquitous database operation: reading data!
 
-Reading data in an intuitive and composable programmatic way is TypeDB's superpower, and achieved by its query language *TypeQL* combining declarative and functional programming concepts with the simplicity of natural language. Let's start with a simple example:
+Reading data in an intuitive and composable programmatic way is TypeDB's superpower, and achieved through its query language *TypeQL* which combines declarative and functional programming concepts with the simplicity of natural language. Let's start with a basic example:
 
 [tabs]
 ====
@@ -1340,25 +1344,26 @@ The query in the example returns the count of how many friends the user `$alex` 
 
 [NOTE]
 ====
-The pattern `$var isa <type>` means the variable `$var` represents a data object (instance) of type `<type>`. An instance may be independent, or it may reference other instances.
+The pattern `$var isa <type>` means the variable `$var` represents a data object (instance) of type `<type>`.
 
-TypeQL has special statements to capture references between instances, like `$relation isa <type> (<role>: $player);` or `$owner has <type> $attribute`.
+In addition, TypeQL has special statements to capture references between instances (as relations must references role players, and attributes must reference owners), like `$relation isa <type> (<role>: $player);` or `$owner has <type> $attribute`.
 ====
 
-Next, let's look at a slightly more complex version of this query query.
+The above query is mildly interesting. But let's look at a slightly more complex version of the same query.
 
 [tabs]
 ====
 Console::
 +
 --
+Run the following query in Console and see what answers you get.
 ////
 [,typeql]
 ----
 # tag::read2[]
 match
   $alex isa user, has username "grothendieck_25";
-  friendship (friend: $alex, friend: $friend-of-alex); # can omit variable
+  friendship (friend: $alex, friend: $friend-of-alex);
 reduce $alex-friend-count = count;
 match
   $other-user isa user, has username $other-name;
@@ -1377,6 +1382,7 @@ select $other-name;
 # Find users with more friends that Alex
 include::./crash-course.adoc[tag=read2]
 ----
+Can you see just from reading the query what's going on here?
 --
 
 Python::
@@ -1581,7 +1587,7 @@ Open your query file. Then click the run button to run your query. Finally, use 
 --
 ====
 
-We've just defined a helper function using the `fun` keyword that abstracts a key part of our query logic. Functions use the same syntax as queries, so they're easy to write, and they are a key component of TypeDB's *query programming* paradigm, allowing you to seamlessly fuse "query modules" together.
+We've just defined a helper function using the `fun` keyword that abstracts a key part of our query logic. Functions use the same syntax as queries, so they're easy to write. In fact, function can contain *entire read pipelines* themselves! This is a key component of TypeDB's *query programming* paradigm, allowing you to seamlessly fuse "query modules" together.
 
 == What next?
 
