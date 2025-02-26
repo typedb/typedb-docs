@@ -1,3 +1,4 @@
+import os
 import re
 from dataclasses import dataclass
 from typing import List, Dict
@@ -85,13 +86,28 @@ class Parser:
     def retrieve_antora_include(self, include_str: str):
         # Parse Antora include
         from code_test.main import MODULE_DIRECTORIES
-        include_match = re.match(r'^.+?@(.+?)::example\$(.+?)\[(.+?)\]', include_str)
 
-        module_name: str = include_match.group(1)
-        file_rel_path: str = include_match.group(2)
-        file_path: str = MODULE_DIRECTORIES[module_name] + "/examples/" + file_rel_path
+        antora_style_include = r'^.+?@(.+?)::(.+?)\$(.+?)\[(.*?)\]'
+        relative_include = r'^include::\.\/(.+?)\[(.*?)\]'
 
-        tags_match: str = include_match.group(3)
+        if re.match(antora_style_include, include_str):
+            include_match = re.match(antora_style_include, include_str)
+            module_name: str = include_match.group(1)
+            document_type: str = include_match.group(2)
+            file_rel_path: str = include_match.group(3)
+            file_path: str = MODULE_DIRECTORIES[module_name] + "/" + document_type + "s/" + file_rel_path
+            tags_match: str = include_match.group(4)
+
+        elif re.match(relative_include, include_str):
+            include_match = re.match(relative_include, include_str)
+            relative_path = include_match.group(1)
+            file_path: str = os.path.join(os.path.dirname(self.adoc_path), "./" + relative_path)
+            print(f"determined file_path {file_path}")
+            tags_match: str = include_match.group(2)
+
+        else:
+            raise RuntimeError(f"Parser couldn't resolve include {include_str}")
+
         tags: List[str] = []
         if tags_match.startswith('tag='):
             tags = [tags_match.split('=')[1]]

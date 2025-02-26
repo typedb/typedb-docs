@@ -1,10 +1,10 @@
 = Crash course
 :title: Crash Course
-:test-tql: custom
-:test-tql-entry: schema_start
+:test-typeql: linear
 :test-python: yes
 :test-rust: yes
 :experimental:
+:tabs-sync-option:
 
 TypeDB brings together powerful programming concepts with the features and performance of modern database systems. We believe the result is a novel database experience - and after taking this 15-minute crash course, we hope you'll agree.
 
@@ -226,6 +226,12 @@ Stored data objects are called *instances* of types, and instance may reference 
 TypeDB's data model is conceptually simple, but at the same time extremely systematic and flexible. This allows our type system to unify concepts from *relational*, *document*, and *graph* DBMSs, blending them with a modern typed programming paradigm. Now, let's write our first queries and see how this plays out!
 
 
+[NOTE]
+====
+A quick *tip* if you are using Console for this course. Queries on this page can be turned into runnable *Console scripts* by clicking the "`hidden lines`" button (image:{page-version}@home::/svg/eye.svg[width=24]). These scripts can then be *pasted* directly into the server-level interface of Console, and run end-to-end simply by pressing kbd:[Enter].
+====
+
+
 [[schema]]
 == Defining your type schema
 
@@ -285,12 +291,12 @@ driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), 
 
 #}}
 # Define entity and attribute types
-query_1 = f"""
+schema_1 = f"""
 include::./crash-course.adoc[tag=define1]
 """
 
 # Define a relation type
-query_2 = f"""
+schema_2 = f"""
 include::./crash-course.adoc[tag=define2]
 """
 
@@ -298,8 +304,8 @@ include::./crash-course.adoc[tag=define2]
 with driver.transaction(database, TransactionType.SCHEMA) as tx:
 
     # Send both queries
-    tx.query(query_1).resolve()
-    tx.query(query_2).resolve()
+    tx.query(schema_1).resolve()
+    tx.query(schema_2).resolve()
 
     # Commit your changes
     tx.commit()
@@ -327,12 +333,12 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
 //}}
     // Define entity and attribute types
-    let query_1 = r#"
+    let schema_1 = r#"
 include::./crash-course.adoc[tag=define1]
 "#;
 
     // Define entity and attribute types
-    let query_2 = r#"
+    let schema_2 = r#"
 include::./crash-course.adoc[tag=define2]
 "#;
 
@@ -340,8 +346,8 @@ include::./crash-course.adoc[tag=define2]
     let tx = driver.transaction(db_name, TransactionType::Schema).await?;
 
     // Send both queries
-    let _ = tx.query(query_1).await?;
-    let _ = tx.query(query_2).await?;
+    let _ = tx.query(schema_1).await?;
+    let _ = tx.query(schema_2).await?;
 
     // Commit your changes
     tx.commit().await?;
@@ -452,17 +458,17 @@ driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), 
 
 #}}
 # Define a start-date attribute for the friendship relation type
-query_3 = f"""
+schema_3 = f"""
 include::./crash-course.adoc[tag=define1]
 """
 
 # Define a multi-valued status attribute for users
-query_4 = f"""
+schema_4 = f"""
 include::./crash-course.adoc[tag=define2]
 """
 
 # Define an organization entity type with similar traits to the user type
-query_5= f"""
+schema_5= f"""
 include::./crash-course.adoc[tag=define2]
 """
 
@@ -470,9 +476,9 @@ include::./crash-course.adoc[tag=define2]
 with driver.transaction(database, TransactionType.SCHEMA) as tx:
 
     # Send queries
-    tx.query(query_3).resolve()
-    tx.query(query_4).resolve()
-    tx.query(query_5).resolve()
+    tx.query(schema_3).resolve()
+    tx.query(schema_4).resolve()
+    tx.query(schema_5).resolve()
 
     # Commit your changes
     tx.commit()
@@ -500,17 +506,17 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
 //}}
     // Define a start-date attribute for the friendship relation type
-    query_3 = r#"
+    schema_3 = r#"
     include::./crash-course.adoc[tag=define1]
     "#;
 
     // Define a multi-valued status attribute for users
-    query_4 = r#"
+    schema_4 = r#"
     include::./crash-course.adoc[tag=define2]
     "#;
 
     // Define an organization entity type with similar traits to the user type
-    query_5= r#"
+    schema_5= r#"
     include::./crash-course.adoc[tag=define2]
     "#;
 
@@ -518,9 +524,9 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let tx = driver.transaction(db_name, TransactionType::Schema).await?;
 
     // Send queries
-    let _ = tx.query(query_3).await?;
-    let _ = tx.query(query_4).await?;
-    let _ = tx.query(query_5).await?;
+    let _ = tx.query(schema_3).await?;
+    let _ = tx.query(schema_4).await?;
+    let _ = tx.query(schema_5).await?;
 
     // Commit your changes
     tx.commit().await?;
@@ -602,12 +608,12 @@ driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), 
 
 #}}
 # Define subtypes of organizations
-query_6 = f"""
+schema_6 = f"""
 include::./crash-course.adoc[tag=define6]
 """
 
 # Define traits specific to universities
-query_7 = f"""
+schema_7 = f"""
 include::./crash-course.adoc[tag=define7]
 """
 
@@ -615,8 +621,8 @@ include::./crash-course.adoc[tag=define7]
 with driver.transaction(database, TransactionType.SCHEMA) as tx:
 
     # Send queries
-    tx.query(query_6).resolve()
-    tx.query(query_7).resolve()
+    tx.query(schema_6).resolve()
+    tx.query(schema_7).resolve()
 
     # Commit your changes
     tx.commit()
@@ -644,12 +650,12 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
 //}}
     // Define subtypes of organizations
-    query_6 = r#"
+    schema_6 = r#"
     include::./crash-course.adoc[tag=define6]
     "#;
 
     // Define traits specific to universities
-    query_7 = r#"
+    schema_7 = r#"
     include::./crash-course.adoc[tag=define7]
     "#;
 
@@ -657,8 +663,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let tx = driver.transaction(db_name, TransactionType::Schema).await?;
 
     // Send queries
-    let _ = tx.query(query_6).await?;
-    let _ = tx.query(query_7).await?;
+    let _ = tx.query(schema_6).await?;
+    let _ = tx.query(schema_7).await?;
 
     // Commit your changes
     tx.commit().await?;
@@ -779,22 +785,22 @@ driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), 
 
 #}}
 # Try to insert a user without username (will fail)
-query_1 = f"""
+write_1 = f"""
 include::./crash-course.adoc[tag=insert1]
 """
 
 # Insert a user with username
-query_2 = f"""
+write_2 = f"""
 include::./crash-course.adoc[tag=insert2]
 """
 
 # Insert multiple users in the same query
-query_3= f"""
+write_3= f"""
 include::./crash-course.adoc[tag=insert3]
 """
 
 # Try to insert multiple users with the same username
-query_4= f"""
+write_4= f"""
 include::./crash-course.adoc[tag=insert3]
 """
 
@@ -803,15 +809,15 @@ with driver.transaction(database, TransactionType.WRITE) as tx:
 
     # Send queries
     try:
-        tx.query(query_1).resolve()
+        tx.query(write_1).resolve()
     except Exception as e:
         print(f"Got error {e}")
 
-    tx.query(query_2).resolve()
-    tx.query(query_3).resolve()
+    tx.query(write_2).resolve()
+    tx.query(write_3).resolve()
 
     try:
-        tx.query(query_4).resolve()
+        tx.query(write_4).resolve()
     except Exception as e:
         print(f"Got error {e}")
 
@@ -841,22 +847,22 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
 //}}
     // Try to insert a user without username (will fail)
-    query_1 = r#"
+    write_1 = r#"
 include::./crash-course.adoc[tag=insert1]
     "#;
 
     // Insert a user with username
-    query_2 = r#"
+    write_2 = r#"
 include::./crash-course.adoc[tag=insert2]
     "#;
 
     // Insert multiple users in the same query
-    query_3= r#"
+    write_3= r#"
 include::./crash-course.adoc[tag=insert3]
     "#;
 
     // Try to insert multiple users with the same username
-    query_4= r#"
+    write_4= r#"
 include::./crash-course.adoc[tag=insert3]
     "#;
 
@@ -864,11 +870,11 @@ include::./crash-course.adoc[tag=insert3]
     let tx = driver.transaction(db_name, TransactionType::Write).await?;
 
     // Send queries
-    let result_1 = tx.query(query_1).await?;
+    let result_1 = tx.query(write_1).await?;
     println!("got {result_1}");
-    let _ = tx.query(query_2).await?;
-    let _ = tx.query(query_3).await?;
-    let result_4 = tx.query(query_4).await?;
+    let _ = tx.query(write_2).await?;
+    let _ = tx.query(write_3).await?;
+    let result_4 = tx.query(write_4).await?;
     println!("got {result_4}");
 
     // Commit your changes
@@ -964,12 +970,12 @@ driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), 
 
 #}}
 # Insert two new users and a friendship between them
-query_5 = f"""
+write_5 = f"""
 include::./crash-course.adoc[tag=insert5]
 """
 
 # Insert three friendships between existing users
-query_6 = f"""
+write_6 = f"""
 include::./crash-course.adoc[tag=insert6]
 """
 
@@ -978,8 +984,8 @@ include::./crash-course.adoc[tag=insert6]
 with driver.transaction(database, TransactionType.WRITE) as tx:
 
     # Send queries
-    tx.query(query_5).resolve()
-    tx.query(query_6).resolve()
+    tx.query(write_5).resolve()
+    tx.query(write_6).resolve()
 
     # Commit your changes
     tx.commit()
@@ -1007,12 +1013,12 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
 //}}
     // Insert two new users and a friendship between them
-    query_5 = r#"
+    write_5 = r#"
 include::./crash-course.adoc[tag=insert5]
     "#;
 
     // Insert three friendships between existing users
-    query_6 = r#"
+    write_6 = r#"
 include::./crash-course.adoc[tag=insert6]
     "#;
 
@@ -1020,8 +1026,8 @@ include::./crash-course.adoc[tag=insert6]
     let tx = driver.transaction(db_name, TransactionType::Write).await?;
 
     // Send queries
-    let _ = tx.query(query_5).await?;
-    let _ = tx.query(query_6).await?;
+    let _ = tx.query(write_5).await?;
+    let _ = tx.query(write_6).await?;
 
     // Commit your changes
     tx.commit().await?;
@@ -1052,9 +1058,9 @@ Just like in functional programming, where you can "`map`" and "`operate`" on an
 
 * First read some data from the database using a `match` stage;
 * Then feed the data you are reading into an insert operation that creates additional data;
-* Now, the insert operation (similar to other `write` operations like `update` and `delete`) itself returns data and this output data can be feed into another stage; for example, a further `match` stage that retrieves further connected data and that we may want to operate on in a "`next step`".
+* Now, the insert operation (similar to other `write` operations like `update` and `delete`) itself returns data and this output data can be fed into yet another stage. For example, we could add a further `match` stage that retrieves further connected data and that we may want to operate on in a "`next step`". This is illustrated in the example below.
 
-We can continue chaining pipeline stages in this way, with the output data of one stage becoming the input data of the next stage. Let's see an example of this in practice.
+We can continue chaining pipeline stages in this way, with the output data of one stage becoming the input data of the next stage. But let's see some code first.
 
 
 [tabs]
@@ -1062,7 +1068,7 @@ We can continue chaining pipeline stages in this way, with the output data of on
 Console::
 +
 --
-The following pipeline adds "VIP" to a user's status, then traverses all friendships of that user, and marks friends as VIPs themselves if they now have more than three VIP friends.
+The following pipeline adds "VIP" status for a specific user, then traverses all friendships of that user, and marks friends as VIPs themselves if they now have more than 3 VIP friends.
 
 ////
 [,typeql]
@@ -1086,7 +1092,9 @@ insert $friend has status "VIP";
 #!test[write, db=my_test_db]
 include::./crash-course.adoc[tag=insert7]
 ----
-Notice how the variable `$user` is re-used through the first three stages of the pipeline. While running the above query will return 0 answers if no friends of `"user_0"` have more than 2 "`VIP`" status friends themselves the pipeline still did some work. Let's verify this:
+Notice how the variable `$user` is re-used through the first three stages of the pipeline. Also note how `match` stages are used both to retrieve new data and to filter data; both of these operations neatly fall into TypeQL's declarative pattern language.
+
+Running the above pipeline will return 0 answers if no friends of `"user_0"` have more than 3 "`VIP`" status friends themselves. Nonetheless, the pipeline still did some work. Let's verify this:
 ////
 [,typeql]
 ----
@@ -1099,7 +1107,7 @@ select $username;
 ////
 [,typeql]
 ----
-#!test[write, db=my_test_db, count=1]
+#!test[read, db=my_test_db, count=1]
 include::./crash-course.adoc[tag=insert8]
 ----
 The query first matches users with "`VIP`" status and their usernames, and then _selects_ only the username: `select` is *"`stream manipulation`"* stage with manipulates the data stream in a pipeline without calling back to the databases: in the case of `select`, this manipulation simply removes all non-selected variables from our results. (Try deleting the last line and comparing answers produced by the database.) The `reduce` stage in the previous example works similarly!
@@ -1124,12 +1132,12 @@ driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), 
 
 #}}
 # A complex data pipeline
-query_7 = f"""
+write_7 = f"""
 include::./crash-course.adoc[tag=insert7]
 """
 
 # Verify the pipeline did some work
-query_8 = f"""
+write_8 = f"""
 include::./crash-course.adoc[tag=insert8]
 """
 
@@ -1138,8 +1146,8 @@ include::./crash-course.adoc[tag=insert8]
 with driver.transaction(database, TransactionType.WRITE) as tx:
 
     # Send queries
-    tx.query(query_7).resolve()
-    tx.query(query_8).resolve()
+    tx.query(write_7).resolve()
+    tx.query(write_8).resolve()
 
     # Commit your changes
     tx.commit()
@@ -1167,12 +1175,12 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
 //}}
     // A complex data pipeline
-    query_7 = r#"
+    write_7 = r#"
 include::./crash-course.adoc[tag=insert7]
     "#;
 
     // Verify the pipeline did some work
-    query_8 = r#"
+    write_8 = r#"
 include::./crash-course.adoc[tag=insert8]
     "#;
 
@@ -1180,8 +1188,8 @@ include::./crash-course.adoc[tag=insert8]
     let tx = driver.transaction(db_name, TransactionType::Write).await?;
 
     // Send queries
-    let _ = tx.query(query_7).await?;
-    let _ = tx.query(query_8).await?;
+    let _ = tx.query(write_7).await?;
+    let _ = tx.query(write_8).await?;
 
     // Commit your changes
     tx.commit().await?;
@@ -1214,17 +1222,117 @@ For a full rundown of pipeline stages, see the xref:{page-version}@manual::CRUD/
 [[read]]
 == "`Query programming`" with TypeDB
 
-The query language of TypeDB is *TypeQL* (did we mention this?). It combines declarative and functional programming concepts with the simplicity of natural language. Let's see
+We've seen how to define expressive database schemas in TypeDB, and how to insert connected data into the database. Now let's turn to the simplest, but most ubiquitous database operation: reading data!
 
+Reading data in an intuitive and composable programmatic way is TypeDB's superpower, and achieved by its query language *TypeQL* combining declarative and functional programming concepts with the simplicity of natural language. Let's start with a simple example:
+
+[tabs]
+====
+Console::
++
+--
+////
 [,typeql]
 ----
+# tag::read1[]
 match
   $alex isa user, has username "grothendieck_25";
   $friendship isa friendship (friend: $alex, friend: $friend-of-alex);
 reduce $alex-friend-count = count;
+# end::read1[]
 ----
+////
+[,typeql]
+----
+#!test[read, db=my_test_db]
+include::./crash-course.adoc[tag=read1]
+----
+--
 
-This query returns the count of how many friends the user `$alex` has (identified by their username `"grothendieck_25"`). Note that the query works in two stages:
+Python::
++
+--
+[,python]
+----
+#{{
+from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions
+
+user = "admin"
+pw = "password"
+address = "127.0.0.1:1729"
+database = "my_test_db"
+
+driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
+
+#}}
+# Find a specific user, their friends, and count their friends
+read_1 = f"""
+include::./crash-course.adoc[tag=read1]
+"""
+
+# Open a transaction
+with driver.transaction(database, TransactionType.WRITE) as tx:
+
+    # Send queries
+    tx.query(read_1).resolve()
+
+    # Commit your changes
+    tx.commit()
+----
+--
+
+Rust::
++
+--
+[,rust]
+----
+//{{
+use typedb_driver::{Credentials, DriverOptions, TransactionType, TypeDBDriver};
+use std::error::Error;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn Error>> {
+    let address = "127.0.0.1:1729";
+    let user = "admin";
+    let pw = "password";
+    let db_name = "test";
+
+    // Connect to TypeDB server
+    let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
+
+//}}
+    // Find a specific user, their friends, and count their friends
+    read_1 = r#"
+include::./crash-course.adoc[tag=read1]
+    "#;
+
+    // Open a transaction
+    let tx = driver.transaction(db_name, TransactionType::Write).await?;
+
+    // Send queries
+    let _ = tx.query(read_1).await?;
+
+    // Commit your changes
+    tx.commit().await?;
+//{{
+
+    Ok(())
+}
+//}}
+----
+--
+
+Studio::
++
+--
+Select your database using the database selector (image:{page-component-version}@home::studio-icons/database-none.png[width=128]), then select your transaction type in the top menu.
+
+Open your query file. Then click the run button to run your query. Finally, use the commit button (image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24]) to persist any changes made.
+--
+====
+
+
+The query in the example returns the count of how many friends the user `$alex` has (identified by their username `"grothendieck_25"`). Note that the query works in two stages:
 
 1. First, the `match` stage outputs all answers from the database that satisfy the statements in the body of the stage. This means we output all possible data combinations from the database for the three used variables!
 
@@ -1237,12 +1345,17 @@ The pattern `$var isa <type>` means the variable `$var` represents a data object
 TypeQL has special statements to capture references between instances, like `$relation isa <type> (<role>: $player);` or `$owner has <type> $attribute`.
 ====
 
-Here's an example of a slightly more complex query.
+Next, let's look at a slightly more complex version of this query query.
 
-//!program[lang=tql, type=read]
-//!++
+[tabs]
+====
+Console::
++
+--
+////
 [,typeql]
 ----
+# tag::read2[]
 match
   $alex isa user, has username "grothendieck_25";
   friendship (friend: $alex, friend: $friend-of-alex); # can omit variable
@@ -1255,11 +1368,100 @@ reduce $other-friend-count = count
 match
   $alex-friend-count < $other-friend-count;
 select $other-name;
+# end::read2[]
 ----
-//!--
-//!run
+////
+[,typeql]
+----
+#!test[read, db=my_test_db, count=3]
+# Find users with more friends that Alex
+include::./crash-course.adoc[tag=read2]
+----
+--
 
-The goal of this query is to find users with more friends than Alex. It has 6 stages:
+Python::
++
+--
+[,python]
+----
+#{{
+from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions
+
+user = "admin"
+pw = "password"
+address = "127.0.0.1:1729"
+database = "my_test_db"
+
+driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
+
+#}}
+# Find users with more friends that Alex
+read_2 = f"""
+include::./crash-course.adoc[tag=read2]
+"""
+
+# Open a transaction
+with driver.transaction(database, TransactionType.WRITE) as tx:
+
+    # Send queries
+    tx.query(read_2).resolve()
+
+    # Commit your changes
+    tx.commit()
+----
+--
+
+Rust::
++
+--
+[,rust]
+----
+//{{
+use typedb_driver::{Credentials, DriverOptions, TransactionType, TypeDBDriver};
+use std::error::Error;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn Error>> {
+    let address = "127.0.0.1:1729";
+    let user = "admin";
+    let pw = "password";
+    let db_name = "test";
+
+    // Connect to TypeDB server
+    let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
+
+//}}
+    // Find users with more friends that Alex
+    read_2 = r#"
+include::./crash-course.adoc[tag=read2]
+    "#;
+
+    // Open a transaction
+    let tx = driver.transaction(db_name, TransactionType::Write).await?;
+
+    // Send queries
+    let _ = tx.query(read_2).await?;
+
+    // Commit your changes
+    tx.commit().await?;
+//{{
+
+    Ok(())
+}
+//}}
+----
+--
+
+Studio::
++
+--
+Select your database using the database selector (image:{page-component-version}@home::studio-icons/database-none.png[width=128]), then select your transaction type in the top menu.
+
+Open your query file. Then click the run button to run your query. Finally, use the commit button (image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24]) to persist any changes made.
+--
+====
+
+The goal of this second query is to find users with more friends than Alex. It has 6 stages:
 
 * *Stage 1 and 2: Count Alex' friends* - and assign the output to ``$alex-friend-count``.
 * *Stage 3 and 4: Count all other users' friends*. Match all ``$other-user``s with their respective usernames, ``$other-name``, and their friends. Group the answers by unique combinations of `$other-name` and `$alex-friend-count`. Finally, ``count`` them.
@@ -1269,10 +1471,16 @@ Isn't that neat? Combining multiple query stages into a single query pipeline is
 
 (Don't worry. This is not an exercise for the reader. We've optimized it for you.)
 
-//!program[lang=tql, type=read]
-//!++
+[tabs]
+====
+Console::
++
+--
+////
 [,typeql]
 ----
+# tag::read3[]
+# Find users with more friends that Alex
 with fun friend_count($user: user) -> integer:
   match friendship (friend: $user, friend: $friend-of-user);
   return count;
@@ -1281,26 +1489,105 @@ match
   $other-user isa user, has username $other-name;
   friend_count($alex) < friend_count($other-user);
 select $other-name;
+# end::read3[]
 ----
-//!--
-//!run
+////
+[,typeql]
+----
+#!test[read, db=my_test_db, count=3]
+include::./crash-course.adoc[tag=read3]
+----
+--
 
-We've just defined a helper function using the `fun` keyword that abstracts a key part of our query logic. Functions use the same syntax as queries, so they're easy to write.
+Python::
++
+--
+[,python]
+----
+#{{
+from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions
 
-== Beyond the basics: functions and query composition
+user = "admin"
+pw = "password"
+address = "127.0.0.1:1729"
+database = "my_test_db"
 
-// schema functions vs helper functions
-// more examples
-// match P; match Q; vs match P
+driver = TypeDB.cloud_driver(address=address, credentials=Credentials(user,pw), driver_options=DriverOptions())
 
-[NOTE]
+#}}
+# Find users with more friends that Alex
+read_3 = f"""
+include::./crash-course.adoc[tag=read3]
+"""
+
+# Open a transaction
+with driver.transaction(database, TransactionType.WRITE) as tx:
+
+    # Send queries
+    tx.query(read_3).resolve()
+
+    # Commit your changes
+    tx.commit()
+----
+--
+
+Rust::
++
+--
+[,rust]
+----
+//{{
+use typedb_driver::{Credentials, DriverOptions, TransactionType, TypeDBDriver};
+use std::error::Error;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn Error>> {
+    let address = "127.0.0.1:1729";
+    let user = "admin";
+    let pw = "password";
+    let db_name = "test";
+
+    // Connect to TypeDB server
+    let driver = TypeDBDriver::new_core(address, Credentials::new(user, pw), DriverOptions::new(false, None)?).await?;
+
+//}}
+    // Find users with more friends that Alex
+    read_3 = r#"
+include::./crash-course.adoc[tag=read3]
+    "#;
+
+    // Open a transaction
+    let tx = driver.transaction(db_name, TransactionType::Write).await?;
+
+    // Send queries
+    let _ = tx.query(read_2).await?;
+
+    // Commit your changes
+    tx.commit().await?;
+//{{
+
+    Ok(())
+}
+//}}
+----
+--
+
+Studio::
++
+--
+Select your database using the database selector (image:{page-component-version}@home::studio-icons/database-none.png[width=128]), then select your transaction type in the top menu.
+
+Open your query file. Then click the run button to run your query. Finally, use the commit button (image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24]) to persist any changes made.
+--
 ====
-Coming soon.
-====
+
+We've just defined a helper function using the `fun` keyword that abstracts a key part of our query logic. Functions use the same syntax as queries, so they're easy to write, and they are a key component of TypeDB's *query programming* paradigm, allowing you to seamlessly fuse "query modules" together.
 
 == What next?
 
-Continue learning how to use TypeDB with TypeDB Academy, or explore other sections of the documentation.
+There is much more to explore in the world of TypeDB, including building custom query logic using disjunctions and negations, the deep exploration of data connection using functional recursion, result formatting features, native language integration features, and more. This is the beginning of your journey, and we'd like to be here for you should you have any question - so do not hesitate to reach out!
+
+And here are some suggestion what to look at next ... (:
 
 [cols-2]
 --
