@@ -83,6 +83,6 @@ Thus, the result of comparing it with `PT24H` (24 hours) is indeterminate.
 `string` values allow two additional comparison operators.
 
 `contains` allows for checking if the string on the left-hand side contains the right-hand side string as a substring.
-The `contains` operator is case-insensitive by https://www.w3.org/TR/charmod-norm/#definitionCaseFolding[case-folding] unicode strings.
+The `contains` operator performs case-insensitive matching by https://www.w3.org/TR/charmod-norm/#definitionCaseFolding[case-folding] unicode strings.
 
 `like` evaluates whether the string on the left-hand side of the operator matches the regular expression string on the right-hand side. The regular expression must follow the https://docs.rs/regex/latest/regex/#syntax[rust regex syntax].
