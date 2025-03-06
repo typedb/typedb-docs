@@ -270,7 +270,7 @@ and consist only of lowercase alphanumeric characters, optionally separated by u
 | `serverCount` | An odd integer value between 1 and 9.
 TypeDB version 3.0 and onwards can currently only have one server.
 | `storageSizeGB` | An integer value between 10 and 1000.
-| `provider` | Must be either `gcp`, `aws`, or `azure`
+| `provider` | Must be either `gcp` or `aws`
 | `isFree` | If set to `true`, must use a valid free machine type, and have at most 1 server and 10GB of storage.
 You may only have one free cluster per organization.
 
@@ -347,31 +347,6 @@ If set to `false`, there must be a valid payment method on the organization.
 |===
 ====
 
-.Azure regions and machine types
-[%collapsible]
-====
-[options="header",cols=",,a"]
-|===
-| Machine Types    | Free Available | Regions
-| Standard_F2s_v2  | Yes            |
-* East US
-* West US 3
-* Germany West Central
-| Standard_F4s_v2  | No             |
-* East US
-* West US 3
-* Germany West Central
-| Standard_F8s_v2  | No             |
-* East US
-* West US 3
-* Germany West Central
-| Standard_F16s_v2 | No             |
-* East US
-* West US 3
-* Germany West Central
-|===
-====
-
 .Storage types
 [#storagetypes]
 [%collapsible]
@@ -381,7 +356,6 @@ If set to `false`, there must be a valid payment method on the organization.
 | Provider | Storage Type
 | GCP      | standard-rwo
 | AWS      | gp2
-| Azure    | default
 |===
 ====
 
