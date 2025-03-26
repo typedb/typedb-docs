@@ -74,5 +74,10 @@ put $p4 isa person, has name "Bob"; # Matches the person with name "Bob", since 
 put $p4 isa person, has age 11;     # Adds an attribute to the same person
 ----
 
+=== Isolation from concurrent transactions
+Though put stages are meant to create data patterns which don't exist in the database,
+they still run under the xref:{page-version}@manual::queries/transactions.adoc[snapshot-isolation] of TypeDB transactions.
+This means they will insert data even if a concurrent transaction has inserted data which satisfies the match - leading to duplication if both transactions commit.
+
 === Sensitivity to multiplicity of input rows
 TODO: If we decide not to try to do something about it.
