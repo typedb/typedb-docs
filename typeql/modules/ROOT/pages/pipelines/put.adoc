@@ -1,17 +1,67 @@
 = Put stage
 
-[NOTE]
-====
-Coming soon.
-====
+A put stage will xref:{page-version}@typeql::pipelines/insert.adoc[insert] data according to a pattern if no existing data xref:{page-version}@typeql::pipelines/match.adoc[matches] that pattern.
 
-// == Draft example
-//
-// [,typeql]
-// ----
-// match
-//   $person-1 isa person, has username "<username 1>";
-//   $person-2 isa person, has username "<username 2>";
-// put
-//   friendship (friend: $person-1, friend: $person-2);
-// ----
+
+== Syntax
+
+As a put stage may insert data, the body of a put stage is a sequence of valid xref:{page-version}@typeql::pipelines/insert.adoc[insert] statements.
+
+[,typeql]
+----
+put <insert-statement> [ <insert-statement> ... ]
+----
+== Example
+The following query creates a friendship relation between two persons, if one does not already exist.
+[,typeql]
+----
+match
+  $person-1 isa person, has username "Alice";
+  $person-2 isa person, has username "Bob";
+put
+  friendship (friend: $person-1, friend: $person-2);
+----
+
+== Behaviour
+The behaviour of a `put` stage can be described in pseudo-code as:
+[,python]
+----
+fn run_put(pattern, input_rows):
+    output_rows = []
+    for row in input_rows:
+        let matched_rows = run_match(pattern, row)
+        if matched_rows.is_empty():
+            let inserted_row = run_insert(pattern, row)
+            output_rows += [inserted_row]
+        else:
+            output_rows += matched_rows
+    return output_rows
+----
+Hence, a put stage is expected to be only as performant as running both the match and the insert stage.
+
+=== No partial matching
+The put matches the entire pattern or inserts the entire pattern. Partial matching and partial inserts are not performed.
+To illustrate, consider running the following queries sequentially.
+
+[,typeql]
+----
+insert $p isa person, has name "Alice"; # Create some initial data.
+
+put $p1 isa person, has name "Alice"; # Does nothing
+
+put $p2 isa person, has name "Bob"; # Creates a new person with name Bob
+
+put $p3 isa person, has name "Alice", has age 10; # Creates a new person with name "Alice" & age 10.
+----
+The statement `put $p3...` creates a new person because the **whole** pattern fails to match, as there is no existing person with name "Alice" **AND** age 10.
+To achieve the desired result of not re-creating the person if only the age attribute is missing, `put` stages can be pipelined.
+
+[,typeql]
+----
+put $p4 isa person, has name "Bob"; # Matches the person with name "bob", since it exists
+put $p4 isa person, has age 11;     # Adds an attribute to the same person
+----
+
+
+=== Sensitivity to multiplicity of input rows
+TODO: If we decide not to try to fix it.
