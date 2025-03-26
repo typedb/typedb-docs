@@ -29,12 +29,12 @@ put
 The behaviour of a `put` stage can be described in pseudo-code as:
 [,python]
 ----
-fn run_put(pattern, input_rows):
+def run_put(pattern, input_rows):
     output_rows = []
     for row in input_rows:
-        let matched_rows = run_match(pattern, row)
+        matched_rows = run_match(pattern, row)
         if matched_rows.is_empty():
-            let inserted_row = run_insert(pattern, row)
+            inserted_row = run_insert(pattern, row)
             output_rows += [inserted_row]
         else:
             output_rows += matched_rows
@@ -50,13 +50,17 @@ To illustrate, consider running the following queries sequentially.
 
 [,typeql]
 ----
-insert $p isa person, has name "Alice"; # Create some initial data.
+# Creates some initial data
+put $p isa person, has name "Alice";
 
-put $p1 isa person, has name "Alice";   # Does nothing, as the match succeeds
+# Does nothing, as the match succeeds
+put $p1 isa person, has name "Alice";
 
-put $p2 isa person, has name "Bob";     # Creates a new person with name Bob
+# Creates a new person with name "Bob"
+put $p2 isa person, has name "Bob";
 
-put $p3 isa person, has name "Alice", has age 10; # Creates a new person with name "Alice" & age 10.
+# Creates a new person with name "Alice" & age 10.
+put $p3 isa person, has name "Alice", has age 10;
 ----
 The statement `put $p3...` creates a new person because the **whole** pattern fails to match,
 as there is no existing person with name "Alice" **AND** age 10.
@@ -66,7 +70,7 @@ To achieve the desired result of not re-creating the person if only the age attr
 
 [,typeql]
 ----
-put $p4 isa person, has name "Bob"; # Matches the person with name "bob", since it exists
+put $p4 isa person, has name "Bob"; # Matches the person with name "Bob", since it exists
 put $p4 isa person, has age 11;     # Adds an attribute to the same person
 ----
 
