@@ -99,8 +99,8 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4
 [#accesslevels]
 === API Token Access Levels
 
-When generating your API token, you will grant it a certain access level to a project of your choice.
-It will be able to perform the actions within that project as described below:
+When generating your API token, you will grant it a certain access level to a space of your choice.
+It will be able to perform the actions within that space as described below:
 
 [options="header"]
 |===
@@ -116,9 +116,9 @@ It will be able to perform the actions within that project as described below:
 
 [cols="h,3a"]
 |===
-| Required access          | *write* to `org/ORG_ID/projects/PROJECT_ID`
+| Required access          | *write* to `team/TEAM_ID/spaces/SPACE_ID`
 | Method                   | `POST`
-| URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/deploy`
+| URL                      | `/api/team/TEAM_ID/spaces/SPACE_ID/clusters/deploy`
 | Request body             | include::{page-version}@manual:resources:partial$cloud-api/cluster-deploy.json.adoc[]
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
 |===
@@ -143,7 +143,7 @@ curl::
 [source,console]
 ----
 curl --request POST \
-    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/deploy \
+    --url https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters/deploy \
     --header 'Authorization: Bearer {ACCESS-TOKEN}' \
     --json '{"id":"api-cluster","serverCount":1,"storageSizeGB":10,"provider":"gcp","region":"europe-west2","isFree":true,"machineType":"c2d-highcpu-2","storageType":"standard-rwo","version":"3.0.6"}'
 ----
@@ -154,7 +154,7 @@ Python::
 ----
 import requests
 
-url = "https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/deploy[https://cloud.typedb.com/api/auth]"
+url = "https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters/deploy[https://cloud.typedb.com/api/auth]"
 
 headers = {
     "Authorization": "Bearer {ACCESS-TOKEN}"
@@ -210,7 +210,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
     let client = reqwest::Client::new();
     let resp = client
-        .post("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/deploy")
+        .post("https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters/deploy")
         .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
         .json(&cluster_deploy)
         .send().await;
@@ -246,8 +246,8 @@ Request Body::
     "isFree":true,
     "status":"starting",
     "createdAt":1738256490070,
-    "organizationID":"new-organization",
-    "projectID":"default",
+    "teamID":"new-team",
+    "spaceID":"default",
     "version":"3.0.6",
     "provider":"gcp",
     "region":"europe-west2",
@@ -265,16 +265,16 @@ Request Body::
 [options="header"]
 |===
 | Field | Allowed Values
-| `id` | The cluster's ID must be unique within its project,
+| `id` | The cluster's ID must be unique within its space,
 and consist only of lowercase alphanumeric characters, optionally separated by underscores and hyphens.
 | `serverCount` | An odd integer value between 1 and 9.
 TypeDB version 3.0 and onwards can currently only have one server.
 | `storageSizeGB` | An integer value between 10 and 1000.
 | `provider` | Must be either `gcp` or `aws`
 | `isFree` | If set to `true`, must use a valid free machine type, and have at most 1 server and 10GB of storage.
-You may only have one free cluster per organization.
+You may only have one free cluster per team.
 
-If set to `false`, there must be a valid payment method on the organization.
+If set to `false`, there must be a valid payment method on the team.
 | `region` | See <<regionsmachinetypes,below>>
 | `machineType` | See <<regionsmachinetypes,below>>
 | `storageType` | See <<storagetypes,below>>
@@ -363,9 +363,9 @@ If set to `false`, there must be a valid payment method on the organization.
 
 [cols="h,3a"]
 |===
-| Required access          | *read* to `org/ORG_ID/projects/PROJECT_ID`
+| Required access          | *read* to `team/TEAM_ID/spaces/SPACE_ID`
 | Method                   | `GET`
-| URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID`
+| URL                      | `/api/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID`
 | Request body             | None
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
 |===
@@ -383,7 +383,7 @@ curl::
 [source,console]
 ----
 curl --request GET \
-    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID \
+    --url https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID \
     --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
 
@@ -393,7 +393,7 @@ Python::
 ----
 import requests
 
-url = "https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID"
+url = "https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID"
 
 headers = {
     "Authorization": "Bearer {ACCESS-TOKEN}"
@@ -410,7 +410,7 @@ Rust::
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let resp = client
-        .get("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID")
+        .get("https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID")
         .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
         .send().await;
     Ok(())
@@ -428,8 +428,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     "isFree":true,
     "status":"running",
     "createdAt":1738256490070,
-    "organizationID":"new-organization",
-    "projectID":"default",
+    "teamID":"new-team",
+    "spaceID":"default",
     "version":"3.0.6",
     "provider":"gcp",
     "region":"europe-west2",
@@ -448,9 +448,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 [cols="h,3a"]
 |===
-| Required access          | *read* to `org/ORG_ID/projects/PROJECT_ID`
+| Required access          | *read* to `team/TEAM_ID/spaces/SPACE_ID`
 | Method                   | `GET`
-| URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters`
+| URL                      | `/api/team/TEAM_ID/spaces/SPACE_ID/clusters`
 | Request body             | None
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
 |===
@@ -468,7 +468,7 @@ curl::
 [source,console]
 ----
 curl --request GET \
-    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters \
+    --url https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters \
     --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
 
@@ -478,7 +478,7 @@ Python::
 ----
 import requests
 
-url = "https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters"
+url = "https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters"
 
 headers = {
     "Authorization": "Bearer {ACCESS-TOKEN}"
@@ -497,7 +497,7 @@ use reqwest;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let resp = client
-        .get("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters")
+        .get("https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters")
         .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
         .send().await;
     Ok(())
@@ -516,8 +516,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         "isFree":true,
         "status":"running",
         "createdAt":1738256490070,
-        "organizationID":"new-organization",
-        "projectID":"default",
+        "teamID":"new-team",
+        "spaceID":"default",
         "version":"3.0.6",
         "provider":"gcp",
         "region":"europe-west2",
@@ -537,8 +537,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         "isFree":false,
         "status":"suspended",
         "createdAt":1738256490090,
-        "organizationID":"new-organization",
-        "projectID":"default",
+        "teamID":"new-team",
+        "spaceID":"default",
         "version":"3.0.6",
         "provider":"aws",
         "region":"eu-west-2",
@@ -554,9 +554,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 [cols="h,3a"]
 |===
-| Required access          | *write* to `org/ORG_ID/projects/PROJECT_ID`
+| Required access          | *write* to `team/TEAM_ID/spaces/SPACE_ID`
 | Method                   | `POST`
-| URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend`
+| URL                      | `/api/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID/suspend`
 | Request body             | None
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
 |===
@@ -574,7 +574,7 @@ curl::
 [source,console]
 ----
 curl --request POST \
-    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend \
+    --url https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID/suspend \
     --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
 
@@ -584,7 +584,7 @@ Python::
 ----
 import requests
 
-url = "https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend"
+url = "https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID/suspend"
 
 headers = {
     "Authorization": "Bearer {ACCESS-TOKEN}"
@@ -603,7 +603,7 @@ use reqwest;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let resp = client
-        .post("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend")
+        .post("https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID/suspend")
         .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
         .send().await;
     Ok(())
@@ -621,8 +621,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     "isFree":true,
     "status":"suspending",
     "createdAt":1738256490070,
-    "organizationID":"new-organization",
-    "projectID":"default",
+    "teamID":"new-team",
+    "spaceID":"default",
     "version":"3.0.6",
     "provider":"gcp",
     "region":"europe-west2",
@@ -641,9 +641,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 [cols="h,3a"]
 |===
-| Required access          | *write* to `org/ORG_ID/projects/PROJECT_ID`
+| Required access          | *write* to `team/TEAM_ID/spaces/SPACE_ID`
 | Method                   | `POST`
-| URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume`
+| URL                      | `/api/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID/resume`
 | Request body             | None
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
 |===
@@ -661,7 +661,7 @@ curl::
 [source,console]
 ----
 curl --request POST \
-    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume \
+    --url https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID/resume \
     --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
 
@@ -671,7 +671,7 @@ Python::
 ----
 import requests
 
-url = "https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume"
+url = "https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID/resume"
 
 headers = {
     "Authorization": "Bearer {ACCESS-TOKEN}"
@@ -690,7 +690,7 @@ use reqwest;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let resp = client
-        .post("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume")
+        .post("https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID/resume")
         .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
         .send().await;
     Ok(())
@@ -708,8 +708,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     "isFree":true,
     "status":"resuming",
     "createdAt":1738256490070,
-    "organizationID":"new-organization",
-    "projectID":"default",
+    "teamID":"new-team",
+    "spaceID":"default",
     "version":"3.0.6",
     "provider":"gcp",
     "region":"europe-west2",
@@ -728,9 +728,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 [cols="h,3a"]
 |===
-| Required access          | *admin* to `org/ORG_ID/projects/PROJECT_ID`
+| Required access          | *admin* to `team/TEAM_ID/spaces/SPACE_ID`
 | Method                   | `DELETE`
-| URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID`
+| URL                      | `/api/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID`
 | Request body             | None
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
 |===
@@ -748,7 +748,7 @@ curl::
 [source,console]
 ----
 curl --request DELETE \
-    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID \
+    --url https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID \
     --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
 
@@ -758,7 +758,7 @@ Python::
 ----
 import requests
 
-url = "https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID"
+url = "https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID"
 
 headers = {
     "Authorization": "Bearer {ACCESS-TOKEN}"
@@ -777,7 +777,7 @@ use reqwest;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let resp = client
-        .delete("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID")
+        .delete("https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID")
         .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
         .send().await;
     Ok(())
@@ -795,8 +795,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     "isFree":true,
     "status":"destroying",
     "createdAt":1738256490070,
-    "organizationID":"new-organization",
-    "projectID":"default",
+    "teamID":"new-team",
+    "spaceID":"default",
     "version":"3.0.6",
     "provider":"gcp",
     "region":"europe-west2",

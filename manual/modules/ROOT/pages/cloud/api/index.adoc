@@ -8,10 +8,10 @@ https://cloud.typedb.com/sign-up.
 
 == Generate an API Token
 
-1. Visit your https://cloud.typedb.com/?org_action=/settings[organization settings] page,
+1. Visit your https://cloud.typedb.com/?team_action=/settings[team settings] page,
 scroll to the API tokens section, and click "Generate API Token".
 
-2. Give your API token a descriptive name, and appropriate access to your chosen project.
+2. Give your API token a descriptive name, and appropriate access to your chosen space.
 See the xref:{page-version}@manual::cloud/api/reference.adoc#accesslevels[API reference] for detailed access level info.
 
 3. Generate your API token and copy the displayed client ID and client secret for later use when authenticating.
@@ -79,8 +79,8 @@ The response body will be your access token.
 ====
 For security, your access token will expire after 1 hour.
 ====
-. Make an API request to list clusters in the project you selected for your API token.
-The example below targets the `default` project in an organization called `my-org`.
+. Make an API request to list clusters in the space you selected for your API token.
+The example below targets the `default` space in an team called `my-team`.
 You will use the access token you generated in the previous step to authenticate this request.
 +
 [tabs]
@@ -90,7 +90,7 @@ curl::
 [source,console]
 ----
 curl --request GET \
-    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters \
+    --url https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters \
     --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
 
@@ -100,7 +100,7 @@ Python::
 ----
 import requests
 
-url = "https://cloud.typedb.com/api/org/my-org/projects/default/clusters"
+url = "https://cloud.typedb.com/api/team/my-team/spaces/default/clusters"
 
 headers = {
     "Authorization": "Bearer {ACCESS-TOKEN}"
@@ -119,7 +119,7 @@ use reqwest;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let resp = client
-        .get("https://cloud.typedb.com/api/org/my-org/projects/default/clusters")
+        .get("https://cloud.typedb.com/api/team/my-team/spaces/default/clusters")
         .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
         .send().await;
     Ok(())
@@ -138,8 +138,8 @@ It will return information about the clusters in a JSON format, as below
         "isFree":true,
         "status":"running",
         "createdAt":1738256490070,
-        "organizationID":"my-org",
-        "projectID":"default",
+        "teamID":"my-team",
+        "spaceID":"default",
         "version":"3.0.6",
         "provider":"gcp",
         "region":"europe-west2",
@@ -157,7 +157,7 @@ It will return information about the clusters in a JSON format, as below
 
 == Next Steps
 
-Now that you know how to list the clusters in your project from the API,
+Now that you know how to list the clusters in your space from the API,
 you can explore TypeDB Cloud further, either through further API use or back on the website.
 
 [cols-2]
