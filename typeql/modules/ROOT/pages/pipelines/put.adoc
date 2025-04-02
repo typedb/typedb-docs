@@ -43,6 +43,27 @@ def run_put(pattern, input_rows):
 
 Hence, a put stage is expected to be only as performant as running both the match and the insert stage.
 
+[NOTE]
+====
+Multiple inputs will cause the pattern to be inserted multiple times.
+
+For example, assume there are two `person` instances in our database named "John",
+and we run the following query:
+```
+match $john isa person, has name "John";
+put $jane isa person, has name "Jane";
+```
+
+What happens in this case is:
+
+- If a person named Jane already exists: nothing is inserted.
+- Else: two new `person` instances with name "Jane" are inserted.
+
+This behaviour is currently under review.
+Please open a Github issue if it is blocking your progress!
+====
+
+
 === No partial matching
 The put matches the entire pattern or inserts the entire pattern. Partial matching and partial inserts are not performed.
 
@@ -77,7 +98,7 @@ put $p4 isa person, has age 11;     # Adds an attribute to the same person
 === Isolation from concurrent transactions
 Though put stages are meant to create data patterns which don't exist in the database,
 they still run under the xref:{page-version}@manual::queries/transactions.adoc[snapshot-isolation] of TypeDB transactions.
-This means they will insert data even if a concurrent transaction has inserted data which satisfies the match - leading to duplication if both transactions commit.
+This means they may insert data even if a concurrent transaction has inserted data which satisfies the match - leading to duplication if both transactions commit.
 
-=== Sensitivity to multiplicity of input rows
-TODO: If we decide not to try to do something about it.
+As cardinality restrictions (`@card`, `@key`, and `@unique`) are validated across concurrent transactions,
+ensuring that a `put` pattern contains atleast one constraint with such a restriction will ensure that the data is inserted at most once across all transactions.
