@@ -11,7 +11,7 @@ It can be used in a xref:{page-version}@typeql::pipelines/index.adoc[pipeline] t
 Due to safety reasons, only unambiguous statements are allowed in update stages.
 Thus, it can only operate on `has` and `links` statements with their schema xref:{page-version}@typeql::annotations/card.adoc[cardinalities] limited by 1. To have more available actions and manual control over updates, use xref:{page-version}@manual::CRUD/deleting.adoc[deletion] and xref:{page-version}@manual::CRUD/inserting.adoc[insertion] instead.
 
-Update queries replaces the existing data with the values specified.
+Update queries replace the existing data with the values specified.
 The new data insertion happens even if no data existed before the update.
 
 This way, update stages can be used to ensure that the data is in a required state before proceeding with other pipeline stages, ignoring the previous "wrong" state of the database.

@@ -117,7 +117,7 @@ With this, you don't need to worry about forgotten transactions.
 
 The current version of the HTTP endpoint does not support query answer streaming. Unlike in gRPC, the query results will be fully consumed before an initial answer is received on the client side, and the whole list of concept rows or documents will be returned in a single response.
 
-While this mechanism will be enhanced in the future, for safety purposes, please use a special query option `answerCountLimit` to limit the amount of produced results and avoid too long query execution. The default value of ten thousands answers can be extended if you are ready for the consequences.
+While this mechanism will be enhanced in the future, for safety purposes, please use a special query option `answerCountLimit` to limit the amount of produced results and avoid too long query execution. The default value of ten thousand answers can be extended if you are ready for the consequences.
 
 If this limit is hit:
 

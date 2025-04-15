@@ -6,7 +6,8 @@
 [#_sign_in]
 === Sign in
 
-Request an API token to authenticate against the rest of the API using user credentials. This token must be used as `ACCESS_TOKEN` for other protected methods.
+Request an API token to authenticate against the rest of the API using user credentials.
+This token must be used as `ACCESS_TOKEN` for other protected methods.
 
 [cols="h,3a"]
 |===
@@ -738,6 +739,18 @@ Open a new transaction and receive a unique transaction id.
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
 |===
 
+// tag::transaction-options[]
+*Transaction options:*
+
+[options="header"]
+[cols="h,3a"]
+|===
+| Field | Description
+| `schemaLockAcquireTimeoutMillis` | Timeout for a schema transaction to acquire the exclusive schema lock of the database. Can be used to wait until a previous schema transaction finishes and releases the exclusivity lock. Specified in milliseconds.
+| `transactionTimeoutMillis` | The maximum amount of time a transaction can stay opened. It will be closed automatically without preserving its changes and finishing its active queries after this timeout. Specified in milliseconds.
+|===
+// end::transaction-options[]
+
 *Responses:*
 
 include::{page-version}@drivers:resources:partial$http-api/responses/details.adoc[tags="200-transaction,400,404"]
@@ -1009,7 +1022,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 === Query in transaction
 
-Run a query within an open transaction. This endpoint allows running multiple sequential queries before committing.
+Run a query within an open transaction.
+This endpoint allows running multiple sequential queries before committing.
 
 [cols="h,3a"]
 |===
@@ -1019,6 +1033,22 @@ Run a query within an open transaction. This endpoint allows running multiple se
 | Request body             | include::{page-version}@drivers:resources:partial$http-api/requests/transactions-query.json.adoc[]
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
 |===
+
+// tag::query-options[]
+*Query options:*
+
+[options="header"]
+[cols="h,3a"]
+|===
+| Field | Description
+| `includeInstanceTypes` | An optimization flag: whether to include the types of the returned instance concepts in the response or not.
+| `answerCountLimit` | The maximum allowed size of concept rows or concept documents answers returned. Used to limit the network load.
+
+If used in a read query, at most `answerCountLimit` answers will be returned. If there are more answers cut, a relevant `warning` will be provided in the response.
+
+If used in a write query and is hit, the operation will fail completely.
+|===
+// end::query-options[]
 
 *Responses:*
 
@@ -1096,6 +1126,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 =====
 include::{page-version}@drivers:resources:partial$http-api/requests/transactions-query-concept-rows-example.json.adoc[]
 =====
+
 include::{page-version}@drivers:resources:partial$http-api/responses/query-concept-rows-example.json.adoc[]
 ====
 
@@ -1107,12 +1138,14 @@ include::{page-version}@drivers:resources:partial$http-api/responses/query-conce
 =====
 include::{page-version}@drivers:resources:partial$http-api/requests/transactions-query-concept-documents-example.json.adoc[]
 =====
+
 include::{page-version}@drivers:resources:partial$http-api/responses/query-concept-documents-example.json.adoc[]
 ====
 
 == One-shot query
 
-Run a one-shot query. This endpoint executes a query within a temporary transaction that is opened and then either committed or closed exclusively for this query.
+Run a one-shot query.
+This endpoint executes a query within a temporary transaction that is opened and then either committed or closed exclusively for this query.
 
 [cols="h,3a"]
 |===
@@ -1122,6 +1155,8 @@ Run a one-shot query. This endpoint executes a query within a temporary transact
 | Request body             | include::{page-version}@drivers:resources:partial$http-api/requests/query.json.adoc[]
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
 |===
+
+include::{page-version}@drivers::http/api-reference.adoc[tags="transaction-options,query-options"]
 
 *Responses:*
 
@@ -1213,6 +1248,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 =====
 include::{page-version}@drivers:resources:partial$http-api/requests/query-concept-rows-example.json.adoc[]
 =====
+
 include::{page-version}@drivers:resources:partial$http-api/responses/query-concept-rows-example.json.adoc[]
 ====
 
@@ -1224,6 +1260,7 @@ include::{page-version}@drivers:resources:partial$http-api/responses/query-conce
 =====
 include::{page-version}@drivers:resources:partial$http-api/requests/query-concept-documents-example.json.adoc[]
 =====
+
 include::{page-version}@drivers:resources:partial$http-api/responses/query-concept-documents-example.json.adoc[]
 ====
 
