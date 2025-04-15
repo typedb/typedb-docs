@@ -3,6 +3,7 @@
 
 == Authorization
 
+[#_sign_in]
 === Sign in
 
 Request an API token to authenticate against the rest of the API using user credentials. This token must be used as `ACCESS_TOKEN` for other protected methods.
@@ -12,7 +13,7 @@ Request an API token to authenticate against the rest of the API using user cred
 | Token required           | No
 | Method                   | `POST`
 | URL                      | `/v1/signin`
-| Request body             | include::{page-version}@manual:resources:partial$http-api/requests/signin.json.adoc[]
+| Request body             | include::{page-version}@drivers:resources:partial$http-api/requests/signin.json.adoc[]
 | Request headers          | None
 |===
 
@@ -21,7 +22,7 @@ Request an API token to authenticate against the rest of the API using user cred
 .200: OK
 [%collapsible]
 ====
-include::{page-version}@manual:resources:partial$http-api/responses/signin.json.adoc[]
+include::{page-version}@drivers:resources:partial$http-api/responses/signin.json.adoc[]
 ====
 
 .400: Bad Request
@@ -33,7 +34,7 @@ Possible causes:
 
 Response format:
 
-include::{page-version}@manual:resources:partial$http-api/responses/error.json.adoc[]
+include::{page-version}@drivers:resources:partial$http-api/responses/error.json.adoc[]
 ====
 
 .401: Unauthorized
@@ -45,7 +46,7 @@ Possible causes:
 
 Response format:
 
-include::{page-version}@manual:resources:partial$http-api/responses/error.json.adoc[]
+include::{page-version}@drivers:resources:partial$http-api/responses/error.json.adoc[]
 ====
 
 *Example request:*
@@ -131,7 +132,7 @@ Get all databases present on the server.
 
 *Responses:*
 
-include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-databases,401"]
+include::{page-version}@drivers:resources:partial$http-api/responses/details.adoc[tags="200-databases,401"]
 
 *Example request:*
 
@@ -195,7 +196,7 @@ Get a single database present on the server by name.
 
 *Responses:*
 
-include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-database,401,404"]
+include::{page-version}@drivers:resources:partial$http-api/responses/details.adoc[tags="200-database,401,404"]
 
 *Example request:*
 
@@ -259,7 +260,7 @@ Create a database on the server.
 
 *Responses:*
 
-include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,401"]
+include::{page-version}@drivers:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,401"]
 
 *Example request:*
 
@@ -323,7 +324,7 @@ Delete a database from the server by name.
 
 *Responses:*
 
-include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,401,404"]
+include::{page-version}@drivers:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,401,404"]
 
 *Example request:*
 
@@ -389,7 +390,7 @@ Get all users present on the server.
 
 *Responses:*
 
-include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-users,401,403"]
+include::{page-version}@drivers:resources:partial$http-api/responses/details.adoc[tags="200-users,401,403"]
 
 *Example request:*
 
@@ -453,7 +454,7 @@ Get a single user present on the server by name.
 
 *Responses:*
 
-include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-user,401,403,404"]
+include::{page-version}@drivers:resources:partial$http-api/responses/details.adoc[tags="200-user,401,403,404"]
 
 *Example request:*
 
@@ -511,13 +512,13 @@ Create a new user on the server.
 | Token required           | Yes
 | Method                   | `POST`
 | URL                      | `/v1/users/USERNAME`
-| Request body             | include::{page-version}@manual:resources:partial$http-api/requests/post-users.json.adoc[]
+| Request body             | include::{page-version}@drivers:resources:partial$http-api/requests/post-users.json.adoc[]
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
 |===
 
 *Responses:*
 
-include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,401,403"]
+include::{page-version}@drivers:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,401,403"]
 
 *Example request:*
 
@@ -589,13 +590,13 @@ Update credentials for a user present on the server.
 | Token required           | Yes
 | Method                   | `PUT`
 | URL                      | `/v1/users/USERNAME`
-| Request body             | include::{page-version}@manual:resources:partial$http-api/requests/put-users.json.adoc[]
+| Request body             | include::{page-version}@drivers:resources:partial$http-api/requests/put-users.json.adoc[]
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
 |===
 
 *Responses:*
 
-include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,401,403,404"]
+include::{page-version}@drivers:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,401,403,404"]
 
 *Example request:*
 
@@ -673,7 +674,7 @@ Delete a user from the server by name.
 
 *Responses:*
 
-include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,401,403,404"]
+include::{page-version}@drivers:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,401,403,404"]
 
 *Example request:*
 
@@ -733,13 +734,13 @@ Open a new transaction and receive a unique transaction id.
 | Token required           | Yes
 | Method                   | `POST`
 | URL                      | `/v1/transactions/open`
-| Request body             | include::{page-version}@manual:resources:partial$http-api/requests/transactions-open.json.adoc[]
+| Request body             | include::{page-version}@drivers:resources:partial$http-api/requests/transactions-open.json.adoc[]
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
 |===
 
 *Responses:*
 
-include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-transaction,400,404"]
+include::{page-version}@drivers:resources:partial$http-api/responses/details.adoc[tags="200-transaction,400,404"]
 
 *Example request:*
 
@@ -829,7 +830,7 @@ Close a transaction without preserving its changes by transaction id.
 
 *Responses:*
 
-include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,403,404"]
+include::{page-version}@drivers:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,403,404"]
 
 *Example request:*
 
@@ -893,7 +894,7 @@ Commit and close a transaction, preserving it changes on the server.
 
 *Responses:*
 
-include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,403,404"]
+include::{page-version}@drivers:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,403,404"]
 
 *Example request:*
 
@@ -957,7 +958,7 @@ Rolls back the uncommitted changes made via a transaction.
 
 *Responses:*
 
-include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,403,404"]
+include::{page-version}@drivers:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,403,404"]
 
 *Example request:*
 
@@ -1015,13 +1016,13 @@ Run a query within an open transaction. This endpoint allows running multiple se
 | Token required           | Yes
 | Method                   | `POST`
 | URL                      | `/v1/transactions/TRANSACTION_ID/query`
-| Request body             | include::{page-version}@manual:resources:partial$http-api/requests/transactions-query.json.adoc[]
+| Request body             | include::{page-version}@drivers:resources:partial$http-api/requests/transactions-query.json.adoc[]
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
 |===
 
 *Responses:*
 
-include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-query,400,403,404,408"]
+include::{page-version}@drivers:resources:partial$http-api/responses/details.adoc[tags="200-query,400,403,404,408"]
 
 *Example request:*
 
@@ -1087,16 +1088,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 *Example responses for each concept:*
 
-// tag::query-response-examples[]
 .Concept rows
 [%collapsible]
 ====
 .Request body
 [%collapsible]
 =====
-include::{page-version}@manual:resources:partial$http-api/requests/transactions-query-concept-rows-example.json.adoc[]
+include::{page-version}@drivers:resources:partial$http-api/requests/transactions-query-concept-rows-example.json.adoc[]
 =====
-include::{page-version}@manual:resources:partial$http-api/responses/query-concept-rows-example.json.adoc[]
+include::{page-version}@drivers:resources:partial$http-api/responses/query-concept-rows-example.json.adoc[]
 ====
 
 .Concept documents
@@ -1105,9 +1105,9 @@ include::{page-version}@manual:resources:partial$http-api/responses/query-concep
 .Request body
 [%collapsible]
 =====
-include::{page-version}@manual:resources:partial$http-api/requests/transactions-query-concept-documents-example.json.adoc[]
+include::{page-version}@drivers:resources:partial$http-api/requests/transactions-query-concept-documents-example.json.adoc[]
 =====
-include::{page-version}@manual:resources:partial$http-api/responses/query-concept-documents-example.json.adoc[]
+include::{page-version}@drivers:resources:partial$http-api/responses/query-concept-documents-example.json.adoc[]
 ====
 
 == One-shot query
@@ -1119,13 +1119,13 @@ Run a one-shot query. This endpoint executes a query within a temporary transact
 | Token required           | Yes
 | Method                   | `POST`
 | URL                      | `/v1/query`
-| Request body             | include::{page-version}@manual:resources:partial$http-api/requests/query.json.adoc[]
+| Request body             | include::{page-version}@drivers:resources:partial$http-api/requests/query.json.adoc[]
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
 |===
 
 *Responses:*
 
-include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-query,400,403,404,408"]
+include::{page-version}@drivers:resources:partial$http-api/responses/details.adoc[tags="200-query,400,403,404,408"]
 
 *Example request:*
 
@@ -1205,16 +1205,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 *Example responses for each concept:*
 
-// tag::query-response-examples[]
 .Concept rows
 [%collapsible]
 ====
 .Request body
 [%collapsible]
 =====
-include::{page-version}@manual:resources:partial$http-api/requests/query-concept-rows-example.json.adoc[]
+include::{page-version}@drivers:resources:partial$http-api/requests/query-concept-rows-example.json.adoc[]
 =====
-include::{page-version}@manual:resources:partial$http-api/responses/query-concept-rows-example.json.adoc[]
+include::{page-version}@drivers:resources:partial$http-api/responses/query-concept-rows-example.json.adoc[]
 ====
 
 .Concept documents
@@ -1223,9 +1222,9 @@ include::{page-version}@manual:resources:partial$http-api/responses/query-concep
 .Request body
 [%collapsible]
 =====
-include::{page-version}@manual:resources:partial$http-api/requests/query-concept-documents-example.json.adoc[]
+include::{page-version}@drivers:resources:partial$http-api/requests/query-concept-documents-example.json.adoc[]
 =====
-include::{page-version}@manual:resources:partial$http-api/responses/query-concept-documents-example.json.adoc[]
+include::{page-version}@drivers:resources:partial$http-api/responses/query-concept-documents-example.json.adoc[]
 ====
 
 == Health check
@@ -1243,7 +1242,7 @@ Check that the server is accessible and healthy.
 
 *Responses:*
 
-include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="204-empty"]
+include::{page-version}@drivers:resources:partial$http-api/responses/details.adoc[tags="204-empty"]
 
 *Example request:*
 

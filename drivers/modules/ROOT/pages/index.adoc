@@ -8,12 +8,12 @@ Welcome to the TypeDB driver documentation!
 
 == Introduction
 
-To build an application on TypeDB, we need to use a TypeDB language driver to communicate with the server.
+To build an application on TypeDB, we need to use a TypeDB driver to communicate with the server. TypeDB servers expose two external endpoints:
 
-[#_typedb_drivers]
-TypeDB drivers implement the https://github.com/typedb/typedb-protocol[TypeDB RPC protocol,window=_blank] and provide language-specific native APIs.
-They are available for some of the most popular programming languages: Rust, Python, and Java.
-Drivers for Node.js, C#, C++, and C are soon to be published.
+- https://github.com/typedb/typedb-protocol[TypeDB RPC,window=_blank] (used for all the officially supported programming languages);
+- xref:{page-version}@drivers::http/index.adoc[TypeDB HTTP] (a more accessible API for other tools, including web applications and languages with a reduced RPC support).
+
+Drivers with language-specific native APIs are available for some of the most popular programming languages: Rust, Python, and Java. Drivers for Node.js, C#, C++, and C are soon to be published.
 
 [#_driver_api]
 == Rust driver
@@ -209,3 +209,20 @@ TypeDB servers accept client connections via gRPC based on the https://github.co
 The Java and Python drivers are implemented as wrappers on top of the Rust driver via an FFI interface.
 // The Node.js driver is implemented independently.
 ====
+
+== HTTP endpoint
+
+[cols-3]
+--
+.xref:{page-version}@drivers::http/index.adoc[Overview]
+[.clickable]
+****
+Basic information, FAQ, and version compatibility.
+****
+
+.xref:{page-version}@drivers::http/api-reference.adoc[API reference]
+[.clickable]
+****
+A complete API reference.
+****
+--
