@@ -1314,7 +1314,7 @@ use reqwest;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let resp = client
-        .post("http://0.0.0.0:8000/health")
+        .get("http://0.0.0.0:8000/health")
         .send().await;
     Ok(())
 }
