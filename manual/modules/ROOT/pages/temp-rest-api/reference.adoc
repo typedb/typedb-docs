@@ -1,19 +1,19 @@
-= TypeDB Cloud API Reference
+= TypeDB HTTP API Reference
 :page-toclevels: 2
 
 == Authorization
 
-=== Token Exchange
+=== Sign in
 
-Exchange an API token's client ID and client secret for a short-lived access token to authenticate against the rest of the API.
+Request an API token to authenticate against the rest of the API using user credentials. This token must be used as `ACCESS_TOKEN` for other protected methods.
 
 [cols="h,3a"]
 |===
-| Required access          | None
+| Token required           | No
 | Method                   | `POST`
-| URL                      | `/api/auth`
-| Request body             | None
-| Request headers          | `Authorization: Basic CLIENT_ID:CLIENT_SECRET`
+| URL                      | `/v1/signin`
+| Request body             | include::{page-version}@manual:resources:partial$http-api/requests/signin.json.adoc[]
+| Request headers          | None
 |===
 
 *Responses:*
@@ -21,14 +21,7 @@ Exchange an API token's client ID and client secret for a short-lived access tok
 .200: OK
 [%collapsible]
 ====
-This response will contain only the access token
-
-Response format:
-
-[source]
-----
-string
-----
+include::{page-version}@manual:resources:partial$http-api/responses/signin.json.adoc[]
 ====
 
 .400: Bad Request
@@ -36,102 +29,23 @@ string
 ====
 Possible causes:
 
-* Incorrectly formatted request (e.g. Authorization header missing a token)
-* Invalid client ID
-* Invalid client secret
+* Incorrectly formatted request
 
 Response format:
 
-include::{page-version}@manual:resources:partial$cloud-api/error-response.json.adoc[]
+include::{page-version}@manual:resources:partial$http-api/responses/error.json.adoc[]
 ====
 
-*Example request:*
-[tabs]
+.401: Unauthorized
+[%collapsible]
 ====
-curl::
-+
-[source,console]
-----
-curl --request POST \
-    --url https://cloud.typedb.com/api/auth \
-    --header 'Authorization: Basic {CLIENT_ID}:{CLIENT_SECRET}'
-----
+Possible causes:
 
-Python::
-+
-[source,python]
-----
-import requests
+* Invalid credentials
 
-url = "https://cloud.typedb.com/api/auth"
+Response format:
 
-headers = {
-    "Authorization": "Basic {CLIENT_ID}:{CLIENT_SECRET}"
-}
-
-response = requests.post(url, headers=headers)
-----
-
-Rust::
-+
-[source,rust]
-----
-use reqwest;
-
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let client = reqwest::Client::new();
-    let resp = client
-        .post("https://cloud.typedb.com/api/auth")
-        .header(reqwest::header::AUTHORIZATION, "Basic {CLIENT_ID}:{CLIENT_SECRET}")
-        .send().await;
-    Ok(())
-}
-----
-====
-
-*Example response:*
-[source]
-----
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
-----
-
-[#accesslevels]
-=== API Token Access Levels
-
-When generating your API token, you will grant it a certain access level to a project of your choice.
-It will be able to perform the actions within that project as described below:
-
-[options="header"]
-|===
-| Project access level | Available cluster actions
-| Admin                | Destroy
-| Write                | Deploy, Suspend, Resume
-| Read                 | Get, List
-|===
-
-== Clusters
-
-=== Deploy
-
-[cols="h,3a"]
-|===
-| Required access          | *write* to `org/ORG_ID/projects/PROJECT_ID`
-| Method                   | `POST`
-| URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/deploy`
-| Request body             | include::{page-version}@manual:resources:partial$cloud-api/cluster-deploy.json.adoc[]
-| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
-|===
-
-*Responses:*
-
-include::{page-version}@manual:resources:partial$cloud-api/response-details.adoc[tags="200-single,400,401,403,404,409,500"]
-
-[NOTE]
-====
-Clusters deployed through the API will have a default user with the username `admin` and the password `password`.
-We recommend xref:{page-version}@manual::users/passwords.adoc[updating the default password] before using the cluster -
-which can also be done through the TypeDB Cloud UI by clicking the "Connect" button on the cluster's page.
+include::{page-version}@manual:resources:partial$http-api/responses/error.json.adoc[]
 ====
 
 *Example request:*
@@ -143,9 +57,8 @@ curl::
 [source,console]
 ----
 curl --request POST \
-    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/deploy \
-    --header 'Authorization: Bearer {ACCESS-TOKEN}' \
-    --json '{"id":"api-cluster","serverCount":1,"storageSizeGB":10,"provider":"gcp","region":"europe-west2","isFree":true,"machineType":"c2d-highcpu-2","storageType":"standard-rwo","version":"3.0.6"}'
+  --url http://0.0.0.0:8000/v1/signin \
+  --json '{"username": "USERNAME", "password": "PASSWORD"}'
 ----
 
 Python::
@@ -154,25 +67,13 @@ Python::
 ----
 import requests
 
-url = "https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/deploy[https://cloud.typedb.com/api/auth]"
-
-headers = {
-    "Authorization": "Bearer {ACCESS-TOKEN}"
-}
-
+url = "http://0.0.0.0:8000/v1/signin"
 body = {
-    "id": "api-cluster",
-    "serverCount": 1,
-    "storageSizeGB": 10,
-    "provider": "gcp",
-    "region": "europe-west2",
-    "isFree": True,
-    "machineType": "c2d-highcpu-2",
-    "storageType": "standard-rwo",
-    "version": "3.0.6"
+    "username": "USERNAME",
+    "password": "PASSWORD"
 }
 
-response = requests.post(url, headers=headers, json=body)
+response = requests.post(url, json=body)
 ----
 
 Rust::
@@ -183,196 +84,54 @@ use reqwest;
 use serde::Serialize;
 
 #[derive(Serialize)]
-struct ClusterDeploy {
-    id: String,
-    serverCount: i32,
-    storageSizeGB: i32,
-    provider: String,
-    region: String,
-    isFree: bool,
-    machineType: String,
-    storageType: String,
-    version: String
+struct Signin {
+    username: String,
+    password: String,
 }
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let cluster_deploy = ClusterDeploy {
-        id: "api-cluster".into(),
-        serverCount: 1,
-        storageSizeGB: 10,
-        provider: "gcp".into(),
-        region: "europe-west2".into(),
-        isFree: true,
-        machineType: "c2d-highcpu-2".into(),
-        storageType: "standard-rwo".into(),
-        version: "3.0.6".into()
+    let signin = Signin {
+        username: "username".to_string(),
+        password: "password".to_string(),
     };
     let client = reqwest::Client::new();
     let resp = client
-        .post("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/deploy")
-        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
-        .json(&cluster_deploy)
+        .post("http://0.0.0.0:8000/v1/signin")
+        .json(&signin)
         .send().await;
     Ok(())
-}
-----
-
-Request Body::
-+
-[source,json]
-----
-{
-    "id":"api-cluster",
-    "serverCount":1,
-    "storageSizeGB":10,
-    "provider":"gcp",
-    "region":"europe-west2",
-    "isFree":true,
-    "machineType":"c2d-highcpu-2",
-    "storageType":"standard-rwo",
-    "version":"3.0.6"
 }
 ----
 ====
 
 *Example response:*
-[source,json]
+
+[source]
 ----
 {
-    "id":"api-cluster",
-    "serverCount":1,
-    "storageSizeGB":10,
-    "isFree":true,
-    "status":"starting",
-    "createdAt":1738256490070,
-    "organizationID":"new-organization",
-    "projectID":"default",
-    "version":"3.0.6",
-    "provider":"gcp",
-    "region":"europe-west2",
-    "machineType":"c2d-highcpu-2",
-    "storageType":"standard-rwo",
-    "servers": [
-        {
-          "address": "abc123-0.cluster.typedb.com:80",
-          "status": "pending"
-        }
-    ]
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTc0NDYzNTI5NSwiaWF0IjoxNzQ0NjIwODk1fQ.WEhmBTAXI_qZUlAB7zw52LDGJhnqfNTXS63QDSZlqds"
 }
 ----
 
-[options="header"]
-|===
-| Field | Allowed Values
-| `id` | The cluster's ID must be unique within its project,
-and consist only of lowercase alphanumeric characters, optionally separated by underscores and hyphens.
-| `serverCount` | An odd integer value between 1 and 9.
-TypeDB version 3.0 and onwards can currently only have one server.
-| `storageSizeGB` | An integer value between 10 and 1000.
-| `provider` | Must be either `gcp` or `aws`
-| `isFree` | If set to `true`, must use a valid free machine type, and have at most 1 server and 10GB of storage.
-You may only have one free cluster per organization.
+== Databases
 
-If set to `false`, there must be a valid payment method on the organization.
-| `region` | See <<regionsmachinetypes,below>>
-| `machineType` | See <<regionsmachinetypes,below>>
-| `storageType` | See <<storagetypes,below>>
-| `version` a| Currently available versions are:
+=== Get databases
 
-* `2.29.3`
-* `3.0.6`
-|===
-
-[#regionsmachinetypes]
-.GCP regions and machine types
-[%collapsible]
-====
-[options="header",cols=",,a"]
-|===
-| Machine Types    | Free Available | Regions
-| c2d-highcpu-2    | Yes            |
-* europe-west2
-* europe-west3
-* us-west4
-* us-east1
-| c2d-highcpu-4    | No             |
-* europe-west2
-* europe-west3
-* us-west4
-* us-east1
-| c2d-highcpu-8    | No             |
-* europe-west2
-* europe-west3
-* us-west4
-* us-east1
-| c2d-highcpu-16   | No             |
-* europe-west2
-* europe-west3
-* us-west4
-* us-east1
-|===
-====
-
-.AWS regions and machine types
-[%collapsible]
-====
-[options="header",cols=",,a"]
-|===
-| Machine Types    | Free Available | Regions
-| c7g.large        | Yes            |
-* eu-west-2
-| c7g.xlarge       | No             |
-* eu-west-2
-| c7g.2xlarge      | No             |
-* eu-west-2
-| c7g.4xlarge      | No             |
-* eu-west-2
-| c8g.large        | Yes            |
-* us-west-2
-* us-east-1
-* eu-central-1
-| c8g.xlarge       | No             |
-* us-west-2
-* us-east-1
-* eu-central-1
-| c8g.2xlarge      | No             |
-* us-west-2
-* us-east-1
-* eu-central-1
-| c8g.4xlarge      | No             |
-* us-west-2
-* us-east-1
-* eu-central-1
-|===
-====
-
-.Storage types
-[#storagetypes]
-[%collapsible]
-====
-[options="header"]
-|===
-| Provider | Storage Type
-| GCP      | standard-rwo
-| AWS      | gp2
-|===
-====
-
-=== Get
+Get all databases present on the server.
 
 [cols="h,3a"]
 |===
-| Required access          | *read* to `org/ORG_ID/projects/PROJECT_ID`
+| Token required           | Yes
 | Method                   | `GET`
-| URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID`
+| URL                      | `/v1/databases`
 | Request body             | None
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
 |===
 
 *Responses:*
 
-include::{page-version}@manual:resources:partial$cloud-api/response-details.adoc[tags="200-single,400,401,403,404,500"]
+include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-databases,401"]
 
 *Example request:*
 
@@ -382,9 +141,10 @@ curl::
 +
 [source,console]
 ----
+
 curl --request GET \
-    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID \
-    --header 'Authorization: Bearer {ACCESS-TOKEN}'
+  --url http://0.0.0.0:8000/v1/databases \
+  --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
 
 Python::
@@ -393,92 +153,7 @@ Python::
 ----
 import requests
 
-url = "https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID"
-
-headers = {
-    "Authorization": "Bearer {ACCESS-TOKEN}"
-}
-
-response = requests.get(url, headers=headers)
-----
-
-Rust::
-+
-[source,rust]
-----
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let client = reqwest::Client::new();
-    let resp = client
-        .get("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID")
-        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
-        .send().await;
-    Ok(())
-}
-----
-====
-
-*Example response:*
-[source,json]
-----
-{
-    "id":"new-cluster",
-    "serverCount":1,
-    "storageSizeGB":10,
-    "isFree":true,
-    "status":"running",
-    "createdAt":1738256490070,
-    "organizationID":"new-organization",
-    "projectID":"default",
-    "version":"3.0.6",
-    "provider":"gcp",
-    "region":"europe-west2",
-    "machineType":"c2d-highcpu-2",
-    "storageType":"standard-rwo",
-    "servers": [
-        {
-          "address": "abc123-0.cluster.typedb.com:80",
-          "status": "running"
-        }
-    ]
-}
-----
-
-=== List
-
-[cols="h,3a"]
-|===
-| Required access          | *read* to `org/ORG_ID/projects/PROJECT_ID`
-| Method                   | `GET`
-| URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters`
-| Request body             | None
-| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
-|===
-
-*Responses:*
-
-include::{page-version}@manual:resources:partial$cloud-api/response-details.adoc[tags="200-list,400,401,403,404,500"]
-
-*Example request:*
-
-[tabs]
-====
-curl::
-+
-[source,console]
-----
-curl --request GET \
-    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters \
-    --header 'Authorization: Bearer {ACCESS-TOKEN}'
-----
-
-Python::
-+
-[source,python]
-----
-import requests
-
-url = "https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters"
+url = "http://0.0.0.0:8000/v1/databases"
 
 headers = {
     "Authorization": "Bearer {ACCESS-TOKEN}"
@@ -497,7 +172,7 @@ use reqwest;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let resp = client
-        .get("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters")
+        .get("http://0.0.0.0:8000/v1/databases")
         .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
         .send().await;
     Ok(())
@@ -505,65 +180,22 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 ----
 ====
 
-*Example response:*
-[source,json]
-----
-[
-    {
-        "id":"new-cluster",
-        "serverCount":1,
-        "storageSizeGB":10,
-        "isFree":true,
-        "status":"running",
-        "createdAt":1738256490070,
-        "organizationID":"new-organization",
-        "projectID":"default",
-        "version":"3.0.6",
-        "provider":"gcp",
-        "region":"europe-west2",
-        "machineType":"c2d-highcpu-2",
-        "storageType":"standard-rwo",
-        "servers": [
-            {
-              "address": "abc123-0.cluster.typedb.com:80",
-              "status": "running"
-            }
-        ]
-    },
-    {
-        "id":"cluster-two",
-        "serverCount":1,
-        "storageSizeGB":10,
-        "isFree":false,
-        "status":"suspended",
-        "createdAt":1738256490090,
-        "organizationID":"new-organization",
-        "projectID":"default",
-        "version":"3.0.6",
-        "provider":"aws",
-        "region":"eu-west-2",
-        "machineType":"c7g.large",
-        "storageType":"gp2",
-        "servers": []
-    }
-]
-----
+=== Get database
 
-
-=== Suspend
+Get a single database present on the server by name.
 
 [cols="h,3a"]
 |===
-| Required access          | *write* to `org/ORG_ID/projects/PROJECT_ID`
-| Method                   | `POST`
-| URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend`
+| Token required           | Yes
+| Method                   | `GET`
+| URL                      | `/v1/databases/DATABASE_NAME`
 | Request body             | None
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
 |===
 
 *Responses:*
 
-include::{page-version}@manual:resources:partial$cloud-api/response-details.adoc[tags="200-single,400,401,403,404,500"]
+include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-database,401,404"]
 
 *Example request:*
 
@@ -573,9 +205,10 @@ curl::
 +
 [source,console]
 ----
-curl --request POST \
-    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend \
-    --header 'Authorization: Bearer {ACCESS-TOKEN}'
+
+curl --request GET \
+  --url http://0.0.0.0:8000/v1/databases/DATABASE_NAME \
+  --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
 
 Python::
@@ -584,7 +217,71 @@ Python::
 ----
 import requests
 
-url = "https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend"
+url = "http://0.0.0.0:8000/v1/databases/DATABASE_NAME"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+
+response = requests.get(url, headers=headers)
+----
+
+Rust::
++
+[source,rust]
+----
+use reqwest;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+    let resp = client
+        .get("http://0.0.0.0:8000/v1/databases/DATABASE_NAME")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
+        .send().await;
+    Ok(())
+}
+----
+====
+
+=== Create database
+
+Create a database on the server.
+
+[cols="h,3a"]
+|===
+| Token required           | Yes
+| Method                   | `POST`
+| URL                      | `/v1/databases/DATABASE_NAME`
+| Request body             | None
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+|===
+
+*Responses:*
+
+include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,401"]
+
+*Example request:*
+
+[tabs]
+====
+curl::
++
+[source,console]
+----
+
+curl --request POST \
+  --url http://0.0.0.0:8000/v1/databases/DATABASE_NAME \
+  --header 'Authorization: Bearer {ACCESS-TOKEN}'
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "http://0.0.0.0:8000/v1/databases/DATABASE_NAME"
 
 headers = {
     "Authorization": "Bearer {ACCESS-TOKEN}"
@@ -603,7 +300,7 @@ use reqwest;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let resp = client
-        .post("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/suspend")
+        .post("http://0.0.0.0:8000/v1/databases/DATABASE_NAME")
         .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
         .send().await;
     Ok(())
@@ -611,133 +308,22 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 ----
 ====
 
-*Example response:*
-[source,json]
-----
-{
-    "id":"new-cluster",
-    "serverCount":1,
-    "storageSizeGB":10,
-    "isFree":true,
-    "status":"suspending",
-    "createdAt":1738256490070,
-    "organizationID":"new-organization",
-    "projectID":"default",
-    "version":"3.0.6",
-    "provider":"gcp",
-    "region":"europe-west2",
-    "machineType":"c2d-highcpu-2",
-    "storageType":"standard-rwo",
-    "servers": [
-        {
-          "address": "abc123-0.cluster.typedb.com:80",
-          "status": "running"
-        }
-    ]
-}
-----
+=== Delete database
 
-=== Resume
+Delete a database from the server by name.
 
 [cols="h,3a"]
 |===
-| Required access          | *write* to `org/ORG_ID/projects/PROJECT_ID`
-| Method                   | `POST`
-| URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume`
-| Request body             | None
-| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
-|===
-
-*Responses:*
-
-include::{page-version}@manual:resources:partial$cloud-api/response-details.adoc[tags="200-single,400,401,403,404,500"]
-
-*Example request:*
-
-[tabs]
-====
-curl::
-+
-[source,console]
-----
-curl --request POST \
-    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume \
-    --header 'Authorization: Bearer {ACCESS-TOKEN}'
-----
-
-Python::
-+
-[source,python]
-----
-import requests
-
-url = "https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume"
-
-headers = {
-    "Authorization": "Bearer {ACCESS-TOKEN}"
-}
-
-response = requests.post(url, headers=headers)
-----
-
-Rust::
-+
-[source,rust]
-----
-use reqwest;
-
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let client = reqwest::Client::new();
-    let resp = client
-        .post("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID/resume")
-        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
-        .send().await;
-    Ok(())
-}
-----
-====
-
-*Example response:*
-[source,json]
-----
-{
-    "id":"new-cluster",
-    "serverCount":1,
-    "storageSizeGB":10,
-    "isFree":true,
-    "status":"resuming",
-    "createdAt":1738256490070,
-    "organizationID":"new-organization",
-    "projectID":"default",
-    "version":"3.0.6",
-    "provider":"gcp",
-    "region":"europe-west2",
-    "machineType":"c2d-highcpu-2",
-    "storageType":"standard-rwo",
-    "servers": [
-        {
-          "address": "abc123-0.cluster.typedb.com:80",
-          "status": "pending"
-        }
-    ]
-}
-----
-
-=== Destroy
-
-[cols="h,3a"]
-|===
-| Required access          | *admin* to `org/ORG_ID/projects/PROJECT_ID`
+| Token required           | Yes
 | Method                   | `DELETE`
-| URL                      | `/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID`
+| URL                      | `/v1/databases/DATABASE_NAME`
 | Request body             | None
 | Request headers          | `Authorization: Bearer ACCESS_TOKEN`
 |===
 
 *Responses:*
 
-include::{page-version}@manual:resources:partial$cloud-api/response-details.adoc[tags="200-single,400,401,403,404,500"]
+include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,401,404"]
 
 *Example request:*
 
@@ -747,9 +333,10 @@ curl::
 +
 [source,console]
 ----
+
 curl --request DELETE \
-    --url https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID \
-    --header 'Authorization: Bearer {ACCESS-TOKEN}'
+  --url http://0.0.0.0:8000/v1/databases/DATABASE_NAME \
+  --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
 
 Python::
@@ -758,7 +345,7 @@ Python::
 ----
 import requests
 
-url = "https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID"
+url = "http://0.0.0.0:8000/v1/databases/DATABASE_NAME"
 
 headers = {
     "Authorization": "Bearer {ACCESS-TOKEN}"
@@ -777,7 +364,7 @@ use reqwest;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let resp = client
-        .delete("https://cloud.typedb.com/api/org/ORG_ID/projects/PROJECT_ID/clusters/CLUSTER_ID")
+        .delete("http://0.0.0.0:8000/v1/databases/DATABASE_NAME")
         .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
         .send().await;
     Ok(())
@@ -785,28 +372,915 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 ----
 ====
 
-*Example response:*
-[source,json]
+== Users
+
+=== Get users
+
+Get all users present on the server.
+
+[cols="h,3a"]
+|===
+| Token required           | Yes
+| Method                   | `GET`
+| URL                      | `/v1/users`
+| Request body             | None
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+|===
+
+*Responses:*
+
+include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-users,401,403"]
+
+*Example request:*
+
+[tabs]
+====
+curl::
++
+[source,console]
 ----
-{
-    "id":"new-cluster",
-    "serverCount":1,
-    "storageSizeGB":10,
-    "isFree":true,
-    "status":"destroying",
-    "createdAt":1738256490070,
-    "organizationID":"new-organization",
-    "projectID":"default",
-    "version":"3.0.6",
-    "provider":"gcp",
-    "region":"europe-west2",
-    "machineType":"c2d-highcpu-2",
-    "storageType":"standard-rwo",
-    "servers": [
-        {
-          "address": "abc123-0.cluster.typedb.com:80",
-          "status": "running"
-        }
-    ]
+
+curl --request GET \
+  --url http://0.0.0.0:8000/v1/users \
+  --header 'Authorization: Bearer {ACCESS-TOKEN}'
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "http://0.0.0.0:8000/v1/users"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+
+response = requests.get(url, headers=headers)
+----
+
+Rust::
++
+[source,rust]
+----
+use reqwest;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+    let resp = client
+        .get("http://0.0.0.0:8000/v1/users")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
+        .send().await;
+    Ok(())
 }
 ----
+====
+
+=== Get user
+
+Get a single user present on the server by name.
+
+[cols="h,3a"]
+|===
+| Token required           | Yes
+| Method                   | `GET`
+| URL                      | `/v1/users/USERNAME`
+| Request body             | None
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+|===
+
+*Responses:*
+
+include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-user,401,403,404"]
+
+*Example request:*
+
+[tabs]
+====
+curl::
++
+[source,console]
+----
+
+curl --request GET \
+  --url http://0.0.0.0:8000/v1/users/USERNAME \
+  --header 'Authorization: Bearer {ACCESS-TOKEN}'
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "http://0.0.0.0:8000/v1/users/USERNAME"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+
+response = requests.get(url, headers=headers)
+----
+
+Rust::
++
+[source,rust]
+----
+use reqwest;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+    let resp = client
+        .get("http://0.0.0.0:8000/v1/users/USERNAME")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
+        .send().await;
+    Ok(())
+}
+----
+====
+
+=== Create user
+
+Create a new user on the server.
+
+[cols="h,3a"]
+|===
+| Token required           | Yes
+| Method                   | `POST`
+| URL                      | `/v1/users/USERNAME`
+| Request body             | include::{page-version}@manual:resources:partial$http-api/requests/post-users.json.adoc[]
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+|===
+
+*Responses:*
+
+include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,401,403"]
+
+*Example request:*
+
+[tabs]
+====
+curl::
++
+[source,console]
+----
+
+curl --request POST \
+  --url http://0.0.0.0:8000/v1/users/USERNAME \
+  --header 'Authorization: Bearer {ACCESS-TOKEN}' \
+  --json '{"password": "PASSWORD"}'
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "http://0.0.0.0:8000/v1/users/USERNAME"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+body = {
+    "password": "PASSWORD"
+}
+
+response = requests.post(url, headers=headers, json=body)
+----
+
+Rust::
++
+[source,rust]
+----
+use reqwest;
+use serde::Serialize;
+
+#[derive(Serialize)]
+struct UserCredentials {
+    password: String,
+}
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let user_credentials = UserCredentials {
+        password: "password".to_string(),
+    };
+    let client = reqwest::Client::new();
+    let resp = client
+        .post("http://0.0.0.0:8000/v1/users/USERNAME")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
+        .json(&user_credentials)
+        .send().await;
+    Ok(())
+}
+----
+====
+
+=== Update user
+
+Update credentials for a user present on the server.
+
+[cols="h,3a"]
+|===
+| Token required           | Yes
+| Method                   | `PUT`
+| URL                      | `/v1/users/USERNAME`
+| Request body             | include::{page-version}@manual:resources:partial$http-api/requests/put-users.json.adoc[]
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+|===
+
+*Responses:*
+
+include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,401,403,404"]
+
+*Example request:*
+
+[tabs]
+====
+curl::
++
+[source,console]
+----
+
+curl --request PUT \
+  --url http://0.0.0.0:8000/v1/users/USERNAME \
+  --header 'Authorization: Bearer {ACCESS-TOKEN}' \
+  --json '{"password": "PASSWORD"}'
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "http://0.0.0.0:8000/v1/users/USERNAME"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+body = {
+    "password": "PASSWORD"
+}
+
+response = requests.put(url, headers=headers, json=body)
+----
+
+Rust::
++
+[source,rust]
+----
+use reqwest;
+use serde::Serialize;
+
+#[derive(Serialize)]
+struct UserCredentials {
+    password: String,
+}
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let user_credentials = UserCredentials {
+        password: "password".to_string(),
+    };
+    let client = reqwest::Client::new();
+    let resp = client
+        .put("http://0.0.0.0:8000/v1/users/USERNAME")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
+        .json(&user_credentials)
+        .send().await;
+    Ok(())
+}
+----
+====
+
+=== Delete user
+
+Delete a user from the server by name.
+
+[cols="h,3a"]
+|===
+| Token required           | Yes
+| Method                   | `DELETE`
+| URL                      | `/v1/users/USERNAME`
+| Request body             | None
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+|===
+
+*Responses:*
+
+include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,401,403,404"]
+
+*Example request:*
+
+[tabs]
+====
+curl::
++
+[source,console]
+----
+
+curl --request DELETE \
+  --url http://0.0.0.0:8000/v1/users/USERNAME \
+  --header 'Authorization: Bearer {ACCESS-TOKEN}'
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "http://0.0.0.0:8000/v1/users/USERNAME"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+
+response = requests.delete(url, headers=headers)
+----
+
+Rust::
++
+[source,rust]
+----
+use reqwest;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+    let resp = client
+        .delete("http://0.0.0.0:8000/v1/users/USERNAME")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
+        .send().await;
+    Ok(())
+}
+----
+====
+
+== Transactions
+
+=== Open transaction
+
+Open a new transaction and receive a unique transaction id.
+
+[cols="h,3a"]
+|===
+| Token required           | Yes
+| Method                   | `POST`
+| URL                      | `/v1/transactions/open`
+| Request body             | include::{page-version}@manual:resources:partial$http-api/requests/transactions-open.json.adoc[]
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+|===
+
+*Responses:*
+
+include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-transaction,400,404"]
+
+*Example request:*
+
+[tabs]
+====
+curl::
++
+[source,console]
+----
+
+curl --request POST \
+  --url http://0.0.0.0:8000/v1/transactions/open \
+  --header 'Authorization: Bearer {ACCESS-TOKEN}' \
+  --json '{"databaseName": "DATABASE_NAME", "transactionType": "schema"}'
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "http://0.0.0.0:8000/v1/transactions/open"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+body = {
+    "databaseName": "DATABASE_NAME",
+    "transactionType": "schema",
+}
+
+response = requests.post(url, headers=headers, json=body)
+----
+
+Rust::
++
+[source,rust]
+----
+use reqwest;
+use serde::Serialize;
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+pub enum TransactionType {
+    Read,
+    Write,
+    Schema,
+}
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+struct Transaction {
+    database_name: String,
+    transaction_type: TransactionType,
+}
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let transaction = Transaction {
+        database_name: DATABASE_NAME,
+        transaction_type: TransactionType::Schema,
+    };
+    let client = reqwest::Client::new();
+    let resp = client
+        .post("http://0.0.0.0:8000/v1/transactions/open")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
+        .json(&transaction)
+        .send().await;
+    Ok(())
+}
+----
+====
+
+=== Close transaction
+
+Close a transaction without preserving its changes by transaction id.
+
+[cols="h,3a"]
+|===
+| Token required           | Yes
+| Method                   | `POST`
+| URL                      | `/v1/transactions/TRANSACTION_ID/close`
+| Request body             | None
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+|===
+
+*Responses:*
+
+include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,403,404"]
+
+*Example request:*
+
+[tabs]
+====
+curl::
++
+[source,console]
+----
+
+curl --request POST \
+  --url http://0.0.0.0:8000/v1/transactions/TRANSACTION_ID/close \
+  --header 'Authorization: Bearer {ACCESS-TOKEN}'
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "http://0.0.0.0:8000/v1/transactions/TRANSACTION_ID/close"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+
+response = requests.post(url, headers=headers)
+----
+
+Rust::
++
+[source,rust]
+----
+use reqwest;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+    let resp = client
+        .post("http://0.0.0.0:8000/v1/transactions/TRANSACTION_ID/close")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
+        .send().await;
+    Ok(())
+}
+----
+====
+
+=== Commit transaction
+
+Commit and close a transaction, preserving it changes on the server.
+
+[cols="h,3a"]
+|===
+| Token required           | Yes
+| Method                   | `POST`
+| URL                      | `/v1/transactions/TRANSACTION_ID/commit`
+| Request body             | None
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+|===
+
+*Responses:*
+
+include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,403,404"]
+
+*Example request:*
+
+[tabs]
+====
+curl::
++
+[source,console]
+----
+
+curl --request POST \
+  --url http://0.0.0.0:8000/v1/transactions/TRANSACTION_ID/commit \
+  --header 'Authorization: Bearer {ACCESS-TOKEN}'
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "http://0.0.0.0:8000/v1/transactions/TRANSACTION_ID/commit"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+
+response = requests.post(url, headers=headers)
+----
+
+Rust::
++
+[source,rust]
+----
+use reqwest;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+    let resp = client
+        .post("http://0.0.0.0:8000/v1/transactions/TRANSACTION_ID/commit")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
+        .send().await;
+    Ok(())
+}
+----
+====
+
+=== Rollback transaction
+
+Rolls back the uncommitted changes made via a transaction.
+
+[cols="h,3a"]
+|===
+| Token required           | Yes
+| Method                   | `POST`
+| URL                      | `/v1/transactions/TRANSACTION_ID/rollback`
+| Request body             | None
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+|===
+
+*Responses:*
+
+include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,403,404"]
+
+*Example request:*
+
+[tabs]
+====
+curl::
++
+[source,console]
+----
+
+curl --request POST \
+  --url http://0.0.0.0:8000/v1/transactions/TRANSACTION_ID/rollback \
+  --header 'Authorization: Bearer {ACCESS-TOKEN}'
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "http://0.0.0.0:8000/v1/transactions/TRANSACTION_ID/rollback"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+
+response = requests.post(url, headers=headers)
+----
+
+Rust::
++
+[source,rust]
+----
+use reqwest;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+    let resp = client
+        .post("http://0.0.0.0:8000/v1/transactions/TRANSACTION_ID/rollback")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
+        .send().await;
+    Ok(())
+}
+----
+====
+
+=== Query in transaction
+
+Run a query within an open transaction. This endpoint allows running multiple sequential queries before committing.
+
+[cols="h,3a"]
+|===
+| Token required           | Yes
+| Method                   | `POST`
+| URL                      | `/v1/transactions/TRANSACTION_ID/query`
+| Request body             | include::{page-version}@manual:resources:partial$http-api/requests/transactions-query.json.adoc[]
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+|===
+
+*Responses:*
+
+include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-query,400,403,404,408"]
+
+*Example request:*
+
+[tabs]
+====
+curl::
++
+[source,console]
+----
+
+curl --request POST \
+  --url http://0.0.0.0:8000/v1/transactions/TRANSACTION_ID/query \
+  --header 'Authorization: Bearer {ACCESS-TOKEN}' \
+  --json '{"query": "define entity person;"}'
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "http://0.0.0.0:8000/v1/transactions/TRANSACTION_ID/query"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+body = {
+    "query": "define entity person;"
+}
+
+response = requests.post(url, headers=headers, json=body)
+----
+
+Rust::
++
+[source,rust]
+----
+use reqwest;
+use serde::Serialize;
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+struct Query {
+    query: String,
+}
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let query = Query {
+        query: "define entity person;".to_string(),
+    };
+    let client = reqwest::Client::new();
+    let resp = client
+        .post("http://0.0.0.0:8000/v1/transactions/TRANSACTION_ID/query")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
+        .json(&query)
+        .send().await;
+    Ok(())
+}
+----
+====
+
+*Example responses for each concept:*
+
+// tag::query-response-examples[]
+.Concept rows
+[%collapsible]
+====
+.Request body
+[%collapsible]
+=====
+include::{page-version}@manual:resources:partial$http-api/requests/transactions-query-concept-rows-example.json.adoc[]
+=====
+include::{page-version}@manual:resources:partial$http-api/responses/query-concept-rows-example.json.adoc[]
+====
+
+.Concept documents
+[%collapsible]
+====
+.Request body
+[%collapsible]
+=====
+include::{page-version}@manual:resources:partial$http-api/requests/transactions-query-concept-documents-example.json.adoc[]
+=====
+include::{page-version}@manual:resources:partial$http-api/responses/query-concept-documents-example.json.adoc[]
+====
+
+== One-shot query
+
+Run a one-shot query. This endpoint executes a query within a temporary transaction that is opened and then either committed or closed exclusively for this query.
+
+[cols="h,3a"]
+|===
+| Token required           | Yes
+| Method                   | `POST`
+| URL                      | `/v1/query`
+| Request body             | include::{page-version}@manual:resources:partial$http-api/requests/query.json.adoc[]
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+|===
+
+*Responses:*
+
+include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="200-query,400,403,404,408"]
+
+*Example request:*
+
+[tabs]
+====
+curl::
++
+[source,console]
+----
+
+curl --request POST \
+  --url http://0.0.0.0:8000/v1/query \
+  --header 'Authorization: Bearer {ACCESS-TOKEN}' \
+  --json '{"databaseName": "DATABASE_NAME", "transactionType": "schema", "query": "define entity person;"}'
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "http://0.0.0.0:8000/v1/query"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+body = {
+    "databaseName": "DATABASE_NAME",
+    "transactionType": "schema",
+    "query": "define entity person;"
+}
+
+response = requests.post(url, headers=headers, json=body)
+----
+
+Rust::
++
+[source,rust]
+----
+use reqwest;
+use serde::Serialize;
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+pub enum TransactionType {
+    Read,
+    Write,
+    Schema,
+}
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+struct OneshotQuery {
+    database_name: String,
+    transaction_type: TransactionType,
+    query: String,
+}
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let query = OneshotQuery {
+        database_name: DATABASE_NAME,
+        transaction_type: TransactionType::Schema,
+        query: "define entity person;".to_string(),
+    };
+    let client = reqwest::Client::new();
+    let resp = client
+        .post("http://0.0.0.0:8000/v1/query")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
+        .json(&query)
+        .send().await;
+    Ok(())
+}
+----
+====
+
+*Example responses for each concept:*
+
+// tag::query-response-examples[]
+.Concept rows
+[%collapsible]
+====
+.Request body
+[%collapsible]
+=====
+include::{page-version}@manual:resources:partial$http-api/requests/query-concept-rows-example.json.adoc[]
+=====
+include::{page-version}@manual:resources:partial$http-api/responses/query-concept-rows-example.json.adoc[]
+====
+
+.Concept documents
+[%collapsible]
+====
+.Request body
+[%collapsible]
+=====
+include::{page-version}@manual:resources:partial$http-api/requests/query-concept-documents-example.json.adoc[]
+=====
+include::{page-version}@manual:resources:partial$http-api/responses/query-concept-documents-example.json.adoc[]
+====
+
+== Health check
+
+Check that the server is accessible and healthy.
+
+[cols="h,3a"]
+|===
+| Token required           | No
+| Method                   | `GET`
+| URL                      | `/health`
+| Request body             | None
+| Request headers          | None
+|===
+
+*Responses:*
+
+include::{page-version}@manual:resources:partial$http-api/responses/details.adoc[tags="204-empty"]
+
+*Example request:*
+
+[tabs]
+====
+curl::
++
+[source,console]
+----
+curl --request GET \
+  --url http://0.0.0.0:8000/health
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "http://0.0.0.0:8000/health"
+
+response = requests.get(url)
+----
+
+Rust::
++
+[source,rust]
+----
+use reqwest;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+    let resp = client
+        .post("http://0.0.0.0:8000/health")
+        .send().await;
+    Ok(())
+}
+----
+====

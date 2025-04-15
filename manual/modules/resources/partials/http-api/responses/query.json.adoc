@@ -1,0 +1,9 @@
+[source,json]
+----
+{
+  "queryType": "read" | "write" | "schema",
+  "answerType": "ok" | "conceptRows" | "conceptDocuments",
+  "answers": [ ... ], // optional
+  "warning": string   // optional
+}
+----

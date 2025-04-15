@@ -1,0 +1,6 @@
+[source,json]
+----
+{
+    "query": "match $entity isa $entity-type, has $attribute-type $attribute; $relation isa $relation-type, links ($entity); $relation-type relates $role-type; fetch { 'entity type': $entity-type, 'relation type': $relation-type, 'entity attributes': { $entity.* }, 'sub query': [ match let $value = $attribute; fetch { 'value': $value }; ] };"
+}
+----

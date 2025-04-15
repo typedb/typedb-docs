@@ -1,0 +1,28 @@
+[source,json]
+----
+{
+    "queryType": "read",
+    "answerType": "conceptDocuments",
+    "answers": [
+        {
+            "entity attributes": {
+                "name": "John"
+            },
+            "sub query": [
+                {
+                    "value": "John"
+                }
+            ],
+            "entity type": {
+                "kind": "entity",
+                "label": "person"
+            },
+            "relation type": {
+                "kind": "relation",
+                "label": "parentship"
+            }
+        }
+    ],
+    "warning": null
+}
+----
