@@ -16,9 +16,9 @@ Connecting to TypeDB Enterprise requires:
 Console::
 +
 --
-Run Console using the `--cloud` argument to set the address and port to connect to:
+Run Console in CLI:
 
-include::../tools/console.adoc[tag=connect_cloud_console]
+include::../tools/console.adoc[tag=connect_console]
 --
 
 Studio::
@@ -90,5 +90,26 @@ C::
 +
 --
 NOTE: Coming soon.
+--
+
+HTTP::
++
+--
+Send a sign in xref:{page-version}@drivers::http/api-reference.adoc[HTTP request]:
+
+.curl
+[,console]
+----
+curl --request POST \
+  --url https://{address}:{http_port}/v1/signin \
+  --json '{"username": "USERNAME", "password": "PASSWORD"}'
+----
+
+A successful response will contain an authentication token:
+
+include::{page-version}@drivers::http/api-reference.adoc[tags=token-example]
+
+Put it in the authorization header of the future requests.
+See xref:{page-version}@drivers::http/index.adoc#_authentication[HTTP endpoint authentication] for more information.
 --
 ====

@@ -328,6 +328,12 @@ try (TypeDBTransaction tx = driver.transaction(DB_NAME, Transaction.Type.READ)) 
 Where `answers` is an iterator yielding ``ConceptRow``s, where each concept row is effectively a mapping from variable names (not including the
 `$` sigil) to their values in the row.
 --
+
+HTTP::
++
+--
+Refer to xref:{page-version}@drivers::http/api-reference.adoc#_query_example_responses_rows[HTTP API].
+--
 ====
 
 === JSON answers
@@ -421,6 +427,12 @@ try (TypeDBTransaction tx = driver.transaction(DB_NAME, Transaction.Type.READ)) 
 
 Where `answers` is an iterator yielding ``ConceptDocument``s.
 Each `ConceptDocument` is equivalent to a JSON and can be serialized as such.
+--
+
+HTTP::
++
+--
+Refer to xref:{page-version}@drivers::http/api-reference.adoc#_query_example_responses_documents[HTTP API].
 --
 ====
 

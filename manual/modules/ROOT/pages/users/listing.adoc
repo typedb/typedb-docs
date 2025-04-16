@@ -70,4 +70,19 @@ C::
 ======
 Coming soon.
 ======
+
+HTTP::
++
+--
+Send a users GET xref:{page-version}@drivers::http/api-reference.adoc[HTTP request]:
+
+.curl
+[,console]
+----
+curl --request GET \
+  --url {http/https}://{address}:{http_port}/v1/users \
+  --header 'Authorization: Bearer {ACCESS-TOKEN}'
+----
+Where `{ACCESS_TOKEN}` is your xref:{page-version}@drivers::http/index.adoc#_authentication[authentication token].
+--
 ====

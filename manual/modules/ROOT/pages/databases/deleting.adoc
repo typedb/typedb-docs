@@ -76,4 +76,19 @@ C::
 ======
 Coming soon.
 ======
+
+HTTP::
++
+--
+Send a databases DELETE xref:{page-version}@drivers::http/api-reference.adoc[HTTP request]:
+
+.curl
+[,console]
+----
+curl --request DELETE \
+  --url {http/https}://{address}:{http_port}/v1/databases/social_network \
+  --header 'Authorization: Bearer {ACCESS-TOKEN}'
+----
+Where `{ACCESS_TOKEN}` is your xref:{page-version}@drivers::http/index.adoc#_authentication[authentication token] and `social_network` is the name of the database.
+--
 ====

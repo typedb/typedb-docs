@@ -72,4 +72,19 @@ C::
 ======
 Coming soon.
 ======
+
+HTTP::
++
+--
+Send a users DELETE xref:{page-version}@drivers::http/api-reference.adoc[HTTP request]:
+
+.curl
+[,console]
+----
+curl --request DELETE \
+  --url {http/https}://{address}:{http_port}/v1/users/<username> \
+  --header 'Authorization: Bearer {ACCESS-TOKEN}'
+----
+Where `{ACCESS_TOKEN}` is your xref:{page-version}@drivers::http/index.adoc#_authentication[authentication token] and `<username>` is the name of the user.
+--
 ====

@@ -13,7 +13,9 @@ Run the following command:
 ----
 user create <username>
 ----
+Where `<username>` is the name of the user.
 
+You will be prompted for a password.
 --
 
 Studio::
@@ -33,10 +35,10 @@ Rust::
 --
 [,rust]
 ----
-let result = driver.users().create("<username>").await;
+let result = driver.users().create("<username>", "<password>").await;
 ----
 
-Where `driver` is an instance of a driver, connected to TypeDB, and `"<username>"` is the name of the user.
+Where `driver` is an instance of a driver, connected to TypeDB, `"<username>"` is the name of the user, and `"<password>"` is its password.
 --
 
 Python::
@@ -44,10 +46,10 @@ Python::
 --
 [,python]
 ----
-driver.users.create("<username>")
+driver.users.create("<username>", "<password>")
 ----
 
-Where `driver` is an instance of a driver, connected to TypeDB, and `"<username>"` is the name of the user.
+Where `driver` is an instance of a driver, connected to TypeDB, `"<username>"` is the name of the user, and `"<password>"` is its password.
 --
 
 Java::
@@ -55,10 +57,10 @@ Java::
 --
 [,java]
 ----
-driver.users().create("<username>");
+driver.users().create("<username>", "<password>");
 ----
 
-Where `driver` is an instance of a driver, connected to TypeDB, and `"<username>"` is the name of the user.
+Where `driver` is an instance of a driver, connected to TypeDB, `"<username>"` is the name of the user, and `"<password>"` is its password.
 --
 
 Node.js::
@@ -70,4 +72,20 @@ C::
 ======
 Coming soon.
 ======
+
+HTTP::
++
+--
+Send a users POST xref:{page-version}@drivers::http/api-reference.adoc[HTTP request]:
+
+.curl
+[,console]
+----
+curl --request POST \
+  --url {http/https}://{address}:{http_port}/v1/users/<username> \
+  --header 'Authorization: Bearer {ACCESS-TOKEN}' \
+  --json '{"password": "<password>"}'
+----
+Where `{ACCESS_TOKEN}` is your xref:{page-version}@drivers::http/index.adoc#_authentication[authentication token], `<username>` is the name of the user, and `"<password>"` is its password.
+--
 ====

@@ -133,6 +133,7 @@ Restart the terminal window for the changes to environment variables to take eff
 TypeDB Console can connect to TypeDB CE, TypeDB Cloud instances, or TypeDB Enterprise deployments.
 Running TypeDB Console initiates a network connection to a TypeDB server.
 
+// tag::connect_console[]
 .Connect to TypeDB
 [source,console]
 ----
@@ -140,6 +141,11 @@ typedb console --address=<server-address> --username=<username>
 ----
 
 You will be prompted for a password.
+// end::connect_console[]
+// tag::tls_disabled_notice[]
+
+Use `--tls-disabled` to connect to a server without encryption.
+// end::tls_disabled_notice[]
 
 [NOTE]
 =====
@@ -199,6 +205,7 @@ The new command, as of version 3.1.0:
 ----
 
 Previously, before version 3.1.0:
+
 [source]
 ----
 >> transaction sample_db read
@@ -329,7 +336,8 @@ In contrast, files containing only TypeQL queries normally use the `.tql` extens
 
 [NOTE]
 ====
-Scripts use the exact same format as the interactive REPL. This means queries in the script must be terminated with an empty newline.
+Scripts use the exact same format as the interactive REPL.
+This means queries in the script must be terminated with an empty newline.
 ====
 
 [#_script_example]
@@ -407,8 +415,9 @@ Successfully deleted database.
 == Run query(ies) from a file
 
 To run a series of TypeQL queries stored in a file from _within_ a REPL, use the `source <filename>` command.
-Each query should be separated with an empty newline. Note that this means long queries
-cannot be split over multiple lines containing empty lines. Use comments instead.
+Each query should be separated with an empty newline.
+Note that this means long queries cannot be split over multiple lines containing empty lines.
+Use comments instead.
 
 This command is available from the <<_transaction_level>> REPL:
 
@@ -741,8 +750,8 @@ TypeDB console has several commonly-used REPl features:
 == Version Compatibility
 
 // tag::compat-intro[]
-For older TypeDB versions, you'll need a compatible version of TypeDB Console. Select the correct TypeDB Console version
-from the version compatibility table, and download it from
+For older TypeDB versions, you'll need a compatible version of TypeDB Console.
+Select the correct TypeDB Console version from the version compatibility table, and download it from
 https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%5Etypedb-console&sort=-version[Cloudsmith].
 
 // end::compat-intro[]
