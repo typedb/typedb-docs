@@ -6,6 +6,11 @@ The TypeDB HTTP endpoint can be used to perform database management, user manage
 
 TypeDB server by runs both a gRPC (standard for most of the client applications) and an HTTP endpoint by default. Both endpoints have common authentication and xref:{page-version}@manual::configure/encryption.adoc[encryption settings]. Additionally, it is possible to disable the HTTP endpoint and change its default port.
 
+[NOTE]
+====
+HTTP and gRPC ports must be different.
+====
+
 Please visit xref:{page-version}@manual::configure/server.adoc#_command_line_arguments[Server configuration] for the configuration specification.
 
 == Access the API

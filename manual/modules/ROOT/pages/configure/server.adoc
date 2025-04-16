@@ -149,7 +149,7 @@ The following arguments can be used for TypeDB configuration:
 
 | `--server.http.address=<SERVER_ADDRESS>`
 |
-| HTTP endpoint host and port. Default value: `0.0.0.0:8000`. +
+| HTTP endpoint host and port. Cannot be the same as `server.address`. Default value: `0.0.0.0:8000`. +
 
 | `--server.authentication.token_ttl_seconds=<SERVER_ADDRESS>`
 |
