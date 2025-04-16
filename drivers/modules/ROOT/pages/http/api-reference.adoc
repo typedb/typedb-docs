@@ -1049,6 +1049,14 @@ This endpoint allows running multiple sequential queries before committing.
 If used in a read query, at most `answerCountLimit` answers will be returned. If there are more answers cut, a relevant `warning` will be provided in the response.
 
 If used in a write query and is hit, the operation will fail completely.
+
+[NOTE]
+====
+This behaviour will be changed in the next stable version of TypeDB:
+
+If used in a write query, at most `answerCountLimit` answers will be returned. All changes, including  both returned and not returned, will be applied.
+====
+
 |===
 // end::query-options[]
 

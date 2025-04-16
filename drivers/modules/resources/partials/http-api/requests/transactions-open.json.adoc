@@ -3,9 +3,9 @@
 {
     "databaseName": string,
     "transactionType": "read" | "write" | "schema",
-    "transactionOptions": {
+    "transactionOptions": {                        // optional
         "schemaLockAcquireTimeoutMillis": integer, // optional
         "transactionTimeoutMillis": integer        // optional
-    }                                              // optional
+    }
 }
 ----

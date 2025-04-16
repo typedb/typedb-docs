@@ -131,6 +131,13 @@ If this limit is hit:
 processed;
 - Write queries will stop their execution with an error, and the transaction will be closed without preserving intermediate results.
 
+[NOTE]
+====
+This behaviour will be changed in the next stable version of TypeDB:
+
+- Write queries will be fully executed, and their changes can be committed. The results will be returned with the `206 Partial Content` code.
+====
+
 For example:
 Sending a request to `/v1/transactions/:transaction-id/query` with the following body:
 

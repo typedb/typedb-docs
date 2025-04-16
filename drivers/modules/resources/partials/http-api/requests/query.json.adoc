@@ -5,13 +5,13 @@
     "commit": boolean,                             // optional
     "databaseName": string,
     "transactionType": "read" | "write" | "schema",
-    "transactionOptions": {
+    "transactionOptions": {                        // optional
         "schemaLockAcquireTimeoutMillis": integer, // optional
         "transactionTimeoutMillis": integer        // optional
-    },                                             // optional
-    "queryOptions": {
+    },
+    "queryOptions": {                              // optional
         "includeInstanceTypes": boolean,           // optional
         "answerCountLimit": integer                // optional
-    }                                              // optional
+    }
 }
 ----
