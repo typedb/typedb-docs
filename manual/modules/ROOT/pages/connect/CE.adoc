@@ -103,6 +103,8 @@ curl --request POST \
   --json '{"username": "USERNAME", "password": "PASSWORD"}'
 ----
 
+Note that the `{http_port}` is different from the regular TypeDB port mentioned above and is defaulted to `8000`.
+
 A successful response will contain an authentication token:
 
 include::{page-version}@drivers::http/api-reference.adoc[tags=token-example]
