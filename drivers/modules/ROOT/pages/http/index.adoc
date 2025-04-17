@@ -4,7 +4,9 @@ The TypeDB HTTP endpoint can be used to perform database management, user manage
 
 == Server configuration
 
-TypeDB server by runs both a gRPC (standard for most of the client applications) and an HTTP endpoint by default. Both endpoints have common authentication and xref:{page-version}@manual::configure/encryption.adoc[encryption settings]. Additionally, it is possible to disable the HTTP endpoint and change its default port.
+TypeDB server by runs both a gRPC (standard for most of the client applications) and an HTTP endpoint by default.
+Both endpoints have common authentication and xref:{page-version}@manual::configure/encryption.adoc[encryption settings].
+Additionally, it is possible to disable the HTTP endpoint and change its default port.
 
 [NOTE]
 ====
@@ -18,13 +20,16 @@ Please visit xref:{page-version}@manual::configure/server.adoc#_command_line_arg
 [#_authentication]
 === Authentication
 
-Mostly all methods require Token-based authorization. These temporary tokens can be generated through a xref:{page-version}@drivers::http/api-reference.adoc#_sign_in[`POST` request to `localhost:8000/v1/signin`]. Provide your TypeDB user credentials in the request's body.
+Mostly all methods require Token-based authorization.
+These temporary tokens can be generated through a xref:{page-version}@drivers::http/api-reference.adoc#_sign_in[`POST` request to `localhost:8000/v1/signin`].
+Provide your TypeDB user credentials in the request's body.
 
 Change the xref:{page-version}@manual::configure/server.adoc#_command_line_arguments[`server.authentication.token_ttl_seconds`] parameter in the server's configuration to modify the time the tokens will remain valid before a new sign in request is required.
 
 === Encryption
 
-If xref:{page-version}@manual::configure/encryption.adoc[server encryption] is set up, its settings are also applied to the HTTP endpoint, and the endpoint access will be additionally protected. Visit the xref:{page-version}@manual::configure/server.adoc#_encryption[server configuration] page for more details.
+If xref:{page-version}@manual::configure/encryption.adoc[server encryption] is set up, its settings are also applied to the HTTP endpoint, and the endpoint access will be additionally protected.
+Visit the xref:{page-version}@manual::configure/server.adoc#_encryption[server configuration] page for more details.
 
 === CORS
 
@@ -39,14 +44,18 @@ See xref:{page-version}@drivers::http/api-reference.adoc[] to access available d
 
 === Understanding query answers
 
-The TypeDB HTTP endpoint supports all types of xref:{page-version}@manual::queries/transactions.adoc[transactions] and xref:{page-version}@manual::queries/index.adoc[queries]. The common xref:{page-version}@manual::queries/answers.adoc[query answer type], a list of concept rows, is represented in the HTTP endpoint like the following document:
+The TypeDB HTTP endpoint supports all types of xref:{page-version}@manual::queries/transactions.adoc[transactions] and xref:{page-version}@manual::queries/index.adoc[queries].
+The common xref:{page-version}@manual::queries/answers.adoc[query answer type], a list of concept rows, is represented in the HTTP endpoint like the following document:
 
 .Concept rows answer
 [%collapsible]
 ====
 Each successful query response contains a query type, an answer type, an optional warning message, and the list of answers containing concepts (if applicable).
 
-The `answers` field contains a list of documents with variables as keys and concepts as values. Each concept contains a `kind` field for unambiguous parsing. Each type has a label, and each instance has an optional description of its type, if the specific query option (`includeInstanceTypes`) is enabled. See all the possible concept variants below.
+The `answers` field contains a list of documents with variables as keys and concepts as values.
+Each concept contains a `kind` field for unambiguous parsing.
+Each type has a label, and each instance has an optional description of its type, if the specific query option (`includeInstanceTypes`) is enabled.
+See all the possible concept variants below.
 
 include::{page-version}@drivers:resources:partial$http-api/responses/query-concept-rows-example.json.adoc[]
 ====
@@ -57,7 +66,8 @@ The result above can be achieved in two different ways.
 
 This will except you to manually open, close, and commit transactions used for querying.
 
-Open a transaction using a `POST` request `/v1/transactions/open`. Provide an authorization token in the header (see xref:{page-version}@drivers::http/index.adoc#_authentication[authentication] above) and a JSON body, containing information about the target database and required transaction type:
+Open a transaction using a `POST` request `/v1/transactions/open`.
+Provide an authorization token in the header (see xref:{page-version}@drivers::http/index.adoc#_authentication[authentication] above) and a JSON body, containing information about the target database and required transaction type:
 
 [source,json]
 ----
@@ -69,7 +79,9 @@ Open a transaction using a `POST` request `/v1/transactions/open`. Provide an au
 
 [NOTE]
 ====
-Schema transactions have an exclusive lock on the database and prevent other transactions from opening. If you don't close a schema transaction and lose its ID, it will be closed automatically based on the transaction timeout specified in the request (this parameter can be added to the request above):
+Schema transactions have an exclusive lock on the database and prevent other transactions from opening.
+If you don't close a schema transaction and lose its ID, it will be closed automatically based on the transaction timeout specified in the request (this parameter can be added to the request above):
+
 [source,json]
 ----
 "transactionOptions": {
@@ -79,6 +91,7 @@ Schema transactions have an exclusive lock on the database and prevent other tra
 ====
 
 If everything is correct, you will receive a response containing a body like:
+
 [source,json]
 ----
 {
@@ -87,6 +100,7 @@ If everything is correct, you will receive a response containing a body like:
 ----
 
 Then, send a `POST` query request to `v1/transactions/e1f8583c-2a03-4aac-a260-ec186369e86f/query` with the same authorization token in the header and the following JSON body included:
+
 [source,json]
 ----
 {
@@ -101,9 +115,12 @@ Don't forget to close the transaction when the work is done.
 
 === One-shot query
 
-To avoid manual transaction management, a one-shot query endpoint can be used. It opens and automatically closes or commits a transaction for each query sent.
+To avoid manual transaction management, a one-shot query endpoint can be used.
+It opens and automatically closes or commits a transaction for each query sent.
 
-Send a single `POST` request to `/v1/query`. Provide an authorization token in the header (see xref:{page-version}@drivers::http/index.adoc#_authentication[authentication] above) and the following body containing information about the target database, transaction type required, query, and optional options:
+Send a single `POST` request to `/v1/query`.
+Provide an authorization token in the header (see xref:{page-version}@drivers::http/index.adoc#_authentication[authentication] above) and the following body containing information about the target database, transaction type required, query, and optional options:
+
 [source,json]
 ----
 {
@@ -121,21 +138,18 @@ With this, you don't need to worry about forgotten transactions.
 
 === Running big queries
 
-The current version of the HTTP endpoint does not support query answer streaming. Unlike in gRPC, the query results will be fully consumed before an initial answer is received on the client side, and the whole list of concept rows or documents will be returned in a single response.
+The current version of the HTTP endpoint does not support query answer streaming.
+Unlike in gRPC, the query results will be fully consumed before an initial answer is received on the client side, and the whole list of concept rows or documents will be returned in a single response.
 
-While this mechanism will be enhanced in the future, for safety purposes, please use a special query option `answerCountLimit` to limit the amount of produced results and avoid too long query execution. The default value of ten thousand answers can be extended if you are ready for the consequences.
+While this mechanism will be enhanced in the future, for safety purposes, please use a special query option `answerCountLimit` to limit the amount of produced results and avoid too long query execution.
+The default value of ten thousand answers can be extended if you are ready for the consequences.
 
 If this limit is hit:
 
-- Read queries will return `206 Partial Content` with all the answers
-processed;
-- Write queries will stop their execution with an error, and the transaction will be closed without preserving intermediate results.
+- Read queries will return `206 Partial Content` with all the answers processed;
+- Write queries will be fully executed, and their changes can be committed.
+The results will be returned with `206 Partial Content`.
 
-[NOTE]
-====
-This behaviour will be changed in the next stable version of TypeDB:
-
-- Write queries will be fully executed, and their changes can be committed. The results will be returned with the `206 Partial Content` code.
 ====
 
 For example:

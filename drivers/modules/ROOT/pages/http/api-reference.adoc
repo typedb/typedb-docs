@@ -1046,16 +1046,7 @@ This endpoint allows running multiple sequential queries before committing.
 | `includeInstanceTypes` | An optimization flag: whether to include the types of the returned instance concepts in concept row responses or not. **Default:** true.
 | `answerCountLimit` | The maximum allowed size of concept rows or concept documents answers returned. Used to limit the network load. **Default:** 10 000.
 
-If used in a read query, at most `answerCountLimit` answers will be returned. If there are more answers cut, a relevant `warning` will be provided in the response.
-
-If used in a write query and is hit, the operation will fail completely.
-
-[NOTE]
-====
-This behaviour will be changed in the next stable version of TypeDB:
-
-If used in a write query, at most `answerCountLimit` answers will be returned. All changes, including  both returned and not returned, will be applied.
-====
+At most `answerCountLimit` answers is returned. If there are more answers cut, a relevant `warning` will be provided in the response. If it is a write query, all changes, including both returned and not returned, will be applied.
 
 |===
 // end::query-options[]
