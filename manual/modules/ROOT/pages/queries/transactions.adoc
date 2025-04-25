@@ -3,21 +3,20 @@
 
 == Transactionality
 
-TypeDB transactions come in 3 flavors: *read*, *write*, and *schema* transactions. All transactions operate over *snapshots* of the database, providing a consistent view regardless of the operations performed in concurrent transactions.
+TypeDB transactions come in 3 flavors: *read*, *write*, and *schema* transactions.
+All transactions operate over *snapshots* of the database, providing a consistent view regardless of the operations performed in concurrent transactions.
 
 TypeDB transactions provide *ACID guarantees* up to snapshot isolation.
 
-All transactions that can do writes in TypeDB are __stateful__: queries that mutate the schema or data
-have their changes buffered and are accessible to following queries in the transaction. After a commit,
-the changes are merged into the global database state and made accessibly to new transactions.
+All transactions that can do writes in TypeDB are __stateful__: queries that mutate the schema or data have their changes buffered and are accessible to following queries in the transaction.
+After a commit, the changes are merged into the global database state and made accessibly to new transactions.
 
 == Read transactions
 
 Read transactions can execute only read queries, and will error when provided data update queries or schema mutation queries.
 
 * They are the most lightweight and should be used whenever possible.
-* *Any number of read transactions can be opened concurrently*, and they
-will never fail to open even when write or schema transactions are open.
+* *Any number of read transactions can be opened concurrently*, and they will never fail to open even when write or schema transactions are open.
 
 == Write transactions
 
@@ -38,9 +37,12 @@ Write transactions can execute read queries and data update queries, and will er
 
 == Schema transactions
 
-Schema transactions can execute any type of query: read, data update, and schema mutation queries. They thus _subsume_ the previous two transaction types.
+Schema transactions can execute any type of query: read, data update, and schema mutation queries.
+They thus _subsume_ the previous two transaction types.
 
-* Schema transactions are *exclusive* both against other schema transactions and write transactions. Existing open write transactions will block schema transactions from opening. Similarly, a schema transaction will block write transactions from opening.
+* Schema transactions are *exclusive* both against other schema transactions and write transactions.
+Existing open write transactions will block schema transactions from opening.
+Similarly, a schema transaction will block write transactions from opening.
 This prevents the data from mutating while the schema is being updated.
 
 * Schema transactions can *mutate both data and schema* at the same time, allowing atomic migrations from one database state to another.
@@ -54,8 +56,7 @@ All transactions types have an identical API to submit queries.
 Studio::
 +
 --
-Select your database using the database selector (image:{page-component-version}@home::studio-icons/database-none.png[width=128]), then
-select your transaction type in the top menu.
+Select your database using the database selector (image:{page-component-version}@home::studio-icons/database-none.png[width=128]), then select your transaction type in the top menu.
 
 Open your query file.
 Run the query by clicking the image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] btn:[Run Query] button.
@@ -80,8 +81,7 @@ Use
 commit
 ----
 
-if you want to commit changes, or press kbd:[Ctrl+C] (interrupt) or kbd:[Ctrl+D] (end of input) to terminate the transaction without
-committing.
+if you want to commit changes, or press kbd:[Ctrl+C] (interrupt) or kbd:[Ctrl+D] (end of input) to terminate the transaction without committing.
 --
 
 Python::
@@ -171,3 +171,67 @@ HTTP::
 Refer to xref:{page-version}@drivers::http/index.adoc#_run_queries[Running queries through HTTP endpoint].
 --
 ====
+
+[#_transaction_options]
+== Transaction options
+
+When a transaction is opened, its behavior can be additionally configured through xref:{page-version}@drivers::index.adoc[TypeDB Drivers] using transaction options.
+
+Refer to the specific driver's documentation to access the list of available transaction options.
+Some of the options may not be available or relevant for a driver or a tool (TypeDB Console and TypeDB Studio).
+
+Use the table below to access the full specification and the option values used by default.
+
+.Transaction options
+[cols=".^2,^.^1,5"]
+|===
+^| Argument ^| Default value ^| Description
+| Transaction timeout
+|
+include::{page-version}@manual:resources:partial$options-descriptions/transaction.adoc[tag=transaction-timeout-default]
+|
+include::{page-version}@manual:resources:partial$options-descriptions/transaction.adoc[tag=transaction-timeout]
+
+| Schema lock acquire timeout
+|
+include::{page-version}@manual:resources:partial$options-descriptions/transaction.adoc[tag=schema-lock-acquire-timeout-default]
+|
+include::{page-version}@manual:resources:partial$options-descriptions/transaction.adoc[tag=schema-lock-acquire-timeout]
+|===
+
+[#_query_options]
+== Query options
+
+Similarly, queries have their own options that can replace the default query behaviour.
+
+Refer to the specific driver's documentation to access the list of available query options.
+Some of the options may not be available or relevant for a driver or a tool (TypeDB Console and TypeDB Studio).
+
+Use the table below to access the full specification and the option values used by default.
+
+.Query options
+[cols=".^2,^.^1,5"]
+|===
+^| Argument ^| Default value ^| Description
+| Include instance types
+|
+include::{page-version}@manual:resources:partial$options-descriptions/query.adoc[tag=include-instance-types-default]
+|
+include::{page-version}@manual:resources:partial$options-descriptions/query.adoc[tag=include-instance-types]
+
+| Prefetch size
+|
+include::{page-version}@manual:resources:partial$options-descriptions/query.adoc[tag=prefetch-size-default]
+|
+include::{page-version}@manual:resources:partial$options-descriptions/query.adoc[tag=prefetch-size]
+
+| * Answer count limit
+| gRPC: Disabled
+
+HTTP:
+include::{page-version}@manual:resources:partial$options-descriptions/query.adoc[tag=answer-count-limit-default]
+| * **Available only for the HTTP Endpoint due to the lack of streaming.**
+
+include::{page-version}@manual:resources:partial$options-descriptions/query.adoc[tag=answer-count-limit]
+|===
+

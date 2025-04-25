@@ -748,8 +748,18 @@ Open a new transaction and receive a unique transaction id.
 [cols="h,3a"]
 |===
 | Field | Description
-| `schemaLockAcquireTimeoutMillis` | Timeout for a schema transaction to acquire the exclusive schema lock of the database. Can be used to wait until a previous schema transaction finishes and releases the exclusivity lock. Specified in milliseconds. **Default:** 10 seconds.
-| `transactionTimeoutMillis` | The maximum amount of time a transaction can stay opened. It will be closed automatically without preserving its changes and finishing its active queries after this timeout. Specified in milliseconds. **Default:** 5 minutes.
+| `transactionTimeoutMillis` |
+include::{page-version}@manual:resources:partial$options-descriptions/transaction.adoc[tag=transaction-timeout]
+
+Specified in milliseconds. **Default:**
+include::{page-version}@manual:resources:partial$options-descriptions/transaction.adoc[tag=transaction-timeout-default]
+
+
+| `schemaLockAcquireTimeoutMillis` |
+include::{page-version}@manual:resources:partial$options-descriptions/transaction.adoc[tag=schema-lock-acquire-timeout]
+
+Specified in milliseconds. **Default:**
+include::{page-version}@manual:resources:partial$options-descriptions/transaction.adoc[tag=schema-lock-acquire-timeout-default]
 |===
 // end::transaction-options[]
 
@@ -1043,10 +1053,19 @@ This endpoint allows running multiple sequential queries before committing.
 [cols="h,3a"]
 |===
 | Field | Description
-| `includeInstanceTypes` | An optimization flag: whether to include the types of the returned instance concepts in concept row responses or not. **Default:** true.
-| `answerCountLimit` | The maximum allowed size of concept rows or concept documents answers returned. Used to limit the network load. **Default:** 10 000.
+| `includeInstanceTypes` |
+include::{page-version}@manual:resources:partial$options-descriptions/query.adoc[tag=include-instance-types]
 
-At most `answerCountLimit` answers is returned. If there are more answers cut, a relevant `warning` will be provided in the response. If it is a write query, all changes, including both returned and not returned, will be applied.
+**Default:**
+include::{page-version}@manual:resources:partial$options-descriptions/query.adoc[tag=include-instance-types-default]
+
+
+| `answerCountLimit` |
+include::{page-version}@manual:resources:partial$options-descriptions/query.adoc[tag=answer-count-limit]
+If there are more answers cut, a relevant `warning` will be provided in the response.
+
+**Default:**
+include::{page-version}@manual:resources:partial$options-descriptions/query.adoc[tag=answer-count-limit-default]
 
 |===
 // end::query-options[]

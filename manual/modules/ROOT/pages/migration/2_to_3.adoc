@@ -1,6 +1,6 @@
-= TypeDB 2.x to 3.0
+= TypeDB 2.x to 3.x
 
-TypeDB 3.0 is a major leap forward, offering significantly improved performance and introducing a wide range of changes across almost every aspect of the database.
+TypeDB 3.x is a major leap forward, offering significantly improved performance and introducing a wide range of changes across almost every aspect of the database.
 This page outlines the key updates you should know, alongside recommendations for server and driver upgrades.
 
 == Migration process
@@ -36,7 +36,9 @@ Click on a feature below for detailed documentation and examples.
 
 * **Sessions Removed:** Connections to TypeDB now only require opening a `schema`, `write`, or `read` xref:{page-version}@manual::queries/transactions.adoc[transaction].
 * **Integer Value Type Renamed:** `long` is now xref:{page-version}@typeql::values/integer.adoc[`integer`].
-* **Kinds Introduced:** no more predefined root types and their subtyping through `person sub entity`, `friendship sub relation`, or `name sub attribute`. Each new type should be declared with an explicit kind: `entity person`, `relation friendship`, and `attribute name`. Check out xref:{page-version}@manual::schema/schema_structure.adoc[] for more.
+* **Kinds Introduced:** no more predefined root types and their subtyping through `person sub entity`, `friendship sub relation`, or `name sub attribute`.
+Each new type should be declared with an explicit kind: `entity person`, `relation friendship`, and `attribute name`.
+Check out xref:{page-version}@manual::schema/schema_structure.adoc[] for more.
 * **Expanded User Management:** Authorization and user management are now included in all TypeDB editions.
 Default credentials, if applicable, can be found in the xref:{page-version}@manual::connect/index.adoc[Connection Manual].
 * **Updated Query Syntax:**
@@ -80,20 +82,18 @@ Take into account that some of your processes can be blocked if you previously r
 
 * Database import and export tools.
 * Configuration files (use CLI as a temporary solution).
-* Transaction options.
-* `update` queries (use `delete` + `insert` as a workaround).
-* `contains` and `like` operators for `string` s.
-* Instantiation restriction for inherited `owns` and `plays` (used to `as`). A better way is planned to be released in the future (NOTE: you don't need the `as` keyword to <<#_specialize, specialize>> an ownership of an inherited super attribute type with an ownership of its subtype).
+* Instantiation restriction for inherited `owns` and `plays` (used to `as`).
+A better way is planned to be released in the future (NOTE: you don't need the `as` keyword to <<#_specialize, specialize>> an ownership of an inherited super attribute type with an ownership of its subtype).
 * Scaling support for Cloud and Enterprise editions.
 
 === TypeDB Drivers
 
 * Node.js, C, C++, and C# drivers are not yet available.
+Consider using one of xref:{page-version}@drivers::index.adoc[the available languages] or xref:{page-version}@drivers::http/index.adoc[the HTTP Endpoint].
 
 === TypeDB Studio
 
-* **Graph visualizer** has been disabled due to incoming migration to an xref:{page-version}@manual::tools/code.adoc[IDE plugin]. Please consider using side tools for graph visualization if required.
-* **Type browser** is temporarily unavailable and planned to be reimplemented in the xref:{page-version}@manual::tools/code.adoc[IDE plugin].
+* **Graph visualizer** and **Type browser** are temporarily unavailable, but will be reimplemented and enhanced in the new TypeDB Studio soon.
 
 [#_having_troubles]
 == Having troubles?
