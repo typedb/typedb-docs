@@ -150,9 +150,9 @@ If this limit is hit:
 - Write queries will be fully executed, and their changes can be committed.
 The results will be returned with `206 Partial Content`.
 
-====
 
 For example:
+
 Sending a request to `/v1/transactions/:transaction-id/query` with the following body:
 
 [source,json]
