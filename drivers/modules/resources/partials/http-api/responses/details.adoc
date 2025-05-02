@@ -14,6 +14,14 @@ include::{page-version}@drivers:resources:partial$http-api/responses/get-databas
 ====
 // end::200-databases[]
 
+// tag::200-version[]
+.200: OK
+[%collapsible]
+====
+include::{page-version}@drivers:resources:partial$http-api/responses/version.json.adoc[]
+====
+// end::200-version[]
+
 // tag::200-database[]
 .200: OK
 [%collapsible]
@@ -21,6 +29,14 @@ include::{page-version}@drivers:resources:partial$http-api/responses/get-databas
 include::{page-version}@drivers:resources:partial$http-api/responses/get-database.json.adoc[]
 ====
 // end::200-database[]
+
+// tag::200-database-schema[]
+.200: OK
+[%collapsible]
+====
+include::{page-version}@drivers:resources:partial$http-api/responses/get-database-schema.adoc[]
+====
+// end::200-database-schema[]
 
 // tag::200-users[]
 .200: OK

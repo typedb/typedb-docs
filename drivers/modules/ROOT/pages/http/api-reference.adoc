@@ -118,6 +118,75 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 ----
 // end::token-example[]
 
+== Server information
+
+=== Version
+
+Get the server's distribution and version information.
+
+[cols="h,3a"]
+|===
+| Token required           | No
+| Method                   | `GET`
+| URL                      | `/v1/version`
+| Request body             | None
+| Request headers          | None
+|===
+
+*Responses:*
+
+include::{page-version}@drivers:resources:partial$http-api/responses/details.adoc[tags="200-version"]
+
+*Example request:*
+
+[tabs]
+====
+curl::
++
+[source,console]
+----
+curl --request GET \
+  --url http://0.0.0.0:8000/v1/version
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "http://0.0.0.0:8000/v1/version"
+
+response = requests.get(url)
+----
+
+Rust::
++
+[source,rust]
+----
+use reqwest;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+    let resp = client
+        .get("http://0.0.0.0:8000/v1/version")
+        .send().await;
+    Ok(())
+}
+----
+====
+
+*Example response:*
+
+[source]
+----
+{
+    "distribution": "TypeDB",
+    "version": "3.2.0"
+}
+----
+
 == Databases
 
 === Get databases
@@ -369,6 +438,134 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let resp = client
         .delete("http://0.0.0.0:8000/v1/databases/DATABASE_NAME")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
+        .send().await;
+    Ok(())
+}
+----
+====
+
+=== Get database's schema
+
+Retrieve a full schema text as a valid TypeQL define query string. This includes function definitions.
+
+[cols="h,3a"]
+|===
+| Token required           | Yes
+| Method                   | `GET`
+| URL                      | `/v1/databases/DATABASE_NAME/schema`
+| Request body             | None
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+|===
+
+*Responses:*
+
+include::{page-version}@drivers:resources:partial$http-api/responses/details.adoc[tags="200-database-schema,400,401,404"]
+
+*Example request:*
+
+[tabs]
+====
+curl::
++
+[source,console]
+----
+
+curl --request GET \
+  --url http://0.0.0.0:8000/v1/databases/DATABASE_NAME/schema \
+  --header 'Authorization: Bearer {ACCESS-TOKEN}'
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "http://0.0.0.0:8000/v1/databases/DATABASE_NAME/schema"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+
+response = requests.get(url, headers=headers)
+----
+
+Rust::
++
+[source,rust]
+----
+use reqwest;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+    let resp = client
+        .get("http://0.0.0.0:8000/v1/databases/DATABASE_NAME/schema")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
+        .send().await;
+    Ok(())
+}
+----
+====
+
+=== Get database's type schema
+
+Retrieve the types in the schema as a valid TypeQL define query string.
+
+[cols="h,3a"]
+|===
+| Token required           | Yes
+| Method                   | `GET`
+| URL                      | `/v1/databases/DATABASE_NAME/type-schema`
+| Request body             | None
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+|===
+
+*Responses:*
+
+include::{page-version}@drivers:resources:partial$http-api/responses/details.adoc[tags="200-database-schema,400,401,404"]
+
+*Example request:*
+
+[tabs]
+====
+curl::
++
+[source,console]
+----
+
+curl --request GET \
+  --url http://0.0.0.0:8000/v1/databases/DATABASE_NAME/type-schema \
+  --header 'Authorization: Bearer {ACCESS-TOKEN}'
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "http://0.0.0.0:8000/v1/databases/DATABASE_NAME/type-schema"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+
+response = requests.get(url, headers=headers)
+----
+
+Rust::
++
+[source,rust]
+----
+use reqwest;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+    let resp = client
+        .get("http://0.0.0.0:8000/v1/databases/DATABASE_NAME/type-schema")
         .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
         .send().await;
     Ok(())
