@@ -60,8 +60,8 @@ artifact_extractor(
 filegroup(
     name = "ci",
     data = [
-        "@vaticle_dependencies//tool/bazelrun:rbe",
-        "@vaticle_dependencies//tool/unuseddeps:unused-deps",
-        "@vaticle_dependencies//tool/release:docs",
+        "@typedb_dependencies//tool/bazelrun:rbe",
+        "@typedb_dependencies//tool/unuseddeps:unused-deps",
+        "@typedb_dependencies//tool/release:docs",
     ],
 )

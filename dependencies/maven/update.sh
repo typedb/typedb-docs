@@ -1,3 +1,3 @@
 #!/usr/bin/env sh
 
-bazel run @vaticle_dependencies//library/maven:update
+bazel run @typedb_dependencies//library/maven:update
