@@ -7,8 +7,8 @@
 ##          sub-sub-dir:
 ##              test-2.md
 
-load("@vaticle_typedb_common//test:rules.bzl", "native_typedb_artifact")
-load("@vaticle_bazel_distribution//artifact:rules.bzl", "artifact_extractor")
+load("@typedb_bazel_distribution//artifact:rules.bzl", "artifact_extractor")
+load("@typedb_dependencies//builder/java:rules.bzl", "native_typedb_artifact")
 
 filegroup(
     name = "content",
@@ -36,31 +36,12 @@ filegroup(
     visibility = ["//visibility:public"]
 )
 
-filegroup(
-    name = "autolink-keywords",
-    srcs = ["views/autolink-keywords.js"],
-    visibility = ["//visibility:public"]
-)
-
-native_typedb_artifact(
-    name = "native-typedb-artifact",
-    mac_artifact = "@vaticle_typedb_artifact_mac//file",
-    linux_artifact = "@vaticle_typedb_artifact_linux//file",
-    windows_artifact = "@vaticle_typedb_artifact_windows//file",
-    output = "typedb-server-native.tar.gz",
-    visibility = ["//test:__subpackages__"],
-)
-
-artifact_extractor(
-    name = "typedb-extractor",
-    artifact = ":native-typedb-artifact",
-)
 
 # CI targets that are not declared in any BUILD file, but are called externally
 filegroup(
     name = "ci",
     data = [
-        "@typedb_dependencies//tool/bazelrun:rbe",
+#        "@typedb_dependencies//tool/bazelrun:rbe",
         "@typedb_dependencies//tool/unuseddeps:unused-deps",
         "@typedb_dependencies//tool/release:docs",
     ],
