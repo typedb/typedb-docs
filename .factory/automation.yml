@@ -15,7 +15,7 @@ build:
         export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
         export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
         export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN
-        bazel run @vaticle_dependencies//tool/release:docs -- $FACTORY_OWNER typedb-docs-web development $FACTORY_REPO content/3.x $FACTORY_COMMIT
+        bazel run @typedb_dependencies//tool/release:docs -- $FACTORY_OWNER typedb-docs-web development $FACTORY_REPO content/3.x $FACTORY_COMMIT
     deploy-3.x-production:
       filter:
         owner: typedb
@@ -26,7 +26,7 @@ build:
         export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
         export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
         export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN
-        bazel run @vaticle_dependencies//tool/release:docs -- $FACTORY_OWNER typedb-docs-web master $FACTORY_REPO content/3.x $FACTORY_COMMIT
+        bazel run @typedb_dependencies//tool/release:docs -- $FACTORY_OWNER typedb-docs-web master $FACTORY_REPO content/3.x $FACTORY_COMMIT
   execution:
     - deploy-development
     - deploy-production
