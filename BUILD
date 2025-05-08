@@ -7,9 +7,6 @@
 ##          sub-sub-dir:
 ##              test-2.md
 
-load("@typedb_bazel_distribution//artifact:rules.bzl", "artifact_extractor")
-load("@typedb_dependencies//builder/java:rules.bzl", "native_typedb_artifact")
-
 filegroup(
     name = "content",
     srcs = glob(
@@ -36,12 +33,10 @@ filegroup(
     visibility = ["//visibility:public"]
 )
 
-
 # CI targets that are not declared in any BUILD file, but are called externally
 filegroup(
     name = "ci",
     data = [
-#        "@typedb_dependencies//tool/bazelrun:rbe",
         "@typedb_dependencies//tool/unuseddeps:unused-deps",
         "@typedb_dependencies//tool/release:docs",
     ],

@@ -47,7 +47,6 @@ kt_register_toolchains()
 # Load //builder/nodejs
 load("@typedb_dependencies//builder/nodejs:deps.bzl", nodejs_deps = "deps")
 nodejs_deps()
-#load("@build_bazel_rules_nodejs//:index.bzl", "yarn_install")
 
 # Load //tool/common
 load("@typedb_dependencies//tool/common:deps.bzl", "typedb_dependencies_ci_pip",
@@ -87,23 +86,6 @@ pip_install_deps()
 
 # load maven dependencies
 load("//dependencies/maven:artifacts.bzl", typedb_docs_artifacs = "artifacts")
-
-# for Node documentation
-#yarn_install(
-#    name = "npm",
-#    package_json = "//test/example/nodejs:package.json",
-#    yarn_lock = "//test/example/nodejs:yarn.lock",
-#)
-
-# for Python documentation
-#pip_install(
-#    name = "test_example_pip",
-#    requirements = "//test/example/python:requirements.txt",
-#)
-#pip_install(
-#    name = "test_links_pip",
-#    requirements = "//test/links:requirements.txt",
-#)
 
 ############################
 # Load @maven dependencies #
