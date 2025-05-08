@@ -15,65 +15,43 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-workspace(
-    name = "vaticle_docs",
-    managed_directories = {"@npm": ["test/example/nodejs/node_modules"]}
-)
+workspace(name = "typedb_docs")
 
 ################################
 # Load @typedb_dependencies #
 ################################
 
-load("//dependencies/vaticle:repositories.bzl", "typedb_dependencies")
+load("//dependencies/typedb:repositories.bzl", "typedb_dependencies")
 typedb_dependencies()
 
 # Load //builder/bazel for RBE
 load("@typedb_dependencies//builder/bazel:deps.bzl", "bazel_toolchain")
 bazel_toolchain()
 
-# Load //builder/antlr
-load("@typedb_dependencies//builder/antlr:deps.bzl", antlr_deps = "deps", "antlr_version")
-antlr_deps()
-
-load("@rules_antlr//antlr:lang.bzl", "JAVA")
-load("@rules_antlr//antlr:repositories.bzl", "rules_antlr_dependencies")
-rules_antlr_dependencies(antlr_version, JAVA)
-
-# Load //builder/grpc
-load("@typedb_dependencies//builder/grpc:deps.bzl", grpc_deps = "deps")
-grpc_deps()
-load("@com_github_grpc_grpc//bazel:grpc_deps.bzl",
-com_github_grpc_grpc_deps = "grpc_deps")
-com_github_grpc_grpc_deps()
-load("@stackb_rules_proto//java:deps.bzl", "java_grpc_compile")
-java_grpc_compile()
-load("@stackb_rules_proto//node:deps.bzl", "node_grpc_compile")
-node_grpc_compile()
-
 # Load //builder/java
-load("@typedb_dependencies//builder/java:deps.bzl", java_deps = "deps")
-java_deps()
+load("@typedb_dependencies//builder/java:deps.bzl", "rules_jvm_external")
+rules_jvm_external()
+load("@typedb_dependencies//library/maven:rules.bzl", "maven")
+
+load("@rules_jvm_external//:repositories.bzl", "rules_jvm_external_deps")
+rules_jvm_external_deps()
 
 # Load //builder/kotlin
-load("@typedb_dependencies//builder/kotlin:deps.bzl", kotlin_deps = "deps")
-kotlin_deps()
-load("@io_bazel_rules_kotlin//kotlin:kotlin.bzl", "kotlin_repositories", "kt_register_toolchains")
+load("@typedb_dependencies//builder/kotlin:deps.bzl", "io_bazel_rules_kotlin")
+io_bazel_rules_kotlin()
+load("@io_bazel_rules_kotlin//kotlin:repositories.bzl", "kotlin_repositories")
 kotlin_repositories()
+load("@io_bazel_rules_kotlin//kotlin:core.bzl", "kt_register_toolchains")
 kt_register_toolchains()
 
 # Load //builder/nodejs
 load("@typedb_dependencies//builder/nodejs:deps.bzl", nodejs_deps = "deps")
 nodejs_deps()
-load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "yarn_install")
-
-# Load //builder/python
-load("@typedb_dependencies//builder/python:deps.bzl", python_deps = "deps")
-python_deps()
-load("@rules_python//python:pip.bzl", "pip_install")
+#load("@build_bazel_rules_nodejs//:index.bzl", "yarn_install")
 
 # Load //tool/common
 load("@typedb_dependencies//tool/common:deps.bzl", "typedb_dependencies_ci_pip",
-typedb_dependencies_tool_maven_artifacts = "maven_artifacts")
+    typedb_dependencies_tool_maven_artifacts = "maven_artifacts")
 typedb_dependencies_ci_pip()
 
 # Load //tool/checkstyle
@@ -84,67 +62,48 @@ checkstyle_deps()
 load("@typedb_dependencies//tool/unuseddeps:deps.bzl", unuseddeps_deps = "deps")
 unuseddeps_deps()
 
-# Load //tool/sonarcloud
-load("@typedb_dependencies//tool/sonarcloud:deps.bzl", "sonarcloud_dependencies")
-sonarcloud_dependencies()
-
 ######################################
-# Load @vaticle_bazel_distribution #
+# Load @typedb_bazel_distribution #
 ######################################
 
-load("@typedb_dependencies//distribution:deps.bzl", "vaticle_bazel_distribution")
-vaticle_bazel_distribution()
+load("@typedb_dependencies//distribution:deps.bzl", "typedb_bazel_distribution")
+typedb_bazel_distribution()
 
 # Load //common
-load("@vaticle_bazel_distribution//common:deps.bzl", "rules_pkg")
+load("@typedb_bazel_distribution//common:deps.bzl", "rules_pkg")
 rules_pkg()
 load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
 rules_pkg_dependencies()
 
 # Load //pip
-load("@vaticle_bazel_distribution//pip:deps.bzl", pip_deps = "deps")
-pip_deps()
+load("@typedb_bazel_distribution//pip:deps.bzl", "typedb_bazel_distribution_pip")
+typedb_bazel_distribution_pip()
+load("@typedb_bazel_distribution_pip//:requirements.bzl", pip_install_deps = "install_deps")
+pip_install_deps()
 
 ################################
 # Load @vaticle dependencies #
 ################################
 
-load("//dependencies/vaticle:repositories.bzl", "vaticle_typedb_client_java")
-vaticle_typedb_client_java()
-load("@vaticle_typedb_client_java//dependencies/vaticle:repositories.bzl", "vaticle_typeql", "vaticle_typedb_protocol",
-     "vaticle_factory_tracing", "vaticle_typedb_common")
-vaticle_typeql()
-vaticle_typedb_protocol()
-vaticle_factory_tracing()
-vaticle_typedb_common()
-
-# Load artifacts
-load("//dependencies/vaticle:artifacts.bzl", "vaticle_typedb_artifact")
-vaticle_typedb_artifact()
-
 # load maven dependencies
-load("@vaticle_typedb_client_java//dependencies/maven:artifacts.bzl", vaticle_typedb_client_java_artifacts = "artifacts")
-load("@vaticle_typedb_common//dependencies/maven:artifacts.bzl", vaticle_typedb_common_artifacts = "artifacts")
-load("@vaticle_typeql//dependencies/maven:artifacts.bzl", vaticle_typeql_artifacts = "artifacts")
-load("@vaticle_factory_tracing//dependencies/maven:artifacts.bzl", vaticle_factory_tracing_artifacts = "artifacts")
-load("//dependencies/maven:artifacts.bzl", vaticle_docs_artifacs = "artifacts")
+load("//dependencies/maven:artifacts.bzl", typedb_docs_artifacs = "artifacts")
 
 # for Node documentation
-yarn_install(
-    name = "npm",
-    package_json = "//test/example/nodejs:package.json",
-    yarn_lock = "//test/example/nodejs:yarn.lock",
-)
+#yarn_install(
+#    name = "npm",
+#    package_json = "//test/example/nodejs:package.json",
+#    yarn_lock = "//test/example/nodejs:yarn.lock",
+#)
 
 # for Python documentation
-pip_install(
-    name = "test_example_pip",
-    requirements = "//test/example/python:requirements.txt",
-)
-pip_install(
-    name = "test_links_pip",
-    requirements = "//test/links:requirements.txt",
-)
+#pip_install(
+#    name = "test_example_pip",
+#    requirements = "//test/example/python:requirements.txt",
+#)
+#pip_install(
+#    name = "test_links_pip",
+#    requirements = "//test/links:requirements.txt",
+#)
 
 ############################
 # Load @maven dependencies #
@@ -153,18 +112,14 @@ pip_install(
 load("@typedb_dependencies//library/maven:rules.bzl", "maven")
 maven(
     typedb_dependencies_tool_maven_artifacts +
-    vaticle_factory_tracing_artifacts +
-    vaticle_typeql_artifacts +
-    vaticle_typedb_client_java_artifacts +
-    vaticle_typedb_common_artifacts +
-    vaticle_docs_artifacs
+    typedb_docs_artifacs
 )
 
 ###############################
-# Create @vaticle_docs_refs #
+# Create @typedb_docs_refs #
 ###############################
 
-load("@vaticle_bazel_distribution//common:rules.bzl", "workspace_refs")
+load("@typedb_bazel_distribution//common:rules.bzl", "workspace_refs")
 workspace_refs(
-    name = "vaticle_docs_workspace_refs"
+    name = "typedb_docs_workspace_refs"
 )
