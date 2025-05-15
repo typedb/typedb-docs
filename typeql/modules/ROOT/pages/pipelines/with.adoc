@@ -30,7 +30,7 @@ The usual function validation applies to the function declaration in a with clau
 +
 [,typeql]
 ----
-with fun friend_count($user: user) -> long:
+with fun friend_count($user: user) -> integer:
   match friendship($user, $x)
   return count;
 match
@@ -45,7 +45,7 @@ select $name;
 +
 [,typeql]
 ----
-with fun friend_count($user: user) -> long:
+with fun friend_count($user: user) -> integer:
   match friendship($user, $x)
   return count;
 with fun popular_users() -> { user }:
