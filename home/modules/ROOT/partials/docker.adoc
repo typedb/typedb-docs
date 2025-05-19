@@ -1,6 +1,6 @@
 // tag::manual-install[]
 
-Get the docker image from the https://hub.docker.com/r/vaticle/typedb/tags[Docker hub,window=_blank]
+Get the docker image from the https://hub.docker.com/r/typedb/typedb/tags[Docker hub,window=_blank]
 or
 https://github.com/typedb/typedb-driver/blob/development/rust/README.md#build-from-source[build,window=_blank]
 it from https://github.com/typedb/typedb/tags[source code,window=_blank] with Bazel.
@@ -12,7 +12,7 @@ To pull the latest TypeDB Community Edition Docker image:
 
 [source,bash]
 ----
-docker pull vaticle/typedb:latest
+docker pull typedb/typedb:latest
 ----
 
 You can replace `latest` with a version number to get a specific version of TypeDB Community Edition.
@@ -27,12 +27,16 @@ To create a new Docker container with TypeDB Community Edition server:
 [source,bash]
 ----
 docker volume create typedb-data
-docker create --name typedb -v typedb-data:/opt/typedb-all-linux-x86_64/server/data -p 1729:1729 --platform linux/amd64 vaticle/typedb:latest
+docker create --name typedb -v typedb-data:/opt/typedb-all-linux-x86_64/server/data -p 1729:1729 -p 8000:8000 typedb/typedb:latest
 ----
 // end::run[]
 // tag::run-info[]
-Where `typedb` is the name of the container, and `typedb-data` is the name of the volume to persist data. The `--platform linux/amd64` parameter is required to run the TypeDB container on macOS with the `arm64` architecture.
-//Support for `linux/arm64` will be released in a future version of TypeDB.
+Where `typedb` is the name of the container, and `typedb-data` is the name of the volume to persist data. `-p 1729:1729 -p 8000:8000` forward the ports 1729 and 8000 on the host machine to the container's ports 1729 and 8000 respectively.
+[NOTE]
+====
+You will have to use `-v typedb-data:/opt/typedb-all-linux-arm64/server/data` if you are running the arm64 image.
+====
+
 // end::run-info[]
 
 // tag::start[]
