@@ -1,4 +1,4 @@
-= TypeDB 2.x to 3.x
+= TypeDB 2.x to TypeDB 3.x
 
 TypeDB 3.x is a major leap forward, offering significantly improved performance and introducing a wide range of changes across almost every aspect of the database.
 This page outlines the key updates you should know, alongside recommendations for server and driver upgrades.
@@ -80,8 +80,6 @@ Take into account that some of your processes can be blocked if you previously r
 
 === TypeDB and TypeQL
 
-* Database import and export tools.
-* Configuration files (use CLI as a temporary solution).
 * Instantiation restriction for inherited `owns` and `plays` (used to `as`).
 A better way is planned to be released in the future (NOTE: you don't need the `as` keyword to <<#_specialize, specialize>> an ownership of an inherited super attribute type with an ownership of its subtype).
 * Scaling support for Cloud and Enterprise editions.

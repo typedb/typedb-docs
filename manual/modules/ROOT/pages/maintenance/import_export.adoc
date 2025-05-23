@@ -1,7 +1,91 @@
-= Import/export
+= Export and import
 :page-aliases: {page-version}@manual::configuring/export.adoc
 
-[NOTE]
+In this guide, you'll see how to export and import both the schema and data of a TypeDB database.
+
+[IMPORTANT]
 ====
-Under construction.
+This feature is introduced in TypeDB 3.4.0. If you want to export or import a database from earlier versions of TypeDB 3.x, simply update your server and client and follow this manual.
+
+You can import your databases exported from TypeDB 2.x following xref:{page-component-version}@manual::migration/2_to_3.adoc[this guide].
 ====
+
+== Understanding export and import
+
+TypeDB database can be represented as two files:
+
+[#_files]
+1. A text file with its TypeQL schema description: a complete xref:{page-component-version}@manual::schema/schema_structure.adoc[`define` query] for the whole schema.
+2. A binary file with its data.
+
+An exported database can be imported into another version of TypeDB using these two files.
+This is the best tool you can use to migrate a database between two incompatible versions of TypeDB (e.g., a migration xref:{page-component-version}@manual::migration/2_to_3.adoc[from TypeDB 2.x to TypeDB 3.x]).
+
+Both operations are performed through the network, but the server and the client can be used on the same host.
+
+The exported binary file might be up to two times larger than the original database.
+Please ensure the disk has enough free capacity to store a file of this size.
+
+Examples below use xref:{page-component-version}@manual::tools/console.adoc[TypeDB Console] as the most accessible client for these operations.
+Please check the xref:{page-component-version}@drivers::index.adoc[Drivers API references] to explore available programmatic commands (e.g., xref:{page-component-version}@drivers::rust/api-reference.adoc[Rust]).
+
+== Export
+
+Database export allows a client to download xref:#_files[database schema and data files] from a TypeDB server for future import to the same or higher TypeDB version.
+
+The files are created on the client side.
+If the client connects to a remote host, the server's disk remains unchanged, thus introducing zero risks to the stability of the server.
+
+While the database data is being exported, parallel queries are allowed, but none of them will affect the exported data thanks to TypeDB's xref:{page-component-version}@manual::queries/transactions.adoc[transactionality].
+However, the database will not be available for such operations as deletion.
+
+=== Perform through TypeDB Console
+
+1. Make sure that your TypeDB Server is running.
+
+2. Follow xref:{page-component-version}@manual::tools/console.adoc[this guide] for TypeDB Console set up and connection.
+
+3. Execute `database export databasename schema.typeql data.typedb`, where
+
+- `databasename` is the name of the exported database;
+- `schema.typeql` is the exported schema definition file path;
+- `data.typedb` is the exported data file path.
+
+4. The result (either `Successfully exported database` or an error) will be printed to the Console.
+
+== Import
+
+Database import allows a client to upload previously exported xref:#_files[database schema and data files] to a TypeDB server.
+
+For your safety, the imported database should not exist on the target server.
+It is possible to assign any new name to the imported database.
+
+While the database data is being imported, it is not recommended to perform parallel operations against it.
+Interfering actions may lead to import errors or database corruption.
+
+=== Perform through TypeDB Console
+
+1. Make sure that your TypeDB Server is running.
+
+2. Follow xref:{page-component-version}@manual::tools/console.adoc[this guide] for TypeDB Console set up and connection.
+
+3. Execute `database import databasename schema.typeql data.typedb`, where
+
+- `databasename` is the new name of the imported database;
+- `schema.typeql` is the imported schema definition file path;
+- `data.typedb` is the imported data file path.
+
+4. The result (either `Successfully imported database` or an error) will be printed to the Console.
+
+== Troubleshooting
+
+Follow this checklist if any errors occur:
+
+* Ensure that you use xref:{page-component-version}@manual::tools/console.adoc#version-compatiblity[compatible] TypeDB Server and TypeDB Console.
+* Ensure that the correct file paths were specified for the operations.
+* Ensure that the schema has been imported correctly to the new database.
+Use xref:{page-version}@manual::studio.adoc[TypeDB Studio] or xref:{page-version}@manual::console.adoc[TypeDB Console] to check the schema after import.
+* If you import a TypeDB 2.x database, some errors may be expected.
+Check out xref:{page-component-version}@manual::migration/2_to_3.adoc[this page] for a detailed guide.
+
+If any errors persist, please join one of our communities and ask for assistance.
