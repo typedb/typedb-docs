@@ -1,0 +1,34 @@
+= TypeDB 2.x to TypeDB 3.x: migration process
+
+This page outlines the key updates of TypeDB 3.x compared to 2.x you should be aware of while transitioning, alongside recommendations for server and driver upgrades.
+
+== Migration plan
+
+1. **Understand the scope of changes** by referring to the xref:{page-version}@manual::migration/2_to_3/diff.adoc[major changes] page.
+1. **Review the xref:{page-version}@manual::migration/2_to_3/diff.adoc#_temporarily_missing[missing features] list** before starting your migration.
+Some features might not yet be available in 3.x, and you may need to wait for a newer version to proceed.
+1. *(Optional)* Refresh your knowledge and adjust to the new versions of TypeDB and TypeQL by following the updated xref:{page-version}@home::quickstart.adoc[Quickstart Guide].
+1. **Set up TypeDB 3.x** by following the xref:{page-version}@manual::configure/index.adoc[Configuration Manual].
+1. **Migrate your TypeDB 2.x database** following the xref:#_step_by_step[step-by-step instructions below].
+The setup process remains largely unchanged from 2.x.
+1. *(Optional)* Update your supporting queries using the xref:{page-version}@manual::schema/index.adoc[Schema] and xref:{page-version}@manual::CRUD/index.adoc[CRUD] manuals.
+1. *(Optional)* Update your drivers.
+Consult the xref:{page-version}@drivers::index.adoc[Drivers Manual] and the xref:{page-version}@manual::migration/2_to_3/diff.adoc#_major_changes_drivers[major driver changes] list for details.
+
+[#_step_by_step]
+== Step-by-step example
+
+TODO!!!
+
+This section showcases a step-by-step guide for
+
+=== Export
+1. **Manually update your schema definition file.** Use error messages during application to guide adjustments.
+The <<_major_changes, major changes>> section highlights the most common updates needed.
+- Rewrite rules in your schema as functions.
+Refer to the xref:{page-version}@typeql::functions/index.adoc[Functions Documentation] and xref:{page-version}@manual::schema/functions.adoc[Manual] for guidance on the new abstraction model.
+
+[#_having_troubles]
+== Having troubles?
+
+For troubleshooting tips and guidance, refer to the xref:{page-version}@manual::troubleshooting/index.adoc[Troubleshooting Manual].

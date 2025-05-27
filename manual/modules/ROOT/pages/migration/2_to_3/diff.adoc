@@ -1,38 +1,16 @@
-= TypeDB 2.x to TypeDB 3.x
+= TypeDB 2.x to TypeDB 3.x: what's changed
 
-TypeDB 3.x is a major leap forward, offering significantly improved performance and introducing a wide range of changes across almost every aspect of the database.
-This page outlines the key updates you should know, alongside recommendations for server and driver upgrades.
-
-== Migration process
-
-1. **Review the <<_temporarily_missing, missing features>> list** before starting your migration.
-Some features might not yet be available in 3.0, and you may need to wait for a newer version to proceed.
-1. **Understand the scope of changes** by referring to the <<_major_changes, major changes>> section.
-1. **Export your schema and data** from TypeDB 2.x using the xref:2.x@manual::configuring/export.adoc[export manual].
-1. **Data migration guide and tools are in progress.** Full migration of a production database is currently unsupported. **Stay tuned for updates!**
-1. *(Optional)* Refresh your knowledge of TypeDB and TypeQL by following the updated xref:{page-version}@home::quickstart.adoc[Quickstart Guide].
-1. **Set up TypeDB 3.0** by following the xref:{page-version}@manual::configure/index.adoc[Configuration Manual].
-The setup process remains largely unchanged from 2.x.
-1. **Manually update your schema definition file.** Use error messages during application to guide adjustments.
-The <<_major_changes, major changes>> section highlights the most common updates needed.
-- Rewrite rules in your schema as functions.
-Refer to the xref:{page-version}@typeql::functions/index.adoc[Functions Documentation] and xref:{page-version}@manual::schema/functions.adoc[Manual] for guidance on the new abstraction model.
-1. *(Optional)* Update your supporting queries using the xref:{page-version}@manual::schema/index.adoc[Schema] and xref:{page-version}@manual::CRUD/index.adoc[CRUD] manuals.
-1. *(Optional)* Update your drivers.
-Consult the xref:{page-version}@drivers::index.adoc[Drivers Manual] and the <<_major_changes_drivers, major driver changes>> list for details.
-
-[#_major_changes]
-== Major changes
+This page outlines the key updates of TypeDB 3.x compared to 2.x you should be aware of while transitioning, alongside recommendations for server and driver upgrades.
 
 [NOTE]
 ====
-This section highlights **changes from TypeDB 2.x**, not all new features in 3.0. Explore the xref:{page-version}@manual::index.adoc[Manual], xref:{page-version}@typeql::index.adoc[TypeQL Documentation], and https://github.com/typedb/typedb/releases[release notes] for the full picture.
+This section highlights **changes from TypeDB 2.x**, not all new features in 3.x. Explore the xref:{page-version}@manual::index.adoc[Manual], xref:{page-version}@typeql::index.adoc[TypeQL Documentation], and https://github.com/typedb/typedb/releases[release notes] for the full picture.
 Stay tuned for upcoming blogs showcasing new features!
 ====
 
 Click on a feature below for detailed documentation and examples.
 
-=== TypeDB and TypeQL
+== TypeDB and TypeQL
 
 * **Sessions Removed:** Connections to TypeDB now only require opening a `schema`, `write`, or `read` xref:{page-version}@manual::queries/transactions.adoc[transaction].
 * **Integer Value Type Renamed:** `long` is now xref:{page-version}@typeql::values/integer.adoc[`integer`].
@@ -61,7 +39,7 @@ Explicitly define cardinalities for traits expecting multiple instances to avoid
 * **Rules and Inference Replaced:** Rules are now replaced by xref:{page-version}@typeql::functions/index.adoc[functions], requiring explicit functions execution instead of inference, but offering more abstraction and flexibility.
 
 [#_major_changes_drivers]
-=== TypeDB Drivers
+== TypeDB Drivers
 
 **API Simplification** for smoother UX and better maintenance.
 
@@ -88,10 +66,6 @@ A better way is planned to be released in the future (NOTE: you don't need the `
 
 * Node.js, C, C++, and C# drivers are not yet available.
 Consider using one of xref:{page-version}@drivers::index.adoc[the available languages] or xref:{page-version}@drivers::http/index.adoc[the HTTP Endpoint].
-
-=== TypeDB Studio
-
-* **Graph visualizer** and **Type browser** are temporarily unavailable, but will be reimplemented and enhanced in the new TypeDB Studio soon.
 
 [#_having_troubles]
 == Having troubles?
