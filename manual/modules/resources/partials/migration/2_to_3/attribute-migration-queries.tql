@@ -1,0 +1,20 @@
+# tag::step1-define-entity-ownership[]
+define
+  page owns bio-version;
+# end::step1-define-entity-ownership[]
+
+# tag::step2-move-data[]
+match
+  $version isa bio-version;
+  $attribute has $version;
+  $entity has $attribute;
+delete
+  $attribute has $version;
+insert
+  $entity has $version;
+# end::step2-move-data[]
+
+# tag::step3-undefine-attribute-ownership[]
+undefine
+  bio owns bio-version;
+# end::step3-undefine-attribute-ownership[]

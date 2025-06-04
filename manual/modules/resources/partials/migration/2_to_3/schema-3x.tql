@@ -1,0 +1,80 @@
+# tag::full-query[]
+define
+  entity content @abstract,
+    owns id @key;
+  entity page @abstract, sub content,
+    owns name @card(0..),
+    owns bio @card(1),
+    owns bio-version @card(1),
+    plays posting:page,
+    plays following:page;
+  entity profile sub page,
+    owns name @card(1..3),
+    owns profile-id,
+    plays content-engagement:author,
+    plays following:follower;
+  entity group sub page,
+    owns name @card(1),
+    owns group-id;
+  entity post @abstract, sub content,
+      owns post-id,
+      owns post-text,
+      owns creation-timestamp @card(1),
+      plays posting:post @card(1),
+      plays commenting:parent,
+      plays reaction:parent;
+  entity text-post sub post,
+    owns post-text @card(1);
+  entity image-post sub post,
+    owns post-image @card(1..10);
+  entity comment sub content,
+    owns comment-id,
+    owns comment-text,
+    owns creation-timestamp @card(1),
+    plays commenting:comment,
+    plays commenting:parent,
+    plays reaction:parent;
+
+  relation interaction @abstract,
+      relates subject @card(1),
+      relates content @card(1);
+  relation content-engagement @abstract, sub interaction,
+    relates author as subject;
+  relation posting, sub content-engagement,
+    relates page as content,
+    relates post @card(1);
+  relation commenting, sub content-engagement,
+    relates parent as content,
+    relates comment @card(1);
+  relation reaction, sub content-engagement,
+    relates parent as content,
+    owns emoji @card(0..9),
+    owns creation-timestamp @card(1);
+  relation following,
+    relates follower @card(1),
+    relates page @card(1);
+
+  attribute name,
+    value string;
+  attribute id @abstract,
+    value string;
+  attribute post-id sub id;
+  attribute profile-id sub id;
+  attribute group-id sub id;
+  attribute comment-id sub id;
+  attribute creation-timestamp,
+    value datetime;
+  attribute emoji,
+    value string @values("like", "love", "funny", "surprise", "sad", "angry");
+  attribute post-image,
+    value string @regex(".*\.png$");
+  attribute payload @abstract,
+    value string;
+  attribute text-payload @abstract, sub payload;
+  attribute image-payload @abstract, sub payload;
+  attribute bio sub text-payload;
+  attribute comment-text sub text-payload;
+  attribute post-text sub text-payload;
+  attribute version, value integer;
+  attribute bio-version sub version;
+# end::full-query[]

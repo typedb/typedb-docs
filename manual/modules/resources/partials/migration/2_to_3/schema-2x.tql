@@ -1,0 +1,136 @@
+# tag::full-query[]
+define
+  content sub entity, abstract,
+    owns id @key;
+  page sub content, abstract,
+    owns name,
+    owns bio,
+    plays posting:page,
+    plays following:page;
+  profile sub page,
+    owns profile-id as id,
+    plays content-engagement:author,
+    plays following:follower;
+  group sub page,
+    owns group-id as id;
+  post sub content,
+    abstract,
+    owns post-id as id,
+    owns post-text,
+    owns creation-timestamp,
+    plays posting:post,
+    plays commenting:parent,
+    plays reaction:parent;
+  text-post sub post;
+  image-post sub post,
+    owns post-image;
+  comment sub content,
+    owns comment-id as id,
+    owns comment-text,
+    owns creation-timestamp,
+    plays commenting:comment,
+    plays commenting:parent,
+    plays reaction:parent;
+
+  interaction sub relation, abstract,
+    relates subject,
+    relates content;
+  content-engagement sub interaction, abstract,
+    relates author as subject;
+  posting sub content-engagement,
+    relates page as content,
+    relates post;
+  commenting sub content-engagement,
+    relates parent as content,
+    relates comment;
+  reaction sub content-engagement,
+    relates parent as content,
+    owns emoji,
+    owns creation-timestamp;
+  following sub relation,
+    relates follower,
+    relates page;
+
+  name sub attribute,
+    value string;
+  id sub attribute, abstract,
+    value string;
+  post-id sub id;
+  profile-id sub id;
+  group-id sub id;
+  comment-id sub id;
+  creation-timestamp sub attribute,
+    value datetime;
+  emoji sub attribute,
+    value string;
+  post-image sub attribute,
+    value string, regex ".*\.png$";
+  payload sub attribute, abstract,
+    value string;
+  text-payload sub payload, abstract;
+  image-payload sub payload;
+  bio sub text-payload,
+    owns bio-version;
+  comment-text sub text-payload;
+  post-text sub text-payload;
+  version sub attribute, abstract,
+    value long;
+  bio-version sub version;
+# end::full-query[]
+
+
+# Not referenced in docs, copy it for manual testing.
+# tag::sample-data[]
+insert
+    $now isa creation-timestamp; $now = 2025-05-30T14:00:00;
+
+    $bio1 isa bio, has bio-version 1; $bio1 = "Bio1";
+    $bio2 isa bio, has bio-version 2; $bio2 = "Bio2";
+    $bio3 isa bio, has bio-version 1; $bio3 = "Bio3";
+    $bio4 isa bio, has bio-version 5; $bio4 = "Bio4";
+    $bio5 isa bio, has bio-version 1; $bio5 = "Bio5";
+    $bio6 isa bio, has bio-version 666666666; $bio6 = "Bio6";
+    $p isa profile, has name "John Doe", has profile-id "john-doe-001", has $bio1;
+    $p2 isa profile, has name "Bob Marley", has profile-id "bob-marley-001", has $bio2;
+    $p3 isa profile, has name "Alice Cooper", has profile-id "alice-cooper-001", has $bio3;
+    $p4 isa profile, has name "Alice Cooper", has profile-id "alice-cooper-002", has $bio4;
+    $p5 isa profile, has name "John Dunk", has name "John Doe", has profile-id "john-dunk-001", has $bio5;
+    $p6 isa profile, has name "John Dunk", has name "Alice Cooper", has name "Bob Marley", has profile-id "john-dunk-112", has $bio5;
+    $g isa group, has name "Testing TypeDB with my friends", has group-id "how-to-typedb-part-100000", has $bio5;
+    $g2 isa group, has name "John Dunk", has group-id "john-dunk-001-group", has $bio5;
+    $g3 isa group, has name "Alice Cooper", has group-id "alice-cooper-002-group", has $bio6;
+    $g4 isa group, has name "Alice Cooper", has group-id "alice-cooper-003-group", has $bio6;
+    $c isa comment, has comment-id "cid1", has comment-text "Great post!", has creation-timestamp 2025-05-29T17:30:05;
+    $c2 isa comment, has comment-id "cid2", has comment-text "OMG", has creation-timestamp 2025-04-23T03:30:05;
+    $c3 isa comment, has comment-id "cid3", has comment-text "like", has creation-timestamp 2025-04-25T07:22:32;
+    $c4 isa comment, has comment-id "cid4", has comment-text "like", has creation-timestamp 2025-04-25T07:23:03;
+
+    (follower: $p2, page: $p) isa following;
+    (follower: $p, page: $p2) isa following;
+    (follower: $p, page: $g) isa following;
+    (follower: $p, page: $g4) isa following;
+    (follower: $p6, page: $g2) isa following;
+    (follower: $p6, page: $g3) isa following;
+    (follower: $p6, page: $g4) isa following;
+    (follower: $p3, page: $g4) isa following;
+
+    $tp isa text-post, has post-id "pid1", has post-text "Hello from TypeDB!", has creation-timestamp 2020-03-02T00:00:00;
+    (author: $p, page: $p, post: $tp) isa posting;
+    (author: $p, comment: $c, parent: $tp) isa commenting;
+    (author: $p6, comment: $c2, parent: $tp) isa commenting;
+    (parent: $tp, author: $p6) isa reaction, has emoji "funny", has creation-timestamp 2025-05-05T05:05:05;
+    (parent: $tp, author: $p6) isa reaction, has emoji "like", has creation-timestamp 2025-05-05T05:05:05;
+
+    $ip isa image-post, has post-id "pid2", has post-text "Look at this diagram!", has post-image "https://typedb.com/img/schema.png", has creation-timestamp 2025-05-30T07:30:05;
+    (parent: $ip, author: $p) isa reaction, has emoji "like", has creation-timestamp $now;
+    (parent: $ip, author: $p) isa reaction, has emoji "love", has creation-timestamp $now;
+    (parent: $ip, author: $p2) isa reaction, has emoji "like", has creation-timestamp 2025-03-03T00:00:00;
+    (parent: $ip, author: $p3) isa reaction, has emoji "surprise", has creation-timestamp 2025-03-03T13:03:03;
+    (author: $p2, page: $p, post: $ip) isa posting;
+    (author: $p, comment: $c3, parent: $ip) isa commenting;
+
+    $ip2 isa image-post, has post-id "pid3", has post-image "https://no-text-nor-reactions-for-this-post.png", has creation-timestamp $now;
+    (author: $p2, page: $p2, post: $ip2) isa posting;
+
+    (author: $p2, comment: $c4, parent: $c3) isa commenting;
+# end::sample-data[]

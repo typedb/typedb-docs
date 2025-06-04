@@ -41,7 +41,7 @@ Explicitly define cardinalities for traits expecting multiple instances to avoid
 [#_major_changes_drivers]
 == TypeDB Drivers
 
-**API Simplification** for smoother UX and better maintenance.
+**API Simplification** for smoother UX and better maintenance. Visit the xref:{page-version}@drivers::index.adoc[Drivers manual] to access their full documentation.
 
 - Now, all schema and data fetching and modifications are performed through a single `transaction.query("your query")` interface.
 - No more `query().insert()` and `query().define()`.
