@@ -1,6 +1,6 @@
 = TypeDB 2.x to TypeDB 3.x: migration process
 
-This page outlines the key updates of TypeDB 3.x compared to 2.x you should be aware of while transitioning, alongside recommendations for server and driver upgrades.
+This page gives recommendations for server and driver upgrades between the two major versions of TypeDB, as well as a step-by-step example of such a migration.
 
 == Migration plan
 
@@ -18,7 +18,7 @@ Consult the xref:{page-version}@drivers::index.adoc[Drivers Manual] and the xref
 [#_step_by_step]
 == Step-by-step example
 
-This section showcases a step-by-step example of migrating a database between TypeDB 2.x and TypeDB 3.x.
+This section showcases a step-by-step example of migrating a database between TypeDB 2.x and TypeDB 3.x using xref:{page-version}@manual::maintenance/export_import.adoc[major changes][export and import].
 
 This example uses a database called `social-network`.
 It contains an arbitrary set of data and the 2.x schema provided below.
@@ -95,15 +95,16 @@ typedb server export --database=social-network --port=1729 --schema=social-netwo
 [#_prepare_schema]
 === Prepare the new schema
 
-**Manually update your schema definition file.** Use error messages during application to guide adjustments.
+**Manually update your schema definition file.**
 
 - The xref:{page-version}@manual::migration/2_to_3/diff.adoc[major changes] page highlights the most common updates needed.
 - For simplicity, rules can be completely removed.
 Additional queries can be run to define functions as their replacements later.
 
 This step can require a couple of iterations until you reach the final state of your new schema you will be satisfied with.
+Use error messages during application to guide adjustments.
 
-This is a sample example of the updated `social-network`'s schema, written in TypeQL 3.x:
+This is a sample example of the updated ``social-network``'s schema, written in TypeQL 3.x:
 
 .social-network's 3.x schema
 [%collapsible]
@@ -121,6 +122,7 @@ Noticeable highlights:
 See `bio-version` for an example of such redesign.
 - `long` is now `integer`.
 - We can restrict cardinalities of `relates`, `owns`, and `plays` using the `@card` annotation.
+Default cardinality values protect your data, but they may not suite your needs. Consider overriding them explicitly.
 - We can redeclare traits like `owns` on subtypes to put additional constraints on them.
 - While there are no `as` keyword for `owns` and `plays`, in most cases, like ours, it's not needed.
 E.g., the previously overridden `owns id` does not require overriding in 3.x as it's an ownership of an abstract attribute, so it cannot be instantiated without type specialization (e.g., `owns post-id`).
@@ -143,8 +145,7 @@ database import social-network /path-to-updated-schema/social-network-3x.typeql 
 
 [NOTE]
 ====
-Do not use the imported database while the import is not finished.
-You can operate other server's databases without restrictions in the meantime.
+You can operate other server's databases without restrictions while the new database is being imported.
 ====
 
 In case of successful migration, you will see:
