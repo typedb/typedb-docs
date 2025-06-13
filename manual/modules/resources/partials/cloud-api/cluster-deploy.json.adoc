@@ -3,12 +3,16 @@
 {
     "id": string,
     "serverCount": number,
-    "storageSizeGB":number,
+    "storageSizeGB": number,
     "provider": string,
     "region": string,
     "isFree": boolean,
     "machineType": string,
     "storageType": string,
-    "version":string
+    "version":string,
+    "backupConfiguration": {
+      "frequency": string,
+      "retentionDays": number
+    }
 }
 ----
