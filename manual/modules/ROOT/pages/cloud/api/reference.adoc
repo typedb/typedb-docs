@@ -283,14 +283,14 @@ If set to `false`, there must be a valid payment method on the team.
 * `2.29.3`
 * `3.0.6`
 * `3.1.0`
-| `backupConfiguration` | Optional. If unset, it will take default values as below
+| `backupConfiguration` | Optional for free clusters. If unset, it will take default values as below
 | `backupConfiguration.frequency` a| Must be one of:
 
 * `disabled`
 * `hourly`
 * `daily`
 
-Must be `disabled` for free clusters. Defaults to `daily` for paid clusters if `backupConfiguration` is unset.
+Must be `disabled` for free clusters.
 | `backupConfiguration.retentionDays` | Must be either 7 or 30. Defaults to `7` if `backupConfiguration` is unset.
 |===
 
