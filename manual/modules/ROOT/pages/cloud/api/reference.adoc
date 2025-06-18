@@ -154,7 +154,7 @@ Python::
 ----
 import requests
 
-url = "https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters/deploy[https://cloud.typedb.com/api/auth]"
+url = "https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters/deploy"
 
 headers = {
     "Authorization": "Bearer {ACCESS-TOKEN}"
@@ -558,6 +558,119 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 ]
 ----
 
+=== Update
+
+[cols="h,3a"]
+|===
+| Required access          | *write* to `team/TEAM_ID/spaces/SPACE_ID`
+| Method                   | `PATCH`
+| URL                      | `/api/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID`
+| Request body             | include::{page-version}@manual:resources:partial$cloud-api/cluster-update.json.adoc[]
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+|===
+
+*Responses:*
+
+include::{page-version}@manual:resources:partial$cloud-api/response-details.adoc[tags="200-single,400,401,403,404,500"]
+
+*Example request:*
+
+[tabs]
+====
+curl::
++
+[source,console]
+----
+curl --request PATCH \
+    --url https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID \
+    --header 'Authorization: Bearer {ACCESS-TOKEN}' \
+    --json '{"id":"new-id"}'
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+
+body = {
+    "id": "new-id"
+}
+
+response = requests.patch(url, headers=headers, json=body)
+----
+
+Rust::
++
+[source,rust]
+----
+use reqwest;
+use serde::Serialize;
+
+#[derive(Serialize)]
+struct ClusterUpdate {
+    id: String,
+}
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let cluster_update = ClusterUpdate {
+        id: "api-cluster".into(),
+    };
+    let client = reqwest::Client::new();
+    let resp = client
+        .patch("https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
+        .json(&cluster_deploy)
+        .send().await;
+    Ok(())
+}
+----
+
+Request Body::
++
+[source,json]
+----
+{
+    "id": "api-cluster",
+    "backupConfiguration": {
+        "frequency": "daily"
+    }
+}
+----
+====
+
+*Example response:*
+[source,json]
+----
+{
+    "id":"new-id",
+    "serverCount":1,
+    "storageSizeGB":10,
+    "isFree":true,
+    "status":"running",
+    "createdAt":1738256490070,
+    "teamID":"new-team",
+    "spaceID":"default",
+    "version":"3.1.0",
+    "provider":"gcp",
+    "region":"europe-west2",
+    "machineType":"c2d-highcpu-2",
+    "storageType":"standard-rwo",
+    "servers": [
+        {
+          "address": "abc123-0.cluster.typedb.com:80",
+          "status": "running"
+        }
+    ]
+}
+----
 
 === Suspend
 
