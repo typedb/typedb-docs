@@ -28,7 +28,7 @@ Start a transaction of the desired type (`read`, `write`, or `schema`):
 
 [,bash]
 ----
-> transaction sample_db read
+> transaction read sample_db
 sample_db::read>
 ----
 
@@ -141,7 +141,7 @@ Open a transaction of the desired type (`read`, `write`, or `schema`):
 
 [,bash]
 ----
-> transaction sample_db read
+> transaction read sample_db
 sample_db::read>
 ----
 

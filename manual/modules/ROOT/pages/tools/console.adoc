@@ -186,34 +186,16 @@ For a full list of commands on the Server level, see the <<_server_level_command
 Transaction level is the second level of interaction, i.e., *second-level REPL*.
 You can control a transaction and send queries in the transaction.
 
-For a full list of commands on the Transaction level, see the <<_transaction_level>> reference section.
+For a full list of commands on the Transaction level, see the <<_transaction_level_commands>> reference section.
 
 [NOTE]
 ====
 To send a query, while in Transaction level, type in or insert a TypeQL query and push btn:[Enter] twice.
 ====
 
-[WARNING]
-====
-As of version 3.1.0, the command to open a transaction differs:
-
-The new command, as of version 3.1.0:
-
-[source]
-----
->> transaction read sample_db
-----
-
-Previously, before version 3.1.0:
-
-[source]
-----
->> transaction sample_db read
-----
-====
-
-When opening a transaction, you can specify transaction options.
-For a full list of transaction options, see the <<_transaction_options>>.
+// TODO: You currently can't in Console 3.x. Uncomment when it changes
+// When opening a transaction, you can specify transaction options.
+// For a full list of transaction options, see the <<_transaction_options>>.
 
 [#_interactive_mode_example]
 === Example
@@ -673,9 +655,14 @@ Set password for the user with the name `username`. When the new password is omi
 | Delete a user with the name `<username>` on the server. +
 
 2+^| Open a transaction
-| `transaction read⎮write⎮schema <db> [options]`
+// TODO: You can't set options in 3.x. Uncomment when it changes
+// | `transaction read⎮write⎮schema <db> [options]`
+// | Start a transaction to the database with the name `<db>` with a chosen transaction type.
+// You can set <<_transaction_options,transaction options>>.
+| `transaction read⎮write⎮schema <db>` (3.1.0+)
+
+`transaction <db> read⎮write⎮schema` (prior 3.1.0)
 | Start a transaction to the database with the name `<db>` with a chosen transaction type.
-You can set <<_transaction_options,transaction options>>.
 
 2+^| Common
 | `help`
@@ -688,6 +675,7 @@ You can set <<_transaction_options,transaction options>>.
 | Exit console.
 |===
 
+[#_transaction_level_commands]
 === Transaction level commands
 
 Use these commands in the Transaction level of TypeDB Console's <<_REPL,REPL>>.
