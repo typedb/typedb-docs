@@ -1,0 +1,59 @@
+// tag::manual-install[]
+
+Get the docker image from the https://hub.docker.com/r/typedb/typedb/tags[Docker hub,window=_blank]
+or
+https://github.com/typedb/typedb-driver/blob/development/rust/README.md#build-from-source[build,window=_blank]
+it from https://github.com/typedb/typedb/tags[source code,window=_blank] with Bazel.
+
+// end::manual-install[]
+
+// tag::install[]
+To pull the latest TypeDB CE Docker image:
+
+[source,bash]
+----
+docker pull typedb/typedb:latest
+----
+
+You can replace `latest` with a version number to get a specific version of TypeDB CE.
+To check the list of available versions,
+see the link:https://github.com/typedb/typedb/releases[Releases,window=_blank] page.
+
+// end::install[]
+
+// tag::run[]
+To create a new Docker container with TypeDB CE server:
+
+[source,bash]
+----
+docker volume create typedb-data
+docker create --name typedb -v typedb-data:/opt/typedb-all-linux-x86_64/server/data -p 1729:1729 -p 8000:8000 typedb/typedb:latest
+----
+// end::run[]
+// tag::run-info[]
+Where `typedb` is the name of the container, and `typedb-data` is the name of the volume to persist data.
+`-p 1729:1729 -p 8000:8000` forward the ports 1729 and 8000 on the host machine to the container's ports 1729 and 8000 respectively.
+[NOTE]
+====
+You will have to use `-v typedb-data:/opt/typedb-all-linux-arm64/server/data` if you are running the arm64 image.
+====
+
+// end::run-info[]
+
+// tag::start[]
+To start the created Docker container, or restart a stopped container:
+
+[source,bash]
+----
+docker start typedb
+----
+// end::start[]
+
+// tag::stop[]
+To stop a running Docker container:
+
+[source,bash]
+----
+docker stop typedb
+----
+// end::stop[] 

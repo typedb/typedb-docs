@@ -1,0 +1,92 @@
+// tag::install[]
+[NOTE]
+=====
+If using versions previous to 3.1.0, you will need to install Java 11+.
+=====
+
+If you are using a distribution of TypeDB CE (TypeDB server), you may already have TypeDB Console included and can skip this step!
+To verify, just run `typedb --help`.
+
+For installation instructions of only the Console distribution, follow the steps below for your OS:
+
+[tabs]
+====
+macOS::
++
+--
+. Download the latest package for your system architecture:
+include::{page-component-version}@new_home:resources:partial$typedb-console-latest-links.adoc[tag=mac]
++
+For other versions, see the
+https://cloudsmith.io/~typedb/repos/public-release/packages/?q=format%3Araw+name%3A%5Etypedb-console-mac&sort=-version[Downloads repository] page.
+. Extract the archive into a new directory:
++
+[source,bash]
+----
+$ sudo mkdir /opt/typedb-console
+$ unzip ~/Downloads/<filename>.zip -d /opt/typedb-console
+----
++
+Where `<filename>` is the name of the archive.
+. Add a symlink to the TypeDB Console executable in the `/usr/local/bin` directory:
++
+[source,bash]
+----
+$ ln -s /opt/typedb-console/<filename>/typedb /usr/local/bin/typedb
+----
+--
+
+Linux::
++
+--
+. Download the latest package for your system architecture:
+include::{page-component-version}@new_home:resources:partial$typedb-console-latest-links.adoc[tag=linux]
++
+For other versions, see the
+https://cloudsmith.io/~typedb/repos/public-release/packages/?q=format%3Araw+name%3A%5Etypedb-console-linux&sort=-version[Downloads repository] page.
+. Extract the archive into a new directory:
++
+[source,bash]
+----
+$ mkdir /opt/typedb-console
+$ tar -xzf ~/Downloads/<filename>.tar.gz -C /opt/typedb-console
+----
++
+Where `<filename>` is the name of the archive.
+. Add a symlink to the TypeDB Console executable in the `/usr/local/bin` directory:
++
+[source,bash]
+----
+$ ln -s /opt/typedb-console/<filename>/typedb /usr/local/bin/typedb
+----
+--
+
+Windows::
++
+--
+. Download the latest package for your system architecture:
+include::{page-component-version}@new_home:resources:partial$typedb-console-latest-links.adoc[tag=windows]
++
+For other versions, see the
+https://cloudsmith.io/~typedb/repos/public-release/packages/?q=format%3Araw+name%3A%5Etypedb-console-win&sort=-version[Downloads repository] page.
+
+. Extract the archive into a new directory:
++
+[source,bash]
+----
+$ mkdir "C:\Program Files\TypeDB Console"
+$ tar xvf "C:\Users\username\Downloads\<filename>.zip" -C "C:\Program Files\TypeDB Console"
+----
++
+Where `<filename>` is the name of the archive.
+. Update the `PATH` environment variable:
++
+[source,bash]
+----
+$ setx /M PATH "%path%;C:\Program Files\TypeDB Console\<filename>"
+----
+
+Restart the terminal window for the changes to environment variables to take effect.
+--
+====
+// end::install[] 

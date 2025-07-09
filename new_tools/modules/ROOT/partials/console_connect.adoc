@@ -1,0 +1,28 @@
+// tag::connect[]
+TypeDB Console can connect to TypeDB CE, TypeDB Cloud instances, or TypeDB Enterprise deployments.
+Running TypeDB Console initiates a network connection to a TypeDB server.
+
+.Connect to TypeDB
+[source,console]
+----
+typedb console --address=<server-address> --username=<username>
+----
+
+You will be prompted for a password.
+
+Use `--tls-disabled` to connect to a server without encryption.
+
+[NOTE]
+=====
+The default username and password are `admin` and `password`.
+After connecting for the first time, you will be able to change the password.
+=====
+
+As a result, you get a welcome message from TypeDB Console followed by a command line prompt.
+
+----
+Welcome to TypeDB Console.
+
+>>
+----
+// end::connect[] 

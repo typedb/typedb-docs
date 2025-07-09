@@ -1,4 +1,275 @@
-= Console
+= TypeDB Console
 
-[placeholder]
-TypeDB Console - the CLI client for TypeDB. 
+[.float-group]
+--
+TypeDB Console is a standalone TypeDB client with a command line interface (CLI).
+It serves as a lightweight and powerful CLI tool to manage and query TypeDB databases.
+
+Console is the default client distributed with TypeDB, but it can also be installed separately.
+[NOTE]
+====
+For installation instructions, see xref:{page-version}@new_home::install/studio-console.adoc[Studio & Console Installation].
+====
+
+== Connect to TypeDB
+
+include::{page-version}@new_tools::partial$console_connect.adoc[tag=connect]
+
+== Interactive mode
+
+TypeDB Console provides two levels of interaction via Read–eval–print loop (https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop[REPL,window=_blank]):
+Server level and Transaction level.
+
+At any level you can use common commands: `help`, `clear`, `exit`.
+
+=== Server level
+
+Server level is the first level of interaction, i.e., *first-level REPL*.
+From this level, you can use commands for managing databases and users on the server.
+You also can open a transaction to a database, which gets you to the <<_transaction_level,second level of REPL>>.
+
+=== Transaction level
+
+Transaction level is the second level of interaction, i.e., *second-level REPL*.
+You can control a transaction and send queries in the transaction.
+
+[NOTE]
+====
+To send a query, while in Transaction level, type in or insert a TypeQL query and push btn:[Enter] twice.
+====
+
+=== Example
+
+The following example illustrates how to create a database, define a schema, and insert some data into the database.
+
+. Run Console in the interactive mode and connect it to TypeDB:
++
+[source,bash]
+----
+typedb console --address=<server-address> --username=<username>
+----
+
+. Now, run the following command to create a database:
++
+----
+database create sample_db
+----
+
+. To define a schema, run the `transaction` command to open a `schema` transaction to the database.
+This command opens a Transaction level REPL.
+Use it to send a define query and commit changes:
++
+----
+transaction schema sample_db
+define entity user;
+
+commit
+----
+
++
+To send a query in the Transaction level, push btn:[Enter] *twice*, as a single push of the btn:[Enter] is recognized as a line break in the query.
+
+. Insert data with a `write` transaction:
++
+----
+transaction write sample_db
+insert $u isa user;
+
+commit
+----
+
+The above example creates a database with the name `sample_db`, defines a simple schema with a single `user` type, then inserts a single instance of the type into the database.
+
+== Non-interactive mode
+
+You can run Console commands using the `--command` argument:
+
+[source,bash]
+----
+typedb console --command=<command1> --command=<command2>
+----
+
+The following example achieves the same results as the one in the interactive mode
+via the command line arguments.
+Run the following command in a terminal to start TypeDB and execute queries:
+
+[source,bash]
+----
+typedb console --address=<server-address> --username=<username> \
+--command="database create sample_db" \
+--command="database list" \
+--command="transaction schema sample_db" \
+--command="define entity user;" \
+--command="commit" \
+--command="transaction write sample_db" \
+--command='insert $u isa user;' \
+--command="commit"
+----
+
+== Scripting
+
+You can create a script file that contains the list of commands to run.
+These are the very same commands that are used in the interactive mode or non-interactive mode.
+
+To use a script file with commands, run Console with the `--script` argument and a path to the script file:
+
+[source,bash]
+----
+typedb console --script=<script-file-path>
+----
+
+By convention, console __**s**__cripts, which can manipulate transactions and server state, use the `.tqls` extension.
+In contrast, files containing only TypeQL queries normally use the `.tql` extension.
+
+[NOTE]
+====
+Scripts use the exact same format as the interactive REPL.
+This means queries in the script must be terminated with an empty newline.
+====
+
+=== Script example
+
+Prepare the script to run and save it to a local file.
+For example, let's try the following `script.tqls` file:
+
+.script.tqls
+----
+database create test
+transaction schema test
+    define
+      entity user owns name;
+      attribute name value string;
+
+    commit
+transaction write test
+    insert $u isa user, has name "Bob";
+
+    commit
+transaction read test
+    match $u isa user, has name $n; select $n;
+
+    close
+database delete test
+----
+
+Execute the script with TypeDB Console non-interactively:
+
+[source,bash]
+----
+typedb console --username=<username> --password=<password> --script=<PATH/script.tqls>
+----
+
+Where `<PATH/script.tqls>` is the path to the file and the filename.
+
+== Run query(ies) from a file
+
+To run a series of TypeQL queries stored in a file from _within_ a REPL, use the `source <filename>` command.
+Each query should be separated with an empty newline.
+Note that this means long queries cannot be split over multiple lines containing empty lines.
+Use comments instead.
+
+This command is available from the Transaction level REPL:
+
+[source,console]
+----
+transaction schema sample_db
+source schema.tql
+commit
+----
+
+The `schema.tql` file should be located in the working directory or be an absolute path.
+
+== Troubleshooting
+
+=== Non-ASCII characters
+
+TypeDB can use type and variable labels and store string value attributes that have characters outside the
+https://ascii.cl/[ASCII,window=_blank] range, for example, non-English letters, symbols, and emojis.
+To manipulate them using Console, the Console's terminal must use a locale with a compatible code set, such as Unicode.
+
+If it doesn't, these characters will most likely be rendered as `?` symbols in Console.
+If this issue occurs, you can use the following fix:
+
+[tabs]
+====
+Linux::
++
+--
+Use `locale -a` to list all installed locales, and use `export` to set the environment.
+For example, to use `en_US.UTF-8` run:
+
+[source,bash]
+----
+export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8
+----
+--
+
+macOS::
++
+--
+Use `locale -a` to list all installed locales, and use `export` to set the environment.
+For example, to use `en_US.UTF-8` run:
+
+[source,bash]
+----
+export LANG=en_US.UTF-8 && export LC_ALL=en_US.UTF-8
+----
+--
+
+Windows::
++
+--
+Use https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701?hl=en-gb&gl=GB[Windows Terminal,window=_blank]
+or run https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/chcp[chcp,window=_blank] in the terminal (e.g., `chcp 936` for Chinese text).
+--
+====
+
+Most systems also allow us to set the system-wide locale.
+However, this impacts the appearance of other applications.
+
+== References
+
+=== Console CLI arguments
+
+The following arguments can be used when invoking TypeDB Console:
+
+[cols=".^3,^.^1,5"]
+|===
+^| Argument ^| Alias ^| Description
+| `--address=<address>`
+|
+| Address to which Console will connect to: IP address and IP port separated by colon.
+Note that by default, TLS is enabled, which will require an `https://` endpoint.
+| `--help`
+| `-h`
+| Show help message.
+
+| `--username=<username>`
+|
+| Username.
+
+| `--password=<password>`
+|
+| Explicitly pass in the password (not recommended). Interactive sessions should let the console safely request for the password.
+
+| `--tls-disabled`
+|
+| Disable TLS connections. For TypeDB Cloud deployments, there is **no reason to use this setting** as they can only operate with network TLS encryption.
+Typically used for development or local work. **When using this option, username/password will be sent over the network in plaintext**.
+
+| `--tls-root-ca=<path>`
+|
+| Path to the root CA certificate file for TLS connections.
+
+| `--command=<command>`
+|
+| Execute a command and exit. Can be used multiple times.
+
+| `--script=<script-file>`
+|
+| Execute commands from a script file and exit.
+
+| `--version`
+| `-v`
+| Show version information.
+|=== 

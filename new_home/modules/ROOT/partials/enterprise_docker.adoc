@@ -1,0 +1,52 @@
+// tag::docker[]
+The TypeDB Enterprise image is hosted in our private Docker repository.
+Make sure to use `docker login` first to authenticate.
+
+To pull the TypeDB Enterprise Docker image, run:
+
+[source,bash]
+----
+docker pull vaticle/typedb-cloud:latest
+----
+
+Use `docker create` to create a new container with the downloaded image.
+By default, a TypeDB Enterprise server is expected to be running on port `1729`.
+To ensure that data is preserved even when the container is killed or restarted, use Docker volumes:
+
+[source,bash]
+----
+docker create --name typedb -p 1729:1729 \
+    -v $(pwd)/db/data:/opt/typedb-cloud-all-linux-x86_64/server/data \
+    -v $(pwd)/db/replication:/opt/typedb-cloud-all-linux-x86_64/server/replication \
+    -v $(pwd)/db/user:/opt/typedb-cloud-all-linux-x86_64/server/user \
+    vaticle/typedb-cloud:latest
+----
+
+[NOTE]
+====
+The port number is configurable. For example, you could configure TypeDB Enterprise to listen on port 80 instead of the default port 1729.
+====
+
+==== Start and Stop TypeDB Enterprise in Docker
+
+To start the Docker container, or restart a stopped container:
+
+[source,bash]
+----
+docker start typedb
+----
+
+To check the containers running:
+
+[source,bash]
+----
+docker ps
+----
+
+To stop the Docker container:
+
+[source,bash]
+----
+docker stop typedb
+----
+// end::docker[] 

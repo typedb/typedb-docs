@@ -1,0 +1,25 @@
+// tag::manual[]
+Download the https://cloudsmith.io/~typedb/repos/private-release/packages/?q=cloud&sort=-version[latest release] (you need access to the private release repository),
+unzip it in a location on your machine that is easily accessible via terminal.
+
+If TypeDB doesn't have a distribution you need, please open an issue
+https://github.com/typedb/typedb/issues[on GitHub].
+
+==== Start and Stop TypeDB Enterprise manually
+
+To start TypeDB Enterprise manually:
+
+1. Navigate into the directory with the unpacked files of TypeDB Enterprise.
+2. Run:
++
+[source,bash]
+----
+./typedb server
+----
+
+Now TypeDB Enterprise should show a welcome screen with its version, address, and bootup time.
+
+To stop TypeDB Enterprise:
+
+Close the terminal or press kbd:[Ctrl+C].
+// end::manual[] 

@@ -1,4 +1,63 @@
 = Studio & Console
 
-[placeholder]
-This page will describe how to install Studio and Console. 
+TypeDB Studio and TypeDB Console are the primary tools for interacting with TypeDB databases.
+
+== TypeDB Studio
+
+TypeDB Studio is an interactive visual environment for managing and querying TypeDB databases.
+
+With Studio, developers can efficiently manage databases, execute queries, and explore query results,
+all within a unified environment.
+
+[cols-2]
+--
+.https://studio.typedb.com[Open TypeDB Studio]
+[.clickable]
+****
+Launch TypeDB Studio directly from your web browser.
+****
+
+.https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name:%5Etypedb-studio[Download TypeDB Studio Desktop]
+[.clickable]
+****
+Download the TypeDB Studio desktop application.
+****
+
+.link:https://github.com/typedb/typedb-studio/[GitHub,window=_blank]
+[.clickable]
+****
+Browse the source code of TypeDB Studio.
+****
+--
+
+=== Getting Started
+
+After installation, you can connect to TypeDB using Studio or Console. For detailed connection instructions and usage guides, see:
+
+* xref:{page-version}@new_tools::studio.adoc[TypeDB Studio] - Complete Studio documentation and connection guide
+
+== TypeDB Console
+
+TypeDB Console is a standalone TypeDB client with a command line interface (CLI).
+It serves as a lightweight and powerful CLI tool to manage and query TypeDB databases.
+
+Console is the default client distributed with TypeDB, but it can also be installed separately.
+
+[cols-2]
+--
+.link:https://github.com/typedb/typedb-console[GitHub,window=_blank]
+[.clickable]
+****
+The GitHub repository with the source code and release notes.
+****
+
+.link:https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%27%5Etypedb-console%27&sort=-version[Downloads,window=_blank]
+[.clickable]
+****
+See the Console's downloadable packages.
+****
+--
+
+=== Install
+
+include::{page-version}@new_home::partial$console_install.adoc[tag=install] 

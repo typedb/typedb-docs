@@ -1,0 +1,28 @@
+// tag::core-manual-install[]
+Download the latest distribution of TypeDB CE from the table below.
+
+[cols="^.^1,^.^1,^.^1,^.^1",caption="",options="header"]
+|===
+|Release notes |macOS |Linux |Windows
+
+include::{page-version}@new_home:resources:partial$typedb-all-latest-links.adoc[]
+|===
+
+For all versions,
+see the link:https://cloudsmith.io/~typedb/repos/public-release/packages/?q=typedb-all&sort=-version[Packages] page.
+
+Unzip the downloaded file in a location that is easily accessible from your terminal. The unzipped folder contains the `typedb` binary.
+// end::core-manual-install[]
+
+// tag::core-run[]
+To start the server:
+
+[source,bash]
+----
+typedb server
+----
+// end::core-run[]
+
+// tag::core-stop[]
+To stop a local TypeDB server, close the terminal where it runs or press kbd:[Ctrl+C].
+// end::core-stop[] 

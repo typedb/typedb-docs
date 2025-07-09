@@ -1,0 +1,35 @@
+// tag::connect_studio[]
+[tabs]
+====
+Cloud::
++
+--
+// tag::connect_cloud_studio[]
+. In the https://cloud.typedb.com[TypeDB Cloud website], navigate to your cluster and click *Connect*. Then, click *Connect with TypeDB Studio*. This will launch TypeDB Studio.
+. Fill in your password and hit *Connect*. Your password can be found in your downloaded credentials file (if you have one).
+// end::connect_cloud_studio[]
+--
+
+Enterprise::
++
+--
+// tag::connect_enterprise_studio[]
+. Launch TypeDB Studio.
+. Enter the address of the HTTP endpoint of your cluster. By default, this is at port 8000.
+. Enter your username and password.
+. Click `Connect`.
+// end::connect_enterprise_studio[]
+--
+
+Community Edition::
++
+--
+// tag::connect_ce_studio[]
+. Launch TypeDB Studio.
+. Enter the address of the HTTP endpoint of your cluster. By default, this is at port 8000 and for local instances you can use `http://localhost:8000`.
+. Enter your username and password - defaults are `admin` and `password`.
+. Click `Connect`.
+// end::connect_ce_studio[]
+--
+====
+// end::connect_studio[] 

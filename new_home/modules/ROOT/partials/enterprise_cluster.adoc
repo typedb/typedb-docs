@@ -1,0 +1,151 @@
+// tag::cluster[]
+=== Multi-server setup
+
+While it's possible to run TypeDB Enterprise in a single-server mode, a highly available and fault-tolerant
+production-grade setup includes setting up multiple servers to connect and form a cluster.
+At any given point in time, one of those servers acts as a leader, and the others are followers.
+Increasing the number of servers increases the
+cluster's tolerance to failure: to tolerate N servers failing, a cluster needs to consist of `2N + 1` servers.
+This section describes how you can set up a 3-server cluster (in this case,
+one server can fail with no data loss).
+
+Each TypeDB Enterprise server in a cluster binds to three ports:
+a client port that TypeDB drivers connect to (`1729` by default) and two server ports
+(`1730` and `1731`) for server-to-server communication.
+
+For this tutorial, it's assumed that all three servers are on the same virtual network, have the relevant ports open,
+with no firewall interference, and the servers have IP addresses `10.0.0.1`, `10.0.0.2` and `10.0.0.3` respectively.
+
+[NOTE]
+====
+If you're using a single machine to host all nodes,
+it may be easier to use `localhost` or `127.0.0.1` address, but prefix the port with the node number; this way the
+ports `1729`, `1730`, `1731` would turn into:
+
+* `11729`, `11730`, `11731`;
+* `21729`, `21730`, `21731`;
+* `31729`, `31730`, `31731`.
+====
+
+=== Starting servers
+
+TypeDB Enterprise servers working in a cluster shall be configured specifically to know all servers in the cluster (peers).
+This could be done through `peers` key in the server config, or with command-line arguments when starting the server.
+Command-line arguments have priority over config file.
+
+See below an example of how 3-server TypeDB Enterprise would be started on three separate machines to be in a cluster.
+
+.Server #1
+====
+The first machine with the IP address of `10.0.0.1`.
+
+To run TypeDB Enterprise server #1:
+
+[source,bash]
+----
+./typedb server \
+    --server.address=10.0.0.1:1729 \
+    --server.internal-address.zeromq=10.0.0.1:1730 \
+    --server.internal-address.grpc=10.0.0.1:1731 \
+    --server.peers.peer-1.address=10.0.0.1:1729 \
+    --server.peers.peer-1.internal-address.zeromq=10.0.0.1:1730 \
+    --server.peers.peer-1.internal-address.grpc=10.0.0.1:1731 \
+    --server.peers.peer-2.address=10.0.0.2:1729 \
+    --server.peers.peer-2.internal-address.zeromq=10.0.0.2:1730 \
+    --server.peers.peer-2.internal-address.grpc=10.0.0.2:1731 \
+    --server.peers.peer-3.address=10.0.0.3:1729 \
+    --server.peers.peer-3.internal-address.zeromq=10.0.0.3:1730 \
+    --server.peers.peer-3.internal-address.grpc=10.0.0.3:1731
+----
+====
+
+.Server #2
+====
+The first machine with the IP address of `10.0.0.2`.
+
+To run TypeDB Enterprise server #2:
+
+[source,bash]
+----
+./typedb server \
+    --server.address=10.0.0.2:1729 \
+    --server.internal-address.zeromq=10.0.0.2:1730 \
+    --server.internal-address.grpc=10.0.0.2:1731 \
+    --server.peers.peer-1.address=10.0.0.1:1729 \
+    --server.peers.peer-1.internal-address.zeromq=10.0.0.1:1730 \
+    --server.peers.peer-1.internal-address.grpc=10.0.0.1:1731 \
+    --server.peers.peer-2.address=10.0.0.2:1729 \
+    --server.peers.peer-2.internal-address.zeromq=10.0.0.2:1730 \
+    --server.peers.peer-2.internal-address.grpc=10.0.0.2:1731 \
+    --server.peers.peer-3.address=10.0.0.3:1729 \
+    --server.peers.peer-3.internal-address.zeromq=10.0.0.3:1730 \
+    --server.peers.peer-3.internal-address.grpc=10.0.0.3:1731
+----
+====
+
+.Server #3
+====
+The first machine with the IP address of `10.0.0.3`.
+
+To run TypeDB Enterprise server #3:
+
+[source,bash]
+----
+./typedb server \
+    --server.address=10.0.0.3:1729 \
+    --server.internal-address.zeromq=10.0.0.3:1730 \
+    --server.internal-address.grpc=10.0.0.3:1731 \
+    --server.peers.peer-1.address=10.0.0.1:1729 \
+    --server.peers.peer-1.internal-address.zeromq=10.0.0.1:1730 \
+    --server.peers.peer-1.internal-address.grpc=10.0.0.1:1731 \
+    --server.peers.peer-2.address=10.0.0.2:1729 \
+    --server.peers.peer-2.internal-address.zeromq=10.0.0.2:1730 \
+    --server.peers.peer-2.internal-address.grpc=10.0.0.2:1731 \
+    --server.peers.peer-3.address=10.0.0.3:1729 \
+    --server.peers.peer-3.internal-address.zeromq=10.0.0.3:1730 \
+    --server.peers.peer-3.internal-address.grpc=10.0.0.3:1731
+----
+====
+
+The above example assumes
+the application (TypeDB Client) accessing TypeDB Enterprise resides on the same private network as the cluster.
+
+If this is *not* the case,
+TypeDB Enterprise also supports using different IP addresses for client and server communication.
+
+.Example of using separate network for client connection
+====
+
+The relevant external hostname should be passed as arguments using the `--server.address` and
+`--server.peers` flags as below.
+
+[source,bash]
+----
+./typedb server \
+    --server.address=external-host-1:1729 \
+    --server.internal-address.zeromq=10.0.0.1:1730 \
+    --server.internal-address.grpc=10.0.0.1:1731 \
+    --server.peers.peer-1.address=external-host-1:1729 \
+    --server.peers.peer-1.internal-address.zeromq=10.0.0.1:1730 \
+    --server.peers.peer-1.internal-address.grpc=10.0.0.1:1731 \
+    --server.peers.peer-2.address=external-host-2:1729 \
+    --server.peers.peer-2.internal-address.zeromq=10.0.0.2:1730 \
+    --server.peers.peer-2.internal-address.grpc=10.0.0.2:1731 \
+    --server.peers.peer-3.address=external-host-3:1729 \
+    --server.peers.peer-3.internal-address.zeromq=10.0.0.3:1730 \
+    --server.peers.peer-3.internal-address.grpc=10.0.0.3:1731
+----
+
+And so on for servers #2 and #3.
+
+In this case, port `1729` would need to be open to public and clients would use the `external-host-1`, `external-host-2`
+and `external-host-3` hostnames to communicate with TypeDB Enterprise; inter-server communication would be done over a
+private network using ports `1730` and `1731`.
+====
+
+=== Stopping servers
+
+Stopping TypeDB Enterprise is done the same way as on a single server:
+to stop TypeDB Enterprise, close the terminal or press kbd:[Ctrl+C].
+All nodes must be shut down independently in the same way.
+// end::cluster[] 

@@ -1,4 +1,30 @@
-= TypeDB CE
+= TypeDB Community Edition
 
-[placeholder]
-This page will describe how to install TypeDB Community Edition (CE). 
+[#_manual]
+== Distributions
+=== Download and install
+
+include::{page-version}@new_home::partial$ce_distributions.adoc[tag=core-manual-install]
+
+=== Run
+
+include::{page-version}@new_home::partial$ce_distributions.adoc[tag=core-run]
+
+include::{page-version}@new_home::partial$ce_distributions.adoc[tag=core-stop]
+
+[#_docker]
+== Docker
+
+=== Download
+
+include::{page-version}@new_home::partial$ce_docker.adoc[tag=install]
+
+=== Run
+
+include::{page-version}@new_home::partial$ce_docker.adoc[tags=run]
+
+include::{page-version}@new_home::partial$ce_docker.adoc[tags=run-info]
+
+include::{page-version}@new_home::partial$ce_docker.adoc[tag=start]
+
+include::{page-version}@new_home::partial$ce_docker.adoc[tag=stop] 
