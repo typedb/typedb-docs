@@ -10,15 +10,6 @@ gpg --export 17507562824cfdcc | sudo tee /etc/apt/trusted.gpg.d/typedb.gpg > /de
 echo "deb https://repo.typedb.com/public/public-release/deb/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/typedb.list > /dev/null
 sudo apt update
 ----
-. Ensure Java 11+ is installed:
-+
-[source,bash]
-----
-sudo apt install default-jre
-----
-+
-TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
-https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
 . Install TypeDB:
 +
 [source,bash]
@@ -26,7 +17,7 @@ https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_bl
 sudo apt install typedb
 ----
 +
-If you had an older version (≤`2.25.5`) of TypeDB installed, you might first need to uninstall older packages to avoid
+If you had an older version of TypeDB installed, you might first need to uninstall older packages to avoid
 conflicts:
 +
 [source,bash]
@@ -42,11 +33,6 @@ invoke an `apt install` command with the specific version for every package.
 // end::install-apt[]
 
 // tag::manual-install[]
-
-. Ensure Java 11+ is installed.
-TypeDB supports https://jdk.java.net[OpenJDK,window=_blank] and
-https://www.oracle.com/java/technologies/downloads/#java11[Oracle JDK,window=_blank].
-
 . Extract the archive with TypeDB into a new directory:
 +
 [source,bash]
