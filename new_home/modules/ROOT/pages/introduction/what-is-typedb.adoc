@@ -1,4 +1,72 @@
 = What is TypeDB?
 
-[placeholder]
-This page will introduce TypeDB. 
+Welcome to the world of TypeDB!
+
+This page introduces TypeDB, a new kind of database designed to help you model and query complex data with clarity and confidence.
+
+At its core, TypeDB is a **strongly-typed, polymorphic, and general-purpose transactional database**.
+
+It's well-suited for agentic AI systems and applications that require a deep understanding of rich, interconnected data and built-in guardrails.
+TypeDB is also excellent for cybersecurity, financial services, supply chain management, research, and other domains with complex data.
+
+TypeDB ships with its own query language, TypeQL, which allows you to define sophisticated data models and write simple but highly expressive queries.
+TypeQL is designed to read and write like natural english, making it easy to discuss, model, and evolve data collaboratively.
+
+TypeDB integrates with pre-built tools: web-based TypeDB Studio and the command-line TypeDB Console.
+It can also be used programmatically with performant GPRC-based drivers in various languages, or directly using its HTTP API.
+
+TypeDB is open-source and available as a free Community Edition, or in TypeDB Cloud where upgrading, backups, and security are fully managed.
+TypeDB Enterprise is also available for on-premise deployments.
+
+== Why do we need something new?
+
+Relational, document, and graph databases are the dominant general-purpose database models today.
+While these are powerful tools, they make your life harder by pushing problems of data safety, expressivity, and evolution back to you.
+
+TypeDB was designed specifically to overcome these limitations, while borrowing some of their best ideas like strict schemas and easy-to-read query languages.
+By using a higher-level model based on entities, relations, and attributes, you'll never deal with normalization, joins, foreign keys, nulls, or missing data again.
+
+TypeDB and TypeQL are grounded in a rigorous mathematical model called PERA (Polymorphic, Entity, Relation, Attribute), with a peer-reviewed foundation in type theory.
+You can find our [published paper](https://typedb.com/papers/typeql-theory) online.
+This basis means that TypeDB's development will always move forward in a mathematically sound and principled way that continues to improve developer experience.
+
+Ultimately, developers need a database that will save them time, money, and effort.
+TypeDB allows you to spend less time on database design, schema migrations, debugging queries and worrying about correctness,
+and more time on application development and business logic.
+
+== Key Concepts
+
+TypeDB is a unique database that is bring together ideas from programming languages and traditional database design:
+
+=== Strongly-Typed
+
+In TypeDB, you to write your schema by creating types - a very familiar idea to programmers regularly defining classes or structs!
+
+Every piece of data inserted into the database then has a specific type from the schema.
+This isn't just about data types like "string" or "integer".
+Instead, you use **entity types** (e.g., `person`, `company`), **relation types** (e.g., `friendship`, `employs`), and **attribute types** containing values (e.g., `name`, `age`, `address`).
+
+Just like in programming languages, the system can now understand and validate structure, and even perform optimizations based on typing information.
+
+In the end, the same requirements that make developers choose Typescript over Javascript, or decide to add typing to your Python codebase,
+exist in the data layer as well: correctness, performance, and maintainability.
+With TypeDB, you get a database that is designed tackle those problems in an intuitive, modern way.
+
+=== Polymorphic
+
+TypeDB types can do far more than you'd initially expect. Not only can you define simple entities, relations, and attributes, you can also define subtype hierarchies, additional interface-like role types, and re-usable functions.
+
+These capabilities in turn compose with each other and interact polymorphically - for example, a user-defined function that can accept a `person` entity as an argument, can also automatically take its subtype `child` entity as an argument!
+
+TypeDB builds extensibility and reusability into your data models, reducing maintenance and cost of development, while also allowing you to write less and do more.
+
+=== Transactional
+
+TypeDB is still built on tried-and-tested database ideas, such as xref:{page-version}@new_core_concepts::typedb/transactions.adoc[transactions] and snapshotting.
+Transactions are used to both read and write data, or even make changes to your database schemas in a safe, atomic manner.
+
+== What's Next
+
+Read more about why developers xref:{page-version}@new_home::introduction/why-typedb.adoc[choose TypeDB], or jump straight into our xref:{page-version}@new_home::quickstart/setup.adoc[quickstart].
+
+If you're trying to learn TypeDB from the ground up, we recommend reading our xref:{page-version}@new_home::learning_journey.adoc[learning journey].
