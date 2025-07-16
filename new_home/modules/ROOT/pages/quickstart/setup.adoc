@@ -1,4 +1,29 @@
 = Setup
+:keywords: start, learn, typedb, typeql, tutorial, quickstart, console, studio, database, create, insert, query
+:pageTitle: Quickstart setup
+:summary: Start running TypeDB and open TypeDB Studio as part of the quickstart
+:tabs-sync-option:
 
-[placeholder]
-This page will describe how to set up TypeDB. 
+[#_create_free_cluster]
+== Create a free cluster
+
+. https://cloud.typedb.com[Create a TypeDB Cloud account]. Your first cluster is free.
+. On the *Clusters* dashboard, click *Create cluster*.
+. Configure your cluster, then click *Deploy*.
+
+Your cluster will be created in a few seconds and the *Connect to your cluster* dialog will display.
+
+[#_connect_cluster]
+== Connect to your cluster
+
+In the *Connect to your cluster* dialog, click *TypeDB Studio*. This will open TypeDB Studio for youThis will open TypeDB Studio for you.
+
+Copy the connection information and save it in a secure location. You'll need it each time you want to connect to your cluster - specifically, you'll need the generated username and password.
+
+This quickstart guide is also possible with xref:{page-version}@new_home::get-typedb/console-cli.adoc[TypeDB Console].
+TypeDB Cloud will guide you through connecting to your cluster with Console.
+
+[NOTE]
+====
+You'll be connecting as the default database user, which is created with admin privileges.
+====
