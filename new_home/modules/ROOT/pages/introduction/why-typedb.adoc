@@ -1,9 +1,81 @@
 = Why TypeDB?
 
-TypeDB excels in scenarios where you need to:
+TypeDB offers developers a new way to manage their data, with simplicity, safety, and expressivity at the forefront.
 
-- **Model complex, highly interconnected data:** Think of domains like cybersecurity, life sciences, financial fraud detection, or supply chain management.
+== Why do we need something new?
+
+Relational, document, and graph databases are the dominant general-purpose database models today.
+While these are powerful tools, they make your life harder by pushing problems of data safety, expressivity, and evolution back to you.
+
+TypeDB was designed specifically to overcome these limitations, while borrowing some of their best ideas like strict schemas and easy-to-read query languages.
+By using a higher-level model based on entities, relations, and attributes, you'll never deal with normalization, joins, foreign keys, nulls, or missing data again.
+
+TypeDB and TypeQL are grounded in a rigorous mathematical model called PERA (Polymorphic Entity, Relation, Attribute), with a peer-reviewed foundation in type theory.
+You can find our [published paper](https://typedb.com/papers/typeql-theory) online.
+This basis means that TypeDB's development will always move forward in a mathematically sound and principled way that continues to improve developer experience.
+
+Developers need a database that will save them time, money, and effort.
+TypeDB allows you to spend less time on database design, query debugging, schema migrations, and worrying about data correctness,
+and more time on application development and business logic.
+
+== Key reasons to choose TypeDB
+
+There are many reasons developers love TypeDB. Here are a few of the top ones:
+
+=== Ease of use
+
+TypeDB combines an intuitive query language, a simple set of APIs,
+and the option to use a fully-managed service that includes certificate management, backups, and more.
+
+TypeDB's data model can also capture much more of your data model than relational databases can:
+polymorphism and native support for subtyping helps close the object-relational gap that persists between
+most databases and their application code.
+
+You'll also never need a semantic layer to enforce your data model:
+types you define in TypeDB's schema serves as a semantic layer by themselves - with no extra work from you!
+
+=== Powerful modelling
+
+TypeDB's baseline types are Entities, Relations, and Attributes.
+These can be combined in countless ways to capture your domain accurately.
+
+To help with this, TypeDB supports many modifiers and uses of these basic types:
+
+- **Abstractness**: mark certain types as abstract and non-instantiable (like in OOP!)
+- **Subtyping**: create sub entities, relations, or even attributes that have the capabilities of all their supertypes
+- **Hyper-relations**: not only can you connect relationships with any number of entities, you can also nest them within other relations
+- **Variadic relations**: roles in relations can be filled multiple times, and different roles can even by filled by the same participant
+- **Multivalued attributes**: entities and relations can have multiple instances of the same attribute with different values
+- **Cardinality constraints**: configurable limits on the number attributes, relations, or entities to connect to
+- **Functions**: create re-usable functions to capture modular pieces of database logic and invoke them at at query time
+
+Among others!
+
+Put together, TypeDB can capture the most complex data models, while being easy to extend with new types and relationships as your application grows.
+
+=== Safety
+
+TypeDB's users frequently domains that might normally require extensive application logic to validate their data.
+
+TypeDB's type system ensures that you can push more data constraints into the database. TypeDB automatically ensures
+that your inserted data conforms to the required relationships, value types, cardinalities, value ranges, and more.
+
+Even during pure read operations, TypeDB's type inference engine will reject semantically invalid operations.
+This allows developers to distinguish an **invalid query returning no results**, which would return an error in TypeDB,
+from a **query correctly returning no results**.
+
+Combined with TypeDB's transactionality, you can be confident of moving between correct states. Even better,
+schema and data can be mutated together in one schema transaction, with full commit-time validation, making migrations
+safe and easy.
+
+== Choosing TypeDB
+
+TypeDB is commonly deployed in the following areas:
+
+- **Complex, highly interconnected data:** Think of domains like cybersecurity, life sciences, financial fraud detection, or supply chain management.
 - **Enforce strict data integrity and consistency:** The strong typing and schema ensure your data adheres to your defined rules.
 - **Handle evolving data models:** The polymorphic nature and schema capabilities make it easier to adapt your data model as your understanding of the domain grows.
 - **Build intelligent systems:** TypeDB provides an excellent data layer for AI and machine learning applications that require a deep understanding of relationships with built-in guardrails.
 
+But it even suits simple applications that need to capture things like subtyping relationships!
+Whatever your domain, TypeDB has the expressivity and capabilities to capture it intuitively.

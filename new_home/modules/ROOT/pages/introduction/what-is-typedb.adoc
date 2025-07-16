@@ -18,22 +18,6 @@ It can also be used programmatically with performant GPRC-based drivers in vario
 TypeDB is open-source and available as a free Community Edition, or in TypeDB Cloud where upgrading, backups, and security are fully managed.
 TypeDB Enterprise is also available for on-premise deployments.
 
-== Why do we need something new?
-
-Relational, document, and graph databases are the dominant general-purpose database models today.
-While these are powerful tools, they make your life harder by pushing problems of data safety, expressivity, and evolution back to you.
-
-TypeDB was designed specifically to overcome these limitations, while borrowing some of their best ideas like strict schemas and easy-to-read query languages.
-By using a higher-level model based on entities, relations, and attributes, you'll never deal with normalization, joins, foreign keys, nulls, or missing data again.
-
-TypeDB and TypeQL are grounded in a rigorous mathematical model called PERA (Polymorphic, Entity, Relation, Attribute), with a peer-reviewed foundation in type theory.
-You can find our [published paper](https://typedb.com/papers/typeql-theory) online.
-This basis means that TypeDB's development will always move forward in a mathematically sound and principled way that continues to improve developer experience.
-
-Ultimately, developers need a database that will save them time, money, and effort.
-TypeDB allows you to spend less time on database design, schema migrations, debugging queries and worrying about correctness,
-and more time on application development and business logic.
-
 == Key Concepts
 
 TypeDB is a unique database that is bring together ideas from programming languages and traditional database design:
@@ -46,7 +30,7 @@ Every piece of data inserted into the database then has a specific type from the
 This isn't just about data types like "string" or "integer".
 Instead, you use **entity types** (e.g., `person`, `company`), **relation types** (e.g., `friendship`, `employs`), and **attribute types** containing values (e.g., `name`, `age`, `address`).
 
-Just like in programming languages, the system can now understand and validate structure, and even perform optimizations based on typing information.
+Just like in strongy-typed programming languages, the system can now understand and validate structure, and even perform optimizations based on typing information.
 
 In the end, the same requirements that make developers choose Typescript over Javascript, or decide to add typing to your Python codebase,
 exist in the data layer as well: correctness, performance, and maintainability.
