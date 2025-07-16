@@ -1,4 +1,420 @@
 = Basic Queries
+:title: Quickstart basic queries
+:test-typeql: linear
+// :test-python: yes
+// :test-rust: yes
+:experimental:
+:tabs-sync-option:
 
-[placeholder]
-This page will describe basic TypeDB queries. 
+Having defined the types in our schema, we are ready to write data to our database. Let's see a few example of how we can create data.
+We will also learn how TypeDB's type system holds us accountable when adding and modifying data, requiring us to conform to the database schema that we defined in the previous section.
+
+== Pure insert queries
+
+The most basic writes in TypeDB are pure insertions: they insert a complete bundle of data at once.
+
+=== Entities and attributes
+
+Let's create some entities and attributes with pure insertions.
+
+[tabs]
+====
+Studio::
++
+--
+To begin, set your transaction type to *write* using the top bar, then let us try and insert a user with the following `insert` query:
+
+[,typeql]
+----
+#!test[write, db=quickstart, fail_at=commit]
+include::./basic-queries.adoc[tag=insert1]
+----
+The commit **will fail**!
+Indeed, we are trying to insert a `user` without a username here, but we declared usernames to be a _key_ attribute earlier when we defined `user owns username @key`.
+(In fact, even if the `insert` query above worked, it would be pretty useless: we are trying to insert an entity with type `user`, but we give no information about that entity and thus no way to refer to the entity.
+So our schema keeps us accountable in this case.)
+
+The following is more meaningful:
+
+[,typeql]
+----
+#!test[write, db=quickstart]
+include::./basic-queries.adoc[tag=insert2]
+----
+
+We can insert multiple values in a single `insert` query like so:
+
+[,typeql]
+----
+#!test[write, db=quickstart]
+include::./basic-queries.adoc[tag=insert3]
+----
+This query inserts two users at the same time.
+
+Finally, since we set usernames to be a `@key` attribute of our users, we would - rightfully - expect the following query to fail:
+
+[,typeql]
+----
+#!test[write, db=quickstart, fail_at=runtime]
+include::./basic-queries.adoc[tag=insert4]
+----
+And it does fail: this time, it fails at execution time, i.e., even before committing the transaction.
+Indeed, because the key `"qwerty0"` would be claimed by two distinct `user` instances no matter what, we can immediately invalidate the transaction.
+
+Let's commit and move on!
+
+--
+
+Console::
++
+--
+
+To begin, let us try insert a user with the following `insert` query:
+////
+[,typeql]
+----
+# tag::insert1[]
+insert $x isa user;
+# end::insert1[]
+----
+////
+[,typeql]
+----
+#!test[write, db=quickstart, fail_at=commit]
+include::./basic-queries.adoc[tag=insert1]
+----
+Try to `commit` this query - the commit _*will fail*_! Indeed, we are trying to insert a `user` without a username here, but we declared usernames to be a key attribute earlier when we defined `user owns username @key`. (In fact, even if the `insert` query above worked, it would be pretty useless: we are trying to insert an entity with type `user`, but we give no information about that entity and thus no way to refer to the entity. So our schema keeps us accountable in this case.)
+
+The following is more meaningful:
+////
+[,typeql]
+----
+# tag::insert2[]
+insert $x isa user, has username "alice1925";
+# end::insert2[]
+----
+////
+[,typeql]
+----
+#!test[write, db=quickstart]
+include::./basic-queries.adoc[tag=insert2]
+----
+
+We can insert multiple values in a single `insert` query like so:
+////
+[,typeql]
+----
+# tag::insert3[]
+insert
+$x isa user, has username "bob78";
+$y isa user;
+$y has username "candice001";  # can split `isa` and `has` across different statements
+# end::insert3[]
+----
+////
+[,typeql]
+----
+#!test[write, db=quickstart]
+include::./basic-queries.adoc[tag=insert3]
+----
+This query inserts two users at the same time. Time to commit your queries again to persist your changes: type `commit` and press kbd:[Enter].
+
+Finally, since we set usernames to be a `@key` attribute of our users, we would - rightfully - expect the following query to fail:
+////
+[,typeql]
+----
+# tag::insert4[]
+insert
+$x isa user, has username "qwerty0";
+$y isa user, has username "qwerty0";
+# end::insert4[]
+----
+////
+[,typeql]
+----
+#!test[write, db=quickstart, fail_at=runtime]
+include::./basic-queries.adoc[tag=insert4]
+----
+And it does fail: this time, it already fails at execution time, i.e., even before committing the transaction.
+Indeed, because the key `"qwerty0"` would be claimed by two distinct `user` instances no matter what, we can immediately invalidate the transaction.
+
+Let's commit and move on!
+--
+
+====
+
+This illustrates how we can insert simple entities with attributes, and how TypeDB keeps us accountable to follow the definitions in the database schema.
+
+So far so good!
+
+=== Complete relations
+
+What about inserting relations?
+Well, relations that are created at the same time as their role players are as easy as entities and attributes!
+
+[tabs]
+====
+Studio::
++
+--
+
+In order to insert a friendship, we need to refer to users that will play the role of friends in the friendship (recall: each friendship takes _exactly two_ friends as specified in the schema; feel free to experiment though, and see what error messages TypeDB will give you when trying to insert triple friendships).
+That's where variables come into play: let's run the following query:
+
+[,typeql]
+----
+#!test[write, db=quickstart]
+include::./basic-queries.adoc[tag=insert5]
+----
+
+This query inserts two new users with a `friendship` relation between them.
+The last line is a shorthand, and could itself be written as `$f isa friendship (friend: $x, friend: $y);` if you'd want to further use the variable `$f`; but otherwise it's convenient to simply omit it.
+
+--
+Console::
++
+--
+
+In order to insert a friendship, we need to refer to users that will play the role of friends in the friendship (recall: each friendship takes _exactly two_ friends as specified in the schema; feel free to experiment though, and see what error messages TypeDB will give you when trying to insert triple friendships).
+That's where variables come into play: let's run the following query:
+
+////
+[,typeql]
+----
+# tag::insert5[]
+insert
+$x isa user, has username "deltaonenine";
+$y isa user, has username "ecclestone";
+friendship (friend: $x, friend: $y);
+# end::insert5[]
+----
+////
+[,typeql]
+----
+#!test[write, db=quickstart]
+include::./basic-queries.adoc[tag=insert5]
+----
+This query inserts two new users with a `friendship` relation between them.
+The last line is a shorthand, and could itself be written as `$f isa friendship (friend: $x, friend: $y);` if you'd want to further use the variable `$f`; but otherwise it's convenient to simply omit it.
+
+--
+
+====
+
+But what if we want to create a `friendship` relation between two existing users already in the database?
+In other words, we want to connect _new_ data with _existing_ data?
+
+That requires read operations, which we'll meet next.
+
+== Read-Write queries
+
+Reading data in TypeDB happens with a `match` clause.
+Data found by a `match` clause can then be utilised in `insert`, `delete`, `reduce` or other kinds of clauses.
+
+=== Reading data
+
+Looking up data is easy - it looks a lot like inserting data.
+
+Let's find some users and their information. This time use a `read` transaction:
+
+[tabs]
+====
+Studio::
++
+--
+[,typeql]
+----
+#!test[read, db=quickstart]
+include::./basic-queries.adoc[tag=match1]
+----
+This query returns the substitutions (answers) for each variable that exist in the database and conforms to the requested constraints:
+any `user` instance that has a `username`!
+
+We get back the following sets of values:
+
+[source]
+----
+--------
+$n | isa username "alice1925"
+$x | isa user, iid 0x1e00000000000000000002
+--------
+$n | isa username "bob78"
+$x | isa user, iid 0x1e00000000000000000003
+--------
+$n | isa username "candice001"
+$x | isa user, iid 0x1e00000000000000000004
+--------
+$n | isa username "deltaonenine"
+$x | isa user, iid 0x1e00000000000000000007
+--------
+$n | isa username "ecclestone"
+$x | isa user, iid 0x1e00000000000000000008
+--------
+----
+
+We can make this more specific and interesting, for instance looking up the friends that exist of a particular user:
+
+[,typeql]
+----
+#!test[read, db=quickstart]
+include::./basic-queries.adoc[tag=match2]
+----
+
+Which returns:
+[source]
+----
+---------------------
+$other-friend   | isa user, iid 0x1e00000000000000000007
+$other-username | isa username "deltaonenine"
+$u              | isa user, iid 0x1e00000000000000000008
+---------------------
+----
+
+--
+
+Console::
++
+--
+
+////
+[,typeql]
+----
+# tag::match1[]
+match $x isa user, has username $n;
+# end::match1[]
+----
+////
+[,typeql]
+----
+#!test[read, db=quickstart]
+include::./basic-queries.adoc[tag=match1]
+----
+This query returns the substitutions (answers) for each variable that exist in the database and conforms to the requested constraints:
+any `user` instance that has a `username`!
+
+We get back the following answers:
+
+[source]
+----
+--------
+$n | isa username "alice1925"
+$x | isa user, iid 0x1e00000000000000000002
+--------
+$n | isa username "bob78"
+$x | isa user, iid 0x1e00000000000000000003
+--------
+$n | isa username "candice001"
+$x | isa user, iid 0x1e00000000000000000004
+--------
+$n | isa username "deltaonenine"
+$x | isa user, iid 0x1e00000000000000000007
+--------
+$n | isa username "ecclestone"
+$x | isa user, iid 0x1e00000000000000000008
+--------
+----
+
+We can make this more specific and interesting, for instance looking up the friends that exist of a particular user:
+
+////
+[,typeql]
+----
+# tag::match2[]
+match
+$u isa user, has username "ecclestone";
+$other-friend isa user, has username $other-username;
+friendship ($u, $other-friend);
+# end::match2[]
+----
+////
+[,typeql]
+----
+#!test[read, db=quickstart]
+include::./basic-queries.adoc[tag=match2]
+----
+
+Which returns:
+[source]
+----
+---------------------
+$other-friend   | isa user, iid 0x1e00000000000000000007
+$other-username | isa username "deltaonenine"
+$u              | isa user, iid 0x1e00000000000000000008
+----------------------
+----
+--
+====
+
+As you can see, reading data using `match` clauses is a lot like a pattern match.
+You simply describe what the data should conform to, and TypeDB will find all answers to your query from the database.
+
+The order of statements _within_ a `match` clause broadly doesn't matter! This is one property that makes TypeQL extremely composable
+and debuggable: if your query isn't doing what you expect, just remove parts until it's simple enough to verify -
+then build it back up bit by bit!
+
+=== Connecting existing data
+
+Now that we know how to look data up - how do we use that to perform a query that creates a relation between existing data?
+
+The key is that we can _chain_ an `insert` clause after a `match` clause.
+The `insert` clause will receive the same set of variables and answers you would see printed out if you executed just the `match` clause!
+
+Using this principe, let's:
+
+. retrieve some users with a `match` clause.
+. write a new `friendship` relation with an `insert` clause.
+
+Remember, you'll need a `write` transaction now since we're modifying data!
+
+[tabs]
+====
+Studio::
++
+--
+[,typeql]
+----
+#!test[write, db=quickstart]
+include::./basic-queries.adoc[tag=match-insert1]
+----
+Chained query clauses always execute in-order, so the direction you read in is how operations will be performed:
+First we find two specific users by username, then insert a new friendship between them.
+
+Feel free to insert more data, e.g., create a university and enrol some of your users in it using our `enrolment` relations!
+
+Let's commit to save our new data!
+--
+
+Console::
++
+--
+
+. retrieve the users with a `match` clause.
+. write the new `friendship` with an `insert` clause.
+
+////
+[,typeql]
+----
+# tag::match-insert1[]
+match
+$u0 isa user, has username "alice1925";
+$u1 isa user, has username "bob78";
+insert
+friendship (friend: $u0, friend: $u1);
+# end::match-insert1[]
+----
+////
+[,typeql]
+----
+#!test[write, db=quickstart]
+include::./basic-queries.adoc[tag=match-insert1]
+----
+Chained query clauses always execute in-order, so the direction you read in is how operations will be performed:
+First we find two specific users by username, then insert a new friendship between them.
+
+Feel free to insert more data, e.g., create a university and enrol some of your users in it using our `enrolment` relations!
+
+Let's commit to save our new data!
+--
+====
+
+Deleting and updating data works in a similar vein, with one additional detail: deleting and updating _requires_ us to first `match` the data that we want to delete or update, whereas for (pure) inserts we saw that this was optional.
