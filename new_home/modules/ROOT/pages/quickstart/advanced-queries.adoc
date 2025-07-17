@@ -34,7 +34,7 @@ Studio::
 +
 --
 
-Let's delete the user with username "alice1925":
+Let's delete the user with username "candice001":
 
 [,typeql]
 ----
@@ -42,59 +42,68 @@ Let's delete the user with username "alice1925":
 include::./advanced-queries.adoc[tag=delete1]
 ----
 
-Easy enough! What if we wanted to delete the _username_ the same user?
-We need a variable to hold the username, then we can remove it from the user:
+Easy enough! What if we wanted to delete an owned attribute?
+
+We need a variable to hold the username, then we can remove it - let's remove the start-date of the friendship between "alice1925" and "bob78":
 
 [,typeql]
 ----
 #!test[write, db=quickstart]
 include::./advanced-queries.adoc[tag=delete2]
 ----
+
+Notice how deletes specify "what" to delete, and "where" to delete that from.
 
 --
 Console::
 +
 --
 
+Let's delete the user with username "candice001":
+
 ////
 [,typeql]
 ----
 # tag::delete1[]
 match
-$user isa user, has username "alice1925";
+$user isa user, has username "candice001";
 delete $user;
 # end::delete1[]
 ----
 ////
-
 [,typeql]
 ----
 #!test[write, db=quickstart]
 include::./advanced-queries.adoc[tag=delete1]
 ----
 
+Easy enough! What if we wanted to delete an owned attribute?
+
+We need a variable to hold the username, then we can remove it - let's remove the start-date of the friendship between "alice1925" and "bob78":
 ////
 [,typeql]
 ----
 # tag::delete2[]
 match
-$user isa user, has username $username;
-friendship ($user, $friend);
-reduce $num-friends = count groupby $user, $username;
+$u0 isa user, has username "alice1925";
+$u1 isa user, has username "bob78";
+$friendship isa friendship ($u0, $u1),
+  has start-date $start-date;
+delete
+$start-date of $friendship;
 # end::delete2[]
 ----
 ////
-
 [,typeql]
 ----
 #!test[write, db=quickstart]
 include::./advanced-queries.adoc[tag=delete2]
 ----
 
+Notice how deletes specify "what" to delete, and "where" to delete that from.
+
 --
 ====
-
-
 
 === Reduce
 
@@ -118,7 +127,7 @@ We see the following result:
 [source]
 ----
 ------------
-$count | 6
+$count | 5
 ------------
 ----
 
@@ -187,7 +196,7 @@ We see the following result:
 [source]
 ----
 ------------
-$count | 6
+$count | 5
 ------------
 ----
 
@@ -245,20 +254,350 @@ Notice that the variables in the grouping have not been consumed by the `reduce`
 If this feels familiar, that's probably because you've met `reduce` operations in programming languages!
 Often these are applied to collections of data, such as lists, or structures like iterators or streams.
 
-**A good mental model of TypeQL queries is that any clause produces a stream of answers (a reduce returns a stream of only 1 answer), which is either returned or processed by the next clause.**
-Keep this in mind as we progress through this chapter.
+**A good mental model of TypeQL queries is that any clause produces a stream of answers, which is either returned or processed by the next clause.**
 
+This is a very powerful tool for composing queries, as we'll see next!
 
+== Chaining clause into pipelines
 
+We'd like to write a query that does the following:
 
-[placeholder]
-This page will describe advanced TypeDB queries.
+Make every user friends with the most popular user in the database, if they aren't already friends.
 
-Topics:
+Conceptually, this requires three steps:
 
-- Query chaining part 2: other types of clauses
-  - reduce, select, sort, limit, delete - refs to put and update
+. Find the most popular user in the database
+. Find all users that aren't friends with the most popular user
+. Make those users friends with the most popular user
 
-- Query chaining part 3: many-step chains - Pipelines!
+Let's start with the first step:
 
-- Reusable query pipelines: functions!
+[tabs]
+====
+Studio::
++
+--
+
+We'll build on top of the `reduce` query we just wrote to solve this, since
+the most popular user is the one with the highest number of friends - we'll sort the `reduce` results by number of friends, and limit to the first answer.
+
+Remember that all clauses return a stream of answers, so we can do exactly this by building chaining on further operations.
+Specifically, we'll use `sort` and `limit` operations, which both manipulate the answer stream!
+
+[,typeql]
+----
+#!test[read, db=quickstart]
+include::./advanced-queries.adoc[tag=pipeline1]
+----
+
+Which returns:
+[source]
+----
+------------------
+$num-friends | 2
+$user        | isa user, iid 0x1e00000000000000000006
+$username    | isa username deltaonenine
+------------------
+----
+
+Perfect! We've identified the most popular user.
+
+--
+Console::
++
+--
+
+We'll build on top of the `reduce` query we just wrote to solve this, since
+the most popular user is the one with the highest number of friends - we'll sort the `reduce` results by number of friends, and limit to the first answer.
+
+Remember that all clauses return a stream of answers, so we can do exactly this by building chaining on further operations.
+Specifically, we'll use `sort` and `limit` operations, which both manipulate the answer stream from the previous clause.
+
+////
+[,typeql]
+----
+# tag::pipeline1[]
+match
+$user isa user, has username $username;
+friendship ($user, $friend);
+reduce $num-friends = count groupby $user, $username;
+sort $num-friends desc;
+limit 1;
+# end::pipeline1[]
+----
+////
+[,typeql]
+----
+#!test[read, db=quickstart]
+include::./advanced-queries.adoc[tag=pipeline1]
+----
+Which returns:
+[source]
+----
+------------------
+$num-friends | 2
+$user        | isa user, iid 0x1e00000000000000000006
+$username    | isa username deltaonenine
+------------------
+----
+
+Perfect! We've identified the most popular user.
+
+--
+====
+
+Next we'll add another clause to find users that aren't friends with this user:
+
+[tabs]
+====
+Studio::
++
+--
+
+This time we use a `not` statement to filter out users that are already friends with the most popular user,
+and also to eliminate the most-popular user from appearing again:
+
+[,typeql]
+----
+#!test[read, db=quickstart]
+include::./advanced-queries.adoc[tag=pipeline2]
+----
+
+This returns:
+[source]
+----
+------------------
+$num-friends | 2
+$other-user  | isa user, iid 0x1e00000000000000000001
+$user        | isa user, iid 0x1e00000000000000000006
+$username    | isa username deltaonenine
+------------------
+$num-friends | 2
+$other-user  | isa user, iid 0x1e00000000000000000002
+$user        | isa user, iid 0x1e00000000000000000006
+$username    | isa username deltaonenine
+------------------
+----
+
+We're almost there! We just need to add an operation to create friendship between the most popular user and the users we found.
+
+--
+Console::
++
+--
+
+This time we use a `not` statement to filter out users that are already friends with the most popular user,
+and also to eliminate the most-popular user from appearing again:
+
+////
+[,typeql]
+----
+# tag::pipeline2[]
+match
+$user isa user, has username $username;
+friendship ($user, $friend);
+reduce $num-friends = count groupby $user, $username;
+
+sort $num-friends desc;
+limit 1;
+
+match
+$other-user isa user;
+not { $user is $other-user; };
+not { friendship ($user, $other-user); };
+# end::pipeline2[]
+----
+////
+[,typeql]
+----
+#!test[read, db=quickstart]
+include::./advanced-queries.adoc[tag=pipeline2]
+----
+
+This returns:
+[source]
+----
+------------------
+$num-friends | 2
+$other-user  | isa user, iid 0x1e00000000000000000001
+$user        | isa user, iid 0x1e00000000000000000006
+$username    | isa username deltaonenine
+------------------
+$num-friends | 2
+$other-user  | isa user, iid 0x1e00000000000000000002
+$user        | isa user, iid 0x1e00000000000000000006
+$username    | isa username deltaonenine
+------------------
+----
+
+We're almost there! We just need to add an operation to create friendship between the most popular user and the users we found.
+
+--
+====
+
+Let's stack one more `insert` clause to create the desired friendships.
+Note that this means this query now is a write query, and requires a write transaction.
+
+[tabs]
+====
+Studio::
++
+--
+
+[,typeql]
+----
+#!test[write, db=quickstart]
+include::./advanced-queries.adoc[tag=pipeline3]
+----
+
+After you've executed the query once, every user will be friends with the most popular user!
+
+--
+Console::
++
+--
+
+////
+[,typeql]
+----
+# tag::pipeline3[]
+match
+$user isa user, has username $username;
+friendship ($user, $friend);
+reduce $num-friends = count groupby $user, $username;
+sort $num-friends desc;
+limit 1;
+
+match
+$other-user isa user;
+not { $user is $other-user; };
+not { friendship ($user, $other-user); };
+
+insert
+friendship ($other-user, $user);
+# end::pipeline3[]
+----
+////
+[,typeql]
+----
+#!test[write, db=quickstart]
+include::./advanced-queries.adoc[tag=pipeline3]
+----
+--
+====
+
+Fantastic! We've got a singe query that will: identify the most popular user,
+identify all users that aren't friends with the most popular user,
+and create friendships between the most popular user and the users we found.
+
+This type of clause chaining is called building a *query pipeline*.
+A pipeline is made of *stages*, each of which is either a *clause* (eg. match, insert) or a stream *operation* (eg. sort, limit).
+
+Pipelines are a very powerful tool for composing queries. They are easy to read and understand,
+since the data flow is explicit in the order of the query stages.
+
+At the same time, query pipelines are very easy to debug: truncate your pipeline at any point
+and inspect the intermediate results by executing the truncated query.
+
+== Functions
+
+In the query we just wrote, we might want to re-use the "find the most popular user" part of the query pipeline.
+
+We can do this by declaring a function, which can be committed to the database as part of the schema:
+
+[tabs]
+====
+Studio::
++
+--
+
+[,typeql]
+----
+#!test[schema, db=quickstart]
+include::./advanced-queries.adoc[tag=function1]
+----
+
+This function returns the first user and username using the same logic as the long pipeline we just wrote,
+with a tiebreaker on the username if there are multiple "most popular users".
+
+Don't forget to commit so the function becomes available outside the transaction!
+
+--
+Console::
++
+--
+
+////
+[,typeql]
+----
+# tag::function1[]
+define
+
+# note: if there are multiple "most popular users", tiebreak on the username
+fun most_popular_user() -> user, username:
+  match
+  $user isa user, has username $username;
+  friendship ($user, $friend);
+  reduce $num-friends = count groupby $user, $username;
+  sort $num-friends desc, $username asc;
+  return first $user, $username;
+
+# end::function1[]
+----
+////
+[,typeql]
+----
+#!test[schema, db=quickstart]
+include::./advanced-queries.adoc[tag=function1]
+----
+
+This function returns the first user and username using the same logic as the long pipeline we just wrote,
+with a tiebreaker on the username if there are multiple "most popular users".
+
+Don't forget to commit so the function becomes available outside the transaction!
+--
+====
+
+Now we can invoke the function in a pipeline.
+
+Let's try to find the users who are friends with our popular user:
+
+[tabs]
+====
+Studio::
++
+--
+
+[,typeql]
+----
+#!test[schema, db=quickstart]
+include::./advanced-queries.adoc[tag=function_pipeline1]
+----
+
+This query is now extremely short, since we've re-used the logic from the function we declared above!
+
+--
+Console::
++
+--
+
+////
+[,typeql]
+----
+# tag::function_pipeline1[]
+match
+let $most-popular-user, $most-popular-username = most_popular_user();
+$other-user isa user, has username $username;
+friendship ($other-user, $most-popular-user);
+# end::function_pipeline1[]
+----
+////
+[,typeql]
+----
+#!test[read, db=quickstart]
+include::./advanced-queries.adoc[tag=function_pipeline1]
+----
+
+This query is now extremely short, since we've re-used the logic from the function we declared above!
+--
+====
