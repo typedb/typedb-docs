@@ -167,8 +167,8 @@ That's where variables come into play: let's run the following query:
 include::./basic-queries.adoc[tag=insert5]
 ----
 
-This query inserts two new users with a `friendship` relation between them.
-The last line is a shorthand, and could itself be written as `$f isa friendship (friend: $x, friend: $y);` if you'd want to further use the variable `$f`; but otherwise it's convenient to simply omit it.
+This query inserts three new users with some `friendship`s between them. 
+The relations are using shorthand, and could themselves be written as `$f isa friendship (friend: $x, friend: $y);` if you'd want to further use the variable `$f`; but otherwise it's convenient to simply omit it.
 
 --
 Console::
@@ -185,7 +185,9 @@ That's where variables come into play: let's run the following query:
 insert
 $x isa user, has username "deltaonenine";
 $y isa user, has username "ecclestone";
+$z isa user, has username "fizzbuzz";
 friendship (friend: $x, friend: $y);
+friendship (friend: $x, friend: $z);
 # end::insert5[]
 ----
 ////
@@ -194,8 +196,8 @@ friendship (friend: $x, friend: $y);
 #!test[write, db=quickstart]
 include::./basic-queries.adoc[tag=insert5]
 ----
-This query inserts two new users with a `friendship` relation between them.
-The last line is a shorthand, and could itself be written as `$f isa friendship (friend: $x, friend: $y);` if you'd want to further use the variable `$f`; but otherwise it's convenient to simply omit it.
+This query inserts three new users with some `friendship`s between them. 
+The relations are using shorthand, and could themselves be written as `$f isa friendship (friend: $x, friend: $y);` if you'd want to further use the variable `$f`; but otherwise it's convenient to simply omit it.
 
 --
 
@@ -204,7 +206,7 @@ The last line is a shorthand, and could itself be written as `$f isa friendship 
 But what if we want to create a `friendship` relation between two existing users already in the database?
 In other words, we want to connect _new_ data with _existing_ data?
 
-That requires read operations, which we'll meet next.
+That requires read operations combined with write operations.
 
 == Read-Write queries
 
@@ -235,22 +237,31 @@ We get back the following sets of values:
 [source]
 ----
 --------
-$n | isa username "alice1925"
+$n | isa username alice1925
+$x | isa user, iid 0x1e00000000000000000001
+--------
+$n | isa username bob78
 $x | isa user, iid 0x1e00000000000000000002
 --------
-$n | isa username "bob78"
+$n | isa username candice001
 $x | isa user, iid 0x1e00000000000000000003
 --------
-$n | isa username "candice001"
-$x | isa user, iid 0x1e00000000000000000004
+$n | isa username deltaonenine
+$x | isa user, iid 0x1e00000000000000000006
 --------
-$n | isa username "deltaonenine"
+$n | isa username ecclestone
 $x | isa user, iid 0x1e00000000000000000007
 --------
-$n | isa username "ecclestone"
 $x | isa user, iid 0x1e00000000000000000008
+$n | isa username fizzbuzz
 --------
 ----
+
+[NOTE]
+=====
+IIDs are "instance IDs". These are auto-generated unique IDs for each entity and relation. 
+However, they are not necessarily deterministic across databases - your IIDs might be different! 
+=====
 
 We can make this more specific and interesting, for instance looking up the friends that exist of a particular user:
 
@@ -264,12 +275,11 @@ Which returns:
 [source]
 ----
 ---------------------
-$other-friend   | isa user, iid 0x1e00000000000000000007
-$other-username | isa username "deltaonenine"
-$u              | isa user, iid 0x1e00000000000000000008
+$u              | isa user, iid 0x1e00000000000000000007
+$other-username | isa username deltaonenine
+$other-friend   | isa user, iid 0x1e00000000000000000006
 ---------------------
 ----
-
 --
 
 Console::
@@ -297,22 +307,32 @@ We get back the following answers:
 [source]
 ----
 --------
-$n | isa username "alice1925"
+$n | isa username alice1925
+$x | isa user, iid 0x1e00000000000000000001
+--------
+$n | isa username bob78
 $x | isa user, iid 0x1e00000000000000000002
 --------
-$n | isa username "bob78"
+$n | isa username candice001
 $x | isa user, iid 0x1e00000000000000000003
 --------
-$n | isa username "candice001"
-$x | isa user, iid 0x1e00000000000000000004
+$n | isa username deltaonenine
+$x | isa user, iid 0x1e00000000000000000006
 --------
-$n | isa username "deltaonenine"
+$n | isa username ecclestone
 $x | isa user, iid 0x1e00000000000000000007
 --------
-$n | isa username "ecclestone"
 $x | isa user, iid 0x1e00000000000000000008
+$n | isa username fizzbuzz
 --------
 ----
+
+[NOTE]
+=====
+IIDs are "instance IDs". These are auto-generated unique IDs for each entity and relation. 
+However, they are not necessarily deterministic across databases - your IIDs might be different! 
+=====
+
 
 We can make this more specific and interesting, for instance looking up the friends that exist of a particular user:
 
@@ -337,10 +357,10 @@ Which returns:
 [source]
 ----
 ---------------------
-$other-friend   | isa user, iid 0x1e00000000000000000007
-$other-username | isa username "deltaonenine"
-$u              | isa user, iid 0x1e00000000000000000008
-----------------------
+$u              | isa user, iid 0x1e00000000000000000006
+$other-username | isa username deltaonenine
+$other-friend   | isa user, iid 0x1e00000000000000000005
+---------------------
 ----
 --
 ====
@@ -399,7 +419,7 @@ match
 $u0 isa user, has username "alice1925";
 $u1 isa user, has username "bob78";
 insert
-friendship (friend: $u0, friend: $u1);
+friendship (friend: $u0, friend: $u1), has start-date 2015-01-01T00:00:00;
 # end::match-insert1[]
 ----
 ////

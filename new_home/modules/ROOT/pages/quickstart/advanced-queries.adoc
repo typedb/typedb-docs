@@ -1,4 +1,255 @@
 = Advanced Queries
+:title: Quickstart advanced queries
+:test-typeql: linear
+// :test-python: yes
+// :test-rust: yes
+:experimental:
+:tabs-sync-option:
+
+In the previous sections you:
+
+. Set up a TypeDB server and accessed your preferred tool (Studio or Console)
+. Created a database and defined a schema
+. Loaded some data using simple write and more complex read-write queries
+
+In this page we'll look a few other types of clauses, and how clause chaining can be generalised into query _pipelines_.
+We'll then also meet a _functions_, which are re-usable pieces of queries that can even do things like recursion.
+
+Finally, we'll meet the `fetch` clause, which lets you format your data into JSON and look up additional information for each answer before returning them.
+
+
+== Delete & Reduce
+
+Let's look at two more useful clauses: `delete`, `reduce`.
+
+=== Delete
+
+We know how to create data and read data, but what if we want to remove data?
+
+Deletion uses a different syntax from insertion and matching in order to specifically pinpoint what data to delete.
+
+[tabs]
+====
+Studio::
++
+--
+
+Let's delete the user with username "alice1925":
+
+[,typeql]
+----
+#!test[write, db=quickstart]
+include::./advanced-queries.adoc[tag=delete1]
+----
+
+Easy enough! What if we wanted to delete the _username_ the same user?
+We need a variable to hold the username, then we can remove it from the user:
+
+[,typeql]
+----
+#!test[write, db=quickstart]
+include::./advanced-queries.adoc[tag=delete2]
+----
+
+--
+Console::
++
+--
+
+////
+[,typeql]
+----
+# tag::delete1[]
+match
+$user isa user, has username "alice1925";
+delete $user;
+# end::delete1[]
+----
+////
+
+[,typeql]
+----
+#!test[write, db=quickstart]
+include::./advanced-queries.adoc[tag=delete1]
+----
+
+////
+[,typeql]
+----
+# tag::delete2[]
+match
+$user isa user, has username $username;
+friendship ($user, $friend);
+reduce $num-friends = count groupby $user, $username;
+# end::delete2[]
+----
+////
+
+[,typeql]
+----
+#!test[write, db=quickstart]
+include::./advanced-queries.adoc[tag=delete2]
+----
+
+--
+====
+
+
+
+=== Reduce
+
+The `reduce` clause works by collapsing the answers provided by a query using an aggregation operation, such as `count` or `sum`.
+
+[tabs]
+====
+Studio::
++
+--
+
+Using a read transaction, let's count the number of users in the database:
+
+[,typeql]
+----
+#!test[read, db=quickstart]
+include::./advanced-queries.adoc[tag=reduce1]
+----
+
+We see the following result:
+[source]
+----
+------------
+$count | 6
+------------
+----
+
+Notice that the user variable `$user` has been consumed by the `reduce` and we created a new variable `$count`!
+
+Reductions can also use `groupby` to apply an aggregation within a grouping:
+
+[,typeql]
+----
+#!test[read, db=quickstart]
+include::./advanced-queries.adoc[tag=reduce2]
+----
+
+[source]
+----
+------------------
+$num-friends | 1
+$user        | isa user, iid 0x1e00000000000000000007
+$username    | isa username fizzbuzz
+------------------
+$num-friends | 1
+$user        | isa user, iid 0x1e00000000000000000006
+$username    | isa username ecclestone
+------------------
+$num-friends | 1
+$user        | isa user, iid 0x1e00000000000000000001
+$username    | isa username bob78
+------------------
+$num-friends | 1
+$user        | isa user, iid 0x1e00000000000000000000
+$username    | isa username alice1925
+------------------
+$num-friends | 2
+$user        | isa user, iid 0x1e00000000000000000005
+$username    | isa username deltaonenine
+----------------------
+----
+
+Here we see the number of friends for each user, grouped by unique pairs of (user, username).
+Of course, we know that each user has a unique username!
+
+Notice that the variables in the grouping have not been consumed by the `reduce` clause and are returned in the results.
+
+--
+Console::
++
+--
+
+////
+[,typeql]
+----
+# tag::reduce1[]
+match
+$user isa user;
+reduce $count = count;
+# end::reduce1[]
+----
+////
+[,typeql]
+----
+#!test[write, db=quickstart]
+include::./advanced-queries.adoc[tag=reduce1]
+----
+
+We see the following result:
+[source]
+----
+------------
+$count | 6
+------------
+----
+
+////
+[,typeql]
+----
+# tag::reduce2[]
+match
+$user isa user, has username $username;
+friendship ($user, $friend);
+reduce $num-friends = count groupby $user, $username;
+# end::reduce2[]
+----
+////
+[,typeql]
+----
+#!test[write, db=quickstart]
+include::./advanced-queries.adoc[tag=reduce2]
+----
+
+[source]
+----
+------------------
+$num-friends | 1
+$user        | isa user, iid 0x1e00000000000000000007
+$username    | isa username fizzbuzz
+------------------
+$num-friends | 1
+$user        | isa user, iid 0x1e00000000000000000006
+$username    | isa username ecclestone
+------------------
+$num-friends | 1
+$user        | isa user, iid 0x1e00000000000000000001
+$username    | isa username bob78
+------------------
+$num-friends | 1
+$user        | isa user, iid 0x1e00000000000000000000
+$username    | isa username alice1925
+------------------
+$num-friends | 2
+$user        | isa user, iid 0x1e00000000000000000005
+$username    | isa username deltaonenine
+----------------------
+----
+
+Here we see the number of friends for each user, grouped by unique pairs of (user, username).
+Of course, we know that each user has a unique username!
+
+Notice that the variables in the grouping have not been consumed by the `reduce` clause and are returned in the results.
+
+--
+
+====
+
+If this feels familiar, that's probably because you've met `reduce` operations in programming languages!
+Often these are applied to collections of data, such as lists, or structures like iterators or streams.
+
+**A good mental model of TypeQL queries is that any clause produces a stream of answers (a reduce returns a stream of only 1 answer), which is either returned or processed by the next clause.**
+Keep this in mind as we progress through this chapter.
+
+
+
 
 [placeholder]
 This page will describe advanced TypeDB queries.
