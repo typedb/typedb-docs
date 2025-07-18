@@ -185,7 +185,7 @@ end::define2[]
 [,typeql]
 ----
 #!test[schema, db=quickstart]
-include::./initialize-database.adoc[tag=define1]
+include::./initialize-database.adoc[tag=define2]
 ----
 
 Finally, commit the transaction by typing `commit` and press kbd:[Enter]. You have just defined the first few types in your database schema, congratulations!
@@ -373,7 +373,7 @@ but in the meantime let's summarize!
 
 Here's your entire schema so you can see it in one go:
 
-[,typeq]
+[,typeql]
 ----
 #!test[schema, db=quickstart]
 define

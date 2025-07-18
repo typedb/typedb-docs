@@ -6,7 +6,7 @@
 :experimental:
 :tabs-sync-option:
 
-Having defined the types in our schema, we are ready to write data to our database. Let's see a few example of how we can create data.
+Having defined the types in our schema, we are ready to write data to our database. Let's see a few examples of how we can create data.
 We will also learn how TypeDB's type system holds us accountable when adding and modifying data, requiring us to conform to the database schema that we defined in the previous section.
 
 == Pure insert queries
@@ -379,7 +379,7 @@ Now that we know how to look data up - how do we use that to perform a query tha
 The key is that we can _chain_ an `insert` clause after a `match` clause.
 The `insert` clause will receive the same set of variables and answers you would see printed out if you executed just the `match` clause!
 
-Using this principe, let's:
+Using this principle, let's:
 
 . retrieve some users with a `match` clause.
 . write a new `friendship` relation with an `insert` clause.
