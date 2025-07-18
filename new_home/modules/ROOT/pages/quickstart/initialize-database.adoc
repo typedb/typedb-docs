@@ -11,7 +11,7 @@ TypeDB supports operating multiple independent databases within one server.
 Databases each contain their own set of schema and data.
 Transactions operate against one database at a time and cannot read data from multiple databases.
 
-Databases can be created and deleted easily. Let's create a quickstart database!
+Databases can be created and deleted easily. Let's create a database for this quickstart!
 
 [tabs]
 ====
@@ -31,7 +31,7 @@ Console::
 Start TypeDB Console and connect to TypeDB with the following terminal command:
 [,bash]
 ----
-$ typedb console --core=<address> --username=<username> --password
+$ typedb console --address=<address> --username=<username>
 ----
 You will be prompted for a password, after which the *server-level interface* of Console will be opened. To create a new database called `quickstart` type the command:
 [,console]
@@ -48,20 +48,20 @@ To use a database, we must first open a transaction.
 
 There are three types of transactions:
 
-* *Schema* transactions allow you to run any type of queries, including queries that modify the database schema. They are computationally more expensive than write or read transactions and should be used mostly for schema operations.
-* *Write* transactions allow you to execute queries that read or write data. You can open many independent transactions at once.
+* *Schema* transactions allow you to run any type of queries, including queries that modify the database schema. They are computationally expensive and should be used mostly for schema updates.
+* *Write* transactions allow you to execute queries that read or write data.
 * *Read* transactions allow you to execute queries that read data. Read transactions are the cheapest kind of transaction.
 
 All TypeDB transactions use snapshotting: they will never see any other transaction's operations.
 To see subsequent changes to the database, you must open a brand-new transaction.
 
 Persisting changes to a database is done with a `commit` operation.
-This validates your changes, reporting any errors to you, and otherwise durably writing the data to the database.
+This validates your changes, reporting any errors to you, and otherwise durably writes the data to the database.
 
 Read transactions cannot be committed as they cannot write to the database - simply `close` them instead!
 Write and schema transactions can also be discarded without commit using `close`.
 
-Let's open a simple schema transaction and define our first schema type:
+Let's open a simple schema transaction and define our first type:
 
 [tabs]
 ====
@@ -95,9 +95,10 @@ transaction schema quickstart
 ----
 This will open a new *transaction-level interface*. In it, you will be able to run queries. You can similarly open `write` or `read` transactions.
 
-Then, enter the following query and hit kbd:[Enter] **twice** to submit:
+Then, enter the following query and hit 'Enter' **twice** to submit:
 [,typeql]
 ----
+#!test[schema, db=quickstart]
 define entity user;
 ----
 
@@ -114,12 +115,12 @@ Alternatively, you could use the command `close` to discard your changes and clo
 [NOTE]
 ====
 A quick *tip* if you are using Console for this course. Queries on this page can be turned into runnable *Console scripts* by clicking the "`hidden lines`" button (image:{page-version}@new_home::/svg/eye.svg[width=24]).
-These scripts can then be *pasted* directly into the server-level interface of Console, and run end-to-end simply by pressing kbd:[Enter].
+These scripts can then be *pasted* directly into the server-level interface of Console, and run end-to-end simply by pressing 'Enter'.
 ====
 
 == TypeDB's data model at a glance
 
-Before we finish creating the database schema, let's have a quick look at TypeDB's data model. In TypeDB, data is stored in *types*, which can be either:
+Before we continue creating the database schema, let's have a quick look at TypeDB's data model. In TypeDB, data is stored in *types*, which can be either:
 
 * *entity* types (e.g., a type of all the ``user``'s in your app)
 * *relation* types (e.g., all the ``friendship``'s of users)
@@ -133,7 +134,7 @@ TypeDB's data model is conceptually simple, but at the same time extremely syste
 
 == Defining your schema
 
-Let's define a simple database schema: we want to store ``user``'s and their ``username``'s in our database and, in addition, let's also record ``friendship``'s between users.
+Let's define a simple database schema: we want to store ``user``'s and their ``username``'s in our database and, in addition, let's also permit ``friendship``'s between users.
 
 [tabs]
 ====
@@ -174,7 +175,7 @@ end::define1[]
 include::./initialize-database.adoc[tag=define1]
 ----
 
-Press kbd:[Enter] _twice_ to send the query. Similarly, send the following second query:
+Press 'Enter' twice to send the query. Similarly, send the following second query:
 ////
 tag::define2[]
 define
@@ -188,7 +189,7 @@ end::define2[]
 include::./initialize-database.adoc[tag=define2]
 ----
 
-Finally, commit the transaction by typing `commit` and press kbd:[Enter]. You have just defined the first few types in your database schema, congratulations!
+Finally, commit the transaction by typing `commit` and press 'Enter'. You have just defined the first few types in your database schema, congratulations!
 --
 ====
 
@@ -207,7 +208,10 @@ Let's write a few more definition queries to get a feel of database schemas in T
 Studio::
 +
 --
-First, note that relation types, like entity types, are types of "`first-class objects`" in our type system. In particular, they too can own attributes (and may play roles in other relation types). As an example, let's run the following query:
+First, note that relation types, like entity types, are first-class definitions in our type system.
+In particular, they too can own attributes (and may play roles in other relation types).
+
+For example:
 
 [,typeql]
 ----
@@ -217,7 +221,7 @@ include::./initialize-database.adoc[tag=define3]
 
 This defines a `start-date` attribute and then declares each friendship may own a `start_date` (i.e., the type `friendship` implements the "`start-date owner`" trait). The definition is followed by a `@card` annotation, which specifies that friendships own _between_ zero or one start dates. In fact, this is the default cardinality, so you don't actually need `@card` here at all.
 
-The next query illustrates usage of "`unbounded`" cardinality together with another useful annotation, `@key` (which, in this case, specifies that the `username` of a `user` should uniquely identify a user, i.e., it is a _key attribute_).
+The next query illustrates usage of "`unbounded`" cardinality together with another useful annotation, `@key`. This specifies that the `username` of a `user` should uniquely identify a user, i.e., it is a _key attribute_.
 
 [,typeql]
 ----
@@ -240,7 +244,10 @@ Let's commit and move on!
 Console::
 +
 --
-First, note that relation types, like entity types, are types of "`first-class objects`" in our type system. In particular, they too can own attributes (and may play roles in other relation types). As an example, let's run the following query:
+First, note that relation types, like entity types, are first-class definitions in our type system.
+In particular, they too can own attributes (and may play roles in other relation types).
+
+For example:
 
 ////
 [,typeql]
@@ -260,7 +267,7 @@ include::./initialize-database.adoc[tag=define3]
 
 This defines a `start-date` attribute and then declares each friendship may own a `start_date` (i.e., the type `friendship` implements the "`start-date owner`" trait). The definition is followed by a `@card` annotation, which specifies that friendships own _between_ zero or one start dates. In fact, this is the default cardinality, so you don't actually need `@card` here at all.
 
-The next query illustrates usage of "`unbounded`" cardinality together with another useful annotation, `@key` (which, in this case, specifies that the `username` of a `user` should uniquely identify a user, i.e., it is a _key attribute_).
+The next query illustrates usage of "`unbounded`" cardinality together with another useful annotation, `@key`. This specifies that the `username` of a `user` should uniquely identify a user, i.e., it is a _key attribute_.
 
 ////
 [,typeql]
@@ -323,6 +330,9 @@ Note that we haven't defined any traits for companies and universities; indeed, 
 #!test[schema, db=quickstart]
 include::./initialize-database.adoc[tag=define7]
 ----
+
+Of course, you would be able to give the new subtypes additional traits that are not inherited from the supertype as well!
+
 --
 
 Console::
@@ -362,7 +372,11 @@ user plays enrolment:student;
 #!test[schema, db=quickstart]
 include::./initialize-database.adoc[tag=define7]
 ----
-Run the above query, and don't forget to commit the transaction by typing `commit` and pressing kbd:[Enter].
+
+Of course, you would be able to give the new subtypes additional traits that are not inherited from the supertype as well!
+
+Don't forget to commit the transaction by typing `commit` and pressing 'Enter'.
+
 --
 ====
 

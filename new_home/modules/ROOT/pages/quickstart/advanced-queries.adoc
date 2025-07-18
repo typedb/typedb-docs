@@ -1,5 +1,5 @@
 = Advanced Queries
-:title: Quickstart advanced queries
+:title: Advanced queries
 :test-typeql: linear
 // :test-python: yes
 // :test-rust: yes
@@ -12,7 +12,9 @@ In the previous sections you:
 . Created a database and defined a schema
 . Loaded some data using simple write and more complex read-write queries
 
-In this page, we'll look at another useful query operation and how chaining can be generalized into query _pipelines_.
+In this page, we'll look at another useful query operation, `reduce`,
+and how chaining can be generalized into extremely useful _query pipelines_.
+
 We'll then introduce _functions_, which are reusable chunks of queries that can even perform recursion.
 
 Finally, we'll cover the `fetch` clause, which lets you format your data as JSON and look up additional information before returning results.
@@ -21,7 +23,7 @@ Finally, we'll cover the `fetch` clause, which lets you format your data as JSON
 
 The `reduce` operation works by collapsing the answers provided by a query using an aggregation operation, such as `count` or `sum`.
 
-We call `reduce` an **operator** rather than a **clause**, since it does not read or write to the database state—it only transforms the answers it receives.
+We call `reduce` an **operator** rather than a **clause**, since it does not read or write to the database state - it only transforms the answers it receives.
 
 [tabs]
 ====
@@ -55,33 +57,35 @@ Reductions can also use `groupby` to aggregate within groups:
 include::./advanced-queries.adoc[tag=reduce2]
 ----
 
+Returning:
+
 [source]
 ----
 ------------------
 $num-friends | 1
-$user        | isa user, iid 0x1e00000000000000000007
-$username    | isa username fizzbuzz
-------------------
-$num-friends | 1
-$user        | isa user, iid 0x1e00000000000000000006
-$username    | isa username ecclestone
-------------------
-$num-friends | 1
-$user        | isa user, iid 0x1e00000000000000000001
-$username    | isa username bob78
+$user        | isa user, iid 0x1e00000000000000000004
+$username    | isa username "ecclestone"
 ------------------
 $num-friends | 1
 $user        | isa user, iid 0x1e00000000000000000000
-$username    | isa username alice1925
+$username    | isa username "alice1925"
+------------------
+$num-friends | 1
+$user        | isa user, iid 0x1e00000000000000000005
+$username    | isa username "fizzbuzz"
 ------------------
 $num-friends | 2
-$user        | isa user, iid 0x1e00000000000000000005
-$username    | isa username deltaonenine
-----------------------
+$user        | isa user, iid 0x1e00000000000000000003
+$username    | isa username "deltaonenine"
+------------------
+$num-friends | 1
+$user        | isa user, iid 0x1e00000000000000000001
+$username    | isa username "bob78"
+------------------
 ----
 
 Here we see the number of friends for each user, grouped by unique pairs of (user, username).
-Of course, we know that each user has a unique username!
+Of course, we know that each user has a unique username, so we don't actually have to keep both!
 
 Notice that the variables in the grouping are not consumed by `reduce` and are returned in the results.
 
@@ -89,6 +93,8 @@ Notice that the variables in the grouping are not consumed by `reduce` and are r
 Console::
 +
 --
+
+Open a read transaction with `transaction read quickstart` to count the number of users in the database:
 
 ////
 [,typeql]
@@ -102,7 +108,7 @@ reduce $count = count;
 ////
 [,typeql]
 ----
-#!test[write, db=quickstart]
+#!test[read, db=quickstart]
 include::./advanced-queries.adoc[tag=reduce1]
 ----
 
@@ -131,37 +137,39 @@ reduce $num-friends = count groupby $user, $username;
 ////
 [,typeql]
 ----
-#!test[write, db=quickstart]
+#!test[read, db=quickstart]
 include::./advanced-queries.adoc[tag=reduce2]
 ----
+
+Returning:
 
 [source]
 ----
 ------------------
 $num-friends | 1
-$user        | isa user, iid 0x1e00000000000000000007
-$username    | isa username fizzbuzz
-------------------
-$num-friends | 1
-$user        | isa user, iid 0x1e00000000000000000006
-$username    | isa username ecclestone
-------------------
-$num-friends | 1
-$user        | isa user, iid 0x1e00000000000000000001
-$username    | isa username bob78
+$user        | isa user, iid 0x1e00000000000000000004
+$username    | isa username "ecclestone"
 ------------------
 $num-friends | 1
 $user        | isa user, iid 0x1e00000000000000000000
-$username    | isa username alice1925
+$username    | isa username "alice1925"
+------------------
+$num-friends | 1
+$user        | isa user, iid 0x1e00000000000000000005
+$username    | isa username "fizzbuzz"
 ------------------
 $num-friends | 2
-$user        | isa user, iid 0x1e00000000000000000005
-$username    | isa username deltaonenine
-----------------------
+$user        | isa user, iid 0x1e00000000000000000003
+$username    | isa username "deltaonenine"
+------------------
+$num-friends | 1
+$user        | isa user, iid 0x1e00000000000000000001
+$username    | isa username "bob78"
+------------------
 ----
 
 Here we see the number of friends for each user, grouped by unique pairs of (user, username).
-Of course, we know that each user has a unique username!
+Of course, we know that each user has a unique username, so we don't actually have to keep both!
 
 Notice that the variables in the grouping are not consumed by `reduce` and are returned in the results.
 
@@ -174,15 +182,15 @@ Keep that idea in mind as we move forward.
 
 == Chaining clauses into pipelines
 
-We'd like to write a query that does the following:
+Let's say we'd like to write a query that does the following:
 
-Make every user friends with the most popular user in the database, if they aren't already friends.
+Make every user friends with the most popular user, if they aren't already friends.
 
 Conceptually, this requires three steps:
 
-. Find the most popular user in the database
+. Find the most popular user
 . Find all users that aren't friends with the most popular user
-. Make those users friends with the most popular user
+. Make them friends with the most popular user
 
 We can build this query step by step by chaining together query pieces into an extended _query pipeline_.
 

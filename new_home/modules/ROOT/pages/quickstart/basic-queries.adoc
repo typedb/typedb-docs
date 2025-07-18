@@ -1,13 +1,15 @@
 = Basic Queries
-:title: Quickstart basic queries
+:title: Basic queries
 :test-typeql: linear
 // :test-python: yes
 // :test-rust: yes
 :experimental:
 :tabs-sync-option:
 
-Having defined the types in our schema, we are ready to write data to our database. Let's see a few examples of how we can create data.
-We will also learn how TypeDB's type system holds us accountable when adding and modifying data, requiring us to conform to the database schema that we defined in the previous section.
+Having defined the types in our schema, we are ready to write data to our database.
+
+We'll see few examples of how we can create data,
+and how TypeDB's type system enforces our data constraints when adding and modifying data.
 
 == Pure insert queries
 
@@ -29,12 +31,12 @@ To begin, set your transaction type to *write* using the top bar, then let us tr
 #!test[write, db=quickstart, fail_at=commit]
 include::./basic-queries.adoc[tag=insert1]
 ----
-The commit **will fail**!
-Indeed, we are trying to insert a `user` without a username here, but we declared usernames to be a _key_ attribute earlier when we defined `user owns username @key`.
-(In fact, even if the `insert` query above worked, it would be pretty useless: we are trying to insert an entity with type `user`, but we give no information about that entity and thus no way to refer to the entity.
-So our schema keeps us accountable in this case.)
+The commit **will fail** - an example of TypeDB enforcing data constraints!
+(If you're manually controlling your transaction, you'll see the error when you click 'commit'.)
 
-The following is more meaningful:
+We are trying to insert a `user` without a username here, but we declared usernames to be a _key_ attribute earlier when we defined `user owns username @key`.
+
+The following passes TypeDB's validation and commits just fine:
 
 [,typeql]
 ----
@@ -42,14 +44,14 @@ The following is more meaningful:
 include::./basic-queries.adoc[tag=insert2]
 ----
 
-We can insert multiple values in a single `insert` query like so:
+We can also insert multiple values in a single `insert` query like so:
 
 [,typeql]
 ----
 #!test[write, db=quickstart]
 include::./basic-queries.adoc[tag=insert3]
 ----
-This query inserts two users at the same time.
+This query inserts two users at the same time and also commits safely.
 
 Finally, since we set usernames to be a `@key` attribute of our users, we would - rightfully - expect the following query to fail:
 
@@ -58,10 +60,8 @@ Finally, since we set usernames to be a `@key` attribute of our users, we would 
 #!test[write, db=quickstart, fail_at=runtime]
 include::./basic-queries.adoc[tag=insert4]
 ----
-And it does fail: this time, it fails at execution time, i.e., even before committing the transaction.
-Indeed, because the key `"qwerty0"` would be claimed by two distinct `user` instances no matter what, we can immediately invalidate the transaction.
 
-Let's commit and move on!
+This will immediately cause the transaction to fail, as the server detects an invalid database state.
 
 --
 
@@ -83,9 +83,12 @@ insert $x isa user;
 #!test[write, db=quickstart, fail_at=commit]
 include::./basic-queries.adoc[tag=insert1]
 ----
-Try to `commit` this query - the commit _*will fail*_! Indeed, we are trying to insert a `user` without a username here, but we declared usernames to be a key attribute earlier when we defined `user owns username @key`. (In fact, even if the `insert` query above worked, it would be pretty useless: we are trying to insert an entity with type `user`, but we give no information about that entity and thus no way to refer to the entity. So our schema keeps us accountable in this case.)
 
-The following is more meaningful:
+Submitting `commit` **will fail** - an example of TypeDB enforcing data constraints!
+
+We are trying to insert a `user` without a username here, but we declared usernames to be a _key_ attribute earlier when we defined `user owns username @key`.
+
+The following passes TypeDB's validation and `commit`s just fine:
 ////
 [,typeql]
 ----
@@ -100,7 +103,7 @@ insert $x isa user, has username "alice1925";
 include::./basic-queries.adoc[tag=insert2]
 ----
 
-We can insert multiple values in a single `insert` query like so:
+This query inserts two users at the same time:
 ////
 [,typeql]
 ----
@@ -117,7 +120,9 @@ $y has username "candice001";  # can split `isa` and `has` across different stat
 #!test[write, db=quickstart]
 include::./basic-queries.adoc[tag=insert3]
 ----
-This query inserts two users at the same time. Time to commit your queries again to persist your changes: type `commit` and press kbd:[Enter].
+
+This query inserts two users at the same time.
+Time to commit your queries again to safely persist your changes: type `commit` and press kbd:[Enter].
 
 Finally, since we set usernames to be a `@key` attribute of our users, we would - rightfully - expect the following query to fail:
 ////
@@ -135,22 +140,21 @@ $y isa user, has username "qwerty0";
 #!test[write, db=quickstart, fail_at=runtime]
 include::./basic-queries.adoc[tag=insert4]
 ----
-And it does fail: this time, it already fails at execution time, i.e., even before committing the transaction.
-Indeed, because the key `"qwerty0"` would be claimed by two distinct `user` instances no matter what, we can immediately invalidate the transaction.
 
-Let's commit and move on!
+This will immediately cause the transaction to fail, as the server detects an invalid database state.
+
 --
 
 ====
 
-This illustrates how we can insert simple entities with attributes, and how TypeDB keeps us accountable to follow the definitions in the database schema.
+So far we've illustrated how we can insert simple entities with attributes, and how TypeDB keeps us accountable to follow the definitions in the database schema.
 
 So far so good!
 
 === Complete relations
 
-What about inserting relations?
-Well, relations that are created at the same time as their role players are as easy as entities and attributes!
+Now we've seen how to create entities and attributes - shat about inserting relations?
+Well, relations that are created at the same time as the connected role players are as easy as entities and attributes!
 
 [tabs]
 ====
@@ -158,8 +162,13 @@ Studio::
 +
 --
 
-In order to insert a friendship, we need to refer to users that will play the role of friends in the friendship (recall: each friendship takes _exactly two_ friends as specified in the schema; feel free to experiment though, and see what error messages TypeDB will give you when trying to insert triple friendships).
-That's where variables come into play: let's run the following query:
+In order to insert a friendship, we need to refer to users that will play the role of friends in the friendship.
+That's where variables come into play!
+
+[Note]
+-----
+Recall that each friendship takes _exactly two_ friends as specified in the schema; feel free to experiment though, and see what error messages TypeDB will give you when trying to insert triple friendships.
+-----
 
 [,typeql]
 ----
@@ -167,16 +176,26 @@ That's where variables come into play: let's run the following query:
 include::./basic-queries.adoc[tag=insert5]
 ----
 
-This query inserts three new users with some `friendship`s between them. 
-The relations are using shorthand, and could themselves be written as `$f isa friendship (friend: $x, friend: $y);` if you'd want to further use the variable `$f`; but otherwise it's convenient to simply omit it.
+This query inserts three new users with some ``friendship``s between them.
+
+The relations are using shorthand, and could themselves be written as `$f isa friendship (friend: $x, friend: $y);` if you'd want to further refer to them with the variable `$f`; but otherwise it's convenient to simply omit it.
+
+Make sure your data is committed so we can use the friendships later!
 
 --
 Console::
 +
 --
 
-In order to insert a friendship, we need to refer to users that will play the role of friends in the friendship (recall: each friendship takes _exactly two_ friends as specified in the schema; feel free to experiment though, and see what error messages TypeDB will give you when trying to insert triple friendships).
-That's where variables come into play: let's run the following query:
+In order to insert a friendship, we need to refer to users that will play the role of friends in the friendship.
+That's where variables come into play!
+
+[Note]
+-----
+Recall that each friendship takes _exactly two_ friends as specified in the schema; feel free to experiment though, and see what error messages TypeDB will give you when trying to insert triple friendships.
+-----
+
+Using a new `write` transaction, run:
 
 ////
 [,typeql]
@@ -196,34 +215,40 @@ friendship (friend: $x, friend: $z);
 #!test[write, db=quickstart]
 include::./basic-queries.adoc[tag=insert5]
 ----
-This query inserts three new users with some `friendship`s between them. 
-The relations are using shorthand, and could themselves be written as `$f isa friendship (friend: $x, friend: $y);` if you'd want to further use the variable `$f`; but otherwise it's convenient to simply omit it.
+This query inserts three new users with some ``friendship``s between them.
+
+The relations are using shorthand, and could themselves be written as `$f isa friendship (friend: $x, friend: $y);` if you'd want to further refer to them with the variable `$f`; but otherwise it's convenient to simply omit it.
+
+Type `commit` to persist your changes so we can use these friendships later!
 
 --
 
 ====
 
-But what if we want to create a `friendship` relation between two existing users already in the database?
-In other words, we want to connect _new_ data with _existing_ data?
+This is great, but we won't always be creating new users and friendships from scratch.
+We'll probably want to create friendships between existing users too!
 
-That requires read operations combined with write operations.
+That requires us to read existing data, and then execute write operations.
 
 == Read-Write queries
 
 Reading data in TypeDB happens with a `match` clause.
-Data found by a `match` clause can then be utilised in `insert`, `delete`, `reduce` or other kinds of clauses.
+We'll then use the `insert` clause to connect the found data.
 
 === Reading data
 
 Looking up data is easy - it looks a lot like inserting data.
 
-Let's find some users and their information. This time use a `read` transaction:
+Let's find some users and their information.
 
 [tabs]
 ====
 Studio::
 +
 --
+
+Change the transaction type to *read* in the top toolbar, and execute the following query:
+
 [,typeql]
 ----
 #!test[read, db=quickstart]
@@ -237,30 +262,30 @@ We get back the following sets of values:
 [source]
 ----
 --------
-$n | isa username alice1925
-$x | isa user, iid 0x1e00000000000000000001
---------
-$n | isa username bob78
-$x | isa user, iid 0x1e00000000000000000002
---------
-$n | isa username candice001
+$n | isa username "alice1925"
 $x | isa user, iid 0x1e00000000000000000003
 --------
-$n | isa username deltaonenine
+$n | isa username "bob78"
+$x | isa user, iid 0x1e00000000000000000004
+--------
+$n | isa username "candice001"
+$x | isa user, iid 0x1e00000000000000000005
+--------
+$n | isa username "deltaonenine"
 $x | isa user, iid 0x1e00000000000000000006
 --------
-$n | isa username ecclestone
+$n | isa username "ecclestone"
 $x | isa user, iid 0x1e00000000000000000007
 --------
+$n | isa username "fizzbuzz"
 $x | isa user, iid 0x1e00000000000000000008
-$n | isa username fizzbuzz
 --------
 ----
 
 [NOTE]
 =====
-IIDs are "instance IDs". These are auto-generated unique IDs for each entity and relation. 
-However, they are not necessarily deterministic across databases - your IIDs might be different! 
+IIDs are "instance IDs". These are auto-generated unique IDs for each entity and relation.
+Though fixed in each database, they are not necessarily deterministic across databases - your IIDs might be different!
 =====
 
 We can make this more specific and interesting, for instance looking up the friends that exist of a particular user:
@@ -275,9 +300,9 @@ Which returns:
 [source]
 ----
 ---------------------
-$u              | isa user, iid 0x1e00000000000000000007
 $other-friend   | isa user, iid 0x1e00000000000000000006
-$other-username | isa username deltaonenine
+$other-username | isa username "deltaonenine"
+$u              | isa user, iid 0x1e00000000000000000007
 ---------------------
 ----
 --
@@ -285,6 +310,8 @@ $other-username | isa username deltaonenine
 Console::
 +
 --
+
+Open a read transaction using `transaction read quickstart`, and execute the following query:
 
 ////
 [,typeql]
@@ -307,30 +334,30 @@ We get back the following answers:
 [source]
 ----
 --------
-$n | isa username alice1925
-$x | isa user, iid 0x1e00000000000000000001
---------
-$n | isa username bob78
-$x | isa user, iid 0x1e00000000000000000002
---------
-$n | isa username candice001
+$n | isa username "alice1925"
 $x | isa user, iid 0x1e00000000000000000003
 --------
-$n | isa username deltaonenine
+$n | isa username "bob78"
+$x | isa user, iid 0x1e00000000000000000004
+--------
+$n | isa username "candice001"
+$x | isa user, iid 0x1e00000000000000000005
+--------
+$n | isa username "deltaonenine"
 $x | isa user, iid 0x1e00000000000000000006
 --------
-$n | isa username ecclestone
+$n | isa username "ecclestone"
 $x | isa user, iid 0x1e00000000000000000007
 --------
+$n | isa username "fizzbuzz"
 $x | isa user, iid 0x1e00000000000000000008
-$n | isa username fizzbuzz
 --------
 ----
 
 [NOTE]
 =====
-IIDs are "instance IDs". These are auto-generated unique IDs for each entity and relation. 
-However, they are not necessarily deterministic across databases - your IIDs might be different! 
+IIDs are "instance IDs". Though fixed in each database, These are auto-generated unique IDs for each entity and relation.
+Though fixed in each database, they are not necessarily deterministic across databases - your IIDs might be different!
 =====
 
 
@@ -357,20 +384,24 @@ Which returns:
 [source]
 ----
 ---------------------
-$u              | isa user, iid 0x1e00000000000000000006
-$other-friend   | isa user, iid 0x1e00000000000000000005
-$other-username | isa username deltaonenine
+$other-friend   | isa user, iid 0x1e00000000000000000006
+$other-username | isa username "deltaonenine"
+$u              | isa user, iid 0x1e00000000000000000007
 ---------------------
 ----
 --
+
+We can `close` the transaction since we won't be using it anymore.
+Closing transactions is good practice since they consume resources on the server.
+
 ====
 
-As you can see, reading data using `match` clauses is a lot like a pattern match.
-You simply describe what the data should conform to, and TypeDB will find all answers to your query from the database.
+As you can see, reading data using `match` clauses is easy:
+simply describe what the data should conform to, and TypeDB will find all answers to your query from the database.
 
-The order of statements _within_ a `match` clause broadly doesn't matter! This is one property that makes TypeQL extremely composable
-and debuggable: if your query isn't doing what you expect, just remove parts until it's simple enough to verify -
-then build it back up bit by bit!
+The order of statements in a `match` clause doesn't matter! This is one property that makes TypeQL extremely composable
+and debuggable: **if your query isn't doing what you expect, just remove parts until it's simple enough to verify -
+then build it back up bit by bit**!
 
 === Connecting existing data
 
@@ -382,7 +413,7 @@ The `insert` clause will receive the same set of variables and answers you would
 Using this principle, let's:
 
 . retrieve some users with a `match` clause.
-. write a new `friendship` relation with an `insert` clause.
+. write a new `friendship` relation between those users with an `insert` clause.
 
 Remember, you'll need a `write` transaction now since we're modifying data!
 
@@ -397,7 +428,7 @@ Studio::
 include::./basic-queries.adoc[tag=match-insert1]
 ----
 Chained query clauses always execute in-order, so the direction you read in is how operations will be performed:
-First we find two specific users by username, then insert a new friendship between them.
+First we find two specific users by username, then insert a new friendship between them referring to those users using variables.
 
 Feel free to insert more data, e.g., create a university and enrol some of your users in it using our `enrolment` relations!
 
@@ -407,9 +438,6 @@ Let's commit to save our new data!
 Console::
 +
 --
-
-. retrieve the users with a `match` clause.
-. write the new `friendship` with an `insert` clause.
 
 ////
 [,typeql]
@@ -429,7 +457,7 @@ friendship (friend: $u0, friend: $u1), has start-date 2015-01-01T00:00:00;
 include::./basic-queries.adoc[tag=match-insert1]
 ----
 Chained query clauses always execute in-order, so the direction you read in is how operations will be performed:
-First we find two specific users by username, then insert a new friendship between them.
+First we find two specific users by username, then insert a new friendship between them referring to those users using variables.
 
 Feel free to insert more data, e.g., create a university and enrol some of your users in it using our `enrolment` relations!
 
@@ -437,4 +465,13 @@ Let's commit to save our new data!
 --
 ====
 
-Deleting and updating data works in a similar vein, with one additional detail: deleting and updating _requires_ us to first `match` the data that we want to delete or update, whereas for (pure) inserts we saw that this was optional.
+Pure inserts are generally used to create new entities and attributes -
+all other operations require a `match` clause to find existing data to work with.
+This applies to clauses like `delete` and `update` as well.
+
+You can read more about other clause types in the applicable xref:{page-version}@new_core_concepts::typeql/query-clauses.adoc[Concepts page].
+
+Fantastic - we've covered the basics of TypeQL!
+You've seen how to manage databases and transactions, define schemas, and read and write data into TypeDB!
+
+The next section will illustrate the power of TypeQL's clause chaining and show you how to modularize queries using functions.
