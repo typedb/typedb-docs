@@ -258,7 +258,7 @@ Often these are applied to collections of data, such as lists, or structures lik
 
 This is a very powerful tool for composing queries, as we'll see next!
 
-== Chaining clause into pipelines
+== Chaining clauses into pipelines
 
 We'd like to write a query that does the following:
 
@@ -270,6 +270,8 @@ Conceptually, this requires three steps:
 . Find all users that aren't friends with the most popular user
 . Make those users friends with the most popular user
 
+We can build this query, one part at a time, by chaining together query clauses into one extended _query pipeline_.
+
 Let's start with the first step:
 
 [tabs]
@@ -278,11 +280,15 @@ Studio::
 +
 --
 
-We'll build on top of the `reduce` query we just wrote to solve this, since
+To solve this, we'll build on top of the `reduce` query we wrote previously:
 the most popular user is the one with the highest number of friends - we'll sort the `reduce` results by number of friends, and limit to the first answer.
 
-Remember that all clauses return a stream of answers, so we can do exactly this by building chaining on further operations.
-Specifically, we'll use `sort` and `limit` operations, which both manipulate the answer stream!
+Let's meet two new operations: `sort` and `limit`.
+We call these query stream **operators** as opposed to clauses since they only manipulate the answer that stream from the previous clause.
+
+At this point we can construct a query **pipeline**, made up of **clauses** and **operators**.
+We can generically refer to clauses and operators as **stages** in the pipeline:
+a pipeline is made up stages, which are either clauses or operators.
 
 [,typeql]
 ----
@@ -307,11 +313,15 @@ Console::
 +
 --
 
-We'll build on top of the `reduce` query we just wrote to solve this, since
+To solve this, we'll build on top of the `reduce` query we wrote previously:
 the most popular user is the one with the highest number of friends - we'll sort the `reduce` results by number of friends, and limit to the first answer.
 
-Remember that all clauses return a stream of answers, so we can do exactly this by building chaining on further operations.
-Specifically, we'll use `sort` and `limit` operations, which both manipulate the answer stream from the previous clause.
+Let's meet two new operations: `sort` and `limit`.
+We call these query stream **operators** as opposed to clauses since they only manipulate the answer that stream from the previous clause.
+
+At this point we can construct a query **pipeline**, made up of **clauses** and **operators**.
+We can generically refer to clauses and operators as **stages** in the pipeline:
+a pipeline is made up stages, which are either clauses or operators.
 
 ////
 [,typeql]
@@ -379,7 +389,7 @@ $username    | isa username deltaonenine
 ------------------
 ----
 
-We're almost there! We just need to add an operation to create friendship between the most popular user and the users we found.
+We're almost there! We just need to add a stage to create friendship between the most popular user and the users we found.
 
 --
 Console::
@@ -430,7 +440,7 @@ $username    | isa username deltaonenine
 ------------------
 ----
 
-We're almost there! We just need to add an operation to create friendship between the most popular user and the users we found.
+We're almost there! We just need to add a stage to create friendship between the most popular user and the users we found.
 
 --
 ====
@@ -483,15 +493,15 @@ friendship ($other-user, $user);
 #!test[write, db=quickstart]
 include::./advanced-queries.adoc[tag=pipeline3]
 ----
+
+After you've executed the query once, every user will be friends with the most popular user!
+
 --
 ====
 
 Fantastic! We've got a singe query that will: identify the most popular user,
 identify all users that aren't friends with the most popular user,
 and create friendships between the most popular user and the users we found.
-
-This type of clause chaining is called building a *query pipeline*.
-A pipeline is made of *stages*, each of which is either a *clause* (eg. match, insert) or a stream *operation* (eg. sort, limit).
 
 Pipelines are a very powerful tool for composing queries. They are easy to read and understand,
 since the data flow is explicit in the order of the query stages.
@@ -503,7 +513,9 @@ and inspect the intermediate results by executing the truncated query.
 
 In the query we just wrote, we might want to re-use the "find the most popular user" part of the query pipeline.
 
-We can do this by declaring a function, which can be committed to the database as part of the schema:
+We can do this by declaring a function, which can be committed to the database as part of the schema.
+
+Note that functions can contain full query pipelines, but cannot have side effects (eg. must be read-only).
 
 [tabs]
 ====
@@ -574,7 +586,7 @@ Studio::
 include::./advanced-queries.adoc[tag=function_pipeline1]
 ----
 
-This query is now extremely short, since we've re-used the logic from the function we declared above!
+This query is now very short, since we've re-used the logic from the function to find the most popular user!
 
 --
 Console::
@@ -588,6 +600,7 @@ Console::
 match
 let $most-popular-user, $most-popular-username = most_popular_user();
 $other-user isa user, has username $username;
+not { $most-popular-user is $other-user; };
 friendship ($other-user, $most-popular-user);
 # end::function_pipeline1[]
 ----
@@ -598,6 +611,119 @@ friendship ($other-user, $most-popular-user);
 include::./advanced-queries.adoc[tag=function_pipeline1]
 ----
 
-This query is now extremely short, since we've re-used the logic from the function we declared above!
+This query is now very short, since we've re-used the logic from the function to find the most popular user!
+
 --
 ====
+
+Congratulations!
+You're now ready to write sophisticated yet modular queries!
+
+One last topic, which makes incorporating TypeDB into your applications easier:
+formatting TypeDB answers into JSON, and incorporating additional data into JSON responses.
+
+== Fetch
+
+TypeQL features one special clause: `fetch`.
+This clause can only be used at the end of a pipeline.
+
+Fetch converts a standard TypeDB answer into a JSON document. You can use it to organize the data into a specific structure,
+look up additional attributes, and even execute subqueries and nest their answers into the JSON document.
+
+The `fetch` clause structure is designed to look exactly like the JSON document it will return, let's take a look:
+
+
+[tabs]
+====
+Studio::
++
+--
+
+[,typeql]
+----
+#!test[schema, db=quickstart]
+include::./advanced-queries.adoc[tag=fetch1]
+----
+
+This query now returns a sequence of JSON documents:
+[source]
+----
+{
+  "friends": [
+    {
+      "friend": "bob78"
+    }
+  ],
+  "username": "alice1925"
+}
+
+{
+  "friends": [
+    {
+      "friend": "alice1925"
+    }
+  ],
+  "username": "bob78",
+}
+
+{
+  "friends": [
+    {
+      "friend": "ecclestone"
+    },
+    {
+      "friend": "fizzbuzz"
+    }
+  ],
+  "username": "deltaonenine"
+}
+----
+
+The fetch clause lets you lay out precisely the JSON document you need for your application,
+and makes it easy to retrieve additional data like (possibly absent) attributes or answers from subqueries.
+
+--
+Console::
++
+--
+
+////
+[,typeql]
+----
+# tag::fetch1[]
+match
+$user isa user;
+limit 3;
+fetch {
+  # get the username if it exists - if not, the JSON value will be set to null
+  "username": $user.username,
+
+  # run a subquery, and collect the answers into a list value
+  "friends": [
+    match
+    $other-user isa user;
+    friendship ($user, $other-user);
+    fetch {
+      "friend": $other-user.username
+    };
+  ]
+};
+# end::fetch1[]
+----
+////
+[,typeql]
+----
+#!test[read, db=quickstart]
+include::./advanced-queries.adoc[tag=fetch1]
+----
+
+The fetch clause lets you lay out precisely the JSON document you need for your application,
+and makes it easy to retrieve additional data like (possibly absent) attributes or answers from subqueries.
+
+--
+====
+
+== What next?
+There is much more to explore in the world of TypeDB, including building custom query logic using disjunctions and negations, the deep exploration of data connection using functional recursion, and more.
+
+This is the beginning of your journey, and we’d like to be here for you should you have any question - so do not hesitate to reach out!
