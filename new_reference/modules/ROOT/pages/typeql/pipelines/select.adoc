@@ -1,0 +1,21 @@
+= Select operator
+:page-aliases: {page-version}@new_reference::typeql/queries/get.adoc
+
+The select operator restricts the stream of rows to only contain the variables specified.
+
+== Syntax
+
+[,typeql]
+----
+select <var> [ , <var> ... ];
+----
+
+== Example
+
+[,typeql]
+----
+match
+  $group isa group, has group-id "<group id>";
+  group-membership (group: $group, member: $member), has rank "member";
+select $member;
+----

@@ -1,0 +1,66 @@
+= Stream functions
+
+Stream functions are xref:{page-version}@new_reference::typeql/functions/index.adoc#fun_types[function types] which return zero or more output rows.
+
+== Syntax
+
+Stream functions can be identified by their return type containing curly braces `{}`.
+
+.Scalar stream function return format
+[,typeql]
+----
+{ <return-type> }
+----
+
+.Tuple stream function return format
+[,typeql]
+----
+{ <return-type-0>, ..., <return-type-N> }
+----
+
+== Usage
+
+Stream functions are defined and called like any other function.
+To retrieve the results of the called function, considering that the number of results for a single call is undefined, use the keyword `in`.
+
+[#scalar_functions]
+=== Scalar functions
+
+Stream  scalar functions are used to return multiple results for one expression: a variable or a function call.
+The following examples illustrate simple usages of functions for retrieving a stream of `type` s and a stream of `integer` s.
+
+[,typeql]
+----
+include::{page-version}@new_reference::example$tql/schema_statements_functions.tql[tags=fun-stream-scalar-return-type]
+----
+
+[,typeql]
+----
+include::{page-version}@new_reference::example$tql/schema_statements_functions.tql[tags=fun-stream-scalar-return-value]
+----
+
+To retrieve the results of such functions calls, the following read query can be used:
+
+[,typeql]
+----
+include::{page-version}@new_reference::example$tql/read_statements_functions.tql[tags=fun-stream-scalar-return-type]
+----
+
+=== Tuple functions
+
+// tag::tuple-functions-description[]
+It is possible to add another dimension to the returned type and enumerate a number of results returned from a function using commas.
+Tuples can contain any combinations of scalar returned values.
+// end::tuple-functions-description[]
+
+[,typeql]
+----
+include::{page-version}@new_reference::example$tql/schema_statements_functions.tql[tags=fun-stream-tuple-return-type]
+----
+
+To retrieve the results of such functions calls, the following read query can be used:
+
+[,typeql]
+----
+include::{page-version}@new_reference::example$tql/read_statements_functions.tql[tags=fun-stream-tuple-return-type]
+----

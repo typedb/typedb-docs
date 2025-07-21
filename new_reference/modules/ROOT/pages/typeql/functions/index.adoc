@@ -1,0 +1,66 @@
+= Functions
+
+== Introduction
+
+// tag::description[]
+Functions provide powerful abstractions of query logic. They are a cornerstone of the functional xref:{page-version}@new_reference::typeql/data_model.adoc[query programming model], and generalize logic programs à la Datalog.
+Functions calls can be nested, recursive, and negated. There syntax natively embeds into TypeQL’s declarative pattern language.
+// end::description[]
+
+[[fun_types]]
+== Function types
+
+The following table illustrates the types of functions based on two dimensions: number of rows and number of columns returned.
+
+[cols="^.1,^.2,^.2",options="header"]
+.Categorizing functions based on their output type
+|===
+|  | *Single output type* | *Tuple of output types*
+| *output*
+
+*up to 1 row* | scalar function
+
+type signature `... -> A`
+
+returns single `$a`
+| tuple function
+
+type signature `... -> A, B`
+
+returns tuple `$a, $b`
+| *output*
+
+*multiple rows* | (scalar) stream function
+
+type signature `... -> { A }`
+
+returns stream `{ $a }`
+| (tuple) stream function
+
+type signature `... -> { A, B }`
+
+returns stream `{ $a, $b }`
+|===
+
+== Explore functions
+
+[cols-3]
+--
+.xref:{page-version}@new_reference::typeql/functions/writing.adoc[]
+[.clickable]
+****
+Learn how to write functions.
+****
+
+.xref:{page-version}@new_reference::typeql/functions/stream.adoc[]
+[.clickable]
+****
+Learn how to work with stream-return functions.
+****
+
+.xref:{page-version}@new_reference::typeql/functions/scalar.adoc[]
+[.clickable]
+****
+Learn how to work with scalar functions.
+****
+--

@@ -1,0 +1,121 @@
+= `@card` annotation
+
+The `@card` annotation is used
+// tag::overview[]
+to specify cardinality ranges for roles and ownerships.
+// end::overview[]
+
+== Syntax
+
+.Range Argument Syntax
+[,typeql]
+----
+<type label> <trait> <type label 2> @card(N..M);
+<type label> <trait> <type label 2> @card(N..);
+----
+
+.Single Scalar Argument Syntax
+[,typeql]
+----
+<type label> <trait> <type label 2> @card(N);
+----
+
+The `@card` annotation can be defined for any `<trait>` of: `owns`, `relates`, or `plays`.
+
+It accepts either a range argument or a single scalar argument.
+Arguments must be integers.
+
+- A partially unbounded range `N..` has an infinite upper bound.
+- The minimal lower bound is `0` and must be explicitly specified (e.g., use `0..M` instead of `..M`).
+- A single scalar argument `N` is shorthand for `N..N` and means "exactly N".
+
+== Usage
+
+// TODO: Update for ordered/unordered when lists are implemented
+Every trait has a default `cardinality` constraint, accessible in <<_default_cardinality>>.
+
+// tag::description[]
+When defined, the `@card` annotation overrides the default `cardinality` with the specified arguments.
+// end::description[]
+
+// tag::description[]
+The `cardinality` constraint regulates the number of data instances that can appear in a specific context (like owning an attribute).
+// end::description[]
+For example, the following definition specifies that an instance of the `page` type must have at least one and no more than three `name`s:
+
+[,typeql]
+----
+include::{page-version}@new_reference::example$tql/schema_annotations.tql[tags=define-keyword;card-owns-13]
+----
+
+At the same time, the `page` type can play the `posting:page` role an unlimited number of times:
+
+[,typeql]
+----
+include::{page-version}@new_reference::example$tql/schema_annotations.tql[tags=define-keyword;card-plays-0inf]
+----
+
+However, an instance of the `posting` relation type can have up to a thousand `page` instances:
+
+[,typeql]
+----
+include::{page-version}@new_reference::example$tql/schema_annotations.tql[tags=define-keyword;card-relates-01k]
+----
+
+[#subtyping]
+=== Subtyping
+
+// TODO: Put somewhere in a common place and reference it
+Similarly to inherited type constraints, trait constraints also affect subtypes from both sides.
+For example, the following query defines that:
+
+- A `page` instance must have between 1 and 3 names.
+- A `profile` instance (subtype of `page`) inherits the same constraint and must have between 1 and 3 names.
+- A `user` instance can own exactly 1 first name and up to 2 surnames (`first-name` and `surname` are subtypes of `name`).
+
+[,typeql]
+----
+include::{page-version}@new_reference::example$tql/schema_annotations.tql[tags=define-keyword;card-owns-13;profile-sub-page;user-owns-name;name-subattributes]
+----
+
+Valid statements based on this schema include:
+
+- It is impossible to insert a `page`, `profile`, or `user` without a name.
+- It is impossible to insert a `page` or `profile` because they do not own non-abstract names.
+- A `user` instance can be inserted with just a first name.
+- A `user` instance cannot have more than two surnames.
+
+== Limitations
+
+Cannot be used with the xref:{page-version}@new_reference::typeql/annotations/key.adoc[`@key` annotation] as they both produce `cardinality` constraints.
+
+[#_references]
+== References
+
+[#_default_cardinality]
+=== Default trait cardinalities
+
+The following `cardinality` constraints are set for traits by default if no `@card` annotations are declared:
+
+.Default Trait Cardinalities
+[cols=".^1,^.^1"]
+|===
+^| Trait ^| Cardinality
+| `owns`
+| `card(0..1)`
+
+// TODO: Uncomment when ordering is introduced
+// | `owns[]`
+// | `card(0..)`
+
+| `relates`
+| `card(0..1)`
+
+// TODO: Uncomment when ordering is introduced
+// | `relates[]`
+// | `card(0..)`
+
+| `plays`
+| `card(0..)`
+
+|===

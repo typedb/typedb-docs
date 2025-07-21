@@ -1,0 +1,76 @@
+= Redefine query
+
+Redefine queries are used
+// tag::overview[]
+to modify existing types, type traits, or functions in the schema.
+// end::overview[]
+
+== Syntax
+
+Redefine queries start with the `redefine` keyword following by a single xref:{page-version}@new_reference::typeql/schema/define.adoc[definition statement] of the define queries format.
+
+[,typeql]
+----
+redefine
+  <definition_statement>
+----
+
+== Behavior
+
+Redefine queries can be used to modify types and type traits or to override functions.
+
+For clarity and precision, only one redefinition is allowed per query.
+
+An error is returned (on execution or on commit), and no changes are preserved, if:
+
+- There is no existing definition to redefine.
+- The redefinition matches the definition and does nothing.
+- There are multiple changes in the schema in the result of the redefinition.
+- The query results in an invalid schema.
+
+[#_statements_behavior]
+=== Statements
+
+* xref:{page-version}@new_reference::typeql/statements/relates.adoc[`relates` statements] redefine role types specialization using `relates ... as`.
+* xref:{page-version}@new_reference::typeql/statements/value.adoc[`value` statements] redefine value types of attribute types.
+* xref:{page-version}@new_reference::typeql/statements/sub.adoc[`sub` statements] redefine supertypes of types.
+* xref:{page-version}@new_reference::typeql/annotations/index.adoc[@annotations] redefine annotations with arguments, replacing their values.
+* xref:{page-version}@new_reference::typeql/statements/fun.adoc[`fun` statements] redefine functions, replacing their interfaces and bodies.
+
+== Examples
+
+=== Redefining types' traits and annotations
+
+.Redefining type's sub
+[,typeql]
+----
+redefine user sub page;
+----
+
+.Redefining attribute type's value type
+[,typeql]
+----
+redefine karma value integer;
+----
+
+.Redefining value type's annotation with arguments
+[,typeql]
+----
+redefine email value string @regex("^.*@typedb\.com$");
+----
+
+.Redefining type trait's annotation with arguments
+[,typeql]
+----
+redefine redefine post owns tag @card(0..5);
+----
+
+.Redefining relates specialization
+[,typeql]
+----
+redefine fathership relates father as parent;
+----
+
+=== Redefining functions
+
+include::{page-version}@new_reference::typeql/functions/writing.adoc[tag=redefine]

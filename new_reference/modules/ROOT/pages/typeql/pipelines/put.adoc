@@ -1,0 +1,104 @@
+= Put stage
+
+A put stage will xref:{page-version}@new_reference::typeql/pipelines/insert.adoc[insert] data according to a pattern if no existing data xref:{page-version}@new_reference::typeql/pipelines/match.adoc[matches] that pattern.
+
+== Syntax
+
+As a put stage may insert data, the body of a put stage is a sequence of valid xref:{page-version}@new_reference::typeql/pipelines/insert.adoc[insert] statements.
+
+[,typeql]
+----
+put <insert-statement> [ <insert-statement> ... ]
+----
+
+== Example
+
+The following query creates a friendship relation between two persons, if one does not already exist.
+
+[,typeql]
+----
+match
+  $person-1 isa person, has username "Alice";
+  $person-2 isa person, has username "Bob";
+put
+  friendship (friend: $person-1, friend: $person-2);
+----
+
+== Behaviour
+
+The behaviour of a `put` stage can be described in pseudo-code as:
+[,python]
+----
+def run_put(pattern, input_rows):
+    output_rows = []
+    for row in input_rows:
+        matched_rows = run_match(pattern, row)
+        if matched_rows.is_empty():
+            inserted_row = run_insert(pattern, row)
+            output_rows += [inserted_row]
+        else:
+            output_rows += matched_rows
+    return output_rows
+----
+
+Hence, a put stage is expected to be only as performant as running both the match and the insert stage.
+
+[NOTE]
+====
+Multiple inputs will cause the pattern to be inserted multiple times.
+
+For example, assume there are two `person` instances in our database named "John",
+and we run the following query:
+```
+match $john isa person, has name "John";
+put $jane isa person, has name "Jane";
+```
+
+What happens in this case is:
+
+- If a person named Jane already exists: nothing is inserted.
+- Else: two new `person` instances with name "Jane" are inserted.
+
+This behaviour is currently under review.
+Please open a Github issue if it is blocking your progress!
+====
+
+
+=== No partial matching
+The put matches the entire pattern or inserts the entire pattern. Partial matching and partial inserts are not performed.
+
+To illustrate, consider running the following queries sequentially.
+
+[,typeql]
+----
+# Creates some initial data
+put $p isa person, has name "Alice";
+
+# Does nothing, as the match succeeds
+put $p1 isa person, has name "Alice";
+
+# Creates a new person with name "Bob"
+put $p2 isa person, has name "Bob";
+
+# Creates a new person with name "Alice" & age 10.
+put $p3 isa person, has name "Alice", has age 10;
+----
+The statement `put $p3...` creates a new person because the **whole** pattern fails to match,
+as there is no existing person with name "Alice" **AND** age 10.
+
+To achieve the desired result of not re-creating the person if only the age attribute is missing,
+`put` stages can be pipelined.
+
+[,typeql]
+----
+put $p4 isa person, has name "Bob"; # Matches the person with name "Bob", since it exists
+put $p4 isa person, has age 11;     # Adds an attribute to the same person
+----
+
+=== Isolation from concurrent transactions
+Though put stages are meant to create data patterns which don't exist in the database,
+they still run under the xref:{page-version}@manual::queries/transactions.adoc[snapshot-isolation] of TypeDB transactions.
+This means they may insert data even if a concurrent transaction has inserted data which satisfies the match - leading to duplication if both transactions commit.
+
+As cardinality restrictions (`@card`, `@key`, and `@unique`) are validated across concurrent transactions,
+ensuring that a `put` pattern contains atleast one constraint with such a restriction will ensure that the data is inserted at most once across all transactions.
