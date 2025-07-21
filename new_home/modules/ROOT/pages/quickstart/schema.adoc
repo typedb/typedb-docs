@@ -1,6 +1,6 @@
-= Initialize a Database
+= Create a schema
 :keywords: start, learn, typedb, typeql, tutorial, quickstart, console, studio, database, create, insert, query
-:pageTitle: Quickstart database initialization
+:pageTitle: Create a schema
 :summary: Create a database and initialize the quickstart schema
 :tabs-sync-option:
 
@@ -95,7 +95,7 @@ transaction schema quickstart
 ----
 This will open a new *transaction-level interface*. In it, you will be able to run queries. You can similarly open `write` or `read` transactions.
 
-Then, enter the following query and hit 'Enter' **twice** to submit:
+Then, enter the following query and hit kbd[Enter] **twice** to submit:
 [,typeql]
 ----
 #!test[schema, db=quickstart]
@@ -115,7 +115,7 @@ Alternatively, you could use the command `close` to discard your changes and clo
 [NOTE]
 ====
 A quick *tip* if you are using Console for this course. Queries on this page can be turned into runnable *Console scripts* by clicking the "`hidden lines`" button (image:{page-version}@new_home::/svg/eye.svg[width=24]).
-These scripts can then be *pasted* directly into the server-level interface of Console, and run end-to-end simply by pressing 'Enter'.
+These scripts can then be *pasted* directly into the server-level interface of Console, and run end-to-end simply by pressing kbd[Enter].
 ====
 
 == TypeDB's data model at a glance
@@ -145,13 +145,13 @@ On the Query page, select a *schema* transaction using the top bar as described 
 [,typeql]
 ----
 #!test[schema, db=quickstart]
-include::./initialize-database.adoc[tag=define1]
+include::./schema.adoc[tag=define1]
 ----
 
 [,typeql]
 ----
 #!test[schema, db=quickstart]
-include::./initialize-database.adoc[tag=define2]
+include::./schema.adoc[tag=define2]
 ----
 
 Make sure to `commit` if you're manually controlling your transactions.
@@ -172,10 +172,10 @@ end::define1[]
 [,typeql]
 ----
 #!test[schema, db=quickstart]
-include::./initialize-database.adoc[tag=define1]
+include::./schema.adoc[tag=define1]
 ----
 
-Press 'Enter' twice to send the query. Similarly, send the following second query:
+Press kbd[Enter] twice to send the query. Similarly, send the following second query:
 ////
 tag::define2[]
 define
@@ -186,10 +186,10 @@ end::define2[]
 [,typeql]
 ----
 #!test[schema, db=quickstart]
-include::./initialize-database.adoc[tag=define2]
+include::./schema.adoc[tag=define2]
 ----
 
-Finally, commit the transaction by typing `commit` and press 'Enter'. You have just defined the first few types in your database schema, congratulations!
+Finally, commit the transaction by typing `commit` and press kbd[Enter]. You have just defined the first few types in your database schema, congratulations!
 --
 ====
 
@@ -216,7 +216,7 @@ For example:
 [,typeql]
 ----
 #!test[schema, db=quickstart]
-include::./initialize-database.adoc[tag=define3]
+include::./schema.adoc[tag=define3]
 ----
 
 This defines a `start-date` attribute and then declares each friendship may own a `start_date` (i.e., the type `friendship` implements the "`start-date owner`" trait). The definition is followed by a `@card` annotation, which specifies that friendships own _between_ zero or one start dates. In fact, this is the default cardinality, so you don't actually need `@card` here at all.
@@ -226,7 +226,7 @@ The next query illustrates usage of "`unbounded`" cardinality together with anot
 [,typeql]
 ----
 #!test[schema, db=quickstart]
-include::./initialize-database.adoc[tag=define4]
+include::./schema.adoc[tag=define4]
 ----
 
 Importantly, different types may own the same attributes; and, similarly, different types may play the same role of a relation type. This flexibility of connecting types is a central feature of data modeling with TypeDB. Run the next query to define an `organization` type which shares many of the traits of `user`:
@@ -234,7 +234,7 @@ Importantly, different types may own the same attributes; and, similarly, differ
 [,typeql]
 ----
 #!test[schema, db=quickstart]
-include::./initialize-database.adoc[tag=define5]
+include::./schema.adoc[tag=define5]
 ----
 
 Let's commit and move on!
@@ -262,7 +262,7 @@ friendship owns start-date @card(0..1);
 [,typeql]
 ----
 #!test[schema, db=quickstart]
-include::./initialize-database.adoc[tag=define3]
+include::./schema.adoc[tag=define3]
 ----
 
 This defines a `start-date` attribute and then declares each friendship may own a `start_date` (i.e., the type `friendship` implements the "`start-date owner`" trait). The definition is followed by a `@card` annotation, which specifies that friendships own _between_ zero or one start dates. In fact, this is the default cardinality, so you don't actually need `@card` here at all.
@@ -283,7 +283,7 @@ user owns username @key;
 [,typeql]
 ----
 #!test[schema, db=quickstart]
-include::./initialize-database.adoc[tag=define4]
+include::./schema.adoc[tag=define4]
 ----
 
 Importantly, different types may own the same attributes; and, similarly, different types may play the same role of a relation type. This flexibility of connecting types is a central feature of data modeling with TypeDB. Run the next query to define an `organization` type which shares many of the traits of `user`:
@@ -303,7 +303,7 @@ plays friendship:friend;
 [,typeql]
 ----
 #!test[schema, db=quickstart]
-include::./initialize-database.adoc[tag=define5]
+include::./schema.adoc[tag=define5]
 ----
 
 Let's commit and move on!
@@ -321,14 +321,14 @@ Let's define two types that specialize our earlier `organization` type: namely, 
 [,typeql]
 ----
 #!test[schema, db=quickstart]
-include::./initialize-database.adoc[tag=define6]
+include::./schema.adoc[tag=define6]
 ----
 Note that we haven't defined any traits for companies and universities; indeed, all traits of the supertype `organization` are automatically *inherited*! That doesn't stop from defining new traits for our subtypes, of course:
 
 [,typeql]
 ----
 #!test[schema, db=quickstart]
-include::./initialize-database.adoc[tag=define7]
+include::./schema.adoc[tag=define7]
 ----
 
 Of course, you would be able to give the new subtypes additional traits that are not inherited from the supertype as well!
@@ -352,7 +352,7 @@ entity university sub organization;
 [,typeql]
 ----
 #!test[schema, db=quickstart]
-include::./initialize-database.adoc[tag=define6]
+include::./schema.adoc[tag=define6]
 ----
 Note that we haven't defined any traits for companies and universities; indeed, all traits of the supertype `organization` are automatically *inherited*! That doesn't stop from defining new traits for our subtypes, of course:
 ////
@@ -370,12 +370,12 @@ user plays enrolment:student;
 [,typeql]
 ----
 #!test[schema, db=quickstart]
-include::./initialize-database.adoc[tag=define7]
+include::./schema.adoc[tag=define7]
 ----
 
 Of course, you would be able to give the new subtypes additional traits that are not inherited from the supertype as well!
 
-Don't forget to commit the transaction by typing `commit` and pressing 'Enter'.
+Don't forget to commit the transaction by typing `commit` and pressing kbd[Enter].
 
 --
 ====

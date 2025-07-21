@@ -1,5 +1,5 @@
-= Advanced Queries
-:title: Advanced queries
+= Query composition
+:title: Query composition
 :test-typeql: linear
 // :test-python: yes
 // :test-rust: yes
@@ -13,9 +13,10 @@ In the previous sections you:
 . Loaded some data using simple write and more complex read-write queries
 
 In this page, we'll look at another useful query operation, `reduce`,
-and how chaining can be generalized into extremely useful _query pipelines_.
+and how to compose small queries into larger _query pipelines_ by chaining clauses together.
+Query pipelines are extremely powerful, and can be to express much more interesting and complex logic in single queries.
 
-We'll then introduce _functions_, which are reusable chunks of queries that can even perform recursion.
+We'll then introduce _functions_, which are another way to compose modular and reusable pieces of queries together.
 
 Finally, we'll cover the `fetch` clause, which lets you format your data as JSON and look up additional information before returning results.
 
@@ -36,7 +37,7 @@ Using a read transaction, let's count the number of users in the database:
 [,typeql]
 ----
 #!test[read, db=quickstart]
-include::./advanced-queries.adoc[tag=reduce1]
+include::./query-composition.adoc[tag=reduce1]
 ----
 
 We see the following result:
@@ -54,7 +55,7 @@ Reductions can also use `groupby` to aggregate within groups:
 [,typeql]
 ----
 #!test[read, db=quickstart]
-include::./advanced-queries.adoc[tag=reduce2]
+include::./query-composition.adoc[tag=reduce2]
 ----
 
 Returning:
@@ -109,7 +110,7 @@ reduce $count = count;
 [,typeql]
 ----
 #!test[read, db=quickstart]
-include::./advanced-queries.adoc[tag=reduce1]
+include::./query-composition.adoc[tag=reduce1]
 ----
 
 We see the following result:
@@ -138,7 +139,7 @@ reduce $num-friends = count groupby $user, $username;
 [,typeql]
 ----
 #!test[read, db=quickstart]
-include::./advanced-queries.adoc[tag=reduce2]
+include::./query-composition.adoc[tag=reduce2]
 ----
 
 Returning:
@@ -223,7 +224,7 @@ Let's go back to our example:
 [,typeql]
 ----
 #!test[read, db=quickstart]
-include::./advanced-queries.adoc[tag=pipeline1]
+include::./query-composition.adoc[tag=pipeline1]
 ----
 
 Which returns:
@@ -277,7 +278,7 @@ limit 1;
 [,typeql]
 ----
 #!test[read, db=quickstart]
-include::./advanced-queries.adoc[tag=pipeline1]
+include::./query-composition.adoc[tag=pipeline1]
 ----
 Which returns:
 [source]
@@ -309,7 +310,7 @@ and also to eliminate the most-popular user from appearing again:
 [,typeql]
 ----
 #!test[read, db=quickstart]
-include::./advanced-queries.adoc[tag=pipeline2]
+include::./query-composition.adoc[tag=pipeline2]
 ----
 
 This returns:
@@ -360,7 +361,7 @@ not { friendship ($user, $other-user); };
 [,typeql]
 ----
 #!test[read, db=quickstart]
-include::./advanced-queries.adoc[tag=pipeline2]
+include::./query-composition.adoc[tag=pipeline2]
 ----
 
 This returns:
@@ -396,7 +397,7 @@ Studio::
 [,typeql]
 ----
 #!test[write, db=quickstart]
-include::./advanced-queries.adoc[tag=pipeline3]
+include::./query-composition.adoc[tag=pipeline3]
 ----
 
 After you execute the query once, every user will be friends with the most popular user.
@@ -430,7 +431,7 @@ friendship ($other-user, $user);
 [,typeql]
 ----
 #!test[write, db=quickstart]
-include::./advanced-queries.adoc[tag=pipeline3]
+include::./query-composition.adoc[tag=pipeline3]
 ----
 
 After you execute the query once, every user will be friends with the most popular user.
@@ -464,7 +465,7 @@ Studio::
 [,typeql]
 ----
 #!test[schema, db=quickstart]
-include::./advanced-queries.adoc[tag=function1]
+include::./query-composition.adoc[tag=function1]
 ----
 
 This function returns the first user and username using the same logic as the long pipeline we just wrote,
@@ -498,7 +499,7 @@ fun most_popular_user() -> user, username:
 [,typeql]
 ----
 #!test[schema, db=quickstart]
-include::./advanced-queries.adoc[tag=function1]
+include::./query-composition.adoc[tag=function1]
 ----
 
 This function returns the first user and username using the same logic as the long pipeline we just wrote,
@@ -522,7 +523,7 @@ Studio::
 [,typeql]
 ----
 #!test[schema, db=quickstart]
-include::./advanced-queries.adoc[tag=function_pipeline1]
+include::./query-composition.adoc[tag=function_pipeline1]
 ----
 
 This query is now much shorter, since we've reused the logic from the function to find the most popular user!
@@ -547,7 +548,7 @@ friendship ($other-user, $most-popular-user);
 [,typeql]
 ----
 #!test[read, db=quickstart]
-include::./advanced-queries.adoc[tag=function_pipeline1]
+include::./query-composition.adoc[tag=function_pipeline1]
 ----
 
 This query is now much shorter, since we've reused the logic from the function to find the most popular user!
@@ -579,7 +580,7 @@ Studio::
 [,typeql]
 ----
 #!test[schema, db=quickstart]
-include::./advanced-queries.adoc[tag=fetch1]
+include::./query-composition.adoc[tag=fetch1]
 ----
 
 This query now returns a sequence of JSON documents:
@@ -650,7 +651,7 @@ fetch {
 [,typeql]
 ----
 #!test[read, db=quickstart]
-include::./advanced-queries.adoc[tag=fetch1]
+include::./query-composition.adoc[tag=fetch1]
 ----
 
 The fetch clause lets you lay out the exact JSON document you need for your application, making it easy to retrieve additional data such as optional attributes or answers from subqueries.
