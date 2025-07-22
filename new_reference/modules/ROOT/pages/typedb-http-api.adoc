@@ -946,17 +946,17 @@ Open a new transaction and receive a unique transaction id.
 |===
 | Field | Description
 | `transactionTimeoutMillis` |
-include::{page-version}@manual:resources:partial$options-descriptions/transaction.adoc[tag=transaction-timeout]
+include::{page-version}@new_reference::partial$options-descriptions/transaction.adoc[tag=transaction-timeout]
 
 Specified in milliseconds. **Default:**
-include::{page-version}@manual:resources:partial$options-descriptions/transaction.adoc[tag=transaction-timeout-default]
+include::{page-version}@new_reference::partial$options-descriptions/transaction.adoc[tag=transaction-timeout-default]
 
 
 | `schemaLockAcquireTimeoutMillis` |
-include::{page-version}@manual:resources:partial$options-descriptions/transaction.adoc[tag=schema-lock-acquire-timeout]
+include::{page-version}@new_reference::partial$options-descriptions/transaction.adoc[tag=schema-lock-acquire-timeout]
 
 Specified in milliseconds. **Default:**
-include::{page-version}@manual:resources:partial$options-descriptions/transaction.adoc[tag=schema-lock-acquire-timeout-default]
+include::{page-version}@new_reference::partial$options-descriptions/transaction.adoc[tag=schema-lock-acquire-timeout-default]
 |===
 // end::transaction-options[]
 
@@ -1251,18 +1251,18 @@ This endpoint allows running multiple sequential queries before committing.
 |===
 | Field | Description
 | `includeInstanceTypes` |
-include::{page-version}@manual:resources:partial$options-descriptions/query.adoc[tag=include-instance-types]
+include::{page-version}@new_reference::partial$options-descriptions/query.adoc[tag=include-instance-types]
 
 **Default:**
-include::{page-version}@manual:resources:partial$options-descriptions/query.adoc[tag=include-instance-types-default]
+include::{page-version}@new_reference::partial$options-descriptions/query.adoc[tag=include-instance-types-default]
 
 
 | `answerCountLimit` |
-include::{page-version}@manual:resources:partial$options-descriptions/query.adoc[tag=answer-count-limit]
+include::{page-version}@new_reference::partial$options-descriptions/query.adoc[tag=answer-count-limit]
 If there are more answers cut, a relevant `warning` will be provided in the response.
 
 **Default:**
-include::{page-version}@manual:resources:partial$options-descriptions/query.adoc[tag=answer-count-limit-default]
+include::{page-version}@new_reference::partial$options-descriptions/query.adoc[tag=answer-count-limit-default]
 
 |===
 // end::query-options[]
