@@ -1,7 +1,7 @@
 = Create a schema
 :keywords: start, learn, typedb, typeql, tutorial, quickstart, console, studio, database, create, insert, query
 :pageTitle: Create a schema
-:summary: Create a database and initialize the quickstart schema
+:summary: Create a database and initialize the schema
 :tabs-sync-option:
 
 == Database management 101
@@ -11,7 +11,7 @@ TypeDB supports operating multiple independent databases within one server.
 Databases each contain their own set of schema and data.
 Transactions operate against one database at a time and cannot read data from multiple databases.
 
-Databases can be created and deleted easily. Let's create a database for this quickstart!
+Databases can be created and deleted easily. Let's create a database for this guide!
 
 [tabs]
 ====
@@ -21,7 +21,7 @@ Studio::
 First, ensure you have an active connection to TypeDB. If you don't, all Studio pages will prompt you to connect to TypeDB using your address and credentials.
 
 To select a database to work with, use the dropdown menu on the right of the database icon in the top toolbar.
-You can also create new databases here. Let's create one called `quickstart`.
+You can also create new databases here. Let's create one called `get_started`.
 
 --
 
@@ -33,12 +33,12 @@ Start TypeDB Console and connect to TypeDB with the following terminal command:
 ----
 $ typedb console --address=<address> --username=<username>
 ----
-You will be prompted for a password, after which the *server-level interface* of Console will be opened. To create a new database called `quickstart` type the command:
+You will be prompted for a password, after which the *server-level interface* of Console will be opened. To create a new database called `get_started` type the command:
 [,console]
 ----
-database create quickstart
+database create get-started
 ----
-You can similarly delete a database with the command `database delete quickstart`. To see a list of all available databases use `database list`.
+You can similarly delete a database with the command `database delete get-started`. To see a list of all available databases use `database list`.
 --
 ====
 
@@ -91,14 +91,14 @@ Console::
 From Console's server-level interface, open a `schema` transaction (tip: use the kbd:[Tab] key to autocomplete each word!):
 [,console]
 ----
-transaction schema quickstart
+transaction schema get-started
 ----
 This will open a new *transaction-level interface*. In it, you will be able to run queries. You can similarly open `write` or `read` transactions.
 
 Then, enter the following query and hit kbd[Enter] **twice** to submit:
 [,typeql]
 ----
-#!test[schema, db=quickstart]
+#!test[schema, db=get-started]
 define entity user;
 ----
 
@@ -144,13 +144,13 @@ Studio::
 On the Query page, select a *schema* transaction using the top bar as described above, then run these two queries.
 [,typeql]
 ----
-#!test[schema, db=quickstart]
+#!test[schema, db=get-started]
 include::./schema.adoc[tag=define1]
 ----
 
 [,typeql]
 ----
-#!test[schema, db=quickstart]
+#!test[schema, db=get-started]
 include::./schema.adoc[tag=define2]
 ----
 
@@ -161,7 +161,7 @@ Make sure to `commit` if you're manually controlling your transactions.
 Console::
 +
 --
-Open a schema transaction with the command `transaction schema quickstart` as explained above. Then paste the following query in:
+Open a schema transaction with the command `transaction schema get-started` as explained above. Then paste the following query in:
 ////
 tag::define1[]
 define
@@ -171,7 +171,7 @@ end::define1[]
 ////
 [,typeql]
 ----
-#!test[schema, db=quickstart]
+#!test[schema, db=get-started]
 include::./schema.adoc[tag=define1]
 ----
 
@@ -185,7 +185,7 @@ end::define2[]
 ////
 [,typeql]
 ----
-#!test[schema, db=quickstart]
+#!test[schema, db=get-started]
 include::./schema.adoc[tag=define2]
 ----
 
@@ -215,7 +215,7 @@ For example:
 
 [,typeql]
 ----
-#!test[schema, db=quickstart]
+#!test[schema, db=get-started]
 include::./schema.adoc[tag=define3]
 ----
 
@@ -225,7 +225,7 @@ The next query illustrates usage of "`unbounded`" cardinality together with anot
 
 [,typeql]
 ----
-#!test[schema, db=quickstart]
+#!test[schema, db=get-started]
 include::./schema.adoc[tag=define4]
 ----
 
@@ -233,7 +233,7 @@ Importantly, different types may own the same attributes; and, similarly, differ
 
 [,typeql]
 ----
-#!test[schema, db=quickstart]
+#!test[schema, db=get-started]
 include::./schema.adoc[tag=define5]
 ----
 
@@ -261,7 +261,7 @@ friendship owns start-date @card(0..1);
 ////
 [,typeql]
 ----
-#!test[schema, db=quickstart]
+#!test[schema, db=get-started]
 include::./schema.adoc[tag=define3]
 ----
 
@@ -282,7 +282,7 @@ user owns username @key;
 ////
 [,typeql]
 ----
-#!test[schema, db=quickstart]
+#!test[schema, db=get-started]
 include::./schema.adoc[tag=define4]
 ----
 
@@ -302,7 +302,7 @@ plays friendship:friend;
 ////
 [,typeql]
 ----
-#!test[schema, db=quickstart]
+#!test[schema, db=get-started]
 include::./schema.adoc[tag=define5]
 ----
 
@@ -320,14 +320,14 @@ Let's define two types that specialize our earlier `organization` type: namely, 
 
 [,typeql]
 ----
-#!test[schema, db=quickstart]
+#!test[schema, db=get-started]
 include::./schema.adoc[tag=define6]
 ----
 Note that we haven't defined any traits for companies and universities; indeed, all traits of the supertype `organization` are automatically *inherited*! That doesn't stop from defining new traits for our subtypes, of course:
 
 [,typeql]
 ----
-#!test[schema, db=quickstart]
+#!test[schema, db=get-started]
 include::./schema.adoc[tag=define7]
 ----
 
@@ -351,7 +351,7 @@ entity university sub organization;
 ////
 [,typeql]
 ----
-#!test[schema, db=quickstart]
+#!test[schema, db=get-started]
 include::./schema.adoc[tag=define6]
 ----
 Note that we haven't defined any traits for companies and universities; indeed, all traits of the supertype `organization` are automatically *inherited*! That doesn't stop from defining new traits for our subtypes, of course:
@@ -369,7 +369,7 @@ user plays enrolment:student;
 ////
 [,typeql]
 ----
-#!test[schema, db=quickstart]
+#!test[schema, db=get-started]
 include::./schema.adoc[tag=define7]
 ----
 
@@ -389,7 +389,7 @@ Here's your entire schema so you can see it in one go:
 
 [,typeql]
 ----
-#!test[schema, db=quickstart]
+#!test[schema, db=get-started]
 define
 attribute username,
  value string;

@@ -36,7 +36,7 @@ Using a read transaction, let's count the number of users in the database:
 
 [,typeql]
 ----
-#!test[read, db=quickstart]
+#!test[read, db=get-started]
 include::./query-composition.adoc[tag=reduce1]
 ----
 
@@ -54,7 +54,7 @@ Reductions can also use `groupby` to aggregate within groups:
 
 [,typeql]
 ----
-#!test[read, db=quickstart]
+#!test[read, db=get-started]
 include::./query-composition.adoc[tag=reduce2]
 ----
 
@@ -95,7 +95,7 @@ Console::
 +
 --
 
-Open a read transaction with `transaction read quickstart` to count the number of users in the database:
+Open a read transaction with `transaction read get-started` to count the number of users in the database:
 
 ////
 [,typeql]
@@ -109,7 +109,7 @@ reduce $count = count;
 ////
 [,typeql]
 ----
-#!test[read, db=quickstart]
+#!test[read, db=get-started]
 include::./query-composition.adoc[tag=reduce1]
 ----
 
@@ -138,7 +138,7 @@ reduce $num-friends = count groupby $user, $username;
 ////
 [,typeql]
 ----
-#!test[read, db=quickstart]
+#!test[read, db=get-started]
 include::./query-composition.adoc[tag=reduce2]
 ----
 
@@ -223,7 +223,7 @@ Let's go back to our example:
 
 [,typeql]
 ----
-#!test[read, db=quickstart]
+#!test[read, db=get-started]
 include::./query-composition.adoc[tag=pipeline1]
 ----
 
@@ -277,7 +277,7 @@ limit 1;
 ////
 [,typeql]
 ----
-#!test[read, db=quickstart]
+#!test[read, db=get-started]
 include::./query-composition.adoc[tag=pipeline1]
 ----
 Which returns:
@@ -309,7 +309,7 @@ and also to eliminate the most-popular user from appearing again:
 
 [,typeql]
 ----
-#!test[read, db=quickstart]
+#!test[read, db=get-started]
 include::./query-composition.adoc[tag=pipeline2]
 ----
 
@@ -360,7 +360,7 @@ not { friendship ($user, $other-user); };
 ////
 [,typeql]
 ----
-#!test[read, db=quickstart]
+#!test[read, db=get-started]
 include::./query-composition.adoc[tag=pipeline2]
 ----
 
@@ -396,7 +396,7 @@ Studio::
 
 [,typeql]
 ----
-#!test[write, db=quickstart]
+#!test[write, db=get-started]
 include::./query-composition.adoc[tag=pipeline3]
 ----
 
@@ -430,7 +430,7 @@ friendship ($other-user, $user);
 ////
 [,typeql]
 ----
-#!test[write, db=quickstart]
+#!test[write, db=get-started]
 include::./query-composition.adoc[tag=pipeline3]
 ----
 
@@ -464,7 +464,7 @@ Studio::
 
 [,typeql]
 ----
-#!test[schema, db=quickstart]
+#!test[schema, db=get-started]
 include::./query-composition.adoc[tag=function1]
 ----
 
@@ -498,7 +498,7 @@ fun most_popular_user() -> user, username:
 ////
 [,typeql]
 ----
-#!test[schema, db=quickstart]
+#!test[schema, db=get-started]
 include::./query-composition.adoc[tag=function1]
 ----
 
@@ -522,7 +522,7 @@ Studio::
 
 [,typeql]
 ----
-#!test[schema, db=quickstart]
+#!test[schema, db=get-started]
 include::./query-composition.adoc[tag=function_pipeline1]
 ----
 
@@ -547,7 +547,7 @@ friendship ($other-user, $most-popular-user);
 ////
 [,typeql]
 ----
-#!test[read, db=quickstart]
+#!test[read, db=get-started]
 include::./query-composition.adoc[tag=function_pipeline1]
 ----
 
@@ -579,7 +579,7 @@ Studio::
 
 [,typeql]
 ----
-#!test[schema, db=quickstart]
+#!test[schema, db=get-started]
 include::./query-composition.adoc[tag=fetch1]
 ----
 
@@ -650,7 +650,7 @@ fetch {
 ////
 [,typeql]
 ----
-#!test[read, db=quickstart]
+#!test[read, db=get-started]
 include::./query-composition.adoc[tag=fetch1]
 ----
 

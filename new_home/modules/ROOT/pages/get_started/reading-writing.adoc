@@ -28,7 +28,7 @@ To begin, set your transaction type to *write* using the top bar, then let us tr
 
 [,typeql]
 ----
-#!test[write, db=quickstart, fail_at=commit]
+#!test[write, db=get-started, fail_at=commit]
 include::./reading-writing.adoc[tag=insert1]
 ----
 The commit **will fail** - an example of TypeDB enforcing data constraints!
@@ -40,7 +40,7 @@ The following passes TypeDB's validation and commits just fine:
 
 [,typeql]
 ----
-#!test[write, db=quickstart]
+#!test[write, db=get-started]
 include::./reading-writing.adoc[tag=insert2]
 ----
 
@@ -48,7 +48,7 @@ We can also insert multiple values in a single `insert` query like so:
 
 [,typeql]
 ----
-#!test[write, db=quickstart]
+#!test[write, db=get-started]
 include::./reading-writing.adoc[tag=insert3]
 ----
 This query inserts two users at the same time and also commits safely.
@@ -57,7 +57,7 @@ Finally, since we set usernames to be a `@key` attribute of our users, we would 
 
 [,typeql]
 ----
-#!test[write, db=quickstart, fail_at=runtime]
+#!test[write, db=get-started, fail_at=runtime]
 include::./reading-writing.adoc[tag=insert4]
 ----
 
@@ -80,7 +80,7 @@ insert $x isa user;
 ////
 [,typeql]
 ----
-#!test[write, db=quickstart, fail_at=commit]
+#!test[write, db=get-started, fail_at=commit]
 include::./reading-writing.adoc[tag=insert1]
 ----
 
@@ -99,7 +99,7 @@ insert $x isa user, has username "alice1925";
 ////
 [,typeql]
 ----
-#!test[write, db=quickstart]
+#!test[write, db=get-started]
 include::./reading-writing.adoc[tag=insert2]
 ----
 
@@ -117,7 +117,7 @@ $y has username "candice001";  # can split `isa` and `has` across different stat
 ////
 [,typeql]
 ----
-#!test[write, db=quickstart]
+#!test[write, db=get-started]
 include::./reading-writing.adoc[tag=insert3]
 ----
 
@@ -137,7 +137,7 @@ $y isa user, has username "qwerty0";
 ////
 [,typeql]
 ----
-#!test[write, db=quickstart, fail_at=runtime]
+#!test[write, db=get-started, fail_at=runtime]
 include::./reading-writing.adoc[tag=insert4]
 ----
 
@@ -172,7 +172,7 @@ Recall that each friendship takes _exactly two_ friends as specified in the sche
 
 [,typeql]
 ----
-#!test[write, db=quickstart]
+#!test[write, db=get-started]
 include::./reading-writing.adoc[tag=insert5]
 ----
 
@@ -212,7 +212,7 @@ friendship (friend: $x, friend: $z);
 ////
 [,typeql]
 ----
-#!test[write, db=quickstart]
+#!test[write, db=get-started]
 include::./reading-writing.adoc[tag=insert5]
 ----
 This query inserts three new users with some ``friendship``s between them.
@@ -251,7 +251,7 @@ Change the transaction type to *read* in the top toolbar, and execute the follow
 
 [,typeql]
 ----
-#!test[read, db=quickstart]
+#!test[read, db=get-started]
 include::./reading-writing.adoc[tag=match1]
 ----
 This query returns the substitutions (answers) for each variable that exist in the database and conforms to the requested constraints:
@@ -293,7 +293,7 @@ We can make this more specific and interesting, for instance looking up the frie
 
 [,typeql]
 ----
-#!test[read, db=quickstart]
+#!test[read, db=get-started]
 include::./reading-writing.adoc[tag=match2]
 ----
 
@@ -312,7 +312,7 @@ Console::
 +
 --
 
-Open a read transaction using `transaction read quickstart`, and execute the following query:
+Open a read transaction using `transaction read get-started`, and execute the following query:
 
 ////
 [,typeql]
@@ -324,7 +324,7 @@ match $x isa user, has username $n;
 ////
 [,typeql]
 ----
-#!test[read, db=quickstart]
+#!test[read, db=get-started]
 include::./reading-writing.adoc[tag=match1]
 ----
 This query returns the substitutions (answers) for each variable that exist in the database and conforms to the requested constraints:
@@ -377,7 +377,7 @@ friendship ($u, $other-friend);
 ////
 [,typeql]
 ----
-#!test[read, db=quickstart]
+#!test[read, db=get-started]
 include::./reading-writing.adoc[tag=match2]
 ----
 
@@ -424,7 +424,7 @@ Studio::
 --
 [,typeql]
 ----
-#!test[write, db=quickstart]
+#!test[write, db=get-started]
 include::./reading-writing.adoc[tag=match-insert1]
 ----
 Chained query clauses always execute in-order, so the direction you read in is how operations will be performed:
@@ -453,7 +453,7 @@ friendship (friend: $u0, friend: $u1), has start-date 2015-01-01T00:00:00;
 ////
 [,typeql]
 ----
-#!test[write, db=quickstart]
+#!test[write, db=get-started]
 include::./reading-writing.adoc[tag=match-insert1]
 ----
 Chained query clauses always execute in-order, so the direction you read in is how operations will be performed:
