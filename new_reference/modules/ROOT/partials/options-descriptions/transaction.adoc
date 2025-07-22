@@ -1,0 +1,20 @@
+== Transaction timeout
+// tag::transaction-timeout[]
+The maximum amount of time a transaction can stay opened.
+It will be closed automatically without preserving its changes and finishing its active queries after this timeout.
+// end::transaction-timeout[]
+
+// tag::transaction-timeout-default[]
+5 minutes
+// end::transaction-timeout-default[]
+
+== Schema lock acquire timeout
+// tag::schema-lock-acquire-timeout[]
+Timeout for a schema transaction to acquire the exclusive schema lock of the database.
+
+Can be used to wait until a previous schema transaction finishes and releases the exclusivity lock.
+// end::schema-lock-acquire-timeout[]
+
+// tag::schema-lock-acquire-timeout-default[]
+10 seconds
+// end::schema-lock-acquire-timeout-default[]

@@ -1,0 +1,33 @@
+== Include instance types
+// tag::include-instance-types[]
+Whether to include the types of the returned instance concepts in concept row responses or not.
+This option allows reducing the amount of unnecessary data transmitted.
+// end::include-instance-types[]
+
+// tag::include-instance-types-default[]
+true
+// end::include-instance-types-default[]
+
+== Answer count limit
+// tag::answer-count-limit[]
+The maximum allowed size of concept rows or concept documents answers returned.
+Used to limit the network load.
+
+At most **count limit** answers is returned.
+If it is a write query, all changes, including both returned and not returned, will be applied.
+// end::answer-count-limit[]
+
+// tag::answer-count-limit-default[]
+10 000
+// end::answer-count-limit-default[]
+
+== Prefetch size
+// tag::prefetch-size[]
+The number of extra query responses sent before the client side has to re-request more responses.
+
+Increasing this may increase performance for queries with a huge number of answers, as it can reduce the number of network round-trips at the cost of more resources on the server side.
+// end::prefetch-size[]
+
+// tag::prefetch-size-default[]
+32
+// end::prefetch-size-default[]
