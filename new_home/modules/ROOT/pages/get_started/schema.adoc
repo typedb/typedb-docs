@@ -4,6 +4,7 @@
 :summary: Create a database and initialize the schema
 :tabs-sync-option:
 
+[#create_database]
 == Database management 101
 
 TypeDB supports operating multiple independent databases within one server.
@@ -387,9 +388,8 @@ but in the meantime let's summarize!
 
 Here's your entire schema so you can see it in one go:
 
-[,typeql]
-----
-#!test[schema, db=get-started]
+////
+# tag::full_define[]
 define
 attribute username,
  value string;
@@ -420,6 +420,12 @@ relation friendship,
 relation enrolment,
   relates student,
   relates university;
+# end::full_define[]
+////
+[,typeql]
+----
+#!test[schema, db=get-started]
+include::./schema.adoc[tag=full_define]
 ----
 
 Congratulations! You've set up a fully-fledged database with a real schema!

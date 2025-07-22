@@ -1,0 +1,30 @@
+= Overview
+
+This section features a guide to getting started with TypeDB.
+It is intended to give a quick rundown of the main interactions you'll have with TypeDB.
+
+== Mini-guide
+
+The following steps serve both as an outline of the main steps of using TypeDB,
+and a quick outline of the main Get started guide.
+
+. xref:{page-version}@new_home::get_started/setup.adoc[]
+.. Sign up & launch a free TypeDB instance on https://cloud.typedb.com[TypeDB Cloud account].
+.. Follow the instructions from the cluster to open https://studio.typedb.com[TypeDB Studio].
+
+. xref:{page-version}@new_home::get_started/schema.adoc[]
+.. Create a database called `get_started`.
+.. Execute the schema definition query
++
+[,typeql]
+----
+include::{page-version}@new_home::get_started/schema.adoc[tag=full_define]
+----
+
+. xref:{page-version}@new_home::get_started/data.adoc[]
++
+TODO
+
+. xref:{page-version}@new_home::get_started/query-composition.adoc[]
++
+Learn how to write aggregations, compose query pipelines, and create functions.
