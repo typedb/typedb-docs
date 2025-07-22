@@ -1,0 +1,17 @@
+[source,json]
+----
+{
+    "query": string,
+    "commit": boolean,                             // optional
+    "databaseName": string,
+    "transactionType": "read" | "write" | "schema",
+    "transactionOptions": {                        // optional
+        "schemaLockAcquireTimeoutMillis": integer, // optional
+        "transactionTimeoutMillis": integer        // optional
+    },
+    "queryOptions": {                              // optional
+        "includeInstanceTypes": boolean,           // optional
+        "answerCountLimit": integer                // optional
+    }
+}
+----

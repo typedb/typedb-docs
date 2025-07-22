@@ -1,0 +1,12 @@
+[source,json]
+----
+{
+    "id": string,
+    "storageSizeGB": number,
+    "machineType": string,
+    "backupConfiguration": {
+      "frequency": string,
+      "retentionDays": number
+    }
+}
+----

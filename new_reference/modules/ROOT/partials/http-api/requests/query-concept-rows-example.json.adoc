@@ -1,0 +1,11 @@
+[source,json]
+----
+{
+    "databaseName": "test",
+    "transactionType": "read",
+    "query": "match $entity isa $entity-type, has $attribute-type $attribute; $relation isa $relation-type, links ($entity); $relation-type relates $role-type; let $value = $attribute;",
+    "queryOptions": {
+        "includeInstanceTypes": true
+    }
+}
+----

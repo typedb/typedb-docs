@@ -1,0 +1,11 @@
+[source,json]
+----
+{
+    "databaseName": string,
+    "transactionType": "read" | "write" | "schema",
+    "transactionOptions": {                        // optional
+        "schemaLockAcquireTimeoutMillis": integer, // optional
+        "transactionTimeoutMillis": integer        // optional
+    }
+}
+----
