@@ -1,1 +1,328 @@
 = Best Practices
+:Summary: Best practices for building robust applications with TypeDB drivers.
+:keywords: typedb, driver, best practices, connection management, error handling, performance
+:pageTitle: TypeDB Driver Best Practices
+
+This guide covers essential best practices for building robust, performant applications with TypeDB drivers. Following these practices will help you avoid common pitfalls and create maintainable database code.
+
+== Connection management
+
+=== Resource cleanup
+
+Always ensure connections are properly closed to avoid resource leaks:
+
+**Recommended: Automatic management**
+
+Use language-specific automatic resource management features:
+
+[tabs]
+====
+Python::
++
+--
+[,python]
+----
+# GOOD: Automatic cleanup with context manager
+with TypeDB.driver(address, credentials, options) as driver:
+    # Connection automatically closed when exiting block
+    with driver.transaction(db_name, TransactionType.READ) as tx:
+        # Transaction automatically closed
+        results = tx.query("match $x isa entity;")
+----
+--
+
+Java::
++
+--
+[,java]
+----
+// GOOD: Automatic cleanup with try-with-resources
+try (Driver driver = TypeDB.driver(address, credentials, options);
+     Transaction tx = driver.transaction(dbName, TransactionType.READ)) {
+    // Connection and transaction automatically closed
+    QueryAnswer results = tx.query("match $x isa entity;");
+}
+----
+--
+
+Rust::
++
+--
+[,rust]
+----
+// GOOD: Resources automatically cleaned up when dropped
+let driver = TypeDBDriver::new(address, credentials, options).await?;
+let tx = driver.transaction(db_name, TransactionType::Read).await?;
+let results = tx.query("match $x isa entity;").await?;
+// Driver and transaction automatically closed when going out of scope
+----
+--
+====
+
+**Manual management**
+
+If you need manual resource management, always use try/finally blocks:
+
+[tabs]
+====
+Python::
++
+--
+[,python]
+----
+# MANUAL: Explicit cleanup required
+driver = TypeDB.driver(address, credentials, options)
+try:
+    tx = driver.transaction(db_name, TransactionType.READ)
+    try:
+        results = tx.query("match $x isa entity;")
+        # Process results...
+    finally:
+        tx.close()  # Always close transaction
+finally:
+    driver.close()  # Always close driver
+----
+--
+
+Java::
++
+--
+[,java]
+----
+// MANUAL: Explicit cleanup required
+Driver driver = TypeDB.driver(address, credentials, options);
+try {
+    Transaction tx = driver.transaction(dbName, TransactionType.READ);
+    try {
+        QueryAnswer results = tx.query("match $x isa entity;");
+        // Process results...
+    } finally {
+        tx.close();  // Always close transaction
+    }
+} finally {
+    driver.close();  // Always close driver
+}
+----
+--
+====
+
+=== Connection reuse
+
+Connections are expensive to create and should be reused across multiple operations:
+
+[source,python]
+----
+# GOOD: Reuse a single connection for multiple operations
+with TypeDB.driver(address, credentials, options) as driver:
+    
+    # Multiple database operations with same connection
+    for db_name in ["users", "products", "orders"]:
+        with driver.transaction(db_name, TransactionType.READ) as tx:
+            results = tx.query("match $x isa entity;")
+            # Process results...
+----
+
+[source,python]
+----
+# AVOID: Creating new connections for each operation
+for db_name in ["users", "products", "orders"]:
+    with TypeDB.driver(address, credentials, options) as driver:  # Inefficient!
+        with driver.transaction(db_name, TransactionType.READ) as tx:
+            results = tx.query("match $x isa entity;")
+----
+
+=== Connection pooling and concurrency
+
+TypeDB drivers handle connection pooling internally:
+
+* **Single driver instance**: Can handle multiple concurrent operations
+* **Thread safety**: Drivers are designed for concurrent use across threads
+* **Automatic pooling**: No need to manage connection pools manually
+
+[source,python]
+----
+# GOOD: Single driver instance for the application
+class DatabaseService:
+    def __init__(self, address, credentials, options):
+        self.driver = TypeDB.driver(address, credentials, options)
+    
+    def get_users(self):
+        with self.driver.transaction("users", TransactionType.READ) as tx:
+            return tx.query("match $u isa user; fetch $u.*;")
+    
+    def get_products(self):
+        with self.driver.transaction("products", TransactionType.READ) as tx:
+            return tx.query("match $p isa product; fetch $p.*;")
+    
+    def close(self):
+        self.driver.close()
+----
+
+== Error handling
+
+=== Server-side errors
+
+Server-side errors are propagated to the driver. Server errors use fixed Error Codes, such as "QEX14", for different types of errors.
+You can use these to handle specific errors in your application.
+
+[tabs]
+====
+Python::
++
+--
+[,python]
+----
+try:
+    with driver.transaction(db_name, TransactionType.READ) as tx:
+        result = tx.query("match $x isa person;").resolve()
+        # Process result...
+except TypeDBDriverException as e:
+	# check for query execution error
+    if "QEX" in str(e).upper(): 
+        print(f"Query execution error: {e}")
+	# check for TypeQL parsing error
+    elif "TQL" in str(e).upper():
+        print(f"TypeQL parsing error: {e}")
+    else:
+        print(f"Server error: {e}")
+----
+--
+
+Java::
++
+--
+[,java]
+----
+try (Transaction tx = driver.transaction(dbName, TransactionType.READ)) {
+    QueryAnswer result = tx.query("match $x isa person;").resolve();
+    // Process result...
+} catch (TypeDBDriverException e) {
+    // check for query execution error
+    if (e.getMessage().toUpperCase().contains("QEX")) {
+        System.err.println("Query execution error: " + e.getMessage());
+    // check for TypeQL parsing error
+    } else if (e.getMessage().toUpperCase().contains("TQL")) {
+        System.err.println("TypeQL parsing error: " + e.getMessage());
+    } else {
+        System.err.println("Server error: " + e.getMessage());
+    }
+}
+----
+--
+
+Rust::
++
+--
+[,rust]
+----
+let tx = driver.transaction(db_name, TransactionType::Read).await?;
+match tx.query("match $x isa person;").await {
+    Ok(result) => {
+        // Process result...
+    },
+    Err(e) => {
+        let error_msg = e.to_string().to_uppercase();
+        // check for query execution error
+        if error_msg.contains("QEX") {
+            eprintln!("Query execution error: {}", e);
+        // check for TypeQL parsing error
+        } else if error_msg.contains("TQL") {
+            eprintln!("TypeQL parsing error: {}", e);
+        } else {
+            eprintln!("Server error: {}", e);
+        }
+    }
+}
+----
+--
+====
+
+== Transaction management
+
+=== Choose the right transaction type
+
+Use the most restrictive transaction type that meets your needs:
+
+[source,python]
+----
+# Use READ transactions for queries that don't modify data
+with driver.transaction(db_name, TransactionType.READ) as tx:
+    users = tx.query("match $u isa user; fetch {{ $u.*; }};").resolve().as_concept_documents()
+
+# Use WRITE transactions for data modifications
+with driver.transaction(db_name, TransactionType.WRITE) as tx:
+    tx.query("insert $u isa user, has email 'new@user.com';")
+    tx.commit()
+
+# Use SCHEMA transactions only for schema changes
+with driver.transaction(db_name, TransactionType.SCHEMA) as tx:
+    tx.query("define entity new-type;")
+    tx.commit()
+----
+
+=== Transaction lifecycle
+
+It is recommended to prefer short-lived transactions, since each transaction pins resources on the server.
+
+[source,python]
+----
+# GOOD: Short-lived transactions
+with driver.transaction(db_name, TransactionType.WRITE) as tx:
+    # Do all related work in one transaction
+    tx.query("insert $u isa user, has email 'user1@example.com';")
+    tx.query("insert $u isa user, has email 'user2@example.com';")
+    tx.commit()  # Commit when all work is done
+
+# AVOID: Long-lived transactions
+with driver.transaction(db_name, TransactionType.WRITE) as tx:
+    tx.query("insert $u isa user, has email 'user1@example.com';")
+    # Don't do heavy processing or I/O within transactions
+    process_large_file()  # This keeps the transaction open too long
+    tx.query("insert $u isa user, has email 'user2@example.com';")
+    tx.commit()
+----
+
+TypeDB server by default times out transactions that have been open for 5 minutes. This helps avoid resource leaks when users forget to close transactions. This timeout is configurable when the transaction is opened.
+
+== Performance optimization
+
+=== Batch operations
+
+Group related operations into single transactions to reduce the cost of transaction commits. Note that if the transaction is too large, it could also slow down the server. We recommend about 10-100 insert queries per commit.
+
+[source,python]
+----
+# GOOD: Batch inserts in a single transaction
+with driver.transaction(db_name, TransactionType.WRITE) as tx:
+    for user_data in user_list:
+        query = f"insert $u isa user, has email '{user_data['email']}';"
+        tx.query(query)
+    tx.commit()
+
+# AVOID: Individual transactions for each operation
+for user_data in user_list:
+    with driver.transaction(db_name, TransactionType.WRITE) as tx:  # Inefficient!
+        query = f"insert $u isa user, has email '{user_data['email']}';"
+        tx.query(query)
+        tx.commit()
+----
+
+=== Security considerations
+
+* **Never hardcode credentials**: Use environment variables or secure configuration management
+* **Use encryption**: Always enable TLS network encryption for production deployments
+
+== Summary
+
+Following these best practices will help you build robust TypeDB applications:
+
+1. **Use automatic resource management** whenever possible
+2. **Reuse connections** and handle errors gracefully  
+3. **Choose appropriate transaction types** and keep transactions short-lived
+4. **Batch operations** for better performance
+5. **Secure your credentials** and use encryption in production
+
+For more specific guidance, refer to:
+* **xref:{page-version}@new_core_concepts::drivers/connections.adoc[Connections]** - Connection fundamentals
+* **xref:{page-version}@new_core_concepts::drivers/transactions.adoc[Transactions]** - Transaction management
+* **xref:{page-version}@new_core_concepts::drivers/queries.adoc[Queries]** - Query execution patterns

@@ -148,13 +148,13 @@ On the Query page, select a *schema* transaction using the top bar as described 
 [,typeql]
 ----
 #!test[schema, db=get-started]
-include::./schema.adoc[tag=define1]
+include::{page-version}@new_home::./schema.adoc[tag=define1]
 ----
 
 [,typeql]
 ----
 #!test[schema, db=get-started]
-include::./schema.adoc[tag=define2]
+include::{page-version}@new_home::./schema.adoc[tag=define2]
 ----
 
 Make sure to `commit` if you're manually controlling your transactions.
@@ -175,7 +175,7 @@ end::define1[]
 [,typeql]
 ----
 #!test[schema, db=get-started]
-include::./schema.adoc[tag=define1]
+include::{page-version}@new_home::./schema.adoc[tag=define1]
 ----
 
 Press kbd[Enter] twice to send the query. Similarly, send the following second query:
@@ -189,7 +189,7 @@ end::define2[]
 [,typeql]
 ----
 #!test[schema, db=get-started]
-include::./schema.adoc[tag=define2]
+include::{page-version}@new_home::./schema.adoc[tag=define2]
 ----
 
 Finally, commit the transaction by typing `commit` and press kbd[Enter]. You have just defined the first few types in your database schema, congratulations!
@@ -219,7 +219,7 @@ For example:
 [,typeql]
 ----
 #!test[schema, db=get-started]
-include::./schema.adoc[tag=define3]
+include::{page-version}@new_home::./schema.adoc[tag=define3]
 ----
 
 This defines a `start-date` attribute and then declares each friendship may own a `start_date` (i.e., the type `friendship` implements the "`start-date owner`" trait). The definition is followed by a `@card` annotation, which specifies that friendships own _between_ zero or one start dates. In fact, this is the default cardinality, so you don't actually need `@card` here at all.
@@ -229,7 +229,7 @@ The next query illustrates usage of "`unbounded`" cardinality together with anot
 [,typeql]
 ----
 #!test[schema, db=get-started]
-include::./schema.adoc[tag=define4]
+include::{page-version}@new_home::./schema.adoc[tag=define4]
 ----
 
 Importantly, different types may own the same attributes; and, similarly, different types may play the same role of a relation type. This flexibility of connecting types is a central feature of data modeling with TypeDB. Run the next query to define an `organization` type which shares many of the traits of `user`:
@@ -237,7 +237,7 @@ Importantly, different types may own the same attributes; and, similarly, differ
 [,typeql]
 ----
 #!test[schema, db=get-started]
-include::./schema.adoc[tag=define5]
+include::{page-version}@new_home::./schema.adoc[tag=define5]
 ----
 
 Let's commit and move on!
@@ -265,7 +265,7 @@ friendship owns start-date @card(0..1);
 [,typeql]
 ----
 #!test[schema, db=get-started]
-include::./schema.adoc[tag=define3]
+include::{page-version}@new_home::./schema.adoc[tag=define3]
 ----
 
 This defines a `start-date` attribute and then declares each friendship may own a `start_date` (i.e., the type `friendship` implements the "`start-date owner`" trait). The definition is followed by a `@card` annotation, which specifies that friendships own _between_ zero or one start dates. In fact, this is the default cardinality, so you don't actually need `@card` here at all.
@@ -286,7 +286,7 @@ user owns username @key;
 [,typeql]
 ----
 #!test[schema, db=get-started]
-include::./schema.adoc[tag=define4]
+include::{page-version}@new_home::./schema.adoc[tag=define4]
 ----
 
 Importantly, different types may own the same attributes; and, similarly, different types may play the same role of a relation type. This flexibility of connecting types is a central feature of data modeling with TypeDB. Run the next query to define an `organization` type which shares many of the traits of `user`:
@@ -306,7 +306,7 @@ plays friendship:friend;
 [,typeql]
 ----
 #!test[schema, db=get-started]
-include::./schema.adoc[tag=define5]
+include::{page-version}@new_home::./schema.adoc[tag=define5]
 ----
 
 Let's commit and move on!
@@ -324,14 +324,14 @@ Let's define two types that specialize our earlier `organization` type: namely, 
 [,typeql]
 ----
 #!test[schema, db=get-started]
-include::./schema.adoc[tag=define6]
+include::{page-version}@new_home::./schema.adoc[tag=define6]
 ----
 Note that we haven't defined any traits for companies and universities; indeed, all traits of the supertype `organization` are automatically *inherited*! That doesn't stop from defining new traits for our subtypes, of course:
 
 [,typeql]
 ----
 #!test[schema, db=get-started]
-include::./schema.adoc[tag=define7]
+include::{page-version}@new_home::./schema.adoc[tag=define7]
 ----
 
 Of course, you would be able to give the new subtypes additional traits that are not inherited from the supertype as well!
@@ -355,7 +355,7 @@ entity university sub organization;
 [,typeql]
 ----
 #!test[schema, db=get-started]
-include::./schema.adoc[tag=define6]
+include::{page-version}@new_home::./schema.adoc[tag=define6]
 ----
 Note that we haven't defined any traits for companies and universities; indeed, all traits of the supertype `organization` are automatically *inherited*! That doesn't stop from defining new traits for our subtypes, of course:
 ////
@@ -373,7 +373,7 @@ user plays enrolment:student;
 [,typeql]
 ----
 #!test[schema, db=get-started]
-include::./schema.adoc[tag=define7]
+include::{page-version}@new_home::./schema.adoc[tag=define7]
 ----
 
 Of course, you would be able to give the new subtypes additional traits that are not inherited from the supertype as well!
@@ -427,7 +427,7 @@ relation enrolment,
 [,typeql]
 ----
 #!test[schema, db=get-started]
-include::./schema.adoc[tag=full_define]
+include::{page-version}@new_home::./schema.adoc[tag=full_define]
 ----
 
 Congratulations! You've set up a fully-fledged database with a real schema!

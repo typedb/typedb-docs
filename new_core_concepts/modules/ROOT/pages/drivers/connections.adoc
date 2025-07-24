@@ -1,1 +1,110 @@
 = Connections
+:pageTitle: TypeDB Driver Connections
+:Summary: How to establish and manage connections to TypeDB servers.
+:keywords: typedb, driver, connection, address, port, network
+
+Drivers are the links over the network between your application and TypeDB servers. They handle all communication, from authentication to query execution.
+
+== Connection fundamentals
+
+A TypeDB driver connection requires three essential components:
+
+**Server Address**:: The network location of your TypeDB server (host and port)
+**Credentials**:: Username and password for authentication  
+**Options**:: Configuration for encryption, timeouts, and connection behavior
+
+[source,python]
+----
+# Basic connection pattern (all languages follow this structure)
+driver = TypeDB.driver(address, credentials, options)
+----
+
+=== Connection lifecycle
+
+Every driver connection follows the same lifecycle:
+
+1. **Establishment**: Driver initiates network connection to server
+2. **Authentication**: Server validates provided credentials
+3. **Active usage**: Application sends queries and receives responses  
+4. **Cleanup**: Connection resources are properly released
+
+We recommend leveraging automatic resource management, such as Python's `with` statement:
+[source,python]
+----
+# Python: Automatic connection management
+with TypeDB.driver(address, credentials, options) as driver:
+    # Connection is active here
+    database = driver.databases().get("my_database")
+    # ... use the connection ...
+# Connection automatically closed here
+----
+
+
+== Connection parameters
+
+=== Server address
+
+The server address specifies where your TypeDB server is running. It combines the hostname/IP address with the port number:
+
+[cols="2,3,2"]
+|===
+|Deployment |Address Format |Example
+
+|Local Development
+|`localhost:1729` or `127.0.0.1:1729`  
+|`"127.0.0.1:1729"`
+
+|Remote Server
+|`hostname:port` or `ip:port`
+|`"db.company.com:1729"`
+
+|TypeDB Cloud
+|Cloud-provided address
+|`"cluster-xyz.cloud.typedb.com:8000"`
+|===
+
+**Note that connecting to a TLS secured endpoint may require you to use the `https://` prefix!** 
+
+TypeDB server default ports:
+| Endpoint		| Port  |
+| gRPC			| 1729  |
+| HTTP			| 8000  |
+
+=== Credentials
+
+All TypeDB servers require authentication. Credentials encapsulate the username and password:
+
+For example, in Python you use:
+[,python]
+----
+from typedb.driver import Credentials
+
+# Basic credentials
+credentials = Credentials("admin", "password")
+----
+
+=== Network encryption & driver options
+
+Driver options configure connection behavior and encryption:
+
+* **Encryption**: Enable/disable TLS encryption for secure connections
+* **TLS Certificate**: Path to certificate file for TLS encrypted connections
+
+TypeDB Cloud instances always use TLS and use known certificates, so you just have to make sure TLS encryption is enabled - no need to provide your own certificate!
+
+If you're running your own TypeDB Community Edition instance, or managing an on-premise TypeDB Enterprise cluster, your servers may be running with **encryption disabled: your username/password will be sent over the network in plain text.**.
+
+While developing locally or in a secure network this may be acceptable in your team's security posture, but be very cautious when moving to production or loading sensitive data into your database! 
+
+If you are unsure about how to manage with this possibility, we recommend using TypeDB Cloud to deploy your database as it secure by default with no further work from you.
+
+
+
+== Next steps
+
+With connection fundamentals covered, you're ready to explore:
+
+* **xref:{page-version}@new_core_concepts::drivers/authentication.adoc[Authentication]** - Learn about user management and security
+* **xref:{page-version}@new_core_concepts::drivers/transactions.adoc[Transactions]** - Understand how to manage database transactions  
+* **xref:{page-version}@new_core_concepts::drivers/queries.adoc[Queries]** - Master query execution and result handling
+* **xref:{page-version}@new_core_concepts::drivers/best-practices.adoc[Best Practices]** - Learn connection management and other best practices

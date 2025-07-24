@@ -66,7 +66,7 @@ To begin, set your transaction type to *write* using the top bar, then let us tr
 [,typeql]
 ----
 #!test[write, db=get-started, fail_at=commit]
-include::./data.adoc[tag=insert1]
+include::{page-version}@new_home::./data.adoc[tag=insert1]
 ----
 The commit **will fail** - an example of TypeDB enforcing data constraints!
 (If you're manually controlling your transaction, you'll see the error when you click 'commit'.)
@@ -78,7 +78,7 @@ The following passes TypeDB's validation and commits just fine:
 [,typeql]
 ----
 #!test[write, db=get-started]
-include::./data.adoc[tag=insert2]
+include::{page-version}@new_home::./data.adoc[tag=insert2]
 ----
 
 We can also insert multiple values in a single `insert` query like so:
@@ -86,7 +86,7 @@ We can also insert multiple values in a single `insert` query like so:
 [,typeql]
 ----
 #!test[write, db=get-started]
-include::./data.adoc[tag=insert3]
+include::{page-version}@new_home::./data.adoc[tag=insert3]
 ----
 This query inserts two users at the same time and also commits safely.
 
@@ -95,7 +95,7 @@ Finally, since we set usernames to be a `@key` attribute of our users, we would 
 [,typeql]
 ----
 #!test[write, db=get-started, fail_at=runtime]
-include::./data.adoc[tag=insert4]
+include::{page-version}@new_home::./data.adoc[tag=insert4]
 ----
 
 This will immediately cause the transaction to fail, as the server detects an invalid database state.
@@ -111,7 +111,7 @@ To begin, let us try insert a user with the following `insert` query:
 [,typeql]
 ----
 #!test[write, db=get-started, fail_at=commit]
-include::./data.adoc[tag=insert1]
+include::{page-version}@new_home::./data.adoc[tag=insert1]
 ----
 
 Submitting `commit` **will fail** - an example of TypeDB enforcing data constraints!
@@ -122,14 +122,14 @@ The following passes TypeDB's validation and `commit`s just fine:
 [,typeql]
 ----
 #!test[write, db=get-started]
-include::./data.adoc[tag=insert2]
+include::{page-version}@new_home::./data.adoc[tag=insert2]
 ----
 
 This query inserts two users at the same time:
 [,typeql]
 ----
 #!test[write, db=get-started]
-include::./data.adoc[tag=insert3]
+include::{page-version}@new_home::./data.adoc[tag=insert3]
 ----
 
 This query inserts two users at the same time.
@@ -139,7 +139,7 @@ Finally, since we set usernames to be a `@key` attribute of our users, we would 
 [,typeql]
 ----
 #!test[write, db=get-started, fail_at=runtime]
-include::./data.adoc[tag=insert4]
+include::{page-version}@new_home::./data.adoc[tag=insert4]
 ----
 
 This will immediately cause the transaction to fail, as the server detects an invalid database state.
@@ -174,7 +174,7 @@ Recall that each friendship takes exactly two friends as specified in the schema
 [,typeql]
 ----
 #!test[write, db=get-started]
-include::./data.adoc[tag=insert5]
+include::{page-version}@new_home::./data.adoc[tag=insert5]
 ----
 
 This query inserts three new users with some ``friendship``s between them.
@@ -201,7 +201,7 @@ Using a new `write` transaction, run:
 [,typeql]
 ----
 #!test[write, db=get-started]
-include::./data.adoc[tag=insert5]
+include::{page-version}@new_home::./data.adoc[tag=insert5]
 ----
 This query inserts three new users with some ``friendship``s between them.
 
@@ -240,7 +240,7 @@ Change the transaction type to *read* in the top toolbar, and execute the follow
 [,typeql]
 ----
 #!test[read, db=get-started]
-include::./data.adoc[tag=match1]
+include::{page-version}@new_home::./data.adoc[tag=match1]
 ----
 This query returns the substitutions (answers) for each variable that exist in the database and conforms to the requested constraints:
 any `user` instance that has a `username`!
@@ -249,7 +249,7 @@ We get back the following sets of values:
 
 [source]
 ----
-include::./data.adoc[tag=match1_result]
+include::{page-version}@new_home::./data.adoc[tag=match1_result]
 ----
 
 [NOTE]
@@ -263,13 +263,13 @@ We can make this more specific and interesting, for instance looking up the frie
 [,typeql]
 ----
 #!test[read, db=get-started]
-include::./data.adoc[tag=match2]
+include::{page-version}@new_home::./data.adoc[tag=match2]
 ----
 
 Which returns:
 [source]
 ----
-include::./data.adoc[tag=match2_result]
+include::{page-version}@new_home::./data.adoc[tag=match2_result]
 ----
 
 --
@@ -312,7 +312,7 @@ $x | isa user, iid 0x1e00000000000000000008
 [,typeql]
 ----
 #!test[read, db=get-started]
-include::./data.adoc[tag=match1]
+include::{page-version}@new_home::./data.adoc[tag=match1]
 ----
 This query returns the substitutions (answers) for each variable that exist in the database and conforms to the requested constraints:
 any `user` instance that has a `username`!
@@ -321,7 +321,7 @@ We get back the following answers:
 
 [source]
 ----
-include::./data.adoc[tag=match1_result]
+include::{page-version}@new_home::./data.adoc[tag=match1_result]
 ----
 
 [NOTE]
@@ -355,13 +355,13 @@ $user           | isa user, iid 0x1e00000000000000000007
 [,typeql]
 ----
 #!test[read, db=get-started]
-include::./data.adoc[tag=match2]
+include::{page-version}@new_home::./data.adoc[tag=match2]
 ----
 
 Which returns:
 [source]
 ----
-include::./data.adoc[tag=match2_result]
+include::{page-version}@new_home::./data.adoc[tag=match2_result]
 ----
 
 We can `close` the transaction since we won't be using it anymore.
@@ -398,7 +398,7 @@ Studio::
 [,typeql]
 ----
 #!test[write, db=get-started]
-include::./data.adoc[tag=match-insert1]
+include::{page-version}@new_home::./data.adoc[tag=match-insert1]
 ----
 Chained query clauses always execute in-order, so the direction you read in is how operations will be performed:
 First we find two specific users by username, then insert a new friendship between them referring to those users using variables.
@@ -427,7 +427,7 @@ friendship (friend: $x, friend: $y), has start-date 2015-01-01T00:00:00;
 [,typeql]
 ----
 #!test[write, db=get-started]
-include::./data.adoc[tag=match-insert1]
+include::{page-version}@new_home::./data.adoc[tag=match-insert1]
 ----
 Chained query clauses always execute in-order, so the direction you read in is how operations will be performed:
 First we find two specific users by username, then insert a new friendship between them referring to those users using variables.
@@ -448,9 +448,9 @@ Here's the full set of queries you've used to write data into TypeDB:
 [,typeql]
 ----
 #!test[write, db=get-started]
-include::./data.adoc[tag=successful-inserts]
+include::{page-version}@new_home::./data.adoc[tag=successful-inserts]
 
-include::./data.adoc[tag=match-insert1]
+include::{page-version}@new_home::./data.adoc[tag=match-insert1]
 ----
 
 

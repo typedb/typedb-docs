@@ -37,13 +37,13 @@ Using a read transaction, let's count the number of users in the database:
 [,typeql]
 ----
 #!test[read, db=get-started]
-include::./query-composition.adoc[tag=reduce1]
+include::{page-version}@new_home::./query-composition.adoc[tag=reduce1]
 ----
 
 We see the following result:
 [source]
 ----
-include::./query-composition.adoc[tag=reduce1_result]
+include::{page-version}@new_home::./query-composition.adoc[tag=reduce1_result]
 ----
 
 Notice that the user variable `$user` has been consumed by `reduce`, and a new variable `$count` has been created.
@@ -53,14 +53,14 @@ Reductions can also use `groupby` to aggregate within groups:
 [,typeql]
 ----
 #!test[read, db=get-started]
-include::./query-composition.adoc[tag=reduce2]
+include::{page-version}@new_home::./query-composition.adoc[tag=reduce2]
 ----
 
 Returning:
 
 [source]
 ----
-include::./query-composition.adoc[tag=reduce2_result]
+include::{page-version}@new_home::./query-composition.adoc[tag=reduce2_result]
 ----
 
 Here we see the number of friends for each user, grouped by unique pairs of (user, username).
@@ -94,13 +94,13 @@ $count | 6
 [,typeql]
 ----
 #!test[read, db=get-started]
-include::./query-composition.adoc[tag=reduce1]
+include::{page-version}@new_home::./query-composition.adoc[tag=reduce1]
 ----
 
 We see the following result:
 [source]
 ----
-include::./query-composition.adoc[tag=reduce1_result]
+include::{page-version}@new_home::./query-composition.adoc[tag=reduce1_result]
 ----
 
 Notice that the user variable `$user` has been consumed by `reduce`, and a new variable `$count` has been created.
@@ -145,14 +145,14 @@ $username    | isa username "bob"
 [,typeql]
 ----
 #!test[read, db=get-started]
-include::./query-composition.adoc[tag=reduce2]
+include::{page-version}@new_home::./query-composition.adoc[tag=reduce2]
 ----
 
 Returning:
 
 [source]
 ----
-include::./query-composition.adoc[tag=reduce2_result]
+include::{page-version}@new_home::./query-composition.adoc[tag=reduce2_result]
 ----
 
 Here we see the number of friends for each user, grouped by unique pairs of (user, username).
@@ -210,13 +210,13 @@ Let's go back to our example:
 [,typeql]
 ----
 #!test[read, db=get-started]
-include::./query-composition.adoc[tag=pipeline1]
+include::{page-version}@new_home::./query-composition.adoc[tag=pipeline1]
 ----
 
 Which returns:
 [source]
 ----
-include::./query-composition.adoc[tag=pipeline1_result]
+include::{page-version}@new_home::./query-composition.adoc[tag=pipeline1_result]
 ----
 
 With this query pipeline, we've identified the most popular user using a `match` clause, and the `reduce`, `sort`, and `limit` operators!
@@ -268,12 +268,12 @@ $username    | isa username delta
 [,typeql]
 ----
 #!test[read, db=get-started]
-include::./query-composition.adoc[tag=pipeline1]
+include::{page-version}@new_home::./query-composition.adoc[tag=pipeline1]
 ----
 Which returns:
 [source]
 ----
-include::./query-composition.adoc[tag=pipeline1_result]
+include::{page-version}@new_home::./query-composition.adoc[tag=pipeline1_result]
 ----
 
 With this query pipeline, we've identified the most popular user using a `match` clause, and the `reduce`, `sort`, and `limit` operators!
@@ -299,13 +299,13 @@ and also to eliminate the most-popular user from appearing again:
 [,typeql]
 ----
 #!test[read, db=get-started]
-include::./query-composition.adoc[tag=pipeline2]
+include::{page-version}@new_home::./query-composition.adoc[tag=pipeline2]
 ----
 
 This returns:
 [source]
 ----
-include::./query-composition.adoc[tag=pipeline2_result]
+include::{page-version}@new_home::./query-composition.adoc[tag=pipeline2_result]
 ----
 
 At the end of this pipeline, we have a stream where each answer contains the most popular user and a different user who isn't friends with them yet.
@@ -360,13 +360,13 @@ $username       | isa username "delta"
 [,typeql]
 ----
 #!test[read, db=get-started]
-include::./query-composition.adoc[tag=pipeline2]
+include::{page-version}@new_home::./query-composition.adoc[tag=pipeline2]
 ----
 
 This returns:
 [source]
 ----
-include::./query-composition.adoc[tag=pipeline2_result]
+include::{page-version}@new_home::./query-composition.adoc[tag=pipeline2_result]
 ----
 
 At the end of this pipeline, we have a stream where each answer contains the most popular user and a different user who isn't friends with them yet.
@@ -386,7 +386,7 @@ Studio::
 [,typeql]
 ----
 #!test[write, db=get-started]
-include::./query-composition.adoc[tag=pipeline3]
+include::{page-version}@new_home::./query-composition.adoc[tag=pipeline3]
 ----
 
 After you execute the query once, every user will be friends with the most popular user.
@@ -422,7 +422,7 @@ friendship ($other-user, $user);
 [,typeql]
 ----
 #!test[write, db=get-started]
-include::./query-composition.adoc[tag=pipeline3]
+include::{page-version}@new_home::./query-composition.adoc[tag=pipeline3]
 ----
 
 After you execute the query once, every user will be friends with the most popular user.
@@ -456,7 +456,7 @@ Studio::
 [,typeql]
 ----
 #!test[schema, db=get-started]
-include::./query-composition.adoc[tag=function1]
+include::{page-version}@new_home::./query-composition.adoc[tag=function1]
 ----
 
 This function returns the first user and username using the same logic as the long pipeline we just wrote,
@@ -490,7 +490,7 @@ fun most_popular_user() -> user, username:
 [,typeql]
 ----
 #!test[schema, db=get-started]
-include::./query-composition.adoc[tag=function1]
+include::{page-version}@new_home::./query-composition.adoc[tag=function1]
 ----
 
 This function returns the first user and username using the same logic as the long pipeline we just wrote,
@@ -514,7 +514,7 @@ Studio::
 [,typeql]
 ----
 #!test[schema, db=get-started]
-include::./query-composition.adoc[tag=function_pipeline1]
+include::{page-version}@new_home::./query-composition.adoc[tag=function_pipeline1]
 ----
 
 This query is now much shorter, since we've reused the logic from the function to find the most popular user!
@@ -523,7 +523,7 @@ We correctly find every user is friends with the user `delta`:
 
 [source]
 -----
-include::./query-composition.adoc[tag=function_pipeline1_result]
+include::{page-version}@new_home::./query-composition.adoc[tag=function_pipeline1_result]
 -----
 
 --
@@ -575,7 +575,7 @@ $username              | isa username "candice001"
 [,typeql]
 ----
 #!test[read, db=get-started]
-include::./query-composition.adoc[tag=function_pipeline1]
+include::{page-version}@new_home::./query-composition.adoc[tag=function_pipeline1]
 ----
 
 This query is now much shorter, since we've reused the logic from the function to find the most popular user!
@@ -584,7 +584,7 @@ We correctly find every user is friends with the user `delta`:
 
 [source]
 -----
-include::./query-composition.adoc[tag=function_pipeline1_result]
+include::{page-version}@new_home::./query-composition.adoc[tag=function_pipeline1_result]
 -----
 
 --
@@ -614,7 +614,7 @@ Studio::
 [,typeql]
 ----
 #!test[schema, db=get-started]
-include::./query-composition.adoc[tag=fetch1]
+include::{page-version}@new_home::./query-composition.adoc[tag=fetch1]
 ----
 
 This query now returns a sequence of JSON documents:
@@ -686,7 +686,7 @@ fetch {
 [,typeql]
 ----
 #!test[read, db=get-started]
-include::./query-composition.adoc[tag=fetch1]
+include::{page-version}@new_home::./query-composition.adoc[tag=fetch1]
 ----
 
 The fetch clause lets you lay out the exact JSON document you need for your application, making it easy to retrieve additional data such as optional attributes or answers from subqueries.
