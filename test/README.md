@@ -80,16 +80,16 @@ See examples in `./tests/` for how to write testable examples in `.adoc` files.
 
 ## Running tests
 
-### Multi-file run
+### Directory run
 
 ```bash
-python -m test.main <lang>     
+python -m test.main <lang> <directory>
 ```
 
 ### Single file run
 
 ```bash
-python -m test.main <lang> <file-name>    
+python -m test.main <lang> <file>    
 ```
 
 ## Development

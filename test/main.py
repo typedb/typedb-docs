@@ -63,33 +63,33 @@ def test_one_file(runner, lang: str, adoc_path: str):
         logger.info(f"[{adoc_path}]: Bad adoc attributes in file.")
 
 
-def test_all_files(runner, lang: str):
+def test_all_files(runner, lang: str, directory: str):
     files_with_failures = []
     files_tested_counter = 0
-    for directory in MODULE_DIRECTORIES.values():
-        for root, _, files in os.walk(directory + "/pages"):
-            for file in files:
-                if file.endswith(".adoc"):
-                    adoc_path = os.path.relpath(os.path.join(root, file))
-                    adoc_config = parse_adoc_config(adoc_path, runner.adoc_keys)
-                    if adoc_config[runner.adoc_keys[0]] is not None:
-                        if runner.check_config(adoc_config):
-                            logger.info(f"TESTING FILE {adoc_path}")
-                            if not try_tests_in_file(runner, lang, adoc_path, adoc_config):
-                                files_with_failures.append(adoc_path)
-                            files_tested_counter += 1
-                        else:
-                            logger.info(f"Bad adoc attributes in file.")
+    for root, _, files in os.walk(directory):
+        for file in files:
+            if file.endswith(".adoc"):
+                adoc_path = os.path.relpath(os.path.join(root, file))
+                adoc_config = parse_adoc_config(adoc_path, runner.adoc_keys)
+                if adoc_config[runner.adoc_keys[0]] is not None:
+                    if runner.check_config(adoc_config):
+                        logger.info(f"TESTING FILE {adoc_path}")
+                        if not try_tests_in_file(runner, lang, adoc_path, adoc_config):
+                            files_with_failures.append(adoc_path)
+                        files_tested_counter += 1
+                    else:
+                        logger.info(f"Bad adoc attributes in file.")
 
-    logger.info(f"SUMMARY: {files_tested_counter} file(s) tested, {len(files_with_failures)} file(s) had test failures" + "".join(["\n>> " + file for file in files_with_failures]))
+    logger.info(f"SUMMARY: {files_tested_counter} file(s) tested in '{directory}', {len(files_with_failures)} file(s) had test failures" + "".join(["\n>> " + file for file in files_with_failures]))
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: python -m test.main <lang> [<path-to-file>]")
+    if len(sys.argv) != 3:
+        print("Usage: python -m test.main <lang> [<file> or <directory>]")
         sys.exit(1)
 
     lang = sys.argv[1]
+    path = sys.argv[2]
 
     try:
         module = importlib.import_module(f'test.runners.{lang}_runner')
@@ -102,10 +102,9 @@ if __name__ == "__main__":
         print(f"Runner class for language '{lang}' not found. msg: {e}")
         sys.exit(1)
 
-    if len(sys.argv) > 2:
-        logger.info(f"START: testing {lang} in single file mode")
-        file_path = sys.argv[2]
-        test_one_file(runner, lang, file_path)
+    if os.path.isdir(path):
+        logger.info(f"START: testing {lang} in directory mode")
+        test_all_files(runner, lang, path)
     else:
-        logger.info(f"START: testing {lang} in multi-file mode")
-        test_all_files(runner, lang)
+        logger.info(f"START: testing {lang} in single file mode")
+        test_one_file(runner, lang, path)
