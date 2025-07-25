@@ -9,7 +9,7 @@ build:
       image: typedb-ubuntu-22.04
       type: foreground
       command: |
-        apt install cargo python3
+        sudo apt install cargo python3
         
         # Note: Rust runners install their own dependencies
         python3 -m pip install -r test/runners/python_requirements.txt
