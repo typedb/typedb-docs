@@ -61,7 +61,8 @@ def test_one_file(runner, lang: str, adoc_path: str):
         try_tests_in_file(runner, lang, adoc_path, adoc_config)
     else:
         logger.info(f"[{adoc_path}]: Bad adoc attributes in file.")
-
+    if runner.failure_count > 0:
+        sys.exit(1)
 
 def test_all_files(runner, lang: str, directory: str):
     files_with_failures = []
@@ -81,7 +82,8 @@ def test_all_files(runner, lang: str, directory: str):
                         logger.info(f"Bad adoc attributes in file.")
 
     logger.info(f"SUMMARY: {files_tested_counter} file(s) tested in '{directory}', {len(files_with_failures)} file(s) had test failures" + "".join(["\n>> " + file for file in files_with_failures]))
-
+    if runner.failure_count > 0:
+        sys.exit(1)
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:

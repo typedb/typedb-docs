@@ -5,11 +5,38 @@ config:
 
 build:
   correctness:
+    test-code-snippets:
+      image: typedb-ubuntu-22.04
+      type: foreground
+      command: |
+        apt install cargo python3
+        
+        # Note: Rust runners install their own dependencies
+        python3 -m pip install -r test/runners/python_requirements.txt
+        
+        test/start-community-server.sh
+        
+        # TODO: test node and java
+        
+        TEST_DIRS=("new_core_concepts")
+        TEST_LANGS=("typeql" "python" "rust")
+        
+        FAILED=false
+        for TEST_LANG in "${TEST_LANGS[@]}"; do
+          for TEST_DIR in "${TEST_DIRS[@]}"; do
+            python3 -m test.main "$TEST_LANG" "$TEST_DIR" || FAILED=true
+          done
+        done
+        $FAILED && exit 1
+        
+        test/stop-community-server.sh
+
+    # TODO: deployments shouldn't be 'correctness' jobs?
     deploy-3.x-development:
       filter:
         owner: typedb
         branch: 3.x-development
-      image: vaticle-ubuntu-21.04
+      image: typedb-ubuntu-22.04
       type: foreground
       command: |
         export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
@@ -20,13 +47,10 @@ build:
       filter:
         owner: typedb
         branch: 3.x-master
-      image: vaticle-ubuntu-21.04
+      image: typedb-ubuntu-22.04
       type: foreground
       command: |
         export RELEASE_DOCS_USERNAME=$REPO_GITHUB_USERNAME
         export RELEASE_DOCS_EMAIL=$REPO_GITHUB_EMAIL
         export RELEASE_DOCS_TOKEN=$REPO_GITHUB_TOKEN
         bazel run @typedb_dependencies//tool/release:docs -- $FACTORY_OWNER typedb-docs-web master $FACTORY_REPO content/3.x $FACTORY_COMMIT
-  execution:
-    - deploy-development
-    - deploy-production

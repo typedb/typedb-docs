@@ -13,6 +13,8 @@ logger = logging.getLogger('main')
 ADOC_TEST_KEY = "test-rust"
 ADOC_CONFIG_KEYS = [ADOC_TEST_KEY]
 
+RUST_TEST_TOML = "rust_cargo_toml.toml"
+
 
 class RustRunner(BaseRunner):
     def __init__(self):
@@ -72,21 +74,10 @@ class RustRunner(BaseRunner):
 
         cargo_toml_path = os.path.join(self.temp_dir, "Cargo.toml")
         if not os.path.exists(cargo_toml_path):
-            with open(cargo_toml_path, "w") as f:
-                f.write(
-                    """
-[package]
-name = "temp_rust_project"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-serde_json = "1.0.114"
-typedb-driver = { version = "3.1.0" }
-tokio = "1.43.0"
-futures-util = "0.3.31"
-"""
-                )
+            shutil.copyfile(
+                os.path.join(os.path.dirname(__file__), RUST_TEST_TOML_PATH),
+                cargo_toml_path,
+            )
 
         src_dir = os.path.join(self.temp_dir, "src")
         os.makedirs(src_dir, exist_ok=True)
