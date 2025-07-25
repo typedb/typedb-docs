@@ -29,7 +29,7 @@ with driver.transaction(DB_NAME, TransactionType.READ) as tx:
 
 === Promise-based execution
 
-TypeDB drivers use an asynchronous promise-based model for query execution: `tx.query()` returns immediately with a promise after submitting the query to the server. This model **allows submitting many concurrent queries within the same transaction, without resolving them one by one**. 
+TypeDB drivers use an asynchronous promise-based model for query execution: `tx.query()` returns immediately with a promise after submitting the query to the server. This model **allows submitting many concurrent queries within the same transaction, without resolving in series. This is used for concurrent reads and optimizing writes throughput.**.
 
 In Rust, two version of the driver are available: using `async`, or a threaded version that conforms to the "Promise" architecture.
 
@@ -148,8 +148,4 @@ def undefine_user_owns_phone(driver):
 
 == Next steps
 
-With query execution mastered, you're ready to explore:
-
 * **xref:{page-version}@new_core_concepts::drivers/best-practices.adoc[Best Practices]** - Advanced patterns for query optimization and error handling
-* **xref:{page-version}@new_core_concepts::drivers/transactions.adoc[Transactions]** - Understanding transaction management for complex queries
-* **xref:{page-version}@new_core_concepts::drivers/connections.adoc[Connections]** - Connection patterns for query-intensive applications

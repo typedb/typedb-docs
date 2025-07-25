@@ -3,30 +3,34 @@
 :Summary: Understanding transaction types, lifecycle, and patterns with TypeDB drivers.
 :keywords: typedb, driver, transactions, isolation, concurrency
 
+After opening a driver with the correct configuration and credentials, you can open transactions in your application.
+
 == Transaction fundamentals
 
 === Transaction types
 
 TypeDB provides three distinct transaction types, each with specific capabilities:
 
-[cols="1,3,2"]
+[cols="3,2"]
 |===
-|Type |Capabilities |Use Cases
+|Type |Capabilities
 
 |**READ**
-|* Execute read queries only +
-* Cannot modify data or schema +
-* Lightweight 
-|**WRITE** 
-|* Execute read queries +
-* Modify data (insert, delete, update) +
-* Cannot modify schema +
+a|* Execute read queries only
+* Cannot modify data or schema
+* Lightweight
+
+|**WRITE**
+a|* Execute read queries
+* Execute data write queries (insert, delete, update)
+* Cannot modify schema
 * May conflict and fail on commit
+* Locks out schema transactions
 
 |**SCHEMA**
-|* Execute read queries +
-* Modify data +
-* Modify schema +
+a|* Execute read queries +
+* Execute data write queries +
+* Execute schema modification queries +
 * Exclusive access +
 * Locks out write transactions
 
@@ -38,7 +42,7 @@ TypeDB transactions provide ACID guarantees up to **snapshot isolation**. For mo
 
 == Transaction lifecycle
 
-=== Basic transaction pattern
+=== Basic transaction usage
 
 Every transaction follows the same lifecycle pattern:
 
@@ -75,14 +79,14 @@ For example, in Python:
 # WRITE transactions for data modifications
 with driver.transaction(DB_NAME, TransactionType.WRITE) as tx:
     # Insert new data
-    tx.query("insert $u isa user, has email 'alice@example.com', has age 30;")
+    tx.query("insert $u isa user, has email 'alice@example.com', has age 30;").resolve()
     
-    # Update existing data
+    # Update existing data and ignore the response
     tx.query("""
         match $user isa user, has age $age;
         delete has $age of $user;
         insert $user has age 31;
-    """)
+    """).resolve()
     
     # All changes are buffered until commit
     tx.commit()
@@ -99,17 +103,17 @@ For example, in Python:
 # SCHEMA transactions for schema changes
 with driver.transaction(DB_NAME, TransactionType.SCHEMA) as tx:
     # Define new schema elements
-    _ = tx.query("""
+    tx.query("""
         define
         entity company, owns company-name, owns email, plays employment:employer;
 		entity user, owns email, plays employment:employee;
         attribute company-name, value string;
 		attribute email, value string;
         relation employment, relates employer, relates employee;
-    """)
+    """).resolve()
     
     # Can also modify data in same transaction, but it will not be as efficient as using a WRITE transaction
-    _ = tx.query("insert $c isa company, has company-name 'TypeDB Inc';")
+    tx.query("insert $c isa company, has company-name 'TypeDB Inc';").resolve()
     
     tx.commit()  # Commit schema and data changes atomically
 ----
@@ -125,20 +129,26 @@ There is a configurable timeout to obtain the schema lock, as noted below.
 
 == Transaction options and timeouts
 
+For the complete documentation, see your driver's reference page:
+
+* xref:{page-version}@new_reference::typedb-grpc-drivers/python.adoc#_TransactionOptions[Python gRPC transaction options]
+* xref:{page-version}@new_reference::typedb-grpc-drivers/java.adoc#_TransactionOptions[Java gRPC transaction options]
+* xref:{page-version}@new_reference::typedb-grpc-drivers/rust.adoc#_TransactionOptions[Rust gRPC transaction options]
+* xref:{page-version}@new_reference::typedb-http-drivers/typescript.adoc#_TransactionOptions[Typescript HTTP library]
+* xref:{page-version}@new_reference::typedb-http-api.adoc#_TransactionOptions[HTTP API transaction options]
+
 === Transaction timeouts
 
 Transactions have configurable timeout settings. The default setting is a **5 minute timeout**. This helps avoid resource leaks when users forget to close transactions.
 
-You can configure transactions with a specific timeout:
+You can configure transactions with a specific timeout.
 
+For example, in Python:
 [,python]
 ----
 from typedb.driver import TransactionOptions
 
-# Configure transaction timeout (in milliseconds)
-tx_options = TransactionOptions(
-	transaction_timeout_millis=60000
-)
+tx_options = TransactionOptions(transaction_timeout_millis=60000)
 
 with driver.transaction(DB_NAME, TransactionType.WRITE, options=tx_options) as tx:
     # This transaction will timeout after 60 seconds if not committed
@@ -150,9 +160,11 @@ with driver.transaction(DB_NAME, TransactionType.WRITE, options=tx_options) as t
 
 For schema transactions, you can configure how long to wait for exclusive access. The default timeout is 30 seconds.
 
+For example, in Python:
 [source,python]
 ----
-# Configure schema lock acquisition timeout
+from typedb.driver import TransactionOptions
+
 tx_options = TransactionOptions(schema_lock_acquire_timeout_millis=60_000)
 
 with driver.transaction(DB_NAME, TransactionType.SCHEMA, options=tx_options) as tx:
@@ -165,33 +177,7 @@ with driver.transaction(DB_NAME, TransactionType.SCHEMA, options=tx_options) as 
 
 === Keep transactions short
 
-Minimize transaction duration to reduce conflicts and resource usage:
-
-[source,python]
-----
-# GOOD: Short transaction
-def update_user_age(email, new_age):
-    with driver.transaction(DB_NAME, TransactionType.WRITE) as tx:
-        tx.query(f"""
-            match $u isa user, has email '{email}';
-            delete $u has $old_age; $old_age isa age;
-            insert $u has age {new_age};
-        """)
-        tx.commit()
-
-# AVOID: Long transaction with external operations
-def bad_update_user_age(email, new_age):
-    with driver.transaction(DB_NAME, TransactionType.WRITE) as tx:
-        # Don't do heavy processing inside transactions
-        processed_age = complex_age_calculation(new_age)  # Takes 30 seconds!
-        
-        tx.query(f"""
-            match $u isa user, has email '{email}';
-            delete $u has $old_age; $old_age isa age;
-            insert $u has age {processed_age};
-        """)
-        tx.commit()
-----
+Minimize transaction duration to reduce conflicts and resource usage. This is particularly important for write transactions.
 
 === Batching operations
 
@@ -202,12 +188,11 @@ Group related operations but avoid transactions that are too large. Optimal thro
 # GOOD: Batch related operations
 def create_users_batch(user_data_list):
     with driver.transaction(DB_NAME, TransactionType.WRITE) as tx:
-        for user_data in user_data_list[:50]:  # Limit batch size
-            tx.query(f"insert $u isa user, has email '{user_data['email']}', has name '{user_data['name']}';")
+        tx.query(f"insert $u isa user, has email '{user_data['email']}', has name '{user_data['name']}';")
         tx.commit()
 
 # For large datasets, process in chunks
-def create_users_chunked(user_data_list, chunk_size=50):
+def create_users_chunked(user_data_list, chunk_size=100):
     for i in range(0, len(user_data_list), chunk_size):
         chunk = user_data_list[i:i + chunk_size]
         create_users_batch(chunk)
@@ -234,8 +219,7 @@ def update_user_with_retry(email, new_age, max_retries=3):
                 tx.commit()
                 return  # Success!
         except TypeDBDriverException as e:
-            # STC2 is a isolation conflict
-            if "STC2" in str(e).upper() and attempt < max_retries - 1:
+            if "conflict" in str(e).lower() and attempt < max_retries - 1:
                 # Transaction conflict - wait and retry
                 wait_time = 0.1 * (2 ** attempt) + random.uniform(0, 0.1)
                 time.sleep(wait_time)
@@ -248,8 +232,5 @@ def update_user_with_retry(email, new_age, max_retries=3):
 
 == Next steps
 
-With transaction fundamentals covered, you're ready to explore:
-
 * **xref:{page-version}@new_core_concepts::drivers/queries.adoc[Queries]** - Learn about query execution and result processing
 * **xref:{page-version}@new_core_concepts::drivers/best-practices.adoc[Best Practices]** - Transaction management and performance optimization patterns
-* **xref:{page-version}@new_core_concepts::drivers/connections.adoc[Connections]** - Review connection management concepts

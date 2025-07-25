@@ -1,7 +1,7 @@
 = Overview
+:pageTitle: Overview
 :Summary: Overview of TypeDB drivers and their conceptual model.
 :keywords: typedb, driver, api, RPC, HTTP, architecture
-:pageTitle: TypeDB Drivers Overview
 
 == What are TypeDB drivers?
 
@@ -36,11 +36,11 @@ A more accessible RESTful API designed for:
 * **Language flexibility**: Use from any language with HTTP client capabilities
 * **Integration scenarios**: Easier integration with existing HTTP-based workflows
 
-The server's HTTP endpoint may also be abstracted away behind HTTP driver libraries in your language (check for availability!). These libraries offer a similar interface to the gRPC driver libraries, with UX differences and limitations.
+The server's HTTP endpoint may also be abstracted away behind xref:{page-version}@new_reference::typedb-http-drivers/index.adoc[HTTP driver libraries] in your language. These libraries offer a similar interface to the gRPC driver libraries.
 
 [NOTE]
 ====
-While the HTTP endpoint offers greater accessibility, the RPC drivers provide better performance, simpler APIs, and more sophisticated connection management for production applications.
+While the HTTP endpoint offers greater accessibility, the gRPC drivers provide better performance, simpler APIs, and more sophisticated connection management for production applications.
 ====
 
 == Driver usage
@@ -58,21 +58,26 @@ Network Layer (gRPC/HTTP)
 TypeDB Server
 ----
 
-=== Implementation architecture
+=== Internal architecture
 
 TypeDB's gRPC drivers are implemented as FFI (Foreign Function Interface) wrappers around a shared Rust driver core, enabling the core logic, validation, and error handling to be implemented once and exposed into each language with a thin wrapper.
 
+This means that your driver may be platform (eg. OS and CPU architecture) specific, and make your application non-portable.
+However, this is typically not a problem - Rust compiles per-platform or is distributed as source, Python applications are usually distributed as source, and the Java driver is specifically built to support major platforms to allow shipping built Java applications.
+
 == Basic driver workflow
 
-Every TypeDB application follows a similar pattern:
+Applications using TypeDB drivers tend to follow a similar pattern:
 
 [source,python]
 ----
+from typedb.driver import *
+
 # 1. Connect to TypeDB
 with TypeDB.driver(address, credentials, options) as driver:
     
     # 2. Open a transaction
-    with driver.transaction(DB, TransactionType.READ) as tx:
+    with driver.transaction(DB_NAME, TransactionType.READ) as tx:
         
         # 3. Execute queries
         result = tx.query("match $x isa person; fetch  {{ $x.* }};").resolve()
@@ -81,9 +86,9 @@ with TypeDB.driver(address, credentials, options) as driver:
         for answer in result.as_concept_documents():
             print(answer)
         
-        # 5. Transaction automatically closed
+        # 5. Transaction automatically closed, call .commit() to commit and close, or .close() explicitly if not using 'with'
     
-    # 6. Driver connection automatically closed
+    # 6. Driver connection automatically closed, or call .close() explicitly if not using 'with'
 ----
 
 

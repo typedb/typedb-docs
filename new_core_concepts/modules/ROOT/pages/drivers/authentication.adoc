@@ -1,7 +1,7 @@
 = Authentication
+:pageTitle: Authentication
 :Summary: Understanding authentication with TypeDB drivers.
 :keywords: typedb, driver, authentication, credentials, security
-:pageTitle: TypeDB Driver Authentication
 
 TypeDB requires authentication for all client connections. Understanding how authentication works across different deployments and how to manage users programmatically is essential for building secure applications.
 
@@ -40,8 +40,10 @@ Always change default passwords before deploying to production environments.
 
 The HTTP endpoint uses token-based authentication instead of direct credentials.
 
-Note that if you are using an official xref::{page-version}@new_reference/typedb-http-drivers/index.adoc[TypeDB HTTP Driver],
+Note that if you are using an official xref:{page-version}@new_reference::typedb-http-drivers/index.adoc[TypeDB HTTP Driver],
 this process is handled by the library.
+
+For the full reference, see the xref:{page-version}@new_reference::typedb-http-api.adoc[TypeDB HTTP API] documentation.
 
 === Token acquisition
 
@@ -79,9 +81,10 @@ curl --request GET \
 * **Renewal**: Obtain new tokens by re-authenticating
 * **Revocation**: Tokens are invalidated when servers restart
 
-=== Updating passwords
+== Updating passwords
 
-Change user passwords programmatically:
+It's possible to change user passwords programmatically.
+The `admin` user can be used to update any user's password, all other users can only update their own password.
 
 [tabs]
 ====
@@ -139,6 +142,7 @@ Common authentication errors and solutions:
 **Error**: "Authentication failed" or "Invalid username/password"
 
 **Solutions**:
+
 - Verify username and password are correct
 - Check if user account exists
 - Ensure user hasn't been deleted
@@ -148,16 +152,17 @@ Common authentication errors and solutions:
 **Error**: "Connection refused" or "Unable to connect"
 
 **Solutions**:
+
 - Verify server address and port
 - Check if TypeDB server is running
+- Check that the TLS is either enabled on both driver and server, or disabled on both driver and server
 - Ensure network connectivity
-- Check that the TLS network encryption settings are enabled on both driver and server, or disabled on both driver and server
 
 === TLS/encryption errors
 
 **Error**: "TLS handshake failed" or "Certificate validation failed"
 
 **Solutions**:
-- Verify encryption settings match server configuration
+
+- Check that the TLS is either enabled on both driver and server, or disabled on both driver and server
 - Check certificate paths and validity
-- Ensure TLS is enabled on server if required
