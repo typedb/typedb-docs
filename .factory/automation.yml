@@ -9,7 +9,7 @@ build:
       image: typedb-ubuntu-22.04
       type: foreground
       command: |
-        curl https://sh.rustup.rs -sSf | sh -- -y
+        curl https://sh.rustup.rs -sSf | sh -s -- -y
         
         # Note: Rust runners install their own dependencies
         python3 -m pip install -r test/runners/python_requirements.txt
