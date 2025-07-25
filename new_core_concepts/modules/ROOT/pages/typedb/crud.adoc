@@ -4,11 +4,14 @@ CRUD operations create, read, update, and delete data in the TypeDB database.
 
 == Create
 
-When a database is created, it contains no data. The first step to building a rich, structured knowledge base is to insert data into the database.
+When a database is created, it contains no data. The first step to building a rich, structured knowledge base is to insert data into the
+database. This can be done in two primary ways: using an `insert` stage for unconditional creation, or a `put` stage for idempotent
+creation. All creation operations must be performed in a write-capable transaction (i.e., `write` or `schema`).
 
-=== `insert`
+===  Unconditional creation using `insert`
 
-In TypeDB, data is created using `insert` stages in *write pipelines*. To insert data, open a write-capable transaction (i.e. `write` or `schema`).
+The `insert` stage is the fundamental command for creating new data. It adds the specified instances without first checking if they
+already exist. If insert is the first stage in a pipeline, it runs just once. For these examples, consider this schema:
 
 For these examples, consider the following schema:
 
@@ -16,12 +19,12 @@ For these examples, consider the following schema:
 .Sample schema
 ----
 define
-  entity order,
-    owns status,
+  entity person,
+    owns name @card(1),
     plays friendship:friend;
   relation friendship,
     relates friend;
-  attribute status,
+  attribute name,
     value string;
 ----
 
@@ -53,8 +56,8 @@ The output row will contain the newly created instances:
    -------------
 ----
 
-When an `insert` stage is preceded by other stages (most commonly `match`), the `insert` stage will run once for each input row, and its
-output rows will contain the newly created instances as well as the contents of the input rows.
+When an `insert` stage is preceded by other stages, most commonly `match`, the `insert` stage will run once for each row it receives from
+the previous stage, and its output rows will contain the newly created instances as well as the contents of the input rows.
 
 In this example, Alice and Bob are already in the database, and we want to create a friendship between them.
 
@@ -71,9 +74,11 @@ insert
 For more detailed information on `insert` stages, see the xref:{page-version}@typeql::pipelines/insert.adoc[Insert query stage documentation in the
 TypeQL reference].
 
-=== `put`
+=== Idempotent creation using `put`
 
-Another way to insert data is by using a `put` query.
+The `put` stage represents an "insert if not exists" operation and provides a simple way to ensure data exists. It first attempts to match
+the entire pattern against existing data. If a complete match is found, no changes are made. If _any part of the pattern_ does not match, the
+query executes as if it were an insert stage for _the entire pattern._
 
 [,typeql]
 ----
@@ -89,13 +94,12 @@ it were an `insert` stage.
 
 [IMPORTANT]
 ====
-`put` stages are all or nothing! For example, even if a `person` with the name `"Alice"` already exists in the database, if there is
-no `person` with the name `"Bob"`, or no friendship between the two, the query will insert a new `person` with the name `"Alice"`, a new
-`person` with the name `"Bob"`, and a new friendship between them.
+It's worth underlining: `put` stages are all-or-nothing. For example, in the query above, even if a `person` named`"Alice"` already exists
+in the database, if there is no `person` named `"Bob"`, the query will insert a new `person` with the name `"Alice"`, a new `person` with
+the name `"Bob"`, and a new friendship between them.
 ====
 
-For more detailed information on `put` stages, see the xref:{page-version}@typeql::pipelines/put.adoc[Put query stage documentation in the
-TypeQL reference].
+For more detailed information on `put` stages, see the xref:{page-version}@typeql::pipelines/put.adoc[put query stage] documentation in the TypeQL reference.
 
 === Bulk loading
 
@@ -154,15 +158,57 @@ let results: Vec<typedb_driver::Result> =
 --
 ====
 
+==== Duplication
 
-==== Other considerations
+A major concern when loading large amounts of data is duplication. In most cases, it can be avoided by using the `put` stage:
 
+[,typeql]
+.Insert a new user if there isn't already a user named `"john1"`
+----
+put
+  $x isa user, has username "john_1";
+----
+
+==== Data dependencies and ordering
+
+When batching and parallelizing be aware of data dependencies: for example, you can only insert a friendship between two users, if:
+
+* either, the friendship is inserted as part of the same insert query as the users,
+* or, the friendship is inserted as part of insert query is run _after_ the insert query for the users but in the _same transaction_,
+* or, the friendship insert is part of a separated transaction that starts _after the transaction inserting the users has successfully
+  committed_.
+
+When insertions are performed in parallel, care must be taken that any transaction that is expected to have completed has successfully
+committed.
 
 == Read
 
-To retrieve data from the database, open a transaction (all transaction types are read-capable, `read`, `write`, and `schema`).
+All queries must be performede within a transaction. All transaction types, `read`, `write`, and `schema`, are read-capable.
 
-=== `fetch`
+=== Retrieving data in rows using `match`
+
+A `match` stage is the fundamental command for retrieving data. They retrieve data by matching *patterns*. Patterns represent constraints
+the variables are expected to satisfy. Match stages return _all combinations_ of data for their variables that satisfy the pattern, though
+they will not rebind a variable already bound by previous stages.
+
+Patterns can be combined into larger patterns by conjunction with `;`, disjuction with `or`, and negation with `not`. Patterns can also be
+marked as optional by putting them in a `try` block, in which case any failure to match those patterns does not affect the rest of the
+stage, and the variables that are newly introduced in the block are considered optionally bound (`$x?`). See the
+xref:{page-version}@typeql::patterns/index.adoc[pattern reference] for more.
+
+The stream of rows can then be processed using stream operators such as `sort`, `reduce`, and `limit`, or extended with more `match`
+clauses.
+
+When retrieving data from the database there is a basic distinction to keep in mind:
+
+* *objects*, i.e. entities and relations, do not have a value that can be returned from the database; instead they are represented
+  by an internal ID (see xref:{page-version}@typeql::data_model.adoc#representation[IID]).
+* *attributes* are fully identified by their type and value.
+
+For the full list of query stages and stream operators, consult the xref:{page-version}@typeql::pipelines/index.adoc[data pipelines]
+documentation in the TypeQL reference.
+
+=== Retrieving data in documents using `fetch`
 
 A `fetch` stage converts each input row into a JSON-like document. The body of a `fetch` stage describes the structure of the document.
 
