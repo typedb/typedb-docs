@@ -3,7 +3,7 @@ import logging
 import sys
 import os
 from typing import Dict, List, Optional
-from code_test.parser.parser import Parser, ParsedTest
+from test.parser.parser import Parser, ParsedTest
 
 # Logging config
 logger = logging.getLogger('main')
@@ -86,13 +86,13 @@ def test_all_files(runner, lang: str):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python -m code_test.main <lang> [<path-to-file>]")
+        print("Usage: python -m test.main <lang> [<path-to-file>]")
         sys.exit(1)
 
     lang = sys.argv[1]
 
     try:
-        module = importlib.import_module(f'code_test.runners.{lang}_runner')
+        module = importlib.import_module(f'test.runners.{lang}_runner')
         runner_class = getattr(module, f'{lang.capitalize()}Runner')
         runner = runner_class()
     except ModuleNotFoundError as e:

@@ -1,7 +1,7 @@
 from typedb.driver import TypeDB, Driver, TransactionType, Credentials, DriverOptions
 from enum import Enum
 from typing import List, Dict, Tuple, Union
-from code_test.parser.parser import ParsedTest
+from test.parser.parser import ParsedTest
 import logging
 logger = logging.getLogger('main')
 # To see debug log, set logging level to debug in main.py

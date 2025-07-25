@@ -2,6 +2,7 @@
 :pageTitle: Overview
 :Summary: Overview of TypeDB drivers and their conceptual model.
 :keywords: typedb, driver, api, RPC, HTTP, architecture
+:test-python: true
 
 == What are TypeDB drivers?
 
@@ -71,24 +72,38 @@ Applications using TypeDB drivers tend to follow a similar pattern:
 
 [source,python]
 ----
+#!test
 from typedb.driver import *
+
+DB_NAME = "typedb"
+address = "localhost:1729"
+credentials = Credentials("admin", "password")
+options = DriverOptions(is_tls_enabled:=True, tls_root_ca_path=None)
 
 # 1. Connect to TypeDB
 with TypeDB.driver(address, credentials, options) as driver:
-    
-    # 2. Open a transaction
+    # 2. Initialize database with a schema  during application startup
+    try:
+        # may error if the database already exists
+        driver.databases.create(DB_NAME)
+    finally:
+        with driver.transaction(DB_NAME, TransactionType.SCHEMA) as tx:
+            tx.query("define entity person;").resolve()
+            tx.commit()
+
+    # 3. Open a transaction
     with driver.transaction(DB_NAME, TransactionType.READ) as tx:
         
-        # 3. Execute queries
-        result = tx.query("match $x isa person; fetch  {{ $x.* }};").resolve()
-        
-        # 4. Process results
+        # 4. Execute queries
+        result = tx.query("match $x label person; fetch  { 'entity': $x };").resolve()
+
+        # 5. Process results
         for answer in result.as_concept_documents():
             print(answer)
         
-        # 5. Transaction automatically closed, call .commit() to commit and close, or .close() explicitly if not using 'with'
+        # 6. Transaction automatically closed, call .commit() to commit and close, or .close() explicitly if not using 'with'
     
-    # 6. Driver connection automatically closed, or call .close() explicitly if not using 'with'
+    # 7. Driver connection automatically closed, or call .close() explicitly if not using 'with'
 ----
 
 
