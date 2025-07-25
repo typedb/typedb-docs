@@ -12,6 +12,8 @@ build:
         curl https://sh.rustup.rs -sSf | sh -s -- -y
         
         # Note: Rust runners install their own dependencies
+        sudo apt-get update
+        sudo apt-get install -y python3-pip
         python3 -m pip install -r test/runners/python_requirements.txt
         
         test/start-community-server.sh
