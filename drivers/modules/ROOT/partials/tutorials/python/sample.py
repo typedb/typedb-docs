@@ -7,7 +7,6 @@ from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions
 # tag::constants[]
 DB_NAME = "sample_app_db"
 SERVER_ADDR = "127.0.0.1:1729"
-
 USERNAME = "admin"
 PASSWORD = "password"
 # end::constants[]
