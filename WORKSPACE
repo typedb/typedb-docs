@@ -81,8 +81,12 @@ load("@typedb_bazel_distribution_pip//:requirements.bzl", pip_install_deps = "in
 pip_install_deps()
 
 ################################
-# Load @vaticle dependencies #
+# Load @typedb dependencies #
 ################################
+
+# Load artifacts
+load("//dependencies/typedb:artifacts.bzl", "typedb_artifact")
+typedb_artifact()
 
 # load maven dependencies
 load("//dependencies/maven:artifacts.bzl", typedb_docs_artifacs = "artifacts")
