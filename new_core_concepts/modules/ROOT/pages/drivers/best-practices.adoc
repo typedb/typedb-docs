@@ -25,7 +25,7 @@ Python::
 # GOOD: Automatic cleanup with context manager
 with TypeDB.driver(address, credentials, options) as driver:
     # Connection automatically closed when exiting block
-    with driver.transaction(db_name, TransactionType.READ) as tx:
+    with driver.transaction(DB_NAME, TransactionType.READ) as tx:
         # Transaction automatically closed
         results = tx.query("match $x isa entity;")
 ----
@@ -52,7 +52,7 @@ Rust::
 ----
 // GOOD: Resources automatically cleaned up when dropped
 let driver = TypeDBDriver::new(address, credentials, options).await?;
-let tx = driver.transaction(db_name, TransactionType::Read).await?;
+let tx = driver.transaction(DB_NAME, TransactionType::Read).await?;
 let results = tx.query("match $x isa entity;").await?;
 // Driver and transaction automatically closed when going out of scope
 ----
@@ -73,7 +73,7 @@ Python::
 # MANUAL: Explicit cleanup required
 driver = TypeDB.driver(address, credentials, options)
 try:
-    tx = driver.transaction(db_name, TransactionType.READ)
+    tx = driver.transaction(DB_NAME, TransactionType.READ)
     try:
         results = tx.query("match $x isa entity;")
         # Process results...
@@ -173,7 +173,7 @@ Python::
 [,python]
 ----
 try:
-    with driver.transaction(db_name, TransactionType.READ) as tx:
+    with driver.transaction(DB_NAME, TransactionType.READ) as tx:
         result = tx.query("match $x isa person;").resolve()
         # Process result...
 except TypeDBDriverException as e:
@@ -215,7 +215,7 @@ Rust::
 --
 [,rust]
 ----
-let tx = driver.transaction(db_name, TransactionType::Read).await?;
+let tx = driver.transaction(DB_NAME, TransactionType::Read).await?;
 match tx.query("match $x isa person;").await {
     Ok(result) => {
         // Process result...
@@ -246,66 +246,39 @@ Use the most restrictive transaction type that meets your needs:
 [source,python]
 ----
 # Use READ transactions for queries that don't modify data
-with driver.transaction(db_name, TransactionType.READ) as tx:
+with driver.transaction(DB_NAME, TransactionType.READ) as tx:
     users = tx.query("match $u isa user; fetch {{ $u.*; }};").resolve().as_concept_documents()
 
 # Use WRITE transactions for data modifications
-with driver.transaction(db_name, TransactionType.WRITE) as tx:
+with driver.transaction(DB_NAME, TransactionType.WRITE) as tx:
     tx.query("insert $u isa user, has email 'new@user.com';")
     tx.commit()
 
 # Use SCHEMA transactions only for schema changes
-with driver.transaction(db_name, TransactionType.SCHEMA) as tx:
+with driver.transaction(DB_NAME, TransactionType.SCHEMA) as tx:
     tx.query("define entity new-type;")
     tx.commit()
 ----
 
-=== Transaction lifecycle
-
-It is recommended to prefer short-lived transactions, since each transaction pins resources on the server.
-
-[source,python]
-----
-# GOOD: Short-lived transactions
-with driver.transaction(db_name, TransactionType.WRITE) as tx:
-    # Do all related work in one transaction
-    tx.query("insert $u isa user, has email 'user1@example.com';")
-    tx.query("insert $u isa user, has email 'user2@example.com';")
-    tx.commit()  # Commit when all work is done
-
-# AVOID: Long-lived transactions
-with driver.transaction(db_name, TransactionType.WRITE) as tx:
-    tx.query("insert $u isa user, has email 'user1@example.com';")
-    # Don't do heavy processing or I/O within transactions
-    process_large_file()  # This keeps the transaction open too long
-    tx.query("insert $u isa user, has email 'user2@example.com';")
-    tx.commit()
-----
-
-TypeDB server by default times out transactions that have been open for 5 minutes. This helps avoid resource leaks when users forget to close transactions. This timeout is configurable when the transaction is opened.
-
 == Performance optimization
 
-=== Batch operations
+To optimise data loading, a common pattern is to asynchronously submit a a batch of queries, resolve them all to catch any errors, and the commit:
 
-Group related operations into single transactions to reduce the cost of transaction commits. Note that if the transaction is too large, it could also slow down the server. We recommend about 10-100 insert queries per commit.
-
-[source,python]
+[source, python]
 ----
-# GOOD: Batch inserts in a single transaction
-with driver.transaction(db_name, TransactionType.WRITE) as tx:
-    for user_data in user_list:
-        query = f"insert $u isa user, has email '{user_data['email']}';"
-        tx.query(query)
-    tx.commit()
-
-# AVOID: Individual transactions for each operation
-for user_data in user_list:
-    with driver.transaction(db_name, TransactionType.WRITE) as tx:  # Inefficient!
-        query = f"insert $u isa user, has email '{user_data['email']}';"
-        tx.query(query)
-        tx.commit()
+def batch_load(driver, queries):
+	with driver.transaction(DB_NAME, TransactionType.WRITE) as tx:
+		promises = []
+		for query in queries:
+			promises.append(tx.query(query))
+		
+		# resolve all the promises
+		for p in promises:
+			p.resolve() # may throw an exception, such as a syntax error
+		
+		tx.commit()
 ----
+
 
 === Security considerations
 

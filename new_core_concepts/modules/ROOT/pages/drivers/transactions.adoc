@@ -127,7 +127,9 @@ There is a configurable timeout to obtain the schema lock, as noted below.
 
 === Transaction timeouts
 
-Transactions have configurable timeout settings:
+Transactions have configurable timeout settings. The default setting is a **5 minute timeout**. This helps avoid resource leaks when users forget to close transactions.
+
+You can configure transactions with a specific timeout:
 
 [,python]
 ----
@@ -146,7 +148,7 @@ with driver.transaction(DB_NAME, TransactionType.WRITE, options=tx_options) as t
 
 === Schema lock timeout
 
-For schema transactions, configure how long to wait for exclusive access. The default timeout is 30 seconds.
+For schema transactions, you can configure how long to wait for exclusive access. The default timeout is 30 seconds.
 
 [source,python]
 ----
@@ -191,7 +193,7 @@ def bad_update_user_age(email, new_age):
         tx.commit()
 ----
 
-=== Batch operations appropriately
+=== Batching operations
 
 Group related operations but avoid transactions that are too large. Optimal throughput is achieved with commits of 10-100 queries per transaction.
 
