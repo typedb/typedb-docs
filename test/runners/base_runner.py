@@ -39,11 +39,12 @@ class BaseRunner(ABC):
         pass
 
     def before_run_test(self, parsed_test):
-        if parsed_test.config.get(TEST_CONFIG_KEY_RESET):
+        if TEST_CONFIG_KEY_RESET in parsed_test.config:
             self.reset_local_databases()
 
     def after_run_test(self, parsed_test):
-        if parsed_test.config.get(TEST_CONFIG_KEY_RESET_AFTER):
+        print("In after test, with parsed test:" + str(parsed_test))
+        if TEST_CONFIG_KEY_RESET_AFTER in parsed_test.config:
             self.reset_local_databases()
 
     @abstractmethod

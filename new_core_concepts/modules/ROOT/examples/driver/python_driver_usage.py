@@ -1,0 +1,45 @@
+#tag::code[]
+#tag::setup_and_schema[]
+#tag::import_and_constants[]
+from typedb.driver import *
+
+DB_NAME = "my_database"
+address = "localhost:1729"
+credentials = Credentials("admin", "password")
+options = DriverOptions(is_tls_enabled=True, tls_root_ca_path=None)
+#end::import_and_constants[]
+
+#tag::driver_create[]
+driver = TypeDB.driver(address, credentials, options)
+#end::driver_create[]
+#tag::database_create[]
+try:
+    driver.databases.create(DB_NAME)
+finally:
+    pass
+#end::database_create[]
+
+#tag::schema_create[]
+with driver.transaction(DB_NAME, TransactionType.SCHEMA) as tx:
+    # Define new schema elements
+    tx.query("""
+        define
+        attribute company-name, value string;
+		attribute email, value string;
+		attribute name, value string;
+		attribute age, value integer;
+        entity company, owns company-name, owns email, plays employment:employer;
+		entity user, owns name, owns email, owns age, plays employment:employee;
+        relation employment, relates employer, relates employee;
+    """).resolve()
+    tx.commit()
+#end::schema_create[]
+#end::setup_and_schema[]
+
+#tag::data_create[]
+with driver.transaction(DB_NAME, TransactionType.WRITE) as tx:
+    # Create a company
+    tx.query("insert $u isa user, has name 'alice', has email 'alice@example.com', has age 25;").resolve()
+    tx.commit()
+#end::data_create[]
+#end::code[]

@@ -76,6 +76,8 @@ Applications using TypeDB drivers tend to follow a similar pattern:
 include::{page-version}@new_core_concepts::example$driver/python_driver_setup.py[tag=import_and_constants]
 
 # 1. Connect to TypeDB
+include::{page-version}@new_core_concepts::example$driver/python_driver_setup.py[tag=driver_create]
+    # 2. Initialize database with a schema  during application startup
 include::{page-version}@new_core_concepts::example$driver/python_driver_setup.py[tag=database_create]
         with driver.transaction(DB_NAME, TransactionType.SCHEMA) as tx:
             tx.query("define entity person;").resolve()

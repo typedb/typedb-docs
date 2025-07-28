@@ -11,7 +11,6 @@ logger = logging.getLogger('main')
 FILE_CONFIG_KEY_TEST = "test-python"
 FILE_CONFIG_KEYS = [FILE_CONFIG_KEY_TEST]
 
-
 class PythonRunner(BaseRunner):
     def __init__(self):
         super().__init__(file_config_keys=FILE_CONFIG_KEYS)

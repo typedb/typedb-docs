@@ -102,20 +102,20 @@ Python::
 --
 [,python]
 ----
-#!test
+#!test[reset-after]
 include::{page-version}@new_core_concepts::example$driver/python_driver_setup.py[tag=import_and_constants]
 
 with TypeDB.driver(address, credentials, options) as driver:
-    driver.users.create("demo_user", "test-password")
+    driver.users.create("demo_user", "test_password")
 
-new_user_credentials = Credentials("demo_user", "test-password")
+new_user_credentials = Credentials("demo_user", "test_password")
 with TypeDB.driver(address, new_user_credentials, options) as driver:
-    driver.users.get_current_user().update_password("new-password")
+    driver.users.get_current_user().update_password("new_password")
     print("Demo user updated password successfully")
 
 with TypeDB.driver(address, credentials, options) as driver:
-    driver.users.get("demo_user").update_password("externally-set-password")
-    print("Admin updated demo user password successfully")
+    driver.users.get("demo_user").update_password("externally_set_password")
+    print("Admin updated demo user's password successfully")
 
 ----
 --

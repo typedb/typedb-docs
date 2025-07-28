@@ -2,6 +2,7 @@
 :pageTitle: Transactions
 :Summary: Understanding transaction types, lifecycle, and patterns with TypeDB drivers.
 :keywords: typedb, driver, transactions, isolation, concurrency
+:test-python: true
 
 After opening a driver with the correct configuration and credentials, you can open transactions in your application.
 
@@ -58,10 +59,16 @@ For example, in Python:
 
 [,python]
 ----
+#!test[reset-after]
+#{{
+include::{page-version}@new_core_concepts::example$driver/python_driver_usage.py[tag=setup_and_schema]
+
+include::{page-version}@new_core_concepts::example$driver/python_driver_usage.py[tag=data_create]
+#}}
+
 # READ transactions for data retrieval
 with driver.transaction(DB_NAME, TransactionType.READ) as tx:
-    users = tx.query("match $u isa user; fetch { 'name': $u.name,  'email': $u.email };").resolve()
-    
+    users = tx.query("match $u isa user; fetch { 'name': $u.name, 'email': $u.email };").resolve()
     for user in users.as_concept_documents():
         print(f"User: {user['name']} ({user['email']})")
     
@@ -76,10 +83,15 @@ For example, in Python:
 
 [,python]
 ----
+#!test[reset-after]
+#{{
+include::{page-version}@new_core_concepts::example$driver/python_driver_usage.py[tag=setup_and_schema]
+#}}
+
 # WRITE transactions for data modifications
 with driver.transaction(DB_NAME, TransactionType.WRITE) as tx:
     # Insert new data
-    tx.query("insert $u isa user, has email 'alice@example.com', has age 30;").resolve()
+    tx.query("insert $u isa user, has email 'bob@example.com', has age 30;").resolve()
     
     # Update existing data and ignore the response
     tx.query("""
@@ -100,6 +112,14 @@ For example, in Python:
 
 [,python]
 ----
+#!test[reset-after]
+#{{
+include::{page-version}@new_core_concepts::example$driver/python_driver_usage.py[tag=import_and_constants]
+
+include::{page-version}@new_core_concepts::example$driver/python_driver_usage.py[tag=driver_create]
+include::{page-version}@new_core_concepts::example$driver/python_driver_usage.py[tag=database_create]
+#}}
+
 # SCHEMA transactions for schema changes
 with driver.transaction(DB_NAME, TransactionType.SCHEMA) as tx:
     # Define new schema elements

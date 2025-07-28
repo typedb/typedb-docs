@@ -19,9 +19,10 @@ options = DriverOptions(is_tls_enabled=True, tls_root_ca_path=None)
 #end::constants[]
 #end::import_and_constants[]
 
-#tag::database_create[]
+#tag::driver_create[]
 with TypeDB.driver(address, credentials, options) as driver:
-    # 2. Initialize database with a schema  during application startup
+#end::driver_create[]
+#tag::database_create[]
     try:
         # may error if the database already exists
         driver.databases.create(DB_NAME)
