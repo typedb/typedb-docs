@@ -19,7 +19,14 @@ MODULE_DIRECTORIES = {
     "manual": os.path.join(os.path.dirname(__file__), "../manual/modules/ROOT"),
     "typeql": os.path.join(os.path.dirname(__file__), "../typeql/modules/ROOT"),
     "drivers": os.path.join(os.path.dirname(__file__), "../drivers/modules/ROOT"),
-    "academy": os.path.join(os.path.dirname(__file__), "../academy/modules/ROOT")
+    "academy": os.path.join(os.path.dirname(__file__), "../academy/modules/ROOT"),
+
+    "new_home": os.path.join(os.path.dirname(__file__), "../new_home/modules/ROOT"),
+    "new_examples": os.path.join(os.path.dirname(__file__), "../new_examples/modules/ROOT"),
+    "new_maintenance_operation": os.path.join(os.path.dirname(__file__), "../new_maintenance_operation/modules/ROOT"),
+    "new_core_concepts": os.path.join(os.path.dirname(__file__), "../new_core_concepts/modules/ROOT"),
+    "new_tools": os.path.join(os.path.dirname(__file__), "../new_tools/modules/ROOT"),
+    "new_reference": os.path.join(os.path.dirname(__file__), "../new_reference/modules/ROOT"),
 }
 
 

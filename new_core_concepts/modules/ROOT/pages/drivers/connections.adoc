@@ -2,6 +2,7 @@
 :pageTitle: Connections
 :Summary: How to establish and manage connections to TypeDB servers.
 :keywords: typedb, driver, connection, address, port, network
+:test-python: true
 
 Drivers are the links over the network between your application and TypeDB servers. They handle all communication, from authentication to query execution. Creating a driver opens a connection to a TypeDB server.
 
@@ -31,10 +32,20 @@ Every driver connection follows the same lifecycle:
 We recommend leveraging automatic resource management, such as Python's `with` statement:
 [source,python]
 ----
+#!test
+#{{
+include::{page-version}@new_core_concepts::example$driver/python_driver_setup.py[tag=import]
+
+include::{page-version}@new_core_concepts::example$driver/python_driver_setup.py[tag=constants]
+
+include::{page-version}@new_core_concepts::example$driver/python_driver_setup.py[tag=database_create]
+        pass
+#}}
+
 # Python: Automatic connection management
 with TypeDB.driver(address, credentials, options) as driver:
     # Connection is active here
-    database = driver.databases().get(DB_NAME)
+    database = driver.databases.get(DB_NAME)
     # ... use the connection ...
 # Connection automatically closed here
 ----
@@ -80,6 +91,7 @@ All TypeDB servers require authentication. Credentials encapsulate the username 
 For example, in Python you use:
 [,python]
 ----
+#!test
 from typedb.driver import Credentials
 
 # Basic credentials
