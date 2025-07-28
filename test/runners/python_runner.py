@@ -30,7 +30,9 @@ class PythonRunner(BaseRunner):
         new_stdout = io.StringIO()
         sys.stdout = new_stdout
 
-        exec(source_code)
+        # allow the exec'ed code to define functions and access them within the test
+        execution_scope = {}
+        exec(source_code, execution_scope)
         output = new_stdout.getvalue()
         sys.stdout = old_stdout
         # logger.info(f"Output:\n{output}")

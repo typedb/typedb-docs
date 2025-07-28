@@ -24,8 +24,7 @@ with TypeDB.driver(address, credentials, options) as driver:
 #end::driver_create[]
 #tag::database_create[]
     try:
-        # may error if the database already exists
-        driver.databases.create(DB_NAME)
+        driver.databases.create(DB_NAME) # raises already exists exception
     finally:
 #end::database_create[]
         pass

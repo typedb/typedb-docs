@@ -14,14 +14,14 @@ driver = TypeDB.driver(address, credentials, options)
 #end::driver_create[]
 #tag::database_create[]
 try:
-    driver.databases.create(DB_NAME)
+    driver.databases.create(DB_NAME) # raises already exists exception
 finally:
     pass
 #end::database_create[]
 
 #tag::schema_create[]
 with driver.transaction(DB_NAME, TransactionType.SCHEMA) as tx:
-    # Define new schema elements
+    #tag::tx_define_query[]
     tx.query("""
         define
         attribute company-name, value string;
@@ -32,13 +32,13 @@ with driver.transaction(DB_NAME, TransactionType.SCHEMA) as tx:
 		entity user, owns name, owns email, owns age, plays employment:employee;
         relation employment, relates employer, relates employee;
     """).resolve()
+    #end::tx_define_query[]
     tx.commit()
 #end::schema_create[]
 #end::setup_and_schema[]
 
 #tag::data_create[]
 with driver.transaction(DB_NAME, TransactionType.WRITE) as tx:
-    # Create a company
     tx.query("insert $u isa user, has name 'alice', has email 'alice@example.com', has age 25;").resolve()
     tx.commit()
 #end::data_create[]
