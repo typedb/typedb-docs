@@ -9,12 +9,12 @@ logger = logging.getLogger('main')
 
 # Poor man's testing grammar (keywords used in .adoc files)
 ## .adoc attribute keys and values
-ADOC_TEST_KEY = "test-typeql"
-ADOC_ENTRYPOINT_KEY = "test-typeql-entry"
-ADOC_CONFIG_KEYS = [ADOC_TEST_KEY, ADOC_ENTRYPOINT_KEY]  # first item should be the test key
+FILE_CONFIG_KEY_TEST = "test-typeql"
+FILE_CONFIG_KEYENTRYPOINT = "test-typeql-entry"
+FILE_CONFIG_KEYS = [FILE_CONFIG_KEY_TEST, FILE_CONFIG_KEYENTRYPOINT]  # first item should be the test key
+
 TEST_MODE_LINEAR_VAL = "linear"  # Run examples linearly from top to bottom
 TEST_MODE_CUSTOM_VAL = "custom"  # Jump around in examples in custom order
-MODE_LIST = [TEST_MODE_LINEAR_VAL, TEST_MODE_CUSTOM_VAL]
 
 ## Test attributes: keys and values
 TEST_NAME_KEY = "name"
@@ -36,10 +36,10 @@ class FailureMode(Enum):
     NoFailure = 3
 
 
-class TypeqlRunner:
+class TypeqlRunner(BaseRunner):
     def __init__(self):
+        super().__init__(file_keys=FILE_CONFIG_KEYS)
         # Required
-        self.adoc_keys = ADOC_CONFIG_KEYS
         self.success_count = 0
         self.failure_count = 0
 
@@ -68,11 +68,11 @@ class TypeqlRunner:
         self.failure_count = 0
 
     def check_config(self, adoc_config: Dict[str, str]):
-        if adoc_config.get(ADOC_TEST_KEY) not in ["linear", "custom"]:
-            logger.info(f"adoc attribute :{ADOC_TEST_KEY}: must be set to either 'linear' or 'custom'")
+        if adoc_config.get(FILE_CONFIG_KEY_TEST) not in ["linear", "custom"]:
+            logger.info(f"adoc attribute :{FILE_CONFIG_KEY_TEST}: must be set to either 'linear' or 'custom'")
             return False
-        elif adoc_config[ADOC_TEST_KEY] == "custom" and adoc_config.get(ADOC_ENTRYPOINT_KEY) is None:
-            logger.info(f"adoc attribute :{ADOC_ENTRYPOINT_KEY}: must be set to some test name for 'custom' test")
+        elif adoc_config[FILE_CONFIG_KEY_TEST] == "custom" and adoc_config.get(FILE_CONFIG_KEYENTRYPOINT) is None:
+            logger.info(f"adoc attribute :{FILE_CONFIG_KEYENTRYPOINT}: must be set to some test name for 'custom' test")
             return False
         return True
 
@@ -124,6 +124,8 @@ class TypeqlRunner:
                 raise Exception(f"{e}") from e
 
     def run_test(self, parsed_test: ParsedTest, adoc_path: str):
+        self.before_run_test(parsed_test)
+
         logger.debug(f"... test source:\n{parsed_test}")
 
         type = None
@@ -165,7 +167,7 @@ class TypeqlRunner:
         else:
             self.run_queries(parsed_test.segments, type, counted, rollback)
 
-        return None
+        self.after_run_test(parsed_test)
 
     def try_test(self, parsed_test: ParsedTest, index: int, adoc_path: str):
         try:
@@ -180,7 +182,7 @@ class TypeqlRunner:
             logger.info(f"[{adoc_path}] ... ERROR:\n{e}")
             self.failure_count += 1
 
-    def try_tests(self, parsed_tests: List[ParsedTest], adoc_path: str, config: Dict[str, str]) -> None:
+    def try_tests(self, parsed_tests: List[ParsedTest], adoc_path: str, file_config: Dict[str, str]) -> None:
         self.setup_db(reset=True)  # Resets the database
         self.reset_counts()
 

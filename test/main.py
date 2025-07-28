@@ -63,7 +63,7 @@ def try_tests_in_file(runner, lang: str, adoc_path: str, adoc_config: Dict[str, 
 
 
 def test_one_file(runner, lang: str, adoc_path: str):
-    adoc_config = parse_adoc_config(adoc_path, runner.adoc_keys)
+    adoc_config = parse_adoc_config(adoc_path, runner.file_config_keys)
     if runner.check_config(adoc_config):
         try_tests_in_file(runner, lang, adoc_path, adoc_config)
     else:
@@ -78,7 +78,7 @@ def test_all_files(runner, lang: str, directory: str):
         for file in files:
             if file.endswith(".adoc"):
                 adoc_path = os.path.relpath(os.path.join(root, file))
-                adoc_config = parse_adoc_config(adoc_path, runner.adoc_keys)
+                adoc_config = parse_adoc_config(adoc_path, runner.file_config_keys)
                 if adoc_config[runner.adoc_keys[0]] is not None:
                     if runner.check_config(adoc_config):
                         logger.info(f"TESTING FILE {adoc_path}")

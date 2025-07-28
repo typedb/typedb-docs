@@ -2,6 +2,7 @@
 :pageTitle: Authentication
 :Summary: Understanding authentication with TypeDB drivers.
 :keywords: typedb, driver, authentication, credentials, security
+:test-python: true
 
 TypeDB requires authentication for all client connections. Understanding how authentication works across different deployments and how to manage users programmatically is essential for building secure applications.
 
@@ -16,10 +17,20 @@ Every TypeDB driver connection requires valid user credentials:
 
 [source,python]
 ----
+#!test
+#{{
+include::{page-version}@new_core_concepts::example$driver/python_driver_setup.py[tag=import]
+#}}
 from typedb.driver import Credentials
 
 # All connections require valid credentials
-credentials = Credentials("username", "password")
+credentials = Credentials("admin", "password")
+
+#{{
+include::{page-version}@new_core_concepts::example$driver/python_driver_setup.py[tag=constants_address]
+include::{page-version}@new_core_concepts::example$driver/python_driver_setup.py[tag=constants_options]
+#}}
+
 driver = TypeDB.driver(address, credentials, options)
 ----
 
@@ -84,47 +95,31 @@ curl --request GET \
 == Updating passwords
 
 It's possible to change user passwords programmatically.
-The `admin` user can be used to update any user's password, all other users can only update their own password.
+The `admin` user can also be used to update any user's password, all other users can only update their own password.
 
-[tabs]
-====
 Python::
 +
 --
 [,python]
 ----
-with TypeDB.driver(address, admin_credentials, options) as driver:
-    user = driver.users().get("username")
-    user.update_password("new_secure_password")
-    print("Password updated successfully")
+#!test
+include::{page-version}@new_core_concepts::example$driver/python_driver_setup.py[tag=import_and_constants]
+
+with TypeDB.driver(address, credentials, options) as driver:
+    driver.users.create("demo_user", "test-password")
+
+new_user_credentials = Credentials("demo_user", "test-password")
+with TypeDB.driver(address, new_user_credentials, options) as driver:
+    driver.users.get_current_user().update_password("new-password")
+    print("Demo user updated password successfully")
+
+with TypeDB.driver(address, credentials, options) as driver:
+    driver.users.get("demo_user").update_password("externally-set-password")
+    print("Admin updated demo user password successfully")
+
 ----
 --
 
-Java::
-+
---
-[,java]
-----
-try (Driver driver = TypeDB.driver(address, adminCredentials, options)) {
-    User user = driver.users().get("username");
-    user.updatePassword("new_secure_password");
-    System.out.println("Password updated successfully");
-}
-----
---
-
-Rust::
-+
---
-[,rust]
-----
-let driver = TypeDBDriver::new(address, admin_credentials, options).await?;
-let user = driver.users().get("username").await?;
-user.update_password("new_secure_password").await?;
-println!("Password updated successfully");
-----
---
-====
 
 == Security considerations
 

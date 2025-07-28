@@ -139,8 +139,10 @@ class Parser:
                     if tag == current_tag:
                         current_tag = None
                     else:
-                        self.error(f"Include has mismatch tag {current_tag}")
-                if current_tag is not None:
+                        # nested tag
+                        pass
+                elif current_tag is not None:
+                    # if not matching an end tag and a tag is active
                     tagged_lines[current_tag].append(line)
 
         logging.debug(f"... finished scanning included file, resolved tags: {tagged_lines}")

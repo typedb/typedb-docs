@@ -34,9 +34,7 @@ We recommend leveraging automatic resource management, such as Python's `with` s
 ----
 #!test
 #{{
-include::{page-version}@new_core_concepts::example$driver/python_driver_setup.py[tag=import]
-
-include::{page-version}@new_core_concepts::example$driver/python_driver_setup.py[tag=constants]
+include::{page-version}@new_core_concepts::example$driver/python_driver_setup.py[tag=import_and_constants]
 
 include::{page-version}@new_core_concepts::example$driver/python_driver_setup.py[tag=database_create]
         pass

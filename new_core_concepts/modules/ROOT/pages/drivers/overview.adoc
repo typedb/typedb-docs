@@ -72,10 +72,8 @@ Applications using TypeDB drivers tend to follow a similar pattern:
 
 [source,python]
 ----
-#!test
-include::{page-version}@new_core_concepts::example$driver/python_driver_setup.py[tag=import]
-
-include::{page-version}@new_core_concepts::example$driver/python_driver_setup.py[tag=constants]
+#!test[reset, reset-after]
+include::{page-version}@new_core_concepts::example$driver/python_driver_setup.py[tag=import_and_constants]
 
 # 1. Connect to TypeDB
 include::{page-version}@new_core_concepts::example$driver/python_driver_setup.py[tag=database_create]

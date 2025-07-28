@@ -10,21 +10,21 @@ logger = logging.getLogger('main')
 
 # Poor man's testing grammar (keywords used in .adoc files)
 ## .adoc attribute keys and values
-ADOC_TEST_KEY = "test-rust"
-ADOC_CONFIG_KEYS = [ADOC_TEST_KEY]
+FILE_CONFIG_KEY_TEST = "test-rust"
+FILE_CONFIG_KEYS = [FILE_CONFIG_KEY_TEST]
 
 RUST_TEST_TOML = "rust_cargo_toml.toml"
 
 
 class RustRunner(BaseRunner):
     def __init__(self):
-        super().__init__(adoc_keys=ADOC_CONFIG_KEYS)
+        super().__init__(file_config_keys=FILE_CONFIG_KEYS)
         self.temp_dir = None
 
     def check_config(self, adoc_config: Dict[str, str]):
-        if adoc_config.get(ADOC_TEST_KEY) not in ["yes", "true"]:
+        if adoc_config.get(FILE_CONFIG_KEY_TEST) not in ["yes", "true"]:
             logger.info(
-                f"adoc attribute :{ADOC_TEST_KEY}: must be set to either 'yes' or 'true' for testing"
+                f"adoc attribute :{FILE_CONFIG_KEY_TEST}: must be set to either 'yes' or 'true' for testing"
             )
             return False
         return True
@@ -32,6 +32,7 @@ class RustRunner(BaseRunner):
     def run_test(self, parsed_test: ParsedTest, adoc_path: str):
         if not self.temp_dir:
             raise RuntimeError("No temporary directory set. Make sure to run inside try_tests().")
+        self.before_run_test(parsed_test)
 
         source_code = "\n".join(parsed_test.segments)
         main_rs_path = os.path.join(self.temp_dir, "src", "main.rs")
@@ -54,6 +55,8 @@ class RustRunner(BaseRunner):
             # logger.info(f"Output:\n{output}")
         except Exception as e:
             raise RuntimeError(f"Execution error:\n{e}")
+        finally:
+            self.after_run_test(parsed_test)
 
     def try_test(self, parsed_test: ParsedTest, index: int, adoc_path: str):
         try:
