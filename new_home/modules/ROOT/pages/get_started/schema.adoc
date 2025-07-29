@@ -137,7 +137,7 @@ TypeDB's data model is conceptually simple, but at the same time extremely syste
 
 == Defining your schema
 
-Let's define a simple database schema: we want to store ``user``'s and their ``username``'s in our database and, in addition, let's also permit ``friendship``'s between users.
+Let's define a simple database schema: we want to store ``user``'s and their ``username``'s in our database and, in addition, let's also permit ``friendship``'s between users. TypeQL is uniquely designed so that you can simply go from your literal description of the data to writing a schema, without worrying about tables, joins, vertices or edges, or document referencing.
 
 [tabs]
 ====
