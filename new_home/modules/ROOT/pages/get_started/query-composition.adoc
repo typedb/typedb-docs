@@ -4,11 +4,47 @@
 :tabs-sync-option:
 :test-typeql: linear
 
-In the previous sections you:
+== Review
 
-. Set up a TypeDB server and accessed your preferred tool (Studio or Console)
-. Created a database and defined a schema
-. Loaded some data using simple write and more complex read-write queries
+In the previous sections we've:
+
+. xref:get_started/setup.adoc[] TypeDB and Studio (or Console)
+. xref:get_started/schema.adoc[Created a schema]
+.. Created a database called `get_started`.
+.. Defined the social network schema:
++
+[,typeql]
+----
+#!test[schema]
+include::{page-version}@new_home::page$get_started/schema.adoc[tag=full_define]
+----
+. xref:get_started/data.adoc[Loaded some data] using a insert and match-insert queries:
++
+[,typeql]
+----
+#!test[write]
+include::{page-version}@new_home::page$get_started/data.adoc[tag=insert2]
+----
++
+[,typeql]
+----
+#!test[write]
+include::{page-version}@new_home::page$get_started/data.adoc[tag=insert3]
+----
++
+[,typeql]
+----
+#!test[write]
+include::{page-version}@new_home::page$get_started/data.adoc[tag=insert5]
+----
++
+[,typeql]
+----
+#!test[write, count=1]
+include::{page-version}@new_home::page$get_started/data.adoc[tag=match-insert1]
+----
+
+== Overview
 
 In this page, we'll look at another useful query operation, `reduce`,
 and how to compose small queries into larger _query pipelines_ by chaining clauses together.
@@ -34,14 +70,13 @@ Using a read transaction, let's count the number of users in the database:
 
 [,typeql]
 ----
-#!test[read, db=get-started]
-include::{page-version}@new_home::./query-composition.adoc[tag=reduce1]
+include::./query-composition.adoc[tag=reduce1]
 ----
 
 We see the following result:
 [source]
 ----
-include::{page-version}@new_home::./query-composition.adoc[tag=reduce1_result]
+include::./query-composition.adoc[tag=reduce1_result]
 ----
 
 Notice that the user variable `$user` has been consumed by `reduce`, and a new variable `$count` has been created.
@@ -50,15 +85,14 @@ Reductions can also use `groupby` to aggregate within groups:
 
 [,typeql]
 ----
-#!test[read, db=get-started]
-include::{page-version}@new_home::./query-composition.adoc[tag=reduce2]
+include::./query-composition.adoc[tag=reduce2]
 ----
 
 Returning:
 
 [source]
 ----
-include::{page-version}@new_home::./query-composition.adoc[tag=reduce2_result]
+include::./query-composition.adoc[tag=reduce2_result]
 ----
 
 Here we see the number of friends for each user, grouped by unique pairs of (user, username).
@@ -91,14 +125,14 @@ $count | 6
 ////
 [,typeql]
 ----
-#!test[read, db=get-started]
-include::{page-version}@new_home::./query-composition.adoc[tag=reduce1]
+#!test[read, count=1]
+include::./query-composition.adoc[tag=reduce1]
 ----
 
 We see the following result:
 [source]
 ----
-include::{page-version}@new_home::./query-composition.adoc[tag=reduce1_result]
+include::./query-composition.adoc[tag=reduce1_result]
 ----
 
 Notice that the user variable `$user` has been consumed by `reduce`, and a new variable `$count` has been created.
@@ -142,15 +176,15 @@ $username    | isa username "bob"
 ////
 [,typeql]
 ----
-#!test[read, db=get-started]
-include::{page-version}@new_home::./query-composition.adoc[tag=reduce2]
+#!test[read, count=5]
+include::./query-composition.adoc[tag=reduce2]
 ----
 
 Returning:
 
 [source]
 ----
-include::{page-version}@new_home::./query-composition.adoc[tag=reduce2_result]
+include::./query-composition.adoc[tag=reduce2_result]
 ----
 
 Here we see the number of friends for each user, grouped by unique pairs of (user, username).
@@ -207,14 +241,13 @@ Let's go back to our example:
 
 [,typeql]
 ----
-#!test[read, db=get-started]
-include::{page-version}@new_home::./query-composition.adoc[tag=pipeline1]
+include::./query-composition.adoc[tag=pipeline1]
 ----
 
 Which returns:
 [source]
 ----
-include::{page-version}@new_home::./query-composition.adoc[tag=pipeline1_result]
+include::./query-composition.adoc[tag=pipeline1_result]
 ----
 
 With this query pipeline, we've identified the most popular user using a `match` clause, and the `reduce`, `sort`, and `limit` operators!
@@ -265,13 +298,13 @@ $username    | isa username delta
 ////
 [,typeql]
 ----
-#!test[read, db=get-started]
-include::{page-version}@new_home::./query-composition.adoc[tag=pipeline1]
+#!test[read, count=1]
+include::./query-composition.adoc[tag=pipeline1]
 ----
 Which returns:
 [source]
 ----
-include::{page-version}@new_home::./query-composition.adoc[tag=pipeline1_result]
+include::./query-composition.adoc[tag=pipeline1_result]
 ----
 
 With this query pipeline, we've identified the most popular user using a `match` clause, and the `reduce`, `sort`, and `limit` operators!
@@ -296,14 +329,13 @@ and also to eliminate the most-popular user from appearing again:
 
 [,typeql]
 ----
-#!test[read, db=get-started]
-include::{page-version}@new_home::./query-composition.adoc[tag=pipeline2]
+include::./query-composition.adoc[tag=pipeline2]
 ----
 
 This returns:
 [source]
 ----
-include::{page-version}@new_home::./query-composition.adoc[tag=pipeline2_result]
+include::./query-composition.adoc[tag=pipeline2_result]
 ----
 
 At the end of this pipeline, we have a stream where each answer contains the most popular user and a different user who isn't friends with them yet.
@@ -357,14 +389,14 @@ $username       | isa username "delta"
 ////
 [,typeql]
 ----
-#!test[read, db=get-started]
-include::{page-version}@new_home::./query-composition.adoc[tag=pipeline2]
+#!test[read, count=3]
+include::./query-composition.adoc[tag=pipeline2]
 ----
 
 This returns:
 [source]
 ----
-include::{page-version}@new_home::./query-composition.adoc[tag=pipeline2_result]
+include::./query-composition.adoc[tag=pipeline2_result]
 ----
 
 At the end of this pipeline, we have a stream where each answer contains the most popular user and a different user who isn't friends with them yet.
@@ -383,8 +415,7 @@ Studio::
 
 [,typeql]
 ----
-#!test[write, db=get-started]
-include::{page-version}@new_home::./query-composition.adoc[tag=pipeline3]
+include::./query-composition.adoc[tag=pipeline3]
 ----
 
 After you execute the query once, every user will be friends with the most popular user.
@@ -419,8 +450,8 @@ friendship ($other-user, $user);
 ////
 [,typeql]
 ----
-#!test[write, db=get-started]
-include::{page-version}@new_home::./query-composition.adoc[tag=pipeline3]
+#!test[write, count=3]
+include::./query-composition.adoc[tag=pipeline3]
 ----
 
 After you execute the query once, every user will be friends with the most popular user.
@@ -453,8 +484,7 @@ Studio::
 
 [,typeql]
 ----
-#!test[schema, db=get-started]
-include::{page-version}@new_home::./query-composition.adoc[tag=function1]
+include::./query-composition.adoc[tag=function1]
 ----
 
 This function returns the first user and username using the same logic as the long pipeline we just wrote,
@@ -487,8 +517,8 @@ fun most_popular_user() -> user, username:
 ////
 [,typeql]
 ----
-#!test[schema, db=get-started]
-include::{page-version}@new_home::./query-composition.adoc[tag=function1]
+#!test[schema]
+include::./query-composition.adoc[tag=function1]
 ----
 
 This function returns the first user and username using the same logic as the long pipeline we just wrote,
@@ -511,8 +541,7 @@ Studio::
 
 [,typeql]
 ----
-#!test[schema, db=get-started]
-include::{page-version}@new_home::./query-composition.adoc[tag=function_pipeline1]
+include::./query-composition.adoc[tag=function_pipeline1]
 ----
 
 This query is now much shorter, since we've reused the logic from the function to find the most popular user!
@@ -521,7 +550,7 @@ We correctly find every user is friends with the user `delta`:
 
 [source]
 -----
-include::{page-version}@new_home::./query-composition.adoc[tag=function_pipeline1_result]
+include::./query-composition.adoc[tag=function_pipeline1_result]
 -----
 
 --
@@ -572,8 +601,8 @@ $username              | isa username "candice001"
 ////
 [,typeql]
 ----
-#!test[read, db=get-started]
-include::{page-version}@new_home::./query-composition.adoc[tag=function_pipeline1]
+#!test[read, count=5]
+include::./query-composition.adoc[tag=function_pipeline1]
 ----
 
 This query is now much shorter, since we've reused the logic from the function to find the most popular user!
@@ -582,7 +611,7 @@ We correctly find every user is friends with the user `delta`:
 
 [source]
 -----
-include::{page-version}@new_home::./query-composition.adoc[tag=function_pipeline1_result]
+include::./query-composition.adoc[tag=function_pipeline1_result]
 -----
 
 --
@@ -611,43 +640,13 @@ Studio::
 
 [,typeql]
 ----
-#!test[schema, db=get-started]
-include::{page-version}@new_home::./query-composition.adoc[tag=fetch1]
+include::./query-composition.adoc[tag=fetch1]
 ----
 
 This query now returns a sequence of JSON documents:
 [source]
 ----
-{
-  "friends": [
-    {
-      "friend": "bob78"
-    },
-    {
-      "friend": "deltaonenine"
-    }
-  ],
-  "username": "alice1925"
-}
-{
-  "friends": [
-    {
-      "friend": "alice1925"
-    },
-    {
-      "friend": "deltaonenine"
-    }
-  ],
-  "username": "bob78"
-}
-{
-  "username": "candice001",
-  "friends": [
-    {
-      "friend": "deltaonenine"
-    }
-  ]
-}
+include::./query-composition.adoc[tag=fetch_1_result]
 ----
 
 The fetch clause lets you lay out the exact JSON document you need for your application, making it easy to retrieve additional data such as optional attributes or answers from subqueries.
@@ -679,12 +678,45 @@ fetch {
   ]
 };
 # end::fetch1[]
+
+# tag::fetch_1_result[]
+{
+  "friends": [
+    {
+      "friend": "bob78"
+    },
+    {
+      "friend": "deltaonenine"
+    }
+  ],
+  "username": "alice1925"
+}
+{
+  "friends": [
+    {
+      "friend": "alice1925"
+    },
+    {
+      "friend": "deltaonenine"
+    }
+  ],
+  "username": "bob78"
+}
+{
+  "username": "candice001",
+  "friends": [
+    {
+      "friend": "deltaonenine"
+    }
+  ]
+}
+#end::fetch_1_result[]
 ----
 ////
 [,typeql]
 ----
-#!test[read, db=get-started]
-include::{page-version}@new_home::./query-composition.adoc[tag=fetch1]
+#!test[read, documents]
+include::./query-composition.adoc[tag=fetch1]
 ----
 
 The fetch clause lets you lay out the exact JSON document you need for your application, making it easy to retrieve additional data such as optional attributes or answers from subqueries.

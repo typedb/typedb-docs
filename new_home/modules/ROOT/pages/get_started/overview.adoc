@@ -35,12 +35,26 @@ include::{page-version}@new_home::page$get_started/schema.adoc[tag=full_define]
 +
 [,typeql]
 ----
-include::{page-version}@new_home::page$get_started/data.adoc[tag=successful-inserts]
+#!test[write]
+include::{page-version}@new_home::page$get_started/data.adoc[tag=insert2]
+----
++
+[,typeql]
+----
+#!test[write]
+include::{page-version}@new_home::page$get_started/data.adoc[tag=insert3]
+----
++
+[,typeql]
+----
+#!test[write]
+include::{page-version}@new_home::page$get_started/data.adoc[tag=insert5]
 ----
 .. Run a read-write query:
 +
 [,typeql]
 ----
+#!test[write, count=1]
 include::{page-version}@new_home::page$get_started/data.adoc[tag=match-insert1]
 ----
 
