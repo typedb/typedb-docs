@@ -1,4 +1,5 @@
 from typedb.driver import TypeDB, Driver, TransactionType, Credentials, DriverOptions
+from test.runners.base_runner import BaseRunner
 from enum import Enum
 from typing import List, Dict, Tuple, Union
 from test.parser.parser import ParsedTest
@@ -10,11 +11,11 @@ logger = logging.getLogger('main')
 # Poor man's testing grammar (keywords used in .adoc files)
 ## .adoc attribute keys and values
 FILE_CONFIG_KEY_TEST = "test-typeql"
-FILE_CONFIG_KEYENTRYPOINT = "test-typeql-entry"
-FILE_CONFIG_KEYS = [FILE_CONFIG_KEY_TEST, FILE_CONFIG_KEYENTRYPOINT]  # first item should be the test key
+FILE_CONFIG_KEY_TEST_ENTRY = "test-typeql-entry"
+FILE_CONFIG_KEYS = [FILE_CONFIG_KEY_TEST, FILE_CONFIG_KEY_TEST_ENTRY]  # first item should be the test key
 
-TEST_MODE_LINEAR_VAL = "linear"  # Run examples linearly from top to bottom
-TEST_MODE_CUSTOM_VAL = "custom"  # Jump around in examples in custom order
+FILE_CONFIG_VAL_TEST_LINEAR = "linear"  # Run examples linearly from top to bottom
+FILE_CONFIG_VAL_TEST_CUSTOM = "custom"  # Jump around in examples in custom order
 
 ## Test attributes: keys and values
 TEST_NAME_KEY = "name"
@@ -38,7 +39,7 @@ class FailureMode(Enum):
 
 class TypeqlRunner(BaseRunner):
     def __init__(self):
-        super().__init__(file_keys=FILE_CONFIG_KEYS)
+        super().__init__(file_config_keys=FILE_CONFIG_KEYS)
         # Required
         self.success_count = 0
         self.failure_count = 0
@@ -46,7 +47,7 @@ class TypeqlRunner(BaseRunner):
         # Tql specific
         self.username = "admin"
         self.password = "password"
-        self.db = "docs_test"
+        self.db = "typeql_docs_test"
         self.uri = "127.0.0.1:1729"
         self.driver = self.create_driver()
 
@@ -71,8 +72,8 @@ class TypeqlRunner(BaseRunner):
         if adoc_config.get(FILE_CONFIG_KEY_TEST) not in ["linear", "custom"]:
             logger.info(f"adoc attribute :{FILE_CONFIG_KEY_TEST}: must be set to either 'linear' or 'custom'")
             return False
-        elif adoc_config[FILE_CONFIG_KEY_TEST] == "custom" and adoc_config.get(FILE_CONFIG_KEYENTRYPOINT) is None:
-            logger.info(f"adoc attribute :{FILE_CONFIG_KEYENTRYPOINT}: must be set to some test name for 'custom' test")
+        elif adoc_config[FILE_CONFIG_KEY_TEST] == "custom" and adoc_config.get(FILE_CONFIG_KEY_TEST_ENTRY) is None:
+            logger.info(f"adoc attribute :{FILE_CONFIG_KEY_TEST_ENTRY}: must be set to some test name for 'custom' test")
             return False
         return True
 
@@ -186,12 +187,12 @@ class TypeqlRunner(BaseRunner):
         self.setup_db(reset=True)  # Resets the database
         self.reset_counts()
 
-        if config[ADOC_TEST_KEY] == TEST_MODE_LINEAR_VAL:
+        if file_config[FILE_CONFIG_KEY_TEST] == FILE_CONFIG_VAL_TEST_LINEAR:
             # try tests in linear order
             for (i, parsed_test) in enumerate(parsed_tests):
                 self.try_test(parsed_test, i, adoc_path)
 
-        elif config[ADOC_TEST_KEY] == TEST_MODE_CUSTOM_VAL:
+        elif file_config[FILE_CONFIG_KEY_TEST] == FILE_CONFIG_VAL_TEST_CUSTOM:
             # populate name lookup table
             name_lookup = {}
             for (i,parsed_test) in enumerate(parsed_tests):
@@ -205,9 +206,9 @@ class TypeqlRunner(BaseRunner):
             # Now run tests in custom order
             remaining_indices = set(range(0, len(parsed_tests)))
             completed_indices = set()
-            if name_lookup.get(config[ADOC_ENTRYPOINT_KEY]):
-                logger.info(f"[{adoc_path}] [INFO: Page entry point is '{config[ADOC_ENTRYPOINT_KEY]}']")
-                current_test_index = name_lookup[config[ADOC_ENTRYPOINT_KEY]]
+            if name_lookup.get(config[FILE_CONFIG_KEY_TEST_ENTRY]):
+                logger.info(f"[{adoc_path}] [INFO: Page entry point is '{config[FILE_CONFIG_KEY_TEST_ENTRY]}']")
+                current_test_index = name_lookup[config[FILE_CONFIG_KEY_TEST_ENTRY]]
             else:
                 raise ValueError(f"[{adoc_path}]: Didn't find declared test entry point")
 
