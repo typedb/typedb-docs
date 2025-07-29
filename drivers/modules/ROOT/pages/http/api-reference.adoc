@@ -399,51 +399,7 @@ Delete a database from the server by name.
 include::{page-version}@drivers:resources:partial$http-api/responses/details.adoc[tags="200-empty,400,401,404"]
 
 *Example request:*
-
-[tabs]
-====
-curl::
-+
-[source,console]
-----
-
-curl --request DELETE \
-  --url http://localhost:8000/v1/databases/DATABASE_NAME \
-  --header 'Authorization: Bearer {ACCESS-TOKEN}'
-----
-
-Python::
-+
-[source,python]
-----
-import requests
-
-url = "http://localhost:8000/v1/databases/DATABASE_NAME"
-
-headers = {
-    "Authorization": "Bearer {ACCESS-TOKEN}"
-}
-
-response = requests.delete(url, headers=headers)
-----
-
-Rust::
-+
-[source,rust]
-----
-use reqwest;
-
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let client = reqwest::Client::new();
-    let resp = client
-        .delete("http://localhost:8000/v1/databases/DATABASE_NAME")
-        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
-        .send().await;
-    Ok(())
-}
-----
-====
+:tabs-sync-option:
 
 === Get database's schema
 

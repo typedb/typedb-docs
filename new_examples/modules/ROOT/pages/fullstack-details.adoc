@@ -1,0 +1,144 @@
+= Fullstack Implementation Details
+
+== Queries
+
+The Python backend's `queries.py` contains core TypeQL queries that interact with the TypeDB schema. Here's how they map to the schema:
+
+1. **Page Listing**
+
+[source,python]
+-----
+PAGE_LIST_QUERY = '''
+    match $page isa page;
+    fetch {
+       "name": $page.name,
+       "bio": $page.bio,
+       "id": $page.page-id,
+       "profile-picture": $page.profile-picture,
+       "type": (
+            match { $page isa person; let $ty = "person"; }
+                or { $page isa organization; let $ty = "organization"; }
+                or { $page isa group; let $ty = "group"; };
+            return first $ty
+        )
+    };
+'''
+-----
+
+This query leverages the schema's type hierarchy where `person`, `organization`, and `group` are all sub-types of `page`.
+
+2. **Location-based Query**
+
+[source,python]
+----
+def location_query(place_id):
+   return f'''
+       match $place has place-id "{place_id}", has name $place-name;
+       fetch {{
+           "placeName": $place-name,
+           "pages": [
+               match $page isa page;
+               location ($page, $page-place);
+               let $_ = located_in_transitive($page-place, $place);
+               fetch {{ "name": $page.name, "id": $page.page-id, ... }}
+           ]
+       }};
+   '''
+----
+This makes use of the `located_in_transitive` function to automatically traverse an arbitrarily deep
+
+== Frontend Data Model vs TypeDB Schema
+
+=== Page Model
+
+[source,typescript]
+----
+// frontend/src/model/Page.tsx
+export interface Page {
+    id: string;          // page-id in TypeDB
+    type: 'person' | 'organization' | 'group';
+    name: string;        // name in TypeDB
+    bio: string;         // bio in TypeDB
+    profilePicture?: string;  // profile-picture in TypeDB
+}
+----
+
+[source,typeql]
+----
+// schema.tql
+define
+  entity page @abstract, sub content,
+    owns page-id,
+    owns name,
+    owns bio,
+    owns profile-picture,
+    owns badge,
+    owns is-active,
+    plays posting:page,
+    plays viewing:viewed,
+    plays following:page;
+----
+
+=== User Model
+
+[source,typescript]
+----
+// frontend/src/model/User.tsx
+export interface User extends Profile {
+    username: string;    // username in TypeDB profile
+    email: string;       // email in TypeDB person
+    phone?: string;      // phone in TypeDB person
+}
+----
+
+[source,typeql]
+----
+define
+  entity profile @abstract, sub page,
+    owns username,
+    owns can-publish,
+    plays group-membership:member,
+    plays location:located,
+    plays viewing:viewer,
+    plays content-engagement:author,
+    plays following:follower,
+    plays subscription:subscriber;
+
+  entity person sub profile,
+    owns gender,
+    owns language,
+    owns email,
+    owns phone,
+    owns relationship-status,
+    owns page-visibility,
+    owns post-visibility,
+    plays birth:born,
+    plays friendship:friend,
+    plays family:relative,
+    plays parentship:parent,
+    plays parentship:child,
+    plays siblingship:sibling,
+    plays relationship:partner,
+    plays engagement:fiance,
+    plays marriage:spouse,
+    plays employment:employee,
+    plays education:attendee;
+----
+
+=== Key Differences
+1. **Relationships**:
+   - TypeDB uses explicit relations (e.g., `friendship`, `following`) with defined roles
+   - Frontend flattens these into simple arrays or nested objects
+
+2. **Inheritance**:
+   - TypeDB: Uses type hierarchies (`person/organization/group` sub `page`)
+   - Frontend: Uses union types and interface extension
+
+3. **Optional Fields**:
+   - TypeDB: All attributes are required unless marked with `@abstract`
+   - Frontend: Explicitly marks optional fields with `?` for better type safety
+
+4. **Attributes vs Relations**:
+   - TypeDB: Clear separation between attributes and relations
+   - Frontend: Often combines related data into nested structures for easier consumption
+-----

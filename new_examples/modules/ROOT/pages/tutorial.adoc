@@ -1,0 +1,820 @@
+= Social Network Application
+:keywords: typedb, typeql, tutorial, rust, java, python, quickstart, start, sample, example, application, app
+:pageTitle: Applicaiton example
+:summary: A simple example application in multiple languages.
+:tabs-sync-option:
+:page-preamble-card: 1
+
+== Introduction
+
+In this tutorial, we'll build a sample application capable of basic interaction with TypeDB:
+
+* Connect to a TypeDB server,
+* Manage databases and transactions,
+* Send different types of queries.
+
+Follow the steps below or see the
+https://github.com/typedb/typedb-examples[full source code,window=_blank].
+
+This example can communicate with TypeDB using one of the following service layers:
+
+* Rust backend
+* Java backend
+* Python backend
+* Directly from the Typescript frontend
+
+== Running the application
+
+To run this sample application, you'll need:
+
+. TypeDB: either a https://cloud.typedb.com/[TypeDB Cloud,window=_blank] cluster or a self-hosted deployment.
+For installation instructions, see the xref:{page-version}@manual::install/index.adoc[] page.
+** You will need the `social-network` sample schema and data from the TypeDB Examples repository.
+Either select it when launching your TypeDB Cloud cluster, or install it following the instructions in https://github.com/typedb/typedb-examples/blob/master/use-cases/social-network/README.md#setup[the README].
+. Frontend:
++
+* Requirements: Node.js, pnpm or npm
+* Select folder:
++
+[tabs]
+====
+With backend (Rust, Python, Java)::
++
+[source,bash]
+----
+cd fullstack/frontend
+----
++
+Frontend only (Typescript)::
++
+[source,bash]
+----
+cd webapp
+----
+====
+* Install dependencies:
++
+[source,bash]
+----
+npm install
+# or
+pnpm install
+----
+* Run:
++
+[source,bash]
+----
+npm run dev
+# or
+pnpm dev
+----
+
+
+. Backend:
++
+[tabs]
+====
+Rust::
++
+* Requirements: Rust toolchain
+* Run:
++
+[source,bash]
+----
+cd fullstack/backend/rust
+cargo run
+----
+
+Python::
++
+* Requirements: Python 3.8+, Flask
+* Install dependencies:
++
+[source,bash]
+----
+cd fullstack/backend/python
+pip install -r requirements.txt
+----
+* Run:
++
+[source,bash]
+----
+python app.py
+----
+
+
+Java::
++
+* Requirements: Java 17+, Gradle
+* Run:
++
+[source,bash]
+----
+cd fullstack/backend/java
+./gradlew bootRun
+----
+====
+
+== Data model - Frontend
+
+This example is based on the `social-network` sample schema and data from the TypeDB Examples repository,
+and can be found at https://github.com/typedb/typedb-examples/tree/master/use-cases/social-network.
+
+We mirror elements of the schema model in our frontend Typescript data model.
+Similar to how in TypeQL, we have `user sub profile` and `profile sub page`,
+in our Typescript model we have `User extends Profile` and `Profile extends Page`
+- omitting certain attributes and relations that are not used in this example.
+
+[tabs]
+====
+TypeQL::
++
+[source,typeql]
+----
+define
+  entity page @abstract, sub content,
+    owns page-id,
+    owns name,
+    owns bio,
+    owns profile-picture,
+    owns badge,
+    owns is-active,
+    plays posting:page,
+    plays viewing:viewed,
+    plays following:page;
+
+  entity profile @abstract, sub page,
+    owns username,
+    owns can-publish,
+    plays group-membership:member,
+    plays location:located,
+    plays viewing:viewer,
+    plays content-engagement:author,
+    plays following:follower,
+    plays subscription:subscriber;
+
+  entity person sub profile,
+    owns gender,
+    owns language,
+    owns email,
+    owns phone,
+    owns relationship-status,
+    owns page-visibility,
+    owns post-visibility,
+    plays birth:born,
+    plays friendship:friend,
+    plays family:relative,
+    plays parentship:parent,
+    plays parentship:child,
+    plays siblingship:sibling,
+    plays relationship:partner,
+    plays engagement:fiance,
+    plays marriage:spouse,
+    plays employment:employee,
+    plays education:attendee;
+----
+
+TypeScript::
++
+[source,typescript]
+----
+// frontend/src/model/Page.tsx
+export interface Page {
+    id: string;
+    type: PageType;
+    name: string;
+    bio: string;
+    profilePicture?: string;
+    badge?: string;
+    isActive?: boolean;
+    posts?: string[];
+    numberOfFollowers?: number;
+    followers?: string[]
+}
+
+
+export interface Profile extends Page {
+    type: 'person' | 'organization';
+    username?: string;
+    canPublish?: boolean;
+    location?: LocationItem[];
+}
+
+// frontend/src/model/Organization.tsx
+export interface Organization extends Profile {
+    type: PageType<'organization'>;
+    tags?: string[];
+}
+----
+====
+
+== Query examples
+
+With setup complete and a data model in place, we can turn to looking at a couple of example queries used by the application -
+one for reading data, and one for writing:
+
+=== List pages
+
+This query will list all `page`s in the database, so that they can be displayed on the frontend's landing page.
+
+[source,typeql]
+----
+match $page isa page;
+fetch {
+    "name": $page.name,
+    "bio": $page.bio,
+    "id": $page.page-id,
+    "profile-picture": $page.profile-picture,
+    "type": (
+        match
+        { $ty label person; } or { $ty label organization; } or { $ty label group; };
+        $page isa $ty;
+        return first $ty;
+    ),
+};
+----
+
+Using TypeQL's `fetch` syntax, we can retrieve our data in a JSON format that matches our data model -
+this allows the data to be transferred directly to the frontend without further modification.
+
+=== Create organization
+
+This query will create a new `organization` in the database.
+
+[source,typeql]
+----
+insert $_ isa organization,
+    has name "...",
+    has username "...",
+    has profile-picture "...",
+    has badge "...",
+    has tag "...",
+    has tag "...",
+    has bio "...",
+    has is-active ...,
+    has can-publish ...;
+----
+
+Note how we use `$_` as an anonymous variable in the query, since we don't need to refer to the new `organization` later.
+Additionally, since an organization can have multiple tags, we use `has tag "..."` multiple times.
+Since some of these attributes are optional, we could simply omit them if they were unset.
+
+[source,typeql]
+----
+insert $_ isa organization,
+    has name "...",
+    has username "...",
+    has bio "...",
+    has is-active ...,
+    has can-publish ...;
+----
+
+Now that we have some queries to run, let's look at integrating those queries into our application,
+starting with connecting to the database.
+
+== Connection configuration
+
+We store values for use by the connection as constants in the source code.
+When running the application yourself, you may need to change them to fit your setup:
+
+[tabs]
+====
+Rust::
++
+[source,rust]
+----
+pub const TYPEDB_ADDRESS: &str = "localhost:1729";
+pub const TYPEDB_USERNAME: &str = "admin";
+pub const TYPEDB_PASSWORD: &str = "password";
+pub const TYPEDB_TLS_ENABLED: bool = false;
+pub const TYPEDB_DATABASE: &str = "social-network";
+----
+
+Python::
++
+[source,python]
+----
+TYPEDB_ADDRESS = "localhost:1729"
+TYPEDB_USERNAME = "admin"
+TYPEDB_PASSWORD = "password"
+TYPEDB_TLS_ENABLED = False
+TYPEDB_DATABASE = "social-network"
+----
+
+Java::
++
+[source,java]
+----
+private static final String TYPEDB_ADDRESS = "localhost:1729";
+private static final String TYPEDB_USERNAME = "admin";
+private static final String TYPEDB_PASSWORD = "password";
+private static final boolean TYPEDB_TLS_ENABLED = false;
+public static final String TYPEDB_DATABASE = "social-network";
+----
+
+TypeScript (HTTP)::
++
+[source,typescript]
+----
+export const TYPEDB_ADDRESS = "localhost:8000";
+export const TYPEDB_USERNAME = "admin";
+export const TYPEDB_PASSWORD = "password";
+export const TYPEDB_DATABASE = "social-network";
+----
+====
+
+where `TYPEDB_DATABASE` -- the name of the database to use;
+`TYPEDB_ADDRESS` -- address of the TypeDB server to connect to;
+`TYPEDB_USERNAME`/`TYPEDB_PASSWORD` -- authentication credentials.
+`TYPEDB_TLS_ENABLED` -- whether TLS is enabled. This is unneeded for the HTTP driver, as TLS is determined based on the URL scheme (`http://` vs. `https://`).
+
+[#_typedb_connection]
+== TypeDB connection
+
+Once your connection configuration is in place, you can connect to TypeDB by creating a new driver instance.:
+
+[tabs]
+====
+Rust::
++
+[source,rust]
+----
+let driver = Arc::new(
+    TypeDBDriver::new(
+        config::TYPEDB_ADDRESS,
+        Credentials::new(config::TYPEDB_USERNAME, config::TYPEDB_PASSWORD),
+        DriverOptions::new(config::TYPEDB_TLS_ENABLED, None).unwrap(),
+    )
+    .await
+    .unwrap(),
+);
+----
+
+Python::
++
+[source,python]
+----
+typedb = TypeDB.driver(TYPEDB_ADDRESS, Credentials(TYPEDB_USERNAME, TYPEDB_PASSWORD), DriverOptions(TYPEDB_TLS_ENABLED, None))
+----
+
+Java::
++
+[source,java]
+----
+@Configuration
+public class TypeDBConfig {
+    private static final String TYPEDB_ADDRESS = "localhost:1729";
+    private static final String TYPEDB_USERNAME = "admin";
+    private static final String TYPEDB_PASSWORD = "password";
+    private static final boolean TYPEDB_TLS_ENABLED = false;
+    public static final String TYPEDB_DATABASE = "social-network";
+
+    @Bean
+    public Driver typeDBDriver() {
+        return TypeDB.driver(TYPEDB_ADDRESS, new Credentials(TYPEDB_USERNAME, TYPEDB_PASSWORD), new DriverOptions(TYPEDB_TLS_ENABLED, null));
+    }
+}
+----
+
+TypeScript (HTTP)::
++
+[source,typescript]
+----
+const driver = new TypeDBHttpDriver({
+    addresses: [TYPEDB_ADDRESS],
+    username: TYPEDB_USERNAME,
+    password: TYPEDB_PASSWORD,
+});
+----
+====
+
+[#_querying]
+== Querying the database
+
+Finally, we can actually query the database
+
+[tabs]
+====
+Rust::
++
+[source,rust]
+----
+async fn get_page_list(State(driver): State<Arc<TypeDBDriver>>) -> Json<Vec<Box<RawValue>>> {
+    let transaction = driver.transaction(config::TYPEDB_DATABASE, TransactionType::Read).await.unwrap();
+    let result = transaction.query(query::PAGE_LIST_QUERY).await.unwrap();
+    Json(
+        result
+            .into_documents()
+            .map_ok(|page| RawValue::from_string(page.into_json().to_string()).unwrap())
+            .try_collect::<Vec<_>>()
+            .await
+            .unwrap(),
+    )
+}
+
+#[serde_as]
+#[derive(Debug, Deserialize)]
+struct CreateOrganizationPayload {
+    username: String,
+    name: String,
+    #[serde_as(as = "NoneAsEmptyString")]
+    #[serde(rename = "profilePicture")]
+    profile_picture: Option<String>,
+    #[serde_as(as = "NoneAsEmptyString")]
+    badge: Option<String>,
+    #[serde(rename = "isActive")]
+    is_active: bool,
+    #[serde(rename = "canPublish")]
+    can_publish: bool,
+    tags: Vec<String>,
+    bio: String,
+}
+
+async fn post_create_organization(
+    State(driver): State<Arc<TypeDBDriver>>,
+    Json(payload): Json<CreateOrganizationPayload>,
+) -> impl IntoResponse {
+    let transaction = driver.transaction(config::TYPEDB_DATABASE, TransactionType::Write).await.unwrap();
+    transaction
+        .query(query::create_organization_query(payload))
+        .await
+        .unwrap()
+        .into_rows()
+        .map_ok(drop)
+        .try_collect::<()>()
+        .await
+        .unwrap();
+    transaction.commit().await.unwrap();
+    (StatusCode::OK, Json(RawValue::NULL.to_owned()))
+}
+
+pub fn create_organization_query(payload: CreateOrganizationPayload) -> String {
+    let CreateOrganizationPayload { username, name, profile_picture, badge, is_active, can_publish, tags, bio } =
+        payload;
+
+    let mut query = String::from("insert $_ isa organization");
+    write!(&mut query, ", has name {name:?}").unwrap();
+    write!(&mut query, ", has username {username:?}").unwrap();
+    if let Some(profile_picture) = profile_picture {
+        write!(&mut query, ", has profile-picture {profile_picture:?}").unwrap();
+    }
+    write!(&mut query, ", has bio {bio:?}").unwrap();
+    write!(&mut query, ", has is-active {is_active}").unwrap();
+    write!(&mut query, ", has can-publish {can_publish}").unwrap();
+    if let Some(badge) = badge {
+        write!(&mut query, ", has badge {badge:?}").unwrap();
+    }
+    for tag in tags {
+        write!(&mut query, ", has tag {tag:?}").unwrap();
+    }
+    query.push(';');
+
+    query
+}
+----
+
+Python::
++
+[source,python]
+----
+def get_page_list():
+    with typedb.transaction(TYPEDB_DATABASE, TransactionType.READ) as tx:
+        return jsonify(list(tx.query(queries.PAGE_LIST_QUERY).resolve().as_concept_documents()))
+
+def post_create_organization():
+    payload = request.json
+    with typedb.transaction(TYPEDB_DATABASE, TransactionType.WRITE) as tx:
+        tx.query(queries.create_organization_query(payload)).resolve()
+        tx.commit()
+    return jsonify(None), 200
+
+def create_organization_query(payload):
+    query = "insert $_ isa organization"
+    query += f", has name \"{payload['name']}\""
+    query += f", has username \"{payload['username']}\""
+    if payload['profilePicture']:
+        query += f", has profile-picture \"{payload['profilePicture']}\""
+    query += f", has bio \"{payload['bio']}\""
+    query += f", has is-active {payload['isActive']}".lower()
+    query += f", has can-publish {payload['canPublish']}".lower()
+    if payload['badge']:
+        query += f", has badge \"{payload['badge']}\""
+    for tag in payload['tags']:
+        query += f", has tag \"{tag}\""
+    query += ";"
+    return query
+----
+
+Java::
++
+[source,java]
+----
+public class PageController {
+    private final Driver driver;
+
+    public PageController(Driver driver) {
+        this.driver = driver;
+    }
+
+    public String getPages() {
+        try (Transaction tx = driver.transaction(TypeDBConfig.TYPEDB_DATABASE, Transaction.Type.READ)) {
+            return tx.query(Query.PAGE_LIST_QUERY).resolve().asConceptDocuments().stream().map(JSON::toString).collect(Collectors.toList()).toString();
+        }
+    }
+
+    public ResponseEntity<?> createOrganization(@RequestBody CreateOrganizationPayload payload) {
+        try (Transaction tx = driver.transaction(TypeDBConfig.TYPEDB_DATABASE, Transaction.Type.WRITE)) {
+            tx.query(Query.createOrganizationQuery(payload)).resolve();
+            tx.commit();
+            return ResponseEntity.ok().body("null");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+}
+----
+
+TypeScript (HTTP)::
++
+[source,typescript]
+----
+async function fetchPages(): Promise<Page[]> {
+    return readConceptDocuments(`
+        match $page isa page;
+        fetch {
+            "name": $page.name,
+            "bio": $page.bio,
+            "id": $page.page-id,
+            "profile-picture": $page.profile-picture,
+            "type": (
+                match {
+                    $page isa person;
+                    let $ty = "person";
+                } or {
+                    $page isa organization;
+                    let $ty = "organization";
+                } or {
+                    $page isa group;
+                    let $ty = "group";
+                };
+                return first $ty;
+            ),
+        };
+    `);
+}
+
+async function readConceptDocuments<T>(query: string): Promise<T[]> {
+    const res = await driver.oneShotQuery(query, false, TYPEDB_DATABASE, "read");
+    if (isApiErrorResponse(res)) throw res.err;
+    if (res.ok.answerType !== 'conceptDocuments') throw new Error('Expected conceptDocuments repsonse');
+    return res.ok.answers as T[];
+}
+
+async function createOrganization(payload: Partial<Organization>) {
+    const query = "insert $_ isa organization"
+        + `, has name "${payload.name}"`
+        + `, has username "${payload.username}"`
+        + (payload.profilePicture ? `, has profile-picture "${payload.profilePicture}"` : '')
+        + (payload.badge ? `, has badge "${payload.badge}"` : '')
+        + (payload.tags?.map(tag => `, has tag "${tag}"`).join('') ?? '')
+        + `, has bio "${payload.bio}"`
+        + `, has is-active ${payload.isActive}`
+        + `, has can-publish ${payload.canPublish};`
+
+    const res = await driver.oneShotQuery(query, true, TYPEDB_DATABASE, "write");
+    if (isApiErrorResponse(res)) throw res.err;
+}
+----
+====
+
+== Service Layer - Frontend
+
+Whether the application uses a backend or not,
+we expose a service layer with a common interface for either querying the backend or TypeDB directly -
+which will return the types established in our data model.
+
+[source,typescript]
+----
+export type ServiceContextType = {
+    fetchUser: (id: string) => Promise<User | null>;
+    fetchGroup: (id: string) => Promise<Group | null>;
+    fetchOrganization: (id: string) => Promise<Organization | null>;
+
+    fetchPages: () => Promise<Page[]>;
+    fetchLocationPages: (locationName: string) => Promise<any>;
+    fetchPosts: (pageId: string) => Promise<PostType[]>;
+    fetchComments: (postId: string) => Promise<Comment[]>;
+
+    fetchMedia: (mediaId: string) => Promise<Blob | null>;
+
+    uploadMedia: (file: File) => Promise<string>;
+    createUser: (payload: Partial<User>) => Promise<void>;
+    createOrganization: (payload: Partial<Organization>) => Promise<void>;
+    createGroup: (payload: Partial<Group>) => Promise<void>;
+};
+----
+
+As examples, let's set up `fetchPages` and `createOrganization` function both with and without a backend.
+
+[tabs]
+====
+With backend (Rust, Python, Java)::
++
+With a backend, our service layer simply directly queries the appropriate backend route, which we will set up in the next steps.
++
+[source,typescript]
+----
+async function fetchPages(): Promise<Page[]> {
+    return fetch('http://localhost:8080/api/pages')
+        .then(jsonOrError('Failed to fetch pages'));
+}
+
+async function createOrganization(payload: Partial<Organization>) {
+    return fetch('http://localhost:8080/api/create-organization', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    }).then(jsonOrError('Failed to create organization'));
+}
+
+function jsonOrError(error: string) {
+    return (res: Response) => {
+        if (!res.ok) throw new Error(error);
+        return res.json();
+    }
+}
+----
++
+Frontend only (Typescript)::
++
+When only using the frontend, our service layer uses the Typescript HTTP driver to query TypeDB directly - which we've already seen.
++
+[source,typescript]
+----
+async function fetchPages(): Promise<Page[]> {
+    return readConceptDocuments(`
+        match $page isa page;
+        fetch {
+            "name": $page.name,
+            "bio": $page.bio,
+            "id": $page.page-id,
+            "profile-picture": $page.profile-picture,
+            "type": (
+                match {
+                    $page isa person;
+                    let $ty = "person";
+                } or {
+                    $page isa organization;
+                    let $ty = "organization";
+                } or {
+                    $page isa group;
+                    let $ty = "group";
+                };
+                return first $ty;
+            ),
+        };
+    `);
+}
+
+async function readConceptDocuments<T>(query: string): Promise<T[]> {
+    const res = await driver.oneShotQuery(query, false, TYPEDB_DATABASE, "read");
+    if (isApiErrorResponse(res)) throw res.err;
+    if (res.ok.answerType !== 'conceptDocuments') throw new Error('Expected conceptDocuments repsonse');
+    return res.ok.answers as T[];
+}
+
+async function createOrganization(payload: Partial<Organization>) {
+    const query = "insert $_ isa organization"
+        + `, has name "${payload.name}"`
+        + `, has username "${payload.username}"`
+        + (payload.profilePicture ? `, has profile-picture "${payload.profilePicture}"` : '')
+        + (payload.badge ? `, has badge "${payload.badge}"` : '')
+        + (payload.tags?.map(tag => `, has tag "${tag}"`).join('') ?? '')
+        + `, has bio "${payload.bio}"`
+        + `, has is-active ${payload.isActive}`
+        + `, has can-publish ${payload.canPublish};`
+
+    const res = await driver.oneShotQuery(query, true, TYPEDB_DATABASE, "write");
+    if (isApiErrorResponse(res)) throw res.err;
+}
+----
+====
+
+[#_routing_setup]
+== Routing and server setup
+
+For the backends, we need to set up routing for the API endpoints, and start the server.
+
+[tabs]
+====
+Rust::
++
+[source,rust]
+----
+let app = Router::new()
+    .route("/api/pages", get(get_page_list))
+    .route("/api/create-organization", post(post_create_organization))
+    .with_state(driver)
+    .layer(CorsLayer::new().allow_origin(Any).allow_methods(Any).allow_headers(Any));
+let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
+let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
+println!("Backend running at http://{addr}");
+axum::serve(listener, app).await.unwrap();
+----
+
+Python::
++
+[source,python]
+----
+app = Flask(__name__)
+CORS(app)
+
+@app.route('/api/pages')
+def get_page_list():
+    with typedb.transaction(TYPEDB_DATABASE, TransactionType.READ) as tx:
+        return jsonify(list(tx.query(queries.PAGE_LIST_QUERY).resolve().as_concept_documents()))
+
+@app.route('/api/create-organization', methods=['POST'])
+def post_create_organization():
+    payload = request.json
+    with typedb.transaction(TYPEDB_DATABASE, TransactionType.WRITE) as tx:
+        tx.query(queries.create_organization_query(payload)).resolve()
+        tx.commit()
+    return jsonify(None), 200
+
+if __name__ == '__main__':
+    app.run(debug=True, port=8080)
+----
+
+Java::
++
+[source,java]
+----
+@SpringBootApplication
+public class BackendjavaApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(BackendjavaApplication.class, args);
+	}
+
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**")
+						.allowedOrigins("*")
+						.allowedMethods("*")
+						.allowedHeaders("*");
+			}
+		};
+	}
+
+}
+
+@RestController
+public class PageController {
+    private final Driver driver;
+
+    @Autowired
+    public PageController(Driver driver) {
+        this.driver = driver;
+    }
+
+    @GetMapping(value = "/api/pages", produces = "application/json")
+    public String getPages() {
+        try (Transaction tx = driver.transaction(TypeDBConfig.TYPEDB_DATABASE, Transaction.Type.READ)) {
+            return tx.query(Query.PAGE_LIST_QUERY).resolve().asConceptDocuments().stream().map(JSON::toString).collect(Collectors.toList()).toString();
+        }
+    }
+
+    @PostMapping(value = "/api/create-organization", produces = "application/json")
+    public ResponseEntity<?> createOrganization(@RequestBody CreateOrganizationPayload payload) {
+        try (Transaction tx = driver.transaction(TypeDBConfig.TYPEDB_DATABASE, Transaction.Type.WRITE)) {
+            tx.query(Query.createOrganizationQuery(payload)).resolve();
+            tx.commit();
+            return ResponseEntity.ok().body("null");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+}
+----
+====
+
+== Learn more
+
+[cols-2]
+--
+.link:https://github.com/typedb/typedb-examples/tree/master/fullstack[Source code with backends,window=_blank]
+[.clickable]
+****
+The full source code of the sample application when used with one of the backends.
+****
+
+.link:https://github.com/typedb/typedb-examples/tree/master/webapp[Source code - frontend-only,window=_blank]
+[.clickable]
+****
+The full source code of the sample application when used querying TypeDB directly from the frontend.
+****
+--
