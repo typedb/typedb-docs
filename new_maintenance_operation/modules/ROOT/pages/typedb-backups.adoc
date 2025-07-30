@@ -1,4 +1,44 @@
 = TypeDB Backups
 
-[placeholder]
-Backup TypeDB servers. 
+This documentation covers the backup solutions available for TypeDB, both in the Cloud and Self-hosted environments.
+
+== Cloud Backups
+
+TypeDB Cloud provides robust backup capabilities leveraging the underlying cloud provider's disk snapshot capabilities.
+
+=== Automated Backups
+
+TypeDB Cloud supports scheduled backups that can be configured
+either during cluster deployment or at a later date.
+
+Backups will be taken according to a chosen frequency (hourly, daily, or weekly)
+and will be retained for a chosen amount of time.
+
+=== Manual Backups
+
+In addition to scheduled backups, you can create backups on-demand.
+We recommend doing this prior to making large changes to your database
+such as schema modifications or data migrations.
+
+=== Restore Options
+
+When restoring from a backup, you have two options:
+
+* Restore to the original cluster (in-place restore)
+* Create a new cluster from the backup with the same configuration as the original (clone)
+
+== Self-hosted Backups
+
+For self-hosted TypeDB deployments, backup implementation is the responsibility of the user.
+We recommend using either disk snapshots (similar to the Cloud offering) or our import/export tool:
+
+=== Disk Snapshots
+
+Similar to the Cloud offering, you can use your infrastructure's disk snapshot capabilities.
+This provides a backup of the database state at a point in time, and can be used to restore to a previous state.
+
+=== Export/Import
+
+xref:{page-version}@new_tools::console.adoc[TypeDB Console] provides a tool for exporting and importing database state.
+Doing an `export` will provide you with two files - one representing the schema, and the other representing the data.
+These can then be used with `import` to restore the database to the point when the export was taken.

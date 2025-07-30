@@ -1,3 +1,176 @@
 = TypeDB Cloud API
 
-Overview of the TypeDB Cloud API (not the complete reference!).
+The TypeDB Cloud administration API can be used to perform certain
+actions programmatically, rather than through the TypeDB Cloud website.
+
+To use the API, you will need to sign up for a free TypeDB Cloud account at
+https://cloud.typedb.com/sign-up.
+
+== Generate an API Token
+
+1. Visit your https://cloud.typedb.com/?team_action=/settings[team settings] page,
+scroll to the API tokens section, and click "Generate API Token".
+
+2. Give your API token a descriptive name, and appropriate access to your chosen space.
+See the xref:{page-version}@new_reference::cloud-http-api.adoc#accesslevels[API reference] for detailed access level info.
+
+3. Generate your API token and copy the displayed client ID and client secret for later use when authenticating.
+
+[IMPORTANT]
+====
+Make sure to save the client secret somewhere safe - you will only see it when
+you first generate the token, and will be unable to use the token without it.
+====
+
+== Access the API
+
+Once you have your client ID and client secret,
+you will need to exchange these for a short-lived access token used to query the API.
+
+. Make a `POST` request to `\https://cloud.typedb.com/api/auth`,
+with the client ID and client secret in a Basic authorization header, separated by a `:`.
++
+[tabs]
+====
+curl::
++
+[source,console]
+----
+curl --request POST \
+    --url https://cloud.typedb.com/api/auth \
+    --header 'Authorization: Basic {CLIENT-ID}:{CLIENT-SECRET}'
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "https://cloud.typedb.com/api/auth"
+
+headers = {
+    "Authorization": "Basic {CLIENT-ID}:{CLIENT-SECRET}"
+}
+
+response = requests.post(url, headers=headers)
+----
+
+Rust::
++
+[source,rust]
+----
+use reqwest;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+    let resp = client
+        .post("https://cloud.typedb.com/api/auth")
+        .header(reqwest::header::AUTHORIZATION, "Basic {CLIENT_ID}:{CLIENT_SECRET}")
+        .send().await;
+    Ok(())
+}
+----
+====
+The response body will be your access token.
++
+[NOTE]
+====
+For security, your access token will expire after 1 hour.
+====
+. Make an API request to list clusters in the space you selected for your API token.
+The example below targets the `default` space in an team called `my-team`.
+You will use the access token you generated in the previous step to authenticate this request.
++
+[tabs]
+====
+curl::
++
+[source,console]
+----
+curl --request GET \
+    --url https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters \
+    --header 'Authorization: Bearer {ACCESS-TOKEN}'
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "https://cloud.typedb.com/api/team/my-team/spaces/default/clusters"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+
+response = requests.get(url, headers=headers)
+----
+
+Rust::
++
+[source,rust]
+----
+use reqwest;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let client = reqwest::Client::new();
+    let resp = client
+        .get("https://cloud.typedb.com/api/team/my-team/spaces/default/clusters")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
+        .send().await;
+    Ok(())
+}
+----
+====
+It will return information about the clusters in a JSON format, as below
++
+[source,json]
+----
+[
+    {
+        "id":"my-cluster",
+        "serverCount":1,
+        "storageSizeGB":10,
+        "isFree":true,
+        "status":"running",
+        "createdAt":1738256490070,
+        "teamID":"my-team",
+        "spaceID":"default",
+        "version":"3.1.0",
+        "provider":"gcp",
+        "region":"europe-west2",
+        "machineType":"c2d-highcpu-2",
+        "storageType":"standard-rwo",
+        "servers": [
+            {
+              "address": "abc123-0.cluster.typedb.com:80",
+              "status": "running"
+            }
+        ]
+    }
+]
+----
+
+== Next Steps
+
+Now that you know how to list the clusters in your space from the API,
+you can explore TypeDB Cloud further, either through further API use or back on the website.
+
+[cols-2]
+--
+.https://cloud.typedb.com[TypeDB Cloud,window=_blank]
+[.clickable]
+****
+Head back to TypeDB Cloud to keep exploring there.
+****
+
+.xref:{page-version}@new_reference::cloud-http-api.adoc[]
+[.clickable]
+****
+View the API reference for more detail on what you can do with it.
+****
+--
