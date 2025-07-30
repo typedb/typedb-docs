@@ -79,7 +79,7 @@ def test_all_files(runner, lang: str, directory: str):
             if file.endswith(".adoc"):
                 adoc_path = os.path.relpath(os.path.join(root, file))
                 adoc_config = parse_adoc_config(adoc_path, runner.file_config_keys)
-                if adoc_config[runner.adoc_keys[0]] is not None:
+                if adoc_config[runner.file_config_keys[0]] is not None:
                     if runner.check_config(adoc_config):
                         logger.info(f"TESTING FILE {adoc_path}")
                         if not try_tests_in_file(runner, lang, adoc_path, adoc_config):
