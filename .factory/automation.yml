@@ -23,7 +23,7 @@ build:
         python3 -m test.main python test/tests/python_test.adoc || FAILED=true
         python3 -m test.main rust test/tests/rust_test.adoc || FAILED=true
         python3 -m test.main typeql test/tests/tql_test_linear.adoc || FAILED=true
-#        python3 -m test.main typeql test/tests/tql_test_custom.adoc || FAILED=true
+        # python3 -m test.main typeql test/tests/tql_test_custom.adoc || FAILED=true
         $FAILED && exit 1
         
         test/stop-community-server.sh 
