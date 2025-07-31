@@ -1,4 +1,50 @@
 = Transactions
 
-[placeholder]
-Managing transactions in TypeDB server. 
+== Transactionality
+
+TypeDB transactions come in 3 flavors: *read*, *write*, and *schema*. All transactions operate over *snapshots* of the database taken when
+the transaction is opened, providing a consistent view regardless of the operations performed in concurrent transactions.
+
+TypeDB transactions provide *ACID guarantees* up to snapshot isolation.
+
+All transactions that can do writes in TypeDB are __stateful__: queries that mutate the schema or data have their changes buffered, and
+those changes are accessible to later stages in the query, and to later queries in the transaction. After a commit, the changes are written
+into the global database state and made accessible to new transactions.
+
+== Read transactions
+
+Read transactions can execute only read queries. When provided a data update query or a schema mutation query, a read transaction will
+error.
+
+* They are the most lightweight and should be used whenever possible.
+* *Any number of read transactions can be opened concurrently*, and they will never fail to open even when write or schema transactions are open.
+
+== Write transactions
+
+Write transactions can execute read queries and data update queries. When provided a schema mutation query, a write transaction will error.
+
+* Write transactions can be opened concurrently to other write transactions and read transactions.
+* An active schema transaction will prevent a new write transaction from being opened.
+* Write transactions *may fail on commit*, as required to enforce data consistency and isolation, such as when two write transactions
+  concurrently update same piece of data and commit.
+
+.Example of conflicting writes
+[caption=""]
+====
+1. We open transaction 1 and modify the owned attribute of an entity.
+
+2. We then open transaction 2 before transaction 1 has been committed, and modify the same ownership.
+
+3. If we commit first transaction 1, then transaction 2, the commit of transaction 2 will fail.
+====
+
+== Schema transactions
+
+Schema transactions can execute read queries, data update queries, and schema mutation queries.
+
+* Schema transactions are *exclusive* both against other schema transactions and write transactions. An open write transactions will block
+  schema transactions from opening. Similarly, a schema transaction will block write and other schema transactions from opening. This
+  prevents the data from being mutated while the schema is being updated.
+
+* Schema transactions can *mutate both data and schema* at the same time, allowing atomic migrations from one database state to another.
+
