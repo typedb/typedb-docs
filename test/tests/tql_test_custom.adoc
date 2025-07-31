@@ -1,30 +1,28 @@
 = Crash course
 :title: Crash Course
-:test-tql: custom
-:test-tql-entry: schema_start
+:test-typeql: custom
+:test-typeql-entry: schema_start
 
 TypeDB brings together powerful testming concepts with the features and performance of modern database systems. We believe the result is a novel database experience - and after taking this 15-minute crash course, we hope you'll agree.
 
 == Storing data in types
 
-This queries will actually be run last ... check .adoc source, which has the `:test-tql-entry:` attribute set.
+This queries will actually be run last ... check .adoc source, which has the `:test-typeql-entry:` attribute set.
 
-//!test[lang=tql, type=read, name=read_start]
-//!++
 [,typeql]
 ----
+#!test
 match
   $alex isa user, has username "grothendieck_25";
   $friendship isa friendship (friend: $alex, friend: $friend-of-alex);
 reduce $alex-friend-count = count;
 ----
-//!--
 
 The next query is run in the same transaction.
 
-//!++
 [,typeql]
 ----
+#!test
 match
   $alex isa user, has username "grothendieck_25";
   friendship (friend: $alex, friend: $friend-of-alex); # can omit variable
@@ -38,13 +36,9 @@ match
   $alex-friend-count < $other-friend-count;
 select $other-name;
 ----
-//!--
-//!run
 
 Here, we committed, and start a new transaction (see source).
 
-//!test[lang=tql, type=read]
-//!++
 [,typeql]
 ----
 with fun friend_count($user: user) -> integer:
@@ -56,15 +50,11 @@ match
   friend_count($alex) < friend_count($other-user);
 select $other-name;
 ----
-//!--
-//!run
 
 == Schema
 
 This is actually the entrypoint of the page.
 
-//!test[lang=tql, type=schema, name=schema_start]
-//!++
 [,typeql]
 ----
 define
@@ -72,43 +62,27 @@ define
   attribute username, value string;
   attribute status, value string;
 ----
-//!--
 
 The next queries are still part of the same transaction
 
-//!++
 [,typeql]
 ----
 define
   relation friendship, relates friend @card(2);
   user plays friendship:friend;
 ----
-//!--
 
 There could be some hidden queries as well (check the .adoc source!)
 
-//!++
-////
-define
-  attribute start-date, value datetime;
-  friendship owns start-date @card(0..1);
-////
-//!--
 
 ...or parts of queries can be hidden
 
-//!++
-////
-define
-////
 [,typeql]
 ----
   user owns status @card(0..);  # as many status attributes as you wish
   user owns username @key;
 ----
-//!--
 
-//!++
 [,typeql]
 ----
 define
@@ -117,21 +91,15 @@ define
     owns status,
     plays friendship:friend;
 ----
-//!--
-//!run
 
 Here we start a new transactions
 
-//!test[lang=tql, type=schema]
-//!++
 [,typeql]
 ----
 define
   entity company sub organization;    # subtypes will inherit ownership and role
   entity university sub organization; # playing traits from their supertype
 ----
-//!--
-//!run
 
 == Insert data
 

@@ -78,7 +78,7 @@ class RustRunner(BaseRunner):
         cargo_toml_path = os.path.join(self.temp_dir, "Cargo.toml")
         if not os.path.exists(cargo_toml_path):
             shutil.copyfile(
-                os.path.join(os.path.dirname(__file__), RUST_TEST_TOML_PATH),
+                os.path.join(os.path.dirname(__file__), RUST_TEST_TOML),
                 cargo_toml_path,
             )
 

@@ -5,6 +5,29 @@ config:
 
 build:
   correctness:
+
+    test-code-testing-framework:
+      image: typedb-ubuntu-22.04
+      type: foreground
+      command: |
+        curl https://sh.rustup.rs -sSf | sh -s -- -y
+        
+        # Note: Rust runners install their own dependencies
+        sudo apt-get update
+        sudo apt-get install -y python3-pip
+        python3 -m pip install -r test/runners/python_requirements.txt
+        
+        test/start-community-server.sh
+        
+        FAILED=false
+        python3 -m test.main python test/tests/python_test.adoc || FAILED=true
+        python3 -m test.main rust test/tests/rust_test.adoc || FAILED=true
+        python3 -m test.main typeql test/tests/tql_test_linear.adoc || FAILED=true
+#        python3 -m test.main typeql test/tests/tql_test_custom.adoc || FAILED=true
+        $FAILED && exit 1
+        
+        test/stop-community-server.sh 
+
     test-code-snippets:
       image: typedb-ubuntu-22.04
       type: foreground
