@@ -1,4 +1,32 @@
 = Users
 
-[placeholder]
-Managing users in TypeDB server. 
+This section covers the management of users in TypeDB.
+
+== Managing users
+
+Like database management, all user management operations are administrative, meaning they are performed through the TypeDB Console or client
+drivers by a user _with administrative privileges_, rather than with TypeQL queries.
+
+After first boot, the only user is `admin`. Cloud users will be able to set a custom initial password for `admin` during the initial
+setup. In TypeDB CE, the default initial password for `admin` is `password`.
+
+The lifecycle of a user is managed through a few simple commands. An administrator can add a new user at any time using `user create
+<username> [<password>]` in the Console (you will be prompted for a password if it's not provided), or programmatically with
+driver.users.create("<username>", "<password>"). To view all users currently on the server, an administrator can use the `user list`
+command. If a user's access needs to be revoked, it can be done permanently with the `user delete <username>` command.
+
+A user can change their password using `user update-password <username> [<new-password>]` in the Console (once again, you will be prompted
+for a new password if it's not provided), or programmatically with `driver.users.updatePassword("<new-password>")`. 
+An administrator can change any user's password with the same command.
+
+== Permissions
+
+TypeDB's permission model is comprised of two roles. The administrator role is currently exclusive to the user `admin` and has full
+administrative privileges, including the ability to manage users and databases. Any other user is considered a standard user and, by
+default, is granted read and write permissions for all databases on the server, but cannot perform administrative actions. This model
+simplifies permission management by focusing on user-level access rather than complex, object-level grants.
+
+For a secure deployment, it is crucial to follow best practices. In a CE deployment, it is recommended to change the default admin password
+immediately. Furthermore, instead of using the powerful admin account for your applications, you should create dedicated standard users for
+each application or service. This follows the principle of least privilege and ensures that your applications have the necessary database
+access without possessing unnecessary administrative rights.
