@@ -1,4 +1,134 @@
 = Connections
 
-[placeholder]
-Managing connections in TypeDB server. 
+== Fundamentals
+
+To interact with a TypeDB database, a client application must first establish a session with the server. This is typically done using a
+TypeDB client driver for your chosen programming language (e.g., Python, Java, Rust, Node.js) or through a tool like the TypeDB Console. A
+connection requires the server's address (host and port) and valid user credentials. For production environments, a secure connection using
+TLS is strongly recommended.
+
+== Connecting to TypeDB Cloud & Enterprise
+
+[tabs]
+====
+Console::
++
+--
+Run Console in CLI:
+
+//include::../tools/console.adoc[tag=connect_console]
+.Connect to TypeDB
+[source,console]
+----
+typedb console --address=<server-address> --username=<username>
+----
+
+You will be prompted for a password.
+--
+
+Studio::
++
+--
+For a cloud deployment:
+
+// include::../tools/studio.adoc[tag=connect_cloud_studio]
+. In the https://cloud.typedb.com[TypeDB Cloud website], navigate to your cluster and click *Connect*. Then, click *Connect with TypeDB Studio*. This will launch TypeDB Studio.
+. Fill in your password and hit *Connect*. Your password can be found in your downloaded credentials file (if you have one).
+
+For an enterprise deployment:
+
+// include::../tools/studio.adoc[tag=connect_enterprise_studio]
+. Launch TypeDB Studio.
+. Enter the address of the HTTP endpoint of your cluster. By default, this is at port 8000.
+. Enter your username and password.
+. Click `Connect`.
+--
+====
+
+== Connecting your application
+
+For programmatic access, use one of the TypeDB xref:{page-component-version}@drivers::overview.adoc[drivers] via the network API:
+
+[tabs]
+====
+Rust::
++
+--
+[,rust,indent=0]
+----
+    let uri = format!("{}:{}", address, port);
+include::{page-version}@drivers::partial$tutorials/rust/src/main.rs[tags=driver_new]
+----
+
+--
+
+Python::
++
+--
+[,python,indent=0]
+----
+    uri = f"{address}:{port}"
+include::{page-version}@drivers::partial$tutorials/python/sample.py[tags=driver_new]
+----
+--
+====
+
+== Connecting to TypeDB Community Edition
+
+[tabs]
+====
+Console::
++
+--
+Run Console in CLI:
+
+//include::../tools/console.adoc[tag=connect_console]
+.Connect to TypeDB
+[source,console]
+----
+typedb console --address=<server-address> --username=<username> --tls-disabled
+----
+
+You will be prompted for a password.
+
+TypeDB CE does not support encryption. Use `--tls-disabled` to connect without using TLS.
+--
+
+Studio::
++
+--
+// include::../tools/studio.adoc[tag=connect_ce_studio]
+. Launch TypeDB Studio.
+. Enter the address of the HTTP endpoint of your cluster. By default, this is at port 8000 and for local instances you can use `http://localhost:8000`.
+. Enter your username and password - defaults are `admin` and `password`.
+. Click `Connect`.
+--
+====
+
+== Connecting your application
+
+For programmatic access, use one of the TypeDB xref:{page-component-version}@drivers::overview.adoc[drivers] via the network API:
+
+[tabs]
+====
+Rust::
++
+--
+[,rust,indent=0]
+----
+    let uri = format!("{}:{}", address, port);
+include::{page-version}@drivers::partial$tutorials/rust/src/main.rs[tags=driver_new]
+----
+
+--
+
+Python::
++
+--
+[,python,indent=0]
+----
+    uri = f"{address}:{port}"
+include::{page-version}@drivers::partial$tutorials/python/sample.py[tags=driver_new]
+----
+--
+====
