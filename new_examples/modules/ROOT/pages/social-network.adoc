@@ -3,7 +3,7 @@
 :pageTitle: Applicaiton example
 :summary: A simple example application in multiple languages.
 :tabs-sync-option:
-:page-preamble-card: 1
+:page-toclevels: 2
 
 == Introduction
 
@@ -18,9 +18,9 @@ https://github.com/typedb/typedb-examples[full source code,window=_blank].
 
 This example can communicate with TypeDB using one of the following service layers:
 
-* Rust backend
-* Java backend
-* Python backend
+* Rust backend (using Axum)
+* Java backend (using Spring Boot)
+* Python backend (using Flask)
 * Directly from the Typescript frontend
 
 == Running the application
@@ -33,25 +33,16 @@ For installation instructions, see the xref:{page-version}@manual::install/index
 Either select it when launching your TypeDB Cloud cluster, or install it following the instructions in https://github.com/typedb/typedb-examples/blob/master/use-cases/social-network/README.md#setup[the README].
 . Frontend:
 +
-* Requirements: Node.js, pnpm or npm
-* Select folder:
-+
 [tabs]
 ====
 With backend (Rust, Python, Java)::
+* Requirements: Node.js, pnpm or npm
+* Select folder:
 +
 [source,bash]
 ----
 cd fullstack/frontend
 ----
-+
-Frontend only (Typescript)::
-+
-[source,bash]
-----
-cd webapp
-----
-====
 * Install dependencies:
 +
 [source,bash]
@@ -68,6 +59,32 @@ npm run dev
 # or
 pnpm dev
 ----
++
+Frontend only (Typescript)::
+* Requirements: Node.js, pnpm or npm
+* Select folder:
++
+[source,bash]
+----
+cd webapp
+----
+* Install dependencies:
++
+[source,bash]
+----
+npm install
+# or
+pnpm install
+----
+* Run:
++
+[source,bash]
+----
+npm run dev
+# or
+pnpm dev
+----
+====
 
 
 . Backend:
@@ -115,10 +132,12 @@ cd fullstack/backend/java
 ----
 ====
 
-== Data model - Frontend
+== Data model
 
 This example is based on the `social-network` sample schema and data from the TypeDB Examples repository,
 and can be found at https://github.com/typedb/typedb-examples/tree/master/use-cases/social-network.
+
+=== Frontend
 
 We mirror elements of the schema model in our frontend Typescript data model.
 Similar to how in TypeQL, we have `user sub profile` and `profile sub page`,
@@ -128,6 +147,12 @@ in our Typescript model we have `User extends Profile` and `Profile extends Page
 [tabs]
 ====
 TypeQL::
++
+Excerpts from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/use-cases/social-network/schema.tql[schema.tql]:
++
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/use-cases/social-network/schema.tql#L21[page, profile]
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/use-cases/social-network/schema.tql#L97[organization]
+
 +
 [source,typeql]
 ----
@@ -153,32 +178,23 @@ define
     plays following:follower,
     plays subscription:subscriber;
 
-  entity person sub profile,
-    owns gender,
-    owns language,
-    owns email,
-    owns phone,
-    owns relationship-status,
-    owns page-visibility,
-    owns post-visibility,
-    plays birth:born,
-    plays friendship:friend,
-    plays family:relative,
-    plays parentship:parent,
-    plays parentship:child,
-    plays siblingship:sibling,
-    plays relationship:partner,
-    plays engagement:fiance,
-    plays marriage:spouse,
-    plays employment:employee,
-    plays education:attendee;
+  entity organization sub profile,
+    owns tag @card(0..),
+    plays employment:employer;
 ----
 
 TypeScript::
 +
+Excerpts from:
++
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/model/Page.tsx[Page.tsx]:
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/model/Page.tsx#L9[Page]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/model/Page.tsx#L31[Profile]
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/model/Organization.tsx#L3[Organization.tsx]
+
++
 [source,typescript]
 ----
-// frontend/src/model/Page.tsx
 export interface Page {
     id: string;
     type: PageType;
@@ -200,7 +216,6 @@ export interface Profile extends Page {
     location?: LocationItem[];
 }
 
-// frontend/src/model/Organization.tsx
 export interface Organization extends Profile {
     type: PageType<'organization'>;
     tags?: string[];
@@ -208,14 +223,14 @@ export interface Organization extends Profile {
 ----
 ====
 
-== Query examples
+=== Query examples
 
 With setup complete and a data model in place, we can turn to looking at a couple of example queries used by the application -
 one for reading data, and one for writing:
 
-=== List pages
+==== List pages
 
-This query will list all `page`s in the database, so that they can be displayed on the frontend's landing page.
+This query will list all `page` entities in the database, so that they can be displayed on the frontend's landing page.
 
 [source,typeql]
 ----
@@ -237,42 +252,48 @@ fetch {
 Using TypeQL's `fetch` syntax, we can retrieve our data in a JSON format that matches our data model -
 this allows the data to be transferred directly to the frontend without further modification.
 
-=== Create organization
+This also allows us to use a subquery to determine which of a few subtypes a `page` is,
+and return that as a property of the resulting JSON.
+We use the `first` keyword to convert the stream returned by the subquery into a single value.
 
-This query will create a new `organization` in the database.
+==== Create organization
+
+This query will create a new `organization` in the database - in the application, we would replace the values with user input.
 
 [source,typeql]
 ----
 insert $_ isa organization,
-    has name "...",
-    has username "...",
-    has profile-picture "...",
-    has badge "...",
-    has tag "...",
-    has tag "...",
-    has bio "...",
-    has is-active ...,
-    has can-publish ...;
+    has name "Acme Inc.",
+    has username "acmeinc",
+    has profile-picture "https://example.com/acmeinc.png",
+    has badge "badge",
+    has tag "acme",
+    has tag "company",
+    has bio "Welcome to Acme Inc.",
+    has is-active true,
+    has can-publish true;
 ----
 
 Note how we use `$_` as an anonymous variable in the query, since we don't need to refer to the new `organization` later.
 Additionally, since an organization can have multiple tags, we use `has tag "..."` multiple times.
-Since some of these attributes are optional, we could simply omit them if they were unset.
+Since some of these attributes are optional, we could simply omit them if they were unset - as below.
 
 [source,typeql]
 ----
 insert $_ isa organization,
-    has name "...",
-    has username "...",
-    has bio "...",
-    has is-active ...,
-    has can-publish ...;
+    has name "Acme Inc.",
+    has username "acmeinc",
+    has bio "Welcome to Acme Inc.",
+    has is-active true,
+    has can-publish true;
 ----
 
 Now that we have some queries to run, let's look at integrating those queries into our application,
 starting with connecting to the database.
 
-== Connection configuration
+== Application
+
+=== Connection configuration
 
 We store values for use by the connection as constants in the source code.
 When running the application yourself, you may need to change them to fit your setup:
@@ -280,6 +301,9 @@ When running the application yourself, you may need to change them to fit your s
 [tabs]
 ====
 Rust::
++
+Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/rust/src/config.rs[config.rs]
+
 +
 [source,rust]
 ----
@@ -292,6 +316,9 @@ pub const TYPEDB_DATABASE: &str = "social-network";
 
 Python::
 +
+Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/config.py[config.py]
+
++
 [source,python]
 ----
 TYPEDB_ADDRESS = "localhost:1729"
@@ -303,6 +330,9 @@ TYPEDB_DATABASE = "social-network"
 
 Java::
 +
+Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/TypeDBConfig.java#L12[TypeDBConfig.java]
+
++
 [source,java]
 ----
 private static final String TYPEDB_ADDRESS = "localhost:1729";
@@ -313,6 +343,9 @@ public static final String TYPEDB_DATABASE = "social-network";
 ----
 
 TypeScript (HTTP)::
++
+Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/webapp/src/config.tsx[config.tsx]
+
 +
 [source,typescript]
 ----
@@ -329,13 +362,16 @@ where `TYPEDB_DATABASE` -- the name of the database to use;
 `TYPEDB_TLS_ENABLED` -- whether TLS is enabled. This is unneeded for the HTTP driver, as TLS is determined based on the URL scheme (`http://` vs. `https://`).
 
 [#_typedb_connection]
-== TypeDB connection
+=== TypeDB connection
 
-Once your connection configuration is in place, you can connect to TypeDB by creating a new driver instance.:
+Once the connection configuration is in place, we can connect to TypeDB by creating a new driver instance:
 
 [tabs]
 ====
 Rust::
++
+Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/rust/src/main.rs#238[main.rs]
+
 +
 [source,rust]
 ----
@@ -352,12 +388,18 @@ let driver = Arc::new(
 
 Python::
 +
+Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/app.py#L10[app.py]
+
++
 [source,python]
 ----
 typedb = TypeDB.driver(TYPEDB_ADDRESS, Credentials(TYPEDB_USERNAME, TYPEDB_PASSWORD), DriverOptions(TYPEDB_TLS_ENABLED, None))
 ----
 
 Java::
++
+Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/TypeDBConfig.java[TypeDBConfig.java]
+
 +
 [source,java]
 ----
@@ -378,6 +420,9 @@ public class TypeDBConfig {
 
 TypeScript (HTTP)::
 +
+Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/webapp/src/AppService.tsx#L28[AppService.tsx]
+
++
 [source,typescript]
 ----
 const driver = new TypeDBHttpDriver({
@@ -389,13 +434,26 @@ const driver = new TypeDBHttpDriver({
 ====
 
 [#_querying]
-== Querying the database
+=== Querying the database
 
-Finally, we can actually query the database
+With a driver instance ready to use, we can now issue queries to the database
 
 [tabs]
 ====
 Rust::
++
+We must open a transaction to execute queries - the transaction will be automatically close when the scope ends.
+We use `Read` and `Write` transactions as required.
+For the `Write` transaction, we must use `commit()` to commit the changes to the database.
++
+Excerpts from:
+
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/rust/src/main.rs[main.rs]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/rust/src/main.rs#L22[get_page_list]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/rust/src/main.rs#L202[post_create_organization]
+
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/rust/src/query.rs#L247[query.rs]
+
 +
 [source,rust]
 ----
@@ -475,6 +533,19 @@ pub fn create_organization_query(payload: CreateOrganizationPayload) -> String {
 
 Python::
 +
+We must open a transaction to execute queries - by using a `with` statement we can ensure that the transaction will be closed when the scope ends.
+We use `READ` and `WRITE` transactions according to the query we actually want to execute.
+For the `WRITE` transaction, we must use `commit()` to commit the changes to the database.
++
+Excerpts from:
+
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/app.py[app.py]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/app.py#L17[get_page_list]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/app.py#L66[post_create_organization]
+
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/queries.py#L193[queries.py]
+
++
 [source,python]
 ----
 def get_page_list():
@@ -507,6 +578,17 @@ def create_organization_query(payload):
 
 Java::
 +
+We must open a transaction to execute queries - the transaction will be automatically close when the scope ends.
+We use `READ` and `WRITE` transactions according to the query we actually want to execute.
+For the `WRITE` transaction, we must use `commit()` to commit the changes to the database.
++
+Excerpts from:
+
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/PageController.java[PageController.java]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/PageController.java#L105[getPages]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/PageController.java#L177[createOrganization]
+
++
 [source,java]
 ----
 public class PageController {
@@ -535,6 +617,18 @@ public class PageController {
 ----
 
 TypeScript (HTTP)::
++
+For the HTTP driver, we can use the `oneShotQuery` method to have a transaction of a chosen type opened and closed automatically for a single query.
+We can pass a boolean argument to indicate whether the transaction should be committed or not -
+which is required for the `write` transaction to actually commit the changes to the database.
++
+//tag::typescript-http-query-excerpts[]
+Excerpts from:
+
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/webapp/src/AppService.tsx[AppService.tsx]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/webapp/src/AppService.tsx#L86[fetchPages]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/webapp/src/AppService.tsx#L226[createOrganization]
+
 +
 [source,typescript]
 ----
@@ -585,13 +679,16 @@ async function createOrganization(payload: Partial<Organization>) {
     if (isApiErrorResponse(res)) throw res.err;
 }
 ----
+//end::typescript-http-query-excerpts[]
 ====
 
-== Service Layer - Frontend
+=== Frontend Service Layer
 
 Whether the application uses a backend or not,
 we expose a service layer with a common interface for either querying the backend or TypeDB directly -
 which will return the types established in our data model.
+
+Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/service/ServiceContext.tsx#L8[ServiceContext.tsx]
 
 [source,typescript]
 ----
@@ -622,6 +719,13 @@ With backend (Rust, Python, Java)::
 +
 With a backend, our service layer simply directly queries the appropriate backend route, which we will set up in the next steps.
 +
+Excerpts from:
+
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/AppService.tsx[AppService.tsx]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/AppService.tsx#L23[fetchPages]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/AppService.tsx#L53[createOrganization]
+
++
 [source,typescript]
 ----
 async function fetchPages(): Promise<Page[]> {
@@ -649,65 +753,19 @@ Frontend only (Typescript)::
 +
 When only using the frontend, our service layer uses the Typescript HTTP driver to query TypeDB directly - which we've already seen.
 +
-[source,typescript]
-----
-async function fetchPages(): Promise<Page[]> {
-    return readConceptDocuments(`
-        match $page isa page;
-        fetch {
-            "name": $page.name,
-            "bio": $page.bio,
-            "id": $page.page-id,
-            "profile-picture": $page.profile-picture,
-            "type": (
-                match {
-                    $page isa person;
-                    let $ty = "person";
-                } or {
-                    $page isa organization;
-                    let $ty = "organization";
-                } or {
-                    $page isa group;
-                    let $ty = "group";
-                };
-                return first $ty;
-            ),
-        };
-    `);
-}
-
-async function readConceptDocuments<T>(query: string): Promise<T[]> {
-    const res = await driver.oneShotQuery(query, false, TYPEDB_DATABASE, "read");
-    if (isApiErrorResponse(res)) throw res.err;
-    if (res.ok.answerType !== 'conceptDocuments') throw new Error('Expected conceptDocuments repsonse');
-    return res.ok.answers as T[];
-}
-
-async function createOrganization(payload: Partial<Organization>) {
-    const query = "insert $_ isa organization"
-        + `, has name "${payload.name}"`
-        + `, has username "${payload.username}"`
-        + (payload.profilePicture ? `, has profile-picture "${payload.profilePicture}"` : '')
-        + (payload.badge ? `, has badge "${payload.badge}"` : '')
-        + (payload.tags?.map(tag => `, has tag "${tag}"`).join('') ?? '')
-        + `, has bio "${payload.bio}"`
-        + `, has is-active ${payload.isActive}`
-        + `, has can-publish ${payload.canPublish};`
-
-    const res = await driver.oneShotQuery(query, true, TYPEDB_DATABASE, "write");
-    if (isApiErrorResponse(res)) throw res.err;
-}
-----
+include::{page-version}@new_examples::social-network.adoc[tag=typescript-http-query-excerpts]
 ====
 
 [#_routing_setup]
-== Routing and server setup
+=== Routing and server setup
 
 For the backends, we need to set up routing for the API endpoints, and start the server.
 
 [tabs]
 ====
 Rust::
++
+Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/rust/src/main.rs#L247[main.rs]
 +
 [source,rust]
 ----
@@ -723,6 +781,12 @@ axum::serve(listener, app).await.unwrap();
 ----
 
 Python::
++
+Excerpts from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/app.py[app.py]:
+
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/app.py#L16[get_page_list]
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/app.py#L65[post_create_organization]
+
 +
 [source,python]
 ----
@@ -747,6 +811,14 @@ if __name__ == '__main__':
 ----
 
 Java::
++
+Excerpts from:
+
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/BackendjavaApplication.java[BackendjavaApplicaiton.java]
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/PageController.java[PageController.java]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/PageController.java#L104[getPages]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/PageController.java#L176[createOrganization]
+
 +
 [source,java]
 ----
@@ -812,7 +884,7 @@ public class PageController {
 The full source code of the sample application when used with one of the backends.
 ****
 
-.link:https://github.com/typedb/typedb-examples/tree/master/webapp[Source code - frontend-only,window=_blank]
+.link:https://github.com/typedb/typedb-examples/tree/master/webapp[Frontend-only source code,window=_blank]
 [.clickable]
 ****
 The full source code of the sample application when used querying TypeDB directly from the frontend.
