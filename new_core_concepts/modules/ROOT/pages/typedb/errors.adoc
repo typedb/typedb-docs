@@ -1,4 +1,21 @@
 = Errors
 
-[placeholder]
-Error handling in TypeDB server. 
+Errors in TypeDB keep track of their cause, and the location of the error in the query. Console and Studio will display the full stck from
+the lowest level cause, such as a TypeQL syntax error, to the ultimate outcome such as the transaction being closed as a result of an
+invalid write. You can access the entire stacktrace of the error in the drivers by e.g. repeatedly calling the `Error::source()` method in
+the Rust driver.
+
+[,]
+====
+test::schema>> define person sub entity;
+
+Error executing command: 'define person sub entity;'
+
+[TQL0] [TQL03] TypeQL Error: There is a syntax error
+parsing error: expected identifier
+Near 1:18:
+--> define person sub entity;
+                      ^
+Caused: Error in usage of TypeQL.
+Caused: [TSV7] Query parsing failed.
+====
