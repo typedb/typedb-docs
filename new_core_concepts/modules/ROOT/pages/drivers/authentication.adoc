@@ -12,7 +12,7 @@ TypeDB requires authentication for all client connections. Understanding how aut
 
 Every TypeDB driver connection requires valid user credentials:
 
-* **Username**: The name of a TypeDB user account
+* **Username**: The name of a TypeDB user
 * **Password**: The corresponding password for that user
 
 [source,python]
@@ -39,8 +39,8 @@ driver = TypeDB.driver(address, credentials, options)
 TypeDB installations come with a default administrative user:
 
 * **Username**: `admin`
-* **Default password**: `password` (Community Edition)
-* **Cloud password**: Set during cluster creation (TypeDB Cloud)
+* **Cloud password**: Set during cluster creation
+* **Community Edition / Enterprise default password**: `password`
 
 [IMPORTANT]
 ====
@@ -139,7 +139,7 @@ Common authentication errors and solutions:
 **Solutions**:
 
 - Verify username and password are correct
-- Check if user account exists
+- Check if user exists
 - Ensure user hasn't been deleted
 
 === Connection refused
@@ -150,7 +150,7 @@ Common authentication errors and solutions:
 
 - Verify server address and port
 - Check if TypeDB server is running
-- Check that the TLS is either enabled on both driver and server, or disabled on both driver and server
+- Check that TLS is either enabled on both driver and server, or disabled on both driver and server
 - Ensure network connectivity
 
 === TLS/encryption errors
@@ -159,5 +159,5 @@ Common authentication errors and solutions:
 
 **Solutions**:
 
-- Check that the TLS is either enabled on both driver and server, or disabled on both driver and server
+- Check that TLS is either enabled on both driver and server, or disabled on both driver and server
 - Check certificate paths and validity

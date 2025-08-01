@@ -4,7 +4,7 @@
 :keywords: typedb, driver, transactions, isolation, concurrency
 :test-python: true
 
-After opening a driver with the correct configuration and credentials, you can open transactions in your application.
+After opening a driver with the correct configuration and credentials, you can open transactions for encapsulated querying in your application.
 
 == Transaction fundamentals
 
@@ -39,7 +39,7 @@ a|* Execute read queries +
 
 === ACID guarantees
 
-TypeDB transactions provide ACID guarantees up to **snapshot isolation**. For more details see the server xref::{page-version}@new_core_concepts/typedb/transactions.adoc[Transaction] documentation.
+TypeDB transactions provide ACID guarantees up to **snapshot isolation**. For more details, see the server xref::{page-version}@new_core_concepts/typedb/transactions.adoc[Transaction] documentation.
 
 == Transaction lifecycle
 
@@ -47,9 +47,9 @@ TypeDB transactions provide ACID guarantees up to **snapshot isolation**. For mo
 
 Every transaction follows the same lifecycle pattern:
 
-1. **Open**: Create transaction with specific type
-2. **Execute**: Send queries and process results
-3. **Commit/Close**: Persist changes or discard transaction
+1. **Open**: Create transaction with specific type.
+2. **Execute**: Send queries and process results.
+3. **Commit/Close**: Persist changes or discard transaction.
 
 === Read transactions
 
@@ -188,7 +188,7 @@ with driver.transaction(DB_NAME, TransactionType.SCHEMA) as tx:
 
 from typedb.driver import TransactionOptions
 
-tx_options = TransactionOptions(transaction_timeout_millis=60000)
+tx_options = TransactionOptions(transaction_timeout_millis=60_000)
 
 with driver.transaction(DB_NAME, TransactionType.WRITE, options=tx_options) as tx:
     # This transaction will timeout after 60 seconds if not committed
