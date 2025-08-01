@@ -12,7 +12,7 @@ After opening a driver with the correct configuration and credentials, you can o
 
 TypeDB provides three distinct transaction types, each with specific capabilities:
 
-[cols="3,2"]
+[cols="1,3"]
 |===
 |Type |Capabilities
 
@@ -39,7 +39,7 @@ a|* Execute read queries +
 
 === ACID guarantees
 
-TypeDB transactions provide ACID guarantees up to **snapshot isolation**. For more details, see the server xref::{page-version}@new_core_concepts/typedb/transactions.adoc[Transaction] documentation.
+TypeDB transactions provide ACID guarantees up to **snapshot isolation**. For more details, see the server xref:{page-version}@new_core_concepts::typedb/transactions.adoc[Transaction] documentation.
 
 == Transaction lifecycle
 

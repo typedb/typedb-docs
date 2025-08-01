@@ -6,7 +6,7 @@
 
 == What are TypeDB drivers?
 
-TypeDB drivers are client libraries that enable applications to communicate with TypeDB servers. They provide a programming language-specific interface for all database operations, from connection management to query execution.
+TypeDB drivers are client libraries that enable applications to communicate with TypeDB servers. They provide a programming language-specific interface for all server operations, from connection management to query execution.
 
 Key responsibilities of a TypeDB driver include:
 
@@ -16,6 +16,8 @@ Key responsibilities of a TypeDB driver include:
 * **Query execution**: Sending TypeQL queries and processing results
 * **Error handling**: Converting server errors into language-specific exceptions
 * **Resource management**: Properly managing network resources and memory
+
+They also allow you to manage databases and users.
 
 == Communication endpoints
 
@@ -63,8 +65,11 @@ TypeDB Server
 
 TypeDB's gRPC drivers are implemented as FFI (Foreign Function Interface) wrappers around a shared Rust driver core, enabling the core logic, validation, and error handling to be implemented once and exposed into each language with a thin wrapper.
 
-This means that your driver may be platform (eg. OS and CPU architecture) specific, and make your application non-portable.
-However, this is typically not a problem - Rust compiles per-platform or is distributed as source, Python applications are usually distributed as source, and the Java driver is specifically built to support major platforms to allow shipping built Java applications.
+This means that your driver may be platform (eg. OS and CPU architecture) specific, and make your application non-portable. However, this is typically not a problem:
+
+ - Rust compiles per-platform or is distributed as source.
+ - Python applications are usually distributed as source.
+ - The Java driver is specifically built to support major platforms to allow shipping built Java applications.
 
 == Basic driver workflow
 
