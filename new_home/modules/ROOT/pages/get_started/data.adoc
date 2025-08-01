@@ -177,10 +177,7 @@ Studio::
 In order to insert a friendship, we need to refer to users that will play the role of friends in the friendship.
 That's where variables come into play!
 
-[Note]
------
 Recall that each friendship takes exactly two friends as specified in the schema; feel free to experiment though, and see what error messages TypeDB will give you when trying to insert triple friendships.
------
 
 [,typeql]
 ----
@@ -201,10 +198,7 @@ Console::
 In order to insert a friendship, we need to refer to users that will play the role of friends in the friendship.
 That's where variables come into play!
 
-[Note]
------
 Recall that each friendship takes exactly two friends as specified in the schema; feel free to experiment though, and see what error messages TypeDB will give you when trying to insert triple friendships.
------
 
 Using a new `write` transaction, run:
 
