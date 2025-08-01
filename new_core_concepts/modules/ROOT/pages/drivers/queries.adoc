@@ -10,9 +10,9 @@
 
 All TypeDB queries follow the same execution pattern:
 
-1. **Execute**: Send a TypeQL query string to the transaction, receiving an already-started promise
-2. **Resolve**: If required, block until the promise that query promise returns a result
-3. **Process**: Handle the result, based on the query type
+1. **Execute**: Send a TypeQL query string to the transaction, receiving an already-started promise.
+2. **Resolve**: If required, block until the promise that query promise returns a result.
+3. **Process**: Handle the result based on the query type.
 
 [source,python]
 ----
@@ -80,7 +80,7 @@ In short: you can execute many read queries concurrently, and lazily consume the
 
 TypeDB queries return different result types depending on the query structure. In languages with exceptions, an exception may be thrown on `resolve()` if the query causes an error.
 
-A successful query's response a `QueryAnswer`, which expands to any of the following types:
+A successful query's response is a `QueryAnswer`, which expands to any of the following types:
 
 - `OK` - a simple success status, returned by `define`, `undefine`, or `redefine` queries
 - `ConceptRowIterator` - an iterator of `ConceptRow`, returned by queries not ending in a `fetch` clause

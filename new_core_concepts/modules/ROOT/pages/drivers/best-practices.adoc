@@ -235,7 +235,7 @@ match tx.query("match $x isa person;").await {
 
 == Performance optimization
 
-To optimise data loading, a common pattern is to asynchronously submit a a batch of queries, resolve them all to catch any errors, and the commit:
+To optimise data loading, a common pattern is to asynchronously submit a batch of queries, resolve them all to catch any errors, and then commit:
 
 [source, python]
 ----
