@@ -9,7 +9,21 @@
 
 In the previous section we've created our TypeDB server instance and connected TypeDB Studio (or Console).
 
-Now we'll use the server to create a database and initialize the schema.
+Now we'll use the server to create a database and initialize the schema. A TypeDB schema defines what data is permitted to be written to your database. Schemas are one of the key aspects of TypeDB: they allow the database to validate inserted data, check queries for validity, and perform query optimization. TypeDB's schemas are intuitive and built with higher-level building blocks compared to relational, document, or graph databases.
+
+== TypeDB's data model at a glance
+
+Let's have a quick look at TypeDB's data model. In TypeDB, data is stored in *types*, which can be either:
+
+* *entity* types (e.g., a type of all the ``user``'s in your app)
+* *relation* types (e.g., all the ``friendship``'s of users)
+* *attribute* types (e.g., the ``username``'s of ``user``'s, or the ``start_date``'s of ``friendship``'s)
+
+Stored data objects are called *instances* of types, and instances may connect to other instances. This simple mechanism of "`connecting`" underpins the distinction of entity, relation, and attribute types above.
+
+For example, to create a relation instance we must reference multiple other entities or relations, which we call the relation's *role players*. Similarly, to create attribute instance we will reference a single entity or relation instances, which we call the attribute's *owner*. Makes sense, right?
+
+TypeDB's data model is conceptually simple, but at the same time extremely systematic and flexible. This is what enables TypeDB's type system to unify concepts from relational, document, and graph DBMSs, and blend them with ideas from modern strongly typed programming languages.
 
 [#create_database]
 == Database management 101
@@ -125,20 +139,6 @@ Alternatively, you could use the command `close` to discard your changes and clo
 A quick *tip* if you are using Console for this course. Queries on this page can be turned into runnable *Console scripts* by clicking the "`hidden lines`" button (image:{page-version}@new_home::/svg/eye.svg[width=24]).
 These scripts can then be *pasted* directly into the server-level interface of Console, and run end-to-end simply by pressing kbd[Enter].
 ====
-
-== TypeDB's data model at a glance
-
-Before we continue creating the database schema, let's have a quick look at TypeDB's data model. In TypeDB, data is stored in *types*, which can be either:
-
-* *entity* types (e.g., a type of all the ``user``'s in your app)
-* *relation* types (e.g., all the ``friendship``'s of users)
-* *attribute* types (e.g., the ``username``'s of ``user``'s, or the ``start_date``'s of ``friendship``'s)
-
-Stored data objects are called *instances* of types, and instances may reference other instances. This simple mechanism of "`referencing`" underpins the distinction of entity, relation, and attribute types above.
-
-For example, to create a relation instance we must reference multiple other entities or relations, which we call the relation's *role players*. Similarly, to create attribute instance we will reference a single entity or relation instances, which we call the attribute's *owner*. Makes sense, right?
-
-TypeDB's data model is conceptually simple, but at the same time extremely systematic and flexible. This is what enables TypeDB's type system to unify concepts from *relational*, *document*, and *graph* DBMSs, and blend them with a modern typed programming paradigm.
 
 == Defining your schema
 
