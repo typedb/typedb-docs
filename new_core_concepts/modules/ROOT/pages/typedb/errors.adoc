@@ -6,7 +6,7 @@ invalid write. You can access the entire stacktrace of the error in the drivers 
 the Rust driver.
 
 [,]
-====
+----
 test::schema>> define person sub entity;
 
 Error executing command: 'define person sub entity;'
@@ -18,4 +18,4 @@ Near 1:18:
                       ^
 Caused: Error in usage of TypeQL.
 Caused: [TSV7] Query parsing failed.
-====
+----
