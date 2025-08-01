@@ -11,6 +11,7 @@ build:
       type: foreground
       command: |
         curl https://sh.rustup.rs -sSf | sh -s -- -y
+        . "$HOME/.cargo/env" 
         
         # Note: Rust runners install their own dependencies
         sudo apt-get update
@@ -33,6 +34,7 @@ build:
       type: foreground
       command: |
         curl https://sh.rustup.rs -sSf | sh -s -- -y
+        . "$HOME/.cargo/env"         
         
         # Note: Rust runners install their own dependencies
         sudo apt-get update

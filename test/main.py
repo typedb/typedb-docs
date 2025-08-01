@@ -69,6 +69,7 @@ def test_one_file(runner, lang: str, adoc_path: str):
     else:
         logger.info(f"[{adoc_path}]: Bad adoc attributes in file.")
     if runner.failure_count > 0:
+        print("EXITING WITH code 1")
         sys.exit(1)
 
 def test_all_files(runner, lang: str, directory: str):
@@ -90,6 +91,7 @@ def test_all_files(runner, lang: str, directory: str):
 
     logger.info(f"SUMMARY: {files_tested_counter} file(s) tested in '{directory}', {len(files_with_failures)} file(s) had test failures" + "".join(["\n>> " + file for file in files_with_failures]))
     if len(files_with_failures) > 0:
+        print("EXITING WITH code 1")
         sys.exit(1)
 
 if __name__ == "__main__":
