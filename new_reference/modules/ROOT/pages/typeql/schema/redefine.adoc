@@ -2,7 +2,7 @@
 
 Redefine queries are used
 // tag::overview[]
-to modify existing types, type traits, or functions in the schema.
+to modify existing types, type interfaces, or functions in the schema.
 // end::overview[]
 
 == Syntax
@@ -17,7 +17,7 @@ redefine
 
 == Behavior
 
-Redefine queries can be used to modify types and type traits or to override functions.
+Redefine queries can be used to modify types and type interfaces or to override functions.
 
 For clarity and precision, only one redefinition is allowed per query.
 
@@ -39,7 +39,7 @@ An error is returned (on execution or on commit), and no changes are preserved, 
 
 == Examples
 
-=== Redefining types' traits and annotations
+=== Redefining types' interfaces and annotations
 
 .Redefining type's sub
 [,typeql]
@@ -59,7 +59,7 @@ redefine karma value integer;
 redefine email value string @regex("^.*@typedb\.com$");
 ----
 
-.Redefining type trait's annotation with arguments
+.Redefining type interface's annotation with arguments
 [,typeql]
 ----
 redefine redefine post owns tag @card(0..5);

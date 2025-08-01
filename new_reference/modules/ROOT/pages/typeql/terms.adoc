@@ -44,15 +44,15 @@ List variable::
 Variable that holds a list.
 --
 
-Trait::
+interface::
 +
 --
-Traits determine classes of types whose instance can be used as reference in instances of other types.
+interfaces determine classes of types whose instance can be used as reference in instances of other types.
 
-Role player trait ("`player trait`")::
+Role player interface ("`player interface`")::
 
 
-Owner trait::
+Owner interface::
 some text
 --
 
@@ -83,7 +83,7 @@ Structured value type ("`struct type`")::
 Built-in type::
 +
 ******
-Entity and relation type can have traits as defined in the schema.
+Entity and relation type can have interfaces as defined in the schema.
 
 Primitive type::
 ...

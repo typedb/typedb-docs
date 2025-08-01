@@ -5,7 +5,7 @@ This page gives a brief technical overview of TypeDB's type system and query mod
 In short, TypeDB's data model is based on a *type system* built from two key ingredients:
 
 * a _single-inheritance_ subtyping system, allowing a type to specialize to zero or more subtypes.
-* a _trait-based_ reference system, allowing instances to refer to other instances.
+* a _interface-based_ reference system, allowing instances to refer to other instances.
 
 TypeDB's query model is tailored to this type system, directly expressing subtyping and references in its query statements, but also  allowing users to chain together queries and data operations into powerful *multi-stage data pipelines* for all types of workloads.
 
@@ -32,7 +32,7 @@ Instances of entity types, simply called entities, can be created _indepdently_,
 11. *Relation types*, specified using the keyword `relation`, and are required to have at least one *associated role type* specified with the keyword `relates`.
 +
 --
-Instances of relation types may reference (or "link") zero or more data instances for each associated role type, called their *players* of that role (these data instance must have types with corresponding *player trait*).
+Instances of relation types may reference (or "link") zero or more data instances for each associated role type, called their *players* of that role (these data instance must have types with corresponding *player interface*).
 
 For example, a friendship relations may link two friends (implemented by, say, two user entities).
 
@@ -41,7 +41,7 @@ Relations without role players will be removed (no "`dangling relations`").
 11. *Attribute types*, specified using the keyword `attribute`, and required to have an *associated value type* (either structured or primitive) specified with the keyword `value`.
 +
 --
-Instances of attribute types carry an *associated value* of the associated value type. They may also reference other data instances, called their *owners* (these data instances must have direct types with the corresponding *owner trait*). Two attributes are considered equal if they have the same associate value and have the same (origin) type.
+Instances of attribute types carry an *associated value* of the associated value type. They may also reference other data instances, called their *owners* (these data instances must have direct types with the corresponding *owner interface*). Two attributes are considered equal if they have the same associate value and have the same (origin) type.
 
 Attributes without owners will be removed (no "`dangling attributes`", unless the attribute type is marked as independent).
 --
@@ -65,15 +65,15 @@ Two instances of a value type are equal exactly when their literal values are eq
 Coming soon.
 ====
 
-=== Type traits and "`objects vs attributes`"
+=== Type interfaces and "`objects vs attributes`"
 
-Entity types can have traits, i.e. play roles or own attribute types. This allows us to create connections of entities with other data.
+Entity types can have interfaces, i.e. play roles or own attribute types. This allows us to create connections of entities with other data.
 
-Relation types can also have traits, i.e. play roles or own attribute types. This, for example, allows the creation of nested relations (i.e., relations playing roles in other relations).
+Relation types can also have interfaces, i.e. play roles or own attribute types. This, for example, allows the creation of nested relations (i.e., relations playing roles in other relations).
 
-Since entity and relation types together make up "`first-class`" types in TypeDB's type system (when it comes to type traits) they are, together, also referred to as *object types*, whose instances are data *objects*.
+Since entity and relation types together make up "`first-class`" types in TypeDB's type system (when it comes to type interfaces) they are, together, also referred to as *object types*, whose instances are data *objects*.
 
-Attributes cannot have traits; they are merely typed associations of values to objects.
+Attributes cannot have interfaces; they are merely typed associations of values to objects.
 
 === Subtyping
 
@@ -88,7 +88,7 @@ Data instances (i.e., entities, relation, are attributes) are stored using datab
 
 == Definitions
 
-User-defined types, their traits, and their subtyping structure, are created and modified through xref:{page-version}@new_reference::typeql/index.adoc#statements[definition statements] in xref:{page-version}@new_reference::typeql/index.adoc#queries[schema queries].
+User-defined types, their interfaces, and their subtyping structure, are created and modified through xref:{page-version}@new_reference::typeql/index.adoc#statements[definition statements] in xref:{page-version}@new_reference::typeql/index.adoc#queries[schema queries].
 
 == Data pipelines
 

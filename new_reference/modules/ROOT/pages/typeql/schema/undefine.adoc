@@ -24,16 +24,16 @@ Undefinition statements are similar to definition statements, but they have a di
 <label>;
 ----
 
-.Trait undefinition statement
+.interface undefinition statement
 [,typeql]
 ----
-<trait_definition> from <type_label>;
+<interface_definition> from <type_label>;
 ----
 
 .Annotation undefinition statement
 [,typeql]
 ----
-<@annotation> from <type_label_or_trait>;
+<@annotation> from <type_label_or_interface>;
 ----
 
 .Function undefinition statement
@@ -47,9 +47,9 @@ Schema statements in an undefine query cannot use variables or values.
 
 == Behavior
 
-An undefine query removes the parts of the schema specified in its undefine clause, including types, traits, annotations, and functions.
-Undefining a type also undefines all its traits and annotations.
-Undefining a trait also undefines all its traits and annotations.
+An undefine query removes the parts of the schema specified in its undefine clause, including types, interfaces, annotations, and functions.
+Undefining a type also undefines all its interfaces and annotations.
+Undefining a interface also undefines all its interfaces and annotations.
 
 An error is returned (on execution or on commit), and no changes are preserved, if:
 
@@ -85,7 +85,7 @@ undefine user;
 undefine parentship; email;
 ----
 
-=== Undefining traits
+=== Undefining interfaces
 
 .Undefining relation type's relates
 [,typeql]
