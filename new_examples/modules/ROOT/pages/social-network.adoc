@@ -30,7 +30,7 @@ To run this sample application, you'll need:
 . TypeDB: either a https://cloud.typedb.com/[TypeDB Cloud,window=_blank] cluster or a self-hosted deployment.
 For installation instructions, see the xref:{page-version}@manual::install/index.adoc[] page.
 ** You will need the `social-network` sample schema and data from the TypeDB Examples repository.
-Either select it when launching your TypeDB Cloud cluster, or install it following the instructions in https://github.com/typedb/typedb-examples/blob/master/use-cases/social-network/README.md#setup[the README].
+Either select it when launching your TypeDB Cloud cluster, or install it following the instructions in https://github.com/typedb/typedb-examples/blob/master/use-cases/social-network/README.md#setup[the README,window=_blank].
 . Frontend:
 +
 [tabs]
@@ -148,10 +148,10 @@ in our Typescript model we have `User extends Profile` and `Profile extends Page
 ====
 TypeQL::
 +
-Excerpts from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/use-cases/social-network/schema.tql[schema.tql]:
+Excerpts from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/use-cases/social-network/schema.tql[schema.tql,window=_blank]:
 +
-* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/use-cases/social-network/schema.tql#L21[page, profile]
-* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/use-cases/social-network/schema.tql#L97[organization]
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/use-cases/social-network/schema.tql#L21["page, profile",window=_blank]
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/use-cases/social-network/schema.tql#L97[organization,window=_blank]
 
 +
 [source,typeql]
@@ -187,13 +187,13 @@ TypeScript::
 +
 Excerpts from:
 +
-* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/model/Page.tsx[Page.tsx]:
-** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/model/Page.tsx#L9[Page]
-** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/model/Page.tsx#L31[Profile]
-* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/model/Organization.tsx#L3[Organization.tsx]
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/model/Page.tsx[Page.tsx,window=_blank]:
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/model/Page.tsx#L9[Page,window=_blank]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/model/Page.tsx#L31[Profile,window=_blank]
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/model/Organization.tsx#L3[Organization.tsx,window=_blank]
 
 +
-[source,typescript]
+[source,typescript,window=_blank]
 ----
 export interface Page {
     id: string;
@@ -302,7 +302,7 @@ When running the application yourself, you may need to change them to fit your s
 ====
 Rust::
 +
-Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/rust/src/config.rs[config.rs]
+Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/rust/src/config.rs[config.rs,window=_blank]
 
 +
 [source,rust]
@@ -316,7 +316,7 @@ pub const TYPEDB_DATABASE: &str = "social-network";
 
 Python::
 +
-Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/config.py[config.py]
+Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/config.py[config.py,window=_blank]
 
 +
 [source,python]
@@ -330,7 +330,7 @@ TYPEDB_DATABASE = "social-network"
 
 Java::
 +
-Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/TypeDBConfig.java#L12[TypeDBConfig.java]
+Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/TypeDBConfig.java#L12[TypeDBConfig.java,window=_blank]
 
 +
 [source,java]
@@ -344,7 +344,7 @@ public static final String TYPEDB_DATABASE = "social-network";
 
 TypeScript (HTTP)::
 +
-Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/webapp/src/config.tsx[config.tsx]
+Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/webapp/src/config.tsx[config.tsx,window=_blank]
 
 +
 [source,typescript]
@@ -370,7 +370,7 @@ Once the connection configuration is in place, we can connect to TypeDB by creat
 ====
 Rust::
 +
-Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/rust/src/main.rs#238[main.rs]
+Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/rust/src/main.rs#238[main.rs,window=_blank]
 
 +
 [source,rust]
@@ -388,7 +388,7 @@ let driver = Arc::new(
 
 Python::
 +
-Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/app.py#L10[app.py]
+Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/app.py#L10[app.py,window=_blank]
 
 +
 [source,python]
@@ -398,7 +398,7 @@ typedb = TypeDB.driver(TYPEDB_ADDRESS, Credentials(TYPEDB_USERNAME, TYPEDB_PASSW
 
 Java::
 +
-Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/TypeDBConfig.java[TypeDBConfig.java]
+Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/TypeDBConfig.java[TypeDBConfig.java,window=_blank]
 
 +
 [source,java]
@@ -420,7 +420,7 @@ public class TypeDBConfig {
 
 TypeScript (HTTP)::
 +
-Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/webapp/src/AppService.tsx#L28[AppService.tsx]
+Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/webapp/src/AppService.tsx#L28[AppService.tsx,window=_blank]
 
 +
 [source,typescript]
@@ -448,11 +448,11 @@ For the `Write` transaction, we must use `commit()` to commit the changes to the
 +
 Excerpts from:
 
-* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/rust/src/main.rs[main.rs]
-** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/rust/src/main.rs#L22[get_page_list]
-** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/rust/src/main.rs#L202[post_create_organization]
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/rust/src/main.rs[main.rs,window=_blank]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/rust/src/main.rs#L22[get_page_list,window=_blank]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/rust/src/main.rs#L202[post_create_organization,window=_blank]
 
-* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/rust/src/query.rs#L247[query.rs]
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/rust/src/query.rs#L247[query.rs,window=_blank]
 
 +
 [source,rust]
@@ -539,11 +539,11 @@ For the `WRITE` transaction, we must use `commit()` to commit the changes to the
 +
 Excerpts from:
 
-* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/app.py[app.py]
-** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/app.py#L17[get_page_list]
-** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/app.py#L66[post_create_organization]
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/app.py[app.py,window=_blank]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/app.py#L17[get_page_list,window=_blank]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/app.py#L66[post_create_organization,window=_blank]
 
-* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/queries.py#L193[queries.py]
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/queries.py#L193[queries.py,window=_blank]
 
 +
 [source,python]
@@ -584,9 +584,9 @@ For the `WRITE` transaction, we must use `commit()` to commit the changes to the
 +
 Excerpts from:
 
-* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/PageController.java[PageController.java]
-** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/PageController.java#L105[getPages]
-** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/PageController.java#L177[createOrganization]
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/PageController.java[PageController.java,window=_blank]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/PageController.java#L105[getPages,window=_blank]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/PageController.java#L177[createOrganization,window=_blank]
 
 +
 [source,java]
@@ -625,9 +625,9 @@ which is required for the `write` transaction to actually commit the changes to 
 //tag::typescript-http-query-excerpts[]
 Excerpts from:
 
-* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/webapp/src/AppService.tsx[AppService.tsx]
-** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/webapp/src/AppService.tsx#L86[fetchPages]
-** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/webapp/src/AppService.tsx#L226[createOrganization]
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/webapp/src/AppService.tsx[AppService.tsx,window=_blank]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/webapp/src/AppService.tsx#L86[fetchPages,window=_blank]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/webapp/src/AppService.tsx#L226[createOrganization,window=_blank]
 
 +
 [source,typescript]
@@ -688,7 +688,7 @@ Whether the application uses a backend or not,
 we expose a service layer with a common interface for either querying the backend or TypeDB directly -
 which will return the types established in our data model.
 
-Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/service/ServiceContext.tsx#L8[ServiceContext.tsx]
+Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/service/ServiceContext.tsx#L8[ServiceContext.tsx,window=_blank]
 
 [source,typescript]
 ----
@@ -721,9 +721,9 @@ With a backend, our service layer simply directly queries the appropriate backen
 +
 Excerpts from:
 
-* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/AppService.tsx[AppService.tsx]
-** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/AppService.tsx#L23[fetchPages]
-** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/AppService.tsx#L53[createOrganization]
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/AppService.tsx[AppService.tsx,window=_blank]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/AppService.tsx#L23[fetchPages,window=_blank]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/frontend/src/AppService.tsx#L53[createOrganization,window=_blank]
 
 +
 [source,typescript]
@@ -765,7 +765,7 @@ For the backends, we need to set up routing for the API endpoints, and start the
 ====
 Rust::
 +
-Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/rust/src/main.rs#L247[main.rs]
+Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/rust/src/main.rs#L247[main.rs,window=_blank]
 +
 [source,rust]
 ----
@@ -782,10 +782,10 @@ axum::serve(listener, app).await.unwrap();
 
 Python::
 +
-Excerpts from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/app.py[app.py]:
+Excerpts from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/app.py[app.py,window=_blank]:
 
-* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/app.py#L16[get_page_list]
-* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/app.py#L65[post_create_organization]
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/app.py#L16[get_page_list,window=_blank]
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/python/app.py#L65[post_create_organization,window=_blank]
 
 +
 [source,python]
@@ -814,10 +814,10 @@ Java::
 +
 Excerpts from:
 
-* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/BackendjavaApplication.java[BackendjavaApplicaiton.java]
-* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/PageController.java[PageController.java]
-** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/PageController.java#L104[getPages]
-** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/PageController.java#L176[createOrganization]
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/BackendjavaApplication.java[BackendjavaApplication.java,window=_blank]
+* https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/PageController.java[PageController.java,window=_blank]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/PageController.java#L104[getPages,window=_blank]
+** https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/fullstack/backend/java/src/main/java/com/example/backendjava/PageController.java#L176[createOrganization,window=_blank]
 
 +
 [source,java]
