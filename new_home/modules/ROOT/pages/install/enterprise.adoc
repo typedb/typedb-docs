@@ -1,17 +1,21 @@
 = TypeDB Enterprise
 
-This page is an installation guide for TypeDB Enterprise, a self-hosted deployment of TypeDB.
+Run TypeDB Enterprise on your own infrastructure, a self-hosted deployment of TypeDB, fully under your control.
 
-TypeDB Enterprise is distributed and installed separately from other editions of TypeDB and requires a license.
-You can get a license for it from our sales team: contact us via
-mailto:cloud@typedb.com[e-mail,window=_blank] or
-https://typedb.com/deploy?dialog=contact[contact form,window=_blank].
+TypeDB Enterprise is distributed and installed separately from other editions of TypeDB and requires a <<_license, license>>.
 
 [IMPORTANT]
 ====
 TypeDB is also available as a fully managed cloud service with no installation required at
 https://cloud.typedb.com/[cloud.typedb.com,window=_blank].
 ====
+
+[#_license]
+== License
+
+To access TypeDB Enterprise, contact our sales team via
+mailto:cloud@typedb.com[e-mail,window=_blank] or
+https://typedb.com/deploy?dialog=contact[contact form,window=_blank].
 
 == System Requirements
 
@@ -24,8 +28,6 @@ Install your TypeDB Enterprise distribution with <<_using_docker,Docker>> or via
 
 You can deploy a cluster of TypeDB Enterprise servers
 <<_deploying_manually,manually>> or via <<_deploying_with_kubernetes,Kubernetes>>.
-
-If you need a license, contact our mailto:cloud@typedb.com[sales team].
 
 [#_using_docker]
 === Docker
