@@ -13,13 +13,18 @@ In the previous sections we've:
 .. Created a database called `get_started`.
 .. Defined the social network schema:
 +
+[%collapsible]
+====
 [,typeql]
 ----
 #!test[schema]
 include::{page-version}@new_home::page$get_started/schema.adoc[tag=full_define]
 ----
+====
 . xref:get_started/data.adoc[Loaded some data] using a insert and match-insert queries:
 +
+[%collapsible]
+====
 [,typeql]
 ----
 #!test[write]
@@ -43,6 +48,7 @@ include::{page-version}@new_home::page$get_started/data.adoc[tag=insert5]
 #!test[write, count=1]
 include::{page-version}@new_home::page$get_started/data.adoc[tag=match-insert1]
 ----
+====
 
 == Overview
 
