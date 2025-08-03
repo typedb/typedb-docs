@@ -1,0 +1,31 @@
+= Connecting
+
+This page contains the most common issues that may be encountered during development with respect to connecting to a TypeDB server.
+
+== Connection refused
+
+[source]
+----
+$ ./typedb console --address localhost:1729 --username admin --password password
+tcp connect error: Connection refused (os error 61)
+----
+
+Receiving this error message from Console or Driver indicates that they are unable to establish a connection to the server. The most common reasons could be:
+
+- The server is not running
+- The server is configured at a different host or port to what the client is attempting to connect to
+- The connection is blocked by a firewall
+
+== TLS errors
+
+[source]
+----
+$ ./typedb console --address https://localhost:1729 --username admin --password password --tls-disabled
+Connecting to HTTPS without TLS enabled
+----
+
+Receiving this error message from Console or Driver indicates that TLS is not properly configured from the Console or Driver side.
+
+When using TLS encryption, ensure it is configured on both the server and the driver. **Drivers connecting to TLS-secured servers must use the `https://` prefix.**
+
+Similarly, when disabling TLS encryption, ensure both server and driver are configured to not use TLS, and the driver connects without an `https://` prefix.

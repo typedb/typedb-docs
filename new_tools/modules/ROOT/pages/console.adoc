@@ -1,14 +1,12 @@
 = TypeDB Console
 
-[.float-group]
---
 TypeDB Console is a standalone TypeDB client with a command line interface (CLI).
 It serves as a lightweight and powerful CLI tool to manage and query TypeDB databases.
 
 Console is the default client distributed with TypeDB, but it can also be installed separately.
 [NOTE]
 ====
-For installation instructions, see xref:{page-version}@new_home::install/studio-console.adoc[Studio & Console Installation].
+For installation instructions, see the xref:{page-version}@new_home::install/studio.adoc[] install page.
 ====
 
 == Connect to TypeDB
@@ -163,10 +161,7 @@ Where `<PATH/script.tqls>` is the path to the file and the filename.
 
 == Run query(ies) from a file
 
-To run a series of TypeQL queries stored in a file from _within_ a REPL, use the `source <filename>` command.
-Each query should be separated with an empty newline.
-Note that this means long queries cannot be split over multiple lines containing empty lines.
-Use comments instead.
+To run a series of TypeQL queries stored in a file from _within_ a REPL, use the `source <filename>` command. Each query should be separated with an `end;` statement and a newline. Multi-clause queries over multiple lines are considered one pipeline until an `end;` clause is encountered or the query unambiguously ends (such as a `fetch` clause).
 
 This command is available from the Transaction level REPL:
 
@@ -227,12 +222,15 @@ or run https://docs.microsoft.com/en-us/windows-server/administration/windows-co
 Most systems also allow us to set the system-wide locale.
 However, this impacts the appearance of other applications.
 
+[#_references]
 == References
 
+[#_command_line_arguments]
 === Console CLI arguments
 
 The following arguments can be used when invoking TypeDB Console:
 
+.Command line arguments
 [cols=".^3,^.^1,5"]
 |===
 ^| Argument ^| Alias ^| Description
@@ -246,11 +244,11 @@ Note that by default, TLS is enabled, which will require an `https://` endpoint.
 
 | `--username=<username>`
 |
-| Username.
+| Username. +
 
 | `--password=<password>`
 |
-| Explicitly pass in the password (not recommended). Interactive sessions should let the console safely request for the password.
+| Explicitly pass in the password (not recommended). Interactive sessions should let the console safely request for the password. +
 
 | `--tls-disabled`
 |
@@ -259,17 +257,176 @@ Typically used for development or local work. **When using this option, username
 
 | `--tls-root-ca=<path>`
 |
-| Path to the root CA certificate file for TLS connections.
+| Path to the TLS root CA file, when the server is using self-managed certificates. +
 
-| `--command=<command>`
+| `--command=<commands>`
 |
-| Execute a command and exit. Can be used multiple times.
+| Commands to run in the Console, without interactive mode. Repeated invocations will be run in the order provided.
 
-| `--script=<script-file>`
+| `--script=<script>`
 |
-| Execute commands from a script file and exit.
+| Script with commands to run in the Console, without interactive mode. Repeated invocations will be run in order provided Repeated invocations will be run in the order provided.
 
 | `--version`
-| `-v`
-| Show version information.
-|=== 
+| `-V`
+| Print version information and exit.
+
+| `--diagnostics-disable=true`
+|
+| Disable anonymous error reporting.
+|===
+
+[#_server_level_commands]
+=== Server level commands
+
+Use these commands at the <<_server_level,Server level>> of TypeDB's <<_REPL,REPL>>:
+
+.Server level commands (first level of REPL)
+[cols=".^2,3"]
+|===
+^.^| Command ^.^| Description
+
+2+^| Database management
+| `database create <db>`
+| Create a database with the name `<db>` on the server.
+
+| `database list`
+| List all databases on the server.
+
+| `database delete <db>`
+| Delete a database with the name `<db>` from the server.
+
+| `database schema <db>`
+| Print the schema of the database with the name `<db>` on the server
+
+| `database export <db> <schema file path> <data file path>`
+| Export a database into a schema definition and a data files.
+
+| `database import <db> <schema file path> <data file path>`
+| Create a database with the given name based on another previously exported database.
+
+2+^| User management
+| `user list`
+| List all users on the server. +
+
+| `user create <username> [password]`
+| Create a user with the name `<username>` on the server. When the password is omitted, it will be safely requested from the user. +
+
+| `user password-update <username> [new-password]`
+a| [#_change_password]
+Set password for the user with the name `username`. When the new password is omitted, it will be safely requested from the user. +
+
+| `user delete <username>`
+| Delete a user with the name `<username>` on the server. +
+
+2+^| Open a transaction
+// TODO: You can't set options in 3.x. Uncomment when it changes
+// | `transaction read⎮write⎮schema <db> [options]`
+// | Start a transaction to the database with the name `<db>` with a chosen transaction type.
+// You can set <<_transaction_options,transaction options>>.
+| `transaction read⎮write⎮schema <db>` (3.1.0+)
+
+`transaction <db> read⎮write⎮schema` (prior 3.1.0)
+| Start a transaction to the database with the name `<db>` with a chosen transaction type.
+
+2+^| Common
+| `help`
+| Print help menu.
+
+| `clear`
+| Clear console screen.
+
+| `exit`
+| Exit console.
+|===
+
+[#_transaction_level_commands]
+=== Transaction level commands
+
+Use these commands in the Transaction level of TypeDB Console's <<_REPL,REPL>>.
+The prompt at the Transaction level contains the database name and the transaction type, for example,
+`sample_db::read>`.
+
+.Transaction level commands (second level of REPL)
+[cols=".^1,3"]
+|===
+^| Command ^.^| Description
+
+2+^| Querying
+| `<query>`
+| Type in TypeQL query directly.
+Push btn:[Enter] once for a line break in a query.
+Push btn:[Enter] twice (once more on a new line) to send a query.
+
+| `source <file>`
+| Run TypeQL queries from a file. You can use a relative or absolute path. On Windows escape `\` by writing `\\`.
+
+2+^| Transaction control
+| `commit`
+| Commit the changes and close the transaction.
+
+| `rollback`
+| Rollback the transaction -- remove any uncommitted changes, while leaving the transaction open.
+
+| `close`
+| Close the transaction without committing changes.
+
+2+^| Common
+| `help`
+| Print help menu.
+
+| `clear`
+| Clear console screen.
+
+| `exit`
+| Exit console.
+|===
+
+[#_navigation]
+== Navigation
+
+TypeDB console has several commonly-used REPL features:
+
+1. Use the UP and DOWN arrows to navigate the current REPL's history - server and transaction histories are retained separately
+2. Type in a search prefix, then use UP and DOWN arrows to search the history for previous commands that share the written prefix
+3. Use ctrl+r to search through history for a specific term or phrase
+
+[#_version_compatibility]
+== Version Compatibility
+
+// tag::compat-intro[]
+For older TypeDB versions, you'll need a compatible version of TypeDB Console.
+Select the correct TypeDB Console version from the xref:#version-compatibility[version compatibility table], and download it from
+https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%5Etypedb-console&sort=-version[Cloudsmith].
+
+// end::compat-intro[]
+
+[#version-compatibility]
+// tag::compat-table[]
+.Version compatibility table
+[%collapsible]
+====
+[cols="^.^2,^.^2,^.^2"]
+|===
+| TypeDB Console | TypeDB | TypeDB Community Edition
+
+| https://github.com/typedb/typedb-console/releases/tag/3.0.0[3.0.0] to 3.1.x
+| 3.0.0 to 3.1.x
+| 3.0.0 to 3.1.x
+
+| https://github.com/typedb/typedb-console/releases/tag/3.2.0[3.2.0] to 3.3.x
+| 3.2.0 to 3.3.x
+| 3.2.0 to 3.3.x
+
+| https://github.com/typedb/typedb-console/releases/tag/3.4.0[3.4.0+]
+| 3.4.0+
+| 3.4.0+
+|===
+
+[NOTE]
+=====
+2.x and 3.x versions are not compatible.
+=====
+====
+// end::compat-table[]
+// end::body[]
