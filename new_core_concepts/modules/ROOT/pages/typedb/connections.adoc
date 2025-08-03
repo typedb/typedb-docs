@@ -1,31 +1,17 @@
 = Connections
 
-== Fundamentals
+== Overview
 
-To interact with a TypeDB database, a client application must first establish a session with the server. This is typically done using a
-TypeDB client driver for your chosen programming language (e.g., Python, Java, Rust, Node.js) or through a tool like the TypeDB Console. A
-connection requires the server's address (host and port) and valid user credentials. For production environments, a secure connection using
+To interact with a TypeDB database, a client application must first establish a connection to the server. This is typically done using a
+xref:{page-version}@new_core_concepts::drivers/index.adoc[TypeDB driver] for your chosen programming language (e.g., Python, Java, Rust, Node.js) or through a tool like the TypeDB Console or TypeDB Studio.
+
+A connection requires the server's address (host and port) and valid user credentials. For production environments, a secure connection using
 TLS is strongly recommended.
 
 == Connecting to TypeDB Cloud & Enterprise
 
 [tabs]
 ====
-Console::
-+
---
-Run Console in CLI:
-
-//include::../tools/console.adoc[tag=connect_console]
-.Connect to TypeDB
-[source,console]
-----
-typedb console --address=<server-address> --username=<username>
-----
-
-You will be prompted for a password.
---
-
 Studio::
 +
 --
@@ -43,6 +29,21 @@ For an enterprise deployment:
 . Enter your username and password.
 . Click `Connect`.
 --
+Console::
++
+--
+Run Console in CLI:
+
+//include::../tools/console.adoc[tag=connect_console]
+.Connect to TypeDB
+[source,console]
+----
+typedb console --address=<server-address> --username=<username>
+----
+
+You will be prompted for a password.
+--
+
 ====
 
 == Connecting your application

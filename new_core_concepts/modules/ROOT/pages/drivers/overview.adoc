@@ -16,8 +16,10 @@ Key responsibilities of a TypeDB driver include:
 * **Query execution**: Sending TypeQL queries and processing results
 * **Error handling**: Converting server errors into language-specific exceptions
 * **Resource management**: Properly managing network resources and memory
+* **Database management**: Create and delete databases
+* **User management**: Create, delete, and manage users.
 
-They also allow you to manage databases and users.
+Check out the available xref:{page-version}@new_reference::typedb-grpc-drivers/index.adoc[gRPC drivers] and xref:{page-version}@new_reference::typedb-http-drivers/index.adoc[HTTP helper libraries] to find a driver that works for you.
 
 == Communication endpoints
 
