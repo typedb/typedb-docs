@@ -44,7 +44,7 @@ they are always bound through variables and constraints.
 [,typeql]
 ----
 match
-## we want $n, $p, $e to be instances such that all of:
+# find the instances $n, $p, $e such that:
 
   ## $n is a 'name' with value "John"
   $n isa name; $n == "John";
@@ -72,8 +72,6 @@ We will continue writing out the constraints for illustrative purposes.
 
 == Matching  & inserting patterns
 
-We use the same syntax for matching patterns as well as creating "patterns" in the data.
-
 === Match
 
 What does it mean to [[definition-match]]"*match*" a pattern?
@@ -96,10 +94,10 @@ A variable is bound in a conjunction if it is bound by any constraint or in any 
 //  * Each instance (& link) satisfies the typing constraints on it.
 //  * Every instance, attribute ownership and relation-player link is in the database.
 
-
 === Insert
-
-The difference between `insert` clause patterns and a `match` clause patterns is that `match` patterns search the database and binds the variables to the matching concepts,
+We use the same syntax for inserting "patterns" as we did for matching patterns in the data.
+The difference between `insert` clause patterns and a `match` clause patterns is that
+`match` patterns search the database and binds the variables to the matching concepts,
 whereas an `insert` clause specifies the concepts to bind to the variables, and creates those patterns in the database.
 
 Notice the above query & comments fit naturally:
@@ -135,12 +133,6 @@ As we have seen, the scope of variable names in TypeQL is the pipeline.
 == Disjunctions, negations & optionals
 
 We often want to write more complex patterns than pure conjunctions, which mean *all* the sub-patterns must be true.
-
-* *Disjunctions* are conditional matches where any branch that is true will contribute to the matched answer. If none match, the disjunction is considered to not match any data.
-* *Negations* are filtering operations. They eliminate answers where the negated sub-pattern is matched
-* *Optional* are partial matches, which permit answers where the optional sub-pattern is matched or not-matched
-
-
 This section discusses the meaning of disjunctive, negated, and optional patterns.
 It also discusses visibility of variables present in each of these sub-patterns.
 
@@ -337,8 +329,9 @@ Optional variables *are* bound by the optional block and not local to it.
 === Variables in an answer
 Notice that a variable that is "bound" in a conjunction is guaranteed to be bound
 in ALL execution paths - i.e. regardless of which branch is taken in each disjunction.
-An answer to a pattern contains only those variables.
+An answer to a pattern contains only those variables bound in the root conjunction.
 
+// TODO: This could be its own page
 === Invalid patterns: unbound negation inputs
 Notice we can write a pattern where the input variable to a negation is not bound in the parent.
 E.g.
@@ -486,6 +479,7 @@ or (2) `$p2` is employed by *any* company and `$p1` attended *any* institute.
 Notice `$company` is "local" to both the first and second disjunctions (The same is the case for `$institute`).
 TypeQL throws a "disjoint variable re-use" error for such cases.
 
+
 ==== Valid variable scopes:
 From these, it can be seen that a variable is either:
 
@@ -503,4 +497,4 @@ This is a workaround to the uniqueness requirement on variables names within a p
 * Constraints: xref:{page-version}@new_reference::typeql/statements/index.adoc[Typeql Statements]
 * Disjunctions, Negations, optionals: xref:{page-version}@new_reference::typeql/statements/index.adoc[Typeql Patterns]
 
-TODO: I should probably introduce the ideas of type-inference.
+// TODO: I should probably introduce the ideas of type-inference.

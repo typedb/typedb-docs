@@ -10,6 +10,7 @@ Each query clause accepts a stream of answers, and outputs a stream of answers.
 This page provides an overview of the available clauses and
 how they can be chained to form complex query & data modification pipelines.
 
+== Query clauses
 === match
 xref:{page-version}@new_core_concepts::typeql/query-variables-patterns.adoc#definition-match[Match clauses] read data by pattern-matching.
 Returns a stream mapping variables to matching concepts.

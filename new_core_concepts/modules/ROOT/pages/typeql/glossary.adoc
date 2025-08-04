@@ -1,13 +1,18 @@
 = Glossary
 
 This page lists out terms reused across pages in this section,
-and links to the heading where they are introduced.
+and links to where they are introduced.
 
-* xref:{page-version}@new_core_concepts::typeql/constraining-data.adoc#definition-annotation[Annotation]: TODO
+* xref:{page-version}@new_core_concepts::typeql/constraining-data.adoc#definition-annotation[Annotation]: Language fragments mainly used to add additional constraint to types.
+* xref:{page-version}@new_core_concepts::typeql/query-variables-patterns.adoc#definition-answer[Answer]: A mapping of variables to the concepts the pattern "matched" in the database.
+* xref:{page-version}@new_core_concepts::typeql/query-variables-patterns.adoc#definition-bound[Boud variable]: A variable which has been mapped to a concept.
 * xref:{page-version}@new_core_concepts::typeql/query-variables-patterns.adoc#definition-concept[Concept]: An umbrella term for a type, an instance of a type or value.
-* xref:{page-version}@new_core_concepts::typeql/query-variables-patterns.adoc#definition-concept[Constraint]: An atomic sentence of the TypeQL language. Broadly, there are two kinds of constraints
-- The schema is a collection of "constraints" on and between types - E.g.: what types (and/or range) of values can a certain attribute type hold? What attributes can an entity/relation own, and what roles can it play?
+* xref:{page-version}@new_core_concepts::typeql/query-variables-patterns.adoc#definition-constraint[Constraint]: An atomic sentence of the TypeQL language. Broadly, constraint is used in two senses:
+- The schema is a collection of "constraints" on and between types - what values can a certain attribute type hold? What attributes can an entity/relation own, and what roles can they play?
 - The pattern in a match clause consists of "constraints" between variables that the concepts matched must satisfy.
+* xref:{page-version}@new_core_concepts::typeql/entities-relations-attributes.adoc#definition-interface-polymorphism[Interface polymorphism]: The polymorphism enabled by allowing different types to implement the same interface
+(play the same roles, or own the same attribute)
 * xref:{page-version}@new_core_concepts::typeql/query-variables-patterns.adoc#definition-pattern[Pattern]: A set of constraints describing the data to match or insert.
-* TODO: specialisation
+* xref:{page-version}@new_core_concepts::typeql/queries-as-functions.adoc#definition-preamble[Preamble]: A collection of functions preceding a query, valid for that query only.
+* xref:{page-version}@new_core_concepts::typeql/entities-relations-attributes.adoc#definition-specialisation[Specialization]: Restricting an inherited interface so it may be implemented by a more specific set of types.
 * xref:{page-version}@new_core_concepts::typeql/query-variables-patterns.adoc#definition-constraint[Variable]: A placeholder for a concept in a pattern.

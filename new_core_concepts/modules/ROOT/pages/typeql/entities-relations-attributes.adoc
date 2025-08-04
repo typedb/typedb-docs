@@ -136,7 +136,7 @@ define
 
 ==== Specializing role types
 A subtype also inherits any interfaces (such as roles) defined by its supertype.
-It may optionally "specialize" an inherited interface by defining a subtype of that interface.
+It may optionally [[definition-specialisation]]"specialize" an inherited interface by defining a subtype of that interface.
 
 In the following schema snippet, `content-engagement` inherits the `content` role from `interaction` as-is, and "specializes" the inherited `subject` role into the `author` role.
 
