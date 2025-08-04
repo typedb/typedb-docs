@@ -147,5 +147,18 @@ offset 20;  # Skip the first 20 results
 limit 10;   # And return the next 10
 ----
 
+== Write stages in pipelines
+Writes from a pipeline are not visible to preceding stages, but are visible to following stages.
+To implement this, write stages:
+1. accumulate *ALL* answers of the preceding stage
+2. perform all the writes at once
+3. Stream out answers with any inserted/deleted concepts updated.
+
+=== update
+The `update` clause is an interesting case.
+As it is meant to update connections of cardinality 1 (or `0..1`) ,
+multiple updates to the same connection will result in only the last applied update surviving.
+This means it is dependent on the order of incoming rows.
+
 == References
-* xref:{page-version}@typeql::pipelines/index.adoc[Pipeline clauses]
+* xref:{page-version}@typeql::pipelines/index.adoc[Manual: Pipeline clauses]
