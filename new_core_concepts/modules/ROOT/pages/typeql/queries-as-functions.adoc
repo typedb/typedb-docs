@@ -1,4 +1,73 @@
 = Queries as Functions
 
-[placeholder]
-TypeQL functions. 
+TypeQL function provides as a way to create abstractions over existing data,
+allowing queries to be expressed at a higher level.
+They can live in your schema - as a "library" your database provides,
+or be specified in the [[definition-preamble]]*preamble* of a query using the `with` keyword.
+
+A function accepts a tuple of concepts as arguments,
+and returns zero or more tuples of concepts as a result.
+The body of a function can be a pipeline consisting of any number of *read* stages.
+
+[,typeql]
+.Find mutual friends
+----
+fun mutual_friends($p1: person, $p2: person) -> { person }:
+match
+    $f1 isa friendship, links (friend: $p1, friend: $pm);
+    $f2 isa friendship, links (friend: $p2, friend: $pm);
+return { $p2 };
+----
+
+== Arguments & returns
+Function arguments & returns can be instances or values, but not types.
+The types of these concepts must be declared in the signature.
+[,typeql]
+.Integer division returns quotient & remainder for the dividend & divisor
+----
+fun divide($dividend: integer, $divisor:integer) -> integer, integer:
+match ...
+return first $quotient, $divisor;
+----
+
+A function can either return a single tuple of concepts, or a stream of tuples.
+For a stream return, the declaration is surrounded by curly braces `{...}`.
+As in the example above, a function returning a single tuple must convert
+the stream output of the pipeline to a single tuple using the `first`, or `last` modifier.
+
+=== Reduce returns
+Functions can also return an aggregation over the stream output by the body,
+using the reduce return modifier.
+
+[,typeql]
+.Find the number of posts by a page
+----
+fun post_count($page: page) -> { integer }:
+match
+  $posting isa posting, links (posted: $page);
+return count($post);
+----
+
+[NOTE]
+====
+Since `reduce` can be used with `groupby` the `reduce` modifier returns a stream.
+====
+
+== Cyclic functions & tabling
+TypeDB tables recursive functions to break cycles. This has implications on the best way to implement the recursion.
+The classic example is computing the transitive closure of a function.
+In a tabled setting, the following (left-recursive) formulation is more efficient.
+[,typeql]
+----
+fun reachable($from: node) -> { node }:
+match
+    { # Base case
+        $_ isa edge, links (from: $from, to: $to);
+    } or { # Recursive case
+        let $mid in reachable($from);
+        $_ isa edge, links (from: $mid, to: $to);
+    };
+return { $to };
+----
+
+This will return `node`s in a breadth-first fashion.
