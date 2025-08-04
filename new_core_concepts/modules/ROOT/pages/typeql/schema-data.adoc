@@ -2,11 +2,12 @@
 
 As seen in the xref:{page-version}@new_core_concepts::typeql/entities-relations-attributes.adoc[] page, a TypeDB schema defines
 a hierarchy of types, their associated interfaces and interfaces they implement.
-TypeDB guarantees semantic integrity by ensuring the data conforms to the schema through type-checking and validation on writes.
 
-====
-TODO: Highlight the difference between types & instances
-====
+__Data__ is created by instantiating types from the schema. Hence, it is impossible to create data not conforming to the types declared to the schema.
+Connections made between instances are also checked against the `owns`, `plays`, and `relates` in the schema to ensure they are permitted between the instance types.
+Write & commit time validation ensures that any constraints that also depend on the state of the database (such as cardinality constraints on updated connections) are respected.
+Through this type-checking and validation, TypeDB guarantees semantic integrity of the database.
+
 
 == Inserting data
 The TypeQL `insert` clause is used to insert new instances, the attributes owned by these instances, and the relations linking them.
@@ -18,9 +19,9 @@ To insert an attribute, its value must also be specified.
 [,typeql]
 ----
 insert
-    $person isa person;
-    $employment isa employment;
-    $age isa age 10;
+  $person isa person;
+  $employment isa employment;
+  $age isa age 10;
 ----
 
 Inserting a new instance will fail if the type is abstract. In the case of attributes,
@@ -36,9 +37,9 @@ An ownership between an entity (or relation) and an attribute is inserted using 
 [,typeql]
 ----
 insert
-    $person isa person;
-    $age isa age 10;
-    $person has $age;
+  $person isa person;
+  $age isa age 10;
+  $person has $age;
 ----
 
 Or in one line:
@@ -63,20 +64,11 @@ these links between the relation are role-players are typically inserted along w
 [,typeql]
 ----
 insert
-    $company isa company;
-    $person isa person;
-    $employment isa employment;
-    $employment links (employer: $company);
-    $employment links (person: $person);
-----
-
-The `isa` and `links` can be written together:
-[,typeql]
-----
-insert
-    ...
-    $employment isa employment,
-        links (employer: $company, employee: $person);
+  $company isa company;
+  $person isa person;
+  $employment isa employment;
+  $employment links (employer: $company);
+  $employment links (person: $person);
 ----
 
 Inserting `$employment links (employer: $company)` succeeds only if
@@ -85,16 +77,16 @@ Similarly, the type `person` must play the `employment:employee` role
 for `$employment links (person: $person);` to be inserted.
 
 
-// == TODO: Decide if the following sections are relevant:
-//
-// == Commit-time validation & schema migrations
-// Most constraints are validated when the data is mutated, giving strong integrity guarantees at all times.
-// However, to remain flexible enough to allow more elaborate mutations which can't be expressed in a single query,
-// TypeDB defers validating certain constraints (such as cardinality) to commit-time.
-// This is especially relevant in the context of schema migrations, which we see next.
-// The committed state of the database will always be consistent fully with the schema.
-//
-// === Schema mutations with data in-place
-// TypeDB's approach to schema mutations is to choose a path that modifies the database
-// in a way that the data remains consistent with the schema at all times.
-// To illustrate, consider
+[NOTE]
+====
+TypeQL has shorthands for writing queries in a more concise & natural manner.
+
+E.g., The two `links` constraints on `$employment` can be combined into one.
+The combined `links` and `isa` constraint can then be written together with a comma.
+[,typeql]
+----
+insert
+  # ...
+  $employment isa employment,
+    links (employer: $company, employee: $person);
+----

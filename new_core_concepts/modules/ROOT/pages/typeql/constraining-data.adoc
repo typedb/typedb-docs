@@ -2,6 +2,7 @@
 
 TypeDB allows additional constraints to be defined on the types in the schema.
 These constraints can restrict the cardinality of an interface, or the domain of values of an attribute-type.
+These constraints are written as [[definition-annotation]]*annotations* on the schema declarations they apply to. Annotations are prefixed with the `@` symbol
 
 == Cardinality constraints
 Cardinality constraints restrict the number of interfaces of a specific type that may be attached to an instance.
@@ -21,7 +22,7 @@ person plays employment:employee @card(0..1);
 person owns email @card(0..);
 ----
 
-=== Cardinality constraints on specialisation
+=== On specialisation of roles
 Cardinality constraints declared on a connection apply to all instances of that connection (including specialisations).
 e.g.
 [,typeql]
@@ -53,8 +54,8 @@ relation football-team sub sports-team,
 The cardinality restrictions on the individual positions do not rule out a "(1-)4-5-3" formation,
 but the `@card(11)` constraint on the `player` does.
 
-==== On specialisation of implementations
-Similarly, cardinality constraints on `plays` & `owns` can be specialised. e.g.:
+==== On specialisation of plays and owns
+Similarly, inherited cardinality constraints on `plays` & `owns` can be specialized. e.g.:
 [,typeql]
 ----
   entity page owns name @card(1..3);
@@ -69,14 +70,13 @@ Similarly, cardinality constraints on `plays` & `owns` can be specialised. e.g.:
 Here, a page must have between 1 & 3 names.
 A person must have exactly one first-name and up to two surnames.
 
-=== `@unique` and `@key`
-These are special cardinality constraints which can be applied to ownerships.
+== `@unique` and `@key`
+These are special constraints which can be applied to ownerships.
 
 `owner owns attribute @unique` constrains a given `attribute` instance to be owned by at most one `owner` instance.
 
 `owner owns attribute @key` requires every `owner` instance to own exactly one instance of the `attribute` type.
 Additionally, the `@unique` constraint applies, requiring an `attribute` instance to be owned by at most one `owner` instance.
-
 
 == Attribute value constraints
 Attribute types may be annotated with constraints to restrict the values that an instance may hold. This allows an extra level of validation to be built into the schema.
@@ -88,6 +88,7 @@ Attribute types may be annotated with constraints to restrict the values that an
 Value constraints are inherited by subtypes. A subtype may add its own value constraints to the inherited ones.
 An instance of the subtype must satisfy all such declared & inherited value constraints.
 
+Value constraints can also be placed on `owns` declarations to restrict values within the context of one ownership.
 
 == Other constraints
 * `@abstract` prevents the type from being instantiated

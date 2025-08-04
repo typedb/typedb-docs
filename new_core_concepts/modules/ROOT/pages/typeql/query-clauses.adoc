@@ -31,7 +31,7 @@ match $x isa person, has name "James";
 person instances which own BOTH the name "John" and "James".
 
 === insert
-xref:{page-version}@new_core_concepts::typeql/schema-vs-data.adoc#_inserting_data[Insert clauses]
+xref:{page-version}@new_core_concepts::typeql/schema-data.adoc#_inserting_data[Insert clauses]
 can create new concepts by themselves, but rely on preceding clauses
 for reading existing concepts to add new connections to.
 An insert clause will execute & insert the specified pattern for *every* input row .

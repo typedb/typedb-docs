@@ -4,7 +4,7 @@
 TypeDB implements the Polymorphic Entity-Relation-Attribute (PERA) data model.
 A TypeDB schema defines a hierarchy of these types, and how they interact with each other through interface-types.
 
-=== Entity
+== Entity
 
 Entities are standalone types, which exist independent of other types.
 
@@ -14,19 +14,38 @@ E.g. A `person` exists, regardless of whether they are involved in friendships o
 entity person;
 ----
 
-=== Relation
-Relations are types which define one-or-more associated interface types called "role".
-The relation "depends" on other types in the schema to implement these interfaces by "playing" these roles.
+== Relation
+Relations are types which define one-or-more associated interface types called "role"s.
+The relation depends on other types in the schema to implement these interfaces by "playing" these roles.
 
 E.g. An `employment` relation exists to relate an `employer` to an `employee`.
 An `employment` instance cannot exist without the other instances which play these roles,
 hence the idea that `employment` "depends" on the participating player types.
+
 [,typeql]
 ----
-relation employment, relates employer, relates employee;
+relation employment,
+  relates employer,
+  relates employee;
 ----
 
-=== Attribute
+Role type names exist scoped within their relation types, allowing you to re-use role labels in different relation types:
+
+[,typeql]
+----
+relation employment,
+  relates employer,
+  relates employee;
+
+relation insurance-obligation,
+  relates employer,
+  relates employee,
+  relates insurance;
+----
+
+You can refer to a role distinctly by scoping the role name with the relation name: `employment:employer`.
+
+== Attribute
 Attributes are types which hold a value. An attribute type must specify the primitive `value-type` of the values it will hold
 An instance of an attribute type is identified by its value.
 
@@ -46,7 +65,7 @@ attribute age, value integer;
 == Owning attributes & playing roles
 
 Entity & relation types may be defined to "own" attribute types.
-Unlike attributes, which are identified by their values - there is no direct way to reference an entity.
+Unlike attributes, which are identified by their values, there is no direct way to reference an entity.
 Hence, entities (or relations) are referenced through their attributes.
 
 E.g. A `person` may own an attribute `birth-date`, or an `employment` may own a `start-date`;
@@ -70,6 +89,7 @@ Polymorphism in TypeDB is realised in two ways:
 
 === Interfaces
 Multiple types may "implement" the same interface - i.e. play the same role, or own the same attribute.
+This is a form of polymorphism we call [[definition-interface-polymorphism]]*"interface polymorphism"*.
 
 In the following schema snippet, the `employer` role in the `employment` relation can be played by a `company` or an `charity`.
 
@@ -80,6 +100,7 @@ define
     relates employer,
     relates employee;
 
+  entity organisation;
   entity company sub organisation,
     plays employment:employer;
   entity charity sub organisation,
@@ -89,11 +110,13 @@ define
 Here, the role `employer` is the interface declared by the `employment` type. The `company` and `charity` types implement the interface.
 The `relates` keyword is used to define the new role-type interface.
 The `plays` keyword is used to implement a role-type interface.
+Similarly, the `owns` keyword can be used to implement the implicit ownership interface of an attribute.
 
 === Subtyping
 TypeDB follows a single-inheritance *subtyping* system which allows types to specialize an existing type.
-The subtype "inherits" all owns or plays implementations from its supertype.
-Thus, an instance of the subtype may be used at any interface or function argument that accepts an instance of its super-type.
+Since the subtype "inherits" all owns or plays implementations from its supertype,
+an instance of the subtype may be used at any interface (or function argument/return)
+that expects an instance of its super-type.
 
 In the following schema snippet, entities of type `company` or `charity` can play the `employer` in an `employment`,
 although it is their supertype `organisation` which is defined to play the role.
@@ -105,17 +128,17 @@ define
     relates employer,
     relates employee;
 
-  entity organisation sub profile,
+  entity organisation,
     plays employment:employer;
   entity company sub organisation;
   entity charity sub organisation;
 ----
 
-==== Inheriting & specialising interfaces
-A subtype also inherits any interfaces defined by its supertype.
-It may optionally "specialise" an inherited interface by defining a subtype of that interface.
+==== Specializing role types
+A subtype also inherits any interfaces (such as roles) defined by its supertype.
+It may optionally "specialize" an inherited interface by defining a subtype of that interface.
 
-In the following schema snippet, `content-engagement` inherits the `content` role from `interaction` as-is, and "specialises" the inherited `subject` role into the `author` role.
+In the following schema snippet, `content-engagement` inherits the `content` role from `interaction` as-is, and "specializes" the inherited `subject` role into the `author` role.
 
 [,typeql]
 ----
@@ -127,17 +150,36 @@ relation content-engagement @abstract,
     sub interaction,
     relates author as subject;
 ----
+Specialization also disallows implementations of the parent interface in the child type.
+Here, no instances can play the role `interaction:content` in `content-engagement` relations.
 
 [NOTE]
 ====
-An attribute type inherits and implicitly specialises the interface of its supertype.
+An attribute type also inherits and implicitly specialises the interface of its supertype.
 ====
-
-// TODO: delete this?
-// ==== Specialising interface implementations
-// When a type implements a specialisation of an interface, the inherited implementation (if any) is hidden.
 //
-// E.g.
+// ==== Analogy to demonstrate
+//
+// A role specialization is equivalent to the following pseudo-typeql:
+//
 // [,typeql]
 // ----
+// define
+//   role interaction:subject;
+//
+//   # 1. create a sub-role
+//   role content-engagement:author, sub interaction:subject;
+//
+//   relation interaction @abstract,
+//     relates interaction:subject;
+//
+//   relation content-engagment @abstract,
+//     sub interaction,
+//
+//     # 2. Prevent data from using the parent role in combination with the child relation type
+//     relates interaction:content @abstract,
+//     relates content-engagement:author;
+//
 // ----
+
+// ==== Specialisation v/s subtyping
