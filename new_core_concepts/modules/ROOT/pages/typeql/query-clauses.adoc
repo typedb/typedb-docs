@@ -112,6 +112,13 @@ reduce $views = count($post) groupby $page;
 === distinct
 Removes duplicate answers in the stream.
 
+[,typeql]
+----
+match
+  { $p isa person; } or { $p has name "John"; };
+distinct; # Make sure that the person with name John is returned at most once.
+----
+
 === select
 Reshapes the stream to only include the specified variables.
 
