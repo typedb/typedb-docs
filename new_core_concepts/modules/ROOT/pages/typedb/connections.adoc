@@ -48,17 +48,7 @@ You will be prompted for a password.
 
 === Connecting your application
 
-For programmatic access using gRPC, use one of the TypeDB xref:{page-version}@new_core_concepts::drivers/index.adoc[drivers] via the network API:
-
-For example, in Python:
-
---
-[,python,indent=0]
-----
-    uri = f"{address}:{port}"
-include::{page-version}@drivers::partial$tutorials/python/sample.py[tags=driver_new]
-----
---
+For programmatic access using gRPC, use one of the TypeDB xref:{page-version}@new_core_concepts::drivers/connections.adoc[driver to connect] via the network API.
 
 All TypeDB Drivers follow the same API as closely as possible, so moving between languages is simple.
 

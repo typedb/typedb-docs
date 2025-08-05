@@ -5,7 +5,7 @@ This page outlines the key updates of TypeDB 3.x compared to 2.x you should be a
 [NOTE]
 ====
 This section highlights **changes from TypeDB 2.x**, not all new features in 3.x.
-Explore the xref:{page-version}@manual::index.adoc[Manual], xref:{page-version}@new_reference::typeql/index.adoc[TypeQL Documentation], and https://github.com/typedb/typedb/releases[release notes] for the full picture.
+Explore the xref:{page-version}@new_core_concepts::typeql/index.adoc[TypeQL Concepts], xref:{page-version}@new_reference::typeql/index.adoc[TypeQL Reference], and https://github.com/typedb/typedb/releases[release notes] for the full picture.
 Stay tuned for upcoming blogs showcasing new features!
 ====
 
@@ -41,7 +41,7 @@ Explicitly define cardinalities for traits expecting multiple instances to avoid
 == TypeDB Drivers
 
 **API Simplification** for smoother UX and better maintenance.
-Visit the xref:{page-version}@drivers::index.adoc[Drivers manual] to access their full documentation.
+Visit the xref:{page-version}@new_reference::index.adoc[Reference] to access their full documentation.
 
 - Now, all schema and data fetching and modifications are performed through a single `transaction.query("your query")` interface.
 - No more `query().insert()` and `query().define()`.

@@ -7,7 +7,8 @@ A finite double precision IEEE 754 floating point number.
 [,typeql]
 ----
 define
-include::{page-version}@home::example$tql/schema_large.tql[tags=double-attrs]
+attribute latitude @independent, value double;
+attribute longitude @independent, value double;
 ----
 
 == Inserting a double valued attribute
