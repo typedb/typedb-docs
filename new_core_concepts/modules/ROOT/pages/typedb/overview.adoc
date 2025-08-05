@@ -1,13 +1,14 @@
 = TypeDB Server Overview
 
-This section provides a foundational understanding of the TypeDB's design and usage. TypeDB is a polymorphic database designed to represent and query complex systems.
+This section of the documentation covers the architecture and design of TypeDB.
 
-TypeDB's core philosophy is centered on a strong type system, making it particularly well-suited for knowledge-intensive applications. Key
-features include full ACID compliance for transactional integrity, a logical schema for modeling complex data, and a robust replication
-system for high availability.
+TypeDB is a polymorphic database designed to represent and query complex systems. TypeDB's core philosophy is centered on a strong type
+system, making it particularly well-suited for knowledge-intensive applications. Key features include full ACID compliance for transactional
+integrity with snapshot-level Isolation, a logical schema for modeling complex data, and a robust replication system using the Raft
+consensus algorithm for high availability. At its foundation, TypeDB is built on top of RocksDB as its storage engine, providing a robust
+and high-performance base for data persistence. 
 
-This database is designed for a wide range of applications, from startups needing a scalable backend for a knowledge base to large
-enterprises requiring high-throughput transactional systems.
-
-To get started, new users should proceed to the xref:{page-version}@new_home::get_started/index.adoc[] guide, which walks through creating your first Cloud deployment and proceeds
-with a sample database and queries. This section of the documentation covers the architecture and design of TypeDB.
+Clients and applications connect to TypeDB primarily through language-specific drivers that communicate over gRPC for efficient,
+high-throughput operations. For broader compatibility, an HTTP endpoint is also available. TypeDB is offered as a fully managed service on
+TypeDB Cloud, providing flexible options for projects of any scale and as a free, open-source Community Edition (CE) for self-hosted
+deployments.
