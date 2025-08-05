@@ -64,7 +64,7 @@ Using these, the above query can be rewritten to:
 match
   $p isa person,      # Combine the constraints on $p using a comma
     has name "John";  # Directly specify type & value of owned attribute.
-  $e isa employment (employee, $p);  # Omit 'links' using the relation shorthand.
+  $e isa employment (employee: $p);  # Omit 'links' using the relation shorthand.
 ----
 We will continue writing out the constraints for illustrative purposes.
 ====
@@ -79,7 +79,7 @@ so that every constraint in the pattern holds true in the database,
 and every subpattern is also satisfied.
 
 Each such mapping from variables to concepts is an [[definition-answer]]*answer* to the pattern.
-For the query above, each answer maps `$e` to an entity, and `$a` to an attribute owned by that type.
+For the query above, each answer maps `$e` to an entity, and `$e` to a relation linking that entity.
 TypeDB will return all such mappings which satisfy the pattern.
 
 Since satisfying a constraint means the variables in it must be mapped to some concept,
@@ -195,7 +195,7 @@ Finished. Total rows: 2
 
 === Negations
 A pattern is negated by wrapping it in a `not` block.
-An answer "satisfies" the negation if it cannot be (part of) an answer to the negated pattern.
+An answer "satisfies" the negation if and only if it cannot be (part of) an answer to the negated pattern.
 Hence, answers are "eliminated" by negations if the pattern inside is matched.
 This resembles the idea of "negation as failure" from logic programming.
 

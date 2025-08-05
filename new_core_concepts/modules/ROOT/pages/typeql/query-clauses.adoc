@@ -34,7 +34,7 @@ person instances which own BOTH the name "John" and "James".
 === insert
 xref:{page-version}@new_core_concepts::typeql/schema-data.adoc#_inserting_data[Insert clauses]
 can create new concepts by themselves, but rely on preceding clauses
-for operating over existing concepts to add new connections to.
+for reading existing concepts to add new connections to.
 An insert clause will execute & insert the specified pattern for *every* input row .
 It extends the row with the newly inserted concepts (if any).
 [,typeql]
@@ -68,11 +68,9 @@ Update clauses are used as an alternative to `delete` + `insert` when you need t
 that the owned attribute (`has`) or the linked role player (`links`) is the correct
 concept, regardless of the previous state.
 
-The returned result contains existing incoming data and updated concepts (similarly to the result of
-a potential `delete` + `insert` pipeline).
-
-As `update` can insert only a single connection for a type, for your safety, it is only allowed when the interface
-is defined with cardinality limited to 1: `@card(0..1)` (default for `owns` and `relates`) or `@card(1)`.
+The `update` operation is allowed only for the interfaces defined with cardinality limited to 1:
+`@card(0..1)` (default for `owns` and `relates`) or `@card(1)`.
+The returned stream is identical to the input because no variables are introduced or removed.
 
 [,typeql]
 ----
