@@ -64,19 +64,24 @@ delete has $n of $p; # Delete the person instance's ownership of the name "John"
 Any deleted concept is removed from the stream.
 
 === update
-Update clauses are used as an alternative to `delete` + `insert` when you need to ensure
-that the owned attribute (`has`) or the linked role player (`links`) is the correct
-concept, regardless of the previous state.
+It is common for entities to own only one instance of a certain attribute type,
+or relations to allow only one instance for a certain role.
+E.g., a `person` has exactly one `age`, or an `employment` relation is between exactly one `company` and one `person`.
 
-The `update` operation is allowed only for the interfaces defined with cardinality limited to 1:
-`@card(0..1)` (default for `owns` and `relates`) or `@card(1)`.
-The returned stream is identical to the input because no variables are introduced or removed.
+Update clauses are used to conveniently delete such a connection and replace it with a new one.
 
 [,typeql]
 ----
 match $x isa person, has name "John";
 update $x has email "john@example.net"; # Update John's email whether or not one existed.
 ----
+The returned stream is identical to the input because no variables are introduced or removed.
+
+[NOTE]
+====
+The `update` operation is allowed *only* for the interfaces defined with `@card(0..1)` or `@card(1)`.
+If no connection exists for the `update` clause to delete, it will simply insert the new one.
+====
 
 === put
 Used to create patterns if they have no matches in the database.
@@ -176,4 +181,6 @@ multiple updates to the same connection will result in only the last applied upd
 This means it is dependent on the order of incoming rows.
 
 == References
-* xref:{page-version}@typeql::pipelines/index.adoc[Manual: Pipeline clauses]
+* xref:{page-version}@typeql::data_model.adoc#_data_pipelines[The Pipeline query model]
+* xref:{page-version}@typeql::pipelines/index.adoc[Clauses]
+
