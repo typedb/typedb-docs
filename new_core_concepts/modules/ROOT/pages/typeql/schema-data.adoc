@@ -54,7 +54,7 @@ or `person` inherits `owns age` from its supertype.
 
 [NOTE]
 ====
-Unless their types are declared `@independent`, attributes which are not involved in any ownerships are cleaned up at the end of a transaction.
+Unless their types are declared `@independent`, attribute instances which are not involved in any ownerships are cleaned up at the end of a transaction.
 ====
 
 === Linking role players
