@@ -79,7 +79,6 @@ so that every constraint in the pattern holds true in the database,
 and every subpattern is also satisfied.
 
 Each such mapping from variables to concepts is an [[definition-answer]]*answer* to the pattern.
-For the query above, each answer maps `$e` to an entity, and `$e` to a relation linking that entity.
 TypeDB will return all such mappings which satisfy the pattern.
 
 Since satisfying a constraint means the variables in it must be mapped to some concept,
