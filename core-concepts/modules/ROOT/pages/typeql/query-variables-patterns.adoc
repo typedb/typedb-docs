@@ -329,156 +329,19 @@ Notice that a variable that is "bound" in a conjunction is guaranteed to be boun
 in ALL execution paths - i.e., regardless of which branch is taken in each disjunction.
 An answer to a pattern contains only those variables bound in the root conjunction.
 
-// TODO: This could be its own page
-=== Invalid patterns: unbound negation inputs
-Notice we can write a pattern where the input variable to a negation is not bound in the parent.
-For example:
+=== Disjoint variable usage errors
+Since variable names are scoped to a pipeline, it's possible to write a query in which
+a certain variable is internal to several different patterns. For example:
 [,typeql]
 ----
 match
-$p1 isa person; $p2 isa person;
-{
-  $emp1 isa employment, links (employer: $company, employee: $p1);
-} or {
-  $edu1 isa education, links (institute: $institute, attendee: $p2);
-};
-
-not { $emp2 isa employment, links (employer: $company, employee: $p2); };
-not { $edu2 isa employment, links (institute: $institute, attendee: $p2); };
+{ $x isa person, has name "John"; } or { $y isa person, has name "James"; };
+{ $x isa person, has age 25; } or { $y isa person, has age 50; };
 ----
-At first glance, this looks like a reasonable query:
-we query for persons `$p1` and `$p2` who neither worked for the same company,
-nor attended the same institute.
-However, you can see that the input variables for the negations (`$company` and `$institute`)
-are not bound in the parent conjunction. Hence, this is an invalid query.
-
-==== DNF
-The best way to think about these requirements is to convert the query to Disjunctive Normal Form
-by rewriting the pattern using "distributivity" and examining each branch:
-
-`A; { B; } or { C; };` becomes `{A; B} or {A; C};`
-
-In this case, we get the pattern:
-[,typeql]
-----
-match
-{
-  $p1 isa person; $p2 isa person;
-  $emp1 isa employment, links (employer: $company, employee: $p1);
-  not { $emp2 isa employment, links (employer: $company, employee: $p2); };
-  not { $edu2 isa employment, links (institute: $institute, attendee: $p2); };
-} or {
-  $p1 isa person; $p2 isa person;
-  $edu1 isa education, links (institute: $institute, attendee: $p2);
-  not { $emp2 isa employment, links (employer: $company, employee: $p2); };
-  not { $edu2 isa education, links (institute: $institute, attendee: $p2); };
-};
-----
-Although this could now be a valid logic query,
-the first branch requires that `$p2` did not attend *any* institute,
-and the second branch requires that `$p2` was not employed by *any* employer.
-This is clearly not what we meant. Hence, we flag these as invalid TypeQL queries.
-
-[NOTE]
-====
-There is, of course, a way to express the intended query:
-[,typeql]
-.The correct query
-----
-$p1 isa person; $p2 isa person;
-not {
-  $emp1 isa employment, links (employer: $company, employee: $p1);
-  $emp2 isa employment, links (employer: $company, employee: $p2);
-};
-not {
-  $edu1 isa education, links (institute: $institute, attendee: $p2);
-  $edu2 isa education, links (institute: $institute, attendee: $p2);
-};
-----
-====
-
-=== Invalid patterns: Disjoint variable re-use
-
-Consider another case of questionable query composition:
-[,typeql]
-----
-match
-$p1 isa person; $p2 isa person;
-{
-  $emp1 isa employment, links (employer: $company, employee: $p1);
-} or {
-  $edu1 isa education, links (institute: $institute, attendee: $p2);
-};
-{
-  $emp2 isa employment, links (employer: $company, employee: $p2);
-} or {
-  $edu2 isa education, links (institute: $institute, attendee: $p2);
-};
-----
-Ideally, this would be a query to find two persons `$p1` and `$p2` who
-were either employed by the same company, or attended the same institute.
-
-The DNF quickly reveals the mistake:
-[,typeql]
-----
-match
-{
-  $p1 isa person; $p2 isa person;
-  $emp1 isa employment, links (employer: $company, employee: $p1);
-  $emp2 isa employment, links (employer: $company, employee: $p2);
-} or {
-  $p1 isa person; $p2 isa person;
-  $edu1 isa education, links (institute: $institute, attendee: $p2);
-  $emp2 isa employment, links (employer: $company, employee: $p2);
-} or
-{
-  $p1 isa person; $p2 isa person;
-  $emp1 isa employment, links (employer: $company, employee: $p1);
-  $edu2 isa education, links (institute: $institute, attendee: $p2);
-} or {
-  $p1 isa person; $p2 isa person;
-  $edu1 isa education, links (institute: $institute, attendee: $p2);
-  $edu2 isa education, links (institute: $institute, attendee: $p2);
-};
-----
-
-You can see the query we meant to write in two of those branches:
-[,typeql]
-----
-match
-$p1 isa person; $p2 isa person;
-{
-  $emp1 isa employment, links (employer: $company, employee: $p1);
-  $emp2 isa employment, links (employer: $company, employee: $p2);
-} or {
-  $edu1 isa education, links (institute: $institute, attendee: $p2);
-  $edu2 isa education, links (institute: $institute, attendee: $p2);
-};
-----
-
-The problem lies in the other two branches.
-[,typeql]
-----
-match
-{
-  $p1 isa person; $p2 isa person;
-  $emp1 isa employment, links (employer: $company, employee: $p1);
-  $edu2 isa education, links (institute: $institute, attendee: $p2);
-} or {
-  $p1 isa person; $p2 isa person;
-  $edu1 isa education, links (institute: $institute, attendee: $p2);
-  $emp2 isa employment, links (employer: $company, employee: $p2);
-};
-----
-This will return any persons `$p1` & `$p2` when
-either (1) `$p1` is employed by *any* and `$p2` attended *any* institute;
-or (2) `$p2` is employed by *any* company and `$p1` attended *any* institute.
-
-Notice `$company` is "internal" to both the first and second disjunctions (The same is the case for `$institute`).
-TypeQL throws a "disjoint variable re-use" error for such cases.
+Such patterns are considered invalid and will throw disjoint variable usage errors.
 
 ==== Valid variable scopes:
-From these, it can be seen that a variable is either:
+Rephrasing the xref:reference::typeql/patterns/index.adoc#_scopes[unique scope principle], a variable is either:
 
 1. Internal to one branch of one disjunction.
 2. Internal to one negation.
