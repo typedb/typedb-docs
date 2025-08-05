@@ -1,16 +1,16 @@
 = Query Variables and Patterns
 
-TypeQL is a declarative language - Its focuses on describing the schema, data or query through *patterns*, rather than specifying how to perform the query.
+TypeQL is a declarative language: it focuses on **describing** the schema, data, or query through *patterns*, rather than specifying how to perform the query.
 
 A [[definition-pattern]]*pattern* is a conjunction of any number of:
 
-* constraints
-* negated patterns
-* optional patterns
-* disjunctions of patterns
+* constraints;
+* negated patterns;
+* optional patterns;
+* disjunctions of patterns.
 
-TypeQL conjunctions are commutative & composable - meaning the pattern ordering is irrelevant,
-and you can (almost always) add or remove constraints and the resulting conjunction remains valid for querying.
+TypeQL conjunctions are commutative & composable, meaning the pattern ordering is irrelevant.
+You can (almost always) add or remove constraints, while the resulting conjunction remains valid for querying.
 This makes TypeQL easy to write and easy to debug!
 
 == Constraints & Variables
@@ -21,23 +21,22 @@ The concepts in a constraint can be specified directly, as we do when defining t
 [,typeql]
 ----
 define
-    entity person;      # 'person' is an entity type.
-    attribute name;     # 'name' is an attribute type.
-    name value string;  # 'name' holds string values.
-    person owns name;   # 'person' instances can own 'name' instances
+  entity person;      # 'person' is an entity type.
+  attribute name;     # 'name' is an attribute type.
+  name value string;  # 'name' holds string values.
+  person owns name;   # 'person' instances can own 'name' instances.
 ----
 
 Or, we can use [[definition-variable]]*variables* as placeholders for concepts,
 and query the database for concepts which "match" the pattern.
 [,typeql]
 ----
-match                 # Find $e and $n such that:
-    entity $e;        # $e is an entity type.
-    attribute $n;     # $n is an attribute type.
-    $n value string;  # $n holds string values.
-    $e owns $n;       # $e instances can own instances of '$n'
+match               # Find $e and $n such that:
+  entity $e;        # $e is an entity type.
+  attribute $n;     # $n is an attribute type.
+  $n value string;  # $n holds string values.
+  $e owns $n;       # $e instances can own instances of $n.
 ----
-
 
 Since instances aren't named the same way types are,
 they are always bound through variables and constraints.
@@ -52,7 +51,7 @@ match
   ## $p is a `person`, who has the attribute $n
   $p isa person; $p has $n;
 
-  ## $e is an 'employment', where '$p' plays the 'employee' role
+  ## $e is an 'employment', where $p plays the 'employee' role
   $e isa employment; $e links (employee: $p);
 ----
 
@@ -63,9 +62,9 @@ Using these, the above query can be rewritten to:
 [,typeql]
 ----
 match
-$p isa person,      # Combine the constraints on $p using a comma
-  has name "John";  # Directly specify type & value of owned attribute.
-$e isa employment (employee, $p);  # Omit 'links' using the relation shorthand.
+  $p isa person,      # Combine the constraints on $p using a comma
+    has name "John";  # Directly specify type & value of owned attribute.
+  $e isa employment (employee, $p);  # Omit 'links' using the relation shorthand.
 ----
 We will continue writing out the constraints for illustrative purposes.
 ====
@@ -77,10 +76,10 @@ We will continue writing out the constraints for illustrative purposes.
 What does it mean to [[definition-match]]"*match*" a pattern?
 A conjunctive pattern is "satisfied" if each variable can be mapped to some concept
 so that every constraint in the pattern holds true in the database,
-and every sub-pattern is also satisfied.
+and every subpattern is also satisfied.
 
 Each such mapping from variables to concepts is an [[definition-answer]]*answer* to the pattern.
-For the query above, each answer maps `$e` to an entity type, and `$a` to an attribute type owned by that type.
+For the query above, each answer maps `$e` to an entity, and `$a` to an attribute owned by that type.
 TypeDB will return all such mappings which satisfy the pattern.
 
 Since satisfying a constraint means the variables in it must be mapped to some concept,
@@ -96,9 +95,10 @@ A variable is bound in a conjunction if it is bound by any constraint or in any 
 
 === Insert
 We use the same syntax for inserting "patterns" as we did for matching patterns in the data.
-The difference between `insert` clause patterns and a `match` clause patterns is that
-`match` patterns search the database and binds the variables to the matching concepts,
-whereas an `insert` clause specifies the concepts to bind to the variables, and creates those patterns in the database.
+The difference between `insert` clause patterns and `match` clause patterns is:
+
+- `match` patterns search the database and bind the variables to the matching concepts;
+- `insert` clauses specify the concepts to bind to the variables and create those patterns in the database.
 
 Notice the above query & comments fit naturally:
 [,typeql]
@@ -112,45 +112,45 @@ insert
   ## $p is a `person`, who has the attribute $n
   $p isa person; $p has $n;
 
-  ## $e is an 'employment', where '$p' plays the 'employee' role
+  ## $e is an 'employment', where $p plays the 'employee' role
   $e isa employment; $e links (employee: $p);
 ----
 [NOTE]
 ====
 Variables are also bound to concepts when they are inserted by an `isa` constraint.
-See xref:{page-version}@new_core_concepts::typeql/schema-data.adoc[]
+See xref:{page-version}@new_core_concepts::typeql/schema-data.adoc[].
 ====
 
 == A quick note on variables
 Variable names are unique within a pipeline -
 every usage of a variable with a certain name refers to the same variable.
 
-In the following sections, the term [[definition-local-variable]]"local" to mean
+In the following sections, the term [[definition-local-variable]]"local" is used to mean
 a variable is bound in that pattern but not in its parent.
 This contrasts with the usage in programming languages where it refers to the scope of a variable name.
-As we have seen, the scope of variable names in TypeQL is the pipeline.
+As we have seen, the scope of variable names in TypeQL is the xref:{page-version}@new_core_concepts::typeql/query-clauses.adoc[pipeline].
 
 == Disjunctions, negations & optionals
 
-We often want to write more complex patterns than pure conjunctions, which mean *all* the sub-patterns must be true.
-This section discusses the meaning of disjunctive, negated, and optional patterns.
-It also discusses visibility of variables present in each of these sub-patterns.
+We often want to write more complex patterns than pure conjunctions, which mean *all* the subpatterns must be true.
+This section describes the meaning of disjunctive, negated, and optional patterns.
+It also discusses visibility of variables present in each of these subpatterns.
 
 We use the following data as our running example:
 [,typeql]
 ----
 insert
-    $james isa person, has name "James", has username "@james";
-    $typedb isa company, has name "TypeDB", has username "@typedb";
-    $emp isa employment, links (employer: $typedb, employee: $james);
+  $james isa person, has name "James", has username "@james";
+  $typedb isa company, has name "TypeDB", has username "@typedb";
+  $emp isa employment, links (employer: $typedb, employee: $james);
 
-    $john isa person, has name "John", has username "@john";
-    $sky-high isa school, has name "Sky High School", has username "@sky-high";
-    $edu isa education, links (institute: $sky-high, attendee: $john);
+  $john isa person, has name "John", has username "@john";
+  $sky-high isa school, has name "Sky High School", has username "@sky-high";
+  $edu isa education, links (institute: $sky-high, attendee: $john);
 
-    $jeff isa person, has name "Jeff", has username "@jeff";
+  $jeff isa person, has name "Jeff", has username "@jeff";
 
-    $shut-shop isa company, has name "Shut Shop", has username "@shut-shop";
+  $shut-shop isa company, has name "Shut Shop", has username "@shut-shop";
 ----
 
 === Disjunctions
@@ -165,16 +165,16 @@ Variables which are present in & bound by only some of the branches of the disju
 match
 $p isa person, has name $p-name;
 {
-    $emp isa employment, links (employer: $company, employee: $p);
-    $company has name $org-name;
+  $emp isa employment, links (employer: $company, employee: $p);
+  $company has name $org-name;
 } or
 {
-    $edu isa education, links (institute: $institute, attendee: $p);
-    $institute has name $org-name;
+  $edu isa education, links (institute: $institute, attendee: $p);
+  $institute has name $org-name;
 };
 ----
 
-Here, `$emp, $company, $edu, $institute` are local to their patterns.
+Here, `$emp`, `$company`, `$edu`, `$institute` are local to their patterns.
 `$p` occurs outside the disjunction.
 `$org-name` is present in every-branch and returned by the disjunction.
 
@@ -195,8 +195,8 @@ Finished. Total rows: 2
 
 === Negations
 A pattern is negated by wrapping it in a `not` block.
-An answer "satisfies" the negation iff it cannot be (part of) an answer to the negated pattern.
-Hence, answers are 'eliminated' by negations if the pattern inside is matched.
+An answer "satisfies" the negation if it cannot be (part of) an answer to the negated pattern.
+Hence, answers are "eliminated" by negations if the pattern inside is matched.
 This resembles the idea of "negation as failure" from logic programming.
 
 Any variable that is present both outside and inside the negation is considered input to the negation
@@ -211,14 +211,14 @@ Local variables are not bound by the negation,
 since the negation is satisfied only if there are no answers to the negated pattern.
 ====
 
-The following query finds persons who are not involved in any `employment` relation with an `employer`.
+The following query finds `person` s who are not involved in any `employment` relation with an `employer`.
 [,typeql]
 ----
 match
-    $p isa person, has name $p-name;
-    not {
-        $e isa employment, links (employer: $c, employee: $p);
-    };
+  $p isa person, has name $p-name;
+  not {
+    $e isa employment, links (employer: $c, employee: $p);
+  };
 ----
 
 Here, `$p` is an input to the negation. `$e, $c` are local. The query returns:
@@ -237,11 +237,11 @@ As a second example, consider the query below:
 [,typeql]
 ----
 match
-    $p isa person, has name $p-name;
-    $c isa company, has name $c-name;
-    not {
-        $e isa employment, links (employer: $c, employee: $p);
-    };
+  $p isa person, has name $p-name;
+  $c isa company, has name $c-name;
+  not {
+    $e isa employment, links (employer: $c, employee: $p);
+  };
 ----
 Here, `$c` is also an input variable.
 This query finds pairs of `person` & `company` such that the person does not work at the company.
@@ -282,15 +282,15 @@ A variable that occurs only inside a `try` block is an optional variable.
 The other variables can be considered input to the pattern. Optional variables can only originate in one `try` block to avoid ambiguity.
 
 If the *entire* optional pattern matches the data, it returns an answer per match.
-If it has no matches (i.e. any part fails), it produces a single answer with every optional variable bound to `None`.
+If it has no matches (i.e., any part fails), it produces a single answer with every optional variable bound to `None`.
 [,typeql]
 ----
 match
-    $p isa person, has name $p-name;
-    try {
-        $e isa employment, links (employer: $c, employee: $p);
-        $c has name $c-name;
-    };
+  $p isa person, has name $p-name;
+  try {
+    $e isa employment, links (employer: $c, employee: $p);
+    $c has name $c-name;
+  };
 ----
 Here, `$e, $c, $c-name` are optional variables.
 `$p` is input to the optional pattern.
@@ -328,28 +328,28 @@ Optional variables *are* bound by the optional block and not local to it.
 == Notes on variables
 === Variables in an answer
 Notice that a variable that is "bound" in a conjunction is guaranteed to be bound
-in ALL execution paths - i.e. regardless of which branch is taken in each disjunction.
+in ALL execution paths - i.e., regardless of which branch is taken in each disjunction.
 An answer to a pattern contains only those variables bound in the root conjunction.
 
 // TODO: This could be its own page
 === Invalid patterns: unbound negation inputs
 Notice we can write a pattern where the input variable to a negation is not bound in the parent.
-E.g.
+For example:
 [,typeql]
 ----
 match
 $p1 isa person; $p2 isa person;
 {
-    $emp1 isa employment, links (employer: $company, employee: $p1);
+  $emp1 isa employment, links (employer: $company, employee: $p1);
 } or {
-    $edu1 isa education, links (institute: $institute, attendee: $p2);
+  $edu1 isa education, links (institute: $institute, attendee: $p2);
 };
 
 not { $emp2 isa employment, links (employer: $company, employee: $p2); };
 not { $edu2 isa employment, links (institute: $institute, attendee: $p2); };
 ----
-At first glance, this looks like a reasonable query -
-We query for persons `$p1` and `$p2` who neither worked for the same company,
+At first glance, this looks like a reasonable query:
+we query for persons `$p1` and `$p2` who neither worked for the same company,
 nor attended the same institute.
 However, you can see that the input variables for the negations (`$company` and `$institute`)
 are not bound in the parent conjunction. Hence, this is an invalid query.
@@ -365,21 +365,21 @@ In this case, we get the pattern:
 ----
 match
 {
-    $p1 isa person; $p2 isa person;
-    $emp1 isa employment, links (employer: $company, employee: $p1);
-    not { $emp2 isa employment, links (employer: $company, employee: $p2); };
-    not { $edu2 isa employment, links (institute: $institute, attendee: $p2); };
+  $p1 isa person; $p2 isa person;
+  $emp1 isa employment, links (employer: $company, employee: $p1);
+  not { $emp2 isa employment, links (employer: $company, employee: $p2); };
+  not { $edu2 isa employment, links (institute: $institute, attendee: $p2); };
 } or {
-    $p1 isa person; $p2 isa person;
-    $edu1 isa education, links (institute: $institute, attendee: $p2);
-    not { $emp2 isa employment, links (employer: $company, employee: $p2); };
-    not { $edu2 isa education, links (institute: $institute, attendee: $p2); };
+  $p1 isa person; $p2 isa person;
+  $edu1 isa education, links (institute: $institute, attendee: $p2);
+  not { $emp2 isa employment, links (employer: $company, employee: $p2); };
+  not { $edu2 isa education, links (institute: $institute, attendee: $p2); };
 };
 ----
 Although this could now be a valid logic query,
 the first branch requires that `$p2` did not attend *any* institute,
-and the second branch requires that `$p2` was not employed by *any* employer -
-This is clearly not what we meant. Hence, we flag these as invalid TypeQL queries
+and the second branch requires that `$p2` was not employed by *any* employer.
+This is clearly not what we meant. Hence, we flag these as invalid TypeQL queries.
 
 [NOTE]
 ====
@@ -389,12 +389,12 @@ There is, of course, a way to express the intended query:
 ----
 $p1 isa person; $p2 isa person;
 not {
-    $emp1 isa employment, links (employer: $company, employee: $p1);
-    $emp2 isa employment, links (employer: $company, employee: $p2);
+  $emp1 isa employment, links (employer: $company, employee: $p1);
+  $emp2 isa employment, links (employer: $company, employee: $p2);
 };
 not {
-    $edu1 isa education, links (institute: $institute, attendee: $p2);
-    $edu2 isa education, links (institute: $institute, attendee: $p2);
+  $edu1 isa education, links (institute: $institute, attendee: $p2);
+  $edu2 isa education, links (institute: $institute, attendee: $p2);
 };
 ----
 ====
@@ -407,14 +407,14 @@ Consider another case of questionable query composition:
 match
 $p1 isa person; $p2 isa person;
 {
-    $emp1 isa employment, links (employer: $company, employee: $p1);
+  $emp1 isa employment, links (employer: $company, employee: $p1);
 } or {
-    $edu1 isa education, links (institute: $institute, attendee: $p2);
+  $edu1 isa education, links (institute: $institute, attendee: $p2);
 };
 {
-    $emp2 isa employment, links (employer: $company, employee: $p2);
+  $emp2 isa employment, links (employer: $company, employee: $p2);
 } or {
-    $edu2 isa education, links (institute: $institute, attendee: $p2);
+  $edu2 isa education, links (institute: $institute, attendee: $p2);
 };
 ----
 Ideally, this would be a query to find two persons `$p1` and `$p2` who
@@ -425,22 +425,22 @@ The DNF quickly reveals the mistake:
 ----
 match
 {
-    $p1 isa person; $p2 isa person;
-    $emp1 isa employment, links (employer: $company, employee: $p1);
-    $emp2 isa employment, links (employer: $company, employee: $p2);
+  $p1 isa person; $p2 isa person;
+  $emp1 isa employment, links (employer: $company, employee: $p1);
+  $emp2 isa employment, links (employer: $company, employee: $p2);
 } or {
-    $p1 isa person; $p2 isa person;
-    $edu1 isa education, links (institute: $institute, attendee: $p2);
-    $emp2 isa employment, links (employer: $company, employee: $p2);
+  $p1 isa person; $p2 isa person;
+  $edu1 isa education, links (institute: $institute, attendee: $p2);
+  $emp2 isa employment, links (employer: $company, employee: $p2);
 } or
 {
-    $p1 isa person; $p2 isa person;
-    $emp1 isa employment, links (employer: $company, employee: $p1);
-    $edu2 isa education, links (institute: $institute, attendee: $p2);
+  $p1 isa person; $p2 isa person;
+  $emp1 isa employment, links (employer: $company, employee: $p1);
+  $edu2 isa education, links (institute: $institute, attendee: $p2);
 } or {
-    $p1 isa person; $p2 isa person;
-    $edu1 isa education, links (institute: $institute, attendee: $p2);
-    $edu2 isa education, links (institute: $institute, attendee: $p2);
+  $p1 isa person; $p2 isa person;
+  $edu1 isa education, links (institute: $institute, attendee: $p2);
+  $edu2 isa education, links (institute: $institute, attendee: $p2);
 };
 ----
 
@@ -450,11 +450,11 @@ You can see the query we meant to write in two of those branches:
 match
 $p1 isa person; $p2 isa person;
 {
-    $emp1 isa employment, links (employer: $company, employee: $p1);
-    $emp2 isa employment, links (employer: $company, employee: $p2);
+  $emp1 isa employment, links (employer: $company, employee: $p1);
+  $emp2 isa employment, links (employer: $company, employee: $p2);
 } or {
-    $edu1 isa education, links (institute: $institute, attendee: $p2);
-    $edu2 isa education, links (institute: $institute, attendee: $p2);
+  $edu1 isa education, links (institute: $institute, attendee: $p2);
+  $edu2 isa education, links (institute: $institute, attendee: $p2);
 };
 ----
 
@@ -463,13 +463,13 @@ The problem lies in the other two branches.
 ----
 match
 {
-    $p1 isa person; $p2 isa person;
-    $emp1 isa employment, links (employer: $company, employee: $p1);
-    $edu2 isa education, links (institute: $institute, attendee: $p2);
+  $p1 isa person; $p2 isa person;
+  $emp1 isa employment, links (employer: $company, employee: $p1);
+  $edu2 isa education, links (institute: $institute, attendee: $p2);
 } or {
-    $p1 isa person; $p2 isa person;
-    $edu1 isa education, links (institute: $institute, attendee: $p2);
-    $emp2 isa employment, links (employer: $company, employee: $p2);
+  $p1 isa person; $p2 isa person;
+  $edu1 isa education, links (institute: $institute, attendee: $p2);
+  $emp2 isa employment, links (employer: $company, employee: $p2);
 };
 ----
 This will return any persons `$p1` & `$p2` when
@@ -479,7 +479,6 @@ or (2) `$p2` is employed by *any* company and `$p1` attended *any* institute.
 Notice `$company` is "local" to both the first and second disjunctions (The same is the case for `$institute`).
 TypeQL throws a "disjoint variable re-use" error for such cases.
 
-
 ==== Valid variable scopes:
 From these, it can be seen that a variable is either:
 
@@ -487,10 +486,8 @@ From these, it can be seen that a variable is either:
 2. Local to one negation.
 3. Bound & present in the answer of the pipeline.
 
-
 == The select statement
-A `select` statement is exceptional in that it will free up all variable names
-*except* those of the selected variables.
+`select` is exceptional in that it will free up all variable names *except* those of the selected variables.
 This is a workaround to the uniqueness requirement on variables names within a pipeline.
 
 == Reference

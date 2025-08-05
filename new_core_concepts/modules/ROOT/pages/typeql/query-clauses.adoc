@@ -3,9 +3,9 @@
 In addition to the `match` clause for pattern matching and
 the `insert, delete, put, update` clauses for modifying data,
 TypeQL has a number of other clauses supporting operations expected of a modern database -
-sorting, aggregation, offset & limit, etc.
+sorting, aggregation, offset, limit, etc.
 
-Each query clause accepts a stream of answers, and outputs a stream of answers.
+Each query clause accepts a stream of answers and outputs a stream of answers.
 
 This page provides an overview of the available clauses and
 how they can be chained to form complex query & data modification pipelines.
@@ -13,7 +13,7 @@ how they can be chained to form complex query & data modification pipelines.
 == Query clauses
 === match
 xref:{page-version}@new_core_concepts::typeql/query-variables-patterns.adoc#definition-match[Match clauses] read data by pattern-matching.
-Returns a stream mapping variables to matching concepts.
+They return a stream mapping variables to matching concepts.
 [,typeql]
 ----
 match $x isa person, has name "John";
@@ -28,13 +28,13 @@ Consider the two stage query:
 match $x isa person, has name "John";
 match $x isa person, has name "James";
 ----
-`$x` refers to the same variable in both stages. Hence, this query will returns
+`$x` refers to the same variable in both stages. Hence, this query will return
 person instances which own BOTH the name "John" and "James".
 
 === insert
 xref:{page-version}@new_core_concepts::typeql/schema-data.adoc#_inserting_data[Insert clauses]
 can create new concepts by themselves, but rely on preceding clauses
-for reading existing concepts to add new connections to.
+for operating over existing concepts to add new connections to.
 An insert clause will execute & insert the specified pattern for *every* input row .
 It extends the row with the newly inserted concepts (if any).
 [,typeql]
@@ -44,7 +44,7 @@ insert $x has email "john@example.com"; # Inserts the email "john@example.com" f
 ----
 
 === delete
-The data-deletion mechanism. Delete clauses cannot read data by themselves and
+Used for data deletion. Delete clauses cannot read data by themselves and
 are typically used with a match-clause to bind the concepts.
 
 The concepts themselves can be deleted...
@@ -61,10 +61,18 @@ match $p isa person, has name $n; $n == "John";
 delete has $n of $p; # Delete the person instance's ownership of the name "John"
 ----
 
-Any concepts which are deleted will be removed from the stream.
+Any deleted concept is removed from the stream.
 
 === update
-Used to update `@card(0..1)` or `@card(1)` ownerships.
+Update clauses are used as an alternative to `delete` + `insert` when you need to ensure
+that the owned attribute (`has`) or the linked role player (`links`) is the correct
+concept, regardless of the previous state.
+
+The returned result contains existing incoming data and updated concepts (similarly to the result of
+a potential `delete` + `insert` pipeline).
+
+As `update` can insert only a single connection for a type, for your safety, it is only allowed when the interface
+is defined with cardinality limited to 1: `@card(0..1)` (default for `owns` and `relates`) or `@card(1)`.
 
 [,typeql]
 ----
@@ -151,8 +159,9 @@ limit 10;   # And return the next 10
 == Write stages in pipelines
 Writes from a pipeline are not visible to preceding stages, but are visible to following stages.
 To implement this, write stages:
-1. accumulate *ALL* answers of the preceding stage
-2. perform all the writes at once
+
+1. Accumulate *ALL* answers of the preceding stage.
+2. Perform all the writes at once.
 3. Stream out answers with any inserted/deleted concepts updated.
 
 === update

@@ -3,7 +3,7 @@
 As seen in the xref:{page-version}@new_core_concepts::typeql/entities-relations-attributes.adoc[] page, a TypeDB schema defines
 a hierarchy of types, their associated interfaces and interfaces they implement.
 
-__Data__ is created by instantiating types from the schema. Hence, it is impossible to create data not conforming to the types declared to the schema.
+__Data__ is created by instantiating types from the schema. Hence, it is impossible to create data not conforming to the types declared in the schema.
 Connections made between instances are also checked against the `owns`, `plays`, and `relates` in the schema to ensure they are permitted between the instance types.
 Write & commit time validation ensures that any constraints that also depend on the state of the database (such as cardinality constraints on updated connections) are respected.
 Through this type-checking and validation, TypeDB guarantees semantic integrity of the database.
@@ -29,7 +29,7 @@ the value must also be of the value-type specified by the attribute,
 and satisfy all value constraints defined on the type.
 
 Unlike entities, relations & attributes are not standalone types.
-We will see how to create ownerships for attributes & link role-players to relations.
+We will see how to create ownerships for attributes & link role players to relations.
 
 === Inserting ownerships
 
@@ -49,18 +49,18 @@ insert $person isa person, has age 10;
 ----
 
 This insert succeeds only if the type `person` "owns" the type `age` in the schema.
-i.e. the constraint `person owns age;` was defined in the schema,
+That is, the constraint `person owns age;` was defined in the schema,
 or `person` inherits `owns age` from its supertype.
 
 [NOTE]
 ====
-Unless declared `@independent`, attributes which are not involved in any ownerships will be cleaned up at the end of a transaction.
+Unless their types are declared `@independent`, attributes which are not involved in any ownerships are cleaned up at the end of a transaction.
 ====
 
-=== Linking role-players
+=== Linking role players
 
 Since relations exist to "link" instances together,
-these links between the relation are role-players are typically inserted along with the relation:
+these links between the relation are role players are typically inserted along with the relation:
 [,typeql]
 ----
 insert

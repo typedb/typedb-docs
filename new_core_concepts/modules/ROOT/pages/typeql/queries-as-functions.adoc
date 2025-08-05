@@ -1,6 +1,6 @@
 = Queries as Functions
 
-TypeQL function provides as a way to create abstractions over existing data,
+TypeQL function provides a way to create abstractions over existing data,
 allowing queries to be expressed at a higher level.
 They can live in your schema - as a "library" your database provides,
 or be specified in the [[definition-preamble]]*preamble* of a query using the `with` keyword.
@@ -33,7 +33,7 @@ return first $quotient, $divisor;
 A function can either return a single tuple of concepts, or a stream of tuples.
 For a stream return, the declaration is surrounded by curly braces `{...}`.
 As in the example above, a function returning a single tuple must convert
-the stream output of the pipeline to a single tuple using the `first`, or `last` modifier.
+the stream output of the pipeline to a single tuple using either the `first` or the `last` modifiers.
 
 === Reduce returns
 Functions can also return an aggregation over the stream output by the body,
@@ -50,7 +50,7 @@ return count($post);
 
 [NOTE]
 ====
-Since `reduce` can be used with `groupby` the `reduce` modifier returns a stream.
+Since `reduce` can be used with `groupby`, the `reduce` modifier returns a stream.
 ====
 
 == Cyclic functions & tabling
