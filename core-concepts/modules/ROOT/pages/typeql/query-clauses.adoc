@@ -1,0 +1,186 @@
+= Query Clauses & Pipelining
+
+In addition to the `match` clause for pattern matching and
+the `insert, delete, put, update` clauses for modifying data,
+TypeQL has a number of other clauses supporting operations expected of a modern database -
+sorting, aggregation, offset, limit, etc.
+
+Each query clause accepts a stream of answers and outputs a stream of answers.
+
+This page provides an overview of the available clauses and
+how they can be chained to form complex query & data modification pipelines.
+
+== Query clauses
+=== match
+xref:{page-version}@core-concepts::typeql/query-variables-patterns.adoc#definition-match[Match clauses] read data by pattern-matching.
+They return a stream mapping variables to matching concepts.
+[,typeql]
+----
+match $x isa person, has name "John";
+----
+
+The output of the above match is a stream of answers binding  `$x` to any concept having name "John".
+This stream is either returned as the result of the query, or becomes the input stream to the next stage in the pipeline.
+
+Consider the two stage query:
+[,typeql]
+----
+match $x isa person, has name "John";
+match $x isa person, has name "James";
+----
+`$x` refers to the same variable in both stages. Hence, this query will return
+person instances which own BOTH the name "John" and "James".
+
+=== insert
+xref:{page-version}@core-concepts::typeql/schema-data.adoc#_inserting_data[Insert clauses]
+can create new concepts by themselves, but rely on preceding clauses
+for reading existing concepts to add new connections to.
+An insert clause will execute & insert the specified pattern for *every* input row .
+It extends the row with the newly inserted concepts (if any).
+[,typeql]
+----
+match $x isa person, has name "John";   # Matches $x to person instance with name "John"
+insert $x has email "john@example.com"; # Inserts the email "john@example.com" for that instance
+----
+
+=== delete
+Delete clauses cannot read data by themselves and
+are typically used with a match-clause to bind the concepts.
+
+The concepts themselves can be deleted...
+[,typeql]
+----
+match $x isa person, has name "John";
+delete $x; # Delete the person instance
+----
+
+or just their connections
+[,typeql]
+----
+match $p isa person, has name $n; $n == "John";
+delete has $n of $p; # Delete the person instance's ownership of the name "John"
+----
+
+Any deleted concept is removed from the stream.
+
+=== update
+It is common for entities to own only one instance of a certain attribute type,
+or relations to allow only one instance for a certain role.
+E.g., a `person` has exactly one `age`, or an `employment` relation is between exactly one `company` and one `person`.
+
+Update clauses are used to conveniently delete such a connection and replace it with a new one.
+
+[,typeql]
+----
+match $x isa person, has name "John";
+update $x has email "john@example.net"; # Update John's email whether or not one existed.
+----
+The returned stream is identical to the input because no variables are introduced or removed.
+
+[NOTE]
+====
+The `update` operation is allowed *only* for the interfaces defined with `@card(0..1)` or `@card(1)`.
+If no connection exists for the `update` clause to delete, it will simply insert the new one.
+====
+
+=== put
+Used to create patterns if they have no matches in the database.
+The pattern must be a valid `insert` pattern.
+If the pattern has matches, all of them will be returned.
+
+[,typeql]
+----
+match
+  $p isa person, has name "John";
+  $q isa person, has name "Jane";
+put # insert a friendship between them if one does not exist.
+  $f isa friendship, links (friend: $p, friend: $q);
+----
+
+==== reduce
+As the name suggests, computes some value from a stream of answers,
+optionally grouped by a set of variables.
+This will return a stream with one answer per group.
+An answer contains the variables in the group, and the output variables of the reducer.
+
+[,typeql]
+----
+match
+  $john isa person, has name "John";
+  $v isa viewing, links (viewer: $john, viewed: $post);
+  $p isa posting, links (page: $page, post: $post);
+reduce $views = count($post) groupby $page;
+----
+
+=== distinct
+Removes duplicate answers in the stream.
+
+[,typeql]
+----
+match
+  { $p isa person; } or { $p has name "John"; };
+distinct; # Make sure that the person with name John is returned at most once.
+----
+
+=== select
+Reshapes the stream to only include the specified variables.
+
+[,typeql]
+----
+match
+  $p isa person, has name "John";
+  $f isa friendship, links (friend: $p, friend: $q);
+  $q isa person, has name $name;
+select $name; # Only return the names of the friend
+----
+
+=== sort
+`sort $v1, $v2, ...` sorts the stream on `$v1`, then `$v2` and so on.
+
+[,typeql]
+----
+match $x isa person, has name $n;
+sort $n; # Return results sorted by $n
+----
+
+=== limit
+`limit <n>` Restricts the stream to the first _n_ answers.
+[,typeql]
+----
+match $p isa person, has name "John";
+limit 1; # Return at most one person named John
+----
+
+=== offset
+`offset <n>` discards the first _n_ answers in the stream.
+
+[,typeql]
+----
+# Pagination of friends of John
+match
+  $p isa person, has name "John";
+  $f isa friendship, links (friend: $p, friend: $q);
+  $q isa person, has name $name;
+sort $name; # Sort on name for stability of pages
+offset 20;  # Skip the first 20 results
+limit 10;   # And return the next 10
+----
+
+== Write stages in pipelines
+Writes from a pipeline are not visible to preceding stages, but are visible to following stages.
+Write stages achieve this through the following steps:
+
+1. Accumulate *ALL* answers of the preceding stage.
+2. Perform all the writes at once.
+3. Stream out answers with any inserted/deleted concepts updated.
+
+=== update
+The `update` clause is an interesting case.
+As it is meant to update connections of cardinality 1 (or `0..1`) ,
+multiple updates to the same connection will result in only the last applied update surviving.
+This means it is dependent on the order of incoming rows.
+
+== References
+* xref:{page-version}@reference::typeql/data-model.adoc#_data_pipelines[The Pipeline query model]
+* xref:{page-version}@reference::typeql/pipelines/index.adoc[Clauses]
+

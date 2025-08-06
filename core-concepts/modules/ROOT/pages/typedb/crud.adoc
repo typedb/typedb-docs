@@ -1,0 +1,313 @@
+= CRUD
+
+CRUD operations create, read, update, and delete data in the TypeDB database.
+
+== Create
+
+When a database is created, it contains no data. The first step to building a rich, structured knowledge base is to insert data into the database. After defining a schema, this can be done in two primary ways: using an `insert` stage for unconditional creation, or a `put` stage for idempotent creation. All creation operations must be performed in a write-capable transaction (i.e., `write` or `schema`).
+
+===  Unconditional creation using `insert`
+
+The `insert` stage is the fundamental command for creating new data. It adds the specified instances without first checking if they already exist. If insert is the first stage in a pipeline, it runs just once. For these examples, consider this schema:
+
+For these examples, consider the following schema:
+
+[,typeql]
+.Sample schema
+----
+define
+  entity person,
+    owns name @card(1),
+    plays friendship:friend;
+  relation friendship,
+    relates friend;
+  attribute name,
+    value string;
+----
+
+If `insert` is the first stage in a pipeline, it runs just once and outputs a single row containing the newly created instances.
+
+An example command to insert two people and a friendship between them would be:
+
+[,typeql]
+.Alice 🤝 Bob
+----
+insert
+  $a-name isa name "Alice";
+  $b-name isa name "Bob";
+  $a isa person, has $a-name;
+  $b isa person, has $b-name;
+  $f isa friendship, links (friend: $a, friend: $b);
+----
+
+The output row will contain the newly created instances:
+
+[,typeql]
+----
+   -------------
+    $a      | isa person, iid 0x1e00000000000000000000
+    $a-name | isa name "Alice"
+    $b      | isa person, iid 0x1e00000000000000000001
+    $b-name | isa name "Bob"
+    $f      | isa friendship, iid 0x1f00000000000000000000
+   -------------
+----
+
+When an `insert` stage is preceded by other stages, most commonly `match`, the `insert` stage will run once for each row it receives from the previous stage, and its output rows will contain the newly created instances as well as the contents of the input rows. We call this kind of processing 'pipelining', and it's very similar to programming with Streams or Iterators!
+
+In this example, Alice and Bob are already in the database, and we want to create a friendship between them.
+
+[,typeql]
+.Alice 🤝 Bob, v2
+----
+match
+  $a isa person, has name "Alice";
+  $b isa person, has name "Bob";
+insert
+  $f isa friendship, links (friend: $a, friend: $b);
+----
+
+For more detailed information on `insert` stages and pipelines, see the xref:{page-version}@core-concepts::typeql/query-clauses.adoc[] documentation in the TypeQL reference.
+
+=== Idempotent creation using `put`
+
+The `put` stage represents an "insert if does not exist" operation and provides a simple way to ensure data exists. It first attempts to match the entire pattern against existing data. If a complete match is found, no changes are made. If _any part of the pattern_ does not match, the query executes as if it were an insert stage for _the entire pattern._
+
+[,typeql]
+----
+put
+  $a isa person, has name "Alice";
+  $b isa person, has name "Bob";
+  $f isa friendship, links (friend: $a, friend: $b);
+----
+
+This query will attempt to match the given patterns against existing data in the database. If the patterns are matched, the query stage will retrieve the matched instances and make no changes to the database. If the patterns are _not_ matched, however, the query will execute as if it were an `insert` stage.
+
+[IMPORTANT]
+====
+It's worth underlining: `put` stages are all-or-nothing. For example, in the query above, even if a `person` named `"Alice"` already exists
+in the database, if there is no `person` named `"Bob"`, the query will insert a new `person` with the name `"Alice"`, a new `person` with
+the name `"Bob"`, and a new friendship between them.
+====
+
+=== Bulk loading
+
+You may already have a large amount of data that you wish to insert into the newly created database.
+This section contains some suggestions on how to do that efficiently.
+
+==== Query batching
+
+There is a cost associated with opening and committing transactions. If you have a large number of queries to execute, you should consider batching more than one query into a single transaction.
+
+Care should be taken to ensure that the batches of queries are not too large. Long-running transactions can cause slowdowns as large sets of data are validated against each other during commits.
+
+As a rule of thumb, we recommend around 100-1000 inserts per transaction, though the exact numbers vary application to application.
+
+==== Deferred resolution
+
+Queries are performed asynchronously: when a query request is sent from the driver, the returned value is a _promise_ that needs to be resolved to obtain the actual result.
+
+This allows the driver to send multiple queries to the server to be executed concurrently. The suggested way to take advantage of this is to
+open a number of concurrent transactions and send a batch of queries to each of them.
+
+For further explanation, see the drivers xref:{page-version}@core-concepts::drivers/queries.adoc[Querying page].
+
+==== Accidental duplication and ordering
+
+A concern when loading large amounts of data is duplication. In most cases, it can be avoided by using the `put` stage:
+
+[,typeql]
+.Insert a new user if there isn't already a user named `"john1"`
+----
+put
+  $x isa user, has username "john_1";
+----
+
+An issue may arise during parallel loading, however, where concurrent workers ensure the same user exists, inadvertently creating two
+``john_1``s. If `user` has a xref:{page-version}@core-concepts::typeql/constraining-data.adoc#unique_key[@key] attribute, this
+is a minor issue: whichever transaction attempts to commit later will fail and need to be retried.
+
+It is recommended, if possible, to load entities first along with their attributes, followed by relations between entities, then relations
+between relations. This order minimizes transaction failures or, with a ``@key``less schema, accidental duplication. Ordering can also be used to replace `put` operations with straight `insert` operations, which are simpler and therefore faster to execute.
+
+== Read
+
+All queries must be performed within a transaction - transactions are isolated from each other and read from a snapshot in time, making querying predictable and repeatable. You can execute read queries in any transaction type.
+
+=== Retrieving data in rows using `match`
+
+A `match` stage is the fundamental command for retrieving data. They retrieve data by matching *patterns*. Patterns represent constraints the variables are expected to satisfy. Match stages return _all combinations_ of data for their variables that satisfy the pattern, though they will not rebind a variable already bound by previous stages.
+
+Patterns can be combined into larger patterns by conjunction with `;`, disjunction with `or`, and negation with `not`. Patterns can also be marked as optional by putting them in a `try` block, in which case any failure to match those patterns does not affect the rest of the stage. The variables that are newly introduced in the block are considered optionally bound (`$x?`). See the
+xref:{page-version}@core-concepts::typeql/query-variables-patterns.adoc[pattern reference] for more.
+
+The stream of rows can then be processed using stream operators such as `sort`, `reduce`, and `limit`, or extended with more `match` clauses. To see all types of stream operations and clauses, check out the clause xref:{page-version}@reference::typeql/pipelines/index.adoc[reference pages].
+
+When retrieving data from the database there is a basic distinction to keep in mind:
+
+* *objects*, i.e. entities and relations, do not have a value that can be returned from the database; instead they are represented
+  by an internal ID.
+* *attributes* are fully identified by their type and value.
+
+To read more about clauses, clause chaining, and pipelines, read the
+xref:{page-version}@core-concepts::typeql/query-clauses.adoc[pipelines] documentation.
+
+=== Retrieving data in documents using `fetch`
+
+A `fetch` stage converts each input row into a JSON document. The body of a `fetch` stage describes the structure of the document.
+This allows structuring the output of the query to map precisely to the structure of the data required by the application.
+
+[,typeql]
+----
+match
+  $p isa person;
+fetch {
+  "name": $p.name,
+  "friends": [
+    match ($p, $q) isa friendship; $q has name $friend-name;
+    return { $friend-name };
+  ],
+};
+----
+
+The `fetch` stage above will return a document for each person in the database, containing the person's name and a list of names of their
+friends.
+
+[,typeql]
+----
+{
+  "name": "Alice"
+  "friends": [
+    "Bob",
+    "Carol",
+    "Dean"
+  ],
+}
+{
+  "name": "Eve",
+  "friends": []
+}
+...
+----
+
+For more information on `fetch` stages, see the xref:{page-version}@reference::typeql/pipelines/fetch.adoc[fetch query stage] documentation in the TypeQL reference.
+
+== Update
+
+There are multiple ways to update data in TypeDB. The common ways are to combine a `delete` and an `insert` clause, or in simpler cases you can use an `update` clause.
+
+=== Atomic updates with `update`
+
+An attribute ownership or a roleplayer with cardinality `@card(0..1)` or `@card(1)` can be updated using an `update` stage.
+
+Similar to ``put``, an `update` stage represents a "set if does not exist" operation. If the attribute or roleplayer is not present, the `update` stage will add it. If one is present, however, the `update` stage will replace it with the new one.
+
+[,typeql]
+.Simple attribute update
+----
+match
+  $a isa person, has name "Alice";
+update
+  $a has name "Alan";
+----
+
+This is the expected way to "change" the value of an attribute that is owned. Attributes in TypeDB are globally unique (maintained by the database), and immutable. Instead of mutating atn attribute, we change the _ownership_ of the attribute and replace it with a new one. Attributes that are not owned anymore are automatically cleaned, unless you mark the attribute type with `@independent` in your schema.
+
+[,typeql]
+.Fixing a data entry error by switching roleplayers
+----
+match
+  $parentship isa parentship, links (parent: $p, child: $c);
+update
+  $parentship links (parent: $c, child: $p);
+----
+
+[,typeql]
+.Multiple unrelated statements can be updated at a time
+----
+match
+  $a isa person, has username "white-rabbit";
+  $b isa person, has username "mad-hatter";
+update
+  $a has name "Alice";
+  $b has name "Bob";
+----
+
+=== Updates with ``delete``-``insert``
+
+For general updates, the recommended pattern is to use a `delete` stage followed by an `insert` stage. This approach provides explicit, manual control over the modification process. While more verbose, it is also more flexible.
+
+The same roleplayer switch from the previous section can be expressed as follows:
+
+[,typeql]
+.Fixing a data entry error by switching roleplayers, v2
+----
+match
+  $parentship isa parentship, links (parent: $p, child: $c);
+delete
+  (parent: $c, child: $p) of $parentship;
+insert
+  $parentship links (parent: $c, child: $p);
+----
+
+This pattern is required for any updates involving attributes or roleplayers with a cardinality greater than one, as well any updates that affect the data in a more complex way.
+
+Similarly, the common operation of replacing an owned attribute can be done like this:
+
+[,typeql]
+----
+match
+  $a isa person, has name $name;
+  $name == "Alice";
+delete
+  has $name of $a;
+insert
+  $a has name "Alan";
+----
+
+== Delete
+
+Deleting data is handled by a `delete` stage, which operates on variables returned by previous stages.
+
+=== Deleting instances
+
+The most straightforward deletion is to remove an entire instance (an entity, relation, or attribute). This is done by matching the instance and then simply using `delete` with the variable.
+
+[,typeql]
+----
+match
+  $a isa person, has name "Alice";
+delete
+  $a;
+----
+
+When an instance is deleted, the variable is removed from the row for all future stages.
+
+[NOTE]
+.Cascading deletes
+====
+Deleting an attribute implicitly deletes all ownerships of that attribute, and deleting an object (i.e. entity or relation) implicitly deletes all roles that instance plays in any relation, as well as any attribute ownerships connected to it. Deleting a relation deletes all `links` connections to participating role players. In SQL, this is as if TypeDB never created any missing "foreign key" references, or "dangling edges" in a property graph.
+
+Full control over cascading deletes is not implemented yet. Please reach out if you need it!
+====
+
+=== Deleting ownerships and roleplayers
+
+Connections between instances, that is ownerships and roleplayers, can be deleted without deleting the instances themselves. `delete has $attribute of $owner;` removes the ownership link but leaves the attribute in the database, while `delete links (role: $player) of $relation;` removes a specific role player from a relation.
+
+[,typeql]
+----
+match
+  $a isa person, has name $name == "Alice";
+  $f isa friendship, links (friend: $a);
+delete
+  has $name of $a;
+  links (friend: $a) of $f;
+----
+
+[NOTE]
+.Cascading deletes
+====
+Relations without roleplayers and non-`@independent` attributes with no owners are deleted automatically when the transaction is committed.
+====
+

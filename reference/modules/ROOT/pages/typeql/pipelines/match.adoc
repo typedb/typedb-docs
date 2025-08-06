@@ -15,7 +15,7 @@ where `<pattern>` denotes a valid xref:{page-version}@reference::typeql/patterns
 == Behavior
 
 * If a query pipeline start with a match clause, then the first match stage is given the empty row `{}` as its only input.
-* For each input row, the match stage outputs all combinations of data for its xref:{page-version}@reference::typeql/data_model.adoc#modes[output variables] (i.e., those variables that have not already been bound in earlier stages, and which are not xref:{page-version}@reference::typeql/data_model.adoc#modes[internal] to the stage).
+* For each input row, the match stage outputs all combinations of data for its xref:{page-version}@reference::typeql/data-model.adoc#modes[output variables] (i.e., those variables that have not already been bound in earlier stages, and which are not xref:{page-version}@reference::typeql/data-model.adoc#modes[internal] to the stage).
 * It passes each output together with its inputs as a combined row to the next stage.
 
 For example, if a match stage is given 2 input rows,

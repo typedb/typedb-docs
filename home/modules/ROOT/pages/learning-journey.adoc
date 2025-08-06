@@ -1,0 +1,89 @@
+= Learning journey
+
+Welcome to our guide on how to best leverage these docs for learning TypeDB and TypeQL. 
+It is designed to take you from being a beginner to an advanced user through a structured learning journey.
+
+But do not feel the need to stick to our flow! 
+Jump between sections based on your immediate needs and come back to fill in gaps as you grow more experienced with TypeDB.
+Most pages in this documentation can be used with few prerequisites and should be easy to understand independently.
+
+== Step 1: TypeDB basics
+
+* xref:{page-version}@home::what-is-typedb.adoc[]
+* xref:{page-version}@home::why-typedb.adoc[]
+
+== Step 2: Installing TypeDB
+
+Choose your installation method based on your needs at the xref:{page-version}@home::install/index.adoc[Install page].
+
+You might also want to pop into the xref:{page-version}@tools::index.adoc[Tools] section to read a bit more about TypeDB Studio and Console.
+
+== Step 3: Get started guide
+
+Once you have TypeDB installed, get up and running with a simple example at the xref:{page-version}@home::get-started/index.adoc[] guide.
+This will teach you all the basics of TypeDB and TypeQL.
+
+== Step 4: Examples
+
+Explore some pre-built xref:{page-version}@examples::index.adoc[examples].
+
+These include simple end-to-end examples of a traditional frontend & backend & database, a web app & database stack,
+and also specific TypeDB schemas and queries applied to industry use-cases.
+
+As you go through those examples, we recommend having the Core Concepts open (see next section).
+
+Some developers like to start with Concepts first, then look at examples, in which case
+skip to the next section and come back to the examples afterward!
+
+== Step 5: Core concepts
+
+There are approximately 3 major parts to understanding TypeDB:
+
+1. Learning about the TypeDB database server
+2. Learning about the details of the TypeQL query language
+3. Learning about the drivers that allow programmatic access to TypeDB
+
+=== TypeDB
+
+TypeDB server implements database and user management, authentication and connection protocols, transactions, and 
+query execution. These APIs are largely independent of the query language or the driver APIs.
+
+Start at the xref:{page-version}@core-concepts::typedb/overview.adoc[TypeDB Overview] to learn about the TypeDB server.
+
+=== TypeQL
+
+Understanding how to "think in TypeQL" is the key part of using TypeDB effectively and at full power.
+
+The xref:{page-version}@core-concepts::typeql/overview.adoc[TypeQL Overview],
+shows the building blocks of the language and how they interact, from types to queries to functions.
+
+=== TypeDB drivers
+
+TypeDB can be accessed through either high-performance gRPC drivers or its built-in HTTP API.
+
+TypeDB's gRPC drivers come with their own set of APIs and recommended usage patterns that 
+are described at the xref:{page-version}@core-concepts::drivers/overview.adoc[Driver Overview].
+
+== Step 6: Building your application
+
+At this point you should have enough conceptual and practical knowledge of TypeDB to build
+your proof-of-concept, or even start building a production application!
+
+In this building phase you will probably need to refer to any of the xref:{page-version}@reference::index.adoc[Reference] pages,
+which are descriptions of all the different features of TypeDB, TypeQL, the protocol and drivers,
+and libraries.
+
+== Step 7: Operations
+
+The xref:{page-version}@maintenance-operation::index.adoc[Operations] pages are for learning about backups, upgrades, configurations, and much more.
+
+In addition, it could be useful to learn about automating TypeDB Cloud operations with the xref:{page-version}@tools::typedb-cloud-api.adoc[TypeDB Cloud API].
+For example, you might want to integrate TypeDB Cloud into your deployment pipelines to spin up and down instances of TypeDB automatically.
+
+
+== Tips
+
+* **Start Small**: Begin with the get-started guide to see immediate results
+* **Join the Community**: Engage with other TypeDB users for support and insights on https://discord.com/invite/typedb[our Discord server]. We're very active and welcoming to new members and love to hear about your projects!
+* **Contribute**: If you see any issues, or have ideas for how TypeDB can be even better, feel free to reach out or file an issue on https://github.com/typedb/typedb[GitHub]
+

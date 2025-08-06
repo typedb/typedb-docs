@@ -23,8 +23,8 @@ MODULE_DIRECTORIES = {
 
     "home": os.path.join(os.path.dirname(__file__), "../home/modules/ROOT"),
     "examples": os.path.join(os.path.dirname(__file__), "../examples/modules/ROOT"),
-    "maintenance_operation": os.path.join(os.path.dirname(__file__), "../maintenance_operation/modules/ROOT"),
-    "core_concepts": os.path.join(os.path.dirname(__file__), "../core_concepts/modules/ROOT"),
+    "maintenance-operation": os.path.join(os.path.dirname(__file__), "../maintenance-operation/modules/ROOT"),
+    "core-concepts": os.path.join(os.path.dirname(__file__), "../core-concepts/modules/ROOT"),
     "tools": os.path.join(os.path.dirname(__file__), "../tools/modules/ROOT"),
     "reference": os.path.join(os.path.dirname(__file__), "../reference/modules/ROOT"),
 }

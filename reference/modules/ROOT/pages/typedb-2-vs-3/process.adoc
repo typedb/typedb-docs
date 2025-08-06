@@ -7,7 +7,7 @@ This page gives recommendations for server and driver upgrades between the two m
 . **Understand the scope of changes** by referring to the xref:{page-version}@reference::typedb-2-vs-3/diff.adoc[major changes] page.
 . **Review the xref:{page-version}@reference::typedb-2-vs-3/diff.adoc#_temporarily_missing[missing features] list** before starting your migration.
 Some features might not yet be available in 3.x, and you may need to wait for a newer version to proceed.
-. Refresh your knowledge and adjust to the new versions of TypeDB and TypeQL by following the updated xref:{page-version}@home::get_started/setup.adoc[Get started] guide.
+. Refresh your knowledge and adjust to the new versions of TypeDB and TypeQL by following the updated xref:{page-version}@home::get-started/setup.adoc[Get started] guide.
 . **Migrate your TypeDB 2.x database** following the xref:#_step_by_step[step-by-step instructions below].
 The setup process remains largely unchanged from 2.x.
 . *Update your queries* using from 2.x syntax to 3.x syntax
@@ -18,7 +18,7 @@ Consult xref:{page-version}@reference::typedb-2-vs-3/diff.adoc#_major_changes_dr
 [#_step_by_step]
 == Step-by-step example
 
-This section showcases a step-by-step example of migrating a database between TypeDB 2.x and TypeDB 3.x using xref:{page-version}@maintenance_operation::database-export-import.adoc[export and import].
+This section showcases a step-by-step example of migrating a database between TypeDB 2.x and TypeDB 3.x using xref:{page-version}@maintenance-operation::database-export-import.adoc[export and import].
 
 This example uses a database called `social-network`.
 It contains an arbitrary set of data and the 2.x schema provided below.
@@ -168,10 +168,10 @@ We recommend running a few read queries to verify that the migration was logical
 
 If necessary, define TypeQL functions and update any queries that previously relied on the removed rules to use the new functions instead.
 
-Visit xref:{page-version}@reference::typedb-2-vs-3/diff.adoc[] and xref:{page-version}@core_concepts::index.adoc[] to learn more about TypeDB 3.x.
+Visit xref:{page-version}@reference::typedb-2-vs-3/diff.adoc[] and xref:{page-version}@core-concepts::index.adoc[] to learn more about TypeDB 3.x.
 Enjoy your journey!
 
 [#_having_troubles]
 == Having troubles?
 
-For troubleshooting tips and guidance, refer to the xref:{page-version}@maintenance_operation::troubleshooting/index.adoc[Troubleshooting pages].
+For troubleshooting tips and guidance, refer to the xref:{page-version}@maintenance-operation::troubleshooting/index.adoc[Troubleshooting pages].

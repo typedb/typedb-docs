@@ -26,7 +26,7 @@ There are many reasons developers love TypeDB. Here are a few of the top ones:
 
 TypeDB and TypeQL are intuitive and easy to use.
 
-TypeDB is made up of a few simple xref:{page-version}@core_concepts::typedb/index.adoc[database concepts].
+TypeDB is made up of a few simple xref:{page-version}@core-concepts::typedb/index.adoc[database concepts].
 By using the https://cloud.typedb.com[fully managed service,window=_blank], or a local xref:{page-version}@home::install/ce.adoc[TypeDB CE server],
 you'll be up and running in minutes.
 
@@ -37,7 +37,7 @@ types you define in TypeDB's schema serve as a semantic layer by themselves — 
 
 === Powerful modelling
 
-TypeDB's baseline types are xref:{page-version}@core_concepts::typeql/entities-relations-attributes.adoc[Entities, Relations, and Attributes].
+TypeDB's baseline types are xref:{page-version}@core-concepts::typeql/entities-relations-attributes.adoc[Entities, Relations, and Attributes].
 These can be combined in countless ways to capture your domain accurately.
 TypeDB supports many modifiers and uses of these basic types:
 
@@ -47,7 +47,7 @@ TypeDB supports many modifiers and uses of these basic types:
 - **Multivalued attributes**: entities and relations can have multiple instances of the same attribute with different values
 - **Cardinality constraints**: configurable limits on the number of attributes, relations, or entities to connect to
 
-You can even create reusable xref:{page-version}@core_concepts::typeql/queries-as-functions.adoc[functions] to capture modular pieces of database logic and invoke them at query time.
+You can even create reusable xref:{page-version}@core-concepts::typeql/queries-as-functions.adoc[functions] to capture modular pieces of database logic and invoke them at query time.
 
 Put together, TypeDB can capture the most complex data models, while being easy to extend with new types and relationships as your application grows.
 
@@ -64,7 +64,7 @@ During pure read operations, TypeDB's type inference engine will reject semantic
 This allows developers to distinguish an **invalid query returning no results**, which returns an error in TypeDB,
 from a **correct query returning no results**.
 
-Combined with xref:{page-version}@core_concepts::typedb/transactions.adoc[transactions], you can be confident of moving between correct states. Even better,
+Combined with xref:{page-version}@core-concepts::typedb/transactions.adoc[transactions], you can be confident of moving between correct states. Even better,
 schema and data can be mutated together in one schema transaction, with full commit-time validation, making migrations
 safe and easy.
 
@@ -85,5 +85,5 @@ Feel free to explore our xref:{page-version}@examples::index.adoc[Examples and u
 
 == Next steps
 
-Check out our xref:{page-version}@home::learning_journey.adoc[Learning Journey] for a guided path through the documentation,
-or jump into the xref:{page-version}@home::get_started/setup.adoc[Get started guide].
+Check out our xref:{page-version}@home::learning-journey.adoc[Learning Journey] for a guided path through the documentation,
+or jump into the xref:{page-version}@home::get-started/setup.adoc[Get started guide].

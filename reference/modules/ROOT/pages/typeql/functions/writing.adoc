@@ -35,7 +35,7 @@ return <return-statement>
 The types `A, B, ...` above can be either user-defined types (e.g. an entity type `user`) or primitive value types (e.g. `boolean`).
 ====
 - `<read_pipeline>` includes any read xref:{page-version}@reference::typeql/pipelines/index.adoc[pipeline].
-- `<return-statement>` may consist of variables, xref:{page-version}@reference::typeql/expressions/function_calls.adoc[function calls], and built-in reductions:
+- `<return-statement>` may consist of variables, xref:{page-version}@reference::typeql/expressions/function-calls.adoc[function calls], and built-in reductions:
 * Scalar return statements are of the form
 `$a;`.
 * Tuple return statements are of the form  `$a, $b, <built-in-reduction>, scalar_fun($c), ...;` (see xref:{page-version}@reference::typeql/pipelines/reduce.adoc[reduce] for available built-in reductions).

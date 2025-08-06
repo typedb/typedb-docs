@@ -36,7 +36,7 @@ not {
 
 Negations may appear in `match` stages of data pipelines or functions, where they behave as follows.
 
-* *Internal variables*. Variable whose scope lies inside an excluded pattern are not returned as part of the stage's output (i.e., such variables are xref:{page-version}@reference::typeql/data_model.adoc#modes[internal] variables).
+* *Internal variables*. Variable whose scope lies inside an excluded pattern are not returned as part of the stage's output (i.e., such variables are xref:{page-version}@reference::typeql/data-model.adoc#modes[internal] variables).
 * *Satisfaction*. A pattern with a negation will return those outputs which satisfy the pattern outside the negation, but do not satisfy the excluded pattern for _any_ choice of internal variables in that pattern.
 * *Recursion*. When using recursive function with negations care need to be taken that evaluation of the negation does not depend on the recursive function call itself (in other words, TypeDB works with https://en.wikipedia.org/wiki/Stratification_(mathematics)#In_mathematical_logic[stratified negation]).
 
@@ -66,6 +66,6 @@ match
 ----
 [NOTE]
 ====
-Negated queries (especially nested negations) can become xref:{page-version}@maintenance_operation::troubleshooting/optimizing-queries.adoc[expensive].
+Negated queries (especially nested negations) can become xref:{page-version}@maintenance-operation::troubleshooting/optimizing-queries.adoc[expensive].
 ====
 --

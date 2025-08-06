@@ -1,0 +1,743 @@
+= Query composition
+:keywords: start, learn, typedb, typeql, tutorial, quickstart, console, studio, database, create, insert, query, schema
+:summary: Chain clauses into queries and write reusable functions
+:tabs-sync-option:
+:test-typeql: linear
+
+== Review
+
+In the previous sections we've:
+
+. xref:get-started/setup.adoc[] TypeDB and Studio (or Console)
+. xref:get-started/schema.adoc[Created a schema]
+.. Created a database called `get_started`.
+.. Defined the social network schema:
++
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema]
+include::{page-version}@home::page$get-started/schema.adoc[tag=full_define]
+----
+====
+. xref:get-started/data.adoc[Loaded some data] using a insert and match-insert queries:
+
+[%collapsible]
+====
+[,typeql]
+----
+#!test[write]
+include::{page-version}@home::page$get-started/data.adoc[tag=insert2]
+----
+
+[,typeql]
+----
+#!test[write]
+include::{page-version}@home::page$get-started/data.adoc[tag=insert3]
+----
+
+[,typeql]
+----
+#!test[write]
+include::{page-version}@home::page$get-started/data.adoc[tag=insert5]
+----
+
+[,typeql]
+----
+#!test[write, count=1]
+include::{page-version}@home::page$get-started/data.adoc[tag=match-insert1]
+----
+====
+
+== Overview
+
+In this page, we'll look at another useful query operation, `reduce`,
+and how to compose small queries into larger _query pipelines_ by chaining clauses together.
+Query pipelines are extremely powerful, and can be to express much more interesting and complex logic in single queries.
+
+We'll then introduce _functions_, which are another way to compose modular and reusable pieces of queries together.
+
+Finally, we'll cover the `fetch` clause, which lets you format your data as JSON and look up additional information before returning results.
+
+== Reduce
+
+The `reduce` operation works by collapsing the answers provided by a query using an aggregation operation, such as `count` or `sum`.
+
+We call `reduce` an **operator** rather than a **clause**, since it does not read or write to the database state - it only transforms the answers it receives.
+
+[tabs]
+====
+Studio::
++
+--
+
+Using a read transaction, let's count the number of users in the database:
+
+[,typeql]
+----
+include::./query-composition.adoc[tag=reduce1]
+----
+
+We see the following result:
+[source]
+----
+include::./query-composition.adoc[tag=reduce1_result]
+----
+
+Notice that the user variable `$user` has been consumed by `reduce`, and a new variable `$count` has been created.
+
+Reductions can also use `groupby` to aggregate within groups:
+
+[,typeql]
+----
+include::./query-composition.adoc[tag=reduce2]
+----
+
+Returning:
+
+[source]
+----
+include::./query-composition.adoc[tag=reduce2_result]
+----
+
+Here we see the number of friends for each user, grouped by unique pairs of (user, username).
+Of course, we know that each user has a unique username, so we don't actually have to keep both!
+
+Notice that the variables in the grouping are not consumed by `reduce` and are returned in the results.
+
+--
+Console::
++
+--
+
+Open a read transaction with `transaction read get-started` to count the number of users in the database:
+
+////
+[,typeql]
+----
+# tag::reduce1[]
+match
+$user isa user;
+reduce $count = count;
+# end::reduce1[]
+
+# tag::reduce1_result[]
+------------
+$count | 6
+------------
+# end::reduce1_result[]
+----
+////
+[,typeql]
+----
+#!test[read, count=1]
+include::./query-composition.adoc[tag=reduce1]
+----
+
+We see the following result:
+[source]
+----
+include::./query-composition.adoc[tag=reduce1_result]
+----
+
+Notice that the user variable `$user` has been consumed by `reduce`, and a new variable `$count` has been created.
+
+Reductions can also use `groupby` to aggregate within groups:
+
+////
+[,typeql]
+----
+# tag::reduce2[]
+match
+$user isa user, has username $username;
+friendship ($user, $friend);
+reduce $num-friends = count groupby $user, $username;
+# end::reduce2[]
+
+tag::reduce2_result[]
+------------------
+$num-friends | 1
+$user        | isa user, iid 0x1e00000000000000000005
+$username    | isa username "fizzbuzz"
+------------------
+$num-friends | 1
+$user        | isa user, iid 0x1e00000000000000000001
+$username    | isa username "bob"
+------------------
+$num-friends | 2
+$user        | isa user, iid 0x1e00000000000000000003
+$username    | isa username "delta"
+------------------
+$num-friends | 1
+$user        | isa user, iid 0x1e00000000000000000000
+$username    | isa username "alice"
+------------------
+$num-friends | 1
+$user        | isa user, iid 0x1e00000000000000000004
+$username    | isa username "echo"
+------------------
+
+# end::reduce2_result[]
+----
+////
+[,typeql]
+----
+#!test[read, count=5]
+include::./query-composition.adoc[tag=reduce2]
+----
+
+Returning:
+
+[source]
+----
+include::./query-composition.adoc[tag=reduce2_result]
+----
+
+Here we see the number of friends for each user, grouped by unique pairs of (user, username).
+Of course, we know that each user has a unique username, so we don't actually have to keep both!
+
+Notice that the variables in the grouping are not consumed by `reduce` and are returned in the results.
+
+--
+
+====
+
+If this feels familiar, it's because you've likely encountered list, iterator, or stream `reduce` operations in programming languages.
+Keep that idea in mind as we move forward.
+
+== Chaining clauses into pipelines
+
+Let's say we'd like to write a query that does the following:
+
+Make every user friends with the most popular user, if they aren't already friends.
+
+Conceptually, this requires three steps:
+
+. Find the most popular user
+. Find all users that aren't friends with the most popular user
+. Make them friends with the most popular user
+
+We can build this query step by step by chaining together query pieces into an extended _query pipeline_.
+
+Let's start with the first step:
+
+[tabs]
+====
+Studio::
++
+--
+
+We'll build on top of the `reduce` query we wrote previously.
+The most popular user is the one with the highest number of friends, so we'll sort the previous `reduce` results by number of friends, and limit to the first answer.
+
+We can do that with two new operators: `sort` and `limit`.
+
+`sort` and `limit` are stream operators like `reduce`, since they manipulate answer stream provided by the previous clause.
+They are probably also familiar to you since most query languages have some sort of Iterator or Stream construct, 
+which you can sort and limit! So you can see that TypeQL queries are really similar to Streams in programming languages.
+
+We generally say that we construct query stream **pipelines** using query **stages**, 
+and each stage is either a **clause** (if it reads or writes to the database), or a stream **operator** (if it only manipulates the stream).
+
+**A good mental model of TypeQL queries is that any stage produces a stream of answers. 
+Any stage can be chained onto any other kind of stage to manipulate the stream, or read and write to the database.**
+
+This is a very powerful idea for composing queries, as we'll see next! 
+Let's go back to our example:
+
+[,typeql]
+----
+include::./query-composition.adoc[tag=pipeline1]
+----
+
+Which returns:
+[source]
+----
+include::./query-composition.adoc[tag=pipeline1_result]
+----
+
+With this query pipeline, we've identified the most popular user using a `match` clause, and the `reduce`, `sort`, and `limit` operators!
+
+--
+Console::
++
+--
+
+We'll build on top of the `reduce` query we wrote previously.
+The most popular user is the one with the highest number of friends, so we'll sort the previous `reduce` results by number of friends, and limit to the first answer.
+
+We can do that with two new operators: `sort` and `limit`.
+
+`sort` and `limit` are stream operators like `reduce`, since they manipulate answer stream provided by the previous clause.
+They are probably also familiar to you since most query languages have some sort of Iterator or Stream construct, 
+which you can sort and limit! So you can see that TypeQL queries are really similar to Streams in programming languages.
+
+We generally say that we construct query stream **pipelines** using query **stages**, 
+and each stage is either a **clause** (if it reads or writes to the database), or a stream **operator** (if it only manipulates the stream).
+
+**A good mental model of TypeQL queries is that any stage produces a stream of answers. 
+Any stage can be chained onto any other kind of stage to manipulate the stream, or read and write to the database.**
+
+This is a very powerful idea for composing queries, as we'll see next! 
+Let's go back to our example:
+
+////
+[,typeql]
+----
+# tag::pipeline1[]
+match
+$user isa user, has username $username;
+friendship ($user, $friend);
+reduce $num-friends = count groupby $user, $username;
+sort $num-friends desc;
+limit 1;
+# end::pipeline1[]
+
+# tag::pipeline1_result[]
+------------------
+$num-friends | 2
+$user        | isa user, iid 0x1e00000000000000000003
+$username    | isa username "delta"
+------------------
+# end::pipeline1_result[]
+----
+////
+[,typeql]
+----
+#!test[read, count=1]
+include::./query-composition.adoc[tag=pipeline1]
+----
+Which returns:
+[source]
+----
+include::./query-composition.adoc[tag=pipeline1_result]
+----
+
+With this query pipeline, we've identified the most popular user using a `match` clause, and the `reduce`, `sort`, and `limit` operators!
+
+--
+====
+
+We'll first simplify a bit by eliminating the `num-friends` value from each answer to avoid confusion.
+This is achieved by using `select` to include only the `user` and `username` answers.
+
+Next we need to find users that aren't friends with this user.
+For this we'll use another `match` clause, which can use answers provided by the previous stage:
+
+[tabs]
+====
+Studio::
++
+--
+
+We need `not` statements to filter out users that are already friends with the most popular user,
+and also to eliminate the most-popular user from appearing again:
+
+[,typeql]
+----
+include::./query-composition.adoc[tag=pipeline2]
+----
+
+This returns:
+[source]
+----
+include::./query-composition.adoc[tag=pipeline2_result]
+----
+
+At the end of this pipeline, we have a stream where each answer contains the most popular user and a different user who isn't friends with them yet.
+
+--
+Console::
++
+--
+
+We need `not` statements to filter out users that are already friends with the most popular user,
+and also to eliminate the most-popular user from appearing again:
+
+////
+[,typeql]
+----
+# tag::pipeline2[]
+match
+$user isa user, has username $username;
+friendship ($user, $friend);
+reduce $num-friends = count groupby $user, $username;
+
+sort $num-friends desc;
+limit 1;
+select $user, $username;
+
+match
+$other-user isa user, has username $other-username;
+not { $user is $other-user; };
+not { friendship ($user, $other-user); };
+# end::pipeline2[]
+
+# tag::pipeline2_result[]
+---------------------
+$other-user     | isa user, iid 0x1e00000000000000000000
+$other-username | isa username "alice"
+$user           | isa user, iid 0x1e00000000000000000003
+$username       | isa username "delta"
+---------------------
+$other-user     | isa user, iid 0x1e00000000000000000001
+$other-username | isa username "bob"
+$user           | isa user, iid 0x1e00000000000000000003
+$username       | isa username "delta"
+---------------------
+$other-user     | isa user, iid 0x1e00000000000000000002
+$other-username | isa username "charlene"
+$user           | isa user, iid 0x1e00000000000000000003
+$username       | isa username "delta"
+---------------------
+# end::pipeline2_result[]
+----
+////
+[,typeql]
+----
+#!test[read, count=3]
+include::./query-composition.adoc[tag=pipeline2]
+----
+
+This returns:
+[source]
+----
+include::./query-composition.adoc[tag=pipeline2_result]
+----
+
+At the end of this pipeline, we have a stream where each answer contains the most popular user and a different user who isn't friends with them yet.
+
+--
+====
+
+Let's stack one more `insert` clause to create the desired friendships.
+Note that this means this query now is a write query, and requires a write transaction.
+
+[tabs]
+====
+Studio::
++
+--
+
+[,typeql]
+----
+include::./query-composition.adoc[tag=pipeline3]
+----
+
+After you execute the query once, every user will be friends with the most popular user.
+
+--
+Console::
++
+--
+
+////
+[,typeql]
+----
+# tag::pipeline3[]
+match
+$user isa user, has username $username;
+friendship ($user, $friend);
+reduce $num-friends = count groupby $user, $username;
+
+sort $num-friends desc;
+limit 1;
+select $user, $username;
+
+match
+$other-user isa user, has username $other-username;
+not { $user is $other-user; };
+not { friendship ($user, $other-user); };
+
+insert
+friendship ($other-user, $user);
+# end::pipeline3[]
+----
+////
+[,typeql]
+----
+#!test[write, count=3]
+include::./query-composition.adoc[tag=pipeline3]
+----
+
+After you execute the query once, every user will be friends with the most popular user.
+
+--
+====
+
+Fantastic! We've written a single query that identifies the most popular user, finds all users who aren't friends with them, and creates the necessary friendships.
+
+Pipelines are a very powerful tool for composing queries. 
+They help eliminate round trips to the server, since even complex operations can be performed within the database. 
+
+They are also easy to read and understand, since the data flow is explicit in the order of the query stages.
+At the same time, query pipelines are very easy to debug: truncate your pipeline at any point
+and inspect intermediate results by executing the truncated query.
+
+== Functions
+
+In the query we just wrote, we might want to reuse the "find the most popular user" part of the pipeline.
+
+We can do this by declaring a function, which can be committed to the database as part of the schema.
+
+Note that functions can contain full query pipelines, but cannot have side effects (e.g., they must be read-only).
+
+[tabs]
+====
+Studio::
++
+--
+
+[,typeql]
+----
+include::./query-composition.adoc[tag=function1]
+----
+
+This function returns the first user and username using the same logic as the long pipeline we just wrote,
+with a tiebreaker on the username if there are multiple "most popular users".
+
+Don't forget to commit so the function becomes available outside the transaction.
+
+--
+Console::
++
+--
+
+////
+[,typeql]
+----
+# tag::function1[]
+define
+
+# note: if there are multiple "most popular users", tiebreak on the username
+fun most_popular_user() -> user, username:
+  match
+  $user isa user, has username $username;
+  friendship ($user, $friend);
+  reduce $num-friends = count groupby $user, $username;
+  sort $num-friends desc, $username asc;
+  return first $user, $username;
+
+# end::function1[]
+----
+////
+[,typeql]
+----
+#!test[schema]
+include::./query-composition.adoc[tag=function1]
+----
+
+This function returns the first user and username using the same logic as the long pipeline we just wrote,
+with a tiebreaker on the username if there are multiple "most popular users".
+
+Don't forget to commit so the function becomes available outside the transaction.
+
+--
+====
+
+Now we can invoke the function in a pipeline.
+
+Let's try to find the users who are friends with our popular user:
+
+[tabs]
+====
+Studio::
++
+--
+
+[,typeql]
+----
+include::./query-composition.adoc[tag=function_pipeline1]
+----
+
+This query is now much shorter, since we've reused the logic from the function to find the most popular user!
+
+We correctly find every user is friends with the user `delta`:
+
+[source]
+-----
+include::./query-composition.adoc[tag=function_pipeline1_result]
+-----
+
+--
+Console::
++
+--
+
+////
+[,typeql]
+----
+# tag::function_pipeline1[]
+match
+let $most-popular-user, $most-popular-username = most_popular_user();
+$other-user isa user, has username $other-username;
+not { $most-popular-user is $other-user; };
+friendship ($other-user, $most-popular-user);
+# end::function_pipeline1[]
+
+# tag::function_pipeline1_result[]
+----------------------------
+$most-popular-user     | isa user, iid 0x1e00000000000000000003
+$most-popular-username | isa username "delta"
+$other-user            | isa user, iid 0x1e00000000000000000004
+$other-username        | isa username "echo"
+----------------------------
+$most-popular-user     | isa user, iid 0x1e00000000000000000003
+$most-popular-username | isa username "delta"
+$other-user            | isa user, iid 0x1e00000000000000000005
+$other-username        | isa username "fizzbuzz"
+----------------------------
+$most-popular-user     | isa user, iid 0x1e00000000000000000003
+$most-popular-username | isa username "delta"
+$other-user            | isa user, iid 0x1e00000000000000000000
+$other-username        | isa username "alice"
+----------------------------
+$most-popular-user     | isa user, iid 0x1e00000000000000000003
+$most-popular-username | isa username "delta"
+$other-user            | isa user, iid 0x1e00000000000000000001
+$other-username        | isa username "bob"
+----------------------------
+$most-popular-user     | isa user, iid 0x1e00000000000000000003
+$most-popular-username | isa username "delta"
+$other-user            | isa user, iid 0x1e00000000000000000002
+$other-username        | isa username "charlene"
+----------------------------
+# end::function_pipeline1_result[]
+----
+////
+[,typeql]
+----
+#!test[read, count=5]
+include::./query-composition.adoc[tag=function_pipeline1]
+----
+
+This query is now much shorter, since we've reused the logic from the function to find the most popular user!
+
+We correctly find every user is friends with the user `delta`:
+
+[source]
+-----
+include::./query-composition.adoc[tag=function_pipeline1_result]
+-----
+
+--
+====
+
+Congratulations! You're now ready to write sophisticated, modular queries.
+
+We'll cover one last incredibly useful feature:
+formatting TypeDB answers as JSON and incorporating additional data into JSON responses.
+
+== Fetch
+
+TypeQL features one special clause: `fetch`.
+This clause can only be used at the end of a pipeline.
+
+Fetch converts a standard TypeDB answer into a JSON document. 
+You can use it to organize data into a specific structure, look up additional attributes, and even execute subqueries and nest their answers.
+
+The `fetch` clause structure is designed to look exactly like the JSON document it will return, let's take a look:
+
+[tabs]
+====
+Studio::
++
+--
+
+[,typeql]
+----
+include::./query-composition.adoc[tag=fetch1]
+----
+
+This query now returns a sequence of JSON documents:
+[source, json]
+----
+include::./query-composition.adoc[tag=fetch1_result]
+----
+
+--
+Console::
++
+--
+
+////
+[,typeql]
+----
+# tag::fetch1[]
+match
+$user isa user;
+limit 3;
+fetch {
+  # get the username if it exists - if not, the JSON value will be set to null
+  "username": $user.username,
+
+  # run a subquery, and collect the answers into a list value
+  "friends": [
+    match
+    $other-user isa user;
+    friendship ($user, $other-user);
+    fetch {
+      "friend": $other-user.username
+    };
+  ]
+};
+# end::fetch1[]
+
+# tag::fetch1_result[]
+{
+  "username": "alice",
+  "friends": [
+    {
+      "friend": "bob"
+    },
+    {
+      "friend": "delta"
+    }
+  ]
+}
+{
+  "username": "bob",
+  "friends": [
+    {
+      "friend": "alice"
+    },
+    {
+      "friend": "delta"
+    }
+  ]
+}
+{
+  "username": "charlene",
+  "friends": [
+    {
+      "friend": "delta"
+    }
+  ]
+}
+#end::fetch1_result[]
+----
+////
+[,typeql]
+----
+#!test[read, documents]
+include::./query-composition.adoc[tag=fetch1]
+----
+
+This query now returns a sequence of JSON documents:
+
+[source, json]
+----
+include::./query-composition.adoc[tag=fetch1_result]
+----
+
+--
+====
+
+The fetch clause lets you lay out the exact JSON document you need for your application, making it easy to retrieve additional data such as optional attributes or answers from subqueries.
+
+
+== What next?
+There is much more to explore in the world of TypeDB, including building custom query logic using disjunctions and negations, the deep exploration of data connection using functional recursion, and more.
+
+This is just the beginning of your journey. If you have any questions, don't hesitate to reach out!

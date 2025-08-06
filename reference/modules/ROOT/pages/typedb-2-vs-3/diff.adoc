@@ -5,7 +5,7 @@ This page outlines the key updates of TypeDB 3.x compared to 2.x you should be a
 [NOTE]
 ====
 This section highlights **changes from TypeDB 2.x**, not all new features in 3.x.
-Explore the xref:{page-version}@core_concepts::typeql/index.adoc[TypeQL Concepts], xref:{page-version}@reference::typeql/index.adoc[TypeQL Reference], and https://github.com/typedb/typedb/releases[release notes] for the full picture.
+Explore the xref:{page-version}@core-concepts::typeql/index.adoc[TypeQL Concepts], xref:{page-version}@reference::typeql/index.adoc[TypeQL Reference], and https://github.com/typedb/typedb/releases[release notes] for the full picture.
 Stay tuned for upcoming blogs showcasing new features!
 ====
 
@@ -13,12 +13,12 @@ Click on a feature below for detailed documentation and examples.
 
 == TypeDB and TypeQL
 
-* **Sessions Removed:** Connections to TypeDB now only require opening a `schema`, `write`, or `read` xref:{page-version}@core_concepts::typedb/transactions.adoc[transaction].
+* **Sessions Removed:** Connections to TypeDB now only require opening a `schema`, `write`, or `read` xref:{page-version}@core-concepts::typedb/transactions.adoc[transaction].
 * **Integer Value Type Renamed:** `long` is now `integer`
 * **Kinds Introduced:** no more predefined root types and their subtyping through `person sub entity`, `friendship sub relation`, or `name sub attribute`.
 Each new type should be declared with an explicit kind: `entity person`, `relation friendship`, and `attribute name`.
 * **Expanded User Management:** Authorization and user management are now included in all TypeDB editions.
-Default credentials, if applicable, can be found in the xref:{page-version}@core_concepts::drivers/connections.adoc[Connections page].
+Default credentials, if applicable, can be found in the xref:{page-version}@core-concepts::drivers/connections.adoc[Connections page].
 * **Updated Query Syntax:**
 - xref:{page-version}@reference::typeql/schema/undefine.adoc[`undefine`] and xref:{page-version}@reference::typeql/pipelines/delete.adoc[`delete`] now explicitly "point" to their removed targets, reducing ambiguity.
 - xref:{page-version}@reference::typeql/pipelines/fetch.adoc[`fetch`] syntax aligns with JSON output formatting.
@@ -69,4 +69,4 @@ Consider using one of xref:{page-version}@reference::typedb-grpc-drivers/index.a
 [#_having_troubles]
 == Having troubles?
 
-For troubleshooting tips and guidance, refer to the xref:{page-version}@maintenance_operation::troubleshooting/index.adoc[Troubleshooting page].
+For troubleshooting tips and guidance, refer to the xref:{page-version}@maintenance-operation::troubleshooting/index.adoc[Troubleshooting page].
