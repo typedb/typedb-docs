@@ -1,4 +1,83 @@
 = TypeDB In-flight Encryption
 
-[placeholder]
-Configure in-flight encryption for TypeDB servers. 
+Communication with a TypeDB server can be secured using TLS.
+TLS serves two purposes:
+
+1. Encrypting connections to prevent eavesdropping
+2. Authenticating the server's identity by validating its certificate is signed by a trusted issuing authority.
+
+To enable TLS, TypeDB must be configured with a private-key & certificate.
+The relevant fields in the config file are:
+[,yaml]
+----
+server:
+    ...
+    encryption:
+        enabled: true
+        certificate: /path/to/certificate
+        certificate-key: /path/to/private-key
+        # Optional:
+        ca-certificate: /path/to/ca-certificate
+----
+
+== Self-signed certificates for development
+We start with a quick, non-mathematical refresher.
+
+=== Public & private keys
+A key-pair consists of a private & public key
+which together can be used for encrypted communication, and digital signatures.
+
+For encrypted communication, a server sends over the "public" key to the client.
+The client uses this key to encrypt messages, which the server can decrypt using its private key.
+
+For signatures, the private key is used to sign a message. This signature can be verified using the corresponding public key.
+
+[IMPORTANT]
+====
+It is *critical* the private key remains confidential
+to prevent others from decrypting messages or forging signatures.
+====
+
+=== Certificates
+
+A server establishes its identity by sending over a certificate.
+A certificate contains a public-key, some metadata for the identity, and a signature.
+The authenticity of the certificate is verified by validating that it has been signed by some other certificate that we "trust".
+
+Typically, an Operating System comes pre-loaded with certificates of few major certificate authorities (CA) that are trusted in the real world - such as Verisign.
+A user can choose to trust any certificate, including ones that they have created & signed themselves.
+The https://github.com/FiloSottile/mkcert[mkcert] utility can be used to easily generate self-signed certificates.
+
+=== Self-signed certificates with mkcert
+
+On first use, `mkcert` creates a fresh CA certificate & signing key for your machine.
+It will use this to sign any certificates it generates.
+To see the location of these files, run `mkcert -CAROOT`.
+You will see `rootCA-key.pem` and `rootCA.pem` at the location.
+
+The following command generates a `private-key.pem` and corresponding `certificate.pem`,
+valid for a server with hostname `localhost`, or IP `127.0.0.1`
+[,sh]
+----
+mkcert -cert-file certificate.pem -key-file private-key.pem localhost 127.0.0.1
+----
+
+We now have 4 files:
+
+* `rootCA-key.pem`: The private-key `mkcert` uses to sign certificates. Only `mkcert` needs this.
+* `rootCA.pem`: The certificate generated from and (self) signed by `rootCA-key.pem`. TypeDB drivers can use this to authenticate the server.
+* `private-key.pem`: The private-key for the server. To be configured as `server.encryption.certificate-key`
+* `certificate.pem`: The certificate for the server generated from `private-key.pem`, and signed by `rootCA-key.pem`. To be configured as `server.encryption.certificate`
+
+[NOTE]
+====
+Unless you have already run `mkcert -install`, you will have seen the following error:
+[,]
+----
+Note: the local CA is not installed in the system trust store.
+Run "mkcert -install" for certificates to be trusted automatically ⚠️
+----
+As the message suggests, you can add the `rootCA.pem` certificate to the system's trust store.
+Most applications will "trust" any certificates signed by a CA in the store.
+Then you will not need to configure TypeDB drivers running on that system to trust `rootCA.pem`
+====

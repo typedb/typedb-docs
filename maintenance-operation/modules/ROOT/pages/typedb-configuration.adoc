@@ -1,5 +1,176 @@
 = TypeDB Configuration
-:page-aliases: {page-version}@manual::configure.adoc
+:keywords: typedb, config, CLI
+:pageTitle: Server configuration manual
+:summary: TypeDB Server configuration.
 
-[placeholder]
-Configure TypeDB servers. 
+You can configure a TypeDB server via two means: a YAML config file or command line options.
+Command line options override values defined in the config file.
+
+For a full list of configurable properties run:
+
+[source,bash]
+----
+typedb server --help
+----
+
+This page lists & explains the available options.
+
+== General CLI arguments
+
+General, non-configuration arguments available on the CLI.
+
+[cols=".^3,^.^1,5"]
+|===
+3+^| General CLI arguments
+
+| `--config <path-to-file>`
+|
+| Specify a custom configuration file
+
+| `--help`
+| `-h`
+| Show help message.
+
+| `--version`
+| `-V`
+| Print version information and exit.
+
+|===
+
+== Configuration file
+By default, TypeDB looks for a `config.yml` file in the same folder as the TypeDB server executable (i.e., `/server/config.yml`).
+This path can be overridden using the CLI argument: `--config <path-to-your-config>`.
+
+== Command line overrides
+
+When using the command line to override a specific option, all CLI arguments must:
+
+* start with the double dash prefix `--`,
+* be separated from their value (if any) either by an equals sign (`--arg=val`) or a whitespace (`--arg val`).
+
+e.g.,  `--server.address=0.0.0.0:1730`
+
+
+[#_overview]
+== Configuration options
+
+[#_server]
+=== Server
+
+The `server` section of the configuration contains network and encryption options.
+For example, a server can be booted up on `0.0.0.0:1730` by using this command:
+
+[source,bash]
+----
+typedb server --server.address=0.0.0.0:1730
+----
+[cols=".^3,5"]
+|===
+2+^| Server
+| `server.address`
+| Server host and port. Default value: `0.0.0.0:1729`. +
+
+| `server.http.enabled`
+| Enable/disable HTTP endpoint. Default value: `true`. +
+
+| `server.http.address`
+| HTTP endpoint host and port. Cannot be the same as `server.address`. Default value: `0.0.0.0:8000`. +
+
+| `server.authentication.token-expiration-seconds`
+| The amount of seconds generated authentication tokens will remain valid, specified in seconds. Default value: `14400` (4 hours). +
+
+|===
+
+[#_encryption]
+==== Encryption
+
+Configure the TLS certificate & private-key to be used for inflight encryption.
+
+[cols=".^3,5"]
+|===
+2+^| Server encryption
+| `server.encryption.enabled`
+| Enable in-flight encryption. Do not specify this argument to leave it disabled. +
+
+| `server.encryption.certificate`
+| Encryption certificate in PEM format. Must be supplied if encryption is enabled. +
+
+| `server.encryption.certificate-key`
+| Encryption certificate key. Must be supplied if encryption is enabled. +
+
+| `server.encryption.ca-certificate`
+| Encryption CA in PEM format. (Optional) +
+
+|===
+
+[#_storage]
+=== Storage
+
+The `storage` section of the configuration contains the storage layer options.
+
+[IMPORTANT]
+====
+For production use, it is recommended that the `storage.data-directory` is set to a path outside the `$TYPEDB_HOME`
+(directory with TypeDB server files).
+This helps to make the process of upgrading TypeDB easier.
+====
+
+[cols=".^3,5"]
+|===
+2+^| Storage
+| `storage.data-directory`
+| Path to the user data directory. Defaults to within the server distribution under `server/data`. +
+|===
+
+[#_diagnostics]
+=== Diagnostics
+
+TypeDB optionally reports anonymous diagnostics to guide the development and optimisation of TypeDB.
+This data includes unexpected errors and occasional system status updates for number and size of databases, as well as numbers of transactions and queries executed per hour.
+
+To see what information is being reported, enable and access the monitoring Web page of the server (e.g. `localhost:4104/diagnostics?format=json`).
+
+[cols=".^3,5"]
+|===
+2+^| Diagnostics
+| `diagnostics.reporting.metrics`
+| Enable usage metrics reporting by setting a boolean flag. Default value: `true`. +
+
+| `diagnostics.reporting.errors`
+| Enable critical error reporting by setting a boolean flag. Default value: `true`. +
+
+| `diagnostics.monitoring.enable`
+| Enable a diagnostics monitoring HTTP endpoint by setting a boolean flag. Default value: `true`. +
+
+| `diagnostics.monitoring.port`
+| Port on which to expose the diagnostics monitoring endpoint. Default value: `4104`. +
+
+|===
+
+[#_log]
+=== Logging
+
+You can configure the directory that TypeDB uses for server logs.
+[cols=".^3,5"]
+|===
+2+^| Logging
+| `logging.directory`
+| Path to the server logs directory. Defaults to within the server distribution under `server/logs`. +
+|===
+
+[#_machine_requirements]
+== Host machine configuration
+This section describes recommended changes to the host OS.
+
+=== Open file limit
+
+To support large data volumes, it is important to check the open file limit the operating system imposes.
+Some Unix distributions default to `1024` open file descriptors.
+This can be checked with the following command:
+
+[source,bash]
+----
+ulimit -n
+----
+
+We recommend this is increased to at least `50 000`.
