@@ -1,7 +1,8 @@
 = Negations
 :page-aliases: {page-version}@reference::typeql/patterns/negation.adoc
 
-Negations can be used to exclude certain subpatterns from your query results.
+Negations can be used to exclude certain subpatterns from your query results -
+ an answer is excluded if it matches the subpattern.
 
 == Syntax
 
@@ -38,7 +39,7 @@ Negations may appear in `match` stages of data pipelines or functions, where the
 
 * *Internal variables*. Variable whose scope lies inside an excluded pattern are not returned as part of the stage's output (i.e., such variables are xref:{page-version}@reference::typeql/data-model.adoc#modes[internal] variables).
 * *Satisfaction*. A pattern with a negation will return those outputs which satisfy the pattern outside the negation, but do not satisfy the excluded pattern for _any_ choice of internal variables in that pattern.
-* *Recursion*. When using recursive function with negations care need to be taken that evaluation of the negation does not depend on the recursive function call itself (in other words, TypeDB works with https://en.wikipedia.org/wiki/Stratification_(mathematics)#In_mathematical_logic[stratified negation]).
+* *Recursion*. When using recursive functions with negations, care needs to be taken that evaluation of the negation does not depend on the recursive function call itself (in other words, TypeDB works with https://en.wikipedia.org/wiki/Stratification_(mathematics)#In_mathematical_logic[stratified negation]).
 
 == Examples
 

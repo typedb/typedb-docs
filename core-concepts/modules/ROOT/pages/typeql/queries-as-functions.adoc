@@ -42,7 +42,7 @@ using the reduce return modifier.
 [,typeql]
 .Find the number of posts by a page
 ----
-fun post_count($page: page) -> { integer }:
+fun post_count($page: page) -> integer:
 match
   $posting isa posting, links (posted: $page);
 return count($post);
@@ -50,7 +50,7 @@ return count($post);
 
 [NOTE]
 ====
-Since `reduce` can be used with `groupby`, the `reduce` modifier returns a stream.
+`reduce` returns a single answer, since it aggregates all answers into one.
 ====
 
 == Cyclic functions & tabling

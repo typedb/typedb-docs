@@ -22,11 +22,11 @@ Role tags can be omitted if there is only a single role the role player can play
 
 Update stages cannot bind new variables.
 
-If there is no data to existing replace, the operation is equivalent to xref:{page-version}@reference::typeql/pipelines/insert.adoc[insert].
+If there is no existing data to replace, the operation is equivalent to xref:{page-version}@reference::typeql/pipelines/insert.adoc[insert].
 
 == Execution
 
-The update stage must be preceded by other stages. The body of the update stage is executed once for each input row. The output is then a stream equivalent to the input rows, as no variables are modified.
+The update stage must be preceded by other stages. The body of the update stage is executed once for each input row. In case multiple rows will update the same data, only the last update will persist. The output is then a stream equivalent to the input rows, as no variables are modified.
 
 == Validation
 

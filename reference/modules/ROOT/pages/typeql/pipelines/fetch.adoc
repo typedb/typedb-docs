@@ -2,13 +2,13 @@
 :page-aliases: {page-version}@typeql::pipelines/fetch.adoc
 
 Fetch is primarily used to convert row answers into document (JSON) answers.
+The `fetch` clause is **terminal**, meaning that it cannot be followed by any other pipeline stage.
 
 [#syntax]
 == Syntax
 
 A fetch stage can follow any other stage that produces rows (e.g., xref:{page-version}@reference::typeql/pipelines/match.adoc[match], xref:{page-version}@reference::typeql/pipelines/insert.adoc[insert]).
 It starts with the keyword `fetch` followed by curly braces `{}` with a fetch body inside of it.
-The `fetch` clause is **terminal**, meaning that it cannot be followed by any other pipeline stage.
 
 .Pipeline syntax
 [,typeql]

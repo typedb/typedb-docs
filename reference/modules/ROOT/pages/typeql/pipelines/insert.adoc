@@ -35,7 +35,7 @@ The output is then a stream of input rows extended with the newly inserted value
 
 [#_validation]
 == Validation
-
+// TODO: The first 3 can be type-inference errors, do they need to fail the transaction?
 Attempting to insert the following fail immediately and terminate the transaction:
 
 * an instance of an xref:{page-version}@reference::typeql/annotations/abstract.adoc[abstract] type,

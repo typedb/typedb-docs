@@ -25,6 +25,7 @@ The `@card` annotation can be defined for any `<interface>` of: `owns`, `relates
 It accepts either a range argument or a single scalar argument.
 Arguments must be integers.
 
+- Both bounds are inclusive.
 - A partially unbounded range `N..` has an infinite upper bound.
 - The minimal lower bound is `0` and must be explicitly specified (e.g., use `0..M` instead of `..M`).
 - A single scalar argument `N` is shorthand for `N..N` and means "exactly N".

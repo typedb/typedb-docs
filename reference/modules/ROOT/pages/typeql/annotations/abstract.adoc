@@ -20,8 +20,7 @@ The `@abstract` annotation does not accept any arguments.
 
 // tag::description[]
 When defined for a type, the `@abstract` annotation enforces the `abstract` constraint, making the type abstract.
-An abstract type cannot be a direct type for an instance.
-Thus, a concrete subtype is required for instances creation, and an abstract type can be used as a query target to retrieve information about its subtypes.
+An abstract type cannot be instantiated. but can be used in a query (e.g. in an `isa` constraint to refer to all its subtypes).
 // end::description[]
 
 [,typeql]

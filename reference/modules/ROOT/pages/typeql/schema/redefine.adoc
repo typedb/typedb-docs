@@ -62,7 +62,7 @@ redefine email value string @regex("^.*@typedb\.com$");
 .Redefining type interface's annotation with arguments
 [,typeql]
 ----
-redefine redefine post owns tag @card(0..5);
+redefine post owns tag @card(0..5);
 ----
 
 .Redefining relates specialization

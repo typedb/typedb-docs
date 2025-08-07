@@ -13,7 +13,7 @@ limit <number>;
 == Example
 
 Match all friends of friends of a given person, sorted by the number of mutual friends, highest to lowest. Return first 10.
-
+// TODO: Are we missing a desc?
 [,typeql]
 ----
 match

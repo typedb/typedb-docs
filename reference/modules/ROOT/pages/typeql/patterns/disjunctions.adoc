@@ -33,6 +33,8 @@ or {
 
 == Behavior
 
+// TODO: needs update. Do not merge
+
 Disjunctions may appear in `match` stages, where they behave as follows.
 
 * *Optionality*. An output variable whose xref:{page-version}@reference::typeql/patterns/index.adoc[scope] is the branch of a disjunction becomes an xref:{page-version}@reference::typeql/data-model.adoc[optional] variable. This means the variable may be left empty `()` in the output of the match stage. For example:

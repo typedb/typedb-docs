@@ -41,7 +41,7 @@ The comma separation is required before a `<PREDICATE>` if its `<SUBJECT>` alrea
 
 [NOTE]
 ====
-The first two predicates in the example above do not require a comma.
+The first predicates in the example above do not require a comma.
 However, every simple statement can be separated by commas if preferred.
 ====
 
@@ -212,16 +212,10 @@ Used to assign a stream or list element to a variable.
 Used to specify that two variables represent the same data instance.
 ****
 
-.xref:{page-version}@reference::typeql/statements/contains.adoc[]
+.xref:{page-version}@reference::typeql/statements/comparisons.adoc[]
 [.clickable]
 ****
-Used to specify that a stream or list contains a data instance.
-****
-
-.xref:{page-version}@reference::typeql/statements/like.adoc[]
-[.clickable]
-****
-Used to specify that a string matches a specified regex pattern
+Equality, inequality, and string comparisons between values.
 ****
 --
 

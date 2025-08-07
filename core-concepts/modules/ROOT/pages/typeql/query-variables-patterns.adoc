@@ -125,10 +125,8 @@ See xref:{page-version}@core-concepts::typeql/schema-data.adoc[].
 Variable names are unique within a pipeline -
 every usage of a variable with a certain name refers to the same variable.
 
-In the following sections, the term [[definition-local-variable]]"local" is used to mean
+In the following sections, the term [[definition-internal-variable]]"internal" is used to mean
 a variable is bound in that pattern but not in its parent.
-This contrasts with the usage in programming languages where it refers to the scope of a variable name.
-As mentioned above, the scope of variable names in TypeQL is the xref:{page-version}@core-concepts::typeql/query-clauses.adoc[pipeline].
 
 == Disjunctions, negations & optionals
 
@@ -159,7 +157,7 @@ An answer to any pattern in the disjunction is an answer to the disjunction.
 
 A variable is "bound" in a disjunction if it is bound in every branch of the disjunction.
 Variables which are present in & bound by only some of the branches of the disjunction
-(and not present outside it) are considered "local" to that disjunction.
+(and not present outside it) are considered "internal" to that disjunction.
 
 ----
 match
@@ -174,7 +172,7 @@ $p isa person, has name $p-name;
 };
 ----
 
-Here, `$emp`, `$company`, `$edu`, `$institute` are local to their patterns.
+Here, `$emp`, `$company`, `$edu`, `$institute` are internal to their patterns.
 `$p` occurs outside the disjunction.
 `$org-name` is present in every-branch and returned by the disjunction.
 
@@ -203,11 +201,11 @@ Any variable that is present both outside and inside the negation is considered 
 and *must* be bound before matching the negated pattern.
 This requires that the variable is bound in the parent conjunction.
 
-Variables that are present only inside the negation are considered local to the negation.
+Variables that are present only inside the negation are considered internal to the negation.
 A negation without any inputs is extremely unusual.
 [NOTE]
 ====
-Local variables are not bound by the negation,
+internal variables are not bound by the negation,
 since the negation is satisfied only if there are no answers to the negated pattern.
 ====
 
@@ -221,7 +219,7 @@ match
   };
 ----
 
-Here, `$p` is an input to the negation. `$e, $c` are local. The query returns:
+Here, `$p` is an input to the negation. `$e, $c` are internal. The query returns:
 ----
    -------------
     $p-name | isa name "Jeff"
@@ -322,7 +320,7 @@ Finished. Total rows: 3
 
 [NOTE]
 ====
-Optional variables *are* bound by the optional block and not local to it.
+Optional variables *are* bound by the optional block and not internal to it.
 ====
 
 == Notes on variables
@@ -476,14 +474,14 @@ This will return any persons `$p1` & `$p2` when
 either (1) `$p1` is employed by *any* and `$p2` attended *any* institute;
 or (2) `$p2` is employed by *any* company and `$p1` attended *any* institute.
 
-Notice `$company` is "local" to both the first and second disjunctions (The same is the case for `$institute`).
+Notice `$company` is "internal" to both the first and second disjunctions (The same is the case for `$institute`).
 TypeQL throws a "disjoint variable re-use" error for such cases.
 
 ==== Valid variable scopes:
 From these, it can be seen that a variable is either:
 
-1. Local to one branch of one disjunction.
-2. Local to one negation.
+1. Internal to one branch of one disjunction.
+2. Internal to one negation.
 3. Bound & present in the answer of the pipeline.
 
 == The select statement
