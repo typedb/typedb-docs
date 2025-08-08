@@ -70,13 +70,13 @@ match
 ----
 
 
-1. Find users that are either VIP, or are admins with access level > 9000, in which case we also want to retrieve their exact access level.
+1. Find users that are either VIP, or are admins with access level > 9000.
 +
 [,typeql]
 ----
 match
   $x isa user;
-  { $x isa VIP; } or { $x isa admin, has access-level $lvl; $lvl > 9000; };
+  { $x isa VIP; } or { $x isa admin, has access-level > 9000; };
 ----
 
 1. Find all attributes that are set for a specific user, return them together with their type;
@@ -88,5 +88,3 @@ match
   $x has $type $value;
 select $type, $value;
 ----
-
-// TODO: The VIP example doesn't work in TypeQL any more.
