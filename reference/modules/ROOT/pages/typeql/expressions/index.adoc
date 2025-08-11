@@ -1,10 +1,34 @@
 = Expressions
 :page-aliases: {page-version}@typeql::expressions.adoc
 
-This reference covers the usage of expressions in TypeQL.
+A TypeQL expression uses operators and functions to
+compute a value from other values. It uses the following syntax:
+[,typeql]
+----
+let <var> = <expression>;
+----
+Examples:
+[,typeql]
+----
+let $x = 5;
 
-// TODO: This article is a stub.
+let $y = $x * 3.1;
 
+let $z = ceil($y + 1);
+----
+
+== Validation
+The following rules apply to variables involved in expressions:
+
+* The variables used in the right-hand side of an expression must be bound to either attribute or values.
+* The attribute may be of various attribute-types as long as they all have the same value-type.
+* A value variable must be assigned to exactly once.
+
+During compilation, the types of every subexpression is resolved and the expression-tree is constructed.
+If any function which is passed an argument which does not match the expected type,
+or any operator which is not defined for the given combination of types, will fail compilation with an error.
+
+== Explore expressions
 [cols-3]
 --
 .xref:{page-version}@reference::typeql/expressions/literals.adoc[]
