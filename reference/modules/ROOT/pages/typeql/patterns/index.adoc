@@ -8,6 +8,7 @@ This reference covers the usage of patterns in TypeQL.
 Pattern comprise statements containing variables. Given a pattern, the *scope* of a variable is:
 
 * the block `{ ... }` in which variable appears at top-level (i.e., not nested in further `{...}`) but it does not appear outside of the block,
+- Exceptionally, if the variable appears in all branches of a disjunction, it counts as appearing in the parent conjunction.
 * or, the entire pattern itself if the variable appears at the top-level of the pattern itself.
 
 A key principle of valid TypeQL pattern is:

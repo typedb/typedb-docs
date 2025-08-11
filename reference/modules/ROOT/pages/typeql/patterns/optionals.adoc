@@ -3,7 +3,7 @@
 Optional patterns can be used in `match` stages to optionally match a pattern,
 or in `insert` stages to insert a pattern *if* all the variables involved are bound.
 
-== Syntax & Basic behaviour
+== Syntax & Basic behavior
 [,typeql]
 ----
 try { <pattern> };
@@ -45,7 +45,7 @@ insert
 Optional patterns are banned in `put` stages.
 ====
 
-== Behaviour in match clauses
+== Behavior in match clauses
 === Single origin
 In the stage that it first occurs, An optional variable may only occur in a single try-block.
 [,typeql]
