@@ -1,7 +1,98 @@
 = Optionals
-// TODO
+
+Optional patterns can be used in `match` stages to optionally match a pattern,
+or in `insert` stages to insert a pattern *if* all the variables involved are bound.
+
+== Syntax & Basic behaviour
+[,typeql]
+----
+try { <pattern> };
+----
+
+=== match
+Variables which are present only in the `try` block are considered optional.
+If the *entire* optional pattern matches the data, it returns an answer per match.
+If it has no matches, it produces a single answer with all optional variables bound to `None`.
+
+[,typeql]
+----
+match
+    $person isa person;
+    try {
+        $_ isa marriage, links (spouse: $person, spouse: $spouse);
+    };
+----
+
+
+=== insert
+Optional insert patterns will execute only if ALL variables present in them are bound.
+
+[,typeql]
+----
+match
+    $person isa person;
+    try {
+        $_ isa marriage, links (spouse: $person, spouse: $spouse);
+    };
+insert
+    $policy isa policy;
+    $policy links (covered: $person);
+    try { $policy links (covered: $spouse); };
+----
 
 [NOTE]
 ====
-Coming soon.
+Optional patterns are banned in `put` stages.
 ====
+
+== Behaviour in match clauses
+=== Single origin
+In the stage that it first occurs, An optional variable may only occur in a single try-block.
+[,typeql]
+----
+match
+    $person isa person;
+    try {
+        $_ isa marriage, links (spouse: $person, spouse: $spouse);
+    };
+    try {
+        $policy isa policy, links (covered: $spouse); # Invalid
+    };
+----
+
+=== Optional variables in subsequent stages
+An optional variable can be used in subsequent stages.
+An unbound optional variable will cause the pattern to fail.
+
+The following is a valid way to express the intent of the example above:
+[,typeql]
+----
+match
+    $person isa person;
+    try {
+        $_ isa marriage, links (spouse: $person, spouse: $spouse);
+    };
+match
+    try {
+        $policy isa policy, links (covered: $spouse);
+    };
+----
+
+
+=== Nested try blocks
+Optional patterns can be nested. This is also an option for the previous example
+[,typeql]
+----
+match
+    $person isa person;
+    try {
+        $_ isa marriage, links (spouse: $person, spouse: $spouse);
+        try {
+            $policy isa policy, links (covered: $spouse); # Ok
+        };
+    };
+----
+
+=== Disallowed in negations
+Optional patterns may not occur in negations, as they can have no effect on the result of the query -
+they can neither fail the pattern, nor bind any variables for use outside the negation.
