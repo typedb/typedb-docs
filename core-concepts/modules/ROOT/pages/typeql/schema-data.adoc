@@ -26,7 +26,7 @@ insert
 ----
 
 Inserting a new instance will fail if the type is abstract. In the case of attributes,
-the value must also be of the value-type specified by the attribute, and satisfy all value constraints defined on the type.
+the value must also be of the value type specified by the attribute, and satisfy all value constraints defined on the type.
 
 [#_iid]
 Remember that inserted entities and relations don't have a natural identifier in your domain unless you provide one. The caveat here is that TypeDB generates an instance ID (`iid`, which you'll see in output logs) for your inserted entities and relations. However, it is recommended that you create meaningful identifiers, especially keys, when needing to refer to specific entities or relations.
