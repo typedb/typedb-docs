@@ -22,7 +22,8 @@ match
         $_ isa marriage, links (spouse: $person, spouse: $spouse);
     };
 ----
-
+Here, `$spouse` will be bound to the spouse if `$person` is in a `marriage`.
+Else, `$spouse` will be bound to `None`
 
 === insert
 Optional insert patterns will execute only if ALL variables present in them are bound.
@@ -39,6 +40,8 @@ insert
     $policy links (covered: $person);
     try { $policy links (covered: $spouse); };
 ----
+If `$person` is in a marriage, the match stage will bind `$spouse`
+and the insert stage will add them to the policy.
 
 [NOTE]
 ====
