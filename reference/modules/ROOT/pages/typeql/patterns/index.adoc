@@ -3,8 +3,7 @@
 
 This reference covers the usage of patterns in TypeQL.
 
-== Scopes and operations
-// TODO: Must update.
+== Scopes
 Pattern comprise statements containing variables. Given a pattern, the *scope* of a variable is:
 
 * the block `{ ... }` in which variable appears at top-level (i.e., not nested in further `{...}`) but it does not appear outside of the block,
@@ -15,9 +14,9 @@ A key principle of valid TypeQL pattern is:
 
 > *_Every variable must have a unique scope._*
 
-While a statement by itself is an (elementary) patterns, *operations* allow us to construct larger and more interesting patterns from smaller ones, and they create new scopes of variables.
+== Operations
 
-== Operation reference
+While a statement by itself is an (elementary) patterns, *operations* allow us to construct larger and more interesting patterns from smaller ones, and they create new scopes of variables.
 
 [cols-3]
 --
