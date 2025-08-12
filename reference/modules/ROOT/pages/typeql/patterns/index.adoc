@@ -14,9 +14,11 @@ A key principle of valid TypeQL pattern is:
 
 > *_Every variable must have a unique scope._*
 
-== Operations
+== Combining patterns
 
-While a statement by itself is an (elementary) patterns, *operations* allow us to construct larger and more interesting patterns from smaller ones, and they create new scopes of variables.
+TypeQL allows us to construct larger and more interesting patterns from smaller ones,
+allowing us to express more than simple conjunctions.
+They can also create new scopes of variables.
 
 [cols-3]
 --
