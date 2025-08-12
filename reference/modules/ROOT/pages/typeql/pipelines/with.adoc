@@ -18,7 +18,6 @@ where `<function-declaration>` is a xref:{page-version}@reference::typeql/functi
 
 == Behavior
 
-// TODO: is this true?
 * The `with` declarations in a data pipeline must precede the pipeline.
 * `with` declarations *must* be followed by a data pipeline, i.e. `with` stages by themselves do not consitute a valid data query.
 * Function declarations in the preamble of a data pipeline are only valid within that pipeline (declared functions may be called in `match` and `fetch` stages).
