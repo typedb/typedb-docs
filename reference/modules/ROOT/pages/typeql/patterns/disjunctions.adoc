@@ -34,7 +34,7 @@ or {
 A disjunction pattern is satisfied if one of its branches is satisfied.
 
 ===  Variable scopes
-A variable which appears in every branch will appear in the answers to the disjunction,
+A variable that appears in every branch will appear in the answers to the disjunction,
 and is considered to be in the scope of the parent pattern.
 Results to the following query will contain answers for `$x` and `$id`:
 [,typeql]
@@ -44,7 +44,7 @@ match
   { $x has email $id; } or { $x has phone $id; };
 ----
 
-A variable which occurs in only one branch AND not outside the disjunction is considered local to the branch.
+A variable that occurs in only one branch AND not outside the disjunction is considered local to the branch.
 Results to the following query will only contain answers for `$x`:
 [,typeql]
 ----
@@ -53,8 +53,8 @@ match
   { $x has email $e; } or { $x has phone $p; };
 ----
 
-In line with the unique scope principle, a variable which is local to more than one pattern is invalid.
-The following query is invalid as $e has multiple scopes.
+In line with the unique scope principle, a variable that is local to more than one pattern is invalid.
+The following query is invalid as `$e` has multiple scopes.
 [,typeql]
 ----
 match

@@ -20,11 +20,11 @@ let $z = ceil($y + 1);
 == Validation
 The following rules apply to variables involved in expressions:
 
-* The variables used in the right-hand side of an expression must be bound to either attribute or values.
-* The attribute may be of various attribute-types as long as they all have the same value-type.
+* The variables used on the right-hand side of an expression must be bound to either attributes or values.
+* The attribute may be of various attribute types as long as they all have the same value-type.
 * A value variable must be assigned to exactly once.
 
-During compilation, the types of every subexpression is resolved and the expression-tree is constructed.
+During compilation, the types of every subexpression are resolved and the expression-tree is constructed.
 If any function which is passed an argument which does not match the expected type,
 or any operator which is not defined for the given combination of types, will fail compilation with an error.
 
