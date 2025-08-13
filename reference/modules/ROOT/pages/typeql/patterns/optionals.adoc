@@ -25,8 +25,8 @@ match
 Here, `$spouse` will be bound to the spouse if `$person` is in a `marriage`.
 Else, `$spouse` will be bound to `None`
 
-=== insert
-Optional insert patterns will execute only if ALL variables present in them are bound.
+=== insert & delete
+Optional patterns in insert or delete stages will execute only if ALL the variables present in them are bound.
 
 [,typeql]
 ----
