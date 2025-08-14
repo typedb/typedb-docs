@@ -339,6 +339,7 @@ match
 { $x isa person, has age 25; } or { $y isa person, has age 50; };
 ----
 Such patterns are considered invalid and will throw disjoint variable usage errors.
+See the xref:core-concepts::typeql/invalid-patterns.adoc[invalid patterns] page for more examples.
 
 ==== Valid variable scopes:
 Rephrasing the xref:reference::typeql/patterns/index.adoc#_scopes[unique scope principle], a variable is either:
