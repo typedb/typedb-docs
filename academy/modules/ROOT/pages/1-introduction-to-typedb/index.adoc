@@ -35,13 +35,14 @@ TypeDB takes a different approach: it focuses on intent at every step of the que
 [,typeql]
 ----
 match
-$folder isa folder, has folder_name $name;
-(location: $folder, file: $media) isa file_location;
-{ $ext isa image_format; } or { $ext isa video_format; };
-$media isa media_file, has $ext; 
-fetch
-$name as folder_name;
-$ext as file_format;
+  $folder isa folder, has folder_name $name;
+  file_location (location: $folder, file: $media);
+  { $ext isa image_format; } or { $ext isa video_format; };
+  $media isa media_file, has $ext;
+fetch {
+  "folder_name": $name,
+  "file_format": $ext
+};
 ----
 
 Notice how the TypeQL query captures the intent of our earlier SQL query simply by stating each variable's intended function. No sequences of operations are needed: in fact, the statements in the `match` clause can be given in any order. Under the hood, this high-level, fully declarative approach of TypeQL's language is powered by a robust type system and a type-inference engine. This is why we also refer to TypeQL as a _type-theoretic_ query language!
@@ -50,41 +51,39 @@ The design of TypeQL is based on four main pillars, which we'll learn about in t
 
 * *Declarative*: TypeQL allows users to directly express the intent of their query, without the need to specify sequences of operations.
 * *Safe*: Users work within the type system of TypeDB, which alerts users about subtle errors before they happen, and ensures the high-level semantic integrity of their data at all times.
-* *Expressive*: TypeDB's type system is flexible and adaptable. *Polymorphism* is a native feature of TypeDB's type system and so are logical *rules*, which allow us to untangle otherwise complex database tasks into a handful of simple declarations.
+* *Expressive*: TypeDB's type system is flexible and adaptable. *Polymorphism* is a native feature of TypeDB's type system and so are *functions*, which allow us to untangle otherwise complex database tasks into a handful of simple declarations.
 * *Maintainable*: Together, the type system and declarative query language strongly simplify the long-term maintenance of database applications. For example, queries can automatically adapt to schema changes, as we will see shortly!
 
 == Programmable databases
 
 In order to allow users to craft fully programmable database applications, TypeDB comprises several key components that build on its modern type system and declarative language. These components address the business logic and behavior of applications, continuous application upgrades, and native integration with existing languages.
 
-=== Database logic
+=== Modular logic
 
-Pre-computing data is a core feature of many database applications. TypeDB takes this one step further, by providing a powerful rule-inference engine that dynamically computes data only as needed. Conditions for inference are declaratively defined by *rules*, which naturally fit into TypeDBs type system. For example, the following rule states that any media file (whether an image, video, or something else) with a file size greater than 1GB will be marked as unavailable to download.
+// Pre-computing data is a core feature of many database applications. TypeDB takes this one step further, by providing a powerful rule-inference engine that dynamically computes data only as needed. Conditions for inference are declaratively defined by *rules*, which naturally fit into TypeDBs type system. For example, the following rule states that any media file (whether an image, video, or something else) with a file size greater than 1GB will be marked as unavailable to download.
+
+Many databases offer only clunky ability to modularize common or important database operations. TypeDB exposes re-use through a familiar programming-language construct: functions.
 
 [,typeql]
 ----
 define
-rule disable_download_of_large_files:
-    when {
-        $m isa media_file;
-        $m has size_kb > 1024 ^ 2;
-    } then {
-        $m has download_status "unavailable";
-    };
+fun large_files() -> { media_file }:
+  match
+    $m isa media_file;
+    $m has size_kb > 1024 ^ 2;
+  return { $m };
 ----
 
-Notice how the same declarative language is used for the definition of rules as we previously saw in our TypeQL query. Rules can be used to augment query results in real-time, and can be applied in sequence, in parallel, and recursively with other rules. TypeDB's rule-inference engine will automatically figure out in which order rules should be applied.
-
-// The "automatic part" will change in 3.0
+Notice how the same declarative language is used for the definition of functions as we previously saw in our TypeQL query. Functions can capture simple or complex logic, and recursively interact with other functions. Function execution is automatically optimized like any other query.
 
 === Schema continuity
 
-Continuous integration is an important concern for most modern application architectures. TypeDB's approach accounts for this process, and makes structural updates to the database particularly easy. One aspect of this concern is modifying the database schema. Continuing our earlier example, consider the following query which defines a new type `audio_file` as a subtype of `media_file`, and gives it ownership of an `audio_format` attribute which collects the file formats of audio files in our database.
+Continuous extension is an important concern for most modern application architectures. TypeDB's approach accounts for this process, and makes structural updates to the database particularly easy. One aspect of this concern is modifying the database schema. Continuing our earlier example, consider the following query which defines a new type `audio_file` as a subtype of `media_file`, and gives it ownership of an `audio_format` attribute which collects the file formats of audio files in our database.
 
 [,typeql]
 ----
 define
-audio_file sub media_file, owns audio_format;
+entity audio_file sub media_file, owns audio_format;
 ----
 
 This query will extend our type hierarchy. Previously only `image_file` and `video_file` were kinds of `media_file`, and this query now adds a new `audio_file` type as another kind of `media_file`. More precisely, we say `audio_file` is a _subtype_ of `media_file`.
@@ -94,59 +93,63 @@ What does this mean for our earlier query? Well, let's revisit that query and re
 [,typeql]
 ----
 match
-$folder isa folder, has folder_name $name;
-(location: $folder, file: $media) isa file_location;
-$media isa media_file, has file_format $ext;
-fetch
-$name as folder_name;
-$ext as file_format;
+  $folder isa folder, has folder_name $name;
+  file_location (location: $folder, file: $media);
+  $media isa media_file, has file_format $ext;
+fetch {
+  "folder_name": $name,
+  "file_format": $ext
+};
 ----
 
 Here, `file_format` is now a joint super-attribute of `audio_format`, `video_format`, and `audio_format`. Notice how the resulting query is completely agnostic to the _kinds_ of media files we are considering: it simply states `$media` is a `media_file` and has the `file_format` `$ext`. So, since audio files are media files, and since audio files have audio formats which are file formats, audio files will automatically be considered by the above query! No query refactoring is needed, even if we write the query before introducing new media file types and file formats.
 
 To summarize: by letting declarative queries adapt to schema changes, TypeDB manages to avoid a large class of pitfalls that we'd usually encounter when making structural changes to our database.
 
-=== Programmatic migrations
+=== Atomic migrations
 
-Queries, like the Define query above, provide a high-level, declarative approach to database operations. TypeDB also provides access to a programmatic and object-centric layer of such operations. This gives advanced control to developers, and can be used in a programming language of their choice. For example, the above creation of a new `audio_file` type could be alternatively achieved with the following Python code using TypeDB's Python driver.
+TypeDB's snapshot-isolated ACID transactions give the schema mutation mechanism even more power. Schema changes are not always add-only, but also require removing or rearranging parts of the schema. TypeDB's extension, type-based validation system means that you can move type hierarchies, rearrange attribute ownerships, detach or specialize relationships, and much more.
 
-[,python]
+For example, given the following type hierarchy:
+[,typeql]
 ----
-transaction: TypeDBTransaction
-media_file = transaction.concepts.get_entity_type("media_file").resolve()
-audio_format = transaction.concepts.get_attribute_type("audio_format").resolve()
-audio_file = transaction.concepts.put_entity_type("audio_file").resolve()
-audio_file.set_supertype(transaction, media_file).resolve()
-audio_file.set_owns(transaction, audio_format).resolve()
-----
-
-Using the programmatic route, refactoring the details of our schema also becomes easy: for example, changing the label `audio_file` to `raw_audio_file`, can be achieved with the following call.
-
-[,python]
-----
-audio_file.set_label(transaction, "raw_audio_file").resolve()
+define
+  entity resource, owns resource-id;
+  entity file sub resource, owns name;
+  entity folder sub file;
 ----
 
-=== Stateful data objects
-
-The programmatic way of interacting with a TypeDB database extends all the way down to the data-level. In fact, here, TypeDB introduces a new _stateful data object_ paradigm. As a quick example of this, consider the following basic Insert query which creates a new audio file object with file format "mp3".
+Let's say we want to arrive at the following schema instead:
 
 [,typeql]
 ----
-insert
-$new_audio isa audio_file, has audio_format "mp3";
+define
+  entity resource, owns resource-id;
+  entity file sub resource, owns name;
+  entity folder sub resource, owns folder-name;
 ----
 
-The very same data insert can be achieved by manipulating data objects directly from your application code. For example, the above query could take the following form using TypeDB's Python driver.
+We need to do two things: mutate the schema into this shape, but also rewrite any existing folders that own `name` to instead own `folder-name`s.
 
-[,python]
+This can be done atomically, in 1 schema transaction, in 3 simple steps:
+
+1. define the new attribute type
++
+[,typeql]
 ----
-new_audio = media_file.create(transaction).resolve()
-mp3_format = audio_format.put(transaction, "mp3").resolve()
-new_audio.set_has(transaction, mp3_format).resolve()
+define entity folder, owns folder-name;
 ----
 
-There are, of course, many further operations that TypeDB's data objects support, and those above merely provide a first taste!
+2. rewrite the old folders with names into folder-names
++
+[,typeql]
+----
+match $f isa folder, owns name $name;
+delete $name of $f;
+insert $f has folder-name == $name;
+----
+
+The system will automatically revalidate relevant data to ensure owned attributes and linked relations are still valid.
 
 == Resilient architecture
 

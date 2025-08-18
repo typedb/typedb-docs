@@ -6,13 +6,11 @@ So far, we've seen that the output of Fetch queries includes a `type` field for 
 
 [,typeql]
 ----
-match
-$user isa user, has id "u0008";
+match $user isa user, has id "u0008";
 $book isa book;
 (executor: $user, action: $action) isa action-execution;
 ($book, $action) isa relation;
-fetch
-$book: isbn, title;
+fetch { "isbn": [$book.isbn], "title": $book.title };
 ----
 
 [,json]
@@ -73,15 +71,12 @@ While the results list the books, they do not tell us anything about the nature 
 
 [,typeql]
 ----
-match
-$user isa user, has id "u0008";
+match $user isa user, has id "u0008";
 $book isa book;
 (executor: $user, action: $action) isa action-execution;
 ($book, $action) isa relation;
 $action isa! $action-type;   # new line
-fetch
-$book: isbn, title;
-$action-type;                # new line
+fetch { "isbn": [$book.isbn-13], "title": $book.title, "action-type": $action-type };
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
@@ -89,72 +84,12 @@ If we run this new query, we now also retrieve the type of `$action`!
 
 [,json]
 ----
-{
-    "action-type": { "label": "order", "root": "entity" },
-    "book": {
-        "isbn": [
-            { "value": "9780060929794", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0060929790", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "title": [ { "value": "One Hundred Years of Solitude", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "action-type": { "label": "order", "root": "entity" },
-    "book": {
-        "isbn": [
-            { "value": "9780008627843", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0008627843", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "title": [ { "value": "The Hobbit", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "ebook", "root": "entity" }
-    }
-}
-{
-    "action-type": { "label": "order", "root": "entity" },
-    "book": {
-        "isbn": [
-            { "value": "9780387881355", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0387881352", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "title": [ { "value": "Electron Backscatter Diffraction in Materials Science", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "hardback", "root": "entity" }
-    }
-}
-{
-    "action-type": { "label": "review", "root": "entity" },
-    "book": {
-        "isbn": [
-            { "value": "9780195153446", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0195153448", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "title": [ { "value": "Classical Mythology", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "action-type": { "label": "review", "root": "entity" },
-    "book": {
-        "isbn": [
-            { "value": "9780500026557", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0500026556", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "title": [ { "value": "Hokusai's Fuji", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "action-type": { "label": "review", "root": "entity" },
-    "book": {
-        "isbn": [
-            { "value": "9780008627843", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0008627843", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "title": [ { "value": "The Hobbit", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "ebook", "root": "entity" }
-    }
-}
+{ "action-type": { "label": "order" }, "isbn": ["9780060929794", "0060929790"], "title": "One Hundred Years of Solitude" }
+{ "action-type": { "label": "order" }, "isbn": ["9780008627843", "0008627843"], "title": "The Hobbit" }
+{ "action-type": { "label": "order" }, "isbn": ["9780387881355", "0387881352"], "title": "Electron Backscatter Diffraction in Materials Science" }
+{ "action-type": { "label": "review" }, "isbn": ["9780195153446", "0195153448"], "title": "Classical Mythology" }
+{ "action-type": { "label": "review" }, "isbn": ["9780500026557", "0500026556"], "title": "Hokusai's Fuji" }
+{ "action-type": { "label": "review" }, "isbn": ["9780008627843", "0008627843"], "title": "The Hobbit" }
 ----
 
 We have been able to retrieve this information by introducing a new `$action-type` variable in an additional statement.
@@ -297,61 +232,51 @@ In addition to using type variablization to retrieve the types of data instances
 
 [,typeql]
 ----
-match
-$book-type sub book;
-fetch
-$book-type;
+match $book_type sub book;
+fetch { "book-type" : $book_type };
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
-{ "book-type": { "label": "ebook", "root": "entity" } }
-{ "book-type": { "label": "hardback", "root": "entity" } }
-{ "book-type": { "label": "book", "root": "entity" } }
-{ "book-type": { "label": "paperback", "root": "entity" } }
+{ "book_type": { "label": "ebook", "kind": "entity" } }
+{ "book_type": { "label": "hardback", "kind": "entity" } }
+{ "book_type": { "label": "book", "kind": "entity" } }
+{ "book_type": { "label": "paperback", "kind": "entity" } }
 ----
 
 These are indeed the subtypes of `book`. We also retrieve the type `book` itself because it is trivially its own subtype. For this query, we've used the `sub` keyword, which matches subtypes of a given supertype. Unlike the `isa` keyword, both the subject and the object of `sub` statements must be *types*. In this case, we've variablized the subject of the `sub` statement to query subtypes, but we could also variablize the object to query supertypes. In the following example, we query the supertypes of `publisher`.
 
 [,typeql]
 ----
-match
-publisher sub $supertype;
-fetch
-$supertype;
+match publisher sub $supertype;
+fetch { "supertype" : $supertype };
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
-{ "supertype": { "label": "thing", "root": "thing" } }
-{ "supertype": { "label": "entity", "root": "entity" } }
-{ "supertype": { "label": "publisher", "root": "entity" } }
-{ "supertype": { "label": "company", "root": "entity" } }
+{ "supertype": { "label": "publisher", "kind": "entity" } }
+{ "supertype": { "label": "company", "kind": "entity" } }
+{ "supertype": { "label": "entity", "kind": "entity" } }
 ----
 
 In addition to `company` (which is the direct supertype of `publisher`) and `publisher` (which is trivially its own supertype) we also retrieve the *root types* `entity` (the supertype of all entities) and `thing` (the supertype of _all_ types).
 
-[WARNING]
-====
-The `thing` type is deprecated and will be removed in TypeDB 3.0. For more information, see the https://typedb.com/blog/typedb-3-roadmap[TypeDB 3.0 roadmap].
-====
+// Removed note about deprecated `thing` root type; 3.0 uses explicit kinds.
 
 If we would like to retrieve only _direct_ subtypes or supertypes of a type, we can instead use the `sub!` keyword, similar to the `isa!` keyword!
 
 [,typeql]
 ----
-match
-publisher sub! $supertype;
-fetch
-$supertype;
+match publisher sub! $supertype;
+fetch { "supertype" : $supertype };
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
-{ "supertype": { "label": "company", "root": "entity" } }
+{ "supertype": { "label": "company", "kind": "entity" } }
 ----
 
 .Exercise
@@ -385,10 +310,8 @@ The query should retrieve the direct subtypes of `place`.
 =====
 [,typeql]
 ----
-match
-$place-type sub! place;
-fetch
-$place-type;
+match $place_type sub! place;
+fetch { "place-type" : $place_type };
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 =====
@@ -406,10 +329,8 @@ The query should retrieve the subtypes of the root type `entity`, directly and i
 =====
 [,typeql]
 ----
-match
-$entity-type sub entity;
-fetch
-$entity-type;
+match $entity_type sub entity;
+fetch { "entity-type" : $entity_type };
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 =====
@@ -421,38 +342,34 @@ In addition to querying the type hierarchies defined in the schema, we can also 
 
 [,typeql]
 ----
-match
-promotion owns $attribute;
-fetch
-$attribute;
+match promotion owns $attribute;
+fetch { "attribute-type": $attribute };
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
-{ "attribute": { "label": "code", "root": "attribute" } }
-{ "attribute": { "label": "start-timestamp", "root": "attribute" } }
-{ "attribute": { "label": "end-timestamp", "root": "attribute" } }
-{ "attribute": { "label": "name", "root": "attribute" } }
+{ "attribute-type": { "label": "code", "kind": "attribute" } }
+{ "attribute-type": { "label": "start-timestamp", "kind": "attribute" } }
+{ "attribute-type": { "label": "end-timestamp", "kind": "attribute" } }
+{ "attribute-type": { "label": "name", "kind": "attribute" } }
 ----
 
 To query ownerships, we use the `owns` keyword. As with the `sub` keyword, we can invert the intent of the statement by variablizing the object instead of the subject. We do this in the next query to retrieve the list of types that own the attribute type `isbn-13`.
 
 [,typeql]
 ----
-match
-$type owns isbn-13;
-fetch
-$type;
+match $type owns isbn-13;
+fetch { "type" : $type };
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
-{ "type": { "label": "ebook", "root": "entity" } }
-{ "type": { "label": "hardback", "root": "entity" } }
-{ "type": { "label": "book", "root": "entity" } }
-{ "type": { "label": "paperback", "root": "entity" } }
+{ "type": { "label": "ebook", "kind": "entity" } }
+{ "type": { "label": "hardback", "kind": "entity" } }
+{ "type": { "label": "book", "kind": "entity" } }
+{ "type": { "label": "paperback", "kind": "entity" } }
 ----
 
 .Exercise
@@ -480,17 +397,15 @@ Ownerships of attribute types are queried using a single keyword `owns`, but rol
 
 [,typeql]
 ----
-match
-locating relates $role;
-fetch
-$role;
+match locating relates $role;
+fetch { "role" : $role };
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
-{ "role": { "label": "locating:located", "root": "relation:role" } }
-{ "role": { "label": "locating:location", "root": "relation:role" } }
+{ "role": { "label": "locating:located", "kind": "relation:role" } }
+{ "role": { "label": "locating:location", "kind": "relation:role" } }
 ----
 
 
@@ -502,43 +417,39 @@ To query for types that play a role using the `plays` keyword, we must use the s
 
 [,typeql]
 ----
-match
-$type plays locating:located;
-fetch
-$type;
+match $type plays locating:located;
+fetch { "type" : $type };
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
-{ "type": { "label": "place", "root": "entity" } }
-{ "type": { "label": "publication", "root": "entity" } }
-{ "type": { "label": "user", "root": "entity" } }
-{ "type": { "label": "city", "root": "entity" } }
-{ "type": { "label": "state", "root": "entity" } }
-{ "type": { "label": "country", "root": "entity" } }
-{ "type": { "label": "address", "root": "entity" } }
+{ "type": { "label": "place", "kind": "entity" } }
+{ "type": { "label": "publication", "kind": "entity" } }
+{ "type": { "label": "user", "kind": "entity" } }
+{ "type": { "label": "city", "kind": "entity" } }
+{ "type": { "label": "state", "kind": "entity" } }
+{ "type": { "label": "country", "kind": "entity" } }
+{ "type": { "label": "address", "kind": "entity" } }
 ----
 
 Here we have queried the types that play the `located` role in `locating`. As with the `sub` and `owns` keywords, we can also invert the intent of `plays` [#_footnote_1]#statements#^<<_footnotes,1>>^. In the next query, we do so in order to retrieve the list of roles that `book` plays.
 
 [,typeql]
 ----
-match
-book plays $role;
-fetch
-$role;
+match book plays $role;
+fetch { "role" : $role };  
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
-{ "role": { "label": "rating:rated", "root": "relation:role" } }
-{ "role": { "label": "publishing:published", "root": "relation:role" } }
-{ "role": { "label": "recommendation:recommended", "root": "relation:role" } }
-{ "role": { "label": "order-line:item", "root": "relation:role" } }
-{ "role": { "label": "contribution:work", "root": "relation:role" } }
-{ "role": { "label": "promotion-inclusion:item", "root": "relation:role" } }
+{ "role": { "label": "rating:rated", "kind": "relation:role" } }
+{ "role": { "label": "publishing:published", "rroleoot": "relation:role" } }
+{ "role": { "label": "recommendation:recommended", "role": "relation:role" } }
+{ "role": { "label": "order-line:item", "role": "relation:role" } }
+{ "role": { "label": "contribution:work", "role": "relation:role" } }
+{ "role": { "label": "promotion-inclusion:item", "role": "relation:role" } }
 ----
 
 .Exercise

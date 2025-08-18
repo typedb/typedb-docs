@@ -8,29 +8,24 @@ In xref:{page-version}@academy::7-understanding-query-patterns/7.6-solution-set-
 
 [,typeql]
 ----
-match
-$book isa book;
-$promotion isa promotion;
-($book, $promotion) isa promotion-inclusion;
-fetch
-$book: title;
-$promotion: name;
+match $book isa book;
+  $promotion isa promotion;
+  ($book, $promotion) isa promotion-inclusion;
+fetch { "title": $book.title, "promotion": $promotion.name };
 ----
 
 In order to retrieve the correct results, we can use a subquery as follows.
 
 [,typeql]
 ----
-match
-$book isa book;
-fetch
-$book: title;
-promotions: {
-    match
-    $promotion isa promotion;
-    ($book, $promotion) isa promotion-inclusion;
-    fetch
-    $promotion: name;
+match $book isa book;
+fetch {
+  "title": $book.title,
+  "promotions": [
+    match $promotion isa promotion;
+          ($book, $promotion) isa promotion-inclusion;
+    fetch { "name": $promotion.name };
+  ]
 };
 ----
 
@@ -56,11 +51,9 @@ If we *run* image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]
 
 [,typeql]
 ----
-match
-$promotion isa promotion;
-($book, $promotion) isa promotion-inclusion;
-fetch
-$promotion: name;
+match $promotion isa promotion;
+      ($book, $promotion) isa promotion-inclusion;
+fetch { "name": $promotion.name };
 ----
 
 The subquery functions exactly like a regular query, except that variables are shared with the *parent query*, in this case just `$book`. The constraints that apply to the parent query also apply to the subquery, but the reverse is not true. That means that the subquery will only return promotions that the associated book is in, but the book does not need to be in a promotion to be matched by the parent query. All subqueries must share at least one variable with the parent query.
@@ -91,16 +84,14 @@ include::{page-version}@academy::attachment$bookstore-schema.tql[lines=18..]
 =====
 [,typeql]
 ----
-match
-$book isa book;
-fetch
-$book: title;
-contributors: {
-    match
-    $contributor isa contributor;
-    ($book, $contributor) isa contribution;
-    fetch
-    $contributor: name;
+match $book isa book;
+fetch {
+  "title": $book.title,
+  "contributors": [
+    match $contributor isa contributor;
+          ($book, $contributor) isa contribution;
+    fetch { "name": $contributor.name };
+  ]
 };
 ----
 =====
@@ -112,23 +103,21 @@ In the same way the `fetch` clause of a query can contain a subquery, the subque
 
 [,typeql]
 ----
-match
-$publisher isa publisher;
-fetch
-$publisher: name;
-books: {
-    match
-    $book isa book;
-    ($book, $publisher) isa publishing;
-    fetch
-    $book: title;
-    promotions: {
-        match
-        $promotion isa promotion;
-        ($book, $promotion) isa promotion-inclusion;
-        fetch
-        $promotion: name;
+match $publisher isa publisher;
+fetch {
+  "name": $publisher.name,
+  "books": [
+    match $book isa book;
+          ($book, $publisher) isa publishing;
+    fetch {
+      "title": $book.title,
+      "promotions": [
+        match $promotion isa promotion;
+              ($book, $promotion) isa promotion-inclusion;
+        fetch { "name": $promotion.name };
+      ]
     };
+  ]
 };
 ----
 
@@ -160,25 +149,21 @@ include::{page-version}@academy::attachment$bookstore-schema.tql[lines=18..]
 =====
 [,typeql]
 ----
-match
-$user isa user, has id $user-id;
-fetch
-$user-id;
-orders: {
-    match
-    $order isa order, has id $order-id;
-    ($user, $order) isa action-execution;
-    fetch
-    $order-id;
-    books: {
-        match
-        $book isa book, has isbn-13 $isbn;
-        ($order, $book) isa order-line,
-            has quantity $quantity;
-        fetch
-        $isbn;
-        $quantity;
+match $user isa user, has id $user_id;
+fetch {
+  "user-id": $user_id,
+  "orders": [
+    match $order isa order, has id $order_id;
+          ($user, $order) isa action-execution;
+    fetch {
+      "order-id": $order_id,
+      "books": [
+        match $book isa book, has isbn-13 $isbn;
+              ($order, $book) isa order-line, has quantity $quantity;
+        fetch { "isbn": $isbn, "quantity": $quantity };
+      ]
     };
+  ]
 };
 ----
 

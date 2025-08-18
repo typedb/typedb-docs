@@ -1,68 +1,55 @@
 = Lesson 7.5: Value expressions
 
-== Value variables
+== Expressions and let assignments
 
 === Declaration
 
-TypeQL allows the use of value expressions in queries through *value variables*. The following Fetch query shows how we might fetch the line totals for a particular order.
+TypeQL uses a single `$` variable form. To assign the result of an expression to a variable, use `let $var = <expression>`. The following Fetch query shows how we might fetch the line totals for a particular order.
 
 [,typeql]
 ----
-match
-$order isa order, has id "o0014";
-$book isa book, has price $retail-price;
-($order, $book) isa order-line,
-    has quantity $quantity;
-?line-total = $quantity * $retail-price;
-fetch
-?line-total;
+match $order isa order, has id "o0014";
+  $book isa book, has price $retail_price;
+  ($order, $book) isa order-line, has quantity $quantity;
+let $line_total = $quantity * $retail_price;
+fetch { "line-total": $line_total };
 ----
 
-Value variables are declared using a `?` prefix, like `?line-total` in this example. They are distinct from *concept variables*, which are declared with a `$` prefix as we saw in xref:{page-version}@academy::3-reading-data/3.1-fetching-simple-data.adoc[Lesson 3.1]. Concept variables represent specific data instances or types within the databases, while value variables represent temporary values that exist only within the scope of a query.
+In 3.0, there are no separate `?value` variables. Use `let $line_total = ...` to bind computed values within the query scope.
 
-=== Writing values
+=== Using computed values in writes
 
-In addition to retrieving value variables in Fetch queries, we can also use them for data writes. In the following query, we modify the previous example to write the line total as an attribute to the order line instead of retrieving it.
+In addition to retrieving computed values in Fetch queries, we can also use them for data writes. In the following query, we modify the previous example to write the line total as an attribute to the order line instead of retrieving it.
 
 [,typeql]
 ----
-match
-$order isa order, has id "o0014";
-$book isa book, has price $retail-price;
-$line ($order, $book) isa order-line,
-    has quantity $quantity;
-?line-total = $quantity * $retail-price;
-insert
-$line has price ?line-total;
+match $order isa order, has id "o0014";
+  $book isa book, has price $retail_price;
+  $line ($order, $book) isa order-line, has quantity $quantity;
+let $line_total = $quantity * $retail_price;
+insert $line has price $line_total;
 ----
 
-Unlike concept variables, value variables do not have schema types, only value types. If we use a write query to insert a value variable as an attribute, we must declare the attribute type, the same way we do when inserting a literal value as an attribute. If we changed the insert clause in the above query to the following, the query would not be valid.
-
-[,typeql]
-----
-...
-insert
-$line has ?line-total;
-----
+Computed variables have value types inferred from the expression. When inserting an attribute, you still specify the attribute type on the left-hand side of `has` and the computed value on the right; inserting a bare variable without the attribute type is not valid.
 
 === Assignment
 
-Value variables are defined using the assignment operator `=`, as we have done above, and can hold values of any value type. The assigned value is described by a *value expression*, which can take any of the following forms:
+Computed variables are defined using `let $var = <expression>` and can hold values of any value type. The assigned value is described by a *value expression*, which can take any of the following forms:
 
-* A concept variable, representing an attribute's value:
+* A variable bound to an attribute's value:
 +
 --
 [,typeql]
 ----
-?value = $attribute;
+let $value = $attribute;
 ----
 --
-* A previously defined value variable:
+* A previously defined computed variable:
 +
 --
 [,typeql]
 ----
-?value = ?other-value;
+let $value = $other_value;
 ----
 --
 * A literal value:
@@ -70,7 +57,7 @@ Value variables are defined using the assignment operator `=`, as we have done a
 --
 [,typeql]
 ----
-?value = "literal";
+let $value = "literal";
 ----
 --
 * Any combination of the above, using certain value operations:
@@ -78,16 +65,13 @@ Value variables are defined using the assignment operator `=`, as we have done a
 --
 [,typeql]
 ----
-?value = max($a + 100, ?c) / $d;
+let $value = max($a + 100, $c) / $d;
 ----
 --
 
 We will explore the different value operations, along with the value types they are valid for, in the remainder of this lesson.
 
-[NOTE]
-====
-In TypeDB 2.x, the only supported operations are on longs and doubles. Datetime, string, and boolean operations will be available in TypeDB 3.0. To learn more about this and other powerful new features, see the https://typedb.com/blog/typedb-3-roadmap[TypeDB 3.0 roadmap].
-====
+// Note: 3.0 supports arithmetic across numeric types; see reference for full expression support.
 
 == Arithmetic operations
 
@@ -139,18 +123,11 @@ include::{page-version}@academy::attachment$bookstore-schema.tql[lines=18..]
 =====
 [,typeql]
 ----
-match
-$sale isa promotion, has code "HOL23";
-$included-book isa book,
-    has title $title,
-    has price $retail-price;
-($sale, $included-book) isa promotion-inclusion,
-    has discount $discount;
-?discounted-price = round(100 * $retail-price * (1 - $discount)) / 100;
-fetch
-$title;
-$retail-price;
-?discounted-price;
+match $sale isa promotion, has code "HOL23";
+  $included_book isa book, has title $title, has price $retail_price;
+  ($sale, $included_book) isa promotion-inclusion, has discount $discount;
+let $discounted_price = round(100 * $retail_price * (1 - $discount)) / 100;
+fetch { "title": $title, "retail-price": $retail_price, "discounted-price": $discounted_price };
 ----
 =====
 
@@ -161,16 +138,11 @@ Write an Update query to decrease the stock of _Pride and Prejudice_ by one in a
 =====
 [,typeql]
 ----
-match
-$pride-prejudice isa book,
-    has isbn "9780553212150",
-    has stock $current-stock;
-$current-stock > 0;
-?new-stock = $current-stock - 1;
-delete
-$pride-prejudice has $current-stock;
-insert
-$pride-prejudice has stock ?new-stock;
+match $pride_prejudice isa book, has isbn "9780553212150", has stock $current_stock;
+  $current_stock > 0;
+let $new_stock = $current_stock - 1;
+delete $pride_prejudice has $current_stock;
+insert $pride_prejudice has stock $new_stock;
 ----
 =====
 ====

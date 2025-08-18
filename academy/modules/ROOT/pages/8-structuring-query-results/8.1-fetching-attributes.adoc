@@ -6,60 +6,47 @@ Fetch queries allow us to retrieve attributes, as we learned in xref:{page-versi
 
 [,typeql]
 ----
-match
-$order isa order, has id "o0014";
-$book isa book, has price $retail-price;
-($order, $book) isa order-line,
-    has quantity $quantity;
-?line-total = $quantity * $retail-price;
-fetch
-?line-total;
+match $order isa order, has id "o0014";
+  $book isa book, has price $retail_price;
+  ($order, $book) isa order-line, has quantity $quantity;
+let $line_total = $quantity * $retail_price;
+fetch { "line-total": $line_total };
 ----
 
 In previous queries, we have retrieved attributes from the entities or relations that own them, using the following syntax.
 
 [,typeql]
 ----
-fetch
-$owner: attribute-type;
+fetch { $owner.attribute-type };
 ----
 
 But we can also retrieve them directly, in the same way we do value variables.
 
 [,typeql]
 ----
-fetch
-$attribute;
+fetch { "attribute": $attribute };
 ----
 
 Let's modify the previous query to retrieve the book price along with the line total in each of these two ways. First, by retrieving the price via the book.
 
 [,typeql]
 ----
-match
-$order isa order, has id "o0014";
-$book isa book, has price $retail-price;
-($order, $book) isa order-line,
-    has quantity $quantity;
-?line-total = $quantity * $retail-price;
-fetch
-$book: price;
-?line-total;
+match $order isa order, has id "o0014";
+  $book isa book, has price $retail_price;
+  ($order, $book) isa order-line, has quantity $quantity;
+let $line_total = $quantity * $retail_price;
+fetch { "price": $book.price, "line-total": $line_total };
 ----
 
 Second, by retrieving the price directly.
 
 [,typeql]
 ----
-match
-$order isa order, has id "o0014";
-$book isa book, has price $retail-price;
-($order, $book) isa order-line,
-    has quantity $quantity;
-?line-total = $quantity * $retail-price;
-fetch
-$retail-price;
-?line-total;
+match $order isa order, has id "o0014";
+  $book isa book, has price $retail_price;
+  ($order, $book) isa order-line, has quantity $quantity;
+let $line_total = $quantity * $retail_price;
+fetch { "retail-price": $retail_price, "line-total": $line_total };
 ----
 
 Try *running* image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] these queries to see the difference. In addition to having two different output formats, these queries act differently on the data. In this lesson, we'll examine the difference between these two methods and learn when to apply each one.
@@ -70,10 +57,8 @@ Let's start with a simple example, in which we retrieve the titles and genres of
 
 [,typeql]
 ----
-match
-$book isa hardback;
-fetch
-$book: title, genre;
+match $book isa hardback;
+fetch { "title": $book.title, "genre": [ $book.genre ] };
 ----
 
 [,json]
@@ -120,13 +105,10 @@ Now let's try retrieving the attributes directly. To do so, we'll need to modify
 
 [,typeql]
 ----
-match
-$book isa hardback,
-    has title $title,
-    has genre $genre;
-fetch
-$title;
-$genre;
+match $book isa hardback,
+      has title $title,
+      has genre $genre;
+fetch { "title": $title, "genre": $genre };
 ----
 
 [,json]
@@ -196,10 +178,8 @@ include::{page-version}@academy::attachment$bookstore-schema.tql[lines=18..]
 =====
 [,typeql]
 ----
-match
-$book isa book;
-fetch
-$book: isbn;
+match $book isa book;
+fetch { "isbn": [ $book.isbn ] };
 ----
 =====
 
@@ -210,10 +190,8 @@ Write another Fetch query to retrieve the ISBNs of all books in the database, wi
 =====
 [,typeql]
 ----
-match
-$book isa book, has isbn $isbn;
-fetch
-$isbn;
+match $book isa book, has isbn $isbn;
+fetch { "isbn": $isbn };
 ----
 =====
 ====

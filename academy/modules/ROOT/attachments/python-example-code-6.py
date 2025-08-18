@@ -1,27 +1,22 @@
 # 6.1 driver setup
 
-from typedb.driver import TypeDB, SessionType, TransactionType
-from typedb.api.connection.credential import TypeDBCredential
-
 from typing import Iterator
-from typedb.api.connection.driver import TypeDBDriver
-from typedb.api.connection.transaction import TypeDBTransaction
+from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions
 from typedb.api.user.user import User
 from typedb.api.connection.database import Database
 
 # 6.2 managing users and databases
 
-ADDRESS = "localhost:1730"
-USERNAME = "username"
+ADDRESS = "localhost:1729"
+USERNAME = "admin"
+PASSWORD = "password"
+credentials = Credentials(USERNAME, PASSWORD)
+options = DriverOptions(is_tls_enabled=False, tls_root_ca_path=None)
 
-password = input("Enter password: ")
-credential = TypeDBCredential(USERNAME, password, tls_enabled=True)
-
-with TypeDB.cloud_driver(ADDRESS, credential) as driver:
-    # code goes here
+with TypeDB.driver(ADDRESS, credentials, options) as driver:
     pass
 
-with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+with TypeDB.driver(ADDRESS, credentials, options) as driver:
     # Creates a new user with the specified username and password.
     driver.users.create("username", "password")
 
@@ -37,12 +32,12 @@ with TypeDB.cloud_driver(ADDRESS, credential) as driver:
     # Deletes a user with the specified username.
     driver.users.delete("username")
 
-with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+with TypeDB.driver(ADDRESS, credentials, options) as driver:
     # Retrieves a user object corresponding to the current user,
     # according to the credentials provided to the driver object.
     current_user: User = driver.user()
 
-with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+with TypeDB.driver(ADDRESS, credentials, options) as driver:
     user: User
 
     # Retrieves the username of a given user.
@@ -68,7 +63,7 @@ def print_usernames(driver: TypeDBDriver) -> None:
         print(user.username())
 
 
-with TypeDB.cloud_driver(ADDRESS, credential) as driver:
+with TypeDB.driver(ADDRESS, credentials, options) as driver:
     # Creates a new database with the specified name.
     driver.databases.create("database-name")
 
@@ -107,272 +102,218 @@ def print_database_details(driver: TypeDBDriver) -> None:
         print(database.schema())
 
 
-# 6.3 sessions and transactions
+# 6.3 transactions
 
-DATABASE = "database-name"
+DB = "database-name"
 
-with TypeDB.cloud_driver(ADDRESS, credential) as driver:
-    with driver.session(DATABASE, SessionType.DATA) as session:
-        # code goes here
+with TypeDB.driver(ADDRESS, credentials, options) as driver:
+    with driver.transaction(DB, TransactionType.READ) as tx:
         pass
 
-with TypeDB.cloud_driver(ADDRESS, credential) as driver:
-    with driver.session(DATABASE, SessionType.DATA) as session:
-        with session.transaction(TransactionType.READ) as transaction:
-            # code goes here
-            pass
-
-with TypeDB.cloud_driver(ADDRESS, credential) as driver:
-    with driver.session(DATABASE, SessionType.DATA) as session:
-        with session.transaction(TransactionType.WRITE) as transaction:
-            # code goes here
-
-            transaction.commit()
+with TypeDB.driver(ADDRESS, credentials, options) as driver:
+    with driver.transaction(DB, TransactionType.WRITE) as tx:
+        # write queries
+        tx.commit()
 
 # 6.4 executing queries
 
 DATABASE = "bookstore"
 
-with TypeDB.cloud_driver(ADDRESS, credential) as driver:
-    with driver.session(DATABASE, SessionType.DATA) as session:
-        with session.transaction(TransactionType.READ) as transaction:
-            results: Iterator[dict] = transaction.query.fetch("""
-                match
-                $book isa book;
-                fetch
-                $book: title, page-count;
-            """)
+with TypeDB.driver(ADDRESS, credentials, options) as driver:
+    with driver.transaction(DB, TransactionType.READ) as tx:
+        docs = tx.query(
+            """
+            match $book isa book;
+            fetch { "title": $book.title, "page-count": $book.page-count };
+            """
+        ).resolve().as_concept_documents()
+        for doc in docs:
+            print(doc)
 
-            for result in results:
-                print(result)
+with TypeDB.driver(ADDRESS, credentials, options) as driver:
+    with driver.transaction(DB, TransactionType.READ) as tx:
+        promise = tx.query(
+            """
+            match $book isa book;
+            fetch { "title": $book.title, "page-count": $book.page-count };
+            """
+        )
+        documents = promise.resolve().as_concept_documents()
+        for doc in documents:
+            print(doc)
 
-with TypeDB.cloud_driver(ADDRESS, credential) as driver:
-    with driver.session(DATABASE, SessionType.DATA) as session:
-        with session.transaction(TransactionType.READ) as transaction:
-            results: list[dict] = list(transaction.query.fetch("""
-                match
-                $book isa book;
-                fetch
-                $book: title, page-count;
-            """))
+with TypeDB.driver(ADDRESS, credentials, options) as driver:
+    with driver.transaction(DB, TransactionType.WRITE) as tx:
+        tx.query(
+            """
+            insert $new_user isa user,
+                   has id "u0014",
+                   has name "Jaiden Hurst",
+                   has birth-date 1950-03-03;
+            """
+        ).resolve()
+        tx.commit()
 
-for result in results:
-    print(result)
+with TypeDB.driver(ADDRESS, credentials, options) as driver:
+    with driver.transaction(DB, TransactionType.WRITE) as tx:
+        tx.query(
+            """
+            match $retracted_review isa review, has id "r0001";
+                  $relation ($retracted_review) isa relation;
+            delete $relation;
+            """
+        ).resolve()
+        tx.query(
+            """
+            match $retracted_review isa review, has id "r0001";
+            delete $retracted_review;
+            """
+        ).resolve()
+        tx.commit()
 
-with TypeDB.cloud_driver(ADDRESS, credential) as driver:
-    with driver.session(DATABASE, SessionType.DATA) as session:
-        with session.transaction(TransactionType.WRITE) as transaction:
-            transaction.query.insert("""
-                insert
-                $new-user isa user,
-                    has id "u0014",
-                    has name "Jaiden Hurst",
-                    has birth-date 1950-03-03;
-            """)
-
-            transaction.commit()
-
-with TypeDB.cloud_driver(ADDRESS, credential) as driver:
-    with driver.session(DATABASE, SessionType.DATA) as session:
-        with session.transaction(TransactionType.WRITE) as transaction:
-            transaction.query.delete("""
-                match
-                $retracted-review isa review, has id "r0001";
-                $relation ($retracted-review) isa relation;
-                delete
-                $relation isa relation;
-            """)
-
-            transaction.query.delete("""
-                match
-                $retracted-review isa review, has id "r0001";
-                delete
-                $retracted-review isa review;
-            """)
-
-            transaction.commit()
-
-with TypeDB.cloud_driver(ADDRESS, credential) as driver:
-    with driver.session(DATABASE, SessionType.DATA) as session:
-        with session.transaction(TransactionType.WRITE) as transaction:
-            transaction.query.update("""
-                match
-                $dispatched-order isa order, has id "o0008";
-                $paid "paid" isa status;
-                delete
-                $dispatched-order has $paid;
-                insert
-                $dispatched-order has status "dispatched";
-            """)
-
-            transaction.commit()
+with TypeDB.driver(ADDRESS, credentials, options) as driver:
+    with driver.transaction(DB, TransactionType.WRITE) as tx:
+        tx.query(
+            """
+            match $dispatched_order isa order, has id "o0008";
+                  $paid = "paid";
+            update delete $dispatched_order has status $paid; insert $dispatched_order has status "dispatched";
+            """
+        ).resolve()
+        tx.commit()
 
 
-def create_user(transaction: TypeDBTransaction, id: str, name: str, birth_date: str) -> None:
-    transaction.query.insert(f"""
-        insert
-        $new-user isa user,
-            has id "{id}",
-            has name "{name}",
-            has birth-date {birth_date};
-    """)
+def create_user(tx, id: str, name: str, birth_date: str) -> None:
+    tx.query(
+        f"""
+        insert $new_user isa user,
+               has id "{id}",
+               has name "{name}",
+               has birth-date {birth_date};
+        """
+    ).resolve()
 
 
-def delete_review(transaction: TypeDBTransaction, id: str) -> None:
-    transaction.query.delete(f"""
-        match
-        $retracted-review isa review, has id "{id}";
-        $relation ($retracted-review) isa relation;
-        delete
-        $relation isa relation;
-    """)
-
-    transaction.query.delete(f"""
-        match
-        $retracted-review isa review, has id "{id}";
-        delete
-        $retracted-review isa review;
-    """)
-
-
-def update_order_status(transaction: TypeDBTransaction, id: str, status_old: str, status_new: str) -> None:
-    transaction.query.update(f"""
-        match
-        $dispatched-order isa order, has id "{id}";
-        $status-old "{status_old}" isa status;
-        delete
-        $dispatched-order has $status-old;
-        insert
-        $dispatched-order has status "{status_new}";
-    """)
+def delete_review(tx, id: str) -> None:
+    tx.query(
+        f"""
+        match $retracted_review isa review, has id "{id}";
+              $relation ($retracted_review) isa relation;
+        delete $relation;
+        """
+    ).resolve()
+    tx.query(
+        f"""
+        match $retracted_review isa review, has id "{id}";
+        delete $retracted_review;
+        """
+    ).resolve()
 
 
-DATABASE = "social-network"
+def update_order_status(tx, id: str, status_old: str, status_new: str) -> None:
+    tx.query(
+        f"""
+        match $order isa order, has id "{id}";
+              $old = "{status_old}";
+        update delete $order has status $old; insert $order has status "{status_new}";
+        """
+    ).resolve()
 
-with TypeDB.cloud_driver(ADDRESS, credential) as driver:
-    driver.databases.create(DATABASE)
 
-    with driver.session(DATABASE, SessionType.SCHEMA) as session:
-        with session.transaction(TransactionType.WRITE) as transaction:
-            transaction.query.define("""
-                define
-                person sub entity,
-                    owns first-name,
-                    owns last-name,
-                    owns birth-date,
-                    plays friendship:friend,
-                    plays relationship:partner,
-                    plays marriage:spouse;
-                friendship sub relation,
-                    relates friend;
-                relationship sub relation,
-                    relates partner;
-                marriage sub relationship,
-                    relates spouse as partner;
-                name sub attribute, abstract, value string;
-                first-name sub name;
-                last-name sub name;
-                birth-date sub attribute, value datetime;
-            """)
+DB = "social-network"
 
-            transaction.commit()
+with TypeDB.driver(ADDRESS, credentials, options) as driver:
+    try:
+        driver.databases.create(DB)
+    except Exception:
+        pass
+    with driver.transaction(DB, TransactionType.SCHEMA) as tx:
+        tx.query(
+            """
+            define
+            entity person,
+                owns first-name,
+                owns last-name,
+                owns birth-date,
+                plays friendship:friend,
+                plays relationship:partner,
+                plays marriage:spouse;
+            relation friendship,
+                relates friend;
+            relation relationship,
+                relates partner;
+            relation marriage sub relationship,
+                relates spouse as partner;
+            attribute name @abstract, value string;
+            attribute first-name sub name;
+            attribute last-name sub name;
+            attribute birth-date, value datetime;
+            """
+        ).resolve()
+        tx.commit()
 
 # 6.5 processing results
 
-DATABASE = "bookstore"
+DB = "bookstore"
 
-with TypeDB.cloud_driver(ADDRESS, credential) as driver:
-    with driver.session(DATABASE, SessionType.DATA) as session:
-        with session.transaction(TransactionType.READ) as transaction:
-            results: Iterator[dict] = transaction.query.fetch("""
-                match
-                $book isa hardback;
-                fetch
-                $book: title, genre, page-count;
-            """)
-
-            for result in results:
-                print(result)
-
-                print(result.keys())
-
-                print(result["book"].keys())
-
-                for title in result["book"]["title"]:
-                    print(f"""Title: {title["value"]}""")
-
-                for genre in result["book"]["genre"]:
-                    print(f"""Genre: {genre["value"]}""")
-
-                for page_count in result["book"]["page-count"]:
-                    print(f"""Page count: {page_count["value"]}""")
-
-                print()
+with TypeDB.driver(ADDRESS, credentials, options) as driver:
+    with driver.transaction(DB, TransactionType.READ) as tx:
+        docs = tx.query(
+            """
+            match $book isa hardback;
+            fetch { "title": $book.title, "genre": [$book.genre], "page-count": $book.page-count };
+            """
+        ).resolve().as_concept_documents()
+        for doc in docs:
+            print(doc)
+            print(doc.keys())
+            print(list(doc.keys()))
 
 
-def print_hardback_isbns(transaction: TypeDBTransaction) -> None:
-    results = transaction.query.fetch("""
-        match
-        $book isa hardback;
-        fetch
-        $book: title, isbn;
-    """)
-
-    for result in results:
-        for title in result["book"]["title"]:
-            print(f"""Title: {title["value"]}""")
-
-        for isbn in result["book"]["isbn"]:
-            print(f"""{isbn["type"]["label"].upper()}: {isbn["value"]}""")
-
+def print_hardback_isbns(tx) -> None:
+    docs = tx.query(
+        """
+        match $book isa hardback;
+        fetch { "title": $book.title, "isbn": [$book.isbn-13, $book.isbn-10] };
+        """
+    ).resolve().as_concept_documents()
+    for doc in docs:
+        print(f"Title: {doc['title']}")
+        for v in doc["isbn"]:
+            print(v)
         print()
 
 
-def get_orders_of_book(transaction: TypeDBTransaction, isbn: str) -> Iterator[tuple[str, int]]:
-    results = transaction.query.fetch(f"""
-        match
-        $book isa book, has isbn "{isbn}";
-        $line (order: $order, item: $book) isa order-line;
-        fetch
-        $order: id;
-        $line: quantity;
-    """)
-
-    for result in results:
-        order_id = result["order"]["id"][0]["value"]
-        quantity = result["line"]["quantity"][0]["value"]
-
-        yield order_id, quantity
+def get_orders_of_book(tx, isbn: str) -> Iterator[tuple[str, int]]:
+    docs = tx.query(
+        f"""
+        match $book isa book, has isbn \"{isbn}\";
+              $line (order: $order, item: $book) isa order-line;
+        fetch {{ "order": $order.id, "quantity": $line.quantity }};
+        """
+    ).resolve().as_concept_documents()
+    for doc in docs:
+        yield doc["order"], doc["quantity"]
 
 
-with TypeDB.cloud_driver(ADDRESS, credential) as driver:
-    with driver.session(DATABASE, SessionType.DATA) as session:
-        with session.transaction(TransactionType.READ) as transaction:
-            orders = get_orders_of_book(transaction, "9780446310789")
-
-            for order in orders:
-                print(order)
+with TypeDB.driver(ADDRESS, credentials, options) as driver:
+    with driver.transaction(DB, TransactionType.READ) as tx:
+        for order in get_orders_of_book(tx, "9780446310789"):
+            print(order)
 
 
-def get_books_in_genre(transaction: TypeDBTransaction, genre: str) -> Iterator[tuple[str, str]]:
-    results = transaction.query.fetch(f"""
-        match
-        $book isa book, has genre "{genre}";
-        fetch
-        $book: isbn-13, title;
-    """)
-
-    for result in results:
-        isbn_13 = result["book"]["isbn-13"][0]["value"]
-        title = result["book"]["title"][0]["value"]
-
-        yield isbn_13, title
+def get_books_in_genre(tx, genre: str) -> Iterator[tuple[str, str]]:
+    docs = tx.query(
+        f"""
+        match $book isa book, has genre \"{genre}\";
+        fetch {{ "isbn-13": $book.isbn-13, "title": $book.title }};
+        """
+    ).resolve().as_concept_documents()
+    for doc in docs:
+        yield doc["isbn-13"], doc["title"]
 
 
-with TypeDB.cloud_driver(ADDRESS, credential) as driver:
-    with driver.session(DATABASE, SessionType.DATA) as session:
-        with session.transaction(TransactionType.READ) as transaction:
-            scifis = get_books_in_genre(transaction, "science fiction")
-
-            for book in scifis:
-                print(book)
+with TypeDB.driver(ADDRESS, credentials, options) as driver:
+    with driver.transaction(DB, TransactionType.READ) as tx:
+        for book in get_books_in_genre(tx, "science fiction"):
+            print(book)

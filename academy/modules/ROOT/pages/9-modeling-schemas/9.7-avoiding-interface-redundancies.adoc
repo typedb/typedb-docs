@@ -18,8 +18,7 @@ include::attachment$books.csv[]
 [,typeql]
 ----
 define
-book sub entity,
-    abstract,
+entity book @abstract,
     owns isbn-13,
     owns isbn-10,
     owns title,
@@ -28,50 +27,49 @@ book sub entity,
     owns price,
     plays contribution:work,
     plays publishing:published;
-paperback sub book,
+entity paperback sub book,
     owns stock;
-hardback sub book,
+entity hardback sub book,
     owns stock;
-ebook sub book;
-contributor sub entity,
+entity ebook sub book;
+entity contributor,
     owns name,
     plays contribution:contributor;
-publisher sub entity,
+entity publisher,
     owns name,
     plays publishing:publisher;
-place sub entity,
-    abstract,
+entity place @abstract,
     owns name,
     plays locating:location,
     plays locating:located;
-city sub place,
+entity city sub place,
     plays publishing:location;
-state sub place;
-country sub place;
-contribution sub relation,
+entity state sub place;
+entity country sub place;
+relation contribution,
     relates contributor,
     relates work;
-authoring sub contribution;
-editing sub contribution;
-illustrating sub contribution;
-publishing sub relation,
+relation authoring sub contribution;
+relation editing sub contribution;
+relation illustrating sub contribution;
+relation publishing,
     relates publisher,
     relates published,
     relates location,
     owns year;
-locating sub relation,
+relation locating,
     relates located,
     relates location;
-isbn sub attribute, abstract, value string;
-isbn-13 sub isbn;
-isbn-10 sub isbn;
-title sub attribute, value string;
-page-count sub attribute, value long;
-genre sub attribute, value string;
-price sub attribute, value double;
-stock sub attribute, value long;
-name sub attribute, value string;
-year sub attribute, value long;
+attribute isbn @abstract, value string;
+attribute isbn-13 sub isbn;
+attribute isbn-10 sub isbn;
+attribute title, value string;
+attribute page-count, value integer;
+attribute genre, value string;
+attribute price, value double;
+attribute stock, value integer;
+attribute name, value string;
+attribute year, value integer;
 ----
 ====
 

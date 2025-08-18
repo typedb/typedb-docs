@@ -6,10 +6,8 @@ In the previous lesson, we retrieved the titles and page counts of paperback boo
 
 [,typeql]
 ----
-match
-$book isa paperback;
-fetch
-$book: title, page-count;
+match $book isa paperback;
+fetch { "title": $book.title, "page-count": $book.page-count };
 ----
 
 But what if we wanted these attributes for all books, regardless of format? In a SQL query, we would need to use a union of tables.
@@ -30,10 +28,8 @@ This approach has several disadvantages. Not only is the query long and verbose,
 
 [,typeql]
 ----
-match
-$book isa book;
-fetch
-$book: title, page-count;
+match $book isa book;
+fetch { "title": $book.title, "page-count": $book.page-count };
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
@@ -41,146 +37,26 @@ We have just changed the type of `$book` from `paperback` to `book`. Now if we r
 
 [,json]
 ----
-{
-    "book": {
-        "page-count": [ { "value": 310, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "The Hobbit", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "ebook", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "page-count": [ { "value": 79, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "The Iron Giant", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "ebook", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "page-count": [ { "value": 450, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "Fundamentals of Data Engineering", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "ebook", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "page-count": [ { "value": 656, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "The Odyssey", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "ebook", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "page-count": [ { "value": 624, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "Dune", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "ebook", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "page-count": [ { "value": 196, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "Physical Principles of Electron Microscopy: An Introduction to TEM, SEM, and AEM", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "ebook", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "page-count": [ { "value": 296, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "Under the Black Flag: The Romance and the Reality of Life Among the Pirates", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "hardback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "page-count": [ { "value": 425, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "Electron Backscatter Diffraction in Materials Science", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "hardback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "page-count": [ { "value": 1451, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "The Complete Calvin and Hobbes", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "hardback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "page-count": [ { "value": 352, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "Great Discoveries in Medicine", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "page-count": [ { "value": 416, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "Hokusai's Fuji", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "page-count": [ { "value": 199, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "Interpretation of Electron Diffraction Patterns", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "page-count": [ { "value": 295, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "Pride and Prejudice", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "page-count": [ { "value": 281, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "To Kill a Mockingbird", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "page-count": [ { "value": 260, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "Business Secrets of The Pharoahs", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "page-count": [ { "value": 240, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "The Mummies of Urumchi", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "page-count": [ { "value": 820, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "Classical Mythology", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "page-count": [ { "value": 458, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "One Hundred Years of Solitude", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "page-count": [ { "value": 215, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "The Hitchhiker's Guide to the Galaxy", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "page-count": [ { "value": 160, "value_type": "long", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "The Motorcycle Diaries: A Journey Around South America", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
+{ "title": "The Hobbit", "page-count": 310 }
+{ "title": "The Iron Giant", "page-count": 79 }
+{ "title": "Fundamentals of Data Engineering", "page-count": 450 }
+{ "title": "The Odyssey", "page-count": 656 }
+{ "title": "Dune", "page-count": 624 }
+{ "title": "Physical Principles of Electron Microscopy: An Introduction to TEM, SEM, and AEM", "page-count": 196 }
+{ "title": "Under the Black Flag: The Romance and the Reality of Life Among the Pirates", "page-count": 296 }
+{ "title": "Electron Backscatter Diffraction in Materials Science", "page-count": 425 }
+{ "title": "The Complete Calvin and Hobbes", "page-count": 1451 }
+{ "title": "Great Discoveries in Medicine", "page-count": 352 }
+{ "title": "Hokusai's Fuji", "page-count": 416 }
+{ "title": "Interpretation of Electron Diffraction Patterns", "page-count": 199 }
+{ "title": "Pride and Prejudice", "page-count": 295 }
+{ "title": "To Kill a Mockingbird", "page-count": 281 }
+{ "title": "Business Secrets of The Pharoahs", "page-count": 260 }
+{ "title": "The Mummies of Urumchi", "page-count": 240 }
+{ "title": "Classical Mythology", "page-count": 820 }
+{ "title": "One Hundred Years of Solitude", "page-count": 458 }
+{ "title": "The Hitchhiker's Guide to the Galaxy", "page-count": 215 }
+{ "title": "The Motorcycle Diaries: A Journey Around South America", "page-count": 160 }
 ----
 
 This is because TypeDB applies *type inference* to queries in order to automatically resolve the possible return types of variables in a query based on the type definitions in the *schema*. This means that, if we add new types of books to the schema, the query will also return them without needing to be updated!
@@ -208,111 +84,24 @@ Entity, relation, and attribute types can all be defined in *type hierarchies*, 
 
 [,typeql]
 ----
-match
-$book isa paperback;
-fetch
-$book: isbn;
+match $book isa paperback;
+fetch { "isbn": [ $book.isbn ] };
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
-{
-    "book": {
-        "isbn": [
-            { "value": "9780500291221", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0500291225", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "isbn": [
-            { "value": "9780500026557", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0500026556", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "isbn": [
-            { "value": "9781489962287", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "148996228X", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "isbn": [
-            { "value": "9780553212150", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "055321215X", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "isbn": [
-            { "value": "9780446310789", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0446310786", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "isbn": [ { "value": "9798691153570", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "isbn": [
-            { "value": "9780393045215", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0393045218", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "isbn": [
-            { "value": "9780195153446", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0195153448", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "isbn": [
-            { "value": "9780060929794", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0060929790", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "isbn": [
-            { "value": "9780671461492", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0671461494", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
-{
-    "book": {
-        "isbn": [
-            { "value": "9781859840665", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "1859840663", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
+["9780500291221", "0500291225"]
+["9780500026557", "0500026556"]
+["9781489962287", "148996228X"]
+["9780553212150", "055321215X"]
+["9780446310789", "0446310786"]
+["9798691153570"]
+["9780393045215", "0393045218"]
+["9780195153446", "0195153448"]
+["9780060929794", "0060929790"]
+["9780671461492", "0671461494"]
+["9781859840665", "1859840663"]
 ----
 
 As we can see from the results, we have returned instances of both `isbn-13` and `isbn-10`, the two subtypes of `isbn`. Once again, the supertype is abstract in this case and so cannot be directly returned.
@@ -340,22 +129,14 @@ We can also make use of inheritance polymorphism when constraining the values of
 
 [,typeql]
 ----
-match
-$book isa book, has isbn "0500026556";
-fetch
-$book: title, stock;
+match $book isa book, has isbn "0500026556";
+fetch { "title": $book.title, "stock": $book.stock };
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
-{
-    "book": {
-        "stock": [ { "value": 11, "value_type": "long", "type": { "label": "stock", "root": "attribute" } } ],
-        "title": [ { "value": "Hokusai's Fuji", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
-}
+{ "title": "Hokusai's Fuji", "stock": 11 }
 ----
 
 == Interface polymorphism
@@ -420,11 +201,9 @@ In this case, only a single return type is possible: `order`, as it is the only 
 
 [,typeql]
 ----
-match
-$kansas-city isa city, has name "Kansas City";
-(location: $kansas-city, located: $x) isa locating;
-fetch
-$x: attribute;
+match $kansas_city isa city, has name "Kansas City";
+(location: $kansas_city, located: $x) isa locating;
+fetch { $x.* };
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
@@ -432,18 +211,8 @@ In this case, `$x` can be resolved to any type that both plays `located` in `loc
 
 [,json]
 ----
-{
-    "x": {
-        "attribute": [ { "value": 2005, "value_type": "long", "type": { "label": "year", "root": "attribute" } } ],
-        "type": { "label": "publication", "root": "entity" }
-    }
-}
-{
-    "x": {
-        "attribute": [ { "value": "826 Vermont Avenue", "value_type": "string", "type": { "label": "street", "root": "attribute" } } ],
-        "type": { "label": "address", "root": "entity" }
-    }
-}
+{ "year": 2005 }
+{ "street": "826 Vermont Avenue" }
 ----
 
 .Exercise
@@ -466,11 +235,9 @@ The following statement can be used to represent `action-execution` relations.
 =====
 [,typeql]
 ----
-match
-$user isa user, has name "Kevin Morrison";
+match $user isa user, has name "Kevin Morrison";
 (executor: $user, action: $action) isa action-execution;
-fetch
-$action: attribute;
+fetch { $action.* };
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 =====

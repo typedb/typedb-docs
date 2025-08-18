@@ -7,18 +7,18 @@ In xref:{page-version}@academy::12-advanced-modeling/12.1-using-dependent-types.
 [,typeql]
 ----
 define
-rating sub relation,
+relation rating,
     relates review,
     relates rated;
-review plays rating:review;
-book plays rating:rated;
+relation review plays rating:review;
+entity book plays rating:rated;
 ----
 
 [,typeql]
 ----
 define
-review relates reviewed;
-book plays review:reviewed;
+relation review relates reviewed;
+entity book plays review:reviewed;
 ----
 
 In the first schema excerpt, the reference between `review` and `book` is represented by the `rating` relation type. In the second, it is represented by the `review:reviewed` role type. The process of changing a model so that a relation type is replaced by a role type is called *de-reification*. Similarly, the process of replacing a role type with a relation type is called *reification*.
@@ -37,12 +37,12 @@ While de-reification is a powerful tool that allows us to achieve parity with ap
 [,typeql]
 ----
 define
-action-execution sub relation,
+relation action-execution,
     relates action,
     relates executor,
     owns timestamp;
-review plays action-execution:action;
-user plays action-execution:executor;
+relation review plays action-execution:action;
+entity user plays action-execution:executor;
 ----
 
 The type-theoretic version in xref:{page-version}@academy::12-advanced-modeling/12.1-using-dependent-types.adoc[Lesson 12.1] de-reified the relation type to the role type `review:reviewer`. This would leave the `timestamp` attribute type without an object type to own it, but this was solved by relocating it to `review`.
@@ -50,10 +50,10 @@ The type-theoretic version in xref:{page-version}@academy::12-advanced-modeling/
 [,typeql]
 ----
 define
-review sub relation,
+relation review,
     relates reviewer,
     owns timestamp;
-user plays review:reviewer;
+entity user plays review:reviewer;
 ----
 
 This is possible because, in the entity-centric schema, `action-execution` has a https://en.wikipedia.org/wiki/Bijection[one-to-one mapping] onto `review`, so the two types have the same https://en.wikipedia.org/wiki/Functional_dependency[functional dependencies] by the https://en.wikipedia.org/wiki/Armstrong%27s_axioms[axiom of transitivity]. This allows us to freely relocate interface implementations between them.
@@ -70,12 +70,12 @@ When the mapping between a relation and its roleplayer is not one-to-one, then i
 [,typeql]
 ----
 define
-promotion-inclusion sub relation,
+relation promotion-inclusion,
     relates promotion,
     relates item,
     owns discount;
-promotion plays promotion-inclusion:promotion;
-book plays promotion-inclusion:item;
+entity promotion plays promotion-inclusion:promotion;
+entity book plays promotion-inclusion:item;
 ----
 
 If we de-reified `promotion-inclusion`, then it might look as follows.
@@ -83,9 +83,9 @@ If we de-reified `promotion-inclusion`, then it might look as follows.
 [,typeql]
 ----
 define
-promotion sub relation,
+relation promotion,
     relates item;
-book plays promotion:item;
+entity book plays promotion:item;
 ----
 
 But neither `promotion` nor `book` can own `discount` without incurring information loss. A book may be in multiple promotions, and a promotion may contain multiple books. This means that neither has a one-to-one mapping onto the removed `promotion-inclusion` relation. As a result, this relation cannot be safely de-reified.
@@ -124,12 +124,12 @@ Initially, it seems that the only composite types involved are `Book` and `Promo
 [,typeql]
 ----
 define
-order-line sub relation,
+relation order-line,
     relates order,
     relates item,
     owns quantity;
-order plays order-line:order;
-book plays order-line:item;
+relation order plays order-line:order;
+entity book plays order-line:item;
 ----
 
 [,python]
@@ -165,20 +165,20 @@ While data fidelity loss occurs when the implementer of an interface is improper
 [,typeql]
 ----
 define
-contribution sub relation,
+relation contribution,
     relates contributor,
     relates work;
-authoring sub contribution,
+relation authoring sub contribution,
     relates author as contributor;
-editing sub contribution,
+relation editing sub contribution,
     relates editor as contributor;
-illustrating sub contribution,
+relation illustrating sub contribution,
     relates illustrator as contributor;
-book plays contribution:work;
-contributor plays contribution:contributor;
-contributor plays authoring:author;
-contributor plays editing:editor;
-contributor plays illustrating:illustrator;
+entity book plays contribution:work;
+entity contributor plays contribution:contributor;
+entity contributor plays authoring:author;
+entity contributor plays editing:editor;
+entity contributor plays illustrating:illustrator;
 ----
 
 The `contributor` relation type and its subtypes do not own any attributes or play any roles, so there should be no data fidelity loss in using the following type-theoretic model instead.
@@ -186,12 +186,12 @@ The `contributor` relation type and its subtypes do not own any attributes or pl
 [,typeql]
 ----
 define
-book sub relation,
+relation book,
     relates author,
     relates editor,
     relates illustrator,
     relates contributor;
-contributor plays book:author,
+entity contributor plays book:author,
     plays book:editor,
     plays book:illustrator,
     plays book:contributor;
@@ -297,8 +297,7 @@ Write TypeQL type definitions to represent the above `Book` class under the type
 [,typeql]
 ----
 define
-book sub relation,
-    abstract,
+relation book @abstract,
     owns isbn-13 @key,
     owns isbn-10 @unique,
     owns title,
@@ -309,21 +308,21 @@ book sub relation,
     owns page-count,
     owns genre,
     owns price;
-contribution sub relation,
+relation contribution,
     relates contributor,
     relates work;
-authoring sub contribution,
+relation authoring sub contribution,
     relates author as contributor;
-editing sub contribution,
+relation editing sub contribution,
     relates editor as contributor;
-illustrating sub contribution,
+relation illustrating sub contribution,
     relates illustrator as contributor;
-contributor plays contribution:contributor,
+entity contributor plays contribution:contributor,
     plays authoring:author,
     plays editing:editor,
     plays illustrating:illustrator;
-publisher plays book:publisher;
-city plays book:location;
+entity publisher plays book:publisher;
+entity city plays book:location;
 ----
 
 Here we have named the role for the city of the book's publication `book:location` in order to maximise the polymorphic querying capabilities of the model, as we learned in xref:{page-version}@academy::12-advanced-modeling/12.2-using-type-theoretic-relations.adoc[Lesson 12.2].

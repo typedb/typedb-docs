@@ -22,8 +22,7 @@ Using a *data* session and a *write* transaction, try *running* image:{page-vers
 ----
 match
 $user isa user;
-fetch
-$user: name;
+fetch { "name": $user.name };
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 

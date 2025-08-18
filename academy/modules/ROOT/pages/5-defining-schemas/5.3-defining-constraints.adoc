@@ -2,15 +2,13 @@
 
 == Constraining attribute values
 
-The values of string attribute types can be constrained with a `regex` statement, which specifies a https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/regex/Pattern.html[Java regex pattern] string that is validated against when instantiating the attribute type. In the following example, we require that the value of `status` instances must be one of "paid", "dispatched", "delivered", "returned", or "canceled".
+The values of string attribute types can be constrained with the `@regex` annotation, which specifies a https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/regex/Pattern.html[Java regex pattern] validated when instantiating the attribute or on ownership.
 
 [,typeql]
 ----
 define
-status sub attribute,
-    value string,
-    regex "^(paid|dispatched|delivered|returned|canceled)$";
-order owns status;
+attribute status, value string @regex("^(paid|dispatched|delivered|returned|canceled)$");
+entity order owns status;
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
@@ -18,7 +16,7 @@ Regex constraints apply directly to attributes, regardless of the owning type. I
 
 [NOTE]
 ====
-The `regex` constraint is the only attribute value constraint in TypeDB 2.x. TypeDB 3.0 will feature other value constraints, such as ranges for numeric values and enums. To learn more about this and other powerful new features, see the https://typedb.com/blog/typedb-3-roadmap[TypeDB 3.0 roadmap].
+In 3.0, value constraints are provided via annotations (e.g., `@regex`, `@range`).
 ====
 
 == Constraining attribute ownerships
@@ -28,12 +26,12 @@ TypeQL provides syntax for defining key and unique constraints on attribute owne
 [,typeql]
 ----
 define
-id sub attribute, value string;
-book owns isbn-13 @key,
+attribute id, value string;
+entity book owns isbn-13 @key,
     owns isbn-10 @unique;
-user owns id @key;
-order owns id @key;
-review owns id @key;
+entity user owns id @key;
+entity order owns id @key;
+entity review owns id @key;
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 

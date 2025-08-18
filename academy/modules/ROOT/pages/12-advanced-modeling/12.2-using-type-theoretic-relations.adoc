@@ -82,24 +82,23 @@ Representing these classes in TypeQL is straightforward under the type-theoretic
 [,typeql]
 ----
 define
-user-action sub relation,
-    abstract,
+relation user-action @abstract,
     relates user,
     owns timestamp;
-order sub user-action,
+relation order sub user-action,
     owns id @key,
     owns status,
     plays order-line:order,
     plays delivery:delivered;
-review sub user-action,
+relation review sub user-action,
     relates reviewed,
     owns id @key,
     owns score,
     owns verified;
-login sub user-action,
+relation login sub user-action,
     owns success;
-user plays user-action:user;
-book plays review:reviewed;
+entity user plays user-action:user;
+entity book plays review:reviewed;
 ----
 
 .Exercise
@@ -156,24 +155,23 @@ class Delivery:
 [,typeql]
 ----
 define
-company sub entity,
-    abstract,
+entity company @abstract,
     owns name;
-publisher sub company;
-courier sub company,
+entity publisher sub company;
+entity courier sub company,
     plays delivery:deliverer;
-user sub relation,
+relation user,
     owns id @key,
     owns name,
     owns birth-date,
     relates location;
-delivery sub relation,
+relation delivery,
     relates delivered,
     relates deliverer,
     relates destination;
-city plays user:location;
-order plays delivery:delivered;
-address plays delivery:destination;
+entity city plays user:location;
+relation order plays delivery:delivered;
+entity address plays delivery:destination;
 ----
 =====
 ====
@@ -203,10 +201,10 @@ We could represent this in TypeQL in the following manner. We'll leave out the p
 [,typeql]
 ----
 define
-address sub relation,
+relation address,
     owns street,
     relates city;
-city plays address:city;
+entity city plays address:city;
 ----
 
 If we were to implement this as it is, then there would be a disparity between the way that users (defined in the above exercise) and addresses reference cities. The object type `city` would play the roles `user:location` and `address:city`, and there is no way we can polymorphically query these two roles without explicitly listing them. However, if we renamed the `address:city` role to `address:location`, then we can query them polymorphically via their shared role name, as we saw in xref:{page-version}@academy::7-understanding-query-patterns/7.2-relation-patterns.adoc[Lesson 7.2], using the following pattern.
@@ -221,10 +219,10 @@ This pattern will match instances of both `user` and `address` for `$located`, a
 [,typeql]
 ----
 define
-address sub relation,
+relation address,
     owns street,
     relates location;
-city plays address:location;
+entity city plays address:location;
 ----
 
 For this reason, it is even more important to choose interface names carefully when using the type-theoretic framework of the PERA model.
@@ -285,16 +283,15 @@ Here we run into an interesting problem. The types `Place` and `Country` are com
 [,typeql]
 ----
 define
-place sub relation,
-    abstract,
+relation place @abstract,
     owns name;
-country sub place,
+relation country sub place,
     plays city:location,
     plays state:location;
-state sub place,
+relation state sub place,
     relates location,
     plays city:location;
-city sub place,
+relation city sub place,
     relates location;
 ----
 
@@ -309,19 +306,18 @@ All of these solutions will allow the schema to pass validation, but none of the
 [,typeql]
 ----
 define
-world sub entity,
+entity world,
     plays country:location;
-place sub relation,
-    abstract,
+relation place @abstract,
     owns name;
-country sub place,
+relation country sub place,
     relates location,
     plays city:location,
     plays state:location;
-state sub place,
+relation state sub place,
     relates location,
     plays city:location;
-city sub place,
+relation city sub place,
     relates location;
 ----
 

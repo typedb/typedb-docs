@@ -6,16 +6,14 @@ We have seen how we can use subqueries to group results. In this lesson, we will
 
 [,typeql]
 ----
-match
-$book isa book;
-fetch
-$book: title;
-promotions: {
-    match
-    $promotion isa promotion;
-    ($book, $promotion) isa promotion-inclusion;
-    fetch
-    $promotion: name;
+match $book isa book;
+fetch {
+  "title": $book.title,
+  "promotions": [
+    match $promotion isa promotion;
+          ($book, $promotion) isa promotion-inclusion;
+    fetch { "name": $promotion.name };
+  ]
 };
 ----
 
@@ -23,22 +21,12 @@ Suppose that we only want to count the promotions each book is in rather than li
 
 [,typeql]
 ----
-match
-$book isa book;
-fetch
-$book: title;
-promotions: {
-    match
-    $promotion isa promotion;
-    ($book, $promotion) isa promotion-inclusion;
-    get;
-    count;
-};
+match $book isa book;
+reduce $promotion_count = count;
+fetch { "title": $book.title, "promotions": $promotion_count };
 ----
 
-An aggregation is done by using a *Get query* as a subquery. We will explore Get queries fully in xref:{page-version}@academy::11-manipulating-stateful-objects/11.1-retrieval-by-query.adoc[Lesson 11.1], where they will be used for stateful object retrieval. For now, we will only consider the aspects needed for aggregations when used as subqueries.
-
-A Get query consists of a `match` clause followed by a `get` clause. In this case, the `get` clause is empty, denoted by the immediately following `;` delimiter. We have then appended a *modifier* to the query, in this case the `count` modifier. This causes the subquery to return the number of results matched by the `match` clause, rather than the results themselves. Modifiers are appended to queries to modify the results returned in some manner. The `count` modifier is one of the *aggregation modifiers*, which can only be appended to Get queries. We will explore the aggregation modifiers in this lesson, and learn about some others in xref:{page-version}@academy::8-structuring-query-results/8.4-sorting-and-pagination.adoc[Lesson 8.4].
+Aggregations in 3.0 are done with the `reduce` stage. You can aggregate globally or `groupby` variables to compute per-group metrics. See xref:{page-version}@reference::typeql/pipelines/reduce.adoc[Reduce].
 
 If we *run* image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] this query, then we can see that the `promotions` field of each result contains an object representing a value. This field is in the same format as those of the *value variables* we learned to retrieve in xref:{page-version}@academy::7-understanding-query-patterns/7.5-value-expressions.adoc[Lesson 7.5].
 
@@ -103,36 +91,21 @@ Unlike the `count` modifier, the other aggregation modifiers all take a variable
 
 [,typeql]
 ----
-match
-$book isa book;
-fetch
-$book: title;
-average-score: {
-    match
-    $review isa review, has score $score;
-    ($review, $book) isa rating;
-    get;
-    mean $score;
-};
+match $book isa book;
+reduce $avg_score = mean($score) groupby $book;
+fetch { "title": $book.title, "average-score": $avg_score };
 ----
 
 Whereas the `count` modifier returns the number of results matched regardless of their content, the other aggregation modifiers require a specified numeric value to operate over. Here, we have supplied the `$score` attribute as the argument to the `mean` modifiers, indicating that we want the average of its values. The argument can be either a concept variable representing an attribute, or a value variable, as we learned about in xref:{page-version}@academy::7-understanding-query-patterns/7.5-value-expressions.adoc[Lesson 7.5]. In the next example, we use the `sum` modifier over the value variable `?line-total` to get the grand total for each order in the database.
 
 [,typeql]
 ----
-match
-$order isa order, has id $id;
-fetch
-$id;
-order-total: {
-    match
-    $book isa book, has price $retail-price;
-    ($order, $book) isa order-line,
-        has quantity $quantity;
-    ?line-total = $quantity * $retail-price;
-    get;
-    sum ?line-total;
-};
+match $order isa order, has id $id;
+  $book isa book, has price $retail_price;
+  ($order, $book) isa order-line, has quantity $quantity;
+let $line_total = $quantity * $retail_price;
+reduce $order_total = sum($line_total) groupby $id;
+fetch { "id": $id, "order-total": $order_total };
 ----
 
 == Filtering unique values
@@ -222,23 +195,18 @@ $order isa order;
 
 If the book in question has been ordered by the same user multiple times, then this pattern will match the user once per order because it contains the `$order` variable, which differs between the matches. We saw in xref:{page-version}@academy::8-structuring-query-results/8.1-fetching-attributes.adoc[Lesson 8.1] that Fetch queries return one result per unique combination of variables retrieved. The same applies to the Get queries we use for aggregations, except that one result is instead returned per unique combination of variables _matched_.
 
-If we want to retrieve only the unique set of users, we can *filter* the matches before aggregating by modifying the get query. In the following query, we add a filter to return only the unique set of users matched in the results, by adding the filtering variable `$user` to the `get` clause.
+If we want to aggregate over unique users, group the reduction by `$user`.
 
 [,typeql]
 ----
-match
-$book isa book, has isbn-13 $isbn;
-fetch
-$isbn;
-buyers: {
-    match
-    $user isa user;
-    $order isa order;
-    ($user, $order) isa action-execution;
-    ($book, $order) isa order-line;
-    get $user;
-    count;
-};
+match $book isa book, has isbn-13 $isbn;
+  $user isa user;
+  $order isa order;
+  ($user, $order) isa action-execution;
+  ($book, $order) isa order-line;
+reduce $buyers = count groupby $isbn, $user;
+reduce $buyer_count = count groupby $isbn;  # distinct users per ISBN
+fetch { "isbn": $isbn, "buyers": $buyer_count };
 ----
 
 If we run this new query, we see that the correct number of buyers is now returned for this book.
@@ -251,10 +219,7 @@ If we run this new query, we see that the correct number of buyers is now return
 }
 ----
 
-[IMPORTANT]
-====
-In order for a variable to be used as the argument of an aggregation modifier, either the `get` clause must be empty (unfiltered), or the variable must be included in it.
-====
+// Note: With `reduce`, pass variables as arguments and use `groupby` for per-group aggregation.
 
 [NOTE]
 ====
@@ -296,34 +261,16 @@ include::{page-version}@academy::attachment$bookstore-schema.tql[lines=18..]
 =====
 [,typeql]
 ----
-match
-$user isa user, has id $id;
-fetch
-$id;
-median-price: {
-    match
-    $book isa book, has price $price;
-    $order isa order;
-    ($book, $order) isa order-line;
-    ($user, $order) isa action-execution;
-    get $book, $price; median $price;
-};
-min-price: {
-    match
-    $book isa book, has price $price;
-    $order isa order;
-    ($book, $order) isa order-line;
-    ($user, $order) isa action-execution;
-    get; min $price;
-};
-max-price: {
-    match
-    $book isa book, has price $price;
-    $order isa order;
-    ($book, $order) isa order-line;
-    ($user, $order) isa action-execution;
-    get; max $price;
-};
+match $user isa user, has id $id;
+  $book isa book, has price $price;
+  $order isa order;
+  ($book, $order) isa order-line;
+  ($user, $order) isa action-execution;
+reduce $median_price = median($price) groupby $id, $book;
+reduce $median_price = median($price) groupby $id;  # median over distinct books
+reduce $min_price = min($price) groupby $id;
+reduce $max_price = max($price) groupby $id;
+fetch { "id": $id, "median-price": $median_price, "min-price": $min_price, "max-price": $max_price };
 ----
 =====
 ====

@@ -27,35 +27,34 @@ For the following schema, identify any errors that would cause validation checks
 [,typeql]
 ----
 define
-person sub entity,
+entity person,
     owns first-name,
     owns last-name,
     plays employment:employee;
-company sub entity,
+entity company,
     owns name,
     plays employment:employer;
-employment sub relation,
-    abstract,
+relation employment @abstract,
     relates employee,
     relates employer,
     owns start-date,
     owns end-date;
-full-time-employment sub employment,
+relation full-time-employment sub employment,
     relates employee,
     relates employer,
     owns salary;
-part-time-employment sub employment,
+relation part-time-employment sub employment,
     relates employee,
     relates employer,
     owns hourly-rate;
-name sub attribute, abstract, value string;
-first-name sub name;
-last-name sub name;
-start-date sub attribute, value datetime;
-end-date sub attribute, value datetime;
-pay sub attribute, value long;
-salary sub pay;
-hourly-rate sub pay;
+attribute name @abstract, value string;
+attribute first-name sub name;
+attribute last-name sub name;
+attribute start-date, value datetime;
+attribute end-date, value datetime;
+attribute pay, value integer;
+attribute salary sub pay;
+attribute hourly-rate sub pay;
 ----
 
 .Answers
@@ -74,32 +73,31 @@ Modify the schema to correct these errors.
 [,typeql]
 ----
 define
-person sub entity,
+entity person,
     owns first-name,
     owns last-name,
     plays employment:employee;
-company sub entity,
+entity company,
     owns company-name,
     plays employment:employer;
-employment sub relation,
-    abstract,
+relation employment @abstract,
     relates employee,
     relates employer,
     owns start-date,
     owns end-date;
-full-time-employment sub employment,
+relation full-time-employment sub employment,
     owns salary;
-part-time-employment sub employment,
+relation part-time-employment sub employment,
     owns hourly-rate;
-name sub attribute, abstract, value string;
-first-name sub name;
-last-name sub name;
-company-name sub name;
-start-date sub attribute, value datetime;
-end-date sub attribute, value datetime;
-pay sub attribute, abstract, value long;
-salary sub pay;
-hourly-rate sub pay;
+attribute name @abstract, value string;
+attribute first-name sub name;
+attribute last-name sub name;
+attribute company-name sub name;
+attribute start-date, value datetime;
+attribute end-date, value datetime;
+attribute pay @abstract, value integer;
+attribute salary sub pay;
+attribute hourly-rate sub pay;
 ----
 =====
 ====

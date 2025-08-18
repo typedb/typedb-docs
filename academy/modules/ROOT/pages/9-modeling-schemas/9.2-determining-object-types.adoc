@@ -18,7 +18,7 @@ The first step is to determine what entity types exist in the data. If we examin
 [,typeql]
 ----
 define
-book sub entity,
+entity book,
     owns isbn-13,
     owns isbn-10,
     owns title,
@@ -56,7 +56,7 @@ These facts indicate that these concepts have identities not determined by their
 [,typeql]
 ----
 define
-book sub entity,
+entity book,
     owns isbn-13,
     owns isbn-10,
     owns title,
@@ -66,22 +66,14 @@ book sub entity,
     owns genre,
     owns price,
     owns stock;
-author sub entity,
-    owns name;
-editor sub entity,
-    owns name;
-illustrator sub entity,
-    owns name;
-other-contributor sub entity,
-    owns name;
-publisher sub entity,
-    owns name;
-city sub entity,
-    owns name;
-state sub entity,
-    owns name;
-country sub entity,
-    owns name;
+entity author, owns name;
+entity editor, owns name;
+entity illustrator, owns name;
+entity other-contributor, owns name;
+entity publisher, owns name;
+entity city, owns name;
+entity state, owns name;
+entity country, owns name;
 ----
 
 Here we've made use of *interface polymorphism* to have several unrelated types implement ownership of `name`.
@@ -93,19 +85,19 @@ Now that properties have been moved from `book` to other entity types, we need a
 [,typeql]
 ----
 define
-contribution sub relation,
+relation contribution,
     relates contributor,
     relates work;
-publishing sub relation,
+relation publishing,
     relates publisher,
     relates published;
-book plays contribution:work,
+entity book plays contribution:work,
     plays publishing:published;
-author plays contribution:contributor;
-editor plays contribution:contributor;
-illustrator plays contribution:contributor;
-other-contributor plays contribution:contributor;
-publisher plays publishing:publisher;
+entity author plays contribution:contributor;
+entity editor plays contribution:contributor;
+entity illustrator plays contribution:contributor;
+entity other-contributor plays contribution:contributor;
+entity publisher plays publishing:publisher;
 ----
 
 Once again, we've leveraged interface polymorphism to re-use the same `contribution` relation types to represent the interdependencies between `book` and several contributor types: `author`, `editor`, `illustrator`, and `other-contributor`.
@@ -115,11 +107,11 @@ However, the connection from `city`, `state`, and `country` to `book` is less ob
 [,typeql]
 ----
 define
-publishing relates location,
+relation publishing relates location,
     owns year;
-city plays publishing:location;
-state plays publishing:location;
-country plays publishing:location;
+entity city plays publishing:location;
+entity state plays publishing:location;
+entity country plays publishing:location;
 ----
 
 We have also moved the `year` attribute from `book` to `publishing`, as it is more accurately a property of the publication event than it is the book itself. This is a good first iteration, but there are still many ways this model can be improved. We'll explore them in the next few lessons.

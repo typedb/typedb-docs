@@ -7,10 +7,10 @@ To define type hierarchies, we use the same Define queries as when defining indi
 [,typeql]
 ----
 define
-book sub entity;
-paperback sub book;
-hardback sub book;
-ebook sub book;
+entity book;
+entity paperback sub book;
+entity hardback sub book;
+entity ebook sub book;
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
@@ -19,7 +19,7 @@ To make one type a subtype of another, we simply replace the root type with the 
 [,typeql]
 ----
 define
-book owns title,
+entity book owns title,
     owns page-count,
     owns genre,
     owns price,
@@ -27,9 +27,9 @@ book owns title,
     plays order-line:item,
     plays rating:rated,
     plays promotion-inclusion:item;
-title sub attribute, value string;
-page-count sub attribute, value long;
-genre sub attribute, value string;
+attribute title, value string;
+attribute page-count, value integer;
+attribute genre, value string;
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
@@ -38,9 +38,9 @@ image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-
 [,typeql]
 ----
 define
-paperback owns stock;
-hardback owns stock;
-stock sub attribute, value long;
+entity paperback owns stock;
+entity hardback owns stock;
+attribute stock, value integer;
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
@@ -61,11 +61,11 @@ Write a query to define an entity type `company` with two subtypes `publisher` a
 [,typeql]
 ----
 define
-company sub entity,
+entity company,
     owns name;
-publisher sub company,
+entity publisher sub company,
     plays publishing:publisher;
-courier sub company,
+entity courier sub company,
     plays delivery:deliverer;
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
@@ -79,8 +79,8 @@ Abstract types cannot be directly instantiated, much like abstract classes in OO
 [,typeql]
 ----
 define
-book abstract;
-company abstract;
+entity book @abstract;
+entity company @abstract;
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
@@ -101,14 +101,13 @@ Write a query to define an abstract entity type `place` with three subtypes, `co
 [,typeql]
 ----
 define
-place sub entity,
-    abstract,
+entity place @abstract,
     owns name,
     plays locating:location,
     plays locating:located;
-country sub place;
-state sub place;
-city sub place;
+entity country sub place;
+entity state sub place;
+entity city sub place;
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 =====
@@ -121,12 +120,12 @@ Relation type hierarchies are defined in the same way as entity type hierarchies
 [,typeql]
 ----
 define
-contribution sub relation,
+relation contribution,
     relates work,
     relates contributor;
-authoring sub contribution;
-editing sub contribution;
-illustrating sub contribution;
+relation authoring sub contribution;
+relation editing sub contribution;
+relation illustrating sub contribution;
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
@@ -142,9 +141,9 @@ We could also define new roles on a specific subtype using the `relates` keyword
 [,typeql]
 ----
 define
-authoring relates author as contributor;
-editing relates editor as contributor;
-illustrating relates illustrator as contributor;
+relation authoring relates author as contributor;
+relation editing relates editor as contributor;
+relation illustrating relates illustrator as contributor;
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
@@ -169,11 +168,11 @@ Write a query to define the following new roleplayers:
 [,typeql]
 ----
 define
-book plays contribution:work;
-contributor plays contribution:contributor;
-contributor plays authoring:author;
-contributor plays editing:editor;
-contributor plays illustrating:illustrator;
+entity book plays contribution:work;
+entity contributor plays contribution:contributor;
+entity contributor plays authoring:author;
+entity contributor plays editing:editor;
+entity contributor plays illustrating:illustrator;
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 =====
@@ -233,17 +232,12 @@ In order to define subtypes of a given attribute type, the supertype must be *ab
 [,typeql]
 ----
 define
-isbn sub attribute,
-    abstract,
-    value string;
-isbn-13 sub isbn;
-isbn-10 sub isbn;
+attribute isbn @abstract, value string;
+attribute isbn-13 sub isbn;
+attribute isbn-10 sub isbn;
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
 Value types of attribute types are inherited by their subtypes. In this case, `isbn-13` and `isbn-10` inherit the `string` value type.
 
-[NOTE]
-====
-In TypeDB 2.x, all attribute types in a hierarchy must have the same value type, as specified in the definition of the supertype. In TypeDB 3.0, it will be possible to create abstract attribute types that do not have a value type, and to assign different value types to their subtypes. To learn more about this and other powerful new features, see the https://typedb.com/blog/typedb-3-roadmap[TypeDB 3.0 roadmap].
-====
+// Note: In 3.0, kinds are explicit and annotations are unified via @annotations.

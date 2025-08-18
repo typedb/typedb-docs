@@ -6,22 +6,15 @@ Try running the following query, which retrieves a particular user's location.
 
 [,typeql]
 ----
-match
-$user isa user, has id "u0003";
+match $user isa user, has id "u0003";
 (located: $user, location: $place) isa locating;
-fetch
-$place: name;
+fetch { "name": $place.name };
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 [,json]
 ----
-{
-    "place": {
-        "name": [ { "value": "Newark", "value_type": "string", "type": { "label": "name", "root": "attribute" } } ],
-        "type": { "label": "city", "root": "entity" }
-    }
-}
+{ "name": "Newark" }
 ----
 
 As we can see from the results, the user is located in Newark. Now, toggle on the *infer* option and run the query again.
@@ -35,24 +28,9 @@ You should see the following results.
 
 [,json]
 ----
-{
-    "place": {
-        "name": [ { "value": "Newark", "value_type": "string", "type": { "label": "name", "root": "attribute" } } ],
-        "type": { "label": "city", "root": "entity" }
-    }
-}
-{
-    "place": {
-        "name": [ { "value": "New Jersey", "value_type": "string", "type": { "label": "name", "root": "attribute" } } ],
-        "type": { "label": "state", "root": "entity" }
-    }
-}
-{
-    "place": {
-        "name": [ { "value": "United States", "value_type": "string", "type": { "label": "name", "root": "attribute" } } ],
-        "type": { "label": "country", "root": "entity" }
-    }
-}
+{ "name": "Newark" }
+{ "name": "New Jersey" }
+{ "name": "United States" }
 ----
 
 We haven't inserted any new data or changed our query, but TypeDB is now generating additional results! This is due to TypeDB's built-in *rule inference* engine, which allows it to generate new data based on *rules* defined in the schema. We'll learn how to define rules in xref:{page-version}@academy::5-defining-schemas/5.4-defining-rules.adoc[Lesson 5.4], but for now let's take a quick look at the one we've made use of for the previous query.
@@ -83,13 +61,11 @@ Once a rule is defined and rule inference is switched on, we can use the inferre
 
 [,typeql]
 ----
-match
-$us isa country, has name "United States";
+match $us isa country, has name "United States";
 (location: $us, located: $user) isa locating;
 (executor: $user, action: $order) isa action-execution;
 (order: $order, item: $book) isa order-line;
-fetch
-$book: title;
+fetch { "title": $book.title };
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 

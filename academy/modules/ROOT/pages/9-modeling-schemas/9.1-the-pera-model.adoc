@@ -79,40 +79,39 @@ The PERA model is implemented in TypeDB through https://typedb.com/papers/typeql
 [,typeql]
 ----
 define
-book sub entity,
-    abstract,
+entity book @abstract,
     owns title,
     owns price,
     plays order-line:item;
-hardback sub book,
+entity hardback sub book,
     owns stock;
-paperback sub book,
+entity paperback sub book,
     owns stock;
-ebook sub book;
-order sub entity,
-    owns id,
-    owns status,
-    plays order-line:order;
-order-line sub relation,
+entity ebook sub book;
+relation order-line,
     relates order,
     relates item,
     owns quantity,
     owns price;
-title sub attribute, value string;
-price sub attribute, value double;
-stock sub attribute, value long;
-id sub attribute, value string;
-status sub attribute, value string;
-quantity sub attribute, value long;
+entity order,
+    owns id,
+    owns status,
+    plays order-line:order;
+attribute title, value string;
+attribute price, value double;
+attribute stock, value integer;
+attribute id, value string;
+attribute status, value string;
+attribute quantity, value integer;
 ----
 
 === Type definitions
 
 A new type is defined using a `sub` statement. For example, in the above schema excerpt:
 
-* `book sub entity;` defines a new entity type with label `book`.
-* `order-line sub relation;` defines a new relation type with label `order-line`.
-* `title sub attribute;` defines a new attribute type with label `title`.
+* `entity book;` defines a new entity type with label `book`.
+* `relation order-line;` defines a new relation type with label `order-line`.
+* `attribute title;` defines a new attribute type with label `title`.
 
 === Interface definitions
 

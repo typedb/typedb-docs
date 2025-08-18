@@ -6,10 +6,8 @@ The results of any query can be sorted by appending the `sort` modifier to the q
 
 [,typeql]
 ----
-match
-$book isa book, has page-count $count;
-fetch
-$book: title, page-count;
+match $book isa book, has page-count $count;
+fetch { "title": $book.title, "page-count": $book.page-count };
 sort $count;
 ----
 
@@ -168,10 +166,8 @@ The `sort` modifier takes a variable as an argument, denoting the variable to so
 
 [,typeql]
 ----
-match
-$book isa book, has page-count $count;
-fetch
-$book: title, page-count;
+match $book isa book, has page-count $count;
+fetch { "title": $book.title, "page-count": $book.page-count };
 sort $count desc;
 ----
 
@@ -364,17 +360,15 @@ You will need to use a subquery to retrieve the contributors, and use `sort` mod
 =====
 [,typeql]
 ----
-match
-$book isa book, has title $title;
-fetch
-$title;
-contributors: {
-    match
-    $contributor isa contributor, has name $name;
-    ($book, $contributor) isa contribution;
-    fetch
-    $name;
+match $book isa book, has title $title;
+fetch {
+  "title": $title,
+  "contributors": [
+    match $contributor isa contributor, has name $name;
+          ($book, $contributor) isa contribution;
+    fetch { "name": $name };
     sort $name;
+  ]
 };
 sort $title;
 ----
@@ -387,10 +381,8 @@ We can paginate the sorted results of any query by appending the `limit` and `of
 
 [,typeql]
 ----
-match
-$book isa book, has page-count $count;
-fetch
-$book: title, page-count;
+match $book isa book, has page-count $count;
+fetch { "title": $book.title, "page-count": $book.page-count };
 sort $count;
 limit 3;
 ----
@@ -424,10 +416,8 @@ In the next example, we also add an `offset` modifier to retrieve the three book
 
 [,typeql]
 ----
-match
-$book isa book, has page-count $count;
-fetch
-$book: title, page-count;
+match $book isa book, has page-count $count;
+fetch { "title": $book.title, "page-count": $book.page-count };
 sort $count;
 offset 3;
 limit 3;
@@ -492,12 +482,10 @@ include::{page-version}@academy::attachment$bookstore-schema.tql[lines=18..]
 =====
 [,typeql]
 ----
-match
-$book isa book;
-$publication isa publication, has year $year;
-($book, $publication) isa publishing;
-fetch
-$book: title;
+match $book isa book;
+  $publication isa publication, has year $year;
+  ($book, $publication) isa publishing;
+fetch { "title": $book.title };
 sort $year desc;
 limit 5;
 ----

@@ -7,17 +7,16 @@ In xref:{page-version}@academy::5-defining-schemas/5.5-schema-validation.adoc[Le
 [,typeql]
 ----
 define
-isbn sub attribute, abstract, value string;
-isbn-13 sub isbn;
-isbn-10 sub isbn;
-book sub relation,
-    abstract,
+attribute isbn @abstract, value string;
+attribute isbn-13 sub isbn;
+attribute isbn-10 sub isbn;
+relation book @abstract,
     relates publisher,
     owns isbn-13 @key,
     owns isbn-10 @unique;
-paperback sub book;
-hardback sub book;
-ebook sub book;
+relation paperback sub book;
+relation hardback sub book;
+relation ebook sub book;
 ----
 
 Its subtypes `paperback`, `hardback`, and `ebook` also own `isbn-13` and `isbn-10` by inheritance. If we make `book` own `isbn`, we will violate schema validation rules, even though they are both abstract types.
@@ -25,18 +24,17 @@ Its subtypes `paperback`, `hardback`, and `ebook` also own `isbn-13` and `isbn-1
 [,typeql]
 ----
 define
-isbn sub attribute, abstract, value string;
-isbn-13 sub isbn;
-isbn-10 sub isbn;
-book sub relation,
-    abstract,
+attribute isbn @abstract, value string;
+attribute isbn-13 sub isbn;
+attribute isbn-10 sub isbn;
+relation book @abstract,
     relates publisher,
     owns isbn,
     owns isbn-13 @key,
     owns isbn-10 @unique;
-paperback sub book;
-hardback sub book;
-ebook sub book;
+relation paperback sub book;
+relation hardback sub book;
+relation ebook sub book;
 ----
 
 This is because `paperback`, `hardback`, and `ebook` are concrete, and they inherit ownership of the abstract `isbn`. We can get around this by *overriding* the interface _implementation_ using the `as` keyword. In xref:{page-version}@academy::9-modeling-schemas/9.6-using-interface-hierarchies.adoc[Lesson 9.6], we used the `as` keyword in `relates` statements to override interface _definitions_. This ensured that the role interfaces exposed by the relation supertype would not be exposed by its subtypes. Similarly, we can use it in `owns` and `plays` statements to ensure that the interfaces implemented by an object supertype will not be implemented by its subtypes.
@@ -44,20 +42,19 @@ This is because `paperback`, `hardback`, and `ebook` are concrete, and they inhe
 [,typeql]
 ----
 define
-isbn sub attribute, abstract, value string;
-isbn-13 sub isbn;
-isbn-10 sub isbn;
-book sub relation,
-    abstract,
+attribute isbn @abstract, value string;
+attribute isbn-13 sub isbn;
+attribute isbn-10 sub isbn;
+relation book @abstract,
     relates publisher,
     owns isbn;
-paperback sub book,
+relation paperback sub book,
     owns isbn-13 as isbn @key,
     owns isbn-10 as isbn @unique;
-hardback sub book,
+relation hardback sub book,
     owns isbn-13 as isbn @key,
     owns isbn-10 as isbn @unique;
-ebook sub book,
+relation ebook sub book,
     owns isbn-13 as isbn @key,
     owns isbn-10 as isbn @unique;
 ----
@@ -78,27 +75,24 @@ By making use of schema validation rules and interface implementation overrides,
 [,typeql]
 ----
 define
-isn sub attribute, abstract, value string;
-isbn sub isn, abstract;
-isbn-13 sub isbn;
-isbn-10 sub isbn;
-issn sub isn;
-publication sub relation,
-    abstract,
+attribute isn @abstract, value string;
+attribute isbn @abstract sub isn;
+attribute isbn-13 sub isbn;
+attribute isbn-10 sub isbn;
+attribute issn sub isn;
+relation publication @abstract,
     relates publisher;
-book sub publication,
-    abstract,
+relation book @abstract sub publication,
     owns isbn-13 @key,
     owns isbn-10 @unique;
-paperback sub book;
-hardback sub book;
-ebook sub book;
-serial sub publication,
-    abstract,
+relation paperback sub book;
+relation hardback sub book;
+relation ebook sub book;
+relation serial @abstract sub publication,
     owns issn @key;
-newspaper sub serial;
-magazine sub serial;
-journal sub serial;
+relation newspaper sub serial;
+relation magazine sub serial;
+relation journal sub serial;
 ----
 
 This allows us to polymorphically describe all publications and their "international standard numbers" (ISNs) with the following pattern.
@@ -121,28 +115,25 @@ Now we will have publications in the database that do not have ISNs, and so are 
 [,typeql]
 ----
 define
-isn sub attribute, abstract, value string;
-isbn sub isn, abstract;
-isbn-13 sub isbn;
-isbn-10 sub isbn;
-issn sub isn;
-publication sub relation,
-    abstract,
+attribute isn @abstract, value string;
+attribute isbn @abstract sub isn;
+attribute isbn-13 sub isbn;
+attribute isbn-10 sub isbn;
+attribute issn sub isn;
+relation publication @abstract,
     relates publisher,
     owns isn @key;
-book sub publication,
-    abstract,
+relation book @abstract sub publication,
     owns isbn-13 as isn,
     owns isbn-10 @unique;
-paperback sub book;
-hardback sub book;
-ebook sub book;
-serial sub publication,
-    abstract,
+relation paperback sub book;
+relation hardback sub book;
+relation ebook sub book;
+relation serial @abstract sub publication,
     owns issn as isn;
-newspaper sub serial;
-magazine sub serial;
-journal sub serial;
+relation newspaper sub serial;
+relation magazine sub serial;
+relation journal sub serial;
 ----
 
 We have also made sure to apply the `@key` annotation to the top-level ownership implementation. This causes it to be inherited and shared, ensuring that every publication has exactly one ISN, and no two ISNs are the same, even if they are of different types. Now if we were to define `music-score` as we did above, the commit would fail.
@@ -156,8 +147,8 @@ In order to define new subtypes of publication, we are now forced to give them o
 [,typeql]
 ----
 define
-ismn sub isn;
-music-score sub publication,
+attribute ismn sub isn;
+relation music-score sub publication,
     owns ismn as isn;
 ----
 

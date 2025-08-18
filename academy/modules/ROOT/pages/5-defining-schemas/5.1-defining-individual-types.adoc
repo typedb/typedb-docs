@@ -11,18 +11,18 @@ The following is an example of a Define query that defines four new entity types
 [,typeql]
 ----
 define
-user sub entity;
-contributor sub entity;
-address sub entity;
-promotion sub entity;
+entity user;
+entity contributor;
+entity address;
+entity promotion;
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
 Using a *schema* session and a *write* transaction, try *running* image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] this query on a newly created database. After running it, make sure to *commit* image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] the transaction. You should see the four new entity types appear in the *type browser*.
 
-When used in a Define query, a `sub` statement defines a new type. The https://en.wikipedia.org/wiki/Subject%E2%80%93verb%E2%80%93object_word_order[subject] of each statement is the new *type label*, and the https://en.wikipedia.org/wiki/Subject%E2%80%93verb%E2%80%93object_word_order[object] is one of the three *root types*: `entity`, `relation`, or `attribute`, indicating which kind of type is being defined.
+When used in a Define query, types are declared with explicit kinds in 3.0: `entity`, `relation`, or `attribute` (there are no predefined root types). For example, `entity user;` declares a new entity type `user`. Subtyping is expressed by adding `, sub <supertype>`: `entity person, sub animal;`.
 
-When `sub` statements are used in a Define query, they are *data definition statements*. This is in contrast to when used in other kinds of query, as we saw in xref:{page-version}@academy::3-reading-data/3.4-fetching-schema-types.adoc[Lesson 3.4], in which they are *data manipulation statements*. Define queries comprise only data definition statements, and so cannot contain any variables. The only permitted terms are keywords and type labels.
+Define queries comprise only data definition statements and cannot contain variables. The only permitted terms are keywords and type labels.
 
 .Exercise
 [caption=""]
@@ -35,9 +35,9 @@ Write a query to define three new entity types: `order`, `review`, and `publicat
 [,typeql]
 ----
 define
-order sub entity;
-review sub entity;
-publication sub entity;
+entity order;
+entity review;
+entity publication;
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 =====
@@ -50,13 +50,13 @@ The syntax for defining new relation types is the same as that used to define en
 [,typeql]
 ----
 define
-rating sub relation,
+relation rating,
     relates review,
     relates rated;
-order-line sub relation,
+relation order-line,
     relates order,
     relates item;
-publishing sub relation,
+relation publishing,
     relates publisher,
     relates published,
     relates publication;
@@ -73,7 +73,7 @@ In this case, `rating` and `order-line` are binary relation types, while `publis
 
 [NOTE]
 ====
-TypeDB 2.x does not include syntax for specifying the cardinality of roles. When instantiating a relation, all roles can be played any number of times. Syntax for restricting role cardinalities will be included in TypeDB 3.0. To learn more about this and other powerful new features, see the https://typedb.com/blog/typedb-3-roadmap[TypeDB 3.0 roadmap].
+In 3.0, default cardinalities are applied to `owns`, `relates`, and `plays`. Defaults: `plays @card(0..)`, `owns @card(0..1)`, `relates @card(0..1)`. Specify cardinalities explicitly when you expect multiple instances.
 ====
 
 .Exercise
@@ -111,10 +111,10 @@ Once relation types and their roles have been defined, we can declare which type
 [,typeql]
 ----
 define
-review plays rating:review;
-order plays order-line:order;
-publication plays publishing:publication;
-promotion plays promotion-inclusion:promotion;
+entity review plays rating:review;
+entity order plays order-line:order;
+entity publication plays publishing:publication;
+entity promotion plays promotion-inclusion:promotion;
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
@@ -152,11 +152,11 @@ Whereas relations must be defined with roles, attributes must be defined with *v
 [,typeql]
 ----
 define
-verified sub attribute, value boolean;
-quantity sub attribute, value long;
-price sub attribute, value double;
-name sub attribute, value string;
-birth-date sub attribute, value datetime;
+attribute verified, value boolean;
+attribute quantity, value integer;
+attribute price, value double;
+attribute name, value string;
+attribute birth-date, value datetime;
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
@@ -182,13 +182,13 @@ Write a query to define seven new attribute types:
 [,typeql]
 ----
 define
-year sub attribute, value long;
-score sub attribute, value long;
-discount sub attribute, value double;
-code sub attribute, value string;
-street sub attribute, value string;
-start-timestamp sub attribute, value datetime;
-end-timestamp sub attribute, value datetime;
+attribute year, value integer;
+attribute score, value integer;
+attribute discount, value double;
+attribute code, value string;
+attribute street, value string;
+attribute start-timestamp, value datetime;
+attribute end-timestamp, value datetime;
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 =====
@@ -199,12 +199,12 @@ With attribute types defined, we can now declare which types own which attribute
 [,typeql]
 ----
 define
-user owns name,
+entity user owns name,
     owns birth-date;
-contributor owns name;
-promotion owns name;
-review owns verified;
-order-line owns quantity,
+entity contributor owns name;
+entity promotion owns name;
+entity review owns verified;
+relation order-line owns quantity,
     owns price;
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
@@ -228,13 +228,13 @@ Write a query to define seven new ownerships:
 [,typeql]
 ----
 define
-address owns street;
-publication owns year;
-review owns score;
-promotion owns code,
+entity address owns street;
+entity publication owns year;
+entity review owns score;
+entity promotion owns code,
     owns start-timestamp,
     owns end-timestamp;
-promotion-inclusion owns discount;
+relation promotion-inclusion owns discount;
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 =====
@@ -257,18 +257,18 @@ Write a query to define:
 [,typeql]
 ----
 define
-login sub entity,
+entity login,
     owns success,
     plays action-execution:action;
-action-execution sub relation,
+relation action-execution,
     relates action,
     relates executor,
     owns timestamp;
-order plays action-execution:action;
-review plays action-execution:action;
-user plays action-execution:executor;
-success sub attribute, value boolean;
-timestamp sub attribute, value datetime;
+entity order plays action-execution:action;
+entity review plays action-execution:action;
+entity user plays action-execution:executor;
+attribute success, value boolean;
+attribute timestamp, value datetime;
 ----
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 =====

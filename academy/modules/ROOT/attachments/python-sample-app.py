@@ -16,12 +16,10 @@
 #
 
 from enum import Enum
-from typing import Iterator, Optional, Any
-from typedb.api.connection.session import TypeDBSession
-from typedb.api.connection.transaction import TypeDBTransaction
-from typedb.driver import TypeDB, SessionType, TransactionType
+from typing import Iterator, Optional
+from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions
 
-ADDRESS = "localhost:1730"
+ADDRESS = "localhost:1729"
 DATABASE = "bookstore"
 
 
@@ -31,205 +29,172 @@ class BookFormat(Enum):
     EBOOK = "ebook"
 
 
-class BookNotFoundException(Exception):
-    pass
-
-
 def filter_books(
-    transaction: TypeDBTransaction,
+    query_prefix: str,
     format: Optional[BookFormat],
     genres: Optional[list[str]],
     contributor_names: Optional[list[str]],
     publisher_name: Optional[str],
     publication_year: Optional[int],
-) -> Iterator[str]:
+) -> str:
     if format is None:
-        query = f"""match $book isa book;"""
+        query = f"{query_prefix} $book isa book;"
     else:
-        query = f"""match $book isa {format.value};"""
+        query = f"{query_prefix} $book isa {format.value};"
 
     if genres is not None:
         for genre in genres:
-            query += f""" $book has genre "{genre}";"""
+            query += f" $book has genre \"{genre}\";"
 
     if contributor_names is not None:
         for i, name in enumerate(contributor_names):
-            query += f""" $contributor-{i} isa contributor, has name "{name}"; ($book, $contributor-{i}) isa contribution;"""
+            query += (
+                f" $contributor_{i} isa contributor, has name \"{name}\";"
+                f" ($book, $contributor_{i}) isa contribution;"
+            )
 
     if publisher_name is not None:
-        query += f""" $publisher isa publisher, has name "{publisher_name}"; ($book, $publisher) isa publishing;"""
+        query += (
+            f" $publisher isa publisher, has name \"{publisher_name}\";"
+            f" ($book, $publisher) isa publishing;"
+        )
 
     if publication_year is not None:
-        query += f""" $publication isa publication, has year {publication_year}; ($book, $publication) isa publishing;"""
+        query += (
+            f" $publication isa publication, has year {publication_year};"
+            f" ($book, $publication) isa publishing;"
+        )
 
-    query += f""" fetch $book: isbn-13;"""
-
-    for result in transaction.query.fetch(query):
-        yield result["book"]["isbn-13"][0]["value"]
-
-
-def get_book_details(transaction: TypeDBTransaction, isbn: str) -> list[tuple[str, Any]]:
-    book_query = f"""
-        match
-        $book isa! $book-type, has isbn "{isbn}";
-        fetch
-        $book-type;
-        $book: attribute;
-    """
-
-    try:
-        result = next(transaction.query.fetch(book_query))
-    except StopIteration:
-        raise BookNotFoundException()
-
-    details = list()
-
-    details.append(("format", result["book-type"]["label"]))
-
-    for attribute in result["book"]["attribute"]:
-        details.append((attribute["type"]["label"], attribute["value"]))
-
-    contributing_query = f"""
-        match
-        $book isa book, has isbn "{isbn}";
-        $contributor isa contributor;
-        ($book, $contributor-role: $contributor) isa! $contribution-type;
-        $contribution-type relates $contributor-role;
-        fetch
-        $contributor: name;
-        $contributor-role;
-    """
-
-    for result in transaction.query.fetch(contributing_query):
-        contributor_name = result["contributor"]["name"][0]["value"]
-        contributor_role = result["contributor-role"]["label"].split(":")[1]
-        details.append((contributor_role, contributor_name))
-
-    publishing_query = f"""
-        match
-        $book isa book, has isbn "{isbn}";
-        $publisher isa publisher;
-        $publication isa publication;
-        ($book, $publisher, $publication) isa publishing;
-        fetch
-        $publisher: name;
-        $publication: year;
-    """
-
-    result = next(transaction.query.fetch(publishing_query))
-    publisher_name = result["publisher"]["name"][0]["value"]
-    details.append(("publisher", publisher_name))
-    publication_year = result["publication"]["year"][0]["value"]
-    details.append(("year", publication_year))
-
-    return details
+    query += " fetch { \"isbn-13\": $book.isbn-13 };"
+    return query
 
 
-def format_book_details(details: list[tuple[str, Any]]) -> str:
-    output = ""
+def get_book_details_query(isbn: str) -> list[str]:
+    return [
+        f"""
+        match $book isa! $book_type, has isbn \"{isbn}\";
+        fetch {{ "format": $book_type, "attributes": {{ $book.* }} }};
+        """,
+        f"""
+        match $book isa book, has isbn \"{isbn}\";
+              $contributor isa contributor;
+              ($book, $contributor_role: $contributor) isa! $contribution_type;
+              $contribution_type relates $contributor_role;
+        fetch {{ "name": $contributor.name, "role": $contributor_role }};
+        """,
+        f"""
+        match $book isa book, has isbn \"{isbn}\";
+              $publisher isa publisher;
+              $publication isa publication;
+              ($book, $publisher, $publication) isa publishing;
+        fetch {{ "publisher": $publisher.name, "year": $publication.year }};
+        """,
+    ]
 
-    for detail in details:
-        field_name = detail[0].replace("-", " ").title().replace("Isbn ", "ISBN-")
-        field_value = detail[1]
-        output += f"""\n{field_name}: {field_value}"""
 
-    return output
+def print_book_details(driver) -> None:
+    isbn = input("Enter ISBN-13 or ISBN-10: ").strip()
+    with driver.transaction(DATABASE, TransactionType.READ) as tx:
+        answers = [tx.query(q).resolve() for q in get_book_details_query(isbn)]
 
-
-def retrieve_book(session: TypeDBSession) -> None:
-    isbn = input("""Enter ISBN-13 or ISBN-10: """).strip()
-
-    with session.transaction(TransactionType.READ) as transaction:
+        # format
+        docs = answers[0].as_concept_documents()
         try:
-            details = get_book_details(transaction, isbn)
-            print(format_book_details(details))
-        except BookNotFoundException:
-            print(f"""No book found with ISBN: "{isbn}" """)
+            first = next(docs)
+        except StopIteration:
+            print(f"No book found with ISBN: \"{isbn}\"")
+            return
+
+        print(f"\nFormat: {first['format']['label']}")
+        for attr in first["attributes"]:
+            print(f"{attr['type']['label'].replace('-', ' ').title().replace('Isbn ', 'ISBN-')}: {attr['value']}")
+
+        # contributors
+        for doc in answers[1].as_concept_documents():
+            print(f"{doc['role']['label'].split(':')[1]}: {doc['name']}")
+
+        # publishing
+        pub = next(answers[2].as_concept_documents())
+        print(f"Publisher: {pub['publisher']}")
+        print(f"Year: {pub['year']}")
 
 
-def search_books(session: TypeDBSession) -> None:
-    print("""Available filters:""")
-    print(""" - Format.""")
-    print(""" - Genres.""")
-    print(""" - Contributor names.""")
-    print(""" - Publisher name.""")
-    print(""" - Publication year.""")
+def search_books(driver) -> None:
+    print("Available filters:")
+    print(" - Format.")
+    print(" - Genres.")
+    print(" - Contributor names.")
+    print(" - Publisher name.")
+    print(" - Publication year.")
 
-    if input("""Filter on format? (Y/N): """).strip().upper() == "Y":
+    if input("Filter on format? (Y/N): ").strip().upper() == "Y":
         try:
-            format_ = BookFormat(input("""Enter format: """).strip())
+            format_ = BookFormat(input("Enter format: ").strip())
         except ValueError:
-            print("""Not a valid book format.""")
+            print("Not a valid book format.")
             return
     else:
         format_ = None
 
-    if input("""Filter on genres? (Y/N): """).strip().upper() == "Y":
-        genres = list()
-
+    if input("Filter on genres? (Y/N): ").strip().upper() == "Y":
+        genres = []
         while True:
-            genres.append(input("""Enter genre: """).strip())
-
-            if input("""Filter on another genre? (Y/N): """).strip().upper() != "Y":
+            genres.append(input("Enter genre: ").strip())
+            if input("Filter on another genre? (Y/N): ").strip().upper() != "Y":
                 break
     else:
         genres = None
 
-    if input("""Filter on contributors? (Y/N): """).strip().upper() == "Y":
-        contributor_names = list()
-
+    if input("Filter on contributors? (Y/N): ").strip().upper() == "Y":
+        contributor_names = []
         while True:
-            contributor_names.append(input("""Enter contributor name: """).strip())
-
-            if input("""Filter on another contributor? (Y/N): """).strip().upper() != "Y":
+            contributor_names.append(input("Enter contributor name: ").strip())
+            if input("Filter on another contributor? (Y/N): ").strip().upper() != "Y":
                 break
     else:
         contributor_names = None
 
-    if input("""Filter on publisher? (Y/N): """).strip().upper() == "Y":
-        publisher_name = input("""Enter publisher name: """)
+    if input("Filter on publisher? (Y/N): ").strip().upper() == "Y":
+        publisher_name = input("Enter publisher name: ")
     else:
         publisher_name = None
 
-    if input("""Filter on publication year? (Y/N): """).strip().upper() == "Y":
-        publication_year = input("""Enter year: """)
+    if input("Filter on publication year? (Y/N): ").strip().upper() == "Y":
+        publication_year = int(input("Enter year: "))
     else:
         publication_year = None
 
-    with session.transaction(TransactionType.READ) as transaction:
-        isbns = filter_books(transaction, format_, genres, contributor_names, publisher_name, publication_year)
-        book_found = False
-
-        for isbn in isbns:
-            try:
-                details = get_book_details(transaction, isbn)
-                print(format_book_details(details))
-                book_found = True
-            except BookNotFoundException:
-                pass
-
-        if not book_found:
-            print("""\nNo results found.""")
+    query = filter_books("match", format_, genres, contributor_names, publisher_name, publication_year)
+    with driver.transaction(DATABASE, TransactionType.READ) as tx:
+        docs = tx.query(query).resolve().as_concept_documents()
+        found = False
+        for doc in docs:
+            print(f"\nISBN-13: {doc['isbn-13']}")
+            found = True
+        if not found:
+            print("\nNo results found.")
 
 
 if __name__ == "__main__":
-    with TypeDB.core_driver(ADDRESS) as driver:
-        with driver.session(DATABASE, SessionType.DATA) as session:
-            while True:
-                print("""Available commands:""")
-                print(""" - R: Retrieve book details by ISBN.""")
-                print(""" - S: Search for books.""")
-                print(""" - Q: Quit.""")
+    # Update credentials/options as needed for your deployment
+    credentials = Credentials("admin", "password")
+    options = DriverOptions(is_tls_enabled=False, tls_root_ca_path=None)
+    with TypeDB.driver(ADDRESS, credentials, options) as driver:
+        while True:
+            print("Available commands:")
+            print(" - R: Retrieve book details by ISBN.")
+            print(" - S: Search for books.")
+            print(" - Q: Quit.")
 
-                command = input("""Enter command: """).strip().upper()
+            command = input("Enter command: ").strip().upper()
 
-                if command == "R":
-                    retrieve_book(session)
-                elif command == "S":
-                    search_books(session)
-                elif command == "Q":
-                    break
-                else:
-                    print(f"""Unrecognised command: "{command}" """)
+            if command == "R":
+                print_book_details(driver)
+            elif command == "S":
+                search_books(driver)
+            elif command == "Q":
+                break
+            else:
+                print(f"Unrecognised command: \"{command}\"")
 
-                print()
+            print()

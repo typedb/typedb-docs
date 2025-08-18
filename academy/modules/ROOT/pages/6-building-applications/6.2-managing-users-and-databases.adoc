@@ -5,36 +5,36 @@
 
 == Connecting to the server
 
-With TypeDB Studio, we were able to connect to the server automatically by providing the address, username, and password. Afterward, Studio managed the connection, session, and transactions for us. When working with the native language drivers, we must manage these ourselves.
-
-To connect to the server, we must instantiate a *driver object*, as illustrated in the following code snippet.
+TypeDB Studio manages the connection automatically. With native drivers, instantiate a *driver object* and open transactions directly (3.0 removes sessions).
 
 [,python]
 ----
-ADDRESS = "localhost:1730"
+from typedb.driver import TypeDB, Credentials, DriverOptions
 
-with TypeDB.core_driver(ADDRESS) as driver:
+ADDRESS = "localhost:1729"
+
+with TypeDB.driver(ADDRESS, Credentials("admin", "password"), DriverOptions(is_tls_enabled=False)) as driver:
     # code goes here
 ----
 
-The driver object `driver` takes one argument, the *server address*, and should be instantiated using a https://peps.python.org/pep-0343/[context manager]. This is essential to ensure that the driver's destructor is called regardless of how the program terminates, which will free the resources on the server. We then conduct all application operations within the scope of the context manager.
+The driver is created with the server address, credentials, and options, and should be used via a https://peps.python.org/pep-0343/[context manager] to ensure resources are cleaned up on exit.
 
 [WARNING]
 ====
-If destructors are not properly called when using the TypeDB driver APIs, it is possible to temporarily deadlock transactions in some niche cases. To avoid this, ensure that you always take appropriate measures to ensure that destructors are called regardless of application termination state.
+Always ensure the driver's destructor is called (use a context manager) to prevent lingering resources.
 ====
 
 There are three key ways we can use a driver object:
 
 * Manage users.
 * Manage databases.
-* Open sessions.
+* Open transactions.
 
-We'll cover managing databases in this lesson, and then see how to open sessions in xref:{page-version}@academy::6-building-applications/6.3-sessions-and-transactions.adoc[Lesson 6.3].
+We'll cover managing databases in this lesson, and then see how to open transactions in xref:{page-version}@academy::6-building-applications/6.3-sessions-and-transactions.adoc[Lesson 6.3].
 
 [NOTE]
 ====
-User management features are only available in TypeDB Cloud and Enterprise, and will not be covered in this course. Instructions can be found on the xref:{page-version}@manual::configuring/users.adoc[user management page] of the TypeDB manual.
+User management is available in all editions in 3.0. See core concepts for authentication details.
 ====
 
 == Managing databases
@@ -43,7 +43,7 @@ Database management controls can be accessed through the `databases` property of
 
 [,python]
 ----
-with TypeDB.core_driver(ADDRESS) as driver:
+with TypeDB.driver(ADDRESS, Credentials("admin", "password"), DriverOptions(is_tls_enabled=False)) as driver:
     # Creates a new database with the specified name.
     driver.databases.create("database-name")
 
@@ -61,7 +61,7 @@ Some of the methods of database objects are shown in the following code snippet.
 
 [,python]
 ----
-with TypeDB.core_driver(ADDRESS) as driver:
+with TypeDB.driver(ADDRESS, Credentials("admin", "password"), DriverOptions(is_tls_enabled=False)) as driver:
     database: Database
 
     # Retrieves the name of a given database.
@@ -98,7 +98,6 @@ force_create_database(driver: TypeDBDriver, database_name: str) -> None
 def force_create_database(driver: TypeDBDriver, database_name: str) -> None:
     if driver.databases.contains(database_name):
         driver.databases.get(database_name).delete()
-
     driver.databases.create(database_name)
 ----
 =====

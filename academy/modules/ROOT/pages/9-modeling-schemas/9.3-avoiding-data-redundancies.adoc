@@ -19,7 +19,7 @@ include::attachment$books.csv[]
 [,typeql]
 ----
 define
-book sub entity,
+entity book,
     owns isbn-13,
     owns isbn-10,
     owns title,
@@ -30,48 +30,48 @@ book sub entity,
     owns stock,
     plays contribution:work,
     plays publishing:published;
-author sub entity,
+entity author,
     owns name,
     plays contribution:contributor;
-editor sub entity,
+entity editor,
     owns name,
     plays contribution:contributor;
-illustrator sub entity,
+entity illustrator,
     owns name,
     plays contribution:contributor;
-other-contributor sub entity,
+entity other-contributor,
     owns name,
     plays contribution:contributor;
-publisher sub entity,
+entity publisher,
     owns name,
     plays publishing:publisher;
-city sub entity,
+entity city,
     owns name,
     plays publishing:location;
-state sub entity,
+entity state,
     owns name,
     plays publishing:location;
-country sub entity,
+entity country,
     owns name,
     plays publishing:location;
-contribution sub relation,
+relation contribution,
     relates contributor,
     relates work;
-publishing sub relation,
+relation publishing,
     relates publisher,
     relates published,
     relates location,
     owns year;
-isbn-13 sub attribute, value string;
-isbn-10 sub attribute, value string;
-title sub attribute, value string;
-format sub attribute, value string;
-page-count sub attribute, value long;
-genre sub attribute, value string;
-price sub attribute, value double;
-stock sub attribute, value long;
-name sub attribute, value string;
-year sub attribute, value long;
+attribute isbn-13, value string;
+attribute isbn-10, value string;
+attribute title, value string;
+attribute format, value string;
+attribute page-count, value integer;
+attribute genre, value string;
+attribute price, value double;
+attribute stock, value integer;
+attribute name, value string;
+attribute year, value integer;
 ----
 ====
 
@@ -112,13 +112,13 @@ In order to prevent these inconsistencies, we must refactor the model in such a 
 [,typeql]
 ----
 define
-locating sub relation,
+relation locating,
     relates located,
     relates location;
-city plays locating:located;
-state plays locating:location,
+entity city plays locating:located;
+entity state plays locating:location,
     plays locating:located;
-country plays locating:location;
+entity country plays locating:location;
 ----
 
 Next, we'll record the locations of cities using the new type.
