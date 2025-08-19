@@ -116,7 +116,7 @@ For example, given the following type hierarchy:
 define
   entity resource, owns resource-id;
   entity file sub resource, owns name;
-  entity folder sub file;
+  entity folder sub file; # inherit owns name
 ----
 
 Let's say we want to arrive at the following schema instead:
@@ -129,18 +129,18 @@ define
   entity folder sub resource, owns folder-name;
 ----
 
-We need to do two things: mutate the schema into this shape, but also rewrite any existing folders that own `name` to instead own `folder-name`s.
+We need to mutate the schema but also rewrite any existing folders that own `name` to instead own `folder-name`.
 
 This can be done atomically, in 1 schema transaction, in 3 simple steps:
 
-1. define the new attribute type
+. Define the new attribute type
 +
 [,typeql]
 ----
 define entity folder, owns folder-name;
 ----
 
-2. rewrite the old folders with names into folder-names
+. Rewrite the old folders with names into folder-names
 +
 [,typeql]
 ----
@@ -149,7 +149,14 @@ delete $name of $f;
 insert $f has folder-name == $name;
 ----
 
-The system will automatically revalidate relevant data to ensure owned attributes and linked relations are still valid.
+. Update the schema
++
+[,typeql]
+----
+redefine entity folder, sub resource;
+----
+
+The system will automatically revalidate relevant data to ensure owned attributes and linked relations are still valid, cardinalities are respected, and the schema is intact on commit.
 
 == Resilient architecture
 
@@ -160,26 +167,25 @@ The rise of distributed computing has brought many incredible advances, as well 
 Once a query has been written, we still have to execute it. TypeDB takes care of several steps in this process, based on a custom execution model. While we will touch on all aspects of this model in more detail throughout this course, let us give a brief overview of the main ideas at play.
 
 * TypeDB batches individual queries into *transactions*. To enable concurrent transactions, TypeDB uses snapshot isolation, meaning a user can freely operate on their data throughout the duration of a transaction without worrying about race conditions. Transactions can then be committed in order to be persisted in the database, at which point data integrity will be verified and invalid transactions rejected.
-* Transactions themselves are organized into *sessions*, which determine what type of transactions can be performed, such as reads or writes. For the duration of a session, communication between the user and the database is upheld. Sessions enable tighter control over concurrent operations: for example, in data-read sessions, transactions can always be run in parallel.
 
 Within each transaction, the execution of queries by TypeDB may further involve the following steps:
 
-. Queries by the user are first *type-checked* by TypeDB's type-inference engine, which validates them against the database's schema.
-. A *query plan* is drawn up, deciding on the order and parallelization of data traversals.
-. TypeDB's *rule-inference* engine, based on a concurrent https://en.wikipedia.org/wiki/Actor_model[actor model], augments stored data with data materialized based on user-defined rules.
-. The results of read queries are *streamed* to make them available to the user as soon as possible.
+. Queries by the user are first *compiled* by TypeDB, including performing *type-checking*, which validates them against the database's schema.
+. Some *static optimization* is done to rewrite parts of the query into more efficient forms.
+. A *query plan* is drawn up, deciding on the order of execution of parts of the query, based on statistical optimization.
+. The results of read queries are executed *lazily* and *incrementally* to make them available to the user as soon as possible. Write queries are eagerly executed to avoid intermediate states.
 
 === Modern security
 
 To round things up, let us also briefly point to the security features that TypeDB implements, though they will not feature prominently in this course.
 
 * *In-flight encryption*: TypeDB supports modern encryption, to keep your data safe from prying eyes.
-* *User and role management*: Not all users will have the same privileges in your organization and the same will apply to your database. Using sessions types, such restrictions can be effectively imposed.
-* *ACID guarantees*: TypeDB provides users with https://en.wikipedia.org/wiki/ACID[ACID guarantees]. This includes the use of a write-ahead log, which ensures no data is lost in case of unexpected crashes.
+* *User and role management*: Not all users will have the same privileges in your organization and the same will apply to your database.
+* *ACID guarantees*: TypeDB provides users with https://en.wikipedia.org/wiki/ACID[ACID guarantees] up to snapshot isolation. This includes the use of a write-ahead log, which ensures no data is lost in case of unexpected crashes.
 
 == Summary and outlook
 
-In this lesson, we have gotten a bird's eye view on the TypeDB landscape. In particular, we've learned how TypeDB is based on a novel, declarative, type-centric data model that focusses on user intent, maintainability, and direct implementation of business logic. The result is a high-level programmable database that makes many common engineering tasks as simple as they should be. In the following lessons, we will dive a bit deeper into these features. Starting with more basic database operations and working our way up to advanced querying techniques, we will explore TypeDB in much more depth!
+In this lesson, we have gotten a bird's eye view on the TypeDB landscape. In particular, we've learned how TypeDB is based on a novel, declarative, type-centric data model that focuses on user intent, maintainability, and direct implementation of business logic. The result is a high-level programmable database that makes many common engineering tasks as simple as they should be. In the following lessons, we will dive a bit deeper into these features. Starting with more basic database operations and working our way up to advanced querying techniques, we will explore TypeDB in much more depth!
 
 == Further learning
 

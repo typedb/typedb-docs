@@ -37,7 +37,7 @@
 * *De-reification* is the process of replacing a relation type with a role type. An entity-centric data model can be transformed into a type-theoretic one by de-reifying any binary relation types.
 * While *nested relations* should be avoided in the entity-centric PERA framework, they are a common feature in the type-theoretic PERA framework.
 * Interface implementations can be freely relocated between two object types that have a https://en.wikipedia.org/wiki/Bijection[one-to-one mapping]. A binary relation type can be losslessly de-reified by first relocating interface implementations it has (if any) to a roleplayer with which it has a one-to-one mapping.
-* A binary relation type cannot be losslessly de-reified if it implements interface types and does not have one-to-one mapping to any of its roleplayers. Similarly, a hierarchy of binary relation types cannot be losslessly de-reified.
+* A binary relation type cannot be losslessly de-reified if it implements interface types and does not have one-to-one mapping to any of its role players. Similarly, a hierarchy of binary relation types cannot be losslessly de-reified.
 
 == xref:{page-version}@academy::12-advanced-modeling/12.4-using-interface-contracts.adoc[Using interface contracts]
 

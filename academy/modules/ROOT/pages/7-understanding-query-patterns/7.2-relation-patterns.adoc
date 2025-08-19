@@ -5,7 +5,7 @@ We initially learned how to use TypeQL's tuple syntax to represent relations in 
 
 == N-ary relations
 
-*Binary* and *ternary* relations (those with two or three roleplayers) can be represented using a tuple with two or three elements respectively.
+*Binary* and *ternary* relations (those with two or three role players) can be represented using a tuple with two or three elements respectively.
 
 [,typeql]
 ----
@@ -29,7 +29,7 @@ We have seen examples of these in the bookstore schema, for instance `order-line
 (deliverer: $courier, delivered: $order, destination: $address) isa delivery;
 ----
 
-This can be naturally extended to represent relations with any number of roleplayers, known as *n-ary* relations, by using a tuple with n elements.
+This can be naturally extended to represent relations with any number of role players, known as *n-ary* relations, by using a tuple with n elements.
 
 [,typeql]
 ----
@@ -43,18 +43,18 @@ We can also represent relations with only a single roleplayer, known as *unary* 
 (role-1: $a) isa unary-relation;
 ----
 
-Nullary relations, those with zero roleplayers, are not permitted in TypeDB.
+Nullary relations, those with zero role players, are not permitted in TypeDB.
 
 == Partial relation tuples
 
-The tuple syntax can also be used to match relations with only a partial number of roleplayers specified. By default, the tuple representation of a relation represents a relation with _at least_ the roleplayers described. Let's consider the previous example of a `delivery` relation again.
+The tuple syntax can also be used to match relations with only a partial number of role players specified. By default, the tuple representation of a relation represents a relation with _at least_ the role players described. Let's consider the previous example of a `delivery` relation again.
 
 [,typeql]
 ----
 (deliverer: $courier, delivered: $order, destination: $address) isa delivery;
 ----
 
-In theory, this statement would actually match relations that have roleplayers other than `$courier`, `$order`, and `$address`, as long as the relations have those roleplayers at a minimum. We can use this property to represent relations *partially*, by omitting roleplayers that we are not interested in. Consider the following query, which retrieves a list of orders and their assigned couriers.
+In theory, this statement would actually match relations that have role players other than `$courier`, `$order`, and `$address`, as long as the relations have those role players at a minimum. We can use this property to represent relations *partially*, by omitting role players that we are not interested in. Consider the following query, which retrieves a list of orders and their assigned couriers.
 
 [,typeql]
 ----
@@ -93,7 +93,7 @@ delete
 $relation isa relation;
 ----
 
-The partial representation can be as minimal as required. If we do not care about any of the roleplayers, we could skip out the tuple entirely! The following query retrieves the timestamps of any `action-execution` relations, regardless of their roleplayers. Essentially, it lists the times of all system actions performed by anyone.
+The partial representation can be as minimal as required. If we do not care about any of the role players, we could skip out the tuple entirely! The following query retrieves the timestamps of any `action-execution` relations, regardless of their role players. Essentially, it lists the times of all system actions performed by anyone.
 
 [,typeql]
 ----
@@ -164,7 +164,7 @@ As we can see from these examples, there are two ways in which we can make use o
 
 === Inferring roles
 
-To allow TypeDB to infer roles, we omit the roles from the tuple representation and list only the roleplayers.
+To allow TypeDB to infer roles, we omit the roles from the tuple representation and list only the role players.
 
 [,typeql]
 ----

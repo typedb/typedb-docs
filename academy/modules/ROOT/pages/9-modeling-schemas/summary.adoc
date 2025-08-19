@@ -38,7 +38,7 @@ image::academy::typeql-terminology.png[role=framed, width = 75%, link=self]
 * If a relation type overrides a role of its supertype, then the overriding role interface is a subtype of the role interface it overrides.
 * Inheritance of interface implementations is determined by their https://en.wikipedia.org/wiki/Covariance_and_contravariance_(computer_science)[variance].
 * In schema definitions, `owns` and `plays` statements are *covariant* in the implementing object type, so the statement also applies to subtypes of the object type by inheritance. Meanwhile, they are *invariant* in the implemented interface type, so the statement does not also apply to subtypes of the interface type.
-* When building a relation type hierarchy, if roleplayers of the relation supertype should also be roleplayers of the relation subtypes, then the relevant role should be inherited. If not, the role should be overridden.
+* When building a relation type hierarchy, if role players of the relation supertype should also be role players of the relation subtypes, then the relevant role should be inherited. If not, the role should be overridden.
 
 == xref:{page-version}@academy::9-modeling-schemas/9.7-avoiding-interface-redundancies.adoc[Avoiding interface redundancies]
 

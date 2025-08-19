@@ -295,7 +295,7 @@ relation city sub place,
     relates location;
 ----
 
-However, this schema excerpt will not commit to a database. While abstract relation types can have no roles, all concrete relation types must have at least one role. The type `country` is concrete but does not have any roles, causing this schema to fail validation. Even if we gave `country` a dummy role, we could not instantiate it, as any relation instances without roleplayers are erased automatically on commit. We have a few options to deal with this:
+However, this schema excerpt will not commit to a database. While abstract relation types can have no roles, all concrete relation types must have at least one role. The type `country` is concrete but does not have any roles, causing this schema to fail validation. Even if we gave `country` a dummy role, we could not instantiate it, as any relation instances without role players are erased automatically on commit. We have a few options to deal with this:
 
 1. Make `country` an entity type instead, and remove the supertype `place` altogether.
 2. Add a `location` role to `country`, and an entity type `world` to play it. We will instantiate `world` once with no attributes, and it will act as the placeholder location for all countries.

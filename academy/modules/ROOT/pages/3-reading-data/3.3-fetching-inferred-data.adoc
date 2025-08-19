@@ -10,7 +10,7 @@ match $user isa user, has id "u0003";
 (located: $user, location: $place) isa locating;
 fetch { "name": $place.name };
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 
 [,json]
 ----
@@ -67,7 +67,7 @@ match $us isa country, has name "United States";
 (order: $order, item: $book) isa order-line;
 fetch { "title": $book.title };
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 
 [,json]
 ----
@@ -200,7 +200,7 @@ $us isa country, has name "United States";
 fetch
 $city: name;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 =====
 ====
 

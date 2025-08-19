@@ -9,19 +9,19 @@
 
 == xref:{page-version}@academy::7-understanding-query-patterns/7.2-relation-patterns.adoc[Relation patterns]
 
-* A relation with any number of roleplayers can be represented using a *relation tuple* with the same number of elements. This allows for unary, binary, ternary, and n-ary relations.
+* A relation with any number of role players can be represented using a *relation tuple* with the same number of elements. This allows for unary, binary, ternary, and n-ary relations.
 +
 [,typeql]
 ----
 (role-1: $a, role-2: $b, role-3: $c, role-4: $d, ...) isa n-ary-relation;
 ----
-* Roleplayers can be omitted from relation tuples, allowing *partial tuple* representations of relations. This will match those relations regardless of the omitted roleplayers.
+* role players can be omitted from relation tuples, allowing *partial tuple* representations of relations. This will match those relations regardless of the omitted role players.
 +
 [,typeql]
 ----
 (role-1: $a, role-2: $b) isa ternary-relation;
 ----
-* Roles can be omitted from relation tuples, allowing TypeDB to use *role inference* to infer them. This will match the roleplayers in any combination of the relation's roles.
+* Roles can be omitted from relation tuples, allowing TypeDB to use *role inference* to infer them. This will match the role players in any combination of the relation's roles.
 +
 [,typeql]
 ----

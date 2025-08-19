@@ -49,7 +49,7 @@ The sample database already has the complete bookstore schema defined and data i
 
 To run a Define query, make sure to use a *schema* session and *write* transaction. After running a Define query, you should see any committed changes to the schema reflected in the *type browser*. The examples and exercises featured in this lesson are annotated with one of the following instructions to indicate how they should be run.
 
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*:: *Run* this query without committing the transaction afterward. Write transactions will remain open for further queries, and changes will not be persisted until a commit.
+:: *Run* this query without committing the transaction afterward. Write transactions will remain open for further queries, and changes will not be persisted until a commit.
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*:: *Run* this query and then *commit* the transaction, persisting the changes to the database.
 image:{page-version}@home::studio-icons/svg/studio_fail.svg[width=24] *_Do not run_*:: Do not run this query, which is shown for information only. To rollback an open transaction, *close* it without committing.
 image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*:: *Run* this query to see the error generated.

@@ -31,9 +31,10 @@ This approach has several disadvantages. Not only is the query long and verbose,
 match $book isa book;
 fetch { "title": $book.title, "page-count": $book.page-count };
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 We have just changed the type of `$book` from `paperback` to `book`. Now if we run this query, the results include paperbacks, hardbacks, and ebooks!
+
+TODO: OUTPUTS
 
 [,json]
 ----
@@ -61,9 +62,9 @@ We have just changed the type of `$book` from `paperback` to `book`. Now if we r
 
 This is because TypeDB applies *type inference* to queries in order to automatically resolve the possible return types of variables in a query based on the type definitions in the *schema*. This means that, if we add new types of books to the schema, the query will also return them without needing to be updated!
 
-[IMPORTANT]
+[NOTE]
 ====
-To determine the actual return types of query results, we can look at the `type` fields in the JSON output. For the above query, each result includes such a field for the book, plus an additional one for each of the book's attributes (title and page count). All `type` fields have two subfields: a `label` field indicating the name of the type, and a `root` field indicating the type's *root type*: `entity`, `relation`, or `attribute`.
+To determine the actual return types of fetch query results, you can ask the server to `analyze()` the query instead of executing it. This will return an annotated structure of the query and its fetch clause including the types expected for each field.
 ====
 
 == Polymorphism in TypeDB
@@ -82,12 +83,15 @@ In the last query, we used inheritance polymorphism to retrieve the titles and p
 
 Entity, relation, and attribute types can all be defined in *type hierarchies*, which allows us to retrieve their instances together by querying their *supertypes*, as we did with the entity type `book`. In the following query, we retrieve the ISBNs of all paperbacks using the `isbn` attribute type.
 
+Notice that here we use a slightly different `fetch` format, using a list syntax to retrieve `isbn` attributes. This is because the schema allows ownership of multiple `isbn` values with the cardinality constraint `@card(0..2)`, as opposed to the default 0 or 1 cardinality `@card(0..1)`. To allow the JSON to represent more than 1 value, the attribute project is wrapped in the `[]` list syntax:
+
 [,typeql]
 ----
 match $book isa paperback;
 fetch { "isbn": [ $book.isbn ] };
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
+TODO: OUTPUT
 
 [,json]
 ----
@@ -118,10 +122,11 @@ Write a query to retrieve _all_ ISBNs of _all_ books in the database.
 ----
 match
 $book isa book;
-fetch
-$book: isbn;
+fetch {
+  "isbn": $book.isbn
+};
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 =====
 ====
 
@@ -132,7 +137,8 @@ We can also make use of inheritance polymorphism when constraining the values of
 match $book isa book, has isbn "0500026556";
 fetch { "title": $book.title, "stock": $book.stock };
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
+TODO: OUTPUT
 
 [,json]
 ----
@@ -149,12 +155,13 @@ We have already seen an example of interface polymorphism in xref:{page-version}
 ----
 match
 $book isa paperback, has isbn-13 "9780446310789";
-$line (order: $order, item: $book) isa order-line;
-fetch
-$order: id;
-$line: quantity;
+$line isa order-line (order: $order, item: $book);
+fetch {
+  "id": $order:.id,
+  "quantity": $line.quantity,
+};
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 
 In this query, we specify the type of `$book` to be `paperback` and the type of `$line` to be `order-line` using the `isa` keyword, but nowhere in the query do we explicitly specify the type of `$order`! Instead, we constrain its type according to two facts:
 
@@ -162,6 +169,8 @@ In this query, we specify the type of `$book` to be `paperback` and the type of 
 * The type of `$order` must own the attribute `id`.
 
 This is more than enough information for TypeDB to infer the type of `$order`, which we can see by running this query.
+
+TODO: OUTPUT
 
 [,json]
 ----
@@ -202,12 +211,13 @@ In this case, only a single return type is possible: `order`, as it is the only 
 [,typeql]
 ----
 match $kansas_city isa city, has name "Kansas City";
-(location: $kansas_city, located: $x) isa locating;
+ locating (location: $kansas_city, located: $x);
 fetch { $x.* };
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 In this case, `$x` can be resolved to any type that both plays `located` in `locating`. Essentially, this query will return the attributes of anything located in Kansas City regardless of what it is. If we run this query, we see that we return instances of `publication` and `address`!
+
+TODO: OUTPUT
 
 [,json]
 ----
@@ -226,7 +236,7 @@ Write a query to retrieve _all_ attributes of _any_ system actions taken by the 
 The following statement can be used to represent `action-execution` relations.
 [,typeql]
 ----
-(executor: $user, action: $action) isa action-execution;
+action-execution (executor: $user, action: $action);
 ----
 =====
 
@@ -236,10 +246,10 @@ The following statement can be used to represent `action-execution` relations.
 [,typeql]
 ----
 match $user isa user, has name "Kevin Morrison";
-(executor: $user, action: $action) isa action-execution;
+ action-execution (executor: $user, action: $action);
 fetch { $action.* };
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 =====
 
 Based on the results returned by running this query, what types of system actions exist in the schema?
@@ -259,39 +269,41 @@ Parametric queries are unique in that they are valid over any schema. They match
 [,typeql]
 ----
 match
-$entity isa entity;
-fetch
-$entity: attribute;
+entity $entity-type;
+$entity isa! $entity-type;
+fetch {
+  $entity.*;
+};
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
-This query will retrieve all attributes of all entities. Meanwhile, the following query retrieves the attributes of any two entities that are roleplayers in the same relation.
+
+This query will retrieve all attributes of all entities. Meanwhile, the following query retrieves the attributes of any two entities that are role players in the same relation. When we don't want to specify what relation type the role players are in, we can equivalently use the `links` keyword, which always links the relation variable on the left to the players on the right.
 
 [,typeql]
 ----
 match
-$entity-1 isa entity;
-$entity-2 isa entity;
-($entity-1, $entity-2) isa relation;
-fetch
-$entity-1: attribute;
-$entity-2: attribute;
+$entity-1 isa! $e1; entity $entity-type-1;
+$entity-2 isa! $e2; entity $entity-type-2;
+$relation links ($entity-1, $entity-2);
+fetch {
+  "entity-1-attributes": { $entity-1.* },
+  "entity-2-attributes": { $entity-2.* }
+};
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
 
 In this query we have omitted the roles that the two entities play! In general, we can omit roles in a relation tuple if we do not care what they are. This is particularly useful for parametric queries, and we will explore this feature more fully in xref:{page-version}@academy::7-understanding-query-patterns/7.2-relation-patterns.adoc[Lesson 7.2].
 
 [NOTE]
 ====
-This particular query would return every pair of entities in a binary relation twice: each of the two entities would be returned in one result as `$entity-1` and in another as `$entity-2`. In fact, it would also return pairs of entities in ternary or higher order relations, returning each possible pair of roleplayers twice. This would result in a large number of redundant results, and we will see how we can return the results of queries like these in more useful structures in xref:{page-version}@academy::8-structuring-query-results/8.2-subqueries.adoc[Lesson 8.2].
+This particular query would return every pair of entities in a binary relation twice: each of the two entities would be returned in one result as `$entity-1` and in another as `$entity-2`. In fact, it would also return pairs of entities in ternary or higher order relations, returning each possible pair of role players twice. This would result in a large number of redundant results, and we will see how we can return the results of queries like these in more useful structures in xref:{page-version}@academy::8-structuring-query-results/8.2-subqueries.adoc[Lesson 8.2].
 ====
 
-While these queries are purely parametric, it is also possible to write non-parametric queries that include parametric statements, as we will see shortly. The defining feature of parametric statements is that they do not include any type names, except for the *root type* keywords `entity`, `relation`, and `attribute`, which allows them to be run against any schema. Much like using https://en.wikipedia.org/wiki/Generic_programming[generics] in application code, using parametric statements in queries can be a challenging aspect of TypeQL, but allows for extremely powerful queries that cannot be expressed in non-polymorphic query languages. We will see several more examples in future lessons.
+While these queries are purely parametric, it is also possible to write non-parametric queries that include parametric statements, as we will see shortly. Much like using https://en.wikipedia.org/wiki/Generic_programming[generics] in application code, using parametric statements in queries can be a challenging aspect of TypeQL, but allows for extremely powerful queries that cannot be expressed in non-polymorphic query languages. We will see several more examples in future lessons.
 
 .Exercise
 [caption=""]
 ====
-Write a query to retrieve the attributes of any three entities in a ternary (or higher order) relation.
+Write a query to retrieve the attributes of any three entities or relations in a ternary (or higher order) relation.
 
 .Sample solution
 [%collapsible]
@@ -299,16 +311,14 @@ Write a query to retrieve the attributes of any three entities in a ternary (or 
 [,typeql]
 ----
 match
-$entity-1 isa entity;
-$entity-2 isa entity;
-$entity-3 isa entity;
-($entity-1, $entity-2, $entity-3) isa relation;
-fetch
-$entity-1: attribute;
-$entity-2: attribute;
-$entity-3: attribute;
+$relation links ($entity-1, $entity-2, $entity-3);
+fetch {
+  "entity-1-attributes": { $entity-1.* },
+  "entity-2-attributes": { $entity-2.* },
+  "entity-3-attributes": { $entity-3.* }
+};
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 =====
 ====
 
@@ -321,12 +331,15 @@ Many useful polymorphic queries combine more than one form of polymorphism. For 
 match
 $user isa user, has id "u0008";
 $book isa book;
-(executor: $user, action: $action) isa action-execution;
-($book, $action) isa relation;
-fetch
-$book: isbn, title;
+action-execution (executor: $user, action: $action);
+$rel links ($book, $action);
+fetch {
+  "isbn": $book.isbn,
+  "title": $book.title
+};
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
+TODO: OUTPUT
 
 [,json]
 ----
@@ -399,4 +412,4 @@ Examine the query above line-by-line and identify how it utilises each type of p
 =====
 ====
 
-In the remainder of this course, we will be applying polymorphism liberally to our queries. After all, TypeDB is the polymorphic database!
+In the remainder of this course, we will be applying polymorphism liberally to our queries.

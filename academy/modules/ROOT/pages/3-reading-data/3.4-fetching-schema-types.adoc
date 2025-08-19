@@ -78,7 +78,7 @@ $book isa book;
 $action isa! $action-type;   # new line
 fetch { "isbn": [$book.isbn-13], "title": $book.title, "action-type": $action-type };
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 
 If we run this new query, we now also retrieve the type of `$action`!
 
@@ -125,7 +125,7 @@ $book: isbn, title;
 $action-type;
 $relation-type;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 =====
 ====
 
@@ -158,7 +158,7 @@ ____
 // fetch
 // $contributor: name;
 // ----
-// image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+//
 //
 // [,json]
 // ----
@@ -188,7 +188,7 @@ ____
 // $contributor: name;
 // $contributor-role;
 // ----
-// image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+//
 //
 // [,json]
 // ----
@@ -222,7 +222,7 @@ ____
 // $book-role;
 // $action-role;
 // ----
-// image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+//
 // =====
 // ====
 
@@ -235,7 +235,7 @@ In addition to using type variablization to retrieve the types of data instances
 match $book_type sub book;
 fetch { "book-type" : $book_type };
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 
 [,json]
 ----
@@ -252,7 +252,7 @@ These are indeed the subtypes of `book`. We also retrieve the type `book` itself
 match publisher sub $supertype;
 fetch { "supertype" : $supertype };
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 
 [,json]
 ----
@@ -272,7 +272,7 @@ If we would like to retrieve only _direct_ subtypes or supertypes of a type, we 
 match publisher sub! $supertype;
 fetch { "supertype" : $supertype };
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 
 [,json]
 ----
@@ -294,7 +294,7 @@ city sub! $supertype;
 fetch
 $supertype;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 =====
 
 Now write a query to determine the other types that share that direct supertype.
@@ -313,7 +313,7 @@ The query should retrieve the direct subtypes of `place`.
 match $place_type sub! place;
 fetch { "place-type" : $place_type };
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 =====
 
 Finally, write a query to retrieve all entity types in the schema.
@@ -332,7 +332,7 @@ The query should retrieve the subtypes of the root type `entity`, directly and i
 match $entity_type sub entity;
 fetch { "entity-type" : $entity_type };
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 =====
 ====
 
@@ -345,7 +345,7 @@ In addition to querying the type hierarchies defined in the schema, we can also 
 match promotion owns $attribute;
 fetch { "attribute-type": $attribute };
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 
 [,json]
 ----
@@ -362,7 +362,7 @@ To query ownerships, we use the `owns` keyword. As with the `sub` keyword, we ca
 match $type owns isbn-13;
 fetch { "type" : $type };
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 
 [,json]
 ----
@@ -387,7 +387,7 @@ $type owns name;
 fetch
 $type;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 =====
 ====
 
@@ -400,7 +400,7 @@ Ownerships of attribute types are queried using a single keyword `owns`, but rol
 match locating relates $role;
 fetch { "role" : $role };
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 
 [,json]
 ----
@@ -420,7 +420,7 @@ To query for types that play a role using the `plays` keyword, we must use the s
 match $type plays locating:located;
 fetch { "type" : $type };
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 
 [,json]
 ----
@@ -440,7 +440,7 @@ Here we have queried the types that play the `located` role in `locating`. As wi
 match book plays $role;
 fetch { "role" : $role };  
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 
 [,json]
 ----
@@ -467,7 +467,7 @@ delivery relates $role;
 fetch
 $role;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 =====
 
 Now modify the query to also retrieve the types that play those roles.
@@ -484,7 +484,7 @@ fetch
 $role;
 $type;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 =====
 ====
 

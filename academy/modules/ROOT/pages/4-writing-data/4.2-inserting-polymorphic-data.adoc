@@ -54,7 +54,7 @@ $sff-festival isa promotion,
     has start-timestamp 2024-04-19T00:00:00,
     has end-timestamp 2024-04-26T23:59:59;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 [,typeql]
 ----
 match
@@ -64,7 +64,7 @@ insert
 (promotion: $sff-festival, item: $book) isa promotion-inclusion,
     has discount 0.15;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 [,typeql]
 ----
 match
@@ -80,7 +80,7 @@ image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-
 
 == Inferring roles
 
-In addition to inferring types of referenced data, TypeDB is able to infer the roles of roleplayers when inserting new relations. This allows us to write significantly more concise Insert queries. For example, in the following query, we insert `rating` and `action-execution` relations without specifying roles!
+In addition to inferring types of referenced data, TypeDB is able to infer the roles of role players when inserting new relations. This allows us to write significantly more concise Insert queries. For example, in the following query, we insert `rating` and `action-execution` relations without specifying roles!
 
 [,typeql]
 ----
@@ -104,7 +104,7 @@ For this query, TypeDB is able to infer that `$review` plays the `review` role a
 * `$frankenstein` is of type `book`.
 * `book` plays `rating:rated` but not `rating:review`.
 
-These constraints mean that TypeDB can infer the roles of `$review` and `$frankenstein` unambiguously, as they could not play any other roles. The same applies to the `action-execution` relation. Conversely, if one or more of the roleplayers _can_ play multiple roles, then TypeDB is unable to infer them and throws an exception. Consider the following query, for instance.
+These constraints mean that TypeDB can infer the roles of `$review` and `$frankenstein` unambiguously, as they could not play any other roles. The same applies to the `action-execution` relation. Conversely, if one or more of the role players _can_ play multiple roles, then TypeDB is unable to infer them and throws an exception. Consider the following query, for instance.
 
 [,typeql]
 ----

@@ -24,7 +24,7 @@ match
 $user isa user;
 fetch { "name": $user.name };
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Run_*
+
 
 If you have correctly executed the Insert query, the new user Evelin should appear in the results.
 
@@ -145,7 +145,7 @@ image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-
 
 This query matches the book we inserted previously by its ISBN, and then gives it a new `stock` attribute. In a Fetch query, the `match` clause identifies matching data within the database, and the `fetch` clause specifies what to retrieve from each match. In an Insert query, the `match` clause serves the same function, but then we insert new data for each match rather than retrieving existing data.
 
-In order to insert a new attribute, we have to match the attribute's existing owner, represented in the last query by the `$book` variable. Similarly, in the next query, we insert a new relation by matching the relation's existing roleplayers, represented by the `$city` and `$publication` variables. It records the fact that the publication of this edition of _Frankenstein_ by Dover Publications took place in NYC.
+In order to insert a new attribute, we have to match the attribute's existing owner, represented in the last query by the `$book` variable. Similarly, in the next query, we insert a new relation by matching the relation's existing role players, represented by the `$city` and `$publication` variables. It records the fact that the publication of this edition of _Frankenstein_ by Dover Publications took place in NYC.
 
 [,typeql]
 ----
