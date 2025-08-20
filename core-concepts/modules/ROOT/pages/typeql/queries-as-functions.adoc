@@ -1,5 +1,6 @@
 = Queries as Functions
-// TODO: I'm going to go fix the test not being detected if it has a caption
+:test-typeql: linear
+
 TypeQL function provides a way to create abstractions over existing data,
 allowing queries to be expressed at a higher level.
 They can live in your schema - as a "library" your database provides,
@@ -12,11 +13,19 @@ The body of a function can be a pipeline consisting of any number of *read* stag
 [,typeql]
 .Find mutual friends
 ----
+#!test[schema]
+define
+relation friendship, relates friend @card(0..2);
+entity person, plays friendship:friend;
+#!test[schema, rollback]
+define
 fun mutual_friends($p1: person, $p2: person) -> { person }:
 match
     $f1 isa friendship, links (friend: $p1, friend: $pm);
     $f2 isa friendship, links (friend: $p2, friend: $pm);
 return { $p2 };
+#!---
+
 ----
 
 == Arguments & returns
@@ -25,9 +34,12 @@ The types of these concepts must be declared in the signature.
 [,typeql]
 .Integer division returns quotient & remainder for the dividend & divisor
 ----
+define
 fun divide($dividend: integer, $divisor:integer) -> integer, integer:
-match ...
-return first $quotient, $divisor;
+match
+ let $quotient = floor($dividend/$divisor);
+ let $remainder = $dividend - $quotient * $divisor;
+return first $quotient, $remainder;
 ----
 
 A function can either return a single tuple of concepts, or a stream of tuples.
@@ -42,10 +54,17 @@ using the reduce return modifier.
 [,typeql]
 .Find the number of posts by a page
 ----
+#!test[schema]
+define
+relation posting, relates page, relates post;
+entity page plays posting:page;
+#!test[schema, rollback]
+define
 fun post_count($page: page) -> integer:
 match
   $posting isa posting, links (posted: $page);
-return count($post);
+return count($posting);
+#!---
 ----
 
 [NOTE]
@@ -59,19 +78,25 @@ The classic example is computing the transitive closure of a function.
 In a tabled setting, the following (left-recursive) formulation is more efficient.
 [,typeql]
 ----
+#!test[schema]
+define
+relation edge, relates from_, relates to;
+entity node plays edge:from_, plays edge:to;
+#!test[schema, rollback]
+define
 fun reachable($from: node) -> { node }:
 match
     { # Base case
-        $_ isa edge, links (from: $from, to: $to);
+        $_ isa edge, links (from_: $from, to: $to);
     } or { # Recursive case
         let $mid in reachable($from);
-        $_ isa edge, links (from: $mid, to: $to);
+        $_ isa edge, links (from_: $mid, to: $to);
     };
 return { $to };
+#!---
 ----
 
 This will return `node`s in a breadth-first fashion.
-
 
 == References
 * xref:{page-version}@reference::typeql/functions/index.adoc[Functions]
