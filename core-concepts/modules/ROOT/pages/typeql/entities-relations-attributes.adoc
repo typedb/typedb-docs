@@ -1,5 +1,6 @@
 = Entities, Relations, Attributes
 :page-aliases: {page-version}@typeql::data_model.adoc
+:test-typeql: linear
 
 TypeDB implements the Polymorphic Entity-Relation-Attribute (PERA) data model.
 A TypeDB schema defines a hierarchy of these types and how they interact with each other through interface types.
@@ -11,7 +12,11 @@ Entities are standalone types, which exist independent of other types.
 E.g., a `person` exists, regardless of whether they are involved in friendships or have a name.
 [,typeql]
 ----
+#!test[schema]
+define
 entity person;
+entity company;
+#!---
 ----
 
 == Relation
@@ -24,15 +29,20 @@ hence the idea that `employment` "depends" on the participating player types.
 
 [,typeql]
 ----
+#!test[schema]
+define
 relation employment,
   relates employer,
   relates employee;
+#!---
 ----
 
 Role type names exist scoped within their relation types, allowing you to re-use role labels in different relation types:
 
 [,typeql]
 ----
+#!test[schema]
+define
 relation employment,
   relates employer,
   relates employee;
@@ -41,6 +51,7 @@ relation insurance-obligation,
   relates employer,
   relates employee,
   relates insurance;
+#!---
 ----
 
 You can refer to a role distinctly by scoping the role name with the relation name: `employment:employer`.
@@ -60,7 +71,10 @@ A type can be defined to implement this interface using the `owns` keyword.
 
 [,typeql]
 ----
+#!test[schema]
+define
 attribute age, value integer;
+#!---
 ----
 
 == Owning attributes & playing roles
@@ -72,7 +86,10 @@ Hence, entities (or relations) are referenced through their attributes.
 E.g., a `person` may own an attribute `birth-date`, or an `employment` may own a `start-date`.
 [,typeql]
 ----
+#!test[schema]
+define
 person owns age;
+#!---
 ----
 
 Entity & relation types may be defined to "play" a role defined by a relation.
@@ -81,17 +98,32 @@ E.g., the entity type `company` may play the  `employer` role of an `employment`
 
 [,typeql]
 ----
+#!test[schema, rollback]
+define
 company plays employment:employer;
+#!---
 ----
 
 == Inheritance
 TypeDB follows a single-inheritance *subtyping* system which allows types to specialize an existing type.
 The subtype  inherits all declared interfaces & implementations from the supertype.
 [,typeql]
-.Inheritance in the social network
 ----
+#!test[schema, rollback]
+#{{
+define
+attribute name, value string;
+attribute username, value string;
+attribute profile-picture, value string;
+relation posting, relates page, relates post;
+relation viewing, relates viewer, relates viewed;
+relation content-engagement, relates author;
+relation group-membership, relates group, relates member;
+
+#}}
 # Some fields are left out for brevity
 # A page on a social network...
+define
 entity page @abstract,
     owns name,              # has some basic information,
     owns profile-picture,   #
@@ -104,6 +136,7 @@ entity profile, sub page,
     plays group-membership:member,   # can participate in groups,
     plays viewing:viewer,            # view posts,
     plays content-engagement:author; # and create posts
+#!---
 ----
 In this context, a page is a passive collection of posts for other users to view.
 A profile retains all the aspects of being a page -
@@ -122,6 +155,7 @@ and "specializes" the inherited `subject` role into the `author` role.
 
 [,typeql]
 ----
+#!test[schema, rollback]
 define
 relation interaction @abstract,
     relates subject,
@@ -129,6 +163,7 @@ relation interaction @abstract,
 relation content-engagement @abstract,
     sub interaction,
     relates author as subject;
+#!---
 ----
 Specialization also disallows implementations of the parent interface in the child type.
 Here, no instances can play the role `interaction:content` in `content-engagement` relations.
@@ -150,6 +185,7 @@ In the following schema snippet, the `employer` role in the `employment` relatio
 
 [,typeql]
 ----
+#!test[schema, rollback]
 define
   relation employment,
     relates employer,
@@ -160,6 +196,7 @@ define
     plays employment:employer;
   entity charity sub organization,
     plays employment:employer;
+#!---
 ----
 
 Here, the role `employer` is the interface declared by the `employment` type. The `company` and `charity` types implement the interface.
@@ -177,6 +214,8 @@ although it is their supertype `organization` which is defined to play the role.
 
 [,typeql]
 ----
+#!test[schema, rollback]
+
 define
   relation employment,
     relates employer,
@@ -186,6 +225,7 @@ define
     plays employment:employer;
   entity company sub organization;
   entity charity sub organization;
+#!---
 ----
 
 //
