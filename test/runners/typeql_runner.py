@@ -1,5 +1,5 @@
 from typedb.driver import TypeDB, Driver, TransactionType, Credentials, DriverOptions
-from test.runners.base_runner import BaseRunner
+from test.runners.base_runner import BaseRunner, TEST_CONFIG_KEY_RESET
 from enum import Enum
 from typing import List, Dict, Tuple, Union
 from test.parser.parser import ParsedTest
@@ -128,6 +128,15 @@ class TypeqlRunner(BaseRunner):
                     return count
             except Exception as e:
                 raise Exception(f"{e}") from e
+
+    def before_run_test(self, parsed_test):
+        if TEST_CONFIG_KEY_RESET in parsed_test.config:
+            self.setup_db(True)
+
+
+    def after_run_test(self, parsed_test):
+        if TEST_CONFIG_KEY_RESET in parsed_test.config:
+            self.setup_db(True)
 
     def run_test(self, parsed_test: ParsedTest, adoc_path: str):
         self.before_run_test(parsed_test)

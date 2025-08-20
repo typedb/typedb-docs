@@ -1,5 +1,6 @@
 = Query Variables and Patterns
 :page-aliases: {page-version}@manual::queries.adoc
+:test-typeql: linear
 
 TypeQL is a declarative language: it focuses on **describing** the schema, data, or query through *patterns*, rather than specifying how to perform the query.
 
@@ -21,6 +22,7 @@ A [[definition-concept]]*concept* is a type, an instance of a type, or a value.
 The concepts in a constraint can be specified directly, as we do when defining the schema:
 [,typeql]
 ----
+#!test[schema, commit]
 define
   entity person;      # 'person' is an entity type.
   attribute name;     # 'name' is an attribute type.
@@ -32,28 +34,48 @@ Or, we can use [[definition-variable]]*variables* as placeholders for concepts,
 and query the database for concepts which "match" the pattern.
 [,typeql]
 ----
+#!test[read, count=1]
 match               # Find $e and $n such that:
   entity $e;        # $e is an entity type.
   attribute $n;     # $n is an attribute type.
   $n value string;  # $n holds string values.
   $e owns $n;       # $e instances can own instances of $n.
+#!---
 ----
 
 Since instances aren't named the same way types are,
 they are always bound through variables and constraints.
 [,typeql]
 ----
+#!test[schema, commit]
+#{{
+define
+relation employment, relates employee, relates employer;
+attribute username, value string;
+person owns username, plays employment:employee, plays education:attendee;
+entity company, owns name, owns username, plays employment:employer;
+entity school, owns name, owns username, plays education:institute;
+relation education, relates institute, relates attendee;
+#}}
+#!test[write]
+#{{
+insert
+$p isa person, has name "James";
+$r isa employment, links (employee: $p);
+#}}
+#!test[read, count = 1]
 match
 # find the instances $n, $p, $e such that:
 
-  ## $n is a 'name' with value "John"
-  $n isa name; $n == "John";
+  ## $n is a 'name' with value "James"
+  $n isa name; $n == "James";
 
   ## $p is a `person`, who has the attribute $n
   $p isa person; $p has $n;
 
   ## $e is an 'employment', where $p plays the 'employee' role
   $e isa employment; $e links (employee: $p);
+#!---
 ----
 
 [NOTE]
@@ -62,10 +84,12 @@ TypeQL provides shorthands to write queries in  more concise, natural ways.
 Using these, the above query can be rewritten to:
 [,typeql]
 ----
+#!test[read, count = 1]
 match
   $p isa person,      # Combine the constraints on $p using a comma
-    has name "John";  # Directly specify type & value of owned attribute.
+    has name "James";  # Directly specify type & value of owned attribute.
   $e isa employment (employee: $p);  # Omit 'links' using the relation shorthand.
+#!---
 ----
 We will continue writing out the constraints for illustrative purposes.
 ====
@@ -103,17 +127,19 @@ The difference between `insert` clause patterns and `match` clause patterns is:
 Notice the above query & comments fit naturally:
 [,typeql]
 ----
+#!test[write, rollback, count = 1]
 insert
 ## create the instances $n, $p, $e such that:
 
-  ## $n is a 'name' with value "John"
-  $n isa name; $n == "John";
+  ## $n is a 'name' with value "James"
+  $n isa name == "James";
 
   ## $p is a `person`, who has the attribute $n
   $p isa person; $p has $n;
 
   ## $e is an 'employment', where $p plays the 'employee' role
   $e isa employment; $e links (employee: $p);
+#!---
 ----
 [NOTE]
 ====
@@ -137,6 +163,11 @@ It also discusses visibility of variables present in each of these subpatterns.
 We use the following data as our running example:
 [,typeql]
 ----
+#!test[write, commit]
+#{{
+match $x isa $_; delete $x;
+#}}
+#!test[write, commit, count = 1]
 insert
   $james isa person, has name "James", has username "@james";
   $typedb isa company, has name "TypeDB", has username "@typedb";
@@ -149,6 +180,7 @@ insert
   $jeff isa person, has name "Jeff", has username "@jeff";
 
   $shut-shop isa company, has name "Shut Shop", has username "@shut-shop";
+#!---
 ----
 
 === Disjunctions
@@ -160,6 +192,7 @@ Variables which are present in & bound by only some of the branches of the disju
 (and not present outside it) are considered "internal" to that disjunction.
 
 ----
+#!test[read, count=2]
 match
 $p isa person, has name $p-name;
 {
@@ -170,6 +203,7 @@ $p isa person, has name $p-name;
   $edu isa education, links (institute: $institute, attendee: $p);
   $institute has name $org-name;
 };
+#!---
 ----
 
 Here, `$emp`, `$company`, `$edu`, `$institute` are internal to their patterns.
@@ -212,11 +246,13 @@ since the negation is satisfied only if there are no answers to the negated patt
 The following query finds `person` s who are not involved in any `employment` relation with an `employer`.
 [,typeql]
 ----
+#!test[read, count=2]
 match
   $p isa person, has name $p-name;
   not {
     $e isa employment, links (employer: $c, employee: $p);
   };
+#!---
 ----
 
 Here, `$p` is an input to the negation. `$e, $c` are internal. The query returns:
@@ -234,12 +270,14 @@ Finished. Total rows: 2
 As a second example, consider the query below:
 [,typeql]
 ----
+#!test[read, count=5]
 match
   $p isa person, has name $p-name;
   $c isa company, has name $c-name;
   not {
     $e isa employment, links (employer: $c, employee: $p);
   };
+#!---
 ----
 Here, `$c` is also an input variable.
 This query finds pairs of `person` & `company` such that the person does not work at the company.
@@ -283,12 +321,14 @@ If the *entire* optional pattern matches the data, it returns an answer per matc
 If it has no matches (i.e., any part fails), it produces a single answer with every optional variable bound to `None`.
 [,typeql]
 ----
+#!test[read, count=3]
 match
   $p isa person, has name $p-name;
   try {
     $e isa employment, links (employer: $c, employee: $p);
     $c has name $c-name;
   };
+#!---
 ----
 Here, `$e, $c, $c-name` are optional variables.
 `$p` is input to the optional pattern.
