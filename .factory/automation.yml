@@ -25,9 +25,9 @@ build:
         python3 -m test.main rust test/tests/rust_test.adoc || FAILED=true
         python3 -m test.main typeql test/tests/tql_test_linear.adoc || FAILED=true
         # python3 -m test.main typeql test/tests/tql_test_custom.adoc || FAILED=true
+        test/stop-community-server.sh 
         $FAILED && exit 1
         
-        test/stop-community-server.sh 
 
     test-code-snippets:
       image: typedb-ubuntu-22.04
@@ -54,9 +54,8 @@ build:
             python3 -m test.main "$TEST_LANG" "$TEST_DIR" || FAILED=true
           done
         done
-        $FAILED && exit 1
-        
         test/stop-community-server.sh
+        $FAILED && exit 1
 
     # TODO: deployments shouldn't be 'correctness' jobs?
     deploy-3.x-development:
