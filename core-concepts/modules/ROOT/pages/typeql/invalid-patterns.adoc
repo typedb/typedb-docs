@@ -75,6 +75,7 @@ This is clearly not what we intended to write. Hence, we flag these as invalid T
 ====
 There is, of course, a way to express the intended query:
 [,typeql]
+.The correct query
 ----
 #!test[read, fail_at=runtime]
 $p1 isa person; $p2 isa person;

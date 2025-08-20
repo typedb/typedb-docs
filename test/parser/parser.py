@@ -185,7 +185,11 @@ class Parser:
                     self.error("Nested language block found")
                 self.in_language_block = True
                 # Forward to start, and then skip it
-                self.line_number += 2
+                self.line_number += 1
+                if lines[self.line_number].startswith("."):
+                    self.line_number += 1
+                if lines[self.line_number].startswith('----'):
+                    self.line_number += 1
                 continue
 
             if self.in_language_block:
