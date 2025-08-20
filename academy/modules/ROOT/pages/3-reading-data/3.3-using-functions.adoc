@@ -1,0 +1,84 @@
+= Lesson 3.3: Using functions
+
+== Functions
+
+Try running the following query, which retrieves a particular user's location.
+
+[,typeql]
+----
+match
+$user isa user, has id "u0003";
+(located: $user, location: $place) isa locating;
+fetch { "name": $place.name };
+----
+
+TODO: OUTPUT
+
+[,json]
+----
+{ "name": "Newark" }
+----
+
+As we can see from the results, the user is located in Newark. However, the schema comes pre-loaded with some additional capabilities - a function for computing locations-within transitively:
+
+[,typeql]
+----
+define
+fun transitive_places($place: place) -> { place }:
+  match
+    {
+      locating (located: $place, location: $parent);
+    } or {
+      locating (located: $place, location: $middle);
+      let $parent in transitive_places($middle);
+    };
+  return { $parent };
+----
+
+The structure of this function is *recursive*! It will follow the parent location chain until none are found, and return the locations above the input place.
+
+This function returns this information as a stream, just like a standard TypeQL query. Functions indicate this with `{}` return type. We can invoke it with the `let` construct in a match query. Here we invoke the function within the `fetch` block to retrieve additional data we want to return.
+
+[,typeql]
+----
+match
+$user isa user, has id "u0003";
+(located: $user, location: $place) isa locating;
+fetch {
+  "name": $place.name,
+  "parent-places": [
+    match let $parent in transitive_places($place);
+    fetch { $parent.name };
+  ]
+};
+----
+
+[,json]
+----
+{
+  "name": "Newark",
+  "parent-places": [
+    {
+      "name": "United States"
+    },
+    {
+      "name": "New Jersey"
+    }
+  ]
+}
+----
+
+You can use functions to encode new, logically derivable information - such as the idea that locations are transitive: it is obvious to us that the user is located in the US. With the above function, you can instruct TypeDB to apply this knowledge as part of your query.
+
+Functions also can be used to modularize queries - any read query segment can be embedded into a function and invoked from other queries or functions. This improves correctness and minimizes the amount of complex querying that has to be repeated.
+
+== Benefits of using functions
+
+Functions are powerful tool that allows us to avoid redundancy in our data and modularize our queries. Imagine if we stored the states and countries that users were located in on disk instead of generating them by functions. What would then happen if a user's location changed? We would need to individually update their city, state, and country, despite the fact that both state and country depend only on the city. It would also be possible for data to be only partially updated, potentially leading to inconsistent data states. By using functions, we can ensure that we only have to update our data in one place, and data inconsistencies are prevented.
+
+Functions also provides us with a number of additional benefits:
+
+* Functions allow modularizing queries and aggregation.
+* Functions are resolved at query time, so results always uses the most up-to-date data.
+* Functions allow recursion and are guaranteed to reach fixed points when the data exists in cycles
+* Functions can interact, leading to complex emergent behaviour.
