@@ -1,5 +1,6 @@
 = Schema & Data
 :page-aliases: {page-version}@manual::schema/schema.adoc, {page-version}@manual::schema/schema-structure.adoc, {page-version}@manual::schema/types.adoc, {page-version}@typeql::schema.adoc
+:test-typeql: linear
 
 As seen in the xref:{page-version}@core-concepts::typeql/entities-relations-attributes.adoc[] page, a TypeDB schema defines
 a hierarchy of types, their associated interfaces and interfaces they implement.
@@ -19,10 +20,20 @@ To insert an attribute, its value must also be specified.
 
 [,typeql]
 ----
+#!test[schema, commit]
+#{{
+define
+relation employment, relates employer, relates employee;
+attribute age, value integer;
+entity person, owns age, plays employment:employee;
+entity company, plays employment:employer;
+#}}
+#!test[write]
 insert
   $person isa person;
   $employment isa employment;
   $age isa age 10;
+#!---
 ----
 
 Inserting a new instance will fail if the type is abstract. In the case of attributes,
@@ -38,16 +49,20 @@ Now we will see how to create ownerships for attributes & link role players to r
 An ownership between an entity (or relation) and an attribute is inserted using a `has` constraint:
 [,typeql]
 ----
+#!test[write]
 insert
   $person isa person;
   $age isa age 10;
   $person has $age;
+#!---
 ----
 
 Or in one line:
 [,typeql]
 ----
+#!test[write]
 insert $person isa person, has age 10;
+#!---
 ----
 
 This insert succeeds only if the type `person` "owns" the type `age` in the schema.
@@ -65,18 +80,20 @@ Since relations exist to "link" instances together,
 these links between the relation are role players are typically inserted along with the relation:
 [,typeql]
 ----
+#!test[write]
 insert
   $company isa company;
   $person isa person;
   $employment isa employment;
   $employment links (employer: $company);
-  $employment links (person: $person);
+  $employment links (employee: $person);
+#!---
 ----
 
 Inserting `$employment links (employer: $company)` succeeds only if
 the type `company` plays the `employer` role defined by the `employment` relation.
 Similarly, the type `person` must play the `employment:employee` role
-for `$employment links (person: $person);` to be inserted.
+for `$employment links (employee: $person);` to be inserted.
 
 
 [NOTE]
@@ -87,9 +104,13 @@ E.g., The two `links` constraints on `$employment` can be combined into one.
 The combined `links` and `isa` constraint can then be written together with a comma.
 [,typeql]
 ----
+#!test[write]
 insert
-  # ...
+  $company isa company;
+  $person isa person;
+
   $employment isa employment,
     links (employer: $company, employee: $person);
+#!---
 ----
 ====
