@@ -1,5 +1,6 @@
 = Limit operator
 :page-aliases: {page-version}@reference::typeql/modifiers/pagination.adoc
+:test-typeql: linear
 
 The limit operator stops producing rows after the specified row limit has been reached.
 
@@ -16,12 +17,18 @@ Match all friends of friends of a given person, sorted by the number of mutual f
 
 [,typeql]
 ----
+#!test[schema, commit]
+#{{
+include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-friendship]
+#}}
+#!test[read]
 match
-  $person isa person, has username "<username>";
-  friendship (friend: $person, friend: $friend);
+  $user isa user, has username "<username>";
+  friendship (friend: $user, friend: $friend);
   friendship (friend: $friend, friend: $possible-friend);
-  not { friendship (friend: $person, friend: $possible-friend); };
-reduce $num-mutuals = count($friend) within $possible-friend;
+  not { friendship (friend: $user, friend: $possible-friend); };
+reduce $num-mutuals = count($friend) groupby $possible-friend;
 sort $num-mutuals desc;
 limit 10;
+#!---
 ----
