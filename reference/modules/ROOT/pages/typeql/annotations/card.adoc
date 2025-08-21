@@ -1,4 +1,5 @@
 = `@card` annotation
+:test-typeql: linear
 
 The `@card` annotation is used
 // tag::overview[]
@@ -46,21 +47,35 @@ For example, the following definition specifies that an instance of the `page` t
 
 [,typeql]
 ----
+#!test[schema]
+#{{
+include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;name-attribute]
+#}}
+#!test[schema]
 include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;card-owns-13]
+#!---
 ----
 
 At the same time, the `page` type can play the `posting:page` role an unlimited number of times:
 
 [,typeql]
 ----
+#!test[schema]
+#{{
+define relation posting relates page;
+#}}
+#!test[schema, rollback]
 include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;card-plays-0inf]
+#!---
 ----
 
 However, an instance of the `posting` relation type can have up to a thousand `page` instances:
 
 [,typeql]
 ----
+#!test[schema]
 include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;card-relates-01k]
+#!---
 ----
 
 [#subtyping]
@@ -76,7 +91,9 @@ For example, the following query defines that:
 
 [,typeql]
 ----
+#!test[schema]
 include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;card-owns-13;profile-sub-page;user-owns-name;name-subattributes]
+#!---
 ----
 
 Valid statements based on this schema include:

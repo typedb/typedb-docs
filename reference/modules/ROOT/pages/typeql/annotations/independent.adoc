@@ -1,4 +1,5 @@
 = `@independent` annotation
+:test-typeql: linear
 
 The `@independent` annotation is used
 // tag::overview[]
@@ -33,13 +34,17 @@ In contrast, attributes of independent types can exist without owners.
 .Independent attribute types definition
 [,typeql]
 ----
-include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;independent-attribute;]
+#!test[schema, commit]
+include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;independent-attribute]
+#!---
 ----
 
 .Inserting independent attributes
 [,typeql]
 ----
-include::{page-version}@reference::example$tql/data_annotations.tql[tags=insert-keyword;independent-attribute;]
+#!test[write]
+include::{page-version}@reference::example$tql/data_annotations.tql[tags=insert-keyword;independent-attribute]
+#!---
 ----
 
 === Subtyping

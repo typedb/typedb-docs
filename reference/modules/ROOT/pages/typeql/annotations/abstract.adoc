@@ -1,5 +1,6 @@
 = `@abstract` annotation
 :page-aliases: {page-version}@reference::typeql/statements/abstract.adoc
+:test-typeql: linear
 
 The `@abstract` annotation is used
 // tag::overview[]
@@ -36,7 +37,9 @@ However, it is possible to define an abstract subtype of an abstract type.
 
 [,typeql]
 ----
+#!test[schema]
 include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;abstract-attribute]
+#!---
 ----
 
 It is impossible to define an abstract subtype of a concrete type.
@@ -44,8 +47,10 @@ It is impossible to define an abstract subtype of a concrete type.
 .Wrong definition!
 [,typeql]
 ----
+#!test[schema, fail_at=runtime]
 define
   attribute categorized-username @abstract, sub username;
+#!---
 ----
 
 === Specialization of role types

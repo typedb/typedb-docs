@@ -1,5 +1,6 @@
 = `@regex` annotation
 :page-aliases: {page-version}@reference::typeql/statements/regex.adoc
+:test-typeql: linear
 
 The `@regex` annotation is used
 // tag::overview[]
@@ -34,7 +35,9 @@ include::{page-version}@reference::typeql/annotations/values.adoc[tags=values-an
 
 [,typeql]
 ----
+#!test[schema]
 include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;regex-value]
+#!---
 ----
 
 [#_example_owns]
@@ -43,7 +46,9 @@ In the following example, an instance of the `phone` type can contain any `strin
 
 [,typeql]
 ----
+#!test[schema]
 include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;phone-attribute;regex-owns]
+#!---
 ----
 
 === Subtyping

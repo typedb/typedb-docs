@@ -1,5 +1,6 @@
 = `@unique` annotation
 :page-aliases: {page-version}@reference::typeql/statements/unique.adoc
+:test-typeql: linear
 
 The `@unique` annotation is used
 // tag::overview[]
@@ -28,7 +29,9 @@ For example, the following statement defines that every `user` should have a uni
 
 [,typeql]
 ----
+#!test[schema]
 include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;phone-attribute;unique]
+#!---
 ----
 
 With this constraint, no instance of `user` can share the same `phone` value.
@@ -40,7 +43,9 @@ The `unique` constraint would also affect the following schema extension:
 
 [,typeql]
 ----
+#!test[schema]
 include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;phone-sub-attributes;unique-sub-entity]
+#!---
 ----
 
 With the `unique` constraint on the `phone`, there is a protection ensuring that:
