@@ -1,5 +1,6 @@
 = Undefine query
 :page-aliases: {page-version}@reference::typeql/queries/undefine.adoc
+:test-typeql: linear
 
 Undefine queries are used
 // tag::overview[]
@@ -70,19 +71,36 @@ Only the type of the annotation is required, so annotations with arguments can b
 * xref:{page-version}@reference::typeql/statements/fun.adoc[`fun ...` statements] undefine existing functions.
 
 == Examples
+////
+[,typeql]
+----
+#!test[schema, commit]
+include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;extended-attributes]
+attribute tag value string;
+entity post owns tag @card(0..);
+relation parentship @abstract, relates parent, relates child;
+relation fathership sub parentship, relates father as parent;
+user plays parentship:parent;
+user owns email @card(0..1);
+----
+////
 
 === Undefining types
 
 .Undefining a type
 [,typeql]
 ----
+#!test[schema, rollback]
 undefine user;
+#!---
 ----
 
 .Undefining types
 [,typeql]
 ----
-undefine parentship; email;
+#!test[schema, rollback]
+undefine fathership; email;
+#!---
 ----
 
 === Undefining interfaces
@@ -90,37 +108,50 @@ undefine parentship; email;
 .Undefining relation type's relates
 [,typeql]
 ----
+#!test[schema]
 undefine relates child from parentship;
-----
-
-.Undefining relation type's subtyping
-[,typeql]
-----
-undefine sub parentship from fathership;
+#!---
 ----
 
 .Undefining relates specialization
 [,typeql]
 ----
+#!test[schema]
 undefine as parent from fathership relates father;
+#!---
+----
+
+.Undefining relation type's subtyping
+[,typeql]
+----
+#!test[schema]
+# Note, this requires the specialisation to have been undefined first.
+undefine sub parentship from fathership;
+#!---
 ----
 
 .Undefining type's roleplaying
 [,typeql]
 ----
+#!test[schema]
 undefine plays parentship:parent from user;
+#!---
 ----
 
 .Undefining attribute type's value type
 [,typeql]
 ----
+#!test[schema, fail_at=runtime]
 undefine value string from email;
+#!---
 ----
 
 .Undefining type's ownership
 [,typeql]
 ----
+#!test[schema, rollback]
 undefine owns email from user;
+#!---
 ----
 
 === Undefining annotations
@@ -128,21 +159,27 @@ undefine owns email from user;
 .Undefining type's annotation without arguments
 [,typeql]
 ----
+#!test[schema]
 undefine @abstract from parentship;
+#!---
 ----
 
 .Undefining value type's annotation with arguments
 [,typeql]
 ----
+#!test[schema]
 undefine @regex from email value string;
+#!---
 ----
 
 .Undefining type's and type's ownership's annotations
 [,typeql]
 ----
+#!test[schema]
 undefine
   @card from user owns email;
   @independent from email;
+#!---
 ----
 
 === Undefining functions
