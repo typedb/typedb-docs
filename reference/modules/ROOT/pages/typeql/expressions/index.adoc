@@ -1,5 +1,6 @@
 = Expressions
 :page-aliases: {page-version}@typeql::expressions.adoc
+:test-typeql: linear
 
 A TypeQL expression uses operators and functions to
 compute a value from other values. It uses the following syntax:
@@ -10,11 +11,14 @@ let <var> = <expression>;
 Examples:
 [,typeql]
 ----
+#!test[read]
+match
 let $x = 5;
 
 let $y = $x * 3.1;
 
 let $z = ceil($y + 1);
+#!---
 ----
 
 == Validation

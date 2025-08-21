@@ -2,18 +2,18 @@
 define
 // end::define-keyword[]
 // tag::entities[]
+// tag::user-supertypes[]
   entity content owns id;
   entity page sub content,
     owns page-id,
     owns name;
   entity profile sub page,
     owns username;
+// end::user-supertypes[]
 // tag::entity-user[]
   entity user sub profile,
     owns phone,
-    owns karma,
-    plays parentship:parent,
-    plays parentship:child;
+    owns karma;
 // end::entity-user[]
 
 // end::entities[]
@@ -23,8 +23,6 @@ define
   user sub profile;
   user owns phone;
   user owns karma;
-  user plays parentship:parent;
-  user plays parentship:child;
 // end::entity-user-breakdown[]
 
 // tag::entities-annotations[]
