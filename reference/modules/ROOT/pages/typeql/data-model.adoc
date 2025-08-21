@@ -210,7 +210,7 @@ limit 1;
 match friendship ($y, $x);  # $x is an input for this stage
 ----
 --
-* *Output* variables are unbound variables that are part of the present stage's output (at least in one `or`-branch of the query). For example, in the query
+* *Output* variables are unbound variables that are part of the present stage's output - i.e., They occur in some constraint, or in ALL branches of a disjunction. For example, in the query
 +
 --
 [,typeql]
@@ -220,7 +220,7 @@ match
  { $x isa VIP; }
  or { $x isa admin, has access-level $lvl; $lvl > 9000; };
 ----
-both `$u` and `$lvl` are returnable variables.
+here `$u` is output, whereas `$lvl` is internal to the second branch of the disjunction.
 
 *Optional* variables are a subclass of returnable variables: these or variables that may be left empty in the stages output (you may think of this as assigning them to the unit `()` of the unit type, which is implicit in our type system).
 [NOTE]
