@@ -1,5 +1,6 @@
 = Writing functions
 :page-aliases: {page-version}@typeql::functions/writing.adoc
+:test-typeql: linear
 
 == Syntax
 
@@ -126,7 +127,13 @@ For example, the following read pipeline defines and uses a temporary function u
 
 [,typeql]
 ----
+#!test[schema]
+#{{
+include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;user-supertypes;entity-user;attributes]
+#}}
+#!test[read]
 include::{page-version}@reference::example$tql/read_statements_functions.tql[tag=with-fun]
+#!---
 ----
 
 === Using Functions in definition queries
