@@ -1,137 +1,135 @@
-// tag::define-keyword[]
+# tag::define-keyword[]
 define
-// end::define-keyword[]
-// tag::entities[]
-// tag::user-supertypes[]
+# end::define-keyword[]
+# tag::entities[]
   entity content owns id;
   entity page sub content,
     owns page-id,
     owns name;
   entity profile sub page,
     owns username;
-// end::user-supertypes[]
-// tag::entity-user[]
+# tag::entity-user[]
   entity user sub profile,
     owns phone,
     owns karma;
-// end::entity-user[]
+# end::entity-user[]
 
-// end::entities[]
+# end::entities[]
 
-// tag::entity-user-breakdown[]
+# tag::entity-user-breakdown[]
   entity user;
   user sub profile;
   user owns phone;
   user owns karma;
-// end::entity-user-breakdown[]
+# end::entity-user-breakdown[]
 
-// tag::entities-annotations[]
+# tag::entities-annotations[]
   content @abstract, owns id @key;
   page @abstract, owns name @card(0..);
   profile @abstract, owns name @card(0..3);
   user owns phone @regex("^\d{8,15}$") @unique;
-// end::entities-annotations[]
+# end::entities-annotations[]
 
-// tag::entities-type-annotations[]
+# tag::entities-type-annotations[]
   content @abstract;
   page @abstract;
   profile @abstract;
-// end::entities-type-annotations[]
+# end::entities-type-annotations[]
 
-// tag::entities-cap-annotations[]
+# tag::entities-cap-annotations[]
   content owns id @key;
   page owns name @card(0..);
   profile owns name @card(0..3);
   user owns phone @regex("^\d{8,15}$") @unique;
-// end::entities-cap-annotations[]
+# end::entities-cap-annotations[]
 
-// tag::all-owns-name[]
+# tag::all-owns-name[]
   entity content;
-// tag::all-owns-name-cards[]
+# tag::all-owns-name-cards[]
   entity page sub content, owns name @card(0..);
   entity profile sub page, owns name @card(0..3);
   entity user sub profile;
-// end::all-owns-name-cards[]
+# end::all-owns-name-cards[]
   attribute name value string;
-// end::all-owns-name[]
+# end::all-owns-name[]
 
-// tag::attributes[]
+# tag::attributes[]
   attribute id value string;
   attribute page-id sub id;
   attribute username sub page-id;
   attribute name value string;
   attribute phone value string;
   attribute karma value double;
-// end::attributes[]
+# end::attributes[]
 
-// tag::attributes-type-annotations[]
+# tag::attributes-type-annotations[]
   attribute id @abstract;
   attribute page-id @abstract;
-// end::attributes-type-annotations[]
+# end::attributes-type-annotations[]
 
 
-// tag::fun-stream-scalar-return-type[]
+# tag::fun-stream-scalar-return-type[]
   fun user_phones($user: user) -> { phone }:
     match
       $user has phone $phone;
     return { $phone };
-// end::fun-stream-scalar-return-type[]
+# end::fun-stream-scalar-return-type[]
 
-// tag::fun-stream-tuple-return-type[]
+# tag::fun-stream-tuple-return-type[]
   fun all_users_and_phones() -> { user, phone, string }:
     match
       $user isa user, has phone $phone;
       let $phone-value = $phone;
     return { $user, $phone, $phone-value };
-// end::fun-stream-tuple-return-type[]
+# end::fun-stream-tuple-return-type[]
 
-// tag::fun-stream-scalar-return-value[]
+# tag::fun-stream-scalar-return-value[]
   fun add_streamed($x: integer, $y: integer) -> { integer }:
     match
       let $z = $x + $y;
     return { $z };
-// end::fun-stream-scalar-return-value[]
+# end::fun-stream-scalar-return-value[]
 
-// tag::fun-single-scalar-return-value[]
+# tag::fun-single-scalar-return-value[]
   fun add($x: integer, $y: integer) -> integer:
     match
       let $z = $x + $y;
     return first $z;
-// end::fun-single-scalar-return-value[]
+# end::fun-single-scalar-return-value[]
 
-// tag::fun-aggregate-single-scalar-return[]
+# tag::fun-aggregate-single-scalar-return[]
   fun mean_karma() -> double:
     match
       $user isa user, has karma $karma;
     return mean($karma);
-// end::fun-aggregate-single-scalar-return[]
+# end::fun-aggregate-single-scalar-return[]
 
-// tag::fun-aggregate-single-tuple-return[]
+# tag::fun-aggregate-single-tuple-return[]
   fun karma_sum_and_sum_squares() -> double, double:
     match
       $karma isa karma;
       let $karma-squared = $karma * $karma;
     return sum($karma), sum($karma-squared);
-// end::fun-aggregate-single-tuple-return[]
+# end::fun-aggregate-single-tuple-return[]
 
-// tag::with-fun-defined[]
+# tag::with-fun-defined[]
   fun karma_with_squared_value($user: user) -> karma, double:
     match
       $user has karma $karma;
       let $karma-squared = $karma * $karma;
     return first $karma, $karma-squared;
-// end::with-fun-defined[]
+# end::with-fun-defined[]
 
-// tag::fun-stream-users[]
+# tag::fun-stream-users[]
   fun users() -> { user }:
     match
       $user isa user;
     return { $user };
-// end::fun-stream-users[]
+# end::fun-stream-users[]
 
-// tag::fun-stream-users-with-first[]
+# tag::fun-stream-users-with-first[]
   fun first_user() -> user:
     match
       $user isa user;
     return first $user;
-// end::fun-stream-users-with-first[]
+# end::fun-stream-users-with-first[]

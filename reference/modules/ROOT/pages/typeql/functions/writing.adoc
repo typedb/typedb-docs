@@ -129,7 +129,7 @@ For example, the following read pipeline defines and uses a temporary function u
 ----
 #!test[schema]
 #{{
-include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;user-supertypes;entity-user;attributes]
+include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes]
 #}}
 #!test[read]
 include::{page-version}@reference::example$tql/read_statements_functions.tql[tag=with-fun]
@@ -146,7 +146,9 @@ Replace the keyword `with` with `define` and execute the query in a schema trans
 // tag::define[]
 [,typeql]
 ----
+#!test[schema]
 include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;with-fun-defined]
+#!---
 ----
 // end::define[]
 
@@ -154,7 +156,9 @@ Once persisted, these functions can be called directly in read queries:
 
 [,typeql]
 ----
+#!test[schema]
 include::{page-version}@reference::example$tql/read_statements_functions.tql[tag=with-fun-match]
+#!---
 ----
 
 ==== Redefine
@@ -164,7 +168,9 @@ Everything except for the function name can be redefined using redefine queries.
 
 [,typeql]
 ----
+#!test[schema]
 include::{page-version}@reference::example$tql/redefine_statements_functions.tql[tags=redefine-keyword;with-fun-redefined]
+#!---
 ----
 // end::redefine[]
 
@@ -175,7 +181,9 @@ To undefine a function, specify the `fun` keyword and its name.
 
 [,typeql]
 ----
+#!test[schema]
 include::{page-version}@reference::example$tql/undefine_statements_functions.tql[tags=undefine-keyword;with-fun-undefined]
+#!---
 ----
 // end::undefine[]
 

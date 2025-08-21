@@ -34,7 +34,7 @@ For example, the following example uses a query with a number of results based o
 ----
 #!test[schema, commit]
 #{{
-include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;user-supertypes;entity-user;attributes]
+include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes]
 #}}
 #!test[read]
 include::{page-version}@reference::example$tql/read_statements_functions.tql[tags=match-users]
