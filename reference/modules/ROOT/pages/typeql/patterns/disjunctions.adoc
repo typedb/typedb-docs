@@ -1,5 +1,6 @@
 = Disjunctions
 :page-aliases: {page-version}@reference::typeql/patterns/disjunction.adoc
+:test-typeql: linear
 
 Disjunctive patterns can be used in `match` stages. They allow queries to match several cases (or "`branches`") of patterns in parallel.
 
@@ -39,28 +40,38 @@ and is considered to be in the scope of the parent pattern.
 Results to the following query will contain answers for `$x` and `$id`:
 [,typeql]
 ----
+#!test[schema, commit]
+#{{
+include::{page-version}@reference::example$tql/conjunction.tql[tags=patterns-schema]
+#}}
+#!test[read]
 match
-  $x isa $user;
+  $x isa user;
   { $x has email $id; } or { $x has phone $id; };
+#!---
 ----
 
 A variable that occurs in only one branch AND not outside the disjunction is considered local to the branch.
 Results to the following query will only contain answers for `$x`:
 [,typeql]
 ----
+#!test[read]
 match
-  $x isa $user;
+  $x isa user;
   { $x has email $e; } or { $x has phone $p; };
+#!---
 ----
 
 In line with the unique scope principle, a variable that is local to more than one pattern is invalid.
 The following query is invalid as `$e` has multiple scopes.
 [,typeql]
 ----
+#!test[read, fail_at=runtime]
 match
-  $x isa $user;
+  $x isa user;
   { $x has email $e; } or { $x has phone $p; };
   not { $e contains "@typedb.com"; };
+#!---
 ----
 
 // Note: A version of this document exists for the version of disjunctions
@@ -72,9 +83,11 @@ match
 +
 [,typeql]
 ----
+#!test[read]
 match
   $x isa user, has username "john_1";
   $y isa user;
   { friendship($x, $y); }
   or { friendship($x, $z); friendship($z, $y); };
+#!---
 ----

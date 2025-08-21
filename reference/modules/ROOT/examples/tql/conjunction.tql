@@ -4,6 +4,21 @@ define
   attribute name, value string;
 # pipeline::schema::end
 
+# tag::patterns-schema[]
+define
+    attribute email, value string;
+    attribute phone, value string;
+    attribute username, value string;
+    relation friendship, relates friend @card(0..2);
+    relation marriage, relates spouse @card(0..2);
+    relation policy, relates covered @card(0..);
+    entity user,
+        owns username, owns email, owns phone,
+        plays friendship:friend;
+    entity person, plays marriage:spouse, plays policy:covered;
+
+# end::patterns-schema[]
+
 # pipeline::read::start
 match
 # tag::conjunction-example[]
