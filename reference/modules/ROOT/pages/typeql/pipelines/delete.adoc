@@ -1,5 +1,6 @@
 = Delete stage
 :page-aliases: {page-version}@reference::typeql/queries/delete.adoc
+:test-typeql: linear
 
 A delete stage deletes data from the database. Deletable data includes instances of types, ownerships of attributes, and role players of
 relations.
@@ -30,13 +31,19 @@ stream of input rows with the deleted concepts removed.
 
 [,typeql]
 ----
+#!test[schema, commit]
+#{{
+include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;extended-attributes;relation-group]
+#}}
+#!test[write]
 match
-  $person isa person, has name "<name>";
+  $user isa user, has name "<name>";
   $group isa group, has group-id "<group id>";
-  $membership isa group-membership(group: $group, member: $person) has rank $rank;
+  $membership isa group-membership(group: $group, member: $user), has rank $rank;
   $rank == "member";
 delete
   has $rank of $membership;
-  links ($person) of $membership;
+  links ($user) of $membership;
   $group;
+#!---
 ----

@@ -1,5 +1,6 @@
 = Insert stage
 :page-aliases: {page-version}@reference::typeql/queries/insert.adoc
+:test-typeql: linear
 
 An insert stage inserts new data into the database.
 Insertable data includes instances of types, ownerships of attributes, and role players of relations.
@@ -50,22 +51,30 @@ NOTE: xref:{page-version}@reference::typeql/annotations/card.adoc[Cardinality an
 
 [,typeql]
 ----
+#!test[schema, commit]
+#{{
+include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;extended-attributes;relation-group;fun-aggregate-single-scalar-return]
+#}}
+#!test[write, documents]
 insert
   $group isa group,
     has group-id "<group id>";
-  $person isa person,
+  $user isa user,
     has name "<name>",
     has bio "<bio>",
     has profile-picture "<uuid>";
-  group-membership(group: $group, member: $person) has rank "member";
+  group-membership(group: $group, member: $user) has rank "member";
+#!---
 ----
 
 [,typeql]
 ----
+#!test[write]
 match
-  $person isa person, has name "<name>";
+  $user isa user, has name "<name>";
   $group isa group, has group-id "<group id>";
 insert
-  group-membership(group: $group, member: $person) has rank "member";
+  group-membership(group: $group, member: $user) has rank "member";
+#!---
 ----
 

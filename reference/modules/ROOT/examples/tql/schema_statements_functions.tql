@@ -62,11 +62,25 @@ define
   attribute karma value double;
 # end::attributes[]
 
+# tag::extended-attributes[]
+attribute tag value string;
+attribute bio value string;
+attribute profile-picture value string;
+user owns bio, owns profile-picture;
+# end::extended-attributes[]
+
 # tag::attributes-type-annotations[]
   attribute id @abstract;
   attribute page-id @abstract;
 # end::attributes-type-annotations[]
 
+# tag::relation-group[]
+attribute group-id sub id;
+attribute rank, value string @values("admin", "member");
+relation group-membership, relates group, relates member,  owns rank;
+entity group, owns name, owns group-id, owns tag, plays group-membership:group;
+user, plays group-membership:member;
+# end::relation-group[]
 
 # tag::fun-stream-scalar-return-type[]
   fun user_phones($user: user) -> { phone }:
