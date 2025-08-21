@@ -208,7 +208,7 @@ Every sub statement inside this `fetch` stage can be written as separate `fetch`
 ----
 #!test[schema, commit]
 #{{
-include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;extended-attributes;relation-group;fun-aggregate-single-scalar-return]
+include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-group;fun-aggregate-single-scalar-return]
 #}}
 #!test[read, documents]
 match
