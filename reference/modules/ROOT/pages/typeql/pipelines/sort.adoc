@@ -1,5 +1,6 @@
 = Sort operator
 :page-aliases: {page-version}@reference::typeql/modifiers/sorting.adoc
+:test-typeql: linear
 
 The sort operator sorts the input stream based on the variables and their sort order.
 
@@ -22,9 +23,15 @@ Retrieve all posts on a given page, sorted from newest to oldest.
 
 [,typeql]
 ----
+#!test[schema, commit]
+#{{
+include::{page-version}@reference::partial$2_to_3/schema-3x.tql[tags=full-query]
+#}}
+#!test[read]
 match
-  $page isa page, has page-id "<page id>";
+  $page isa page, has id "<page id>";
   $post isa post, has creation-timestamp $created;
   posting (page: $page, post: $post);
 sort $created desc;
+#!---
 ----

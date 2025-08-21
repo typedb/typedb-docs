@@ -1,5 +1,6 @@
 = Select operator
 :page-aliases: {page-version}@reference::typeql/queries/get.adoc
+:test-typeql: linear
 
 The select operator restricts the stream of rows to only contain the variables specified.
 
@@ -14,8 +15,14 @@ select <var> [ , <var> ... ];
 
 [,typeql]
 ----
+#!test[schema, commit]
+#{{
+include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;extended-attributes;relation-group]
+#}}
+#!test[read]
 match
   $group isa group, has group-id "<group id>";
   group-membership (group: $group, member: $member), has rank "member";
 select $member;
+#!---
 ----

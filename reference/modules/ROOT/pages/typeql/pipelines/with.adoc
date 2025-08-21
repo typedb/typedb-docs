@@ -1,4 +1,5 @@
 = Preamble
+:test-typeql: linear
 
 The preamble of a pipeline allows the local declaration of functions using `with` statements.
 These functions can be called from the pipeline, and from other premable functions.
@@ -33,14 +34,20 @@ The usual function validation applies to the function declaration in a with clau
 +
 [,typeql]
 ----
+#!test[schema, commit]
+#{{
+include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-friendship]
+#}}
+#!test[read]
 with fun friend_count($user: user) -> integer:
-  match friendship($user, $x)
+  match friendship($user, $x);
   return count;
 match
   $user1 isa user, has username "<name>";
   $user2 isa user, has username $name;
   friend_count($user1) < friend_count($user2);
 select $name;
+#!---
 ----
 
 
@@ -48,18 +55,22 @@ select $name;
 +
 [,typeql]
 ----
+#!test[read]
 with fun friend_count($user: user) -> integer:
-  match friendship($user, $x)
+  match friendship($user, $x);
   return count;
+
 with fun popular_users() -> { user }:
   match
     $x isa user;
     friend_count($x) > 500;
   return { $x };
+
 match
   let $y in popular_users();
   $y has username $pop_name;
 select $pop_name;
+#!---
 ----
 
 
