@@ -1,5 +1,6 @@
 = Reduce operator
 :page-aliases: {page-version}@reference::typeql/modifiers/aggregation.adoc, {page-version}@reference::typeql/modifiers/grouping.adoc
+:test-typeql: linear
 
 == Reduce
 
@@ -22,22 +23,38 @@ TypeQL supports the following reduce operators:
 
 === Examples
 
-Count the number of logins since `<datetime>`:
+Count the number of logins since `2025-01-01`:
 
 [,typeql]
 ----
+#!test[schema, commit]
+#{{
+include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-friendship]
+attribute last-login, value date;
+user owns last-login;
+#}}
+#!test[read]
 match
-  $user isa user, has last-login >= <datetime>;
+  $user isa user, has last-login >= 2025-01-01;
 reduce $logins = count;
+#!---
 ----
 
 Get disk usage statistics of the files:
 
 [,typeql]
 ----
+#!test[schema, commit]
+#{{
+define
+attribute size-kb, value double;
+entity file, owns size-kb;
+#}}
+#!test[read]
 match
   $file isa file, has size-kb $s;
 reduce $total = sum($s), $mean = mean($s), $max = max($s);
+#!---
 ----
 
 == Grouping
@@ -59,6 +76,14 @@ Get the number of users per country:
 
 [,typeql]
 ----
+#!test[schema, commit]
+#{{
+define
+  relation located, relates country, relates user;
+  entity country, plays located:country;
+user plays located:user;
+#}}
+#!test[read]
 match
   $user isa user;
   $country isa country;
@@ -68,5 +93,6 @@ match
     located($user, $place);
     located($place, $country);
   };
-reduce $logins = count groupby $country;
+reduce $user-count = count groupby $country;
+#!---
 ----
