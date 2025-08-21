@@ -1,4 +1,5 @@
 = `attribute` statement
+:test-typeql: linear
 
 The statement `attribute <LABEL>` is used to identify the `<LABEL>` as a type of kind `attribute`.
 
@@ -8,7 +9,9 @@ The `attribute` keyword can be used to define a type of kind `attribute`.
 
 [,typeql]
 ----
+#!test[schema, fail_at=commit]
 define attribute name;
+#!---
 ----
 
 == Matching attributes
@@ -17,5 +20,7 @@ The `attribute` keyword can be used to match all types of kind `attribute`.
 
 [,typeql]
 ----
+#!test[read]
 match attribute $a;
+#!---
 ----
