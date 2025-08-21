@@ -1,4 +1,5 @@
 = Redefine query
+:test-typeql: linear
 
 Redefine queries are used
 // tag::overview[]
@@ -44,7 +45,9 @@ An error is returned (on execution or on commit), and no changes are preserved, 
 .Redefining type's sub
 [,typeql]
 ----
+#!test[schema]
 redefine user sub page;
+#!---
 ----
 
 .Redefining attribute type's value type

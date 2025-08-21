@@ -65,6 +65,7 @@ define
 # tag::extended-attributes[]
 attribute bio value string;
 attribute profile-picture value string;
+attribute email value string @regex("^.*@.*\.com");
 user owns bio, owns profile-picture;
 # end::extended-attributes[]
 
