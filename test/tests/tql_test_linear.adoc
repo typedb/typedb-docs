@@ -8,6 +8,7 @@
 #{{
 define attribute name, value string;
 #}}
+#!test[schema]
 #{{
 define entity person, owns name;
 #}}
@@ -27,7 +28,7 @@ insert
 # Regular comment
 match
  $a isa person;
-#---
+#!test[read]
 match
  $n isa name;
 #!test[read, count=2]
