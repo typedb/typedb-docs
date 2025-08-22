@@ -42,6 +42,18 @@ P1Y2M3DT4H5M6.789S
 # they are disambiguated by the time designator `T`
 P1M # one month
 PT1M # one minute
+#!test[read]
+#{{
+match
+  let $d1 = P12W;
+  let $d2 = P1Y2M3DT4H5M6.789S;
+  let $d3 = P1M;
+  let $d4 = PT1M;
+#}}
+#!test[read, fail_at=runtime]
+#{{
+match let $d5 = P1W1D;
+#}}
 ----
 
 == Storage representation
@@ -58,7 +70,7 @@ nanoseconds. These operations respect daylight saving changes, and other timezon
 [WARNING]
 ====
 This means that addition of durations to datetimes is not commutative.
-
+// TODO: Add tests
 [,typeql]
 ----
 # 29th of Februrary + 1 month and 1 day = 29th of March + 1 day = 30th of March
@@ -120,15 +132,19 @@ The nanosecond part of the duration is added directly to the underlying UTC time
 
 [,typeql]
 ----
+#!test[schema]
 define
   attribute event-cadence value duration;
+#!---
 ----
 
 == Inserting a duration valued attribute
 
 [,typeql]
 ----
+#!test[write]
 insert
   $_ isa event-cadence P1M; # same local time on the same day of every month
+#!---
 ----
 
