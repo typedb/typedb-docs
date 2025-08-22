@@ -9,7 +9,7 @@ The `entity` keyword can be used to define a type of kind `entity`.
 
 [,typeql]
 ----
-#!test[schema, fail_at=commit]
+#!test[schema]
 define entity user;
 #!---
 ----

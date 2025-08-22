@@ -1,5 +1,6 @@
 = TypeQL language guide
 :page-aliases: {page-version}@reference::typeql/concepts/concept-variables.adoc, {page-version}@reference::typeql/concepts/data-instances.adoc, {page-version}@reference::typeql/concepts/overview.adoc, {page-version}@reference::typeql/overview.adoc, {page-version}@reference::typeql/concepts/types.adoc
+:test-typeql: linear
 
 This page gives an overview of the TypeQL query language. For an overview of the data model on which TypeQL queries are built see xref:{page-version}@reference::typeql/data-model.adoc[here].
 
@@ -88,16 +89,20 @@ Definitions and patterns play distinct roles in TypeQL.
 As a simple example of this distinction, compare:
 [,typeql]
 ----
+#!test[schema]
 define
   entity user, plays friendship:friend;
   relation friendship, relates friend @card(2);
+#!---
 ----
 with
 [,typeql]
 ----
+#!test[read]
 match
   $some-type plays $some-role;
   friendship relates $some-role;
+#!---
 ----
 The former query introduces types, while the latter will query for types. The general idea here is as follows.
 
