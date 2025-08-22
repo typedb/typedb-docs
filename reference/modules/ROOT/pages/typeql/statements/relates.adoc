@@ -1,4 +1,5 @@
 = `relates` statement
+:test-typeql: linear
 
 The statement `<RELATION LABEL> relates <LABEL>` is used to identify the `<LABEL>` as a role type related by `<RELATION LABEL>`.
 
@@ -10,7 +11,15 @@ The `relates` keyword can be used to define a role type for a relation type.
 
 [,typeql]
 ----
+#!test[schema]
+#{{
+define
+  relation parentship, relates child;
+  relation fathership sub parentship;
+#}}
+#!test[schema]
 define parentship relates parent;
+#!---
 ----
 
 === Defining specializing role types
@@ -19,7 +28,9 @@ The `relates ... as` construction can be used to define a role type specializing
 
 [,typeql]
 ----
+#!test[schema, commit]
 define fathership relates father as parent;
+#!---
 ----
 
 // TODO: Redefining when ordering is introduced
@@ -30,7 +41,9 @@ The `relates ... as` construction can be used to define a role type specializing
 
 [,typeql]
 ----
+#!test[schema, rollback]
 redefine fathership relates father as child;
+#!---
 ----
 
 == Undefining role types
@@ -39,7 +52,13 @@ The `relates` keyword can be used to undefine a role type from a relation.
 
 [,typeql]
 ----
+#!test[schema]
+#{{
+undefine as parent from fathership relates father;
+#}}
+#!test[schema, rollback]
 undefine relates parent from parentship;
+#!---
 ----
 
 === Undefining role types specialization
@@ -48,7 +67,13 @@ The `relates ... as` construction can be used to undefine a role type specializa
 
 [,typeql]
 ----
+#!test[schema]
+#{{
+define fathership relates father as parent;
+#}}
+#!test[schema]
 undefine as parent from fathership relates father;
+#!---
 ----
 
 == Matching
@@ -59,7 +84,9 @@ The `relates` keyword can be used to match all role types related by a relation 
 
 [,typeql]
 ----
+#!test[schema]
 match parentship relates $r;
+#!---
 ----
 
 === Matching relation types
@@ -68,7 +95,9 @@ The `relates` keyword can be used to match all relation types for a role type wi
 
 [,typeql]
 ----
+#!test[schema]
 match $r relates parent;
+#!---
 ----
 
 Note that a scope can be used to have more specific results.
@@ -76,5 +105,7 @@ The previous query can return results for different role types with the same `<L
 
 [,typeql]
 ----
+#!test[schema]
 match $r relates parentship:parent;
+#!---
 ----

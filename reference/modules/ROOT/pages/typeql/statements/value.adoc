@@ -1,8 +1,18 @@
 = `value` statement
+:test-typeql: linear
 
 The statement `<LABEL> value <VALUE TYPE>` is used to identify `<VALUE TYPE>` as the value type of the `<LABEL>` attribute type.
 
 `<VALUE TYPE>` should be a built-in or a user-defined xref:{page-version}@reference::typeql/values/index.adoc[value type].
+
+////
+[,typeql]
+----
+#!test[schema]
+define attribute name @abstract;
+#!---
+----
+////
 
 == Defining attribute type's value types
 
@@ -10,7 +20,9 @@ The `value` keyword can be used to define a value type of an attribute type.
 
 [,typeql]
 ----
+#!test[schema]
 define name value string;
+#!---
 ----
 
 == Undefining attribute type's value type
@@ -19,7 +31,9 @@ The `value` keyword can be used to undefine an attribute type's value type.
 
 [,typeql]
 ----
+#!test[schema]
 undefine value string from name;
+#!---
 ----
 
 == Matching
@@ -28,5 +42,7 @@ The `value` keyword can be used to match all attribute types with a value type.
 
 [,typeql]
 ----
+#!test[read]
 match $a value string;
+#!---
 ----

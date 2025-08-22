@@ -1,4 +1,5 @@
 = `relation` statement
+:test-typeql: linear
 
 The statement `relation <LABEL>` is used to identify the `<LABEL>` as a type of kind `relation`.
 
@@ -8,7 +9,9 @@ The `relation` keyword can be used to define a type of kind `relation`.
 
 [,typeql]
 ----
+#!test[schema, fail_at=commit]
 define relation parentship;
+#!---
 ----
 
 == Matching relations
@@ -17,5 +20,7 @@ The `relation` keyword can be used to match all types of kind `relation`.
 
 [,typeql]
 ----
+#!test[schema]
 match relation $r;
+#!---
 ----

@@ -1,8 +1,20 @@
 = `links` statement
 :page-aliases: {page-version}@reference::typeql/statements/role-assignment.adoc
+:test-typeql: linear
 
 The statement `<RELATION VAR> links (<ROLE>: <PLAYER VAR> [ , ... ])` is used to identify the `<PLAYER VAR>` as playing `<ROLE>` in the `<RELATION
 VAR>`.
+
+////
+[,typeql]
+----
+#!test[schema, commit]
+define
+relation friendship, relates friend @card(0..2);
+entity user, plays friendship:friend;
+#!---
+----
+////
 
 == Inserting a role player
 
@@ -11,6 +23,12 @@ The `links` keyword can be used to attach a role player to a relation instance.
 [,typeql]
 ----
 insert $friendship links (friend: $person);
+
+#!test[write]
+#{{
+match $person isa user; $friendship isa friendship;
+insert $friendship links (friend: $person);
+#}}
 ----
 
 Multiple role players can be attached in the same statement.
@@ -18,6 +36,12 @@ Multiple role players can be attached in the same statement.
 [,typeql]
 ----
 insert $friendship links (friend: $alice, friend: $bob);
+
+#!test[write]
+#{{
+match $alice isa user; $bob isa user; $friendship isa friendship;
+insert $friendship links (friend: $alice, friend: $bob);
+#}}
 ----
 
 == Deleting a role player
@@ -27,6 +51,12 @@ The `links` keyword is used to remove a role player from a relation instance.
 [,typeql]
 ----
 delete links ($person) of $friendship;
+
+#!test[write]
+#{{
+match $friendship isa friendship, links ($person);
+delete links ($person) of $friendship;
+#}}
 ----
 
 Multiple role players can be removed in the same statement.
@@ -34,6 +64,12 @@ Multiple role players can be removed in the same statement.
 [,typeql]
 ----
 delete links ($alice, $bob) of $friendship;
+
+#!test[write]
+#{{
+match $friendship isa friendship, links (friend: $alice, friend: $bob);
+delete links ($alice, $bob) of $friendship;
+#}}
 ----
 
 == Matching role players
@@ -42,27 +78,35 @@ The `links` keyword can be used to match relations along with their role players
 
 [,typeql]
 ----
+#!test[read]
 match $friendship links (friend: $person);
+#!---
 ----
 
 The role specifiers may be variables as well.
 
 [,typeql]
 ----
+#!test[read]
 match $friendship links ($role: $person);
+#!---
 ----
 
 Note that the role label is not required.
 
 [,typeql]
 ----
+#!test[read]
 match $friendship links ($person);
+#!---
 ----
 
 If a relation binding is not required, the relation type shorthand can be used directly instead.
 
 [,typeql]
 ----
+#!test[read]
 match friendship ($alice, $bob);
+#!---
 ----
 
