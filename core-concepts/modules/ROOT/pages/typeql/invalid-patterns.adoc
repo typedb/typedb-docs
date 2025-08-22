@@ -4,6 +4,21 @@
 This section dives into the semantics of TypeQL,
 using the <<_disjunctive_normal_form>> to explain why <<_disjoint_variable_reuse>> makes a pattern invalid.
 
+.Schema for the examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema, commit]
+define
+attribute name, value string;
+relation employment, relates employee, relates employer;
+relation education, relates institute, relates attendee;
+entity person owns name, plays employment:employee, plays education:attendee;
+entity company, owns name, plays employment:employer;
+entity school, owns name, plays education:institute;
+----
+====
 
 == Disjoint variable reuse
 This section demonstrates some of the cases which can arise due to
@@ -15,14 +30,6 @@ Notice we can write a pattern where the input variable to a negation is not boun
 For example:
 [,typeql]
 ----
-#!test[schema]
-define
-attribute name, value string;
-relation employment, relates employee, relates employer;
-relation education, relates institute, relates attendee;
-entity person owns name, plays employment:employee, plays education:attendee;
-entity company, owns name, plays employment:employer;
-entity school, owns name, plays education:institute;
 #!test[read, fail_at=runtime]
 match
 $p1 isa person; $p2 isa person;
@@ -34,7 +41,6 @@ $p1 isa person; $p2 isa person;
 
 not { $emp2 isa employment, links (employer: $company, employee: $p2); };
 not { $edu2 isa employment, links (institute: $institute, attendee: $p2); };
-#!---
 ----
 At first glance, this looks like a reasonable query:
 we query for persons `$p1` and `$p2` who neither worked for the same company,
@@ -64,7 +70,6 @@ match
   not { $emp2 isa employment, links (employer: $company, employee: $p2); };
   not { $edu2 isa education, links (institute: $institute, attendee: $p2); };
 };
-#!---
 ----
 Although this could now be a valid logic query,
 the first branch requires that `$p2` did not attend *any* institute,
@@ -87,7 +92,6 @@ not {
   $edu1 isa education, links (institute: $institute, attendee: $p2);
   $edu2 isa education, links (institute: $institute, attendee: $p2);
 };
-#!---
 ----
 ====
 
@@ -109,7 +113,6 @@ $p1 isa person; $p2 isa person;
 } or {
   $edu2 isa education, links (institute: $institute, attendee: $p2);
 };
-#!---
 ----
 Ideally, this would be a query to find two persons `$p1` and `$p2` who
 were either employed by the same company, or attended the same institute.
@@ -137,7 +140,6 @@ match
   $edu1 isa education, links (institute: $institute, attendee: $p2);
   $edu2 isa education, links (institute: $institute, attendee: $p2);
 };
-#!---
 ----
 
 You can see the query we meant to write in two of those branches:
@@ -153,7 +155,6 @@ $p1 isa person; $p2 isa person;
   $edu1 isa education, links (institute: $institute, attendee: $p2);
   $edu2 isa education, links (institute: $institute, attendee: $p2);
 };
-#!---
 ----
 
 The problem lies in the other two branches.
@@ -170,7 +171,6 @@ match
   $edu1 isa education, links (institute: $institute, attendee: $p2);
   $emp2 isa employment, links (employer: $company, employee: $p2);
 };
-#!---
 ----
 This will return any persons `$p1` & `$p2` when
 either (1) `$p1` is employed by *any* and `$p2` attended *any* institute;
@@ -187,7 +187,6 @@ Optional variables can only be used in only one `try` block in a given match cla
 match
   try { $x isa person, has name "John"; };
   try { $x isa person, has name "James"; };
-#!---
 ----
 The reason this is banned is similar to the <<_unbound_negation_inputs>> case above:
 It is unclear if `$x` is an input or either of the `try` blocks, or an optional variable.
@@ -210,7 +209,6 @@ Rewriting the above query with this equivalence (assuming `$x` to be 'optional' 
 match
 { $x "John"; } or not { $x_1 "John"; };
 { $x "James"; } or not { $x_2 "James"; };
-#!---
 ----
 
 Taking the DNF gives us 4 cases, and some very unintuitive behaviour:
@@ -223,7 +221,6 @@ match
 { not { $x_1 "John"; };  $x "James"; } or   # If nobody is named John, then persons named James
 { not { $x_1 "John"; };  not { $x_2 "James"; }; }; # If nobody is named either, then a single answer `None`
 # If there is one person named John, and a different person named James, then no answers
-#!---
 ----
 
 ====

@@ -110,7 +110,7 @@ The subtype  inherits all declared interfaces & implementations from the superty
 [,typeql]
 .Inheritance in the social network
 ----
-#!test[schema, rollback]
+#!test[schema, commit]
 #{{
 define
 attribute name, value string;
@@ -120,10 +120,10 @@ relation posting, relates page, relates post;
 relation viewing, relates viewer, relates viewed;
 relation content-engagement, relates author;
 relation group-membership, relates group, relates member;
-
 #}}
 # Some fields are left out for brevity
 # A page on a social network...
+#!test[schema]
 define
 entity page @abstract,
     owns name,              # has some basic information,
@@ -137,7 +137,6 @@ entity profile, sub page,
     plays group-membership:member,   # can participate in groups,
     plays viewing:viewer,            # view posts,
     plays content-engagement:author; # and create posts
-#!---
 ----
 In this context, a page is a passive collection of posts for other users to view.
 A profile retains all the aspects of being a page -
@@ -164,7 +163,6 @@ relation interaction @abstract,
 relation content-engagement @abstract,
     sub interaction,
     relates author as subject;
-#!---
 ----
 Specialization also disallows implementations of the parent interface in the child type.
 Here, no instances can play the role `interaction:content` in `content-engagement` relations.
@@ -197,7 +195,6 @@ define
     plays employment:employer;
   entity charity sub organization,
     plays employment:employer;
-#!---
 ----
 
 Here, the role `employer` is the interface declared by the `employment` type. The `company` and `charity` types implement the interface.
@@ -226,7 +223,6 @@ define
     plays employment:employer;
   entity company sub organization;
   entity charity sub organization;
-#!---
 ----
 
 //

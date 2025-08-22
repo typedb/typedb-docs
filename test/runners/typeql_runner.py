@@ -165,7 +165,7 @@ class TypeqlRunner(BaseRunner):
                     ref_failure_mode = FailureMode.Runtime
                 case x if x == TEST_FAIL_COMMIT_VAL:
                     ref_failure_mode = FailureMode.Commit
-            failure_mode = self.run_failing_queries(parsed_test.segments, type)
+            failure_mode = self.run_failing_queries(parsed_test, type)
             if failure_mode != ref_failure_mode:
                 raise RuntimeError(f"[{adoc_path}]: Failure mode: expected {ref_failure_mode} but got {failure_mode}")
         elif counted == True:
