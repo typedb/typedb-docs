@@ -5,6 +5,19 @@ TypeDB allows additional constraints to be defined on the types in the schema.
 These constraints can restrict the cardinality of an interface, or the domain of values of an attribute type.
 These constraints are written as [[definition-annotation]]*annotations* on the schema declarations they apply to. Annotations are prefixed with the `@` symbol.
 
+////
+[,typeql]
+----
+#!test[schema, commit]
+#{{
+define
+  entity person;
+  relation employment relates employee;
+  attribute email, value string;
+#}}
+----
+////
+
 == Cardinality constraints
 Cardinality constraints restrict the number of interfaces of a specific type that may be attached to an instance.
 These are specified using the `@card` annotation. It can be written using either:
@@ -18,7 +31,6 @@ E.g., we can restrict a `friendship` relation to relate exactly two `friends`.
 #!test[schema, rollback]
 define
 relation friendship relates friend @card(2);
-#!---
 ----
 
 We can also restrict the number of roles of a specific type an instance plays, or the number of attributes of a specific type it owns.
@@ -27,16 +39,9 @@ E.g., a person can be involved in at most one employment, but own any number of 
 [,typeql]
 ----
 #!test[schema, rollback]
-#{{
-define
-entity person;
-relation employment relates employee;
-attribute email, value string;
-#}}
 define
 person plays employment:employee @card(0..1);
 person owns email @card(0..);
-#!---
 ----
 
 === On specialisation of roles
@@ -52,7 +57,6 @@ relation football-team sub sports-team,
     relates defender as player,
     relates midfielder as player,
     relates forward as player;
-#!---
 ----
 Here, a `sports-team` is constrained to have exactly 11 players.
 `football-team` is a subtype of sports-team, and the various positions are specialisations of the `player` role.
