@@ -28,7 +28,7 @@ These are specified using the `@card` annotation. It can be written using either
 E.g., we can restrict a `friendship` relation to relate exactly two `friends`.
 [,typeql]
 ----
-#!test[schema, rollback]
+#!test[schema]
 define
 relation friendship relates friend @card(2);
 ----
@@ -38,7 +38,7 @@ We can also restrict the number of roles of a specific type an instance plays, o
 E.g., a person can be involved in at most one employment, but own any number of emails.
 [,typeql]
 ----
-#!test[schema, rollback]
+#!test[schema]
 define
 person plays employment:employee @card(0..1);
 person owns email @card(0..);
@@ -68,14 +68,13 @@ When an interface has multiple constraints (declared and/or inherited), all of t
 For example, let's restrict our `football-team` to the more common distribution across positions.
 [,typeql]
 ----
-#!test[schema, rollback]
+#!test[schema]
 define
 relation football-team sub sports-team,
     relates goal-keeper as player @card(1),
     relates defender as player @card(3..5),
     relates midfielder as player @card(3..5),
     relates forward as player @card(1..3);
-#!---
 ----
 The cardinality restrictions on the individual positions do not rule out a "(1-)4-5-3" formation,
 but the `@card(11)` constraint on the `player` does.
@@ -84,7 +83,7 @@ but the `@card(11)` constraint on the `player` does.
 Similarly, inherited cardinality constraints on `plays` & `owns` can be specialized. For instance:
 [,typeql]
 ----
-#!test[schema, rollback]
+#!test[schema]
 define
   entity page owns name @card(1..3);
   entity profile sub page;
@@ -94,7 +93,6 @@ define
   attribute name @abstract, value string;
   attribute first-name sub name;
   attribute surname sub name;
-#!---
 ----
 Here, a page must have between 1 & 3 names.
 A person must have exactly one first-name and up to two surnames.
