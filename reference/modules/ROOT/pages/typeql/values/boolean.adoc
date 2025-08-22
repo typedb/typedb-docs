@@ -1,4 +1,5 @@
 = Boolean
+:test-typeql: linear
 
 A logical boolean (`true` / `false`).
 
@@ -6,15 +7,19 @@ A logical boolean (`true` / `false`).
 
 [,typeql]
 ----
+#!test[schema]
 define
   attribute shipped value boolean;
+#!---
 ----
 
 == Inserting a boolean valued attribute
 
 [,typeql]
 ----
+#!test[write]
 insert
   $_ isa shipped false;
+#!---
 ----
 

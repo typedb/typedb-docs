@@ -1,4 +1,5 @@
 = Date
+:test-typeql: linear
 
 An ISO 8601 compliant date type. 
 
@@ -14,21 +15,37 @@ The date literal consists of the following values, separated by a `-`:
 .Example date literals
 ----
 2024-03-30
-+802701-09-21
++12345-09-21
+#!test[read]
+#{{
+match
+  let $x = 2024-03-30;
+  let $y = +12345-09-21;
+#}}
 ----
+
+[NOTE]
+====
+The minimum supported date is January 1, 262144 BCE,
+and the maximum supported date is December 31, 262142 CE.
+====
 
 == Defining a date valued attribute
 
 [,typeql]
 ----
+#!test[schema]
 define
   attribute publish-date value date;
+#!---
 ----
 
 == Inserting a date valued attribute
 
 [,typeql]
 ----
+#!test[write]
 insert
   $_ isa publish-date 2025-01-10;
+#!---
 ----
