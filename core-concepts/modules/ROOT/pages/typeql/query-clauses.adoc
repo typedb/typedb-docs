@@ -11,39 +11,38 @@ Each query clause accepts a stream of answers and outputs a stream of answers.
 This page provides an overview of the available clauses and
 how they can be chained to form complex query & data modification pipelines.
 
+.Schema for the examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema]
+define
+  attribute name, value string;
+  attribute email, value string;
+  relation friendship, relates friend @card(0..2);
+  relation viewing relates viewer, relates viewed;
+  relation posting, relates page, relates post;
+  entity person, owns name, owns email, plays friendship:friend,
+  plays viewing:viewer;
+  entity post, plays posting:post, plays viewing:viewed;
+  entity page plays posting:page;
+#!test[write, commit]
+insert
+  $james isa person, has name "James";
+  $john isa person, has name "John";
+  $jane isa person, has name "Jane";
+----
+====
+
 == Query clauses
 === match
 xref:{page-version}@core-concepts::typeql/query-variables-patterns.adoc#definition-match[Match clauses] read data by pattern-matching.
 They return a stream mapping variables to matching concepts.
 [,typeql]
 ----
-#!test[schema]
-#{{
-
-define
-attribute name, value string;
-attribute email, value string;
-relation friendship, relates friend @card(0..2);
-relation viewing relates viewer, relates viewed;
-relation posting, relates page, relates post;
-entity person, owns name, owns email, plays friendship:friend,
-    plays viewing:viewer;
-entity post, plays posting:post, plays viewing:viewed;
-entity page plays posting:page;
-
-#}}
-#!test[write, commit]
-#{{
-
-insert
-$james isa person, has name "James";
-$john isa person, has name "John";
-$jane isa person, has name "Jane";
-
-#}}
 #!test[read, count=1]
 match $x isa person, has name "John";
-#!---
 ----
 
 The output of the above match is a stream of answers binding  `$x` to any concept having name "John".
@@ -55,7 +54,6 @@ Consider the two stage query:
 #!test[read, count=0]
 match $x isa person, has name "John";
 match $x isa person, has name "James";
-#!---
 ----
 `$x` refers to the same variable in both stages. Hence, this query will return
 person instances which own BOTH the name "John" and "James".
@@ -71,7 +69,6 @@ It extends the row with the newly inserted concepts (if any).
 #!test[write, count=1]
 match $x isa person, has name "John";   # Matches $x to person instance with name "John"
 insert $x has email "john@example.com"; # Inserts the email "john@example.com" for that instance
-#!---
 ----
 
 === delete
@@ -84,7 +81,6 @@ The concepts themselves can be deleted...
 #!test[write, count=1, rollback]
 match $x isa person, has name "John";
 delete $x; # Delete the person instance
-#!---
 ----
 
 or just their connections
@@ -93,7 +89,6 @@ or just their connections
 #!test[write, rollback, count=1]
 match $p isa person, has name $n; $n == "John";
 delete has $n of $p; # Delete the person instance's ownership of the name "John"
-#!---
 ----
 
 Any deleted concept is removed from the stream.
@@ -110,7 +105,6 @@ Update clauses are used to conveniently delete such a connection and replace it 
 #!test[write, count=1]
 match $x isa person, has name "John";
 update $x has email "john@example.net"; # Update John's email whether or not one existed.
-#!---
 ----
 The returned stream is identical to the input because no variables are introduced or removed.
 
@@ -133,7 +127,6 @@ match
   $q isa person, has name "Jane";
 put # insert a friendship between them if one does not exist.
   $f isa friendship, links (friend: $p, friend: $q);
-#!---
 ----
 
 ==== reduce
@@ -150,7 +143,6 @@ match
   $v isa viewing, links (viewer: $john, viewed: $post);
   $p isa posting, links (page: $page, post: $post);
 reduce $views = count($post) groupby $page;
-#!---
 ----
 
 === distinct
@@ -162,7 +154,6 @@ Removes duplicate answers in the stream.
 match
   { $p isa person; } or { $p has name "John"; };
 distinct; # Make sure that the person with name John is returned at most once.
-#!---
 ----
 
 === select
@@ -176,7 +167,6 @@ match
   $f isa friendship, links (friend: $p, friend: $q);
   $q isa person, has name $name;
 select $name; # Only return the names of the friend
-#!---
 ----
 
 === sort
@@ -187,7 +177,6 @@ select $name; # Only return the names of the friend
 #!test[read, count=3]
 match $x isa person, has name $n;
 sort $n; # Return results sorted by $n
-#!---
 ----
 
 === limit
@@ -213,7 +202,6 @@ match
 sort $name; # Sort on name for stability of pages
 offset 20;  # Skip the first 20 results
 limit 10;   # And return the next 10
-#!---
 ----
 
 == Write stages in pipelines

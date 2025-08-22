@@ -40,7 +40,6 @@ match               # Find $e and $n such that:
   attribute $n;     # $n is an attribute type.
   $n value string;  # $n holds string values.
   $e owns $n;       # $e instances can own instances of $n.
-#!---
 ----
 
 Since instances aren't named the same way types are,
@@ -165,6 +164,7 @@ We use the following data as our running example:
 ----
 #!test[write, commit]
 #{{
+# Clean up data existing from previous examples.
 match $x isa $_; delete $x;
 #}}
 #!test[write, commit, count = 1]
@@ -180,7 +180,6 @@ insert
   $jeff isa person, has name "Jeff", has username "@jeff";
 
   $shut-shop isa company, has name "Shut Shop", has username "@shut-shop";
-#!---
 ----
 
 === Disjunctions
@@ -203,7 +202,6 @@ $p isa person, has name $p-name;
   $edu isa education, links (institute: $institute, attendee: $p);
   $institute has name $org-name;
 };
-#!---
 ----
 
 Here, `$emp`, `$company`, `$edu`, `$institute` are internal to their patterns.
@@ -252,7 +250,6 @@ match
   not {
     $e isa employment, links (employer: $c, employee: $p);
   };
-#!---
 ----
 
 Here, `$p` is an input to the negation. `$e, $c` are internal. The query returns:
@@ -277,7 +274,6 @@ match
   not {
     $e isa employment, links (employer: $c, employee: $p);
   };
-#!---
 ----
 Here, `$c` is also an input variable.
 This query finds pairs of `person` & `company` such that the person does not work at the company.
@@ -328,7 +324,6 @@ match
     $e isa employment, links (employer: $c, employee: $p);
     $c has name $c-name;
   };
-#!---
 ----
 Here, `$e, $c, $c-name` are optional variables.
 `$p` is input to the optional pattern.

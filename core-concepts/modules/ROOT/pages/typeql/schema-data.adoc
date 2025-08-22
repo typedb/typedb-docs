@@ -10,6 +10,19 @@ Connections made between instances are also checked against the `owns`, `plays`,
 Write & commit time validation ensures that any constraints that also depend on the state of the database (such as cardinality constraints on updated connections) are respected.
 Through this type-checking and validation, TypeDB guarantees semantic integrity of the database.
 
+.Schema for the examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema, commit]
+define
+  relation employment, relates employer, relates employee;
+  attribute age, value integer;
+  entity person, owns age, plays employment:employee;
+  entity company, plays employment:employer;
+----
+====
 
 == Inserting data
 The TypeQL `insert` clause is used to insert new instances, the attributes owned by these instances, and the relations linking them.
@@ -20,20 +33,11 @@ To insert an attribute, its value must also be specified.
 
 [,typeql]
 ----
-#!test[schema, commit]
-#{{
-define
-relation employment, relates employer, relates employee;
-attribute age, value integer;
-entity person, owns age, plays employment:employee;
-entity company, plays employment:employer;
-#}}
 #!test[write]
 insert
   $person isa person;
   $employment isa employment;
   $age isa age 10;
-#!---
 ----
 
 Inserting a new instance will fail if the type is abstract. In the case of attributes,
@@ -54,7 +58,6 @@ insert
   $person isa person;
   $age isa age 10;
   $person has $age;
-#!---
 ----
 
 Or in one line:
@@ -62,7 +65,6 @@ Or in one line:
 ----
 #!test[write]
 insert $person isa person, has age 10;
-#!---
 ----
 
 This insert succeeds only if the type `person` "owns" the type `age` in the schema.
@@ -87,7 +89,6 @@ insert
   $employment isa employment;
   $employment links (employer: $company);
   $employment links (employee: $person);
-#!---
 ----
 
 Inserting `$employment links (employer: $company)` succeeds only if
@@ -111,6 +112,5 @@ insert
 
   $employment isa employment,
     links (employer: $company, employee: $person);
-#!---
 ----
 ====

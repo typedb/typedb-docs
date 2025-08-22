@@ -14,18 +14,18 @@ The body of a function can be a pipeline consisting of any number of *read* stag
 .Find mutual friends
 ----
 #!test[schema]
+#{{
 define
 relation friendship, relates friend @card(0..2);
 entity person, plays friendship:friend;
-#!test[schema, rollback]
+#}}
+#!test[schema]
 define
 fun mutual_friends($p1: person, $p2: person) -> { person }:
 match
     $f1 isa friendship, links (friend: $p1, friend: $pm);
     $f2 isa friendship, links (friend: $p2, friend: $pm);
 return { $p2 };
-#!---
-
 ----
 
 == Arguments & returns
@@ -34,6 +34,7 @@ The types of these concepts must be declared in the signature.
 [,typeql]
 .Integer division returns quotient & remainder for the dividend & divisor
 ----
+#!test[schema]
 define
 fun divide($dividend: integer, $divisor:integer) -> integer, integer:
 match
@@ -55,9 +56,11 @@ using the reduce return modifier.
 .Find the number of posts by a page
 ----
 #!test[schema]
+#{{
 define
 relation posting, relates page, relates post;
 entity page plays posting:page;
+#}}
 #!test[schema, rollback]
 define
 fun post_count($page: page) -> integer:
@@ -79,9 +82,11 @@ In a tabled setting, the following (left-recursive) formulation is more efficien
 [,typeql]
 ----
 #!test[schema]
+#{{
 define
 relation edge, relates from_, relates to;
 entity node plays edge:from_, plays edge:to;
+#}}
 #!test[schema, rollback]
 define
 fun reachable($from: node) -> { node }:
