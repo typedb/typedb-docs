@@ -156,7 +156,6 @@ undefine owns email from user;
 ----
 #!test[schema]
 undefine @abstract from parentship;
-#!---
 ----
 
 .Undefining value type's annotation with arguments
@@ -164,7 +163,6 @@ undefine @abstract from parentship;
 ----
 #!test[schema]
 undefine @regex from email value string;
-#!---
 ----
 
 .Undefining type's and type's ownership's annotations
@@ -174,7 +172,6 @@ undefine @regex from email value string;
 undefine
   @card from user owns email;
   @independent from email;
-#!---
 ----
 
 === Undefining functions
