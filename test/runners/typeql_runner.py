@@ -129,6 +129,15 @@ class TypeqlRunner(BaseRunner):
             except Exception as e:
                 raise Exception(f"{e}") from e
 
+    def before_run_test(self, parsed_test):
+        if TEST_CONFIG_KEY_RESET in parsed_test.config:
+            self.setup_db(True)
+
+
+    def after_run_test(self, parsed_test):
+        if TEST_CONFIG_KEY_RESET in parsed_test.config:
+            self.setup_db(True)
+
     def run_test(self, parsed_test: ParsedTest, adoc_path: str):
         self.before_run_test(parsed_test)
 
