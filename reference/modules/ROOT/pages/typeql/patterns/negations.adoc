@@ -44,20 +44,25 @@ Negations may appear in `match` stages of data pipelines or functions, where the
 
 == Examples
 
+.Schema for the following examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema, commit]
+include::{page-version}@reference::example$tql/conjunction.tql[tags=patterns-schema]
+----
+====
+
 . Retrieve users without friends
 +
 --
 [,typeql]
 ----
-#!test[schema, commit]
-#{{
-include::{page-version}@reference::example$tql/conjunction.tql[tags=patterns-schema]
-#}}
 #!test[read]
 match
   $x isa user, has username $name;
   not { friendship($x, $y); };
-#!---
 ----
 --
 
@@ -72,7 +77,6 @@ match
   not { friendship($x, $y);
     not { friendship($y, $z); };
   };
-#!---
 ----
 [NOTE]
 ====

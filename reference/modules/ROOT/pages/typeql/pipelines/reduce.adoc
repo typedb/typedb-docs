@@ -23,38 +23,43 @@ TypeQL supports the following reduce operators:
 
 === Examples
 
+.Schema for the following examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema, commit]
+include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-friendship]
+  attribute last-login, value date;
+  user owns last-login;
+
+  attribute size-kb, value double;
+  entity file, owns size-kb;
+
+  relation located, relates country, relates user;
+  entity country, plays located:country;
+  user plays located:user;
+----
+====
+
 Count the number of logins since `2025-01-01`:
 
 [,typeql]
 ----
-#!test[schema, commit]
-#{{
-include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-friendship]
-attribute last-login, value date;
-user owns last-login;
-#}}
 #!test[read]
 match
   $user isa user, has last-login >= 2025-01-01;
 reduce $logins = count;
-#!---
 ----
 
 Get disk usage statistics of the files:
 
 [,typeql]
 ----
-#!test[schema, commit]
-#{{
-define
-attribute size-kb, value double;
-entity file, owns size-kb;
-#}}
 #!test[read]
 match
   $file isa file, has size-kb $s;
 reduce $total = sum($s), $mean = mean($s), $max = max($s);
-#!---
 ----
 
 == Grouping
@@ -76,13 +81,6 @@ Get the number of users per country:
 
 [,typeql]
 ----
-#!test[schema, commit]
-#{{
-define
-  relation located, relates country, relates user;
-  entity country, plays located:country;
-user plays located:user;
-#}}
 #!test[read]
 match
   $user isa user;
@@ -94,5 +92,4 @@ match
     located($place, $country);
   };
 reduce $user-count = count groupby $country;
-#!---
 ----

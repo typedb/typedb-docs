@@ -24,6 +24,16 @@ Single functions can be identified by their return type not containing curly bra
 Single functions are defined and called like any other function.
 To retrieve the results of the called function, a simple assignment is enough (however, a general `in` used for xref:{page-version}@reference::typeql/functions/stream.adoc[streamed] results is also allowed).
 
+.Schema for the following examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema, commit]
+include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes]
+----
+====
+
 === Transforming stream outputs to single outputs
 
 TypeQL pipelines generally produce streams of results as not every query always returns a specific number of answers.
@@ -32,13 +42,8 @@ For example, the following example uses a query with a number of results based o
 [#_transforming_general_example]
 [,typeql]
 ----
-#!test[schema, commit]
-#{{
-include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes]
-#}}
 #!test[read]
 include::{page-version}@reference::example$tql/read_statements_functions.tql[tags=match-users]
-#!---
 ----
 
 There are two main ways of transforming streams into single results: aggregation and stream modification.
@@ -54,7 +59,6 @@ These aggregations are usually scalar single functions by themselves, so calling
 ----
 #!test[schema]
 include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;fun-aggregate-single-scalar-return]
-#!---
 ----
 
 .Example of an aggregate function used in a tuple function
@@ -62,7 +66,6 @@ include::{page-version}@reference::example$tql/schema_statements_functions.tql[t
 ----
 #!test[schema]
 include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;fun-aggregate-single-tuple-return]
-#!---
 ----
 
 ==== Stream modification

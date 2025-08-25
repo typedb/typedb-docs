@@ -41,7 +41,6 @@ When defined for an attribute type's value type, the annotation creates a constr
 ----
 #!test[schema]
 include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;values-value]
-#!---
 ----
 [#_example_owns]
 // tag::values-and-owns-annotations-description-owns[]
@@ -57,7 +56,6 @@ define relation reaction relates parent;
 #}}
 #!test[schema]
 include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;emoji-attribute;values-owns]
-#!---
 ----
 
 === Subtyping

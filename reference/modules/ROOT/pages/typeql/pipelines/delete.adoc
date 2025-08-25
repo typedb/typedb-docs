@@ -29,12 +29,18 @@ stream of input rows with the deleted concepts removed.
 
 == Example
 
+.Schema for the following examples
+[%collapsible]
+====
 [,typeql]
 ----
 #!test[schema, commit]
-#{{
 include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-group]
-#}}
+----
+====
+
+[,typeql]
+----
 #!test[write]
 match
   $user isa user, has name "<name>";
@@ -45,5 +51,4 @@ delete
   has $rank of $membership;
   links ($user) of $membership;
   $group;
-#!---
 ----

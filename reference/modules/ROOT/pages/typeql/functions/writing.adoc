@@ -2,6 +2,37 @@
 :page-aliases: {page-version}@typeql::functions/writing.adoc
 :test-typeql: linear
 
+.Schema for the following examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema, commit]
+include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes]
+# Some extra just to test the snippets
+fun f1($a: integer) -> integer:
+match let $x = $a;
+return first $x;
+
+fun f2($a: integer) -> integer:
+match let $x = $a;
+return first $x;
+
+fun scalar_fun($a: integer, $b: integer) -> integer:
+match let $x = $a + $b;
+return first $x;
+
+fun tuple_fun($a: integer, $b: integer) -> integer, integer:
+match let $x = $a + $b; let $y = $a - $b;
+return first $x, $y;
+
+fun stream_fun($a: integer, $b: integer) -> { integer, integer }:
+match let $x = $a + $b; let $y = $a - $b;
+return { $x, $y };
+
+----
+====
+
 == Syntax
 
 [[declaration]]
@@ -70,12 +101,20 @@ Function can be called:
 [,typeql]
 .Scalar expression comparison
 ----
+#!test[read, count = 1]
+#{{
+match let $x = 0 ; let $y = 1;
+#}}
 $x + 1 < f1($y) + f2($y);
 ----
 [,typeql]
 .Scalar expression assignment
 ----
-let $x = scalar_fun($a, $b) / 2; # f3 is
+#!test[read, count = 1]
+#{{
+match let $a = 0 ; let $b = 1;
+#}}
+let $x = scalar_fun($a, $b) / 2;
 ----
 --
 1. as part of a tuple or stream assignment, for example:
@@ -84,11 +123,19 @@ let $x = scalar_fun($a, $b) / 2; # f3 is
 [,typeql]
 .Tuple assignment
 ----
+#!test[read, count = 1]
+#{{
+match let $a = 0 ; let $b = 1;
+#}}
 let $x, $y = tuple_fun($a, $b);
 ----
 .Stream assignment
 [,typeql]
 ----
+#!test[read, count = 1]
+#{{
+match let $a = 0 ; let $b = 1;
+#}}
 let $x, $y in stream_fun($a, $b);
 ----
 --
@@ -127,13 +174,8 @@ For example, the following read pipeline defines and uses a temporary function u
 
 [,typeql]
 ----
-#!test[schema]
-#{{
-include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes]
-#}}
 #!test[read]
 include::{page-version}@reference::example$tql/read_statements_functions.tql[tag=with-fun]
-#!---
 ----
 
 === Using Functions in definition queries
@@ -146,9 +188,8 @@ Replace the keyword `with` with `define` and execute the query in a schema trans
 // tag::define[]
 [,typeql]
 ----
-#!test[schema]
+#!test[schema, commit]
 include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;with-fun-defined]
-#!---
 ----
 // end::define[]
 
@@ -158,7 +199,6 @@ Once persisted, these functions can be called directly in read queries:
 ----
 #!test[schema]
 include::{page-version}@reference::example$tql/read_statements_functions.tql[tag=with-fun-match]
-#!---
 ----
 
 ==== Redefine
@@ -170,7 +210,6 @@ Everything except for the function name can be redefined using redefine queries.
 ----
 #!test[schema]
 include::{page-version}@reference::example$tql/redefine_statements_functions.tql[tags=redefine-keyword;with-fun-redefined]
-#!---
 ----
 // end::redefine[]
 
@@ -183,7 +222,6 @@ To undefine a function, specify the `fun` keyword and its name.
 ----
 #!test[schema]
 include::{page-version}@reference::example$tql/undefine_statements_functions.tql[tags=undefine-keyword;with-fun-undefined]
-#!---
 ----
 // end::undefine[]
 

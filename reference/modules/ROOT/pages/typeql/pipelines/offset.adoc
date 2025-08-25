@@ -12,6 +12,16 @@ offset <number>;
 
 == Example
 
+.Schema for the following examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema, commit]
+include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-friendship]
+----
+====
+
 Retrieve all friends of a user, sorted by the time they became friends from earliest to latest.
 Skip first 10, then return the following 10.
 
@@ -19,10 +29,6 @@ This can be thought as retrieving the second page with 10 employees per page.
 
 [,typeql]
 ----
-#!test[schema, commit]
-#{{
-include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-friendship]
-#}}
 #!test[read]
 match
   $user isa user, has name "<name>";
@@ -31,5 +37,4 @@ match
 sort $start;
 offset 10;
 limit 10;
-#!---
 ----

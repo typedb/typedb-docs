@@ -46,14 +46,20 @@ If no valid combinations of types can be inferred for the variables in body patt
 
 == Examples
 
+.Schema for the following examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema, commit]
+include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-friendship]
+----
+====
+
 1. Retrieve usernames of user who have more than 400 friends:
 +
 [,typeql]
 ----
-#!test[schema, commit]
-#{{
-include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-friendship]
-#}}
 #!test[read]
 match
   $x isa user;
@@ -63,7 +69,6 @@ match
   $y_count > 500;
   $x has username $name;
 select $name;
-#!---
 ----
 
 1. Retrieve users with no friends:
@@ -74,7 +79,6 @@ select $name;
 match
   $x isa user;
   not { friendship($x, $y); };
-#!---
 ----
 
 

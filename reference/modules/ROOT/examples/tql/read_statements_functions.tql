@@ -4,6 +4,7 @@ with fun karma_with_squared_value($user: user) -> karma, double:
     $user has karma $karma;
     let $karma-squared = $karma * $karma;
   return first $karma, $karma-squared;
+
 # tag::with-fun-match[]
 match
   $user isa user, has username $name;

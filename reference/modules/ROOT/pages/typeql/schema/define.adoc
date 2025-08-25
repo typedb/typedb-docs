@@ -57,7 +57,6 @@ An error is returned (on execution or on commit), and no changes are preserved, 
 ----
 #!test[schema, commit]
 define entity user;
-#!---
 ----
 
 .Defining relation types
@@ -65,7 +64,6 @@ define entity user;
 ----
 #!test[schema, fail_at=commit]
 define relation parentship;
-#!---
 ----
 
 .Defining attribute types
@@ -73,7 +71,6 @@ define relation parentship;
 ----
 #!test[schema, fail_at=commit]
 define attribute email;
-#!---
 ----
 
 === Defining interfaces
@@ -87,7 +84,6 @@ define relation parentship, relates unused-role;
 #}}
 #!test[schema]
 define parentship relates parent, relates child;
-#!---
 ----
 
 .Defining relation types with subtyping
@@ -95,7 +91,6 @@ define parentship relates parent, relates child;
 ----
 #!test[schema, commit]
 define relation fathership sub parentship;
-#!---
 ----
 
 .Defining relates with role type specializing
@@ -103,7 +98,6 @@ define relation fathership sub parentship;
 ----
 #!test[schema]
 define fathership relates father as parent;
-#!---
 ----
 
 .Defining roleplaying for multiple roles
@@ -111,7 +105,6 @@ define fathership relates father as parent;
 ----
 #!test[schema]
 define user plays parentship:parent, plays parentship:child;
-#!---
 ----
 
 .Defining attribute type's value type
@@ -121,7 +114,6 @@ define user plays parentship:parent, plays parentship:child;
 define attribute email @abstract; # cheat.
 #!test[schema]
 define email value string;
-#!---
 ----
 
 .Defining type's ownership
@@ -129,7 +121,6 @@ define email value string;
 ----
 #!test[schema]
 define user owns email;
-#!---
 ----
 
 === Defining annotations
@@ -139,7 +130,6 @@ define user owns email;
 ----
 #!test[schema]
 define parentship @abstract;
-#!---
 ----
 
 .Defining attribute type's annotation and value type's annotation with arguments
@@ -147,7 +137,6 @@ define parentship @abstract;
 ----
 #!test[schema]
 define email @independent, value string @regex("^.*@\w+\.\w+$");
-#!---
 ----
 
 .Defining type's ownership's annotation with arguments
@@ -155,7 +144,6 @@ define email @independent, value string @regex("^.*@\w+\.\w+$");
 ----
 #!test[schema]
 define user owns email @card(0..2);
-#!---
 ----
 
 
@@ -164,7 +152,6 @@ define user owns email @card(0..2);
 ----
 #!test[schema]
 define parentship relates parent @abstract;
-#!---
 ----
 
 .Defining annotations for specializing relates
@@ -172,7 +159,6 @@ define parentship relates parent @abstract;
 ----
 #!test[schema]
 define fathership relates father as parent @abstract;
-#!---
 ----
 
 === Defining functions

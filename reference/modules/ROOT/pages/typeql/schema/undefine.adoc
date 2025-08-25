@@ -71,7 +71,10 @@ Only the type of the annotation is required, so annotations with arguments can b
 * xref:{page-version}@reference::typeql/statements/fun.adoc[`fun ...` statements] undefine existing functions.
 
 == Examples
-////
+
+.Schema for the following examples
+[%collapsible]
+====
 [,typeql]
 ----
 #!test[schema, commit]
@@ -83,7 +86,7 @@ relation fathership sub parentship, relates father as parent;
 user plays parentship:parent;
 user owns email @card(0..1);
 ----
-////
+====
 
 === Undefining types
 
@@ -92,7 +95,6 @@ user owns email @card(0..1);
 ----
 #!test[schema, rollback]
 undefine user;
-#!---
 ----
 
 .Undefining types
@@ -100,7 +102,6 @@ undefine user;
 ----
 #!test[schema, rollback]
 undefine fathership; email;
-#!---
 ----
 
 === Undefining interfaces
@@ -110,7 +111,6 @@ undefine fathership; email;
 ----
 #!test[schema]
 undefine relates child from parentship;
-#!---
 ----
 
 .Undefining relates specialization
@@ -118,7 +118,6 @@ undefine relates child from parentship;
 ----
 #!test[schema]
 undefine as parent from fathership relates father;
-#!---
 ----
 
 .Undefining relation type's subtyping
@@ -127,7 +126,6 @@ undefine as parent from fathership relates father;
 #!test[schema]
 # Note, this requires the specialisation to have been undefined first.
 undefine sub parentship from fathership;
-#!---
 ----
 
 .Undefining type's roleplaying
@@ -135,7 +133,6 @@ undefine sub parentship from fathership;
 ----
 #!test[schema]
 undefine plays parentship:parent from user;
-#!---
 ----
 
 .Undefining attribute type's value type
@@ -143,7 +140,6 @@ undefine plays parentship:parent from user;
 ----
 #!test[schema, fail_at=runtime]
 undefine value string from email;
-#!---
 ----
 
 .Undefining type's ownership
@@ -151,7 +147,6 @@ undefine value string from email;
 ----
 #!test[schema, rollback]
 undefine owns email from user;
-#!---
 ----
 
 === Undefining annotations

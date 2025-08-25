@@ -19,19 +19,24 @@ sort <var> [asc|desc] [ , <var> [asc|desc] ... ];
 
 == Example
 
+.Schema for the following examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema, commit]
+include::{page-version}@reference::partial$2_to_3/schema-3x.tql[tags=full-query]
+----
+====
+
 Retrieve all posts on a given page, sorted from newest to oldest.
 
 [,typeql]
 ----
-#!test[schema, commit]
-#{{
-include::{page-version}@reference::partial$2_to_3/schema-3x.tql[tags=full-query]
-#}}
 #!test[read]
 match
   $page isa page, has id "<page id>";
   $post isa post, has creation-timestamp $created;
   posting (page: $page, post: $post);
 sort $created desc;
-#!---
 ----

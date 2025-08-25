@@ -14,23 +14,28 @@ put <insert-statement> [ <insert-statement> ... ]
 
 == Example
 
+.Schema for the following examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema, commit]
+include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-friendship]
+attribute age, value integer;
+user owns age;
+----
+====
+
 The following query creates a friendship relation between two users, if one does not already exist.
 
 [,typeql]
 ----
-#!test[schema, commit]
-#{{
-include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-friendship]
-attribute age, value integer;
-user owns age;
-#}}
 #!test[write]
 match
   $user-1 isa user, has username "Alice";
   $user-2 isa user, has username "Bob";
 put
   friendship (friend: $user-1, friend: $user-2);
-#!---
 ----
 
 == Behavior
@@ -63,7 +68,6 @@ and we run the following query:
 #!test[write]
 match $john isa user, has username "John";
 put $jane isa user, has username "Jane";
-#!---
 ----
 
 What happens in this case is:
@@ -95,7 +99,6 @@ put $p2 isa user, has name "Bob";
 
 # Creates a new user with name "Alice" & age 10.
 put $p3 isa user, has name "Alice", has age 10;
-#!---
 ----
 The statement `put $p3...` creates a new user because the **whole** pattern fails to match,
 as there is no existing user with name "Alice" **AND** age 10.
@@ -108,7 +111,6 @@ To achieve the desired result of not re-creating the user if only the age attrib
 #!test[write]
 put $p4 isa user, has name "Bob"; # Matches the user with name "Bob", since it exists
 put $p4 has age 11;     # Adds an attribute to the same user
-#!---
 ----
 
 === Isolation from concurrent transactions

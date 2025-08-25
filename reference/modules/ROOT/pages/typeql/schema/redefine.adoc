@@ -39,7 +39,10 @@ An error is returned (on execution or on commit), and no changes are preserved, 
 * xref:{page-version}@reference::typeql/statements/fun.adoc[`fun` statements] redefine functions, replacing their interfaces and bodies.
 
 == Examples
-////
+
+.Schema for the following examples
+[%collapsible]
+====
 [,typeql]
 ----
 #!test[schema, commit]
@@ -48,10 +51,9 @@ attribute tag value string;
 entity post owns tag @card(0..);
 relation parentship relates parent, relates child;
 relation fathership sub parentship, relates father as child;
-#!---
 ----
+====
 
-////
 === Redefining types' interfaces and annotations
 
 .Redefining type's sub
@@ -59,7 +61,6 @@ relation fathership sub parentship, relates father as child;
 ----
 #!test[schema]
 redefine user sub page;
-#!---
 ----
 
 .Redefining attribute type's value type
@@ -67,7 +68,6 @@ redefine user sub page;
 ----
 #!test[schema]
 redefine karma value integer;
-#!---
 ----
 
 .Redefining value type's annotation with arguments
@@ -75,7 +75,6 @@ redefine karma value integer;
 ----
 #!test[schema]
 redefine email value string @regex("^.*@typedb\.com$");
-#!---
 ----
 
 .Redefining type interface's annotation with arguments
@@ -83,7 +82,6 @@ redefine email value string @regex("^.*@typedb\.com$");
 ----
 #!test[schema]
 redefine post owns tag @card(0..5);
-#!---
 ----
 
 .Redefining relates specialization
@@ -91,7 +89,6 @@ redefine post owns tag @card(0..5);
 ----
 #!test[schema]
 redefine fathership relates father as parent;
-#!---
 ----
 
 === Redefining functions

@@ -42,7 +42,6 @@ include::{page-version}@reference::typeql/annotations/values.adoc[tags=values-an
 ----
 #!test[schema]
 include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;range-value]
-#!---
 ----
 
 [#_example_owns]
@@ -53,7 +52,6 @@ In the following example, an instance of the `creation-timestamp` type can conta
 ----
 #!test[schema]
 include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;creation-timestamp-attribute;range-owns]
-#!---
 ----
 
 === Subtyping for attribute types' values

@@ -23,6 +23,15 @@ Stream functions can be identified by their return type containing curly braces 
 
 Stream functions are defined and called like any other function.
 To retrieve the results of the called function, considering that the number of results for a single call is undefined, use the keyword `in`.
+.Schema for the following examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema, commit]
+include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes]
+----
+====
 
 [#scalar_functions]
 === Scalar functions
@@ -33,12 +42,7 @@ The following examples illustrate simple usages of functions for retrieving a st
 [,typeql]
 ----
 #!test[schema, commit]
-#{{
-include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes]
-#}}
-#!test[schema, commit]
 include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;fun-stream-scalar-return-type]
-#!---
 ----
 
 [,typeql]

@@ -37,7 +37,6 @@ include::{page-version}@reference::typeql/annotations/values.adoc[tags=values-an
 ----
 #!test[schema]
 include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;regex-value]
-#!---
 ----
 
 [#_example_owns]
@@ -48,7 +47,6 @@ In the following example, an instance of the `phone` type can contain any `strin
 ----
 #!test[schema]
 include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;phone-attribute;regex-owns]
-#!---
 ----
 
 === Subtyping

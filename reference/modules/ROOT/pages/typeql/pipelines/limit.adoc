@@ -13,14 +13,20 @@ limit <number>;
 
 == Example
 
+.Schema for the following examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema, commit]
+include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-friendship]
+----
+====
+
 Match all friends of friends of a given person, sorted by the number of mutual friends, highest to lowest. Return first 10.
 
 [,typeql]
 ----
-#!test[schema, commit]
-#{{
-include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-friendship]
-#}}
 #!test[read]
 match
   $user isa user, has username "<username>";
@@ -30,5 +36,4 @@ match
 reduce $num-mutuals = count($friend) groupby $possible-friend;
 sort $num-mutuals desc;
 limit 10;
-#!---
 ----

@@ -203,13 +203,19 @@ The following example demonstrates a single `fetch` stage containing different v
 ====
 Every sub statement inside this `fetch` stage can be written as separate `fetch` es and can be considered as separate examples.
 ====
-
+.Schema for the following examples
+[%collapsible]
+====
 [,typeql]
 ----
 #!test[schema, commit]
-#{{
 include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-group;fun-aggregate-single-scalar-return]
-#}}
+----
+====
+
+
+[,typeql]
+----
 #!test[read, documents]
 match
   $group isa group;
@@ -248,7 +254,6 @@ fetch {
     return mean($karma);
   ]
 };
-#!---
 ----
 
 .Example TypeDB Console output

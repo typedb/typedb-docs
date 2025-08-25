@@ -34,21 +34,26 @@ or {
 == Behavior
 A disjunction pattern is satisfied if one of its branches is satisfied.
 
+.Schema for the following examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema, commit]
+include::{page-version}@reference::example$tql/conjunction.tql[tags=patterns-schema]
+----
+====
+
 ===  Variable scopes
 A variable that appears in every branch will appear in the answers to the disjunction,
 and is considered to be in the scope of the parent pattern.
 Results to the following query will contain answers for `$x` and `$id`:
 [,typeql]
 ----
-#!test[schema, commit]
-#{{
-include::{page-version}@reference::example$tql/conjunction.tql[tags=patterns-schema]
-#}}
 #!test[read]
 match
   $x isa user;
   { $x has email $id; } or { $x has phone $id; };
-#!---
 ----
 
 A variable that occurs in only one branch AND not outside the disjunction is considered local to the branch.
@@ -59,7 +64,6 @@ Results to the following query will only contain answers for `$x`:
 match
   $x isa user;
   { $x has email $e; } or { $x has phone $p; };
-#!---
 ----
 
 In line with the unique scope principle, a variable that is local to more than one pattern is invalid.
@@ -71,7 +75,6 @@ match
   $x isa user;
   { $x has email $e; } or { $x has phone $p; };
   not { $e contains "@typedb.com"; };
-#!---
 ----
 
 // Note: A version of this document exists for the version of disjunctions
@@ -89,5 +92,4 @@ match
   $y isa user;
   { friendship($x, $y); }
   or { friendship($x, $z); friendship($z, $y); };
-#!---
 ----

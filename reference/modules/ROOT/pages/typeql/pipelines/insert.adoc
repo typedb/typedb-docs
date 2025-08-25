@@ -49,12 +49,18 @@ NOTE: xref:{page-version}@reference::typeql/annotations/card.adoc[Cardinality an
 
 == Examples
 
+.Schema for the following examples
+[%collapsible]
+====
 [,typeql]
 ----
 #!test[schema, commit]
-#{{
 include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;extended-attributes;relation-group]
-#}}
+----
+====
+
+[,typeql]
+----
 #!test[write, documents]
 insert
   $group isa group,
@@ -64,7 +70,6 @@ insert
     has bio "<bio>",
     has profile-picture "<uuid>";
   group-membership(group: $group, member: $user) has rank "member";
-#!---
 ----
 
 [,typeql]
@@ -75,6 +80,5 @@ match
   $group isa group, has group-id "<group id>";
 insert
   group-membership(group: $group, member: $user) has rank "member";
-#!---
 ----
 

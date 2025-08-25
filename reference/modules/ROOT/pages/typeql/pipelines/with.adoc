@@ -29,15 +29,20 @@ The usual function validation applies to the function declaration in a with clau
 
 == Examples
 
+.Schema for the following examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema, commit]
+include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-friendship]
+----
+====
 
 1. Find users with more friends than a specific user and return their usernames
 +
 [,typeql]
 ----
-#!test[schema, commit]
-#{{
-include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-friendship]
-#}}
 #!test[read]
 with fun friend_count($user: user) -> integer:
   match friendship($user, $x);
@@ -47,7 +52,6 @@ match
   $user2 isa user, has username $name;
   friend_count($user1) < friend_count($user2);
 select $name;
-#!---
 ----
 
 
@@ -70,7 +74,6 @@ match
   let $y in popular_users();
   $y has username $pop_name;
 select $pop_name;
-#!---
 ----
 
 

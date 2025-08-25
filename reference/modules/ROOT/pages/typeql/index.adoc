@@ -93,7 +93,6 @@ As a simple example of this distinction, compare:
 define
   entity user, plays friendship:friend;
   relation friendship, relates friend @card(2);
-#!---
 ----
 with
 [,typeql]
@@ -102,7 +101,6 @@ with
 match
   $some-type plays $some-role;
   friendship relates $some-role;
-#!---
 ----
 The former query introduces types, while the latter will query for types. The general idea here is as follows.
 

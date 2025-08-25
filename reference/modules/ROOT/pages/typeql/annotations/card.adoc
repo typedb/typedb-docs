@@ -53,7 +53,6 @@ include::{page-version}@reference::example$tql/schema_annotations.tql[tags=defin
 #}}
 #!test[schema]
 include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;card-owns-13]
-#!---
 ----
 
 At the same time, the `page` type can play the `posting:page` role an unlimited number of times:
@@ -66,7 +65,6 @@ define relation posting relates page;
 #}}
 #!test[schema, rollback]
 include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;card-plays-0inf]
-#!---
 ----
 
 However, an instance of the `posting` relation type can have up to a thousand `page` instances:
@@ -75,7 +73,6 @@ However, an instance of the `posting` relation type can have up to a thousand `p
 ----
 #!test[schema]
 include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;card-relates-01k]
-#!---
 ----
 
 [#subtyping]
@@ -93,7 +90,6 @@ For example, the following query defines that:
 ----
 #!test[schema]
 include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;card-owns-13;profile-sub-page;user-owns-name;name-subattributes]
-#!---
 ----
 
 Valid statements based on this schema include:

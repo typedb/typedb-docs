@@ -37,12 +37,18 @@ The modified concepts are validated the same way as in xref:{page-version}@refer
 
 == Example
 
+.Schema for the following examples
+[%collapsible]
+====
 [,typeql]
 ----
 #!test[schema, commit]
-#{{
 include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-group]
-#}}
+----
+====
+
+[,typeql]
+----
 #!test[write]
 match
   $group isa group, has group-id "<group id>";
@@ -51,5 +57,4 @@ match
 update
   $group-membership has rank "member";
   $group-membership links (group: $group);
-#!---
 ----

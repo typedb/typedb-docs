@@ -13,16 +13,21 @@ select <var> [ , <var> ... ];
 
 == Example
 
+.Schema for the following examples
+[%collapsible]
+====
 [,typeql]
 ----
 #!test[schema, commit]
-#{{
 include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-group]
-#}}
+----
+====
+
+[,typeql]
+----
 #!test[read]
 match
   $group isa group, has group-id "<group id>";
   group-membership (group: $group, member: $member), has rank "member";
 select $member;
-#!---
 ----
