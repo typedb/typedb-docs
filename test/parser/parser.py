@@ -10,20 +10,20 @@ logger = logging.getLogger('main')
 MARKERS = {
     "typeql": {
         "test_start": "#!test",  # may have options, e.g. '#!test[write, reset, count=3]', see README.md
-        "hidden_segment_start": "#{{",
-        "hidden_segment_end": "#}}",
+        "hidden_section_start": "#{{",
+        "hidden_section_end": "#}}",
         "segment_separator": "#---",  # used to separate non-hidden queries
     },
     "python": {
         "test_start": "#!test",
-        "hidden_segment_start": "#{{",
-        "hidden_segment_end": "#}}",
+        "hidden_section_start": "#{{",
+        "hidden_section_end": "#}}",
         "segment_separator": "#---",
     },
     "rust": {
         "test_start": "//!test",
-        "hidden_segment_start": "//{{",
-        "hidden_segment_end": "//}}",
+        "hidden_section_start": "//{{",
+        "hidden_section_end": "//}}",
         "segment_separator": "//---",
     }
 }
@@ -225,22 +225,22 @@ class Parser:
                 continue
 
             if self.in_language_block and self.in_test:
-                if line.startswith(MARKERS[self.language]['hidden_segment_start']):
-                    logger.debug(f"line {self.line_number}: found hidden segment start")
+                if line.startswith(MARKERS[self.language]['hidden_section_start']):
+                    logger.debug(f"line {self.line_number}: found hidden section start")
                     if self.in_segment:
-                        self.error("Nested hidden segment found.")
+                        self.error("Nested hidden section found.")
                     self.in_segment = True
 
-                elif line.startswith(MARKERS[self.language]['hidden_segment_end']):
-                    logger.debug(f"line {self.line_number}: found hidden segment end")
+                elif line.startswith(MARKERS[self.language]['hidden_section_end']):
+                    logger.debug(f"line {self.line_number}: found hidden section end")
                     if not self.in_segment:
-                        self.error("No hidden segment to end found.")
+                        self.error("No hidden section to end found.")
                     self.in_segment = False
 
                 elif line.startswith(MARKERS[self.language]['segment_separator']):
                     logger.debug(f"line {self.line_number}: found segment separator")
                     if self.in_segment:
-                        self.error("Cannot separate in a hidden segment")
+                        self.error("Cannot separate in a hidden section")
                     self.finalize_current_segment()
 
                 elif line.startswith("include::"):
