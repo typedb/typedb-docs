@@ -12,7 +12,6 @@ The `label` keyword is only used when matching on a type label. The type label i
 ----
 #!test[schema]
 define entity user;
-#!---
 ----
 
 == Matching type labels
@@ -21,5 +20,4 @@ define entity user;
 ----
 #!test[schema]
 match $t label user;
-#!---
 ----

@@ -19,7 +19,6 @@ define
 #}}
 #!test[schema]
 define parentship relates parent;
-#!---
 ----
 
 === Defining specializing role types
@@ -30,7 +29,6 @@ The `relates ... as` construction can be used to define a role type specializing
 ----
 #!test[schema, commit]
 define fathership relates father as parent;
-#!---
 ----
 
 // TODO: Redefining when ordering is introduced
@@ -43,7 +41,6 @@ The `relates ... as` construction can be used to define a role type specializing
 ----
 #!test[schema, rollback]
 redefine fathership relates father as child;
-#!---
 ----
 
 == Undefining role types
@@ -58,7 +55,6 @@ undefine as parent from fathership relates father;
 #}}
 #!test[schema, rollback]
 undefine relates parent from parentship;
-#!---
 ----
 
 === Undefining role types specialization
@@ -73,7 +69,6 @@ define fathership relates father as parent;
 #}}
 #!test[schema]
 undefine as parent from fathership relates father;
-#!---
 ----
 
 == Matching
@@ -86,7 +81,6 @@ The `relates` keyword can be used to match all role types related by a relation 
 ----
 #!test[schema]
 match parentship relates $r;
-#!---
 ----
 
 === Matching relation types
@@ -97,7 +91,6 @@ The `relates` keyword can be used to match all relation types for a role type wi
 ----
 #!test[schema]
 match $r relates parent;
-#!---
 ----
 
 Note that a scope can be used to have more specific results.
@@ -107,5 +100,4 @@ The previous query can return results for different role types with the same `<L
 ----
 #!test[schema]
 match $r relates parentship:parent;
-#!---
 ----

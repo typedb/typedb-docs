@@ -18,7 +18,6 @@ match
 { $a <= $b; let $min = $a; let $max = $b; } or
 { $a > $b; let $min = $b; let $max = $a; };
 return first $min, $max;
-#!---
 ----
 ////
 
@@ -27,5 +26,4 @@ return first $min, $max;
 #!test[read]
 match
   let $x, $y = minmax(3 * 5, 4 * 4);
-#!---
 ----

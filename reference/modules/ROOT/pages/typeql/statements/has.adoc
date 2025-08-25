@@ -10,7 +10,6 @@ The statement `<OWNER VAR> has <ATTRIBUTE VAR>` is used to identify the `<OWNER 
 define
 attribute name, value string;
 entity person, owns name;
-#!---
 ----
 ////
 
@@ -65,7 +64,6 @@ The `has` keyword can be used to match attributes of an object.
 ----
 #!test[read]
 match $person has $name;
-#!---
 ----
 
 The attribute type may be provided.
@@ -74,7 +72,6 @@ The attribute type may be provided.
 ----
 #!test[read]
 match $person has name $name;
-#!---
 ----
 
 The attribute can be matched by attribute type and value instead of binding it to a variable.
@@ -83,7 +80,6 @@ The attribute can be matched by attribute type and value instead of binding it t
 ----
 #!test[read]
 match $person has name "Alice";
-#!---
 ----
 
 Alternatively, a comparison can be used to constrain the attribute value.
@@ -92,6 +88,5 @@ Alternatively, a comparison can be used to constrain the attribute value.
 ----
 #!test[read]
 match $person has name < "Bob";
-#!---
 ----
 

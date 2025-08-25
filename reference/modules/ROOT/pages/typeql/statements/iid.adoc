@@ -10,7 +10,6 @@ The constraint `$c iid <IID>` matches the stored concept with the provided inter
 define
 attribute name, value string;
 entity person, owns name;
-#!---
 ----
 ////
 
@@ -22,7 +21,6 @@ When a concept is inserted, it is assigned an IID automatically.
 ----
 #!test[write]
 insert $user isa person;
-#!---
 ----
 
 .Example TypeDB Console output
@@ -41,5 +39,4 @@ insert $user isa person;
 ----
 #!test[read]
 match $x iid 0x1f0005000000000000012f;
-#!---
 ----

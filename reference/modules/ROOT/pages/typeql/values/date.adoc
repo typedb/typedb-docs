@@ -37,7 +37,6 @@ and the maximum supported date is December 31, 262142 CE.
 #!test[schema]
 define
   attribute publish-date value date;
-#!---
 ----
 
 == Inserting a date valued attribute
@@ -47,5 +46,4 @@ define
 #!test[write]
 insert
   $_ isa publish-date 2025-01-10;
-#!---
 ----

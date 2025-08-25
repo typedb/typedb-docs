@@ -10,7 +10,6 @@ A 64-bit signed integer.
 #!test[schema]
 define
   attribute total-likes value integer;
-#!---
 ----
 
 == Inserting an integer valued attribute
@@ -20,6 +19,5 @@ define
 #!test[write]
 insert
   $_ isa total-likes 42;
-#!---
 ----
 

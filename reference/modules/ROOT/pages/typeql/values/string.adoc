@@ -10,7 +10,6 @@ A UTF-8 character string type.
 #!test[schema]
 define
   attribute name value string;
-#!---
 ----
 
 == Inserting a string valued attribute
@@ -20,7 +19,6 @@ define
 #!test[write]
 insert
   $_ isa name "John";
-#!---
 ----
 
 

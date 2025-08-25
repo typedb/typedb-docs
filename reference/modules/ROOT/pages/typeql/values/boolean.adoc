@@ -10,7 +10,6 @@ A logical boolean (`true` / `false`).
 #!test[schema]
 define
   attribute shipped value boolean;
-#!---
 ----
 
 == Inserting a boolean valued attribute
@@ -20,6 +19,5 @@ define
 #!test[write]
 insert
   $_ isa shipped false;
-#!---
 ----
 

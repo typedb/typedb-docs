@@ -11,7 +11,6 @@ The `relation` keyword can be used to define a type of kind `relation`.
 ----
 #!test[schema, fail_at=commit]
 define relation parentship;
-#!---
 ----
 
 == Matching relations
@@ -22,5 +21,4 @@ The `relation` keyword can be used to match all types of kind `relation`.
 ----
 #!test[schema]
 match relation $r;
-#!---
 ----

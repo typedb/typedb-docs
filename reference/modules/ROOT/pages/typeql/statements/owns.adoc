@@ -10,7 +10,6 @@ The statement `<LABEL> owns <ATTRIBUTE LABEL>` is used to identify the `<LABEL>`
 define
 entity user;
 attribute email value string;
-#!---
 ----
 ////
 
@@ -22,7 +21,6 @@ The `owns` keyword can be used to define a type as an owner of an attribute type
 ----
 #!test[schema]
 define user owns email;
-#!---
 ----
 
 // TODO: Redefining when ordering is introduced
@@ -35,7 +33,6 @@ The `owns` keyword can be used to undefine a type's ownership of an attribute ty
 ----
 #!test[schema]
 undefine owns email from user;
-#!---
 ----
 
 == Matching
@@ -48,7 +45,6 @@ The `owns` keyword can be used to match all attribute types a type owns.
 ----
 #!test[read]
 match user owns $a;
-#!---
 ----
 
 === Matching owner types
@@ -59,5 +55,4 @@ The `owns` keyword can be used to match all owner types for an attribute type.
 ----
 #!test[read]
 match $o owns email;
-#!---
 ----

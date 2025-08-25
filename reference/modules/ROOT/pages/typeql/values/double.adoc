@@ -11,7 +11,6 @@ A finite double precision IEEE 754 floating point number.
 define
 attribute latitude @independent, value double;
 attribute longitude @independent, value double;
-#!---
 ----
 
 == Inserting a double valued attribute
@@ -22,6 +21,5 @@ attribute longitude @independent, value double;
 insert
   $_ isa latitude 11.373333;
   $_ isa longitude 142.591667;
-#!---
 ----
 

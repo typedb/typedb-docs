@@ -10,7 +10,6 @@ The statement `<LABEL> value <VALUE TYPE>` is used to identify `<VALUE TYPE>` as
 ----
 #!test[schema]
 define attribute name @abstract;
-#!---
 ----
 ////
 
@@ -22,7 +21,6 @@ The `value` keyword can be used to define a value type of an attribute type.
 ----
 #!test[schema]
 define name value string;
-#!---
 ----
 
 == Undefining attribute type's value type
@@ -33,7 +31,6 @@ The `value` keyword can be used to undefine an attribute type's value type.
 ----
 #!test[schema]
 undefine value string from name;
-#!---
 ----
 
 == Matching
@@ -44,5 +41,4 @@ The `value` keyword can be used to match all attribute types with a value type.
 ----
 #!test[read]
 match $a value string;
-#!---
 ----

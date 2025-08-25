@@ -10,7 +10,6 @@ The statement `<VAR> isa <TYPE>` is used to identify the `<VAR>` as an instance 
 define
 attribute name, value string;
 entity person, owns name;
-#!---
 ----
 ////
 
@@ -22,7 +21,6 @@ The `isa` keyword can be used to create a new instance of a given type.
 ----
 #!test[write]
 insert $person isa person;
-#!---
 ----
 
 == Deleting instance of type
@@ -51,7 +49,6 @@ The `isa` keyword can be used to match all instances of a given type and its sub
 ----
 #!test[read]
 match $person isa person;
-#!---
 ----
 
 The `isa!` keyword can be used to match all instances of a type _excluding subtypes._
@@ -60,7 +57,6 @@ The `isa!` keyword can be used to match all instances of a type _excluding subty
 ----
 #!test[read]
 match $person isa! person;
-#!---
 ----
 
 === Matching types of an instance
@@ -71,7 +67,6 @@ The `isa` keyword can be used to match all types of an instance.
 ----
 #!test[read]
 match $person isa $type;
-#!---
 ----
 
 The `isa!` keyword can be used to match the exact type of an instance.
@@ -80,5 +75,4 @@ The `isa!` keyword can be used to match the exact type of an instance.
 ----
 #!test[read]
 match $person isa! $type;
-#!---
 ----

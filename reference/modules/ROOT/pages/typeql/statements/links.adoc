@@ -12,7 +12,6 @@ VAR>`.
 define
 relation friendship, relates friend @card(0..2);
 entity user, plays friendship:friend;
-#!---
 ----
 ////
 
@@ -80,7 +79,6 @@ The `links` keyword can be used to match relations along with their role players
 ----
 #!test[read]
 match $friendship links (friend: $person);
-#!---
 ----
 
 The role specifiers may be variables as well.
@@ -89,7 +87,6 @@ The role specifiers may be variables as well.
 ----
 #!test[read]
 match $friendship links ($role: $person);
-#!---
 ----
 
 Note that the role label is not required.
@@ -98,7 +95,6 @@ Note that the role label is not required.
 ----
 #!test[read]
 match $friendship links ($person);
-#!---
 ----
 
 If a relation binding is not required, the relation type shorthand can be used directly instead.
@@ -107,6 +103,5 @@ If a relation binding is not required, the relation type shorthand can be used d
 ----
 #!test[read]
 match friendship ($alice, $bob);
-#!---
 ----
 

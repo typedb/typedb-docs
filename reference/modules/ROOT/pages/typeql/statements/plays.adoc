@@ -10,7 +10,6 @@ The statement `<LABEL> plays <SCOPED ROLE LABEL>` is used to identify the `<LABE
 define
 relation parentship, relates parent, relates child;
 entity user, plays parentship:child;
-#!---
 ----
 ////
 
@@ -23,7 +22,6 @@ Note that a scope is required to resolve role type names ambiguity.
 ----
 #!test[schema]
 define user plays parentship:parent;
-#!---
 ----
 
 == Undefining role players
@@ -34,7 +32,6 @@ The `plays` keyword can be used to undefine a type's role.
 ----
 #!test[schema]
 undefine plays parentship:parent from user;
-#!---
 ----
 
 == Matching
@@ -47,7 +44,6 @@ The `plays` keyword can be used to match all role types a type plays.
 ----
 #!test[schema]
 match user plays $r;
-#!---
 ----
 
 === Matching role player types
@@ -67,5 +63,4 @@ The previous query can return results for different role types with the same `<L
 ----
 #!test[schema]
 match $rp plays parentship:parent;
-#!---
 ----

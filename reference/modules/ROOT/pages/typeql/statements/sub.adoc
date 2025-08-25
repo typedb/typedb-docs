@@ -8,7 +8,6 @@ The statement `<LABEL> sub <SUPERTYPE LABEL>` is used to identify the `<LABEL>` 
 ----
 #!test[schema]
 define entity profile; entity user;
-#!---
 ----
 ////
 
@@ -20,7 +19,6 @@ The `sub` keyword can be used to define a type as a subtype of another type.
 ----
 #!test[schema]
 define user sub profile;
-#!---
 ----
 
 == Undefining subtyping
@@ -31,7 +29,6 @@ The `sub` keyword can be used to undefine a type's subtyping of a type.
 ----
 #!test[schema]
 undefine sub profile from user;
-#!---
 ----
 
 == Matching
@@ -45,7 +42,6 @@ This will result in all the transitive supertypes, including supertypes of its s
 ----
 #!test[read]
 match user sub $t;
-#!---
 ----
 
 .Example TypeDB Console output
@@ -73,7 +69,6 @@ This will result in only the types with defined `sub` statements, excluding the 
 ----
 #!test[read]
 match user sub! $t;
-#!---
 ----
 
 .Example TypeDB Console output
@@ -95,7 +90,6 @@ This will result in all the transitive subtypes, including subtypes of its subty
 ----
 #!test[read]
 match $t sub profile;
-#!---
 ----
 
 .Example TypeDB Console output
@@ -133,7 +127,6 @@ This will result in only the types with defined `sub` statements, excluding the 
 ----
 #!test[read]
 match $t sub! profile;
-#!---
 ----
 
 .Example TypeDB Console output
