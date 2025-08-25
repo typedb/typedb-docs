@@ -55,11 +55,11 @@ The `relates` keyword can be used to undefine a role type from a relation.
 
 [,typeql]
 ----
-#!test[schema]
+#!test[schema, rollback]
 #{{
 undefine as parent from fathership relates father;
 #}}
-#!test[schema, rollback]
+#---
 undefine relates parent from parentship;
 ----
 
@@ -69,11 +69,7 @@ The `relates ... as` construction can be used to undefine a role type specializa
 
 [,typeql]
 ----
-#!test[schema]
-#{{
-define fathership relates father as parent;
-#}}
-#!test[schema]
+#!test[schema, rollback]
 undefine as parent from fathership relates father;
 ----
 

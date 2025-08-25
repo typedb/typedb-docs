@@ -229,14 +229,12 @@ class Parser:
                     logger.debug(f"line {self.line_number}: found hidden segment start")
                     if self.in_segment:
                         self.error("Nested hidden segment found.")
-                    self.finalize_current_segment()
                     self.in_segment = True
 
                 elif line.startswith(MARKERS[self.language]['hidden_segment_end']):
                     logger.debug(f"line {self.line_number}: found hidden segment end")
                     if not self.in_segment:
                         self.error("No hidden segment to end found.")
-                    self.finalize_current_segment()
                     self.in_segment = False
 
                 elif line.startswith(MARKERS[self.language]['segment_separator']):
