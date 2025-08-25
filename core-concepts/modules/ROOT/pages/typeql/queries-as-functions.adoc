@@ -67,7 +67,6 @@ fun post_count($page: page) -> integer:
 match
   $posting isa posting, links (posted: $page);
 return count($posting);
-#!---
 ----
 
 [NOTE]
@@ -98,7 +97,6 @@ match
         $_ isa edge, links (from_: $mid, to: $to);
     };
 return { $to };
-#!---
 ----
 
 This will return `node`s in a breadth-first fashion.

@@ -74,7 +74,6 @@ match
 
   ## $e is an 'employment', where $p plays the 'employee' role
   $e isa employment; $e links (employee: $p);
-#!---
 ----
 
 [NOTE]
@@ -88,7 +87,6 @@ match
   $p isa person,      # Combine the constraints on $p using a comma
     has name "James";  # Directly specify type & value of owned attribute.
   $e isa employment (employee: $p);  # Omit 'links' using the relation shorthand.
-#!---
 ----
 We will continue writing out the constraints for illustrative purposes.
 ====
@@ -138,7 +136,6 @@ insert
 
   ## $e is an 'employment', where $p plays the 'employee' role
   $e isa employment; $e links (employee: $p);
-#!---
 ----
 [NOTE]
 ====

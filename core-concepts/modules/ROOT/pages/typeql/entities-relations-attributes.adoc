@@ -16,7 +16,6 @@ E.g., a `person` exists, regardless of whether they are involved in friendships 
 define
 entity person;
 entity company;
-#!---
 ----
 
 == Relation
@@ -34,7 +33,6 @@ define
 relation employment,
   relates employer,
   relates employee;
-#!---
 ----
 
 Role type names exist scoped within their relation types, allowing you to re-use role labels in different relation types:
@@ -51,7 +49,6 @@ relation insurance-obligation,
   relates employer,
   relates employee,
   relates insurance;
-#!---
 ----
 
 You can refer to a role distinctly by scoping the role name with the relation name: `employment:employer`.
@@ -74,7 +71,6 @@ A type can be defined to implement this interface using the `owns` keyword.
 #!test[schema]
 define
 attribute age, value integer;
-#!---
 ----
 
 == Owning attributes & playing roles
@@ -89,7 +85,6 @@ E.g., a `person` may own an attribute `birth-date`, or an `employment` may own a
 #!test[schema]
 define
 person owns age;
-#!---
 ----
 
 Entity & relation types may be defined to "play" a role defined by a relation.
@@ -101,7 +96,6 @@ E.g., the entity type `company` may play the  `employer` role of an `employment`
 #!test[schema, rollback]
 define
 company plays employment:employer;
-#!---
 ----
 
 == Inheritance
