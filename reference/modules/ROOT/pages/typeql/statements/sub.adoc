@@ -3,13 +3,15 @@
 
 The statement `<LABEL> sub <SUPERTYPE LABEL>` is used to identify the `<LABEL>` type as a subtype of `<SUPERTYPE LABEL>`.
 
-////
+.Schema for the following examples
+[%collapsible]
+====
 [,typeql]
 ----
 #!test[schema]
 define entity profile; entity user;
 ----
-////
+====
 
 == Defining subtyping
 

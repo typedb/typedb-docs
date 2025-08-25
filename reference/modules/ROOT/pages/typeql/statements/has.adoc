@@ -3,7 +3,9 @@
 
 The statement `<OWNER VAR> has <ATTRIBUTE VAR>` is used to identify the `<OWNER VAR>` as owning the `<ATTRIBUTE VAR>`.
 
-////
+.Schema for the following examples
+[%collapsible]
+====
 [,typeql]
 ----
 #!test[schema]
@@ -11,7 +13,7 @@ define
 attribute name, value string;
 entity person, owns name;
 ----
-////
+====
 
 == Inserting attribute ownership
 
@@ -19,26 +21,22 @@ The `has` keyword can be used to attach an attribute to an object.
 
 [,typeql]
 ----
-insert $person has $name;
-
 #!test[write]
 #{{
 match $person isa person; $name isa name;
-insert $person has $name;
 #}}
+insert $person has $name;
 ----
 
 An attribute can be created in-place by providing its type and value.
 
 [,typeql]
 ----
-insert $person has name "Alice";
-
 #!test[write]
 #{{
 match $person isa person;
-insert $person has name "Alice";
 #}}
+insert $person has name "Alice";
 ----
 
 == Deleting attribute ownership
@@ -47,13 +45,11 @@ The `has` keyword is used to remove an attribute from its owner.
 
 [,typeql]
 ----
-delete has $name of $person;
-
 #!test[write]
 #{{
 match $person isa person, has name $name;
-delete has $name of $person;
 #}}
+delete has $name of $person;
 ----
 
 == Matching attributes

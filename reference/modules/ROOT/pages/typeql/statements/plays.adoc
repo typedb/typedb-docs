@@ -3,7 +3,9 @@
 
 The statement `<LABEL> plays <SCOPED ROLE LABEL>` is used to identify the `<LABEL>` type as a role player of `<SCOPED ROLE LABEL>`.
 
-////
+.Schema for the following examples
+[%collapsible]
+====
 [,typeql]
 ----
 #!test[schema, commit]
@@ -11,7 +13,7 @@ define
 relation parentship, relates parent, relates child;
 entity user, plays parentship:child;
 ----
-////
+====
 
 == Defining role players
 

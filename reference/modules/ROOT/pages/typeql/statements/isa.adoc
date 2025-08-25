@@ -3,7 +3,9 @@
 
 The statement `<VAR> isa <TYPE>` is used to identify the `<VAR>` as an instance of `<TYPE>`.
 
-////
+.Schema for the following examples
+[%collapsible]
+====
 [,typeql]
 ----
 #!test[schema]
@@ -11,7 +13,7 @@ define
 attribute name, value string;
 entity person, owns name;
 ----
-////
+====
 
 == Inserting instance of type
 
@@ -30,13 +32,11 @@ Simply delete the variable that is bound to the instance.
 
 [,typeql]
 ----
-delete $person;
-
 #!test[write]
 #{{
 match $person isa person;
-delete $person;
 #}}
+delete $person;
 ----
 
 == Matching

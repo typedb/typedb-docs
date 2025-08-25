@@ -8,7 +8,9 @@ The expression can be a literal, an arithmetic expression, or a single valued fu
 
 If the function returns a tuple, multiple variables must be specified on the left hand side of the assignment.
 
-////
+.Schema for the following examples
+[%collapsible]
+====
 [,typeql]
 ----
 #!test[schema, commit]
@@ -19,7 +21,7 @@ match
 { $a > $b; let $min = $b; let $max = $a; };
 return first $min, $max;
 ----
-////
+====
 
 [,typeql]
 ----

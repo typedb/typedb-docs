@@ -7,7 +7,26 @@ The expression can only be a call to a function that returns a stream of answers
 
 If each tuple in the stream contains more than one value, multiple variables must be specified of the left hand side of the assignment.
 
+.Schema for the following examples
+[%collapsible]
+====
 [,typeql]
 ----
+#!test[schema, commit]
+define
+entity person;
+entity company;
+# Dummy definition
+fun past-employments($person: person) -> { integer, company }:
+match
+  let $year = 2000;
+  $company isa company;
+return {$year, $company};
+----
+====
+
+[,typeql]
+----
+#!test[read]
 let $year, $company in past-employments($person);
 ----
