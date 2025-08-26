@@ -1,5 +1,6 @@
 = Databases
 :page-aliases: {page-version}@manual::databases.adoc, {page-version}@manual::databases/creating.adoc
+:test-typeql: linear
 
 This section covers the management of databases and the definition of the schema, which provides the structural foundation for your data.
 
@@ -50,6 +51,7 @@ Here is an example of a simple schema definition:
 
 [,typeql]
 ----
+#!test[schema]
 define
   entity person,
     owns name,

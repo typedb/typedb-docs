@@ -1,5 +1,6 @@
 = CRUD
 :page-aliases: {page-version}@manual::CRUD.adoc, {page-version}@manual::CRUD/inserting.adoc,  {page-version}@manual::CRUD/reading.adoc
+:test-typeql: linear
 
 CRUD operations create, read, update, and delete data in the TypeDB database.
 
@@ -16,14 +17,25 @@ For these examples, consider the following schema:
 [,typeql]
 .Sample schema
 ----
+#!test[schema]
 define
   entity person,
     owns name @card(1),
-    plays friendship:friend;
-  relation friendship,
-    relates friend;
+    plays friendship:friend,
+    plays parentship:parent,
+    plays parentship:child;
   attribute name,
     value string;
+  relation friendship,
+    relates friend @card(2);
+  relation parentship,
+    relates parent,
+    relates child;
+
+entity user sub person,
+  owns username @key;
+attribute username,
+  value string;
 ----
 
 If `insert` is the first stage in a pipeline, it runs just once and outputs a single row containing the newly created instances.
@@ -33,6 +45,7 @@ An example command to insert two people and a friendship between them would be:
 [,typeql]
 .Alice 🤝 Bob
 ----
+#!test[write]
 insert
   $a-name isa name "Alice";
   $b-name isa name "Bob";
@@ -61,6 +74,7 @@ In this example, Alice and Bob are already in the database, and we want to creat
 [,typeql]
 .Alice 🤝 Bob, v2
 ----
+#!test[write]
 match
   $a isa person, has name "Alice";
   $b isa person, has name "Bob";
@@ -76,6 +90,7 @@ The `put` stage represents an "insert if does not exist" operation and provides 
 
 [,typeql]
 ----
+#!test[write]
 put
   $a isa person, has name "Alice";
   $b isa person, has name "Bob";
@@ -118,10 +133,11 @@ For further explanation, see the drivers xref:{page-version}@core-concepts::driv
 A concern when loading large amounts of data is duplication. In most cases, it can be avoided by using the `put` stage:
 
 [,typeql]
-.Insert a new user if there isn't already a user named `"john1"`
+.Insert a new user if there isn't already a user with username `"john1"`
 ----
+#!test[write, count = 1]
 put
-  $x isa user, has username "john_1";
+  $x isa user, has username "john_1", has name "John";
 ----
 
 An issue may arise during parallel loading, however, where concurrent workers ensure the same user exists, inadvertently creating two
@@ -160,6 +176,7 @@ This allows structuring the output of the query to map precisely to the structur
 
 [,typeql]
 ----
+#!test[read, documents]
 match
   $p isa person;
 fetch {
@@ -206,6 +223,7 @@ Similar to ``put``, an `update` stage represents a "set if does not exist" opera
 [,typeql]
 .Simple attribute update
 ----
+#!test[write]
 match
   $a isa person, has name "Alice";
 update
@@ -217,6 +235,7 @@ This is the expected way to "change" the value of an attribute that is owned. At
 [,typeql]
 .Fixing a data entry error by switching roleplayers
 ----
+#!test[write]
 match
   $parentship isa parentship, links (parent: $p, child: $c);
 update
@@ -226,6 +245,7 @@ update
 [,typeql]
 .Multiple unrelated statements can be updated at a time
 ----
+#!test[write]
 match
   $a isa person, has username "white-rabbit";
   $b isa person, has username "mad-hatter";
@@ -243,6 +263,7 @@ The same roleplayer switch from the previous section can be expressed as follows
 [,typeql]
 .Fixing a data entry error by switching roleplayers, v2
 ----
+#!test[write]
 match
   $parentship isa parentship, links (parent: $p, child: $c);
 delete
@@ -257,6 +278,7 @@ Similarly, the common operation of replacing an owned attribute can be done like
 
 [,typeql]
 ----
+#!test[write]
 match
   $a isa person, has name $name;
   $name == "Alice";
@@ -276,6 +298,7 @@ The most straightforward deletion is to remove an entire instance (an entity, re
 
 [,typeql]
 ----
+#!test[write]
 match
   $a isa person, has name "Alice";
 delete
@@ -298,8 +321,10 @@ Connections between instances, that is ownerships and roleplayers, can be delete
 
 [,typeql]
 ----
+#!test[write]
 match
-  $a isa person, has name $name == "Alice";
+  $a isa person, has name $name;
+  $name == "Alice";
   $f isa friendship, links (friend: $a);
 delete
   has $name of $a;
