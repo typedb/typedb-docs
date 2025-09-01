@@ -1,5 +1,7 @@
 = Lesson 11.1: Retrieval by query
 
+include::{page-version}@home::partial$outdated-docs-disclaimer.adoc[]
+
 == The Get query
 
 In previous lessons, the query results we retrieved were in JSON format. But TypeDB also includes functionality for retrieving *stateful objects*, which we can continue to operate on within the scope of a transaction, allowing us to read or write associated data. In order to retrieve stateful objects, we must use a *Get query* issued using a TypeDB driver. The following code snippet shows an example of such a query.

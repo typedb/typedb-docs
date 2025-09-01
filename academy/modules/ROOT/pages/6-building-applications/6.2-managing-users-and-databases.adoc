@@ -3,6 +3,8 @@
 // Ensure all changes are propagated to both versions.
 = Lesson 6.2: Managing databases
 
+include::{page-version}@home::partial$outdated-docs-disclaimer.adoc[]
+
 == Connecting to the server
 
 With TypeDB Studio, we were able to connect to the server automatically by providing the address, username, and password. Afterward, Studio managed the connection, session, and transactions for us. When working with the native language drivers, we must manage these ourselves.

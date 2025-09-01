@@ -1,5 +1,7 @@
 = Lesson 5.3: Defining constraints
 
+include::{page-version}@home::partial$outdated-docs-disclaimer.adoc[]
+
 == Constraining attribute values
 
 The values of string attribute types can be constrained with a `regex` statement, which specifies a https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/regex/Pattern.html[Java regex pattern] string that is validated against when instantiating the attribute type. In the following example, we require that the value of `status` instances must be one of "paid", "dispatched", "delivered", "returned", or "canceled".

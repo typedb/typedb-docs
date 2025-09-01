@@ -1,5 +1,7 @@
 = Lesson 5.4: Defining rules
 
+include::{page-version}@home::partial$outdated-docs-disclaimer.adoc[]
+
 == Rule structure
 
 In xref:{page-version}@academy::3-reading-data/3.3-fetching-inferred-data.adoc[Lesson 3.3], we saw how we could use *rule inference* to generate new data based on *rules*. In this lesson, we'll see how we can go about defining these rules. Rules are defined using the same Define queries used to define types, as types and rules together form the schema. The syntactic structure used to define a rule has three parts: a *rule label*, a *condition*, and a *conclusion*, as demonstrated in the following template.

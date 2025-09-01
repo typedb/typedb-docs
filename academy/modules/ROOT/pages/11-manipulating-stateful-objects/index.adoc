@@ -2,6 +2,8 @@
 :page-aliases: {page-version}@academy::11-manipulating-stateful-objects/overview.adoc
 :page-preamble-card: 1
 
+include::{page-version}@home::partial$outdated-docs-disclaimer.adoc[]
+
 In this lesson, we'll learn to use the TypeDB driver APIs to retrieve and operate on *stateful data objects*. We'll begin by seeing how we can retrieve data instances and schema types from the database as stateful objects using *Get queries* or by *programmatic retrieval*. Then we'll see how to operate on those objects, including how to programmatically *create* and *modify* data instances.
 
 // In this lesson, we'll learn to use the TypeDB driver APIs to retrieve and operate on *stateful data objects*. We'll begin by seeing how we can retrieve data instances and schema types from the database as stateful objects using *Get queries* or by *programmatic retrieval*. Then we'll see how to operate on those objects, including how to programmatically *create* and *modify* data instances. Finally, we'll use the API's *explanations* feature to perform root-cause analysis on inferred data.

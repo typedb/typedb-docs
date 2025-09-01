@@ -1,6 +1,8 @@
 = Lesson 12.1: Using dependent types
 :page-preamble-card: 1
 
+include::{page-version}@home::partial$outdated-docs-disclaimer.adoc[]
+
 The PERA model and TypeQL are both based on the theory of https://en.wikipedia.org/wiki/Dependent_type[dependent types]. Though we have previously taken advantage of polymorphic features in the model and language, we have not used their type-theoretic natures to their complete potential. When used in this way, we can eliminate object model mismatch by achieving parity between application classes and database types.
 
 == A unified view of object types

@@ -1,5 +1,7 @@
 = Lesson 7.1: Patterns as constraints
 
+include::{page-version}@home::partial$outdated-docs-disclaimer.adoc[]
+
 == Introduction to patterns
 
 TypeQL uses *pattern matching* as the basis for all data queries. We have seen in previous lessons how almost all queries have a `match` clause. The content of a match clause is a *pattern*, which comprises any number of consecutive statements and specifies what data in the database should be matched. Subsequent clauses in a query then determine the action that should be taken for each match found, for instance retrieving data from each match with a `fetch` clause, inserting data for each match with an `insert` clause, or deleting data from each match with a `delete` clause. Consider the following queries, each of a different kind: Fetch, Insert, Delete, and Update respectively, but with identical `match` clauses.

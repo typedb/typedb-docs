@@ -1,5 +1,7 @@
 = Lesson 4.4: Updating data
 
+include::{page-version}@home::partial$outdated-docs-disclaimer.adoc[]
+
 == The Update query
 
 To update the values of attributes, we use an *Update query*. An Update query consists of a `match` clause, a `delete` clause, and an `insert` clause. In effect, the Update query deletes an existing attribute of an entity (or relation) and then inserts a new one in its place. Consider the following two queries.

@@ -1,5 +1,7 @@
 = Lesson 4.2: Inserting polymorphic data
 
+include::{page-version}@home::partial$outdated-docs-disclaimer.adoc[]
+
 == Inferring types
 
 In the previous lesson, we saw how we could use `match` clauses in Insert queries in order to have new data reference existing data. In this lesson, we'll see how we can use that strategy to perform *polymorphic inserts*. We have already created a new `promotion` entity for the Spring Sale with this query from a previous exercise.

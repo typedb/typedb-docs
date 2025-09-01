@@ -1,5 +1,7 @@
 = Lesson 3.4: Fetching schema types
 
+include::{page-version}@home::partial$outdated-docs-disclaimer.adoc[]
+
 == Variablizing types
 
 So far, we've seen that the output of Fetch queries includes a `type` field for every retrieved data instance and their attributes. However, there are also types involved in the query that are not returned. Consider this polymorphic query from xref:{page-version}@academy::3-reading-data/3.2-fetching-polymorphic-data.adoc[Lesson 3.2], where we asked for books that a user had interacted with in some way on the web store.

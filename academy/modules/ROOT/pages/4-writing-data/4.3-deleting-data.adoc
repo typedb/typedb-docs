@@ -1,5 +1,7 @@
 = Lesson 4.3: Deleting data
 
+include::{page-version}@home::partial$outdated-docs-disclaimer.adoc[]
+
 == The Delete query
 
 To delete data from the database, we use a *Delete query*. Delete queries always consist of a `match` clause followed by a `delete` clause. The way we write Delete queries depends on if we want to delete an entity, relation, or attribute. To begin with, we'll look at an example of an attribute.

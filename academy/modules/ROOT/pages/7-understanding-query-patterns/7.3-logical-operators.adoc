@@ -1,5 +1,7 @@
 = Lesson 7.3: Logical operators
 
+include::{page-version}@home::partial$outdated-docs-disclaimer.adoc[]
+
 == Disjunctions
 
 By default, all statements in a pattern are joined in a https://en.wikipedia.org/wiki/Logical_conjunction[conjunction]. As we have seen in xref:{page-version}@academy::7-understanding-query-patterns/7.1-patterns-as-constraints.adoc[Lesson 7.1], this means that the pattern must be satisfied as a set of simultaneous constraints. If we want to create a https://en.wikipedia.org/wiki/Logical_disjunction[disjunction], we must do so explicitly, as we do in the following Fetch query where we retrieve a list of books that a user "likes". We consider a user to have liked a book if either they have ordered it _or_ they have reviewed it with a score of seven or higher.

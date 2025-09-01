@@ -1,5 +1,7 @@
 = Lesson 11.3: Operating on objects
 
+include::{page-version}@home::partial$outdated-docs-disclaimer.adoc[]
+
 == Instantiating types
 
 In the previous lesson, we learned how to retrieve data instances and schema types from the database as stateful objects. In this lesson, we'll see how we can operate on them, starting by programmatically instantiating types. To do so, we can call methods of the type objects: the `create` method for entity and relation types, and the `put` method for attribute types. The following code snippet shows an example of each method.

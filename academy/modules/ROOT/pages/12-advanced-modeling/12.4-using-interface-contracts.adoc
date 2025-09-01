@@ -1,5 +1,7 @@
 = Lesson 12.4: Using interface contracts
 
+include::{page-version}@home::partial$outdated-docs-disclaimer.adoc[]
+
 == Overriding interface implementations
 
 In xref:{page-version}@academy::5-defining-schemas/5.5-schema-validation.adoc[Lesson 5.5], we learned that if an attribute type is abstract, then any types that own it must also be abstract. In the current schema, `book` owns `isbn-13` and `isbn-10`, both subtypes of `isbn`.

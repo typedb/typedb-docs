@@ -1,5 +1,7 @@
 = Lesson 10: Using inference
 
+include::{page-version}@home::partial$outdated-docs-disclaimer.adoc[]
+
 == xref:{page-version}@academy::10-using-inference/10.1-rules-as-views.adoc[Rules as views]
 
 * If a query pattern is placed in the condition of a rule, then the statement in the rule's conclusion can replace the pattern wherever it occurs in the `match` clause of read queries. This can be used to create simplified *abstractions* for complex patterns.
