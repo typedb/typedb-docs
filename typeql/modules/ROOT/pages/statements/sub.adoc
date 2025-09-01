@@ -1,5 +1,7 @@
 = sub / sub!
 
+include::{page-version}@home::partial$outdated-docs-disclaimer.adoc[]
+
 The `sub` keyword is used in TypeQL to specify a parent type for a subtype.
 For specifying only a direct subtype in a pattern, with no type inference,
 use the `sub!` keyword instead.

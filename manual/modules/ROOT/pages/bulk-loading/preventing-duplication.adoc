@@ -1,6 +1,8 @@
 = Preventing duplication
 :page-preamble-card: 1
 
+include::{page-version}@home::partial$outdated-docs-disclaimer.adoc[]
+
 When bulk loading data to a database, data can easily end up being duplicated if the source of the data is not properly cleaned. Let's consider the following JSON object describing a book, which we'd like to insert into a bookstore database, likely one of thousands of similar books.
 
 [,json]

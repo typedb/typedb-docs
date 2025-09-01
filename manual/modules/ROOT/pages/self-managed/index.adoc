@@ -2,6 +2,8 @@
 :tabs-sync-option:
 :page-aliases: {page-version}@home::install/core.adoc
 :experimental:
+
+include::{page-version}@home::partial$outdated-docs-disclaimer.adoc[]
 // Goal – Install TypeDB Community Edition
 
 TypeDB Community Edition can be installed in several ways: using the <<_docker,Docker image>>, via a <<_package,package manager>>, or by <<_manual,manual installation>>. For TypeDB Enterprise installation and setup, see the xref:{page-version}@manual::self-managed/enterprise.adoc[TypeDB Enterprise] page.
