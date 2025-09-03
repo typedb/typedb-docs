@@ -29,7 +29,7 @@ The `isa!` keyword does the same, but excludes the subtypes.
 
 == Usage in a match pattern
 
-include::typeql::partial$iam-database-links.adoc[]
+include::{page-version}@typeql::partial$iam-database-links.adoc[]
 
 In a `match` clause pattern an isa statement can be used to match data instance of a selected type
 or any of its subtype (via type inference).
@@ -90,7 +90,7 @@ fetch $attr;
 
 == Usage in an insert pattern
 
-include::typeql::partial$iam-database-links.adoc[]
+include::{page-version}@typeql::partial$iam-database-links.adoc[]
 
 To insert a data instance to a database, you need to use an `isa` statement in an `insert` clause.
 For example:
@@ -129,7 +129,7 @@ $per(subject: $p) isa permission;
 [#_in_a_delete_pattern]
 == Usage in a delete pattern
 
-include::typeql::partial$iam-database-links.adoc[]
+include::{page-version}@typeql::partial$iam-database-links.adoc[]
 
 To delete a data instance from a database, you need to match it to a concept variable with a `match` clause,
 and then use the concept variable with an `isa` statement in a `delete` clause of the same query.
