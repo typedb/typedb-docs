@@ -51,6 +51,20 @@ $book has genre "art and design";
 ----
 __-> Commit!__
 
+== Update shorthand
+
+When updating an attribute ownership (or indeed, a role player in an existing relation) that exists exactly 0 or 1 times, you can use the `update` clause shorthand:
+
+[,typeq]
+----
+match
+$book isa book;
+update $book has genre "unknown";
+----
+
+The `update` clause will, for each statement written, set the new attribute to be the only attribute owned by the owner. In this example, for any book that has no genre, it sets the genre to "unknown" - and for any book that has any other genre, it will replace it with "unknown".
+
+
 .Exercise
 [caption=""]
 ====

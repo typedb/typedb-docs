@@ -2,7 +2,7 @@
 
 == xref:{page-version}@academy::4-writing-data/4.1-inserting-simple-data.adoc[Inserting simple data]
 
-* *Insert queries* are used to insert data. They comprise either an `insert` clause only, or a `match` clause and an `insert` clause. Insert queries are run using a *data session* and *write transaction*.
+* **Insert clauses** are used to insert data. They can be used alone, using just an `insert` clause, or after any other sequence of clauses, such as a `match` clause. Inserts are run using *write transactions* (or in a schema transaction).
 +
 [,typeql]
 ----
@@ -17,17 +17,18 @@ match
 insert
 # insert clause
 ----
-* All attributes are *multivalued*, allowing an entity or relation to own any number of attributes of the same type, as long as they each have different values.
-* An Insert query without a `match` clause inserts data *once*. An Insert query with a `match` clause inserts data *multiple times*, once for each match found.
+
+* All attributes may be *multivalued*, depending on the set cardinality constraint, allowing an entity or relation to own any number of attributes of the same type, as long as they each have different values. The default is `@card(0..1)`, which means 0 or 1 attributes
+* An Insert without a `match` clause inserts data *once*. An Insert query with a `match` clause may insert data *multiple times*, once for each match found.
 
 == xref:{page-version}@academy::4-writing-data/4.2-inserting-polymorphic-data.adoc[Inserting polymorphic data]
 
-* A *polymorphic insert* can be performed by using a polymorphic pattern in the `match` clause of an Insert query.
+* A *polymorphic insert* can be performed by using a polymorphic pattern in the `match` clause of an insert.
 * When inserting a relation, the roles can be omitted if they can be inferred unambiguously.
 
 == xref:{page-version}@academy::4-writing-data/4.3-deleting-data.adoc[Deleting data]
 
-* *Delete queries* are used to delete data. They comprise a `match` clause and a `delete` clause. Delete queries are run using a *data session* and *write transaction*.
+* *Delete clauses* are used to delete data. They comprise a `match` clause (or any other sequence of clauses) and a `delete` clause. Deletes require using *write transaction* (or schema transaction).
 +
 [,typeql]
 ----
@@ -37,23 +38,25 @@ delete
 # delete clause
 ----
 * Delete queries delete data per statement.
-* A `has` statement is used to delete an entity or relation's attribute.
+* An inverted `has` statement is used to delete an entity or relation's attribute: `has <attribute var> of <owner`
 +
 [,typeql]
 ----
-$entity has $deleted-attribute;
+delete
+has $attribute of $entity;
 ----
-* An `isa` statement is used to delete an entity or relation.
+* Deleting an entity or relation can be done with a simple deletion of the variable
 +
 [,typeql]
 ----
-$deleted-entity isa entity-type;
+delete
+$entity;
 ----
-* When deleting a roleplayer in a relation, the relation must also be deleted manually if required. A relation is only deleted automatically if all of its role players are deleted.
+* When deleting a entity or relation playing a role in another relation that should also be removed, the relation must also be deleted manually. A relation is only deleted automatically if all of its role players are deleted (until `@cascade` is implemented as an annotation!).
 
 == xref:{page-version}@academy::4-writing-data/4.4-updating-data.adoc[Updating data]
 
-* *Update queries* are used to update data. They comprise a `match` clause, a `delete` clause, and an `insert` clause. Update queries are run using a *data session* and *write transaction*.
+* *Chained delete and insert clauses* are used to update data. They comprise a `match` clause, a `delete` clause, and an `insert` clause. Updates are using a *write transaction* (or a schema transaction).
 +
 [,typeql]
 ----
