@@ -11,53 +11,53 @@ TypeQL's composability provides a natural syntax for building queries, but not a
 match
 $user isa user;
 $country isa country;
-(location: $country, located: $user) isa locating;
-fetch
-$user: name;
-$country: name;
+locating (location: $country, located: $user);
+fetch {
+  "name": $user.name,
+  "country": $country.name,
+};
 ----
-
 
 [,typeql]
 ----
 match
 $user isa user;
 $country isa country;
-(location: $country, located: $user) isa locating;
-fetch
-$user: isbn-13;
-$country: name;
+locating (location: $country, located: $user);
+fetch {
+  "isbn": $user.isbn-13,
+  "country": $country.name,
+};
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*
 
 [,typeql]
 ----
 match
 $book isa book;
 $country isa country;
-(location: $country, located: $book) isa locating;
-fetch
-$book: isbn-13;
-$country: name;
+locating (location: $country, located: $book);
+fetch {
+  "isbn": $book.isbn-13,
+  "country": $country.name,
+};
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*
 
 The second query is invalid because users do not have ISBN attributes. The third is invalid because books do not have locations. TypeDB validates queries against the *schema*, which sets out which types are able to own each attribute and play each role in relations. This enables the database to determine which queries are semantically sound, and extends to queries of arbitrary complexity, for instance the following query. Try running it to see if it is valid.
 
 [,typeql]
 ----
 match
-(located: $user, location: $user-city) isa locating;
-(action: $order, executor: $user) isa action-execution;
-(delivered: $order, destination: $destination) isa delivery;
-(located: $destination, location: $destination-city) isa locating;
+locating (located: $user, location: $user-city);
+action-execution (action: $order, executor: $user);
+delivery (delivered: $order, destination: $destination);
+locating (located: $destination, location: $destination-city);
 $user-city isa city;
 $destination-city isa city;
 not { $destination-city is $user-city; };
-fetch
-$order: id;
+fetch {
+  "order": $order.id,
+};
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*
 
 We will explore exactly how TypeDB validates queries in xref:{page-version}@academy::7-understanding-query-patterns/7.1-patterns-as-constraints.adoc[Lesson 7.1].
 

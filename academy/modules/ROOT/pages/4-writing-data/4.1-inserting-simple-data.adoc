@@ -2,7 +2,7 @@
 
 == The Insert query
 
-To insert new data into a database, we use an *Insert query*. The following query inserts a new user.
+To insert new data into a database, we use an *Insert clause*. The following query inserts a new user.
 
 [,typeql]
 ----
@@ -12,11 +12,10 @@ $evelin isa user,
     has name "Evelin Griffith",
     has birth-date 1994-08-03;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
 This Insert query consists of a single `insert` clause, which inserts a single entity of type `user` and assigns it three attributes: one each of types `id`, `name`, and `birth-date`.
 
-Using a *data* session and a *write* transaction, try *running* image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] this query. After running it, make sure to *commit* image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] the transaction. The new user should now be in the database! You can check by switching to a *data* session and *read* transaction and then running the following query, which lists the names of users in the database.
+Using a *write* transaction, try *running*. After running it, make sure to *commit* the transaction. The new user should now be in the database! You can check by switching to a new *read* transaction and then running the following query, which lists the names of users in the database.
 
 [,typeql]
 ----
@@ -24,7 +23,6 @@ match
 $user isa user;
 fetch { "name": $user.name };
 ----
-
 
 If you have correctly executed the Insert query, the new user Evelin should appear in the results.
 
@@ -50,20 +48,28 @@ $spring-sale isa promotion,
     has start-timestamp 2024-03-15T00:00:00,
     has end-timestamp 2024-03-31T23:59:59;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+
+Don't forget to commit!
+
 =====
 ====
 
 [NOTE]
 ====
-Datetime literals can be represented in any of the following formats:
+TypeDB 3 supports date, datetime and datetime-tz (datetime with timezone)
+
+These generally look like this:
 
 * `yyyy-mm-dd`
 * `yyyy-mm-ddThh:mm`
 * `yyyy-mm-ddThh:mm:ss`
-* `yyyy-mm-ddThh:mm:ss.fff`
+* `yyyy-mm-ddThh:mm:ss.fffffffff`
+* `yyyy-mm-ddThh:mm:ss.fffffffff <IANA timezone TZ identifier>`
+* `yyyy-mm-ddThh:mm:ss.fffffffff±HHMM` (with ISO 8601 timezone specifier)
 
-All datetimes are stored at millisecond precision, with missing digits filled by zeroes.
+All datetimes are stored at nanosecond precision, with missing digits filled by zeroes.
+
+
 ====
 
 == Inserting multiple objects
@@ -87,12 +93,13 @@ $dover isa publisher,
     has name "Dover Publications";
 $publication isa publication,
     has year 1994;
-(work: $frankenstein, author: $shelley) isa authoring;
-(published: $frankenstein, publisher: $dover, publication: $publication) isa publishing;
+authoring (work: $frankenstein, author: $shelley);
+publishing (published: $frankenstein, publisher: $dover, publication: $publication);
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
 
-Notice that we have given the book two `genre` attributes! This is perfectly permissible, and in fact all attributes in TypeDB are *multivalued* by default, allowing an entity or relation to own any number of attributes of the same type, as long as they each have different values.
+Reminder: commit your changes!
+
+Notice that we have given the book two `genre` attributes! This is perfectly permissible since your schema permits it with `@card(0..)`. All attributes in TypeDB may *multivalued* with this setting, with the default being 0 or 1 attributes with `@card(0..1)`. **Cardinality** configuration is an important part of constraining your data into the shapes and semantics you desire - such as allowing an entity or relation to own any number of attributes of the same type, or allowing exactly 1, or any other range of quantities of them.
 
 [#_exercise_4_1_2]
 .Exercise
@@ -126,7 +133,9 @@ $jordan isa user,
     has name "Jordan Duarte",
     has birth-date 1963-10-31;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+
+Commit reminder!
+
 =====
 ====
 
@@ -141,7 +150,7 @@ $book isa book, has isbn-13 "9780486282114";
 insert
 $book has stock 20;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+__-> Commit__
 
 This query matches the book we inserted previously by its ISBN, and then gives it a new `stock` attribute. In a Fetch query, the `match` clause identifies matching data within the database, and the `fetch` clause specifies what to retrieve from each match. In an Insert query, the `match` clause serves the same function, but then we insert new data for each match rather than retrieving existing data.
 
@@ -153,12 +162,12 @@ match
 $book isa paperback, has isbn-13 "9780486282114";
 $publisher isa publisher, has name "Dover Publications";
 $publication isa publication, has year 2002;
-(published: $book, publisher: $publisher, publication: $publication) isa publishing;
+publishing (published: $book, publisher: $publisher, publication: $publication);
 $city isa city, has name "New York City";
 insert
-(location: $city, located: $publication) isa locating;
+locating (location: $city, located: $publication);
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+__-> Commit__
 
 An Insert query without a `match` clause always inserts the data described in the `insert` clause *once*. However, an Insert query _with_ a `match` clause will insert the data described in the `insert` clause *multiple times*, once for each match found. The following query would assign a `stock` attribute to every paperback in the database, even if it already had one!
 
@@ -169,7 +178,7 @@ $book isa paperback;
 insert
 $book has stock 20;
 ----
-image:{page-version}@home::studio-icons/svg/studio_fail.svg[width=24] *_Do not run_*
+__-> DON'T COMMIT YET__
 
 Likewise, the following query would create a `locating` relation for every `publication` entity with a `year` attribute equal to `2002`.
 
@@ -179,13 +188,16 @@ match
 $publication isa publication, has year 2002;
 $city isa city, has name "New York City";
 insert
-(location: $city, located: $publication) isa locating;
+locating (location: $city, located: $publication) isa locating;
 ----
-image:{page-version}@home::studio-icons/svg/studio_fail.svg[width=24] *_Do not run_*
+-> **Close your transaction without committing**
+
+Since we don't want these changes to be permanent (they're just for demonstration), simply close your transaction to throw away the changes. Before committing, your changes will live as a set of changes in the transactional snapshot of your database. If you did commit, those changes are merged back into the database. If you don't, they are simply discarded. Any changes before commit are invisible to other transactions.
+
 
 [IMPORTANT]
 ====
-To prevent unintended data insertions, it is often useful to structure the `match` clause around the values of one or more *key attributes*, which can only be matched once. We have done this above using the key attribute `isbn-13`, as the value `"9780486282114"` uniquely identifies a single book. We will see how to define key attributes in xref:{page-version}@academy::5-defining-schemas/5.1-defining-individual-types.adoc[Lesson 5.1].
+It is often useful to structure the `match` clause around the values of one or more *key attributes*, which can only be matched once. We have done this above using the key attribute `isbn-13`, as the value `"9780486282114"` uniquely identifies a single book. We will see how to define key attributes in xref:{page-version}@academy::5-defining-schemas/5.1-defining-individual-types.adoc[Lesson 5.1].
 ====
 
 .Exercise
@@ -202,8 +214,9 @@ You can get the labels of the roles in the `action-execution` relation with the 
 ----
 match
 action-execution relates $role;
-fetch
-$role;
+fetch {
+  "role": $role,
+},
 ----
 =====
 
@@ -222,9 +235,10 @@ match
 $user isa user, has id "u0012";
 insert
 $login isa login, has success true;
-(action: $login, executor: $user) isa action-execution,
-    has timestamp 2024-03-04T07:32:03.287;
+$rel isa action-execution,
+  links (action: $login, executor: $user),
+  has timestamp 2024-03-04T07:32:03.287;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+-> Commit!
 =====
 ====

@@ -2,23 +2,25 @@
 
 == The Delete query
 
-To delete data from the database, we use a *Delete query*. Delete queries always consist of a `match` clause followed by a `delete` clause. The way we write Delete queries depends on if we want to delete an entity, relation, or attribute. To begin with, we'll look at an example of an attribute.
+To delete data from the database, we use a *delete clause*. Delete clauses always follow some preceding query clauses. The way we write Delete queries depends on if we want to delete an entity, relation, or attribute. To begin with, we'll look at an example of an attribute.
 
 == Deleting attributes
 
-It turns out that _Fundamentals of Data Engineering_ has been mistakenly assigned the genre "children's fiction" (in addition to "nonfiction" and "technology"). We should probably change that before there are too many upset children, which we'll do with the following Delete query. To run a Delete query, use a *data* session and *write* transaction, *run* image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] the query, and *commit* image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] the transaction.
+It turns out that _Fundamentals of Data Engineering_ has been mistakenly assigned the genre "children's fiction" (in addition to "nonfiction" and "technology"). We should probably change that before there are too many upset children, which we'll do with the following Delete query. To run a Delete query, use a *write* transaction, *run* the query, and *commit* the transaction.
 
 [,typeql]
 ----
 match
 $fundamentals isa book, has isbn "9781098108274";
-$childrens "children's fiction" isa genre;
+$genre isa genre "children's fiction";
 delete
-$fundamentals has $childrens;
+has $genre of $fundamentals;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+__-> Commit__
 
-To begin with, we've matched the book entity by its ISBN in the `match` clause. Then, we've matched the genre attribute by its value. Finally, we've deleted the entity's ownership of the attribute. In TypeQL, Delete queries delete data per statement rather than per variable, so the `has` statement in the `delete` clause only deletes the attribute ownership, not the entity itself.
+To begin with, we've matched the book entity by its ISBN in the `match` clause. Then, we've matched the genre attribute by its value. Finally, we've deleted the entity's ownership of the attribute using a different kind of syntax.
+
+In TypeQL, Delete statements (similar to Undefine statements) specify first __what__ to delete from a specific piece of data or schema. Here, we're specifying we want to delete the `has $genre` of the `$fundamental` entity. In other words, we're going to remove the connection between the book and the genre.
 
 == Deleting relations
 
@@ -28,15 +30,15 @@ Next, we'll see how to delete relations. The courier that is supposed to be deli
 ----
 match
 $order-33 isa order, has id "o0033";
-$delivery-33 ($order-33) isa delivery;
+$delivery-33 isa delivery ($order-33);
 delete
-$delivery-33 isa delivery;
+$delivery-33;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+__-> Commit!__
 
 Similar to the previous example, we've begun by matching the order by its order ID. Next, we've matched the `delivery` relation in which it plays a role. We've omitted the role and let TypeDB infer it. Role inference means we'll match any delivery in which `$order-33` plays any role, but in this case only one such relation exists, in which `$order-33` plays `delivery:delivered`. We've also omitted the role players we aren't interested in from the tuple: the courier and the address. We don't need to know them to identify or delete the relation!
 
-Finally, the `delete` clause deletes the relation. In Insert queries, we use `isa` statements to create entities and relations, and `has` statements to create their attributes. Likewise in Delete queries, we use `isa` statements to delete entities and relations, and `has` statements to delete their attributes.
+Finally, the `delete` clause deletes the relation. Deleting a full entity, relation, or attribute is super easy - just delete the variable itself!
 
 .Exercise
 [caption=""]
@@ -51,8 +53,9 @@ To get the correct ISBN, you can use the following query.
 ----
 match
 $calvin-hobbes isa book, has title "The Complete Calvin and Hobbes";
-fetch
-$calvin-hobbes: isbn;
+fetch {
+  "isbn": $calvin-hobbes.isbn,
+};
 ----
 =====
 
@@ -70,17 +73,17 @@ To delete the book from only this particular sale, you will need to match the re
 match
 $spring-sale isa promotion, has code "SPR24";
 $calvin-hobbes isa book, has isbn "9780740748479";
-$inclusion ($spring-sale, $calvin-hobbes) isa promotion-inclusion;
+$inclusion isa promotion-inclusion ($spring-sale, $calvin-hobbes);
 delete
-$inclusion isa promotion-inclusion;
+$inclusion;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+__-> Commit!__
 =====
 ====
 
 == Deleting entities
 
-Last, we'll see how to delete entities. A user has decided to delete a review they made of the book. In the following queries, we perform their request. First of all, we need to retrieve the ID of the review to be deleted.
+Last, we'll see how to delete entities, which is very similar to deleting relations. Let's say a user has decided to delete a review they made of the book. In the following queries, we perform their request. First of all, we need to retrieve the ID of the review to be deleted.
 
 [,typeql]
 ----
@@ -88,11 +91,15 @@ match
 $book isa book, has isbn "9781859840665";
 $user-9 isa user, has id "u0009";
 $review isa review;
-($review, $book) isa rating;
-($review, $user-9) isa action-execution;
-fetch
-$review: id;
+rating ($review, $book);
+action-execution ($review, $user-9);
+fetch {
+  "id": $review.id,
+};
 ----
+
+TODO: output
+
 [,json]
 ----
 {
@@ -109,11 +116,10 @@ Now that we know the review's ID, we can go ahead and delete it. We start by del
 ----
 match
 $review-4 isa review, has id "r0004";
-$relation ($review-4) isa relation;
+$relation ($review-4);
 delete
-$relation isa relation;
+$relation;
 ----
-
 
 Here, we delete the relations by using the same query structure as we used to delete the `delivery` relation earlier, but we're using a *parametric statement* to delete _all_ relations rather than just deliveries. Once that's done, we can delete the review itself.
 
@@ -122,9 +128,9 @@ Here, we delete the relations by using the same query structure as we used to de
 match
 $review-4 isa review, has id "r0004";
 delete
-$review-4 isa review;
+$review-4;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+__-> Commit!__
 
 When deleting an entity, it's important to also delete any relations it plays a role in. If we don't, then those relations would be left behind without the entity as a roleplayer. A relation is only deleted automatically if _all_ of its role players are deleted.
 
@@ -151,8 +157,9 @@ To get the correct ISBN, you can use the following query.
 ----
 match
 $pet-sematary isa book, has title "Pet Sematary";
-fetch
-$pet-sematary: isbn;
+fetch {
+  "isbn": $pet-sematary.isbn;
+};
 ----
 =====
 
@@ -163,9 +170,9 @@ $pet-sematary: isbn;
 ----
 match
 $pet-sematary isa book, has isbn "9780451162076";
-$relation ($pet-sematary) isa relation;
+$relation ($pet-sematary);
 delete
-$relation isa relation;
+$relation;
 ----
 
 
@@ -174,8 +181,8 @@ $relation isa relation;
 match
 $pet-sematary isa book, has isbn "9780451162076";
 delete
-$pet-sematary isa book;
+$pet-sematary;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+__-> Commit!__
 =====
 ====

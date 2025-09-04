@@ -2,14 +2,15 @@
 
 == xref:{page-version}@academy::3-reading-data/3.1-fetching-simple-data.adoc[Fetching simple data]
 
-* *Fetch queries* are used to retrieve data in JSON format. They comprise a `match` clause and `fetch` clause. Fetch queries are run using a *data session* and *read transaction*.
+* *Fetch queries* are used to retrieve data in JSON format. They comprise a `match` clause and `fetch` clause.
 +
 [,typeql]
 ----
 match
 # match clause
-fetch
-# fetch clause
+fetch {
+  # fetch clause
+};
 ----
 * *Variables* are declared with a `$` prefix.
 * An `isa` statement is used to specify the *type* of a variable.
@@ -23,7 +24,7 @@ $entity isa entity-type;
 +
 [,typeql]
 ----
-($role-1: $a, $role-2: $b) isa relation-type;
+$rel isa relation-type, links ($role-1: $a, $role-2: $b);
 ----
 * A `has` statement is used to specify the value of an entity or relation's *attribute*.
 +
@@ -40,10 +41,9 @@ $entity has attribute-type "attribute value";
 * *Parametric polymorphism* allows us to query data of multiple types through the structure of the data alone. Purely parametric queries can be run on any schema.
 * Different types of polymorphism can be combined to produce complex queries.
 
-== xref:{page-version}@academy::3-reading-data/3.3-fetching-inferred-data.adoc[Fetching inferred data]
+== xref:{page-version}@academy::3-reading-data/3.3-using-functions[Using functions]
 
-* *Rule inference* allows the database to infer new data based on existing data and *rules* defined as part of the schema.
-* Rule inference must be enabled for inferred data to be returned.
+* *Functions* allow you to encode modular and re-usuable sub-queries and logic in either queries or even the schema
 
 == xref:{page-version}@academy::3-reading-data/3.4-fetching-schema-types.adoc[Fetching schema types]
 
@@ -94,6 +94,7 @@ $entity-type plays $role;
 
 * All queries are *validated* against the schema.
 * Running a query that does not conform to the schema will cause an exception to be thrown.
+* This is like a compilation failure in a strongly-typed programming language!
 
 == Further learning
 

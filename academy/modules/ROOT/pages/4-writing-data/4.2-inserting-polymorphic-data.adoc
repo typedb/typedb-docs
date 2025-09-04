@@ -13,7 +13,7 @@ $spring-sale isa promotion,
     has start-timestamp 2024-03-15T00:00:00,
     has end-timestamp 2024-03-31T23:59:59;
 ----
-image:{page-version}@home::studio-icons/svg/studio_fail.svg[width=24] *_Do not run_*
+**-> Run, but don't commit - we don't want these changes!**
 
 However, we have not yet assigned any books to this sale. This sale is a pretty big one, so we're going to assign every book in the store to it with a 10% discount.
 
@@ -23,10 +23,11 @@ match
 $spring-sale isa promotion, has code "SPR24";
 $book isa book;
 insert
-(promotion: $spring-sale, item: $book) isa promotion-inclusion,
-    has discount 0.10;
+$rel isa promotion-inclusion,
+  links (promotion: $spring-sale, item: $book),
+  has discount 0.10;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+__-> Commit this one!__
 
 By matching books using the supertype `book`, this query will add all books to the promotion, regardless of whether they are paperbacks, hardbacks, or ebooks. In this case, TypeDB is using *type inference* to resolve the inheritance polymorphism in the write query. We can just as easily use interface or parametric polymorphism in data writes!
 
@@ -61,8 +62,8 @@ match
 $sff-festival isa promotion, has code "SFF24";
 $book isa book, has genre "science fiction";
 insert
-(promotion: $sff-festival, item: $book) isa promotion-inclusion,
-    has discount 0.15;
+promotion-inclusion (promotion: $sff-festival, item: $book),
+  has discount 0.15;
 ----
 
 [,typeql]
@@ -71,10 +72,11 @@ match
 $sff-festival isa promotion, has code "SFF24";
 $book isa book, has genre "fantasy";
 insert
-(promotion: $sff-festival, item: $book) isa promotion-inclusion,
-    has discount 0.20;
+promotion-inclusion (promotion: $sff-festival, item: $book),
+  has discount 0.20;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+__-> Commit!__
+
 =====
 ====
 
@@ -90,11 +92,11 @@ $frankenstein isa book, has isbn-13 "9780486282114";
 insert
 $review isa review, has id "r0034",
     has score 8;
-($review, $frankenstein) isa rating;
-($review, $user-13) isa action-execution,
-    has timestamp 2024-03-19T03:32:00.073;
+rating ($review, $frankenstein);
+action-execution ($review, $user-13),
+  has timestamp 2024-03-19T03:32:00.073;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+__-> Commit!__
 
 For this query, TypeDB is able to infer that `$review` plays the `review` role and `$frankenstein` plays the `rated` role in rating. This is because:
 
@@ -112,9 +114,8 @@ match
 $us isa country, has name "United States";
 $ma isa state, has name "Massachusetts";
 insert
-($us, $ma) isa locating;
+locating ($us, $ma);
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*
 
 The types `country` and `state` can play both `location:location` and `location:located`, so any of the following four combinations of roles would be valid:
 
@@ -139,9 +140,9 @@ match
 $sff-festival isa promotion, has code "SFF24";
 $frankenstein isa book, has isbn-13 "9780486282114";
 insert
-($sff-festival, $frankenstein) isa promotion-inclusion,
-    has discount 0.15;
+promption-inclusion ($sff-festival, $frankenstein),
+  has discount 0.15;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+__-> Commit__
 =====
 ====
