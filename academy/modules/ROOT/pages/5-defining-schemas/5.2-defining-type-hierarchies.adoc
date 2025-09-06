@@ -8,11 +8,11 @@ To define type hierarchies, we use the same Define queries as when defining indi
 ----
 define
 entity book;
-entity paperback sub book;
-entity hardback sub book;
-entity ebook sub book;
+entity paperback, sub book;
+entity hardback, sub book;
+entity ebook, sub book;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+_-> Commit_
 
 To make one type a subtype of another, we simply replace the root type with the intended *supertype* in the `sub` statement that defines that type. When defined in a type hierarchy, subtypes will *inherit* all the owned attributes and played roles of their supertypes. Consider the following Define query where we assign a number of ownerships and roles to `book`.
 
@@ -20,29 +20,29 @@ To make one type a subtype of another, we simply replace the root type with the 
 ----
 define
 entity book owns title,
-    owns page-count,
-    owns genre,
-    owns price,
-    plays publishing:published,
-    plays order-line:item,
-    plays rating:rated,
-    plays promotion-inclusion:item;
+  owns page-count,
+  owns genre,
+  owns price,
+  plays publishing:published,
+  plays order-line:item,
+  plays rating:rated,
+  plays promotion-inclusion:item;
 attribute title, value string;
 attribute page-count, value integer;
 attribute genre, value string;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+_-> Commit_
 
 `paperback`, `hardback`, and `ebook` will inherit all of these capabilities from `book` without having to explicitly declare this to be the case. This will even apply to new subtypes of `book` defined in the future! If we want capabilities that only apply to certain subtypes, then we can declare them directly on those types only.
 
 [,typeql]
 ----
 define
-entity paperback owns stock;
-entity hardback owns stock;
+entity paperback, owns stock;
+entity hardback, owns stock;
 attribute stock, value integer;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+_-> Commit_
 
 This allows paperbacks and hardbacks to have stock levels, but not ebooks.
 
@@ -62,19 +62,21 @@ Write a query to define an entity type `company` with two subtypes `publisher` a
 ----
 define
 entity company,
-    owns name;
-entity publisher sub company,
-    plays publishing:publisher;
-entity courier sub company,
-    plays delivery:deliverer;
+  owns name;
+entity publisher,
+  sub company,
+  plays publishing:publisher;
+entity courier,
+  sub company,
+  plays delivery:deliverer;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+_-> Commit_
 =====
 ====
 
 == Defining abstract types
 
-Abstract types cannot be directly instantiated, much like abstract classes in OOP. An abstract type can only be instantiated via its subtypes. To make a type abstract, we use an `abstract` statement. The following Define query makes the existing types `book` and `company` abstract.
+Abstract types cannot be directly instantiated, much like abstract classes in OOP. An abstract type can only be instantiated via its subtypes. To make a type abstract, we use an `@abstract` annotation. The following Define query makes the existing types `book` and `company` abstract.
 
 [,typeql]
 ----
@@ -82,7 +84,7 @@ define
 entity book @abstract;
 entity company @abstract;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+_-> Commit_
 
 Now `book` can only be instantiated through `paperback`, `hardback`, or `ebook`, and `company` can only be instantiated through `publisher` or `courier`.
 
@@ -105,11 +107,11 @@ entity place @abstract,
     owns name,
     plays locating:location,
     plays locating:located;
-entity country sub place;
-entity state sub place;
-entity city sub place;
+entity country, sub place;
+entity state, sub place;
+entity city, sub place;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+_-> Commit_
 =====
 ====
 
@@ -123,11 +125,11 @@ define
 relation contribution,
     relates work,
     relates contributor;
-relation authoring sub contribution;
-relation editing sub contribution;
-relation illustrating sub contribution;
+relation authoring, sub contribution;
+relation editing, sub contribution;
+relation illustrating, sub contribution;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+_-> Commit_
 
 Here, `authoring`, `editing`, and `illustrating` inherit the roles `work` and `contributor` from `contribution`. This would allow instantiation of the following relation types:
 
@@ -141,11 +143,11 @@ We could also define new roles on a specific subtype using the `relates` keyword
 [,typeql]
 ----
 define
-relation authoring relates author as contributor;
-relation editing relates editor as contributor;
-relation illustrating relates illustrator as contributor;
+relation authoring, relates author as contributor;
+relation editing, relates editor as contributor;
+relation illustrating, relates illustrator as contributor;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+_-> Commit_
 
 This would instead allow instantiation of the following relation types:
 
@@ -153,6 +155,8 @@ This would instead allow instantiation of the following relation types:
 * `authoring` with roles `contribution:work` and `authoring:author`
 * `editing` with roles `contribution:work` and `editing:editor`
 * `illustrating` with roles `contribution:work` and `illustrating:illustrator`
+
+An **overridden role** defines a subtype of the role, and makes the role abstract in the sub-relation. In other words, you get a new role that can be used in place of the parent role, and you cannot use the parent role in the sub relation.
 
 .Exercise
 [caption=""]
@@ -168,13 +172,13 @@ Write a query to define the following new role players:
 [,typeql]
 ----
 define
-entity book plays contribution:work;
-entity contributor plays contribution:contributor;
-entity contributor plays authoring:author;
-entity contributor plays editing:editor;
-entity contributor plays illustrating:illustrator;
+entity book, plays contribution:work;
+entity contributor, plays contribution:contributor;
+entity contributor, plays authoring:author;
+entity contributor, plays editing:editor;
+entity contributor, plays illustrating:illustrator;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+_-> Commit_
 =====
 ====
 
@@ -183,10 +187,11 @@ With this schema, it is no longer possible to instantiate `authoring`, `editing`
 [,typeql]
 ----
 match
-(work: $book, contributor: $contributor) isa contribution;
-fetch
-$book: title;
-$contributor: name;
+contribution (work: $book, contributor: $contributor);
+fetch {
+  "title": $book.title,
+  "name": $contributor.name
+};
 ----
 
 .Exercise
@@ -200,10 +205,11 @@ Modify the above Fetch query to retrieve only author names instead of all contri
 [,typeql]
 ----
 match
-(work: $book, author: $contributor) isa authoring;
-fetch
-$book: title;
-$contributor: name;
+authoring (work: $book, author: $contributor);
+fetch {
+  "title": $book.title,
+  "name": $contributor.name,
+};
 ----
 =====
 
@@ -215,10 +221,11 @@ Now instead modify it to retrieve only names of contributors who have made misce
 [,typeql]
 ----
 match
-(work: $book, contributor: $contributor) isa! contribution;
-fetch
-$book: title;
-$contributor: name;
+$rel isa! contribution, links (work: $book, contributor: $contributor);
+fetch {
+  "title": $book.title,
+  "name": $contributor.name,
+};
 ----
 
 Notice we have used the `isa!` keyword.
@@ -227,17 +234,24 @@ Notice we have used the `isa!` keyword.
 
 == Defining attribute type hierarchies
 
-In order to define subtypes of a given attribute type, the supertype must be *abstract*. This is to prevent potential ambiguities in the interpretation of queries. In the following Define query, we define an attribute type `isbn` with two subtypes.
+Attribute types can also be defined hierarchically.
 
 [,typeql]
 ----
 define
-attribute isbn @abstract, value string;
+attribute isbn value string;
 attribute isbn-13 sub isbn;
 attribute isbn-10 sub isbn;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+_-> Commit_
 
 Value types of attribute types are inherited by their subtypes. In this case, `isbn-13` and `isbn-10` inherit the `string` value type.
 
-// Note: In 3.0, kinds are explicit and annotations are unified via @annotations.
+If you don't want omit a value type in the super type, to allow different value types in sub types, you must make the attribute type abstract:
+[,typeql]
+----
+define
+attribute id @abstract;
+attribute email-id, sub id, value string;
+attribute numerical-id, sub id, value integer;
+----

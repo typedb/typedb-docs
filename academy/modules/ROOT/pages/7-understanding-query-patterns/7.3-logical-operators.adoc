@@ -21,7 +21,7 @@ fetch
 $liked-book: isbn-13;
 ----
 
-We have encountered *blocks* before when we used them to define rules in xref:{page-version}@academy::5-defining-schemas/5.4-defining-rules.adoc[Lesson 5.4]. To recap, blocks are delimited by braces and contain patterns. To construct a disjunction within a query pattern, we place each branch of the disjunction inside a block and interleave the blocks with the `or` keyword.
+We have encountered *blocks* before when we used them to define rules in xref:{page-version}@academy::5-defining-schemas/5.4-defining-functions.adoc[Lesson 5.4]. To recap, blocks are delimited by braces and contain patterns. To construct a disjunction within a query pattern, we place each branch of the disjunction inside a block and interleave the blocks with the `or` keyword.
 
 [,typeql]
 ----

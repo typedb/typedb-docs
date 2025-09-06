@@ -1,0 +1,136 @@
+= Lesson 5.4: Defining functions
+
+== Function structure
+
+In xref:{page-version}@academy::3-reading-data/3.3-using-functions.adoc[Lesson 3.3], we saw how we could use functions to modularize and re-use computation. In this lesson, we'll see how we can go about defining these functions. Functions are defined using the same define syntax used to define types, as types and functions together form the schema. The syntactic structure used to define a rule has three parts: a *function signature*, a *body*, and a *return*, as demonstrated in the following template.
+
+[,typeql]
+----
+function function_name($arg: arg-type) -> { return-type }:
+  <body query pipeline>
+  return <variables or operation>;
+----
+
+== Definition conditions
+
+Function bodies contain any **read-only** query pipeline, which may themselves invoke other functions.
+
+[,typeql]
+----
+define
+fun transitive_places($place: place) -> { place }:
+  match
+    {
+      locating (located: $place, location: $parent);
+    } or {
+      locating (located: $place, location: $middle);
+      let $parent in transitive_places($middle);
+    };
+  return { $parent };
+----
+
+This function is a recursive function, returning a stream of places (as indicated in the function signature with `{}` and in the return with `{}) based on a match query.
+
+== Function return types
+
+=== Stream vs Single returns
+
+Functions can be defined to return either Single or Stream returns. You've already seen stream-returning functions which use the `{}` signature and return to syntactically mark a stream. A single-return function simply omits them:
+
+[,typeql]
+----
+define
+fun any_place() -> place:
+  match
+  $place isa place;
+  return first $place;
+----
+
+=== Tuple returns
+
+You can also return more than one value - this is known as returning Tuples.
+Both single and stream returning functions can return tuples:
+
+[,typeql]
+----
+define
+fun transitive_place_pairs($place: place) -> { place, place }:
+  match
+    {
+      locating (located: $place, location: $parent);
+    } or {
+      locating (located: $place, location: $middle);
+      let $parent in transitive_places($middle);
+    };
+  return { $parent, $place }; # return function argument as well
+----
+_-> Commit_
+
+[,typeql]
+----
+define
+fun any_place_and_name() -> place, name:
+  match
+  $place isa place, has name $name;
+  return first $place, $name;
+----
+_-> Commit_
+
+You must assign as many variables to the function return as there are tuple elements. In the functions we've defined, you need to assign two variables to capture the returned values, otherwise you'll get an error.
+
+[,typeql]
+----
+match
+let $place, $name = any_place_and_name();
+let $p1, $p2 in transitive_place_pairs($place);
+----
+
+Note that here you see that single-return functions are assigned with a single `=`, while streams are assigned with the `in` iterator construct, which takes one tuple from the stream at a time. Kind of like a `for ... in` loops in many programming languages!
+
+=== Optional returns
+
+__Note: optionals are partially implemented as of TypeDB 3.5.0, and not returnable from a function in that version. Double check what version you are running and its level of support for optionals.__
+
+TypeQL supports partial matches through optionality:
+[,typeql]
+----
+match
+$place isa place;
+try {
+  $place has name $name;
+};
+----
+
+Conceptually, `$place` holds a `place`, while `$name`, holds an optional name: `Option<name>` in programming language speak. How do we return this from functions? We can use the `?` syntax in the function signature:
+
+[,typeql]
+----
+define
+fun any_place_with_optional_name() -> place, name?:
+  match
+  $place isa place;
+  try {
+    $place has name $name;
+  };
+  return first $place, $name;
+----
+
+Note that if you assign a tuple that contains an empty optional in a non-optional context, the answer will be eliminated:
+
+[,typeql]
+----
+match
+let $place, $name = any_place_with_optional_name();
+----
+
+The query above will only return places with populated names. Use `?` variables in the assignment with `?` to allow some assigned variables to be optional:
+
+[,typeql]
+----
+match
+let $place, $name? = any_place_with_optional_name();
+----
+
+This query will return places with names and places without names.
+
+

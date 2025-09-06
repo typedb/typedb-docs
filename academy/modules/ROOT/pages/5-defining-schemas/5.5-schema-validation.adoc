@@ -6,13 +6,12 @@ In order to maintain integrity, the schema is validated to ensure internal consi
 
 * When a new type is defined:
 ** The type has a single supertype.
-** If the type is a relation type: it has at least one role.
-** If the type is an attribute type: it has a value type defined or inherited.
-** If the type is an attribute type: its supertype is abstract.
+** If the type is a relation type: it has at least one role, or is abstract.
+** If the type is an attribute type: it has a value type defined or inherited, or is abstract.
 * When a new role is defined:
 ** The relation type does not already inherit the role from a supertype.
-* When a new roleplayer is defined:
-** The roleplayer does not already inherit the roleplaying capability from a supertype.
+* When a new role player is defined:
+** The role player does not already inherit the role playing capability from a supertype.
 * When a new attribute owner is defined:
 ** The owner does not already inherit the ownership capability from a supertype.
 ** If the attribute type is abstract: the owner is also abstract.
@@ -28,33 +27,35 @@ For the following schema, identify any errors that would cause validation checks
 ----
 define
 entity person,
-    owns first-name,
-    owns last-name,
-    plays employment:employee;
+  owns first-name,
+  owns last-name,
+  plays employment:employee;
 entity company,
-    owns name,
-    plays employment:employer;
+  owns name,
+  plays employment:employer;
 relation employment @abstract,
-    relates employee,
-    relates employer,
-    owns start-date,
-    owns end-date;
-relation full-time-employment sub employment,
-    relates employee,
-    relates employer,
-    owns salary;
-relation part-time-employment sub employment,
-    relates employee,
-    relates employer,
-    owns hourly-rate;
+  relates employee,
+  relates employer,
+  owns start-date,
+  owns end-date;
+relation full-time-employment,
+  sub employment,
+  relates employee,
+  relates employer,
+  owns salary;
+relation part-time-employment,
+  sub employment,
+  relates employee,
+  relates employer,
+  owns hourly-rate;
 attribute name @abstract, value string;
-attribute first-name sub name;
-attribute last-name sub name;
+attribute first-name, sub name;
+attribute last-name, sub name;
 attribute start-date, value datetime;
 attribute end-date, value datetime;
 attribute pay, value integer;
-attribute salary sub pay;
-attribute hourly-rate sub pay;
+attribute salary, sub pay;
+attribute hourly-rate, sub pay;
 ----
 
 .Answers
@@ -62,7 +63,6 @@ attribute hourly-rate sub pay;
 =====
 * The entity type `company` is not abstract and so cannot own the abstract attribute type `name`.
 * The relation types `full-time-employment` and `part-time-employement` inherit the roles `employee` and `employer` from their supertype `employment` and so cannot redeclare them.
-* The attribute type `pay` is not abstract and so cannot have subtypes.
 =====
 
 Modify the schema to correct these errors.
@@ -74,78 +74,34 @@ Modify the schema to correct these errors.
 ----
 define
 entity person,
-    owns first-name,
-    owns last-name,
-    plays employment:employee;
+  owns first-name,
+  owns last-name,
+  plays employment:employee;
 entity company,
-    owns company-name,
-    plays employment:employer;
+  owns company-name,
+  plays employment:employer;
 relation employment @abstract,
-    relates employee,
-    relates employer,
-    owns start-date,
-    owns end-date;
+  relates employee,
+  relates employer,
+  owns start-date,
+  owns end-date;
 relation full-time-employment sub employment,
-    owns salary;
+  owns salary;
 relation part-time-employment sub employment,
-    owns hourly-rate;
+  owns hourly-rate;
 attribute name @abstract, value string;
 attribute first-name sub name;
 attribute last-name sub name;
 attribute company-name sub name;
 attribute start-date, value datetime;
 attribute end-date, value datetime;
-attribute pay @abstract, value integer;
+attribute pay, value integer;
 attribute salary sub pay;
 attribute hourly-rate sub pay;
 ----
 =====
 ====
 
-== Rule validation
+== Function validation
 
-When defined, rules are also validated against the schema. Particularly, the condition and conclusion patterns undergo the same data validation process that the `match` and `insert` clauses of Insert queries do. Consider the following _invalid_ Insert queries that we encountered in xref:{page-version}@academy::4-writing-data/4.5-data-validation.adoc[Lesson 4.5].
-
-[,typeql]
-----
-match
-$us isa country, has name "United States";
-$ga isa state, has name "Georgia";
-insert
-($us, $ga) isa locating;
-----
-
-[,typeql]
-----
-match
-$odyssey isa book, has isbn "9780393634563";
-insert
-$odyssey has stock 20;
-----
-
-We could convert these queries into the following rules, which are structurally sound, even if they don't do anything particularly useful.
-
-[,typeql]
-----
-rule georgia-is-in-united-states:
-    when {
-        $us isa country, has name "United States";
-        $ga isa state, has name "Georgia";
-    } then {
-        ($us, $ga) isa locating;
-    };
-----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*
-
-[,typeql]
-----
-rule odyssey-has-stock-20:
-    when {
-        $odyssey isa book, has isbn "9780393634563";
-    } then {
-        $odyssey has stock 20;
-    };
-----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] *_Try running_*
-
-However, both of these rules would fail validation for the same reasons the Insert queries do. In the first example, TypeDB is unable to infer the roles for the `locating` relation as they are ambiguous. In the second, `book` does not own `stock`, making the attribute ownership illegal.
+Functions contain read queries, plus a signature and the return statement. They are validated just like any other read query, using type inference. However, the function signature must match the `return` statement definition as well.

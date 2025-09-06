@@ -16,13 +16,13 @@ entity contributor;
 entity address;
 entity promotion;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+_-> Commit!_
 
-Using a *schema* session and a *write* transaction, try *running* image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24] this query on a newly created database. After running it, make sure to *commit* image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] the transaction. You should see the four new entity types appear in the *type browser*.
+Using a *schema* transaction, run this query on a newly created database. After running it, make sure to *commit* the transaction. You should see the four new entity types appear when you refresh the *schema browser* in TypeDB Studio.
 
 When used in a Define query, types are declared with explicit kinds in 3.0: `entity`, `relation`, or `attribute` (there are no predefined root types). For example, `entity user;` declares a new entity type `user`. Subtyping is expressed by adding `, sub <supertype>`: `entity person, sub animal;`.
 
-Define queries comprise only data definition statements and cannot contain variables. The only permitted terms are keywords and type labels.
+Define queries comprise only data definition statements and **cannot contain variables**. The only permitted terms are keywords and type labels.
 
 .Exercise
 [caption=""]
@@ -39,7 +39,7 @@ entity order;
 entity review;
 entity publication;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+_-> Commit_
 =====
 ====
 
@@ -61,7 +61,7 @@ relation publishing,
     relates published,
     relates publication;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+_-> Commit_
 
 When used in a Define query, the `relates` keyword defines a new role for a relation type. This query defines the following relation types:
 
@@ -73,7 +73,7 @@ In this case, `rating` and `order-line` are binary relation types, while `publis
 
 [NOTE]
 ====
-In 3.0, default cardinalities are applied to `owns`, `relates`, and `plays`. Defaults: `plays @card(0..)`, `owns @card(0..1)`, `relates @card(0..1)`. Specify cardinalities explicitly when you expect multiple instances.
+In 3.0, default cardinalities are applied to `owns`, `relates`, and `plays`. Defaults: `plays @card(0..)`, `owns @card(0..1)`, `relates @card(0..1)`. Specify cardinalities explicitly when you expect multiple instances to be connected via the same role or attribute type.
 ====
 
 .Exercise
@@ -102,7 +102,8 @@ promotion-inclusion sub relation,
     relates promotion,
     relates item;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+_-> Commit_
+
 =====
 ====
 
@@ -116,7 +117,7 @@ entity order plays order-line:order;
 entity publication plays publishing:publication;
 entity promotion plays promotion-inclusion:promotion;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+_-> Commit_
 
 When used in a Define query, the `plays` keyword defines a new roleplayer for a relation's role (i.e. a new implementer of a role interface).
 
@@ -141,7 +142,7 @@ address plays delivery:destination,
 user plays locating:located;
 publication plays locating:located;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+_-> Commit_
 =====
 ====
 
@@ -158,13 +159,11 @@ attribute price, value double;
 attribute name, value string;
 attribute birth-date, value datetime;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+_-> Commit_
 
-When used in a Define query, the `value` keyword defines the value type of an attribute type. When the attribute type is later instantiated, its values must be of the specified value type. There are currently five value types in TypeDB:
+When used in a Define query, the `value` keyword defines the value type of an attribute type. When the attribute type is later instantiated, its values must be of the specified value type. There are currently these value types in TypeDB:
 
-include::{page-version}@typeql::values/value-types.adoc[tag=value_types]
-
-More value types will be added in future updates.
+include::{page-version}@reference::typeql/values/index.adoc
 
 .Exercise
 [caption=""]
@@ -172,7 +171,7 @@ More value types will be added in future updates.
 Write a query to define seven new attribute types:
 
 * Integer attribute types `year` and `score`.
-* Float attribute type `discount`.
+* Double attribute type `discount`.
 * String attribute types `code` and `street`.
 * Datetime attribute types `start-timestamp` and `end-timestamp`
 
@@ -190,7 +189,8 @@ attribute street, value string;
 attribute start-timestamp, value datetime;
 attribute end-timestamp, value datetime;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+_-> Commit_
+
 =====
 ====
 
@@ -199,15 +199,17 @@ With attribute types defined, we can now declare which types own which attribute
 [,typeql]
 ----
 define
-entity user owns name,
-    owns birth-date;
-entity contributor owns name;
-entity promotion owns name;
-entity review owns verified;
-relation order-line owns quantity,
-    owns price;
+entity user,
+  owns name,
+  owns birth-date;
+entity contributor, owns name;
+entity promotion, owns name;
+entity review, owns verified;
+relation order-line,
+  owns quantity,
+  owns price;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+_-> Commit_
 
 When used in a Define query, the `owns` keyword defines a new attribute owner (i.e. a new implementer of an ownership interface). The syntax is the same for declaring entity types (like `user`) and relation types (like `order-line`) as owners.
 
@@ -228,15 +230,16 @@ Write a query to define seven new ownerships:
 [,typeql]
 ----
 define
-entity address owns street;
-entity publication owns year;
-entity review owns score;
-entity promotion owns code,
-    owns start-timestamp,
-    owns end-timestamp;
-relation promotion-inclusion owns discount;
+entity address, owns street;
+entity publication, owns year;
+entity review, owns score;
+entity promotion,
+  owns code,
+  owns start-timestamp,
+  owns end-timestamp;
+relation promotion-inclusion, owns discount;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+_-> Commit_
 =====
 ====
 
@@ -264,12 +267,12 @@ relation action-execution,
     relates action,
     relates executor,
     owns timestamp;
-entity order plays action-execution:action;
-entity review plays action-execution:action;
-entity user plays action-execution:executor;
+entity order, plays action-execution:action;
+entity review, plays action-execution:action;
+entity user, plays action-execution:executor;
 attribute success, value boolean;
 attribute timestamp, value datetime;
 ----
-image:{page-version}@home::studio-icons/svg/studio_run.svg[width=24]image:{page-version}@home::studio-icons/svg/studio_check.svg[width=24] *_Run and commit_*
+_-> Commit_
 =====
 ====
