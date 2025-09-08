@@ -16,7 +16,7 @@ Let's run this query within a *read transaction* since we're only reading data.
 ----
 from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions
 
-DB = "my_database"
+DB = "bookstore"
 address = "localhost:1729"
 credentials = Credentials("admin", "password")
 options = DriverOptions(is_tls_enabled=True, tls_root_ca_path=None)
@@ -34,25 +34,14 @@ with TypeDB.driver(address, credentials, options) as driver:
             print(doc)
 ----
 
-You should see the results printed out in the same JSON format.
+You should see the results printed out in the same JSON format. The `resolve()` call is ensuring the query promise is finished, and we receive any relevant errors, or the answers.
 
-Notice that there's a `.resolve()` operation and a `as_concept_documents()` operation. `.resolve()` is required since `tx.query()` returns a promise that needs to be awaited (if using Rust with the async-compatible driver, you can just use `await`). This will result in either an error, or an `QueryAnswer`.
-
-`QueryAnswer` can either be a simple acknowledgement for `define` or other schema queries, as they do not return anything. `QueryAnswer` could also be an iterator or `ConceptRow` or of `ConceptDocument`. Queries ending in `fetch {}` clauses always return documents, so we downcast the answer into a `ConceptDocumentIterator` with `.as_concept_documents()`.
-
-Answer iterators (in GRPC) are lazy, so:
-- they must be consumed them inside the transaction scope
-- they will prefetch a certain number of answers to hide latency, but must be consumed to trigger further computation on the server side
-
-Note that since they're standard Python iterators, you can do the usual operations like using `all_answers = list(tx.query(my_query).resolve().as_answer_documents())`.
-
-We will examine the result set more closely in xref:{page-version}@academy::6-building-applications/6.5-processing-results.adoc[Lesson 6.5].
+We will examine query response type, and explain the `resolve()` and `as_concept_documents()` method call further, in xref:{page-version}@academy::6-building-applications/6.5-processing-results.adoc[Lesson 6.5].
 
 == Data write queries
 
 To run queries that do writes, we should use a *write* transaction.
 
-If we don't care about the answers to our query and are confident we won't get any errors, we don't even need to resolve the query - we can just submit it and the transaction commit will wait until all queries are completed.
 
 [,python]
 ----
@@ -70,114 +59,78 @@ with TypeDB.driver(address, credentials, options) as driver:
         tx.commit()
 ----
 
+Note that if we don't care about the answers to our query and are confident we won't get any errors, we don't even need to resolve the query - we can just submit it and the transaction commit will wait until all queries are completed.
+
+Queries submitted, even without resolving, are submitted in order on the server side:
+
 [,python]
 ----
 with TypeDB.driver(address, credentials, options) as driver:
     with driver.transaction(DB, TransactionType.WRITE) as tx:
+        # make two changes in same transaction, in order of submission
         tx.query(
             """
             match $retracted_review isa review, has id "r0001";
                   $relation ($retracted_review) isa relation;
             delete $relation;
             """
-        ).resolve()
-        # make two changes in same transaction
+        )
         tx.query(
             """
             match $retracted_review isa review, has id "r0001";
             delete $retracted_review;
             """
-        ).resolve()
-        tx.commit()
-----
-
-[,python]
-----
-with TypeDB.driver(address, credentials, options) as driver:
-    with driver.transaction(DB, TransactionType.WRITE) as tx:
-        tx.query(
-            """
-            match
-              $order isa order, has id "o0008" has status $status;
-              $status = "paid";
-            delete has $status of $order;
-            insert $order has status "dispatched";
-            """
-        ).resolve()
+        )
         tx.commit()
 ----
 
 == Schema write queries
 
-To run Define queries, we should use a *schema transaction*. As with all previous queries, we issue the query with a method of the transaction's `query` method. In the following code snippet, we create a new database for a social network and define a rudimentary schema.
+To run Define queries, we should use a *schema transaction*. As with all previous queries, we issue the query with a method of the transaction's `query` method. In the following code snippet, we create a new database for a simplified bookstore and define a rudimentary schema.
 
 [,python]
 ----
-DB = "social-network"
+DB = "bookstore-2"
 with TypeDB.driver(address, credentials, options) as driver:
     try:
         driver.databases.create(DB)
     except Exception:
         pass
     with driver.transaction(DB, TransactionType.SCHEMA) as tx:
-        tx.query(
-            """
+        tx.query("""
             define
-            entity person,
-                owns first-name,
-                owns last-name,
-                owns birth-date,
-                plays friendship:friend,
-                plays relationship:partner,
-                plays marriage:spouse;
-            relation friendship,
-                relates friend;
-            relation relationship,
-                relates partner;
-            relation marriage,
-                sub relationship,
-                relates spouse as partner;
-            attribute name @abstract, value string;
-            attribute first-name, sub name;
-            attribute last-name, sub name;
-            attribute birth-date, value datetime;
-            """
-        ).resolve()
+            entity book @abstract,
+              owns price,
+              plays order-line:item;
+
+            entity hardback,
+              sub book,
+              owns stock;
+
+            entity paperback,
+              sub book,
+              owns stock;
+
+            entity ebook sub book;
+
+            entity order,
+              owns id @key,
+              owns status,
+              plays order-line:order;
+
+            relation order-line,
+                relates order,
+                relates item,
+                owns quantity,
+                owns price;
+
+            attribute id, value string;
+            attribute price, value double;
+            attribute quantity, value integer;
+            attribute stock, value integer;
+            attribute status, value string @values("paid", "dispatched", "delivered",             "returned", "canceled");
+        """).resolve()
         tx.commit()
 ----
-
-// Add after change to Cloud.
-// [,python]
-// ----
-// DATABASE = "social-network"
-//
-// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
-//     driver.databases.create(DATABASE)
-//
-//     with driver.session(DATABASE, SessionType.SCHEMA) as session:
-//         with session.transaction(TransactionType.WRITE) as transaction:
-//             transaction.query.define("""
-//                 define
-//                 person sub entity,
-//                     owns first-name,
-//                     owns last-name,
-//                     owns birth-date,
-//                     plays friendship:friend,
-//                     plays relationship:partner,
-//                     plays marriage:spouse;
-//                 friendship sub relation,
-//                     relates friend;
-//                 relationship sub relation,
-//                     relates partner;
-//                 marriage sub relationship,
-//                     relates spouse as partner;
-//                 name sub attribute, abstract, value string;
-//                 first-name sub name;
-//                 last-name sub name;
-//                 birth-date sub attribute, value datetime;
-//             """)
-//
-//             transaction.commit()
-// ----
 
 As when writing data, we must *commit* the transaction when defining schemas in order for the changes to be persisted.

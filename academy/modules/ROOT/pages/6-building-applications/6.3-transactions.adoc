@@ -8,7 +8,7 @@ With a connection established to the server via a driver, open transactions dire
 ----
 from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions
 
-DB = "my_database"
+DB = "bookstore"
 address = "localhost:1729"
 credentials = Credentials("admin", "password")
 options = DriverOptions(is_tls_enabled=True, tls_root_ca_path=None)

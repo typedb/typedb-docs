@@ -12,11 +12,14 @@ fetch { "title": $book.title, "genre": [$book.genre], "page-count": $book.page-c
 
 [,python]
 ----
-from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions
+from typedb.driver import TypeDB, Credentials, DriverOptions
 
-ADDRESS = "localhost:1729"
 DB = "bookstore"
-with TypeDB.driver(ADDRESS, Credentials("admin", "password"), DriverOptions(is_tls_enabled=False)) as driver:
+address = "localhost:1729"
+credentials = Credentials("admin", "password")
+options = DriverOptions(is_tls_enabled=True, tls_root_ca_path=None)
+
+with TypeDB.driver(address, credentials, options) as driver:
     with driver.transaction(DB, TransactionType.READ) as tx:
         docs = tx.query(
             """
@@ -28,26 +31,20 @@ with TypeDB.driver(ADDRESS, Credentials("admin", "password"), DriverOptions(is_t
             print(doc)
 ----
 
-// Add after change to Cloud.
-// [,python]
-// ----
-// DATABASE = "bookstore"
-//
-// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
-//     with driver.session(DATABASE, SessionType.DATA) as session:
-//         with session.transaction(TransactionType.READ) as transaction:
-//             results: Iterator[dict] = transaction.query.fetch("""
-//                 match
-//                 $book isa hardback;
-//                 fetch
-//                 $book: title, genre, page-count;
-//             """)
-//
-//             for result in results:
-//                 print(result)
-// ----
+Notice that there's a `.resolve()` operation and a `as_concept_documents()` operation. `.resolve()` is required since `tx.query()` returns a promise that needs to be awaited (if using Rust with the async-compatible driver, you can just use `await`). This will result in either an error, or an `QueryAnswer`.
+
+`QueryAnswer` can either be a simple acknowledgement for `define` or other schema queries, as they do not return anything. `QueryAnswer` could also be an iterator or `ConceptRow` or of `ConceptDocument`. Queries ending in `fetch {}` clauses always return documents, so we downcast the answer into a `ConceptDocumentIterator` with `.as_concept_documents()`.
+
+Answer iterators (in GRPC) are lazy, so:
+- they must be consumed them inside the transaction scope
+- they will prefetch a certain number of answers to hide latency, but must be consumed to trigger further computation on the server side
+
+Note that since they're standard Python iterators, you can do the usual operations like using `all_answers = list(tx.query(my_query).resolve().as_answer_documents())`.
 
 If we run this code snippet, then we get the following output.
+
+
+TODO: output
 
 [,json]
 ----
@@ -57,8 +54,6 @@ If we run this code snippet, then we get the following output.
 ----
 
 Each output line is a concept document (JSON). Keys correspond to the fetch body.
-
-Remove the outdated Python snippets that introspected nested dictionaries; documents already reflect the selected fields.
 
 For each result, the value of `result["book"]` is another dictionary. The keys of these nested dictionaries are the names of the attributes that we fetched of `book`, in addition to a `type` field as we saw in xref:{page-version}@academy::3-reading-data/3.2-fetching-polymorphic-data.adoc[Lesson 3.2].
 
@@ -75,7 +70,7 @@ dict_keys(['type', 'genre', 'page-count', 'title'])
 dict_keys(['title', 'genre', 'page-count', 'type'])
 ----
 
-In the example above, `title` and `page-count` are scalars. `genre` is a list as requested by `[$book.genre]`.
+In the example above, `title` and `page-count` are scalars. `genre` is a list as requested by the list syntax in the fetch for the genres: `[$book.genre]`.
 
 [,python]
 ----
@@ -137,7 +132,7 @@ def print_hardback_isbns(tx) -> None:
     docs = tx.query(
         """
         match $book isa hardback;
-        fetch { "title": $book.title, "isbn": [$book.isbn-13, $book.isbn-10] };
+        fetch { "title": $book.title, "isbn": [$book.isbn] };
         """
     ).resolve().as_concept_documents()
     for doc in docs:
@@ -171,24 +166,12 @@ We make sure to return an *iterator* by using the `yield` keyword rather than th
 
 [,python]
 ----
-with TypeDB.driver(ADDRESS, Credentials("admin", "password"), DriverOptions(is_tls_enabled=False)) as driver:
+with TypeDB.driver(address, credentials, options) as driver:
     with driver.transaction(DB, TransactionType.READ) as tx:
         for order in get_orders_of_book(tx, "9780446310789"):
             print(order)
 ----
 
-
-// Add after change to Cloud.
-// [,python]
-// ----
-// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
-//     with driver.session(DATABASE, SessionType.DATA) as session:
-//         with session.transaction(TransactionType.READ) as transaction:
-//             orders = get_orders_of_book(transaction, "9780446310789")
-//
-//             for order in orders:
-//                 print(order)
-// ----
 
 [,python]
 ----
@@ -209,26 +192,13 @@ get_books_in_genre(tx, genre: str) -> Iterator[tuple[str, str]]
 
 You should ensure the following test case produces the result given for the sample database. Additional results may be produced if you have inserted data.
 
-// Remove after change to Cloud.
 [,python]
 ----
-with TypeDB.driver(ADDRESS, Credentials("admin", "password"), DriverOptions(is_tls_enabled=False)) as driver:
+with TypeDB.driver(address, credentials, options) as driver:
     with driver.transaction(DB, TransactionType.READ) as tx:
         for book in get_books_in_genre(tx, "science fiction"):
             print(book)
 ----
-
-// Add after change to Cloud.
-// [,python]
-// ----
-// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
-//     with driver.session(DATABASE, SessionType.DATA) as session:
-//         with session.transaction(TransactionType.READ) as transaction:
-//             scifis = get_books_in_genre(transaction, "science fiction")
-//
-//             for book in scifis:
-//                 print(book)
-// ----
 
 [,python]
 ----
@@ -251,6 +221,9 @@ def get_books_in_genre(tx, genre: str) -> Iterator[tuple[str, str]]:
     for doc in docs:
         yield doc["isbn-13"], doc["title"]
 ----
+
+**Warning:** because your query iterator is a stateful object tied to the transaction in the server, you **must finish using the query iterator before the transaction closes**. In other words, since TypeDB's GRPC drivers are **reactively streaming over the network** as you consume answers, you must keep the transaction open while consuming answers.
+
 =====
 ====
 

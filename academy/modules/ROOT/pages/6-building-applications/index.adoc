@@ -2,9 +2,9 @@
 :page-aliases: {page-version}@academy::6-building-applications/overview.adoc
 :page-preamble-card: 1
 
-In this lesson, we'll learn how to use the TypeDB native language drivers to build applications on TypeDB. We'll start by seeing how to *manage databases*, then move onto *using sessions* and *controlling transactions*. We'll see how we use different session and transaction types to *execute queries*, and how we can *process results* that are returned.
+In this lesson, we'll learn how to use the TypeDB native language drivers to build applications on TypeDB. We'll start by seeing how to *manage databases*, then learn to *use transactions*. We'll see how we use different transaction types to *execute queries*, and how we can *process results* that are returned.
 
-The examples and exercises in this lesson feature the official *TypeDB Python driver*.
+The examples and exercises in this lesson feature the official *TypeDB Python driver*, though other language drivers feature extremely similar APIs.
 
 == Recommended prerequisites
 
@@ -20,19 +20,11 @@ The examples and exercises in this lesson feature the official *TypeDB Python dr
 Driver overview and installation.
 ****
 
-// Remove after change to Cloud.
 .xref:{page-version}@academy::6-building-applications/6.2-managing-users-and-databases.adoc[]
 [.clickable]
 ****
 Learn how to connect to a server and manage databases.
 ****
-
-// Add after change to Cloud.
-// .xref:{page-version}@academy::6-building-applications/6.2-managing-users-and-databases.adoc[]
-// [.clickable]
-// ****
-// Learn how to manage users and databases on a server.
-// ****
 
 .xref:{page-version}@academy::6-building-applications/6.3-transactions.adoc[]
 [.clickable]
@@ -53,6 +45,3 @@ Learn how to efficiently process the results of read queries.
 ****
 --
 
-== Using other driver languages
-
-Official drivers are also available for xref:{page-version}@drivers::index.adoc[other languages]. All official drivers offer very similar APIs, so it is recommended to use the Python driver while following this course, as the skills learned will be easily transferable to the other drivers.

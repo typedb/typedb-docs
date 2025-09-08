@@ -104,7 +104,7 @@ def print_database_details(driver: TypeDBDriver) -> None:
 
 # 6.3 transactions
 
-DB = "database-name"
+DB = "bookstore"
 
 with TypeDB.driver(ADDRESS, credentials, options) as driver:
     with driver.transaction(DB, TransactionType.READ) as tx:
@@ -220,7 +220,7 @@ def update_order_status(tx, id: str, status_old: str, status_new: str) -> None:
     ).resolve()
 
 
-DB = "social-network"
+DB = "bookstore"
 
 with TypeDB.driver(ADDRESS, credentials, options) as driver:
     try:
