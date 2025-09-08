@@ -2,7 +2,7 @@
 
 == Data read queries
 
-Now that we know how to instantiate driver objects, open sessions, and control transactions, we can begin running queries. We'll begin with the following Fetch query.
+Now that we know how to instantiate driver objects and open transactions, we can begin running queries. We'll begin with the following Fetch query.
 
 [,typeql]
 ----
@@ -10,15 +10,19 @@ match $book isa book;
 fetch { "title": $book.title, "page-count": $book.page-count };
 ----
 
-Run queries within a *read transaction*. In 3.0, use `tx.query(...).resolve().as_concept_documents()` for fetch queries.
+Let's run this query within a *read transaction* since we're only reading data.
 
 [,python]
 ----
 from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions
 
-ADDRESS = "localhost:1729"
-DB = "bookstore"
-with TypeDB.driver(ADDRESS, Credentials("admin", "password"), DriverOptions(is_tls_enabled=False)) as driver:
+DB = "my_database"
+address = "localhost:1729"
+credentials = Credentials("admin", "password")
+options = DriverOptions(is_tls_enabled=True, tls_root_ca_path=None)
+
+# Note: options can be omitted if you want to use the default options of True/None
+with TypeDB.driver(address, credentials, options) as driver:
     with driver.transaction(DB, TransactionType.READ) as tx:
         docs = tx.query(
             """
@@ -30,73 +34,29 @@ with TypeDB.driver(ADDRESS, Credentials("admin", "password"), DriverOptions(is_t
             print(doc)
 ----
 
-// Remove after change to Cloud.
-Try running this code snippet against the sample database. You should see the results printed out in the same JSON format that TypeDB Studio displayed them in xref:{page-version}@academy::3-reading-data/3.2-fetching-polymorphic-data.adoc[Lesson 3.2].
+You should see the results printed out in the same JSON format.
 
-// Add after change to Cloud.
-// [,python]
-// ----
-// DATABASE = "bookstore"
-//
-// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
-//     with driver.session(DATABASE, SessionType.DATA) as session:
-//         with session.transaction(TransactionType.READ) as transaction:
-//             results: Iterator[dict] = transaction.query.fetch("""
-//                 match
-//                 $book isa book;
-//                 fetch
-//                 $book: title, page-count;
-//             """)
-//
-//             for result in results:
-//                 print(result)
-// ----
-//
-// Try running this code snippet against the sample database. Remember to provide necessary the server address and credential object as shown in xref:{page-version}@academy::6-building-applications/6.2-managing-users-and-databases.adoc[Lesson 6.2]. You should see the results printed out in the same JSON format that TypeDB Studio displayed them in xref:{page-version}@academy::3-reading-data/3.2-fetching-polymorphic-data.adoc[Lesson 3.2].
+Notice that there's a `.resolve()` operation and a `as_concept_documents()` operation. `.resolve()` is required since `tx.query()` returns a promise that needs to be awaited (if using Rust with the async-compatible driver, you can just use `await`). This will result in either an error, or an `QueryAnswer`.
 
-The result is a promise that resolves to an iterator. Answers are lazily streamed; consume them inside the transaction scope.
+`QueryAnswer` can either be a simple acknowledgement for `define` or other schema queries, as they do not return anything. `QueryAnswer` could also be an iterator or `ConceptRow` or of `ConceptDocument`. Queries ending in `fetch {}` clauses always return documents, so we downcast the answer into a `ConceptDocumentIterator` with `.as_concept_documents()`.
 
-[,python]
-----
-with TypeDB.driver(ADDRESS, Credentials("admin", "password"), DriverOptions(is_tls_enabled=False)) as driver:
-    with driver.transaction(DB, TransactionType.READ) as tx:
-        documents = tx.query(
-            """
-            match $book isa book;
-            fetch { "title": $book.title, "page-count": $book.page-count };
-            """
-        ).resolve().as_concept_documents()
-        results = list(documents)
-for doc in results:
-    print(doc)
-----
+Answer iterators (in GRPC) are lazy, so:
+- they must be consumed them inside the transaction scope
+- they will prefetch a certain number of answers to hide latency, but must be consumed to trigger further computation on the server side
 
-// Add after change to Cloud.
-// [,python]
-// ----
-// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
-//     with driver.session(DATABASE, SessionType.DATA) as session:
-//         with session.transaction(TransactionType.READ) as transaction:
-//             results: list[dict] = list(transaction.query.fetch("""
-//                 match
-//                 $book isa book;
-//                 fetch
-//                 $book: title, page-count;
-//             """))
-//
-// for result in results:
-//     print(result)
-// ----
+Note that since they're standard Python iterators, you can do the usual operations like using `all_answers = list(tx.query(my_query).resolve().as_answer_documents())`.
 
 We will examine the result set more closely in xref:{page-version}@academy::6-building-applications/6.5-processing-results.adoc[Lesson 6.5].
 
 == Data write queries
 
-To run Insert, Delete, and Update queries, we should use a *data session* and *write* transaction. To issue these queries, we use the `insert`, `delete`, and `update` methods, as shown respectively in the following code snippets.
+To run queries that do writes, we should use a *write* transaction.
+
+If we don't care about the answers to our query and are confident we won't get any errors, we don't even need to resolve the query - we can just submit it and the transaction commit will wait until all queries are completed.
 
 [,python]
 ----
-with TypeDB.driver(ADDRESS, Credentials("admin", "password"), DriverOptions(is_tls_enabled=False)) as driver:
+with TypeDB.driver(address, credentials, options) as driver:
     with driver.transaction(DB, TransactionType.WRITE) as tx:
         tx.query(
             """
@@ -106,12 +66,13 @@ with TypeDB.driver(ADDRESS, Credentials("admin", "password"), DriverOptions(is_t
                    has birth-date 1950-03-03;
             """
         ).resolve()
+        # we don't care about the answers, so we don't have read them back out
         tx.commit()
 ----
 
 [,python]
 ----
-with TypeDB.driver(ADDRESS, Credentials("admin", "password"), DriverOptions(is_tls_enabled=False)) as driver:
+with TypeDB.driver(address, credentials, options) as driver:
     with driver.transaction(DB, TransactionType.WRITE) as tx:
         tx.query(
             """
@@ -120,6 +81,7 @@ with TypeDB.driver(ADDRESS, Credentials("admin", "password"), DriverOptions(is_t
             delete $relation;
             """
         ).resolve()
+        # make two changes in same transaction
         tx.query(
             """
             match $retracted_review isa review, has id "r0001";
@@ -131,176 +93,28 @@ with TypeDB.driver(ADDRESS, Credentials("admin", "password"), DriverOptions(is_t
 
 [,python]
 ----
-with TypeDB.driver(ADDRESS, Credentials("admin", "password"), DriverOptions(is_tls_enabled=False)) as driver:
+with TypeDB.driver(address, credentials, options) as driver:
     with driver.transaction(DB, TransactionType.WRITE) as tx:
         tx.query(
             """
-            match $order isa order, has id "o0008";
-                  $paid = "paid";
-            update delete $order has status $paid; insert $order has status "dispatched";
+            match
+              $order isa order, has id "o0008" has status $status;
+              $status = "paid";
+            delete has $status of $order;
+            insert $order has status "dispatched";
             """
         ).resolve()
         tx.commit()
 ----
 
-// Add after change to Cloud.
-// [,python]
-// ----
-// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
-//     with driver.session(DATABASE, SessionType.DATA) as session:
-//         with session.transaction(TransactionType.WRITE) as transaction:
-//             transaction.query.insert("""
-//                 insert
-//                 $new-user isa user,
-//                     has id "u0014",
-//                     has name "Jaiden Hurst",
-//                     has birth-date 1950-03-03;
-//             """)
-//
-//             transaction.commit()
-// ----
-//
-// [,python]
-// ----
-// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
-//     with driver.session(DATABASE, SessionType.DATA) as session:
-//         with session.transaction(TransactionType.WRITE) as transaction:
-//             transaction.query.delete("""
-//                 match
-//                 $retracted-review isa review, has id "r0001";
-//                 $relation ($retracted-review) isa relation;
-//                 delete
-//                 $relation isa relation;
-//             """)
-//
-//             transaction.query.delete("""
-//                 match
-//                 $retracted-review isa review, has id "r0001";
-//                 delete
-//                 $retracted-review isa review;
-//             """)
-//
-//             transaction.commit()
-// ----
-//
-// [,python]
-// ----
-// with TypeDB.cloud_driver(ADDRESS, credential) as driver:
-//     with driver.session(DATABASE, SessionType.DATA) as session:
-//         with session.transaction(TransactionType.WRITE) as transaction:
-//             transaction.query.update("""
-//                 match
-//                 $dispatched-order isa order, has id "o0008";
-//                 $paid "paid" isa status;
-//                 delete
-//                 $dispatched-order has $paid;
-//                 insert
-//                 $dispatched-order has status "dispatched";
-//             """)
-//
-//             transaction.commit()
-// ----
-
-In each case, we must *commit* the transaction for the changes to be persisted. The second query deletes a review and must use two queries to do so, as explained in xref:{page-version}@academy::4-writing-data/4.3-deleting-data.adoc[Lesson 4.3]. Because deleting a review is an atomic process, the two queries should be executed in the same transaction and committed together, as shown above.
-
-.Exercise
-[caption=""]
-====
-Write functions to do each of the following. In each case, do not commit the transaction within the function, as the transaction should be committed by the code that calls the functions rather than the functions themselves.
-
-1. Insert a new user. The function should have the following signature.
-+
---
-[,python]
-----
-create_user(transaction: TypeDBTransaction, id: str, name: str, birth_date: str) -> None
-----
-
-.Sample solution
-[%collapsible]
-=====
-[,python]
-----
-def create_user(transaction: TypeDBTransaction, id: str, name: str, birth_date: str) -> None:
-    transaction.query.insert(f"""
-        insert
-        $new-user isa user,
-            has id "{id}",
-            has name "{name}",
-            has birth-date {birth_date};
-    """)
-----
-=====
---
-
-2. Delete a review by its ID. The function should have the following signature.
-+
---
-[,python]
-----
-delete_review(transaction: TypeDBTransaction, id: str) -> None
-----
-
-.Sample solution
-[%collapsible]
-=====
-[,python]
-----
-def delete_review(transaction: TypeDBTransaction, id: str) -> None:
-    transaction.query.delete(f"""
-        match
-        $retracted-review isa review, has id "{id}";
-        $relation ($retracted-review) isa relation;
-        delete
-        $relation isa relation;
-    """)
-
-    transaction.query.delete(f"""
-        match
-        $retracted-review isa review, has id "{id}";
-        delete
-        $retracted-review isa review;
-    """)
-----
-=====
---
-
-3. Update the status of an order by ID. The function should have the following signature.
-+
---
-[,python]
-----
-update_order_status(transaction: TypeDBTransaction, id: str, status_old: str, status_new: str) -> None
-----
-
-.Sample solution
-[%collapsible]
-=====
-[,python]
-----
-def update_order_status(transaction: TypeDBTransaction, id: str, status_old: str, status_new: str) -> None:
-    transaction.query.update(f"""
-        match
-        $dispatched-order isa order, has id "{id}";
-        $status-old "{status_old}" isa status;
-        delete
-        $dispatched-order has $status-old;
-        insert
-        $dispatched-order has status "{status_new}";
-    """)
-----
-=====
---
-====
-
 == Schema write queries
 
-To run Define queries, we should use a *schema session* and *write transaction*. As with all previous queries, we issue the query with a method of the transaction's `query` property, in this case the `define` method. In the following code snippet, we create a new database for a social network and define a rudimentary schema.
+To run Define queries, we should use a *schema transaction*. As with all previous queries, we issue the query with a method of the transaction's `query` method. In the following code snippet, we create a new database for a social network and define a rudimentary schema.
 
 [,python]
 ----
 DB = "social-network"
-with TypeDB.driver(ADDRESS, Credentials("admin", "password"), DriverOptions(is_tls_enabled=False)) as driver:
+with TypeDB.driver(address, credentials, options) as driver:
     try:
         driver.databases.create(DB)
     except Exception:
@@ -320,11 +134,12 @@ with TypeDB.driver(ADDRESS, Credentials("admin", "password"), DriverOptions(is_t
                 relates friend;
             relation relationship,
                 relates partner;
-            relation marriage sub relationship,
+            relation marriage,
+                sub relationship,
                 relates spouse as partner;
             attribute name @abstract, value string;
-            attribute first-name sub name;
-            attribute last-name sub name;
+            attribute first-name, sub name;
+            attribute last-name, sub name;
             attribute birth-date, value datetime;
             """
         ).resolve()

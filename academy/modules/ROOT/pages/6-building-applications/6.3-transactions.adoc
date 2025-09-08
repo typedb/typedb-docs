@@ -8,9 +8,12 @@ With a connection established to the server via a driver, open transactions dire
 ----
 from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions
 
-ADDRESS = "localhost:1729"
-DB = "database-name"
-with TypeDB.driver(ADDRESS, Credentials("admin", "password"), DriverOptions(is_tls_enabled=False)) as driver:
+DB = "my_database"
+address = "localhost:1729"
+credentials = Credentials("admin", "password")
+options = DriverOptions(is_tls_enabled=True, tls_root_ca_path=None)
+
+with TypeDB.driver(address, credentials, options) as driver:
     # Read transaction
     with driver.transaction(DB, TransactionType.READ) as tx:
         pass
@@ -35,3 +38,5 @@ The transaction takes a database name and a transaction type. Use a context mana
 - Schema transactions: exclusive with other write/schema transactions for a database.
 
 Transactions are short-lived atomic units of work and provide ACID guarantees up to snapshot isolation. See xref:{page-version}@core-concepts::typedb/transactions.adoc[Transactions] for details.
+
+To get a deeper understanding of using TypeDB transactions - including concurrency, configuration, and best practices - see the driver-side xref:{page-version}@core-concepts::drivers/transactions.adoc[Transaction Concepts] page.
