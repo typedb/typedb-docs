@@ -187,6 +187,7 @@ A variable is "bound" in a disjunction if it is bound in every branch of the dis
 Variables which are present in & bound by only some of the branches of the disjunction
 (and not present outside it) are considered "internal" to that disjunction.
 
+[,typeql]
 ----
 #!test[read, count=2]
 match
