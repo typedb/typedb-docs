@@ -347,12 +347,12 @@ isbn sub attribute, abstract, value string;
 isbn-13 sub isbn;
 isbn-10 sub isbn;
 title sub attribute, value string;
-page-count sub attribute, value long;
+page-count sub attribute, value integer;
 genre sub attribute, value string;
 price sub attribute, value double;
-stock sub attribute, value long;
+stock sub attribute, value integer;
 name sub attribute, value string;
-year sub attribute, value long;
+year sub attribute, value integer;
 
 rule transitive-location:
     when {

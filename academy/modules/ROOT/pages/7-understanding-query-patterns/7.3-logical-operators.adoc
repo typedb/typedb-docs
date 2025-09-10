@@ -2,7 +2,9 @@
 
 == Disjunctions
 
-By default, all statements in a pattern are joined in a https://en.wikipedia.org/wiki/Logical_conjunction[conjunction]. As we have seen in xref:{page-version}@academy::7-understanding-query-patterns/7.1-patterns-as-constraints.adoc[Lesson 7.1], this means that the pattern must be satisfied as a set of simultaneous constraints. If we want to create a https://en.wikipedia.org/wiki/Logical_disjunction[disjunction], we must do so explicitly, as we do in the following Fetch query where we retrieve a list of books that a user "likes". We consider a user to have liked a book if either they have ordered it _or_ they have reviewed it with a score of seven or higher.
+By default, all statements in a pattern are joined in a https://en.wikipedia.org/wiki/Logical_conjunction[conjunction]. As we have seen in xref:{page-version}@academy::7-understanding-query-patterns/7.1-patterns-as-constraints.adoc[Lesson 7.1], this means that the pattern must be satisfied as a set of simultaneous constraints.
+
+If we want to create a https://en.wikipedia.org/wiki/Logical_disjunction[disjunction], we must do so explicitly, as we do in the following Fetch query where we retrieve a list of books that a user "likes". We consider a user to have liked a book if either they have ordered it _or_ they have reviewed it with a score of seven or higher.
 
 [,typeql]
 ----
@@ -10,18 +12,21 @@ match
 $user isa user, has id "u0008";
 $liked-book isa book;
 {
-    ($user, $order) isa action-execution;
-    ($order, $liked-book) isa order-line;
+    action-execution ($user, $order);
+    order-line ($order, $liked-book);
 } or {
-    ($user, $review) isa action-execution;
-    ($review, $liked-book) isa rating;
+    action-execution ($user, $review);
+    rating ($review, $liked-book);
     $review has score >= 7;
 };
-fetch
-$liked-book: isbn-13;
+fetch {
+  "isbn-13": $liked-book.isbn-13,
+};
 ----
 
-We have encountered *blocks* before when we used them to define rules in xref:{page-version}@academy::5-defining-schemas/5.4-defining-functions.adoc[Lesson 5.4]. To recap, blocks are delimited by braces and contain patterns. To construct a disjunction within a query pattern, we place each branch of the disjunction inside a block and interleave the blocks with the `or` keyword.
+As in programming languages, we call the patterns inside one set of `{}` **blocks**. Variables defined in a parent block are "shared" with the child block, the same way scoping works in programming languages. Variables defined in every branch of the disjunction are also shared with the parent scope.
+
+To construct a disjunction within a query pattern, we place make each branch of the disjunction a separate block and interleave the blocks with the `or` keyword.
 
 [,typeql]
 ----
@@ -46,7 +51,7 @@ You may find it useful to refer to the bookstore's schema.
 =====
 [,typeql]
 ----
-include::{page-version}@academy::attachment$bookstore-schema.tql[lines=18..]
+include::{page-version}@academy::attachment$bookstore-schema.tql[lines=19..]
 ----
 =====
 
@@ -58,7 +63,7 @@ include::{page-version}@academy::attachment$bookstore-schema.tql[lines=18..]
 match
 $book isa book;
 $order isa order;
-($book, $order) isa order-line;
+order-line ($book, $order);
 {
     $order has status "paid";
 } or {
@@ -66,8 +71,9 @@ $order isa order;
 } or {
     $order has status "delivered";
 };
-fetch
-$book: isbn-13;
+fetch {
+  "isbn-13": $book.isbn-13,
+};
 ----
 =====
 ====
@@ -83,8 +89,9 @@ $book isa book;
 not {
     ($book, $contributor) isa illustrating;
 };
-fetch
-$book: isbn-13;
+fetch {
+  "isbn-13": book.isbn-13,
+};
 ----
 
 To construct a negation within a query, we place the negated pattern inside a block preceded by the `not` keyword and followed by a `;` delimiter.
@@ -114,7 +121,7 @@ You may find it useful to refer to the bookstore's schema.
 =====
 [,typeql]
 ----
-include::{page-version}@academy::attachment$bookstore-schema.tql[lines=18..]
+include::{page-version}@academy::attachment$bookstore-schema.tql[lines=19..]
 ----
 =====
 
@@ -127,15 +134,16 @@ match
 $user isa user, has id "u0008";
 $new-book isa book;
 not {
-    ($user, $order) isa action-execution;
-    ($order, $new-book) isa order-line;
+    action-execution ($user, $order);
+    order-line ($order, $new-book);
 };
 not {
-    ($user, $review) isa action-execution;
-    ($review, $new-book) isa rating;
+    action-execution ($user, $review);
+    rating ($review, $new-book);
 };
-fetch
-$new-book: isbn-13;
+fetch {
+  "isbn-13": $new-book.isbn-13,
+};
 ----
 
 Here, we have used a conjunction of negations, but we could identically use a negation of disjunctions by https://en.wikipedia.org/wiki/De_Morgan%27s_laws[De Morgan's laws]!
@@ -146,17 +154,45 @@ match
 $user isa user, has id "u0008";
 $new-book isa book;
 not { {
-    ($user, $order) isa action-execution;
-    ($order, $new-book) isa order-line;
+    action-execution ($user, $order);
+    order-line ($order, $new-book);
 } or {
-    ($user, $review) isa action-execution;
-    ($review, $new-book) isa rating;
+    action-execution ($user, $review);
+    rating ($review, $new-book);
 }; };
-fetch
-$new-book: isbn-13;
+fetch {
+  "isbn-13": $new-book.isbn-13,
+};
 ----
 =====
 ====
+
+== Optionals
+
+Optional patterns allow you to do **partial** matching. Patterns inside a `try` block must also *all* be matched (just like any conjunction). However, a `try` block's content that fail to match complete do not cause the outer pattern to fail.
+
+[,typeql]
+----
+match
+$ebook isa ebook;
+try {
+    $ebook has isbn-10 $isbn;
+};
+fetch {
+  "isbn-10": $isbn,
+};
+----
+
+To construct a negation within a query, we place the negated pattern inside a block preceded by the `ty` keyword and followed by a `;` delimiter.
+
+[,typeql]
+----
+try {
+    # optional pattern
+};
+----
+
+Variables only used inside of an optional clause are returned, but not available to sibling `try`, `not`, or `or` clauses.
 
 == Identities
 
@@ -165,18 +201,19 @@ We encountered the following query in xref:{page-version}@academy::3-reading-dat
 [,typeql]
 ----
 match
-(located: $user, location: $user-city) isa locating;
-(action: $order, executor: $user) isa action-execution;
-(delivered: $order, destination: $destination) isa delivery;
-(located: $destination, location: $destination-city) isa locating;
+locating (located: $user, location: $user-city);
+action-execution (action: $order, executor: $user);
+delivery (delivered: $order, destination: $destination);
+locating (located: $destination, location: $destination-city);
 $user-city isa city;
 $destination-city isa city;
 not { $destination-city is $user-city; };
-fetch
-$order: id;
+fetch {
+  "order-id": $order.id,
+};
 ----
 
-The `is` keyword is used to denote that two variables are identical: that they represent the same data object. It is most useful when used in a negation, in order to state that two variables are _not_ identical. As TypeQL is a constraint-based language, anything that is not constrained can be satisfied in any way, as long as it conforms to the schema. For instance in the query above, if we do not explicitly state that `$destination-city` and `$user-city` are not identical, then the constraints can be easily satisfied by resolving the two variables to the same instance of `city`.
+The `is` keyword is used to denote that two variables are identical: that they represent the **same** data object. It is most useful when used in a negation, in order to state that two variables are _not_ identical. The distinction with a `==`, is that `==` performs equality by __value__ only: meaning an attribute `age 10` and `year 10` would be equal by `==`, but not using `is`.
 
 .Exercise
 [caption=""]
@@ -190,7 +227,7 @@ You may find it useful to refer to the bookstore's schema.
 =====
 [,typeql]
 ----
-include::{page-version}@academy::attachment$bookstore-schema.tql[lines=18..]
+include::{page-version}@academy::attachment$bookstore-schema.tql[lines=19..]
 ----
 =====
 
@@ -203,13 +240,14 @@ match
 $book-1 isa book;
 $book-2 isa book;
 $shared-publisher isa publisher;
-($book-1, $shared-publisher) isa publishing;
-($book-2, $shared-publisher) isa publishing;
+publishing ($book-1, $shared-publisher);
+publishing ($book-2, $shared-publisher);
 not { $book-1 is $book-2; };
-fetch
-$book-1: isbn-13;
-$book-2: isbn-13;
-$shared-publisher: name;
+fetch {
+  "isbn-1": $book-1.isbn-13,
+  "isbn-2": $book-2.isbn-13,
+  "publisher": $shared-publisher.name,
+};
 ----
 
 If we did not state that `$book-1` and `$book-2` are not identical, then this query would be trivially satisfied by retrieving all books, which always have the same publishers as themselves! Try running it with and without the negation statement to see this.

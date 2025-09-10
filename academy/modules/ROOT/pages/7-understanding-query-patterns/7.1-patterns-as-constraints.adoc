@@ -2,28 +2,31 @@
 
 == Introduction to patterns
 
-TypeQL uses *pattern matching* as the basis for all data queries. We have seen in previous lessons how almost all queries have a `match` clause. The content of a match clause is a *pattern*, which comprises any number of consecutive statements and specifies what data in the database should be matched. Subsequent clauses in a query then determine the action that should be taken for each match found, for instance retrieving data from each match with a `fetch` clause, inserting data for each match with an `insert` clause, or deleting data from each match with a `delete` clause. Consider the following queries, each of a different kind: Fetch, Insert, Delete, and Update respectively, but with identical `match` clauses.
+TypeQL uses *pattern matching* as the basis for all data queries. We have seen in previous lessons how almost all queries have a `match` clause. The content of a match clause is a *pattern*, which comprises any number of consecutive statements and specifies what data in the database should be matched.
+
+Subsequent clauses in a query then determine the action that should be taken for each match found, for instance retrieving data from each match with a `fetch` clause, inserting data for each match with an `insert` clause, or deleting data from each match with a `delete` clause. Consider the following queries, each of a different kind: Fetch, Insert, Delete, and Update respectively, but with identical `match` clauses.
 
 [,typeql]
 ----
 match
 $book has title "The Complete Calvin and Hobbes";
-$user has name "Lorenzo Nixon";
+$user has name  "Giovanni Beard";
 $review has score $score;
 ($book, $review);
-$execution ($user, action: $review);
-fetch
-$execution: timestamp;
+$execution links ($user, action: $review);
+fetch {
+  "timestamp": $execution.timestamp,
+};
 ----
 
 [,typeql]
 ----
 match
 $book has title "The Complete Calvin and Hobbes";
-$user has name "Lorenzo Nixon";
+$user has name  "Giovanni Beard";
 $review has score $score;
 ($book, $review);
-$execution ($user, action: $review);
+$execution links ($user, action: $review);
 insert
 $review has verified true;
 ----
@@ -32,26 +35,26 @@ $review has verified true;
 ----
 match
 $book has title "The Complete Calvin and Hobbes";
-$user has name "Lorenzo Nixon";
+$user has name  "Giovanni Beard";
 $review has score $score;
 ($book, $review);
-$execution ($user, action: $review);
+$execution links ($user, action: $review);
 delete
-$review isa review;
-$rating isa rating;
-$execution isa action-execution;
+$review;
+$rating;
+$execution;
 ----
 
 [,typeql]
 ----
 match
 $book has title "The Complete Calvin and Hobbes";
-$user has name "Lorenzo Nixon";
+$user has name  "Giovanni Beard";
 $review has score $score;
 ($book, $review);
-$execution ($user, action: $review);
+$execution links ($user, action: $review);
 delete
-$review has $score;
+has $score of $review;
 insert
 $review has score 10;
 ----
@@ -61,13 +64,13 @@ Each of them has the same pattern in the `match` clause.
 [,typeql]
 ----
 $book has title "The Complete Calvin and Hobbes";
-$user has name "Lorenzo Nixon";
+$user has name  "Giovanni Beard";
 $review has score $score;
 ($book, $review);
-$execution ($user, action: $review);
+$execution links ($user, action: $review);
 ----
 
-This pattern matches reviews of _The Complete Calvin and Hobbes_ by the user Lorenzo Nixon. Each query then performs a different action for the review(s) matched:
+This pattern matches reviews of _The Complete Calvin and Hobbes_ by the user Giovanni Beard. Each query then performs a different action for the review(s) matched:
 
 * The Fetch query returns the timestamp of the review's submission.
 * The Insert query marks the review as verified.
@@ -78,29 +81,26 @@ Understanding how to construct patterns and how they are resolved by TypeDB is n
 
 == Constraint satisfaction
 
-Every pattern is equivalent to a list of *constraints* that must be *simultaneously* satisfied. Let's consider the previous pattern. It represents several constraints about the *terms* involved, where a term can be either a variable or a literal:
+Every pattern is equivalent to a list of *constraints* that must be *simultaneously* satisfied. (Note: some patterns have special semantics that modify this behaviour, like `or`, `not`, and `try` - see xref:{page-version}@academy::7-understanding-query-patterns/7.3-logical-operators.adoc[Lesson 7.3].)
+
+Let's consider the previous pattern. It represents several constraints about the *terms* involved, where a term can be either a variable or a literal:
 
 1. `$book` owns `"The Complete Calvin and Hobbes"`.
 2. `"The Complete Calvin and Hobbes"` is of type `title`.
-3. `$user` owns `"Lorenzo Nixon"`.
-4. `"Lorenzo Nixon"` is of type `name`.
+3. `$user` owns `"Giovanni Beard"`.
+4. `"Giovanni Beard"` is of type `name`.
 5. `$review` owns `$score`.
 6. `$score` is of type `score`.
-7. `$book` and `$review` plays roles in the same relation.
+7. `$book` and `$review` plays roles in the same `rating` relation.
 8. `$execution` has the role `action`.
 9. `$user` plays a role in `$execution`.
 10. `$review` plays `action` in `$execution`.
 
-[NOTE]
-====
-In TypeDB 2.x, the `match` clause of all queries uses all-or-nothing pattern matching, meaning that every constraint must be satisfied simultaneously. Syntax for optional pattern elements will be introduced in TypeDB 3.0, which will allow some constraints to be matched only if possible. To learn more about this and other powerful new features, see the https://typedb.com/blog/typedb-3-roadmap[TypeDB 3.0 roadmap].
-====
-
 The types of `$book`, `$user`, and `$review` are not explicitly specified in the pattern, but we have previously seen how TypeDB is able to infer their types regardless. This is done by solving the pattern as a *constraint satisfaction* problem.
 
-Let's examine the constraints and attempt to determine the type of `$user`. We only know two things about `$user`: constraint (3) tells us that it owns `"Lorenzo Nixon"`, and constraint (9) tells us that it plays a role in `$execution`. This doesn't seem like enough to work with, but we can solve the type of `$user` by combining these constraints with others.
+Let's examine the constraints and attempt to determine the type of `$user`. We only know two things about `$user`: constraint (3) tells us that it owns `"Giovanni Beard"`, and constraint (9) tells us that it plays a role in `$execution`. This doesn't seem like enough to work with, but we can solve the type of `$user` by combining these constraints with others.
 
-Constraint (4) tells us that `"Lorenzo Nixon"` must be of type `name`. By combining this with constraint (3), we can infer that `$user` must be of a type that owns `name`. Examining the schema, there are five types that do: `user`, `contributor`, `place` (and its subtypes), `company` (and its subtypes), and `promotion`.
+Constraint (4) tells us that `"Giovanni Beard"` must be of type `name`. By combining this with constraint (3), we can infer that `$user` must be of a type that owns `name`. Examining the schema, there are five types that do: `user`, `contributor`, `place` (and its subtypes), `company` (and its subtypes), and `promotion`.
 
 Meanwhile, constraint (8) tells us that `$execution` has the role `action`. Examining the schema, there is only one relation type with a role of that name: `action-execution`. Combining this with constraint (9) means that `$user` must be of a type that plays one of its roles, either `action-execution:action` or `action-execution:executor`. Examining the schema again, there are four types that play one of these roles: `user`, `order`, `login`, and `review`.
 
@@ -109,7 +109,7 @@ Finally, we know that `$user` must be one of types `user`, `contributor`, `place
 [,typeql]
 ----
 $a has title "The Complete Calvin and Hobbes";
-$b has name "Lorenzo Nixon";
+$b has name "Giovanni Beard";
 $c has score $d;
 ($a, $c);
 $e ($b, action: $c);
@@ -125,15 +125,16 @@ We encountered the following Fetch query in xref:{page-version}@academy::3-readi
 [,typeql]
 ----
 match
-($user, $user-city) isa locating;
-($order, $user) isa action-execution;
-($order, $destination) isa delivery;
-($destination, $destination-city) isa locating;
+locating ($user, $user-city);
+action-execution ($order, $user);
+delivery ($order, $destination);
+locating ($destination, $destination-city);
 $user-city isa city;
 $destination-city isa city;
 not { $destination-city is $user-city; };
-fetch
-$order: id;
+fetch {
+  "order-id": $order.id,
+};
 ----
 
 By identifying constraints present in the query and comparing them to the bookstore schema, determine the return type(s) of `$destination`.
@@ -143,7 +144,7 @@ By identifying constraints present in the query and comparing them to the bookst
 =====
 [,typeql]
 ----
-include::{page-version}@academy::attachment$bookstore-schema.tql[lines=18..]
+include::{page-version}@academy::attachment$bookstore-schema.tql[lines=19..]
 ----
 =====
 
@@ -160,10 +161,12 @@ We encountered the following Fetch query in xref:{page-version}@academy::3-readi
 match
 $user isa user, has id "u0008";
 $book isa book;
-(executor: $user, action: $action) isa action-execution;
-($book, $action) isa relation;
-fetch
-$book: isbn, title;
+action-execution (executor: $user, action: $action);
+($book, $action);
+fetch {
+  "isbn": [$book.isbn],
+  "title": $book.title,
+};
 ----
 
 As before, determine the return type(s) of `$action`.
@@ -185,11 +188,11 @@ Lessons xref:{page-version}@academy::3-reading-data/3.5-query-validation.adoc[3.
 match
 $x has id $id;
 ($x, $y, $z) isa publishing;
-fetch
-$x: attribute;
 ----
 
-The types that own `id` are `user`, `order`, and `review`, but the types that play roles in `publishing` are `book` (and its subtypes), `publisher`, and `publication`. This means there are no possible types for `$x`, as no type has both necessary capabilities. When solving a pattern's constraints, a solution requires a type for every variable, much like a set of simultaneous equations. If there is no possible return type for any single variable, then there are no solutions for the entire pattern. As a result, this query could not possibly return any data, and so TypeDB returns an error. This validation is performed for patterns in both read queries, as we have just seen, and in write queries, as in the following example.
+The types that own `id` are `user`, `order`, and `review`, but the types that play roles in `publishing` are `book` (and its subtypes), `publisher`, and `publication`. This means there are no possible types for `$x`, as no type has both necessary capabilities. When solving a pattern's constraints, a solution requires a type for every variable. If there is no possible return type for any single variable, then there are no solutions for the entire pattern. As a result, this query could not possibly return any data, and so TypeDB returns an error.
+
+This validation is performed for patterns in both read queries, as we have just seen, and in write queries, as in the following example.
 
 [,typeql]
 ----

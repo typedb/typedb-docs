@@ -2,20 +2,20 @@
 
 == Expressions and let assignments
 
+Expressions are used to compute new values or capture the result of function calls as a new variable.
+
 === Declaration
 
-TypeQL uses a single `$` variable form. To assign the result of an expression to a variable, use `let $var = <expression>`. The following Fetch query shows how we might fetch the line totals for a particular order.
+To assign the result of an expression to a variable, use `let $var = <expression>`. The following Fetch query shows how we might fetch the line totals for a particular order.
 
 [,typeql]
 ----
 match $order isa order, has id "o0014";
   $book isa book, has price $retail_price;
-  ($order, $book) isa order-line, has quantity $quantity;
+  order-line ($order, $book), has quantity $quantity;
 let $line_total = $quantity * $retail_price;
 fetch { "line-total": $line_total };
 ----
-
-In 3.0, there are no separate `?value` variables. Use `let $line_total = ...` to bind computed values within the query scope.
 
 === Using computed values in writes
 
@@ -25,31 +25,23 @@ In addition to retrieving computed values in Fetch queries, we can also use them
 ----
 match $order isa order, has id "o0014";
   $book isa book, has price $retail_price;
-  $line ($order, $book) isa order-line, has quantity $quantity;
+  $line isa order-line ($order, $book), has quantity $quantity;
 let $line_total = $quantity * $retail_price;
-insert $line has price $line_total;
+insert $line has price == $line_total;
 ----
 
 Computed variables have value types inferred from the expression. When inserting an attribute, you still specify the attribute type on the left-hand side of `has` and the computed value on the right; inserting a bare variable without the attribute type is not valid.
 
 === Assignment
 
-Computed variables are defined using `let $var = <expression>` and can hold values of any value type. The assigned value is described by a *value expression*, which can take any of the following forms:
+Computed variables are defined using `let $var = <expression>` and can hold values of any value type. The assigned value is described by an *expression*, which can take any of the following forms:
 
-* A variable bound to an attribute's value:
+* A variable bound to an attribute's value, copying out just the **raw value**:
 +
 --
 [,typeql]
 ----
 let $value = $attribute;
-----
---
-* A previously defined computed variable:
-+
---
-[,typeql]
-----
-let $value = $other_value;
 ----
 --
 * A literal value:
@@ -68,81 +60,28 @@ let $value = "literal";
 let $value = max($a + 100, $c) / $d;
 ----
 --
+* A function call returning a single value
++
+--
+[,typeql]
+----
+let $value = my_reducing_function($x);
+----
+--
+
+
+There is also a separate `let ... in` syntax for assigning to an iterable one element at a time:
+* A function call returning a stream of values, taken one at a time
++
+--
+[,typeql]
+----
+let $value in match_subquery_function($x);
+----
+--
 
 We will explore the different value operations, along with the value types they are valid for, in the remainder of this lesson.
 
-// Note: 3.0 supports arithmetic across numeric types; see reference for full expression support.
-
 == Arithmetic operations
 
-TypeQL's arithmetic operators and functions can be used to operate on longs and doubles. The *arithmetic operators* are summarised in the following table.
-
-[cols="^.^,^.^,^.^",caption="",options="header"]
-|===
-| Operator | Name | Precedence
-| `(\...)` | Parentheses | 1
-| `^` | Exponentiation operator | 2
-| `*` | Multiplication operator | 3
-| `/` | Division operator | 4
-| `%` | Modulo operator | 5
-| `+` | Addition operator | 6
-| `-` | Subtraction operator | 7
-|===
-
-When resolving an arithmetic expression, the https://en.wikipedia.org/wiki/Order_of_operations[order of operations] is determined by their precedence. The *arithmetic functions* are summarised in the following table.
-
-[cols="^.^,^.^,^.^",caption="",options="header"]
-|===
-| Function | Name | Usage
-| `min(\...)` | Minimum function | Returns the minimum of comma-separated arguments.
-| `max(\...)` | Maximum function | Returns the maximum of comma-separated arguments.
-| `round(\...)` | Rounding function | Rounds the argument to the nearest integer.
-| `floor(\...)` | Floor function | Rounds the argument to the nearest lesser integer.
-| `ceil(\...)` | Ceiling function | Rounds the argument to the nearest greater integer.
-| `abs(\...)` | Modulus function | Returns the https://en.wikipedia.org/wiki/Absolute_value[absolute value] of the argument.
-|===
-
-.Exercise
-[caption=""]
-====
-Write a Fetch query to retrieve the titles of books included in the Holiday Sale 2023, along with their retail and discounted prices. The entity representing this sale has the code "HOL23". Ensure that the discounted prices are rounded to the nearest cent (within the tolerance of double precision).
-
-You may find it useful to refer to the bookstore's schema.
-
-.Schema
-[%collapsible]
-=====
-[,typeql]
-----
-include::{page-version}@academy::attachment$bookstore-schema.tql[lines=18..]
-----
-=====
-
-.Sample solution
-[%collapsible]
-=====
-[,typeql]
-----
-match $sale isa promotion, has code "HOL23";
-  $included_book isa book, has title $title, has price $retail_price;
-  ($sale, $included_book) isa promotion-inclusion, has discount $discount;
-let $discounted_price = round(100 * $retail_price * (1 - $discount)) / 100;
-fetch { "title": $title, "retail-price": $retail_price, "discounted-price": $discounted_price };
-----
-=====
-
-Write an Update query to decrease the stock of _Pride and Prejudice_ by one in a single query. The entity representing this book has the ISBN-13 "9780553212150". Ensure that the stock does not drop below zero.
-
-.Sample solution
-[%collapsible]
-=====
-[,typeql]
-----
-match $pride_prejudice isa book, has isbn "9780553212150", has stock $current_stock;
-  $current_stock > 0;
-let $new_stock = $current_stock - 1;
-delete $pride_prejudice has $current_stock;
-insert $pride_prejudice has stock $new_stock;
-----
-=====
-====
+TypeQL ships with a number of built-in operators and functions. See the xref:{page-version}@reference::typeql/expressions/index.adoc[expressions reference] for the current list.

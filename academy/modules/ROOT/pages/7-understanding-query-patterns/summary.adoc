@@ -13,19 +13,19 @@
 +
 [,typeql]
 ----
-(role-1: $a, role-2: $b, role-3: $c, role-4: $d, ...) isa n-ary-relation;
+n-ary-relation (role-1: $a, role-2: $b, role-3: $c, role-4: $d, ...);
 ----
 * role players can be omitted from relation tuples, allowing *partial tuple* representations of relations. This will match those relations regardless of the omitted role players.
 +
 [,typeql]
 ----
-(role-1: $a, role-2: $b) isa ternary-relation;
+ternary-relation (role-1: $a, role-2: $b);
 ----
 * Roles can be omitted from relation tuples, allowing TypeDB to use *role inference* to infer them. This will match the role players in any combination of the relation's roles.
 +
 [,typeql]
 ----
-($a, $b) isa example-relation;
+example-relation ($a, $b);
 ----
 * A relation's type can be omitted after a relation tuple, allowing TypeDB to use *type inference* to infer the possible types. This will match any relations with the supplied role names.
 +
@@ -55,6 +55,14 @@ not {
     # negated pattern
 };
 ----
+* An optional pattern of a pattern is made by placing it in a block preceded by the `try` keyword and followed by a `;` delimiter. Optionals let you do *partial* matching:
++
+[,typeql]
+----
+try {
+    # optional pattern
+};
+----
 * An `is` statement is used to specify that two variables represent the same data object.
 +
 [,typeql]
@@ -70,11 +78,11 @@ $a is $b;
 ----
 $attribute-1 == $attribute-2;
 ----
-* The *ordering operators* `>`, `>=`, `<`, and `\<=` are used to compare numeric values.
+* The *ordering operators* `>`, `>=`, `<`, and `\<=` are used to compare values of all types.
 +
 [,typeql]
 ----
-$numeric-1 > $numeric-2;
+$attribute-1 > $attribute-2;
 ----
 * The `contains` operator is used to specify that one string contains another string in a case-insensitive manner.
 +
@@ -82,23 +90,18 @@ $numeric-1 > $numeric-2;
 ----
 $string contains "sub-string";
 ----
-* The `like` operator is used to specify that a string matches a https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/regex/Pattern.html[Java regex pattern].
+* The `like` operator is used to specify that a string matches a Regex.
 +
 [,typeql]
 ----
-$string like "^java regex pattern$";
+$string like "^regex pattern$";
 ----
 
 == xref:{page-version}@academy::7-understanding-query-patterns/7.5-value-expressions.adoc[Value expressions]
 
-* *Value variables* are declared with a `?` prefix. They exist only within the scope of the query and can be read out in the results of read queries or written to attribute instances with write queries.
-* The *assignment operator* `=` is used to specify the value of a value variable.
-+
-[,typeql]
-----
-?value = $attribute;
-----
-* Numeric values can be computed using *arithmetic operators* `^`, `+*+`, `/`, `%`, `+`, and `-`, as well as *arithmetic functions* `min`, `max`, `round`, `floor`, `ceil`, and `abs`.
+* The *assignment operator* `let $var = <expression>` is used to specify the value of a computed variable.
+* The *assignment iterator* `let $var in <expression>` is used to specify the value of a of iterating over a computed iterable, one at a time
+* Numeric values can be computed using *arithmetic operators* `^`, `+*+`, `/`, `%`, `+`, and `-`, as well as *arithmetic functions* `min`, `max`, `round`, `floor`, `ceil`, and `abs` inside expressions
 
 == xref:{page-version}@academy::7-understanding-query-patterns/7.6-solution-set-semantics.adoc[Solution set semantics]
 

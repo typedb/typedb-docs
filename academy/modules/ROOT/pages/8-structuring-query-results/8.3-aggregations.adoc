@@ -134,7 +134,7 @@ Let's examine one of the results, corresponding to the book _Great Discoveries i
 [,json]
 ----
 {
-    "buyers": { "value": 6, "value_type": "long" },
+    "buyers": { "value": 6, "value_type": "integer" },
     "isbn": { "value": "9780500291221", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } }
 }
 ----
@@ -214,7 +214,7 @@ If we run this new query, we see that the correct number of buyers is now return
 [,json]
 ----
 {
-    "buyers": { "value": 4, "value_type": "long" },
+    "buyers": { "value": 4, "value_type": "integer" },
     "isbn": { "value": "9780500291221", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } }
 }
 ----
