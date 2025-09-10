@@ -1,0 +1,146 @@
+= Lesson 10.1: Functions as views
+
+== Abstracting complex patterns
+
+In xref:{page-version}@academy::5-defining-schemas/5.4-defining-functions.adoc[Lesson 5.4], we learned how to define *functions* for TypeDB's to capture subqueries and abstract away reusable ideas. In this lesson, we'll learn how to design function that capture *domain logic*, in this case for the domain of an online bookstore. To begin with, let's consider a piece of domain logic expressed in natural language.
+
+[quote]
+____
+A review is verified if: the review is for a book that has been previously bought by the user who made the review.
+____
+
+This could be easily translated into TypeQL, allowing us to query for reviews that are verified as follows.
+
+[,typeql]
+----
+match
+rating ($review, $book);
+order-line ($order, $book);
+$_ isa action-execution ($user, $review), has timestamp $review-time;
+$_ isa action-execution ($user, $order), has timestamp $order-time;
+$review-time > $order-time;
+fetch {
+  "review-id": $review.id,
+};
+----
+
+Now let's consider how we might apply this domain logic. Suppose we want to query for the average review score of each book, as we did in xref:{page-version}@academy::8-composing-clauses/8.2-aggregations.adoc[Lesson 8.2], except this time we only want to include verified reviews in the average.
+
+[,typeql]
+----
+match
+$book isa book;
+fetch {
+  "title": $book.title,
+  "average-verified-score": (
+    match
+    $review isa review, has score $score;
+    rating ($review, $book);
+    order-line ($order, $book);
+    $_ isa action-execution ($user, $review), has timestamp $review-time;
+    $_ isa action-execution ($user, $order), has timestamp $order-time;
+    $review-time > $order-time;
+    return mean($score);
+  )
+};
+----
+
+The addition of the verification check makes the query significantly more complicated, and it's not straightforward to read through. As queries become larger and retrieve more complex data patterns, they can become harder to maintain. This is a good use case for functions, which can significantly simplify queries. For this particular case, we'll use the following function.
+
+[,typeql]
+----
+fun verified-reviews($book: book) -> { review }:
+  match
+  $review isa review, has score $score;
+  rating ($review, $book);
+  order-line ($order, $book);
+  $_ isa action-execution ($user, $review), has timestamp $review-time;
+  $_ isa action-execution ($user, $order), has timestamp $order-time;
+  $review-time > $order-time;
+  return { $review };
+----
+
+Now, we can use this encapsulated logic to simplify the query we really wanted to write:
+
+[,typeql]
+----
+match
+$book isa book;
+fetch {
+  $book: title;
+  average-verified-score: (
+    match
+    let $review in verified-reviews($book);
+    $review has score $score;
+    return mean($score);
+  )
+};
+----
+
+Using functions to abstract a complex query pattern into a more easily queried form is one of the most common use cases for functions in TypeDB. In principle this process is no different from using a https://en.wikipedia.org/wiki/View_(SQL)[view] in a relational database.
+
+.Exercise
+[caption=""]
+====
+Write a Fetch query that lists users. For each user, retrieve their user ID and the number of validated reviews they have written. Write the query once without making use of functions, and again using the above rule. Other than the ordering of results, the queries should give identical outputs.
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::{page-version}@academy::attachment$bookstore-schema.tql[lines=19..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+Without functions:
+
+[,typeql]
+----
+match
+$user isa user, has id $id;
+fetch {
+  "user-id": $id,
+  "verified-reviews": (
+    match
+    rating ($review, $book);
+    order-line ($order, $book);
+    $_ isa action-execution ($user, $review), has timestamp $review-time;
+    $_ isa action-execution ($user, $order), has timestamp $order-time;
+    $review-time > $order-time;
+    return count;
+  )
+};
+----
+
+With functions:
+
+[,typeql]
+----
+with fun verified-user-reviews($user: user) -> { review }:
+  match
+  $review isa review, has score $score;
+  rating ($review, $book);
+  order-line ($order, $book);
+  $_ isa action-execution ($user, $review), has timestamp $review-time;
+  $_ isa action-execution ($user, $order), has timestamp $order-time;
+  $review-time > $order-time;
+  return { $review };
+match
+$user isa user, has id $id;
+fetch {
+  "user-id": $id,
+  "verified-reviews": (
+    match
+    let $review in verified-user-reviews($user);
+    return count;
+  )
+};
+----
+=====
+====
