@@ -102,8 +102,8 @@ match
 $hobbit isa book, has isbn-13 "9780008627843";
 $tolkien isa contributor, has name "J.R.R. Tolkien";
 insert
-($hobbit, $tolkien) isa authoring;
-($hobbit, $tolkien) isa illustrating;
+authoring ($hobbit, $tolkien);
+illustrating ($hobbit, $tolkien);
 ----
 
 Now we can easily record contributors in different roles.

@@ -19,47 +19,49 @@ include::attachment$books.csv[]
 ----
 define
 entity book @abstract,
-    owns isbn-13,
-    owns isbn-10,
-    owns title,
-    owns page-count,
-    owns genre,
-    owns price,
-    plays contribution:work,
-    plays publishing:published;
+  owns isbn, # abstract, but instantiated using isbn-10 or isbn-13
+  owns isbn-13,
+  owns isbn-10,
+  owns title,
+  owns page-count,
+  owns genre,
+  owns price,
+  plays contribution:work,
+  plays publishing:published;
 entity paperback sub book,
-    owns stock;
+  owns stock;
 entity hardback sub book,
-    owns stock;
+  owns stock;
 entity ebook sub book;
 entity contributor,
-    owns name,
-    plays contribution:contributor;
+  owns name,
+  plays contribution:contributor;
 entity publisher,
-    owns name,
-    plays publishing:publisher;
+  owns name,
+  plays publishing:publisher;
 entity place @abstract,
-    owns name,
-    plays locating:location,
-    plays locating:located;
+  owns name,
+  plays locating:location,
+  plays locating:located;
 entity city sub place,
-    plays publishing:location;
+  plays publishing:location;
 entity state sub place;
 entity country sub place;
 relation contribution,
-    relates contributor,
-    relates work;
+  relates contributor,
+  relates work;
 relation authoring sub contribution;
 relation editing sub contribution;
 relation illustrating sub contribution;
 relation publishing,
-    relates publisher,
-    relates published,
-    relates location,
-    owns year;
+  relates publisher,
+  relates published,
+  relates location,
+  owns year;
 relation locating,
-    relates located,
-    relates location;
+  relates located,
+  relates location;
+attribute isbn @abstract, value string;
 attribute isbn-13, value string;
 attribute isbn-10, value string;
 attribute title, value string;
@@ -92,8 +94,8 @@ Role hierarchies work in a similar way, but have a major difference. Whereas all
 ----
 define
 relation contribution,
-    relates contributor,
-    relates work;
+  relates contributor,
+  relates work;
 relation authoring sub contribution;
 relation editing sub contribution;
 relation illustrating sub contribution;
@@ -105,17 +107,32 @@ Here `contribution` defines two interfaces: `contribution:contributor` and `cont
 ----
 define
 relation contribution,
-    relates contributor,
-    relates work;
+  relates contributor,
+  relates work;
 relation authoring sub contribution,
-    relates author as contributor;
+  relates author as contributor;
 relation editing sub contribution,
-    relates editor as contributor;
+  relates editor as contributor;
 relation illustrating sub contribution,
-    relates illustrator as contributor;
+  relates illustrator as contributor;
 ----
 
-Here `authoring`, `editing`, and `illustrating` each expose a new interface: `authoring:author`, `editing:editor`, and `illustrating:illustrator` respectively. These interfaces *override* the interface `contribution:contributor`, meaning that it is no longer exposed by the subtypes of `contributor`. Because the newly defined interfaces override an interface from the parent type, these interfaces `authoring:author`, `editing:editor`, and `illustrating:illustrator` are subtypes of the parent interface `contribution:contributor`. Meanwhile, the interface `contribution:work` is still exposed by all four relation types.
+Here `authoring`, `editing`, and `illustrating` each expose a new interface: `authoring:author`, `editing:editor`, and `illustrating:illustrator` respectively. These interfaces *override* the interface `contribution:contributor`, meaning that it is no longer usable by the subtypes of `contributor`. Because the newly defined interfaces override an interface from the parent type, these interfaces `authoring:author`, `editing:editor`, and `illustrating:illustrator` are subtypes of the parent interface `contribution:contributor`. Meanwhile, the interface `contribution:work` is still exposed by all four relation types.
+
+In other words, overriding an inherited role is like a combination of subtyping and making the inherited value abstract:
+[,typeql]
+----
+define
+relation contribution,
+  relates contributor,
+  relates work;
+relation authoring sub contribution,
+  relates author as contributor,
+  relates contributor @abstract;
+# and also: authoring:author sub contribution:contributor
+----
+
+Since `contributor` is abstract in the `authoring` scope, it's not available to be instantiated in the data. However, `authoring:author` is a subtype of `contribution:contributor` that can be used in its place.
 
 == Interface variance
 
@@ -147,11 +164,6 @@ entity book owns isbn;
 
 The implementing object type is `book` and the implemented interface type is `isbn:OWNER`. This time, both have subtypes. The object type has three subtypes `paperback`, `hardback`, and `ebook`, and they _also_ implement `isbn:OWNER`. Meanwhile, the interface type has two subtypes `isbn-13:OWNER` and `isbn-10:OWNER`, and `book` does _not_ also implement them (nor do its subtypes).
 
-[NOTE]
-====
-As we learned in xref:{page-version}@academy::5-defining-schemas/5.5-schema-validation.adoc[Lesson 5.5], if an attribute type is abstract, then any owners must also be abstract. Because the implementation of `isbn:OWNER` is inherited by the subtypes of `book` (which are not themselves abstract), this will result in a violation of schema validation rules, and the schema will not commit! However, we will see how we can use this property to our advantage in xref:{page-version}@academy::12-advanced-modeling/12.4-using-interface-contracts.adoc[Lesson 12.4], where we will explore https://en.wikipedia.org/wiki/Design_by_contract[schema design by contract].
-====
-
 Because implementations are invariant in the interface, this means that we must separately declare implementations of their subtypes if we wish to use them, as [#_footnote_1]#follows#^<<_footnotes,1>>^.
 
 [,typeql]
@@ -172,19 +184,19 @@ Earlier in this lesson, we encountered two possible design strategies for the su
 +
 [,typeql]
 ----
-(contributor: $person, work: $book) isa contribution;
+contribution (contributor: $person, work: $book);
 ----
 * To describe an instance of a specific subtype of contribution (e.g. `authoring`):
 +
 [,typeql]
 ----
-(contributor: $person, work: $book) isa authoring;
+authoring (contributor: $person, work: $book);
 ----
 * To describe an instance of `contribution` only, not one of its subtypes:
 +
 [,typeql]
 ----
-(contributor: $person, work: $book) isa! contribution;
+$rel isa! contribution (contributor: $person, work: $book);
 ----
 
 When the role is overridden, we can do the same with the following patterns instead:
@@ -193,7 +205,7 @@ When the role is overridden, we can do the same with the following patterns inst
 +
 [,typeql]
 ----
-(contributor: $person, work: $book) isa contribution;
+contribution (contributor: $person, work: $book);
 ----
 +
 Here, using `contributor` in the relation tuple matches both `contribution:contributor` and its subtypes by inheritance polymorphism.
@@ -201,13 +213,13 @@ Here, using `contributor` in the relation tuple matches both `contribution:contr
 +
 [,typeql]
 ----
-(author: $person, work: $book) isa authoring;
+authoring (author: $person, work: $book);
 ----
 * To describe an instance of `contribution` only, not one of its subtypes:
 +
 [,typeql]
 ----
-(contributor: $person, work: $book) isa! contribution;
+$rel isa! contribution (contributor: $person, work: $book);
 ----
 
 The only thing that changes is the way we query the specific subtypes of the relation type. Even then, we can easily use role inference to omit the roles from the pattern as we saw in xref:{page-version}@academy::7-understanding-query-patterns/7.2-relation-patterns.adoc[Lesson 7.2], and use the same queries throughout. Thus, the querying capabilities of the model are the same regardless of whether we inherit or override a role. In fact, this is true of any model involving roles that can be inherited or overridden.
@@ -230,14 +242,14 @@ In other cases, it may be more appropriate to override roles. The following sche
 ----
 define
 entity user,
-    plays action-execution:executor;
+  plays action-execution:executor;
 entity admin sub user,
-    plays privileged-execution:priveleged-executor;
+  plays privileged-execution:priveleged-executor;
 relation action-execution,
-    relates action,
-    relates executor;
+  relates action,
+  relates executor;
 relation privileged-execution sub action-execution,
-    relates privileged-executor as executor;
+  relates privileged-executor as executor;
 ----
 
 [#_footnotes]
@@ -281,17 +293,17 @@ human sub animal;                             # all humans are animals
 goose sub animal;                             # all geese are animals
 animal-group sub entity, abstract;
 group-membership sub relation,
-    abstract,
-    relates group,
-    relates group-member;
+  abstract,
+  relates group,
+  relates group-member;
 animal-group plays group-membership:group;
 animal plays group-membership:group-member;   # all animals can join animal groups
 flock sub animal-group;                       # all flocks are animal groups
 flock-membership sub group-membership,
-    relates flock as group,
-    relates flock-member as group-member;
+  relates flock as group,
+  relates flock-member as group-member;
 flock plays flock-membership:flock;
-goose plays flock-membership:flock-member;    # all geese can join flocks
+goose plays flock-membership:flock-member;  # all geese can join flocks
 ----
 
 If definitions of interface implementations were covariant in the interface type instead of invariant, then `animal`, and all of its subtypes including `human`, would inherit the ability to play `flock-membership:flock-member`!

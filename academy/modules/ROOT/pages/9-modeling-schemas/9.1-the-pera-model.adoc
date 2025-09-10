@@ -35,11 +35,6 @@ A key difference between entity or relation types and attribute types is that en
 
 This difference also affects permitted *interface implementations* in the PERA model. Only object types are able to implement interfaces: own attribute types and play roles in relation types. It is not possible for an attribute type to own another attribute type, or to play a role in a relation type.
 
-[WARNING]
-====
-In TypeDB 2.x, attribute types can implement interfaces (own other attribute types and play roles in relation types) in the same way object types can, contrary to the PERA model. This behaviour is deprecated and will be removed in TypeDB 3.0. In some niche cases, usage of this feature can result in information loss due to attribute idempotency, so it is strongly advised against. For more information, see the https://typedb.com/blog/typedb-3-roadmap[TypeDB 3.0 roadmap].
-====
-
 === Polymorphic features
 
 The biggest difference between the ER and PERA models is that the PERA model permits the use of polymorphic features like interfaces, inheritance, and abstraction. *Interface implementations* are used to define capabilities of object types, and an interface can be independently implemented by multiple object types. Meanwhile, *inheritance* allows types to be made subtypes of other types, and the interface implementations of an object type are inherited by its subtypes. Finally, *abstraction* is used to prevent instantiation of a type, which can only be instantiated through a concrete subtype.
@@ -60,11 +55,6 @@ The following table summarises the key properties of data-storing types in the P
 |===
 
 In addition to these data-storing types, interface types and value types together make up the *data-structuring types*. In fact, all parts of the PERA model are types! This arises from the PERA model's core philosophy:
-
-[quote]
-____
-https://typedb.com/fundamentals/type-theory[_Everything has a type, and so everything can be a variable._]
-____
 
 The key difference between data-storing and data-structuring types is that only data-storing types can be instantiated directly, and their instances operated on. Meanwhile, the data-structuring types serve to define the behaviours of these data instances. The following diagram summarises the ways in which different kinds of types in the PERA model are associated.
 

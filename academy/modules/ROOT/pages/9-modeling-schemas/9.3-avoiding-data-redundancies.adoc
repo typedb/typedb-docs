@@ -86,16 +86,16 @@ $city isa city, has name "New York City";
 $state isa state, has name "New York";
 $country isa country, has name "United States";
 insert
-(
+$rel isa publishing (
     publisher: $publisher,
     published: $book,
     location: $city,
     location: $state,
     location: $country
-) isa publishing, has year 2010;
+), has year 2010;
 ----
 
-However, there is a https://en.wikipedia.org/wiki/Functional_dependency[functional dependency] of state on city, as knowing the city (by identity, not just by name) in which a book is published is sufficient to determine the state in which it was published. Similarly, there is a functional dependency of country on state, and thus country on city, as functional dependencies are https://en.wikipedia.org/wiki/Transitive_relation[transitive]. Simply recording the city should be sufficient, as the state and country should then be inferrable. In fact, we saw this inference performed explicitly in xref:{page-version}@academy::3-reading-data/3.3-fetching-inferred-data.adoc[Lesson 3.3].
+However, there is a https://en.wikipedia.org/wiki/Functional_dependency[functional dependency] of state on city, as knowing the city (by identity, not just by name) in which a book is published is sufficient to determine the state in which it was published. Similarly, there is a functional dependency of country on state, and thus country on city, as functional dependencies are https://en.wikipedia.org/wiki/Transitive_relation[transitive]. Simply recording the city should be sufficient, as the state and country should then be inferrable using a function.
 
 This highlights a problem with the data model. The entity types `state` and `country` have functional dependencies on the entity type `city`. Meanwhile, `city` has a functional dependency on `book` via the `publishing` relation type, in which they both play roles. Thus, `state` and `country` both have transitive function dependencies on `book`. However, `state` and `country` also have direct functional dependencies on `book` via `publishing`. This means that `state` and `country` have *duplicate dependencies* on `book`. When dependencies are duplicated, this creates redundancy in the data model, which can lead to data inconsistencies.
 
@@ -130,8 +130,8 @@ $city isa city, has name "New York City";
 $state isa state, has name "New York";
 $country isa country, has name "United States";
 insert
-(located: $city, location: $state) isa locating;
-(located: $state, location: $country) isa locating;
+locating (located: $city, location: $state);
+locating (located: $state, location: $country);
 ----
 
 Now, whenever we record the location a book is published, we only need to store the city.
@@ -143,7 +143,7 @@ $book isa book, has isbn-13 "9780575104419";
 $publisher isa publisher, has name "Hachette Book Group";
 $city isa city, has name "New York City";
 insert
-(publisher: $publisher, published: $book, location: $city) isa publishing,
+$rel isa publishing (publisher: $publisher, published: $book, location: $city),
     has year 2010;
 ----
 
