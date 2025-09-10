@@ -1,0 +1,155 @@
+= Lesson 8.4: Sorting and pagination
+
+== Sorting
+
+The results of any query can be sorted by adding the `sort` modifier to the query. The following query retrieves the list of every book's title and page count, and sorts by page count in ascending order, and then takes the shortest 5 books with a limit:
+
+[,typeql]
+----
+match $book isa book, has page-count $count;
+sort $count;
+limit 5;
+fetch { "title": $book.title, "page-count": $book.page-count };
+----
+
+[,json]
+----
+{
+  "title": "The Iron Giant",
+  "page-count": 79
+}
+{
+  "title": "The Motorcycle Diaries: A Journey Around South America",
+  "page-count": 160
+}
+{
+  "title": "Physical Principles of Electron Microscopy: An Introduction to TEM, SEM, and AEM",
+  "page-count": 196
+}
+{
+  "page-count": 199,
+  "title": "Interpretation of Electron Diffraction Patterns"
+}
+{
+  "page-count": 215,
+  "title": "The Hitchhiker's Guide to the Galaxy"
+}
+----
+
+The `sort` modifier takes a variable as an argument, denoting the variable to sort on. The results are sorted in ascending order. In order to sort in descending order, we can add append the keyword `desc` to the modifier as follows to get the 5 longest books:
+
+[,typeql]
+----
+match $book isa book, has page-count $count;
+sort $count desc;
+limit 5;
+fetch { "title": $book.title, "page-count": $book.page-count };
+----
+
+[,json]
+----
+{
+  "title": "The Complete Calvin and Hobbes",
+  "page-count": 1451
+}
+{
+  "title": "Classical Mythology",
+  "page-count": 820
+}
+{
+  "title": "The Odyssey",
+  "page-count": 656
+}
+{
+  "title": "Dune",
+  "page-count": 624
+}
+{
+  "title": "One Hundred Years of Solitude",
+  "page-count": 458
+}
+
+----
+
+Though sorting is always in ascending order by default, we can specify this explicitly using the keyword `asc` in the same way as `desc`.
+
+[NOTE]
+====
+The ordering of strings is determined according https://en.wikipedia.org/wiki/Lexicographic_order[lexicographic ordering].
+====
+
+== Pagination
+
+We can do simple pagination the sorted results of any query by combining the `limit` and `offset` modifiers. In the following example, we add a `limit` modifier to the previous query to retrieve 5 to 10th books with the lowest page counts.
+
+[,typeql]
+----
+match $book isa book, has page-count $count;
+sort $count;
+offset 5;
+limit 5;
+fetch { "title": $book.title, "page-count": $book.page-count };
+----
+
+[,json]
+----
+{
+  "page-count": 240,
+  "title": "The Mummies of Urumchi"
+}
+{
+  "page-count": 260,
+  "title": "Business Secrets of The Pharoahs"
+}
+{
+  "title": "To Kill a Mockingbird",
+  "page-count": 281
+}
+{
+  "title": "Pride and Prejudice",
+  "page-count": 295
+}
+{
+  "title": "Under the Black Flag: The Romance and the Reality of Life Among the Pirates",
+  "page-count": 296
+}
+----
+
+[IMPORTANT]
+====
+The `sort`, `limit`, and `offset` modifiers can all be used individually or in any combination. They apply in the order they are written!
+====
+
+__Note: offset/limit pagination is easy, but it is not efficient as the offset computes, then discards values!__ More efficient pagination uses a known, ordered attribute value and fetches pages at a time by restricting the search to answers with value greater than the last value: `match <pattern>; $attribute > [last-returned-value]`.
+
+.Exercise
+[caption=""]
+====
+Write a Fetch query to retrieve the titles of the five most recently published books in the database.
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::{page-version}@academy::attachment$bookstore-schema.tql[lines=19..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$book isa book;
+$publication isa publication, has year $year;
+publishing ($book, $publication);
+sort $year desc;
+limit 5;
+fetch { "title": $book.title };
+----
+=====
+====

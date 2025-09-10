@@ -200,6 +200,23 @@ Since we don't want these changes to be permanent (they're just for demonstratio
 It is often useful to structure the `match` clause around the values of one or more *key attributes*, which can only be matched once. We have done this above using the key attribute `isbn-13`, as the value `"9780486282114"` uniquely identifies a single book. We will see how to define key attributes in xref:{page-version}@academy::5-defining-schemas/5.1-defining-individual-types.adoc[Lesson 5.1].
 ====
 
+== Putting data
+
+TypeDB 3.0 ships with a new alternative to `insert`: the `put` clauses. Put clauses check if the pattern provided exists in its entirety, and if it does not, it inserts the entire pattern:
+
+[,typeq]
+----
+put $book isa book, has isbn "0195153448";
+----
+
+A put is equivalent to doing:
+[,typeql]
+----
+match not { <pattern> };
+insert <pattern>;
+
+**It's highly recommended use `put` with a `key`-ed attributes**. This will prevent duplicates from emerging during concurrent transactions, as one will be forced to fail.
+
 .Exercise
 [caption=""]
 ====

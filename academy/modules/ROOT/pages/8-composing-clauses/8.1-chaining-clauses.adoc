@@ -1,0 +1,42 @@
+= Lesson 8.1: Chaining clauses
+
+== Building Query Pipelines
+
+In every lesson, we've used different query clauses: `match`, `insert`, `delete`, `update`. We have also used query operators, that don't touch the database, like `limit`. And, we've composed these into larger queries, for example:
+
+[,typeql]
+----
+match <pattern>
+delete <statements>
+insert <pattern>
+----
+
+This type of clause and operator chaining produces what is called a **query pipeline**. A pipeline is made up of clauses and operators - generically known as stages.
+
+Answers linearly flow from one stage into the next, essentially one answer a time. All stages stream answers out (in the form of a `concept row`, which contains variables and an answer for each variable). Since all stages can take an input of `concept rows`, and produce a stream of `concept rows`, we can chain them together arbitrarily!
+
+The exception to this rule is the `fetch` clause: it takes an input stream of `concept rows`, and outputs a stream of `concept documents` (JSON) - that's why it can only come at the end of a query!
+
+== Behaviour of stages
+
+Here's how each type of TypeQL stage that we've met so far interacts with the query's stream of answers:
+
+- `match`: essentially a `flat_map` operation. For each input, compute all answers to the pattern and emits them, then consume the next answer from the input. If it's the first stage in a query, this just generates answers from its pattern with no input.
+- `insert`: for each input, apply the insert operation, and add any newly created instances to each emitted concept row.
+- `delete`: for each input, apply the delete operation, and remove any deleted instances from each emitted concept row.
+- `update`: for each input, update the provided instances with the statements provided, add any newly created instances to the emitted concept row
+- `put`: for each input, check if the pattern exists. If not, then insert it, and add any newly created instance to the emitted concept row
+- `fetch`: for each input, transform into a JSON document of the provided structure
+
+We also met `select` and `limit`, which have sibling operators `sort` and `offset` we'll meet this chapter:
+
+* `select <vars>` - for each input, drop any variables not in the set of `vars`, and emit the truncated concept row
+* `limit N` - pass on the first N results from the input stream and ignore the rest
+* `offset N` - skip the first N results, and then pass through the remainder
+* `sort (var ASC/DESC)*` - sort the input stream and re-emit it according to the sort variables
+
+Finally, there's one more useful operator we'll meet:
+
+* `reduce (<var> = <operation>)* [groupby <groupvars>]` - aggregate the input stream, grouped by the optional grouping variables, into a variable and emit one concept row per group. Multiple variables and operations pairs may be provided and each will compute over the input stream simultaneously.
+
+As you can see, except the `fetch` clause, all stages take in a stream of rows, and a stream of rows!

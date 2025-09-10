@@ -1,0 +1,101 @@
+= Lesson 8: Structuring query results
+
+
+== xref:{page-version}@academy::8-composing-clauses/8.1-chaining-clauses.adoc[]
+
+* Clauses can be chained arbitrarily into query **pipelines**, since they all consume streams of concept rows and produce stream of concept rows
++
+[,typeql]
+----
+match <pattern>
+reduce <operation>
+match <pattern>
+sort <vars>;
+insert <pattern>
+delete <pattern>
+match <pattern>
+limit N;
+...
+----
+* `fetch` clauses can only be placed at the end of a query pipeline to transform the stream into a stream of JSON documents
+
+== xref:{page-version}@academy::8-composing-clauses/8.2-aggregations.adoc[]
+
+* Use `reduce` operators to aggregate streams
+* The reduce operators are `count`, `sum`, `max`, `min`, `mean`, `median`, and `std`. Except for `count`, each modifier takes a variable to aggregate over as an argument, which can represent either a numeric attribute or a numeric value.
+* You can group reductions by using `groupby`
++
+[,typeql]
+----
+reduce $count = count groupy $book;
+----
+
+== xref:{page-version}@academy::8-composing-clauses/8.3-sorting-and-pagination.adoc[Sorting and pagination]
+
+* The query streams can be sorted using the `sort` operator
++
+[,typeql]
+----
+match <pattern>
+sort var;
+----
+* The results of queries can be *paginated* using the `limit` and `offset` modifiers, which take a literal integer as an argument.
++
+[,typeql]
+----
+match <pattern>
+offset 10;
+limit 5;
+----
+* The `sort`, `limit`, and `offset` modifiers can all be used individually or in any combination.
+
+== xref:{page-version}@academy::8-composing-clauses/8.4-subqueries.adoc[Subqueries]
+
+* Subqueries can be encapsulated and invoked easily wth functions.
+
+== xref:{page-version}@academy::8-composing-clauses/8.5-structured-fetching.adoc[]
+
+* Fetch clauses can project attributes
++
+[,typeql]
+----
+fetch {
+ "value": $owner.attribute-type,
+};
+----
+* Attributes, values, and types can be fetched directly in the fetch clause
++
+[,typeql]
+----
+fetch {
+  "attribute": $attribute,
+  "type": $type_,
+  "computed-value": $computed-value,
+};
+----
+* Subqueries can be written directly into the fetch clause with the correct encapsulation:
+[,typeql]
+----
+fetch {
+  "attached-values": [ match ...; fetch { ... }; ],
+};
+----
+* Underlying idea: all leaves in a fetch clause structure must be serializeable to a value
+
+== Further learning
+
+[cols-3]
+--
+.xref:{page-version}@academy::9-modeling-schemas/index.adoc[]
+[.clickable]
+****
+Learn how to design schemas for TypeDB using the conceptual PERA model, including common design patterns and pitfalls.
+****
+
+.xref:{page-version}@academy::10-using-inference/index.adoc[]
+[.clickable]
+****
+Learn how to use rule inference to abstract complex patterns into simple forms, and capture complex logic with combinations of rules.
+****
+
+--

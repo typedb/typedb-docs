@@ -1,0 +1,46 @@
+= Lesson 8.2: Subqueries
+
+The best way to do subqueries in TypeQL is with functions (though we'll see how to use `fetch` for similar purposes in the next lesson).
+
+== Subquery functions
+
+Let's see how to retrieve attributes individually or grouped by owner.
+
+Let's try to write a query to retrieve a list of book titles along with the first contributor (chosen alphabetically), returning values sorted by title and then first contributor.
+
+This query requires a subquery to find the first contributor alphabetically. Let's capture this in a function
+
+[,typeql]
+----
+fun first_contributor($book: book) -> { contributor }:
+  match
+  $contributor isa contributor, has name $name;
+  authoring ($contributor, $book);
+  sort $name;
+  limit 1;
+  return { $contributor };
+----
+
+Then, we can invoke this subquery for every book, and sort
+
+[,typeql]
+----
+with fun first_contributor($book: book) -> contributor:
+  match
+  $contributor isa contributor, has name $name;
+  authoring ($contributor, $book);
+  sort $name;
+  return first $contributor;
+match
+$book isa book, has title $title;
+let $first-contributor = first_contributor($book);
+$first-contributor has name $name;
+sort $title, $name;
+fetch {
+  "title": $title,
+  "contributor": $name,
+};
+----
+
+The subquery functions is exactly like a regular query, except that arguments are provided from the function signature. That means that the subquery will only return contributors of that one book.
+

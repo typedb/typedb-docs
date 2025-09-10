@@ -1,0 +1,146 @@
+= Lesson 8.5: Structured fetching
+
+TypeQL's `fetch` clause is quite powerful! Let's look a little deeper at what it can do. One underlying idea is that every part of the fetch clause must use serializable types - values, user defined types, and attributes are serializable; entities and relations are not.
+
+== Owned Attributes
+
+We've mostly been using `fetch` clauses to get attributes owned by an entity or relation. This is a common operation to retrieve the serializable data attached to entities and relations:
+
+[,typeql]
+----
+match $book isa book;
+fetch { "title": $book.title, "page-count": $book.page-count, "isbn": [ $book.isbn ] };
+----
+
+This is the operation of projecting an attribute from an owner. Each result contains one JSON object. Each of these objects represents a data instance matched by `$book`. Within this object we have the projected `title`, `page-count`, and `isbn` numbers.
+
+Notice that when the schema requires that there is 1 (or 0) attributes, you just write `$var.<attribute>` to retrieve it. However, if it can be multi-valued, such as a book's isbn (it can have isbn-10 and isbn-13), you wrap it in a `[]` JSON list syntax to hold the multiple values.
+
+As you'll continue to see, a `fetch` clause structure mirror exactly the output of the JSON you'll get.
+
+=== All Attributes
+
+Fetch clauses have an equivalent to SQL's `select *` operator, which allows you to fetch all attributes of an owner:
+
+[,typeql]
+----
+match $book isa book;
+fetch { $book.* };
+----
+
+You can place this projection anywhere you'd like - however, since it expands to an object, it always must be wrapped in object notation `{}`:
+
+[,typeql]
+----
+match $book isa book;
+fetch {
+  "book-attributes": { $book.* }
+};
+----
+
+== Attributes, Values, and Types
+
+You can also have `fetch` return attributes, values, and types directly from variables:
+
+[,typeql]
+----
+match
+$book isa! $book-type;
+$book-type sub book;
+$book has title $title, has price $price;
+let $tax = $price * 0.1;
+limit 2;
+fetch {
+  "book-type": $book-type,
+  "title": $title,
+  "tax": $tax,
+};
+----
+
+This outputs:
+[,json]
+----
+{
+  "tax": 3.473,
+  "title": "Under the Black Flag: The Romance and the Reality of Life Among the Pirates",
+  "book-type": {
+    "kind": "entity",
+    "label": "hardback"
+  }
+}
+{
+  "title": "Electron Backscatter Diffraction in Materials Science",
+  "book-type": {
+    "kind": "entity",
+    "label": "hardback"
+  },
+  "tax": 23.037000000000003
+}
+----
+
+== Fetch Subqueries
+
+In the previous lesson, we saw how we can write subqueries using functions. If we just want to do a sophisticated data projection based on variables, such as getting a book's list of authors, we don't need to use a function.
+
+[,typeql]
+----
+match
+$book isa book;
+limit 3;
+fetch {
+  "title": $book.title,
+  "authors": [
+    match authoring ($book, $contributor); $contributor isa contributor;
+    fetch { "contributor": $contributor.name };
+  ]
+};
+----
+
+To construct a subquery, we place a fetch *subquery* as the value of a fetch key-value pair. When the query returns a list of answers, we must again use `[]` syntax. However, we can force a subquery to force one result with a `return first` operator, just like in functions:
+
+----
+match
+$book isa book;
+limit 3;
+fetch {
+  "title": $book.title,
+  "first-author": (
+    match
+    authoring ($book, $contributor);
+    $contributor isa contributor, has name $name;
+    return first $name;
+  )
+};
+----
+
+The subquery functions exactly like a regular query, except that variables are shared with the *parent query*, in this case just `$book`. The constraints that apply to the parent query also apply to the subquery, but the reverse is not true. That means that the subquery will only return promotions that the associated book is in, but the book does not need to be in a promotion to be matched by the parent query. All subqueries must share at least one variable with the parent query. You can have as many subqueries as you want within a fetch clause.
+
+=== Nesting subqueries
+
+In the same way the `fetch` clause of a query can contain a subquery, the subquery itself can contain further nested subqueries. Let's see an example. In the following, we list all publishers, any books they have published, and any promotions those books are in.
+
+[,typeql]
+----
+match $publisher isa publisher;
+fetch {
+  "name": $publisher.name,
+  "books": [
+    match $book isa book;
+          ($book, $publisher) isa publishing;
+    fetch {
+      "title": $book.title,
+      "promotions": [
+        match $promotion isa promotion;
+              ($book, $promotion) isa promotion-inclusion;
+        fetch { "name": $promotion.name };
+      ]
+    };
+  ]
+};
+----
+
+In effect, we have added a level of grouping to the previous query for books and promotions, now grouping the books by publisher. In general, if we want to introduce a new level of grouping to our query results, we can do so by using the query that retrieved those results as a subquery, and query for the groups in the parent query. There is no limit to the depth that subqueries can be nested, though performance can become a concern for very deep nesting.
+
+== Summary
+
+Fetch clauses are powerful ways to project attribute, format data, and augment your responses with extra data you look up with subqueries. They are the standard way to get data out of TypeDB using JSON.

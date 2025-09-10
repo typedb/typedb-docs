@@ -1,0 +1,97 @@
+= Lesson 8.3: Aggregations
+
+== Aggregating over results
+
+Suppose that we want to count the promotions each book is in rather than listing them all out by name. To do so, we can use an *aggregation*, as in the following query.
+
+[,typeql]
+----
+match
+$book isa book;
+$promotion isa promotion;
+($book, $promotion);
+reduce $promotion_count = count groupby $book;
+fetch { "title": $book.title, "promotions": $promotion_count };
+----
+
+You can aggregate the entire answer stream, or `groupby` variables to compute per-group metrics. See xref:{page-version}@reference::typeql/pipelines/reduce.adoc[Reduce].
+
+.Exercise
+[caption=""]
+====
+Retrieve a list of publishers. For each publisher, retrieve their name and the number of books they have published.
+
+You may find it useful to refer to the bookstore's schema.
+
+.Schema
+[%collapsible]
+=====
+[,typeql]
+----
+include::{page-version}@academy::attachment$bookstore-schema.tql[lines=19..]
+----
+=====
+
+.Sample solution
+[%collapsible]
+=====
+[,typeql]
+----
+match
+$publisher isa publisher;
+$book isa book;
+publishing ($book, $publisher);
+reduce $published = count groupby $publisher;
+fetch {
+  "publisher": $publisher.name,
+  "books-published": $published,
+};
+----
+=====
+====
+
+== Aggregation modifiers
+
+We have seen an example of the `count` modifier, and now we will explore examples of some of the others. The table below lists the aggregation modifiers currently available in TypeQL.
+
+[cols="^.^,^.^,^.^",caption="",options="header"]
+|===
+| Aggregation modifier | Name | Takes argument
+| `count` | Count | No
+| `sum` | Sum | Yes
+| `max` | Maximum | Yes
+| `min` | Minimum | Yes
+| `mean` | Mean | Yes
+| `median` | Median | Yes
+| `std` | Standard deviation | Yes
+|===
+
+[NOTE]
+====
+The `std` modifier returns the sample standard deviation as obtained by https://en.wikipedia.org/wiki/Bessel's_correction[Bessel's correction].
+====
+
+Unlike the `count` modifier, the other aggregation modifiers all take a variable as an argument. Let's see an example. In the following query, we retrieve the average review score for each book.
+
+[,typeql]
+----
+match
+$book isa book;
+$review isa review, has score $score;
+rating ($review, $book);
+reduce $avg_score = mean($score) groupby $book;
+fetch { "title": $book.title, "average-score": $avg_score };
+----
+
+Whereas the `count` modifier returns the number of results matched regardless of their content, the other aggregation modifiers require a specified numeric value to operate over. Here, we have supplied the `$score` attribute as the argument to the `mean` modifiers, indicating that we want the average of its values.
+
+[,typeql]
+----
+match
+$order isa order, has id $id;
+$book isa book, has price $retail_price;
+order-line ($order, $book), has quantity $quantity;
+let $line_total = $quantity * $retail_price;
+reduce $order_total = sum($line_total) groupby $id;
+fetch { "id": $id, "order-total": $order_total };
+----

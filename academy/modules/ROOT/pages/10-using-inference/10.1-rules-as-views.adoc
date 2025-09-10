@@ -23,7 +23,7 @@ fetch
 $review: id;
 ----
 
-Now let's consider how we might apply this domain logic. Suppose we want to query for the average review score of each book, as we did in xref:{page-version}@academy::8-structuring-query-results/8.3-aggregations.adoc[Lesson 8.3], except this time we only want to include verified reviews in the average.
+Now let's consider how we might apply this domain logic. Suppose we want to query for the average review score of each book, as we did in xref:{page-version}@academy::8-composing-clauses/8.2-aggregations.adoc[Lesson 8.3], except this time we only want to include verified reviews in the average.
 
 [,typeql]
 ----
@@ -94,7 +94,7 @@ You may find it useful to refer to the bookstore's schema.
 =====
 [,typeql]
 ----
-include::{page-version}@academy::attachment$bookstore-schema.tql[lines=18..]
+include::{page-version}@academy::attachment$bookstore-schema.tql[lines=19..]
 ----
 =====
 
@@ -222,7 +222,7 @@ You may find it useful to refer to the bookstore's schema.
 =====
 [,typeql]
 ----
-include::{page-version}@academy::attachment$bookstore-schema.tql[lines=18..]
+include::{page-version}@academy::attachment$bookstore-schema.tql[lines=19..]
 ----
 =====
 

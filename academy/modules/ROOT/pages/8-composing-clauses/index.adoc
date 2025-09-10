@@ -1,0 +1,56 @@
+= Lesson 8: Composing clauses
+:page-aliases: {page-version}@academy::8-composing-clauses/overview.adoc
+:page-preamble-card: 1
+
+In this lesson, we'll learn how we can compose clauses to build queries into longer **pipelines**, and to to retrieve results in more useful structures using advanced `fetch` clause functionality.
+
+We'll see how to perform *aggregations*, and finally how we can *sort* and *paginate* the results returned.
+
+== Recommended prerequisites
+
+* You should complete xref:{page-version}@academy::7-understanding-query-patterns/index.adoc[Lesson 7] before starting this lesson.
+
+== Lesson contents
+
+[cols-2]
+--
+.xref:{page-version}@academy::8-composing-clauses/8.1-chaining-clauses.adoc[]
+[.clickable]
+****
+Learn how to chain clauses
+****
+
+.xref:{page-version}@academy::8-composing-clauses/8.4-subqueries.adoc[]
+[.clickable]
+****
+Learn how to group results using subqueries.
+****
+
+.xref:{page-version}@academy::8-composing-clauses/8.2-aggregations.adoc[]
+[.clickable]
+****
+Learn how to aggregate results using subqueries.
+****
+
+.xref:{page-version}@academy::8-composing-clauses/8.3-sorting-and-pagination.adoc[]
+[.clickable]
+****
+Learn how to sort and paginate query results.
+****
+--
+
+== TypeQL keywords introduced
+
+* `reduce`
+* `count`
+* `sum`
+* `max`
+* `min`
+* `mean`
+* `median`
+* `std`
+* `sort`
+* `asc`
+* `desc`
+* `limit`
+* `offset`
