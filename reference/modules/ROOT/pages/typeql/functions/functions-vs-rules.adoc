@@ -7,17 +7,17 @@ This page discusses the similarities, differences and factors to consider when m
 
 == Separating data & computation
 Whereas rules were a natural fit for predicate-logic based semantics of TypeDB 2,
-rules are better suited for TypeDB 3's type-theory based semantics.
-The major difference to the user is that there is now a separation between the data and reasoning machinery.
-Rules allowed the user to think reason purely in terms of the data-model and silently completed the data with inferred concepts.
-Functions force the user to separate reasoning from the data-model, making the computation involved in the query more explicit and the process more transparent overall.
+functions are better suited for TypeDB 3's type-theory based semantics.
+The major difference to the user is that there is now a separation between the data and reasoning constructs.
+Rules allowed the user to think reason purely in terms of the data-model by silently completing the data by inferring instances of existing types.
+Functions force the user to separate reasoning from the data-model, by explicitly creating a new function for any new computation that infers something new.
 
-Although this shift sounds significant, the truth is most advanced rules required the user to think of the computation involved for efficiency reasons.
+Although this shift sounds significant, most advanced rules do require the user to think of the computation involved for efficiency reasons.
 
 == Similarities
-Although one would ideally think natively in functions, it is easy to see the similarities between rules and functions.
+Although one would ideally think natively in functions (rather than thinking of them in terms of rules) it is easy to see the similarities between rules and functions.
 
-E.g. A rule completing a `reachable` relation transitively, can be seen as a function which computes all pairs of reachable nodes.
+E.g. A rule completing a `reachable` relation transitively, can be seen as a function which computes all pairs of nodes where one is reachable from the other.
 Conversely, the function can be seen as special type of relation where the roles are implicitly specified by the position of arguments or returned concepts.
 
 [,typeql]
@@ -84,12 +84,12 @@ match
 From the example, there are multiple ways of expressing the same rule as a function.
 This is understandable given (mathematically) a relation is a collection of tuples,
 whereas a function is a mapping from the input domain to the output range.
-So there is some ambiguity as to which members are inputs and which are outputs.
+So there is some ambiguity as to which concepts are arguments and which are to be returned.
 
-This depends on the context - what needs to be computed in the query.
-We may want to enumerate the pairs of nodes for which one is reachable from the other,
-check whether a node is reachable from the other,
-or even enumerate the nodes reachable from a given node:
+The choice depends on what the query needs to compute.
+Does it need to enumerate the pairs of nodes for which one is reachable from the other?
+Or check whether a node is reachable from the other?
+Or even enumerate the nodes reachable from a given node, as the function below does?
 
 [,typeql]
 ----
@@ -115,19 +115,18 @@ Currently, each of these use cases would need a different function to be defined
 The arguments are inputs to the function and must be bound by the rest of the query.
 The function will bind the returned values to the variables on the left of `in`.
 
-
-== Partial evaluation of functions
+=== Partial evaluation of functions
 Although the split between arguments and returned concepts is a reasonable consequence of
-having the user think about the computation explicitly, it's less declarative than the rules
-where the planner would infer which role-players of a relation should be bound before evaluating the rules.
-In the future, we hope to introduce "partial functions" where the planner may choose to leave some
-it to the function to bind some of the arguments instead of requiring them as outputs.
+having the user think about the computation explicitly, it is less declarative than rules -
+where the planner would infer which role-players of a relation should be bound when evaluating the rule.
+In the future, we hope to introduce "partial functions" where the planner may choose to leave
+it to the function to bind some of the arguments instead of requiring them as inputs.
 
 == What functions can do
 Since functions aren't forced to return relations (or ownerships) which are defined in the schema,
 they are more flexible and can also operate on raw values, including structs (when they are implemented).
 Since they don't infer new instances, they also avoid the overhead
-of making the result of the subquery abide by the rules governing the inferred types.
+of making the result of the computation abide by the rules governing the inferred types.
 In short, they're a really simple way of doing reasoning.
 
 Functions are still evaluated on demand in a goal-driven way.
@@ -148,30 +147,31 @@ return { $x };
 match let $x in nat();
 ----
 
-Since TypeDB's grpc endpoint supports reactive streaming,
-this query will stream them out natural numbers on demand.
+Since TypeDB's grpc endpoint also supports reactive streaming,
+this query will stream out natural numbers on demand.
 This isn't quite an infinite domain, since we are limited to the domain of the `integer` type which is a signed 64-bit integer.
 Understandable, since this is the case with most programming languages -
 but it does bring us to the next section.
 
 === What functions can't do (yet)
-To the best of our knowledge, TypeDB in its current state can't do "arbitrarily large" models.
+TypeDB in its current state can't do "arbitrarily large" models.
 
-This limitation is unlikely to be practically relevant, since most uses of functions only need to compute tuples of concepts which exist in the database -
- that means combination of finite sets - combinatorially large but still finite.
+This limitation is unlikely to be practically relevant,
+since most uses of functions only need to compute tuples of concepts which exist in the database.
+Since this is a combination of finite sets, it is combinatorially large but still finite.
 
-It's still (theoretically) interesting for two reasons - (1) TypeDB 2 could do it; (2) A feature complete TypeDB 3 can too.
+The problem is still (theoretically) interesting for two reasons - (1) TypeDB 2 could do it; (2) A feature complete TypeDB 3 could too.
 
 ==== How did TypeDB 2 do it? Nested relations.
 In theory, one can infer an arbitrary number of nested relations,
-because you can always infer a new one which relates the one you just inferred.
+because you can always infer a new relation which relates the one you just inferred.
 
 In particular this makes state-space search on "open" worlds possible.
 For games like the Rubik's cube, it is possible to assign each state a number (not necessarily one that fits in 64 bits).
 For open worlds such as an arbitrary block's world, this doesn't work since the number of "objects" of each type aren't fixed.
 You would instead represent a state as a relation involving the previous state and the action taken.
 
-==== How will TypeDB 3 solve this problem? Lists.
+==== How will TypeDB 3 do it? Lists.
 Lists can be arbitrarily long. A state can be represented by specifying the initial state,
 and the list of actions which brings us to this state.
 
@@ -180,7 +180,7 @@ and the list of actions which brings us to this state.
 ====
 Modern computers have finite memory so none of this is truly infinite.
 The difference between the finiteness of TypeDB 3's model without and with lists
-is that the former is constrained by TypeQL's limited expressivity,
+is that the former is constrained by the limits of TypeQL's expressivity,
 while the latter is constrained by the limits of the underlying computer.
 ====
 
