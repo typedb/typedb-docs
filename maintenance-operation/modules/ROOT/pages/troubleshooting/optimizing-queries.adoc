@@ -1,4 +1,5 @@
 = Optimizing queries
+:test-typeql: linear
 
 == TypeDB's optimizer
 
@@ -111,23 +112,30 @@ Certain formulations of functions are more efficient than others under tabling:
 
 [,typeql]
 ----
-fun recurse_on_from($from: from) -> { node }:
+#!test[schema]
+#{{
+define
+relation edge, relates from_, relates to;
+entity node, plays edge:from_, plays edge:to;
+#}}
+
+fun recurse_on_to($from: node) -> { node }:
 match
   {
-    $_ isa edge (from: $from, to: $to);
+    $_ isa edge (from_: $from, to: $to);
   } or {
-    let $via in recurse_on_from($from);
-    $_ isa edge (from: $via, to: $to);
+    $_ isa edge (from_: $from, to: $via);
+    let $to in recurse_on_to($via);
   };
 return { $to };
 
-fun recurse_on_to($from: from) -> { node }:
+fun recurse_on_from($from: node) -> { node }:
 match
   {
-    $_ isa edge (from: $from, to: $to);
+    $_ isa edge (from_: $from, to: $to);
   } or {
-    $_ isa edge (from: $from, to: $via);
-    let $to in recurse_on_to($via);
+    let $via in recurse_on_from($from);
+    $_ isa edge (from_: $via, to: $to);
   };
 return { $to };
 ----
