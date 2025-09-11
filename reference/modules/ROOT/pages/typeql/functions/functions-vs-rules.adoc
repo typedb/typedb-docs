@@ -1,4 +1,5 @@
 = Functions v/s rules
+:test-typeql: linear
 
 TypeDB 3 introduces functions to reason over your data.
 They replace rules, which were the way to reason in TypeDB 2.
@@ -20,40 +21,55 @@ Although one would ideally think natively in functions (rather than thinking of 
 E.g. A rule completing a `reachable` relation transitively, can be seen as a function which computes all pairs of nodes where one is reachable from the other.
 Conversely, the function can be seen as special type of relation where the roles are implicitly specified by the position of arguments or returned concepts.
 
+.Schema for the following examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema]
+define
+attribute id, value integer;
+relation edge, relates from_, relates to;
+entity node, plays edge:from_, plays edge:to, owns id;
+----
+====
+
 [,typeql]
 ----
 define
 rule transitive-reachability:
 when {
   {
-    (from: $from, to: $to) isa edge;
+    (from_: $from, to: $to) isa edge;
   } or {
-    (from: $from, to: $via) isa edge;
-    (from: $via, to: $to) isa reachable;
+    (from_: $from, to: $via) isa edge;
+    (from_: $via, to: $to) isa reachable;
   };
 } then {
-  (from: $from, to: $to) isa reachable;
+  (from_: $from, to: $to) isa reachable;
 };
 
 # query
 match
   $x isa node; $y isa node;
-  (from: $x, to: $y) isa reachable;
+  (from_: $x, to: $y) isa reachable;
 ----
 
 [,typeql]
 ----
+#!test[schema]
 define
 fun reachable() -> { node, node }:
 match
   {
-    (from: $from, to: $to) isa edge;
+    (from_: $from, to: $to) isa edge;
   } or {
     let $from, $via in reachable();
-    (from: $via, to: $to) isa edge;
+    (from_: $via, to: $to) isa edge;
   };
 return { $from, $to };
 
+#!test[read]
 # query
 match
   $x isa node; $y isa node;
@@ -67,9 +83,9 @@ define
 fun reachable($from: node, $to: node) -> bool:
 match
   {
-    (from: $from, to: $to) isa edge;
+    (from_: $from, to: $to) isa edge;
   } or {
-    (from: $from, to: $via) isa edge;
+    (from_: $from, to: $via) isa edge;
     true == reachable($via, $to);
   };
 return check;
@@ -93,20 +109,22 @@ Or even enumerate the nodes reachable from a given node, as the function below d
 
 [,typeql]
 ----
+#!test[schema]
 define
 fun reachable_from($from: node) -> { node }:
 match
   {
-    (from: $from, to: $to) isa edge;
+    (from_: $from, to: $to) isa edge;
   } or {
     let $via in reachable_from($from);
-    (from: $via, to: $to) isa edge;
+    (from_: $via, to: $to) isa edge;
   };
 return { $to };
 
+#!test[read]
 # query
 match
-  $x isa node, has id "123";
+  $x isa node, has id 123;
   $y isa node;
   let $y in reachable_from($x);
 ----
