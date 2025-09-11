@@ -105,10 +105,55 @@ match $f_count == user_count(); # function returning user count
 While the first query needs to consider data whose size is quadratic in the number of users, the second query considers data linear in the size of friendships.
 
 == Optimizing recursive functions
+TypeDB uses tabling to break cycles when computing recursive functions.
+When computing a recursive function, a new table will be created for each combination of arguments the function is called with.
+Certain formulations of functions are more efficient than others under tabling:
+
+[,typeql]
+----
+fun recurse_on_from($from: from) -> { node }:
+match
+  {
+    $_ isa edge (from: $from, to: $to);
+  } or {
+    let $via in recurse_on_from($from);
+    $_ isa edge (from: $via, to: $to);
+  };
+return { $to };
+
+fun recurse_on_to($from: from) -> { node }:
+match
+  {
+    $_ isa edge (from: $from, to: $to);
+  } or {
+    $_ isa edge (from: $from, to: $via);
+    let $to in recurse_on_to($via);
+  };
+return { $to };
+----
+
+`recurse_on_to` is an intuitive recursive formulation that works in most programming languages.
+For untabled execution, this would be the standard formulation.
+`recurse_on_from` is almost unintuitive as most programmers would expect it to suffer from infinite recursion.
+
+Although both formulations return the same set of answers,
+the difference in efficiency comes down to the number of tables we create & answers we store.
+
+`recurse_on_to` is called once for each node reachable from the source node.
+Each call creates a table, holding one row per node reachable from that node.
+Across all tables, we'd have one row per nodes `($from, $to)` where `$to` is reachable from `$from`.-
+In the worst case (a chain), this is quadratic in the number of reachable nodes.
+
+On the other hand, `recurse_on_from` is always called for the same value of `$from`.
+Thus, it creates only one table, which holds a row for each node reachable from `$from` -
+this is linear in the number of reachable nodes.
 
 [NOTE]
 ====
-Coming soon.
+Under the hood, the tabling mechanism breaks cycles by "suspending" calls which are already in the "stack"
+and marking them to be retried later. Here, each  retry assigns the answers found in the previous iteration to `$via`.
+The next statement extends this by one edge and returns it (any returned answer is appended to the table).
+When no answers are added to the table the iteration stops.
 ====
 
 == Roadmap
