@@ -115,12 +115,13 @@ Currently, each of these use cases would need a different function to be defined
 The arguments are inputs to the function and must be bound by the rest of the query.
 The function will bind the returned values to the variables on the left of `in`.
 
-=== Partial evaluation of functions
+=== Contextually bound functions
 Although the split between arguments and returned concepts is a reasonable consequence of
 having the user think about the computation explicitly, it is less declarative than rules -
 where the planner would infer which role-players of a relation should be bound when evaluating the rule.
-In the future, we hope to introduce "partial functions" where the planner may choose to leave
-it to the function to bind some of the arguments instead of requiring them as inputs.
+A future version of TypeDB will introduce "contextually bound functions" where the planner may choose which
+variables are input to the functions and which are output - allowing a single function definition
+to satisfy all the cases discussed above.
 
 == What functions can do
 Since functions aren't forced to return relations (or ownerships) which are defined in the schema,
