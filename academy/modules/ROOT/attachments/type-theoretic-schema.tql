@@ -18,23 +18,23 @@
 define
 
 relation publication @abstract,
-    relates publisher,
-    relates location,
-    owns isn @key,
-    owns title,
-    owns genre,
-    owns price,
-    plays contribution:work,
-    plays promotion-inclusion:item,
-    plays order-line:item,
-    plays review:reviewed,
-    plays recommendation:recommended;
+  relates publisher,
+  relates location,
+  owns isn @key,
+  owns title,
+  owns genre,
+  owns price,
+  plays contribution:work,
+  plays promotion-inclusion:item,
+  plays order-line:item,
+  plays review:reviewed,
+  plays recommendation:recommended;
 
 relation book sub publication @abstract,
-    owns isbn-13 as isn,
-    owns isbn-10 @unique,
-    owns year,
-    owns page-count;
+  owns isbn-13 as isn,
+  owns isbn-10 @unique,
+  owns year,
+  owns page-count;
 
 relation hardback sub book,
     owns stock;

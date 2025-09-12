@@ -138,7 +138,7 @@ When an object type implements interfaces, those implementations are inherited b
 
 * The object types `paperback`, `hardback`, and `ebook` all inherit the implementations of the `title:OWNER`, `price:OWNER`, and `order-line:item` interfaces from their supertype `book`.
 
-Finally, a type if defined to be abstract using an `abstract` statement. For example, in the above schema excerpt:
+Finally, a type if defined to be abstract using an `@abstract` annotation. For example, in the above schema excerpt:
 
 * The type `book` is declared to be abstract, and can only be instantiated through one of its concrete subtypes: `paperback`, `hardback`, and `ebook`.
 

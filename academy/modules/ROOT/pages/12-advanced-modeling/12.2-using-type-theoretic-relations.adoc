@@ -83,20 +83,20 @@ Representing these classes in TypeQL is straightforward under the type-theoretic
 ----
 define
 relation user-action @abstract,
-    relates user,
-    owns timestamp;
+  relates user,
+  owns timestamp;
 relation order sub user-action,
-    owns id @key,
-    owns status,
-    plays order-line:order,
-    plays delivery:delivered;
+  owns id @key,
+  owns status,
+  plays order-line:order,
+  plays delivery:delivered;
 relation review sub user-action,
-    relates reviewed,
-    owns id @key,
-    owns score,
-    owns verified;
+  relates reviewed,
+  owns id @key,
+  owns score,
+  owns verified;
 relation login sub user-action,
-    owns success;
+  owns success;
 entity user plays user-action:user;
 entity book plays review:reviewed;
 ----
@@ -156,19 +156,19 @@ class Delivery:
 ----
 define
 entity company @abstract,
-    owns name;
+  owns name;
 entity publisher sub company;
 entity courier sub company,
-    plays delivery:deliverer;
+  plays delivery:deliverer;
 relation user,
-    owns id @key,
-    owns name,
-    owns birth-date,
-    relates location;
+  owns id @key,
+  owns name,
+  owns birth-date,
+  relates location;
 relation delivery,
-    relates delivered,
-    relates deliverer,
-    relates destination;
+  relates delivered,
+  relates deliverer,
+  relates destination;
 entity city plays user:location;
 relation order plays delivery:delivered;
 entity address plays delivery:destination;
@@ -196,14 +196,14 @@ class Address:
         return self.city.country
 ----
 
-We could represent this in TypeQL in the following manner. We'll leave out the properties of `Address` for now, but we could always replicate their behaviour using rules.
+We could represent this in TypeQL in the following manner. We'll leave out the properties of `Address` for now.
 
 [,typeql]
 ----
 define
 relation address,
-    owns street,
-    relates city;
+  owns street,
+  relates city;
 entity city plays address:city;
 ----
 
@@ -220,18 +220,12 @@ This pattern will match instances of both `user` and `address` for `$located`, a
 ----
 define
 relation address,
-    owns street,
-    relates location;
+  owns street,
+  relates location;
 entity city plays address:location;
 ----
 
 For this reason, it is even more important to choose interface names carefully when using the type-theoretic framework of the PERA model.
-
-[NOTE]
-====
-TypeDB 3.0 will include user-defined *functions* that allow for https://en.wikipedia.org/wiki/Ad_hoc_polymorphism[ad hoc polymorphism]. This will enable a new class of powerful polymorphic queries that do not depend on inheritance hierarchies or interface implementations. By making use of ad hoc polymorphism in TypeDB 3.0, interface names could be chosen freely and the desired polymorphic behaviour could still be implemented! To learn more about this and other powerful new features, see the https://typedb.com/blog/typedb-3-roadmap[TypeDB 3.0 roadmap].
-====
-
 
 == Handling nullary relations
 
@@ -284,15 +278,15 @@ Here we run into an interesting problem. The types `Place` and `Country` are com
 ----
 define
 relation place @abstract,
-    owns name;
+  owns name;
 relation country sub place,
-    plays city:location,
-    plays state:location;
+  plays city:location,
+  plays state:location;
 relation state sub place,
-    relates location,
-    plays city:location;
+  relates location,
+  plays city:location;
 relation city sub place,
-    relates location;
+  relates location;
 ----
 
 However, this schema excerpt will not commit to a database. While abstract relation types can have no roles, all concrete relation types must have at least one role. The type `country` is concrete but does not have any roles, causing this schema to fail validation. Even if we gave `country` a dummy role, we could not instantiate it, as any relation instances without role players are erased automatically on commit. We have a few options to deal with this:
@@ -307,18 +301,18 @@ All of these solutions will allow the schema to pass validation, but none of the
 ----
 define
 entity world,
-    plays country:location;
+  plays country:location;
 relation place @abstract,
-    owns name;
+  owns name;
 relation country sub place,
-    relates location,
-    plays city:location,
-    plays state:location;
+  relates location,
+  plays city:location,
+  plays state:location;
 relation state sub place,
-    relates location,
-    plays city:location;
+  relates location,
+  plays city:location;
 relation city sub place,
-    relates location;
+  relates location;
 ----
 
 [,python]

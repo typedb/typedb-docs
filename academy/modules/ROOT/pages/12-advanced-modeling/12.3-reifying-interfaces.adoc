@@ -8,8 +8,8 @@ In xref:{page-version}@academy::12-advanced-modeling/12.1-using-dependent-types.
 ----
 define
 relation rating,
-    relates review,
-    relates rated;
+  relates review,
+  relates rated;
 relation review plays rating:review;
 entity book plays rating:rated;
 ----
@@ -38,9 +38,9 @@ While de-reification is a powerful tool that allows us to achieve parity with ap
 ----
 define
 relation action-execution,
-    relates action,
-    relates executor,
-    owns timestamp;
+  relates action,
+  relates executor,
+  owns timestamp;
 relation review plays action-execution:action;
 entity user plays action-execution:executor;
 ----
@@ -51,8 +51,8 @@ The type-theoretic version in xref:{page-version}@academy::12-advanced-modeling/
 ----
 define
 relation review,
-    relates reviewer,
-    owns timestamp;
+  relates reviewer,
+  owns timestamp;
 entity user plays review:reviewer;
 ----
 
@@ -71,9 +71,9 @@ When the mapping between a relation and its roleplayer is not one-to-one, then i
 ----
 define
 relation promotion-inclusion,
-    relates promotion,
-    relates item,
-    owns discount;
+  relates promotion,
+  relates item,
+  owns discount;
 entity promotion plays promotion-inclusion:promotion;
 entity book plays promotion-inclusion:item;
 ----
@@ -84,7 +84,7 @@ If we de-reified `promotion-inclusion`, then it might look as follows.
 ----
 define
 relation promotion,
-    relates item;
+  relates item;
 entity book plays promotion:item;
 ----
 
@@ -95,28 +95,28 @@ Let's return to the definition of the `Promotion` class from xref:{page-version}
 [,python]
 ----
 class Promotion:
-    def __init__(
-        self,
-        code: str,
-        name: str,
-        start_timestamp: datetime,
-        end_timestamp: datetime
-    ):
-        self.code = code
-        self.name = name
-        self.start_timestamp = start_timestamp
-        self.end_timestamp = end_timestamp
-        self._discounts: dict[Book, float] = dict()
+  def __init__(
+    self,
+    code: str,
+    name: str,
+    start_timestamp: datetime,
+    end_timestamp: datetime
+  ):
+    self.code = code
+    self.name = name
+    self.start_timestamp = start_timestamp
+    self.end_timestamp = end_timestamp
+    self._discounts: dict[Book, float] = dict()
 
-    @property
-    def discounts(self) -> dict[Book, float]:
-        return copy.copy(self._discounts)
+  @property
+  def discounts(self) -> dict[Book, float]:
+    return copy.copy(self._discounts)
 
-    def put_discount(self, item: Book, discount: float):
-        if discount == 0:
-            self._discounts.pop(item, None)
-        else:
-            self._discounts[item] = discount
+  def put_discount(self, item: Book, discount: float):
+    if discount == 0:
+      self._discounts.pop(item, None)
+    else:
+      self._discounts[item] = discount
 ----
 
 Initially, it seems that the only composite types involved are `Book` and `Promotion`, and that keeping the `promotion-inclusion` relation in the database model will result in model mismatch. However, there is a third composite type hidden within the definition of `Promotion`. The variable `+Promotion._discounts+` has the type `dict[Book, float]`, which is a composition of `Book` and `float`. As the application model includes a third composite type, we require a third object type in the database model. This is represented with `promotion-inclusion`, which is a relation type because `+Promotion._discounts+` is composed of `Book`, another composite type. So in fact, de-reification would _introduce_ model mismatch in this case, not eliminate it! We can apply this same logic to the `order-line` relation, demonstrating that it cannot be safely de-reified due to the `quantity` attribute.
@@ -125,9 +125,9 @@ Initially, it seems that the only composite types involved are `Book` and `Promo
 ----
 define
 relation order-line,
-    relates order,
-    relates item,
-    owns quantity;
+  relates order,
+  relates item,
+  owns quantity;
 relation order plays order-line:order;
 entity book plays order-line:item;
 ----
@@ -135,27 +135,27 @@ entity book plays order-line:item;
 [,python]
 ----
 class Order(UserAction):
-    def __init__(
-        self,
-        id: str,
-        user: User,
-        timestamp: datetime
-    ):
-        super().__init__(user, timestamp)
-        self.id = id
-        self.status = Status.PENDING
-        self._lines: dict[Book, int] = dict()
+  def __init__(
+    self,
+    id: str,
+    user: User,
+    timestamp: datetime
+  ):
+    super().__init__(user, timestamp)
+    self.id = id
+    self.status = Status.PENDING
+    self._lines: dict[Book, int] = dict()
 
-    @property
-    def items(self) -> list[tuple[Book, int]]:
-        return [(book, quantity) for book, quantity in self._lines.items()]
+  @property
+  def items(self) -> list[tuple[Book, int]]:
+    return [(book, quantity) for book, quantity in self._lines.items()]
 
-    def add_or_remove_items(self, item: Book, quantity: int):
-        self._lines.setdefault(item, 0)
-        self._lines[item] += quantity
+  def add_or_remove_items(self, item: Book, quantity: int):
+    self._lines.setdefault(item, 0)
+    self._lines[item] += quantity
 
-        if self._lines[item] <= 0:
-            del self._lines[item]
+    if self._lines[item] <= 0:
+      del self._lines[item]
 ----
 
 == Avoiding type fidelity loss
@@ -166,14 +166,14 @@ While data fidelity loss occurs when the implementer of an interface is improper
 ----
 define
 relation contribution,
-    relates contributor,
-    relates work;
+  relates contributor,
+  relates work;
 relation authoring sub contribution,
-    relates author as contributor;
+  relates author as contributor;
 relation editing sub contribution,
-    relates editor as contributor;
+  relates editor as contributor;
 relation illustrating sub contribution,
-    relates illustrator as contributor;
+  relates illustrator as contributor;
 entity book plays contribution:work;
 entity contributor plays contribution:contributor;
 entity contributor plays authoring:author;
@@ -187,14 +187,14 @@ The `contributor` relation type and its subtypes do not own any attributes or pl
 ----
 define
 relation book,
-    relates author,
-    relates editor,
-    relates illustrator,
-    relates contributor;
+  relates author,
+  relates editor,
+  relates illustrator,
+  relates contributor;
 entity contributor plays book:author,
-    plays book:editor,
-    plays book:illustrator,
-    plays book:contributor;
+  plays book:editor,
+  plays book:illustrator,
+  plays book:contributor;
 ----
 
 However, we run into an issue if we would like to query all contributors to a book. We saw in xref:{page-version}@academy::9-modeling-schemas/9.6-using-interface-hierarchies.adoc[Lesson 9.6] that we can use the following pattern to do so with the entity-centric schema.
@@ -217,13 +217,13 @@ This is because `book:contributor` has no subtypes. The four roles of `book` are
 ----
 ($contributor-role: $person) isa book;
 {
-    $contributor-role type book:author;
+  $contributor-role type book:author;
 } or {
-    $contributor-role type book:editor;
+  $contributor-role type book:editor;
 } or {
-    $contributor-role type book:illustrator;
+  $contributor-role type book:illustrator;
 } or {
-    $contributor-role type book:contributor;
+  $contributor-role type book:contributor;
 };
 ----
 
@@ -232,56 +232,56 @@ Once again, de-reification has resulted in information loss. This time, the lost
 [,python]
 ----
 class Book(ABC):
-    def __init__(
-        self,
-        isbn_13: str,
-        isbn_10: Optional[str],
-        title: str,
-        contributors: set[tuple[Contributor, ContributorRole]],
-        publisher: Publisher,
-        year: int,
-        location: City,
-        page_count: str,
-        genres: set[str],
-        price: float,
-    ):
-        self.isbn_13 = isbn_13
-        self.isbn_10 = isbn_10
-        self.title = title
-        self._contributors = contributors
-        self.publisher = publisher
-        self.year = year
-        self.location = location
-        self.page_count = page_count
-        self.genres = genres
-        self.price = price
+  def __init__(
+    self,
+    isbn_13: str,
+    isbn_10: Optional[str],
+    title: str,
+    contributors: set[tuple[Contributor, ContributorRole]],
+    publisher: Publisher,
+    year: int,
+    location: City,
+    page_count: str,
+    genres: set[str],
+    price: float,
+  ):
+    self.isbn_13 = isbn_13
+    self.isbn_10 = isbn_10
+    self.title = title
+    self._contributors = contributors
+    self.publisher = publisher
+    self.year = year
+    self.location = location
+    self.page_count = page_count
+    self.genres = genres
+    self.price = price
 
-    @property
-    def isbns(self) -> set[str]:
-        if self.isbn_10 is None:
-            return {self.isbn_13}
-        else:
-            return {self.isbn_13, self.isbn_10}
+  @property
+  def isbns(self) -> set[str]:
+    if self.isbn_10 is None:
+      return {self.isbn_13}
+    else:
+      return {self.isbn_13, self.isbn_10}
 
-    @property
-    def contributors(self) -> set[Contributor]:
-        return {contributor for contributor, role in self._contributors}
+  @property
+  def contributors(self) -> set[Contributor]:
+    return {contributor for contributor, role in self._contributors}
 
-    @property
-    def authors(self) -> set[Contributor]:
-        return {contributor for contributor, role in self._contributors if role is ContributorRole.AUTHOR}
+  @property
+  def authors(self) -> set[Contributor]:
+    return {contributor for contributor, role in self._contributors if role is ContributorRole.AUTHOR}
 
-    @property
-    def editors(self) -> set[Contributor]:
-        return {contributor for contributor, role in self._contributors if role is ContributorRole.EDITOR}
+  @property
+  def editors(self) -> set[Contributor]:
+    return {contributor for contributor, role in self._contributors if role is ContributorRole.EDITOR}
 
-    @property
-    def illustrators(self) -> set[Contributor]:
-        return {contributor for contributor, role in self._contributors if role is ContributorRole.ILLUSTRATOR}
+  @property
+  def illustrators(self) -> set[Contributor]:
+    return {contributor for contributor, role in self._contributors if role is ContributorRole.ILLUSTRATOR}
 
-    @property
-    def other_contributors(self) -> set[Contributor]:
-        return {contributor for contributor, role in self._contributors if role is ContributorRole.CONTRIBUTOR}
+  @property
+  def other_contributors(self) -> set[Contributor]:
+    return {contributor for contributor, role in self._contributors if role is ContributorRole.CONTRIBUTOR}
 ----
 
 In general, the storage of composite objects in collections are best modeled as relations in the database, with one role referencing the containing collection object (e.g. `promotion-inclusion:promotion`, `order-line:order`, `contribution:work`) and the other referencing the contained objects (e.g. `promotion-inclusion:item`, `order-line:item`, `contribution:contributor`). This will normally ensure close parity to the application model and prevent data or type fidelity loss. As always when modeling, this should be taken as a guideline and not a rule.
@@ -298,29 +298,29 @@ Write TypeQL type definitions to represent the above `Book` class under the type
 ----
 define
 relation book @abstract,
-    owns isbn-13 @key,
-    owns isbn-10 @unique,
-    owns title,
-    plays contribution:work,
-    relates publisher,
-    owns year,
-    relates location,
-    owns page-count,
-    owns genre,
-    owns price;
+  owns isbn-13 @key,
+  owns isbn-10 @unique,
+  owns title,
+  plays contribution:work,
+  relates publisher,
+  owns year,
+  relates location,
+  owns page-count,
+  owns genre,
+  owns price;
 relation contribution,
-    relates contributor,
-    relates work;
+  relates contributor,
+  relates work;
 relation authoring sub contribution,
-    relates author as contributor;
+  relates author as contributor;
 relation editing sub contribution,
-    relates editor as contributor;
+  relates editor as contributor;
 relation illustrating sub contribution,
-    relates illustrator as contributor;
+  relates illustrator as contributor;
 entity contributor plays contribution:contributor,
-    plays authoring:author,
-    plays editing:editor,
-    plays illustrating:illustrator;
+  plays authoring:author,
+  plays editing:editor,
+  plays illustrating:illustrator;
 entity publisher plays book:publisher;
 entity city plays book:location;
 ----

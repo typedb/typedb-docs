@@ -1,0 +1,75 @@
+= Lesson 9.9: Specialization
+
+Most of the time, TypeDB will reject redeclarations of identical schema definitions when the same definition is already applicable via inheritance. However, it is possible to __specialize__ an inherited definition in a subtype by adding more  xref:{page-version}@5-defining-schemas/5.3-defining-constraints.adoc[constraint annotations] to a redeclared definition.
+
+== Specialized definition
+
+Let's taking a simple example, where an isbn must 10 or 13 characters long.
+
+[,typeql]
+----
+define
+attribute isbn @abstract, value string @regex("(.{10})|(.{13})");
+attribute isbn-10, sub isbn;
+attribute isbn-13, sub isbn;
+----
+
+Notice that we haven't redeclared the string value definition, since it's inherited from the parent `isbn` type. However, an isbn-10 should have 10 characters, and an isbn-13 should have 13 characters! In this case, it's legal to do a specialized redeclaration of the definition:
+
+[,typeql]
+----
+define
+attribute isbn @abstract, value string @regex("(.{10})|(.{13})");
+attribute isbn-10, sub isbn, value string @regex(".{10}");
+attribute isbn-13, sub isbn, value string @regex(".{13}");
+----
+
+Semantically speaking, we expect every subtype to also respect the supertype's constraints. As a result, any instance of `isbn-10` will be validated against the regex for 10 characters, and against the inherited regex of 10 or 13 characters.
+
+This simple property, of validating __all__ semantically applicable constraints, is how all specializations operate.
+
+=== Granular abstractness and annotations
+
+We can combine the xref:{page-version}@academy::9-modeling-schemas/9.8-abstract-contracts.adoc[granular abstractness properties] with the fact that logically applicable constraints must be satisfied simultaneously to achieve extremely flexible and powerful modeling:
+
+[,typeql]
+----
+define
+attribute isbn @abstract, value string @regex("(.{10})|(.{13})");
+attribute isbn-10, sub isbn, value string @regex(".{10}");
+attribute isbn-13, sub isbn, value string @regex(".{13}");
+attribute price, value double;
+
+entity book,
+  owns isbn @card(0..2),
+  owns isbn-10 @card(0..1),
+  owns isbn-13 @card(0..1),
+  owns price;
+entity paperback, sub book; # no need to repeat ownerships of concrete isbn-10 and isbn-13: inherited instead!
+entity hardback, sub book;  # no need to repeat ownerships of concrete isbn-10 and isbn-13: inherited instead!
+----
+
+In this example, we're not only specializing the regex for each subtype of `isbn`. We're also requiring that any book can own the abstract `isbn` attribute type, as long as there are between 0 and 2 of them.
+
+At the same time, we're declaring an ownership of `isbn-10` and `isbn-13` to specialize the abstract ownership - and applying new cardinalities on them of 0 or 1!
+
+As a result, we will end up ensuring that every book has 0, 1, or 2 isbn numbers, of which there is at most 1 of each of `isbn-10`, and `isbn-13`!
+
+Let's quickly show one more widely applicable example of this pattern:
+
+[,typeql]
+----
+define
+
+entity principal @abstract,
+  owns id @card(1) @key;
+
+attribute id @abstract;
+
+entity user, sub principal,
+  owns email;
+
+attribute email, sub id, value string;
+----
+
+Here, we are establishing the requirement that some `principal` must have some key identifier, of any value type. A `user` is an example of one such principal, and users own emails. As emails are a subtype of `id`, the `principal owns id`  constraints will be applied to the `user owns email` definition. We can consider that the user's ownership of the email is a specialization of the principal owning an id.

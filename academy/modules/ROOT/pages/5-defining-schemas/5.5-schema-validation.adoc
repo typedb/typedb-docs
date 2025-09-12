@@ -14,9 +14,6 @@ In order to maintain integrity, the schema is validated to ensure internal consi
 ** The role player does not already inherit the role playing capability from a supertype.
 * When a new attribute owner is defined:
 ** The owner does not already inherit the ownership capability from a supertype.
-** If the attribute type is abstract: the owner is also abstract.
-
-There are also more complex checks that take place, some of which we will encounter in xref:{page-version}@academy::12-advanced-modeling/12.4-using-interface-contracts.adoc[Lesson 12.4].
 
 .Exercise
 [caption=""]
@@ -61,7 +58,6 @@ attribute hourly-rate, sub pay;
 .Answers
 [%collapsible]
 =====
-* The entity type `company` is not abstract and so cannot own the abstract attribute type `name`.
 * The relation types `full-time-employment` and `part-time-employement` inherit the roles `employee` and `employer` from their supertype `employment` and so cannot redeclare them.
 =====
 

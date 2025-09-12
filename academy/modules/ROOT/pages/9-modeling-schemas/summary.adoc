@@ -44,14 +44,24 @@ image::academy::typeql-terminology.png[role=framed, width = 75%, link=self]
 
 * Each behaviour should be represented by a single interface. Using two different interfaces to represent the same common behaviour results in model redundancies, preventing the behaviour from being polymorphically queried over.
 
+== xref:{page-version}@academy::9-modeling-schemas/9.8-abstract-contracts.adoc[Abstract contracts]
+
+* A simple contract can be created by making a type abstract, and implementing abstract interfaces
+* Contact us if you're interested in 'strict' contracts
+
+== xref:{page-version}@academy::9-modeling-schemas/9.9-specializations.adoc[Specialization]
+
+* Redeclaring schema definitions is normally disallowed - unless adding specializing annotations to them
+* Combine abstract interface implementations with interface specialization to model complex connectivity requirements
+
 == Further learning
 
 [cols-3]
 --
-.xref:{page-version}@academy::10-using-inference/index.adoc[]
+.xref:{page-version}@academy::10-  using-functions/index.adoc[]
 [.clickable]
 ****
-Learn how to use rule inference to abstract complex patterns into simple forms, and capture complex logic with combinations of rules.
+Learn how to use functions to abstract complex patterns into simple forms, and capture complex logic with combinations of functions.
 ****
 
 .xref:{page-version}@academy::12-advanced-modeling/index.adoc[]

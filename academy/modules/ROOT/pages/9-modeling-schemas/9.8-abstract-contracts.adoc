@@ -1,0 +1,102 @@
+= Lesson 9.8: Interface constracts
+
+Abstractness allows you to build forms of contracts on types, with more forms of contracts to be allowed in the future.
+
+== Abstractness
+
+TypeDB's semantics around abstractness are simple. Let's say you define an abstract attribute, such as `isbn` and an owner:
+
+[,typeql]
+----
+define
+attribute isbn @abstract, value string;
+
+entity book,
+  owns isbn;
+----
+
+In TypeDB 3, `@abstract` simply means that __one type is not instantiable__. However, there are no further restrictions on how this restriction translates to other types. This means that because `book` is not abstract, it can still be instantiated, but it would be impossible for an instance to own an `isbn` instance - simply because `isbn` cannot be instantiated.
+
+=== Granular abstractness
+
+These semantics mean you don't have to make an owner abstract when it owns an abstract type.
+
+[,typeql]
+----
+define
+attribute isbn @abstract, value string;
+attribute price, value double;
+
+entity book,
+  owns isbn,
+  owns price;
+----
+
+You can freely instantiate books, but you can't create any books owning an `isbn`.
+
+However, if you make `book` abstract, now you've created a simple contract of what a `book` may have: all books may have an `isbn`. Further, you can add both abstract and concrete types onto the same owner, allowing generic querying (find any books with any kind of isbn), while eliminating redundancy (directly allow any future book subtype to re-use isbn-10 and isbn-13 to fulfill the `isbn` contract).
+
+[,typeql]
+----
+define
+attribute isbn @abstract, value string;
+attribute isbn-10;
+attribute isbn-13;
+attribute price, value double;
+
+entity book,
+  owns isbn,
+  owns isbn-10,
+  owns isbn-13,
+  owns price;
+entity paperback, sub book; # no need to repeat ownerships of concrete isbn-10 and isbn-13: inherited instead!
+entity hardback, sub book;  # no need to repeat ownerships of concrete isbn-10 and isbn-13: inherited instead!
+----
+
+Note that, you can't (yet) guarantee that all types of books have some type of isbn attached. This behaviour is expected in future versions of TypeQL, and brings back parity with TypeQL 2 in this regard. Please contact us if this is interesting to you!
+
+=== Historical note: strict interface contracts
+
+In TypeDB 2, this "strict" form of contract was the default.
+
+TypeDB 2 made it illegal for a non-abstract `book` type to implement the abstract `owns isbn` interface: an abstract attribute can only be owned by an abstract type. In other words, abstractness is "infectious".
+
+TypeDB 2's infectious abstractness meant that abstract contracts could be created and enforced:
+
+[,typeql]
+----
+# TypeDB 2 syntax
+define
+isbn sub attribute, abstract, value string;
+
+book sub entity, abstract,
+  owns isbn;
+----
+
+This base schema requires any user of the schema must provide non-abstract subtypes in order to utilize them - any instance that is coming from a subtype of `book` is guaranteed to have some subtype of `isbn`.
+
+This was practically achieved by providing a concrete subtype of `book` and `isbn`, and _override_ the ownership to make it non-abstract:
+
+[,typeql]
+----
+# TypeDB 2 syntax
+define
+isbn sub attribute, abstract, value string;
+isbn-10 sub isbn;
+isbn-13 sub isbn;
+
+book sub entity, abstract,
+  owns isbn;
+paperback sub book,
+  owns isbn-10 as isbn,
+  owns isbn-13 as isbn;
+hardback sub book,
+  owns isbn-10 as isbn,
+  owns isbn-13 as isbn;
+----
+
+Essentially, any instantiable subtype of `book` will provide its own implementation of `owns isbn` in whatever form it wishes - and it would be still be readable via `book` that has an `isbn`. This is what we refer to as an implementation _contract_.
+
+However, this model forces you to introduce lots of extra layers of types to avoid repeating adding `owns isbn-10` to each of the concrete subtypes of `book` - often you'd end up with a supertype called `abstract-book`, since there's no better name! And additionally, you had much less granular control over which parts of a type are forming a "contract".
+
+TypeDB 3's non-infectious semantics remove the need for implementation overrides `as isbn` and eliminate the complexity arising from extra layers of abstract to non-abstract types.

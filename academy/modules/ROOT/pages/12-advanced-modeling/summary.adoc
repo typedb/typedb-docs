@@ -39,16 +39,6 @@
 * Interface implementations can be freely relocated between two object types that have a https://en.wikipedia.org/wiki/Bijection[one-to-one mapping]. A binary relation type can be losslessly de-reified by first relocating interface implementations it has (if any) to a roleplayer with which it has a one-to-one mapping.
 * A binary relation type cannot be losslessly de-reified if it implements interface types and does not have one-to-one mapping to any of its role players. Similarly, a hierarchy of binary relation types cannot be losslessly de-reified.
 
-== xref:{page-version}@academy::12-advanced-modeling/12.4-using-interface-contracts.adoc[Using interface contracts]
-
-* Interface implementations can be *overridden* using the `as` keyword. Using it in an `owns` or `plays` statement will ensure that the interface implemented by the object supertype is not implemented by its subtypes. The overriding interface must be a subtype of the overridden interface.
-+
-[,typeql]
-----
-object-type owns attribute-type as overridden-attribute-type;
-----
-* If an abstract object type owns an abstract attribute types, then any subtypes of the object type must own a subtype of the attribute type. This allows for schema design https://en.wikipedia.org/wiki/Design_by_contract[by contract].
-
 == Further learning
 
 [cols-3]

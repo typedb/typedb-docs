@@ -33,8 +33,8 @@ with TypeDB.cloud_driver(ADDRESS, credential) as driver:
     with driver.session(DATABASE, SessionType.DATA) as session:
         with session.transaction(TransactionType.READ) as transaction:
             results: Iterator[ConceptMap] = transaction.query.get("""
-                match
-                $user isa user;
+        match
+              $user isa user;
                 $execution ($user, $action) isa action-execution,
                     has timestamp $timestamp;
                 $action isa $action-type;

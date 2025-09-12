@@ -67,29 +67,29 @@ How should we go about modelling `Promotion` and `Review` in TypeDB? Previously,
 ----
 define
 entity promotion,
-    owns code,
-    owns name,
-    owns start-timestamp,
-    owns end-timestamp;
+  owns code,
+  owns name,
+  owns start-timestamp,
+  owns end-timestamp;
 entity review,
-    owns id,
-    plays rating:review,
-    plays action-execution:action,
-    owns timestamp,
-    owns score;
+  owns id,
+  plays rating:review,
+  plays action-execution:action,
+  owns timestamp,
+  owns score;
 relation rating,
-    relates review,
-    relates rated;
+  relates review,
+  relates rated;
 relation action-execution,
-    relates action,
-    relates executor;
+  relates action,
+  relates executor;
 entity book plays rating:rated;
 entity user plays action-execution:executor;
 ----
 
 [NOTE]
 ====
-For simplicity, throughout most of Lesson 12, we'll be omitting any statements in schema definitions where not required for the discussion topic at hand.
+For simplicity, throughout most of Lesson 11, we'll be omitting any statements in schema definitions where not required for the discussion topic at hand.
 ====
 
 If we instantiate `Promotion` in our application, then we can persist the instance by instantiating `promotion` in the database. However, if we instantiate `Review` in the application, we must instantiate `review`, `rating`, and `action-execution` in the database. Here, the creation of one object in the application necessitates the creation of three objects in the database. This also highlights another disparity in the way we reference one type from another. We reference attribute types using interface types (ownerships), but reference other object types using object types (relations). This is distinct from the approach in the application, in which composite types are composed in the same way from both primitive types and other composite types.
@@ -102,21 +102,21 @@ We can solve these problems by adopting a *type-theoretic framework* to schema d
 ----
 define
 entity promotion,
-    owns code,
-    owns name,
-    owns start-timestamp,
-    owns end-timestamp;
+  owns code,
+  owns name,
+  owns start-timestamp,
+  owns end-timestamp;
 relation review,
-    owns id,
-    relates reviewed,
-    relates reviewer,
-    owns timestamp,
-    owns score;
+  owns id,
+  relates reviewed,
+  relates reviewer,
+  owns timestamp,
+  owns score;
 entity book plays review:reviewed;
 entity user plays review:reviewer;
 ----
 
-OOP primitive types are represented with PERA attribute types, and OOP composite types with PERA object types. References from OOP composite types to OOP primitive types are represented with PERA ownership types, and references from OOP composite types to other OOP composite types with PERA role types. If an OOP composite type is composed only of primitive types, it is represented with a PERA entity type. If it is composed of both primitive and other composite types, it is represented with a PERA relation type. In this framework, the number of objects instantiated in the application and the database is the same, and we create references between objects in the database in a single way.
+OOP primitive types are represented with PERA attribute types, and OOP composite types with PERA object types. References from OOP composite types to OOP primitive types are represented with PERA ownership types, and references from OOP composite types to other OOP composite types with PERA role types. __If an OOP composite type is composed only of primitive types, it is represented with a PERA entity type. If it is composed of both primitive and other composite types, it is represented with a PERA relation type. In this framework, the number of objects instantiated in the application and the database is the same, and we create references between objects in the database in a single way.
 
 The mappings from OOP types to PERA types in the type-theoretic framework are summarised in the following table.
 
