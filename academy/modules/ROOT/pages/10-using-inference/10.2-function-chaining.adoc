@@ -38,60 +38,48 @@ Functions can recurse as well! A recursive function is one which invokes itself.
 
 [,typeql]
 ----
-fun transitive_places($place: place) -> { place }:
+fun transitive_places_unoptimized($place: place) -> { place }:
   match
     {
-      locating (located: $place, location: $parent);
+      locating (located: $place, location: $transitive);
     } or {
-      locating (located: $place, location: $middle);
-      let $parent in transitive_places($middle);
+      locating (located: $place, location: $next);
+      let $transitive in transitive_places_unoptimized($next);
     };
-  return { $parent };
+  return { $transitive };
 ----
 
-This rule is a *recursive rule*. If we compare the conclusion, it actually matches _both_ statements in the condition. This means that when we infer `$x` to be located in `$parent` place, the facts that `$x` is located in `$child-place` and that `$child-place` is located in `$parent` place could both themselves be inferred.
-
-Our data contains the following information encoded in `locating` relations:
-
-* The user with ID "u0003" is located in Newark.
-* Newark is located in New Jersey.
-* New Jersey is located in the United States.
-
-When we run the following query, we get the following result.
+Note that this function is written in the **unoptimized** recursive form. Read the xref:{page-version}@maintenance-operation::troubleshooting/optimizing-queries.adoc[Optimizing queries] page to understand how to write this more efficiently.
 
 [,typeql]
 ----
 match
 $user isa user, has id "u0003";
 (located: $user, location: $place) isa locating;
-fetch
-$place: name;
+fetch {
+  "direct-place": $place.name,
+  "transitive-places": [
+    match let $transitive in transitive_places_unoptimized($place);
+    fetch { "place": $transitive.name };
+  ],
+};
 ----
 
 [,json]
 ----
 {
-    "place": {
-        "name": [ { "value": "Newark", "value_type": "string", "type": { "label": "name", "root": "attribute" } } ],
-        "type": { "label": "city", "root": "entity" }
+  "direct-place": "Newark",
+  "transitive-places": [
+    {
+      "place": "United States"
+    },
+    {
+      "place": "New Jersey"
     }
-}
-{
-    "place": {
-        "name": [ { "value": "New Jersey", "value_type": "string", "type": { "label": "name", "root": "attribute" } } ],
-        "type": { "label": "state", "root": "entity" }
-    }
-}
-{
-    "place": {
-        "name": [ { "value": "United States", "value_type": "string", "type": { "label": "name", "root": "attribute" } } ],
-        "type": { "label": "country", "root": "entity" }
-    }
+  ]
 }
 ----
 
-To retrieve the first result (Newark), we do not need to use the rule at all, because the fact the user is located there is written to disk. To retrieve the second result (New Jersey), we need to apply the rule _once_. To retrieve the third result (United States) we need to apply the rule _twice_. Similarly, if we had another level in our location hierarchy (perhaps North America), we would need to apply the rule _three times_ to retrieve the result.
+Recursive functions have "self-terminating" behaviours that are guaranteed to reach a fixed point and finish their computation, under the condition that the function isn't continuously generating new values (or in the future - lists).
 
-While the rule `transitive-location` is the easiest to understand of the rules in the bookstore schema, it is also the one with the most complex behaviour. Generating transitive relations is not the only use case for rule recursion, but it is by far the most common. Depending on the depth of recursion and the size of the dataset, recursive rules can be computationally intensive to resolve, so they should be used with caution.
-
-// While the rule `transitive-location` is the easiest to understand of the rules in the bookstore schema, it is also the one with the most complex behaviour. Generating transitive relations is not the only use case for rule recursion, but it is by far the most common. Depending on the depth of recursion and the size of the dataset, recursive rules can be computationally intensive to resolve, so they should be used with caution. We will explore optimisation strategies for rules, including recursive ones, in Lesson 16 (coming soon).
+In other words, when using functions to simply modularize queries and invoke recursion without computing new data, functions will always terminate - even in the case of data cycles. Beware that passing an incrementing or decrementing integer argument does invalidate this guarantee - which might be what you want!
