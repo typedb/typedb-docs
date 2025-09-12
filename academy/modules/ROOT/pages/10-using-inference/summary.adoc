@@ -11,11 +11,6 @@
 * If the statement in the conclusion of a rule also appears in the condition of another rule, then the rules can be triggered in sequence to form a *chain* of logic.
 * If the statement in the conclusion of a rule also appears in its own condition, then the rule can *recursively* trigger itself.
 
-== xref:{page-version}@academy::10-using-inference/10.3-function-branching.adoc[Rule branching]
-
-* If two rules have the same conclusion and mutually exclusive conditions, then they represent two alternative *branches* of logic.
-* If two rules have the same conclusion but are not mutually exclusive, then both rules can be triggered simultaneously. If the conclusions generate identical data, then the data will only be generated once, and only if it doesn't already exist on disk.
-
 == Further learning
 
 [cols-3]

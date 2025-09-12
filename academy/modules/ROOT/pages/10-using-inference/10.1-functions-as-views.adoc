@@ -51,7 +51,7 @@ The addition of the verification check makes the query significantly more compli
 ----
 fun verified-reviews($book: book) -> { review }:
   match
-  $review isa review, has score $score;
+  $review isa review;
   rating ($review, $book);
   order-line ($order, $book);
   $_ isa action-execution ($user, $review), has timestamp $review-time;
@@ -124,7 +124,7 @@ With functions:
 ----
 with fun verified-user-reviews($user: user) -> { review }:
   match
-  $review isa review, has score $score;
+  $review isa review;
   rating ($review, $book);
   order-line ($order, $book);
   $_ isa action-execution ($user, $review), has timestamp $review-time;
