@@ -1,18 +1,20 @@
 #
-# Copyright (C) 2024 TypeDB
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
 #
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
+#   http://www.apache.org/licenses/LICENSE-2.0
 #
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
 #
 
 define
@@ -30,24 +32,26 @@ relation publication @abstract,
   plays review:reviewed,
   plays recommendation:recommended;
 
-relation book sub publication @abstract,
-  owns isbn-13 as isn,
+relation book @abstract,
+  sub publication,
+  owns isbn-13,
   owns isbn-10 @unique,
   owns year,
   owns page-count;
 
 relation hardback sub book,
-    owns stock;
+  owns stock;
 
 relation paperback sub book,
-    owns stock;
+  owns stock;
 
 relation ebook sub book;
 
-relation serial sub publication @abstract,
-    owns issn as isn,
-    owns next-issue-number,
-    owns next-issue-date;
+relation serial @abstract,
+  sub publication,
+  owns issn,
+  owns next-issue-number,
+  owns next-issue-date;
 
 relation newspaper sub serial;
 
@@ -56,122 +60,122 @@ relation magazine sub serial;
 relation journal sub serial;
 
 relation music-score sub publication,
-    owns ismn as isn,
-    owns year,
-    owns page-count,
-    owns stock;
+  owns ismn,
+  owns year,
+  owns page-count,
+  owns stock;
 
 entity contributor,
-    owns name,
-    plays contribution:contributor,
-    plays authoring:author,
-    plays editing:editor,
-    plays illustrating:illustrator;
+  owns name,
+  plays contribution:contributor,
+  plays authoring:author,
+  plays editing:editor,
+  plays illustrating:illustrator;
 
 entity company @abstract,
-    owns name;
+  owns name;
 
 entity publisher sub company,
-    plays publication:publisher;
+  plays publication:publisher;
 
 entity courier sub company,
-    plays delivery:deliverer;
+  plays delivery:deliverer;
 
 relation user,
-    relates location,
-    owns id @key,
-    owns name,
-    owns birth-date,
-    plays user-action:user,
-    plays recommendation:recipient;
+  relates location,
+  owns id @key,
+  owns name,
+  owns birth-date,
+  plays user-action:user,
+  plays recommendation:recipient;
 
 relation user-action @abstract,
-    relates user,
-    owns timestamp;
+  relates user,
+  owns timestamp;
 
 relation order sub user-action,
-    owns id @key,
-    owns status,
-    plays order-line:order,
-    plays delivery:delivered;
+  owns id @key,
+  owns status,
+  plays order-line:order,
+  plays delivery:delivered;
 
 relation review sub user-action,
-    relates reviewed,
-    owns id @key,
-    owns score,
-    owns verified;
+  relates reviewed,
+  owns id @key,
+  owns score,
+  owns verified;
 
 relation login sub user-action,
-    owns success;
+  owns success;
 
 entity promotion,
-    owns code @key,
-    owns name,
-    owns start-timestamp,
-    owns end-timestamp,
-    plays promotion-inclusion:promotion;
+  owns code @key,
+  owns name,
+  owns start-timestamp,
+  owns end-timestamp,
+  plays promotion-inclusion:promotion;
 
 relation address,
-    relates location,
-    owns street,
-    plays delivery:destination;
+  relates location,
+  owns street,
+  plays delivery:destination;
 
 relation place @abstract,
-    owns name;
+  owns name;
 
 relation city sub place,
-    relates location,
-    plays publication:location,
-    plays user:location,
-    plays address:location;
+  relates location,
+  plays publication:location,
+  plays user:location,
+  plays address:location;
 
 relation state sub place,
-    relates location,
-    plays city:location;
+  relates location,
+  plays city:location;
 
 relation country sub place,
-    relates location,
-    plays city:location,
-    plays state:location;
+  relates location,
+  plays city:location,
+  plays state:location;
 
 entity world,
-    plays country:location;
+  plays country:location;
 
 relation contribution,
-    relates contributor,
-    relates work;
+  relates contributor,
+  relates work;
 
 relation authoring sub contribution,
-    relates author as contributor;
+  relates author as contributor;
 
 relation editing sub contribution,
-    relates editor as contributor;
+  relates editor as contributor;
 
 relation illustrating sub contribution,
-    relates illustrator as contributor;
+  relates illustrator as contributor;
 
 relation promotion-inclusion,
-    relates promotion,
-    relates item,
-    owns discount;
+  relates promotion,
+  relates item,
+  owns discount;
 
 relation order-line,
-    relates order,
-    relates item,
-    owns quantity,
-    owns price;
+  relates order,
+  relates item,
+  owns quantity,
+  owns price;
 
 relation delivery,
-    relates deliverer,
-    relates delivered,
-    relates destination;
+  relates deliverer,
+  relates delivered,
+  relates destination;
 
 relation recommendation,
-    relates recommended,
-    relates recipient;
+  relates recommended,
+  relates recipient;
 
 attribute isn @abstract, value string;
-attribute isbn sub isn @abstract;
+attribute isbn @abstract, sub isn;
 attribute isbn-13 sub isbn;
 attribute isbn-10 sub isbn;
 attribute issn sub isn;
@@ -198,110 +202,3 @@ attribute start-timestamp, value datetime;
 attribute end-timestamp, value datetime;
 attribute status, value string @regex("^(paid|dispatched|delivered|returned|canceled)$");
 attribute success, value boolean;
-
-# rule review-verified-by-purchase:
-#     when {
-#         $review ($user, $product) isa review, has timestamp $review-time;
-#         $order ($user) isa order, has timestamp $order-time;
-#         ($order, $product) isa order-line;
-#         $review-time > $order-time;
-#     } then {
-#         $review has verified true;
-#     };
-
-# rule review-unverified:
-#     when {
-#         $review isa review;
-#         not { $review has verified true; };
-#     } then {
-#         $review has verified false;
-#     };
-
-# rule publication-recommendation-by-genre:
-#     when {
-#         $user isa user;
-#         $liked-publication isa publication;
-#         {
-#             $order ($user) isa order;
-#             ($order, $liked-publication) isa order-line;
-#         } or {
-#             ($user, $liked-publication) isa review,
-#                 has score >= 7;
-#         };
-#         $new-publication isa publication;
-#         not { {
-#             $order ($user) isa order;
-#             ($order, $new-publication) isa order-line;
-#         } or {
-#             ($user, $new-publication) isa review;
-#         }; };
-#         $liked-publication has genre $shared-genre;
-#         $new-publication has genre $shared-genre;
-#         not { {
-#             $shared-genre == "fiction";
-#         } or {
-#             $shared-genre == "nonfiction";
-#         }; };
-#     } then {
-#         (recommended: $new-publication, recipient: $user) isa recommendation;
-#     };
-
-# rule publication-recommendation-by-contributor:
-#     when {
-#         $user isa user;
-#         $liked-publication isa publication;
-#         {
-#             $order ($user) isa order;
-#             ($order, $liked-publication) isa order-line;
-#         } or {
-#             ($user, $liked-publication) isa review,
-#                 has score >= 7;
-#         };
-#         $new-publication isa publication;
-#         not { {
-#             $order ($user) isa order;
-#             ($order, $new-publication) isa order-line;
-#         } or {
-#             ($user, $new-publication) isa review;
-#         }; };
-#         ($liked-publication, $shared-contributor) isa contribution;
-#         ($new-publication, $shared-contributor) isa contribution;
-#     } then {
-#         (recommended: $new-publication, recipient: $user) isa recommendation;
-#     };
-
-# rule order-line-total-retail-price:
-#     when {
-#         $order has timestamp $order-time;
-#         $line ($order, $item) isa order-line;
-#         not {
-#             ($promotion, $item) isa promotion-inclusion;
-#             $promotion has start-timestamp <= $order-time,
-#                 has end-timestamp >= $order-time;
-#         };
-#         $item has price $retail-price;
-#         $line has quantity $quantity;
-#         ?line-total = $quantity * $retail-price;
-#     } then {
-#         $line has price ?line-total;
-#     };
-
-# rule order-line-total-discounted-price:
-#     when {
-#         $order has timestamp $order-time;
-#         $line ($order, $item) isa order-line;
-#         ($best-promotion, $item) isa promotion-inclusion, has discount $best-discount;
-#         $best-promotion has start-timestamp <= $order-time,
-#             has end-timestamp >= $order-time;
-#         not {
-#             ($other-promotion, $item) isa promotion-inclusion, has discount > $best-discount;
-#             $other-promotion has start-timestamp <= $order-time,
-#                 has end-timestamp >= $order-time;
-#         };
-#         $item has price $retail-price;
-#         ?discounted-price = round(100 * $retail-price * (1 - $best-discount)) / 100;
-#         $line has quantity $quantity;
-#         ?line-total = $quantity * ?discounted-price;
-#     } then {
-#         $line has price ?line-total;
-#     };

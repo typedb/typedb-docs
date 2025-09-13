@@ -3,15 +3,6 @@
 
 In the previous two lessons, we created and developed a data model for book data. In this lesson, we'll see how we can introduce type hierarchies into the model so that we can leverage inheritance polymorphism in our queries.
 
-.Data table
-[%collapsible]
-====
-[%header,format=csv]
-|===
-include::attachment$books.csv[]
-|===
-====
-
 .Lesson 9.3 schema
 [%collapsible]
 ====
@@ -19,53 +10,53 @@ include::attachment$books.csv[]
 ----
 define
 entity book,
-    owns isbn-13,
-    owns isbn-10,
-    owns title,
-    owns format,
-    owns page-count,
-    owns genre,
-    owns price,
-    owns stock,
-    plays contribution:work,
-    plays publishing:published;
+  owns isbn-13,
+  owns isbn-10,
+  owns title,
+  owns format,
+  owns page-count,
+  owns genre,
+  owns price,
+  owns stock,
+  plays contribution:work,
+  plays publishing:published;
 entity author,
-    owns name,
-    plays contribution:contributor;
+  owns name,
+  plays contribution:contributor;
 entity editor,
-    owns name,
-    plays contribution:contributor;
+  owns name,
+  plays contribution:contributor;
 entity illustrator,
-    owns name,
-    plays contribution:contributor;
+  owns name,
+  plays contribution:contributor;
 entity other-contributor,
-    owns name,
-    plays contribution:contributor;
+  owns name,
+  plays contribution:contributor;
 entity publisher,
-    owns name,
-    plays publishing:publisher;
+  owns name,
+  plays publishing:publisher;
 entity city,
-    owns name,
-    plays publishing:location,
-    plays locating:located;
+  owns name,
+  plays publishing:location,
+  plays locating:located;
 entity state,
-    owns name,
-    plays locating:location,
-    plays locating:located;
+  owns name,
+  plays locating:location,
+  plays locating:located;
 entity country,
-    owns name,
-    plays locating:location;
+  owns name,
+  plays locating:location;
 relation contribution,
-    relates contributor,
-    relates work;
+  relates contributor,
+  relates work;
 relation publishing,
-    relates publisher,
-    relates published,
-    relates location,
-    owns year;
+  relates publisher,
+  relates published,
+  relates location,
+  owns year;
 relation locating,
-    relates located,
-    relates location;
+  relates located,
+  relates location;
 attribute isbn-13, value string;
 attribute isbn-10, value string;
 attribute title, value string;
@@ -90,16 +81,16 @@ We'll begin with the bottom-up method. The entity types `city`, `state`, and `co
 define
 entity place @abstract;
 entity city sub place,
-    owns name,
-    plays publishing:location,
-    plays locating:located;
+  owns name,
+  plays publishing:location,
+  plays locating:located;
 entity state sub place,
-    owns name,
-    plays locating:location,
-    plays locating:located;
+  owns name,
+  plays locating:location,
+  plays locating:located;
 entity country sub place,
-    owns name,
-    plays locating:location;
+  owns name,
+  plays locating:location;
 ----
 
 Next, we must consider which properties of the subtypes are actually properties that should be inherited from the supertype. The first is ownership of `name`. All three subtypes own `name`, so we can move it to the supertype with no change in expressivity of the current model, however this is a significant change for the development of the model in the future. If we give ownership of `name` to `place`, not only will all three current subtypes inherit the ownership, all future subtypes will inherit it as well. For that reason, we should consider if _all_ kinds of places have names, not just the ones in the data model so far. Indeed, we decide that this is the case, so ownership of `name` is moved to the supertype.
@@ -116,11 +107,11 @@ None of these interfaces are implemented by all three subtypes, so it might seem
 ----
 define
 entity place @abstract,
-    owns name,
-    plays locating:location,
-    plays locating:located;
+  owns name,
+  plays locating:location,
+  plays locating:located;
 entity city sub place,
-    plays publishing:location;
+  plays publishing:location;
 entity state sub place;
 entity country sub place;
 ----
@@ -144,19 +135,19 @@ There is an additional hint that this field in the data table represents a type:
 ----
 define
 book sub entity,
-    abstract,
-    owns isbn-13,
-    owns isbn-10,
-    owns title,
-    owns page-count,
-    owns genre
-    owns price,
-    plays contribution:work,
-    plays publishing:published;
+  abstract,
+  owns isbn-13,
+  owns isbn-10,
+  owns title,
+  owns page-count,
+  owns genre
+  owns price,
+  plays contribution:work,
+  plays publishing:published;
 paperback sub book,
-    owns stock;
+  owns stock;
 hardback sub book,
-    owns stock;
+  owns stock;
 ebook sub book;
 ----
 
@@ -186,8 +177,8 @@ The current schema includes the types `author`, `editor`, `illustrator`, and `ot
 ----
 define
 entity contributor @abstract,
-    owns name,
-    plays contribution:contributor;
+  owns name,
+  plays contribution:contributor;
 entity author sub contributor;
 entity editor sub contributor;
 entity illustrator sub contributor;
@@ -200,8 +191,8 @@ However, this hierarchy includes the redundant representation `other-contributor
 ----
 define
 entity contributor,
-    owns name,
-    plays contribution:contributor;
+  owns name,
+  plays contribution:contributor;
 entity author sub contributor;
 entity editor sub contributor;
 entity illustrator sub contributor;

@@ -19,23 +19,23 @@ The first step is to determine what entity types exist in the data. If we examin
 ----
 define
 entity book,
-    owns isbn-13,
-    owns isbn-10,
-    owns title,
-    owns format,
-    owns author,
-    owns editor,
-    owns illustrator,
-    owns other-contributor,
-    owns publisher,
-    owns year,
-    owns city,
-    owns state,
-    owns country,
-    owns page-count,
-    owns genre,
-    owns price,
-    owns stock;
+  owns isbn-13,
+  owns isbn-10,
+  owns title,
+  owns format,
+  owns author,
+  owns editor,
+  owns illustrator,
+  owns other-contributor,
+  owns publisher,
+  owns year,
+  owns city,
+  owns state,
+  owns country,
+  owns page-count,
+  owns genre,
+  owns price,
+  owns stock;
 ----
 
 [NOTE]
@@ -57,15 +57,15 @@ These facts indicate that these concepts have identities not determined by their
 ----
 define
 entity book,
-    owns isbn-13,
-    owns isbn-10,
-    owns title,
-    owns format,
-    owns year,
-    owns page-count,
-    owns genre,
-    owns price,
-    owns stock;
+  owns isbn-13,
+  owns isbn-10,
+  owns title,
+  owns format,
+  owns year,
+  owns page-count,
+  owns genre,
+  owns price,
+  owns stock;
 entity author, owns name;
 entity editor, owns name;
 entity illustrator, owns name;
@@ -86,13 +86,13 @@ Now that properties have been moved from `book` to other entity types, we need a
 ----
 define
 relation contribution,
-    relates contributor,
-    relates work;
+  relates contributor,
+  relates work;
 relation publishing,
-    relates publisher,
-    relates published;
+  relates publisher,
+  relates published;
 entity book plays contribution:work,
-    plays publishing:published;
+  plays publishing:published;
 entity author plays contribution:contributor;
 entity editor plays contribution:contributor;
 entity illustrator plays contribution:contributor;
@@ -108,7 +108,7 @@ However, the connection from `city`, `state`, and `country` to `book` is less ob
 ----
 define
 relation publishing relates location,
-    owns year;
+  owns year;
 entity city plays publishing:location;
 entity state plays publishing:location;
 entity country plays publishing:location;

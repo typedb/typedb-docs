@@ -70,23 +70,23 @@ The PERA model is implemented in TypeDB through https://typedb.com/papers/typeql
 ----
 define
 entity book @abstract,
-    owns title,
-    owns price,
-    plays order-line:item;
+  owns title,
+  owns price,
+  plays order-line:item;
 entity hardback sub book,
-    owns stock;
+  owns stock;
 entity paperback sub book,
-    owns stock;
+  owns stock;
 entity ebook sub book;
 relation order-line,
-    relates order,
-    relates item,
-    owns quantity,
-    owns price;
+  relates order,
+  relates item,
+  owns quantity,
+  owns price;
 entity order,
-    owns id,
-    owns status,
-    plays order-line:order;
+  owns id,
+  owns status,
+  plays order-line:order;
 attribute title, value string;
 attribute price, value double;
 attribute stock, value integer;

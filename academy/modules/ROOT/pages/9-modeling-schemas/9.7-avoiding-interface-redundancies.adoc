@@ -3,15 +3,6 @@
 
 In the previous lesson, we learned how to use interface hierarchies in our schema to achieve different behaviours. In this lesson, we'll see how having multiple interfaces that fulfill the same behaviour damages the querying capabilities of the model.
 
-.Data table
-[%collapsible]
-====
-[%header,format=csv]
-|===
-include::attachment$books.csv[]
-|===
-====
-
 .Lesson 9.6 schema
 [%collapsible]
 ====
@@ -19,6 +10,7 @@ include::attachment$books.csv[]
 ----
 define
 entity book @abstract,
+  owns isbn, # abstract, but instantiated using isbn-10 or isbn-13
   owns isbn-13,
   owns isbn-10,
   owns title,
