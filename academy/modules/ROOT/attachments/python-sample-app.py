@@ -106,8 +106,8 @@ def print_book_details(driver) -> None:
             return
 
         print(f"\nFormat: {first['format']['label']}")
-        for attr in first["attributes"]:
-            print(f"{attr['type']['label'].replace('-', ' ').title().replace('Isbn ', 'ISBN-')}: {attr['value']}")
+        for (key, attr) in first["attributes"].items():
+            print(f"{key.replace('-', ' ').title().replace('Isbn ', 'ISBN-')}: {attr}")
 
         # contributors
         for doc in answers[1].as_concept_documents():
