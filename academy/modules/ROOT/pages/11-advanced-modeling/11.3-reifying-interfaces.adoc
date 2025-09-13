@@ -1,8 +1,8 @@
-= Lesson 12.3: Reifying interfaces
+= Lesson 11.3: Reifying interfaces
 
 == Reification and de-reification
 
-In xref:{page-version}@academy::12-advanced-modeling/12.1-using-dependent-types.adoc[Lesson 12.1], we saw how references between object types can be stored either as relation types or as role types, as illustrated in the following examples.
+In xref:{page-version}@academy::11-advanced-modeling/11.1-using-dependent-types.adoc[Lesson 11.1], we saw how references between object types can be stored either as relation types or as role types, as illustrated in the following examples.
 
 [,typeql]
 ----
@@ -45,7 +45,7 @@ relation review plays action-execution:action;
 entity user plays action-execution:executor;
 ----
 
-The type-theoretic version in xref:{page-version}@academy::12-advanced-modeling/12.1-using-dependent-types.adoc[Lesson 12.1] de-reified the relation type to the role type `review:reviewer`. This would leave the `timestamp` attribute type without an object type to own it, but this was solved by relocating it to `review`.
+The type-theoretic version in xref:{page-version}@academy::11-advanced-modeling/11.1-using-dependent-types.adoc[Lesson 11.1] de-reified the relation type to the role type `review:reviewer`. This would leave the `timestamp` attribute type without an object type to own it, but this was solved by relocating it to `review`.
 
 [,typeql]
 ----
@@ -90,7 +90,7 @@ entity book plays promotion:item;
 
 But neither `promotion` nor `book` can own `discount` without incurring information loss. A book may be in multiple promotions, and a promotion may contain multiple books. This means that neither has a one-to-one mapping onto the removed `promotion-inclusion` relation. As a result, this relation cannot be safely de-reified.
 
-Let's return to the definition of the `Promotion` class from xref:{page-version}@academy::12-advanced-modeling/12.1-using-dependent-types.adoc[Lesson 12.1], and now introduce a method that allows us to add books.
+Let's return to the definition of the `Promotion` class from xref:{page-version}@academy::11-advanced-modeling/11.1-using-dependent-types.adoc[Lesson 11.1], and now introduce a method that allows us to add books.
 
 [,python]
 ----
@@ -325,6 +325,6 @@ entity publisher plays book:publisher;
 entity city plays book:location;
 ----
 
-Here we have named the role for the city of the book's publication `book:location` in order to maximise the polymorphic querying capabilities of the model, as we learned in xref:{page-version}@academy::12-advanced-modeling/12.2-using-type-theoretic-relations.adoc[Lesson 12.2].
+Here we have named the role for the city of the book's publication `book:location` in order to maximise the polymorphic querying capabilities of the model, as we learned in xref:{page-version}@academy::11-advanced-modeling/11.2-using-type-theoretic-relations.adoc[Lesson 11.2].
 =====
 ====
