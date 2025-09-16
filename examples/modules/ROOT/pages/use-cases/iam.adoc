@@ -1,9 +1,58 @@
 = IAM
 
-[NOTE]
-====
-Coming soon.
-====
+TypeDB is an excellent database to model identity control, resources and permission systems. 
 
-[placeholder]
-Identity and Access Management (IAM) with TypeDB. 
+The https://github.com/typedb/typedb-examples/tree/master/use-cases/identity-and-access-management[TypeDB Examples] repository contains one such extensive example, which is described here.
+
+The IAM example is released as a schema and data file (note: good for demos, but not extremely scalable!). You can easily load the latest schema and dataset, either using TypeDB Cloud to create a server with the dataset preloaded, or using TypeDB Console:
+
+[,bash]
+----
+typdb console --username=<USERNAME> --address=<ADDRESS> --command="database create-init iam http://github.com/typedb/typedb-examples/releases/latest/download/iam-schema.tql http://github.com/typedb/typedb-examples/releases/latest/download/iam-data.tql"
+----
+
+== Schema
+
+This schema's primary purpose is to define and enforce permissions, ownership, and policies, including the crucial concept of segregation of duties. The schema's core is a network of relationships between subjects, objects, and actions, which are then used to grant or deny access and detect policy violations.
+
+=== Core Concepts
+
+**Key Entities**
+
+* Subjects: These are the entities that can perform actions. The schema defines two main types of subjects:
+** user: An individual, like an employee or a contractor.
+** user-group: A collection of users, like a business-unit or user-role.
+
+* Objects: These are the things that subjects can act upon. The schema distinguishes between:
+** resource: A single item, such as a file or a purchase-order.
+** resource-collection: A group of resources, like a directory or an application.
+
+* Actions: These are the operations that can be performed on objects, such as reading a file or creating a record. An action can be a single operation or a collection of them in an operation-set.
+
+* Access: This is the central relationship that combines an object with an action, defining a specific, granular permission. For example, the access to a specific file for the read action.
+
+**Key Relationships**
+
+* membership: Defines how subjects, objects, and actions can be grouped. For example, a user can be a group-member of a user-group, and a file can be a collection-member of a directory. This allows for hierarchical and nested permissions.
+
+* ownership: Tracks which subjects own other subjects or objects. This is useful for change requests and managing administrative rights.
+
+* direct-permission: This is how permissions are explicitly granted. It links a subject to an access (which, in turn, links an object to an action) and includes attributes like validity and review-date.
+
+* change-request & access-history: These relations provide an audit trail. A change-request models a request for a change in access, while access-history records every time a subject exercises an access, along with a timestamp.
+
+**Functions**
+
+* segregation-policy: This is a function for enforcing separation of duties. It defines pairs of actions that are mutually exclusive and cannot be performed by the same subject on the same object.
+  ** static-segregation-policy: Prevents a user from being granted two conflicting permissions at the same time.
+  ** dynamic-segregation-policy: Prevents a user from being granted a permission if they have already exercised a conflicting one.
+
+The schema also includes several functions that demonstrate the power of recursive queries. These functions simplify complex queries by:
+  ** Listing memberships and members of a group or collection, transitively using recursion
+  ** Determining permissions for a subject by traversing nested memberships (list_permissions).
+  ** Detecting policy violations by checking for conflicting permissions or historical access (violates_policies).
+
+
+== Dataset
+
+This example ships with a sample dataset containing Users, Groups, Group memberships, Operations, Permissions, and more. Feel free to play around and and explore!
