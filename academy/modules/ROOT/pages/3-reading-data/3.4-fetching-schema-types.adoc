@@ -17,59 +17,49 @@ fetch {
 };
 ----
 
-TODO: OUTPUT
-
 [,json]
 ----
 {
-    "book": {
-        "isbn": [
-            { "value": "9780060929794", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0060929790", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "title": [ { "value": "One Hundred Years of Solitude", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
+  "title": "Electron Backscatter Diffraction in Materials Science",
+  "isbn": [
+    "9780387881355",
+    "0387881352"
+  ]
 }
 {
-    "book": {
-        "isbn": [
-            { "value": "9780008627843", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0008627843", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "title": [ { "value": "The Hobbit", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "ebook", "root": "entity" }
-    }
+  "isbn": [
+    "9780060929794",
+    "0060929790"
+  ],
+  "title": "One Hundred Years of Solitude"
 }
 {
-    "book": {
-        "isbn": [
-            { "value": "9780387881355", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0387881352", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "title": [ { "value": "Electron Backscatter Diffraction in Materials Science", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "hardback", "root": "entity" }
-    }
+  "isbn": [
+    "9780008627843",
+    "0008627843"
+  ],
+  "title": "The Hobbit"
 }
 {
-    "book": {
-        "isbn": [
-            { "value": "9780195153446", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0195153448", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "title": [ { "value": "Classical Mythology", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
+  "isbn": [
+    "9780500026557",
+    "0500026556"
+  ],
+  "title": "Hokusai's Fuji"
 }
 {
-    "book": {
-        "isbn": [
-            { "value": "9780500026557", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0500026556", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "title": [ { "value": "Hokusai's Fuji", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
+  "isbn": [
+    "9780008627843",
+    "0008627843"
+  ],
+  "title": "The Hobbit"
+}
+{
+  "title": "Classical Mythology",
+  "isbn": [
+    "9780195153446",
+    "0195153448"
+  ]
 }
 ----
 
@@ -84,7 +74,7 @@ action-execution (executor: $user, action: $action);
 $rel links ($book, $action);
 $action isa! $action-type;   # new line
 fetch {
-  "isbn": $book.isbn,
+  "isbn": [ $book.isbn ],
   "title": $book.title,
   "action-type": $action-type
 };
@@ -93,16 +83,74 @@ fetch {
 
 If we run this new query, we now also retrieve the type of `$action`!
 
-TODO: output
-
 [,json]
 ----
-{ "action-type": { "label": "order" }, "isbn": ["9780060929794", "0060929790"], "title": "One Hundred Years of Solitude" }
-{ "action-type": { "label": "order" }, "isbn": ["9780008627843", "0008627843"], "title": "The Hobbit" }
-{ "action-type": { "label": "order" }, "isbn": ["9780387881355", "0387881352"], "title": "Electron Backscatter Diffraction in Materials Science" }
-{ "action-type": { "label": "review" }, "isbn": ["9780195153446", "0195153448"], "title": "Classical Mythology" }
-{ "action-type": { "label": "review" }, "isbn": ["9780500026557", "0500026556"], "title": "Hokusai's Fuji" }
-{ "action-type": { "label": "review" }, "isbn": ["9780008627843", "0008627843"], "title": "The Hobbit" }
+{
+  "title": "Electron Backscatter Diffraction in Materials Science",
+  "isbn": [
+    "9780387881355",
+    "0387881352"
+  ],
+  "action-type": {
+    "kind": "entity",
+    "label": "order"
+  }
+}
+{
+  "isbn": [
+    "9780060929794",
+    "0060929790"
+  ],
+  "title": "One Hundred Years of Solitude",
+  "action-type": {
+    "kind": "entity",
+    "label": "order"
+  }
+}
+{
+  "title": "The Hobbit",
+  "action-type": {
+    "kind": "entity",
+    "label": "order"
+  },
+  "isbn": [
+    "9780008627843",
+    "0008627843"
+  ]
+}
+{
+  "action-type": {
+    "kind": "entity",
+    "label": "review"
+  },
+  "title": "Hokusai's Fuji",
+  "isbn": [
+    "9780500026557",
+    "0500026556"
+  ]
+}
+{
+  "isbn": [
+    "9780008627843",
+    "0008627843"
+  ],
+  "action-type": {
+    "kind": "entity",
+    "label": "review"
+  },
+  "title": "The Hobbit"
+}
+{
+  "action-type": {
+    "kind": "entity",
+    "label": "review"
+  },
+  "isbn": [
+    "9780195153446",
+    "0195153448"
+  ],
+  "title": "Classical Mythology"
+}
 ----
 
 We have been able to retrieve this information by introducing a new `$action-type` variable in an additional statement.
@@ -134,7 +182,7 @@ $book isa book;
 $rel isa! $relation-type, links ($book, $action);
 $action isa! $action-type;
 fetch {
-  "isbn": $book.isbn,
+  "isbn": [$book.isbn],
   "title": $book.title,
   "action-type": $action-type,
   "relation-type": $relation-type,
@@ -248,10 +296,10 @@ fetch { "book-type" : $book_type };
 
 [,json]
 ----
-{ "book_type": { "label": "ebook", "kind": "entity" } }
-{ "book_type": { "label": "hardback", "kind": "entity" } }
-{ "book_type": { "label": "book", "kind": "entity" } }
-{ "book_type": { "label": "paperback", "kind": "entity" } }
+{ "book-type": { "kind": "entity", "label": "book" } }
+{ "book-type": { "kind": "entity", "label": "hardback" } }
+{ "book-type": { "kind": "entity", "label": "paperback" } }
+{ "book-type": { "kind": "entity", "label": "ebook" } }
 ----
 
 These are indeed the subtypes of `book`. We also retrieve the type `book` itself because it is trivially its own subtype. For this query, we've used the `sub` keyword, which matches subtypes of a given supertype. Unlike the `isa` keyword, both the subject and the object of `sub` statements must be *types*. In this case, we've variablized the subject of the `sub` statement to query subtypes, but we could also variablize the object to query supertypes. In the following example, we query the supertypes of `publisher`.
@@ -265,8 +313,8 @@ fetch { "supertype" : $supertype };
 
 [,json]
 ----
-{ "supertype": { "label": "publisher", "kind": "entity" } }
-{ "supertype": { "label": "company", "kind": "entity" } }
+{ "supertype": { "kind": "entity", "label": "company" } }
+{ "supertype": { "kind": "entity", "label": "publisher" } }
 ----
 
 If we would like to retrieve only _direct_ subtypes or supertypes of a type, we can instead use the `sub!` keyword, similar to the `isa!` keyword!
@@ -280,7 +328,7 @@ fetch { "supertype" : $supertype };
 
 [,json]
 ----
-{ "supertype": { "label": "company", "kind": "entity" } }
+{ "supertype": { "kind": "entity", "label": "company" } }
 ----
 
 .Exercise
@@ -333,14 +381,12 @@ match promotion owns $attribute;
 fetch { "attribute-type": $attribute };
 ----
 
-TODO: output
-
 [,json]
 ----
-{ "attribute-type": { "label": "code", "kind": "attribute" } }
-{ "attribute-type": { "label": "start-timestamp", "kind": "attribute" } }
-{ "attribute-type": { "label": "end-timestamp", "kind": "attribute" } }
-{ "attribute-type": { "label": "name", "kind": "attribute" } }
+{ "attribute-type": { "kind": "attribute", "label": "code", "valueType": "string" } }
+{ "attribute-type": { "kind": "attribute", "label": "name", "valueType": "string" } }
+{ "attribute-type": { "kind": "attribute", "label": "start-timestamp", "valueType": "datetime" } }
+{ "attribute-type": { "kind": "attribute", "label": "end-timestamp", "valueType": "datetime" } }
 ----
 
 To query ownerships, we use the `owns` keyword. As with the `sub` keyword, we can invert the intent of the statement by variablizing the object instead of the subject. We do this in the next query to retrieve the list of types that own the attribute type `isbn-13`.
@@ -351,14 +397,12 @@ match $type owns isbn-13;
 fetch { "type" : $type };
 ----
 
-TODO: output
-
 [,json]
 ----
-{ "type": { "label": "ebook", "kind": "entity" } }
-{ "type": { "label": "hardback", "kind": "entity" } }
-{ "type": { "label": "book", "kind": "entity" } }
-{ "type": { "label": "paperback", "kind": "entity" } }
+{ "type": { "kind": "entity", "label": "book" } }
+{ "type": { "kind": "entity", "label": "hardback" } }
+{ "type": { "kind": "entity", "label": "paperback" } }
+{ "type": { "kind": "entity", "label": "ebook" } }
 ----
 
 .Exercise
@@ -391,12 +435,10 @@ match locating relates $role;
 fetch { "role" : $role };
 ----
 
-TODO: output
-
 [,json]
 ----
-{ "role": { "label": "locating:located", "kind": "relation:role" } }
-{ "role": { "label": "locating:location", "kind": "relation:role" } }
+{ "role": { "kind": "relation:role", "label": "locating:located" } }
+{ "role": { "kind": "relation:role", "label": "locating:location" } }
 ----
 
 
@@ -412,17 +454,15 @@ match $type plays locating:located;
 fetch { "type" : $type };
 ----
 
-TODO: output
-
 [,json]
 ----
-{ "type": { "label": "place", "kind": "entity" } }
-{ "type": { "label": "publication", "kind": "entity" } }
-{ "type": { "label": "user", "kind": "entity" } }
-{ "type": { "label": "city", "kind": "entity" } }
-{ "type": { "label": "state", "kind": "entity" } }
-{ "type": { "label": "country", "kind": "entity" } }
-{ "type": { "label": "address", "kind": "entity" } }
+{ "type": { "kind": "entity", "label": "publication" } }
+{ "type": { "kind": "entity", "label": "user" } }
+{ "type": { "kind": "entity", "label": "address" } }
+{ "type": { "kind": "entity", "label": "place" } }
+{ "type": { "kind": "entity", "label": "city" } }
+{ "type": { "kind": "entity", "label": "state" } }
+{ "type": { "kind": "entity", "label": "country" } }
 ----
 
 Here we have queried the types that play the `located` role in `locating`. As with the `sub` and `owns` keywords, we can also invert the intent of `plays` [#_footnote_1]#statements#^<<_footnotes,1>>^. In the next query, we do so in order to retrieve the list of roles that `book` plays.
@@ -433,16 +473,14 @@ match book plays $role;
 fetch { "role" : $role };  
 ----
 
-TODO: output
-
 [,json]
 ----
-{ "role": { "label": "rating:rated", "kind": "relation:role" } }
-{ "role": { "label": "publishing:published", "rroleoot": "relation:role" } }
-{ "role": { "label": "recommendation:recommended", "role": "relation:role" } }
-{ "role": { "label": "order-line:item", "role": "relation:role" } }
-{ "role": { "label": "contribution:work", "role": "relation:role" } }
-{ "role": { "label": "promotion-inclusion:item", "role": "relation:role" } }
+{ "role": { "kind": "relation:role", "label": "contribution:work" } }
+{ "role": { "kind": "relation:role", "label": "publishing:published" } }
+{ "role": { "kind": "relation:role", "label": "promotion-inclusion:item" } }
+{ "role": { "kind": "relation:role", "label": "order-line:item" } }
+{ "role": { "kind": "relation:role", "label": "rating:rated" } }
+{ "role": { "kind": "relation:role", "label": "recommendation:recommended" } }
 ----
 
 .Exercise

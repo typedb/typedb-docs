@@ -161,7 +161,7 @@ In order to insert a new attribute, we have to match the attribute's existing ow
 match
 $book isa paperback, has isbn-13 "9780486282114";
 $publisher isa publisher, has name "Dover Publications";
-$publication isa publication, has year 2002;
+$publication isa publication, has year 1994;
 publishing (published: $book, publisher: $publisher, publication: $publication);
 $city isa city, has name "New York City";
 insert
@@ -180,12 +180,12 @@ $book has stock 20;
 ----
 __-> DON'T COMMIT YET__
 
-Likewise, the following query would create a `locating` relation for every `publication` entity with a `year` attribute equal to `2002`.
+Likewise, the following query would create a `locating` relation for every `publication` entity with a `year` attribute equal to `1994`.
 
 [,typeql]
 ----
 match
-$publication isa publication, has year 2002;
+$publication isa publication, has year 1994;
 $city isa city, has name "New York City";
 insert
 locating (location: $city, located: $publication) isa locating;
@@ -240,7 +240,7 @@ fetch {
 .Hint 2
 [%collapsible]
 =====
-Make sure to identify Fiona by her unique user ID `"u0012"` so as not to match other users with the same name!
+Make sure to identify Fiona by her unique user ID `"u0010"` so as not to match other users with the same name!
 =====
 
 .Sample solution

@@ -34,30 +34,29 @@ fetch { "title": $book.title, "page-count": $book.page-count };
 
 We have just changed the type of `$book` from `paperback` to `book`. Now if we run this query, the results include paperbacks, hardbacks, and ebooks!
 
-TODO: OUTPUTS
-
 [,json]
 ----
-{ "title": "The Hobbit", "page-count": 310 }
+{ "title": "Under the Black Flag: The Romance and the Reality of Life Among the Pirates", "page-count": 296 }
+{ "title": "Electron Backscatter Diffraction in Materials Science", "page-count": 425 }
+{ "title": "The Complete Calvin and Hobbes", "page-count": 1451 }
+{ "title": "Classical Mythology", "page-count": 820 }
+{ "title": "The Mummies of Urumchi", "page-count": 240 }
+{ "title": "Business Secrets of The Pharoahs", "page-count": 260 }
+{ "title": "To Kill a Mockingbird", "page-count": 281 }
+{ "title": "Pride and Prejudice", "page-count": 295 }
+{ "title": "Interpretation of Electron Diffraction Patterns", "page-count": 199 }
+{ "title": "Hokusai's Fuji", "page-count": 416 }
+{ "title": "Great Discoveries in Medicine", "page-count": 352 }
+{ "title": "The Motorcycle Diaries: A Journey Around South America", "page-count": 160 }
+{ "title": "The Hitchhiker's Guide to the Galaxy", "page-count": 215 }
+{ "title": "One Hundred Years of Solitude", "page-count": 458 }
+{ "title": "Pet Sematary", "page-count": 374 }
+{ "title": "Physical Principles of Electron Microscopy: An Introduction to TEM, SEM, and AEM", "page-count": 196 }
 { "title": "The Iron Giant", "page-count": 79 }
 { "title": "Fundamentals of Data Engineering", "page-count": 450 }
 { "title": "The Odyssey", "page-count": 656 }
 { "title": "Dune", "page-count": 624 }
-{ "title": "Physical Principles of Electron Microscopy: An Introduction to TEM, SEM, and AEM", "page-count": 196 }
-{ "title": "Under the Black Flag: The Romance and the Reality of Life Among the Pirates", "page-count": 296 }
-{ "title": "Electron Backscatter Diffraction in Materials Science", "page-count": 425 }
-{ "title": "The Complete Calvin and Hobbes", "page-count": 1451 }
-{ "title": "Great Discoveries in Medicine", "page-count": 352 }
-{ "title": "Hokusai's Fuji", "page-count": 416 }
-{ "title": "Interpretation of Electron Diffraction Patterns", "page-count": 199 }
-{ "title": "Pride and Prejudice", "page-count": 295 }
-{ "title": "To Kill a Mockingbird", "page-count": 281 }
-{ "title": "Business Secrets of The Pharoahs", "page-count": 260 }
-{ "title": "The Mummies of Urumchi", "page-count": 240 }
-{ "title": "Classical Mythology", "page-count": 820 }
-{ "title": "One Hundred Years of Solitude", "page-count": 458 }
-{ "title": "The Hitchhiker's Guide to the Galaxy", "page-count": 215 }
-{ "title": "The Motorcycle Diaries: A Journey Around South America", "page-count": 160 }
+{ "title": "The Hobbit", "page-count": 310 }
 ----
 
 This is because TypeDB applies *type inference* to queries in order to automatically resolve the possible return types of variables in a query based on the type definitions in the *schema*. This means that, if we add new types of books to the schema, the query will also return them without needing to be updated!
@@ -91,24 +90,23 @@ match $book isa paperback;
 fetch { "isbn": [ $book.isbn ] };
 ----
 
-TODO: OUTPUT
-
 [,json]
 ----
-["9780500291221", "0500291225"]
-["9780500026557", "0500026556"]
-["9781489962287", "148996228X"]
-["9780553212150", "055321215X"]
-["9780446310789", "0446310786"]
-["9798691153570"]
-["9780393045215", "0393045218"]
 ["9780195153446", "0195153448"]
-["9780060929794", "0060929790"]
-["9780671461492", "0671461494"]
+["9780393045215", "0393045218"]
+["9798691153570"]
+["9780446310789", "0446310786"]
+["9780553212150", "055321215X"]
+["9781489962287", "148996228X"]
+["9780500026557", "0500026556"]
+["9780500291221", "0500291225"]
 ["9781859840665", "1859840663"]
+["9780671461492", "0671461494"]
+["9780060929794", "0060929790"]
+["9780451162076", "0451162072"]
 ----
 
-As we can see from the results, we have returned instances of both `isbn-13` and `isbn-10`, the two subtypes of `isbn`. Once again, the supertype is abstract in this case and so cannot be directly returned.
+As we can see from the results, we have returned instances of both `isbn-13` and `isbn-10` when available, the two subtypes of `isbn`. Once again, the supertype is abstract in this case and so cannot be directly returned.
 
 .Exercise
 [caption=""]
@@ -135,14 +133,12 @@ We can also make use of inheritance polymorphism when constraining the values of
 [,typeql]
 ----
 match $book isa book, has isbn "0500026556";
-fetch { "title": $book.title, "stock": $book.stock };
+fetch { "title": $book.title };
 ----
-
-TODO: OUTPUT
 
 [,json]
 ----
-{ "title": "Hokusai's Fuji", "stock": 11 }
+{ "title": "Hokusai's Fuji" }
 ----
 
 == Interface polymorphism
@@ -157,7 +153,7 @@ match
 $book isa paperback, has isbn-13 "9780446310789";
 $line isa order-line (order: $order, item: $book);
 fetch {
-  "id": $order:.id,
+  "id": $order.id,
   "quantity": $line.quantity,
 };
 ----
@@ -170,39 +166,19 @@ In this query, we specify the type of `$book` to be `paperback` and the type of 
 
 This is more than enough information for TypeDB to infer the type of `$order`, which we can see by running this query.
 
-TODO: OUTPUT
-
 [,json]
 ----
 {
-    "line": {
-        "quantity": [ { "value": 1, "value_type": "integer", "type": { "label": "quantity", "root": "attribute" } } ],
-        "type": { "label": "order-line", "root": "relation" }
-    },
-    "order": {
-        "id": [ { "value": "o0016", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
-        "type": { "label": "order", "root": "entity" }
-    }
+  "id": "o0016",
+  "quantity": 1
 }
 {
-    "line": {
-        "quantity": [ { "value": 1, "value_type": "integer", "type": { "label": "quantity", "root": "attribute" } } ],
-        "type": { "label": "order-line", "root": "relation" }
-    },
-    "order": {
-        "id": [ { "value": "o0032", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
-        "type": { "label": "order", "root": "entity" }
-    }
+  "id": "o0032",
+  "quantity": 1
 }
 {
-    "line": {
-        "quantity": [ { "value": 2, "value_type": "integer", "type": { "label": "quantity", "root": "attribute" } } ],
-        "type": { "label": "order-line", "root": "relation" }
-    },
-    "order": {
-        "id": [ { "value": "o0036", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
-        "type": { "label": "order", "root": "entity" }
-    }
+  "quantity": 2,
+  "id": "o0036"
 }
 ----
 
@@ -216,8 +192,6 @@ fetch { $x.* };
 ----
 
 In this case, `$x` can be resolved to any type that both plays `located` in `locating`. Essentially, this query will return the attributes of anything located in Kansas City regardless of what it is. If we run this query, we see that we return instances of `publication` and `address`!
-
-TODO: OUTPUT
 
 [,json]
 ----
@@ -334,7 +308,7 @@ $book isa book;
 action-execution (executor: $user, action: $action);
 $rel links ($book, $action);
 fetch {
-  "isbn": $book.isbn,
+  "isbn": [ $book.isbn ],
   "title": $book.title
 };
 ----
@@ -343,55 +317,26 @@ TODO: OUTPUT
 
 [,json]
 ----
+
 {
-    "book": {
-        "isbn": [
-            { "value": "9780008627843", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0008627843", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "title": [ { "value": "The Hobbit", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "ebook", "root": "entity" }
-    }
+  "title": "Electron Backscatter Diffraction in Materials Science",
+  "isbn": ["0387881352", "9780387881355"],
 }
 {
-    "book": {
-        "isbn": [
-            { "value": "9780060929794", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0060929790", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "title": [ { "value": "One Hundred Years of Solitude", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
+  "title": "One Hundred Years of Solitude",
+  "isbn": ["0060929790", "9780060929794"],
 }
 {
-    "book": {
-        "isbn": [
-            { "value": "9780387881355", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0387881352", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "title": [ { "value": "Electron Backscatter Diffraction in Materials Science", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "hardback", "root": "entity" }
-    }
+  "title": "The Hobbit",
+  "isbn": ["0008627843", "9780008627843"]
 }
 {
-    "book": {
-        "isbn": [
-            { "value": "9780195153446", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0195153448", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "title": [ { "value": "Classical Mythology", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
+  "title": "Hokusai's Fuji",
+  "isbn": ["0500026556", "9780500026557"],
 }
 {
-    "book": {
-        "isbn": [
-            { "value": "9780500026557", "value_type": "string", "type": { "label": "isbn-13", "root": "attribute" } },
-            { "value": "0500026556", "value_type": "string", "type": { "label": "isbn-10", "root": "attribute" } }
-        ],
-        "title": [ { "value": "Hokusai's Fuji", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
+  "title": "Classical Mythology"
+  "isbn": ["0195153448", "9780195153446"],
 }
 ----
 

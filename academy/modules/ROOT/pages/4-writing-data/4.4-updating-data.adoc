@@ -8,7 +8,7 @@ To update the values of attributes, we use chain Delete and Insert clauses. In e
 ----
 match
 $order-38 isa order, has id "o0038";
-$dispatched "dispatched" isa status;
+$dispatched isa status "dispatched";
 delete
 has $dispatched of $order-38;
 ----
@@ -29,7 +29,7 @@ When run one after the other, they replace the existing order status "dispatched
 ----
 match
 $order-38 isa order, has id "o0038";
-$dispatched "dispatched" isa status;
+$dispatched isa status "dispatched";
 delete
 has $dispatched of $order-38;
 insert
@@ -58,17 +58,17 @@ When updating an attribute ownership (or indeed, a role player in an existing re
 [,typeq]
 ----
 match
-$book isa book;
-update $book has genre "unknown";
+$book isa paperback, has isbn-10 "0060929790";
+update $book has stock 20;
 ----
 
-The `update` clause will, for each statement written, set the new attribute to be the only attribute owned by the owner. In this example, for any book that has no genre, it sets the genre to "unknown" - and for any book that has any other genre, it will replace it with "unknown".
+The `update` clause will, for each statement written, set the new attribute to be the only attribute owned by the owner. In this example, for the specific paperback book, it sets the stock to 25, replacing any existing stock value.
 
 
 .Exercise
 [caption=""]
 ====
-Use a match-delete-insert query pipeline to decrease the `stock` attribute of _Pride and Prejudice_ by one. In order to do so, you will need to first retrieve its current value.
+Use a match-delete-insert query pipeline to decrease the `stock` attribute of paperback _Pride and Prejudice_ by one. In order to do so, you will need to first retrieve its current value.
 
 .Hint
 [%collapsible]
@@ -77,9 +77,9 @@ To get the correct ISBN and current stock, you can use the following query.
 [,typeql]
 ----
 match
-$pride-prejudice isa book, has title "Pride and Prejudice";
+$pride-prejudice isa paperback, has title "Pride and Prejudice";
 fetch {
-  "isbn": $pride-prejudice.isbn,
+  "isbn": [ $pride-prejudice.isbn ],
   "stock": $pride-prejudice.stock,
 };
 ----
@@ -91,8 +91,8 @@ fetch {
 [,typeql]
 ----
 match
-$pride-prejudice isa book, has isbn "9780553212150";
-$stock 15 isa stock;
+$pride-prejudice isa paperback, has isbn "9780553212150";
+$stock isa stock 15;
 delete
 has $stock of $pride-prejudice;
 insert

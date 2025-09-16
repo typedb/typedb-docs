@@ -29,7 +29,7 @@ $odyssey has stock 20;
 ----
 match
 $book isa book, has $isbn;
-$isbn "9781489962287" isa isbn;
+$isbn isa isbn "9781489962287";
 delete
 has $isbn of $book;
 ----
@@ -38,7 +38,7 @@ has $isbn of $book;
 ----
 match
 $order-28 isa order, has id "o0028";
-$paid "paid" isa status;
+$paid isa status "paid";
 delete
 has $paid of $order-28;
 insert

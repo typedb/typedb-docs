@@ -91,14 +91,14 @@ Write a query to define three new relation types and their roles:
 [,typeql]
 ----
 define
-locating sub relation,
+relation locating,
     relates location,
     relates located;
-delivery sub relation,
+relation delivery,
     relates deliverer,
     relates delivered,
     relates destination;
-promotion-inclusion sub relation,
+relation promotion-inclusion,
     relates promotion,
     relates item;
 ----

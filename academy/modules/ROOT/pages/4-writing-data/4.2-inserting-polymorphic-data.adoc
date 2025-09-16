@@ -87,13 +87,13 @@ In addition to inferring types of referenced data, TypeDB is able to infer the r
 [,typeql]
 ----
 match
-$user-13 isa user, has id "u0013";
+$user-11 isa user, has id "u0011";
 $frankenstein isa book, has isbn-13 "9780486282114";
 insert
 $review isa review, has id "r0034",
     has score 8;
 rating ($review, $frankenstein);
-action-execution ($review, $user-13),
+action-execution ($review, $user-11),
   has timestamp 2024-03-19T03:32:00.073;
 ----
 __-> Commit!__
@@ -140,7 +140,7 @@ match
 $sff-festival isa promotion, has code "SFF24";
 $frankenstein isa book, has isbn-13 "9780486282114";
 insert
-promption-inclusion ($sff-festival, $frankenstein),
+promotion-inclusion ($sff-festival, $frankenstein),
   has discount 0.15;
 ----
 __-> Commit__

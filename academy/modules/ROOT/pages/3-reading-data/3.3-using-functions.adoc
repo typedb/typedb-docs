@@ -12,8 +12,6 @@ $user isa user, has id "u0003";
 fetch { "name": $place.name };
 ----
 
-TODO: OUTPUT
-
 [,json]
 ----
 { "name": "Newark" }
@@ -48,7 +46,7 @@ fetch {
   "name": $place.name,
   "parent-places": [
     match let $parent in transitive_places($place);
-    fetch { $parent.name };
+    fetch { "name": $parent.name };
   ]
 };
 ----

@@ -18,13 +18,13 @@ Function bodies contain any **read-only** query pipeline, which may themselves i
 [,typeql]
 ----
 define
-fun transitive_places($place: place) -> { place }:
+fun transitive_places_new($place: place) -> { place }:
   match
     {
       locating (located: $place, location: $parent);
     } or {
       locating (located: $place, location: $middle);
-      let $parent in transitive_places($middle);
+      let $parent in transitive_places_new($middle);
     };
   return { $parent };
 ----
@@ -60,7 +60,7 @@ fun transitive_place_pairs($place: place) -> { place, place }:
       locating (located: $place, location: $parent);
     } or {
       locating (located: $place, location: $middle);
-      let $parent in transitive_places($middle);
+      let $parent in transitive_places_new($middle);
     };
   return { $parent, $place }; # return function argument as well
 ----

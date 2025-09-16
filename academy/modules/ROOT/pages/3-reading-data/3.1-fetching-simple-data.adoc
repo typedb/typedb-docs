@@ -24,21 +24,20 @@ The `match` clause is equivalent to a *selection* in SQL. It identifies what ent
 
 Using *read* transaction, *run* this query. You should see the following result.
 
-TODO: OUTPUTS
-
 [,json]
 ----
-{ "title": "The Mummies of Urumchi", "page-count": 240 }
 { "title": "Classical Mythology", "page-count": 820 }
-{ "title": "To Kill a Mockingbird", "page-count": 281 }
+{ "title": "The Mummies of Urumchi", "page-count": 240 }
 { "title": "Business Secrets of The Pharoahs", "page-count": 260 }
-{ "title": "Hokusai's Fuji", "page-count": 416 }
+{ "title": "To Kill a Mockingbird", "page-count": 281 }
 { "title": "Pride and Prejudice", "page-count": 295 }
 { "title": "Interpretation of Electron Diffraction Patterns", "page-count": 199 }
-{ "title": "The Motorcycle Diaries: A Journey Around South America", "page-count": 160 }
+{ "title": "Hokusai's Fuji", "page-count": 416 }
 { "title": "Great Discoveries in Medicine", "page-count": 352 }
-{ "title": "One Hundred Years of Solitude", "page-count": 458 }
+{ "title": "The Motorcycle Diaries: A Journey Around South America", "page-count": 160 }
 { "title": "The Hitchhiker's Guide to the Galaxy", "page-count": 215 }
+{ "title": "One Hundred Years of Solitude", "page-count": 458 }
+{ "title": "Pet Sematary", "page-count": 374 }
 ----
 
 All Fetch queries return results in JSON format, where the output format matches the structure you write in the fetch clause syntax.
@@ -86,86 +85,55 @@ fetch {
 
 If we run this query, we see the following result.
 
-TODO: update output
-
 [,json]
 ----
 {
-    "book": {
-        "page-count": [ { "value": 352, "value_type": "integer", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "Great Discoveries in Medicine", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
+  "page-count": 820,
+  "title": "Classical Mythology"
 }
 {
-    "book": {
-        "page-count": [ { "value": 416, "value_type": "integer", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "Hokusai's Fuji", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
+  "title": "The Mummies of Urumchi",
+  "page-count": 240
 }
 {
-    "book": {
-        "page-count": [ { "value": 199, "value_type": "integer", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "Interpretation of Electron Diffraction Patterns", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
+  "title": "Business Secrets of The Pharoahs",
+  "page-count": 260
 }
 {
-    "book": {
-        "page-count": [ { "value": 295, "value_type": "integer", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "Pride and Prejudice", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
+  "page-count": 281,
+  "title": "To Kill a Mockingbird"
 }
 {
-    "book": {
-        "page-count": [ { "value": 281, "value_type": "integer", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "To Kill a Mockingbird", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
+  "title": "Pride and Prejudice",
+  "page-count": 295
 }
 {
-    "book": {
-        "page-count": [ { "value": 260, "value_type": "integer", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "Business Secrets of The Pharoahs", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
+  "title": "Interpretation of Electron Diffraction Patterns",
+  "page-count": 199
 }
 {
-    "book": {
-        "page-count": [ { "value": 240, "value_type": "integer", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "The Mummies of Urumchi", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
+  "title": "Hokusai's Fuji",
+  "page-count": 416
 }
 {
-    "book": {
-        "page-count": [ { "value": 820, "value_type": "integer", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "Classical Mythology", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
+  "page-count": 352,
+  "title": "Great Discoveries in Medicine"
 }
 {
-    "book": {
-        "page-count": [ { "value": 458, "value_type": "integer", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "One Hundred Years of Solitude", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
+  "page-count": 160,
+  "title": "The Motorcycle Diaries: A Journey Around South America"
 }
 {
-    "book": {
-        "page-count": [ { "value": 215, "value_type": "integer", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "The Hitchhiker's Guide to the Galaxy", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
+  "title": "The Hitchhiker's Guide to the Galaxy",
+  "page-count": 215
 }
 {
-    "book": {
-        "page-count": [ { "value": 160, "value_type": "integer", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "The Motorcycle Diaries: A Journey Around South America", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
+  "title": "One Hundred Years of Solitude",
+  "page-count": 458
+}
+{
+  "title": "Pet Sematary",
+  "page-count": 374
 }
 ----
 
@@ -214,16 +182,11 @@ fetch {
 ----
 
 
-TODO: OUTPUT
-
 [,json]
 ----
 {
-    "book": {
-        "page-count": [ { "value": 281, "value_type": "integer", "type": { "label": "page-count", "root": "attribute" } } ],
-        "title": [ { "value": "To Kill a Mockingbird", "value_type": "string", "type": { "label": "title", "root": "attribute" } } ],
-        "type": { "label": "paperback", "root": "entity" }
-    }
+  "page-count": 281,
+  "title": "To Kill a Mockingbird"
 }
 ----
 
@@ -321,39 +284,19 @@ fetch {
 };
 ----
 
-TODO: UPDATE OUTPUT
-
 [,json]
 ----
 {
-    "line": {
-        "quantity": [ { "value": 1, "value_type": "integer", "type": { "label": "quantity", "root": "attribute" } } ],
-        "type": { "label": "order-line", "root": "relation" }
-    },
-    "order": {
-        "id": [ { "value": "o0016", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
-        "type": { "label": "order", "root": "entity" }
-    }
+  "id": "o0016",
+  "quantity": 1
 }
 {
-    "line": {
-        "quantity": [ { "value": 1, "value_type": "integer", "type": { "label": "quantity", "root": "attribute" } } ],
-        "type": { "label": "order-line", "root": "relation" }
-    },
-    "order": {
-        "id": [ { "value": "o0032", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
-        "type": { "label": "order", "root": "entity" }
-    }
+  "quantity": 1,
+  "id": "o0032"
 }
 {
-    "line": {
-        "quantity": [ { "value": 2, "value_type": "integer", "type": { "label": "quantity", "root": "attribute" } } ],
-        "type": { "label": "order-line", "root": "relation" }
-    },
-    "order": {
-        "id": [ { "value": "o0036", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
-        "type": { "label": "order", "root": "entity" }
-    }
+  "id": "o0036",
+  "quantity": 2
 }
 ----
 
@@ -417,63 +360,25 @@ fetch {
 ----
 
 
-TODO: OUTPUT
-
 [,json]
 ----
 {
-    "address": {
-        "street": [ { "value": "464 Pilgrim Lane", "value_type": "string", "type": { "label": "street", "root": "attribute" } } ],
-        "type": { "label": "address", "root": "entity" }
-    },
-    "courier": {
-        "name": [ { "value": "FedEx", "value_type": "string", "type": { "label": "name", "root": "attribute" } } ],
-        "type": { "label": "courier", "root": "entity" }
-    },
-    "line": {
-        "quantity": [ { "value": 1, "value_type": "integer", "type": { "label": "quantity", "root": "attribute" } } ],
-        "type": { "label": "order-line", "root": "relation" }
-    },
-    "order": {
-        "id": [ { "value": "o0016", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
-        "type": { "label": "order", "root": "entity" }
-    }
+  "name": "FedEx",
+  "street": "464 Pilgrim Lane",
+  "quantity": 1,
+  "id": "o0016"
 }
 {
-    "address": {
-        "street": [ { "value": "984 Williams Street", "value_type": "string", "type": { "label": "street", "root": "attribute" } } ],
-        "type": { "label": "address", "root": "entity" }
-    },
-    "courier": {
-        "name": [ { "value": "FedEx", "value_type": "string", "type": { "label": "name", "root": "attribute" } } ],
-        "type": { "label": "courier", "root": "entity" }
-    },
-    "line": {
-        "quantity": [ { "value": 1, "value_type": "integer", "type": { "label": "quantity", "root": "attribute" } } ],
-        "type": { "label": "order-line", "root": "relation" }
-    },
-    "order": {
-        "id": [ { "value": "o0032", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
-        "type": { "label": "order", "root": "entity" }
-    }
+  "name": "FedEx",
+  "id": "o0032",
+  "quantity": 1,
+  "street": "984 Williams Street"
 }
 {
-    "address": {
-        "street": [ { "value": "20 Ridge Lane", "value_type": "string", "type": { "label": "street", "root": "attribute" } } ],
-        "type": { "label": "address", "root": "entity" }
-    },
-    "courier": {
-        "name": [ { "value": "DHL", "value_type": "string", "type": { "label": "name", "root": "attribute" } } ],
-        "type": { "label": "courier", "root": "entity" }
-    },
-    "line": {
-        "quantity": [ { "value": 2, "value_type": "integer", "type": { "label": "quantity", "root": "attribute" } } ],
-        "type": { "label": "order-line", "root": "relation" }
-    },
-    "order": {
-        "id": [ { "value": "o0036", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
-        "type": { "label": "order", "root": "entity" }
-    }
+  "quantity": 2,
+  "name": "DHL",
+  "id": "o0036",
+  "street": "20 Ridge Lane"
 }
 ----
 

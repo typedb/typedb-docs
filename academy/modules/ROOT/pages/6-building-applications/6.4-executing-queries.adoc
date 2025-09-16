@@ -71,8 +71,8 @@ with TypeDB.driver(address, credentials, options) as driver:
         tx.query(
             """
             match $retracted_review isa review, has id "r0001";
-                  $relation ($retracted_review) isa relation;
-            delete $relation;
+                  $rel links ($retracted_review);
+            delete $rel;
             """
         )
         tx.query(

@@ -50,10 +50,10 @@ The values of string attribute types can be constrained with the `@values` or th
 ----
 define
 attribute status, value string @values("paid", "dispatched", "delivered", "returned", "canceled");
-attribute isbn-10, value string @regex("^(?:ISBN(?:-10)?:?\s)?(?=[0-9X]{10}$|(?=(?:[0-9]+[-\s]){3})[-\s0-9X]{13}$)[\s\S]*?[0-9]{1,5}[-\s]?[0-9]+[-\s]?[0-9]+[-\s]?[0-9X]$");
+attribute isbn-10, value string @regex(".{10}");
 
 entity book, owns isbn-10;
-entity order, owns tatus;
+entity order, owns status;
 ----
 _-> Commit_
 

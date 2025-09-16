@@ -98,16 +98,9 @@ fetch {
 };
 ----
 
-TODO: output
-
 [,json]
 ----
-{
-    "review": {
-        "id": [ { "value": "r0004", "value_type": "string", "type": { "label": "id", "root": "attribute" } } ],
-        "type": { "label": "review", "root": "entity" }
-    }
-}
+{ "id": "r0004" }
 ----
 
 Now that we know the review's ID, we can go ahead and delete it. We start by deleting any relations that the review plays a role in.
@@ -116,12 +109,12 @@ Now that we know the review's ID, we can go ahead and delete it. We start by del
 ----
 match
 $review-4 isa review, has id "r0004";
-$relation ($review-4);
+$rel links ($review-4);
 delete
-$relation;
+$rel;
 ----
 
-Here, we delete the relations by using the same query structure as we used to delete the `delivery` relation earlier, but we're using a *parametric statement* to delete _all_ relations rather than just deliveries. Once that's done, we can delete the review itself.
+Once that's done, we can delete the review itself.
 
 [,typeql]
 ----
@@ -170,11 +163,10 @@ fetch {
 ----
 match
 $pet-sematary isa book, has isbn "9780451162076";
-$relation ($pet-sematary);
+$rel links ($pet-sematary);
 delete
-$relation;
+$rel;
 ----
-
 
 [,typeql]
 ----
