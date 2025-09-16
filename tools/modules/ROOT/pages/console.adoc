@@ -175,6 +175,23 @@ commit
 
 The `schema.tql` file should be located in the working directory or be an absolute path.
 
+== Loading sample dataset
+
+TypeDB Console (v3.5.0 and up) allows you to `source` or create and initialize a database from a pair of schema and data `tql` files. This is most useful when loading smaller examples and datasets presented in this format (this is not recommended to load a substantial amount of data!).
+
+For example, to load the `bookstore` example from the latest https://github.com/typedb/typedb-examples/releases[TypeDB Examples releases,window=_blank], we could use:
+
+[source,console]
+----
+database create-init bookstore http://github.com/typedb/typedb-examples/releases/latest/download/bookstore-schema.tql http://github.com/typedb/typedb-examples/releases/latest/download/bookstore-data.tql
+----
+
+You can also run this from outside of console as an executable:
+[bash]
+----
+typedb console --address=<ADDRESS> --username=<USER> --command="database create-init bookstore http://github.com/typedb/typedb-examples/releases/latest/download/bookstore-schema.tql http://github.com/typedb/typedb-examples/releases/latest/download/bookstore-data.tql"
+----
+
 == Troubleshooting
 
 === Non-ASCII characters
@@ -290,6 +307,9 @@ Use these commands at the <<_server_level,Server level>> of TypeDB's <<_REPL,REP
 2+^| Database management
 | `database create <db>`
 | Create a database with the name `<db>` on the server.
+
+| `database create-init <db> <schema file> <data file> [schema file sha256 (hex or sha256:hex)] [data file sha256 (hex or sha256:hex)]`
+| Create a database with the name `<db>` on the server, and load a schema and a data file. Files may be HTTP hosted or local.
 
 | `database list`
 | List all databases on the server.

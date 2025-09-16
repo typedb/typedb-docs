@@ -12,9 +12,10 @@ You can use xref:{page-version}@home::install/console-cli.adoc[TypeDB Console] (
 
 TypeDB Console ships with a 1-liner to create a database, and load a schema and data file from URL. To create and initialize a new database with the latest bookstore dataset, you can use:
 
-```bash
+[,bash]
+----
 typedb console --address=<ADDRESS> --username=<USER> --command="database create-init bookstore http://github.com/typedb/typedb-examples/releases/latest/download/bookstore-schema.tql http://github.com/typedb/typedb-examples/releases/latest/download/bookstore-data.tql"                                
-```
+----
 
 You can use this to load the dataset into a TypeDB CE, TypeDB Cloud, or your own on-premise TypeDB Enterprise server. 
 
