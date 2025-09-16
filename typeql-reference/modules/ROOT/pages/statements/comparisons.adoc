@@ -1,0 +1,88 @@
+= Comparisons
+
+== Quick reference
+
+[%header,cols="1,3,5"]
+|===
+|Operator
+|Description
+|Example
+
+|`==`
+|equals
+|`2.5 == 2.5dec`
+
+|`!=`
+|does not equal
+|`true != false`
+
+|`<`
+|less than
+|`1 < 2`
+
+|`>`
+|greater than
+|`2 > 1`
+
+|`\<=`
+|less than or equals
+|`2025-01-31 \<= 2025-02-28`
+
+|`>=`
+|greater than or equals
+|`2025-02-28 >= 2025-01-31`
+
+|`contains`
+|contains substring
+|`"TypeDB" contains "Type"`
+
+|`like`
+|matches regular expression
+|`"grey" like "gr(a\|e)y"`
+|===
+
+== Total ordering
+
+Totally ordered value types permit all equality and inequality comparison operators (viz. `==`, `!=`, `<`, `\<=`, `>`, `>=`).
+
+Comparisons between values of different value types are only allowed between if those value types are comparable. Comparable value type
+groups include:
+
+[%header,cols="1,3"]
+|===
+|Group | Value types
+
+|Numeric
+|`integer`, ``double``^<<double-footnote,†>>^, `decimal`
+
+|String
+|`string`
+
+|Date
+|`date`
+
+|Datetime
+|`datetime`, ``datetime-tz``^<<datetime-tz-footnote,‡>>^
+|===
+
+[#double-footnote]#^†^# Only finite `double` values are allowed in TypeDB.
+
+[#datetime-tz-footnote]#^‡^# Values of type `datetime-tz` are ordered based on the equivalent UTC datetime. The time zone does not affect
+the ordering.
+
+== Equality only
+
+Values of type `boolean` or `duration` can only be compared for equality (i.e. using `==` / `!=`).
+
+NOTE: It may not be obvious why two values of type `duration` may not be comparable.
+`P1D` (1 day) may be 23, 24, or 25 hours, depending on when the duration is applied, due to daylight saving time.
+Thus, the result of comparing it with `PT24H` (24 hours) is indeterminate.
+
+== String comparison
+
+`string` values allow two additional comparison operators.
+
+`contains` allows for checking if the string on the left-hand side contains the right-hand side string as a substring.
+The `contains` operator performs case-insensitive matching by https://www.w3.org/TR/charmod-norm/#definitionCaseFolding[case-folding] unicode strings.
+
+`like` evaluates whether the string on the left-hand side of the operator matches the regular expression string on the right-hand side. The regular expression must follow the https://docs.rs/regex/latest/regex/#syntax[rust regex syntax].

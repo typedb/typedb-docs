@@ -1,0 +1,25 @@
+= Double
+:test-typeql: linear
+
+A finite double precision IEEE 754 floating point number.
+
+== Defining a double valued attribute
+
+[,typeql]
+----
+#!test[schema]
+define
+attribute latitude @independent, value double;
+attribute longitude @independent, value double;
+----
+
+== Inserting a double valued attribute
+
+[,typeql]
+----
+#!test[write]
+insert
+  $_ isa latitude 11.373333;
+  $_ isa longitude 142.591667;
+----
+

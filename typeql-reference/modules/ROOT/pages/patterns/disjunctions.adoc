@@ -1,0 +1,95 @@
+= Disjunctions
+:page-aliases: {page-version}@reference::typeql/patterns/disjunction.adoc
+:test-typeql: linear
+
+Disjunctive patterns can be used in `match` stages. They allow queries to match several cases (or "`branches`") of patterns in parallel.
+
+== Syntax
+
+[,typeql]
+----
+{ <pattern1> } or { <pattern2> } [ or { <pattern3> } ... ] ;
+----
+
+The individual blocks `{ <pattern-i> }` of a disjunction are called its *branches*.
+
+[NOTE]
+====
+It is worth highlighting that, like all patterns, disjunctions can be chained, e.g.:
+[,typeql]
+----
+{ <p1> } or { <p2> };
+{ <p3> } or { <p4> };
+----
+Moreover, since disjunctions are themselves patterns, they can also be nested, e.g.:
+[,typeql]
+----
+{ <p1> }
+or {
+  { <p2> } or { <p3> };
+};
+----
+====
+
+== Behavior
+A disjunction pattern is satisfied if one of its branches is satisfied.
+
+.Schema for the following examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema, commit]
+include::{page-version}@reference::example$tql/conjunction.tql[tags=patterns-schema]
+----
+====
+
+===  Variable scopes
+A variable that appears in every branch will appear in the answers to the disjunction,
+and is considered to be in the scope of the parent pattern.
+Results to the following query will contain answers for `$x` and `$id`:
+[,typeql]
+----
+#!test[read]
+match
+  $x isa user;
+  { $x has email $id; } or { $x has phone $id; };
+----
+
+A variable that occurs in only one branch AND not outside the disjunction is considered local to the branch.
+Results to the following query will only contain answers for `$x`:
+[,typeql]
+----
+#!test[read]
+match
+  $x isa user;
+  { $x has email $e; } or { $x has phone $p; };
+----
+
+In line with the unique scope principle, a variable that is local to more than one pattern is invalid.
+The following query is invalid as `$e` has multiple scopes.
+[,typeql]
+----
+#!test[read, fail_at=runtime]
+match
+  $x isa user;
+  { $x has email $e; } or { $x has phone $p; };
+  not { $e contains "@typedb.com"; };
+----
+
+// Note: A version of this document exists for the version of disjunctions
+//  that could return None values for branch-local variables.
+// Revert to 19fb67756bfb76018315c6c7b380913683ca052c if needed (2025/08/08).
+
+== Examples
+1. Retrieve friends and friends of friends of a user;
++
+[,typeql]
+----
+#!test[read]
+match
+  $x isa user, has username "john_1";
+  $y isa user;
+  { friendship($x, $y); }
+  or { friendship($x, $z); friendship($z, $y); };
+----

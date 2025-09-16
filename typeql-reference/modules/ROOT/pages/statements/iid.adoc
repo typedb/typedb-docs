@@ -1,0 +1,44 @@
+= `iid` statement
+:test-typeql: linear
+
+The constraint `$c iid <IID>` matches the stored concept with the provided internal ID (IID).
+
+.Schema for the following examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema]
+define
+attribute name, value string;
+entity person, owns name;
+----
+====
+
+== Inserting IIDs
+
+When a concept is inserted, it is assigned an IID automatically.
+
+[,typeql]
+----
+#!test[write]
+insert $user isa person;
+----
+
+.Example TypeDB Console output
+[%collapsible]
+====
+----
+   --------
+    $x | iid 0x1f0005000000000000012f isa user
+   --------
+----
+====
+
+== Matching IIDs
+
+[,typeql]
+----
+#!test[read]
+match $x iid 0x1f0005000000000000012f;
+----

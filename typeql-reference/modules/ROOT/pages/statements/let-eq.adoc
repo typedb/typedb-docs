@@ -1,0 +1,31 @@
+= `let ... =` statement
+:page-aliases: {page-version}@reference::typeql/statements/value-assignment.adoc, {page-version}@reference::typeql/values/value-variables.adoc
+:test-typeql: linear
+
+The statement `let <VAR> = <EXPRESSION>` assigns the result of a single valued expression `<EXPRESSION>` to the variable `<VAR>`.
+
+The expression can be a literal, an arithmetic expression, or a single valued function call.
+
+If the function returns a tuple, multiple variables must be specified on the left hand side of the assignment.
+
+.Schema for the following examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema, commit]
+define
+fun minmax($a: integer, $b: integer) -> integer, integer:
+match
+{ $a <= $b; let $min = $a; let $max = $b; } or
+{ $a > $b; let $min = $b; let $max = $a; };
+return first $min, $max;
+----
+====
+
+[,typeql]
+----
+#!test[read]
+match
+  let $x, $y = minmax(3 * 5, 4 * 4);
+----

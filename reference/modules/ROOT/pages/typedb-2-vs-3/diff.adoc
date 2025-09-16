@@ -5,7 +5,7 @@ This page outlines the key updates of TypeDB 3.x compared to 2.x you should be a
 [NOTE]
 ====
 This section highlights **changes from TypeDB 2.x**, not all new features in 3.x.
-Explore the xref:{page-version}@core-concepts::typeql/index.adoc[TypeQL Concepts], xref:{page-version}@reference::typeql/index.adoc[TypeQL Reference], and https://github.com/typedb/typedb/releases[release notes] for the full picture.
+Explore the xref:{page-version}@core-concepts::typeql/index.adoc[TypeQL Concepts], xref:{page-version}@typeql-reference::index.adoc[TypeQL Reference], and https://github.com/typedb/typedb/releases[release notes] for the full picture.
 Stay tuned for upcoming blogs showcasing new features!
 ====
 
@@ -20,22 +20,22 @@ Each new type should be declared with an explicit kind: `entity person`, `relati
 * **Expanded User Management:** Authorization and user management are now included in all TypeDB editions.
 Default credentials, if applicable, can be found in the xref:{page-version}@core-concepts::drivers/connections.adoc[Connections page].
 * **Updated Query Syntax:**
-- xref:{page-version}@reference::typeql/schema/undefine.adoc[`undefine`] and xref:{page-version}@reference::typeql/pipelines/delete.adoc[`delete`] now explicitly "point" to their removed targets, reducing ambiguity.
-- xref:{page-version}@reference::typeql/pipelines/fetch.adoc[`fetch`] syntax aligns with JSON output formatting.
-- xref:{page-version}@reference::typeql/pipelines/match.adoc[`match`] produces visible row-like results itself (similarly to xref:{page-version}@reference::typeql/pipelines/insert.adoc[`insert`], etc): no more `get` s!
+- xref:{page-version}@typeql-reference::schema/undefine.adoc[`undefine`] and xref:{page-version}@typeql-reference::pipelines/delete.adoc[`delete`] now explicitly "point" to their removed targets, reducing ambiguity.
+- xref:{page-version}@typeql-reference::pipelines/fetch.adoc[`fetch`] syntax aligns with JSON output formatting.
+- xref:{page-version}@typeql-reference::pipelines/match.adoc[`match`] produces visible row-like results itself (similarly to xref:{page-version}@typeql-reference::pipelines/insert.adoc[`insert`], etc): no more `get` s!
 - All `$vars` start with `$`: no more `?` for value variables!
-However, it is still easy to differentiate their declaration with the new xref:{page-version}@reference::typeql/statements/let-eq.adoc[`let` keyword].
-* **Annotations and Statements Consolidated:** xref:{page-version}@reference::typeql/annotations/abstract.adoc[`abstract`] and xref:{page-version}@reference::typeql/annotations/regex.adoc[`regex`] are now grouped under xref:{page-version}@reference::typeql/annotations/index.adoc[@annotations].
+However, it is still easy to differentiate their declaration with the new xref:{page-version}@typeql-reference::statements/let-eq.adoc[`let` keyword].
+* **Annotations and Statements Consolidated:** xref:{page-version}@typeql-reference::annotations/abstract.adoc[`abstract`] and xref:{page-version}@typeql-reference::annotations/regex.adoc[`regex`] are now grouped under xref:{page-version}@typeql-reference::annotations/index.adoc[@annotations].
 [#_specialize]
 * **Smoother trait specialization:**
 - It is possible to redefine already inherited `owns` and `plays` on subtypes, adding more annotations to them.
-- As before, use the `as` keyword to xref:{page-version}@reference::typeql/statements/relates.adoc[specialize a `relates`].
+- As before, use the `as` keyword to xref:{page-version}@typeql-reference::statements/relates.adoc[specialize a `relates`].
 * **Default Cardinalities:**
 - Default cardinalities are applied to `owns`, `relates`, and `plays` if not explicitly defined.
 - Default `plays` cardinality: `@card(0..)` (unlimited).
 - Default `owns` and `relates` cardinality: `@card(0..1)` (up to one instance).
 Explicitly define cardinalities for traits expecting multiple instances to avoid data corruption and optimize database performance.
-* **Rules and Inference Replaced:** Rules are now replaced by xref:{page-version}@reference::typeql/functions/index.adoc[functions], requiring explicit functions execution instead of inference, but offering more abstraction and flexibility.
+* **Rules and Inference Replaced:** Rules are now replaced by xref:{page-version}@typeql-reference::functions/index.adoc[functions], requiring explicit functions execution instead of inference, but offering more abstraction and flexibility.
 
 [#_major_changes_drivers]
 == TypeDB Drivers

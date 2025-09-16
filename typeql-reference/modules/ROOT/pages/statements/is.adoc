@@ -1,0 +1,13 @@
+= `is` statement
+
+The statement `<LEFT VAR> is <RIGHT VAR>` is used to identify `<LEFT VAR>` and `<RIGHT VAR>` as bound to the same concept.
+
+== Matching
+
+The `is` keyword acts as an assertion that two variables are bound to the exact same concept.
+
+[,typeql]
+----
+match $tweedle-dee is $tweedle-dum;
+----
+

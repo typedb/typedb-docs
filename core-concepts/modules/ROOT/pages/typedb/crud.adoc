@@ -158,7 +158,7 @@ A `match` stage is the fundamental command for retrieving data. They retrieve da
 Patterns can be combined into larger patterns by conjunction with `;`, disjunction with `or`, and negation with `not`. Patterns can also be marked as optional by putting them in a `try` block, in which case any failure to match those patterns does not affect the rest of the stage. The variables that are newly introduced in the block are considered optionally bound (`$x?`). See the
 xref:{page-version}@core-concepts::typeql/query-variables-patterns.adoc[pattern reference] for more.
 
-The stream of rows can then be processed using stream operators such as `sort`, `reduce`, and `limit`, or extended with more `match` clauses. To see all types of stream operations and clauses, check out the clause xref:{page-version}@reference::typeql/pipelines/index.adoc[reference pages].
+The stream of rows can then be processed using stream operators such as `sort`, `reduce`, and `limit`, or extended with more `match` clauses. To see all types of stream operations and clauses, check out the clause xref:{page-version}@typeql-reference::pipelines/index.adoc[reference pages].
 
 When retrieving data from the database there is a basic distinction to keep in mind:
 
@@ -208,7 +208,7 @@ friends.
 ...
 ----
 
-For more information on `fetch` stages, see the xref:{page-version}@reference::typeql/pipelines/fetch.adoc[fetch query stage] documentation in the TypeQL reference.
+For more information on `fetch` stages, see the xref:{page-version}@typeql-reference::pipelines/fetch.adoc[fetch query stage] documentation in the TypeQL reference.
 
 == Update
 

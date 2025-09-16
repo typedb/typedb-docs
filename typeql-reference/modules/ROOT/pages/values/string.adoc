@@ -1,0 +1,24 @@
+= String
+:test-typeql: linear
+
+A UTF-8 character string type.
+
+== Defining a string valued attribute
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute name value string;
+----
+
+== Inserting a string valued attribute
+
+[,typeql]
+----
+#!test[write]
+insert
+  $_ isa name "John";
+----
+
+

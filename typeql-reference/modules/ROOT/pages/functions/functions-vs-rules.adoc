@@ -1,0 +1,213 @@
+= Functions v/s rules
+:test-typeql: linear
+
+TypeDB 3 introduces functions to reason over your data.
+They replace rules, which were the way to reason in TypeDB 2.
+Functions work in a similar way to rules, providing an intuitive abstraction over subqueries. They should be able to replace them in most cases.
+This page discusses the similarities, differences and factors to consider when moving from rules to functions.
+
+== Separating data & computation
+Whereas rules were a natural fit for predicate-logic based semantics of TypeDB 2,
+functions are better suited for TypeDB 3's type-theory based semantics.
+The major difference to the user is that there is now a separation between the data and reasoning constructs.
+Rules allowed the user to think reason purely in terms of the data-model by silently completing the data by inferring instances of existing types.
+Functions force the user to separate reasoning from the data-model, by explicitly creating a new function for any new computation that infers something new.
+
+Although this shift sounds significant, most advanced rules do require the user to think of the computation involved for efficiency reasons.
+
+== Similarities
+Although one would ideally think natively in functions (rather than thinking of them in terms of rules) it is easy to see the similarities between rules and functions.
+
+E.g. A rule completing a `reachable` relation transitively, can be seen as a function which computes all pairs of nodes where one is reachable from the other.
+Conversely, the function can be seen as special type of relation where the roles are implicitly specified by the position of arguments or returned concepts.
+
+.Schema for the following examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema]
+define
+attribute id, value integer;
+relation edge, relates from_, relates to;
+entity node, plays edge:from_, plays edge:to, owns id;
+----
+====
+
+[,typeql]
+----
+define
+rule transitive-reachability:
+when {
+  {
+    (from_: $from, to: $to) isa edge;
+  } or {
+    (from_: $from, to: $via) isa edge;
+    (from_: $via, to: $to) isa reachable;
+  };
+} then {
+  (from_: $from, to: $to) isa reachable;
+};
+
+# query
+match
+  $x isa node; $y isa node;
+  (from_: $x, to: $y) isa reachable;
+----
+
+[,typeql]
+----
+#!test[schema]
+define
+fun reachable() -> { node, node }:
+match
+  {
+    (from_: $from, to: $to) isa edge;
+  } or {
+    let $from, $via in reachable();
+    (from_: $via, to: $to) isa edge;
+  };
+return { $from, $to };
+
+#!test[read]
+# query
+match
+  $x isa node; $y isa node;
+  let $x, $y in reachable();
+----
+
+An equally valid way is to see a function as a predicate computing whether one node is a reachable from the other.
+[,typeql]
+----
+define
+fun reachable($from: node, $to: node) -> bool:
+match
+  {
+    (from_: $from, to: $to) isa edge;
+  } or {
+    (from_: $from, to: $via) isa edge;
+    true == reachable($via, $to);
+  };
+return check;
+
+# query
+match
+  $x isa node; $y isa node;
+  true == reachable($x, $y);
+----
+
+== Arguments & return values
+From the example, there are multiple ways of expressing the same rule as a function.
+This is understandable given (mathematically) a relation is a collection of tuples,
+whereas a function is a mapping from the input domain to the output range.
+So there is some ambiguity as to which concepts are arguments and which are to be returned.
+
+The choice depends on what the query needs to compute.
+Does it need to enumerate the pairs of nodes for which one is reachable from the other?
+Or check whether a node is reachable from the other?
+Or even enumerate the nodes reachable from a given node, as the function below does?
+
+[,typeql]
+----
+#!test[schema]
+define
+fun reachable_from($from: node) -> { node }:
+match
+  {
+    (from_: $from, to: $to) isa edge;
+  } or {
+    let $via in reachable_from($from);
+    (from_: $via, to: $to) isa edge;
+  };
+return { $to };
+
+#!test[read]
+# query
+match
+  $x isa node, has id 123;
+  $y isa node;
+  let $y in reachable_from($x);
+----
+
+Currently, each of these use cases would need a different function to be defined.
+The arguments are inputs to the function and must be bound by the rest of the query.
+The function will bind the returned values to the variables on the left of `in`.
+
+=== Contextually bound functions
+Although the split between arguments and returned concepts is a reasonable consequence of
+having the user think about the computation explicitly, it is less declarative than rules -
+where the planner would infer which role-players of a relation should be bound when evaluating the rule.
+A future version of TypeDB will introduce "contextually bound functions" where the planner may choose which
+variables are input to the functions and which are output - allowing a single function definition
+to satisfy all the cases discussed above.
+
+== What functions can do
+Since functions aren't forced to return relations (or ownerships) which are defined in the schema,
+they are more flexible and can also operate on raw values, including structs (when they are implemented).
+Since they don't infer new instances, they also avoid the overhead
+of making the result of the computation abide by the rules governing the inferred types.
+In short, they're a really simple way of doing reasoning.
+
+Functions are still evaluated on demand in a goal-driven way.
+This means we don't materialize all the results of the function when the data is updated.
+Instead, we only compute the calls relevant to the query being evaluated.
+The advantage of a goal-driven approaches over an eagerly materializing one is that they support very large models
+(in theory infinitely large models - i.e. an infinite number of inferred concepts).
+A simple illustration is this toy function that produces natural numbers.
+
+[,typeql]
+----
+with fn nat() -> { integer }:
+match
+  {let $x = 0;} or
+  { let $x in nat() + 1; };
+return { $x };
+
+match let $x in nat();
+----
+
+Since TypeDB's grpc endpoint also supports reactive streaming,
+this query will stream out natural numbers on demand.
+This isn't quite an infinite domain, since we are limited to the domain of the `integer` type which is a signed 64-bit integer.
+Understandable, since this is the case with most programming languages -
+but it does bring us to the next section.
+
+=== What functions can't do (yet)
+TypeDB in its current state can't do "arbitrarily large" models.
+
+This limitation is unlikely to be practically relevant,
+since most uses of functions only need to compute tuples of concepts which exist in the database.
+Since this is a combination of finite sets, it is combinatorially large but still finite.
+
+The problem is still (theoretically) interesting for two reasons - (1) TypeDB 2 could do it; (2) A feature complete TypeDB 3 could too.
+
+==== How did TypeDB 2 do it? Nested relations.
+In theory, one can infer an arbitrary number of nested relations,
+because you can always infer a new relation which relates the one you just inferred.
+
+In particular this makes state-space search on "open" worlds possible.
+For games like the Rubik's cube, it is possible to assign each state a number (not necessarily one that fits in 64 bits).
+For open worlds such as an arbitrary block's world, this doesn't work since the number of "objects" of each type aren't fixed.
+You would instead represent a state as a relation involving the previous state and the action taken.
+
+==== How will TypeDB 3 do it? Lists.
+Lists can be arbitrarily long. A state can be represented by specifying the initial state,
+and the list of actions which brings us to this state.
+
+
+[NOTE]
+====
+Modern computers have finite memory so none of this is truly infinite.
+The difference between the finiteness of TypeDB 3's model without and with lists
+is that the former is constrained by the limits of TypeQL's expressivity,
+while the latter is constrained by the limits of the underlying computer.
+====
+
+[NOTE]
+====
+This is based on ideas & results from the deductive databases field.
+A lot of research there is conducted on datalog -
+a "syntactic subset" of prolog that bans compound terms.
+Lists are central to prolog and are implemented as recursive compound terms.
+The exclusion of compound terms has implications on the decidability of datalog.
+====

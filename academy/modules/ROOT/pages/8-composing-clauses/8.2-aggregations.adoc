@@ -14,7 +14,7 @@ reduce $promotion_count = count groupby $book;
 fetch { "title": $book.title, "promotions": $promotion_count };
 ----
 
-You can aggregate the entire answer stream, or `groupby` variables to compute per-group metrics. See xref:{page-version}@reference::typeql/pipelines/reduce.adoc[Reduce].
+You can aggregate the entire answer stream, or `groupby` variables to compute per-group metrics. See xref:{page-version}@typeql-reference::pipelines/reduce.adoc[Reduce].
 
 .Exercise
 [caption=""]

@@ -1,0 +1,50 @@
+= `@independent` annotation
+:test-typeql: linear
+
+The `@independent` annotation is used
+// tag::overview[]
+to prevent attributes without owners from being deleted automatically.
+// end::overview[]
+
+== Syntax
+
+.Syntax
+[,typeql]
+----
+<type label> @independent;
+----
+
+The `@independent` annotation does not accept any arguments.
+
+== Usage
+
+// tag::description[]
+The `@independent` annotation enforces the `independent` constraint for an attribute type, allowing instances of the type to exist independently of their owner.
+// end::description[]
+
+// TODO: Add a reference to attributes and their dependency on existing owners
+
+By default, attributes (instances of attribute types) depend on their owners:
+
+* Attributes cannot be inserted without a `has` clause.
+* Attributes are automatically deleted when their owners are deleted.
+
+In contrast, attributes of independent types can exist without owners.
+
+.Independent attribute types definition
+[,typeql]
+----
+#!test[schema, commit]
+include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;independent-attribute]
+----
+
+.Inserting independent attributes
+[,typeql]
+----
+#!test[write]
+include::{page-version}@reference::example$tql/data_annotations.tql[tags=insert-keyword;independent-attribute]
+----
+
+=== Subtyping
+
+The `independent` constraint is inherited. This means that all subtypes of an independent type are also independent, and it cannot be changed.
