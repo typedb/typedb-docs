@@ -4,7 +4,9 @@ TypeDB is an excellent database to model identity control, resources and permiss
 
 The https://github.com/typedb/typedb-examples/tree/master/use-cases/identity-and-access-management[TypeDB Examples] repository contains one such extensive example, which is described here.
 
-The IAM example is released as a schema and data file (note: good for demos, but not extremely scalable!). You can easily load the latest schema and dataset, either using TypeDB Cloud to create a server with the dataset preloaded, or using TypeDB Console:
+== Installation
+
+The IAM example is released as a schema and data file (note: good for small or medium-sized examples, but not recommended for large datasets!). You can easily load the latest schema and dataset, either using TypeDB Cloud to create a server with the dataset preloaded, or using TypeDB Console:
 
 [,bash]
 ----

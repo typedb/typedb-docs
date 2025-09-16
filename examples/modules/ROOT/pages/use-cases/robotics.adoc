@@ -1,9 +1,60 @@
 = Robotics
 
-[NOTE]
-====
-Coming soon.
-====
+TypeDB's ability to model complexity is extremely useful in robotics, where worlds, datasets and interactions can be extremely heterogenous.
 
-[placeholder]
-TypeDB in robotics applications. 
+The https://github.com/typedb-osi/typedb-robotics[TypeDB Robotics] open-source example shows how to use TypeDB for robotic navigation of the world. It is based on a real-world usage developed by Joris Sijs at the TNO University.
+
+== Installation
+
+The robotics example is released as a schema and data file (note: good for small or medium-sized examples, but not recommended for large datasets!). You can easily load the latest schema and dataset, either using TypeDB Cloud to create a server with the dataset preloaded, or using TypeDB Console:
+
+[,bash]
+----
+typdb console --username=<USERNAME> --address=<ADDRESS> --command="database create-init robotics http://github.com/typedb-osi/typedb-robotics/releases/latest/download/schema_floorplan.tql http://github.com/typedb-osi/typedb-robotics/releases/latest/download/data_floorplan_assignment.tql"
+----
+
+== Schema
+
+This schema models a physical and mathematical domain, defining concepts ranging from physical objects and their spatial relationships to abstract mathematical constructs. The schema serves as a knowledge graph for describing, locating, and analyzing the components of a given environment, such as a building or a room. It is designed to be highly extensible and hierarchical, using abstract types to create a flexible and powerful model.
+
+=== Core Concepts
+
+**Key Entities**
+
+The schema is built around two primary, top-level abstractions:
+
+* physical_entity: Represents anything that exists in the real world. This is the root for all concrete, tangible things. It owns attributes for existence, name, and id.
+  ** being: A living or artificial entity, like a human or a robot.
+  ** space: An open or closed area, such as a room or an open_space.
+  ** artifact: A manufactured item. This is further divided into stationary_artifact (like a building or wall) and constituent_artifact (like furniture or toys).
+
+* abstract_entity: Represents non-physical concepts, typically for defining and describing physical entities.
+  ** mathematical: Defines abstract shapes (shape), lines (line), and points (point), which can be used to model the physical world. For example, a room can have the shape of a box.
+  ** measure: Represents quantifiable features, like distance or height. These concepts are used to describe the properties of physical entities.
+  ** time: A simple entity to capture datetime values.
+
+**Key Relationships**
+
+The schema's true power lies in its relations, which define how these concepts connect to each other. They are also categorized into mathematics and physics to reflect their purpose.
+
+* featuring: A fundamental relation that links a subject (a physical entity) to a feature (an abstract measure). This allows you to say, for example, a human has a height.
+
+* locating: A physical_entity is located in a space. This is a core relation for modeling the position of objects and beings within an environment.
+
+* taking_form: A mathematical concept is used to describe the form of a physical entity. For instance, a room is enclosed by a box, and a wall has the form of a rectangle.
+
+* positioning: Defines the precise spatial relationship between two points using attributes like lin_x and rot_x to represent coordinates and rotation.
+
+* composing: Defines a hierarchical structure, such as a building being composed of multiple rooms (volume) and walls (partition).
+
+**Key Attributes**
+
+The schema includes a rich set of attributes to describe entities and relations.
+
+* Existence: The exists and not_exists attributes, which are sub-types of the abstract existance, are used to model the current state of a physical_entity. This is useful for tracking things that may be created or destroyed.
+
+* Quantifiables: The schema has a comprehensive hierarchy of quantifiable attributes, ranging from continuous values like distance to categorical ones like color_name. This allows for highly detailed and specific data representation.
+
+== Dataset
+
+This example ships with a sample dataset containing physical entities, spaces, artifacts, mathematical constructs, and spatial relationships. Feel free to play around and explore!
