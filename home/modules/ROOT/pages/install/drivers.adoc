@@ -55,7 +55,7 @@ driver = TypeDB.driver(address=TypeDB.DEFAULT_ADDRESS, ...)
 
 === Python driver tutorial
 
-* https://github.com/typedb/typedb-driver/python[typedb-driver/python on GitHub] - Read the TypeDB Python driver tutorial
+* xref:{page-version}@examples::social-network.adoc[Read the Python app example]
 
 
 == TypeScript (HTTP)
@@ -84,7 +84,7 @@ const driver = new TypeDBHttpDriver({
 
 === TypeScript HTTP driver example
 
-* https://github.com/typedb/typedb-examples/tree/master/webapp[TypeSpace: Social Network Webapp Example] - Explore the TypeScript HTTP driver example on GitHub
+* xref:{page-version}@examples::social-network.adoc[Read the TypeScript webapp example]
 
 
 == Rust
@@ -109,7 +109,7 @@ let driver = TypeDBDriver::new_core(TypeDBDriver::DEFAULT_ADDRESS).await.unwrap(
 
 === Rust driver tutorial
 
-* https://github.com/typedb/typedb-driver/rust[typedb-driver/rust on GitHub] - Read the TypeDB Rust driver tutorial
+* xref:{page-version}@examples::social-network.adoc[Read the Rust app example]
 
 
 == Java
@@ -152,7 +152,7 @@ try (Driver driver = TypeDB.driver(TypeDB.DEFAULT_ADDRESS, new Credentials("admi
 
 === Java driver tutorial
 
-* https://github.com/typedb/typedb-driver/java[typedb-driver/java on GitHub] - Read the TypeDB Java driver tutorial
+* xref:{page-version}@examples::social-network.adoc[Read the Java app example]
 
 
 == Other languages

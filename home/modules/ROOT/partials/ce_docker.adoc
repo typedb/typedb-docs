@@ -57,3 +57,47 @@ To stop a running Docker container:
 docker stop typedb
 ----
 // end::stop[] 
+
+// tag::docker-compose[]
+
+Alternatively, you can use Docker Compose to run TypeDB CE. Create a `docker-compose.yml` file:
+
+[source,yaml]
+----
+version: '3.8'
+
+services:
+  typedb:
+    image: typedb/typedb:latest
+    container_name: typedb
+    ports:
+      - "1729:1729"
+      - "8000:8000"
+    volumes:
+      - typedb-data:/opt/typedb-all-linux-x86_64/server/data
+
+volumes:
+  typedb-data:
+----
+
+To start TypeDB with Docker Compose:
+
+[source,bash]
+----
+docker-compose up -d
+----
+
+To stop TypeDB:
+
+[source,bash]
+----
+docker-compose down
+----
+
+[NOTE]
+====
+If you are running the arm64 image, change the volume path to `/opt/typedb-all-linux-arm64/server/data`.
+You can also replace `typedb-data` with a local path to mount a specific directory on your host machine.
+====
+
+// end::docker-compose[]
