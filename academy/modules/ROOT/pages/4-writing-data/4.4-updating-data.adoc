@@ -43,7 +43,7 @@ In addition to being more efficient and easier for readers to interpret, these q
 ----
 match
 $book isa book, has $art;
-$art "art" isa genre;
+$art isa genre "art";
 delete
 has $art of $book;
 insert
@@ -59,7 +59,7 @@ When updating an attribute ownership (or indeed, a role player in an existing re
 ----
 match
 $book isa paperback, has isbn-10 "0060929790";
-update $book has stock 20;
+update $book has stock 25;
 ----
 
 The `update` clause will, for each statement written, set the new attribute to be the only attribute owned by the owner. In this example, for the specific paperback book, it sets the stock to 25, replacing any existing stock value.
