@@ -279,8 +279,8 @@ match
 $book isa paperback, has isbn-13 "9780446310789";
 $line isa order-line (order: $order, item: $book);
 fetch {
-  "id": $order.id;
-  "quantity": $line.quantity;
+  "id": $order.id,
+  "quantity": $line.quantity
 };
 ----
 
@@ -352,7 +352,7 @@ $book isa paperback, has isbn-13 "9780446310789";
 $line isa order-line (order: $order, item: $book);
 delivery (deliverer: $courier, delivered: $order, destination: $address);
 fetch {
-  "id": $order.id;
+  "id": $order.id,
   "quantity": $line.quantity,
   "name": $courier.name,
   "street": $address.street
