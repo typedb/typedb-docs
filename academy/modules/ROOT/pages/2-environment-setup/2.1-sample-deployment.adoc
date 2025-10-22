@@ -10,6 +10,7 @@ TypeDB Cloud deployments let you deploy the latest version of the bookstore samp
 === Using TypeDB Console
 You can use xref:{page-version}@home::install/console-cli.adoc[TypeDB Console] (minimum version 3.5.0) to load the bookstore dataset from the `typedb-example` repository, published at https://github.com/typedb/typedb-examples/releases.
 
+// TODO: Make this clearer. What address should one use? Is there a default username? How do you set these things up via the CLI?
 TypeDB Console ships with a 1-liner to create a database, and load a schema and data file from URL. To create and initialize a new database with the latest bookstore dataset, you can use:
 
 [,bash]
