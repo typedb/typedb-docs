@@ -33,6 +33,10 @@ We will write a script to deploy TypeDB, which will:
 The full script is presented here for reference,
 with a breakdown of its individual parts below
 
+[tabs]
+====
+Bash::
++
 [source,bash]
 ----
 #!/usr/bin/env bash
@@ -91,17 +95,103 @@ while [[ $(echo $CLUSTER_RES | jq -r '.status') != 'running' ]]; do
   echo
   echo "Sleeping..."
   echo
-  sleep 30
+  sleep 15
   CLUSTER_RES=$(curl --request GET \
     --url https://cloud.typedb.com/api/team/$TEAM_ID/spaces/$SPACE_ID/clusters/$CLUSTER_ID \
     --header "Authorization: Bearer $TYPEDB_CLOUD_ACCESS_TOKEN")
 done
 ----
 
+Python::
++
+[source,python]
+----
+import requests
+import os
+import sys
+import time
+
+def main():
+    client_id = os.getenv("TYPEDB_CLOUD_CLIENT_ID")
+    client_secret = os.getenv("TYPEDB_CLOUD_CLIENT_SECRET")
+
+    team_id = sys.argv[1]
+    space_id = sys.argv[2]
+    region = sys.argv[3]
+    cluster_id = sys.argv[4]
+
+    access_token = get_access_token(client_id, client_secret)
+
+    cluster_config = {
+        "id": cluster_id,
+        "serverCount": 1,
+        "storageSizeGB": 10,
+        "provider": "gcp",
+        "region": region,
+        "isFree": True,
+        "machineType": "c2d-highcpu-2",
+        "storageType": "standard-rwo",
+        "version": "latest"
+    }
+
+    response = deploy_cluster(access_token, team_id, space_id, cluster_config)
+
+    while response["status"] != "running":
+        print("\nSleeping...\n")
+        time.sleep(15)
+        response = get_cluster(access_token, team_id, space_id, cluster_id)
+
+def get_access_token(client_id, client_secret):
+    url = "https://cloud.typedb.com/api/auth"
+
+    headers = {
+        "Authorization": f"Basic {client_id}:{client_secret}"
+    }
+
+    response = requests.post(url, headers=headers)
+    if response.status_code >= 400: print(response.text)
+    response.raise_for_status()
+    return response.text
+
+def deploy_cluster(access_token, team_id, space_id, cluster_config):
+    url = f"https://cloud.typedb.com/api/team/{team_id}/spaces/{space_id}/clusters/deploy"
+
+    headers = {
+        "Authorization": f"Bearer {access_token}"
+    }
+
+    response = requests.post(url, headers=headers, json=cluster_config)
+    if response.status_code >= 400: print(response.text)
+    response.raise_for_status()
+
+    return response.json()
+
+def get_cluster(access_token, team_id, space_id, cluster_id):
+    url = f"https://cloud.typedb.com/api/team/{team_id}/spaces/{space_id}/clusters/{cluster_id}"
+
+    headers = {
+        "Authorization": f"Bearer {access_token}"
+    }
+
+    response = requests.get(url, headers=headers)
+    if response.status_code >= 400: print(response.text)
+    response.raise_for_status()
+
+    return response.json()
+
+if __name__ == "__main__":
+    main()
+----
+====
+
 == Script breakdown
 
 === 1. Arguments
 
+[tabs]
+====
+Bash::
++
 [source,bash]
 ----
 if [ -z "$TYPEDB_CLOUD_CLIENT_ID" ] || [ -z "$TYPEDB_CLOUD_CLIENT_SECRET" ]; then
@@ -119,12 +209,29 @@ SPACE_ID=$2
 REGION=$3
 CLUSTER_ID=$4
 ----
+Python::
++
+[source,python]
+----
+client_id = os.getenv("TYPEDB_CLOUD_CLIENT_ID")
+client_secret = os.getenv("TYPEDB_CLOUD_CLIENT_SECRET")
+
+team_id = sys.argv[1]
+space_id = sys.argv[2]
+region = sys.argv[3]
+cluster_id = sys.argv[4]
+----
+====
 
 We use environment variables for the Client ID and Client Secret of the API token,
 and take our other configurable options as command-line arguments.
 
 === 2. Token exchange
 
+[tabs]
+====
+Bash::
++
 [source,bash]
 ----
 TYPEDB_CLOUD_ACCESS_TOKEN=$(
@@ -133,12 +240,33 @@ TYPEDB_CLOUD_ACCESS_TOKEN=$(
     --header "Authorization: Basic $TYPEDB_CLOUD_CLIENT_ID:$TYPEDB_CLOUD_CLIENT_SECRET"
 )
 ----
+Python::
++
+[source,python]
+----
+def get_access_token(client_id, client_secret):
+    url = "https://cloud.typedb.com/api/auth"
+
+    headers = {
+        "Authorization": f"Basic {client_id}:{client_secret}"
+    }
+
+    response = requests.post(url, headers=headers)
+    if response.status_code >= 400: print(response.text)
+    response.raise_for_status()
+    return response.text
+----
+====
 
 We exchange the long-lived client ID and secret for a short-lived access token,
 which we will use for authentication for the rest of the script.
 
 === 3. Cluster configuration
 
+[tabs]
+====
+Bash::
++
 [source,bash]
 ----
 CLUSTER_CONFIG="{
@@ -153,6 +281,23 @@ CLUSTER_CONFIG="{
   \"version\":\"latest\"
 }"
 ----
+Python::
++
+[source,python]
+----
+cluster_config = {
+    "id": cluster_id,
+    "serverCount": 1,
+    "storageSizeGB": 10,
+    "provider": "gcp",
+    "region": region,
+    "isFree": True,
+    "machineType": "c2d-highcpu-2",
+    "storageType": "standard-rwo",
+    "version": "latest"
+}
+----
+====
 
 This JSON object defines how your cluster will be deployed.
 The parameters could be redefined in the script, or adjusted to be arguments to suit your needs.
@@ -162,6 +307,10 @@ See the xref:{page-version}@reference::cloud-http-api.adoc[API reference] for mo
 
 === 4. Deploying TypeDB
 
+[tabs]
+====
+Bash::
++
 [source,bash]
 ----
 CLUSTER_RES=$(
@@ -171,12 +320,34 @@ CLUSTER_RES=$(
     --json "$CLUSTER_CONFIG"
 )
 ----
+Python::
++
+[source,python]
+----
+def deploy_cluster(access_token, team_id, space_id, cluster_config):
+    url = f"https://cloud.typedb.com/api/team/{team_id}/spaces/{space_id}/clusters/deploy"
+
+    headers = {
+        "Authorization": f"Bearer {access_token}"
+    }
+
+    response = requests.post(url, headers=headers, json=cluster_config)
+    if response.status_code >= 400: print(response.text)
+    response.raise_for_status()
+
+    return response.json()
+----
+====
 
 We use the cluster config and the access token we acquired previously to actually deploy the cluster.
 We store the response for use in the next step
 
 === 5. Waiting for the cluster to be ready
 
+[tabs]
+====
+Bash::
++
 [source,bash]
 ----
 while [[ $(echo $CLUSTER_RES | jq -r '.status') != 'running' ]]; do
@@ -187,12 +358,35 @@ while [[ $(echo $CLUSTER_RES | jq -r '.status') != 'running' ]]; do
   echo
   echo "Sleeping..."
   echo
-  sleep 30
+  sleep 15
   CLUSTER_RES=$(curl --request GET \
     --url https://cloud.typedb.com/api/team/$TEAM_ID/spaces/$SPACE_ID/clusters/$CLUSTER_ID \
     --header "Authorization: Bearer $TYPEDB_CLOUD_ACCESS_TOKEN")
 done
 ----
+Python::
++
+[source,python]
+----
+while response["status"] != "running":
+    print("\nSleeping...\n")
+    time.sleep(15)
+    response = get_cluster(access_token, team_id, space_id, cluster_id)
+
+def get_cluster(access_token, team_id, space_id, cluster_id):
+    url = f"https://cloud.typedb.com/api/team/{team_id}/spaces/{space_id}/clusters/{cluster_id}"
+
+    headers = {
+        "Authorization": f"Bearer {access_token}"
+    }
+
+    response = requests.get(url, headers=headers)
+    if response.status_code >= 400: print(response.text)
+    response.raise_for_status()
+
+    return response.json()
+----
+====
 
 We wait for the cluster to be ready by polling the cluster's status until it's running.
 If we encounter an error at any point
