@@ -1,0 +1,242 @@
+= Deploy TypeDB through the API
+:keywords: typedb, typeql, tutorial, api, cloud, cluster, deploy
+:pageTitle: Deploy TypeDB through the API
+:summary: A tutorial on deploying TypeDB through the API
+:page-toclevels: 2
+
+This tutorial will walk you through the creation of a script
+to automate deployment of a TypeDB cluster on TypeDB Cloud.
+
+By the end of it, you'll be able to use the API to perform routine actions
+such as launching new clusters.
+
+== Before you start
+
+1. Sign in to your TypeDB Cloud account at https://cloud.typedb.com.
+2. In https://cloud.typedb.com/?team_action=/settings#api-tokens[Team settings - API tokens,window=_blank],
+create a new API token with `Write` access.
+
+[IMPORTANT]
+====
+Make sure to save the client secret somewhere safe - you will only see it when
+you first generate the token, and will be unable to use the token without it.
+====
+
+== Overview
+
+We will write a script to deploy TypeDB, which will:
+
+1. Generate an API access token
+2. Use this token to launch a single-node TypeDB cluster
+3. Wait for the cluster to become ready
+
+The full script is presented here for reference,
+with a breakdown of its individual parts below
+
+[source,bash]
+----
+#!/usr/bin/env bash
+
+set -e
+
+# Check if the required environment variables are set
+if [ -z "$TYPEDB_CLOUD_CLIENT_ID" ] || [ -z "$TYPEDB_CLOUD_CLIENT_SECRET" ]; then
+    echo "Error: TYPEDB_CLOUD_CLIENT_ID and TYPEDB_CLOUD_CLIENT_SECRET environment variables must be set"
+    exit 1
+fi
+
+# Check if the required arguments are provided
+if [[ "$#" -ne 5 ]]; then
+    echo "Usage: $0 <team_id> <space_id> <provider> <region> <cluster_id>"
+    exit 1
+fi
+
+TEAM_ID=$1
+SPACE_ID=$2
+PROVIDER=$3
+REGION=$4
+CLUSTER_ID=$5
+
+# Get a short-lived access token
+TYPEDB_CLOUD_ACCESS_TOKEN=$(
+  curl --request POST \
+    --url https://cloud.typedb.com/api/v1/auth \
+    --header "Authorization: Basic $TYPEDB_CLOUD_CLIENT_ID:$TYPEDB_CLOUD_CLIENT_SECRET"
+)
+
+CLUSTER_CONFIG="{
+  \"id\":\"$CLUSTER_ID\",
+  \"serverCount\":1,
+  \"storageSizeGB\":10,
+  \"provider\":\"$PROVIDER\",
+  \"region\":\"$REGION\",
+  \"isFree\":true,
+  \"machineType\":\"c2d-highcpu-2\",
+  \"storageType\":\"standard-rwo\",
+  \"version\":\"latest\"
+}"
+
+# Deploy the cluster
+CLUSTER_RES=$(curl --request POST \
+  --url "https://cloud.typedb.com/api/team/$TEAM_ID/spaces/$SPACE_ID/clusters/deploy" \
+  --header "Authorization: Bearer $TYPEDB_CLOUD_ACCESS_TOKEN" \
+  --json "$CLUSTER_CONFIG")
+
+# Wait for the cluster to be up and running
+while [[ $(echo $CLUSTER_RES | jq -r '.status') != 'running' ]]; do
+  if [[ $(echo $CLUSTER_RES | jq -r '.message') != null ]]; then
+    echo "Error: $(echo $CLUSTER_RES | jq -r '.message')"
+    exit 1
+  fi
+  echo
+  echo "Sleeping..."
+  echo
+  sleep 30
+  CLUSTER_RES=$(curl --request GET \
+    --url https://cloud.typedb.com/api/team/$TEAM_ID/spaces/$SPACE_ID/clusters/$CLUSTER_ID \
+    --header "Authorization: Bearer $TYPEDB_CLOUD_ACCESS_TOKEN")
+done
+----
+
+== Script breakdown
+
+=== 1. Arguments
+
+[source,bash]
+----
+if [ -z "$TYPEDB_CLOUD_CLIENT_ID" ] || [ -z "$TYPEDB_CLOUD_CLIENT_SECRET" ]; then
+    echo "Error: TYPEDB_CLOUD_CLIENT_ID and TYPEDB_CLOUD_CLIENT_SECRET environment variables must be set"
+    exit 1
+fi
+
+if [[ "$#" -ne 4 ]]; then
+    echo "Usage: $0 <team_id> <space_id> <region> <cluster_id>"
+    exit 1
+fi
+
+TEAM_ID=$1
+SPACE_ID=$2
+REGION=$3
+CLUSTER_ID=$4
+----
+
+We use environment variables for the Client ID and Client Secret of the API token,
+and take our other configurable options as command-line arguments.
+
+=== 2. Token exchange
+
+[source,bash]
+----
+TYPEDB_CLOUD_ACCESS_TOKEN=$(
+  curl --request POST \
+    --url https://cloud.typedb.com/api/v1/auth \
+    --header "Authorization: Basic $TYPEDB_CLOUD_CLIENT_ID:$TYPEDB_CLOUD_CLIENT_SECRET"
+)
+----
+
+We exchange the long-lived client ID and secret for a short-lived access token,
+which we will use for authentication for the rest of the script.
+
+=== 3. Cluster configuration
+
+[source,bash]
+----
+CLUSTER_CONFIG="{
+  \"id\":\"$CLUSTER_ID\",
+  \"serverCount\":1,
+  \"storageSizeGB\":10,
+  \"provider\":\"gcp\",
+  \"region\":\"$REGION\",
+  \"isFree\":true,
+  \"machineType\":\"c2d-highcpu-2\",
+  \"storageType\":\"standard-rwo\",
+  \"version\":\"latest\"
+}"
+----
+
+This JSON object defines how your cluster will be deployed.
+The parameters could be redefined in the script, or adjusted to be arguments to suit your needs.
+In this case, we've provided preset values for all parameters except ID, provider, and region.
+
+See the xref:{page-version}@reference::cloud-http-api.adoc[API reference] for more details on cluster configuration.
+
+=== 4. Deploying TypeDB
+
+[source,bash]
+----
+CLUSTER_RES=$(
+  curl --request POST \
+    --url "https://cloud.typedb.com/api/team/$TEAM_ID/spaces/$SPACE_ID/clusters/deploy" \
+    --header "Authorization: Bearer $TYPEDB_CLOUD_ACCESS_TOKEN" \
+    --json "$CLUSTER_CONFIG"
+)
+----
+
+We use the cluster config and the access token we acquired previously to actually deploy the cluster.
+We store the response for use in the next step
+
+=== 5. Waiting for the cluster to be ready
+
+[source,bash]
+----
+while [[ $(echo $CLUSTER_RES | jq -r '.status') != 'running' ]]; do
+  if [[ $(echo $CLUSTER_RES | jq -r '.message') != null ]]; then
+    echo "Error: $(echo $CLUSTER_RES | jq -r '.message')"
+    exit 1
+  fi
+  echo
+  echo "Sleeping..."
+  echo
+  sleep 30
+  CLUSTER_RES=$(curl --request GET \
+    --url https://cloud.typedb.com/api/team/$TEAM_ID/spaces/$SPACE_ID/clusters/$CLUSTER_ID \
+    --header "Authorization: Bearer $TYPEDB_CLOUD_ACCESS_TOKEN")
+done
+----
+
+We wait for the cluster to be ready by polling the cluster's status until it's running.
+If we encounter an error at any point
+(either during the initial deployment, or when subsequently getting the cluster to check its status)
+we print the error and exit.
+
+== Example usage
+
+1. Export your credentials:
++
+[source,bash]
+----
+export TYPEDB_CLOUD_CLIENT_ID=myClientID
+export TYPEDB_CLOUD_CLIENT_SECRET=mySecret
+----
+
+2. Run the script:
++
+[source,bash]
+----
+./deploy_cluster.sh my-team my-space gcp europe-west2 api-cluster
+----
+
+If successful, TypeDB Cloud will deploy your cluster, and the script will poll it until it's ready.
+
+== Conclusion
+
+This tutorial has shown you how to set up a script to deploy TypeDB through the API.
+Similar approaches can be used for other common actions,
+such as pausing or resuming your clusters when not in use.
+
+== Next steps
+
+[cols-2]
+--
+.https://cloud.typedb.com[TypeDB Cloud,window=_blank]
+[.clickable]
+****
+Head back to TypeDB Cloud to keep exploring there.
+****
+
+.xref:{page-version}@reference::cloud-http-api.adoc[]
+[.clickable]
+****
+View the API reference for more detail on what you can do with it.
+****
+--

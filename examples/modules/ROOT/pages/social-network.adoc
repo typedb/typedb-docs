@@ -296,8 +296,8 @@ starting with connecting to the database.
 
 === Connection configuration
 
-We store values for use by the connection as constants in the source code.
-When running the application yourself, you may need to change them to fit your setup:
+We pull values used for connection from a set of environment variables, with defaults provided.
+When running the application yourself, you may need to set them to fit your setup:
 
 [tabs]
 ====
@@ -308,11 +308,23 @@ Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c
 +
 [source,rust]
 ----
-pub const TYPEDB_ADDRESS: &str = "localhost:1729";
-pub const TYPEDB_USERNAME: &str = "admin";
-pub const TYPEDB_PASSWORD: &str = "password";
-pub const TYPEDB_TLS_ENABLED: bool = false;
-pub const TYPEDB_DATABASE: &str = "social-network";
+use std::env::var;
+
+pub fn typedb_address() -> String {
+    return var("TYPEDB_ADDRESS").unwrap_or("localhost:1729".to_string());
+}
+pub fn typedb_username() -> String {
+    return var("TYPEDB_USERNAME").unwrap_or("admin".to_string());
+}
+pub fn typedb_password() -> String {
+    return var("TYPEDB_PASSWORD").unwrap_or("password".to_string());
+}
+pub fn typedb_tls_enabled() -> bool {
+    return var("TYPEDB_TLS_ENABLED").unwrap_or("false".to_string()).parse().unwrap();
+}
+pub fn typedb_database() -> String {
+    return var("TYPEDB_DATABASE").unwrap_or("social-network".to_string());
+}
 ----
 
 Python::
@@ -322,11 +334,13 @@ Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c
 +
 [source,python]
 ----
-TYPEDB_ADDRESS = "localhost:1729"
-TYPEDB_USERNAME = "admin"
-TYPEDB_PASSWORD = "password"
-TYPEDB_TLS_ENABLED = False
-TYPEDB_DATABASE = "social-network"
+import os
+
+TYPEDB_ADDRESS = os.getenv("TYPEDB_ADDRESS", "localhost:1729")
+TYPEDB_USERNAME = os.getenv("TYPEDB_USERNAME", "admin")
+TYPEDB_PASSWORD = os.getenv("TYPEDB_PASSWORD", "password")
+TYPEDB_TLS_ENABLED = os.getenv("TYPEDB_TLS_ENABLED", "false").lower() == "true"
+TYPEDB_DATABASE = os.getenv("TYPEDB_DATABASE", "social-network")
 ----
 
 Java::
@@ -336,14 +350,18 @@ Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c
 +
 [source,java]
 ----
-private static final String TYPEDB_ADDRESS = "localhost:1729";
-private static final String TYPEDB_USERNAME = "admin";
-private static final String TYPEDB_PASSWORD = "password";
-private static final boolean TYPEDB_TLS_ENABLED = false;
-public static final String TYPEDB_DATABASE = "social-network";
+private Map<String, String> env = System.getenv();
+private String TYPEDB_ADDRESS = env.getOrDefault("TYPEDB_ADDRESS", "localhost:1729");
+private String TYPEDB_USERNAME = env.getOrDefault("TYPEDB_USERNAME", "admin");
+private String TYPEDB_PASSWORD = env.getOrDefault("TYPEDB_PASSWORD", "password");
+private boolean TYPEDB_TLS_ENABLED = env.getOrDefault("TYPEDB_TLS_ENABLED", "false").toLowerCase().equals("true");
+public String TYPEDB_DATABASE = env.getOrDefault("TYPEDB_DATABASE", "social-network");
 ----
 
 TypeScript (HTTP)::
++
+For the frontend-only setup we store values for use by the connection as constants in the source code.
+When running the application yourself, you may need to change them to fit your setup:
 +
 Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c304fc654bc1ed93c76ae/webapp/src/config.tsx[config.tsx,window=_blank]
 
@@ -378,9 +396,9 @@ Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c
 ----
 let driver = Arc::new(
     TypeDBDriver::new(
-        config::TYPEDB_ADDRESS,
-        Credentials::new(config::TYPEDB_USERNAME, config::TYPEDB_PASSWORD),
-        DriverOptions::new(config::TYPEDB_TLS_ENABLED, None).unwrap(),
+        config::typedb_address(),
+        Credentials::new(config::typedb_username(), config::typedb_password()),
+        DriverOptions::new(config::typedb_tls_enabled(), None).unwrap(),
     )
     .await
     .unwrap(),
@@ -406,11 +424,12 @@ Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c
 ----
 @Configuration
 public class TypeDBConfig {
-    private static final String TYPEDB_ADDRESS = "localhost:1729";
-    private static final String TYPEDB_USERNAME = "admin";
-    private static final String TYPEDB_PASSWORD = "password";
-    private static final boolean TYPEDB_TLS_ENABLED = false;
-    public static final String TYPEDB_DATABASE = "social-network";
+    private Map<String, String> env = System.getenv();
+    private String TYPEDB_ADDRESS = env.getOrDefault("TYPEDB_ADDRESS", "localhost:1729");
+    private String TYPEDB_USERNAME = env.getOrDefault("TYPEDB_USERNAME", "admin");
+    private String TYPEDB_PASSWORD = env.getOrDefault("TYPEDB_PASSWORD", "password");
+    private boolean TYPEDB_TLS_ENABLED = env.getOrDefault("TYPEDB_TLS_ENABLED", "false").toLowerCase().equals("true");
+    public String TYPEDB_DATABASE = env.getOrDefault("TYPEDB_DATABASE", "social-network");
 
     @Bean
     public Driver typeDBDriver() {
@@ -459,7 +478,7 @@ Excerpts from:
 [source,rust]
 ----
 async fn get_page_list(State(driver): State<Arc<TypeDBDriver>>) -> Json<Vec<Box<RawValue>>> {
-    let transaction = driver.transaction(config::TYPEDB_DATABASE, TransactionType::Read).await.unwrap();
+    let transaction = driver.transaction(config::typedb_database(), TransactionType::Read).await.unwrap();
     let result = transaction.query(query::PAGE_LIST_QUERY).await.unwrap();
     Json(
         result
@@ -493,7 +512,7 @@ async fn post_create_organization(
     State(driver): State<Arc<TypeDBDriver>>,
     Json(payload): Json<CreateOrganizationPayload>,
 ) -> impl IntoResponse {
-    let transaction = driver.transaction(config::TYPEDB_DATABASE, TransactionType::Write).await.unwrap();
+    let transaction = driver.transaction(config::typedb_database(), TransactionType::Write).await.unwrap();
     transaction
         .query(query::create_organization_query(payload))
         .await
@@ -594,19 +613,20 @@ Excerpts from:
 ----
 public class PageController {
     private final Driver driver;
+    private final TypeDBConfig config = new TypeDBConfig();
 
     public PageController(Driver driver) {
         this.driver = driver;
     }
 
     public String getPages() {
-        try (Transaction tx = driver.transaction(TypeDBConfig.TYPEDB_DATABASE, Transaction.Type.READ)) {
+        try (Transaction tx = driver.transaction(config.TYPEDB_DATABASE, Transaction.Type.READ)) {
             return tx.query(Query.PAGE_LIST_QUERY).resolve().asConceptDocuments().stream().map(JSON::toString).collect(Collectors.toList()).toString();
         }
     }
 
     public ResponseEntity<?> createOrganization(@RequestBody CreateOrganizationPayload payload) {
-        try (Transaction tx = driver.transaction(TypeDBConfig.TYPEDB_DATABASE, Transaction.Type.WRITE)) {
+        try (Transaction tx = driver.transaction(config.TYPEDB_DATABASE, Transaction.Type.WRITE)) {
             tx.query(Query.createOrganizationQuery(payload)).resolve();
             tx.commit();
             return ResponseEntity.ok().body("null");
@@ -848,6 +868,7 @@ public class BackendjavaApplication {
 @RestController
 public class PageController {
     private final Driver driver;
+    private final TypeDBConfig config = new TypeDBConfig();
 
     @Autowired
     public PageController(Driver driver) {
@@ -856,14 +877,14 @@ public class PageController {
 
     @GetMapping(value = "/api/pages", produces = "application/json")
     public String getPages() {
-        try (Transaction tx = driver.transaction(TypeDBConfig.TYPEDB_DATABASE, Transaction.Type.READ)) {
+        try (Transaction tx = driver.transaction(config.TYPEDB_DATABASE, Transaction.Type.READ)) {
             return tx.query(Query.PAGE_LIST_QUERY).resolve().asConceptDocuments().stream().map(JSON::toString).collect(Collectors.toList()).toString();
         }
     }
 
     @PostMapping(value = "/api/create-organization", produces = "application/json")
     public ResponseEntity<?> createOrganization(@RequestBody CreateOrganizationPayload payload) {
-        try (Transaction tx = driver.transaction(TypeDBConfig.TYPEDB_DATABASE, Transaction.Type.WRITE)) {
+        try (Transaction tx = driver.transaction(config.TYPEDB_DATABASE, Transaction.Type.WRITE)) {
             tx.query(Query.createOrganizationQuery(payload)).resolve();
             tx.commit();
             return ResponseEntity.ok().body("null");

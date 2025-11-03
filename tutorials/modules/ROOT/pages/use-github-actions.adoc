@@ -1,0 +1,115 @@
+= Use TypeDB in GitHub Actions
+:keywords: typedb, typeql, tutorial, github actions, ci
+:pageTitle: Use TypeDB in GitHub Actions
+:summary: A tutorial on using the TypeDB in GitHub Actions
+:page-toclevels: 2
+
+This tutorial shows you how to get a running instance of TypeDB into your GitHub Actions CI pipeline
+using the TypeDB GitHub Action.
+
+== Step 1. Installing and running TypeDB
+
+We install and run TypeDB using the `typedb/setup-typedb` GitHub Action, specifying the `typedb_version` to use as required.
+
+[source,yaml]
+----
+name: TypeDB
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup TypeDB
+        uses: typedb/setup-typedb@1.0.0
+        with:
+          typedb_version: 3.5.1
+----
+
+== Step 2. Step arguments
+
+The TypeDB GitHub Action supports a number of arguments for configuring TypeDB as required.
+
+[options=header]
+|===
+| Argument           | Description                            | Default | Value
+| `typedb_version`   | The version of TypeDB to use           | latest  | A TypeDB version (e.g. `3.5.0`) or `latest`
+| `typedb_grpc_port` | TypeDB's port for gRPC connections     | 1729    | Valid port number
+| `typedb_http_port` | TypeDB's port for HTTP connections     | 8000    | Valid port number
+| `typedb_args`      | Additional arguments to pass to TypeDB |         | xref:{page-version}@maintenance-operation::typedb-configuration.adoc[TypeDB CLI arguments]
+|===
+
+== Usage Example: Setting up a database
+
+Once the `setup-typedb` step has been run in a job,
+there'll be a TypeDB instance running for that job.
+You'll also have access to TypeDB Console,
+which you could use for tasks such as loading schema and data to run tests against:
+
+[source,yaml]
+----
+name: TypeDB
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup TypeDB
+        uses: typedb/setup-typedb@1.0.0
+        with:
+          typedb_version: 3.5.1
+
+      - name: Create and initialise database
+        run: |
+          typedb console --address=localhost:1729 --tls-disabled \
+            --username=admin --password=password \
+            --command="database create-init test-db path/to/schema.tql path/to/data.tql"
+----
+
+== Step 3. Commit and push
+
+Once your workflow file is set up, you can run it by commiting and pushing to GitHub:
+
+[source,bash]
+----
+git add .github/workflows/workflow.yml
+git commit -m "Add TypeDB workflow"
+git push
+----
+
+== Step 4. View the workflow run
+
+Once your workflow is set up, you can view the workflow run in the "Actions" tab of your repository on GitHub.
+
+== Conclusion
+
+This workflow demonstrates how to use the TypeDB GitHub Action to run a specific version of TypeDB in a CI pipeline.
+
+This approach enables fast, isolated, and reproducible testing environments in GitHub Actions.
+
+== Next steps
+
+[cols-2]
+--
+
+.xref:{page-version}@core-concepts::drivers/overview.adoc[Drivers]
+[.clickable]
+****
+Learn how to connect to TypeDB through our drivers
+****
+
+.xref:{page-version}@examples::index.adoc[]
+[.clickable]
+****
+View example TypeDB applications and datasets
+****
+--

@@ -1,20 +1,20 @@
 = TypeDB Cloud API
+:tabs-sync-option:
 
 The TypeDB Cloud administration API can be used to perform certain
 actions programmatically, rather than through the TypeDB Cloud website.
 
-To use the API, you will need to sign up for a free TypeDB Cloud account at
-https://cloud.typedb.com/sign-up.
+To use the API, you will need a https://cloud.typedb.com[TypeDB Cloud account].
 
 == Generate an API Token
 
 1. Visit your https://cloud.typedb.com/?team_action=/settings[team settings,window=_blank] page,
 scroll to the API tokens section, and click "Generate API Token".
 
-2. Give your API token a descriptive name, and appropriate access to your chosen space.
+2. Give your API token a descriptive name, and appropriate access to your chosen space and hit "Generate token".
 See the xref:{page-version}@reference::cloud-http-api.adoc#accesslevels[API reference] for detailed access level info.
 
-3. Generate your API token and copy the displayed client ID and client secret for later use when authenticating.
+3. Once created, the token details will be displayed - save the displayed client secret.
 
 [IMPORTANT]
 ====
@@ -27,7 +27,7 @@ you first generate the token, and will be unable to use the token without it.
 Once you have your client ID and client secret,
 you will need to exchange these for a short-lived access token used to query the API.
 
-. Make a `POST` request to `\https://cloud.typedb.com/api/auth`,
+. Make a `POST` request to `\https://cloud.typedb.com/api/v1/auth`,
 with the client ID and client secret in a Basic authorization header, separated by a `:`.
 +
 [tabs]
@@ -37,7 +37,7 @@ curl::
 [source,console]
 ----
 curl --request POST \
-    --url https://cloud.typedb.com/api/auth \
+    --url https://cloud.typedb.com/api/v1/auth \
     --header 'Authorization: Basic {CLIENT-ID}:{CLIENT-SECRET}'
 ----
 
@@ -47,7 +47,7 @@ Python::
 ----
 import requests
 
-url = "https://cloud.typedb.com/api/auth"
+url = "https://cloud.typedb.com/api/v1/auth"
 
 headers = {
     "Authorization": "Basic {CLIENT-ID}:{CLIENT-SECRET}"
@@ -66,7 +66,7 @@ use reqwest;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let resp = client
-        .post("https://cloud.typedb.com/api/auth")
+        .post("https://cloud.typedb.com/api/v1/auth")
         .header(reqwest::header::AUTHORIZATION, "Basic {CLIENT_ID}:{CLIENT_SECRET}")
         .send().await;
     Ok(())
@@ -90,7 +90,7 @@ curl::
 [source,console]
 ----
 curl --request GET \
-    --url https://cloud.typedb.com/api/team/TEAM_ID/spaces/SPACE_ID/clusters \
+    --url https://cloud.typedb.com/api/v1/team/TEAM_ID/spaces/SPACE_ID/clusters \
     --header 'Authorization: Bearer {ACCESS-TOKEN}'
 ----
 
@@ -100,7 +100,7 @@ Python::
 ----
 import requests
 
-url = "https://cloud.typedb.com/api/team/my-team/spaces/default/clusters"
+url = "https://cloud.typedb.com/api/v1/team/my-team/spaces/default/clusters"
 
 headers = {
     "Authorization": "Bearer {ACCESS-TOKEN}"
@@ -119,7 +119,7 @@ use reqwest;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = reqwest::Client::new();
     let resp = client
-        .get("https://cloud.typedb.com/api/team/my-team/spaces/default/clusters")
+        .get("https://cloud.typedb.com/api/v1/team/my-team/spaces/default/clusters")
         .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
         .send().await;
     Ok(())
@@ -155,7 +155,7 @@ It will return information about the clusters in a JSON format, as below
 ]
 ----
 
-== Next Steps
+== Next steps
 
 Now that you know how to list the clusters in your space from the API,
 you can explore TypeDB Cloud further, either through further API use or back on the website.
