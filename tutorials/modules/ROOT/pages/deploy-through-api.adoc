@@ -3,16 +3,17 @@
 :pageTitle: Deploy TypeDB through the API
 :summary: A tutorial on deploying TypeDB through the API
 :page-toclevels: 2
+:tabs-sync-option:
 
 This tutorial will walk you through the creation of a script
 to automate deployment of a TypeDB cluster on TypeDB Cloud.
 
-By the end of it, you'll be able to use the API to perform routine actions
-such as launching new clusters.
+We're going to build a script that authenticates with the API,
+deploys a TypeDB cluster, and retrieves its status in a polling loop until it's ready to receive incoming connections.
 
 == Before you start
 
-1. Sign in to your TypeDB Cloud account at https://cloud.typedb.com.
+1. Sign in to your TypeDB Cloud account at https://cloud.typedb.com[window=_blank].
 2. In https://cloud.typedb.com/?team_action=/settings#api-tokens[Team settings - API tokens,window=_blank],
 create a new API token with `Write` access.
 
@@ -28,10 +29,10 @@ We will write a script to deploy TypeDB, which will:
 
 1. Generate an API access token
 2. Use this token to launch a single-node TypeDB cluster
-3. Wait for the cluster to become ready
+3. Wait for the cluster to become ready to receive incoming connections
 
-The full script is presented here for reference,
-with a breakdown of its individual parts below
+Here's the full script.
+In the following sections we'll break down what each part of the script does.
 
 [tabs]
 ====
@@ -115,6 +116,14 @@ def main():
     client_id = os.getenv("TYPEDB_CLOUD_CLIENT_ID")
     client_secret = os.getenv("TYPEDB_CLOUD_CLIENT_SECRET")
 
+    if client_id is None or client_secret is None:
+        print("TYPEDB_CLOUD_CLIENT_ID and TYPEDB_CLOUD_CLIENT_SECRET environment variables must be set")
+        sys.exit(1)
+
+    if len(sys.argv) != 5:
+        print("Usage: python main.py <team_id> <space_id> <region> <cluster_id>")
+        sys.exit(1)
+
     team_id = sys.argv[1]
     space_id = sys.argv[2]
     region = sys.argv[3]
@@ -182,6 +191,104 @@ def get_cluster(access_token, team_id, space_id, cluster_id):
 if __name__ == "__main__":
     main()
 ----
+Node.js::
++
+[source,javascript]
+----
+main();
+
+async function main() {
+    const clientId = process.env.TYPEDB_CLOUD_CLIENT_ID;
+    const clientSecret = process.env.TYPEDB_CLOUD_CLIENT_SECRET;
+
+    if (!clientId || !clientSecret) {
+        console.error("TYPEDB_CLOUD_CLIENT_ID or TYPEDB_CLOUD_CLIENT_SECRET not found");
+        process.exit(1);
+    }
+
+    if (process.argv.length != 6) {
+        console.error("Usage: node deploy.ts <team_id> <space_id> <region> <cluster_id>");
+        process.exit(1);
+    }
+
+    const teamId = process.argv[2];
+    const spaceId = process.argv[3];
+    const region = process.argv[4];
+    const clusterId = process.argv[5];
+
+    const accessToken = await getAccessToken(clientId, clientSecret);
+
+    const clusterConfig = {
+        id: clusterId,
+        serverCount: 1,
+        storageSizeGB: 10,
+        provider: "gcp",
+        region: region,
+        isFree: true,
+        machineType: "c2d-highcpu-2",
+        storageType: "standard-rwo",
+        version: "latest"
+    };
+
+    let response = await deployCluster(accessToken, teamId, spaceId, clusterConfig);
+
+    while (response.status != "running") {
+        console.log("\nSleeping...\n");
+        await new Promise((resolve) => { setTimeout(resolve, 15_000); });
+        response = await getCluster(accessToken, teamId, spaceId, clusterId);
+    }
+}
+
+async function getAccessToken(clientId, clientSecret) {
+    const url = "https://cloud.typedb.com/api/v1/auth";
+    const request = new Request(
+        url, {
+            method: "POST",
+            headers: {Authorization: `Basic ${clientId}:${clientSecret}`}
+        }
+    );
+
+    return fetch(request).then(async res => {
+        if (!res.ok) throw Error(await res.text());
+        return res.text();
+    });
+}
+
+async function deployCluster(accessToken, teamId, spaceId, clusterConfig) {
+    const url = `https://cloud.typedb.com/api/v1/team/${teamId}/spaces/${spaceId}/clusters/deploy`;
+    const request = new Request(
+        url, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(clusterConfig),
+        },
+    );
+
+    return fetch(request).then(async res => {
+        if (!res.ok) throw Error(await res.text());
+        return res.json();
+    });
+}
+
+async function getCluster(accessToken, teamId, spaceId, clusterId) {
+    const url = `https://cloud.typedb.com/api/v1/team/${teamId}/spaces/${spaceId}/clusters/${clusterId}`;
+    const request = new Request(
+        url, {
+            method: "GET",
+            headers: {Authorization: `Bearer ${accessToken}`},
+        },
+    );
+
+    return fetch(request).then(async res => {
+        if (!res.ok) throw Error(await res.text());
+        return res.json();
+    });
+}
+----
 ====
 
 == Script breakdown
@@ -216,10 +323,40 @@ Python::
 client_id = os.getenv("TYPEDB_CLOUD_CLIENT_ID")
 client_secret = os.getenv("TYPEDB_CLOUD_CLIENT_SECRET")
 
+if client_id is None or client_secret is None:
+    print("TYPEDB_CLOUD_CLIENT_ID and TYPEDB_CLOUD_CLIENT_SECRET environment variables must be set")
+    sys.exit(1)
+
+if len(sys.argv) != 5:
+    print("Usage: python main.py <team_id> <space_id> <region> <cluster_id>")
+    sys.exit(1)
+
 team_id = sys.argv[1]
 space_id = sys.argv[2]
 region = sys.argv[3]
 cluster_id = sys.argv[4]
+----
+Node.js::
++
+[source,javascript]
+----
+const clientId = process.env.TYPEDB_CLOUD_CLIENT_ID;
+const clientSecret = process.env.TYPEDB_CLOUD_CLIENT_SECRET;
+
+if (!clientId || !clientSecret) {
+    console.error("TYPEDB_CLOUD_CLIENT_ID or TYPEDB_CLOUD_CLIENT_SECRET not found");
+    process.exit(1);
+}
+
+if (process.argv.length != 6) {
+    console.error("Usage: node deploy.ts <team_id> <space_id> <region> <cluster_id>");
+    process.exit(1);
+}
+
+const teamId = process.argv[2];
+const spaceId = process.argv[3];
+const region = process.argv[4];
+const clusterId = process.argv[5];
 ----
 ====
 
@@ -245,7 +382,7 @@ Python::
 [source,python]
 ----
 def get_access_token(client_id, client_secret):
-    url = "https://cloud.typedb.com/api/auth"
+    url = "https://cloud.typedb.com/api/v1/auth"
 
     headers = {
         "Authorization": f"Basic {client_id}:{client_secret}"
@@ -256,10 +393,30 @@ def get_access_token(client_id, client_secret):
     response.raise_for_status()
     return response.text
 ----
+Node.js::
++
+[source,javascript]
+----
+async function getAccessToken(clientId, clientSecret) {
+    const url = "https://cloud.typedb.com/api/v1/auth";
+    const request = new Request(
+        url, {
+            method: "POST",
+            headers: {Authorization: `Basic ${clientId}:${clientSecret}`}
+        }
+    );
+
+    return fetch(request).then(async res => {
+        if (!res.ok) throw Error(await res.text());
+        return res.text();
+    });
+}
+----
 ====
 
-We exchange the long-lived client ID and secret for a short-lived access token,
-which we will use for authentication for the rest of the script.
+We'll need an access token.
+To get it we post to `https://cloud.typedb.com/api/v1/auth`
+with the long-lived client ID and secret.
 
 === 3. Cluster configuration
 
@@ -297,11 +454,27 @@ cluster_config = {
     "version": "latest"
 }
 ----
+Node.js::
++
+[source,javascript]
+----
+const clusterConfig = {
+    id: clusterId,
+    serverCount: 1,
+    storageSizeGB: 10,
+    provider: "gcp",
+    region: region,
+    isFree: true,
+    machineType: "c2d-highcpu-2",
+    storageType: "standard-rwo",
+    version: "latest"
+};
+----
 ====
 
 This JSON object defines how your cluster will be deployed.
 The parameters could be redefined in the script, or adjusted to be arguments to suit your needs.
-In this case, we've provided preset values for all parameters except ID, provider, and region.
+In this case, we've provided preset values for all parameters except ID and region.
 
 See the xref:{page-version}@reference::cloud-http-api.adoc[API reference] for more details on cluster configuration.
 
@@ -315,7 +488,7 @@ Bash::
 ----
 CLUSTER_RES=$(
   curl --request POST \
-    --url "https://cloud.typedb.com/api/team/$TEAM_ID/spaces/$SPACE_ID/clusters/deploy" \
+    --url "https://cloud.typedb.com/api/v1/team/$TEAM_ID/spaces/$SPACE_ID/clusters/deploy" \
     --header "Authorization: Bearer $TYPEDB_CLOUD_ACCESS_TOKEN" \
     --json "$CLUSTER_CONFIG"
 )
@@ -325,7 +498,7 @@ Python::
 [source,python]
 ----
 def deploy_cluster(access_token, team_id, space_id, cluster_config):
-    url = f"https://cloud.typedb.com/api/team/{team_id}/spaces/{space_id}/clusters/deploy"
+    url = f"https://cloud.typedb.com/api/v1/team/{team_id}/spaces/{space_id}/clusters/deploy"
 
     headers = {
         "Authorization": f"Bearer {access_token}"
@@ -337,10 +510,34 @@ def deploy_cluster(access_token, team_id, space_id, cluster_config):
 
     return response.json()
 ----
+Node.js::
++
+[source,javascript]
+----
+async function deployCluster(accessToken, teamId, spaceId, clusterConfig) {
+    const url = `https://cloud.typedb.com/api/v1/team/${teamId}/spaces/${spaceId}/clusters/deploy`;
+    const request = new Request(
+        url, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(clusterConfig),
+        },
+    );
+
+    return fetch(request).then(async res => {
+        if (!res.ok) throw Error(await res.text());
+        return res.json();
+    });
+}
+----
 ====
 
 We use the cluster config and the access token we acquired previously to actually deploy the cluster.
-We store the response for use in the next step
+We store the response for use in the next step.
 
 === 5. Waiting for the cluster to be ready
 
@@ -360,7 +557,7 @@ while [[ $(echo $CLUSTER_RES | jq -r '.status') != 'running' ]]; do
   echo
   sleep 15
   CLUSTER_RES=$(curl --request GET \
-    --url https://cloud.typedb.com/api/team/$TEAM_ID/spaces/$SPACE_ID/clusters/$CLUSTER_ID \
+    --url https://cloud.typedb.com/api/v1/team/$TEAM_ID/spaces/$SPACE_ID/clusters/$CLUSTER_ID \
     --header "Authorization: Bearer $TYPEDB_CLOUD_ACCESS_TOKEN")
 done
 ----
@@ -374,7 +571,7 @@ while response["status"] != "running":
     response = get_cluster(access_token, team_id, space_id, cluster_id)
 
 def get_cluster(access_token, team_id, space_id, cluster_id):
-    url = f"https://cloud.typedb.com/api/team/{team_id}/spaces/{space_id}/clusters/{cluster_id}"
+    url = f"https://cloud.typedb.com/api/v1/team/{team_id}/spaces/{space_id}/clusters/{cluster_id}"
 
     headers = {
         "Authorization": f"Bearer {access_token}"
@@ -386,9 +583,34 @@ def get_cluster(access_token, team_id, space_id, cluster_id):
 
     return response.json()
 ----
+Node.js::
++
+[source,javascript]
+----
+while (response.status != "running") {
+    console.log("\nSleeping...\n");
+    await new Promise((resolve) => { setTimeout(resolve, 15_000); });
+    response = await getCluster(accessToken, teamId, spaceId, clusterId);
+}
+
+async function getCluster(accessToken, teamId, spaceId, clusterId) {
+    const url = `https://cloud.typedb.com/api/v1/team/${teamId}/spaces/${spaceId}/clusters/${clusterId}`;
+    const request = new Request(
+        url, {
+            method: "GET",
+            headers: {Authorization: `Bearer ${accessToken}`},
+        },
+    );
+
+    return fetch(request).then(async res => {
+        if (!res.ok) throw Error(await res.text());
+        return res.json();
+    });
+}
+----
 ====
 
-We wait for the cluster to be ready by polling the cluster's status until it's running.
+We wait for the cluster to be ready to receive incoming connections by polling the cluster's status until it's running.
 If we encounter an error at any point
 (either during the initial deployment, or when subsequently getting the cluster to check its status)
 we print the error and exit.
@@ -405,16 +627,34 @@ export TYPEDB_CLOUD_CLIENT_SECRET=mySecret
 
 2. Run the script:
 +
+[tabs]
+====
+Bash::
++
 [source,bash]
 ----
 ./deploy_cluster.sh my-team my-space gcp europe-west2 api-cluster
 ----
+Python::
++
+[source,bash]
+----
+python deploy.py my-team my-space gcp europe-west2 api-cluster
+----
+Node.js::
++
+[source,bash]
+----
+node deploy.js my-team my-space gcp europe-west2 api-cluster
+----
+====
 
-If successful, TypeDB Cloud will deploy your cluster, and the script will poll it until it's ready.
+If successful, TypeDB Cloud will deploy your cluster, and the script will poll it until it's ready to receive incoming connections.
 
 == Conclusion
 
 This tutorial has shown you how to set up a script to deploy TypeDB through the API.
+
 Similar approaches can be used for other common actions,
 such as pausing or resuming your clusters when not in use.
 
@@ -428,7 +668,7 @@ such as pausing or resuming your clusters when not in use.
 Head back to TypeDB Cloud to keep exploring there.
 ****
 
-.xref:{page-version}@reference::cloud-http-api.adoc[]
+.xref:{page-version}@reference::cloud-http-api.adoc[API reference]
 [.clickable]
 ****
 View the API reference for more detail on what you can do with it.

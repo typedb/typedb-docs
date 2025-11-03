@@ -7,7 +7,7 @@
 This tutorial shows you how to get a running instance of TypeDB into your GitHub Actions CI pipeline
 using the TypeDB GitHub Action.
 
-== Step 1. Installing and running TypeDB
+== Step 1. Install and run TypeDB
 
 We install and run TypeDB using the `typedb/setup-typedb` GitHub Action, specifying the `typedb_version` to use as required.
 
@@ -30,7 +30,7 @@ jobs:
           typedb_version: 3.5.1
 ----
 
-== Step 2. Step arguments
+== Step 2. Arguments
 
 The TypeDB GitHub Action supports a number of arguments for configuring TypeDB as required.
 
@@ -43,11 +43,11 @@ The TypeDB GitHub Action supports a number of arguments for configuring TypeDB a
 | `typedb_args`      | Additional arguments to pass to TypeDB |         | xref:{page-version}@maintenance-operation::typedb-configuration.adoc[TypeDB CLI arguments]
 |===
 
-== Usage Example: Setting up a database
+== Usage example: Set up a database
 
 Once the `setup-typedb` step has been run in a job,
 there'll be a TypeDB instance running for that job.
-You'll also have access to TypeDB Console,
+You'll also have access to the TypeDB Console CLI,
 which you could use for tasks such as loading schema and data to run tests against:
 
 [source,yaml]
@@ -77,7 +77,7 @@ jobs:
 
 == Step 3. Commit and push
 
-Once your workflow file is set up, you can run it by commiting and pushing to GitHub:
+Once your workflow file is set up, you can run it by committing and pushing to GitHub:
 
 [source,bash]
 ----
@@ -100,7 +100,6 @@ This approach enables fast, isolated, and reproducible testing environments in G
 
 [cols-2]
 --
-
 .xref:{page-version}@core-concepts::drivers/overview.adoc[Drivers]
 [.clickable]
 ****
@@ -111,5 +110,11 @@ Learn how to connect to TypeDB through our drivers
 [.clickable]
 ****
 View example TypeDB applications and datasets
+****
+
+.xref:{page-version}@maintenance-operation::index.adoc[]
+[.clickable]
+****
+Learn how to maintain and operate TypeDB servers.
 ****
 --
