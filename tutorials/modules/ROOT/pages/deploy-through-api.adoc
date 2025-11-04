@@ -633,13 +633,13 @@ Bash::
 +
 [source,bash]
 ----
-./deploy_cluster.sh my-team my-space gcp europe-west2 api-cluster
+./deploy.sh my-team my-space gcp europe-west2 api-cluster
 ----
 Python::
 +
 [source,bash]
 ----
-python deploy.py my-team my-space gcp europe-west2 api-cluster
+python main.py my-team my-space gcp europe-west2 api-cluster
 ----
 Node.js::
 +
