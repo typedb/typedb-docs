@@ -35,7 +35,12 @@ As you go through those examples, we recommend having the Core Concepts open (se
 Some developers like to start with Concepts first, then look at examples, in which case
 skip to the next section and come back to the examples afterward!
 
-== Step 5: Core concepts
+== Step 5: Tutorials
+
+Look at our xref:{page-version}@tutorials::index.adoc[tutorials] for accomplishing specific TypeDB tasks,
+such as using TypeDB in CI, or deploying TypeDB through our Cloud API.
+
+== Step 6: Core concepts
 
 There are approximately 3 major parts to understanding TypeDB:
 
@@ -64,7 +69,7 @@ TypeDB can be accessed through either high-performance gRPC drivers or its built
 TypeDB's gRPC drivers come with their own set of APIs and recommended usage patterns that 
 are described at the xref:{page-version}@core-concepts::drivers/overview.adoc[Driver Overview].
 
-== Step 6: Building your application
+== Step 7: Building your application
 
 At this point you should have enough conceptual and practical knowledge of TypeDB to build
 your proof-of-concept, or even start building a production application!
@@ -73,7 +78,7 @@ In this building phase you will probably need to refer to any of the xref:{page-
 which are descriptions of all the different features of TypeDB, TypeQL, the protocol and drivers,
 and libraries.
 
-== Step 7: Operations
+== Step 8: Operations
 
 The xref:{page-version}@maintenance-operation::index.adoc[Operations] pages are for learning about backups, upgrades, configurations, and much more.
 
