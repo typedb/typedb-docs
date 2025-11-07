@@ -39,6 +39,20 @@ match $person isa person;
 insert $person has name "Alice";
 ----
 
+If the value is a variable instead of a literal, you must use `==`.
+
+[,typeql]
+----
+#!test[write]
+#{{
+match
+$person isa person;
+#}}
+match let $name_value = "Alice";
+insert $person has name == $name_value;
+----
+
+
 == Deleting attribute ownership
 
 The `has` keyword is used to remove an attribute from its owner.
