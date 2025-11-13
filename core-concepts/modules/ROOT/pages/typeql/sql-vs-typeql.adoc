@@ -1,0 +1,718 @@
+= SQL versus TypeQL guide
+:test-typeql: linear
+
+This guide helps SQL users understand TypeQL by mapping familiar SQL constructs to their TypeQL equivalents.
+TypeQL is a declarative query language for TypeDB that uses pattern matching rather than table joins.
+
+[NOTE]
+====
+TypeQL operates on a graph data model (entities, relations, and attributes) rather than tables and rows.
+This fundamental difference means that some SQL concepts map directly, while others require a different approach.
+====
+
+== Schema Setup
+
+For the examples in this guide, we'll use a simple schema:
+
+[,typeql]
+----
+#!test[schema]
+define
+  entity person, owns name, owns email, owns age;
+  attribute name, value string;
+  attribute email, value string;
+  attribute age, value integer;
+  relation employment, relates employee, relates employer;
+  person plays employment:employee;
+  entity company, owns name, plays employment:employer;
+  company owns name;
+#!test[write, commit]
+insert
+  $alice isa person, has name "Alice", has email "alice@example.com", has age 30;
+  $bob isa person, has name "Bob", has email "bob@example.com", has age 25;
+  $charlie isa person, has name "Charlie", has email "charlie@example.com", has age 35;
+  $acme isa company, has name "Acme Corp";
+  $e1 isa employment, links (employee: $alice, employer: $acme);
+----
+====
+
+== Basic Query Operations
+
+=== SELECT → match + fetch/select
+
+In SQL, `SELECT` retrieves data from tables. In TypeQL, `match` finds data by pattern, and `fetch` or `select` projects the results.
+
+**SQL:**
+[source,sql]
+----
+SELECT name, email FROM person;
+----
+
+**TypeQL:**
+
+In TypeQL, use SELECT to filter out unwanted data:
+
+[,typeql]
+----
+#!test[read, count=3]
+match
+  $p isa person, has name $name, has email $email;
+select $name, $email;	# eliminates $p
+----
+
+Special case: if you're returning data and want to format it through a `fetch` clause, it can also work as a projection:
+
+[,typeql]
+----
+#!test[read, count=3]
+match
+  $p isa person, has name $name, has email $email;
+fetch {
+  "name": $name,
+  "email": $email
+};
+----
+
+=== WHERE → Pattern Constraints
+
+SQL's `WHERE` clause filters rows. In TypeQL, constraints are part of the `match` pattern.
+
+**SQL:**
+[source,sql]
+----
+SELECT name FROM person WHERE age > 25;
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[read, count=2]
+match
+  $p isa person, has name $name, has age $age;
+  $age > 25;
+select $name;
+----
+
+Shorthand:
+[,typeql]
+----
+#!test[read, count=2]
+match
+  $p isa person, has name $name, has age > 25;
+select $name;
+----
+
+
+==== AND/OR Conditions in WHERE clauses
+
+SQL uses `AND` and `OR` in `WHERE` clauses. TypeQL uses pattern conjunction (comma or semicolon) and disjunction (`or`).
+
+**SQL:**
+[source,sql]
+----
+SELECT name FROM person WHERE age > 25 AND email LIKE '%@example.com';
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[read, count=2]
+match
+  $p isa person, has name $name, has age $age, has email $email;
+  $age > 25;
+  $email like ".*@example.com";
+select $name;
+----
+
+**SQL with OR:**
+[source,sql]
+----
+SELECT name FROM person WHERE age < 20 OR age > 30;
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[read, count=1]
+match
+  $p isa person, has name $name, has age $age;
+  { $age < 20; } or { $age > 30; };
+select $name;
+----
+
+=== JOIN → Relation Patterns
+
+SQL uses `JOIN` to combine data from multiple tables. In TypeQL, relations naturally connect entities through patterns.
+The type of JOIN determines which entities are included in the results when relationships don't exist.
+
+==== INNER JOIN (or JOIN)
+
+An INNER JOIN returns only rows where there is a match in both tables. In TypeQL, this is the default behavior when matching relations.
+
+**SQL:**
+[source,sql]
+----
+SELECT p.name, e.id
+FROM person p
+INNER JOIN employment e ON p.id = e.employee_id;
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[read, count=1]
+match
+  $p isa person, has name $pname;
+  $e isa employment, links (employee: $p);
+select $pname, $e;
+----
+
+This returns only persons who have an employment relation.
+
+==== LEFT JOIN
+
+A LEFT JOIN returns all rows from the left table (person), and matching rows from the right table (employment).
+If there's no match, NULL values are returned for the right table columns. In TypeQL, use the `try` construct for optional matching.
+
+**SQL:**
+[source,sql]
+----
+SELECT p.name, e.id
+FROM person p
+LEFT JOIN employment e ON p.id = e.employee_id;
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[read, count=3]
+match
+  $p isa person, has name $pname;
+  try {
+    $e isa employment, links (employee: $p);
+  };
+select $pname, $e;
+----
+
+This returns all persons, with their employment if they have one.
+Persons without employment will still appear in the results (with `$e` unbound).
+
+==== RIGHT JOIN
+
+A RIGHT JOIN returns all rows from the right table (employment), and matching rows from the left table (person).
+If there's no match, NULL values are returned for the left table columns. In TypeQL, reverse the pattern to start from the right side.
+
+**SQL:**
+[source,sql]
+----
+SELECT p.name, e.id
+FROM person p
+RIGHT JOIN employment e ON p.id = e.employee_id;
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[read, count=1]
+match
+  $e isa employment;
+  try {
+    $p isa person, has name $pname;
+    $e links (employee: $p);
+  };
+select $pname;
+----
+
+This returns all employments, with employee names if they exist.
+Employments without matching persons will still appear in the results (with `$pname` unbound).
+
+==== CROSS JOIN
+
+A CROSS JOIN returns the Cartesian product of two tables - every row from the first table combined with every row from the second table.
+In TypeQL, match entities from both types independently without requiring any relation between them.
+
+**SQL:**
+[source,sql]
+----
+SELECT p.name, e.id
+FROM person p
+CROSS JOIN employment e;
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[read, count=3]
+match
+  $p isa person, has name $pname;
+  $e isa employment;
+select $pname, $e;
+----
+
+This returns every combination of person and employment, regardless of whether they have any relationship.
+The result set size is the product of the number of persons and employments.
+
+==== FULL OUTER JOIN
+
+A FULL OUTER JOIN returns all rows from both tables, with NULL values where there's no match.
+
+TypeQL doesn't yet have an efficient equivalent of full outer joins! Please leave us a message if this operation is required for your application.
+
+== Data Modification
+
+=== INSERT → insert
+
+**SQL:**
+[source,sql]
+----
+INSERT INTO person (name, email, age) VALUES ('David', 'david@example.com', 28);
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[write, commit, count=1]
+insert
+  $p isa person, has name "David", has email "david@example.com", has age 28;
+----
+
+**SQL INSERT with SELECT:**
+[source,sql]
+----
+INSERT INTO employment (employee_id, employer_id)
+SELECT p.id, c.id
+FROM person p, company c
+WHERE p.name = 'Alice' AND c.name = 'Acme Corp';
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[write, commit, count=1]
+match
+  $p isa person, has name "Alice";
+  $c isa company, has name "Acme Corp";
+insert
+  $e isa employment, links (employee: $p, employer: $c);
+----
+
+=== UPDATE → update
+
+**SQL:**
+[source,sql]
+----
+UPDATE person SET email = 'newemail@example.com' WHERE name = 'Alice';
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[write, count=1]
+match
+  $p isa person, has name "Alice";
+update $p has email "newemail@example.com";
+----
+
+[NOTE]
+====
+The `update` clause in TypeQL works only for attributes with cardinality `@card(0..1)` or `@card(1)`.
+It automatically deletes the old value and inserts the new one.
+====
+
+=== DELETE → delete
+
+**SQL:**
+[source,sql]
+----
+DELETE FROM person WHERE name = 'Charlie';
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[write, rollback, count=1]
+match
+  $p isa person, has name "Charlie";
+delete $p;
+----
+
+**SQL DELETE with JOIN:**
+[source,sql]
+----
+DELETE e FROM employment e
+INNER JOIN person p ON e.employee_id = p.id
+WHERE p.name = 'Alice';
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[write, rollback, count=1]
+match
+  $p isa person, has name "Alice";
+  $e isa employment, links (employee: $p);
+delete $e;
+----
+
+== Aggregation and Grouping
+
+=== GROUP BY → reduce with groupby
+
+**SQL:**
+[source,sql]
+----
+SELECT age, COUNT(*) as count
+FROM person
+GROUP BY age;
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[read, count=3]
+match
+  $p isa person, has age $age;
+reduce $count = count groupby $age;
+----
+
+=== Aggregate Functions
+
+**SQL:**
+[source,sql]
+----
+SELECT 
+  COUNT(*) as total,
+  AVG(age) as avg_age,
+  MAX(age) as max_age,
+  MIN(age) as min_age,
+  SUM(age) as sum_age
+FROM person;
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[read, count=1]
+match
+  $p isa person, has age $age;
+reduce
+  $total = count,
+  $avg_age = mean($age),
+  $max_age = max($age),
+  $min_age = min($age),
+  $sum_age = sum($age);
+----
+
+=== HAVING → reduce + match
+
+**SQL:**
+[source,sql]
+----
+SELECT age, COUNT(*) as count
+FROM person
+GROUP BY age
+HAVING COUNT(*) > 1;
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[read, count=0]
+match
+  $p isa person, has age $age;
+reduce $count = count groupby $age;
+match $count > 1;
+----
+
+== Sorting and Pagination
+
+=== ORDER BY → sort
+
+**SQL:**
+[source,sql]
+----
+SELECT name, age FROM person ORDER BY age DESC, name ASC;
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[read, count=3]
+match
+  $p isa person, has name $name, has age $age;
+sort $age desc, $name asc;
+select $name, $age;
+----
+
+=== LIMIT and OFFSET
+
+**SQL:**
+[source,sql]
+----
+SELECT name FROM person ORDER BY name LIMIT 10 OFFSET 20;
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[read, count=0]
+match
+  $p isa person, has name $name;
+sort $name;
+offset 20;
+limit 10;
+select $name;
+----
+
+== Advanced Operations
+
+=== DISTINCT → distinct
+
+**SQL:**
+[source,sql]
+----
+SELECT DISTINCT age FROM person;
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[read, count=3]
+match
+  $p isa person, has age $age;
+select $age;
+distinct;
+----
+
+=== Subqueries → Functions or Nested match
+
+**SQL:**
+[source,sql]
+----
+SELECT name FROM person
+WHERE age > (SELECT AVG(age) FROM person);
+----
+
+**TypeQL using functions:**
+[,typeql]
+----
+#!test[read, count=1]
+with fun avg_age() -> integer:
+  match $p isa person, has age $age;
+  return mean($age);
+match
+  $p isa person, has name $name, has age $age;
+  $age > avg_age();
+select $name;
+----
+
+=== UNION → or patterns
+
+**SQL:**
+[source,sql]
+----
+SELECT name FROM person WHERE age < 25
+UNION
+SELECT name FROM person WHERE age > 35;
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[read, count=1]
+match
+  $p isa person, has name $name, has age $age;
+  { $age < 25; } or { $age > 35; };
+select $name;
+----
+
+=== EXISTS → not { not { ... } }
+
+**SQL:**
+[source,sql]
+----
+SELECT name FROM person p
+WHERE EXISTS (
+  SELECT 1 FROM employment e
+  WHERE e.employee_id = p.id OR e.employer_id = p.id
+);
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[read, count=2]
+match
+  $p isa person, has name $name;
+  not { not { $e isa employment, links (employee: $p); }; };
+select $name;
+----
+
+_This will be improved in future versions of TypeQL!_
+
+=== IN → Multiple value constraints
+
+**SQL:**
+[source,sql]
+----
+SELECT name FROM person WHERE age IN (25, 30, 35);
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[read, count=1]
+match
+  $p isa person, has name $name, has age $age;
+  { $age == 25; } or { $age == 30; } or { $age == 35; };
+select $name;
+----
+
+=== LIKE → like (regex)
+
+**SQL:**
+[source,sql]
+----
+SELECT name FROM person WHERE email LIKE '%@example.com';
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[read, count=3]
+match
+  $p isa person, has name $name, has email $email;
+  $email like ".*@example.com";
+select $name;
+----
+
+=== NULL checks → not { ... }
+
+**SQL:**
+[source,sql]
+----
+SELECT name FROM person WHERE email IS NULL;
+----
+
+**TypeQL:**
+
+TypeQL doesn't have NULLs. A value is either existing or absent in the database:
+
+[,typeql]
+----
+#!test[read, count=0]
+match
+  $p isa person, has name $name;
+  not { $p has email; };
+select $name;
+----
+
+**SQL:**
+[source,sql]
+----
+SELECT name FROM person WHERE email IS NOT NULL;
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[read, count=3]
+match
+  $p isa person, has name $name, has email $email;
+select $name;
+----
+
+Note that for optional matches like when using LEFT/RIGHT joins, TypeQL's `try` construct can create `None` values. Unlike `null`s in SQL, a `None` is not a value that can be stored. It's also only possible to generated for explicitly known optional variables (ie. ones generated in `try` patterns.)  
+
+Fundamentally, in SQL a `null` is an extra value that any column could contain. In TypeQL, a `None` is a marker given to a variable when it is unset, but it is never used as a value in the data. In other words, any typical value in SQL has the range of possible values of: `<values> + null`. In TypeQL, variables that are explicitly optional can hold `Either<None, Value>` instead of just `Value`.
+
+== Key Differences and Concepts
+
+=== No Explicit FROM Clause
+
+In TypeQL, there's no `FROM` clause. The `match` pattern implicitly defines what data to search through by specifying types and their relationships.
+
+=== Pattern-Based Matching
+
+TypeQL uses pattern matching rather than table joins. Relations are first-class citizens that naturally connect entities, making complex queries more intuitive.
+
+=== Strong Typing
+
+TypeQL is strongly typed. Variables are bound to specific types (entities, relations, attributes), and the query engine enforces type safety. Optional variables are known at query compilation time and validated throughout.
+
+=== Pipeline Model
+
+TypeQL queries are pipelines where each clause processes a stream of answers. This allows for powerful composition:
+
+[,typeql]
+----
+#!test[read, count=1]
+match
+  $p isa person, has name $name, has age $age;
+reduce $avg_age = mean($age);
+match $avg_age > 30;
+----
+
+=== Relations vs Foreign Keys
+
+In SQL, relationships are represented through foreign keys. In TypeQL, relationships are explicit relations that can have their own attributes and connect multiple entities.
+
+**SQL (with foreign keys):**
+[source,sql]
+----
+CREATE TABLE employment (
+  id INT PRIMARY KEY,
+  employee_id INT REFERENCES person(id),
+  employer_id INT REFERENCES company(id),
+  start_date DATE
+);
+----
+
+**TypeQL:**
+[,typeql]
+----
+define
+  relation employment, relates employee, relates employer, owns start-date;
+  attribute start-date, value datetime;
+  person plays employment:employee;
+  company plays employment:employer;
+----
+
+== Summary Table
+
+[cols="^1,^1,^1", options="header"]
+|===
+| SQL Construct | TypeQL Equivalent | Notes
+
+| `SELECT` | `match` + `fetch`/`select` | Pattern matching replaces table selection
+| `FROM` | Implicit in `match` patterns | Types are specified in the pattern
+| `WHERE` | Constraints in `match` | Filtering is part of the pattern
+| `JOIN` | Relation patterns | Relations naturally connect entities
+| `INNER JOIN` | Required relation patterns | Both sides must exist
+| `LEFT JOIN` | Optional patterns with `try` | Use `try` for optional matches
+| `RIGHT JOIN` | Optional patterns with `try` | Reverse pattern direction
+| `INSERT` | `insert` | Similar syntax, pattern-based
+| `UPDATE` | `update` | Only for single-value attributes
+| `DELETE` | `delete` | Pattern-based deletion
+| `GROUP BY` | `reduce ... groupby` | Aggregation with grouping
+| `HAVING` | `reduce` + `match` | Filter aggregated results
+| `ORDER BY` | `sort` | Similar functionality
+| `LIMIT` | `limit` | Identical
+| `OFFSET` | `offset` | Identical
+| `DISTINCT` | `distinct` | Identical
+| `COUNT/SUM/AVG/etc` | `reduce` with functions | `count`, `sum`, `mean`, etc.
+| `UNION` | `or` patterns | Pattern disjunction
+| `EXISTS` | `not { not { ... } }` | Double negation pattern
+| `IN` | `or` with multiple `==` | Pattern disjunction
+| `LIKE` | `like` with regex | Uses regex syntax
+| `IS NULL` | `not { ... has ... }` | Negation pattern
+| `IS NOT NULL` | Implicit in pattern | If matched, it exists
+|===
+
+== References
+
+* xref:{page-version}@core-concepts::typeql/query-clauses.adoc[Query Clauses & Pipelining]
+* xref:{page-version}@core-concepts::typeql/query-variables-patterns.adoc[Query Variables and Patterns]
+* xref:{page-version}@typeql-reference::pipelines/index.adoc[TypeQL Pipeline Reference]
+* xref:{page-version}@typeql-reference::patterns/index.adoc[TypeQL Pattern Reference]
+
