@@ -67,7 +67,7 @@ If you want your data to be returned in JSON, you can format it through a `fetch
 
 [,typeql]
 ----
-#!test[read, count=3]
+#!test[read, count=3, documents]
 match
   $p isa person, has name $name;
 fetch {
@@ -228,8 +228,8 @@ match
 select $pname;
 ----
 
-This returns all employments, with employee names if they exist.
-Employments without matching persons will still appear in the results (with `$pname` unbound).
+This returns employments' employee names if they exist.
+Employments without matching persons will still appear in the results (with `$pname` unbound, set to `None`).
 
 ==== CROSS JOIN
 
@@ -351,7 +351,7 @@ WHERE p.name = 'Alice';
 **TypeQL:**
 [,typeql]
 ----
-#!test[write, rollback, count=1]
+#!test[write, rollback, count=2]
 match
   $p isa person, has name "Alice";
   $e isa employment, links (employee: $p);
@@ -373,7 +373,7 @@ GROUP BY age;
 **TypeQL:**
 [,typeql]
 ----
-#!test[read, count=3]
+#!test[read, count=4]
 match
   $p isa person, has age $age;
 reduce $count = count groupby $age;
@@ -441,7 +441,7 @@ SELECT name, age FROM person ORDER BY age DESC, name ASC;
 **TypeQL:**
 [,typeql]
 ----
-#!test[read, count=3]
+#!test[read, count=4]
 match
   $p isa person, has name $name, has age $age;
 sort $age desc, $name asc;
@@ -488,7 +488,7 @@ SELECT DISTINCT age FROM person;
 **TypeQL:**
 [,typeql]
 ----
-#!test[read, count=3]
+#!test[read, count=4]
 match
   $p isa person, has age $age;
 select $age;
@@ -507,14 +507,15 @@ WHERE age > (SELECT AVG(age) FROM person);
 **TypeQL:**
 [,typeql]
 ----
-#!test[read, count=1]
-with fun avg_age() -> integer:
+#!test[read, count=2]
+with fun avg_age() -> double:
   match $p isa person, has age $age;
   return mean($age);
 match
   $p isa person, has name $name, has age $age;
-  $age > avg_age();
-select $name;
+  let $avg = avg_age();
+  $age > $avg;
+select $avg, $name, $age;
 ----
 
 === UNION → or patterns
@@ -524,7 +525,7 @@ select $name;
 ----
 SELECT name FROM person WHERE age < 25
 UNION
-SELECT name FROM person WHERE age > 35;
+SELECT name FROM person WHERE age >= 35;
 ----
 
 **TypeQL:**
@@ -536,7 +537,7 @@ In TypeQL, you have multiple ways to execute this union using `or`:
 #!test[read, count=1]
 match
   $p isa person, has name $name, has age $age;
-  { $age < 25; } or { $age > 35; };
+  { $age < 25; } or { $age >= 35; };
 select $name;
 ----
 
@@ -547,7 +548,7 @@ match
   { 
     $p isa person, has name $name, has age < 25; 
   } or { 
-    $p isa person, has name $name, has age > 35; 
+    $p isa person, has name $name, has age >= 35; 
   };
 select $name;
 ----
@@ -569,7 +570,7 @@ WHERE EXISTS (
 **TypeQL:**
 [,typeql]
 ----
-#!test[read, count=2]
+#!test[read, count=1]
 match
   $p isa person, has name $name;
   not { not { $e isa employment, links (employee: $p); }; };
@@ -591,7 +592,7 @@ SELECT name FROM person WHERE age IN (25, 30, 35);
 **TypeQL:**
 [,typeql]
 ----
-#!test[read, count=1]
+#!test[read, count=3]
 match
   $p isa person, has name $name, has age $age;
   { $age == 25; } or { $age == 30; } or { $age == 35; };
@@ -619,7 +620,7 @@ SELECT name FROM person WHERE email LIKE '%@example.com';
 **TypeQL:**
 [,typeql]
 ----
-#!test[read, count=3]
+#!test[read, count=4]
 match
   $p isa person, has name $name, has email $email;
   $email like ".*@example.com";
@@ -643,7 +644,7 @@ TypeQL doesn't store NULLs. A value is either existing or absent in the database
 #!test[read, count=0]
 match
   $p isa person, has name $name;
-  not { $p has email; };
+  not { $p has email $_; };
 select $name;
 ----
 
@@ -656,7 +657,7 @@ SELECT name FROM person WHERE email IS NOT NULL;
 **TypeQL:**
 [,typeql]
 ----
-#!test[read, count=3]
+#!test[read, count=4]
 match
   $p isa person, has name $name, has email $_;
 select $name;
@@ -690,7 +691,7 @@ TypeQL queries are pipelines where each clause processes a stream of answers. Th
 match
   $p isa person, has name $name, has age $age;
 reduce $avg_age = mean($age);
-match $avg_age > 30;
+match $avg_age > 29;
 ----
 
 === Relations vs foreign keys

@@ -150,7 +150,7 @@ Removes duplicate answers in the stream.
 
 [,typeql]
 ----
-#!test[read, count=3]
+#!test[read, count=4]
 match
   { $p isa person; } or { $p has name "John"; };
 distinct; # Make sure that the person with name John is returned at most once.

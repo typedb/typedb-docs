@@ -93,39 +93,28 @@ class TypeqlRunner(BaseRunner):
                 return FailureMode.Commit
         return FailureMode.NoFailure
 
-    def run_transaction(self, queries: List[str], type: TransactionType, counted=False, rollback=False, documents=False) -> Union[int, None]:
-        count_var_name = "automatic_test_count"
-        if counted:
-            queries[-1] = queries[-1] + f"\nreduce ${count_var_name} = count;"
+    def run_transaction(self, queries: List[str], type: TransactionType, rollback=False) -> Union[int, None]:
         with self.driver.transaction(self.db, type) as tx:
             try:
-                promises = []
-                results = []
                 for q in queries:
-                    promises.append(tx.query(q))
-                for p in promises:
-                    results.append(p.resolve())
+                    results = tx.query(q).resolve()
+                    if results.is_ok():
+                        results = []
+                    elif results.is_concept_rows():
+                        results = list(results.as_concept_rows())
+                    elif results.is_concept_documents():
+                        results = list(results.as_concept_documents())
+                    else:
+                        print(f"Unknown result type: {results}")
                 if rollback:
                     tx.rollback()
                     tx.close()
                 elif type == TransactionType.READ:
-                    for r in results:
-                        if documents:
-                            consumed_iterator = list(r.as_concept_documents())
-                        else:
-                            consumed_iterator = list(r.as_concept_rows())
                     tx.close()
                 else:
                     tx.commit()
-                if counted:
-                    if documents:
-                        raise Exception("Counting currently relies on Reduce, which is not compatible with Documents")
-                    if type == TransactionType.READ:
-                        count = consumed_iterator[0].get(count_var_name).get_integer()
-                    else:
-                        last_result = list(results[-1].as_concept_rows())
-                        count = last_result[0].get(count_var_name).get_integer()
-                    return count
+                # the count only returned for the count of the last query
+                return len(results)
             except Exception as e:
                 raise Exception(f"{e}") from e
 
@@ -162,10 +151,6 @@ class TypeqlRunner(BaseRunner):
             reference_count = int(parsed_test.config[TEST_COUNT_KEY])
             counted = True
 
-        documents = False
-        if parsed_test.config.get(TEST_DOCUMENTS_KEY) is not None:
-            documents = True
-
         if parsed_test.config.get(TEST_FAIL_KEY):
             ref_failure_mode = FailureMode.NoFailure
             match parsed_test.config[TEST_FAIL_KEY]:
@@ -177,11 +162,11 @@ class TypeqlRunner(BaseRunner):
             if failure_mode != ref_failure_mode:
                 raise RuntimeError(f"[{adoc_path}]: Failure mode: expected {ref_failure_mode} but got {failure_mode}")
         elif counted == True:
-            count = self.run_transaction(parsed_test.segments, type, counted, rollback, documents)
+            count = self.run_transaction(parsed_test.segments, type, rollback)
             if count != reference_count:
                 raise RuntimeError(f"[{adoc_path}]: Query count: expected {reference_count} but got {count}")
         else:
-            self.run_transaction(parsed_test.segments, type, counted, rollback, documents)
+            self.run_transaction(parsed_test.segments, type, rollback)
 
         self.after_run_test(parsed_test)
 

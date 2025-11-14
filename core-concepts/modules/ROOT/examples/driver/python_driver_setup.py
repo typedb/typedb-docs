@@ -14,7 +14,7 @@ address = "localhost:1729"
 credentials = Credentials("admin", "password")
 #end::constants_credentials[]
 #tag::constants_options[]
-options = DriverOptions(is_tls_enabled=True, tls_root_ca_path=None)
+options = DriverOptions(is_tls_enabled=False, tls_root_ca_path=None)
 #end::constants_options[]
 #end::constants[]
 #end::import_and_constants[]
