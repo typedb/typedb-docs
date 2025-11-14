@@ -61,7 +61,7 @@ include::{page-version}@reference::example$tql/schema_statements_functions.tql[t
 
 [,typeql]
 ----
-#!test[write, documents]
+#!test[write]
 insert
   $group isa group,
     has group-id "<group id>";

@@ -67,7 +67,7 @@ If you want your data to be returned in JSON, you can format it through a `fetch
 
 [,typeql]
 ----
-#!test[read, count=3, documents]
+#!test[read, count=3]
 match
   $p isa person, has name $name;
 fetch {

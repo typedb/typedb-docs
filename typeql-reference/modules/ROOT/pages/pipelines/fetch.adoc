@@ -216,7 +216,7 @@ include::{page-version}@reference::example$tql/schema_statements_functions.tql[t
 
 [,typeql]
 ----
-#!test[read, documents]
+#!test[read]
 match
   $group isa group;
 fetch {

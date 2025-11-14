@@ -176,7 +176,7 @@ This allows structuring the output of the query to map precisely to the structur
 
 [,typeql]
 ----
-#!test[read, documents]
+#!test[read]
 match
   $p isa person;
 fetch {
