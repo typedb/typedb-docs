@@ -34,15 +34,11 @@ match
         $_ isa marriage, links (spouse: $person, spouse: $spouse);
     };
 ----
-Here, `$spouse` will be bound to the spouse if `$person` is in a `marriage`.
-Else, `$spouse` will be bound to `None`
+Here, `$spouse` is bound to the spouse if `$person` is in a `marriage`.
+Else, `$spouse` is bound to `None`
 
-=== insert & delete
-[NOTE]
-====
-Coming soon!
-====
-Optional patterns in insert or delete stages will execute only if ALL the variables present in them are bound.
+=== insert, update, & delete
+Optional patterns in insert, update, or delete stages execute only if ALL the variables present in them are bound.
 // Re-enable the tests when we do implement it
 [,typeql]
 ----
@@ -56,18 +52,76 @@ insert
     $policy links (covered: $person);
     try { $policy links (covered: $spouse); };
 ----
-If `$person` is in a marriage, the match stage will bind `$spouse`
-and the insert stage will add them to the policy.
+If `$person` is in a marriage, the match stage binds `$spouse` and the insert stage adds them to the policy.
+
+=== put
+Because a put stage only inserts data if no existing data matches the body of the put, the patterns in a `try` block of a put stage only attempt to insert data if the mandatory patterns (i.e. those
+outside `try` blocks) fail to produce a match. When inserting data, put behaves identically to an insert stage in that a `try` block only executes if all referenced variables are bound.
+
+[,typeql]
+----
+#!test[write, rollback]
+match
+  $person isa person;
+  $spouse isa person;
+  try {
+    $policy isa policy, links (covered: $person);
+  };
+put
+  $_ isa marriage, links (spouse: $person, spouse: $spouse);
+  try {
+    $policy links (covered: $spouse);
+  };
+----
+
+In this example, if the marriage relation already exists, the put stage does not attempt to add `$spouse` to the optionally bound `$policy`.
+
+If this behavior is not desirable, the `try` block should be put in a separate insert stage instead.
+
+[,typeql]
+----
+#!test[write, rollback]
+match
+  $person isa person;
+  $spouse isa person;
+  try {
+    $policy isa policy, links (covered: $person);
+    not { $policy links (covered: $spouse); };
+  };
+put
+  $_ isa marriage, links (spouse: $person, spouse: $spouse);
+insert
+  try {
+    $policy links (covered: $spouse);
+  };
+----
+
+In this pipeline, the `marriage` relation is created if it does not already exist, and `$spouse` is always inserted as a roleplayer in `$policy` provided it is bound.
 
 [NOTE]
 ====
-Optional patterns are banned in `put` stages.
+In particular, a put stage with only `try` blocks never inserts any data!
+[,typeql]
+----
+#!test[write, rollback]
+match
+  $_ isa marriage, links (spouse: $person, spouse: $spouse);
+  try {
+    $policy isa policy, links (covered: $person);
+  };
+put
+  try {
+    $policy links (covered: $spouse);
+  };
+----
+
+In this example the `$policy` is bound only if `$person` plays a role in it, but if it doesn't also link `$spouse`, that link is not inserted.
 ====
 
 == Behavior in match clauses
 === Single origin
 In the stage that it first occurs, An optional variable may only occur in a single try-block.
-[,typeql]
+
 ----
 #!test[read, fail_at=runtime]
 match
@@ -82,7 +136,7 @@ match
 
 === Optional variables in subsequent stages
 An optional variable can be used in subsequent stages.
-An unbound optional variable will cause the pattern to fail.
+An unbound optional variable causes the pattern to fail.
 
 The following is a valid way to express the intent of the example above:
 [,typeql]

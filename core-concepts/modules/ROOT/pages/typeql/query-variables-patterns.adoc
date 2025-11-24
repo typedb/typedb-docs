@@ -356,6 +356,42 @@ Finished. Total rows: 3
 Optional variables *are* bound by the optional block and not internal to it.
 ====
 
+==== Optional writes
+A `try` block in a write stage such as `insert` allows for conditional writes in a larger pipeline.
+
+[,typeql]
+----
+#!test[write, rollback]
+match
+  $p isa person, has name $p-name;
+  try {
+    $e isa employment, links (employer: $c, employee: $p);
+    $c has name "Shut Shop";
+  };
+delete try { $e; };
+# pipeline continues with $p, $p-name, and $c still available
+----
+
+Optional patterns in write stages execute only if all the variables referenced in them are bound to a value.
+That means that in this example, if either `$p` or `$c` is not bound, the insert stage does nothing.
+If they are both bound, however, then a new employment relation is inserted.
+
+[,typeql]
+----
+#!test[write, rollback]
+match
+  try { $p isa person, has name $p-name; };
+  try { $c isa company, has name "Shut Shop"; };
+insert
+  try { $_ isa employment, links (employer: $c, employee: $p); };
+----
+
+[NOTE]
+====
+Note that `try` blocks may not be nested (`try { try { ... }; };`) in write stages.
+The inner `try` block can usually either be flattened into the outer block or placed at the top level in the write stage.
+====
+
 == Notes on variables
 === Variables in an answer
 Notice that a variable that is "bound" in a conjunction is guaranteed to be bound

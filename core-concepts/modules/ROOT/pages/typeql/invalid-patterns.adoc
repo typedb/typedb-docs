@@ -224,3 +224,40 @@ match
 ----
 
 ====
+
+=== Nested optional blocks in write stages
+
+A `try` block in a write stage is executed as a unit. When all variables referenced in the `try` block are bound, the write instructions are executed. While this could allow for arbitrary nesting of
+`try` blocks where the bound variables are checked at every level, for simplicity's sake nesting `try` blocks is not permitted.
+
+[,typeql]
+----
+#!test[write, fail_at=runtime]
+match
+  $person isa person;
+  try {
+    $edu isa education, links (institute: $institute, attendee: $person);
+    try { $emp isa employment, links (employer: $company, employee: $person); }; # allowed in match
+  };
+delete
+  try {
+    $edu;
+    try { $emp; }; # not allowed!
+  };
+----
+
+Use instead:
+
+[,typeql]
+----
+#!test[write, rollback]
+match
+  $person isa person;
+  try {
+    $edu isa education, links (institute: $institute, attendee: $person);
+    try { $emp isa employment, links (employer: $company, employee: $person); };
+  };
+delete
+  try { $edu; };
+  try { $emp; };
+----
