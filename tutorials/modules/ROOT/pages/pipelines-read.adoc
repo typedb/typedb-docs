@@ -1,0 +1,385 @@
+= Read data using TypeDB
+:keywords: typedb, typeql, tutorial, console
+:pageTitle: 
+:summary: 
+:page-toclevels: 2
+:tabs-sync-option:
+:test-typeql: linear
+
+== Overview
+
+This tutorial covers the common patterns of read queries in TypeQL. 
+
+== Prerequisites
+
+This tutorial assumes you have access to a running TypeDB instance, as well as a TypeDB Console.
+
+See xref:{page-version}@home:install/index.adoc[the Install page] for setup instructions based on your needs.
+
+== Schema
+
+IMPORTANT: TODO PERMALINKS TO `typedb/typedb-examples`
+
+We are using the https://github.com/typedb/typedb-examples/tree/master/use-cases/bookstore[bookstore example] schema and data throughout this tutorial.
+You can load the example into your TypeDB instance using the following Console command:
+
+[,console]
+----
+database create-init bookstore http://github.com/typedb/typedb-examples/releases/latest/download/bookstore-schema.tql http://github.com/typedb/typedb-examples/releases/latest/download/bookstore-data.tql
+----
+
+.Schema and data for the following examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema, commit]
+include::{page-version}@academy::attachment$bookstore-schema.tql[lines=20..]
+----
+[,typeql]
+----
+#!test[write, commit]
+include::{page-version}@academy::attachment$bookstore-data.tql[lines=18..]
+----
+====
+
+== List all books
+
+To retrieve all ``book``s in the database, use a xref:{page-version}@typeql-reference::pipelines/match.adoc[`match`] query with an xref:{page-version}@typeql-reference::statements/isa.adoc[`isa`]
+statement:
+
+[,typeql]
+----
+#!test[read, count = 21,]
+match $book isa book;
+----
+
+This produces an output containing just the unique internal identifiers of all the books in the database alongside their exact type:
+
+[,]
+----
+   -----------
+    $book | isa hardback, iid 0x1e00010000000000000000
+   -----------
+    $book | isa hardback, iid 0x1e00010000000000000001
+   -----------
+    $book | isa hardback, iid 0x1e00010000000000000002
+   -----------
+    ...
+Finished. Total answers: 21
+----
+
+These are the values the variable `$book` takes that can be used further down in the pipeline.
+This output isn't very useful for displaying a list of books to the user, however.
+Instead, most read queries end with a `fetch` clause that allows you to format the query result into a JSON-like document:
+
+[,typeql]
+----
+#!test[read, documents, count = 21]
+match
+  $book isa book;
+fetch {
+  $book.*
+};
+----
+
+This is the simplest `fetch` stage there is, and it simply retrieves all attributes `$book` owns:
+
+[,json]
+----
+{
+  "isbn-10": "0671461494",
+  "title": "The Hitchhiker's Guide to the Galaxy",
+  "genre": [
+    "fiction",
+    "science fiction"
+  ],
+  "stock": 9,
+  "price": 91.47,
+  "page-count": 215,
+  "isbn-13": "9780671461492"
+}
+...
+Finished. Total answers: 21
+----
+
+== Additional patterns
+
+Some data we'd like to display is still missing, however, such as the book's author.
+Let's look back at the schema and find out how the author is associated to the book.
+
+[,typeql]
+----
+define
+
+entity book @abstract,
+    # ...
+    plays contribution:work,
+    # ...
+
+# ...
+
+entity contributor,
+    owns name,
+    plays contribution:contributor,
+    plays authoring:author,
+    plays editing:editor,
+    plays illustrating:illustrator;
+
+# ...
+
+relation contribution,
+    relates contributor,
+    relates work;
+
+relation authoring sub contribution,
+    relates author as contributor;
+
+relation editing sub contribution,
+    relates editor as contributor;
+
+relation illustrating sub contribution,
+    relates illustrator as contributor;
+
+# ...
+----
+
+We can see that the author is not an attribute of a book, but rather a separate entity that is linked to the book through an `authoring` relation.
+We'll adjust the query.
+
+[,typeql]
+----
+#!test[read, documents, count = 23]
+match
+  $book isa book;
+  authoring (author: $author, work: $book);
+fetch {
+  "book": { $book.* },
+  "author": { $author.* }
+};
+----
+
+We've added a new pattern to the query that matches an `authoring` relation in which the `$book` is playing the `work` role, and binds whichever entity is playing the `author` role in it to the
+variable `$author`.
+
+[,json]
+----
+{
+  "author": {
+    "name": "Adams, Douglas"
+  },
+  "book": {
+    "price": 91.47,
+    "stock": 9,
+    "isbn-10": "0671461494",
+    "genre": [
+      "fiction",
+      "science fiction"
+    ],
+    "page-count": 215,
+    "title": "The Hitchhiker's Guide to the Galaxy",
+    "isbn-13": "9780671461492"
+  }
+}
+...
+Finished. Total answers: 23
+----
+
+If we want to clean up the output to only fetch the attributes we want to display, we can use explicit attribute retrieval:
+
+[,typeql]
+----
+#!test[read, documents, count = 23]
+match
+  $book isa book;
+  authoring (author: $author, work: $book);
+fetch {
+  "title": $book.title,
+  "price": $book.price,
+  "author": $author.name
+};
+----
+
+[,json]
+----
+{
+  "price": 91.47,
+  "author": "Adams, Douglas",
+  "title": "The Hitchhiker's Guide to the Galaxy"
+}
+{
+  "price": 34.98,
+  "title": "Classical Mythology",
+  "author": "Morford, Mark P. O."
+}
+{
+  "price": 34.98,
+  "title": "Classical Mythology",
+  "author": "Lenardon, Robert J."
+}
+...
+Finished. Total answers: 23
+----
+
+== Subqueries
+
+Have you noticed?
+The last query we ran returned two more answers, 23 total, compared to the 21 answers to the query before.
+Turns out, some books have more than one author, such as "Classical Mythology" seen in the output above.
+Other books, like "Great Discoveries in Medicine", have no author listed at all, only editors, so they are gone from the output completely!
+
+There is no error here: we've asked for pairs of `$book, $author` that are linked by an `authoring` relation, and TypeDB obliged.
+
+We'll need to be able to include all the authors of the book in the output as a list (which may be empty).
+We can do this by using a subquery in the `fetch`:
+
+[,typeql]
+----
+#!test[read, documents, count = 21]
+match
+  $book isa book;
+fetch {
+  "title": $book.title,
+  "price": $book.price,
+  "authors": [
+    match
+      authoring (author: $author, work: $book);
+      $author has name $author-name;
+    return { $author-name };
+  ]
+};
+----
+
+You can see we've moved the `authoring` relation to the subquery, and we've explicitly queried for the name attribute of the author.
+The query is wrapped in square brackets `[]` to indicate that we want the results of the query collected into an array.
+The `return` statement tells TypeDB which variables to return (`$author-name`)
+
+The curly braces `{}` are a requirement for a subquery that returns more than one answer.
+If you want _an_ author, for instance, you can replace the return body with `first $author-name`, for instance.
+In that case, the `[]` around the query should be substituted with parentheses `()` so `fetch` does not collect the single answer into an array of one.
+
+The `return` syntax in subqueries is shared with xref:{page-version}@typeql-reference::functions/writing.adoc[functions].
+You can read more about using functions in xref:{page-version}@core-concepts::typeql/queries-as-functions.adoc[] in TypeQL Core Concepts.
+
+[,json]
+----
+{
+  "price": 34.98,
+  "authors": [
+    "Morford, Mark P. O.",
+    "Lenardon, Robert J."
+  ],
+  "title": "Classical Mythology"
+}
+{
+  "title": "The Hitchhiker's Guide to the Galaxy",
+  "price": 91.47,
+  "authors": [
+    "Adams, Douglas"            
+  ]
+}
+...
+Finished. Total answers: 21
+----
+
+== Optionals
+
+Sometimes the data we want to display is optional, and we'd like to display it if it exists, but not require it to match for the query to succeed.
+
+For instance, we might want to display the discounted price of a book if it is currently on sale.
+If we try to add a pattern to the query that matches a `promotion-inclusion` relation, the query will only return books that are on sale:
+
+[,typeql]
+----
+#!test[read, documents, count = 5]
+match
+  $book isa book, has price $book-price;
+  promotion-inclusion (item: $book), has discount $discount;
+  let $discounted-price = $book-price * (1.0 - $discount);
+fetch {
+  "title": $book.title,
+  "price": $book-price,
+  "discounted-price": $discounted-price,
+};
+----
+
+[,]
+----
+{
+  "title": "Dune",
+  "discounted-price": 4.1175,
+  "price": 5.49
+}
+{
+  "price": 16.99,
+  "discounted-price": 12.7425,
+  "title": "The Hobbit"
+}
+...
+Finished. Total answers: 5
+----
+
+Instead, we'd like to display the discounted price if it exists, but not _require_ it to match for the query to succeed.
+We can do this by using a `try` pattern:
+
+[,typeql]
+----
+#!test[read, documents, count = 21]
+match
+  $book isa book, has price $book-price;
+  try {
+    promotion-inclusion (item: $book), has discount $discount;
+    let $discounted-price = $book-price * (1.0 - $discount);
+  };
+fetch {
+  "title": $book.title,
+  "price": $book-price,
+  "discounted-price": $discounted-price,
+};
+----
+
+[,]
+----
+{
+  "discounted-price": null,
+  "price": 91.47,
+  "title": "The Hitchhiker's Guide to the Galaxy"
+}
+{
+  "price": 16.99,
+  "discounted-price": 12.7425,
+  "title": "The Hobbit"
+}
+...
+Finished. Total answers: 21
+----
+
+[TIP]
+====
+Note that a `fetch` subquery is not required to produce an answer for the query to succeed.
+If the subquery does not match any data, the `fetch` document contains an empty list or a `null` for that key.
+The previous query could be equivalently written as:
+
+[,typeql]
+----
+#!test[read, documents, count = 21]
+match
+  $book isa book, has price $book-price;
+fetch {
+  "title": $book.title,
+  "price": $book-price,
+  "discounted-price": (
+    match
+      promotion-inclusion (item: $book), has discount $discount;
+      let $discounted-price = $book-price * (1.0 - $discount);
+    return first $discounted-price;
+  )
+};
+----
+====
+
+== Further reading
+
+* xref:{page-version}@tutorials::pipelines-crud.adoc[Learn how to modify data in the next tutorial]
+* xref:{page-version}@core-concepts::typeql/index.adoc[TypeQL core concepts]
+* xref:{page-version}@typeql-reference::index.adoc[TypeQL reference manual]
