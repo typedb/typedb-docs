@@ -93,6 +93,7 @@ class TypeqlRunner(BaseRunner):
         return FailureMode.NoFailure
 
     def run_transaction(self, queries: List[str], type: TransactionType, rollback=False) -> Union[int, None]:
+        queries = [q for qs in queries for q in qs.split('end;') if q.strip()]
         with self.driver.transaction(self.db, type) as tx:
             try:
                 for q in queries:

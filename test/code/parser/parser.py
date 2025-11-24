@@ -1,7 +1,7 @@
 import os
 import re
 from dataclasses import dataclass
-from typing import List, Dict
+from typing import List, Dict, Tuple
 import logging
 logger = logging.getLogger('main')
 # To see debug log, set logging level to debug in main.py
@@ -114,9 +114,17 @@ class Parser:
         if tags_match.startswith('tags='):
             tags = tags_match.split('=')[1].split(';')
 
+        line_nrs: Tuple[str, str] = (None, None)
+        if tags_match.startswith('lines='):
+            line_nrs = tags_match.split('=')[1].split('..')
+
         # Read tagged lines from Antora include
         with open(file_path, 'r', encoding='utf-8') as f:
             lines = f.readlines()
+            if line_nrs[1]:
+                lines = lines[:int(line_nrs[1])]
+            if line_nrs[0]:
+                lines = lines[int(line_nrs[0]) - 1:]
 
         tagged_lines: Dict[str, List[str]] = {}
         current_tag = None
@@ -148,10 +156,13 @@ class Parser:
         logging.debug(f"... finished scanning included file, resolved tags: {tagged_lines}")
 
         output_lines = []
-        for tag in tags:
-            if tagged_lines.get(tag) is None:
-                self.error(f"Include is missing tag {tag}")
-            output_lines += tagged_lines[tag]
+        if tags:
+            for tag in tags:
+                if tagged_lines.get(tag) is None:
+                    self.error(f"Include is missing tag {tag}")
+                output_lines += tagged_lines[tag]
+        else:
+            output_lines = lines
 
         return output_lines
 
