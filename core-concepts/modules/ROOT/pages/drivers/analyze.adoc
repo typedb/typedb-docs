@@ -1,0 +1,234 @@
+= Analyzing queries
+:pageTitle: Analyzing queries
+:Summary: Compiling & analyzing TypeDB queries.
+:keywords: typedb, driver, analyze, type-inference
+:test-python: true
+
+TypeDB allows the user to "analyze" a query without having it execute against the data.
+During analysis, a query is parsed to the internal representation and type-checked.
+This allows the user to check their query for syntax and typing errors against a schema,
+without executing a query against the data.
+
+The aim is to facilitate better developer tooling around TypeDB.
+Envisioned use-cases are validating TypeQL queries when application code is being compiled,
+and debugging type errors. This page gives an overview of how to analyze a query and use the response.
+
+
+== Analyzing a query
+Analyzing a query follows the same pattern as xref:{page-version}@core-concepts::drivers/queries.adoc[running a query].
+[source,python]
+----
+#!test[reset-after]
+#{{
+include::{page-version}@core-concepts::example$driver/python_driver_usage.py[tag=setup_and_schema]
+
+include::{page-version}@core-concepts::example$driver/python_driver_usage.py[tag=data_create]
+#}}
+
+with driver.transaction(DB_NAME, TransactionType.READ) as tx:
+    # 1. Send the analyze request
+    promise = tx.analyze("""
+        match { $x isa user; } or { $x isa company; };
+        fetch { "email": [$x.email] };
+    """)
+
+    # 2. Resolve the promise if you want to access the result or receive an error as an exception
+    analyzed = promise.resolve()
+----
+
+== The response
+
+The response aims to be a type-annotated representation of the query.
+This section covers the essence, but the details are left to the reference pages.
+
+As one would expect, the top-level response contains each element of a TypeQL query:
+A (possibly empty) set of preamble functions, the query-pipeline, and a fetch clause, if present.
+The snippets are based on the python API, but some details are omitted.
+[source,python]
+----
+class AnalyzedQuery:
+    def pipeline(self) -> Pipeline
+    def preamble(self) -> Iterator[Function]
+    def fetch(self) -> Optional[Fetch]
+----
+
+=== Pipelines & conjunctions
+TypeQL pipelines are made up of a sequence of stages.
+
+[source,python]
+----
+class Pipeline:
+    def stages(self) -> Iterator[PipelineStage]
+    def conjunction(self, conjunction_id: ConjunctionID) -> Optional[Conjunction]
+    # ...
+----
+The `PipelineStage` instances returned by the `stages()` method follows the familiar pattern
+of having an abstract base class which is a union of all the variants,
+and must be downcast to the appropriate variant using the `is_<variant>` and `as_<variant>` methods.
+
+[source,python]
+----
+class PipelineStage(ABC):
+    def is_match(self) -> bool
+    def as_match(self) -> MatchStage
+    # is_insert, as_insert, is_select, as_select, ...
+
+class MatchStage(PipelineStage):
+    def block(self) -> ConjunctionID
+
+class SelectStage(PipelineStage):
+    def variables(self) -> Iterator[Variable]
+----
+
+Stages such as `Match` and `Insert` contain a `Conjunction` of constraints.
+We use `ConjunctionID` s as an indirection -
+the conjunction can be retrieved using the `Pipeline.conjunction` method.
+
+[source,python]
+----
+stages = list(analyzed.pipeline.stages())
+block_id = stages[0].as_match().block()
+conjunction = analyzed.pipeline.conjunction(block_id)
+----
+
+From the returned conjunction one can access the constraints,
+as well as the types inferred for the variables in those constraints.
+[source,python]
+----
+class Conjunction:
+    def constraints(self) -> Iterator[Constraint]
+    def annotated_variables(self) -> Iterator[Variable]
+    def variable_annotations(self, variable: Variable) -> Optional[VariableAnnotations]
+----
+
+=== Constraints
+Similar to stages, the `Constraint` instances returned by the `constraints()` method
+must be down-cast to the appropriate variant using the `is/as` methods.
+Sub-patterns such as `or`, `not`, and `try` are also constraints.
+These hold the `ConjunctionID`(s) of the nested conjunctions.
+
+[source,python]
+----
+class Constraint(ABC):
+    def is_isa(self) -> bool
+    def as_isa(self) -> Isa
+    # is_has, as_has, ...
+
+    def is_or(self) -> bool
+    def as_or(self) -> Or
+    # is_not, as_not, is_try, as_try
+
+class Isa(Constraint):
+    # <instance> isa(!) <type>
+    def instance(self) -> ConstraintVertex
+    def type(self) -> ConstraintVertex
+    def exactness(self) -> ConstraintExactness # isa or isa!
+
+# Has, ...
+
+class Or(Constraint):
+    def branches(self) -> Iterator[ConjunctionID]
+# Not, Try
+----
+
+==== Constraint vertices
+Although constraints typically apply on variables,
+Certain TypeQL constraints allow you to directly specify a type-label or a value.
+Additionally, a `NamedRole` vertex type exists to handle the ambiguity of unscoped role-labels.
+A `ConstraintVertex` is the union of these four,
+and can be converted to the appropriate variant using the `is/as` methods.
+
+* A *label* unwraps to the resolved type.
+* A *value* unwraps to a value concept of the appropriate value-type.
+* An unwrapped *named-role* is a combination of the internal variable and the unscoped name.
+The variable can be used to retrieve the resolved role-type(s) using the annotations in the conjunction.
+* An unwrapped *variable* is a lot of things.
+
+A variable is shared across constraints. The name of a (if it has one) can be read from the pipeline.
+If this is an output variable, the name can be used to read answers from query responses.
+The possible types of a variable in a conjunction can be read from the annotations in the conjunction.
+
+[NOTE]
+====
+`Variable` and `ConjunctionID` are scoped to a pipeline.
+Trying to resolve either of these using a pipeline other than the one it originated from
+(e.g. a pipeline of a preamble function) is undefined behaviour.
+====
+
+=== Annotations
+Type-checking is a central feature of TypeDB.
+The analyze response contains the final set of inferred types for every variable in a conjunction.
+
+
+[NOTE]
+====
+We return annotations per conjunction because a variable may be of different types in different conjunctions.
+[source, typeql]
+----
+# user in the left branch, company in the right, Either of them at the root.
+match { $p isa user; } or { $p isa company; };
+----
+or
+[source, typeql]
+----
+match $p has email $email;  # $p is any type that owns email
+match $p has name $name;    # The type of $p must also own name
+----
+====
+
+
+
+=== Overview of others
+Most of the topics which need an explanation have now been covered.
+This section provides an overview of anything that may not be totally obvious from the generated documentation.
+
+==== Functions
+Unsurprisingly, a `Function` is a pipeline with a set of arguments, and returns.
+[source, python]
+----
+class Function:
+    def body(self) -> Pipeline
+
+    def argument_variables(self) -> Iterator[Variable]
+    def argument_annotations(self) -> Iterator[VariableAnnotations]
+
+    def return_operation(self) -> ReturnOperation
+    def return_annotations(self) -> Iterator[VariableAnnotations]
+----
+
+==== Fetch
+An analyzed `Fetch` is one of a Dictionary, a List, or a collection of values.
+[source,python]
+----
+class Fetch(ABC):
+    # is/as methods
+
+class FetchObject(Fetch):
+    def keys(self) -> Iterator[str]
+    def get(self, key: str) -> Fetch
+
+class FetchList(Fetch):
+    def element(self) -> Fetch
+
+class FetchLeaf(Fetch):
+    def annotations(self) -> Iterator[str]
+----
+The structure of the analyzed `Fetch` reflects that of the `Fetch` stage itself,
+with leaves being annotated with the value types.
+
+[source,typeql]
+----
+match $u isa user;
+fetch {
+    "email": [ $u.email ],
+};
+----
+
+To access the emails, you would write:
+[source,python]
+----
+root_object = analyzed.fetch.as_object()
+email_field = root_object.get("email")
+email_list_element = email_field.as_list().element()
+email_value_types = list(email_list_element.annotations())
+----
