@@ -1,0 +1,71 @@
+site:
+  title: TypeDB Documentation portal
+  start_page: home:ROOT:index.adoc
+  robots: allow
+content:
+  edit_url: 'https://github.com/typedb/typedb-docs/edit/development/{path}'
+  sources:
+    - url: .
+      start_path: home
+      branches: HEAD
+    - url: .
+      start_path: examples
+      branches: HEAD
+    - url: .
+      start_path: core-concepts
+      branches: HEAD
+    - url: .
+      start_path: tools
+      branches: HEAD
+    - url: .
+      start_path: maintenance-operation
+      branches: HEAD
+    #- url: .
+    #  start_path: academy
+    #  branches: HEAD
+    - url: .
+      start_path: reference
+      branches: HEAD
+    - url: .
+      start_path: typeql-reference
+      branches: HEAD
+    - url: .
+      start_path: tutorials
+      branches: HEAD
+
+    - url: .
+      start_path: archive/manual
+      branches: HEAD
+    - url: .
+      start_path: archive/drivers
+      branches: HEAD
+    - url: .
+      start_path: archive/typeql
+      branches: HEAD
+
+    # TODO: Use actual academy when complete
+    - url: .
+      start_path: mock/academy
+      branches: HEAD
+    - url: .
+      start_path: mock/driver
+      branches: HEAD
+    # TODO: Can we use the 2.x-development branch?
+    - url: .
+      start_path: mock/2.x-manual
+      branches: HEAD
+
+urls:
+  latest_version_segment: ""
+
+asciidoc:
+  attributes:
+    page-pagination: "@"
+    source-highlighter: ~
+
+runtime:
+  log:
+    failure_level: error
+output:
+  clean: true
+  dir: ./dist

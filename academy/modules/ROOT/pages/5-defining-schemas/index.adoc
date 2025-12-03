@@ -44,8 +44,8 @@ Learn about how types and functions are validated against the schema.
 --
 
 == Running examples
-
-The sample database already has the complete bookstore schema defined and data inserted. If you would like to try running the Define queries featured in the examples and exercises in this section, then you should do so using another database. To create a new database, use the *database manager* image:{page-version}@home::studio-icons/svg/studio_dbs.svg[width=24]. After creation, make sure to switch over to it using the *database selector*. For more information on how to manage databases using TypeDB Studio, refer back to xref:{page-version}@academy::2-environment-setup/2.2-using-typedb-studio.adoc[Lesson 2.2]
+// There used to be a Lesson 2.2 on how to use studio. Until we have that, I'm linking out to the studio docs.
+The sample database already has the complete bookstore schema defined and data inserted. If you would like to try running the Define queries featured in the examples and exercises in this section, then you should do so using another database. To create a new database, use the *database manager* image:{page-version}@home::studio-icons/svg/studio_dbs.svg[width=24]. After creation, make sure to switch over to it using the *database selector*. For more information on how to manage databases using TypeDB Studio, refer back to the xref:{page-version}@tools::studio.adoc[TypeDB studio reference].
 
 To run a Define query, make sure to use a *schema* session and *write* transaction. After running a Define query, you should see any committed changes to the schema reflected in the *type browser*. The examples and exercises featured in this lesson are annotated with one of the following instructions to indicate how they should be run.
 
