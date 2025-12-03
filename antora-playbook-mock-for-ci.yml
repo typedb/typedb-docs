@@ -66,6 +66,10 @@ asciidoc:
 runtime:
   log:
     failure_level: error
+ui:
+  bundle:
+    url: ./mock/ui-bundle.zip
+    snapshot: true
 output:
   clean: true
   dir: ./dist
