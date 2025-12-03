@@ -29,7 +29,7 @@ To retrieve the results of the called function, considering that the number of r
 [,typeql]
 ----
 #!test[schema, commit]
-include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes]
+include::{page-version}@typeql-reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes]
 ----
 ====
 
@@ -42,13 +42,13 @@ The following examples illustrate simple usages of functions for retrieving a st
 [,typeql]
 ----
 #!test[schema, commit]
-include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;fun-stream-scalar-return-type]
+include::{page-version}@typeql-reference::example$tql/schema_statements_functions.tql[tags=define-keyword;fun-stream-scalar-return-type]
 ----
 
 [,typeql]
 ----
 #!test[schema, commit]
-include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;fun-stream-scalar-return-value]
+include::{page-version}@typeql-reference::example$tql/schema_statements_functions.tql[tags=define-keyword;fun-stream-scalar-return-value]
 ----
 
 To retrieve the results of such functions calls, the following read query can be used:
@@ -56,7 +56,7 @@ To retrieve the results of such functions calls, the following read query can be
 [,typeql]
 ----
 #!test[read]
-include::{page-version}@reference::example$tql/read_statements_functions.tql[tags=fun-stream-scalar-return-type]
+include::{page-version}@typeql-reference::example$tql/read_statements_functions.tql[tags=fun-stream-scalar-return-type]
 ----
 
 === Tuple functions
@@ -69,7 +69,7 @@ Tuples can contain any combinations of scalar returned values.
 [,typeql]
 ----
 #!test[schema, commit]
-include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;fun-stream-tuple-return-type]
+include::{page-version}@typeql-reference::example$tql/schema_statements_functions.tql[tags=define-keyword;fun-stream-tuple-return-type]
 ----
 
 To retrieve the results of such functions calls, the following read query can be used:
@@ -77,5 +77,5 @@ To retrieve the results of such functions calls, the following read query can be
 [,typeql]
 ----
 #!test[read]
-include::{page-version}@reference::example$tql/read_statements_functions.tql[tags=fun-stream-tuple-return-type]
+include::{page-version}@typeql-reference::example$tql/read_statements_functions.tql[tags=fun-stream-tuple-return-type]
 ----

@@ -40,7 +40,7 @@ When defined for an attribute type's value type, the annotation creates a constr
 [,typeql]
 ----
 #!test[schema]
-include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;values-value]
+include::{page-version}@typeql-reference::example$tql/schema_annotations.tql[tags=define-keyword;values-value]
 ----
 [#_example_owns]
 // tag::values-and-owns-annotations-description-owns[]
@@ -55,7 +55,7 @@ In the following example, an instance of the `emoji` type can contain any value,
 define relation reaction relates parent;
 #}}
 #!test[schema]
-include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;emoji-attribute;values-owns]
+include::{page-version}@typeql-reference::example$tql/schema_annotations.tql[tags=define-keyword;emoji-attribute;values-owns]
 ----
 
 === Subtyping

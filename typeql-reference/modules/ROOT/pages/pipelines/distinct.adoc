@@ -18,18 +18,18 @@ distinct;
 [,typeql]
 ----
 #!test[schema, commit]
-include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-friendship]
+include::{page-version}@typeql-reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes]
 ----
 ====
 
-Find all unique ages of users:
+Find all unique names of users:
 
 [,typeql]
 ----
 #!test[read]
 match
-  $user isa user, has age $age;
-select $age;
+  $user isa user, has name $name;
+select $name;
 distinct;
 ----
 
@@ -39,7 +39,7 @@ Remove duplicate answers that may result from using `or` patterns:
 ----
 #!test[read]
 match
-  { $p isa person; } or { $p has name "John"; };
+  { $p isa user; } or { $p has name "John"; };
 distinct; # Make sure that the person with name John is returned at most once.
 ----
 

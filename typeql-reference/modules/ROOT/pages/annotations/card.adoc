@@ -49,10 +49,10 @@ For example, the following definition specifies that an instance of the `page` t
 ----
 #!test[schema]
 #{{
-include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;name-attribute]
+include::{page-version}@typeql-reference::example$tql/schema_annotations.tql[tags=define-keyword;name-attribute]
 #}}
 #!test[schema]
-include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;card-owns-13]
+include::{page-version}@typeql-reference::example$tql/schema_annotations.tql[tags=define-keyword;card-owns-13]
 ----
 
 At the same time, the `page` type can play the `posting:page` role an unlimited number of times:
@@ -64,7 +64,7 @@ At the same time, the `page` type can play the `posting:page` role an unlimited 
 define relation posting relates page;
 #}}
 #!test[schema, rollback]
-include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;card-plays-0inf]
+include::{page-version}@typeql-reference::example$tql/schema_annotations.tql[tags=define-keyword;card-plays-0inf]
 ----
 
 However, an instance of the `posting` relation type can have up to a thousand `page` instances:
@@ -72,7 +72,7 @@ However, an instance of the `posting` relation type can have up to a thousand `p
 [,typeql]
 ----
 #!test[schema]
-include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;card-relates-01k]
+include::{page-version}@typeql-reference::example$tql/schema_annotations.tql[tags=define-keyword;card-relates-01k]
 ----
 
 [#subtyping]
@@ -89,7 +89,7 @@ For example, the following query defines that:
 [,typeql]
 ----
 #!test[schema]
-include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;card-owns-13;profile-sub-page;user-owns-name;name-subattributes]
+include::{page-version}@typeql-reference::example$tql/schema_annotations.tql[tags=define-keyword;card-owns-13;profile-sub-page;user-owns-name;name-subattributes]
 ----
 
 Valid statements based on this schema include:

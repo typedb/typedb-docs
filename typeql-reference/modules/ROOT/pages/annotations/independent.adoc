@@ -35,14 +35,14 @@ In contrast, attributes of independent types can exist without owners.
 [,typeql]
 ----
 #!test[schema, commit]
-include::{page-version}@reference::example$tql/schema_annotations.tql[tags=define-keyword;independent-attribute]
+include::{page-version}@typeql-reference::example$tql/schema_annotations.tql[tags=define-keyword;independent-attribute]
 ----
 
 .Inserting independent attributes
 [,typeql]
 ----
 #!test[write]
-include::{page-version}@reference::example$tql/data_annotations.tql[tags=insert-keyword;independent-attribute]
+include::{page-version}@typeql-reference::example$tql/data_annotations.tql[tags=insert-keyword;independent-attribute]
 ----
 
 === Subtyping

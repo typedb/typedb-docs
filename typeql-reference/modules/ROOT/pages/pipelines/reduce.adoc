@@ -29,7 +29,7 @@ TypeQL supports the following reduce operators:
 [,typeql]
 ----
 #!test[schema, commit]
-include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-friendship]
+include::{page-version}@typeql-reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-friendship]
   attribute last-login, value date;
   user owns last-login;
 

@@ -25,7 +25,7 @@ A composite statement starts with a single subject, and multiple comma-separated
 .Composite statement example
 [,typeql]
 ----
-include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entity-user]
+include::{page-version}@typeql-reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entity-user]
 ----
 
 The above example combines simple xref:{page-version}@typeql-reference::statements/entity.adoc[`entity`], xref:{page-version}@typeql-reference::statements/sub.adoc[`sub`], xref:{page-version}@typeql-reference::statements/owns.adoc[`owns`], and xref:{page-version}@typeql-reference::statements/plays.adoc[`plays`] statements to the same result without repeating the subject:
@@ -33,7 +33,7 @@ The above example combines simple xref:{page-version}@typeql-reference::statemen
 .Equal simple statements example
 [,typeql]
 ----
-include::{page-version}@reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entity-user-breakdown]
+include::{page-version}@typeql-reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entity-user-breakdown]
 ----
 ====
 

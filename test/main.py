@@ -27,6 +27,7 @@ MODULE_DIRECTORIES = {
     "core-concepts": os.path.join(os.path.dirname(__file__), "../core-concepts/modules/ROOT"),
     "tools": os.path.join(os.path.dirname(__file__), "../tools/modules/ROOT"),
     "reference": os.path.join(os.path.dirname(__file__), "../reference/modules/ROOT"),
+    "typeql-reference": os.path.join(os.path.dirname(__file__), "../typeql-reference/modules/ROOT"),
 }
 
 
