@@ -146,9 +146,10 @@ So far, the Insert queries we've seen have only created entirely new entities, r
 [,typeql]
 ----
 match
-$book isa book, has isbn-13 "9780486282114";
+$stock isa stock;
+$frankenstein isa book, has $stock, has isbn "9780486282114";
 insert
-$book has stock 20;
+$frankenstein has stock 20;
 ----
 __-> Commit__
 
@@ -210,10 +211,12 @@ put $book isa book, has isbn "0195153448";
 ----
 
 A put is equivalent to doing:
+
 [,typeql]
 ----
 match not { <pattern> };
 insert <pattern>;
+----
 
 **It's highly recommended use `put` with a `key`-ed attributes**. This will prevent duplicates from emerging during concurrent transactions, as one will be forced to fail.
 

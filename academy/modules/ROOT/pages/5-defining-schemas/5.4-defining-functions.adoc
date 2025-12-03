@@ -29,7 +29,7 @@ fun transitive_places_new($place: place) -> { place }:
   return { $parent };
 ----
 
-This function is a recursive function, returning a stream of places (as indicated in the function signature with `{}` and in the return with `{}) based on a match query.
+This function is a recursive function, returning a stream of places (as indicated in the function signature with `{}` and in the return with `{}`) based on a match query.
 
 == Function return types
 

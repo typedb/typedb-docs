@@ -15,7 +15,7 @@ insert
 locating ($us, $ga);
 ----
 
-In this case, the query was invalid because TypeDB cannot infer the roles that `$us` and `$ga` should play, but there are many reasons a query can be invalid. Try running each of the following ones to see what happens.
+In this case, the query was invalid because TypeDB cannot infer the roles that `$us` and `$ga` should play, but there are many reasons a query can be invalid. Try running (and committing) each of the following ones to see what happens.
 
 [,typeql]
 ----
