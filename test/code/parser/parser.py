@@ -85,7 +85,7 @@ class Parser:
 
     def retrieve_antora_include(self, include_str: str):
         # Parse Antora include
-        from test.main import MODULE_DIRECTORIES
+        from test.code.main import MODULE_DIRECTORIES
 
         antora_style_include = r'^.+?@(.+?)::(.+?)\$(.+?)\[(.*?)\]'
         relative_include = r'^include::\.\/(.+?)\[(.*?)\]'

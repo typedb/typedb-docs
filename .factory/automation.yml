@@ -10,7 +10,7 @@ build:
       image: typedb-ubuntu-22.04
       type: foreground
       command: |
-        npx antora generate test-content/antora-playbook-mock-for-ci.yml
+        npx antora generate test/content/antora-playbook-mock-for-ci.yml
 
     test-code-testing-framework:
       image: typedb-ubuntu-22.04
@@ -22,15 +22,15 @@ build:
         # Note: Rust runners install their own dependencies
         sudo apt-get update
         sudo apt-get install -y python3-pip
-        python3 -m pip install -r test/runners/python_requirements.txt
+        python3 -m pip install -r test/code/runners/python_requirements.txt
         
         test/start-community-server.sh
         
         FAILED=false
-        python3 -m test.main python test/tests/python_test.adoc || FAILED=true
-        python3 -m test.main rust test/tests/rust_test.adoc || FAILED=true
-        python3 -m test.main typeql test/tests/tql_test_linear.adoc || FAILED=true
-        # python3 -m test.main typeql test/tests/tql_test_custom.adoc || FAILED=true
+        python3 -m test.code.main python test/code/tests/python_test.adoc || FAILED=true
+        python3 -m test.code.main rust test/code/tests/rust_test.adoc || FAILED=true
+        python3 -m test.code.main typeql test/code/tests/tql_test_linear.adoc || FAILED=true
+        # python3 -m test.code.main typeql test/code/tests/tql_test_custom.adoc || FAILED=true
         test/stop-community-server.sh 
         $FAILED && exit 1
         
@@ -45,7 +45,7 @@ build:
         # Note: Rust runners install their own dependencies
         sudo apt-get update
         sudo apt-get install -y python3-pip
-        python3 -m pip install -r test/runners/python_requirements.txt
+        python3 -m pip install -r test/code/runners/python_requirements.txt
         
         test/start-community-server.sh
         
@@ -57,7 +57,7 @@ build:
         FAILED=false
         for TEST_LANG in "${TEST_LANGS[@]}"; do
           for TEST_DIR in "${TEST_DIRS[@]}"; do
-            python3 -m test.main "$TEST_LANG" "$TEST_DIR" || FAILED=true
+            python3 -m test.code.main "$TEST_LANG" "$TEST_DIR" || FAILED=true
           done
         done
         test/stop-community-server.sh

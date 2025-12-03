@@ -3,7 +3,7 @@ import logging
 import sys
 import os
 from typing import Dict, List, Optional
-from test.parser.parser import Parser, ParsedTest
+from test.code.parser.parser import Parser, ParsedTest
 
 # Logging config
 logger = logging.getLogger('main')
@@ -15,19 +15,19 @@ logging.basicConfig(level=logging.DEBUG,  # set to logging.DEBUG for debugging
 # Directories to code test
 MODULE_DIRECTORIES = {
     # os.path.join(os.path.dirname(__file__), "tests"),
-    "home": os.path.join(os.path.dirname(__file__), "../home/modules/ROOT"),
-    "manual": os.path.join(os.path.dirname(__file__), "../manual/modules/ROOT"),
-    "typeql": os.path.join(os.path.dirname(__file__), "../typeql/modules/ROOT"),
-    "drivers": os.path.join(os.path.dirname(__file__), "../drivers/modules/ROOT"),
-    "academy": os.path.join(os.path.dirname(__file__), "../academy/modules/ROOT"),
+    "home": os.path.join(os.path.dirname(__file__), "../../home/modules/ROOT"),
+    "manual": os.path.join(os.path.dirname(__file__), "../../manual/modules/ROOT"),
+    "typeql": os.path.join(os.path.dirname(__file__), "../../typeql/modules/ROOT"),
+    "drivers": os.path.join(os.path.dirname(__file__), "../../drivers/modules/ROOT"),
+    "academy": os.path.join(os.path.dirname(__file__), "../../academy/modules/ROOT"),
 
-    "home": os.path.join(os.path.dirname(__file__), "../home/modules/ROOT"),
-    "examples": os.path.join(os.path.dirname(__file__), "../examples/modules/ROOT"),
-    "maintenance-operation": os.path.join(os.path.dirname(__file__), "../maintenance-operation/modules/ROOT"),
-    "core-concepts": os.path.join(os.path.dirname(__file__), "../core-concepts/modules/ROOT"),
-    "tools": os.path.join(os.path.dirname(__file__), "../tools/modules/ROOT"),
-    "reference": os.path.join(os.path.dirname(__file__), "../reference/modules/ROOT"),
-    "typeql-reference": os.path.join(os.path.dirname(__file__), "../typeql-reference/modules/ROOT"),
+    "home": os.path.join(os.path.dirname(__file__), "../../home/modules/ROOT"),
+    "examples": os.path.join(os.path.dirname(__file__), "../../examples/modules/ROOT"),
+    "maintenance-operation": os.path.join(os.path.dirname(__file__), "../../maintenance-operation/modules/ROOT"),
+    "core-concepts": os.path.join(os.path.dirname(__file__), "../../core-concepts/modules/ROOT"),
+    "tools": os.path.join(os.path.dirname(__file__), "../../tools/modules/ROOT"),
+    "reference": os.path.join(os.path.dirname(__file__), "../../reference/modules/ROOT"),
+    "typeql-reference": os.path.join(os.path.dirname(__file__), "../../typeql-reference/modules/ROOT"),
 }
 
 
@@ -97,14 +97,14 @@ def test_all_files(runner, lang: str, directory: str):
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print("Usage: python -m test.main <lang> [<file> or <directory>]")
+        print("Usage: python -m test.code.main <lang> [<file> or <directory>]")
         sys.exit(1)
 
     lang = sys.argv[1]
     path = sys.argv[2]
 
     try:
-        module = importlib.import_module(f'test.runners.{lang}_runner')
+        module = importlib.import_module(f'test.code.runners.{lang}_runner')
         runner_class = getattr(module, f'{lang.capitalize()}Runner')
         runner = runner_class()
     except ModuleNotFoundError as e:

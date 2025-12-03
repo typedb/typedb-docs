@@ -1,8 +1,8 @@
 import io
 import sys
 from typing import List, Dict, Tuple, Union
-from test.parser.parser import ParsedTest
-from test.runners.base_runner import BaseRunner
+from test.code.parser.parser import ParsedTest
+from test.code.runners.base_runner import BaseRunner
 import logging
 logger = logging.getLogger('main')
 

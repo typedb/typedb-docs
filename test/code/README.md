@@ -83,20 +83,20 @@ See examples in `./tests/` for how to write testable examples in `.adoc` files.
 ### Directory run
 
 ```bash
-python -m test.main <lang> <directory>
+python -m test.code.main <lang> <directory>
 ```
 
 ### Single file run
 
 ```bash
-python -m test.main <lang> <file>    
+python -m test.code.main <lang> <file>    
 ```
 
 ## Development
 
 ### Type checking
 
-Type check with `mypy test/main.py` (need to install `mypy`)
+Type check with `mypy test/code/main.py` (need to install `mypy`)
 
 ### Modules
 

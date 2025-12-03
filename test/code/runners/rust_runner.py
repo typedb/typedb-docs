@@ -2,8 +2,8 @@ import subprocess
 import os
 import shutil
 from typing import List, Dict
-from test.parser.parser import ParsedTest
-from test.runners.base_runner import BaseRunner
+from test.code.parser.parser import ParsedTest
+from test.code.runners.base_runner import BaseRunner
 import logging
 
 logger = logging.getLogger('main')

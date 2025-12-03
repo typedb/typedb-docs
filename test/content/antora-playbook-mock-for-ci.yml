@@ -5,54 +5,54 @@ site:
 content:
   edit_url: 'https://github.com/typedb/typedb-docs/edit/3.x-development/{path}'
   sources:
-    - url: ./..
+    - url: ./../..
       start_path: home
       branches: HEAD
-    - url: ./..
+    - url: ./../..
       start_path: examples
       branches: HEAD
-    - url: ./..
+    - url: ./../..
       start_path: core-concepts
       branches: HEAD
-    - url: ./..
+    - url: ./../..
       start_path: tools
       branches: HEAD
-    - url: ./..
+    - url: ./../..
       start_path: maintenance-operation
       branches: HEAD
-    #- url: ./..
+    #- url: ./../..
     #  start_path: academy
     #  branches: HEAD
-    - url: ./..
+    - url: ./../..
       start_path: reference
       branches: HEAD
-    - url: ./..
+    - url: ./../..
       start_path: typeql-reference
       branches: HEAD
-    - url: ./..
+    - url: ./../..
       start_path: tutorials
       branches: HEAD
 
-    - url: ./..
+    - url: ./../..
       start_path: archive/manual
       branches: HEAD
-    - url: ./..
+    - url: ./../..
       start_path: archive/drivers
       branches: HEAD
-    - url: ./..
+    - url: ./../..
       start_path: archive/typeql
       branches: HEAD
 
     # TODO: Use actual academy when complete
-    - url: ./..
-      start_path: test-content/mock/academy
+    - url: ./../..
+      start_path: test/content/mock/academy
       branches: HEAD
-    - url: ./..
-      start_path: test-content/mock/driver
+    - url: ./../..
+      start_path: test/content/mock/driver
       branches: HEAD
     # TODO: Can we use the 2.x-development branch?
-    - url: ./..
-      start_path: test-content/mock/2.x-manual
+    - url: ./../..
+      start_path: test/content/mock/2.x-manual
       branches: HEAD
 
 urls:
@@ -68,7 +68,7 @@ runtime:
     failure_level: error
 ui:
   bundle:
-    url: ./mock/ui-bundle.zip
+    url: test/content/mock/ui-bundle.zip
     snapshot: true
 output:
   clean: true
