@@ -1,5 +1,5 @@
 = `@regex` annotation
-:page-aliases: {page-version}@reference::typeql/statements/regex.adoc
+:page-aliases: {page-version}@typeql-reference::statements/regex.adoc
 :test-typeql: linear
 
 The `@regex` annotation is used
@@ -31,7 +31,7 @@ The `@range` annotation accepts a single string argument containing a regular ex
 The `@regex` annotation adds a constraint on values of attributes of a given attribute type to be valid strings according to the regular expression.
 // end::description[]
 
-include::{page-version}@reference::typeql/annotations/values.adoc[tags=values-and-owns-annotations-description-values]
+include::{page-version}@typeql-reference::annotations/values.adoc[tags=values-and-owns-annotations-description-values]
 
 [,typeql]
 ----
@@ -40,7 +40,7 @@ include::{page-version}@reference::example$tql/schema_annotations.tql[tags=defin
 ----
 
 [#_example_owns]
-include::{page-version}@reference::typeql/annotations/values.adoc[tags=values-and-owns-annotations-description-owns]
+include::{page-version}@typeql-reference::annotations/values.adoc[tags=values-and-owns-annotations-description-owns]
 In the following example, an instance of the `phone` type can contain any `string` value, but a `user` can have (`has`) only the `phone` s with the suitable values.
 
 [,typeql]
@@ -52,7 +52,7 @@ include::{page-version}@reference::example$tql/schema_annotations.tql[tags=defin
 === Subtyping
 
 The `regex` constraint put on an attribute types' value type is inherited.
-include::{page-version}@reference::typeql/annotations/values.adoc[tags=value-constraints-subtyping]
+include::{page-version}@typeql-reference::annotations/values.adoc[tags=value-constraints-subtyping]
 
 A subtype can introduce another `regex` constraint to combine it with the inherited one and create a subset of allowed values based on the intersection of the specified regular expressions.
 

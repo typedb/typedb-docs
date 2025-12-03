@@ -36,7 +36,7 @@ Partially unbounded ranges `N..` and `..M` represent ranges without an upper and
 
 The `@range` annotation adds a constraint on values of attributes of a given attribute type to be within the specified range.
 
-include::{page-version}@reference::typeql/annotations/values.adoc[tags=values-and-owns-annotations-description-values]
+include::{page-version}@typeql-reference::annotations/values.adoc[tags=values-and-owns-annotations-description-values]
 
 [,typeql]
 ----
@@ -45,7 +45,7 @@ include::{page-version}@reference::example$tql/schema_annotations.tql[tags=defin
 ----
 
 [#_example_owns]
-include::{page-version}@reference::typeql/annotations/values.adoc[tags=values-and-owns-annotations-description-owns]
+include::{page-version}@typeql-reference::annotations/values.adoc[tags=values-and-owns-annotations-description-owns]
 In the following example, an instance of the `creation-timestamp` type can contain any value, but a `post` can have (`has`) only the `creation-timestamp` s with the suitable values.
 
 [,typeql]
@@ -57,7 +57,7 @@ include::{page-version}@reference::example$tql/schema_annotations.tql[tags=defin
 === Subtyping for attribute types' values
 
 The `range` constraint put on an attribute types' value type is inherited.
-include::{page-version}@reference::typeql/annotations/values.adoc[tags=value-constraints-subtyping]
+include::{page-version}@typeql-reference::annotations/values.adoc[tags=value-constraints-subtyping]
 
 A subtype can introduce an even stricter constraint to allow only a subrange of the inherited range for its values.
 
