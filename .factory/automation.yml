@@ -6,6 +6,12 @@ config:
 build:
   correctness:
 
+    test-docs-content:
+      image: typedb-ubuntu-22.04
+      type: foreground
+      command: |
+        npx antora generate --ui-bundle-url ./minimal-ui-bundle.zip antora-playbook-mock-for-ci.yml
+
     test-code-testing-framework:
       image: typedb-ubuntu-22.04
       type: foreground
