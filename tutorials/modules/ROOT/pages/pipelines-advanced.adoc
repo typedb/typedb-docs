@@ -1,0 +1,178 @@
+= Advanced pipelines
+:keywords: typedb, typeql, tutorial, console
+:pageTitle: 
+:summary: 
+:page-toclevels: 2
+:tabs-sync-option:
+:test-typeql: linear
+
+== Overview
+
+This tutorial covers the common patterns of read queries in TypeQL. 
+
+== Prerequisites
+
+This tutorial assumes you have access to a running TypeDB instance, as well as a TypeDB Console.
+
+We recommend xref:{page-version}@home::install/ce.adoc[installing TypeDB Community Edition] as it is distributed bundled with Console for easy setup.
+
+== Example schema and data
+
+IMPORTANT: TODO PERMALINKS TO `typedb/typedb-examples`
+
+We are using the https://github.com/typedb/typedb-examples/tree/master/use-cases/bookstore[bookstore example] schema and data throughout this tutorial.
+You can load the example into your TypeDB instance using the following Console command:
+
+[,console]
+----
+database create-init bookstore http://github.com/typedb/typedb-examples/releases/latest/download/bookstore-schema.tql http://github.com/typedb/typedb-examples/releases/latest/download/bookstore-data.tql
+----
+
+.Full schema and data queries
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema, commit]
+include::{page-version}@academy::attachment$bookstore-schema.tql[lines=20..]
+----
+[,typeql]
+----
+#!test[write, commit]
+include::{page-version}@academy::attachment$bookstore-data.tql[lines=18..]
+----
+====
+
+== Conditionals using disjunctions
+
+Let's say we want to create an order for a user, but we want to check the book is in stock first.
+If it isn't, we need to mark the order as invalid.
+
+We can do this by using a xref:{page-version}@typeql-reference::patterns/disjunctions.adoc[disjunction] to check if the book is in stock or not and setting `$status` accordingly.
+
+[,typeql]
+----
+#!test[write, rollback, count = 1]
+match
+  $book isa book, has isbn-13 "9780451162076";
+  {
+    $book has stock >= 1;
+    let $status = "pending";
+  } or {
+    $book has stock < 1;
+    let $status = "invalid";
+  };
+insert
+  $order isa order,
+    has id "o0067",
+    has status == $status;
+  $line isa order-line,
+    links (order: $order, item: $book),
+    has quantity 1;
+----
+
+== Collect sales statistics using ``reduce``-``groupby``
+
+We can use a xref:{page-version}@typeql-reference::pipelines/reduce.adoc[reduce] stage to collect sales statistics for each genre within a given year.
+
+The `groupby` keyword allows us to sum the sale quantities grouped by the value of a specific variable, in this case `$genre`.
+
+[,typeql]
+----
+#!test[write, rollback, count = 8]
+match
+  $item isa book, has genre $genre;
+  $order-line isa order-line,
+    links ($order, $item),
+    has quantity $quantity;
+  ($order) isa action-execution,
+    has timestamp $timestamp;
+  $timestamp >= 2022-01-01T00:00;
+  $timestamp < 2023-01-01T00:00;
+reduce
+  $total-sold = sum($quantity) groupby $genre;
+fetch {
+  "genre": $genre,
+  "total sold": $total-sold
+};
+----
+
+Note that when a book has multiple genres, the number of times it has been sold is included in the results for each genre.
+
+[,]
+----
+{
+  "genre": "historical fiction",
+  "total sold": 5
+}
+{
+  "total sold": 6,
+  "genre": "history"
+}
+{
+  "total sold": 8,
+  "genre": "fiction"
+}
+...
+Finished. Total answers: 8
+----
+
+== Conditionals using optionals
+
+Imagine we want to update a user's loyalty tier based on their total spending.
+When a user pays for an order, we want to update their total spending and, if their spending has crossed some threshold, we want to increase their loyalty tier as well.
+
+We can use an xref:{page-version}@typeql-reference::patterns/optionals.adoc[optional] pattern to only assign the `$new-loyalty-tier` when necessary.
+Then, we can use the `try` keyword to conditionally set their loyalty tier in the `update` stage.
+The `try` block in the `update` stage will only be executed if the `$new-loyalty-tier` is assigned.
+
+[,typeql]
+----
+#!test[write, rollback, count = 1]
+match
+  $user isa user, has id "u0002";
+  $order isa order, has id "o0004";
+  ($user, $order) isa action-execution;
+  ($order, $item) isa order-line, has quantity $quantity;
+  $item has price $price;
+  let $line-total = $price * $quantity;
+reduce
+  $total = sum($line-total) groupby $order, $user;
+match 
+  $user has total-spending $spending;
+  let $new-spending = $spending + $total;
+  try {
+    $user has loyalty-tier $tier;
+    $new-spending > 100 * $tier * $tier;
+    $tier < 5;
+    let $new-loyalty-tier = $tier + 1;
+  };
+update
+  $user has total-spending == $new-spending;
+  try {
+    $user has loyalty-tier == $new-loyalty-tier;
+  };
+----
+
+== Further reading
+
+[cols-2]
+--
+.xref:{page-version}@core-concepts::typeql/index.adoc[]
+[.clickable]
+****
+TypeQL core concepts
+****
+
+.xref:{page-version}@core-concepts::typeql/query-clauses.adoc[]
+[.clickable]
+****
+Learn more about chaining TypeQL clauses into pipelines
+****
+
+.xref:{page-version}@typeql-reference::index.adoc[]
+[.clickable]
+****
+TypeQL reference manual
+****
+--
