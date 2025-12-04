@@ -57,8 +57,8 @@ class Pipeline:
     # ...
 ----
 The `PipelineStage` instances returned by the `stages()` method follows the familiar pattern
-of having an abstract base class which is a union of all the variants,
-and must be downcast to the appropriate variant using the `is_<variant>` and `as_<variant>` methods.
+of having an abstract base class which is a union of all the variants.
+it must be downcast to the appropriate variant using the `is_<variant>` and `as_<variant>` methods.
 
 [source,python]
 ----
@@ -74,7 +74,7 @@ class SelectStage(PipelineStage):
     def variables(self) -> Iterator[Variable]
 ----
 
-Stages such as `Match` and `Insert` contain hold a `ConjunctionID` -
+Stages such as `Match` and `Insert` hold a `ConjunctionID`.
 This is an indirection which can be used
 to retrieve the actual conjunction using the `Pipeline.conjunction` method.
 
@@ -145,24 +145,20 @@ include::{page-version}@core-concepts::example$driver/analyze_query.py[tags=anal
 
 #}}
 include::{page-version}@core-concepts::example$driver/analyze_query.py[tag=get_first_branch_isa]
-
-var_x = first_branch_isa.instance()
-assert var_x.is_variable() and pipeline.get_variable_name(var_x.as_variable()) == "x"
 ----
-
 
 ==== Constraint vertices
 Although constraints typically apply on variables,
-Certain TypeQL constraints allow you to directly specify a type-label or a value.
+certain TypeQL constraints allow you to directly specify a type-label or a value.
 Additionally, a `NamedRole` vertex type exists to handle the ambiguity of unscoped role-labels.
 A `ConstraintVertex` is the union of these four,
 and can be converted to the appropriate variant using the `is/as` methods.
 
-* A *label* unwraps to the resolved type.
-* A *value* unwraps to a value concept of the appropriate value-type.
-* An unwrapped *named-role* is a combination of the internal variable and the unscoped name.
-The variable can be used to retrieve the resolved role-type(s) using the annotations in the conjunction.
-* An unwrapped *variable* is a lot of things.
+* A *label* vertex holds the resolved type.
+* A *value* vertex holds the value concept of the appropriate value-type.
+* A *named-role* vertex holds the internal variable and the unscoped name.
+The internal variable can be used to retrieve the resolved role-type(s) using the annotations in the conjunction.
+* A *variable* vertex holds a variable, which can be used in many places.
 
 A variable is shared across constraints. The name of a variable (if it has one) can be read from the pipeline.
 [source,python]
@@ -179,7 +175,7 @@ include::{page-version}@core-concepts::example$driver/analyze_query.py[tags=anal
 var_x = first_branch_isa.instance()
 assert var_x.is_variable() and pipeline.get_variable_name(var_x.as_variable()) == "x"
 ----
-If this is an output variable, the name can be used to read answers from query responses.
+If the variable is an output of the pipeline, the name can be used to read answers from query responses.
 The possible types of a variable in a conjunction can be read from the annotations in the conjunction.
 
 [NOTE]
@@ -191,7 +187,7 @@ Trying to resolve either of these using a pipeline other than the one it origina
 
 === Annotations
 Type-checking is a central feature of TypeDB.
-The analyze response contains the final set of inferred types for every variable in a conjunction.
+Analyze returns the final set of inferred types for every variable in a conjunction.
 
 [source,python]
 ----
@@ -217,7 +213,7 @@ assert labels == {"user", "company"}
 
 [NOTE]
 ====
-We return annotations per conjunction because a variable may be of different types in different conjunctions.
+We return annotations per conjunction because a variable may have different types in different conjunctions.
 [source, typeql]
 ----
 # user in the left branch, company in the right, Either of them at the root.
@@ -232,13 +228,8 @@ match $p has name $name;    # The type of $p must also own name
 ====
 
 
-
-=== Overview of others
-Most of the topics which need an explanation have now been covered.
-This section provides an overview of anything that may not be totally obvious from the generated documentation.
-
-==== Functions
-Unsurprisingly, a `Function` is a pipeline with a set of arguments, and returns.
+=== Functions
+A `Function` is a pipeline with a set of arguments, and returns.
 [source, python]
 ----
 class Function:
@@ -251,7 +242,7 @@ class Function:
     def return_annotations(self) -> Iterator[VariableAnnotations]
 ----
 
-==== Fetch
+=== Fetch
 An analyzed `Fetch` is one of a Dictionary, a List, or a collection of values.
 [source,python]
 ----
@@ -268,7 +259,7 @@ class FetchList(Fetch):
 class FetchLeaf(Fetch):
     def annotations(self) -> Iterator[str]
 ----
-The structure of the analyzed `Fetch` reflects that of the `Fetch` stage itself,
+The JSON-like structure of the analyzed `Fetch` reflects that of the `Fetch` stage itself,
 with leaves being annotated with the value types.
 
 [source,typeql]
@@ -279,7 +270,7 @@ fetch {
 };
 ----
 
-To access the emails, you would write:
+To inspect the value-type of the emails:
 [source,python]
 ----
 #!test[]
