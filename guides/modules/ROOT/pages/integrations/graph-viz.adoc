@@ -1,0 +1,784 @@
+== Visualising TypeDB Data with Python
+[NOTE]
+====
+This tutorial is based on a jupyter notebook. You can run it locally
+====
+
+This tutorial builds a simple python library for visualising TypeDB
+results as graphs using the query representation returned by the analyze
+endpoint, and optionally returned with a query when the
+`+include_query_structure+` `+QueryOption+` is set. We assume the user
+is familiar with the TypeDB python driver
+(https://github.com/typedb/typedb-driver/tree/master/python#example-usage[tutorial]).
+It uses the python driver for interacting with TypeDB, networkx for
+building the graph, and matplotlib for visualisation. We chose networkx
+and matplotlib purely because they’re widely used, but you could use any
+- TypeDB studio uses sigmajs and graphology.
+
+The full code of this tutorial is available on
+https://github.com/typedb-osi/typedb-graph-utils/python[github]. It is a
+pyproject that can be built, published and installed.
+
+== Running example:
+
+For the following sections, we’ll use this toy dataset.
+[source, typeql]
+----
+# schema
+define
+  attribute name, value string;
+  attribute age, value integer;
+  entity person, owns name, owns age;
+
+# data
+insert
+  $john isa person, has name "John", has age 20;
+  $jane isa person, has name "Jane", has age 30;
+
+# simple_query
+match $x isa person, has name $n;
+----
+
+.Code to set up
+[%collapsible]
+====
+[source, python]
+----
+SCHEMA = """
+define
+  attribute name, value string;
+  attribute age, value integer;
+  entity person, owns name, owns age;
+"""
+
+DATA = """
+insert
+  $john isa person, has name "John", has age 20;
+  $jane isa person, has name "Jane", has age 30;
+"""
+
+SIMPLE_QUERY = """
+    match $x isa person, has name $n;
+"""
+
+from typedb.driver import TypeDB, Credentials, DriverOptions, TypeDB, QueryOptions, TransactionType
+
+DB_ADDRESS = "127.0.0.1:1729"
+DB_CREDENTIALS = Credentials("admin", "password")
+DRIVER_OPTIONS = DriverOptions(is_tls_enabled=False)
+QUERY_OPTIONS = QueryOptions()
+QUERY_OPTIONS.include_query_structure = True
+DB_NAME = "typedb-graph-tutorial-py"
+
+def setup(driver, schema, data):
+    if DB_NAME in [db.name for db in driver.databases.all()]:
+        driver.databases.get(DB_NAME).delete()
+    driver.databases.create(DB_NAME)
+    with driver.transaction(DB_NAME, TransactionType.SCHEMA) as tx:
+        tx.query(schema).resolve()
+        tx.commit()
+    with driver.transaction(DB_NAME, TransactionType.WRITE) as tx:
+        rows = list(tx.query(data).resolve())
+        assert 1 == len(rows)
+        tx.commit()
+
+driver = TypeDB.driver(DB_ADDRESS, DB_CREDENTIALS, DRIVER_OPTIONS)
+setup(driver, SCHEMA, DATA)
+----
+====
+
+== Background: Analyzing queries and PipelineStructure
+
+TypeDB 3.7.0 introduces the `+analyze+` operation. Analyzing a query
+returns its pipeline structure, along with typing information for the
+variables in each pattern.
+
+A pipeline is made up of `+PipelineStage+`s, some of which are made of
+`+Conjunction+`s.
+
+[source,python]
+----
+class Pipeline:
+    def stages(self) -> Iterator[PipelineStage]
+    def conjunction(self, conjunction_id: ConjunctionID) -> Optional[Conjunction]
+    # ...
+
+class MatchStage(PipelineStage):
+    def block(self) -> "ConjunctionID"
+
+class InsertStage(PipelineStage):
+    def block(self) -> "ConjunctionID"
+----
+
+
+[source, python]
+----
+# Analyze the simple query
+from typedb.analyze import Pipeline, Constraint, ConstraintVertex
+
+with driver.transaction(DB_NAME, TransactionType.READ) as tx:
+    analyzed = tx.analyze(SIMPLE_QUERY).resolve()
+pipeline = analyzed.pipeline()
+stages = list(pipeline.stages())
+stages
+----
+.Output
+[%collapsible]
+====
+[source, rust]
+----
+[
+    Match { block: ConjunctionID(0) }
+]
+----
+====
+
+A conjunction is a collection of `+Constraint+`s, which should be
+familiar from the TypeQL statements:
+
+[source,python]
+----
+class Conjunction:
+    def constraints(self) -> Iterator["Constraint"]
+
+
+class Isa(Constraint, ABC):
+    """Represents an 'isa' constraint: <instance> isa(!) <type>"""
+    def instance(self) -> "ConstraintVertex"
+    def type(self) -> "ConstraintVertex"
+    def exactness(self) -> "ConstraintExactness" # isa or isa!
+
+
+class Has(Constraint, ABC):
+    """Represents a 'has' constraint: <owner> has <attribute>"""
+    def owner(self) -> "ConstraintVertex"
+    def attribute(self) -> "ConstraintVertex"
+----
+
+TypeQL statements can be seen as constraints between one or more
+`+ConstraintVertex+`es - These can be type `+Label+`s, `+Variable+`s or
+raw `+Value+`s.
+
+
+[source, python]
+----
+# Get the constraints from the match stage
+match_stage = stages[0]
+conjunction = pipeline.conjunction(match_stage.block())
+constraints = list(conjunction.constraints())
+constraints
+----
+.Output
+[%collapsible]
+====
+[source, rust]
+----
+[
+    Isa { instance: Variable(Variable(0)), type: Label(EntityType(EntityType { label: "person" })), exactness: Subtypes },
+    Has { owner: Variable(Variable(0)), attribute: Variable(Variable(1)), exactness: Subtypes },
+    Isa { instance: Variable(Variable(1)), type: Label(AttributeType(AttributeType { label: "name", value_type: Some(string) })), exactness: Subtypes }
+]
+----
+====
+
+== From constraints to the query graph
+
+Before we get to visualising the data returned by queries, We’ll turn
+the constraints in our query into a query-graph and visualise it. We’ll
+use a `+to_query_edge+` function to go from a Constraint to a labelled
+edge represented by the tuple `+(from, label, to)+`
+
+
+[source, python]
+----
+# Convert all constraints to edges
+from typing import Tuple
+def to_query_edge(constraint: Constraint) -> Tuple[ConstraintVertex, str, ConstraintVertex]:
+    if constraint.is_isa():
+        isa = constraint.as_isa()
+        return (isa.instance(), "isa", isa.type())
+    elif constraint.is_has():
+        has = constraint.as_has()
+        return (has.owner(), "has", has.attribute())
+    else:
+        raise NotImplementedError("Not implemented in tutorial.")
+
+query_edges = [to_query_edge(constraint) for constraint in constraints]
+query_edges
+----
+.Output
+[%collapsible]
+====
+[source, rust]
+----
+[
+    (Variable(0), 'isa', EntityType(person)),
+    (Variable(0), 'has', Variable(1)),
+    (Variable(1), 'isa', AttributeType(name))
+]
+----
+====
+
+We then use networkx and matplotlib to visualise the graph
+
+
++*In[6]:*+
+[source, python]
+----
+import networkx
+from matplotlib import pyplot
+
+query_graph = networkx.MultiDiGraph()
+for (u, label, v) in query_edges:
+    query_graph.add_edge(u,v)
+node_labels = {node: str(node) for node in query_graph.nodes()}
+networkx.draw(query_graph, labels=node_labels)
+pyplot.show()
+----
+.Output
+[%collapsible]
+====
+image:output_11_0.png[]
+====
+
+== Better formatting
+
+That’s the query graph, but it’s of little use to the viewer. We’ll
+create a `+node_style+` function which specifies some style attributes,
+and a `+draw+` function which uses these to draw the networkx graph
+using matplotlib.
+
+
+[source, python]
+----
+from typing import Dict, List, Tuple
+def node_style(pipeline: Pipeline, node: ConstraintVertex) -> Dict[str, any]:
+    color = "g" if node.is_variable() else "b"
+    label = ("$" + pipeline.get_variable_name(node.as_variable())) if node.is_variable() else str(node)
+    shape = "s" if node.is_label() else "o"
+    return {
+        "color": color,
+        "label": label,
+        "shape": shape,
+    }
+
+def draw(edges: List[Tuple[ConstraintVertex, str, ConstraintVertex]], node_styles: Dict[ConstraintVertex, Dict[str, any]]):
+    graph = networkx.MultiDiGraph()
+    graph.add_edges_from((u,v, label) for (u, label, v) in edges)
+    pos = networkx.forceatlas2_layout(graph) if hasattr(networkx, 'forceatlas2_layout') else networkx.planar_layout(graph)
+
+    nodes_by_shape = {node_styles[n]["shape"]: [] for n in graph.nodes}
+    for node in node_styles:
+        nodes_by_shape[node_styles[node]["shape"]].append(node)
+
+    for (shape, node_subset) in nodes_by_shape.items():
+        node_colors = [node_styles[n]["color"] for n in node_subset]
+        node_labels = {n: node_styles[n]["label"] for n in node_subset}
+        networkx.draw_networkx_nodes(graph, pos, nodelist=nodes_by_shape[shape], node_color=node_colors, node_shape=shape)
+        networkx.draw_networkx_labels(graph, pos, labels = node_labels)
+    networkx.draw_networkx_edges(graph, pos)
+
+    edge_labels = { (u,v): label for (u, label, v) in edges}
+    networkx.draw_networkx_edge_labels(graph, pos, edge_labels=edge_labels)
+    pyplot.show()
+
+# Prepare node styles
+nodes = set(u for (u,_,_) in query_edges).union(set(v for (_,_,v) in query_edges))
+node_styles = { n: node_style(pipeline, n) for n in nodes}
+# Draw
+draw(query_edges, node_styles)
+----
+.Output
+[%collapsible]
+====
+image:output_13_0.png[]
+====
+
+== Visualising Data
+
+TypeDB answers are `+ConceptRow+`s which map variables in the queries to
+concepts in the database. It has a similar interface to a python
+dictionary. If the `+include_query_structure+` `+QueryOption+` is set,
+the pipeline structure will be returned and each row will have shared
+access to it.
+
+[source,python]
+----
+class ConceptRow:
+    def column_names(self) -> Iterator[str] # keys
+    def concepts(self) -> Iterator[Concept]  # values
+    def get(self, column_name: str) -> Optional[Concept] # get
+
+    def query_structure(self) -> Optional["Pipeline"] # Shared access to the pipeline structure
+----
+
+
++*In[8]:*+
+[source, python]
+----
+with driver.transaction(DB_NAME, TransactionType.READ) as tx:
+    answers = list(tx.query(SIMPLE_QUERY, QUERY_OPTIONS).resolve())
+assert 2 == len(answers), "TypeDB answer count mismatch"
+answers
+----
+.Output
+[%collapsible]
+====
+----
+[
+|  $n: Attribute(name: "Jane")  |  $x: Entity(person: 0x1e00000000000000000001)  |,
+|  $n: Attribute(name: "John")  |  $x: Entity(person: 0x1e00000000000000000000)  |
+]
+----
+====
+
+[source, python]
+----
+# Every answer also has a reference to the pipeline structure
+list(answers[0].query_structure().stages())
+----
+
+.Output
+[%collapsible]
+====
+[source, rust]
+----
+[
+    Match { block: ConjunctionID(0) }
+]
+----
+====
+
+== From query structure and rows to graphs
+
+The graph view sees pattern matching as finding a homomorphism between
+the query-graph and some subgraph in the database. An answer is thus the
+mapping between the two graphs. To construct the graph representing the
+answer, we simply have to substitute the concepts in the answers for the
+variables in the query-graph. Since there are multiple answers, we take
+the union of edges
+
+[source, python]
+----
+from typedb.driver import ConceptRow, Concept
+def substitute(pipeline: Pipeline, vertex: ConstraintVertex, row: ConceptRow) -> Concept:
+    if vertex.is_label():
+        return vertex.as_label()
+    elif vertex.is_variable():
+        var_name = pipeline.get_variable_name(vertex.as_variable())
+        return row.get(var_name) if var_name else None
+    else:
+        raise NotImplementedError("Not implemented in tutorial. See resolve_constraint_vertex")
+
+answers_as_data_edges = [
+    [(substitute(pipeline, u, row), label, substitute(pipeline, v, row)) for (u,label,v) in query_edges]
+    for row in answers
+]
+answers_as_data_edges
+----
+
+.Output
+[%collapsible]
+====
+[source,rust]
+----
+[
+    [
+        (Entity(person: 0x1e00000000000000000001), 'isa', EntityType(person)),
+        (Entity(person: 0x1e00000000000000000001), 'has', Attribute(name: "Jane")),
+        (Attribute(name: "Jane"), 'isa', AttributeType(name))
+    ],
+    [
+        (Entity(person: 0x1e00000000000000000000), 'isa', EntityType(person)),
+        (Entity(person: 0x1e00000000000000000000), 'has', Attribute(name: "John")),
+        (Attribute(name: "John"), 'isa', AttributeType(name))
+    ]
+]
+----
+====
+
+== Visualising
+
+We’ll need a new node style since our vertices are now concepts rather
+than `+ConstraintVertex+`es
+
+
++*In[11]:*+
+[source, python]
+----
+# We need to update our node_style
+def data_node_style(node: Concept) -> Dict[str, any]:
+    if node.is_type():
+        label = str(node)
+        color = "c"
+    elif node.is_attribute():
+        label = f"{node.get_type().get_label()}:{node.get_value()}"
+        color = "g"
+    else:
+        label = f"{node.get_type().get_label()}#{node.get_iid()[-4:]}"
+        color = "b"
+
+    shape = "s" if (node.is_attribute() or node.is_attribute_type()) else "o"
+    return {
+        "color": color,
+        "label": label,
+        "shape": shape,
+    }
+
+# Flatten them and remove any duplicate edges:
+data_edges = set(e for answer_edges in answers_as_data_edges for e in answer_edges)
+
+# Prepare node styles
+nodes = set(u for (u,_,_) in data_edges).union(set(v for (_,_,v) in data_edges))
+node_styles = { n: data_node_style(n) for n in nodes}
+# Draw
+draw(data_edges, node_styles)
+
+----
+
+
++*Out[11]:*+
+----
+![png](output_20_0.png)
+----
+
+== Disjunctions and optionals
+
+TypeQL queries can be more than simple conjunctions of patterns. They
+can also contain disjunctions & optional patterns - meaning not every
+answer satisfies every constraint.
+
+Consider the query:
+[source, python]
+----
+BRANCHED_QUERY = """
+match
+$x isa person;
+{ $x has name $y; } or { $x has age $y; };
+"""
+
+with driver.transaction(DB_NAME, TransactionType.READ) as tx:
+    answers = list(tx.query(BRANCHED_QUERY, QUERY_OPTIONS).resolve())
+assert 4 == len(answers), "TypeDB answer count mismatch"
+answers
+
+----
+.Output
+[%collapsible]
+====
+----
+[
+|  $x: Entity(person: 0x1e00000000000000000000)  |  $y: Attribute(age: 20)  |,
+|  $x: Entity(person: 0x1e00000000000000000001)  |  $y: Attribute(age: 30)  |,
+|  $x: Entity(person: 0x1e00000000000000000001)  |  $y: Attribute(name: "Jane")  |,
+|  $x: Entity(person: 0x1e00000000000000000000)  |  $y: Attribute(name: "John")  |
+]
+----
+====
+
+
+
+We can get the constraints in the trunk:
+[source, python]
+----
+pipeline = answers[0].query_structure()
+stages = list(pipeline.stages())
+trunk_id = stages[0].as_match().block()
+trunk = list(pipeline.conjunction(trunk_id).constraints())
+(trunk_id, trunk)
+----
+.Output
+[%collapsible]
+====
+----
+(
+    2,
+    [
+        Isa { instance: Variable(Variable(0)), type: Label(EntityType(EntityType { label: "person" })), exactness: Subtypes },
+        Or { branches: [ConjunctionID(0), ConjunctionID(1)] }
+    ]
+)
+----
+====
+
+
+[source, python]
+----
+## Get those as well:
+branches = { branch_id: list(pipeline.conjunction(branch_id).constraints()) for branch_id in trunk[1].as_or().branches() }
+branches
+----
+
+.Output
+[%collapsible]
+====
+----
+{
+    0: [
+        Has { owner: Variable(Variable(0)), attribute: Variable(Variable(1)), exactness: Subtypes },
+        Isa { instance: Variable(Variable(1)), type: Label(AttributeType(AttributeType { label: "name", value_type: Some(string) })), exactness: Subtypes }
+    ],
+    1: [
+        Has { owner: Variable(Variable(0)), attribute: Variable(Variable(1)), exactness: Subtypes },
+        Isa { instance: Variable(Variable(1)), type: Label(AttributeType(AttributeType { label: "age", value_type: Some(integer) })), exactness: Subtypes }
+    ]
+}
+----
+====
+
+How do we know which of these branches were satisfied by each answer? If
+we were to naively draw the constraints from all branches, we’d have
+some absurd edges such as `+name:John isa age+`. Each `+ConceptRow+` has
+an `+involved_conjunctions+` method which tells us exactly this.
+
+
+[source, python]
+----
+[list(answer.involved_conjunctions()) for answer in answers]
+----
+.Output
+[%collapsible]
+====
+----
+[
+    [1, 2],
+    [1, 2],
+    [0, 2],
+    [0, 2]
+]
+----
+====
+
+As expected, the first two answers satisfy the branch with age, and the
+second two answers satisfy the branch with name (all answers satisfy the
+trunk, of course). Constructing the graph for these is still quite
+simple. We take the union of all constraints in each involved
+conjunction:
+
+
+[source, python]
+----
+def flatten(list_of_lists: List[List[any]]) -> List[any]:
+    return [x for l in list_of_lists for x in l]
+
+answers_as_data_edges = []
+for row in answers:
+    involved_constraints = flatten([list(pipeline.conjunction(conj_id).constraints()) for conj_id in row.involved_conjunctions()])
+    as_query_edges = [to_query_edge(c) for c in involved_constraints if not c.is_or()] # Exclude or constraint
+    as_data_edges = [(substitute(pipeline, u, row), label, substitute(pipeline, v, row)) for (u,label,v) in as_query_edges]
+    answers_as_data_edges.append(as_data_edges)
+
+answers_as_data_edges
+----
+.Output
+[%collapsible]
+====
+[source,rust]
+----
+[
+    [
+        (Entity(person: 0x1e00000000000000000000), 'has', Attribute(age: 20)),
+        (Attribute(age: 20), 'isa', AttributeType(age)),
+        (Entity(person: 0x1e00000000000000000000), 'isa', EntityType(person))
+    ],
+    [
+        (Entity(person: 0x1e00000000000000000001), 'has', Attribute(age: 30)),
+        (Attribute(age: 30), 'isa', AttributeType(age)),
+        (Entity(person: 0x1e00000000000000000001), 'isa', EntityType(person))
+    ],
+    [
+        (Entity(person: 0x1e00000000000000000001), 'has', Attribute(name: "Jane")),
+        (Attribute(name: "Jane"), 'isa', AttributeType(name)),
+        (Entity(person: 0x1e00000000000000000001), 'isa', EntityType(person))
+    ],
+    [
+        (Entity(person: 0x1e00000000000000000000), 'has', Attribute(name: "John")),
+        (Attribute(name: "John"), 'isa', AttributeType(name)),
+        (Entity(person: 0x1e00000000000000000000), 'isa', EntityType(person))
+    ]
+]
+----
+====
+
+Prepare the styles for the nodes, and draw:
+[source, python]
+----
+# Prepare node styles
+flattened_data_edges = flatten(answers_as_data_edges)
+nodes = set(u for (u,_,_) in data_edges).union(set(v for (_,_,v) in flattened_data_edges))
+node_styles = { n: data_node_style(n) for n in nodes }
+# Draw
+draw(flattened_data_edges, node_styles)
+----
+
+.Output
+[%collapsible]
+====
+image:output_30_0.png[]
+====
+
+This covers the basics of visualising TypeDB answers as graphs. The next
+section discusses a few cases where TypeDB constraints don’t directly
+map to a simple labelled binary edge between two concepts. Later, we
+introduce a simple python library which computes involved constraints
+and substitutes answers into the constraints - allowing you to focus on
+converting these "`DataConstraints`" into your target representation.
+
+== Visualising complex constraints
+
+In this section, we discuss a few cases where visualisation is not as
+straightforward and the solutions we chose when building TypeDB Studio.
+
+=== Functions
+
+A query can contain function calls. Functions have arguments and return
+values - all of which are concepts. Unlike a relation, the function call
+itself is not a concept. We felt the cleanest way to visualise the
+many-to-many constraint between return values and arguments was to
+introduce a `+FunctionCall+` vertex for each call. Two function calls
+are the same vertex if they have the same (1) function name, (2) tuple
+of argument concepts, and (3) tuple of returned concepts.
+
+=== Expressions
+
+We treat expressions as we did functions, except the string representing
+the expression is used in place of the function name.
+
+=== Links constraints
+
+Links constraints are ternary constraints involving the relation
+instance, the player instance and the played role type. We choose to
+represent it as a binary edge from the relation to the player, with the
+role serving as the label of the edge.
+
+=== Named roles
+
+TypeDB allows the use of unscoped role names in links & relates
+constraints to specify the role. e.g. For the schema below, the query
+`+match $r relates subject;+` will return both `+sentence+` and
+`+email+` as answers for `+$r+`;
+
+....
+define
+relation sentence relates subject;
+relation email relates subject;
+....
+
+Internally, TypeDB introduces an internal variable and constrains it to
+be any of the role types with the specified name. In the structure
+returned by the `+analyze+` operation, these variables and their
+associated names are returned as `+NamedRole+` vertices. (Since the
+variable introduced is anonymous, it is unavailable in the ConceptRow.
+Since it does not uniquely determine the type, it cannot be considered a
+label.)
+
+=== Is & comparison constraints
+
+Since `+is+` constraints are always a self-edge on a vertex, we choose
+not to visualise it. We also skip visualising comparison constraints to
+reduce the number of edges, though they can be useful in certain cases -
+the comparator symbol is available from the comparison constraint.
+
+== The library
+
+In this section, we introduce the library developed along with the
+tutorial. It follows the structure of the TypeScript library we wrote
+for TypeDB studio. The essence remains the same as what we’ve covered in
+the tutorial - Find the constraints "`involved`" in each answer, and
+substitute in the concepts for the variables. Instead of converting a
+constraint into query edges, and then applying the substitution to form
+data-edges, We directly apply the substitution on the `+Constraint+`s to
+obtain the corresponding `+DataConstraint+` - These constrain
+`+DataVertex+`es instead of `+ConstraintVertex+`es.
+
+Here’s the signature of an `+Isa+` `+DataConstraint+` from the library,
+and the `+Isa+` `+Constraint+` from the driver API to compare against:
+
+[source,python]
+----
+# From library
+class Isa(DataConstraint):
+    def instance(self) -> DataVertex
+    def type(self) -> DataVertex
+    def exactness(self) -> ConstraintExactness
+
+# From driver
+class Isa(Constraint, ABC):
+    def instance(self) -> ConstraintVertex
+    def type(self) -> ConstraintVertex
+    def exactness(self) -> ConstraintExactness # isa or isa!
+----
+
+We introduce a `+TypeDBAnswerConverter[OutputType]+` abstract class,
+which defines methods the user has to implement - One `+add_+` method
+per data constraint (e.g. `+add_isa(self, isa: Isa)+`) and a
+`+finish(self) -> OutputType+` for whatever your final representation
+may be.
+
+We provide a sample implementation -
+`+class NetworkXBuilder(TypeDBAnswerConverter[MultiDiGraph])+` - which
+builds a `+MultiDiGraph+` as in this tutorial. We also provide a basic
+`+matplotlib_visualizer+` for inspiration.
+
+== Visualising using the library
+
+We recreate the previous example by implementing the
+`+TypeDBAnswerConverter+` class provided by the library.
+
+
++*In[18]:*+
+[source, python]
+----
+from typedb_graph_utils import data_constraint, TypeDBAnswerConverter, MatplotlibVisualizer
+from typedb.common.enums import ConstraintExactness
+from networkx import MultiDiGraph
+class MyTutorialBuilder(TypeDBAnswerConverter[MultiDiGraph]):
+
+    def __init__(self, pipeline: Pipeline):
+        super().__init__(pipeline)
+        self.graph = MultiDiGraph()
+
+    def finish(self) -> MultiDiGraph:
+        return self.graph
+
+    def add_isa(self, isa: data_constraint.Isa):
+        edge_type = "isa!" if isa.exactness() == ConstraintExactness.Exact else "isa"
+         # Use the edge attributes to store metadata. The visualiser uses it.
+        self.graph.add_edge(isa.instance(), isa.type(), label=edge_type)
+
+    def add_has(self, has: data_constraint.Has):
+        if has.owner() is None or has.attribute() is None:
+            return
+        edge_type = "has!" if has.exactness() == ConstraintExactness.Exact else "has"
+        self.graph.add_edge(has.owner(), has.attribute(), label = edge_type)
+
+    # We leave the remaining unimplemented for brevity. Check the NetworkXConverter
+    def add_comparison(c): pass
+    def add_expression(c): pass
+    def  add_function_call(c): pass
+    def  add_iid(c): pass
+    def  add_is(c): pass
+    def  add_kind(c): pass
+    def  add_label(c): pass
+    def  add_links(c): pass
+    def  add_owns(c): pass
+    def  add_plays(c): pass
+    def  add_relates(c): pass
+    def  add_sub(c): pass
+    def  add_value(c): pass
+
+with driver.transaction(DB_NAME, TransactionType.READ) as tx:
+    answers = list(tx.query(BRANCHED_QUERY, QUERY_OPTIONS).resolve())
+
+builder = MyTutorialBuilder(answers[0].query_structure())
+for (i, answer) in enumerate(answers):
+    builder.add_answer(i, answer)
+
+graph = builder.finish()
+MatplotlibVisualizer.draw(graph)
+----
+.Output
+[%collapsible]
+====
+image:output_35_0.png[]
+====
