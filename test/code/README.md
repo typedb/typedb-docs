@@ -19,7 +19,7 @@ Text.
 
 [,typeql]
 ----
-#!test[<TYPE>[, reset] [, rollback] [, fail_at=<FAILURE>] [, documents] [, count=<NUM>] [, jump=<LABEL>] [, name=<LABEL>]]
+#!test[<TYPE>[, reset] [, rollback] [, fail_at=<FAILURE>] [, count=<NUM>] [, jump=<LABEL>] [, name=<LABEL>]]
 #{{
 <HIDDEN-QUERY>
 #}}
@@ -46,7 +46,6 @@ where
 * `reset` resets the database before running the test
 * `rollback` rolls backs the transaction instead of committing it
 * `fail_at=<FAILURE>` can be `runtime, commit`
-* `documents` specifies that the query is a fetch query, and the results are documents
 * `count=<NUM>` is an integer representing expected answer count
 * `name=<LABEL>` names the test
 * `jump=<LABEL>` is a label for the test (used for entrypoints and jumping around)
