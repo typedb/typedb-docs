@@ -241,3 +241,9 @@ email_field = root_object.get("email")
 email_list_element = email_field.as_list().element()
 email_value_types = list(email_list_element.annotations())
 ----
+
+== References
+* Analyze reference:
+xref:{page-version}@reference::typedb-grpc-drivers/rust.adoc#_Analyze[rust],
+xref:{page-version}@reference::typedb-grpc-drivers/java.adoc#_Analyze[java],
+xref:{page-version}@reference::typedb-grpc-drivers/python.adoc#_Analyze[python]
