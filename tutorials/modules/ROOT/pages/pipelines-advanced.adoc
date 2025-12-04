@@ -149,9 +149,7 @@ match
   };
 update
   $user has total-spending == $new-spending;
-  try {
-    $user has loyalty-tier == $new-loyalty-tier;
-  };
+  try { $user has loyalty-tier == $new-loyalty-tier; };
 ----
 
 == Further reading
