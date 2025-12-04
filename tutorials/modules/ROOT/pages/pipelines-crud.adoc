@@ -1,0 +1,279 @@
+= Writing and updating data in TypeDB
+:keywords: typedb, typeql, tutorial, console, crud
+:pageTitle: 
+:summary: 
+:page-toclevels: 2
+:tabs-sync-option:
+:test-typeql: linear
+
+== Overview
+
+This tutorial covers the basics of writing and updating data in TypeDB.
+
+== Prerequisites
+
+This tutorial assumes you have access to a running TypeDB instance, as well as a TypeDB Console.
+
+We recommend xref:{page-version}@home::install/ce.adoc[installing TypeDB Community Edition] as it is distributed bundled with Console for easy setup.
+
+This is a continuation of xref:{page-version}@tutorials::pipelines-read.adoc[], though you don't need to have completed it to follow along.
+
+== Example schema and data
+
+IMPORTANT: TODO PERMALINKS TO `typedb/typedb-examples`
+
+We are using the https://github.com/typedb/typedb-examples/tree/master/use-cases/bookstore[bookstore example] schema and data throughout this tutorial.
+You can load the example into your TypeDB instance using the following Console command:
+
+[,console]
+----
+database create-init bookstore http://github.com/typedb/typedb-examples/releases/latest/download/bookstore-schema.tql http://github.com/typedb/typedb-examples/releases/latest/download/bookstore-data.tql
+----
+
+.Full schema and data queries
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema, commit]
+include::{page-version}@academy::attachment$bookstore-schema.tql[lines=20..]
+----
+[,typeql]
+----
+#!test[write, commit]
+include::{page-version}@academy::attachment$bookstore-data.tql[lines=18..]
+----
+====
+
+== Add a book to the database with `insert`
+
+To add a new book to the database, we can use an xref:{page-version}@typeql-reference::pipelines/insert.adoc[`insert`] query.
+Simply use an xref:{page-version}@typeql-reference::statements/isa.adoc[`isa`] statement to specify the type of the entity, and then use
+xref:{page-version}@typeql-reference::statements/has.adoc[`has`] statements to list the attributes of the book.
+
+[,typeql]
+----
+#!test[write, count = 1, rollback]
+insert
+  $book isa paperback,
+    has isbn-13 "9780441569595",
+    has isbn-10 "0441569595",
+    has title "Neuromancer",
+    has page-count 288,
+    has price 6.99,
+    has genre "fiction",
+    has genre "science fiction",
+    has stock 5;
+----
+
+Adding the author is as simple as inserting a `contributor` entity in a similar fashion, and an `authoring` relation linking the two.
+
+[,typeql]
+----
+#!test[write, count = 1, commit]
+insert
+  $book isa paperback,
+    has isbn-13 "9780441569595",
+    has isbn-10 "0441569595",
+    has title "Neuromancer",
+    has page-count 288,
+    has price 6.99,
+    has genre "fiction",
+    has genre "science fiction",
+    has stock 5;
+  $author isa contributor,
+    has name "Gibson, William";
+  (work: $book, author: $author) isa authoring;
+----
+
+What if the author already exists?
+The query above would then merrily insert another `contributor` with the same name, which is almost certainly not what we intend.
+
+Thankfully, the fix is straightforward.
+We can use a xref:{page-version}@typeql-reference::pipelines/match.adoc[`match`] stage to find the author, and then use an xref:{page-version}@typeql-reference::pipelines/insert.adoc[`insert`] stage
+to create the book and the authoring relation.
+
+[,typeql]
+----
+#!test[write, count = 1, rollback]
+match
+  $author isa contributor,
+    has name "Adams, Douglas";
+insert
+  $book isa paperback,
+    has isbn-13 "9781529034585",
+    has isbn-10 "1529034582",
+    has title "Dirk Gently's Holistic Detective Agency",
+    has page-count 288,
+    has price 5.99,
+    has genre "fiction",
+    has genre "science fiction",
+    has stock 4;
+  (work: $book, author: $author) isa authoring;
+----
+
+== Insert an author only if one doesn't exist with `put`
+
+We happened to know that an author named "Adams, Douglas" was already present in the database.
+What if we didn't know that, but still wanted to avoid inserting a duplicate author?
+We can use a xref:{page-version}@typeql-reference::pipelines/put.adoc[`put`] clause to insert the author only if a `contributor` matching the constraints does not already exist in the database.
+
+[,typeql]
+----
+#!test[write, count = 1, rollback]
+put
+  $author isa contributor,
+    has name "Adams, Douglas";
+insert
+  $book isa paperback,
+    has isbn-13 "9781529034585",
+    has isbn-10 "1529034582",
+    has title "Dirk Gently's Holistic Detective Agency",
+    has page-count 288,
+    has price 5.99,
+    has genre "fiction",
+    has genre "science fiction",
+    has stock 4;
+  (work: $book, author: $author) isa authoring;
+----
+
+[TIP]
+====
+It might be tempting to combine all of the above into one `put` query:
+
+[,typeql]
+----
+#!test[write, count = 1, rollback]
+put
+  $author isa contributor,
+    has name "Adams, Douglas";
+  $book isa paperback,
+    has isbn-13 "9781529034585",
+    has isbn-10 "1529034582",
+    has title "Dirk Gently's Holistic Detective Agency",
+    has page-count 288,
+    has price 5.99,
+    has genre "fiction",
+    has genre "science fiction",
+    has stock 4;
+  (work: $book, author: $author) isa authoring;
+----
+
+It's important to remember that if anything in the `put` fails to match existing data, the entirety of `put` body is inserted.
+If the author already exists, but the book doesn't, a new entity for the author is inserted alongside the book.
+This is why it's important to keep `put` stages as short as possible, usually one per object.
+Here's an example with multiple ``put``s:
+
+[,typeql]
+----
+#!test[write, count = 1, rollback]
+put
+  $author isa contributor,
+    has name "Adams, Douglas";
+put
+  $publisher isa publisher,
+    has name "Signet";
+insert
+  $book isa paperback,
+    has isbn-13 "9781529034585",
+    has isbn-10 "1529034582",
+    has title "Dirk Gently's Holistic Detective Agency",
+    has page-count 288,
+    has price 5.99,
+    has genre "fiction",
+    has genre "science fiction",
+    has stock 4;
+  (work: $book, author: $author) isa authoring;
+  (publisher: $publisher, published: $book) isa publishing;
+----
+====
+
+== Update stock with `update`
+
+When we sell a book, we need to decrease the stock by one.
+Concretely, that means deleting the old `stock` attribute and inserting a new one with the updated value.
+
+[,typeql]
+----
+#!test[write, count = 1, commit]
+match
+  $book isa book, has isbn-13 "9780671461492", has stock $stock;
+  let $new-stock = $stock - 1;
+delete
+  has $stock of $book;
+insert
+  $book has stock == $new-stock;
+----
+
+xref:{page-version}@typeql-reference::pipelines/update.adoc[`update`] is a shorthand for the above.
+
+[,typeql]
+----
+#!test[write, count = 1, commit]
+match
+  $book isa book, has isbn-13 "9780671461492", has stock $stock;
+  let $new-stock = $stock - 1;
+update
+  $book has stock == $new-stock;
+----
+
+[TIP]
+====
+`update` is only allowed when the cardinality constraint of the attribute is at most one.
+This is to avoid ambiguity: there's at most one old attribute to delete.
+
+By default, all attributes have cardinality `0..1`, but if you define an attribute ownership with higher cardinality, you will not be able to use `update` even if the object happens to only have zero
+or one attribute of the type.
+====
+
+== Delete a book with `delete`
+
+To delete a book, we can use a xref:{page-version}@typeql-reference::pipelines/delete.adoc[`delete`] query.
+
+[,typeql]
+----
+#!test[write, count = 1, rollback]
+match
+  $book isa book, has isbn-13 "9780671461492";
+delete
+  $book;
+----
+
+Note that while this query deletes all attributes of the book, it does not delete the relations in which the book is involved.
+The book is deleted _from_ the relations, but the relations themselves remain.
+
+To delete all relations in which the book is involved as well as the book, we need to match them first:
+
+[,typeql]
+----
+#!test[write, count = 3, commit]
+match
+  $book isa book, has isbn-13 "9780671461492";
+  $rel links ($book);
+delete
+  $rel;
+  $book;
+----
+
+== Further reading
+
+[cols-2]
+--
+.xref:{page-version}@tutorials::pipelines-advanced.adoc[]
+[.clickable]
+****
+Learn about complex pipelines in the next tutorial
+****
+
+.xref:{page-version}@core-concepts::typeql/index.adoc[]
+[.clickable]
+****
+TypeQL core concepts
+****
+
+.xref:{page-version}@typeql-reference::index.adoc[]
+[.clickable]
+****
+TypeQL reference manual
+****
+--
