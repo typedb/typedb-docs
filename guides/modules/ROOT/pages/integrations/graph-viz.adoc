@@ -7,7 +7,7 @@ This tutorial is based on a jupyter notebook. You can run it locally
 This tutorial builds a simple python library for visualising TypeDB
 results as graphs using the query representation returned by the analyze
 endpoint, and optionally returned with a query when the
-`+include_query_structure+` `+QueryOption+` is set. We assume the user
+`include_query_structure` `QueryOption` is set. We assume the user
 is familiar with the TypeDB python driver
 (https://github.com/typedb/typedb-driver/tree/master/python#example-usage[tutorial]).
 It uses the python driver for interacting with TypeDB, networkx for
@@ -89,12 +89,12 @@ setup(driver, SCHEMA, DATA)
 
 == Background: Analyzing queries and PipelineStructure
 
-TypeDB 3.7.0 introduces the `+analyze+` operation. Analyzing a query
+TypeDB 3.7.0 introduces the `analyze` operation. Analyzing a query
 returns its pipeline structure, along with typing information for the
 variables in each pattern.
 
-A pipeline is made up of `+PipelineStage+`s, some of which are made of
-`+Conjunction+`s.
+A pipeline is made up of `PipelineStage`s, some of which are made of
+`Conjunction`s.
 
 [source,python]
 ----
@@ -133,7 +133,7 @@ stages
 ----
 ====
 
-A conjunction is a collection of `+Constraint+`s, which should be
+A conjunction is a collection of `Constraint`s, which should be
 familiar from the TypeQL statements:
 
 [source,python]
@@ -156,8 +156,8 @@ class Has(Constraint, ABC):
 ----
 
 TypeQL statements can be seen as constraints between one or more
-`+ConstraintVertex+`es - These can be type `+Label+`s, `+Variable+`s or
-raw `+Value+`s.
+`ConstraintVertex`es - These can be type `Label`s, `Variable`s or
+raw `Value`s.
 
 
 [source, python]
@@ -185,8 +185,8 @@ constraints
 
 Before we get to visualising the data returned by queries, We’ll turn
 the constraints in our query into a query-graph and visualise it. We’ll
-use a `+to_query_edge+` function to go from a Constraint to a labelled
-edge represented by the tuple `+(from, label, to)+`
+use a `to_query_edge` function to go from a Constraint to a labelled
+edge represented by the tuple `(from, label, to)`
 
 
 [source, python]
@@ -219,10 +219,7 @@ query_edges
 ----
 ====
 
-We then use networkx and matplotlib to visualise the graph
-
-
-+*In[6]:*+
+We then use networkx and matplotlib to visualise the graph:
 [source, python]
 ----
 import networkx
@@ -244,8 +241,8 @@ image:output_11_0.png[]
 == Better formatting
 
 That’s the query graph, but it’s of little use to the viewer. We’ll
-create a `+node_style+` function which specifies some style attributes,
-and a `+draw+` function which uses these to draw the networkx graph
+create a `node_style` function which specifies some style attributes,
+and a `draw` function which uses these to draw the networkx graph
 using matplotlib.
 
 
@@ -296,9 +293,9 @@ image:output_13_0.png[]
 
 == Visualising Data
 
-TypeDB answers are `+ConceptRow+`s which map variables in the queries to
+TypeDB answers are `ConceptRow`s which map variables in the queries to
 concepts in the database. It has a similar interface to a python
-dictionary. If the `+include_query_structure+` `+QueryOption+` is set,
+dictionary. If the `include_query_structure` `QueryOption` is set,
 the pipeline structure will be returned and each row will have shared
 access to it.
 
@@ -312,8 +309,7 @@ class ConceptRow:
     def query_structure(self) -> Optional["Pipeline"] # Shared access to the pipeline structure
 ----
 
-
-+*In[8]:*+
+Run a query:
 [source, python]
 ----
 with driver.transaction(DB_NAME, TransactionType.READ) as tx:
@@ -332,12 +328,12 @@ answers
 ----
 ====
 
+Get the pipeline stages from it:
 [source, python]
 ----
 # Every answer also has a reference to the pipeline structure
 list(answers[0].query_structure().stages())
 ----
-
 .Output
 [%collapsible]
 ====
@@ -356,7 +352,7 @@ the query-graph and some subgraph in the database. An answer is thus the
 mapping between the two graphs. To construct the graph representing the
 answer, we simply have to substitute the concepts in the answers for the
 variables in the query-graph. Since there are multiple answers, we take
-the union of edges
+the union of edges.
 
 [source, python]
 ----
@@ -376,7 +372,6 @@ answers_as_data_edges = [
 ]
 answers_as_data_edges
 ----
-
 .Output
 [%collapsible]
 ====
@@ -400,10 +395,8 @@ answers_as_data_edges
 == Visualising
 
 We’ll need a new node style since our vertices are now concepts rather
-than `+ConstraintVertex+`es
+than `ConstraintVertex`es.
 
-
-+*In[11]:*+
 [source, python]
 ----
 # We need to update our node_style
@@ -435,12 +428,11 @@ node_styles = { n: data_node_style(n) for n in nodes}
 draw(data_edges, node_styles)
 
 ----
-
-
-+*Out[11]:*+
-----
-![png](output_20_0.png)
-----
+.Output
+[%collapsible]
+====
+image:output_20_0.png[]
+====
 
 == Disjunctions and optionals
 
@@ -477,8 +469,7 @@ answers
 ====
 
 
-
-We can get the constraints in the trunk:
+Get the constraints in the trunk:
 [source, python]
 ----
 pipeline = answers[0].query_structure()
@@ -502,9 +493,9 @@ trunk = list(pipeline.conjunction(trunk_id).constraints())
 ====
 
 
+Get the constraints by branch:
 [source, python]
 ----
-## Get those as well:
 branches = { branch_id: list(pipeline.conjunction(branch_id).constraints()) for branch_id in trunk[1].as_or().branches() }
 branches
 ----
@@ -528,8 +519,8 @@ branches
 
 How do we know which of these branches were satisfied by each answer? If
 we were to naively draw the constraints from all branches, we’d have
-some absurd edges such as `+name:John isa age+`. Each `+ConceptRow+` has
-an `+involved_conjunctions+` method which tells us exactly this.
+some absurd edges such as `name:John isa age`. Each `ConceptRow` has
+an `involved_conjunctions` method which tells us exactly this.
 
 
 [source, python]
@@ -635,7 +626,7 @@ A query can contain function calls. Functions have arguments and return
 values - all of which are concepts. Unlike a relation, the function call
 itself is not a concept. We felt the cleanest way to visualise the
 many-to-many constraint between return values and arguments was to
-introduce a `+FunctionCall+` vertex for each call. Two function calls
+introduce a `FunctionCall` vertex for each call. Two function calls
 are the same vertex if they have the same (1) function name, (2) tuple
 of argument concepts, and (3) tuple of returned concepts.
 
@@ -655,26 +646,27 @@ role serving as the label of the edge.
 
 TypeDB allows the use of unscoped role names in links & relates
 constraints to specify the role. e.g. For the schema below, the query
-`+match $r relates subject;+` will return both `+sentence+` and
-`+email+` as answers for `+$r+`;
+`match $r relates subject;` will return both `sentence` and
+`email` as answers for `$r`;
 
-....
+[source, typeql]
+----
 define
 relation sentence relates subject;
 relation email relates subject;
-....
+----
 
 Internally, TypeDB introduces an internal variable and constrains it to
 be any of the role types with the specified name. In the structure
-returned by the `+analyze+` operation, these variables and their
-associated names are returned as `+NamedRole+` vertices. (Since the
+returned by the `analyze` operation, these variables and their
+associated names are returned as `NamedRole` vertices. (Since the
 variable introduced is anonymous, it is unavailable in the ConceptRow.
 Since it does not uniquely determine the type, it cannot be considered a
 label.)
 
 === Is & comparison constraints
 
-Since `+is+` constraints are always a self-edge on a vertex, we choose
+Since `is` constraints are always a self-edge on a vertex, we choose
 not to visualise it. We also skip visualising comparison constraints to
 reduce the number of edges, though they can be useful in certain cases -
 the comparator symbol is available from the comparison constraint.
@@ -687,12 +679,12 @@ for TypeDB studio. The essence remains the same as what we’ve covered in
 the tutorial - Find the constraints "`involved`" in each answer, and
 substitute in the concepts for the variables. Instead of converting a
 constraint into query edges, and then applying the substitution to form
-data-edges, We directly apply the substitution on the `+Constraint+`s to
-obtain the corresponding `+DataConstraint+` - These constrain
-`+DataVertex+`es instead of `+ConstraintVertex+`es.
+data-edges, We directly apply the substitution on the `Constraint`s to
+obtain the corresponding `DataConstraint` - These constrain
+`DataVertex`es instead of `ConstraintVertex`es.
 
-Here’s the signature of an `+Isa+` `+DataConstraint+` from the library,
-and the `+Isa+` `+Constraint+` from the driver API to compare against:
+Here’s the signature of an `Isa` `DataConstraint` from the library,
+and the `Isa` `Constraint` from the driver API to compare against:
 
 [source,python]
 ----
@@ -709,24 +701,22 @@ class Isa(Constraint, ABC):
     def exactness(self) -> ConstraintExactness # isa or isa!
 ----
 
-We introduce a `+TypeDBAnswerConverter[OutputType]+` abstract class,
-which defines methods the user has to implement - One `+add_+` method
-per data constraint (e.g. `+add_isa(self, isa: Isa)+`) and a
-`+finish(self) -> OutputType+` for whatever your final representation
+We introduce a `TypeDBAnswerConverter[OutputType]` abstract class,
+which defines methods the user has to implement - One `add_` method
+per data constraint (e.g. `add_isa(self, isa: Isa)`) and a
+`finish(self) -> OutputType` for whatever your final representation
 may be.
 
 We provide a sample implementation -
-`+class NetworkXBuilder(TypeDBAnswerConverter[MultiDiGraph])+` - which
-builds a `+MultiDiGraph+` as in this tutorial. We also provide a basic
-`+matplotlib_visualizer+` for inspiration.
+`NetworkXBuilder` - which
+builds a `MultiDiGraph` as in this tutorial. We also provide a basic
+`MatplotlibVisualizer` for inspiration.
 
 == Visualising using the library
 
 We recreate the previous example by implementing the
-`+TypeDBAnswerConverter+` class provided by the library.
+`TypeDBAnswerConverter` class provided by the library.
 
-
-+*In[18]:*+
 [source, python]
 ----
 from typedb_graph_utils import data_constraint, TypeDBAnswerConverter, MatplotlibVisualizer
