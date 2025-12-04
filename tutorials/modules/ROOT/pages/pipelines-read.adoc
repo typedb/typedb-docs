@@ -1,4 +1,4 @@
-= Read data using TypeDB
+= Common patterns of read queries
 :keywords: typedb, typeql, tutorial, console
 :pageTitle: 
 :summary: 
@@ -14,9 +14,9 @@ This tutorial covers the common patterns of read queries in TypeQL.
 
 This tutorial assumes you have access to a running TypeDB instance, as well as a TypeDB Console.
 
-See xref:{page-version}@home:install/index.adoc[the Install page] for setup instructions based on your needs.
+We recommend xref:{page-version}@home::install/ce.adoc[installing TypeDB Community Edition] as it is distributed bundled with Console for easy setup.
 
-== Schema
+== Example schema and data
 
 IMPORTANT: TODO PERMALINKS TO `typedb/typedb-examples`
 
@@ -28,7 +28,7 @@ You can load the example into your TypeDB instance using the following Console c
 database create-init bookstore http://github.com/typedb/typedb-examples/releases/latest/download/bookstore-schema.tql http://github.com/typedb/typedb-examples/releases/latest/download/bookstore-data.tql
 ----
 
-.Schema and data for the following examples
+.Full schema and data queries
 [%collapsible]
 ====
 [,typeql]
@@ -50,7 +50,7 @@ statement:
 
 [,typeql]
 ----
-#!test[read, count = 21,]
+#!test[read, count = 21]
 match $book isa book;
 ----
 
@@ -70,12 +70,12 @@ Finished. Total answers: 21
 ----
 
 These are the values the variable `$book` takes that can be used further down in the pipeline.
-This output isn't very useful for displaying a list of books to the user, however.
+This output isn't very useful for displaying a list of books to the customer, however.
 Instead, most read queries end with a `fetch` clause that allows you to format the query result into a JSON-like document:
 
 [,typeql]
 ----
-#!test[read, documents, count = 21]
+#!test[read, count = 21]
 match
   $book isa book;
 fetch {
@@ -103,7 +103,7 @@ This is the simplest `fetch` stage there is, and it simply retrieves all attribu
 Finished. Total answers: 21
 ----
 
-== Additional patterns
+== Retrieve the author of each book using additional constraints
 
 Some data we'd like to display is still missing, however, such as the book's author.
 Let's look back at the schema and find out how the author is associated to the book.
@@ -149,7 +149,7 @@ We'll adjust the query.
 
 [,typeql]
 ----
-#!test[read, documents, count = 23]
+#!test[read, count = 23]
 match
   $book isa book;
   authoring (author: $author, work: $book);
@@ -189,7 +189,7 @@ If we want to clean up the output to only fetch the attributes we want to displa
 
 [,typeql]
 ----
-#!test[read, documents, count = 23]
+#!test[read, count = 23]
 match
   $book isa book;
   authoring (author: $author, work: $book);
@@ -221,7 +221,7 @@ fetch {
 Finished. Total answers: 23
 ----
 
-== Subqueries
+== Fetch list of authors using a subquery
 
 Have you noticed?
 The last query we ran returned two more answers, 23 total, compared to the 21 answers to the query before.
@@ -235,7 +235,7 @@ We can do this by using a subquery in the `fetch`:
 
 [,typeql]
 ----
-#!test[read, documents, count = 21]
+#!test[read, count = 21]
 match
   $book isa book;
 fetch {
@@ -282,7 +282,7 @@ You can read more about using functions in xref:{page-version}@core-concepts::ty
 Finished. Total answers: 21
 ----
 
-== Optionals
+== Fetch discounted price with optionals
 
 Sometimes the data we want to display is optional, and we'd like to display it if it exists, but not require it to match for the query to succeed.
 
@@ -291,7 +291,7 @@ If we try to add a pattern to the query that matches a `promotion-inclusion` rel
 
 [,typeql]
 ----
-#!test[read, documents, count = 5]
+#!test[read, count = 5]
 match
   $book isa book, has price $book-price;
   promotion-inclusion (item: $book), has discount $discount;
@@ -324,7 +324,7 @@ We can do this by using a `try` pattern:
 
 [,typeql]
 ----
-#!test[read, documents, count = 21]
+#!test[read, count = 21]
 match
   $book isa book, has price $book-price;
   try {
@@ -362,7 +362,7 @@ The previous query could be equivalently written as:
 
 [,typeql]
 ----
-#!test[read, documents, count = 21]
+#!test[read, count = 21]
 match
   $book isa book, has price $book-price;
 fetch {
@@ -380,6 +380,23 @@ fetch {
 
 == Further reading
 
-* xref:{page-version}@tutorials::pipelines-crud.adoc[Learn how to modify data in the next tutorial]
-* xref:{page-version}@core-concepts::typeql/index.adoc[TypeQL core concepts]
-* xref:{page-version}@typeql-reference::index.adoc[TypeQL reference manual]
+[cols-2]
+--
+.xref:{page-version}@tutorials::pipelines-crud.adoc[]
+[.clickable]
+****
+Learn how to modify data in the next tutorial
+****
+
+.xref:{page-version}@core-concepts::typeql/index.adoc[]
+[.clickable]
+****
+TypeQL core concepts
+****
+
+.xref:{page-version}@typeql-reference::index.adoc[]
+[.clickable]
+****
+TypeQL reference manual
+****
+--
