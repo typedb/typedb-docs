@@ -43,7 +43,7 @@ include::{page-version}@academy::attachment$bookstore-data.tql[lines=18..]
 ----
 ====
 
-== Conditionals using disjunctions
+== Select order status conditionally using disjunctions
 
 Let's say we want to create an order for a user, but we want to check the book is in stock first.
 If it isn't, we need to mark the order as invalid.
@@ -117,7 +117,7 @@ Note that when a book has multiple genres, the number of times it has been sold 
 Finished. Total answers: 8
 ----
 
-== Conditionals using optionals
+== Update user data conditionally using optionals
 
 Imagine we want to update a user's loyalty tier based on their total spending.
 When a user pays for an order, we want to update their total spending and, if their spending has crossed some threshold, we want to increase their loyalty tier as well.
