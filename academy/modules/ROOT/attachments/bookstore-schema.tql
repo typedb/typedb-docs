@@ -67,6 +67,8 @@ entity user,
     owns id @key,
     owns name,
     owns birth-date,
+    owns total-spending,
+    owns loyalty-tier,
     plays action-execution:executor,
     plays locating:located,
     plays recommendation:recipient;
@@ -138,8 +140,7 @@ relation promotion-inclusion,
 relation order-line,
     relates order,
     relates item,
-    owns quantity,
-    owns price;
+    owns quantity;
 
 relation rating,
     relates review,
@@ -184,8 +185,10 @@ attribute verified, value boolean;
 attribute timestamp, value datetime;
 attribute start-timestamp, value datetime;
 attribute end-timestamp, value datetime;
-attribute status, value string @regex("^(paid|dispatched|delivered|returned|canceled)$");
+attribute status, value string @regex("^(invalid|pending|paid|dispatched|delivered|returned|canceled)$");
 attribute success, value boolean;
+attribute total-spending, value double;
+attribute loyalty-tier, value integer @range(0..5);
 
 # TODO: Change to check
 fun is_review_verified_by_purchase($review: review) -> { order }:
