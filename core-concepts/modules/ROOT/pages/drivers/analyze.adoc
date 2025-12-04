@@ -5,14 +5,15 @@
 :test-python: true
 
 TypeDB allows the user to "analyze" a query without having it execute against the data.
-During analysis, a query is parsed to the internal representation and type-checked.
-This allows the user to check their query for syntax and typing errors against a schema,
-without executing a query against the data.
+During analysis, a query is parsed to the internal representation and type-checked -
+allowing the user to check their query for syntax and typing errors against a schema.
+The envisioned use is to facilitate developer tooling around TypeDB, such as
+plugins to validate TypeQL queries when application code is being compiled,
+and debugging type errors.
 
-The aim is to facilitate better developer tooling around TypeDB.
-Envisioned use-cases are validating TypeQL queries when application code is being compiled,
-and debugging type errors. This page gives an overview of how to analyze a query and use the response.
-
+This page gives an overview of how to analyze a query and use the response.
+The examples are valid python code using the TypeDB python driver.
+The class definitions are illustrative.
 
 == Analyzing a query
 Analyzing a query follows the same pattern as xref:{page-version}@core-concepts::drivers/queries.adoc[running a query].
@@ -30,12 +31,13 @@ include::{page-version}@core-concepts::example$driver/analyze_query.py[tag=analy
 
 == The response
 
-The response aims to be a type-annotated representation of the query.
-This section covers the essence, but the details are left to the reference pages.
+The response is a type-annotated representation of the query.
+The following sections cover the essence,
+but details are left to the xref:#_references[driver reference].
 
-As one would expect, the top-level response contains each element of a TypeQL query:
+As one would expect, the response contains each part of a TypeQL query:
 A (possibly empty) set of preamble functions, the query-pipeline, and a fetch clause, if present.
-The snippets are based on the python API, but some details are omitted.
+
 [source,python]
 ----
 class AnalyzedQuery:
@@ -45,7 +47,7 @@ class AnalyzedQuery:
 ----
 
 === Pipelines & conjunctions
-TypeQL pipelines are made up of a sequence of stages.
+TypeQL pipelines are made up of a sequence of stages, some of which may contain conjunctions.
 
 [source,python]
 ----
@@ -72,9 +74,9 @@ class SelectStage(PipelineStage):
     def variables(self) -> Iterator[Variable]
 ----
 
-Stages such as `Match` and `Insert` contain a `Conjunction` of constraints.
-We use `ConjunctionID` s as an indirection -
-the conjunction can be retrieved using the `Pipeline.conjunction` method.
+Stages such as `Match` and `Insert` contain hold a `ConjunctionID` -
+This is an indirection which can be used
+to retrieve the actual conjunction using the `Pipeline.conjunction` method.
 
 [source,python]
 ----
@@ -85,10 +87,9 @@ include::{page-version}@core-concepts::example$driver/python_driver_usage.py[tag
 include::{page-version}@core-concepts::example$driver/python_driver_usage.py[tag=driver_create]
 
 include::{page-version}@core-concepts::example$driver/analyze_query.py[tag=analyze]
+
 #}}
-stages = list(analyzed.pipeline().stages())
-block_id = stages[0].as_match().block()
-conjunction = analyzed.pipeline().conjunction(block_id)
+include::{page-version}@core-concepts::example$driver/analyze_query.py[tag=get_conjunction]
 ----
 
 From the returned conjunction one can access the constraints,
@@ -131,6 +132,25 @@ class Or(Constraint):
 # Not, Try
 ----
 
+To get the `isa` constraint from the first branch:
+[source,python]
+----
+#!test[]
+#{{
+include::{page-version}@core-concepts::example$driver/python_driver_usage.py[tag=import_and_constants]
+
+include::{page-version}@core-concepts::example$driver/python_driver_usage.py[tag=driver_create]
+
+include::{page-version}@core-concepts::example$driver/analyze_query.py[tags=analyze;get_conjunction]
+
+#}}
+include::{page-version}@core-concepts::example$driver/analyze_query.py[tag=get_first_branch_isa]
+
+var_x = first_branch_isa.instance()
+assert var_x.is_variable() and pipeline.get_variable_name(var_x.as_variable()) == "x"
+----
+
+
 ==== Constraint vertices
 Although constraints typically apply on variables,
 Certain TypeQL constraints allow you to directly specify a type-label or a value.
@@ -144,7 +164,21 @@ and can be converted to the appropriate variant using the `is/as` methods.
 The variable can be used to retrieve the resolved role-type(s) using the annotations in the conjunction.
 * An unwrapped *variable* is a lot of things.
 
-A variable is shared across constraints. The name of a (if it has one) can be read from the pipeline.
+A variable is shared across constraints. The name of a variable (if it has one) can be read from the pipeline.
+[source,python]
+----
+#!test[]
+#{{
+include::{page-version}@core-concepts::example$driver/python_driver_usage.py[tag=import_and_constants]
+
+include::{page-version}@core-concepts::example$driver/python_driver_usage.py[tag=driver_create]
+
+include::{page-version}@core-concepts::example$driver/analyze_query.py[tags=analyze;get_conjunction;get_first_branch_isa]
+
+#}}
+var_x = first_branch_isa.instance()
+assert var_x.is_variable() and pipeline.get_variable_name(var_x.as_variable()) == "x"
+----
 If this is an output variable, the name can be used to read answers from query responses.
 The possible types of a variable in a conjunction can be read from the annotations in the conjunction.
 
@@ -159,6 +193,27 @@ Trying to resolve either of these using a pipeline other than the one it origina
 Type-checking is a central feature of TypeDB.
 The analyze response contains the final set of inferred types for every variable in a conjunction.
 
+[source,python]
+----
+#!test[]
+#{{
+include::{page-version}@core-concepts::example$driver/python_driver_usage.py[tag=import_and_constants]
+
+include::{page-version}@core-concepts::example$driver/python_driver_usage.py[tag=driver_create]
+
+include::{page-version}@core-concepts::example$driver/analyze_query.py[tags=analyze;get_conjunction;get_first_branch_isa]
+
+#}}
+var_x = first_branch_isa.instance().as_variable()
+assert var_x in list(root_conjunction.annotated_variables())
+
+x_annotations_in_root = root_conjunction.variable_annotations(var_x)
+assert x_annotations_in_root.is_instance()
+
+x_types_in_root = list(x_annotations_in_root.as_instance())
+labels = set(map(lambda t: t.get_label(), x_types_in_root))
+assert labels == {"user", "company"}
+----
 
 [NOTE]
 ====
@@ -240,6 +295,7 @@ root_object = analyzed.fetch().as_object()
 email_field = root_object.get("email")
 email_list_element = email_field.as_list().element()
 email_value_types = list(email_list_element.annotations())
+assert email_value_types == ["string"]
 ----
 
 == References
