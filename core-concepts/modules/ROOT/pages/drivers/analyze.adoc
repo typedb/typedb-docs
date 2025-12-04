@@ -18,22 +18,14 @@ and debugging type errors. This page gives an overview of how to analyze a query
 Analyzing a query follows the same pattern as xref:{page-version}@core-concepts::drivers/queries.adoc[running a query].
 [source,python]
 ----
-#!test[reset-after]
+#!test[]
 #{{
 include::{page-version}@core-concepts::example$driver/python_driver_usage.py[tag=setup_and_schema]
 
 include::{page-version}@core-concepts::example$driver/python_driver_usage.py[tag=data_create]
+
 #}}
-
-with driver.transaction(DB_NAME, TransactionType.READ) as tx:
-    # 1. Send the analyze request
-    promise = tx.analyze("""
-        match { $x isa user; } or { $x isa company; };
-        fetch { "email": [$x.email] };
-    """)
-
-    # 2. Resolve the promise if you want to access the result or receive an error as an exception
-    analyzed = promise.resolve()
+include::{page-version}@core-concepts::example$driver/analyze_query.py[tag=analyze]
 ----
 
 == The response
@@ -86,9 +78,17 @@ the conjunction can be retrieved using the `Pipeline.conjunction` method.
 
 [source,python]
 ----
-stages = list(analyzed.pipeline.stages())
+#!test[]
+#{{
+include::{page-version}@core-concepts::example$driver/python_driver_usage.py[tag=import_and_constants]
+
+include::{page-version}@core-concepts::example$driver/python_driver_usage.py[tag=driver_create]
+
+include::{page-version}@core-concepts::example$driver/analyze_query.py[tag=analyze]
+#}}
+stages = list(analyzed.pipeline().stages())
 block_id = stages[0].as_match().block()
-conjunction = analyzed.pipeline.conjunction(block_id)
+conjunction = analyzed.pipeline().conjunction(block_id)
 ----
 
 From the returned conjunction one can access the constraints,
@@ -227,7 +227,16 @@ fetch {
 To access the emails, you would write:
 [source,python]
 ----
-root_object = analyzed.fetch.as_object()
+#!test[]
+#{{
+include::{page-version}@core-concepts::example$driver/python_driver_usage.py[tag=import_and_constants]
+
+include::{page-version}@core-concepts::example$driver/python_driver_usage.py[tag=driver_create]
+
+include::{page-version}@core-concepts::example$driver/analyze_query.py[tag=analyze]
+
+#}}
+root_object = analyzed.fetch().as_object()
 email_field = root_object.get("email")
 email_list_element = email_field.as_list().element()
 email_value_types = list(email_list_element.annotations())
