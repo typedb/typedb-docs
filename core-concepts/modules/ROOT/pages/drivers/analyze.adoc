@@ -1,15 +1,17 @@
 = Analyzing queries
 :pageTitle: Analyzing queries
 :Summary: Compiling & analyzing TypeDB queries.
-:keywords: typedb, driver, analyze, type-inference
+:keywords: typedb, driver, analyze, type-inference, dry-run, validate
 :test-python: true
 
 TypeDB allows the user to "analyze" a query without having it execute against the data.
 During analysis, a query is parsed to the internal representation and type-checked -
 allowing the user to check their query for syntax and typing errors against a schema.
+
 The envisioned use is to facilitate developer tooling around TypeDB, such as
 plugins to validate TypeQL queries when application code is being compiled,
 and debugging type errors.
+Such tools can also be used by AI query-generators to automatically validate generated queries.
 
 This page gives an overview of how to analyze a query and use the response.
 The examples are valid python code using the TypeDB python driver.
@@ -47,7 +49,7 @@ class AnalyzedQuery:
 ----
 
 === Pipelines & conjunctions
-TypeQL pipelines are made up of a sequence of stages, some of which may contain conjunctions.
+TypeQL xref:{page-version}@typeql-reference::/data-model.adoc#_stages[pipelines] are made up of a sequence of stages, some of which may contain conjunctions.
 
 [source,python]
 ----
@@ -102,6 +104,12 @@ class Conjunction:
     def variable_annotations(self, variable: Variable) -> Optional[VariableAnnotations]
 ----
 
+[NOTE]
+====
+`VariableAnnotations` refer to the types the variable is annotated with by type-inference.
+These are not to be confused with xref:{page-version}@typeql-reference::annotations/index.adoc[schema-annotations]
+====
+
 === Constraints
 Similar to stages, the `Constraint` instances returned by the `constraints()` method
 must be down-cast to the appropriate variant using the `is/as` methods.
@@ -151,8 +159,14 @@ include::{page-version}@core-concepts::example$driver/analyze_query.py[tag=get_f
 Although constraints typically apply on variables,
 certain TypeQL constraints allow you to directly specify a type-label or a value.
 Additionally, a `NamedRole` vertex type exists to handle the ambiguity of unscoped role-labels.
-A `ConstraintVertex` is the union of these four,
-and can be converted to the appropriate variant using the `is/as` methods.
+A `ConstraintVertex` is the union of these four.
+
+[NOTE]
+====
+The term `vertex` comes from viewing a query as a constraint graph.
+====
+
+A `ConstraintVertex` can be converted to the appropriate variant using the `is/as` methods.
 
 * A *label* vertex holds the resolved type.
 * A *value* vertex holds the value concept of the appropriate value-type.
