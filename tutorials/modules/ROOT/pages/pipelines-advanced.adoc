@@ -20,14 +20,12 @@ This is a continuation of xref:{page-version}@tutorials::pipelines-read.adoc[] a
 
 == Example schema and data
 
-IMPORTANT: TODO PERMALINKS TO `typedb/typedb-examples`
-
 We are using the https://github.com/typedb/typedb-examples/tree/master/use-cases/bookstore[bookstore example] schema and data throughout this tutorial.
 You can load the example into your TypeDB instance using the following Console command:
 
 [,console]
 ----
-database create-init bookstore http://github.com/typedb/typedb-examples/releases/latest/download/bookstore-schema.tql http://github.com/typedb/typedb-examples/releases/latest/download/bookstore-data.tql
+database create-init bookstore https://github.com/typedb/typedb-examples/releases/download/3.7.0/bookstore-schema.tql https://github.com/typedb/typedb-examples/releases/download/3.7.0/bookstore-data.tql
 ----
 
 .Full schema and data queries
