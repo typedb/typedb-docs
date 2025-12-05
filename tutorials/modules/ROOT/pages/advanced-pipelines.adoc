@@ -34,12 +34,12 @@ database create-init bookstore https://github.com/typedb/typedb-examples/release
 [,typeql]
 ----
 #!test[schema, commit]
-include::{page-version}@academy::attachment$bookstore-schema.tql[lines=20..]
+include::{page-version}@tutorials::attachment$bookstore-schema.tql[lines=20..]
 ----
 [,typeql]
 ----
 #!test[write, commit]
-include::{page-version}@academy::attachment$bookstore-data.tql[lines=18..]
+include::{page-version}@tutorials::attachment$bookstore-data.tql[lines=18..]
 ----
 ====
 
