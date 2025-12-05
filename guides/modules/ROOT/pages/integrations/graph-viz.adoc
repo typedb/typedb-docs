@@ -11,7 +11,7 @@ This is a tutorial to visualise TypeDB data as graphs
 using the query representation returned by the analyze endpoint,
 and with query results (when the `include_query_structure` `QueryOption` is set).
 
-It uses the TypeDB (https://github.com/typedb/typedb-driver/tree/master/python#example-usage[python driver] for interacting with TypeDB, networkx for
+It uses the TypeDB https://github.com/typedb/typedb-driver/tree/master/python#example-usage[python driver] for interacting with TypeDB, networkx for
 building the graph, and matplotlib for visualisation.
 We chose networkx and matplotlib because they’re widely used, but you could use any libraries
 - TypeDB studio uses http://sigmajs.org/[sigmajs] and https://graphology.github.io/[graphology].
@@ -659,15 +659,12 @@ the comparator symbol is available from the comparison constraint.
 In this section, we introduce the `typedb-graph-utils` python library developed alongside this tutorial.
 It follows the structure of the TypeScript library we wrote for TypeDB studio.
 
-This library handles computing the constraints involved in an answer, and substitutes concepts into the constraints -
-
-
 The essence remains the same as what we’ve covered in the tutorial -
 find the constraints "`involved`" in each answer, and substitute in the concepts for the variables.
 Instead of converting a constraint into query edges, and then applying the substitution to form data-edges,
-We directly apply the substitution on the `Constraint` s to obtain the corresponding `DataConstraint` -
+we apply the substitution directly on the `Constraint` s to obtain a corresponding `DataConstraint`.
 These constrain `DataVertex` es instead of `ConstraintVertex` es.
-The library handles this part, allowing you to focus on constructing your target representation.
+The library handles the conversion of answers to `DataConstraint` s, allowing you to focus on constructing your target representation.
 
 === Data constraints
 Here’s the signature of an `Isa` `DataConstraint` from the library,
@@ -695,7 +692,7 @@ One `add_` method per data constraint, and a `finish(self) -> OutputType` to bui
 We provide a sample implementation -`NetworkXBuilder` - which builds a `MultiDiGraph` as in this tutorial.
 We also provide a basic `MatplotlibVisualizer`  with a familiar `draw` function for inspiration.
 
-=== Creating a visualiser using the library
+=== Building a visualiser using the library
 We now recreate the previous example by implementing the `TypeDBAnswerConverter` class provided by the library.
 
 [source, python]
