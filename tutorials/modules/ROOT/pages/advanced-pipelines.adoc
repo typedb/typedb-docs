@@ -16,7 +16,7 @@ This tutorial assumes you have access to a running TypeDB instance, as well as a
 
 We recommend xref:{page-version}@home::install/ce.adoc[installing TypeDB Community Edition] as it is distributed bundled with Console for easy setup.
 
-This is a continuation of xref:{page-version}@tutorials::pipelines-read.adoc[] and xref:{page-version}@tutorials::pipelines-crud.adoc[], though you don't need to have completed them to follow along.
+This is a continuation of xref:{page-version}@tutorials::read-data.adoc[] and xref:{page-version}@tutorials::insert-update-data.adoc[], though you don't need to have completed them to follow along.
 
 == Example schema and data
 
@@ -119,7 +119,7 @@ Finished. Total answers: 8
 Imagine we want to update a user's loyalty tier based on their total spending.
 After a user has paid for an order, we want to update their total spending and, if their spending has crossed some threshold, we want to increase their loyalty tier as well.
 
-We've covered in xref:{page-version}@tutorials::pipelines-read.adoc#_fetch_discounted_price_with_optionals[Reading data] how to use a `try` pattern to assign a variable based on whether the data
+We've covered in xref:{page-version}@tutorials::read-data.adoc#_fetch_discounted_price_with_optionals[Reading data] how to use a `try` pattern to assign a variable based on whether the data
 exists in the database.
 This extends to all kinds of patterns, including comparisons.
 All patterns in a `try` block must succeed, otherwise the new variables defined in it will not be assigned.
