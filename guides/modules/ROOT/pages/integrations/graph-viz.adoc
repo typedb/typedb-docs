@@ -1,4 +1,4 @@
-= Visualising TypeDB Data with Python
+= Graph Visualisation for TypeDB Data
 
 [NOTE]
 ====
@@ -7,20 +7,22 @@ https://github.com/typedb-osi/typedb-graph-utils/python[typedb-graph-utils] repo
 You can set it up and run it locally.
 ====
 
-This tutorial builds a simple python library for visualising TypeDB
-results as graphs using the query representation returned by the analyze
-endpoint, and optionally returned with a query when the
-`include_query_structure` `QueryOption` is set. We assume the user
-is familiar with the TypeDB python driver
-(https://github.com/typedb/typedb-driver/tree/master/python#example-usage[tutorial]).
-It uses the python driver for interacting with TypeDB, networkx for
-building the graph, and matplotlib for visualisation. We chose networkx
-and matplotlib purely because they’re widely used, but you could use any
-- TypeDB studio uses sigmajs and graphology.
+This is a tutorial to visualise TypeDB data as graphs
+using the query representation returned by the analyze endpoint,
+and with query results (when the `include_query_structure` `QueryOption` is set).
 
-The full code of this tutorial is available on
-https://github.com/typedb-osi/typedb-graph-utils/python[github]. It is a
-pyproject that can be built, published and installed.
+It uses the TypeDB (https://github.com/typedb/typedb-driver/tree/master/python#example-usage[python driver] for interacting with TypeDB, networkx for
+building the graph, and matplotlib for visualisation.
+We chose networkx and matplotlib because they’re widely used, but you could use any libraries
+- TypeDB studio uses http://sigmajs.org/[sigmajs] and https://graphology.github.io/[graphology].
+
+At the end, we present the `typedb-graph-utils` python library,
+which provides an easy interface to build graphs and other structures from TypeDB query results.
+
+[NOTE]
+====
+This tutorial requires TypeDB version >= 3.7.0
+====
 
 == Running example:
 
@@ -92,15 +94,21 @@ setup(driver, SCHEMA, DATA)
 
 == Analyze & the query graph
 
-TypeDB 3.7.0 introduces the `analyze` operation. Analyzing a query
-returns its pipeline structure, along with typing information for the
-variables in each pattern.
+TypeDB allows users to `analyze` a query to get a type-annotated representation of it.
+This includes the pipeline structure, and typing information for the variables in each pattern.
+[source, python]
+----
+with driver.transaction(DB_NAME, TransactionType.READ) as tx:
+    analyzed = tx.analyze(SIMPLE_QUERY).resolve()
+----
 
 A pipeline is made up of `PipelineStage` s, some of which are made of
-`Conjunction` s.
+`Conjunction` s.  structure, and typing information for the
+variables in each pattern.
 
 [source,python]
 ----
+from typedb.analyze import Pipeline, Constraint, ConstraintVertex
 class Pipeline:
     def stages(self) -> Iterator[PipelineStage]
     def conjunction(self, conjunction_id: ConjunctionID) -> Optional[Conjunction]
@@ -117,10 +125,6 @@ class InsertStage(PipelineStage):
 [source, python]
 ----
 # Analyze the simple query
-from typedb.analyze import Pipeline, Constraint, ConstraintVertex
-
-with driver.transaction(DB_NAME, TransactionType.READ) as tx:
-    analyzed = tx.analyze(SIMPLE_QUERY).resolve()
 pipeline = analyzed.pipeline()
 stages = list(pipeline.stages())
 stages
@@ -237,13 +241,12 @@ pyplot.show()
 ----
 image:output_11_0.png[]
 
-=== Prettier drawings
+=== Colouring & Labelling the graph
 
-That’s the query graph, but it’s of little use to the viewer. We’ll
-create a `node_style` function which specifies some style attributes,
-and a `draw` function which uses these to draw the networkx graph
-using matplotlib.
-
+We've constructed the structure of the query graph! Now let's add some colours and labelling.
+We’ll create a `node_style` function which returns the style given a vertex,
+and move the drawing logic into a `draw` function.
+Although this code is specific to matplotlib, it can serve as inspiration for other visualization libraries.
 
 [source, python]
 ----
@@ -342,12 +345,9 @@ list(answers[0].query_structure().stages())
 
 === From query structure and rows to graphs
 
-The graph view sees pattern matching as finding a homomorphism between
-the query-graph and some subgraph in the database. An answer is thus the
-mapping between the two graphs. To construct the graph representing the
-answer, we simply have to substitute the concepts in the answers for the
-variables in the query-graph. Since there are multiple answers, we take
-the union of edges.
+To construct the graph representing an answer, we simply have to
+substitute the concepts in the answer for the variables in the query-graph.
+Since there are multiple answers, we just combine the graphs of each answer
 
 [source, python]
 ----
@@ -597,17 +597,11 @@ draw(flattened_data_edges, node_styles)
 ----
 image:output_30_0.png[]
 
-This covers the basics of visualising TypeDB answers as graphs. The next
-section discusses a few cases where TypeDB constraints don’t directly
-map to a simple labelled binary edge between two concepts. Later, we
-introduce a simple python library which computes involved constraints
-and substitutes answers into the constraints - allowing you to focus on
-converting these "`DataConstraints`" into your target representation.
-
 === Notes on visualising constraints
-
-In this section, we discuss a few cases where visualisation is not as
-straightforward and the solutions we chose when building TypeDB Studio.
+We have now covered the basics of visualising TypeDB answers as graphs.
+In this section, we discuss aa few cases where TypeDB constraints don’t
+directly map to a simple labelled binary edge between two concepts,
+and the solutions we chose when building TypeDB Studio.
 
 ==== Functions
 
@@ -664,12 +658,18 @@ the comparator symbol is available from the comparison constraint.
 
 In this section, we introduce the `typedb-graph-utils` python library developed alongside this tutorial.
 It follows the structure of the TypeScript library we wrote for TypeDB studio.
+
+This library handles computing the constraints involved in an answer, and substitutes concepts into the constraints -
+
+
 The essence remains the same as what we’ve covered in the tutorial -
-Find the constraints "`involved`" in each answer, and substitute in the concepts for the variables.
+find the constraints "`involved`" in each answer, and substitute in the concepts for the variables.
 Instead of converting a constraint into query edges, and then applying the substitution to form data-edges,
 We directly apply the substitution on the `Constraint` s to obtain the corresponding `DataConstraint` -
 These constrain `DataVertex` es instead of `ConstraintVertex` es.
+The library handles this part, allowing you to focus on constructing your target representation.
 
+=== Data constraints
 Here’s the signature of an `Isa` `DataConstraint` from the library,
 and the `Isa` `Constraint` from the driver API to compare against:
 
@@ -688,21 +688,15 @@ class Isa(Constraint, ABC):
     def exactness(self) -> ConstraintExactness # isa or isa!
 ----
 
-We introduce a `TypeDBAnswerConverter[OutputType]` abstract class,
-which defines methods the user has to implement - One `add_` method
-per data constraint (e.g. `add_isa(self, isa: Isa)`) and a
-`finish(self) -> OutputType` for whatever your final representation
-may be.
+=== The `TypeDBAnswerConverter` interface
+We introduce a `TypeDBAnswerConverter[OutputType]` abstract class, which defines methods the user has to implement -
+One `add_` method per data constraint, and a `finish(self) -> OutputType` to build your final representation.
 
-We provide a sample implementation -
-`NetworkXBuilder` - which
-builds a `MultiDiGraph` as in this tutorial. We also provide a basic
-`MatplotlibVisualizer` for inspiration.
+We provide a sample implementation -`NetworkXBuilder` - which builds a `MultiDiGraph` as in this tutorial.
+We also provide a basic `MatplotlibVisualizer`  with a familiar `draw` function for inspiration.
 
 === Creating a visualiser using the library
-
-We recreate the previous example by implementing the
-`TypeDBAnswerConverter` class provided by the library.
+We now recreate the previous example by implementing the `TypeDBAnswerConverter` class provided by the library.
 
 [source, python]
 ----
@@ -755,3 +749,9 @@ graph = builder.finish()
 MatplotlibVisualizer.draw(graph)
 ----
 image:output_35_0.png[]
+
+== Conclusion
+This tutorial combines the rows and query-structure returned by a TypeQL query
+to construct and visualise a graph representation of the result.
+We hope this new feature and the `typedb-graph-utils` library will enable users
+to construct whatever representation their applications may need.
