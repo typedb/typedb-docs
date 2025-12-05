@@ -96,8 +96,8 @@ TypeDB 3.7.0 introduces the `analyze` operation. Analyzing a query
 returns its pipeline structure, along with typing information for the
 variables in each pattern.
 
-A pipeline is made up of `PipelineStage`s, some of which are made of
-`Conjunction`s.
+A pipeline is made up of `PipelineStage` s, some of which are made of
+`Conjunction` s.
 
 [source,python]
 ----
@@ -136,7 +136,7 @@ stages
 ----
 ====
 
-A conjunction is a collection of `Constraint`s, which should be
+A conjunction is a collection of `Constraint` s, which should be
 familiar from the TypeQL statements:
 
 [source,python]
@@ -159,8 +159,8 @@ class Has(Constraint, ABC):
 ----
 
 TypeQL statements can be seen as constraints between one or more
-`ConstraintVertex`es - These can be type `Label`s, `Variable`s or
-raw `Value`s.
+`ConstraintVertex` es - These can be type `Label` s, `Variable` s or
+raw `Value` s.
 
 
 [source, python]
@@ -288,7 +288,7 @@ image:output_13_0.png[]
 
 == Visualising Data
 
-TypeDB answers are `ConceptRow`s which map variables in the queries to
+TypeDB answers are `ConceptRow` s which map variables in the queries to
 concepts in the database. It has a similar interface to a python
 dictionary. If the `include_query_structure` `QueryOption` is set,
 the pipeline structure will be returned and each row will have shared
@@ -390,7 +390,7 @@ answers_as_data_edges
 === Drawing the graph
 
 We’ll need a new node style since our vertices are now concepts rather
-than `ConstraintVertex`es.
+than `ConstraintVertex` es.
 
 [source, python]
 ----
@@ -667,8 +667,8 @@ It follows the structure of the TypeScript library we wrote for TypeDB studio.
 The essence remains the same as what we’ve covered in the tutorial -
 Find the constraints "`involved`" in each answer, and substitute in the concepts for the variables.
 Instead of converting a constraint into query edges, and then applying the substitution to form data-edges,
-We directly apply the substitution on the `Constraint`s to obtain the corresponding `DataConstraint` -
-These constrain `DataVertex`es instead of `ConstraintVertex`es.
+We directly apply the substitution on the `Constraint` s to obtain the corresponding `DataConstraint` -
+These constrain `DataVertex` es instead of `ConstraintVertex` es.
 
 Here’s the signature of an `Isa` `DataConstraint` from the library,
 and the `Isa` `Constraint` from the driver API to compare against:
