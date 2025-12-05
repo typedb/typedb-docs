@@ -185,7 +185,7 @@ attribute verified, value boolean;
 attribute timestamp, value datetime;
 attribute start-timestamp, value datetime;
 attribute end-timestamp, value datetime;
-attribute status, value string @regex("^(invalid|pending|paid|dispatched|delivered|returned|canceled)$");
+attribute status, value string @values("invalid", "pending", "paid", "dispatched", "delivered", "returned", "canceled");
 attribute success, value boolean;
 attribute total-spending, value double;
 attribute loyalty-tier, value integer @range(0..5);
