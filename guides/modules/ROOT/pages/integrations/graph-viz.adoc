@@ -24,7 +24,7 @@ which provides an easy interface to build graphs and other structures from TypeD
 This tutorial requires TypeDB version >= 3.7.0
 ====
 
-== Running example:
+== Dataset
 
 For the following sections, we’ll use this toy dataset.
 [source, typeql]
@@ -599,7 +599,7 @@ image:output_30_0.png[]
 
 === Notes on visualising constraints
 We have now covered the basics of visualising TypeDB answers as graphs.
-In this section, we discuss aa few cases where TypeDB constraints don’t
+In this section, we discuss a few cases where TypeDB constraints don’t
 directly map to a simple labelled binary edge between two concepts,
 and the solutions we chose when building TypeDB Studio.
 
@@ -755,3 +755,33 @@ This tutorial combines the rows and query-structure returned by a TypeQL query
 to construct and visualise a graph representation of the result.
 We hope this new feature and the `typedb-graph-utils` library will enable users
 to construct whatever representation their applications may need.
+
+== Next steps
+
+[cols-2]
+--
+.xref:{page-version}@core-concepts::drivers/analyze.adoc[Analyze: Core Concepts]
+[.clickable]
+****
+Read the core-concepts section on analyzing queries.
+****
+
+.xref:{page-version}@examples::index.adoc[Driver Reference]
+[.clickable]
+****
+Complete documentation for all the analyzed query structures.
+****
+
+.https://studio.typedb.com[TypeDB Studio Web]
+[.clickable]
+****
+The web-based IDE for TypeDB with graph visualization
+****
+
+.https://github.com/typedb-osi/typedb-graph-utils[TypeDB Graph Utils]
+[.clickable]
+****
+Utility libraries for constructing graphs & other structures from TypeDB answers
+****
+
+--
