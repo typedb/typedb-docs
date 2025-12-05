@@ -90,7 +90,7 @@ setup(driver, SCHEMA, DATA)
 ----
 ====
 
-== Background: Analyzing queries and PipelineStructure
+== Analyze & the query graph
 
 TypeDB 3.7.0 introduces the `analyze` operation. Analyzing a query
 returns its pipeline structure, along with typing information for the
@@ -184,7 +184,7 @@ constraints
 ----
 ====
 
-== From constraints to the query graph
+=== From constraints to the query graph
 
 Before we get to visualising the data returned by queries, We’ll turn
 the constraints in our query into a query-graph and visualise it. We’ll
@@ -235,13 +235,9 @@ node_labels = {node: str(node) for node in query_graph.nodes()}
 networkx.draw(query_graph, labels=node_labels)
 pyplot.show()
 ----
-.Output
-[%collapsible]
-====
 image:output_11_0.png[]
-====
 
-== Better formatting
+=== Prettier drawings
 
 That’s the query graph, but it’s of little use to the viewer. We’ll
 create a `node_style` function which specifies some style attributes,
@@ -288,11 +284,7 @@ node_styles = { n: node_style(pipeline, n) for n in nodes}
 # Draw
 draw(query_edges, node_styles)
 ----
-.Output
-[%collapsible]
-====
 image:output_13_0.png[]
-====
 
 == Visualising Data
 
@@ -348,7 +340,7 @@ list(answers[0].query_structure().stages())
 ----
 ====
 
-== From query structure and rows to graphs
+=== From query structure and rows to graphs
 
 The graph view sees pattern matching as finding a homomorphism between
 the query-graph and some subgraph in the database. An answer is thus the
@@ -395,7 +387,7 @@ answers_as_data_edges
 ----
 ====
 
-== Visualising
+=== Drawing the graph
 
 We’ll need a new node style since our vertices are now concepts rather
 than `ConstraintVertex`es.
@@ -431,13 +423,9 @@ node_styles = { n: data_node_style(n) for n in nodes}
 draw(data_edges, node_styles)
 
 ----
-.Output
-[%collapsible]
-====
 image:output_20_0.png[]
-====
 
-== Disjunctions and optionals
+=== Disjunctions and optionals
 
 TypeQL queries can be more than simple conjunctions of patterns. They
 can also contain disjunctions & optional patterns - meaning not every
@@ -484,6 +472,7 @@ trunk = list(pipeline.conjunction(trunk_id).constraints())
 .Output
 [%collapsible]
 ====
+[source, rust]
 ----
 (
     2,
@@ -506,6 +495,7 @@ branches
 .Output
 [%collapsible]
 ====
+[source, rust]
 ----
 {
     0: [
@@ -533,6 +523,7 @@ an `involved_conjunctions` method which tells us exactly this.
 .Output
 [%collapsible]
 ====
+[source, rust]
 ----
 [
     [1, 2],
@@ -604,12 +595,7 @@ node_styles = { n: data_node_style(n) for n in nodes }
 # Draw
 draw(flattened_data_edges, node_styles)
 ----
-
-.Output
-[%collapsible]
-====
 image:output_30_0.png[]
-====
 
 This covers the basics of visualising TypeDB answers as graphs. The next
 section discusses a few cases where TypeDB constraints don’t directly
@@ -618,12 +604,12 @@ introduce a simple python library which computes involved constraints
 and substitutes answers into the constraints - allowing you to focus on
 converting these "`DataConstraints`" into your target representation.
 
-== Visualising complex constraints
+=== Notes on visualising constraints
 
 In this section, we discuss a few cases where visualisation is not as
 straightforward and the solutions we chose when building TypeDB Studio.
 
-=== Functions
+==== Functions
 
 A query can contain function calls. Functions have arguments and return
 values - all of which are concepts. Unlike a relation, the function call
@@ -633,19 +619,19 @@ introduce a `FunctionCall` vertex for each call. Two function calls
 are the same vertex if they have the same (1) function name, (2) tuple
 of argument concepts, and (3) tuple of returned concepts.
 
-=== Expressions
+==== Expressions
 
 We treat expressions as we did functions, except the string representing
 the expression is used in place of the function name.
 
-=== Links constraints
+==== Links constraints
 
 Links constraints are ternary constraints involving the relation
 instance, the player instance and the played role type. We choose to
 represent it as a binary edge from the relation to the player, with the
 role serving as the label of the edge.
 
-=== Named roles
+==== Named roles
 
 TypeDB allows the use of unscoped role names in links & relates
 constraints to specify the role. e.g. For the schema below, the query
@@ -667,24 +653,22 @@ variable introduced is anonymous, it is unavailable in the ConceptRow.
 Since it does not uniquely determine the type, it cannot be considered a
 label.)
 
-=== Is & comparison constraints
+==== Is & comparison constraints
 
 Since `is` constraints are always a self-edge on a vertex, we choose
 not to visualise it. We also skip visualising comparison constraints to
 reduce the number of edges, though they can be useful in certain cases -
 the comparator symbol is available from the comparison constraint.
 
-== The library
+== The `typedb-graph-utils` library
 
-In this section, we introduce the library developed along with the
-tutorial. It follows the structure of the TypeScript library we wrote
-for TypeDB studio. The essence remains the same as what we’ve covered in
-the tutorial - Find the constraints "`involved`" in each answer, and
-substitute in the concepts for the variables. Instead of converting a
-constraint into query edges, and then applying the substitution to form
-data-edges, We directly apply the substitution on the `Constraint`s to
-obtain the corresponding `DataConstraint` - These constrain
-`DataVertex`es instead of `ConstraintVertex`es.
+In this section, we introduce the `typedb-graph-utils` python library developed alongside this tutorial.
+It follows the structure of the TypeScript library we wrote for TypeDB studio.
+The essence remains the same as what we’ve covered in the tutorial -
+Find the constraints "`involved`" in each answer, and substitute in the concepts for the variables.
+Instead of converting a constraint into query edges, and then applying the substitution to form data-edges,
+We directly apply the substitution on the `Constraint`s to obtain the corresponding `DataConstraint` -
+These constrain `DataVertex`es instead of `ConstraintVertex`es.
 
 Here’s the signature of an `Isa` `DataConstraint` from the library,
 and the `Isa` `Constraint` from the driver API to compare against:
@@ -715,7 +699,7 @@ We provide a sample implementation -
 builds a `MultiDiGraph` as in this tutorial. We also provide a basic
 `MatplotlibVisualizer` for inspiration.
 
-== Visualising using the library
+=== Creating a visualiser using the library
 
 We recreate the previous example by implementing the
 `TypeDBAnswerConverter` class provided by the library.
@@ -770,8 +754,4 @@ for (i, answer) in enumerate(answers):
 graph = builder.finish()
 MatplotlibVisualizer.draw(graph)
 ----
-.Output
-[%collapsible]
-====
 image:output_35_0.png[]
-====
