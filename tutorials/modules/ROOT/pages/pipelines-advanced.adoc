@@ -1,4 +1,4 @@
-= Advanced pipelines
+= Advanced query pipelines
 :keywords: typedb, typeql, tutorial, console
 :pageTitle: 
 :summary: 
@@ -15,6 +15,8 @@ In this tutorial, we will explore some more complex pipelines and patterns in Ty
 This tutorial assumes you have access to a running TypeDB instance, as well as a TypeDB Console.
 
 We recommend xref:{page-version}@home::install/ce.adoc[installing TypeDB Community Edition] as it is distributed bundled with Console for easy setup.
+
+This is a continuation of xref:{page-version}@tutorials::pipelines-read.adoc[] and xref:{page-version}@tutorials::pipelines-crud.adoc[], though you don't need to have completed them to follow along.
 
 == Example schema and data
 
@@ -43,12 +45,12 @@ include::{page-version}@academy::attachment$bookstore-data.tql[lines=18..]
 ----
 ====
 
-== Select order status conditionally using disjunctions
+== Set order status based on stock using `or`
 
 Let's say we want to create an order for a user, but we want to check the book is in stock first.
 If it isn't, we need to mark the order as invalid.
 
-We can do this by using a xref:{page-version}@typeql-reference::patterns/disjunctions.adoc[disjunction] to check if the book is in stock or not and setting `$status` accordingly.
+We can do this by using an `or` to check if the book is in stock or not and setting `$status` accordingly.
 
 [,typeql]
 ----
@@ -71,9 +73,9 @@ insert
     has quantity 1;
 ----
 
-== Collect sales statistics using ``reduce``-``groupby``
+== Group sales statistics by genre using `reduce` with `groupby`
 
-We can use a xref:{page-version}@typeql-reference::pipelines/reduce.adoc[reduce] stage to collect sales statistics for each genre within a given year.
+We can use a reduce stage to collect sales statistics for each genre within a given year.
 
 The `groupby` keyword allows us to sum the sale quantities grouped by the value of a specific variable, in this case `$genre`.
 
@@ -82,11 +84,8 @@ The `groupby` keyword allows us to sum the sale quantities grouped by the value 
 #!test[write, rollback, count = 8]
 match
   $item isa book, has genre $genre;
-  $order-line isa order-line,
-    links ($order, $item),
-    has quantity $quantity;
-  ($order) isa action-execution,
-    has timestamp $timestamp;
+  order-line ($order, $item), has quantity $quantity;
+  action-execution ($order), has timestamp $timestamp;
   $timestamp >= 2022-01-01T00:00;
   $timestamp < 2023-01-01T00:00;
 reduce
@@ -117,12 +116,17 @@ Note that when a book has multiple genres, the number of times it has been sold 
 Finished. Total answers: 8
 ----
 
-== Update user data conditionally using optionals
+== Update user loyalty tier based on spending using `try`
 
 Imagine we want to update a user's loyalty tier based on their total spending.
-When a user pays for an order, we want to update their total spending and, if their spending has crossed some threshold, we want to increase their loyalty tier as well.
+After a user has paid for an order, we want to update their total spending and, if their spending has crossed some threshold, we want to increase their loyalty tier as well.
 
-We can use an xref:{page-version}@typeql-reference::patterns/optionals.adoc[optional] pattern to only assign the `$new-loyalty-tier` when necessary.
+We've covered in xref:{page-version}@tutorials::pipelines-read.adoc#_fetch_discounted_price_with_optionals[Reading data] how to use a `try` pattern to assign a variable based on whether the data
+exists in the database.
+This extends to all kinds of patterns, including comparisons.
+All patterns in a `try` block must succeed, otherwise the new variables defined in it will not be assigned.
+
+We can use a `try` pattern to only assign the `$new-loyalty-tier` when the user's total spending has exceeded the threshold.
 Then, we can use the `try` keyword to conditionally set their loyalty tier in the `update` stage.
 The `try` block in the `update` stage will only be executed if the `$new-loyalty-tier` is assigned.
 
@@ -130,17 +134,8 @@ The `try` block in the `update` stage will only be executed if the `$new-loyalty
 ----
 #!test[write, rollback, count = 1]
 match
-  $user isa user, has id "u0002";
-  $order isa order, has id "o0004";
-  ($user, $order) isa action-execution;
-  ($order, $item) isa order-line, has quantity $quantity;
-  $item has price $price;
-  let $line-total = $price * $quantity;
-reduce
-  $total = sum($line-total) groupby $order, $user;
-match 
-  $user has total-spending $spending;
-  let $new-spending = $spending + $total;
+  $user isa user, has id "u0002", has total-spending $spending;
+  let $new-spending = $spending + 9.99;
   try {
     $user has loyalty-tier $tier;
     $new-spending > 100 * $tier * $tier;
@@ -168,9 +163,21 @@ TypeQL core concepts
 Learn more about chaining TypeQL clauses into pipelines
 ****
 
-.xref:{page-version}@typeql-reference::index.adoc[]
+.xref:{page-version}@typeql-reference::patterns/disjunctions.adoc[]
 [.clickable]
 ****
-TypeQL reference manual
+`or` documentation in TypeQL reference
+****
+
+.xref:{page-version}@typeql-reference::pipelines/reduce.adoc
+[.clickable]
+****
+`reduce` documentation in TypeQL reference
+****
+
+.xref:{page-version}@typeql-reference::patterns/optionals.adoc
+[.clickable]
+****
+`try` documentation in TypeQL reference
 ****
 --

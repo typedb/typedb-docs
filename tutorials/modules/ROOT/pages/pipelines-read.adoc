@@ -1,4 +1,4 @@
-= Common patterns of read queries
+= Reading data
 :keywords: typedb, typeql, tutorial, console
 :pageTitle: 
 :summary: 
@@ -69,7 +69,7 @@ This produces an output containing just the unique internal identifiers of all t
 Finished. Total answers: 21
 ----
 
-These are the values the variable `$book` takes that can be used further down in the pipeline.
+These are the values the variable `$book` takes that can be used further down in the query.
 This output isn't very useful for displaying a list of books to the customer, however.
 Instead, most read queries end with a `fetch` clause that allows you to format the query result into a JSON-like document:
 
@@ -83,7 +83,7 @@ fetch {
 };
 ----
 
-This is the simplest `fetch` stage there is, and it simply retrieves all attributes `$book` owns:
+This is the simplest `fetch` clause there is, and it simply retrieves all attributes `$book` owns:
 
 [,json]
 ----
@@ -113,11 +113,7 @@ Let's look back at the schema and find out how the author is associated to the b
 define
 
 entity book @abstract,
-    # ...
-    plays contribution:work,
-    # ...
-
-# ...
+    plays contribution:work;
 
 entity contributor,
     owns name,
@@ -125,8 +121,6 @@ entity contributor,
     plays authoring:author,
     plays editing:editor,
     plays illustrating:illustrator;
-
-# ...
 
 relation contribution,
     relates contributor,
@@ -140,8 +134,6 @@ relation editing sub contribution,
 
 relation illustrating sub contribution,
     relates illustrator as contributor;
-
-# ...
 ----
 
 We can see that the author is not an attribute of a book, but rather a separate entity that is linked to the book through an `authoring` relation.
