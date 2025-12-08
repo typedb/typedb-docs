@@ -1,7 +1,7 @@
 = Date
 :test-typeql: linear
 
-An ISO 8601 compliant date type. 
+An https://www.iso.org/iso-8601-date-and-time-format.html[ISO 8601,window=_blank] compliant date type. 
 
 == Syntax
 
@@ -15,12 +15,25 @@ The date literal consists of the following values, separated by a `-`:
 .Example date literals
 ----
 2024-03-30
-+12345-09-21
+1920-09-21
 #!test[read]
 #{{
 match
   let $x = 2024-03-30;
-  let $y = +12345-09-21;
+  let $y = 1920-09-21;
+#}}
+----
+
+[,typeql]
+.Example date literals (non-4-digit year)
+----
++20000-01-01
++900-09-21
+#!test[read]
+#{{
+match
+  let $x = +20000-01-01;
+  let $y = +900-09-21;
 #}}
 ----
 

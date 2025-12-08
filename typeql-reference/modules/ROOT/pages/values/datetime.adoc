@@ -1,7 +1,7 @@
 = Datetime
 :test-typeql: linear
 
-An ISO 8601 compliant date and time type. 
+An https://www.iso.org/iso-8601-date-and-time-format.html[ISO 8601,window=_blank] compliant date and time type. 
 
 == Syntax
 
@@ -23,13 +23,29 @@ The time fragment consists of the following values, separated by `:`:
 .Example datetime literals
 ----
 2024-03-30T12:00:00
+1920-09-21T09:00:00
 +12345-09-21T12:34:56.789
 
 #!test[read]
 #{{
 match
     let $x = 2024-03-30T12:00:00;
+    let $y = 1920-09-21T09:00:00;
     let $y = +12345-09-21T12:34:56.789;
+#}}
+----
+
+[,typeql]
+.Example datetime literals (non-4-digit year)
+----
++20000-01-01T10:30:00.000
++900-09-21T19:59:59.358
+
+#!test[read]
+#{{
+match
+    let $x = +20000-01-01T10:30:00.000;
+    let $y = +900-09-21T19:59:59.358;
 #}}
 ----
 
