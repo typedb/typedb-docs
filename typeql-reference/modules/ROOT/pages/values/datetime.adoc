@@ -24,14 +24,12 @@ The time fragment consists of the following values, separated by `:`:
 ----
 2024-03-30T12:00:00
 1920-09-21T09:00:00
-+12345-09-21T12:34:56.789
 
 #!test[read]
 #{{
 match
     let $x = 2024-03-30T12:00:00;
     let $y = 1920-09-21T09:00:00;
-    let $y = +12345-09-21T12:34:56.789;
 #}}
 ----
 
