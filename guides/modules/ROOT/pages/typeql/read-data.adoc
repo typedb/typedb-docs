@@ -1,5 +1,5 @@
 = Reading data
-:keywords: typedb, typeql, tutorial, console
+:keywords: typedb, typeql, tutorial, guide, console
 :pageTitle: 
 :summary: 
 :page-toclevels: 2
@@ -8,17 +8,17 @@
 
 == Overview
 
-This tutorial covers the common patterns of read queries in TypeQL. 
+This guide covers the common patterns of read queries in TypeQL. 
 
 == Prerequisites
 
-This tutorial assumes you have access to a running TypeDB instance, as well as a TypeDB Console.
+This guide assumes you have access to a running TypeDB instance, as well as a TypeDB Console.
 
 We recommend xref:{page-version}@home::install/ce.adoc[installing TypeDB Community Edition] as it is distributed bundled with Console for easy setup.
 
 == Example schema and data
 
-We are using the https://github.com/typedb/typedb-examples/tree/master/use-cases/bookstore[bookstore example] schema and data throughout this tutorial.
+We are using the https://github.com/typedb/typedb-examples/tree/master/use-cases/bookstore[bookstore example] schema and data throughout this guide.
 You can load the example into your TypeDB instance using the following Console command:
 
 [,console]
@@ -32,12 +32,12 @@ database create-init bookstore https://github.com/typedb/typedb-examples/release
 [,typeql]
 ----
 #!test[schema, commit]
-include::{page-version}@tutorials::attachment$bookstore-schema.tql[lines=20..]
+include::{page-version}@guides::attachment$bookstore-schema.tql[lines=20..]
 ----
 [,typeql]
 ----
 #!test[write, commit]
-include::{page-version}@tutorials::attachment$bookstore-data.tql[lines=18..]
+include::{page-version}@guides::attachment$bookstore-data.tql[lines=18..]
 ----
 ====
 
@@ -372,10 +372,10 @@ fetch {
 
 [cols-2]
 --
-.xref:{page-version}@tutorials::insert-update-data.adoc[]
+.xref:{page-version}@guides::typeql/insert-update-data.adoc[]
 [.clickable]
 ****
-Learn how to modify data in the next tutorial
+Learn how to modify data in the next guide
 ****
 
 .xref:{page-version}@core-concepts::typeql/index.adoc[]

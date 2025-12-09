@@ -1,5 +1,5 @@
 = Inserting and updating data
-:keywords: typedb, typeql, tutorial, console, crud
+:keywords: typedb, typeql, tutorial, guide, console, crud
 :pageTitle: 
 :summary: 
 :page-toclevels: 2
@@ -8,19 +8,19 @@
 
 == Overview
 
-This tutorial covers the basics of inserting and updating data in TypeDB.
+This guide covers the basics of inserting and updating data in TypeDB.
 
 == Prerequisites
 
-This tutorial assumes you have access to a running TypeDB instance, as well as a TypeDB Console.
+This guide assumes you have access to a running TypeDB instance, as well as a TypeDB Console.
 
 We recommend xref:{page-version}@home::install/ce.adoc[installing TypeDB Community Edition] as it is distributed bundled with Console for easy setup.
 
-This is a continuation of xref:{page-version}@tutorials::read-data.adoc[], though you don't need to have completed it to follow along.
+This is a continuation of xref:{page-version}@guides::typeql/read-data.adoc[], though you don't need to have completed it to follow along.
 
 == Example schema and data
 
-We are using the https://github.com/typedb/typedb-examples/tree/master/use-cases/bookstore[bookstore example] schema and data throughout this tutorial.
+We are using the https://github.com/typedb/typedb-examples/tree/master/use-cases/bookstore[bookstore example] schema and data throughout this guide.
 You can load the example into your TypeDB instance using the following Console command:
 
 [,console]
@@ -34,12 +34,12 @@ database create-init bookstore https://github.com/typedb/typedb-examples/release
 [,typeql]
 ----
 #!test[schema, commit]
-include::{page-version}@tutorials::attachment$bookstore-schema.tql[lines=20..]
+include::{page-version}@guides::attachment$bookstore-schema.tql[lines=20..]
 ----
 [,typeql]
 ----
 #!test[write, commit]
-include::{page-version}@tutorials::attachment$bookstore-data.tql[lines=18..]
+include::{page-version}@guides::attachment$bookstore-data.tql[lines=18..]
 ----
 ====
 
@@ -282,10 +282,10 @@ insert
 
 [cols-2]
 --
-.xref:{page-version}@tutorials::advanced-pipelines.adoc[]
+.xref:{page-version}@guides::typeql/advanced-pipelines.adoc[]
 [.clickable]
 ****
-Learn about complex pipelines in the next tutorial
+Learn about complex pipelines in the next guide
 ****
 
 .xref:{page-version}@core-concepts::typeql/index.adoc[]

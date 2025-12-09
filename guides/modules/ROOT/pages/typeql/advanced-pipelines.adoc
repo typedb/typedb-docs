@@ -1,5 +1,5 @@
 = Advanced query pipelines
-:keywords: typedb, typeql, tutorial, console
+:keywords: typedb, typeql, tutorial, guide, console
 :pageTitle: 
 :summary: 
 :page-toclevels: 2
@@ -8,19 +8,19 @@
 
 == Overview
 
-In this tutorial, we will explore some more complex pipelines and patterns in TypeQL.
+In this guide, we will explore some more complex pipelines and patterns in TypeQL.
 
 == Prerequisites
 
-This tutorial assumes you have access to a running TypeDB instance, as well as a TypeDB Console.
+This guide assumes you have access to a running TypeDB instance, as well as a TypeDB Console.
 
 We recommend xref:{page-version}@home::install/ce.adoc[installing TypeDB Community Edition] as it is distributed bundled with Console for easy setup.
 
-This is a continuation of xref:{page-version}@tutorials::read-data.adoc[] and xref:{page-version}@tutorials::insert-update-data.adoc[], though you don't need to have completed them to follow along.
+This is a continuation of xref:{page-version}@guides::typeql/read-data.adoc[] and xref:{page-version}@guides::typeql/insert-update-data.adoc[], though you don't need to have completed them to follow along.
 
 == Example schema and data
 
-We are using the https://github.com/typedb/typedb-examples/tree/master/use-cases/bookstore[bookstore example] schema and data throughout this tutorial.
+We are using the https://github.com/typedb/typedb-examples/tree/master/use-cases/bookstore[bookstore example] schema and data throughout this guide.
 You can load the example into your TypeDB instance using the following Console command:
 
 [,console]
@@ -34,12 +34,12 @@ database create-init bookstore https://github.com/typedb/typedb-examples/release
 [,typeql]
 ----
 #!test[schema, commit]
-include::{page-version}@tutorials::attachment$bookstore-schema.tql[lines=20..]
+include::{page-version}@guides::attachment$bookstore-schema.tql[lines=20..]
 ----
 [,typeql]
 ----
 #!test[write, commit]
-include::{page-version}@tutorials::attachment$bookstore-data.tql[lines=18..]
+include::{page-version}@guides::attachment$bookstore-data.tql[lines=18..]
 ----
 ====
 
@@ -119,7 +119,7 @@ Finished. Total answers: 8
 Imagine we want to update a user's loyalty tier based on their total spending.
 After a user has paid for an order, we want to update their total spending and, if their spending has crossed some threshold, we want to increase their loyalty tier as well.
 
-We've covered in xref:{page-version}@tutorials::read-data.adoc#_fetch_discounted_price_with_optionals[Reading data] how to use a `try` pattern to assign a variable based on whether the data
+We've covered in xref:{page-version}@guides::typeql/read-data.adoc#_fetch_discounted_price_with_optionals[Reading data] how to use a `try` pattern to assign a variable based on whether the data
 exists in the database.
 This extends to all kinds of patterns, including comparisons.
 All patterns in a `try` block must succeed, otherwise the new variables defined in it will not be assigned.
