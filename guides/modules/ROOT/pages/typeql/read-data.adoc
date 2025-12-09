@@ -54,7 +54,7 @@ match $book isa book;
 
 This produces an output containing just the unique internal identifiers of all the books in the database alongside their exact type:
 
-[,]
+[,typeql]
 ----
    -----------
     $book | isa hardback, iid 0x1e00010000000000000000
@@ -293,7 +293,7 @@ fetch {
 };
 ----
 
-[,]
+[,json]
 ----
 {
   "title": "Dune",
@@ -328,7 +328,7 @@ fetch {
 };
 ----
 
-[,]
+[,json]
 ----
 {
   "discounted-price": null,
