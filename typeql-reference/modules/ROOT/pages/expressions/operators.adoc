@@ -35,7 +35,7 @@ TypeQL provides several built-in functions for common mathematical and list oper
 
 `round(x)`::
 Returns the provided numeric argument rounded to the nearest integer.
-If the value is half-way between two integers, rounds to the number with an even least significant digit.
+If the value is half-way between two integers, rounds to the nearest even integer.
 
 [,typeql]
 ----
