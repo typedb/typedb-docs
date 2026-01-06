@@ -11,6 +11,7 @@ Stay tuned for upcoming blogs showcasing new features!
 
 Click on a feature below for detailed documentation and examples.
 
+[#_typedb_and_typeql]
 == TypeDB and TypeQL
 
 * **Sessions Removed:** Connections to TypeDB now only require opening a `schema`, `write`, or `read` xref:{page-version}@core-concepts::typedb/transactions.adoc[transaction].
@@ -29,6 +30,7 @@ However, it is still easy to differentiate their declaration with the new xref:{
 [#_specialize]
 * **Smoother trait specialization:**
 - It is possible to redefine already inherited `owns` and `plays` on subtypes, adding more annotations to them.
+- The `as` keyword is no longer applicable to `owns` and `plays`. This guarantees that every subtype owns all attributes and plays all roles that its supertypes do.
 - As before, use the `as` keyword to xref:{page-version}@typeql-reference::statements/relates.adoc[specialize a `relates`].
 * **Default Cardinalities:**
 - Default cardinalities are applied to `owns`, `relates`, and `plays` if not explicitly defined.
@@ -65,6 +67,25 @@ An enhanced approach is in development (NOTE: you don't need the `as` keyword to
 
 * Node.js, C, C++, and C# drivers are not yet available.
 Consider using one of xref:{page-version}@reference::typedb-grpc-drivers/index.adoc[the available languages] or xref:{page-version}@reference::typedb-http-api.adoc[the HTTP Endpoint].
+
+== TypeQL 2 to 3 schema cheatsheet
+
+[cols="^1,^1,^1", options="header"]
+|===
+| TypeQL 2 Construct | TypeQL 3 Equivalent | Notes
+
+| `define person sub entity` | `define entity person` |
+| `define employment sub relation` | `define relation employment` |
+| `define name sub attribute` | `define attribute name` |
+| `define age sub attribute, value long` | `define attribute age, value integer` |
+| `define object sub entity, abstract` | `define entity object @abstract` |
+| `define phone-number sub attribute, regex "\\d{10}"` | `define attribute phone-number @regex "\\d{10}"` |
+| `define child owns child-name as name` | `define entity child, owns name` | `as` is no longer applicable to `owns`
+| `define child plays child-employee as employee` | `define entity child, plays employee` | `as` is no longer applicable to `plays`
+| `define rule my-rule` | Use functions instead | Rules are now replaced by functions
+|===
+
+Everything else is the same syntax-wise, but do check xref:#_typedb_and_typeql[] for implicit changes such as default cardinalities.
 
 [#_having_troubles]
 == Having troubles?
