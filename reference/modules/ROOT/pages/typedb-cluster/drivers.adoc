@@ -1,24 +1,19 @@
-= Drivers in TypeDB Cluster
-:pageTitle: Drivers in TypeDB Cluster
+= Drivers in clustered TypeDB
+:pageTitle: Drivers in clustered TypeDB
 :Summary: Cluster-specific features in TypeDB drivers: multi-replica connections, failover, and consistency levels.
 :keywords: typedb, cluster, driver, replication, failover, consistency level, replicas, primary, secondary
 :test-python: false
 
-TypeDB gRPC drivers can connect to TypeDB clusters and automatically operate across multiple server replicas. This support is experimental (alpha) and its API may change between releases.
+TypeDB gRPC drivers have been updated to connect to TypeDB clusters and automatically operate across multiple server replicas.
+The API is experimental and may change between releases.
+You'll need an alpha version of TypeDB Driver. These are published alongside the mainstream versions, starting with `3.7.0`.
+To access the releases, visit the https://github.com/typedb/typedb-driver/releases[TypeDB Driver GitHub page] and look for
+the most recent Pre-release item containing the alpha suffix (e.g., `TypeDB Driver 3.7.0-alpha-3`).
 
-TypeDB HTTP endpoint and driver is not affected by these changes and can be used the usual way by explicitly choosing a
+Alternatively, the TypeDB HTTP endpoint and drivers are unchanged and can be used the usual way by explicitly choosing a
 specific replica to send requests to.
 
-[NOTE]
-====
-Clustered Driver features are available only in cluster-enabled builds of TypeDB tools.
-
-They are currently published as alphas alongside the mainstream versions, starting with `3.7.0`.
-
-To access the full list of updated drivers, visit our https://github.com/typedb/typedb-driver/releases[Releases page] and look for the most recent Pre-release item containing the alpha suffix (e.g., `TypeDB Driver 3.7.0-alpha-3`).
-====
-
-== What changes in a clustered deployment?
+== What's different in a clustered deployment?
 
 include::{page-version}@reference::typedb-cluster/index.adoc[tags=cluster-overview]
 
@@ -28,7 +23,7 @@ Cluster-enabled drivers add:
 - Replica discovery (learning other replicas from the server).
 - Automatic failover (retrying operations against other replicas).
 - Consistency levels for most operations (strong/eventual/replica-dependent).
-- Cluster management commands (alpha-only; use with extreme care).
+- Cluster inspection.
 
 == Connecting to a cluster
 
@@ -194,7 +189,7 @@ Cluster features are available across the officially supported gRPC drivers. The
 
 === Rust
 
-In Rust, consistency is commonly expressed via *_with_consistency methods:
+In Rust, consistency is commonly expressed via `*_with_consistency` methods:
 
 [source,rust]
 ----
@@ -221,19 +216,15 @@ driver.databases().all(ConsistencyLevel.Strong);
 For the full, language-specific API surface, refer to your driver’s public APIs. The official documentation will be published
 with the first post-beta release.
 
-== Cluster management commands
+== Inspect your cluster
 
-Cluster-enabled drivers may expose administrative operations to dynamically register or deregister cluster peers.
+Drivers have access to the information about the cluster size and its peers. Below is an example of retrieving this information using Python:
 
-[WARNING]
-====
-Peer registration/deregistration is an alpha-stage capability.
-
-**DO NOT** use it in TypeDB Cloud, since the whole cluster is protected by a dedicated network environment,
-and you will not be able to bring it back to normal from the outside due to the lack of server-related information.
-
-These commands are intended for development/testing workflows and will soon be replaced by another tool.
-====
+[source,python]
+----
+driver.replicas() # get the list of replicas with their statuses
+driver.primary_replica() # get the current primary replica of the cluster
+----
 
 == Quickstart in Rust
 
@@ -309,7 +300,7 @@ Quickstart examples for Java and Python will be published soon, but they can be 
 
 == Next steps
 
-- Continue with xref:{page-version}@reference::typedb-cluster/console.adoc[Console in TypeDB Cluster] for CLI-specific workflows.
+- Continue with xref:{page-version}@reference::typedb-cluster/console.adoc[Console in clustered TypeDB] for CLI-specific workflows.
 - Get the latest alpha clustered TypeDB Driver from the https://github.com/typedb/typedb-driver/releases[Releases page].
 - Visit https://github.com/typedb/typedb-driver/tree/cluster-support-feature-branch/docs/modules/ROOT/partials[TypeDB Driver GitHub page] to access the updated API references.
 - Join our discussion in https://discord.com/invite/typedb[Discord]!

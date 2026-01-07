@@ -1,21 +1,16 @@
-= Console in TypeDB Cluster
-:pageTitle: Console in TypeDB Cluster
+= Console in clustered TypeDB
+:pageTitle: Console in clustered TypeDB
 :Summary: Cluster-specific features in TypeDB Console: multi-replica connections and replication.
 :keywords: typedb, cluster, driver, replication, failover, consistency level, replicas, primary, secondary
 :test-python: false
 
-TypeDB Console is built on top of xref:{page-version}@reference::typedb-cluster/drivers.adoc[TypeDB gRPC Drivers] and is also updated
+TypeDB Console has been updated to connect to TypeDB clusters and automatically operate across multiple server replicas.
+The interface is experimental and may change between releases.
+You'll need an alpha version of TypeDB Console. These are published alongside the mainstream versions, starting with `3.7.0`.
+To access the releases, visit the https://github.com/typedb/typedb-console/releases[TypeDB Console GitHub page] and look for
+the most recent Pre-release item containing the alpha suffix (e.g., `TypeDB Console 3.7.0-alpha-2`).
 
-[NOTE]
-====
-Clustered Console features are available only in cluster-enabled builds of TypeDB tools.
-
-They are currently published as alphas alongside the mainstream versions, starting with 3.7.0.
-
-To download the latest clustered Console, visit our https://github.com/typedb/typedb-console/releases[Releases page] and look for the most recent Pre-release item containing the alpha suffix (e.g., `TypeDB Driver 3.7.0-alpha-2`).
-====
-
-== What changes in a clustered deployment?
+== What's different in a clustered deployment?
 
 include::{page-version}@reference::typedb-cluster/index.adoc[tags=cluster-overview]
 
@@ -93,7 +88,12 @@ Lists replicas known to the cluster with their statuses (as discovered by Consol
 
 [source,console]
 ```
-replica list
+>> replica list
+ id | address                     | role      | term  | status
+--------------------------------------------------------------------
+ 1  | ...-0.cluster.typedb.com:80 | secondary | 37    | available
+ 2  | ...-1.cluster.typedb.com:80 | secondary | 37    | available
+ 3  | ...-2.cluster.typedb.com:80 | primary   | 37    | available
 ```
 
 === replica primary
@@ -102,7 +102,7 @@ Shows the current primary replica:
 
 [source,console]
 ```
-replica primary
+>> replica primary
 ```
 
 [NOTE]
@@ -112,6 +112,7 @@ Replica roles may change over time (for example, during failover or re-election)
 
 == Next steps
 
-- Continue with xref:{page-version}@reference::typedb-cluster/drivers.adoc[Drivers in TypeDB Cluster] for programmatic access to TypeDB.
+- Continue with xref:{page-version}@reference::typedb-cluster/drivers.adoc[Drivers in clustered TypeDB] for programmatic access to TypeDB.
+- Read the full xref:{page-version}@tools::console.adoc[TypeDB Console documentation].
 - Get the latest alpha clustered TypeDB Console from the https://github.com/typedb/typedb-console/releases[Releases page].
 - Join our discussion in https://discord.com/invite/typedb[Discord]!
