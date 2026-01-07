@@ -31,15 +31,15 @@ from the **Experimental** section.
 After creating a new cluster, the website will share all the required connection information.
 
 == What changes in a clustered deployment?
-
-In a single-server deployment, the data is stored on one single machine, and a driver can access it only through this one server address.
+// tag::cluster-overview[]
+In a single-server deployment, the data is stored on one single machine, and a client can access it only through this one server address.
 
 In a clustered deployment, this information is replicated between a cluster of servers using https://raft.github.io/raft.pdf[Raft consensus algorithm].
 The users can perform operations across multiple replicas:
 
 - a primary replica (serves strongly consistent operations),
 - one or more secondary replicas (can serve eventually consistent idempotent operations and be used for failover).
-
+// end::cluster-overview[]
 
 [cols-2]
 --
