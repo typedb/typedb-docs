@@ -1,5 +1,12 @@
 = `@cascade` annotation
 
+[NOTE]
+====
+The `@cascade` annotation is a planned feature and not yet available in TypeDB.
+Coming soon!
+====
+
+
 The `@cascade` annotation is used
 // tag::overview[]
 to specify behavior when deleting a relation's role players.
@@ -14,11 +21,3 @@ to specify behavior when deleting a relation's role players.
 ----
 
 The `@cascade` annotation does not accept any arguments.
-
-== Usage
-
-[NOTE]
-====
-The `@cascade` annotation is not yet available in TypeDB.
-Coming soon!
-====

@@ -1,0 +1,118 @@
+= Console in clustered TypeDB
+:pageTitle: Console in clustered TypeDB
+:Summary: Cluster-specific features in TypeDB Console: multi-replica connections and replication.
+:keywords: typedb, cluster, driver, replication, failover, consistency level, replicas, primary, secondary
+:test-python: false
+
+TypeDB Console has been updated to connect to TypeDB clusters and automatically operate across multiple server replicas.
+The interface is experimental and may change between releases.
+You'll need an alpha version of TypeDB Console. These are published alongside the mainstream versions, starting with `3.7.0`.
+To access the releases, visit the https://github.com/typedb/typedb-console/releases[TypeDB Console GitHub page] and look for
+the most recent Pre-release item containing the alpha suffix (e.g., `TypeDB Console 3.7.0-alpha-2`).
+
+== What's different in a clustered deployment?
+
+include::{page-version}@reference::typedb-cluster/index.adoc[tags=cluster-overview]
+
+Cluster-enabled Console adds:
+
+- Flexible connection addresses (single, multiple, or translated).
+- Replica discovery (learning replica addresses from the server).
+- Optional replication disabling for replica-specific debugging.
+- Replica inspection commands (list replicas, show primary).
+
+== Connecting to a cluster
+
+Console supports three connection modes.
+
+=== Single address
+
+Use this when you have one stable endpoint (for example, a load balancer, or a known replica address):
+
+[source,console]
+```
+typedb console --address=host1:port1
+```
+
+Even if the cluster has multiple replicas, Console can discover peers from the server and update its connection targets automatically.
+
+=== Multiple addresses
+
+If you do not know which replica is available, or you want to increase the chance of connecting when some replicas are down, provide multiple addresses:
+
+[source,console]
+```
+typedb console --address=host1:port1,host2:port2,host3:port3
+```
+
+=== Address translation
+
+When replicas advertise private addresses internally (e.g. Docker/Kubernetes/VPC), while clients connect through public addresses, use address translation.
+
+Provide a comma-separated list of public=private pairs:
+
+[source,console]
+```
+typedb console --address-translation=public-1.domain:1729=10.0.0.11:1729,public-2.domain:1729=10.0.0.12:1729
+```
+
+This allows Console to translate replica addresses returned by the server into addresses reachable from your environment.
+
+== Disable replication
+
+A new connection flag `--replication-disabled` is introduced.
+
+If used in a Cluster environment (Cloud or Enterprise), this limits Console to communicate only with the address(es) provided via --address.
+
+This disables:
+
+- redirecting requests to other replicas,
+- automatic address updates based on server-provided replica information.
+
+Use this for administrative/debug workflows when you want to test a specific replica.
+
+[WARNING]
+====
+--replication-disabled reduces the success rate of operations in real cluster conditions (for example, when a primary changes).
+Additionally, it switches all operations to use eventual consistency level (instead of the strongest).
+Use it only when you intentionally want to avoid automatic replica discovery and failover.
+====
+
+== Replica inspection commands
+
+Cluster-enabled Console adds basic commands to inspect replica state.
+
+=== replica list
+
+Lists replicas known to the cluster with their statuses (as discovered by Console through the server):
+
+[source,console]
+```
+>> replica list
+ id | address                     | role      | term  | status
+--------------------------------------------------------------------
+ 1  | ...-0.cluster.typedb.com:80 | secondary | 37    | available
+ 2  | ...-1.cluster.typedb.com:80 | secondary | 37    | available
+ 3  | ...-2.cluster.typedb.com:80 | primary   | 37    | available
+```
+
+=== replica primary
+
+Shows the current primary replica:
+
+[source,console]
+```
+>> replica primary
+```
+
+[NOTE]
+====
+Replica roles may change over time (for example, during failover or re-election). If you are debugging a specific node, consider using --replication-disabled and connecting directly to that replica.
+====
+
+== Next steps
+
+- Continue with xref:{page-version}@reference::typedb-cluster/drivers.adoc[Drivers in clustered TypeDB] for programmatic access to TypeDB.
+- Read the full xref:{page-version}@tools::console.adoc[TypeDB Console documentation].
+- Get the latest alpha clustered TypeDB Console from the https://github.com/typedb/typedb-console/releases[Releases page].
+- Join our discussion in https://discord.com/invite/typedb[Discord]!

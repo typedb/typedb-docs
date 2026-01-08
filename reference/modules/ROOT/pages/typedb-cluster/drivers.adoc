@@ -1,0 +1,306 @@
+= Drivers in clustered TypeDB
+:pageTitle: Drivers in clustered TypeDB
+:Summary: Cluster-specific features in TypeDB drivers: multi-replica connections, failover, and consistency levels.
+:keywords: typedb, cluster, driver, replication, failover, consistency level, replicas, primary, secondary
+:test-python: false
+
+TypeDB gRPC drivers have been updated to connect to TypeDB clusters and automatically operate across multiple server replicas.
+The API is experimental and may change between releases.
+You'll need an alpha version of TypeDB Driver. These are published alongside the mainstream versions, starting with `3.7.0`.
+To access the releases, visit the https://github.com/typedb/typedb-driver/releases[TypeDB Driver GitHub page] and look for
+the most recent Pre-release item containing the alpha suffix (e.g., `TypeDB Driver 3.7.0-alpha-3`).
+
+Alternatively, the TypeDB HTTP endpoint and drivers are unchanged and can be used the usual way by explicitly choosing a
+specific replica to send requests to.
+
+== What's different in a clustered deployment?
+
+include::{page-version}@reference::typedb-cluster/index.adoc[tags=cluster-overview]
+
+Cluster-enabled drivers add:
+
+- Flexible connection addresses (single, multiple, or translated).
+- Replica discovery (learning other replicas from the server).
+- Automatic failover (retrying operations against other replicas).
+- Consistency levels for most operations (strong/eventual/replica-dependent).
+- Cluster inspection.
+
+== Connecting to a cluster
+
+Cluster-enabled drivers accept three address formats displayed below.
+
+=== Single address
+
+Use this when you have one stable endpoint (for example, a load balancer, or a known replica address):
+
+[source,python]
+----
+driver = TypeDB.driver("host1:port1", credentials, driver_options)
+----
+
+Even if your cluster has multiple nodes, if the driver successfully connects to this address, it will automatically
+find its peers and establish all the needed connections.
+
+=== Multiple addresses
+
+To increase the chances of connecting to a functioning node, provide multiple addresses. This is helpful in situations
+when one of the replicas is down, and there is no way to retrieve the information about its peers.
+
+[source,python]
+
+driver = TypeDB.driver(["host1:port1", "host2:port2", "host3:port2"], credentials, driver_options)
+
+=== Address translation
+
+When replicas advertise private addresses internally (e.g. Docker/Kubernetes/VPC), while the users are outside of the cluster
+network and are provided with a dynamic public addresses unsuitable for server configuration, use address translation.
+
+In this mode, you provide a mapping of public -> private addresses, and the driver can translate replica addresses returned by the server into addresses reachable from your environment:
+
+[source,python]
+----
+translation = {
+    "public-1.domain:1729": "10.0.0.11:1729",
+    "public-2.domain:1729": "10.0.0.12:1729",
+}
+
+driver = TypeDB.driver(translation, credentials, driver_options)
+----
+
+== DriverOptions for replication & failover
+
+Cluster-enabled drivers extend DriverOptions with replication/failover controls.
+
+=== DriverTlsConfig
+
+TLS configuration has been refactored to avoid ambiguity and protect your data. Now, to construct an options object, it
+is required to provide a `DriverTlsConfig` with one of the three modes:
+
+- disabled TLS (data, including passwords, is sent as plaintext): `DriverTlsConfig.disabled()`
+- enabled TLS, system's native root CA is used: `DriverTlsConfig.enabled_with_native_root_ca()`
+- enabled TLS, custom native root CA is used (provide your own file): `DriverTlsConfig.enabled_with_root_ca("path/to/ca-certificate.pem")`
+
+=== use_replication
+
+If `use_replication = true` (default), the driver may use replicas discovered from the server to execute operations and fail over.
+
+If `use_replication = false`, the driver will behave more like a single-endpoint client and limit itself to the configured address(es), even if the server reports additional replicas.
+This is mostly useful for debugging by cluster's administrators.
+
+=== primary_failover_retries
+
+Limits how many times a strongly consistent request will be retried against a new primary if the primary role changes (for example during leader re-election).
+
+This is relevant for operations that must go to the primary (generally limited to or requested to by the user).
+
+=== replica_discovery_attempts
+
+Limits how many replicas the driver will try when it needs to find a working replica for an operation (for example, an eventually consistent read, or a redirect/failover path).
+
+This can cap the amount of extra work the driver performs when some replicas are unavailable.
+
+=== Example
+
+[source,python]
+----
+driver_options = DriverOptions(
+    DriverTlsConfig.enabled_with_native_root_ca(),
+    use_replication=True,
+    primary_failover_retries=1,
+    replica_discovery_attempts=5,
+)
+
+driver = TypeDB.driver(["host1:port1", "host2:port2"], credentials, driver_options)
+----
+
+== Consistency level
+
+Cluster-enabled drivers introduce `ConsistencyLevel` to control where an operation executes in a distributed server.
+
+If you connect to a non-clustered TypeDB edition (e.g. single-node CE), or if a specific operation does not support consistency levels, the driver uses the strongest available behavior by default.
+
+=== Levels
+
+==== Strong
+Executes only on the primary replica.
+Provides the strongest guarantees (up-to-date), but may be slower and may require failover if the primary changes.
+
+==== Eventual
+May execute on secondary replicas.
+Can be faster and more available, but may return stale results (does not guarantee latest writes).
+
+Additionally, while the driver work is simplified, the target replica can redirect specific requests to the primary by itself, when required.
+This may lead to a longer execution time, but more consistent results.
+
+==== Replica dependent
+Targets a specific replica address.
+Useful for debugging, testing, and investigating replica-local behaviour.
+
+=== Where you can use consistency levels
+
+Cluster-enabled drivers allow a `ConsistencyLevel` parameter on most operations, for example:
+
+- replica-related read operations (server status)
+- database management (listing, creation, and deletion)
+- user management (listing, creation, and deletion)
+- read transactions/queries
+- database export
+
+The only operations that do not support non-strongly consistent execution are:
+
+- replica management (alpha-only operations)
+- schema and write transactions/queries
+- database import (currently fully unavailable in clustered TypeDB)
+
+In Python, this looks like:
+
+[source,python]
+----
+driver.databases.all() # default (strongest possible)
+driver.databases.all(ConsistencyLevel.Strong())
+driver.databases.contains("my_db", ConsistencyLevel.Eventual())
+driver.databases.get("my_db", ConsistencyLevel.ReplicaDependent("host2:port2"))
+----
+
+[NOTE]
+====
+Use Eventual only when your application can tolerate stale reads or variable execution time. If you are unsure, keep the default.
+====
+
+== Read transaction consistency
+
+Write and schema transactions must be opened against a primary replica. For this reason, transaction-level consistency configuration applies to READ transactions only.
+
+Cluster-enabled drivers add a read consistency option in TransactionOptions:
+
+[source,python]
+----
+options = TransactionOptions(read_consistency_level=ConsistencyLevel.Eventual())
+
+with driver.transaction("my_db", TransactionType.READ, options=options) as tx:
+    answers = tx.query("match $x isa person;").resolve()
+----
+
+This setting affects the transaction opening operation and the replica selection used for that read transaction.
+
+== Examples in other languages
+
+Cluster features are available across the officially supported gRPC drivers. The exact API style differs by language; the concepts are consistent.
+
+=== Rust
+
+In Rust, consistency is commonly expressed via `*_with_consistency` methods:
+
+[source,rust]
+----
+/// Default strong consistency
+driver.databases().all().await;
+
+/// Explicit consistency
+driver.databases().all_with_consistency(ConsistencyLevel::Strong).await;
+----
+
+=== Java
+
+In Java, consistency is typically an optional parameter (with defaults provided by overloads):
+
+[source,java]
+----
+// Default strong consistency
+driver.databases().all();
+
+// Explicit consistency
+driver.databases().all(ConsistencyLevel.Strong);
+----
+
+For the full, language-specific API surface, refer to your driver’s public APIs. The official documentation will be published
+with the first post-beta release.
+
+== Inspect your cluster
+
+Drivers have access to the information about the cluster size and its peers. Below is an example of retrieving this information using Python:
+
+[source,python]
+----
+driver.replicas() # get the list of replicas with their statuses
+driver.primary_replica() # get the current primary replica of the cluster
+----
+
+== Quickstart in Rust
+
+```rust
+use typedb_driver::{
+    answer::ConceptRow, consistency_level::ConsistencyLevel, Addresses, Credentials, DriverOptions,
+    DriverTlsConfig, TransactionOptions, TransactionType, TypeDBDriver,
+};
+
+fn test_clustered_typedb() {
+    async_std::task::block_on(async {
+        let driver = TypeDBDriver::new(
+            // Try automatic replicas retrieval by connecting to only a single server!
+            // Use Addresses::try_from_addresses_str() to provide multiple addresses instead.
+            Addresses::try_from_address_str(ADDRESS).unwrap(),
+            Credentials::new(USERNAME, PASSWORD),
+            // New DriverOptions API
+            DriverOptions::new(DriverTlsConfig::enabled_with_native_root_ca()).use_replication(true),
+        )
+        .await
+        .expect("Error while setting up the driver");
+
+        let replicas = driver.replicas().await.expect("Expected replicas retrieval");
+        let addresses = replicas.iter().map(|replica| replica.address().unwrap()).collect::<Vec<_>>();
+        println!("Replicas known to the driver: {addresses:?}");
+
+        const DATABASE_NAME: &str = "clustered-test";
+
+        if !driver.databases().contains(DATABASE_NAME).await.expect("Expected database check") {
+            driver
+                .databases()
+                .create_with_consistency(DATABASE_NAME, ConsistencyLevel::Strong)
+                .await
+                .expect("Expected database creation");
+        }
+
+        let database = driver.databases().get(DATABASE_NAME).await.expect("Expected database retrieval");
+        println!("Database exists: {}", database.name());
+
+        // New TransactionOptions API
+        let transaction_options = TransactionOptions::new()
+            .transaction_timeout(Duration::from_secs(100))
+            .read_consistency_level(ConsistencyLevel::Eventual);
+
+        // Schema transactions are always strongly consistent
+        let transaction = driver
+            .transaction_with_options(DATABASE_NAME, TransactionType::Schema, transaction_options.clone())
+            .await
+            .expect("Expected schema transaction");
+
+        transaction.query("define entity person;").await.expect("Expected schema query");
+        transaction.query("insert $p1 isa person; $p2 isa person;").await.expect("Expected data query");
+        transaction.commit().await.expect("Expected schema tx commit");
+
+        // Read transaction will be opened using the consistency level from the options
+        let transaction = driver
+            .transaction_with_options(DATABASE_NAME, TransactionType::Read, transaction_options)
+            .await
+            .expect("Expected schema transaction");
+        let answer = transaction.query("match $p isa person;").await.expect("Expected read query");
+        let rows: Vec<ConceptRow> = answer.into_rows().try_collect().await.unwrap();
+        println!("Persons found: {}", rows.len());
+
+        println!("Done!");
+    });
+}
+```
+
+[NOTE]
+====
+Quickstart examples for Java and Python will be published soon, but they can be easily replicated using the example above.
+====
+
+== Next steps
+
+- Continue with xref:{page-version}@reference::typedb-cluster/console.adoc[Console in clustered TypeDB] for CLI-specific workflows.
+- Get the latest alpha clustered TypeDB Driver from the https://github.com/typedb/typedb-driver/releases[Releases page].
+- Visit https://github.com/typedb/typedb-driver/tree/cluster-support-feature-branch/docs/modules/ROOT/partials[TypeDB Driver GitHub page] to access the updated API references.
+- Join our discussion in https://discord.com/invite/typedb[Discord]!

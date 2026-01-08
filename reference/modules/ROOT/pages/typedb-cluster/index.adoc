@@ -1,0 +1,55 @@
+= Clustered TypeDB (Experimental)
+
+TypeDB server can be run as a single independent instance and as a part of a **cluster**.
+
+This is a section dedicated to special features of clustered TypeDB.
+
+[NOTE]
+====
+Clustering in TypeDB 3.x is being actively developed and is currently on the **alpha stage**.
+
+Its features and public interfaces will be improved and can be changed between releases.
+
+Please do not use the experimental version of clustered TypeDB in production.
+
+Please **do**:
+
+- use it for testing;
+- report bugs;
+- share ideas and requests;
+- ask questions on https://typedb.com/discord[Discord].
+
+Thank you for your interest and help!
+====
+
+To access clustered TypeDB versions to help us in its stabilization or to expore its features,
+visit https://cloud.typedb.com[cloud.typedb.com] and create a deployment with the latest version
+from the **Experimental** section.
+
+After creating a new cluster, the TypeDB Cloud dashboard will display all the required connection information.
+
+== What's different in a clustered deployment?
+// tag::cluster-overview[]
+In a single-server deployment, the data is stored on one single machine, and a client can access it only through this one server address.
+
+In a clustered deployment, this information is replicated between a cluster of servers using the https://raft.github.io/raft.pdf[Raft consensus algorithm].
+The users can perform operations across multiple replicas:
+
+- a primary replica (serves strongly consistent operations),
+- one or more secondary replicas (can serve eventually consistent idempotent operations and be used for failover).
+// end::cluster-overview[]
+
+[cols-2]
+--
+.xref:{page-version}@reference::typedb-cluster/drivers.adoc[]
+[.clickable]
+****
+Explore cluster-related features of TypeDB Drivers.
+****
+
+.xref:{page-version}@reference::typedb-cluster/console.adoc[]
+[.clickable]
+****
+Read cluster-related features of TypeDB Console.
+****
+--
