@@ -269,21 +269,22 @@ TypeDB drivers support logging via environment variables. Set these before runni
 |===
 | Variable | Description
 
+| `TYPEDB_DRIVER_LOG_LEVEL`
+| Simple log level (`debug`, `info`, `warn`, `error`, `trace`) applied to all driver components. This is the easiest way to enable logging.
+
 | `TYPEDB_DRIVER_LOG`
-| Log level for the driver core (e.g., `debug`, `info`, `warn`, `error`, `trace`)
-
-| `TYPEDB_DRIVER_CLIB_LOG`
-| Log level for the C FFI layer (useful for debugging memory and binding issues)
-
-| `RUST_LOG`
-| Standard Rust logging variable (lower priority than `TYPEDB_DRIVER_LOG`)
+| Fine-grained control using the same syntax as `RUST_LOG`. Allows setting different levels for different components. `TYPEDB_DRIVER_LOG_LEVEL` takes precedence if both are set.
 |===
 
-**Example:**
+**Examples:**
 [source,bash]
 ----
-# Enable debug logging
-export TYPEDB_DRIVER_LOG=debug
+# Simple: Enable debug logging for all driver components
+export TYPEDB_DRIVER_LOG_LEVEL=debug
+python my_app.py
+
+# Advanced: Fine-grained control per component
+export TYPEDB_DRIVER_LOG=typedb_driver=debug,typedb_driver_clib=trace
 python my_app.py
 ----
 
@@ -294,35 +295,39 @@ python my_app.py
 Python::
 +
 --
-Logging is available automatically when environment variables are set. You can also explicitly initialize logging:
+Logging is automatically initialized when the driver module is imported. If you want logging enabled before importing the driver (e.g., to capture import-time logs), you can explicitly initialize it first:
 
 [,python]
 ----
-from typedb.driver import TypeDB
+from typedb.native_driver_wrapper import init_logging
+init_logging()
 
-# Initialize driver logging
-TypeDB.init_logging()
+# Now import and use the driver
+from typedb.driver import TypeDB
 ----
 --
 
 Java::
 +
 --
-Logging is available automatically when environment variables are set. You can also explicitly initialize logging:
+Logging is automatically initialized when driver classes are loaded. If you want logging enabled before creating a driver (e.g., to capture class-loading logs), you can explicitly initialize it first:
 
 [,java]
 ----
 import com.typedb.driver.TypeDB;
 
-// Initialize driver logging
+// Explicitly initialize logging before driver creation
 TypeDB.initLogging();
+
+// Now create and use the driver
+Driver driver = TypeDB.driver(address, credentials, options);
 ----
 --
 
 Rust::
 +
 --
-The Rust driver uses the `tracing` crate. Configure your own subscriber to capture driver logs:
+The Rust driver uses the `tracing` crate and does **not** use the `TYPEDB_DRIVER_LOG*` environment variables. Configure your own tracing subscriber using standard Rust logging conventions:
 
 [,rust]
 ----
