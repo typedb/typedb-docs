@@ -33,10 +33,41 @@ Cluster-enabled drivers accept three address formats displayed below.
 
 Use this when you have one stable endpoint (for example, a load balancer, or a known replica address):
 
+[tabs]
+====
+Python::
++
+--
 [source,python]
 ----
 driver = TypeDB.driver("host1:port1", credentials, driver_options)
 ----
+--
+
+Java::
++
+--
+[source,java]
+----
+Driver driver = TypeDB.driver("host1:port1", credentials, driverOptions)
+----
+--
+
+Rust::
++
+--
+[source,rust]
+----
+let driver = TypeDBDriver::new(
+    Addresses::try_from_address_str("host1:port1").unwrap(),
+    credentials,
+    driver_options,
+)
+.await
+.unwrap();
+----
+--
+====
 
 Even if your cluster has multiple nodes, if the driver successfully connects to this address, it will automatically
 find its peers and establish all the needed connections.
@@ -46,9 +77,49 @@ find its peers and establish all the needed connections.
 To increase the chances of connecting to a functioning node, provide multiple addresses. This is helpful in situations
 when one of the replicas is down, and there is no way to retrieve the information about its peers.
 
+[tabs]
+====
+Python::
++
+--
 [source,python]
+----
+driver = TypeDB.driver(
+    ["host1:port1", "host2:port2", "host3:port3"],
+    credentials,
+    driver_options
+)
+----
+--
 
-driver = TypeDB.driver(["host1:port1", "host2:port2", "host3:port2"], credentials, driver_options)
+Java::
++
+--
+[source,java]
+----
+Driver driver = TypeDB.driver(
+        Set.of("host1:port1", "host2:port2", "host3:port3"),
+        credentials,
+        driverOptions
+);
+----
+--
+
+Rust::
++
+--
+[source,rust]
+----
+let driver = TypeDBDriver::new(
+    Addresses::try_from_addresses_str(["host1:port1", "host2:port2", "host3:port3"]).unwrap(),
+    credentials,
+    driver_options,
+)
+.await
+.unwrap();
+----
+--
+====
 
 === Address translation
 
@@ -57,6 +128,11 @@ network and are provided with a dynamic public addresses unsuitable for server c
 
 In this mode, you provide a mapping of public -> private addresses, and the driver can translate replica addresses returned by the server into addresses reachable from your environment:
 
+[tabs]
+====
+Python::
++
+--
 [source,python]
 ----
 translation = {
@@ -66,6 +142,41 @@ translation = {
 
 driver = TypeDB.driver(translation, credentials, driver_options)
 ----
+--
+
+Java::
++
+--
+[source,java]
+----
+Map<String, String> translation = Map.of(
+        "public-1.domain:1729", "10.0.0.11:1729",
+        "public-2.domain:1729", "10.0.0.12:1729"
+);
+
+Driver driver = TypeDB.driver(translation, credentials, driverOptions);
+----
+--
+
+Rust::
++
+--
+[source,rust]
+----
+let translation = HashMap::from([
+    ("public-1.domain:1729", "10.0.0.11:1729"),
+    ("public-2.domain:1729", "10.0.0.12:1729"),
+]);
+let addresses = Addresses::try_from_translation_str(translation)?;
+
+let driver = TypeDBDriver::new(
+    addresses,
+    credentials,
+    driver_options,
+).await?;
+----
+--
+====
 
 == DriverOptions for replication & failover
 
@@ -101,6 +212,11 @@ This can cap the amount of extra work the driver performs when some replicas are
 
 === Example
 
+[tabs]
+====
+Python::
++
+--
 [source,python]
 ----
 driver_options = DriverOptions(
@@ -112,6 +228,45 @@ driver_options = DriverOptions(
 
 driver = TypeDB.driver(["host1:port1", "host2:port2"], credentials, driver_options)
 ----
+--
+
+Java::
++
+--
+[source,java]
+----
+DriverOptions driverOptions = new DriverOptions(DriverTlsConfig.enabledWithNativeRootCA())
+        .useReplication(true)
+        .primaryFailoverRetries(1)
+        .replicaDiscoveryAttempts(5);
+
+Driver driver = TypeDB.driver(
+        Set.of("host1:port1", "host2:port2"),
+        credentials,
+        driverOptions
+);
+----
+--
+
+Rust::
++
+--
+[source,rust]
+----
+let driver_options = DriverOptions::new(DriverTlsConfig::enabled_with_native_root_ca())
+    .use_replication(true)
+    .primary_failover_retries(1)
+    .replica_discovery_attempts(Some(5));
+
+let driver = TypeDBDriver::new(
+    Addresses::try_from_addresses_str(["host1:port1", "host2:port2"]).unwrap(),
+    credentials,
+    driver_options,
+)
+.await?;
+----
+--
+====
 
 == Consistency level
 
@@ -152,8 +307,11 @@ The only operations that do not support non-strongly consistent execution are:
 - schema and write transactions/queries
 - database import (currently fully unavailable in clustered TypeDB)
 
-In Python, this looks like:
-
+[tabs]
+====
+Python::
++
+--
 [source,python]
 ----
 driver.databases.all() # default (strongest possible)
@@ -161,6 +319,32 @@ driver.databases.all(ConsistencyLevel.Strong())
 driver.databases.contains("my_db", ConsistencyLevel.Eventual())
 driver.databases.get("my_db", ConsistencyLevel.ReplicaDependent("host2:port2"))
 ----
+--
+
+Java::
++
+--
+[source,java]
+----
+driver.databases().all(); // default (strongest possible)
+driver.databases().all(ConsistencyLevel.Strong);
+driver.databases().contains("my_db", ConsistencyLevel.Eventual);
+driver.databases().get("my_db", ConsistencyLevel.ReplicaDependent("host2:port2"));
+----
+--
+
+Rust::
++
+--
+[source,rust]
+----
+driver.databases().all().await?; // default (strongest possible)
+driver.databases().all_with_consistency(ConsistencyLevel::Strong).await?;
+driver.databases().contains_with_consistency("my_db", ConsistencyLevel::Eventual).await?;
+driver.databases().get_with_consistency("my_db", ConsistencyLevel::ReplicaDependent { address: "host2:port2".to_owned() }).await?;
+----
+--
+====
 
 [NOTE]
 ====
@@ -173,6 +357,11 @@ Write and schema transactions must be opened against a primary replica. For this
 
 Cluster-enabled drivers add a read consistency option in TransactionOptions:
 
+[tabs]
+====
+Python::
++
+--
 [source,python]
 ----
 options = TransactionOptions(read_consistency_level=ConsistencyLevel.Eventual())
@@ -180,51 +369,86 @@ options = TransactionOptions(read_consistency_level=ConsistencyLevel.Eventual())
 with driver.transaction("my_db", TransactionType.READ, options=options) as tx:
     answers = tx.query("match $x isa person;").resolve()
 ----
+--
 
-This setting affects the transaction opening operation and the replica selection used for that read transaction.
-
-== Examples in other languages
-
-Cluster features are available across the officially supported gRPC drivers. The exact API style differs by language; the concepts are consistent.
-
-=== Rust
-
-In Rust, consistency is commonly expressed via `*_with_consistency` methods:
-
-[source,rust]
-----
-/// Default strong consistency
-driver.databases().all().await;
-
-/// Explicit consistency
-driver.databases().all_with_consistency(ConsistencyLevel::Strong).await;
-----
-
-=== Java
-
-In Java, consistency is typically an optional parameter (with defaults provided by overloads):
-
+Java::
++
+--
 [source,java]
 ----
-// Default strong consistency
-driver.databases().all();
+TransactionOptions options = new TransactionOptions()
+        .readConsistencyLevel(ConsistencyLevel.Eventual);
 
-// Explicit consistency
-driver.databases().all(ConsistencyLevel.Strong);
+try (Transaction tx = driver.transaction("my_db", TransactionType.READ, options)) {
+    var answers = tx.query("match $x isa person;").resolve();
+}
 ----
+--
 
-For the full, language-specific API surface, refer to your driver’s public APIs. The official documentation will be published
-with the first post-beta release.
+Rust::
++
+--
+[source,rust]
+----
+let options = TransactionOptions::new()
+    .read_consistency_level(ConsistencyLevel::Eventual);
+
+let tx = driver
+    .transaction_with_options("my_db", TransactionType::Read, options)
+    .await?;
+
+let answer = tx.query("match $x isa person;").await?;
+----
+--
+====
+
+This setting affects the transaction opening operation and the replica selection used for that read transaction.
 
 == Inspect your cluster
 
 Drivers have access to the information about the cluster size and its peers. Below is an example of retrieving this information using Python:
 
+[tabs]
+====
+Python::
++
+--
 [source,python]
 ----
-driver.replicas() # get the list of replicas with their statuses
-driver.primary_replica() # get the current primary replica of the cluster
+# Get all replicas with their statuses
+driver.replicas()
+
+# Get the current primary replica
+driver.primary_replica()
 ----
+--
+
+Java::
++
+--
+[source,java]
+----
+// Get all replicas with their statuses
+Set<? extends ServerReplica> replicas = driver.replicas();
+
+// Get the current primary replica
+Optional<? extends ServerReplica> primary = driver.primaryReplica();
+----
+--
+
+Rust::
++
+--
+[source,rust]
+----
+// Get all replicas with their statuses
+let replicas = driver.replicas().await?;
+
+// Get the current primary replica
+let primary = driver.primary_replica().await?;
+----
+--
+====
 
 == Quickstart in Rust
 
@@ -295,7 +519,7 @@ fn test_clustered_typedb() {
 
 [NOTE]
 ====
-Quickstart examples for Java and Python will be published soon, but they can be easily replicated using the example above.
+Quickstarts for Java and Python will be published soon, but they can be easily replicated using the example above.
 ====
 
 == Next steps
