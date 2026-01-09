@@ -1,7 +1,7 @@
 = Best Practices
 :pageTitle: Best Practices
 :Summary: Best practices for building robust applications with TypeDB drivers.
-:keywords: typedb, driver, best practices, connection management, error handling, performance
+:keywords: typedb, driver, best practices, connection management, error handling, performance, debugging, logging
 
 This guide covers essential best practices for building robust, performant applications with TypeDB drivers. Following these practices will help you avoid common pitfalls and create maintainable database code.
 
@@ -259,12 +259,96 @@ If you know that all your queries are valid, the `resolve()` call can be omitted
 * **Never hardcode credentials**: Use environment variables or secure configuration management
 * **Use encryption**: Always enable TLS network encryption for production or publicly accessible deployments
 
+== Debugging
+
+=== Driver logging
+
+TypeDB drivers support logging via environment variables. Set these before running your application:
+
+[cols="1,2"]
+|===
+| Variable | Description
+
+| `TYPEDB_DRIVER_LOG`
+| Log level for the driver core (e.g., `debug`, `info`, `warn`, `error`, `trace`)
+
+| `TYPEDB_DRIVER_CLIB_LOG`
+| Log level for the C FFI layer (useful for debugging memory and binding issues)
+
+| `RUST_LOG`
+| Standard Rust logging variable (lower priority than `TYPEDB_DRIVER_LOG`)
+|===
+
+**Example:**
+[source,bash]
+----
+# Enable debug logging
+export TYPEDB_DRIVER_LOG=debug
+python my_app.py
+----
+
+=== Enabling logging in your application
+
+[tabs]
+====
+Python::
++
+--
+Logging is available automatically when environment variables are set. You can also explicitly initialize logging:
+
+[,python]
+----
+from typedb.driver import TypeDB
+
+# Initialize driver logging
+TypeDB.init_logging()
+----
+--
+
+Java::
++
+--
+Logging is available automatically when environment variables are set. You can also explicitly initialize logging:
+
+[,java]
+----
+import com.typedb.driver.TypeDB;
+
+// Initialize driver logging
+TypeDB.initLogging();
+----
+--
+
+Rust::
++
+--
+The Rust driver uses the `tracing` crate. Configure your own subscriber to capture driver logs:
+
+[,rust]
+----
+use tracing_subscriber::{fmt, layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
+
+// Initialize tracing with environment filter
+tracing_subscriber::registry()
+    .with(EnvFilter::from_default_env())
+    .with(fmt::layer())
+    .init();
+
+// Driver logs will now be captured
+let driver = TypeDBDriver::new(address, credential).await?;
+----
+
+Set `RUST_LOG=typedb_driver=debug` to enable debug-level driver logs.
+--
+====
+
 == Summary
 
 Following these best practices will help you build robust TypeDB applications:
 
 1. **Use automatic resource management** whenever possible
-2. **Reuse connections** and handle errors gracefully  
+2. **Reuse connections** and handle errors gracefully
 3. **Choose appropriate transaction types** and keep transactions short-lived
 4. **Batch operations** for better performance
 5. **Secure your credentials** and use encryption in production
+6. **Enable logging** with environment variables when debugging issues
