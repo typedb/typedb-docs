@@ -1,4 +1,4 @@
-= Install TypeDB Drivers
+= TypeDB Drivers
 :page-aliases: {page-version}@drivers::index.adoc, {page-version}@drivers::python/index.adoc, {page-version}@drivers::python/tutorial.adoc, {page-version}@drivers::java/index.adoc, {page-version}@drivers::java/tutorial.adoc, {page-version}@drivers::rust/index.adoc, {page-version}@drivers::rust/tutorial.adoc, {page-version}@drivers::nodejs/index.adoc, {page-version}@drivers::nodejs/tutorial.adoc, {page-version}@drivers::csharp/index.adoc, {page-version}@drivers::csharp/tutorial.adoc, {page-version}@drivers::cpp/index.adoc, {page-version}@drivers::cpp/tutorial.adoc, {page-version}@drivers::c/index.adoc, {page-version}@drivers::c/tutorial.adoc,
 
 TypeDB drivers are client libraries that enable applications to communicate with TypeDB servers. They provide a programming language-specific interface for all server operations, from connection management to query execution.
@@ -27,13 +27,17 @@ TypeDB drivers are client libraries that enable applications to communicate with
 ****
 ****
 
+.xref:#_c[]
+[.clickable]
+****
+****
+
 .xref:#_other_languages[]
 [.clickable]
 ****
 ****
 --
 
-[#_python]
 == Python
 
 === Install TypeDB Python Driver through Pip
@@ -54,9 +58,9 @@ from typedb.driver import *
 driver = TypeDB.driver(address=TypeDB.DEFAULT_ADDRESS, ...)
 ----
 
-=== Links
+=== Python driver example
 
-* https://github.com/typedb/typedb-driver/tree/master/python[Python driver tutorial]
+* https://github.com/typedb/typedb-driver/blob/master/python/example.py[example.py on GitHub] - View the TypeDB Python driver example
 * https://pypi.org/project/typedb-driver/[PyPI]
 
 
@@ -64,18 +68,18 @@ driver = TypeDB.driver(address=TypeDB.DEFAULT_ADDRESS, ...)
 
 === Install TypeDB HTTP TypeScript Driver from NPM
 
-. Install `@typedb/driver-http` using `npm`:
+. Install `typedb-driver-http` using `npm`:
 +
 [source,bash]
 ----
-npm install @typedb/driver-http
+npm install typedb-driver-http
 ----
 
-. In your Node.js or Web application, import from `@typedb/driver-http`:
+. In your Node.js or Web application, import from `typedb-driver-http`:
 +
 [source,typescript]
 ----
-import { TypeDBHttpDriver, isApiErrorResponse } from "@typedb/driver-http";
+import { TypeDBHttpDriver, isApiErrorResponse } from "typedb-driver-http";
 
 const driver = new TypeDBHttpDriver({
     username: "...",
@@ -84,10 +88,11 @@ const driver = new TypeDBHttpDriver({
 });
 ----
 
-=== Links
+=== TypeScript HTTP driver example
 
-- https://github.com/typedb/typedb-examples/tree/master/webapp[TypeScript HTTP driver example]
-- https://www.npmjs.com/package/@typedb/driver-http[NPM registry]
+* https://github.com/typedb/typedb-examples/tree/master/webapp[TypeSpace: Social Network Webapp Example] - Explore the TypeScript HTTP driver example on GitHub
+* https://www.npmjs.com/package/typedb-driver-http[NPM registry]
+
 
 == Rust
 
@@ -109,9 +114,9 @@ use typedb_driver::TypeDBDriver;
 let driver = TypeDBDriver::new_core(TypeDBDriver::DEFAULT_ADDRESS).await.unwrap();
 ----
 
-=== Links
+=== Rust driver example
 
-* https://github.com/typedb/typedb-driver/tree/master/rust[Rust driver tutorial]
+* https://github.com/typedb/typedb-driver/blob/master/rust/example.rs[example.rs on GitHub] - View the TypeDB Rust driver example
 * https://crates.io/crates/typedb-driver[Crates.io]
 
 
@@ -153,10 +158,33 @@ try (Driver driver = TypeDB.driver(TypeDB.DEFAULT_ADDRESS, new Credentials("admi
 }
 ----
 
-=== Links
+=== Java driver example
 
-- https://github.com/typedb/typedb-driver/tree/master/java[TypeDB Java driver tutorial]
-- https://cloudsmith.io/~typedb/repos/public-release/packages/detail/maven/typedb-driver/[Maven repo]
+* https://github.com/typedb/typedb-driver/blob/master/java/TypeDBExample.java[TypeDBExample.java on GitHub] - View the TypeDB Java driver example
+* https://cloudsmith.io/~typedb/repos/public-release/packages/detail/maven/typedb-driver/[Maven repo]
+
+
+== C
+
+=== Install TypeDB C Driver
+
+. Download the C driver package from the https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name%3A%27%5Etypedb-driver-clib%27[TypeDB package repository].
+
+. Extract the archive and include the header and library in your project:
++
+[source,c]
+----
+#include "typedb_driver.h"
+
+Credentials* credentials = credentials_new("admin", "password");
+DriverOptions* options = driver_options_new(false, NULL);
+TypeDBDriver* driver = driver_open("127.0.0.1:1729", credentials, options);
+----
+
+=== C driver example
+
+* https://github.com/typedb/typedb-driver/blob/master/c/example.c[example.c on GitHub] - View the TypeDB C driver example
+
 
 == Other languages
 
