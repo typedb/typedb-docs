@@ -1,0 +1,30 @@
+= AI Data Exploration
+
+TypeDB's powerful query language and graph structure make it an excellent foundation for AI-driven data exploration applications.
+
+== Overview
+
+AI data exploration with TypeDB combines the power of natural language processing with TypeDB's expressive query capabilities. This approach allows users to ask questions in natural language and have them translated into TypeQL queries that retrieve relevant information from the knowledge graph.
+
+== Typical Stack
+
+A typical AI data exploration application might include:
+
+* **TypeDB** - Knowledge graph database for storing structured data
+* **Large Language Model (LLM)** - For natural language understanding and query generation
+* **TypeQL** - Query language for retrieving data from TypeDB
+* **Application Layer** - Orchestrates the interaction between the LLM and TypeDB
+
+== How It Works
+
+1. User asks a question in natural language
+2. LLM interprets the question and generates an appropriate TypeQL query
+3. Query is executed against the TypeDB database
+4. Results are formatted and presented to the user
+5. LLM can help interpret and explain the results
+
+== Learn More
+
+For a detailed guide on building an AI data exploration application with TypeDB, see:
+
+link:https://typedb.com/blog[Ganesh's blog post on AI Data Exploration] _(coming soon)_
