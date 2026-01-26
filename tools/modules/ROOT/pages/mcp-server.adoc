@@ -1,0 +1,125 @@
+= TypeDB MCP Server
+
+TypeDB MCP Server is an MCP (Model Context Protocol) server that enables AI assistants to interact with TypeDB databases.
+This allows Large Language Models (LLMs) to execute TypeQL queries, manage databases, and manage users through natural language,
+making TypeDB accessible to AI-powered development tools.
+
+== What is MCP?
+
+The Model Context Protocol (MCP) is a standardized protocol that allows AI assistants and LLMs to interact with external tools and services.
+TypeDB MCP Server implements this protocol, enabling AI tools like Cursor IDE to communicate with TypeDB databases seamlessly.
+
+== When to use TypeDB MCP Server
+
+TypeDB MCP Server is ideal when you want to:
+
+* Enable AI assistants to query and manipulate TypeDB databases using natural language
+* Integrate TypeDB with AI-powered IDEs and development tools
+* Prototype and explore TypeDB schemas and data interactively with AI assistance
+* Automate database operations through conversational interfaces
+
+== Features
+
+TypeDB MCP Server provides the following capabilities:
+
+* *Query Execution*: Run TypeQL read, write, and schema queries
+* *Database Management*: List, create, and delete databases
+* *User Management*: List, create, and delete users
+
+== Running the Server
+
+TypeDB MCP Server is distributed as a Docker image. To run the server:
+
+[source,bash]
+----
+docker run -p 8001:8001 typedb/typedb-mcp:<version> \
+  --typedb-address <address> \
+  --typedb-username <username> \
+  --typedb-password <password>
+----
+
+Replace `<version>` with the desired version number, and provide your TypeDB server connection details.
+
+=== Connecting to localhost
+
+If you're running TypeDB server on localhost, there are special considerations:
+
+* Replace `<address>` with `http://host.docker.internal:8000` instead of `http://localhost:8000`
+* On Linux, add the `--add-host=host.docker.internal:host-gateway` flag to the Docker command
+
+[source,bash]
+----
+docker run -p 8001:8001 --add-host=host.docker.internal:host-gateway \
+  typedb/typedb-mcp:<version> \
+  --typedb-address http://host.docker.internal:8000 \
+  --typedb-username <username> \
+  --typedb-password <password>
+----
+
+== Configuration
+
+TypeDB MCP Server accepts the following configuration parameters:
+
+[cols="2,3"]
+|===
+| Parameter | Description
+
+| `--typedb-address`
+| The address of your TypeDB server (e.g., `http://localhost:8000` or `http://host.docker.internal:8000` when running in Docker)
+
+| `--typedb-username`
+| Username for authenticating with the TypeDB server
+
+| `--typedb-password`
+| Password for authenticating with the TypeDB server
+|===
+
+The server listens on port `8001` by default. You can map this to a different host port using Docker's `-p` flag.
+
+== Using with Cursor IDE
+
+Cursor IDE is an AI-powered code editor that supports MCP servers. To integrate TypeDB MCP Server with Cursor:
+
+. Start the MCP server (see above)
+
+. Open Cursor Settings → MCP
+
+. Create or edit `.cursor/mcp.json` in your project directory:
++
+[source,json]
+----
+{
+  "mcpServers": {
+    "typedb": {
+      "url": "http://localhost:8001/mcp"
+    }
+  }
+}
+----
+
+. Restart Cursor or refresh MCP connections
+
+. Start chatting! You can now ask Cursor to interact with TypeDB:
+
+* "List all databases"
+* "Create a database called 'mydb'"
+* "Define an entity 'person' with attribute 'name' in database 'mydb'"
+* "Insert a person with name 'Alice'"
+* "Query all persons in the database"
+
+== Additional Resources
+
+[cols-2]
+--
+.link:https://github.com/typedb/typedb-mcp[GitHub Repository,window=_blank]
+[.clickable]
+****
+Browse the source code and contribute to TypeDB MCP Server.
+****
+
+.link:https://hub.docker.com/r/typedb/typedb-mcp[Docker Hub,window=_blank]
+[.clickable]
+****
+Download TypeDB MCP Server Docker images.
+****
+--
