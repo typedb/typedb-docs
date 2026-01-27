@@ -12,7 +12,7 @@ By combining TypeDB's semantic modeling with AI capabilities, developers can bui
 
 === Unstructured to Structured
 
-Transform rich, real-world data from unstructured formats into structured semantic knowledge graphs.
+Transform rich, real-world data from unstructured formats into structured and queryable semantic knowledge graphs.
 
 ==== Use Case
 
@@ -32,10 +32,7 @@ Extract meaningful information from unstructured sources such as:
 
 ==== Benefits
 
-* **Semantic Understanding** - Preserve the meaning and context of information, not just raw data
-* **Complex Relationships** - Model intricate connections between entities that emerge from unstructured content
-* **Unified Knowledge** - Combine information from multiple unstructured sources into a coherent graph
-* **Rich Querying** - Ask sophisticated questions across your structured knowledge base
+This approach preserves the semantic understanding of information, capturing meaning and context rather than just raw data. TypeDB's modeling capabilities allow you to represent the complex relationships that emerge from unstructured content, creating a unified knowledge graph that combines information from multiple sources into a coherent whole. Once structured, you can leverage TypeQL to ask sophisticated questions across your knowledge base, uncovering insights that would be difficult or impossible to find in the original unstructured format.
 
 ==== Learn More
 
@@ -57,18 +54,15 @@ Allow users to interact with your TypeDB database through natural language queri
 
 ==== Approach
 
-1. **User Input** - User asks a question in natural language
-2. **LLM Translation** - Large Language Model interprets the question and generates a TypeQL query
-3. **Schema Context** - LLM uses TypeDB schema information to generate accurate, valid queries
-4. **Query Execution** - TypeQL query runs against the database
-5. **Result Formatting** - LLM helps format and explain results in natural language
+1. User asks a question in natural language
+2. Large Language Model interprets the question and generates a TypeQL query
+3. LLM uses TypeDB schema information to generate accurate, valid queries
+4. TypeQL query runs against the database
+5. LLM helps format and explain results in natural language
 
 ==== Benefits
 
-* **Accessibility** - Non-technical users can query complex databases without learning TypeQL
-* **Schema-Aware** - TypeDB's rich schema guides the LLM to generate valid, meaningful queries
-* **Complex Reasoning** - Leverage TypeQL's expressive power through natural language
-* **Contextual Responses** - Combine database results with AI-generated explanations
+Prompt-guided retrieval makes complex databases accessible to non-technical users who can query data without learning TypeQL. TypeDB's rich schema guides the LLM to generate valid and meaningful queries, ensuring accurate results. Users can leverage TypeQL's expressive power through natural language, enabling complex reasoning and sophisticated queries. The combination of database results with AI-generated explanations provides contextual responses that are both accurate and easy to understand.
 
 ==== Learn More
 
