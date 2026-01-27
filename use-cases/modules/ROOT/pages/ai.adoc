@@ -1,65 +1,78 @@
-= AI
+= Artificial Intelligence
 
-TypeDB's powerful query language and graph structure make it an excellent foundation for AI and machine learning applications.
+TypeDB's rich modeling language empowers AI-powered applications by capturing the complex and interconnected nature of real-world data. Its expressive schema and powerful query capabilities provide AI systems with the rich context needed to deliver intelligent insights and interactions.
 
-== AI Data Exploration
+== Overview
 
-AI data exploration with TypeDB combines the power of natural language processing with TypeDB's expressive query capabilities. This approach allows users to ask questions in natural language and have them translated into TypeQL queries that retrieve relevant information from the knowledge graph.
+Traditional databases often struggle to represent the nuanced relationships and hierarchies that characterize real-world information. TypeDB's type system and relational modeling enable AI applications to work with data that mirrors the complexity of the domains they operate in, whether that's understanding organizational structures, tracking multi-faceted events, or mapping intricate dependencies.
 
-=== Typical Stack
+By combining TypeDB's semantic modeling with AI capabilities, developers can build applications that not only store data but understand its meaning and context.
 
-A typical AI data exploration application might include:
+== Common Patterns
 
-* **TypeDB** - Knowledge graph database for storing structured data
-* **Large Language Model (LLM)** - For natural language understanding and query generation
-* **TypeQL** - Query language for retrieving data from TypeDB
-* **Application Layer** - Orchestrates the interaction between the LLM and TypeDB
+=== Unstructured to Structured
 
-=== How It Works
+Transform rich, real-world data from unstructured formats into structured semantic knowledge graphs.
 
-1. User asks a question in natural language
-2. LLM interprets the question and generates an appropriate TypeQL query
-3. Query is executed against the TypeDB database
-4. Results are formatted and presented to the user
-5. LLM can help interpret and explain the results
+==== Use Case
 
-=== Learn More
+Extract meaningful information from unstructured sources such as:
 
-For a detailed guide on building an AI data exploration application with TypeDB, see:
+* **Audio and video content** - Transcribe conversations, identify speakers, extract topics and relationships
+* **Documents and text** - Parse contracts, reports, or articles to identify entities and their connections
+* **Images** - Extract visual information and metadata to build searchable knowledge bases
 
-link:https://typedb.com/blog[Ganesh's blog post on AI Data Exploration] _(coming soon)_
+==== Approach
 
-== Unstructured to Structured Data
+1. Ingest unstructured data from various sources (audio files, videos, documents)
+2. Process with ML models (speech-to-text, NLP, computer vision) to extract entities and relationships
+3. Structure the extracted information according to your TypeDB schema
+4. Store in TypeDB as a queryable knowledge graph with rich semantic relationships
+5. Query using TypeQL to discover insights across your structured data
 
-Converting unstructured data into structured knowledge graphs is a powerful application of AI with TypeDB, enabling better data organization, querying, and insights.
+==== Benefits
 
-=== Typical Stack and Approach
+* **Semantic Understanding** - Preserve the meaning and context of information, not just raw data
+* **Complex Relationships** - Model intricate connections between entities that emerge from unstructured content
+* **Unified Knowledge** - Combine information from multiple unstructured sources into a coherent graph
+* **Rich Querying** - Ask sophisticated questions across your structured knowledge base
 
-A typical unstructured-to-structured pipeline might include:
+==== Learn More
 
-* **Data Sources** - Unstructured text, documents, PDFs, web content
-* **Large Language Model (LLM)** - For entity extraction, relationship identification, and data structuring
-* **TypeDB Schema** - Defines the structure of the knowledge graph
-* **TypeDB** - Stores the extracted structured data
-* **TypeQL** - For inserting and querying the structured data
+For a detailed guide on transforming unstructured audio data into a TypeDB knowledge graph, see:
 
-=== How It Works
+link:https://typedb.com/blog[Blog post on Audio Knowledge Graphs] _(coming soon)_
 
-1. Ingest unstructured data from various sources
-2. Use an LLM to extract entities, relationships, and attributes
-3. Map the extracted information to your TypeDB schema
-4. Insert the structured data into TypeDB using TypeQL
-5. Query and analyze the knowledge graph to gain insights
+=== Prompt-Guided Retrieval
 
-=== Benefits
+Enable users to query structured databases using natural language, making complex data accessible through conversational interfaces.
 
-* **Automated Knowledge Extraction** - Reduce manual data entry and structuring
-* **Consistent Schema** - Ensure all data follows a well-defined structure
-* **Rich Querying** - Leverage TypeQL to ask complex questions across your data
-* **Scalability** - Process large volumes of unstructured data efficiently
+==== Use Case
 
-=== Learn More
+Allow users to interact with your TypeDB database through natural language queries:
 
-For a detailed guide on building an unstructured-to-structured pipeline with TypeDB, see:
+* **Business Intelligence** - Ask questions about data in plain English without learning query languages
+* **Knowledge Discovery** - Explore complex datasets through conversational exploration
+* **Domain-Specific Search** - Query specialized databases (security, healthcare, finance) using domain terminology
 
-link:https://typedb.com/blog[Ganesh's blog post on Unstructured to Structured Data] _(coming soon)_
+==== Approach
+
+1. **User Input** - User asks a question in natural language
+2. **LLM Translation** - Large Language Model interprets the question and generates a TypeQL query
+3. **Schema Context** - LLM uses TypeDB schema information to generate accurate, valid queries
+4. **Query Execution** - TypeQL query runs against the database
+5. **Result Formatting** - LLM helps format and explain results in natural language
+
+==== Benefits
+
+* **Accessibility** - Non-technical users can query complex databases without learning TypeQL
+* **Schema-Aware** - TypeDB's rich schema guides the LLM to generate valid, meaningful queries
+* **Complex Reasoning** - Leverage TypeQL's expressive power through natural language
+* **Contextual Responses** - Combine database results with AI-generated explanations
+
+==== Learn More
+
+For a detailed guide on building natural language query interfaces with TypeDB, see:
+
+link:https://typedb.com/blog[Blog post on Prompt-Guided Retrieval] _(coming soon)_
+
