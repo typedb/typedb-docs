@@ -1,9 +1,65 @@
 = Cybersecurity
 
-[NOTE]
-====
-Coming soon.
-====
+TypeDB's polymorphic data model makes it a natural fit for cyber threat intelligence, where threats, actors, indicators, and infrastructure form a deeply interconnected graph that demands rich relationships and flexible classification.
 
-[placeholder]
-Cybersecurity solutions using TypeDB. 
+The https://github.com/typedb-osi/typedb-cti[TypeDB CTI] open-source project implements the full https://oasis-open.github.io/cti-documentation/stix/intro.html[STIX 2.1] standard for structured threat intelligence in TypeDB. A smaller worked example based on this schema is available in the https://github.com/typedb/typedb-examples/tree/master/use-cases/cyber-threat-intelligence[TypeDB Examples] repository and described here.
+
+== Installation
+
+The cybersecurity example is released as a schema and data file (note: good for small or medium-sized examples, but not recommended for large datasets!). You can easily load the latest schema and dataset, either using TypeDB Cloud to create a server with the dataset preloaded, or using TypeDB Console:
+
+[,bash]
+----
+typdb console --username=<USERNAME> --address=<ADDRESS> --command="database create-init cti http://github.com/typedb/typedb-examples/releases/latest/download/cti-schema.tql http://github.com/typedb/typedb-examples/releases/latest/download/cti-data.tql"
+----
+
+== Schema
+
+This schema implements the STIX 2.1 (Structured Threat Information Expression) standard from OASIS, modelling the full lifecycle of cyber threat intelligence: from threat actors and campaigns, through attack patterns and indicators, to the technical observables that analysts use for detection. STIX reference properties are interpreted as first-class TypeDB relations, enabling graph queries that would require complex joins in a tabular model.
+
+=== Core Concepts
+
+**Key Entities**
+
+The schema defines a hierarchy of STIX objects rooted in two abstract supertypes:
+
+* stix-domain-object: High-level threat intelligence concepts. The most important subtypes are:
+  ** threat-actor: An individual, group, or organization believed to operate with malicious intent (e.g. an APT group).
+  ** campaign: A set of adversarial activities over a period of time against a specific set of targets.
+  ** attack-pattern: A description of how an adversary attempts to compromise a target, often linked to MITRE ATT&CK techniques.
+  ** indicator: A pattern (such as an IP address, domain, or file hash) used to detect suspicious or malicious activity.
+  ** malware: Software designed to compromise a system, including trojans, ransomware, and rootkits.
+  ** vulnerability: A weakness in software or hardware that can be exploited.
+  ** course-of-action: A recommended response or mitigation for a threat.
+  ** identity: An individual, organization, or group relevant to a threat (e.g. a targeted company or sector).
+  ** infrastructure: Systems, software, and services used by threat actors to carry out attacks.
+  ** intrusion-set: A grouped set of adversarial behaviours attributed to a single actor.
+
+* stix-cyber-observable-object: Technical artifacts observed during an investigation. Key subtypes include:
+  ** ipv4-addr / ipv6-addr / domain-name: Network-level indicators.
+  ** file: File artifacts with extensions for archive, PDF, PE binary, and raster image analysis.
+  ** network-traffic: Connection records with extensions for HTTP, ICMP, TCP, and socket data.
+  ** process: Running processes with Windows and Unix-specific extensions.
+  ** email-message / email-addr: Email artifacts for phishing analysis.
+  ** user-account: Accounts observed in an intrusion, with platform-specific extensions.
+  ** x509-certificate: TLS/SSL certificates used in command-and-control infrastructure.
+
+**Key Relationships**
+
+The schema defines over 40 relationship types (all subtypes of stix-relationship-object) to express the connections between threat intelligence objects:
+
+* attributed-to: Links a campaign or intrusion-set to the threat actor believed to be responsible.
+* uses: Connects a threat actor or campaign to the attack patterns, malware, or tools they employ.
+* targets: Identifies the identities, locations, or vulnerabilities that a campaign or threat actor aims at.
+* indicates: Links an indicator to the malware, campaign, or threat actor it detects.
+* mitigates: Connects a course-of-action to the attack pattern or vulnerability it addresses.
+* delivers / drops / downloads: Describes how malware is distributed and installed.
+* exploits: Links malware or a campaign to the vulnerability it takes advantage of.
+* communicates-with / beacons-to / exfiltrates-to: Describes network-level behaviours of malware or infrastructure.
+* sighting: Records when an indicator or other object was observed in a specific context.
+
+Supporting relations such as external-reference-ownership and kill-chain-phase-ownership link objects to external sources (e.g. MITRE ATT&CK identifiers) and kill chain phases.
+
+== Dataset
+
+This example ships with a sample dataset modelling the https://dti.domaintools.com/inside-salt-typhoon-chinas-state-corporate-advanced-persistent-threat/[Salt Typhoon] APT campaign, including threat actors, attack patterns, indicators (domains and IP addresses), and courses of action. Feel free to play around and explore!
