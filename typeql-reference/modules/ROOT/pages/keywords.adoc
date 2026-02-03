@@ -255,14 +255,20 @@ Floor function, returns the provided numeric argument rounded to the nearest les
 `abs(...)`::
 Modulus function, returns the absolute value of the provided numeric argument. See xref:{page-version}@typeql-reference::expressions/operators.adoc[] for more information.
 
-`length(...)`::
-Length function (coming soon), will return the length of the provided list argument. See xref:{page-version}@typeql-reference::expressions/operators.adoc[] for more information.
+`len(...)`::
+Length function, returns the length of the provided string or list (coming soon) argument. See xref:{page-version}@typeql-reference::expressions/operators.adoc[] for more information.
 
 `min(...)`::
 Minimum function, returns the minimum value of two provided numeric arguments. See xref:{page-version}@typeql-reference::expressions/operators.adoc[] for more information.
 
 `max(...)`::
 Maximum function, returns the maximum value of two provided numeric arguments. See xref:{page-version}@typeql-reference::expressions/operators.adoc[] for more information.
+
+`iid(...)`::
+IID function, returns the internal ID of the provided instance argument as a string. See xref:{page-version}@typeql-reference::expressions/operators.adoc[] for more information.
+
+`label(...)`::
+Label function, returns the label of the provided type argument as a string. See xref:{page-version}@typeql-reference::expressions/operators.adoc[] for more information.
 
 == Literals
 
