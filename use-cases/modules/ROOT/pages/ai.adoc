@@ -1,0 +1,72 @@
+= Artificial Intelligence
+
+TypeDB's rich modeling language empowers AI-powered applications by capturing the complex and interconnected nature of real-world data. Its expressive schema and powerful query capabilities provide AI systems with the rich context needed to deliver intelligent insights and interactions.
+
+== Overview
+
+Traditional databases often struggle to represent the nuanced relationships and hierarchies that characterize real-world information. TypeDB's type system and relational modeling enable AI applications to work with data that mirrors the complexity of the domains they operate in, whether that's understanding organizational structures, tracking multi-faceted events, or mapping intricate dependencies.
+
+By combining TypeDB's semantic modeling with AI capabilities, developers can build applications that not only store data but understand its meaning and context.
+
+== Common Patterns
+
+=== Unstructured to Structured
+
+Transform rich, real-world data from unstructured formats into structured and queryable semantic knowledge graphs.
+
+==== Use Case
+
+Extract meaningful information from unstructured sources such as:
+
+* **Audio and video content** - Transcribe conversations, identify speakers, extract topics and relationships
+* **Documents and text** - Parse contracts, reports, or articles to identify entities and their connections
+* **Images** - Extract visual information and metadata to build searchable knowledge bases
+
+==== Approach
+
+1. Ingest unstructured data from various sources (audio files, videos, documents)
+2. Process with ML models (speech-to-text, NLP, computer vision) to extract entities and relationships
+3. Structure the extracted information according to your TypeDB schema
+4. Store in TypeDB as a queryable knowledge graph with rich semantic relationships
+5. Query using TypeQL to discover insights across your structured data
+
+==== Benefits
+
+This approach preserves the semantic understanding of information, capturing meaning and context rather than just raw data. TypeDB's modeling capabilities allow you to represent the complex relationships that emerge from unstructured content, creating a unified knowledge graph that combines information from multiple sources into a coherent whole. Once structured, you can leverage TypeQL to ask sophisticated questions across your knowledge base, uncovering insights that would be difficult or impossible to find in the original unstructured format.
+
+==== Learn More
+
+For a detailed guide on transforming unstructured audio data into a TypeDB knowledge graph, see:
+
+https://typedb.com/blog/building-an-audio-knowledge-graph-with-ml-and-typedb[Building an Audio Knowledge Graph with ML and TypeDB,window=_blank]
+
+=== Prompt-Guided Retrieval
+
+Enable users to query structured databases using natural language, making complex data accessible through conversational interfaces.
+
+==== Use Case
+
+Allow users to interact with your TypeDB database through natural language queries:
+
+* **Business Intelligence** - Ask questions about data in plain English without learning query languages
+* **Knowledge Discovery** - Explore complex datasets through conversational exploration
+* **Domain-Specific Search** - Query specialized databases (security, healthcare, finance) using domain terminology
+
+==== Approach
+
+1. User asks a question in natural language
+2. Large Language Model interprets the question and generates a TypeQL query
+3. LLM uses TypeDB schema information to generate accurate, valid queries
+4. TypeQL query runs against the database
+5. LLM helps format and explain results in natural language
+
+==== Benefits
+
+Prompt-guided retrieval makes complex databases accessible to non-technical users who can query data without learning TypeQL. TypeDB's rich schema guides the LLM to generate valid and meaningful queries, ensuring accurate results. Users can leverage TypeQL's expressive power through natural language, enabling complex reasoning and sophisticated queries. The combination of database results with AI-generated explanations provides contextual responses that are both accurate and easy to understand.
+
+==== Learn More
+
+For a detailed guide on building natural language query interfaces with TypeDB, see:
+
+https://typedb.com/blog/building-prompt-guided-stix-knowledge-graph-explorer[Building a Prompt-Guided STIX Knowledge Graph Explorer,window=_blank]
+

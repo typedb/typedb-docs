@@ -327,9 +327,9 @@ Java::
 [source,java]
 ----
 driver.databases().all(); // default (strongest possible)
-driver.databases().all(ConsistencyLevel.Strong);
-driver.databases().contains("my_db", ConsistencyLevel.Eventual);
-driver.databases().get("my_db", ConsistencyLevel.ReplicaDependent("host2:port2"));
+driver.databases().all(new ConsistencyLevel.Strong());
+driver.databases().contains("my_db", new ConsistencyLevel.Eventual());
+driver.databases().get("my_db", new ConsistencyLevel.ReplicaDependent("host2:port2"));
 ----
 --
 
@@ -377,7 +377,7 @@ Java::
 [source,java]
 ----
 TransactionOptions options = new TransactionOptions()
-        .readConsistencyLevel(ConsistencyLevel.Eventual);
+        .readConsistencyLevel(new ConsistencyLevel.Eventual());
 
 try (Transaction tx = driver.transaction("my_db", TransactionType.READ, options)) {
     var answers = tx.query("match $x isa person;").resolve();
@@ -450,9 +450,146 @@ let primary = driver.primary_replica().await?;
 --
 ====
 
-== Quickstart in Rust
+== Quickstart
 
-```rust
+[tabs]
+====
+Python::
++
+--
+[source,python]
+----
+from typedb.driver import (
+    TypeDB, Credentials, DriverOptions, DriverTlsConfig,
+    TransactionType, TransactionOptions, ConsistencyLevel
+)
+
+DATABASE_NAME = "clustered-test"
+
+def test_clustered_typedb():
+    driver = TypeDB.driver(
+        # Try automatic replicas retrieval by connecting to only a single server!
+        # Use a list of addresses to provide multiple addresses instead.
+        ADDRESS,
+        Credentials(USERNAME, PASSWORD),
+        # New DriverOptions API
+        DriverOptions(DriverTlsConfig.enabled_with_native_root_ca(), use_replication=True),
+    )
+
+    replicas = driver.replicas()
+    addresses = [replica.address for replica in replicas]
+    print(f"Replicas known to the driver: {addresses}")
+
+    if not driver.databases.contains(DATABASE_NAME):
+        driver.databases.create(DATABASE_NAME, ConsistencyLevel.Strong())
+
+    database = driver.databases.get(DATABASE_NAME)
+    print(f"Database exists: {database.name}")
+
+    # New TransactionOptions API
+    transaction_options = TransactionOptions(
+        transaction_timeout_millis=100_000,
+        read_consistency_level=ConsistencyLevel.Eventual()
+    )
+
+    # Schema transactions are always strongly consistent
+    with driver.transaction(DATABASE_NAME, TransactionType.SCHEMA, transaction_options) as tx:
+        tx.query("define entity person;").resolve()
+        tx.query("insert $p1 isa person; $p2 isa person;").resolve()
+        tx.commit()
+
+    # Read transaction will be opened using the consistency level from the options
+    with driver.transaction(DATABASE_NAME, TransactionType.READ, transaction_options) as tx:
+        answer = tx.query("match $p isa person;").resolve()
+        rows = list(answer.as_concept_rows())
+        print(f"Persons found: {len(rows)}")
+
+    driver.close()
+    print("Done!")
+
+
+if __name__ == "__main__":
+    test_clustered_typedb()
+----
+--
+
+Java::
++
+--
+[source,java]
+----
+import com.typedb.driver.TypeDB;
+import com.typedb.driver.api.Credentials;
+import com.typedb.driver.api.Driver;
+import com.typedb.driver.api.DriverOptions;
+import com.typedb.driver.api.DriverTlsConfig;
+import com.typedb.driver.api.Transaction;
+import com.typedb.driver.api.TransactionOptions;
+import com.typedb.driver.api.ConsistencyLevel;
+import com.typedb.driver.api.QueryAnswer;
+import com.typedb.driver.api.answer.ConceptRow;
+import com.typedb.driver.api.server.ServerReplica;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+public class ClusteredTypeDBExample {
+    private static final String DATABASE_NAME = "clustered-test";
+
+    public static void main(String[] args) {
+        try (Driver driver = TypeDB.driver(
+                // Try automatic replicas retrieval by connecting to only a single server!
+                // Use Set.of() with multiple addresses to provide multiple addresses instead.
+                ADDRESS,
+                new Credentials(USERNAME, PASSWORD),
+                // New DriverOptions API
+                new DriverOptions(DriverTlsConfig.enabledWithNativeRootCA()).useReplication(true)
+        )) {
+            Set<? extends ServerReplica> replicas = driver.replicas();
+            List<String> addresses = replicas.stream()
+                    .map(ServerReplica::address)
+                    .collect(Collectors.toList());
+            System.out.println("Replicas known to the driver: " + addresses);
+
+            if (!driver.databases().contains(DATABASE_NAME)) {
+                driver.databases().create(DATABASE_NAME, new ConsistencyLevel.Strong());
+            }
+
+            String databaseName = driver.databases().get(DATABASE_NAME).name();
+            System.out.println("Database exists: " + databaseName);
+
+            // New TransactionOptions API
+            TransactionOptions transactionOptions = new TransactionOptions()
+                    .transactionTimeoutMillis(100_000)
+                    .readConsistencyLevel(new ConsistencyLevel.Eventual());
+
+            // Schema transactions are always strongly consistent
+            try (Transaction tx = driver.transaction(DATABASE_NAME, Transaction.Type.SCHEMA, transactionOptions)) {
+                tx.query("define entity person;").resolve();
+                tx.query("insert $p1 isa person; $p2 isa person;").resolve();
+                tx.commit();
+            }
+
+            // Read transaction will be opened using the consistency level from the options
+            try (Transaction tx = driver.transaction(DATABASE_NAME, Transaction.Type.READ, transactionOptions)) {
+                QueryAnswer answer = tx.query("match $p isa person;").resolve();
+                List<ConceptRow> rows = answer.asConceptRows().stream().collect(Collectors.toList());
+                System.out.println("Persons found: " + rows.size());
+            }
+
+            System.out.println("Done!");
+        }
+    }
+}
+----
+--
+
+Rust::
++
+--
+[source,rust]
+----
 use typedb_driver::{
     answer::ConceptRow, consistency_level::ConsistencyLevel, Addresses, Credentials, DriverOptions,
     DriverTlsConfig, TransactionOptions, TransactionType, TypeDBDriver,
@@ -515,11 +652,8 @@ fn test_clustered_typedb() {
         println!("Done!");
     });
 }
-```
-
-[NOTE]
-====
-Quickstarts for Java and Python will be published soon, but they can be easily replicated using the example above.
+----
+--
 ====
 
 == Next steps
