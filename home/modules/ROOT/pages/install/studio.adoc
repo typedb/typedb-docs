@@ -1,11 +1,12 @@
-= Get started with TypeDB Studio
+= TypeDB Studio
 
 TypeDB Studio is an interactive visual environment for managing and querying TypeDB databases.
 
 With Studio, developers can efficiently manage databases, execute queries, and explore query results,
 all within a unified environment.
 
-TypeDB Studio is available both as a web app and as a desktop application.
+TypeDB Studio is available both as a web app and as a desktop application. All features of TypeDB Studio
+are available on both web and desktop. Be aware that the web app may not be able to connect to non-HTTPS endpoints (e.g. localhost, 127.0.0.1) on certain browsers; at the time of writing, Chrome works, but Safari does not.
 
 [cols-2]
 --
@@ -28,8 +29,15 @@ Browse the source code of TypeDB Studio.
 ****
 --
 
-== Getting Started
+== TypeDB Studio User Manual
 
-After set up, you can connect to TypeDB servers. For detailed connection instructions and usage guides, see:
+For connection instructions and usage guides, see:
 
-* xref:{page-version}@tools::studio.adoc[] - Complete Studio documentation and connection guide
+[cols-2]
+--
+.xref:{page-version}@tools::studio.adoc[TypeDB Studio User Manual]
+[.clickable]
+****
+How to use TypeDB Studio.
+****
+--

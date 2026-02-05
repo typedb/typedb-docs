@@ -37,10 +37,16 @@ Then, you can build Docs as follows:
 ```shell
 git submodule update --init
 pnpm i
-pnpm run build
+npm run build
 ```
 
 This will build a single version of Docs containing the content of your locally checked out branch.
+
+If you've built Docs before, you can build it again by simply running
+
+```shell
+npm run build
+```
 
 ---
 

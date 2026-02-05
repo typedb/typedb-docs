@@ -32,4 +32,15 @@ Community Edition::
 // end::connect_ce_studio[]
 --
 ====
-// end::connect_studio[] 
+
+[NOTE]
+====
+### Using a connection string
+
+You can also connect to a TypeDB server using a connection string. The connection string should be in the format `typedb://<username>:<password>@<host>:<port>/<database_name>?name=<my_connection_name>`. '/<database_name>' and 'name' are optional.
+
+For example, if you have a TypeDB server running on `localhost:8000` and you want to connect to the `mydb` database, you can use the connection string `typedb://admin:password@localhost:8000/mydb`.
+
+TypeDB Cloud credentials files include a prebuilt connection string.
+====
+// end::connect_studio[]

@@ -9,7 +9,7 @@ With Studio, developers can efficiently manage databases, execute queries, and e
 all within a unified environment.
 
 This page provides a quick introduction to TypeDB Studio and an overview of its features. All features of TypeDB Studio
-are available on both web and desktop.
+are available on both web and desktop. Be aware that the web app may not be able to connect to non-HTTPS endpoints (e.g. localhost, 127.0.0.1) on certain browsers; at the time of writing, Chrome works, but Safari does not.
 --
 
 [cols-2]
@@ -56,23 +56,25 @@ You can run queries against the connected TypeDB server using TypeDB Studio's ht
 
 You can write TypeQL queries in the Query pane.
 
-The Query pane contains a code editor that offers TypeQL highlighting and simple autocompletion.
+The Query pane contains a code editor that offers TypeQL highlighting and autocompletion.
 
 === Run a query
 
 When your query is ready to run, hit "Run query" in the Query pane.
 
-Results are printed to the Run pane.
+Results are printed to the Results pane.
 
 === Query results
 
-The Run pane offers three different views of results - you can choose between *Log*, *Table* and *Raw*.
+The Results pane offers three different views of results - you can choose between *Log*, *Table*, *Graph* and *Raw*.
 
 The Log contains textual output, similar to TypeDB Console, as well as input log, and error messages.
 
 Table view is well suited for visualising the answers of *match* and *fetch* queries in a tabular format, where each row represents an answer, and each column represents a variable.
 
-Raw output allows you to see the raw HTTP response from TypeDB.
+Graph (network) output is appropriate for visualising and understanding the connections in your dataset.
+
+Raw output allows you to see the raw HTTP response from TypeDB and is useful for debugging.
 
 === Schema pane
 
@@ -86,9 +88,13 @@ typically better for simple schemas, while the hierarchical view is better for m
 The options pane also allows you to filter what capabilities are displayed. For example, you can set it to only display
 owned attributes, or to only display roleplayers of relations.
 
+You can also view the full schema text from this pane.
+
 === History pane
 
-All queries and transaction operations are timestamped and logged to the History pane. Any errors that occur can be retrieved from this pane.
+All queries and transaction operations are timestamped and logged to the History pane.
+You can copy and replay queries from this pane.
+Any errors that occur can be inspected from this pane.
 
 === Transaction controls
 
@@ -118,6 +124,46 @@ TypeDB Studio's https://studio.typedb.com/schema[Schema tool,window=_blank] allo
 
 It renders the entire schema as a graph visualisation, with nodes representing entities, relations, attributes, etc.,
 and edges representing capabilities such as owned attributes and played roles.
+
+
+== Data explorer
+
+You can explore your TypeDB data without writing queries in the https://studio.typedb.com/data[Data explorer,window=_blank], an interactive visual environment for exploring data.
+
+Select any type, and it will show you a table of instances and their most interesting connections - attributes, relations, roleplayers, etc.
+
+Select any instance from that table, and you can see all its connections in greater detail, allowing you to see exactly what data you're looking at.
+
+You can then jump to connected instances using the "Explore" buttons on instance details, and as such you can traverse your dataset entirely using this visual UI without needing to write queries.
+
+=== Table of instances
+
+Once you're in the data explorer, start exploring by selecting any type from the schema. This will bring up a table of instances of that type, as well as:
+
+- For entities and relations: the instance's attributes;
+- For entities and relations: a summary of the instance's relations;
+- For relations: a summary of the instance's roleplayers;
+- For attributes: the attribute's value and value type;
+- The instance's type - as tables include subtypes of the selected type.
+
+Selecting any instance from this table will take you to Instance Details.
+
+Instance tables support standard table functionality (filtering, sorting, pagination, column picker ...) Filtering, sorting and pagination are all handled server-side using TypeQL queries.
+
+=== Instance details
+
+Instance details show the same info as tables in much more detail.
+In particular, roleplayers, attribute owners and linked relations include their attributes so that data is clearly labelled.
+
+You can jump to connected instances using the "Explore" buttons on instance details, allowing you to traverse your dataset.
+Explorations leave behind a breadcrumb that indicates the exploration chain you've taken to get to a specific instance.
+Thus, breadcrumbs form a chain of connected concepts.
+
+Data Explorer tabs support standard tab functionality (close, close others, close all, pin ...) and are restored (but perform fresh queries) when you reopen TypeDB Studio.
+
+=== Working with a data snapshot
+
+In manual transaction mode the user can work with a fixed snapshot of their data for stable exploration.
 
 
 == User manager

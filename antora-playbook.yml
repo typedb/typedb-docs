@@ -32,6 +32,18 @@ content:
     - url: .
       start_path: guides
       branches: HEAD
+    - url: .
+      start_path: archive/manual
+      branches: HEAD
+    - url: .
+      start_path: archive/drivers
+      branches: HEAD
+    - url: .
+      start_path: archive/typeql
+      branches: HEAD
+    - url: .
+      start_path: archive/examples
+      branches: HEAD
     - url: https://github.com/typedb/typedb-driver
       start_path: docs
       branches: ["master"]
