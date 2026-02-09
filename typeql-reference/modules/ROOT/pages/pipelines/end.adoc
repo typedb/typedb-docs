@@ -1,0 +1,95 @@
+= End clause
+
+The `end` clause explicitly marks the end of a query. It is primarily used to separate multiple data pipeline queries when they are written in sequence - in essence letting the parser split what is otherwise one long query pipeline into a series of queries.
+
+== Syntax
+
+[,typeql]
+----
+end;
+----
+
+== Behavior
+
+When multiple queries are written together in a single input, the `end` clause serves as an unambiguous boundary between them.
+
+=== Data pipelines
+
+When submitting multiple queries, users need a way to indicate where one query ends and the next begins. Without `end`, TypeQL parses the longest valid query it can. For example:
+
+[,typeql]
+----
+match $x isa movie;
+insert $x has rating 5;
+match $y isa person;
+insert $y has verified true;
+----
+
+This input could have been intended as:
+
+* One `match-insert-match-insert` pipeline
+* Two separate `match-insert` pipelines
+* Other combinations
+
+Use `end;` to ensure the intent is clear:
+
+[,typeql]
+----
+match $x isa movie;
+insert $x has rating 5;
+end;
+match $y isa person;
+insert $y has verified true;
+end;
+----
+
+This clearly represents two separate queries.
+
+=== Schema queries
+
+Schema queries (`define`, `undefine`, `redefine`) are automatically recognized as their own queries because they cannot be chained into pipelines. When a schema query is followed by another query, the parser can determine the boundary without `end`.
+
+[,typeql]
+----
+define
+  entity movie;
+  entity person, owns name;
+  attribute name, value string;
+
+match
+  $x isa movie;
+insert
+  $x has rating 5;
+----
+
+This is clearly two queries: one `define` and one `match-insert` pipeline.
+
+== Client support
+
+Currently, only xref:{page-version}@home::installation/console.adoc[TypeDB Console] (version 3.2.0+) supports submitting multiple queries in a single input. TypeDB Studio and the drivers accept only one query at a time, so `end` is not needed with those clients.
+
+== When to use
+
+The `end` clause is:
+
+* *Required* when submitting multiple data pipeline queries in sequence that would otherwise be ambiguous
+* *Optional* for single queries (both schema and data pipelines)
+* *Not needed* after schema queries when followed by other queries, as they are naturally unambiguous
+
+== Example
+
+Separate two data pipelines:
+
+[,typeql]
+----
+match
+  $movie isa movie, has title "Inception";
+insert
+  $movie has rating 9.5;
+end;
+match
+  $person isa person, has name "Alice";
+  $movie isa movie, has title "Inception";
+insert
+  viewing (viewer: $person, viewed: $movie);
+----
