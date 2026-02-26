@@ -58,10 +58,11 @@ from typedb.driver import *
 driver = TypeDB.driver(address=TypeDB.DEFAULT_ADDRESS, ...)
 ----
 
-=== Python driver example
+=== Python driver resources
 
 * https://github.com/typedb/typedb-driver/blob/master/python/example.py[example.py on GitHub] - View the TypeDB Python driver example
 * https://pypi.org/project/typedb-driver/[PyPI]
+* xref:{page-version}@reference::typedb-grpc-drivers/python.adoc[Python Driver API Reference]
 
 
 == TypeScript (HTTP)
@@ -88,10 +89,11 @@ const driver = new TypeDBHttpDriver({
 });
 ----
 
-=== TypeScript HTTP driver example
+=== TypeScript HTTP driver resources
 
 * https://github.com/typedb/typedb-examples/tree/master/webapp[TypeSpace: Social Network Webapp Example] - Explore the TypeScript HTTP driver example on GitHub
 * https://www.npmjs.com/package/typedb-driver-http[NPM registry]
+* xref:{page-version}@reference::typedb-http-drivers/typescript.adoc[TypeScript Driver API Reference]
 
 
 == Rust
@@ -114,10 +116,11 @@ use typedb_driver::TypeDBDriver;
 let driver = TypeDBDriver::new_core(TypeDBDriver::DEFAULT_ADDRESS).await.unwrap();
 ----
 
-=== Rust driver example
+=== Rust driver resources
 
 * https://github.com/typedb/typedb-driver/blob/master/rust/example.rs[example.rs on GitHub] - View the TypeDB Rust driver example
 * https://crates.io/crates/typedb-driver[Crates.io]
+* xref:{page-version}@reference::typedb-grpc-drivers/rust.adoc[Rust Driver API Reference]
 
 
 == Java
@@ -158,10 +161,11 @@ try (Driver driver = TypeDB.driver(TypeDB.DEFAULT_ADDRESS, new Credentials("admi
 }
 ----
 
-=== Java driver example
+=== Java driver resources
 
 * https://github.com/typedb/typedb-driver/blob/master/java/TypeDBExample.java[TypeDBExample.java on GitHub] - View the TypeDB Java driver example
 * https://cloudsmith.io/~typedb/repos/public-release/packages/detail/maven/typedb-driver/[Maven repo]
+* xref:{page-version}@reference::typedb-grpc-drivers/java.adoc[Java Driver API Reference]
 
 
 == C
@@ -181,9 +185,10 @@ DriverOptions* options = driver_options_new(false, NULL);
 TypeDBDriver* driver = driver_open("127.0.0.1:1729", credentials, options);
 ----
 
-=== C driver example
+=== C driver resources
 
 * https://github.com/typedb/typedb-driver/blob/master/c/example.c[example.c on GitHub] - View the TypeDB C driver example
+* xref:{page-version}@reference::typedb-grpc-drivers/c.adoc[C Driver API Reference]
 
 
 == Other languages
