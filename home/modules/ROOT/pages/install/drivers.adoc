@@ -205,8 +205,8 @@ TypeDBDriver* driver = driver_open("127.0.0.1:1729", credentials, options);
 +
 [source,xml]
 ----
-<PackageReference Include="TypeDB.Driver" Version={VERSION} />
-<PackageReference Include="TypeDB.Driver.Pinvoke.osx-arm64" Version={VERSION} />
+<PackageReference Include="TypeDB.Driver" Version="{version}" />
+<PackageReference Include="TypeDB.Driver.Pinvoke.osx-arm64" Version="{version}" />
 ----
 +
 Replace `osx-arm64` with the appropriate platform for your system: `osx-x64`, `linux-x64`, `linux-arm64`, or `win-x64`.
@@ -215,11 +215,11 @@ For platform-independent distribution, include all Pinvoke runtimes:
 +
 [source,xml]
 ----
-<PackageReference Include="TypeDB.Driver.Pinvoke.osx-x64" Version={VERSION} />
-<PackageReference Include="TypeDB.Driver.Pinvoke.osx-arm64" Version={VERSION} />
-<PackageReference Include="TypeDB.Driver.Pinvoke.linux-x64" Version={VERSION} />
-<PackageReference Include="TypeDB.Driver.Pinvoke.linux-arm64" Version={VERSION} />
-<PackageReference Include="TypeDB.Driver.Pinvoke.win-x64" Version={VERSION} />
+<PackageReference Include="TypeDB.Driver.Pinvoke.osx-x64" Version="{version}" />
+<PackageReference Include="TypeDB.Driver.Pinvoke.osx-arm64" Version="{version}" />
+<PackageReference Include="TypeDB.Driver.Pinvoke.linux-x64" Version="{version}" />
+<PackageReference Include="TypeDB.Driver.Pinvoke.linux-arm64" Version="{version}" />
+<PackageReference Include="TypeDB.Driver.Pinvoke.win-x64" Version="{version}" />
 ----
 
 . Use TypeDB Driver in your program:
@@ -229,11 +229,12 @@ For platform-independent distribution, include all Pinvoke runtimes:
 using TypeDB.Driver;
 using TypeDB.Driver.Api;
 
-using var driver = TypeDB.Driver("127.0.0.1:1729", new Credentials("admin", "password"), new DriverOptions(false, null));
+using var driver = TypeDB.Driver(TypeDB.DefaultAddress, new Credentials("admin", "password"), new DriverOptions(false, null));
 ----
 
 === C# driver resources
 
+* https://github.com/typedb/typedb-driver/blob/master/csharp/TypeDBExample.cs[TypeDBExample.cs on GitHub] - View the TypeDB C# driver example
 * https://www.nuget.org/packages/TypeDB.Driver[NuGet]
 * xref:{page-version}@reference::typedb-grpc-drivers/csharp.adoc[C# Driver API Reference]
 
