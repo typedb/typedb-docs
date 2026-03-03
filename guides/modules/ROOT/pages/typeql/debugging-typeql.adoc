@@ -1,0 +1,444 @@
+= Debugging TypeQL
+:keywords: typedb, typeql, debugging, guide, studio
+:pageTitle: Debugging TypeQL queries
+:summary: Learn how to leverage TypeQL's composability to quickly debug queries and pipelines.
+:page-toclevels: 2
+:page-aliases: {page-version}@maintenance-operation::troubleshooting/debugging-queries.adoc
+:test-typeql: linear
+
+== Overview
+
+When a query doesn't behave as expected, TypeQL's compositional structure makes it straightforward to isolate the problem.
+This guide covers three practical techniques:
+
+1. Using `reduce` to quickly count results at any point in a query.
+2. Commenting out statements in a `match` clause to narrow down which constraint is wrong.
+3. Running successive prefixes of a multi-stage pipeline to inspect intermediate results.
+
+== Prerequisites
+
+This guide assumes you have access to a running TypeDB instance.
+
+We recommend using xref:{page-version}@tools::studio.adoc[TypeDB Studio] to follow along.
+Its query editor makes it easy to edit, comment out lines, and re-run queries interactively.
+
+== Example schema and data
+
+We'll use a small financial services schema throughout this guide.
+Create a database and load the following schema and data to follow along.
+
+[,typeql]
+----
+#!test[schema, commit]
+define
+
+entity customer,
+    owns customer-id @key,
+    owns name,
+    owns risk-rating,
+    plays account-holding:holder;
+
+entity account,
+    owns account-id @key,
+    owns balance,
+    owns status,
+    plays account-holding:account,
+    plays payment:sender,
+    plays payment:receiver;
+
+relation account-holding,
+    relates holder,
+    relates account;
+
+relation payment,
+    relates sender,
+    relates receiver,
+    owns amount,
+    owns reference @key;
+
+attribute customer-id, value string;
+attribute account-id, value string;
+attribute name, value string;
+attribute risk-rating, value string;
+attribute balance, value double;
+attribute status, value string;
+attribute amount, value double;
+attribute reference, value string;
+----
+
+[,typeql]
+----
+#!test[write, commit]
+insert
+
+$c1 isa customer, has customer-id "C001", has name "Acme Corp", has risk-rating "high";
+$c2 isa customer, has customer-id "C002", has name "Globex Inc", has risk-rating "low";
+$c3 isa customer, has customer-id "C003", has name "Initech Ltd", has risk-rating "medium";
+
+$a1 isa account, has account-id "ACC-001", has balance 50000.0, has status "active";
+$a2 isa account, has account-id "ACC-002", has balance 120000.0, has status "active";
+$a3 isa account, has account-id "ACC-003", has balance 8000.0, has status "frozen";
+
+account-holding (holder: $c1, account: $a1);
+account-holding (holder: $c2, account: $a2);
+account-holding (holder: $c3, account: $a3);
+
+$p1 isa payment, links (sender: $a1, receiver: $a2), has amount 15000.0, has reference "PAY-001";
+$p2 isa payment, links (sender: $a2, receiver: $a1), has amount 3000.0, has reference "PAY-002";
+$p3 isa payment, links (sender: $a1, receiver: $a3), has amount 7500.0, has reference "PAY-003";
+$p4 isa payment, links (sender: $a3, receiver: $a2), has amount 2000.0, has reference "PAY-004";
+$p5 isa payment, links (sender: $a2, receiver: $a3), has amount 4500.0, has reference "PAY-005";
+----
+
+This gives us three customers, each with one account, and five payments between accounts.
+
+== Quick counts with `reduce`
+
+The simplest debugging tool is `reduce $count = count;`.
+Appending this to any query tells you how many answers were produced, without displaying the full results:
+
+[,typeql]
+----
+#!test[read, count = 1]
+match $c isa customer;
+reduce $count = count;
+----
+
+[,typeql]
+----
+   -----------
+    $count | 3
+   -----------
+Finished. Total answers: 1
+----
+
+This works after any stage that produces a stream of answers, such as `match`, `select`, or `distinct`:
+
+[,typeql]
+----
+#!test[read, count = 1]
+match
+  $p isa payment, has amount $a;
+  $a > 5000.0;
+reduce $count = count;
+----
+
+[,typeql]
+----
+   -----------
+    $count | 2
+   -----------
+Finished. Total answers: 1
+----
+
+A quick count is often the fastest way to confirm whether a stage is producing the results you expect before diving deeper.
+
+[NOTE]
+====
+`reduce` cannot follow a `fetch` clause.
+`fetch` is a _terminal_ stage that converts the answer stream into JSON documents — nothing can come after it.
+To count results, replace the `fetch` with `reduce $count = count;`.
+====
+
+== Narrowing down a match clause
+
+When a `match` clause returns fewer results than expected, you can use TypeQL comments (`#`) to systematically disable constraints and isolate the problem.
+The idea is simple: comment out roughly half the statements, check the count, and repeat on the half that still misbehaves.
+
+Suppose we want to find large outgoing payments from high-risk customers.
+We know Acme Corp is high-risk and has sent payments of 15,000 and 7,500, so we expect at least two results:
+
+[,typeql]
+----
+#!test[read, count = 0]
+match
+  $customer isa customer, has name $name;
+  $customer has risk-rating "High";
+  account-holding (holder: $customer, account: $source);
+  $source has status "active";
+  payment (sender: $source, receiver: $dest), has amount $amount;
+  $amount > 5000.0;
+----
+
+[,typeql]
+----
+Finished. Total answers: 0
+----
+
+Zero results.
+Rather than re-reading the whole query, we can binary-search for the problematic constraint.
+
+=== Step 1: comment out the bottom half
+
+Comment out the last three constraints and count what's left:
+
+[,typeql]
+----
+#!test[read, count = 1]
+match
+  $customer isa customer, has name $name;
+  $customer has risk-rating "High";
+  account-holding (holder: $customer, account: $source);
+  # $source has status "active";
+  # payment (sender: $source, receiver: $dest), has amount $amount;
+  # $amount > 5000.0;
+reduce $count = count;
+----
+
+Still zero — the problem is in the top half.
+
+=== Step 2: narrow further
+
+Comment out the second and third constraints:
+
+[,typeql]
+----
+#!test[read, count = 1]
+match
+  $customer isa customer, has name $name;
+  # $customer has risk-rating "High";
+  # account-holding (holder: $customer, account: $source);
+reduce $count = count;
+----
+
+Three results — the first constraint is fine.
+Re-enable the second:
+
+[,typeql]
+----
+#!test[read, count = 1]
+match
+  $customer isa customer, has name $name;
+  $customer has risk-rating "High";
+reduce $count = count;
+----
+
+Zero again.
+The constraint `has risk-rating "High"` is the culprit.
+
+=== Step 3: inspect the data
+
+[,typeql]
+----
+#!test[read, count = 3]
+match $c isa customer, has risk-rating $r;
+----
+
+[,typeql]
+----
+   -----------
+    $c | isa customer, iid 0x...
+    $r | "high"
+   -----------
+    ...
+Finished. Total answers: 3
+----
+
+The values are `"high"`, `"low"`, and `"medium"` — all lowercase.
+The query used `"High"` with a capital H, which matches nothing.
+Fixing the case gives us the expected results:
+
+[,typeql]
+----
+#!test[read, count = 2]
+match
+  $customer isa customer, has name $name;
+  $customer has risk-rating "high";
+  account-holding (holder: $customer, account: $source);
+  $source has status "active";
+  payment (sender: $source, receiver: $dest), has amount $amount;
+  $amount > 5000.0;
+----
+
+[,typeql]
+----
+   -----------
+    ...
+   -----------
+Finished. Total answers: 2
+----
+
+In three quick iterations, we narrowed six constraints down to the one that was wrong.
+
+== Debugging a query pipeline
+
+Multi-stage pipelines can be harder to debug because the problem may be in any stage.
+The key technique is to run successive _prefixes_ of the pipeline — first just the `match`, then `match` + `reduce`, and so on — checking the results at each step before moving on.
+
+Suppose we want to flag customers whose total outgoing payments exceed $20,000 by setting their risk-rating to `"high"`:
+
+[,typeql]
+----
+#!test[write, count = 0, rollback]
+match
+  $customer isa customer;
+  account-holding (holder: $customer, account: $account);
+  payment (receiver: $account), has amount $amount;
+reduce
+  $total = sum($amount) groupby $customer;
+match
+  $total > 20000.0;
+update
+  $customer has risk-rating == "high";
+----
+
+[,typeql]
+----
+Finished. Total answers: 0
+----
+
+No updates were written.
+We expected at least Acme Corp (outgoing total of 22,500) to be flagged.
+Let's work through the pipeline prefix by prefix.
+
+=== Prefix 1: just the match
+
+First, check that the initial `match` is finding data at all:
+
+[,typeql]
+----
+#!test[read, count = 1]
+match
+  $customer isa customer;
+  account-holding (holder: $customer, account: $account);
+  payment (receiver: $account), has amount $amount;
+reduce $count = count;
+----
+
+[,typeql]
+----
+   -----------
+    $count | 5
+   -----------
+Finished. Total answers: 1
+----
+
+Five matched payment rows — the `match` stage is working.
+
+=== Prefix 2: match and reduce
+
+Now include the `reduce` to see the aggregated totals:
+
+[,typeql]
+----
+#!test[read, count = 3]
+match
+  $customer isa customer;
+  account-holding (holder: $customer, account: $account);
+  payment (receiver: $account), has amount $amount;
+reduce
+  $total = sum($amount) groupby $customer;
+----
+
+[,typeql]
+----
+   -----------
+    $customer | isa customer, iid 0x...
+    $total    | 3000.0
+   -----------
+    $customer | isa customer, iid 0x...
+    $total    | 17000.0
+   -----------
+    $customer | isa customer, iid 0x...
+    $total    | 12000.0
+   -----------
+Finished. Total answers: 3
+----
+
+Three results, but the totals are 3,000, 17,000, and 12,000.
+None exceed 20,000, which explains the zero updates — but the values look wrong.
+Let's add a stage to see which customer is which:
+
+=== Prefix 3: match, reduce, and inspect
+
+[,typeql]
+----
+#!test[read, count = 3]
+match
+  $customer isa customer;
+  account-holding (holder: $customer, account: $account);
+  payment (receiver: $account), has amount $amount;
+reduce
+  $total = sum($amount) groupby $customer;
+match
+  $customer has name $name;
+fetch {
+  "customer": $name,
+  "total": $total
+};
+----
+
+[,json]
+----
+{ "customer": "Acme Corp", "total": 3000.0 }
+{ "customer": "Globex Inc", "total": 17000.0 }
+{ "customer": "Initech Ltd", "total": 12000.0 }
+Finished. Total answers: 3
+----
+
+Acme Corp shows a total of only 3,000 — but we know they _sent_ payments totalling 22,500.
+These are _incoming_ totals, not outgoing.
+
+Looking back at the first `match`, the query uses the `receiver` role:
+
+[,typeql]
+----
+payment (receiver: $account), has amount $amount;
+----
+
+This matches payments _received by_ the account.
+We need payments _sent from_ the account — the `sender` role:
+
+[,typeql]
+----
+#!test[write, count = 1, rollback]
+match
+  $customer isa customer;
+  account-holding (holder: $customer, account: $account);
+  payment (sender: $account), has amount $amount;
+reduce
+  $total = sum($amount) groupby $customer;
+match
+  $total > 20000.0;
+update
+  $customer has risk-rating == "high";
+----
+
+[,typeql]
+----
+Finished. Total answers: 1
+----
+
+One update — Acme Corp, whose outgoing total of 22,500 exceeds the threshold.
+
+By running each prefix of the pipeline in turn, we located the problem at the `reduce` stage (unexpected totals) and traced it back to the role name in the `match`.
+The same technique works for any pipeline ending in `insert`, `delete`, or `update`: build it up stage by stage and verify each stage's output before adding the next.
+
+== Further reading
+
+[cols-2]
+--
+.xref:{page-version}@typeql-reference::pipelines/reduce.adoc[]
+[.clickable]
+****
+`reduce` documentation in TypeQL reference
+****
+
+.xref:{page-version}@guides::typeql/advanced-pipelines.adoc[]
+[.clickable]
+****
+Advanced TypeDB pipelines and patterns
+****
+
+.xref:{page-version}@typeql-reference::pipelines/match.adoc[]
+[.clickable]
+****
+`match` documentation in TypeQL reference
+****
+
+.xref:{page-version}@guides::typeql/optimizing-typeql.adoc[]
+[.clickable]
+****
+Optimize your queries for the best performance
+****
+--
