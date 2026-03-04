@@ -40,8 +40,8 @@ However, if you make `book` abstract, now you've created a simple contract of wh
 ----
 define
 attribute isbn @abstract, value string;
-attribute isbn-10;
-attribute isbn-13;
+attribute isbn-10, sub isbn;
+attribute isbn-13, sub isbn;
 attribute price, value double;
 
 entity book,
