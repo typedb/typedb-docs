@@ -116,7 +116,7 @@ entity book plays review:reviewed;
 entity user plays review:reviewer;
 ----
 
-OOP primitive types are represented with PERA attribute types, and OOP composite types with PERA object types. References from OOP composite types to OOP primitive types are represented with PERA ownership types, and references from OOP composite types to other OOP composite types with PERA role types. __If an OOP composite type is composed only of primitive types, it is represented with a PERA entity type. If it is composed of both primitive and other composite types, it is represented with a PERA relation type. In this framework, the number of objects instantiated in the application and the database is the same, and we create references between objects in the database in a single way.
+OOP primitive types are represented with PERA attribute types, and OOP composite types with PERA object types. References from OOP composite types to OOP primitive types are represented with PERA ownership types, and references from OOP composite types to other OOP composite types with PERA role types. __If__ an OOP composite type is composed only of primitive types, it is represented with a PERA entity type. If it is composed of both primitive and other composite types, it is represented with a PERA relation type. In this framework, the number of objects instantiated in the application and the database is the same, and we create references between objects in the database in a single way.
 
 The mappings from OOP types to PERA types in the type-theoretic framework are summarised in the following table.
 
