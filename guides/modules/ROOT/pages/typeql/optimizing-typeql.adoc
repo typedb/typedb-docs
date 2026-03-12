@@ -1,4 +1,9 @@
-= Optimizing queries
+= Optimizing TypeQL
+:keywords: typedb, typeql, optimization, performance, guide
+:pageTitle: Optimizing TypeQL queries
+:summary: Learn how TypeDB's optimizer works and how to write efficient TypeQL queries.
+:page-toclevels: 2
+:page-aliases: {page-version}@maintenance-operation::troubleshooting/optimizing-queries.adoc
 :test-typeql: linear
 
 == TypeDB's optimizer
@@ -21,6 +26,12 @@ match
   $x has username "john_1";
 ----
 are semantically equivalent (i.e., they yield the same results), but the first query will likely run much faster than the second query.
+
+[TIP]
+====
+Splitting a single `match` into multiple stages is a useful debugging technique when you suspect TypeDB's optimizer is not finding the fast execution path you have in mind.
+If breaking a stage into two improves performance, it confirms that the optimizer was choosing a suboptimal plan for the combined stage — and the split gives you direct control over the evaluation order.
+====
 
 1. In the first query, the optimizer will optimize evaluation order of the first (and only) `match` stage: it'll decide that it is most efficient to first look up all entities with `username` equal to `"john_1"` and then filter the result to contain only `user` entities.
 2. The second query comprises two stages, to be executed one after the other: the database will first retrieve _all_ users, thus constructing a very large set of answers. Only in the second stage to we filter this set to contain only users with `username` equal to `"john_1"`.

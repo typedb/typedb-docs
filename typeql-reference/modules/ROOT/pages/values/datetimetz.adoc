@@ -43,6 +43,48 @@ match
 #}}
 ----
 
+== Storage representation
+
+A datetime-tz value is stored as a UTC timestamp and a time zone identifier or offset.
+
+== Comparing datetime-tz values
+
+In comparisons, a datetime-tz value is compared to another datetime-tz value by converting both to UTC.
+In particular, the time zones do not affect the result of the comparison.
+A later time point in time is always greater than an earlier time point, and two time points at the same instant are equal.
+
+[,typeql]
+.Example datetime-tz comparison
+----
+2024-01-30T12:00:00 Europe/London == 2024-01-30T08:00:00-04:00
+2024-01-30T12:00:00 America/New_York < 2024-01-30T12:00:00Z
+2024-01-30T12:00:00+01:00 > 2024-01-30T11:00:00 UTC
+----
+
+== In expressions
+
+A difference between two datetime-tz values is a duration such that when it is added to the earlier
+datetime-tz, it produces a datetime equal to the later datetime-tz.
+See the xref:{page-version}@typeql-reference::values/duration.adoc[Duration] type reference for more
+information about datetime-duration arithmetic.
+
+The calendar portion of the result (that is, years, months, and days) is the greatest calendar
+duration that can be added to the earlier datetime-tz without exceeding the later datetime-tz.
+The time portion (hours, minutes, seconds, and nanoseconds) is the 
+
+[,typeql]
+.Example datetime-tz arithmetic
+----
+# London DST change occurred on 2024-10-27 02:00:00 BST
+# This means that the period from 01:00:00 to 02:00:00 is repeated in the Europe/London timezone
+# The repeated hour means that the difference between 2024-10-26T18:00 and 2024-10-27T06:00 is 13 hours, not 12
+2024-10-27T06:00 Europe/London - 2024-10-26T18:00 Europe/London == P13H
+# Crucially, this also means that the difference between 2024-10-26T18:00 and 2024-10-27T17:30 is 24 hours and 30 minutes
+# which is still less than one calendar day
+2024-10-27T17:30 Europe/London - 2024-10-26T18:00 Europe/London == PT24H30M
+2024-10-27T18:00 Europe/London - 2024-10-26T18:00 Europe/London == P1D
+----
+
 == Defining a datetime-tz valued attribute
 
 [,typeql]

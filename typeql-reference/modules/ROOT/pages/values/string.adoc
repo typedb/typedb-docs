@@ -3,6 +3,15 @@
 
 A UTF-8 character string type.
 
+== In expressions
+
+Strings can be concatenated using the `+` operator.
+
+[,typeql]
+----
+"Hello," + " world!" == "Hello, world!" 
+----
+
 == Defining a string valued attribute
 
 [,typeql]

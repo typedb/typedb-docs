@@ -64,6 +64,27 @@ without having a date as a frame of reference.
 
 == In expressions
 
+Durations can be added together or subtracted from one another.
+The arithmetic is performed on each component separately.
+
+[,typeql]
+.Example duration arithmetic
+----
+P1Y2M3D + P3Y2M1D == P4Y4M4D
+P3DT23H59M59S + PT1S == P3DT24H
+P1Y2M3DT24H - PT1H == P1Y2M3DT23H
+----
+
+It is an error to subtract durations where the result in any component would be negative.
+
+[,typeql]
+.Example duration arithmetic errors
+----
+P1D - PT1H # error: the lhs has time duration of 0 seconds and would underflow
+P1Y3D - P10D # error: the lhs day duration is less than the rhs day duration
+P1Y2M3D - P1D == P1Y2M2D # fine: subtracting 1 day from the day component
+----
+
 When adding to or subtracting from a datetime or a datetime-tz value, first the months part is added, then the days, and finally the
 nanoseconds. These operations respect daylight saving changes, and other timezone changes where relevant.
 
@@ -80,6 +101,16 @@ This means that addition of durations to datetimes is not commutative.
 2024-02-29T12:00:00 + P1D + P1M == 2024-04-01T12:00:00
 ----
 
+It also means that adding and subtracting the same duration to a datetime may not result in the same value.
+[,typeql]
+----
+# 29th of Februrary + 1 month and 1 day = 29th of March + 1 day = 30th of March
+2024-02-29T12:00:00 + P1M1D == 2024-02-29T12:00:00 + P1M + P1D == 2024-03-30T12:00:00
+
+# 30th of March - 1 month and 1 day = 29th of February - 1 day = 28th of February
+2024-03-30T12:00:00 - P1M1D == 2024-03-30T12:00:00 - P1M - P1D == 2024-02-28T12:00:00
+----
+
 To avoid confusion, it is generally recommended to compute the duration value first, then add it to or subtract it from the datetime.
 ====
 
@@ -90,6 +121,19 @@ If adding a month would make the day of the month invalid, the last day of the r
 # 31st of January + 1 month = 28th of February, not 31st of February or 3rd of March
 2025-01-31T14:00:00Z + P1M == 2025-02-28T14:00:00Z
 ----
+
+[WARNING]
+====
+This means that addition of durations to datetimes is also not associative.
+[,typeql]
+----
+# 31st of January + 2 months = 31st of March
+2025-01-31T14:00:00 + P2M == 2025-03-31T14:00:00
+
+# 31st of January + 1 month + 1 month = 28th of February + 1 month = 28th of March
+2025-01-31T14:00:00 + P1M + P1M == 2025-03-28T14:00:00
+----
+====
 
 When used with a value of type datetime-tz, arithmetic operations with duration respect local timezone changes (e.g. daylight saving time).
 

@@ -157,10 +157,10 @@ A simple illustration is this toy function that produces natural numbers.
 
 [,typeql]
 ----
-with fn nat() -> { integer }:
+with fun nat() -> { integer }:
 match
   {let $x = 0;} or
-  { let $x in nat() + 1; };
+  { let $prev in nat(); let $x = $prev + 1; };
 return { $x };
 
 match let $x in nat();

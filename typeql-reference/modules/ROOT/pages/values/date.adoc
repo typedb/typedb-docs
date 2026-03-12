@@ -43,6 +43,15 @@ The minimum supported date is January 1, 262144 BCE,
 and the maximum supported date is December 31, 262142 CE.
 ====
 
+== In expressions
+
+A difference between two dates values is a calendar duration between the two, in years, months, and days.
+
+[,typeql]
+----
+2024-03-30 - 2020-09-21 == P3Y6M9D
+----
+
 == Defining a date valued attribute
 
 [,typeql]

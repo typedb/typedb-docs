@@ -49,7 +49,7 @@ fun transitive_places_unoptimized($place: place) -> { place }:
   return { $transitive };
 ----
 
-Note that this function is written in the **unoptimized** recursive form. Read the xref:{page-version}@maintenance-operation::troubleshooting/optimizing-queries.adoc[Optimizing queries] page to understand how to write this more efficiently.
+Note that this function is written in the **unoptimized** recursive form. Read the xref:{page-version}@guides::typeql/optimizing-typeql.adoc[Optimizing TypeQL] page to understand how to write this more efficiently.
 
 [,typeql]
 ----

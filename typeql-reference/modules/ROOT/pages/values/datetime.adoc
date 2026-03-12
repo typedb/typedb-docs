@@ -17,7 +17,7 @@ The time fragment consists of the following values, separated by `:`:
 
 * a two-digit hour between `00` and `24`,
 * a two-digit minute between `00` and `59`,
-* a two-digit second between `00` and `60` with up to nine digits after the decimal point.
+* a two-digit second between `00` and `59` with up to nine digits after the decimal point.
 
 [,typeql]
 .Example datetime literals
@@ -45,6 +45,20 @@ match
     let $x = +20000-01-01T10:30:00.000;
     let $y = +900-09-21T19:59:59.358;
 #}}
+----
+
+== In expressions
+
+A difference between two datetime values is a duration such that when it is added to the earlier
+datetime, it produces the later datetime. 
+See the xref:{page-version}@typeql-reference::values/duration.adoc[Duration] type reference for more
+information about datetime-duration arithmetic.
+The time portion of the result is always under 24 hours.
+
+[,typeql]
+----
+2024-03-30T12:00:00 - 2020-09-21T09:00:00 == P3Y6M9DT3H
+2020-09-21T09:00:00 + P3Y6M9DT3H == 2024-03-30T12:00:00
 ----
 
 == Defining a datetime valued attribute
