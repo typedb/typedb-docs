@@ -1,0 +1,211 @@
+= Hypergraph database
+:Summary: How TypeDB's hypergraph model handles n-ary relations, nested relations, and layered context and metadata structuresg
+:keywords: typedb, hypergraph, n-ary relations, nested relations, knowledge graph, data modeling
+:test-typeql: linear
+
+Binary edges work well for simple connections: a person directs a company, a company owns a subsidiary. But real domains involve relationships that connect multiple parties in specific roles, carry rich context, and themselves participate in other relationships.
+
+This page explains why TypeDB is an excellent hypergraph store — a paradigm not widely implemented in production databases. To illustrate, we'll extend the companies ledger from the xref:{page-version}@use-cases::graph.adoc[Graph] page into acquisition deal modeling — showing where binary edges break down and how a hypergraph model handles the complexity directly.
+
+== The limits of binary edges
+
+Starting from our companies ledger, suppose Acme Corp acquires Globex Inc. In a property graph, you'd model this with a simple edge:
+
+[,cypher]
+----
+CREATE (acme)-[:ACQUIRES {stake: 67.5, value: 2500000000}]->(globex)
+----
+
+Simple enough. But real acquisitions involve more than two parties. Bank A leads the financing, Advisory Firm B advises the acquirer, Legal Firm C handles representation. Now you're forced to reify the acquisition into a node:
+
+[,cypher]
+----
+CREATE (bankA:Bank {name: "Bank A"})
+CREATE (advB:AdvisoryFirm {name: "Advisory Firm B"})
+CREATE (legalC:LegalFirm {name: "Legal Firm C"})
+
+CREATE (acq:Acquisition {name: "Project Atlas", value: 2500000000})
+CREATE (acme)-[:ACQUIRES {stake: 67.5}]->(acq)
+CREATE (globex)-[:TARGET_OF]->(acq)
+CREATE (bankA)-[:FINANCES {facility_size: 1800000000}]->(acq)
+CREATE (advB)-[:ADVISES]->(acq)
+CREATE (legalC)-[:REPRESENTS]->(acq)
+----
+
+Notice the problems:
+
+* **The acquisition is not an edge.** It's a relationship between parties, but you've been forced to model it as a node. The database treats it the same as a company — there's no structural distinction.
+* **Roles are edge labels.** The fact that Acme is the _acquirer_ and Bank A is the _lender_ is encoded in edge type names, not in a schema-enforced structure. Nothing prevents attaching a `:FINANCES` edge from an advisory firm.
+* **Context is scattered.** The stake percentage lives on one edge, the facility size on another, the value on the node. A single question — "what are the financial terms of this acquisition?" — requires collecting properties from multiple edges and the node.
+* **No composability.** If a compliance officer reviews the acquisition, there's no way to create that review _about_ the `Acquisition` node in a way that's structurally distinct from any other edge. You'd need yet another node and more edges.
+
+== N-ary relations (hyperedges)
+
+TypeDB models multi-party relationships directly. Here's the full schema for the acquisition domain — building on the same concepts from the companies ledger (entities, relations, attributes, roles) but redesigned with an `organization` type hierarchy and an n-ary `acquisition` relation:
+
+[,typeql]
+----
+#!test[schema]
+define
+
+  attribute name, value string;
+  attribute incorporation-date, value date;
+  attribute stake-percentage, value double;
+  attribute deal-value, value integer;
+  attribute facility-size, value integer;
+  attribute fee, value integer;
+
+  entity organization @abstract,
+    owns name;
+
+  entity company sub organization,
+    owns incorporation-date,
+    plays directorship:directed,
+    plays ownership:owner,
+    plays ownership:subsidiary,
+    plays acquisition:acquirer,
+    plays acquisition:target;
+
+  entity bank sub organization,
+    plays acquisition:lender;
+
+  entity advisory-firm sub organization,
+    plays acquisition:advisor;
+
+  entity legal-firm sub organization,
+    plays acquisition:counsel;
+
+  entity person @abstract,
+    owns name;
+
+  entity officer sub person,
+    plays directorship:director;
+
+  relation directorship,
+    relates director,
+    relates directed;
+
+  relation ownership,
+    relates owner,
+    relates subsidiary,
+    owns stake-percentage;
+
+  relation acquisition,
+    relates acquirer,
+    relates target,
+    relates lender,
+    relates advisor,
+    relates counsel,
+    owns name,
+    owns deal-value,
+    owns stake-percentage,
+    owns facility-size,
+    owns fee;
+----
+
+One relation, five roles, five owned attributes. The schema enforces that only a `company` can be an `acquirer` or `target`, only a `bank` can be a `lender`, and so on.
+
+Inserting the acquisition:
+
+[,typeql]
+----
+#!test[write, commit]
+insert
+  $acme isa company,
+    has name "Acme Corp",
+    has incorporation-date 2019-03-15;
+  $globex isa company,
+    has name "Globex Inc",
+    has incorporation-date 2021-07-01;
+  $bankA isa bank, has name "Bank A";
+  $advB isa advisory-firm, has name "Advisory Firm B";
+  $legalC isa legal-firm, has name "Legal Firm C";
+
+  $acq isa acquisition (acquirer: $acme,
+        target: $globex, lender: $bankA,
+        advisor: $advB, counsel: $legalC),
+    has name "Project Atlas",
+    has deal-value 2500000000,
+    has stake-percentage 67.5,
+    has facility-size 1800000000,
+    has fee 15000000;
+----
+
+Everything about the deal — parties and financial terms — lives in one relation. Querying is straightforward:
+
+[,typeql]
+----
+#!test[read, count=1]
+match
+  $acq isa acquisition (lender: $bank), has name "Project Atlas";
+  $bank has name $bank-name;
+----
+
+The acquisition remains a relationship — not a node masquerading as one.
+
+== Nested relations: relations playing roles
+
+N-ary relations handle multiple parties. Nested relations handle relationships _about_ relationships.
+
+=== Compliance review of an acquisition
+
+Suppose a compliance officer reviews the acquisition and flags a conflict — Advisory Firm B also advises a portfolio company of the target.
+
+The compliance review is _about_ the acquisition (a relation), not about any individual party. In TypeDB, a relation can play a role in another relation:
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute finding, value string;
+  attribute timestamp, value datetime;
+
+  entity officer, plays compliance-review:reviewer;
+  relation acquisition, plays compliance-review:reviewed-acquisition;
+
+  relation compliance-review,
+    relates reviewer,
+    relates reviewed-acquisition,
+    owns finding,
+    owns timestamp;
+----
+
+Now you can insert a review that directly references the acquisition:
+
+[,typeql]
+----
+#!test[write, commit]
+match
+  $acq isa acquisition, has name "Project Atlas";
+insert
+  $carol isa officer, has name "Carol Chen";
+  $review isa compliance-review (reviewer: $carol, reviewed-acquisition: $acq),
+    has finding "Conflict: Advisory Firm B also advises target portfolio company",
+    has timestamp 2025-11-15T09:30:00;
+----
+
+And query it:
+
+[,typeql]
+----
+#!test[read, count=1]
+match
+  $review isa compliance-review (reviewer: $reviewer, reviewed-acquisition: $acq),
+    has finding $finding;
+  $reviewer has name $reviewer-name;
+  $acq has name $acq-name;
+----
+
+In TypeDB, this is encoded in the schema: only a relation of type `acquisition` can fill the `reviewed-acquisition` role.
+
+Nesting is recursive — the compliance review is itself a relation, so it too can play a role in another relation (e.g., a senior officer signing off on the review). Each layer is a genuine relation with its own attributes, roles, and schema constraints.
+
+== Design space
+
+TypeDB scales from binary relations (like the xref:{page-version}@use-cases::graph.adoc[companies ledger]) to hyperedges to nested hypergraph structures seamlessly. Use the simplest model that fits your domain — the richer capabilities are there when you need them.
+
+== Next steps
+
+* xref:{page-version}@use-cases::graph.adoc[Graph database] — understanding TypeDB as a more advanced graph database
+* xref:{page-version}@core-concepts::typeql/entities-relations-attributes.adoc[Entities, relations, and attributes] — core type system concepts
+* xref:{page-version}@home::get-started/setup.adoc[Get started] — install TypeDB and try it yourself
