@@ -1,0 +1,234 @@
+= Graph database
+:Summary: How TypeDB works as a more advanced graph database
+:keywords: typedb, graph database, property graph, neo4j, cypher, labeled property graph
+:test-typeql: linear
+
+If you've worked with graphs or graph databases like Neo4j, you already think in terms of nodes and edges. TypeDB shares the core intuition that relationships are first-class citizens, but its model goes further: entities and relations are fully typed, relationships carry named roles, and a strict schema validates every write.
+
+This page maps graph concepts to TypeDB, and shows you how TypeDB goes above and beyond property graph models. We'll work through a concrete example — a companies ledger tracking companies, their directors, and ownership stakes.
+
+== Mapping property graph concepts to TypeDB
+
+[cols="1,1,2"]
+|===
+| Property graph | TypeDB | Notes
+
+| Node
+| Entity
+| Typed instances with attributes. **No labels** - the type _is_ the classification.
+
+| Label
+| Type
+| Instead of attaching labels, you define types in the schema. Types can be organized in hierarchies, eg. `organization` (abstract) -> [`company`, `nonprofit`]. There are 3 groups of types: Entity types, Relation types, and Attribute types.
+
+| Property
+| Attribute
+| Owned by entity or relation types. Value-typed (`string`, `long`, `double`, `datetime`, ...).
+
+| Edge
+| Relation with roles
+| A relation connects players through named roles, not just source -> target. Relation types declare which role(s) they `relates`, which are in turn added to other types using `plays`.
+
+| Edge property
+| Relation-owned attribute
+| Relations own attributes directly.
+
+| Traversal
+| Pattern matching
+| TypeQL `match` clauses describe the subgraph you want; the engine finds all matches.
+|===
+
+In TypeDB, entity, relation, and attribute types make up the schema, while entity, relation, and attribute _instances_ make up the data.
+
+=== Example: a companies ledger
+
+Let's model companies, people who direct them, and the ownership stakes between them.
+
+**Cypher (property graph)**
+
+In Cypher, you directly insert the data without any schema:
+
+[,cypher]
+----
+CREATE (acme:Company {name: "Acme Corp", jurisdiction: "US", incorporated: date("2019-03-15")})
+CREATE (globex:Company {name: "Globex Inc", jurisdiction: "UK", incorporated: date("2021-07-01")})
+CREATE (initech:Company {name: "Initech Ltd", jurisdiction: "US", incorporated: date("2015-11-20")})
+
+CREATE (alice:Person {name: "Alice Park"})
+CREATE (bob:Person {name: "Bob Rivera"})
+
+CREATE (alice)-[:DIRECTS]->(acme)
+CREATE (alice)-[:DIRECTS]->(globex)
+CREATE (bob)-[:DIRECTS]->(initech)
+
+CREATE (acme)-[:OWNS {stake_percentage: 51.0}]->(globex)
+CREATE (acme)-[:OWNS {stake_percentage: 30.0}]->(initech)
+----
+
+This is simple and readable — but nothing in the database enforces which node types can appear on either end of an edge, or what properties an edge should carry. You could accidentally create `(alice)-[:OWNS]->(bob)` and the database would accept it.
+
+**TypeQL**
+
+In TypeDB, we define a schema first:
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute name, value string;
+  attribute jurisdiction, value string;
+  attribute incorporation-date, value date;
+  attribute stake-percentage, value double;
+
+  entity company,
+    owns name @key,
+    owns jurisdiction,
+    owns incorporation-date @card(1),  # required
+    # i.e. instances of company can use directorship relations via the directed role
+    plays directorship:directed,
+    plays ownership:owner,
+    plays ownership:subsidiary;
+
+  entity person,
+    owns name,
+    plays directorship:director;
+
+  relation directorship,
+    relates director,
+    relates directed;
+
+  relation ownership,
+    relates owner,
+    relates subsidiary,
+    owns stake-percentage;
+----
+
+Then, insert data:
+
+[,typeql]
+----
+#!test[write, commit]
+insert
+  $acme isa company,
+    has name "Acme Corp",
+    has jurisdiction "US",
+    has incorporation-date 2019-03-15;
+  $globex isa company,
+    has name "Globex Inc",
+    has jurisdiction "UK",
+    has incorporation-date 2021-07-01;
+  $initech isa company,
+    has name "Initech Ltd",
+    has jurisdiction "US",
+    has incorporation-date 2015-11-20;
+
+  $alice isa person, has name "Alice Park";
+  $bob isa person, has name "Bob Rivera";
+
+  $d1 isa directorship (director: $alice, directed: $acme);
+  $d2 isa directorship (director: $alice, directed: $globex);
+  $d3 isa directorship (director: $bob, directed: $initech);
+
+  $o1 isa ownership (owner: $acme, subsidiary: $globex),
+    has stake-percentage 51.0;
+  $o2 isa ownership (owner: $acme, subsidiary: $initech),
+    has stake-percentage 30.0;
+----
+
+The schema validates that only a `person` can be a `director` and only a `company` can be an `owner` or `subsidiary`. The mistake `(owner: $alice, subsidiary: $bob)` would be rejected at write time.
+
+_TypeDB enforces the structure of your graph, so your application doesn't have to._
+
+=== Querying: find a company's directors
+
+**Cypher:**
+[,cypher]
+----
+MATCH (person)-[:DIRECTS]->(company:Company {name: "Acme Corp"})
+RETURN person.name
+----
+
+**TypeQL:**
+[,typeql]
+----
+#!test[read, count=1]
+match
+  $company isa company, has name "Acme Corp";
+  $dir isa directorship (director: $person, directed: $company);
+  $person has name $name;
+----
+
+The queries look similar — both follow edges from a company to its directors.
+
+== What TypeDB adds beyond property graphs
+
+=== Type inheritance and polymorphism
+
+In a property graph, you might give a node multiple labels — `:Company:Public` or `:Company:Private` — but there's no enforced hierarchy. In TypeDB, types form a tree. You could extend the ledger schema with subtypes:
+
+[,typeql]
+----
+define
+  entity company @abstract;
+  entity public-company sub company;
+  entity private-company sub company;
+----
+
+Now querying `company` returns all public and private companies — without listing subtypes!
+
+This works for relations too. You could subtype `ownership` into `majority-ownership` and `minority-ownership`, and a query matching `ownership` would find both. This extensibility is enabled by structuring your graph using a schema.
+
+=== Roles give semantics
+
+In a property graph, `(acme)-[:OWNS]->(globex)` relies on convention to determine which end is the parent and which is the subsidiary. In TypeDB, the roles `owner` and `subsidiary` make the semantics explicit and queryable:
+
+[,typeql]
+----
+#!test[read, count=2]
+match
+  $own isa ownership (subsidiary: $sub);
+  $sub has name $name;
+----
+
+This finds all companies that are subsidiaries of some other company, regardless of the owner.
+
+You can think of roles as interfaces that let your data be interpreted from different angles - company is seen as a subsidiary, or a person is used as a director.
+
+=== Attribute value identity
+
+In TypeDB, attributes with the same value and type are the same instance. In other words – attributes are like their own singleton 'nodes'. If two companies share the jurisdiction `"US"`, they both own the same `jurisdiction` attribute. This provides natural deduplication and enables queries like "find all companies in the same jurisdiction" without self-joins:
+
+[,typeql]
+----
+#!test[read, count=2]
+match
+  $a isa company, has jurisdiction $j;
+  $b isa company, has jurisdiction $j;
+  not { $a is $b; };
+----
+
+=== Relations can do more
+
+The examples above use binary relations — each connecting two players — which map directly to the property graph model. But TypeDB relations can:
+
+- **Own attributes** directly (like `stake-percentage` on `ownership`)
+- **Connect any number of participants** in a single relation with distinct roles
+- **Play roles in other relations** — an ownership relation can itself be reviewed, amended, or disputed
+
+These last two capabilities are what make TypeDB a full hypergraph database. See the xref:{page-version}@use-cases::hypergraph.adoc[Hypergraph page] for how the companies ledger extends into acquisition deal modeling.
+
+== Tradeoffs
+
+TypeDB's stricter model is not always the right choice. Property graphs have advantages in several areas:
+
+**Schemaless exploration.** Property graphs let you ingest data immediately and evolve structure over time. Even though TypeDB schemas are designed easily refactored, TypeDB requires some schema before any data is written. This is a strength for production systems but adds friction during early exploration.
+
+**Graph algorithm ecosystems.** Neo4j's Graph Data Science library provides PageRank, community detection, shortest path, and other algorithms out of the box. TypeDB does not currently ship with graph analytics.
+
+**Ecosystem size.** Property graph databases have broader tool integration (visualization, ETL, monitoring,) and larger communities.
+
+== Next steps
+
+* xref:{page-version}@use-cases::hypergraph.adoc[Hypergraphs] — extending the companies ledger into acquisition deal modeling
+* xref:{page-version}@guides::typeql/sql-vs-typeql.adoc[SQL vs TypeQL] — mapping relational database concepts to TypeDB
+* xref:{page-version}@home::get-started/setup.adoc[Get started] — install TypeDB and try it yourself
