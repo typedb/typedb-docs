@@ -105,8 +105,8 @@ It will be able to perform the actions within that space as described below:
 [options="header"]
 |===
 | Project access level | Available cluster actions
-| Admin                | Destroy, Clone
-| Write                | Deploy, Suspend, Resume
+| Admin                | Destroy
+| Write                | Deploy, Suspend, Resume, Clone
 | Read                 | Get, List
 |===
 
@@ -853,7 +853,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 [cols="h,3a"]
 |===
-| Required access          | *admin* to `team/TEAM_ID/spaces/SPACE_ID`
+| Required access          | *write* to `team/TEAM_ID/spaces/SPACE_ID`
 | Method                   | `POST`
 | URL                      | `/api/v1/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID/clone`
 | Request body             |
