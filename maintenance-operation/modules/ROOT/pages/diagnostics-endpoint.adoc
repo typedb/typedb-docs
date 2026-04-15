@@ -1,0 +1,217 @@
+= Diagnostics monitoring endpoint
+:keywords: typedb, diagnostics, monitoring, prometheus, metrics, observability
+:pageTitle: Diagnostics monitoring endpoint
+:summary: HTTP endpoint for scraping TypeDB server metrics in Prometheus or JSON format.
+
+TypeDB exposes a diagnostics HTTP endpoint that serves server and per-database metrics in Prometheus text format or JSON.
+The endpoint is intended for local monitoring and integration with scraping tools such as Prometheus, Grafana Agent, or Datadog.
+
+== Enabling and configuring
+
+The endpoint is controlled by the `diagnostics.monitoring` section of the server configuration:
+
+[cols=".^3,5"]
+|===
+2+^| Configuration
+
+| `diagnostics.monitoring.enable`
+| Enables the diagnostics HTTP endpoint. Default: `true`.
+
+| `diagnostics.monitoring.port`
+| TCP port the endpoint binds to. Default: `4104`.
+|===
+
+The endpoint binds to `0.0.0.0` on the configured port.
+
+See xref:{page-version}@maintenance-operation::typedb-configuration.adoc#_diagnostics[Diagnostics configuration] for the full set of related options.
+
+== Endpoint path
+
+[cols=".^1,.^2,5"]
+|===
+| Method | Path | Description
+
+| `GET`
+| `/diagnostics`
+| Returns the current server diagnostics report.
+|===
+
+Any other path returns `404 Not Found`. Note that the path is `/diagnostics`, *not* the default `/metrics` used by many Prometheus exporters — scrape configurations must be adjusted accordingly.
+
+== Response formats
+
+The response format is selected by the `format` query parameter:
+
+[cols=".^1,.^2,5"]
+|===
+| Query | Content-Type | Description
+
+|
+| `text/plain`
+| Prometheus text exposition format. Default when no `format` parameter is supplied.
+
+| `?format=json`
+| `application/json`
+| Full diagnostics report as JSON, including fields that are not exposed as Prometheus metrics.
+|===
+
+Examples:
+
+[source,bash]
+----
+# Prometheus-formatted metrics
+curl http://localhost:4104/diagnostics
+
+# JSON report (includes all fields, useful for debugging)
+curl http://localhost:4104/diagnostics?format=json
+----
+
+== Prometheus scrape configuration
+
+Because the path is `/diagnostics`, you must set `metrics_path` explicitly:
+
+[source,yaml]
+----
+scrape_configs:
+  - job_name: typedb
+    metrics_path: /diagnostics
+    static_configs:
+      - targets: ['typedb-host:4104']
+----
+
+== Exposed Prometheus metrics
+
+The endpoint emits the following families. All metric values are sampled at scrape time.
+
+=== Server header
+
+The response begins with comment lines describing the server:
+
+[source]
+----
+# distribution: <edition>
+# version: <version>
+# os: <name> <arch> <version>
+----
+
+The `os` comment is only emitted when the sensitive part of the report is populated (see <<_sensitive_fields>>).
+
+=== Server resource usage
+
+[cols=".^2,.^1,5"]
+|===
+| Metric | Type | Description
+
+| `server_resources_count{kind="memoryUsedInBytes"}`
+| gauge
+| Resident memory consumed by the server process, in bytes.
+
+| `server_resources_count{kind="memoryAvailableInBytes"}`
+| gauge
+| Memory available to the host, in bytes.
+
+| `server_resources_count{kind="diskUsedInBytes"}`
+| gauge
+| Disk space used by the data directory, in bytes.
+
+| `server_resources_count{kind="diskAvailableInBytes"}`
+| gauge
+| Disk space available on the data volume, in bytes.
+|===
+
+=== Schema and data counts
+
+Per-database gauges describing the shape and size of the stored schema and data.
+
+[cols=".^2,.^1,5"]
+|===
+| Metric | Type | Description
+
+| `typedb_schema_data_count{database, kind="typeCount"}`
+| gauge
+| Number of user-defined types in the database schema.
+
+| `typedb_schema_data_count{database, kind="entityCount"}`
+| gauge
+| Number of entity instances.
+
+| `typedb_schema_data_count{database, kind="relationCount"}`
+| gauge
+| Number of relation instances.
+
+| `typedb_schema_data_count{database, kind="attributeCount"}`
+| gauge
+| Number of attribute instances.
+
+| `typedb_schema_data_count{database, kind="hasCount"}`
+| gauge
+| Number of `has` edges between owners and attributes.
+
+| `typedb_schema_data_count{database, kind="roleCount"}`
+| gauge
+| Number of role-player edges across relations.
+
+| `typedb_schema_data_count{database, kind="storageInBytes"}`
+| gauge
+| On-disk size of the database's live storage, in bytes.
+
+| `typedb_schema_data_count{database, kind="storageKeyCount"}`
+| gauge
+| Total number of keys in the database's live storage.
+|===
+
+=== Request counters
+
+Cumulative request counters, labelled by action kind and, where applicable, database. Server-wide actions (e.g. connection-level operations) have no `database` label.
+
+[cols=".^2,.^1,5"]
+|===
+| Metric | Type | Description
+
+| `typedb_attempted_requests_total{kind, database?}`
+| counter
+| Number of requests received since server start.
+
+| `typedb_successful_requests_total{kind, database?}`
+| counter
+| Number of requests that completed successfully since server start.
+|===
+
+The difference between the two counters gives failed or in-flight requests; use `rate()` over a window for per-second throughput.
+
+=== Error counters
+
+[cols=".^2,.^1,5"]
+|===
+| Metric | Type | Description
+
+| `typedb_error_total{database, code}`
+| counter
+| Number of errors raised, labelled by TypeDB error code (for example `SRO6`, `STO10`, `DBO4`) and database.
+|===
+
+Only errors associated with a specific database are reported here. Error codes correspond to the structured codes emitted in server logs and panic messages.
+
+[#_sensitive_fields]
+== Sensitive fields
+
+The `os`, `server_resources_count` metrics, and certain other report fields are classified as "sensitive" and are only included when the server's reporting configuration permits. If these metrics are missing from a scrape, check `diagnostics.reporting.metrics` and the server startup logs.
+
+== Security considerations
+
+The endpoint binds to `0.0.0.0` and has no authentication. In production deployments:
+
+* Place it behind a firewall, reverse proxy, or network policy so that only trusted scrapers can reach it.
+* Bind the host-side port to localhost or an internal network interface when running in a container (`-p 127.0.0.1:4104:4104`).
+* Disable the endpoint entirely by setting `diagnostics.monitoring.enable: false` if it is not in use.
+
+== Limitations
+
+The endpoint exposes server-level and database-shape metrics only. It does *not* currently expose:
+
+* Query or transaction latency histograms.
+* Per-query-kind timing.
+* WAL size, checkpoint state, or recovery progress.
+* JVM/Tokio runtime internals.
+
+If the server fails to start, no metrics will be served — logs remain the primary source of truth during startup failures.
