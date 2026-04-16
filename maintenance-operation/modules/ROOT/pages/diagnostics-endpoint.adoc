@@ -204,14 +204,3 @@ The endpoint binds to `0.0.0.0` and has no authentication. In production deploym
 * Place it behind a firewall, reverse proxy, or network policy so that only trusted scrapers can reach it.
 * Bind the host-side port to localhost or an internal network interface when running in a container (`-p 127.0.0.1:4104:4104`).
 * Disable the endpoint entirely by setting `diagnostics.monitoring.enable: false` if it is not in use.
-
-== Limitations
-
-The endpoint exposes server-level and database-shape metrics only. It does *not* currently expose:
-
-* Query or transaction latency histograms.
-* Per-query-kind timing.
-* WAL size, checkpoint state, or recovery progress.
-* JVM/Tokio runtime internals.
-
-If the server fails to start, no metrics will be served — logs remain the primary source of truth during startup failures.
