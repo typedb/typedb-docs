@@ -252,6 +252,11 @@ def batch_load(driver, queries):
 		tx.commit()
 ----
 
+[NOTE]
+====
+For data loading workloads, we recommend batching approximately 100-1000 queries per transaction. Smaller batches add per-commit overhead, while larger batches increase transaction memory use and recovery cost.
+====
+
 If you know that all your queries are valid, the `resolve()` call can be omitted for even higher performance.
 
 === Security considerations
