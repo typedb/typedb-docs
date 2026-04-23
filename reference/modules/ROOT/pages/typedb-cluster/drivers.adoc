@@ -6,12 +6,11 @@
 
 TypeDB gRPC drivers have been updated to connect to TypeDB clusters and automatically operate across multiple server replicas.
 The API is experimental and may change between releases.
-You'll need an alpha version of TypeDB Driver. These are published alongside the mainstream versions, starting with `3.7.0`.
-To access the releases, visit the https://github.com/typedb/typedb-driver/releases[TypeDB Driver GitHub page] and look for
-the most recent Pre-release item containing the alpha suffix (e.g., `TypeDB Driver 3.7.0-alpha-3`).
+You'll need an alpha version of TypeDB Driver.
+These are published alongside the mainstream versions, starting with `3.7.0`.
+To access the releases, visit the https://github.com/typedb/typedb-driver/releases[TypeDB Driver GitHub page] and look for the most recent Pre-release item containing the alpha suffix (e.g., `TypeDB Driver 3.7.0-alpha-3`).
 
-Alternatively, the TypeDB HTTP endpoint and drivers are unchanged and can be used the usual way by explicitly choosing a
-specific replica to send requests to.
+Alternatively, the TypeDB HTTP endpoint and drivers are unchanged and can be used the usual way by explicitly choosing a specific replica to send requests to.
 
 == What's different in a clustered deployment?
 
@@ -69,13 +68,12 @@ let driver = TypeDBDriver::new(
 --
 ====
 
-Even if your cluster has multiple nodes, if the driver successfully connects to this address, it will automatically
-find its peers and establish all the needed connections.
+Even if your cluster has multiple nodes, if the driver successfully connects to this address, it will automatically find its peers and establish all the needed connections.
 
 === Multiple addresses
 
-To increase the chances of connecting to a functioning node, provide multiple addresses. This is helpful in situations
-when one of the replicas is down, and there is no way to retrieve the information about its peers.
+To increase the chances of connecting to a functioning node, provide multiple addresses.
+This is helpful in situations when one of the replicas is down, and there is no way to retrieve the information about its peers.
 
 [tabs]
 ====
@@ -123,8 +121,7 @@ let driver = TypeDBDriver::new(
 
 === Address translation
 
-When replicas advertise private addresses internally (e.g. Docker/Kubernetes/VPC), while the users are outside of the cluster
-network and are provided with a dynamic public addresses unsuitable for server configuration, use address translation.
+When replicas advertise private addresses internally (e.g. Docker/Kubernetes/VPC), while the users are outside of the cluster network and are provided with a dynamic public addresses unsuitable for server configuration, use address translation.
 
 In this mode, you provide a mapping of public -> private addresses, and the driver can translate replica addresses returned by the server into addresses reachable from your environment:
 
@@ -184,8 +181,8 @@ Cluster-enabled drivers extend DriverOptions with failover and timeout controls.
 
 === DriverTlsConfig
 
-TLS configuration has been refactored to avoid ambiguity and protect your data. Now, to construct an options object, it
-is required to provide a `DriverTlsConfig` with one of the three modes:
+TLS configuration has been refactored to avoid ambiguity and protect your data.
+Now, to construct an options object, it is required to provide a `DriverTlsConfig` with one of the three modes:
 
 - disabled TLS (data, including passwords, is sent as plaintext): `DriverTlsConfig.disabled()`
 - enabled TLS, system's native root CA is used: `DriverTlsConfig.enabled_with_native_root_ca()`
@@ -193,16 +190,15 @@ is required to provide a `DriverTlsConfig` with one of the three modes:
 
 === primary_failover_retries
 
-Sets the number of times the driver retries finding and re-routing to the primary server
-on connection failures. This value is used both for polling during leader election (up to
-N+1 attempts with a 2-second sleep between each) and for re-executing a failed request on
-a newly discovered primary. Defaults to 1.
+Sets the number of times the driver retries finding and re-routing to the primary server on connection failures.
+This value is used both for polling during leader election (up to N+1 attempts with a 2-second sleep between each) and for re-executing a failed request on a newly discovered primary.
+Defaults to 1.
 
 === request_timeout_millis
 
 Sets the maximum time (in milliseconds) to wait for a response to a unary RPC request.
-This applies to operations like database creation, user management, and initial
-transaction opening. It does NOT apply to operations within transactions (queries, commits).
+This applies to operations like database creation, user management, and initial transaction opening.
+It does NOT apply to operations within transactions (queries, commits).
 Defaults to 2 hours (7200000 milliseconds).
 
 === Example
@@ -264,19 +260,20 @@ let driver = TypeDBDriver::new(
 
 Cluster-enabled drivers introduce `ServerRouting` to control which server handles an inspection operation.
 
-Most driver operations (database management, user management, transactions) are routed to the most suitable server
-automatically, and failover is handled transparently. `ServerRouting` is available on inspection methods to
-optionally target a specific server. This mechanism will be extended with the evolution of clustered TypeDB.
+Most driver operations (database management, user management, transactions) are routed to the most suitable server automatically, and failover is handled transparently. `ServerRouting` is available on inspection methods to optionally target a specific server.
+This mechanism will be extended with the evolution of clustered TypeDB.
 
 === Variants
 
 ==== Auto
 
-The driver selects the server automatically (typically the primary in a cluster). This is the default.
+The driver selects the server automatically (typically the primary in a cluster).
+This is the default.
 
 ==== Direct
 
-Routes the operation to a specific server by address. Useful for debugging, testing, and investigating replica-local state.
+Routes the operation to a specific server by address.
+Useful for debugging, testing, and investigating replica-local state.
 
 === Where you can use server routing
 
