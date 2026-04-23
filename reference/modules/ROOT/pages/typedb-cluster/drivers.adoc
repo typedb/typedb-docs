@@ -1,7 +1,7 @@
 = Drivers in clustered TypeDB
 :pageTitle: Drivers in clustered TypeDB
-:Summary: Cluster-specific features in TypeDB drivers: multi-replica connections, failover, and consistency levels.
-:keywords: typedb, cluster, driver, replication, failover, consistency level, replicas, primary, secondary
+:Summary: Cluster-specific features in TypeDB drivers: multi-replica connections, failover, and server routing.
+:keywords: typedb, cluster, driver, replication, failover, server routing, replicas, primary, secondary
 :test-python: false
 
 TypeDB gRPC drivers have been updated to connect to TypeDB clusters and automatically operate across multiple server replicas.
@@ -22,8 +22,8 @@ Cluster-enabled drivers add:
 - Flexible connection addresses (single, multiple, or translated).
 - Replica discovery (learning other replicas from the server).
 - Automatic failover (retrying operations against other replicas).
-- Consistency levels for most operations (strong/eventual/replica-dependent).
-- Cluster inspection.
+- Server routing for inspection operations (automatic or targeted).
+- Cluster inspection (servers, primary server, server version).
 
 == Connecting to a cluster
 
@@ -178,9 +178,9 @@ let driver = TypeDBDriver::new(
 --
 ====
 
-== DriverOptions for replication & failover
+== DriverOptions for cluster connections
 
-Cluster-enabled drivers extend DriverOptions with replication/failover controls.
+Cluster-enabled drivers extend DriverOptions with failover and timeout controls.
 
 === DriverTlsConfig
 
@@ -191,24 +191,19 @@ is required to provide a `DriverTlsConfig` with one of the three modes:
 - enabled TLS, system's native root CA is used: `DriverTlsConfig.enabled_with_native_root_ca()`
 - enabled TLS, custom native root CA is used (provide your own file): `DriverTlsConfig.enabled_with_root_ca("path/to/ca-certificate.pem")`
 
-=== use_replication
-
-If `use_replication = true` (default), the driver may use replicas discovered from the server to execute operations and fail over.
-
-If `use_replication = false`, the driver will behave more like a single-endpoint client and limit itself to the configured address(es), even if the server reports additional replicas.
-This is mostly useful for debugging by cluster's administrators.
-
 === primary_failover_retries
 
-Limits how many times a strongly consistent request will be retried against a new primary if the primary role changes (for example during leader re-election).
+Sets the number of times the driver retries finding and re-routing to the primary server
+on connection failures. This value is used both for polling during leader election (up to
+N+1 attempts with a 2-second sleep between each) and for re-executing a failed request on
+a newly discovered primary. Defaults to 1.
 
-This is relevant for operations that must go to the primary (generally limited to or requested to by the user).
+=== request_timeout_millis
 
-=== replica_discovery_attempts
-
-Limits how many replicas the driver will try when it needs to find a working replica for an operation (for example, an eventually consistent read, or a redirect/failover path).
-
-This can cap the amount of extra work the driver performs when some replicas are unavailable.
+Sets the maximum time (in milliseconds) to wait for a response to a unary RPC request.
+This applies to operations like database creation, user management, and initial
+transaction opening. It does NOT apply to operations within transactions (queries, commits).
+Defaults to 2 hours (7200000 milliseconds).
 
 === Example
 
@@ -221,9 +216,8 @@ Python::
 ----
 driver_options = DriverOptions(
     DriverTlsConfig.enabled_with_native_root_ca(),
-    use_replication=True,
     primary_failover_retries=1,
-    replica_discovery_attempts=5,
+    request_timeout_millis=60_000,
 )
 
 driver = TypeDB.driver(["host1:port1", "host2:port2"], credentials, driver_options)
@@ -236,9 +230,8 @@ Java::
 [source,java]
 ----
 DriverOptions driverOptions = new DriverOptions(DriverTlsConfig.enabledWithNativeRootCA())
-        .useReplication(true)
         .primaryFailoverRetries(1)
-        .replicaDiscoveryAttempts(5);
+        .requestTimeoutMillis(60_000);
 
 Driver driver = TypeDB.driver(
         Set.of("host1:port1", "host2:port2"),
@@ -254,9 +247,8 @@ Rust::
 [source,rust]
 ----
 let driver_options = DriverOptions::new(DriverTlsConfig::enabled_with_native_root_ca())
-    .use_replication(true)
     .primary_failover_retries(1)
-    .replica_discovery_attempts(Some(5));
+    .request_timeout(Duration::from_secs(60));
 
 let driver = TypeDBDriver::new(
     Addresses::try_from_addresses_str(["host1:port1", "host2:port2"]).unwrap(),
@@ -268,44 +260,32 @@ let driver = TypeDBDriver::new(
 --
 ====
 
-== Consistency level
+== Server routing
 
-Cluster-enabled drivers introduce `ConsistencyLevel` to control where an operation executes in a distributed server.
+Cluster-enabled drivers introduce `ServerRouting` to control which server handles an inspection operation.
 
-If you connect to a non-clustered TypeDB edition (e.g. single-node CE), or if a specific operation does not support consistency levels, the driver uses the strongest available behavior by default.
+Most driver operations (database management, user management, transactions) are routed to the most suitable server
+automatically, and failover is handled transparently. `ServerRouting` is available on inspection methods to
+optionally target a specific server. This mechanism will be extended with the evolution of clustered TypeDB.
 
-=== Levels
+=== Variants
 
-==== Strong
-Executes only on the primary replica.
-Provides the strongest guarantees (up-to-date), but may be slower and may require failover if the primary changes.
+==== Auto
 
-==== Eventual
-May execute on secondary replicas.
-Can be faster and more available, but may return stale results (does not guarantee latest writes).
+The driver selects the server automatically (typically the primary in a cluster). This is the default.
 
-Additionally, while the driver work is simplified, the target replica can redirect specific requests to the primary by itself, when required.
-This may lead to a longer execution time, but more consistent results.
+==== Direct
 
-==== Replica dependent
-Targets a specific replica address.
-Useful for debugging, testing, and investigating replica-local behaviour.
+Routes the operation to a specific server by address. Useful for debugging, testing, and investigating replica-local state.
 
-=== Where you can use consistency levels
+=== Where you can use server routing
 
-Cluster-enabled drivers allow a `ConsistencyLevel` parameter on most operations, for example:
+Server routing is available on the following driver methods:
 
-- replica-related read operations (server status)
-- database management (listing, creation, and deletion)
-- user management (listing, creation, and deletion)
-- read transactions/queries
-- database export
+- `servers()` / `primaryServer()` — retrieve cluster server information
+- `serverVersion()` — retrieve the TypeDB version from a specific server
 
-The only operations that do not support non-strongly consistent execution are:
-
-- replica management (alpha-only operations)
-- schema and write transactions/queries
-- database import (currently fully unavailable in clustered TypeDB)
+=== Example
 
 [tabs]
 ====
@@ -314,10 +294,17 @@ Python::
 --
 [source,python]
 ----
-driver.databases.all() # default (strongest possible)
-driver.databases.all(ConsistencyLevel.Strong())
-driver.databases.contains("my_db", ConsistencyLevel.Eventual())
-driver.databases.get("my_db", ConsistencyLevel.ReplicaDependent("host2:port2"))
+# Default routing (automatic)
+driver.servers()
+driver.primary_server()
+driver.server_version()
+
+# Explicit automatic routing
+driver.servers(ServerRouting.Auto())
+
+# Target a specific server
+driver.servers(ServerRouting.Direct("host2:port2"))
+driver.server_version(ServerRouting.Direct("host2:port2"))
 ----
 --
 
@@ -326,10 +313,17 @@ Java::
 --
 [source,java]
 ----
-driver.databases().all(); // default (strongest possible)
-driver.databases().all(new ConsistencyLevel.Strong());
-driver.databases().contains("my_db", new ConsistencyLevel.Eventual());
-driver.databases().get("my_db", new ConsistencyLevel.ReplicaDependent("host2:port2"));
+// Default routing (automatic)
+driver.servers();
+driver.primaryServer();
+driver.serverVersion();
+
+// Explicit automatic routing
+driver.servers(new ServerRouting.Auto());
+
+// Target a specific server
+driver.servers(new ServerRouting.Direct("host2:port2"));
+driver.serverVersion(new ServerRouting.Direct("host2:port2"));
 ----
 --
 
@@ -338,24 +332,59 @@ Rust::
 --
 [source,rust]
 ----
-driver.databases().all().await?; // default (strongest possible)
-driver.databases().all_with_consistency(ConsistencyLevel::Strong).await?;
-driver.databases().contains_with_consistency("my_db", ConsistencyLevel::Eventual).await?;
-driver.databases().get_with_consistency("my_db", ConsistencyLevel::ReplicaDependent { address: "host2:port2".to_owned() }).await?;
+// Default routing (automatic)
+driver.servers().await?;
+driver.primary_server().await?;
+driver.server_version().await?;
+
+// Explicit automatic routing
+driver.servers_with_routing(ServerRouting::Auto).await?;
+
+// Target a specific server
+driver.servers_with_routing(
+    ServerRouting::Direct { address: "host2:port2".parse().unwrap() }
+).await?;
+driver.server_version_with_routing(
+    ServerRouting::Direct { address: "host2:port2".parse().unwrap() }
+).await?;
 ----
 --
 ====
 
 [NOTE]
 ====
-Use Eventual only when your application can tolerate stale reads or variable execution time. If you are unsure, keep the default.
+If you connect to a non-clustered (single-node) TypeDB server, server routing has no effect: all operations go to the single server.
 ====
 
-== Read transaction consistency
+== Inspect your cluster
 
-Write and schema transactions must be opened against a primary replica. For this reason, transaction-level consistency configuration applies to READ transactions only.
+Drivers have access to information about the cluster and its servers.
 
-Cluster-enabled drivers add a read consistency option in TransactionOptions:
+=== Server properties
+
+Each server exposes the following properties:
+
+[cols="1,3"]
+|===
+| Property | Description
+
+| `id`
+| The unique identifier of this server in the cluster.
+
+| `address`
+| The network address this server is available at.
+
+| `role`
+| The replication role of this server: `Primary`, `Candidate`, or `Secondary`. May be absent for non-clustered servers.
+
+| `isPrimary`
+| Whether this server is the current primary (leader) of the cluster.
+
+| `term`
+| The Raft protocol term of this server. Useful for debugging elections and failover. May be absent for non-clustered servers.
+|===
+
+=== Get all servers
 
 [tabs]
 ====
@@ -364,10 +393,9 @@ Python::
 --
 [source,python]
 ----
-options = TransactionOptions(read_consistency_level=ConsistencyLevel.Eventual())
-
-with driver.transaction("my_db", TransactionType.READ, options=options) as tx:
-    answers = tx.query("match $x isa person;").resolve()
+servers = driver.servers()
+for server in servers:
+    print(f"Server {server.id}: {server.address}, role={server.role}, term={server.term}")
 ----
 --
 
@@ -376,11 +404,10 @@ Java::
 --
 [source,java]
 ----
-TransactionOptions options = new TransactionOptions()
-        .readConsistencyLevel(new ConsistencyLevel.Eventual());
-
-try (Transaction tx = driver.transaction("my_db", TransactionType.READ, options)) {
-    var answers = tx.query("match $x isa person;").resolve();
+Set<? extends Server> servers = driver.servers();
+for (Server server : servers) {
+    System.out.printf("Server %d: %s, role=%s, term=%s%n",
+        server.getID(), server.getAddress(), server.getRole(), server.getTerm());
 }
 ----
 --
@@ -390,23 +417,17 @@ Rust::
 --
 [source,rust]
 ----
-let options = TransactionOptions::new()
-    .read_consistency_level(ConsistencyLevel::Eventual);
-
-let tx = driver
-    .transaction_with_options("my_db", TransactionType::Read, options)
-    .await?;
-
-let answer = tx.query("match $x isa person;").await?;
+let servers = driver.servers().await?;
+for server in &servers {
+    if let Some(address) = server.address() {
+        println!("Server at {address}");
+    }
+}
 ----
 --
 ====
 
-This setting affects the transaction opening operation and the replica selection used for that read transaction.
-
-== Inspect your cluster
-
-Drivers have access to the information about the cluster size and its peers. Below is an example of retrieving this information using Python:
+=== Get primary server
 
 [tabs]
 ====
@@ -415,11 +436,9 @@ Python::
 --
 [source,python]
 ----
-# Get all replicas with their statuses
-driver.replicas()
-
-# Get the current primary replica
-driver.primary_replica()
+primary = driver.primary_server()
+if primary is not None:
+    print(f"Primary: {primary.address}")
 ----
 --
 
@@ -428,11 +447,8 @@ Java::
 --
 [source,java]
 ----
-// Get all replicas with their statuses
-Set<? extends ServerReplica> replicas = driver.replicas();
-
-// Get the current primary replica
-Optional<? extends ServerReplica> primary = driver.primaryReplica();
+Optional<? extends Server> primary = driver.primaryServer();
+primary.ifPresent(p -> System.out.println("Primary: " + p.getAddress()));
 ----
 --
 
@@ -441,11 +457,44 @@ Rust::
 --
 [source,rust]
 ----
-// Get all replicas with their statuses
-let replicas = driver.replicas().await?;
+if let Some(primary) = driver.primary_server().await? {
+    println!("Primary: {}", primary.address());
+}
+----
+--
+====
 
-// Get the current primary replica
-let primary = driver.primary_replica().await?;
+=== Get server version
+
+[tabs]
+====
+Python::
++
+--
+[source,python]
+----
+version = driver.server_version()
+print(f"Distribution: {version.distribution}, Version: {version.version}")
+----
+--
+
+Java::
++
+--
+[source,java]
+----
+ServerVersion version = driver.serverVersion();
+System.out.println("Distribution: " + version.getDistribution() + ", Version: " + version.getVersion());
+----
+--
+
+Rust::
++
+--
+[source,rust]
+----
+let version = driver.server_version().await?;
+println!("Distribution: {}, Version: {}", version.distribution(), version.version());
 ----
 --
 ====
@@ -461,45 +510,48 @@ Python::
 ----
 from typedb.driver import (
     TypeDB, Credentials, DriverOptions, DriverTlsConfig,
-    TransactionType, TransactionOptions, ConsistencyLevel
+    TransactionType, ServerRouting
 )
 
 DATABASE_NAME = "clustered-test"
 
 def test_clustered_typedb():
     driver = TypeDB.driver(
-        # Try automatic replicas retrieval by connecting to only a single server!
+        # Try automatic replica discovery by connecting to only a single server!
         # Use a list of addresses to provide multiple addresses instead.
         ADDRESS,
         Credentials(USERNAME, PASSWORD),
-        # New DriverOptions API
-        DriverOptions(DriverTlsConfig.enabled_with_native_root_ca(), use_replication=True),
+        DriverOptions(DriverTlsConfig.enabled_with_native_root_ca()),
     )
 
-    replicas = driver.replicas()
-    addresses = [replica.address for replica in replicas]
-    print(f"Replicas known to the driver: {addresses}")
+    servers = driver.servers()
+    addresses = [server.address for server in servers]
+    print(f"Servers known to the driver: {addresses}")
+
+    primary = driver.primary_server()
+    if primary is not None:
+        print(f"Primary server: {primary.address}")
+
+    version = driver.server_version()
+    print(f"Server version: {version.distribution} {version.version}")
 
     if not driver.databases.contains(DATABASE_NAME):
-        driver.databases.create(DATABASE_NAME, ConsistencyLevel.Strong())
+        driver.databases.create(DATABASE_NAME)
 
     database = driver.databases.get(DATABASE_NAME)
     print(f"Database exists: {database.name}")
 
-    # New TransactionOptions API
-    transaction_options = TransactionOptions(
-        transaction_timeout_millis=100_000,
-        read_consistency_level=ConsistencyLevel.Eventual()
-    )
-
-    # Schema transactions are always strongly consistent
-    with driver.transaction(DATABASE_NAME, TransactionType.SCHEMA, transaction_options) as tx:
+    # Schema transactions are always routed to the primary
+    with driver.transaction(DATABASE_NAME, TransactionType.SCHEMA) as tx:
         tx.query("define entity person;").resolve()
+        tx.commit()
+
+    with driver.transaction(DATABASE_NAME, TransactionType.WRITE) as tx:
         tx.query("insert $p1 isa person; $p2 isa person;").resolve()
         tx.commit()
 
-    # Read transaction will be opened using the consistency level from the options
-    with driver.transaction(DATABASE_NAME, TransactionType.READ, transaction_options) as tx:
+    # Read transactions are routed automatically
+    with driver.transaction(DATABASE_NAME, TransactionType.READ) as tx:
         answer = tx.query("match $p isa person;").resolve()
         rows = list(answer.as_concept_rows())
         print(f"Persons found: {len(rows)}")
@@ -524,13 +576,14 @@ import com.typedb.driver.api.Driver;
 import com.typedb.driver.api.DriverOptions;
 import com.typedb.driver.api.DriverTlsConfig;
 import com.typedb.driver.api.Transaction;
-import com.typedb.driver.api.TransactionOptions;
-import com.typedb.driver.api.ConsistencyLevel;
 import com.typedb.driver.api.QueryAnswer;
+import com.typedb.driver.api.ServerRouting;
 import com.typedb.driver.api.answer.ConceptRow;
-import com.typedb.driver.api.server.ServerReplica;
+import com.typedb.driver.api.server.Server;
+import com.typedb.driver.api.server.ServerVersion;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -539,40 +592,44 @@ public class ClusteredTypeDBExample {
 
     public static void main(String[] args) {
         try (Driver driver = TypeDB.driver(
-                // Try automatic replicas retrieval by connecting to only a single server!
+                // Try automatic replica discovery by connecting to only a single server!
                 // Use Set.of() with multiple addresses to provide multiple addresses instead.
                 ADDRESS,
                 new Credentials(USERNAME, PASSWORD),
-                // New DriverOptions API
-                new DriverOptions(DriverTlsConfig.enabledWithNativeRootCA()).useReplication(true)
+                new DriverOptions(DriverTlsConfig.enabledWithNativeRootCA())
         )) {
-            Set<? extends ServerReplica> replicas = driver.replicas();
-            List<String> addresses = replicas.stream()
-                    .map(ServerReplica::address)
+            Set<? extends Server> servers = driver.servers();
+            List<String> addresses = servers.stream()
+                    .map(Server::getAddress)
                     .collect(Collectors.toList());
-            System.out.println("Replicas known to the driver: " + addresses);
+            System.out.println("Servers known to the driver: " + addresses);
+
+            Optional<? extends Server> primary = driver.primaryServer();
+            primary.ifPresent(p -> System.out.println("Primary server: " + p.getAddress()));
+
+            ServerVersion version = driver.serverVersion();
+            System.out.println("Server version: " + version.getDistribution() + " " + version.getVersion());
 
             if (!driver.databases().contains(DATABASE_NAME)) {
-                driver.databases().create(DATABASE_NAME, new ConsistencyLevel.Strong());
+                driver.databases().create(DATABASE_NAME);
             }
 
             String databaseName = driver.databases().get(DATABASE_NAME).name();
             System.out.println("Database exists: " + databaseName);
 
-            // New TransactionOptions API
-            TransactionOptions transactionOptions = new TransactionOptions()
-                    .transactionTimeoutMillis(100_000)
-                    .readConsistencyLevel(new ConsistencyLevel.Eventual());
-
-            // Schema transactions are always strongly consistent
-            try (Transaction tx = driver.transaction(DATABASE_NAME, Transaction.Type.SCHEMA, transactionOptions)) {
+            // Schema transactions are always routed to the primary
+            try (Transaction tx = driver.transaction(DATABASE_NAME, Transaction.Type.SCHEMA)) {
                 tx.query("define entity person;").resolve();
+                tx.commit();
+            }
+
+            try (Transaction tx = driver.transaction(DATABASE_NAME, Transaction.Type.WRITE)) {
                 tx.query("insert $p1 isa person; $p2 isa person;").resolve();
                 tx.commit();
             }
 
-            // Read transaction will be opened using the consistency level from the options
-            try (Transaction tx = driver.transaction(DATABASE_NAME, Transaction.Type.READ, transactionOptions)) {
+            // Read transactions are routed automatically
+            try (Transaction tx = driver.transaction(DATABASE_NAME, Transaction.Type.READ)) {
                 QueryAnswer answer = tx.query("match $p isa person;").resolve();
                 List<ConceptRow> rows = answer.asConceptRows().stream().collect(Collectors.toList());
                 System.out.println("Persons found: " + rows.size());
@@ -591,62 +648,66 @@ Rust::
 [source,rust]
 ----
 use typedb_driver::{
-    answer::ConceptRow, consistency_level::ConsistencyLevel, Addresses, Credentials, DriverOptions,
-    DriverTlsConfig, TransactionOptions, TransactionType, TypeDBDriver,
+    Addresses, Credentials, DriverOptions, DriverTlsConfig,
+    TransactionType, TypeDBDriver, Server, ServerRouting,
 };
 
 fn test_clustered_typedb() {
     async_std::task::block_on(async {
         let driver = TypeDBDriver::new(
-            // Try automatic replicas retrieval by connecting to only a single server!
+            // Try automatic replica discovery by connecting to only a single server!
             // Use Addresses::try_from_addresses_str() to provide multiple addresses instead.
             Addresses::try_from_address_str(ADDRESS).unwrap(),
             Credentials::new(USERNAME, PASSWORD),
-            // New DriverOptions API
-            DriverOptions::new(DriverTlsConfig::enabled_with_native_root_ca()).use_replication(true),
+            DriverOptions::new(DriverTlsConfig::enabled_with_native_root_ca()),
         )
         .await
         .expect("Error while setting up the driver");
 
-        let replicas = driver.replicas().await.expect("Expected replicas retrieval");
-        let addresses = replicas.iter().map(|replica| replica.address().unwrap()).collect::<Vec<_>>();
-        println!("Replicas known to the driver: {addresses:?}");
+        let servers = driver.servers().await.expect("Expected servers retrieval");
+        let addresses: Vec<_> = servers.iter()
+            .filter_map(|server| server.address().map(|a| a.to_string()))
+            .collect();
+        println!("Servers known to the driver: {addresses:?}");
+
+        if let Some(primary) = driver.primary_server().await.expect("Expected primary check") {
+            println!("Primary server: {}", primary.address());
+        }
+
+        let version = driver.server_version().await.expect("Expected version retrieval");
+        println!("Server version: {} {}", version.distribution(), version.version());
 
         const DATABASE_NAME: &str = "clustered-test";
 
         if !driver.databases().contains(DATABASE_NAME).await.expect("Expected database check") {
-            driver
-                .databases()
-                .create_with_consistency(DATABASE_NAME, ConsistencyLevel::Strong)
-                .await
-                .expect("Expected database creation");
+            driver.databases().create(DATABASE_NAME).await.expect("Expected database creation");
         }
 
         let database = driver.databases().get(DATABASE_NAME).await.expect("Expected database retrieval");
         println!("Database exists: {}", database.name());
 
-        // New TransactionOptions API
-        let transaction_options = TransactionOptions::new()
-            .transaction_timeout(Duration::from_secs(100))
-            .read_consistency_level(ConsistencyLevel::Eventual);
-
-        // Schema transactions are always strongly consistent
+        // Schema transactions are always routed to the primary
         let transaction = driver
-            .transaction_with_options(DATABASE_NAME, TransactionType::Schema, transaction_options.clone())
+            .transaction(DATABASE_NAME, TransactionType::Schema)
             .await
             .expect("Expected schema transaction");
-
         transaction.query("define entity person;").await.expect("Expected schema query");
-        transaction.query("insert $p1 isa person; $p2 isa person;").await.expect("Expected data query");
         transaction.commit().await.expect("Expected schema tx commit");
 
-        // Read transaction will be opened using the consistency level from the options
         let transaction = driver
-            .transaction_with_options(DATABASE_NAME, TransactionType::Read, transaction_options)
+            .transaction(DATABASE_NAME, TransactionType::Write)
             .await
-            .expect("Expected schema transaction");
+            .expect("Expected write transaction");
+        transaction.query("insert $p1 isa person; $p2 isa person;").await.expect("Expected insert query");
+        transaction.commit().await.expect("Expected write tx commit");
+
+        // Read transactions are routed automatically
+        let transaction = driver
+            .transaction(DATABASE_NAME, TransactionType::Read)
+            .await
+            .expect("Expected read transaction");
         let answer = transaction.query("match $p isa person;").await.expect("Expected read query");
-        let rows: Vec<ConceptRow> = answer.into_rows().try_collect().await.unwrap();
+        let rows: Vec<_> = answer.into_rows().try_collect().await.unwrap();
         println!("Persons found: {}", rows.len());
 
         println!("Done!");
