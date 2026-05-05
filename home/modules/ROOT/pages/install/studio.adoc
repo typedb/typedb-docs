@@ -8,36 +8,38 @@ all within a unified environment.
 TypeDB Studio is available both as a web app and as a desktop application. All features of TypeDB Studio
 are available on both web and desktop. Be aware that the web app may not be able to connect to non-HTTPS endpoints (e.g. localhost, 127.0.0.1) on certain browsers; at the time of writing, Chrome works, but Safari does not.
 
-[cols-2]
---
-.https://studio.typedb.com[Visit studio.typedb.com]
-[.clickable]
-****
-Launch TypeDB Studio in your web browser.
-****
+== Launch TypeDB Studio (Web version)
 
-.https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name:%5Etypedb-studio[Install TypeDB Studio Desktop,window=_blank]
-[.clickable]
-****
-Download TypeDB Studio for desktop.
-****
+* https://studio.typedb.com[https://studio.typedb.com] - Launch TypeDB Studio in your web browser.
 
-.link:https://github.com/typedb/typedb-studio/[GitHub,window=_blank]
-[.clickable]
-****
-Browse the source code of TypeDB Studio.
-****
---
+== Install TypeDB Studio Desktop
 
-== TypeDB Studio User Manual
+Download the latest distribution of TypeDB Studio from the table below.
 
-For connection instructions and usage guides, see:
+[cols="^.^1,^.^1,^.^1,^.^1",caption="",options="header"]
+|===
+|Release notes |macOS |Linux |Windows
 
-[cols-2]
---
-.xref:{page-version}@tools::studio.adoc[TypeDB Studio User Manual]
-[.clickable]
-****
-How to use TypeDB Studio.
-****
---
+|
+https://github.com/typedb/typedb-studio/releases/latest[latest]
+
+|
+https://repo.typedb.com/public/public-release/raw/names/typedb-studio-mac-x86_64/versions/latest/download[x86_64]
+/ https://repo.typedb.com/public/public-release/raw/names/typedb-studio-mac-arm64/versions/latest/download[arm64]
+
+|
+https://repo.typedb.com/public/public-release/raw/names/typedb-studio-linux-x86_64/versions/latest/download[x86_64]
+/ https://repo.typedb.com/public/public-release/raw/names/typedb-studio-linux-arm64/versions/latest/download[arm64]
+
+|
+https://repo.typedb.com/public/public-release/raw/names/typedb-studio-windows-x86_64/versions/latest/download[x86_64]
+|===
+
+For all versions,
+see the link:https://cloudsmith.io/~typedb/repos/public-release/packages/?q=typedb-studio&sort=-version[Packages] page.
+
+== Getting Started
+
+After launching TypeDB Studio, you can connect to TypeDB servers. For detailed connection instructions and usage guides, see:
+
+* xref:{page-version}@tools::studio.adoc[] - Complete Studio documentation and connection guide

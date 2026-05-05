@@ -4,10 +4,21 @@
 You can run TypeDB Community Edition (CE) locally or inside a Docker container.
 TypeDB CE is free & open source!
 
-[#_manual]
-== Install
+[#_installer_script]
+== Installer script
 
-include::{page-version}@home::partial$ce_install.adoc[tag=install]
+include::{page-version}@home::partial$ce_install.adoc[tag=install-script]
+
+=== Run
+
+include::{page-version}@home::partial$ce_distributions.adoc[tag=core-run]
+
+include::{page-version}@home::partial$ce_distributions.adoc[tag=core-stop]
+
+[#_package_manager]
+== Package manager
+
+include::{page-version}@home::partial$ce_install.adoc[tag=package-manager]
 
 === Run
 
@@ -31,6 +42,17 @@ include::{page-version}@home::partial$ce_docker.adoc[tags=run-info]
 include::{page-version}@home::partial$ce_docker.adoc[tag=start]
 
 include::{page-version}@home::partial$ce_docker.adoc[tag=stop]
+
+[#_manual_install]
+== Manual install
+
+include::{page-version}@home::partial$ce_distributions.adoc[tag=core-manual-install]
+
+=== Run
+
+include::{page-version}@home::partial$ce_distributions.adoc[tag=core-run]
+
+include::{page-version}@home::partial$ce_distributions.adoc[tag=core-stop]
 
 == Next steps
 
