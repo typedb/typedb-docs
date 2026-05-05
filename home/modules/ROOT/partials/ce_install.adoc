@@ -1,4 +1,4 @@
-// tag::install[]
+// tag::install-script[]
 [tabs]
 ====
 macOS::
@@ -6,17 +6,49 @@ macOS::
 --
 **Install using the install script**
 
-Use the TypeDB https://typedb.com/install.sh[install script]. This script
-securely downloads the latest version of TypeDB and installs it to `$HOME/.typedb`.
+This script securely downloads the latest version of TypeDB and installs it to `$HOME/.typedb`.
 
 [source,shell]
 ----
 curl -sSL https://typedb.com/install.sh | sh && export PATH="$HOME/.typedb:$PATH"
 ----
+--
 
-**Or install using Homebrew**
+Linux::
++
+--
+**Install using the install script**
 
-Install the TypeDB Homebrew package using the command:
+This script securely downloads the latest version of TypeDB and installs it to `$HOME/.typedb`.
+
+[source,shell]
+----
+curl -sSL https://typedb.com/install.sh | sh && export PATH="$HOME/.typedb:$PATH"
+----
+--
+
+Windows::
++
+--
+**Install using the install script**
+
+This script securely downloads the latest version of TypeDB and installs it to `%LOCALAPPDATA%\TypeDB`.
+
+[source,powershell]
+----
+iwr https://typedb.com/install.ps1 -useb | iex
+----
+--
+====
+// end::install-script[]
+
+// tag::package-manager[]
+[tabs]
+====
+macOS::
++
+--
+**Install using Homebrew**
 
 [source,shell]
 ----
@@ -27,19 +59,7 @@ brew install typedb/tap/typedb
 Linux::
 +
 --
-**Install using the install script**
-
-Use the TypeDB https://typedb.com/install.sh[install script]. This script
-securely downloads the latest version of TypeDB and installs it to `$HOME/.typedb`.
-
-[source,shell]
-----
-curl -sSL https://typedb.com/install.sh | sh && export PATH="$HOME/.typedb:$PATH"
-----
-
-**Or install using apt**
-
-Install the TypeDB apt package using the following commands.
+**Install using apt**
 
 [source,shell]
 ----
@@ -55,16 +75,7 @@ sudo apt install typedb
 Windows::
 +
 --
-**Install using the install script**
-
-Use the TypeDB https://typedb.com/install.ps1[install script]. This script
-securely downloads the latest version of TypeDB and installs it to `%LOCALAPPDATA%\TypeDB`.
-
-[source,powershell]
-----
-iwr https://typedb.com/install.ps1 -useb | iex
-----
-
+Package manager installation is not yet available for Windows. Use the <<_installer_script,easy installer script>> or perform a <<_manual_install,manual installation>> instead.
 --
 ====
-// end::install[] 
+// end::package-manager[]

@@ -11,7 +11,73 @@ include::{page-version}@home:resources:partial$typedb-all-latest-links.adoc[]
 For all versions,
 see the link:https://cloudsmith.io/~typedb/repos/public-release/packages/?q=typedb-all&sort=-version[Packages] page.
 
-Unzip the downloaded file in a location that is easily accessible from your terminal. The unzipped folder contains the `typedb` binary.
+[tabs]
+====
+macOS::
++
+--
+. Extract the archive with TypeDB into a new directory:
++
+[source,console]
+----
+sudo mkdir /opt/typedb
+unzip ~/Downloads/<filename>.zip -d /opt/typedb
+----
++
+Where `<filename>` is the name of the archive.
+
+. Add a symlink to the TypeDB executable in the `/usr/local/bin` directory:
++
+[source,console]
+----
+ln -s /opt/typedb/<filename>/typedb /usr/local/bin/typedb
+----
+--
+
+Linux::
++
+--
+. Extract the archive with TypeDB into a new directory:
++
+[source,console]
+----
+mkdir /opt/typedb
+tar -xzf ~/Downloads/<filename>.tar.gz -C /opt/typedb
+----
++
+Where `<filename>` is the name of the archive.
+
+. Add a symlink to the TypeDB executable in the `/usr/local/bin` directory:
++
+[source,console]
+----
+ln -s /opt/typedb/<filename>/typedb /usr/local/bin/typedb
+----
+--
+
+Windows::
++
+--
+. Extract the archive with TypeDB into a new directory:
++
+[source,console]
+----
+mkdir "C:\Program Files\TypeDB"
+tar xvf "C:\Users\username\Downloads\<filename>.zip" -C "C:\Program Files\TypeDB"
+----
++
+Where `<filename>` is the name of the archive.
+
+. Update the `PATH` environment variable:
++
+[source,console]
+----
+setx /M PATH "%path%;C:\Program Files\TypeDB\<filename>"
+----
++
+Restart the terminal window for the changes to environment variables to take effect.
+--
+====
 // end::core-manual-install[]
 
 // tag::core-run[]
