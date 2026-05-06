@@ -182,7 +182,7 @@ match
 fetch {
   "name": $p.name,
   "friends": [
-    match ($p, $q) isa friendship; $q has name $friend-name;
+    match $_ isa friendship, links ($p, $q); $q has name $friend-name;
     return { $friend-name };
   ],
 };
