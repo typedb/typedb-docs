@@ -30,4 +30,17 @@ insert
   $_ isa name "John";
 ----
 
+== Unicode support
+TypeDB supports unicode characters in strings, as well as providing a syntax for escaping unicode characters.
+The escape is `\u{<code>}` where `<code>` is the hex-encoded character-code.
+[,typeql]
+----
+#!test[read, count=1]
+match
+  let $x = "A\u{42}C \u{130ED}\u{13153}";
+  let $y = "ABC 𓃭𓅓";
+  $x == $y;
+----
+
+
 
