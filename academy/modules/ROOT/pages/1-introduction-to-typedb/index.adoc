@@ -100,7 +100,7 @@ fetch {
 };
 ----
 
-Here, `file_format` is now a joint super-attribute of `audio_format`, `video_format`, and `audio_format`. Notice how the resulting query is completely agnostic to the _kinds_ of media files we are considering: it simply states `$media` is a `media_file` and has the `file_format` `$ext`. So, since audio files are media files, and since audio files have audio formats which are file formats, audio files will automatically be considered by the above query! No query refactoring is needed, even if we write the query before introducing new media file types and file formats.
+Here, `file_format` is now a joint super-attribute of `image_format`, `video_format`, and `audio_format`. Notice how the resulting query is completely agnostic to the _kinds_ of media files we are considering: it simply states `$media` is a `media_file` and has the `file_format` `$ext`. So, since audio files are media files, and since audio files have audio formats which are file formats, audio files will automatically be considered by the above query! No query refactoring is needed, even if we write the query before introducing new media file types and file formats.
 
 To summarize: by letting declarative queries adapt to schema changes, TypeDB manages to avoid a large class of pitfalls that we'd usually encounter when making structural changes to our database.
 
