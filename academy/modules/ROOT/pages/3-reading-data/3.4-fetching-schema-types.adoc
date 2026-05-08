@@ -12,7 +12,7 @@ $book isa book;
 action-execution (executor: $user, action: $action);
 $rel links ($book, $action);
 fetch {
-  "isbn": $book.isbn,
+  "isbn": [$book.isbn],
   "title": $book.title
 };
 ----
