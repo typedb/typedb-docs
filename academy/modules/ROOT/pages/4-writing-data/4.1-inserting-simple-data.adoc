@@ -204,7 +204,7 @@ It is often useful to structure the `match` clause around the values of one or m
 
 TypeDB 3.0 ships with a new alternative to `insert`: the `put` clauses. Put clauses check if the pattern provided exists in its entirety, and if it does not, it inserts the entire pattern:
 
-[,typeq]
+[,typeql]
 ----
 put $book isa book, has isbn "0195153448";
 ----
@@ -214,6 +214,7 @@ A put is equivalent to doing:
 ----
 match not { <pattern> };
 insert <pattern>;
+----
 
 **It's highly recommended use `put` with a `key`-ed attributes**. This will prevent duplicates from emerging during concurrent transactions, as one will be forced to fail.
 
