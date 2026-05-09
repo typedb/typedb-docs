@@ -144,7 +144,7 @@ class TypeDBClient:
     
     def get_users(self):
         with self.driver.transaction("users", TransactionType.READ) as tx:
-            return list(tx.query("match $u isa user; fetch {{ $u.*; }};").resolve().as_concept_documents())
+            return list(tx.query("match $u isa user; fetch {{ $u.* }};").resolve().as_concept_documents())
     
     def get_products(self):
         with self.driver.transaction("products", TransactionType.READ) as tx:
