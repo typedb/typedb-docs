@@ -158,9 +158,9 @@ Write a query to instead retrieve the `isbn-13`, `price`, and `stock` attributes
 match
 $book isa paperback;
 fetch {
-  "isbn-13": $book.isbn-13
+  "isbn-13": $book.isbn-13,
   "price": $book.price,
-  "stock": $book.stock;
+  "stock": $book.stock
 };
 ----
 

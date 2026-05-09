@@ -191,15 +191,15 @@ fetch {
 The `fetch` stage above will return a document for each person in the database, containing the person's name and a list of names of their
 friends.
 
-[,typeql]
+[,json]
 ----
 {
-  "name": "Alice"
+  "name": "Alice",
   "friends": [
     "Bob",
     "Carol",
     "Dean"
-  ],
+  ]
 }
 {
   "name": "Eve",
