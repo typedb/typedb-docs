@@ -6,7 +6,7 @@ from typedb.driver import *
 DB_NAME = "my_database"
 address = "localhost:1729"
 credentials = Credentials("admin", "password")
-options = DriverOptions(is_tls_enabled=False, tls_root_ca_path=None)
+options = DriverOptions(DriverTlsConfig.disabled())
 #end::import_and_constants[]
 
 #tag::driver_create[]

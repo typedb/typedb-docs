@@ -14,12 +14,12 @@ Let's run this query within a *read transaction* since we're only reading data.
 
 [,python]
 ----
-from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions
+from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions, DriverTlsConfig
 
 DB = "bookstore"
 address = "localhost:1729"
 credentials = Credentials("admin", "password")
-options = DriverOptions(is_tls_enabled=True, tls_root_ca_path=None)
+options = DriverOptions(DriverTlsConfig.enabled_with_native_root_ca())
 
 # Note: options can be omitted if you want to use the default options of True/None
 with TypeDB.driver(address, credentials, options) as driver:

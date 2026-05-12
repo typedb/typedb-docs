@@ -160,8 +160,9 @@ import com.typedb.driver.TypeDB;
 import com.typedb.driver.api.Driver;
 import com.typedb.driver.api.Credentials;
 import com.typedb.driver.api.DriverOptions;
+import com.typedb.driver.api.DriverTlsConfig;
 
-try (Driver driver = TypeDB.driver(TypeDB.DEFAULT_ADDRESS, new Credentials("admin", "password"), new DriverOptions(false, null))) {
+try (Driver driver = TypeDB.driver(TypeDB.DEFAULT_ADDRESS, new Credentials("admin", "password"), new DriverOptions(DriverTlsConfig.disabled()))) {
     ...
 }
 ----
@@ -229,7 +230,7 @@ For platform-independent distribution, include all Pinvoke runtimes:
 using TypeDB.Driver;
 using TypeDB.Driver.Api;
 
-using var driver = TypeDB.Driver(TypeDB.DefaultAddress, new Credentials("admin", "password"), new DriverOptions(false, null));
+using var driver = TypeDB.Driver(TypeDB.DefaultAddress, new Credentials("admin", "password"), new DriverOptions(DriverTlsConfig.Disabled()));
 ----
 
 === C# driver resources

@@ -17,7 +17,7 @@
 
 from enum import Enum
 from typing import Iterator, Optional
-from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions
+from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions, DriverTlsConfig
 
 ADDRESS = "localhost:1729"
 DATABASE = "bookstore"
@@ -178,7 +178,7 @@ def search_books(driver) -> None:
 if __name__ == "__main__":
     # Update credentials/options as needed for your deployment
     credentials = Credentials("admin", "password")
-    options = DriverOptions(is_tls_enabled=False, tls_root_ca_path=None)
+    options = DriverOptions(DriverTlsConfig.disabled())
     with TypeDB.driver(ADDRESS, credentials, options) as driver:
         while True:
             print("Available commands:")
