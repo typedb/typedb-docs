@@ -75,7 +75,7 @@ Each public network endpoint has two addresses:
 
 When the server is reached directly, both can be the same. When the server sits behind a NAT, reverse proxy, or load balancer, the listen address is the local bind (often `0.0.0.0:<port>`) and the advertise address is the externally-reachable host:port that clients should dial.
 
-If `advertise-address` is omitted, the server defaults it to the listen address.
+If `advertise-address` is omitted, the server defaults it to the listen address. Exception: `0.0.0.0` listen address is automatically translated to `127.0.0.1` if no explicit advertise value is set.
 
 [cols=".^3,5"]
 |===
