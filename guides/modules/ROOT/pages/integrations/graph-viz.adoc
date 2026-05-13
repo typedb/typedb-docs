@@ -68,11 +68,11 @@ SIMPLE_QUERY = """
     match $x isa person, has name $n;
 """
 
-from typedb.driver import TypeDB, Credentials, DriverOptions, TypeDB, QueryOptions, TransactionType
+from typedb.driver import TypeDB, Credentials, DriverOptions, DriverTlsConfig, TypeDB, QueryOptions, TransactionType
 
 DB_ADDRESS = "127.0.0.1:1729"
 DB_CREDENTIALS = Credentials("admin", "password")
-DRIVER_OPTIONS = DriverOptions(is_tls_enabled=False)
+DRIVER_OPTIONS = DriverOptions(DriverTlsConfig.disabled())
 QUERY_OPTIONS = QueryOptions()
 QUERY_OPTIONS.include_query_structure = True
 DB_NAME = "typedb-graph-tutorial-py"

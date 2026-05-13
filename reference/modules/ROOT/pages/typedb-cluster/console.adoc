@@ -1,14 +1,14 @@
 = Console in clustered TypeDB
 :pageTitle: Console in clustered TypeDB
-:Summary: Cluster-specific features in TypeDB Console: multi-replica connections and replication.
-:keywords: typedb, cluster, driver, replication, failover, consistency level, replicas, primary, secondary
+:Summary: Cluster-specific features in TypeDB Console: multi-replica connections, server routing, and cluster inspection.
+:keywords: typedb, cluster, console, replication, failover, server routing, replicas, primary, secondary
 :test-python: false
 
 TypeDB Console has been updated to connect to TypeDB clusters and automatically operate across multiple server replicas.
 The interface is experimental and may change between releases.
-You'll need an alpha version of TypeDB Console. These are published alongside the mainstream versions, starting with `3.7.0`.
-To access the releases, visit the https://github.com/typedb/typedb-console/releases[TypeDB Console GitHub page] and look for
-the most recent Pre-release item containing the alpha suffix (e.g., `TypeDB Console 3.7.0-alpha-2`).
+You'll need an alpha version of TypeDB Console.
+These are published alongside the mainstream versions, starting with `3.7.0`.
+To access the releases, visit the https://github.com/typedb/typedb-console/releases[TypeDB Console GitHub page] and look for the most recent Pre-release item containing the alpha suffix (e.g., `TypeDB Console 3.7.0-alpha-2`).
 
 == What's different in a clustered deployment?
 
@@ -18,8 +18,7 @@ Cluster-enabled Console adds:
 
 - Flexible connection addresses (single, multiple, or translated).
 - Replica discovery (learning replica addresses from the server).
-- Optional replication disabling for replica-specific debugging.
-- Replica inspection commands (list replicas, show primary).
+- Server inspection commands (list servers, show primary, check version).
 
 == Connecting to a cluster
 
@@ -58,37 +57,19 @@ typedb console --address-translation=public-1.domain:1729=10.0.0.11:1729,public-
 
 This allows Console to translate replica addresses returned by the server into addresses reachable from your environment.
 
-== Disable replication
+== Server inspection commands
 
-A new connection flag `--replication-disabled` is introduced.
+Cluster-enabled Console adds commands to inspect server state.
+All server commands accept an optional address argument to route the request to a specific server (equivalent to `ServerRouting.Direct` in the driver API).
+When no address is given, the request is routed automatically.
 
-If used in a Cluster environment (Cloud or Enterprise), this limits Console to communicate only with the address(es) provided via --address.
+=== server list
 
-This disables:
-
-- redirecting requests to other replicas,
-- automatic address updates based on server-provided replica information.
-
-Use this for administrative/debug workflows when you want to test a specific replica.
-
-[WARNING]
-====
---replication-disabled reduces the success rate of operations in real cluster conditions (for example, when a primary changes).
-Additionally, it switches all operations to use eventual consistency level (instead of the strongest).
-Use it only when you intentionally want to avoid automatic replica discovery and failover.
-====
-
-== Replica inspection commands
-
-Cluster-enabled Console adds basic commands to inspect replica state.
-
-=== replica list
-
-Lists replicas known to the cluster with their statuses (as discovered by Console through the server):
+Lists servers known to the cluster with their statuses:
 
 [source,console]
 ```
->> replica list
+>> server list
  id | address                     | role      | term  | status
 --------------------------------------------------------------------
  1  | ...-0.cluster.typedb.com:80 | secondary | 37    | available
@@ -96,18 +77,42 @@ Lists replicas known to the cluster with their statuses (as discovered by Consol
  3  | ...-2.cluster.typedb.com:80 | primary   | 37    | available
 ```
 
-=== replica primary
-
-Shows the current primary replica:
+To query a specific server directly:
 
 [source,console]
 ```
->> replica primary
+>> server list host1:port1
+```
+
+=== server primary
+
+Shows the current primary server:
+
+[source,console]
+```
+>> server primary
+```
+
+=== server version
+
+Retrieves the TypeDB server version:
+
+[source,console]
+```
+>> server version
+```
+
+To check the version of a specific server:
+
+[source,console]
+```
+>> server version host2:port2
 ```
 
 [NOTE]
 ====
-Replica roles may change over time (for example, during failover or re-election). If you are debugging a specific node, consider using --replication-disabled and connecting directly to that replica.
+Server roles may change over time (for example, during failover or re-election).
+Use `server list` to see up-to-date roles and statuses across all replicas.
 ====
 
 == Next steps

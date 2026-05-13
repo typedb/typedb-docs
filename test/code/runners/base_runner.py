@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Dict, List, Optional
-from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions
+from typedb.driver import TypeDB, TransactionType, Credentials, DriverOptions, DriverTlsConfig
 
 TEST_CONFIG_KEY_RESET = "reset"
 TEST_CONFIG_KEY_RESET_AFTER = "reset-after"
@@ -21,7 +21,7 @@ class BaseRunner(ABC):
         self.failure_count = 0
 
     def reset_local_databases(self):
-        driver = TypeDB.driver(address=self.uri, credentials=Credentials(self.username,self.password), driver_options=DriverOptions(False, None))
+        driver = TypeDB.driver(address=self.uri, credentials=Credentials(self.username,self.password), driver_options=DriverOptions(DriverTlsConfig.disabled()))
         for database in driver.databases.all():
             database.delete()
         for user in driver.users.all():

@@ -395,11 +395,15 @@ Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c
 +
 [source,rust]
 ----
+let tls_config = match config::typedb_tls_enabled() {
+    true => DriverTlsConfig::enabled_with_native_root_ca(),
+    false => DriverTlsConfig::disabled(),
+};
 let driver = Arc::new(
     TypeDBDriver::new(
         config::typedb_address(),
         Credentials::new(config::typedb_username(), config::typedb_password()),
-        DriverOptions::new(config::typedb_tls_enabled(), None).unwrap(),
+        DriverOptions::new(tls_config).unwrap(),
     )
     .await
     .unwrap(),
@@ -413,7 +417,8 @@ Excerpt from https://github.com/typedb/typedb-examples/blob/3f992da5eabc273f2b2c
 +
 [source,python]
 ----
-typedb = TypeDB.driver(TYPEDB_ADDRESS, Credentials(TYPEDB_USERNAME, TYPEDB_PASSWORD), DriverOptions(TYPEDB_TLS_ENABLED, None))
+tls_config = DriverTlsConfig.enabled_with_native_root_ca() if TYPEDB_TLS_ENABLED else DriverTlsConfig.disabled()
+typedb = TypeDB.driver(TYPEDB_ADDRESS, Credentials(TYPEDB_USERNAME, TYPEDB_PASSWORD), DriverOptions(tls_config))
 ----
 
 Java::
@@ -434,7 +439,8 @@ public class TypeDBConfig {
 
     @Bean
     public Driver typeDBDriver() {
-        return TypeDB.driver(TYPEDB_ADDRESS, new Credentials(TYPEDB_USERNAME, TYPEDB_PASSWORD), new DriverOptions(TYPEDB_TLS_ENABLED, null));
+        DriverTlsConfig tlsConfig = TYPEDB_TLS_ENABLED ? DriverTlsConfig.enabledWithNativeRootCA() : DriverTlsConfig.disabled();
+        return TypeDB.driver(TYPEDB_ADDRESS, new Credentials(TYPEDB_USERNAME, TYPEDB_PASSWORD), new DriverOptions(tlsConfig));
     }
 }
 ----

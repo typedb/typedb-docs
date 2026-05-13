@@ -160,8 +160,9 @@ import com.typedb.driver.TypeDB;
 import com.typedb.driver.api.Driver;
 import com.typedb.driver.api.Credentials;
 import com.typedb.driver.api.DriverOptions;
+import com.typedb.driver.api.DriverTlsConfig;
 
-try (Driver driver = TypeDB.driver(TypeDB.DEFAULT_ADDRESS, new Credentials("admin", "password"), new DriverOptions(false, null))) {
+try (Driver driver = TypeDB.driver(TypeDB.DEFAULT_ADDRESS, new Credentials("admin", "password"), new DriverOptions(DriverTlsConfig.disabled()))) {
     ...
 }
 ----
@@ -186,8 +187,9 @@ try (Driver driver = TypeDB.driver(TypeDB.DEFAULT_ADDRESS, new Credentials("admi
 #include "typedb_driver.h"
 
 Credentials* credentials = credentials_new("admin", "password");
-DriverOptions* options = driver_options_new(false, NULL);
-TypeDBDriver* driver = driver_open("127.0.0.1:1729", credentials, options);
+DriverTlsConfig* tls_config = driver_tls_config_new_disabled();
+DriverOptions* options = driver_options_new(tls_config);
+TypeDBDriver* driver = driver_new("127.0.0.1:1729", credentials, options);
 ----
 
 === C driver resources
@@ -229,7 +231,7 @@ For platform-independent distribution, include all Pinvoke runtimes:
 using TypeDB.Driver;
 using TypeDB.Driver.Api;
 
-using var driver = TypeDB.Driver(TypeDB.DefaultAddress, new Credentials("admin", "password"), new DriverOptions(false, null));
+using var driver = TypeDB.Driver(TypeDB.DefaultAddress, new Credentials("admin", "password"), new DriverOptions(DriverTlsConfig.Disabled()));
 ----
 
 === C# driver resources
