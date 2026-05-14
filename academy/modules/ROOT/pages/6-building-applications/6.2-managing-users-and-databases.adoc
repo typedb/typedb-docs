@@ -131,5 +131,5 @@ While Admins can manipuluate users, regular and admin users can retrieve the use
 with TypeDB.driver(address, credentials, options) as driver:
     # Retrieves a user object corresponding to the current user,
     # according to the credentials provided to the driver object.
-    current_user: User = driver.users.get_current_user()
+    current_user: User = driver.users.get_current()
 ----
