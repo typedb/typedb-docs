@@ -60,7 +60,7 @@ pip install typedb-driver
 ----
 from typedb.driver import *
 
-driver = TypeDB.driver(address=TypeDB.DEFAULT_ADDRESS, ...)
+driver = TypeDB.driver(TypeDB.DEFAULT_ADDRESS, Credentials("admin", "password"), DriverOptions(DriverTlsConfig.disabled()))
 ----
 
 === Python driver resources
@@ -116,9 +116,13 @@ cargo add typedb-driver
 +
 [source,rust]
 ----
-use typedb_driver::TypeDBDriver;
+use typedb_driver::{Addresses, Credentials, DriverOptions, DriverTlsConfig, TypeDBDriver};
 
-let driver = TypeDBDriver::new_core(TypeDBDriver::DEFAULT_ADDRESS).await.unwrap();
+let driver = TypeDBDriver::new(
+    Addresses::try_from_address_str(TypeDBDriver::DEFAULT_ADDRESS).unwrap(),
+    Credentials::new("admin", "password"),
+    DriverOptions::new(DriverTlsConfig::disabled()),
+).await.unwrap();
 ----
 
 === Rust driver resources
@@ -189,7 +193,7 @@ try (Driver driver = TypeDB.driver(TypeDB.DEFAULT_ADDRESS, new Credentials("admi
 Credentials* credentials = credentials_new("admin", "password");
 DriverTlsConfig* tls_config = driver_tls_config_new_disabled();
 DriverOptions* options = driver_options_new(tls_config);
-TypeDBDriver* driver = driver_new("127.0.0.1:1729", credentials, options);
+TypeDBDriver* driver = driver_new("127.0.0.1:1729", credentials, options, NULL);
 ----
 
 === C driver resources

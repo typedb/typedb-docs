@@ -110,7 +110,7 @@ with TypeDB.driver(address, credentials, options) as driver:
 
 user_credentials = Credentials("demo_user", "test_password")
 with TypeDB.driver(address, user_credentials, options) as driver:
-    driver.users.get_current_user().update_password("password")
+    driver.users.get_current().update_password("password")
     print("Demo user updated password successfully")
 
 with TypeDB.driver(address, credentials, options) as driver:
