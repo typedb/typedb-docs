@@ -1,0 +1,201 @@
+= TypeDB Loader Reference
+
+Reference for every command-line flag accepted by the TypeDB Loader, grouped by topic.
+
+[NOTE]
+====
+On resume (`--resume PATH`), every flag in this document — except `--schema-file` and
+`--create-db`, which are inert on resume — defaults to the value stored in the checkpoint
+unless explicitly overridden on the command line. Defaults shown below are the fresh-run
+defaults; on resume, the "default" is whatever the previous run used.
+====
+
+== Connection
+
+`--address <host:port[,host:port]>`::
+TypeDB server address(es) to connect to. Accepts either a single `host:port` or a comma-
+separated list. Also available under the alias `--addresses`.
++
+*Required.* No default.
+
+`--username <username>`::
+Username for authentication.
++
+*Required.* No default.
+
+`--password <password>`::
+Password for authentication.
++
+If omitted, the loader prompts on stdin (without echo).
+
+`--tls-disabled[=true|false]`::
+Disable TLS encryption on the wire. Defaults to `false` (TLS enabled).
+
+`--tls-root-ca <path>`::
+Path to a custom TLS root CA certificate for the connection.
+
+== Database and schema setup
+
+`--database <name>`::
+Database to load into.
++
+*Required.* No default.
+
+`--schema-file <path>`::
+Path to a TypeQL schema file to apply in a schema transaction before any data loading.
++
+*Ignored (with a warning) when resuming.*
+
+`--create-db[=true|false]`::
+Create the database if it does not already exist. Defaults to `false`.
++
+*Ignored (with a warning) when resuming.*
+
+== Data and query
+
+`--query <path to .tql>`::
+Path to the TypeQL query template used for loading. The query's `given` variables are bound to
+CSV columns by name.
++
+*Required.* No default.
+
+`--data <path to .csv>`::
+Path to the CSV file to load.
++
+*Required.* No default.
+
+`--header[=true|false]`::
+Whether the CSV file has a header row. Defaults to `false`.
++
+With `--header true`, the first row is used as the column-name → `given`-variable mapping. With
+`--header false`, columns are bound positionally in the order declared in `given`.
+
+`--no-header`::
+Force header parsing off. Use this to override a checkpoint that had `--header true` set.
+Mutually exclusive with `--header`.
+
+`--null-values <value>`::
+A string value in the CSV to treat as null. May be repeated to specify multiple sentinels (e.g.
+`--null-values '' --null-values NULL --null-values NA`).
++
+Defaults to treating only empty cells as null.
++
+[IMPORTANT]
+*Replaces, not extends.* As soon as you pass `--null-values NA`, empty cells stop being null
+unless you also pass `--null-values ''` explicitly.
+
+`--max-rows <n>`::
+Process at most `n` data rows. Defaults to all rows.
++
+Pass `--max-rows 0` to clear an inherited cap on resume (the value persists in the checkpoint
+otherwise).
+
+== Batching and parallelism
+
+`--batch-rows <n>`::
+Number of CSV rows submitted in each `query_with_inputs` invocation. Each batch is committed in
+its own write transaction. Defaults to `1000`.
++
+[IMPORTANT]
+*Cannot be changed on resume.* The loader's cursor depends on the original batch size; a
+resume that passes a different value is rejected with an error.
+
+`--parallel-batches <n>`::
+Maximum number of batches submitted concurrently to the server. Defaults to `1` (no parllelism).
++
+Higher values increase throughput at the cost of more concurrent write transactions, which can
+cause commit conflicts. Tune in tandem with `--batch-rows`.
+
+== Rejects
+
+`--rejects-file <path to .csv>`::
+Path for the CSV file containing rejected rows. The file is reloadable as-is once the cause of
+rejection is fixed.
++
+Defaults to `<data-stem>-rejects.csv` alongside the data file.
+
+`--rejects-log <path>`::
+Path for the per-rejection error log (one entry per rejected row, with the failure reason).
++
+Defaults to `<data-stem>-rejects.log` alongside the data file.
+
+== Error handling
+
+`--stop-on-error[=true|false]`::
+Abort on the first row or batch error, instead of skipping and continuing. The offending rows
+are still written to the rejects file before exit. Defaults to `false`.
+
+`--no-stop-on-error`::
+Force stop-on-error off. Use this to override a checkpoint that had it enabled. Mutually
+exclusive with `--stop-on-error`.
+
+`--max-rejects <n>`::
+Abort once the total number of rejected rows exceeds this threshold. Applies independently of
+`--stop-on-error`.
++
+Defaults to unlimited.
+
+== Checkpointing and resume
+
+`--checkpoint-file <path>`::
+Path for the checkpoint JSON file written during the run.
++
+Defaults to `<data-stem>-checkpoint.json` alongside the data file.
++
+A fresh run aborts if the target checkpoint path already exists; pass `--resume` to continue
+from it, `--checkpoint-file` to write elsewhere, or `--no-checkpoint` to disable checkpointing.
+
+`--no-checkpoint`::
+Disable checkpointing entirely. The loader writes no checkpoint file and the run is not
+resumable. Defaults to `false`.
++
+Mutually exclusive with `--resume`.
+
+`--resume <path to checkpoint file>`::
+Resume a previous run from the named checkpoint file. Parameters from the checkpoint are used
+unless explicitly overridden on the command line.
++
+A resumed run never re-applies the schema or creates the database — `--schema-file` and
+`--create-db` are ignored with a warning if supplied.
++
+The loader presents a confirmation prompt before resuming if:
++
+--
+* the data file's hash differs from the checkpoint, or
+* the live TypeDB schema's hash differs from the checkpoint, or
+* the checkpoint records any batches that were in flight when the previous run stopped (the
+  loader prints the first row of each so you can decide whether to re-process them).
+--
+
+== Help and version
+
+`-h`, `--help`::
+Print the auto-generated help message and exit.
+
+`-V`, `--version`::
+Print the loader version and exit.
+
+== Exit codes
+
+[cols="1,3"]
+|===
+| Code | Meaning
+
+| `0` | The run completed; all batches finished. The presence of rejects does not change this.
+| `1` | General error (I/O failure, query parse failure, internal panic).
+| `2` | User-input error (bad/missing flags, invalid combinations, hard checkpoint mismatch).
+| `3` | Connection error (could not reach or authenticate against the server).
+| `130` | Forced exit after a second Ctrl+C — sent only if the user interrupts the graceful drain.
+|===
+
+== Resume behaviour summary
+
+A few cross-cutting rules to keep in mind when reading the per-flag entries above:
+
+* On resume, every flag's effective value is `cli arg if provided, else checkpoint value`.
+* `--batch-rows` is the one exception: it cannot differ from the checkpoint.
+* `--schema-file` and `--create-db` are ignored on resume.
+* `--no-checkpoint` cannot be combined with `--resume`.
+* `--max-rows 0` is a sentinel that clears an inherited cap; any other value sets a new cap.
+* The `--no-X` opt-out flags (`--no-header`, `--no-stop-on-error`) exist solely so a resume can
+  override a checkpoint that had the corresponding flag enabled.

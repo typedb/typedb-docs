@@ -1,0 +1,304 @@
+= Migrating a SQL Database
+
+This walkthrough takes you from a relational SQL schema to a fully loaded TypeDB database. This
+requires us to shift the way our data is modelled — predominantly, things that formerly used
+foreign keys will now use relations. Once we've remodelled that, we can use the TypeDB Loader
+to relatively simply perform the actual loading.
+
+We'll use a small e-commerce schema with two common SQL patterns:
+
+* a *1:N foreign key* (an order belongs to a customer), and
+* a *M:N join table with payload* (order line items, with a quantity).
+
+== Step 1: The source schema
+
+[source,sql]
+----
+CREATE TABLE customers (
+  id    INTEGER PRIMARY KEY,
+  name  TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE products (
+  id    INTEGER PRIMARY KEY,
+  name  TEXT NOT NULL,
+  price NUMERIC(10,2) NOT NULL
+);
+
+CREATE TABLE orders (
+  id          INTEGER PRIMARY KEY,
+  customer_id INTEGER NOT NULL REFERENCES customers(id),
+  created_at  TIMESTAMP NOT NULL
+);
+
+CREATE TABLE order_items (
+  order_id   INTEGER NOT NULL REFERENCES orders(id),
+  product_id INTEGER NOT NULL REFERENCES products(id),
+  quantity   INTEGER NOT NULL,
+  PRIMARY KEY (order_id, product_id)
+);
+----
+
+== Step 2: Export to CSV
+
+The loader consumes one CSV per pass, so the bridge from SQL is a per-table dump. From
+PostgreSQL:
+
+[source,bash]
+----
+psql ecommerce <<'SQL'
+\copy customers   TO 'customers.csv'   CSV HEADER
+\copy products    TO 'products.csv'    CSV HEADER
+\copy orders      TO 'orders.csv'      CSV HEADER
+\copy order_items TO 'order_items.csv' CSV HEADER
+SQL
+----
+
+(MySQL: `SELECT ... INTO OUTFILE`. SQLite: `.mode csv` + `.headers on` + `.output`.)
+
+The CSV columns line up with the SQL columns 1:1 — `id`, `customer_id`, etc. We'll keep these
+names through to the loader queries.
+
+== Step 3: SQL → TypeDB, one mapping rule at a time
+
+[cols="1,2"]
+|===
+| SQL pattern | TypeDB pattern
+
+| Table with a primary key
+| Entity that owns the PK as `@key`
+
+| Non-key column
+| Attribute owned by the entity
+
+| 1:N foreign key column
+| Relation between the two entity types
+
+| Pure join table (composite PK only)
+| Relation with one role per FK
+
+| Join table with extra columns
+| Relation that owns those columns as attributes
+
+| Self-referencing FK
+| Relation where both role players are the same type
+
+| `NOT NULL` constraint
+| Plain `owns attr` (TypeDB ownership is optional by default; declare it as required if needed)
+
+| `UNIQUE` constraint
+| `owns attr @unique` (or `@key` if it identifies the type)
+|===
+
+The single most important shift is the third row: in SQL, `orders.customer_id` is a column on
+`orders`. In TypeDB, it doesn't exist as an attribute at all — instead, a `placement` relation
+ties a `customer` to an `order`. Relations are first-class, bidirectional, and can themselves
+carry attributes; FK columns are a workaround for the absence of that primitive.
+
+== Step 4: Design the schema
+
+`schema.tql`:
+
+[source,typeql]
+----
+define
+
+attribute customer_id, value integer;
+attribute product_id, value integer;
+attribute order_id, value integer;
+
+attribute name, value string;
+attribute email, value string;
+attribute price, value decimal;
+attribute created_at, value datetime;
+attribute quantity, value integer;
+
+entity customer,
+  owns customer_id @key,
+  owns name,
+  owns email @unique;
+
+entity product,
+  owns product_id @key,
+  owns name,
+  owns price;
+
+entity order,
+  owns order_id @key,
+  owns created_at;
+
+relation placement,
+  relates customer,
+  relates order;
+
+relation line_item,
+  relates order,
+  relates product,
+  owns quantity;
+
+customer plays placement:customer;
+order plays placement:order;
+order plays line_item:order;
+product plays line_item:product;
+----
+
+Things to notice against the SQL:
+
+* `orders.customer_id` became the `placement` relation, not an attribute of `order`.
+* `order_items` became the `line_item` relation. Its `quantity` payload column became an
+  attribute owned by the relation itself — no synthetic entity.
+* Surrogate IDs (`customer_id`, `product_id`, `order_id`) survive as `@key` attributes because
+  the SQL CSV uses them to encode FKs. If you migrate further, you could often replace them
+  with natural keys (e.g. `email` already identifies a customer).
+
+== Step 5: Plan the load passes
+
+Each relation pass uses `match` on the `@key` attribute of the referenced entity, so entities
+must exist before any relation referencing them is loaded:
+
+. *customers* — entity only
+. *products* — entity only
+. *orders* — entity *and* `placement` relation, in one query (the order CSV already
+  carries the `customer_id`, so we look the customer up while inserting the order)
+. *order_items* — `line_item` relation only
+
+This is one pass per CSV file from step 2. Note that pass 3 is the common shortcut: when the
+entity's CSV already carries an FK, you can insert the entity and its relation together in a
+single `match … insert` pipeline.
+
+== Step 6: Write the loader queries
+
+*`load_customers.tql`*
+
+[source,typeql]
+----
+given $id: integer, $name: string, $email: string;
+insert
+  $c isa customer,
+    has customer_id == $id,
+    has name == $name,
+    has email == $email;
+----
+
+*`load_products.tql`*
+
+[source,typeql]
+----
+given $id: integer, $name: string, $price: decimal;
+insert
+  $p isa product,
+    has product_id == $id,
+    has name == $name,
+    has price == $price;
+----
+
+*`load_orders.tql`*
+
+[source,typeql]
+----
+given $id: integer, $customer_id: integer, $created_at: datetime;
+match
+  $c isa customer, has customer_id == $customer_id;
+insert
+  $o isa order,
+    has order_id == $id,
+    has created_at == $created_at;
+  $pl isa placement, links (customer: $c, order: $o);
+----
+
+*`load_order_items.tql`*
+
+[source,typeql]
+----
+given $order_id: integer, $product_id: integer, $quantity: integer;
+match
+  $o isa order, has order_id == $order_id;
+  $p isa product, has product_id == $product_id;
+insert
+  $li isa line_item, links (order: $o, product: $p),
+    has quantity == $quantity;
+----
+
+Each `given` variable matches a CSV column header from the SQL dump verbatim. The `match` stage
+is the FK resolution — replacing what would have been a join on `customer_id` in SQL.
+
+== Step 7: Run the loads
+
+[source,bash]
+----
+# Pass 1 — customers (also creates db + schema)
+typedb-loader \
+  --address localhost:1729 --username admin \
+  --database shop --create-db --schema-file schema.tql \
+  --query load_customers.tql --data customers.csv --header
+
+# Pass 2 — products
+typedb-loader \
+  --address localhost:1729 --username admin --database shop \
+  --query load_products.tql --data products.csv --header
+
+# Pass 3 — orders + placement
+typedb-loader \
+  --address localhost:1729 --username admin --database shop \
+  --query load_orders.tql --data orders.csv --header \
+  --batch-rows 1000 --parallel-batches 4
+
+# Pass 4 — line items
+typedb-loader \
+  --address localhost:1729 --username admin --database shop \
+  --query load_order_items.tql --data order_items.csv --header \
+  --batch-rows 1000 --parallel-batches 4
+----
+
+== Step 8: Verify
+
+[source,typeql]
+----
+# Orders per customer
+match
+  $c isa customer, has name $n;
+  $o isa order;
+  $pl isa placement, links (customer: $c, order: $o);
+reduce $orders = count groupby $n;
+----
+
+[source,typeql]
+----
+# Total spend per customer
+match
+  $c isa customer, has name $n;
+  $o isa order;
+  $pl isa placement, links (customer: $c, order: $o);
+  $li isa line_item, links (order: $o, product: $p), has quantity $q;
+  $p isa product, has price $pr;
+  let $line_total = $q * $pr;
+reduce $spend = sum($line_total) groupby $n;
+----
+
+In SQL, the second query would be a four-way join (`customers ⋈ orders ⋈ order_items ⋈
+products`) with an explicit `GROUP BY`. In TypeQL, the relations carry the joins — there's no
+join condition because the relations _are_ the conditions.
+
+== Patterns worth knowing
+
+* *Foreign keys are relations, not attributes.* Resist the temptation to model
+  `customer_id` as an attribute of `order` in TypeDB. Doing so reduces TypeDB to an awkward
+  relational store and forfeits the whole point of relations.
+* *Surrogate IDs are scaffolding.* They exist because SQL needs a single column to point to.
+  If a natural key already identifies an entity (an email, a SKU, an ISBN), use that as `@key`
+  and drop the surrogate. The migration is a good moment to do this.
+* *Join tables become relations cleanly.* A two-FK join table maps directly to a binary
+  relation; a three-FK join table maps to a ternary relation. Extra columns become attributes
+  on the relation itself.
+* *Combine entity + relation in one pass when the FK is on the entity's row.* `load_orders`
+  inserts the order and its `placement` link in a single query. This is faster than splitting
+  into two passes and avoids needing an intermediate "orders without customers" state.
+* *`match` failures are silent.* If `load_orders` references a `customer_id` that wasn't
+  loaded, the row produces no order and is _not_ flagged in rejects — TypeDB treats the empty
+  match as a successful empty-result query. Use `--stop-on-error` during initial loads, and
+  compare row counts between the SQL source and the resulting TypeDB instance to catch FK
+  drift.
+* *Order matters; checkpoints don't span passes.* Each pass is a separate loader invocation
+  with its own checkpoint. If a relation pass fails, fix it and `--resume` that pass — but
+  don't try to roll back the entity passes that already committed.
