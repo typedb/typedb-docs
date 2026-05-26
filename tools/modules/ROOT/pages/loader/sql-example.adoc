@@ -1,9 +1,8 @@
 = Migrating a SQL Database
 
-This walkthrough takes you from a relational SQL schema to a fully loaded TypeDB database. This
-requires us to shift the way our data is modelled — predominantly, things that formerly used
-foreign keys will now use relations. Once we've remodelled that, we can use the TypeDB Loader
-to relatively simply perform the actual loading.
+This walkthrough takes a small relational schema, remodels it for TypeDB, and loads it end-to-end
+with the TypeDB Loader. The modelling shift is brief; the bulk of the work is one loader
+invocation per CSV.
 
 We'll use a small e-commerce schema with two common SQL patterns:
 
@@ -57,46 +56,15 @@ SQL
 
 (MySQL: `SELECT ... INTO OUTFILE`. SQLite: `.mode csv` + `.headers on` + `.output`.)
 
-The CSV columns line up with the SQL columns 1:1 — `id`, `customer_id`, etc. We'll keep these
-names through to the loader queries.
+The CSV columns line up with the SQL columns 1:1 — we'll keep these names through to the loader
+queries.
 
-== Step 3: SQL → TypeDB, one mapping rule at a time
+== Step 3: Design the TypeDB schema
 
-[cols="1,2"]
-|===
-| SQL pattern | TypeDB pattern
-
-| Table with a primary key
-| Entity that owns the PK as `@key`
-
-| Non-key column
-| Attribute owned by the entity
-
-| 1:N foreign key column
-| Relation between the two entity types
-
-| Pure join table (composite PK only)
-| Relation with one role per FK
-
-| Join table with extra columns
-| Relation that owns those columns as attributes
-
-| Self-referencing FK
-| Relation where both role players are the same type
-
-| `NOT NULL` constraint
-| Plain `owns attr` (TypeDB ownership is optional by default; declare it as required if needed)
-
-| `UNIQUE` constraint
-| `owns attr @unique` (or `@key` if it identifies the type)
-|===
-
-The single most important shift is the third row: in SQL, `orders.customer_id` is a column on
-`orders`. In TypeDB, it doesn't exist as an attribute at all — instead, a `placement` relation
-ties a `customer` to an `order`. Relations are first-class, bidirectional, and can themselves
-carry attributes; FK columns are a workaround for the absence of that primitive.
-
-== Step 4: Design the schema
+The key shift from SQL is that *foreign keys become relations, not attributes*. `orders.customer_id`
+doesn't exist as an attribute of `order` in TypeDB — instead, a `placement` relation ties a
+`customer` to an `order`. Likewise, the `order_items` join table becomes a `line_item` relation
+that owns its `quantity` payload directly.
 
 `schema.tql`:
 
@@ -143,19 +111,10 @@ order plays line_item:order;
 product plays line_item:product;
 ----
 
-Things to notice against the SQL:
+== Step 4: Plan the load passes
 
-* `orders.customer_id` became the `placement` relation, not an attribute of `order`.
-* `order_items` became the `line_item` relation. Its `quantity` payload column became an
-  attribute owned by the relation itself — no synthetic entity.
-* Surrogate IDs (`customer_id`, `product_id`, `order_id`) survive as `@key` attributes because
-  the SQL CSV uses them to encode FKs. If you migrate further, you could often replace them
-  with natural keys (e.g. `email` already identifies a customer).
-
-== Step 5: Plan the load passes
-
-Each relation pass uses `match` on the `@key` attribute of the referenced entity, so entities
-must exist before any relation referencing them is loaded:
+Entities must exist before any relation referencing them is loaded, so the passes follow that
+order:
 
 . *customers* — entity only
 . *products* — entity only
@@ -163,11 +122,10 @@ must exist before any relation referencing them is loaded:
   carries the `customer_id`, so we look the customer up while inserting the order)
 . *order_items* — `line_item` relation only
 
-This is one pass per CSV file from step 2. Note that pass 3 is the common shortcut: when the
-entity's CSV already carries an FK, you can insert the entity and its relation together in a
-single `match … insert` pipeline.
+One pass per CSV file from step 2. Pass 3 is the common shortcut: when the entity's CSV already
+carries an FK, you can insert the entity and its relation together in a single `match … insert`.
 
-== Step 6: Write the loader queries
+== Step 5: Write the loader queries
 
 *`load_customers.tql`*
 
@@ -223,7 +181,7 @@ insert
 Each `given` variable matches a CSV column header from the SQL dump verbatim. The `match` stage
 is the FK resolution — replacing what would have been a join on `customer_id` in SQL.
 
-== Step 7: Run the loads
+== Step 6: Run the loads
 
 [source,bash]
 ----
@@ -251,17 +209,7 @@ typedb-loader \
   --batch-rows 1000 --parallel-batches 4
 ----
 
-== Step 8: Verify
-
-[source,typeql]
-----
-# Orders per customer
-match
-  $c isa customer, has name $n;
-  $o isa order;
-  $pl isa placement, links (customer: $c, order: $o);
-reduce $orders = count groupby $n;
-----
+== Step 7: Verify
 
 [source,typeql]
 ----
@@ -276,24 +224,14 @@ match
 reduce $spend = sum($line_total) groupby $n;
 ----
 
-In SQL, the second query would be a four-way join (`customers ⋈ orders ⋈ order_items ⋈
-products`) with an explicit `GROUP BY`. In TypeQL, the relations carry the joins — there's no
-join condition because the relations _are_ the conditions.
+In SQL, this would be a four-way join with an explicit `GROUP BY`.
+In TypeQL, the relations carry the joins.
 
 == Patterns worth knowing
 
-* *Foreign keys are relations, not attributes.* Resist the temptation to model
-  `customer_id` as an attribute of `order` in TypeDB. Doing so reduces TypeDB to an awkward
-  relational store and forfeits the whole point of relations.
-* *Surrogate IDs are scaffolding.* They exist because SQL needs a single column to point to.
-  If a natural key already identifies an entity (an email, a SKU, an ISBN), use that as `@key`
-  and drop the surrogate. The migration is a good moment to do this.
-* *Join tables become relations cleanly.* A two-FK join table maps directly to a binary
-  relation; a three-FK join table maps to a ternary relation. Extra columns become attributes
-  on the relation itself.
 * *Combine entity + relation in one pass when the FK is on the entity's row.* `load_orders`
-  inserts the order and its `placement` link in a single query. This is faster than splitting
-  into two passes and avoids needing an intermediate "orders without customers" state.
+  inserts the order and its `placement` link in a single query — faster than splitting into two
+  passes, and avoids an intermediate "orders without customers" state.
 * *`match` failures are silent.* If `load_orders` references a `customer_id` that wasn't
   loaded, the row produces no order and is _not_ flagged in rejects — TypeDB treats the empty
   match as a successful empty-result query. Use `--stop-on-error` during initial loads, and

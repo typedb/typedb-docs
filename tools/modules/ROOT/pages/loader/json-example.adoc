@@ -1,12 +1,8 @@
 = JSON to TypeDB
 
-This walkthrough takes you end-to-end from a raw dataset to a fully loaded TypeDB database:
-reading the data, designing a schema to fit it, normalizing it into CSV form, writing the
-loader query, and handling the multi-pass patterns most real datasets require.
-
-We start from JSON — the shape data most often arrives in from an API. The loader itself only
-consumes CSV, so the first real engineering step is going from one to the other; we'll use
-`jq` for that.
+This walkthrough takes a nested JSON dataset, designs a schema to fit it, normalizes it into
+CSVs, and loads it with the TypeDB Loader. The loader itself only consumes CSV, so the first
+step is going from one to the other — we'll use `jq` for that, but keep the focus on the load.
 
 == Step 1: The source data
 
@@ -46,32 +42,17 @@ consumes CSV, so the first real engineering step is going from one to the other;
 }
 ----
 
-Three structural features matter before going further:
+Two things to notice: reviewers repeat across books (the same `alice@example.com` reviews
+multiple books), and `text` can be `null`. Both will shape the schema and the load.
 
-* *Nesting* — reviews live inside books; reviewers live inside reviews. The JSON encodes
-  relationships positionally.
-* *Implicit duplication* — the same reviewer (`alice@example.com`) appears under multiple
-  books. The JSON shape repeats them; the schema will not.
-* *Optional fields* — `text` is `null` for the 1984 review. JSON `null` will become an empty
-  CSV cell once normalized.
+== Step 2: Design the schema
 
-== Step 2: Identify entities and relations
-
-For each piece of information, ask three questions:
-
-. *Does this identify something?* (`isbn`, `reviewer.email`) → key on an entity
-. *Does it describe a thing?* (`title`, `reviewer.name`, `rating`) → an attribute
-. *Does the connection between two things matter on its own?* (a `review` ties a book and a
-  reviewer, and carries its own rating and date) → a relation
-
-The nesting in the JSON is encoding _relationships_, not ownership. A reviewer doesn't "belong
-to" a book in real life — they happened to review one. The schema recovers that fact:
+The JSON's nesting encodes _relationships_, not ownership: a reviewer doesn't belong to a book,
+they happened to review one. The schema recovers that:
 
 * `book` (entity, keyed by `isbn`)
 * `reviewer` (entity, keyed by `email`)
 * `review` (relation linking a book and a reviewer, with its own rating/text/date)
-
-== Step 3: Design the schema
 
 `schema.tql`:
 
@@ -106,48 +87,24 @@ book plays review:book;
 reviewer plays review:reviewer;
 ----
 
-Two choices worth calling out:
+`@key` enforces uniqueness on `isbn` and `email`, so duplicate inserts fail cleanly. `review` is
+a relation that owns its own attributes — no synthetic entity needed.
 
-* *`@key` on `isbn` and `email`* enforces uniqueness, so duplicate inserts fail cleanly — the
-  exact failure mode you want when deduping is incomplete.
-* *`review` is a relation that owns attributes.* In TypeDB, relations are first-class: they
-  carry their own attributes (rating, text, date) instead of forcing you to invent a synthetic
-  entity.
-
-== Step 4: Normalize JSON into CSVs with jq
+== Step 3: Normalize JSON into CSVs
 
 The loader consumes one CSV per pass, with one column per `given` input in the query template.
-We need three CSVs: books, reviewers, reviews. `jq` does this in one shot per file.
-
-=== Books
-
-Each book appears once in the JSON, so no dedup is needed:
+We need three CSVs: books, reviewers, reviews.
 
 [source,bash]
 ----
+# Books — one row per book
 jq -r '
   ["isbn", "title"],
   (.books[] | [.isbn, .title])
   | @csv
 ' source.json > books.csv
-----
 
-Output:
-
-[source,csv]
-----
-"isbn","title"
-"9780441172719","Dune"
-"9780553213119","Frankenstein"
-"9780451524935","1984"
-----
-
-=== Reviewers
-
-Reviewers repeat across books — dedupe inside `jq` using `unique_by`:
-
-[source,bash]
-----
+# Reviewers — deduped by email
 jq -r '
   [.books[].reviews[].reviewer]
   | unique_by(.email)
@@ -155,24 +112,8 @@ jq -r '
     (.[] | [.email, .name])
   | @csv
 ' source.json > reviewers.csv
-----
 
-Output:
-
-[source,csv]
-----
-"reviewer_email","reviewer_name"
-"alice@example.com","Alice"
-"bob@example.com","Bob"
-"carol@example.com","Carol"
-----
-
-=== Reviews
-
-One row per review, carrying the parent book's `isbn` onto each child:
-
-[source,bash]
-----
+# Reviews — one row per review, carrying the parent book's isbn
 jq -r '
   ["isbn", "reviewer_email", "rating", "review_text", "reviewed_at"],
   (.books[] as $b
@@ -182,7 +123,7 @@ jq -r '
 ' source.json > reviews.csv
 ----
 
-Output:
+The resulting `reviews.csv`:
 
 [source,csv]
 ----
@@ -193,26 +134,13 @@ Output:
 "9780451524935","carol@example.com",5,,"2024-02-20"
 ----
 
-Notice the `null` `text` for 1984 became an empty cell (`,,`). The loader will treat it as
-absent with `--null-values ''` — matching the optional `string?` we'll declare in the query
-template.
+The JSON `null` `text` for 1984 became an empty cell (`,,`). The loader will treat it as absent
+with `--null-values ''`, matching the optional `string?` in the query template.
 
-=== `jq` idioms used here
-
-* *`... as $b | ...`* — bind a parent so you can refer back to it inside nested iteration.
-  This is how the book's `isbn` ends up on every child review row.
-* *`unique_by(.field)`* — dedupe an array by a key. Safer than piping to `sort -u` because it
-  works on JSON values rather than on bytes (no quote/comma issues, no header sorted into the
-  data).
-* *`@csv`* — properly quotes strings, escapes embedded commas and quotes, and emits `null` as
-  an empty cell. Always prefer it over hand-rolled string concatenation.
-* *Concatenated outputs* — in `(["a","b"]), (.x | [...])`, the comma is jq's stream-concat
-  operator; it emits the header array first, then the data arrays in order.
-
-== Step 5: Plan the load passes
+== Step 4: Plan the load passes
 
 `@key` makes the multi-pass pattern necessary: you cannot insert the same key twice. The three
-CSVs from step 4 map directly onto three passes:
+CSVs map directly onto three passes:
 
 . *Pass A* — load `books.csv` (unique books)
 . *Pass B* — load `reviewers.csv` (unique reviewers)
@@ -221,7 +149,7 @@ CSVs from step 4 map directly onto three passes:
 
 Pass C must run after A and B because it uses `match` to find the entities it links.
 
-== Step 6: Write the loader queries
+== Step 5: Write the loader queries
 
 *`load_books.tql`*
 
@@ -261,7 +189,7 @@ Each `given` variable must match a CSV header exactly. `review_text` is optional
 nullable (`string?`) and wrap its insert in `try { ... };` — empty cells become absent inputs
 and the clause skips.
 
-== Step 7: Run the loads
+== Step 6: Run the loads
 
 [source,bash]
 ----
@@ -287,41 +215,23 @@ typedb-loader \
   --batch-rows 1000 --parallel-batches 4
 ----
 
-Notes:
+Only pass A passes `--schema-file` and `--create-db`. `--null-values ''` in pass C makes empty
+`review_text` cells become absent inputs, letting the `try` clause skip them.
 
-* Only pass A passes `--schema-file` and `--create-db`. Schema is committed once.
-* `--null-values ''` in pass C makes empty `review_text` cells become absent inputs, letting
-  the `try` clause skip them.
-
-== Step 8: Inspect, verify, iterate
+== Step 7: Inspect, verify, iterate
 
 Each pass writes two files next to its data:
 
 * `*-rejects.csv` — the failing rows, reloadable as-is once the cause is fixed
 * `*-rejects.log` — the per-row error messages
 
-Common patterns:
+Watch for *silent `match` failures in pass C* — if a review row references a book or reviewer
+that wasn't loaded, TypeDB treats the empty `match` as a successful zero-result query, so the
+row will _not_ be flagged in rejects. It'll just quietly produce no review. If pass C looks
+suspiciously empty, that's where to look. Use `--stop-on-error` during initial loads and compare
+row counts to catch this.
 
-* *`@key` violation in pass A or B* — your `jq` dedupe missed something (often: trailing
-  whitespace, casing differences). Check the rejects CSV, fix the upstream JSON or the `jq`
-  filter, re-run on the rejects file.
-* *`match` found nothing in pass C* — the relation row references a book or reviewer that
-  wasn't loaded. Watch for this: TypeDB treats an empty `match` as a successful zero-result
-  query, so the row will _not_ be flagged in rejects — it'll just quietly produce no review. If
-  pass C looks suspiciously empty, that's where to look.
-* *Datetime parse error* — your CSV value doesn't match TypeDB's expected `datetime` format.
-  Normalize in `jq` (`.reviewed_at | strptime(...) | strftime(...)`) rather than relaxing the
-  schema.
-
-Verify in Console:
-
-[source,typeql]
-----
-match
-  $b isa book, has title $t;
-  $rv (book: $b) isa review, has rating $r;
-select $t, $r;
-----
+Verify:
 
 [source,typeql]
 ----
@@ -333,18 +243,12 @@ reduce $reviews = count groupby $t;
 
 == Patterns worth knowing
 
-* *Normalize in `jq`, not in TypeQL.* `jq` is a much better tool for reshaping than a load
-  query is — dedupe, flatten, rename, and type-normalize there, so each CSV is a clean
-  projection of one schema concept.
-* *Lookup-then-insert (`match ... insert`)* is how you load relations. Always match on
-  `@key` attributes — they're the fastest filter and give you a clear failure mode if the
-  referenced entity is missing.
-* *Don't try to upsert in a single pass.* TypeQL has no native upsert. The loader's strength
-  is running the same dataset through cleanly separated passes, not cramming everything into
-  one query.
-* *Iterate against a small slice.* While you're shaping your schema and queries, use
-  `--max-rows 100` and `--stop-on-error` on a throwaway database. Drop the cap and tune
-  `--batch-rows` / `--parallel-batches` once the rejects log is clean.
+* *Normalize before the loader, not inside it.* Reshape, dedupe and rename in `jq` (or whatever
+  tool fits your source) so each CSV is a clean projection of one schema concept. The load
+  queries should be straightforward `insert` or `match ... insert` templates.
+* *Iterate against a small slice.* While shaping your schema and queries, use `--max-rows 100`
+  and `--stop-on-error` on a throwaway database. Drop the cap and tune `--batch-rows` /
+  `--parallel-batches` once the rejects log is clean.
 * *Checkpoint files are per-run.* If you re-load against a fresh database, delete the
   checkpoint file from the previous attempt or pass `--no-checkpoint`.
 * *Schema changes don't belong in resumed runs.* `--resume` ignores `--schema-file` and
