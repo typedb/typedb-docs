@@ -71,11 +71,13 @@ typedb server --server.listen-address=0.0.0.0:1730
 Each public network endpoint has two addresses:
 
 * The *listen* address is what the server binds to locally — the interface and port where it accepts connections.
-* The *advertise* address is what the server reports back to clients (and, in clustered deployments, to peer servers). Clients use the advertise address to connect.
+* The *advertise* address is what the server reports back to clients (and, in clustered deployments, to peer servers). Clients use the advertise address to connect if it is presented.
 
 When the server is reached directly, both can be the same. When the server sits behind a NAT, reverse proxy, or load balancer, the listen address is the local bind (often `0.0.0.0:<port>`) and the advertise address is the externally-reachable host:port that clients should dial.
 
-If `advertise-address` is omitted, the server defaults it to the listen address. Exception: `0.0.0.0` listen address is automatically translated to `127.0.0.1` if no explicit advertise value is set.
+If `advertise-address` is omitted, the server does not report back any address to gRPC/HTTP connections. Then, the clients must not depend on the server's information, using the initial connection address for further communication.
+
+Multi-node environments **must** use advertise addresses for efficient failover logic execution on the client side.
 
 [cols=".^3,5"]
 |===
@@ -85,7 +87,7 @@ If `advertise-address` is omitted, the server defaults it to the listen address.
 Alias (deprecated): `server.address`. Specifying both `server.listen-address` and `server.address` is rejected.
 
 | `server.advertise-address`
-| Server gRPC advertise host and port — the address shared with clients. Required when the listen and advertise addresses differ (e.g., behind a proxy or NAT). Default value: same as `server.listen-address`.
+| Server gRPC advertise host and port — the address shared with clients. Required when the listen and advertise addresses differ (e.g., behind a proxy or NAT).
 
 | `server.http.enabled`
 | Enable/disable HTTP endpoint. Default value: `true`. +
