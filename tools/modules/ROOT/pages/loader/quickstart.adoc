@@ -6,7 +6,19 @@ and resumable runs.
 
 == Example: loading people from a CSV
 
-=== 1. Schema (`schema.tql`)
+=== 1. Data (`data.csv`)
+
+[source,csv]
+----
+name,age,active
+alice,34,true
+bob,23,false
+carol,29,false
+----
+
+We start with some initial data in a CSV format - the format the loader can handle.
+
+=== 2. Schema (`schema.tql`)
 
 [source,typeql]
 ----
@@ -17,7 +29,7 @@ attribute active, value boolean;
 entity person owns name @key, owns age, owns active;
 ----
 
-=== 2. Query template (`query.tql`)
+=== 3. Query template (`query.tql`)
 
 [source,typeql]
 ----
@@ -31,17 +43,8 @@ insert
 The `given` variables become the loader's inputs. The `?` marks them optional, and
 `try { ... };` lets a row succeed even when that column is empty.
 
-=== 3. Data (`data.csv`)
-
-[source,csv]
-----
-name,age,active
-alice,34,true
-bob,,false
-carol,29,
-----
-
-CSV header names must match the `given` variable names exactly.
+By using the column names of the CSV for our `given` variables,
+we can match the data into the query correctly.
 
 === 4. Run
 
@@ -52,9 +55,11 @@ typedb-loader \
   --database people \
   --schema-file schema.tql --create-db \
   --query query.tql \
-  --data data.csv --header \
-  --max-rejects 100
+  --data data.csv --header
 ----
+
+We provide `--schema-file schema.tql --create-db`,
+to allow us to set up the database and load data into it in one go.
 
 === 5. Resuming
 
@@ -70,7 +75,7 @@ warning prompt if either has drifted.
 
 == CSV hygiene
 
-Most loader failures come from the CSV, not from TypeDB. A few things to check before a full
+Many loader failures come from the CSV, not from TypeDB. A few things to check before a full
 load:
 
 * *Headers must match `given` variables exactly* — case-sensitive, no leading or trailing
@@ -78,9 +83,6 @@ load:
   or "unknown variable" on the very first row.
 ** Headers can be omitted - in which case variables will be inserted positionally.
    We recommend including headers to ensure data always ends up used as expected.
-* *Use a real CSV writer.* `jq`'s `@csv`, Python's `csv.writer`, R's `write.csv`, `mlr` —
-  anything that knows the RFC 4180 quoting rules. Hand-built CSV (`echo` + commas) breaks the
-  moment a field contains a comma, quote, or newline.
 * *Embedded quotes are doubled, not backslash-escaped.* `He said "hi"` becomes
   `"He said ""hi"""`. A stray `\"` in a quoted field is treated as the closing quote, and
   every subsequent row will parse against the wrong columns — usually with a confusing
@@ -116,27 +118,13 @@ Once the dry run is clean, drop `--max-rows`, drop `--stop-on-error`, and tune `
 
 == General advice
 
-* *`given` ↔ CSV headers*: the loader binds CSV columns to query variables by name. Mismatches
-  surface as parse rejections — check the rejects log first.
-* *Make optional columns optional in the query, not the CSV*: declare `$x: T?` in `given` and
+* *Make optional columns optional in the query*: declare `$x: T?` in `given` and
   wrap inserts in `try { ... };`. Without `--null-values`, only empty cells become absent inputs.
 * *`--null-values` replaces the empty-cell default — it doesn't extend it.* As soon as you pass
   `--null-values NA`, empty cells stop being treated as null. The example above includes
   `--null-values ''` explicitly so that both empty cells and the string `NULL` count as null.
-* *`--max-rows 0` clears an inherited cap on resume.* `--max-rows` is persisted in the
-  checkpoint, so a resumed run inherits the original cap. To resume past it without specifying a
-  new finite limit, pass `--max-rows 0` to mean "no cap at all".
-* *Tune `--batch-rows` and `--parallel-batches` together*: larger batches mean fewer commits but
-  longer write transactions; more parallelism means more concurrent write conflicts. Start at
-  `1000 × 4` and adjust based on commit failures in the rejects log.
-* *Don't change `--batch-rows` on resume* — the loader's cursor depends on it and will refuse to
-  continue.
 * *`--schema-file` and `--create-db` are ignored on resume*, with a warning. Keep schema setup
   as a separate one-shot step if you expect to iterate.
 * *Two rejects files are written*: `*-rejects.csv` (the raw failing rows, reloadable) and
   `*-rejects.log` (the per-row error message). Re-running the loader on the rejects CSV after a
   fix is a common workflow.
-* *Use `--stop-on-error` for schema bring-up* (so you catch query/CSV mismatches immediately)
-  and *`--max-rejects N` for bulk loads* (let bad rows accumulate, abort if the failure rate is
-  too high).
-* *TLS is on by default.* Only use `--tls-disabled` against a local dev server.
