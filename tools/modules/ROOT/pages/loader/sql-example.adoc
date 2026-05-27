@@ -71,6 +71,7 @@ that owns its `quantity` payload directly.
 
 [source,typeql]
 ----
+#!test[schema, commit]
 define
 
 attribute customer_id, value integer;
@@ -180,10 +181,15 @@ insert
 
 [source,typeql]
 ----
-given $order_id: integer, $product_id: integer, $quantity: integer;
+given
+    $order_id: integer,
+    $product_id: integer,
+    $quantity: integer;
 match
-  $o isa order, has order_id == $order_id;
-  $p isa product, has product_id == $product_id;
+  $o isa order,
+    has order_id == $order_id;
+  $p isa product,
+    has product_id == $product_id;
 insert
   $li isa line_item, links (order: $o, product: $p),
     has quantity == $quantity;
@@ -224,6 +230,7 @@ typedb-loader \
 
 [source,typeql]
 ----
+#!test[read]
 # Total spend per customer
 match
   $c isa customer, has name $n;

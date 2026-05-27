@@ -59,6 +59,7 @@ they happened to review one. The schema recovers that:
 
 [source,typeql]
 ----
+#!test[schema, commit]
 define
 
 attribute isbn, value string;
@@ -250,6 +251,7 @@ Verify:
 
 [source,typeql]
 ----
+#!test[read]
 match
   $b isa book, has title $t;
   $rv (book: $b) isa review;
