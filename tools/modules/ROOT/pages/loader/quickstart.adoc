@@ -50,7 +50,7 @@ we can match the data into the query correctly.
 
 [source,bash]
 ----
-typedb-loader \
+typedb loader \
   --address localhost:1729 --username admin \
   --database people \
   --schema-file schema.tql --create-db \
@@ -70,13 +70,60 @@ with:
 
 [source,bash]
 ----
-typedb-loader --resume loader_data_progress --password ...
+typedb loader --resume loader_data_progress --password ...
 ----
 
 The checkpoint stores the original parameters and a hash of the data + live schema; you'll get
 a warning prompt if any of those has drifted, and a separate prompt for any batches that were
 in flight when the previous run stopped (the loader can't tell whether they actually
 committed, so you choose between reprocess all, skip all, or decide each).
+
+=== 6. Errors
+
+When a row fails to load, the loader writes it to `rejects.csv` in the output directory and
+records the reason in `rejects.log`. The run keeps going by default,
+since rejects don't abort the load unless you pass `--stop-on-error`.
+
+Suppose the data file repeats `alice`:
+
+[source,csv]
+----
+name,age,active
+alice,34,true
+bob,23,false
+alice,25,false
+carol,29,false
+----
+
+The third row violates `name @key`. Running with `--batch-rows 2`, the loader submits rows 3–4
+as a single batch — and because the batch is one transaction, both rows fail together. The
+resulting `rejects.csv` contains:
+
+[source,csv]
+----
+name,age,active
+alice,25,false
+carol,29,false
+----
+
+It's a valid CSV with the original header, so once you've fixed the upstream cause you can pass
+it straight back to the loader as `--data rejects.csv`.
+
+`rejects.log` records the row range, the batch number, and the full server error:
+
+[source,log]
+----
+rows 3-4, batch 2: query failed:
+[CNT9] Constraint '@unique' has been violated: there is a conflict for value '"alice"'.
+Caused: [DVL9] Instance [1E00 0000 0000 0000 0000 02] of type 'person' has a key constraint violation for attribute ownership of 'name', since it is not the unique owner of attribute '"alice"'.
+Caused: [COW5] Concept write failed due to a data validation error.
+Caused: [WEX1] Write execution failed due to a concept write error.
+Caused: [PEX6] Error executing write operation.
+Caused: [QEX14] Error while execution write pipeline.
+----
+
+You can tweak `--batch-rows` to limit how many row rejections a single error causes.
+
 
 == CSV hygiene
 
@@ -107,7 +154,7 @@ Before committing to a full load, validate the pipeline against a small slice:
 
 [source,bash]
 ----
-typedb-loader \
+typedb loader \
   --address localhost:1729 --username admin \
   --database scratch --create-db --schema-file schema.tql \
   --query load_x.tql --data full_data.csv --header \

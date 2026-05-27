@@ -210,20 +210,20 @@ and the clause skips.
 [source,bash]
 ----
 # Pass A — also creates the database and applies the schema
-typedb-loader \
+typedb loader \
   --address localhost:1729 --username admin \
   --database reviews --create-db \
   --schema-file schema.tql \
   --query load_books.tql --data books.csv --header
 
 # Pass B — db + schema already exist
-typedb-loader \
+typedb loader \
   --address localhost:1729 --username admin \
   --database reviews \
   --query load_reviewers.tql --data reviewers.csv --header
 
 # Pass C — relations
-typedb-loader \
+typedb loader \
   --address localhost:1729 --username admin \
   --database reviews \
   --query load_reviews.tql --data reviews.csv --header \

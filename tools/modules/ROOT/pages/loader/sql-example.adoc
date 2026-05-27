@@ -203,24 +203,24 @@ is the FK resolution — replacing what would have been a join on `customer_id` 
 [source,bash]
 ----
 # Pass 1 — customers (also creates db + schema)
-typedb-loader \
+typedb loader \
   --address localhost:1729 --username admin \
   --database shop --create-db --schema-file schema.tql \
   --query load_customers.tql --data customers.csv --header
 
 # Pass 2 — products
-typedb-loader \
+typedb loader \
   --address localhost:1729 --username admin --database shop \
   --query load_products.tql --data products.csv --header
 
 # Pass 3 — orders + placement
-typedb-loader \
+typedb loader \
   --address localhost:1729 --username admin --database shop \
   --query load_orders.tql --data orders.csv --header \
   --batch-rows 1000 --parallel-batches 4
 
 # Pass 4 — line items
-typedb-loader \
+typedb loader \
   --address localhost:1729 --username admin --database shop \
   --query load_order_items.tql --data order_items.csv --header \
   --batch-rows 1000 --parallel-batches 4
