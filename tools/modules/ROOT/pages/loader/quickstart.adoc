@@ -63,15 +63,20 @@ to allow us to set up the database and load data into it in one go.
 
 === 5. Resuming
 
-If the run is interrupted (Ctrl+C, network blip, server restart), restart it with:
+The loader writes its output (checkpoint, rejects CSV, rejects log) into a single directory —
+by default `loader_<data-stem>_progress` next to the data file, or whatever you pass to
+`--output-dir`. If the run is interrupted (Ctrl+C, network blip, server restart), restart it
+with:
 
 [source,bash]
 ----
-typedb-loader --resume data-checkpoint.json --password ...
+typedb-loader --resume loader_data_progress --password ...
 ----
 
-The checkpoint stores the original parameters and a hash of the data + live schema; you'll get a
-warning prompt if either has drifted.
+The checkpoint stores the original parameters and a hash of the data + live schema; you'll get
+a warning prompt if any of those has drifted, and a separate prompt for any batches that were
+in flight when the previous run stopped (the loader can't tell whether they actually
+committed, so you choose between reprocess all, skip all, or decide each).
 
 == CSV hygiene
 
@@ -125,6 +130,6 @@ Once the dry run is clean, drop `--max-rows`, drop `--stop-on-error`, and tune `
   `--null-values ''` explicitly so that both empty cells and the string `NULL` count as null.
 * *`--schema-file` and `--create-db` are ignored on resume*, with a warning. Keep schema setup
   as a separate one-shot step if you expect to iterate.
-* *Two rejects files are written*: `*-rejects.csv` (the raw failing rows, reloadable) and
-  `*-rejects.log` (the per-row error message). Re-running the loader on the rejects CSV after a
-  fix is a common workflow.
+* *Two rejects files are written into the output directory*: `rejects.csv` (the raw failing
+  rows, reloadable) and `rejects.log` (the per-row error message). Re-running the loader on
+  the rejects CSV after a fix is a common workflow.

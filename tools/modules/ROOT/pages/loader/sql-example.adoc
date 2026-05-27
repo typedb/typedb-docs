@@ -253,5 +253,6 @@ reduce $spend = sum($line_total) groupby $n;
   compare row counts between the SQL source and the resulting TypeDB instance to catch FK
   drift.
 * *Order matters; checkpoints don't span passes.* Each pass is a separate loader invocation
-  with its own checkpoint. If a relation pass fails, fix it and `--resume` that pass — but
-  don't try to roll back the entity passes that already committed.
+  with its own output directory (and its own `checkpoint.json` inside). If a relation pass
+  fails, fix it and `--resume <that pass's output dir>` — but don't try to roll back the
+  entity passes that already committed.

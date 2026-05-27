@@ -236,10 +236,13 @@ Only pass A passes `--schema-file` and `--create-db`. `--null-values ''` in pass
 
 == Step 7: Inspect, verify, iterate
 
-Each pass writes two files next to its data:
+Each pass writes its output into a directory next to the data (default
+`loader_<data-stem>_progress`, override with `--output-dir`):
 
-* `*-rejects.csv` — the failing rows, reloadable as-is once the cause is fixed
-* `*-rejects.log` — the per-row error messages
+* `checkpoint.json` — resumable state for `--resume`
+* `rejects.csv` — the failing rows, reloadable as-is once the cause is fixed (only created if
+  there are rejects)
+* `rejects.log` — the per-row error messages (only created if there are rejects)
 
 Watch for *silent `match` failures in pass C* — if a review row references a book or reviewer
 that wasn't loaded, TypeDB treats the empty `match` as a successful zero-result query, so the
@@ -266,8 +269,9 @@ reduce $reviews = count groupby $t;
 * *Iterate against a small slice.* While shaping your schema and queries, use `--max-rows 100`
   and `--stop-on-error` on a throwaway database. Drop the cap and tune `--batch-rows` /
   `--parallel-batches` once the rejects log is clean.
-* *Checkpoint files are per-run.* If you re-load against a fresh database, delete the
-  checkpoint file from the previous attempt or pass `--no-checkpoint`.
+* *Output directories are per-run.* If you re-load against a fresh database, delete the
+  previous output directory (or pass `--output-dir` to point at a new one, or
+  `--no-checkpoint` to skip checkpointing entirely).
 * *Schema changes don't belong in resumed runs.* `--resume` ignores `--schema-file` and
   `--create-db`. If you need to evolve the schema mid-load, finish or abandon the current run,
   evolve the schema separately, then start a new load.

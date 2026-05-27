@@ -106,18 +106,19 @@ Maximum number of batches submitted concurrently to the server. Defaults to `1` 
 Higher values increase throughput at the cost of more concurrent write transactions, which can
 cause commit conflicts. Tune in tandem with `--batch-rows`.
 
-== Rejects
+== Output directory
 
-`--rejects-file <path to .csv>`::
-Path for the CSV file containing rejected rows. The file is reloadable as-is once the cause of
-rejection is fixed.
-+
-Defaults to `<data-stem>-rejects.csv` alongside the data file.
+The loader writes three artifacts into a single output directory: `checkpoint.json`,
+`rejects.csv` (rejected rows, reloadable as-is once their cause is fixed), and `rejects.log`
+(per-rejection error message). The rejects files are only created when at least one row is
+rejected.
 
-`--rejects-log <path>`::
-Path for the per-rejection error log (one entry per rejected row, with the failure reason).
+`--output-dir <path>`::
+Directory to write the loader's output into. Created if it does not already exist.
 +
-Defaults to `<data-stem>-rejects.log` alongside the data file.
+Defaults to `loader_<data-stem>_progress` alongside the data file.
++
+Cannot be combined with `--resume`, as resuming re-uses the existing output directory.
 
 == Error handling
 
@@ -137,23 +138,20 @@ Defaults to unlimited.
 
 == Checkpointing and resume
 
-`--checkpoint-file <path>`::
-Path for the checkpoint JSON file written during the run.
-+
-Defaults to `<data-stem>-checkpoint.json` alongside the data file.
-+
-A fresh run aborts if the target checkpoint path already exists; pass `--resume` to continue
-from it, `--checkpoint-file` to write elsewhere, or `--no-checkpoint` to disable checkpointing.
-
 `--no-checkpoint`::
 Disable checkpointing entirely. The loader writes no checkpoint file and the run is not
 resumable. Defaults to `false`.
 +
 Mutually exclusive with `--resume`.
++
+A fresh run aborts if a `checkpoint.json` already exists in the chosen output directory; pass
+`--resume <dir>` to continue from it, `--output-dir <other>` to write elsewhere, or
+`--no-checkpoint` to disable checkpointing.
 
-`--resume <path to checkpoint file>`::
-Resume a previous run from the named checkpoint file. Parameters from the checkpoint are used
-unless explicitly overridden on the command line.
+`--resume <path to previous output directory>`::
+Resume a previous run by pointing at its output directory (the one that contains
+`checkpoint.json`). Parameters from the checkpoint are used unless explicitly overridden on the
+command line.
 +
 A resumed run never re-applies the schema or creates the database — `--schema-file` and
 `--create-db` are ignored with a warning if supplied.
@@ -196,6 +194,7 @@ A few cross-cutting rules to keep in mind when reading the per-flag entries abov
 * `--batch-rows` is the one exception: it cannot differ from the checkpoint.
 * `--schema-file` and `--create-db` are ignored on resume.
 * `--no-checkpoint` cannot be combined with `--resume`.
+* `--output-dir` cannot be combined with `--resume`, as it re-uses the existing output directory
 * `--max-rows 0` is a sentinel that clears an inherited cap; any other value sets a new cap.
 * The `--no-X` opt-out flags (`--no-header`, `--no-stop-on-error`) exist solely so a resume can
   override a checkpoint that had the corresponding flag enabled.
