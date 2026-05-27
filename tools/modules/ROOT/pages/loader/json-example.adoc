@@ -155,29 +155,43 @@ Pass C must run after A and B because it uses `match` to find the entities it li
 
 [source,typeql]
 ----
-given $isbn: string, $title: string;
+given
+    $isbn: string,
+    $title: string;
 insert
-  $b isa book, has isbn == $isbn, has title == $title;
+  $b isa book,
+    has isbn == $isbn,
+    has title == $title;
 ----
 
 *`load_reviewers.tql`*
 
 [source,typeql]
 ----
-given $reviewer_email: string, $reviewer_name: string;
+given
+    $reviewer_email: string,
+    $reviewer_name: string;
 insert
-  $r isa reviewer, has email == $reviewer_email, has name == $reviewer_name;
+  $r isa reviewer,
+    has email == $reviewer_email,
+    has name == $reviewer_name;
 ----
 
 *`load_reviews.tql`*
 
 [source,typeql]
 ----
-given $isbn: string, $reviewer_email: string,
-      $rating: integer, $review_text: string?, $reviewed_at: datetime;
+given
+    $isbn: string,
+    $reviewer_email: string,
+    $rating: integer,
+    $review_text: string?,
+    $reviewed_at: datetime;
 match
-  $b isa book, has isbn == $isbn;
-  $r isa reviewer, has email == $reviewer_email;
+  $b isa book,
+    has isbn == $isbn;
+  $r isa reviewer,
+    has email == $reviewer_email;
 insert
   $rv isa review, links (book: $b, reviewer: $r),
     has rating == $rating,

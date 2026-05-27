@@ -131,7 +131,10 @@ carries an FK, you can insert the entity and its relation together in a single `
 
 [source,typeql]
 ----
-given $id: integer, $name: string, $email: string;
+given
+    $id: integer,
+    $name: string,
+    $email: string;
 insert
   $c isa customer,
     has customer_id == $id,
@@ -143,7 +146,10 @@ insert
 
 [source,typeql]
 ----
-given $id: integer, $name: string, $price: decimal;
+given
+    $id: integer,
+    $name: string,
+    $price: decimal;
 insert
   $p isa product,
     has product_id == $id,
@@ -155,9 +161,13 @@ insert
 
 [source,typeql]
 ----
-given $id: integer, $customer_id: integer, $created_at: datetime;
+given
+    $id: integer,
+    $customer_id: integer,
+    $created_at: datetime;
 match
-  $c isa customer, has customer_id == $customer_id;
+  $c isa customer,
+    has customer_id == $customer_id;
 insert
   $o isa order,
     has order_id == $id,
@@ -223,9 +233,6 @@ match
   let $line_total = $q * $pr;
 reduce $spend = sum($line_total) groupby $n;
 ----
-
-In SQL, this would be a four-way join with an explicit `GROUP BY`.
-In TypeQL, the relations carry the joins.
 
 == Patterns worth knowing
 
