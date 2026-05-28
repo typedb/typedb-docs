@@ -1,0 +1,97 @@
+= TypeDB Admin Tool
+:keywords: typedb, admin, cli, server, status, version
+:pageTitle: TypeDB Admin Tool
+:summary: Localhost CLI for inspecting and managing a running TypeDB server.
+
+`typedb admin` is a CLI tool bundled with every TypeDB distribution.
+It connects to the server's localhost-only admin endpoint to inspect server status and run administrative commands.
+
+Because the admin endpoint binds to `127.0.0.1` only, the admin tool must run on the same host as the server.
+
+== Connect
+
+By default the admin tool connects to `127.0.0.1:1728` — the default address of the server's admin endpoint.
+
+[source,bash]
+----
+typedb admin
+----
+
+To target a non-default admin port (e.g., when `server.admin.port` is overridden in the server config):
+
+[source,bash]
+----
+typedb admin --address 127.0.0.1:1738
+----
+
+== Modes
+
+The admin tool supports three modes.
+
+=== Interactive (REPL)
+
+Run with no `--command` or `--script` to enter an interactive REPL.
+
+[source,bash]
+----
+typedb admin
+----
+
+The REPL prints the connected server's distribution and version, then accepts commands one at a time. Use `help` to list available commands, and `exit` to quit.
+
+=== One-shot commands
+
+Pass one or more `--command` (`-c`) flags to execute commands and exit. Useful in scripts and CI checks.
+
+[source,bash]
+----
+typedb admin --command "server status"
+typedb admin -c "server version" -c "server status"
+----
+
+The exit code is non-zero if any command fails.
+
+=== Script
+
+Execute a file containing one command per line and exit.
+
+[source,bash]
+----
+typedb admin --script ./admin-checks.txt
+----
+
+`--command` and `--script` cannot be combined.
+
+== Commands
+
+[cols=".^3,5"]
+|===
+2+^| Built-in commands
+| `server version`
+| Print the running server's distribution name and version.
+
+| `server status`
+| Print every endpoint the server is serving on (gRPC, HTTP, admin) along with each one's listen and advertise addresses (when they differ).
+
+| `help`
+| List all available commands.
+
+| `exit`
+| Leave the REPL.
+|===
+
+== Example
+
+[source,bash]
+----
+$ typedb admin --command "server status"
+Status: running
+Serving:
+  gRPC:  0.0.0.0:1729 (connect via 127.0.0.1:1729)
+  HTTP:  0.0.0.0:8000 (connect via http://127.0.0.1:8000)
+  Admin: 127.0.0.1:1728
+----
+
+== Disabling the admin endpoint
+
+The admin endpoint is enabled by default. To disable it, set `server.admin.enabled: false` in the server config — see xref:{page-version}@maintenance-operation::typedb-configuration.adoc#_admin[Server configuration / Admin endpoint]. With the endpoint disabled, `typedb admin` will fail to connect.

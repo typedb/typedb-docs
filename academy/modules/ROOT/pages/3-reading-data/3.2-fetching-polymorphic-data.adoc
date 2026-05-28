@@ -121,7 +121,7 @@ Write a query to retrieve _all_ ISBNs of _all_ books in the database.
 match
 $book isa book;
 fetch {
-  "isbn": $book.isbn
+  "isbn": [$book.isbn]
 };
 ----
 
@@ -246,7 +246,7 @@ match
 entity $entity-type;
 $entity isa! $entity-type;
 fetch {
-  $entity.*;
+  $entity.*
 };
 ----
 

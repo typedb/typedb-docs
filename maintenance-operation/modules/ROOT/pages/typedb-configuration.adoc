@@ -48,7 +48,7 @@ When using the command line to override a specific option, all CLI arguments mus
 * start with the double dash prefix `--`,
 * be separated from their value (if any) either by an equals sign (`--arg=val`) or a whitespace (`--arg val`).
 
-e.g.,  `--server.address=0.0.0.0:1730`
+e.g.,  `--server.listen-address=0.0.0.0:1730`
 
 
 [#_overview]
@@ -58,26 +58,65 @@ e.g.,  `--server.address=0.0.0.0:1730`
 === Server
 
 The `server` section of the configuration contains network and encryption options.
-For example, a server can be booted up on `0.0.0.0:1730` by using this command:
+For example, a server can be booted up to listen on `0.0.0.0:1730` by using this command:
 
 [source,bash]
 ----
-typedb server --server.address=0.0.0.0:1730
+typedb server --server.listen-address=0.0.0.0:1730
 ----
+
+[#_listen_vs_advertise]
+==== Listen vs. advertise addresses
+
+Each public network endpoint has two addresses:
+
+* The *listen* address is what the server binds to locally — the interface and port where it accepts connections.
+* The *advertise* address is what the server reports back to clients (and, in clustered deployments, to peer servers). Clients use the advertise address to connect if it is presented.
+
+When the server is reached directly, both can be the same. When the server sits behind a NAT, reverse proxy, or load balancer, the listen address is the local bind (often `0.0.0.0:<port>`) and the advertise address is the externally-reachable host:port that clients should dial.
+
+If `advertise-address` is omitted, the server does not report back any address to gRPC/HTTP connections. Then, the clients must not depend on the server's information, using the initial connection address for further communication.
+
+Multi-node environments **must** use advertise addresses for efficient failover logic execution on the client side.
+
 [cols=".^3,5"]
 |===
 2+^| Server
-| `server.address`
-| Server host and port. Default value: `0.0.0.0:1729`. +
+| `server.listen-address`
+| Server gRPC listen host and port — the address the server binds to. Default value: `0.0.0.0:1729`. +
+Alias (deprecated): `server.address`. Specifying both `server.listen-address` and `server.address` is rejected.
+
+| `server.advertise-address`
+| Server gRPC advertise host and port — the address shared with clients. Required when the listen and advertise addresses differ (e.g., behind a proxy or NAT).
 
 | `server.http.enabled`
 | Enable/disable HTTP endpoint. Default value: `true`. +
 
-| `server.http.address`
-| HTTP endpoint host and port. Cannot be the same as `server.address`. Default value: `0.0.0.0:8000`. +
+| `server.http.listen-address`
+| HTTP listen host and port — the address the server binds to. Cannot be the same as `server.listen-address`. Default value: `0.0.0.0:8000`. +
+Alias (deprecated): `server.http.address`. Specifying both `server.http.listen-address` and `server.http.address` is rejected.
+
+| `server.http.advertise-address`
+| HTTP advertise URL shared with clients (include the scheme, e.g. `http://127.0.0.1:8000` or `https://typedb.example.com`). Required when the listen and advertise addresses differ. Default value: derived from `server.http.listen-address`.
 
 | `server.authentication.token-expiration-seconds`
 | The amount of seconds generated authentication tokens will remain valid, specified in seconds. Default value: `14400` (4 hours). +
+
+|===
+
+[#_admin]
+==== Admin endpoint
+
+TypeDB exposes a separate admin gRPC endpoint, bound to localhost only, used by the bundled `typedb admin` CLI tool to inspect and manage a running server (see xref:{page-version}@tools::admin.adoc[]).
+
+[cols=".^3,5"]
+|===
+2+^| Server admin
+| `server.admin.enabled`
+| Enable/disable the localhost-only admin endpoint. Default value: `true`. +
+
+| `server.admin.port`
+| Port for the admin endpoint on `127.0.0.1`. Default value: `1728`. +
 
 |===
 
@@ -129,6 +168,8 @@ TypeDB optionally reports anonymous diagnostics to guide the development and opt
 This data includes unexpected errors and occasional system status updates for number and size of databases, as well as numbers of transactions and queries executed per hour.
 
 To see what information is being reported, enable and access the monitoring Web page of the server (e.g. `localhost:4104/diagnostics?format=json`).
+
+See xref:{page-version}@maintenance-operation::diagnostics-endpoint.adoc[Diagnostics monitoring endpoint] for the full list of Prometheus metrics exposed and how to scrape them.
 
 [cols=".^3,5"]
 |===

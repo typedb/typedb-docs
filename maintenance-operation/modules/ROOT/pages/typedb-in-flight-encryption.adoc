@@ -65,7 +65,7 @@ mkcert -cert-file certificate.pem -key-file private-key.pem localhost 127.0.0.1
 We now have 4 files:
 
 * `rootCA-key.pem`: The private-key `mkcert` uses to sign certificates. Only `mkcert` needs this.
-* `rootCA.pem`: The certificate generated from and (self) signed by `rootCA-key.pem`. TypeDB drivers can use this to authenticate the server.
+* `rootCA.pem`: The certificate generated from and (self) signed by `rootCA-key.pem`. TypeDB drivers can use this to authenticate the server. To be configured as `server.encryption.ca-certificate`
 * `private-key.pem`: The private-key for the server. To be configured as `server.encryption.certificate-key`
 * `certificate.pem`: The certificate for the server generated from `private-key.pem`, and signed by `rootCA-key.pem`. To be configured as `server.encryption.certificate`
 

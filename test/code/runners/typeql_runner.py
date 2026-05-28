@@ -1,4 +1,4 @@
-from typedb.driver import TypeDB, Driver, TransactionType, Credentials, DriverOptions
+from typedb.driver import TypeDB, Driver, TransactionType, Credentials, DriverOptions, DriverTlsConfig
 from test.code.runners.base_runner import BaseRunner, TEST_CONFIG_KEY_RESET
 from enum import Enum
 from typing import List, Dict, Tuple, Union
@@ -52,7 +52,7 @@ class TypeqlRunner(BaseRunner):
         self.driver = self.create_driver()
 
     def create_driver(self) -> Driver:
-        return TypeDB.driver(self.uri, Credentials(self.username, self.password), DriverOptions(False, None))
+        return TypeDB.driver(self.uri, Credentials(self.username, self.password), DriverOptions(DriverTlsConfig.disabled()))
 
     def delete_db(self):
         if self.driver.databases.contains(self.db):

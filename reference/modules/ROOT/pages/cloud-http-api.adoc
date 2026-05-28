@@ -106,7 +106,7 @@ It will be able to perform the actions within that space as described below:
 |===
 | Project access level | Available cluster actions
 | Admin                | Destroy
-| Write                | Deploy, Suspend, Resume
+| Write                | Deploy, Suspend, Resume, Clone
 | Read                 | Get, List
 |===
 
@@ -832,6 +832,114 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     "storageSizeGB":10,
     "isFree":true,
     "status":"resuming",
+    "createdAt":1738256490070,
+    "teamID":"new-team",
+    "spaceID":"default",
+    "version":"3.1.0",
+    "provider":"gcp",
+    "region":"europe-west2",
+    "machineType":"c2d-highcpu-2",
+    "storageType":"standard-rwo",
+    "servers": [
+        {
+          "address": "abc123-0.cluster.typedb.com:80",
+          "status": "pending"
+        }
+    ]
+}
+----
+
+=== Clone
+
+[cols="h,3a"]
+|===
+| Required access          | *write* to `team/TEAM_ID/spaces/SPACE_ID`
+| Method                   | `POST`
+| URL                      | `/api/v1/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID/clone`
+| Request body             |
+[source,json]
+----
+{
+    "id": string,
+}
+----
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+|===
+
+*Responses:*
+
+include::{page-version}@reference::partial$cloud-api/response-details.adoc[tags="200-single,400,401,403,404,500"]
+
+*Example request:*
+
+[tabs]
+====
+curl::
++
+[source,console]
+----
+curl --request POST \
+    --url https://cloud.typedb.com/api/v1/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID/clone \
+    --header 'Authorization: Bearer {ACCESS-TOKEN}' \
+    --json '{"id":"cloned-cluster"}'
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "https://cloud.typedb.com/api/v1/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID/clone"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+
+body = {
+    "id": "cloned-cluster"
+}
+
+response = requests.patch(url, headers=headers, json=body)
+----
+
+Rust::
++
+[source,rust]
+----
+use reqwest;
+use serde::Serialize;
+
+#[derive(Serialize)]
+struct ClusterClone {
+    id: String,
+}
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let cluster_clone = ClusterClone {
+        id: "cloned-cluster".into(),
+    };
+    let client = reqwest::Client::new();
+    let resp = client
+        .patch("https://cloud.typedb.com/api/v1/team/TEAM_ID/spaces/SPACE_ID/clusters/CLUSTER_ID")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
+        .json(&cluster_clone)
+        .send().await;
+    Ok(())
+}
+----
+====
+
+*Example response:*
+[source,json]
+----
+{
+    "id":"cloned-cluster",
+    "serverCount":1,
+    "storageSizeGB":10,
+    "isFree":true,
+    "status":"starting",
     "createdAt":1738256490070,
     "teamID":"new-team",
     "spaceID":"default",

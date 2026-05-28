@@ -54,7 +54,7 @@ To get the correct ISBN, you can use the following query.
 match
 $calvin-hobbes isa book, has title "The Complete Calvin and Hobbes";
 fetch {
-  "isbn": $calvin-hobbes.isbn,
+  "isbn": [$calvin-hobbes.isbn],
 };
 ----
 =====
@@ -151,7 +151,7 @@ To get the correct ISBN, you can use the following query.
 match
 $pet-sematary isa book, has title "Pet Sematary";
 fetch {
-  "isbn": $pet-sematary.isbn;
+  "isbn": [$pet-sematary.isbn]
 };
 ----
 =====
