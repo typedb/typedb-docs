@@ -1,4 +1,10 @@
 = Quickstart
+:keywords: typedb, typeql, tutorial, guide, loader
+:pageTitle:
+:summary:
+:page-toclevels: 2
+:tabs-sync-option:
+:test-typeql: linear
 
 A CSV-driven bulk loader for TypeDB. Each CSV row is bound to the variables of a TypeQL query
 template and submitted in batches over write transactions, with checkpointing, rejects capture,
@@ -22,6 +28,7 @@ We start with some initial data in a CSV format - the format the loader can hand
 
 [source,typeql]
 ----
+#!test
 define
 attribute name, value string;
 attribute age, value integer;
