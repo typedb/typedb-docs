@@ -107,16 +107,17 @@ Alias (deprecated): `server.http.address`. Specifying both `server.http.listen-a
 [#_admin]
 ==== Admin endpoint
 
-TypeDB exposes a separate admin gRPC endpoint, bound to localhost only, used by the bundled `typedb admin` CLI tool to inspect and manage a running server (see xref:{page-version}@tools::admin.adoc[]).
+TypeDB exposes a separate admin gRPC endpoint over a local IPC channel — a Unix domain socket on Linux and macOS, a Named Pipe on Windows — used by the bundled `typedb admin` CLI tool to inspect and manage a running server (see xref:{page-version}@tools::admin.adoc[]).
 
 [cols=".^3,5"]
 |===
 2+^| Server admin
 | `server.admin.enabled`
-| Enable/disable the localhost-only admin endpoint. Default value: `true`. +
+| Enable/disable the local admin endpoint. Default value: `false`. +
 
-| `server.admin.port`
-| Port for the admin endpoint on `127.0.0.1`. Default value: `1728`. +
+| `server.admin.socket-path`
+| Filesystem path of the admin Unix domain socket (Linux/macOS) or the Named Pipe name (Windows). Default value: `<data-directory>/admin.sock` on Linux/macOS, `\\.\pipe\typedb-admin` on Windows. +
+On Linux/macOS the path must be short enough to fit `sun_path` (typically ≤ 108 bytes). +
 
 |===
 
