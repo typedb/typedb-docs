@@ -1,0 +1,84 @@
+= AI Agents persistence with LangGraph and TypeDB
+:keywords: typedb, typeql, tutorial, guide, langgraph, ai, agents, llm, checkpoint, memory
+:pageTitle: AI Agents persistence with LangGraph and TypeDB
+:summary: Use the TypeDB plugin for LangGraph to persist agent state and long-term memory.
+:page-toclevels: 2
+
+This guide shows you how to use the TypeDB plugin for LangGraph to persist the state of an AI agent
+and store long-term memory that can be shared across agents and conversations.
+
+== Get started
+
+Install the checkpointer and store packages:
+
+[source,bash]
+----
+pip install langgraph-checkpoint-typedb langgraph-store-typedb
+----
+
+=== Using the checkpointer
+
+The checkpointer lets you persist the state of a LangGraph agent, so that conversations can be
+resumed at a later time even if the agent process is stopped. For background, see LangGraph's
+persistence and checkpointing guide.
+
+[source,python]
+----
+from langgraph_checkpoint_typedb import TypeDBSaver
+from langgraph.graph import StateGraph
+from langchain_core.messages import HumanMessage
+from typedb.driver import Credentials, DriverOptions, TypeDB
+
+driver = TypeDB.driver(
+    "localhost:1729",
+    Credentials("admin", "password"),
+    DriverOptions(is_tls_enabled=False),
+)
+
+checkpointer = TypeDBSaver(driver, database="langgraph_checkpoints")
+checkpointer.ensure_database()
+checkpointer.ensure_schema()
+
+graph = state_graph.compile(checkpointer=checkpointer)
+config = {"configurable": {"thread_id": "1"}}
+graph.invoke({"messages": [HumanMessage(content="hello")]}, config=config)
+----
+
+=== Using the long-term store
+
+The long-term store holds memory that can be accessed by multiple LangGraph agents, such as facts
+the agent has learned about the user. This is particularly useful when you have multiple agents, or
+when you have some information that needs to be remembered across conversations.
+
+[source,python]
+----
+import uuid
+
+from langgraph_store_typedb import TypeDBStore
+from langchain.tools import tool
+
+store = TypeDBStore(driver, database="langgraph_memory")
+store.ensure_database()
+store.ensure_schema()
+
+NAMESPACE = ("users", "default-user", "notes")
+
+@tool
+def remember(note: str) -> str:
+    """Save a note to the user's long-term memory."""
+    key = uuid.uuid4().hex
+    store.put(NAMESPACE, key, {"note": note})
+    return f"saved note {key}"
+
+@tool
+def recall() -> list[str]:
+    """List every note the user has saved."""
+    items = store.search(NAMESPACE, limit=100)
+    return [it.value["note"] for it in items]
+
+graph = state_graph.compile(checkpointer=checkpointer, store=store)
+----
+
+== Caveats
+
+Both plugins are a new experimental release and have some limitations. For instance, vector / semantic search are currently not supported. We'll stabilise and add more advanced functionalities as we learn more from our users about their requirements.
