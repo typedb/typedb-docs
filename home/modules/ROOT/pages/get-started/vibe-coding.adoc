@@ -1,0 +1,126 @@
+= Set up vibe coding
+:keywords: start, learn, typedb, typeql, tutorial, quickstart, vibe, coding, ai, agent, claude, cursor, copilot, typeql_check, skills
+:pageTitle: Set up vibe coding
+:summary: Configure your AI coding agent to write valid TypeQL
+:tabs-sync-option:
+
+Before you start writing TypeQL, set up your AI coding agent so it can write and verify TypeQL on your behalf. This step is optional - skip ahead to xref:{page-version}@home::get-started/schema.adoc[] if you'd rather write TypeQL by hand.
+
+Two pieces make vibe coding with TypeDB reliable:
+
+. `typeql_check` - a CLI that statically validates TypeQL against your schema, so the agent can self-correct.
+. `typedb-skills/typeql.md` - a skill file that teaches your coding agent the TypeQL language and TypeDB's data model.
+
+[#install_typeql_check]
+== Install typeql_check
+
+`typeql_check` is distributed through the same channels as TypeDB Console.
+
+[tabs]
+====
+macOS::
++
+--
+**Install using Homebrew**
+
+[source,shell]
+----
+brew install typedb/tap/typeql_check
+----
+
+**Or install using the install script**
+
+[source,shell]
+----
+curl -sSL https://typedb.com/install.sh | sh -s -- typeql_check && export PATH="$HOME/.typedb:$PATH"
+----
+--
+
+Linux::
++
+--
+**Install using apt**
+
+[source,shell]
+----
+sudo apt install software-properties-common apt-transport-https gpg
+gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 17507562824cfdcc
+gpg --export 17507562824cfdcc | sudo tee /etc/apt/trusted.gpg.d/typedb.gpg > /dev/null
+echo "deb https://repo.typedb.com/public/public-release/deb/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/typedb.list > /dev/null
+sudo apt update
+sudo apt install typeql_check
+----
+
+**Or install using the install script**
+
+[source,shell]
+----
+curl -sSL https://typedb.com/install.sh | sh -s -- typeql_check && export PATH="$HOME/.typedb:$PATH"
+----
+--
+
+Windows::
++
+--
+**Install using the install script**
+
+[source,powershell]
+----
+iwr https://typedb.com/install.ps1 -useb | iex -Args typeql_check
+----
+--
+====
+
+Verify the install:
+
+[source,shell]
+----
+typeql_check --version
+----
+
+[#add_skill]
+== Add the TypeQL skill to your coding agent
+
+The https://github.com/typedb/typedb-skills[`typedb-skills`,window=_blank] repository contains skill files that teach AI coding agents how to write TypeQL. The relevant file is `typeql.md`.
+
+. Clone the repository:
++
+[source,shell]
+----
+git clone https://github.com/typedb/typedb-skills.git
+----
+
+. Register `typedb-skills/typeql.md` with your coding agent:
++
+[tabs]
+====
+Claude Code::
++
+--
+Copy `typeql.md` into `~/.claude/skills/typeql.md` (user-level) or `.claude/skills/typeql.md` inside your project (project-level). Claude Code will load it automatically the next time you start a session.
+--
+
+Cursor::
++
+--
+Copy the contents of `typeql.md` into `.cursor/rules/typeql.mdc` at the root of your project.
+--
+
+GitHub Copilot::
++
+--
+Copy the contents of `typeql.md` into `.github/copilot-instructions.md` at the root of your project.
+--
+
+Other agents::
++
+--
+Most coding agents accept a Markdown rules or instructions file. Point your agent at `typedb-skills/typeql.md` using whatever mechanism it provides for custom instructions.
+--
+====
+
+With the skill loaded, your coding agent will know TypeQL syntax, the TypeDB data model, and that it can call `typeql_check` to validate the queries it writes.
+
+== What next?
+
+You're ready to start vibe coding TypeQL. Continue with xref:{page-version}@home::get-started/schema.adoc[] - ask your agent to draft the schema, then run `typeql_check` (or have the agent run it) before sending the query to TypeDB.
