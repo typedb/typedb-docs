@@ -8,8 +8,10 @@ Now that you've walked through TypeDB by hand, set up your AI coding agent so it
 
 Two pieces make vibe coding with TypeDB reliable:
 
-. `typeql_check` - a CLI that statically validates TypeQL against your schema, so the agent can self-correct.
+. `typeql_check` - a CLI that statically validates TypeQL syntax, so the agent can self-correct.
 . `typedb-skills/typeql.md` - a skill file that teaches your coding agent the TypeQL language and TypeDB's data model.
+
+In our benchmarks, adding both raises Claude's TypeQL pass rate from 23-43% (no tools) to 86-96% - the difference between AI-generated TypeQL being unreliable and being something you can build on.
 
 [#install_typeql_check]
 == Install typeql_check
