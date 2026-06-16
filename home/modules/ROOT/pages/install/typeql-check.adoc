@@ -1,0 +1,22 @@
+= Install TypeQL Syntax Checker
+
+`typeql-check` is a small CLI tool that validates the syntax of a TypeQL query without sending it to a TypeDB server. It is useful for linting `.tql` files in editors and CI pipelines, and for letting AI coding agents self-correct the queries they produce.
+
+It is distributed through the same channels as TypeDB Console.
+
+== Install
+
+include::{page-version}@home::partial$typeql_check_install.adoc[tag=install]
+
+== Verify
+
+Check that the binary is on your `PATH`:
+
+[source,shell]
+----
+typeql_check --version
+----
+
+== Getting Started
+
+After installation, see xref:{page-version}@tools::typeql-check.adoc[] for usage and examples.
