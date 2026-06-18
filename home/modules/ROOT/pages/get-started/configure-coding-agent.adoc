@@ -6,7 +6,7 @@
 
 Now that you've walked through TypeDB by hand, set up your AI coding agent so it can write and verify TypeQL on your behalf. This step is optional - skip it if you'd rather keep writing TypeQL by hand.
 
-Two pieces make vibe coding with TypeDB reliable:
+Two pieces make vibe querying with TypeDB reliable:
 
 . `typeql_check` - a CLI that statically validates TypeQL syntax, so the agent can self-correct.
 . `typedb-skills/typeql.md` - a skill file that teaches your coding agent the TypeQL language and TypeDB's data model.
@@ -63,4 +63,4 @@ With the skill loaded, your coding agent will know TypeQL syntax, the TypeDB dat
 
 == What next?
 
-You're ready to start vibe coding TypeQL. Ask your agent to draft schemas and queries against your TypeDB databases, and have it run `typeql_check` to validate the output before sending it to TypeDB.
+You're ready to start vibe querying with TypeQL. Ask your agent to draft schemas and queries against your TypeDB databases, and have it run `typeql_check` to validate the output before sending it to TypeDB.
