@@ -58,7 +58,11 @@ Catch a syntax error:
 [source,bash]
 ----
 $ typeql-check "match $p isa person fetch { 'name': $p.name };"
-[parse error output]
+[TQL03] TypeQL Error: There is a syntax error
+  parsing error: expected relation, comparator, expression, expression_struct, or value_literal
+  Near 1:20:
+  --> match $p isa person fetch { 'name': $p.name };
+
 $ echo $?
 1
 ----
