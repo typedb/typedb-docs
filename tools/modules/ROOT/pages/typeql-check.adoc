@@ -31,7 +31,7 @@ The exit code is:
 
 * `0` — the query parsed successfully (no output).
 * `1` — the query failed to parse (error printed to stderr).
-* `2` — failed to read from stdin.
+* `2` — an I/O error occurred while reading from stdin (for example, a broken pipe).
 
 == Examples
 
