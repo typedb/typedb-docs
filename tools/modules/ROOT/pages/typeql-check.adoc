@@ -1,0 +1,75 @@
+= TypeQL Syntax Checker
+:keywords: typedb, typeql, syntax, check, lint, cli
+:pageTitle: TypeQL Syntax Checker
+:summary: CLI tool for validating TypeQL query syntax.
+
+`typeql-check` is a small CLI tool that validates the syntax of a TypeQL query without sending it to a TypeDB server.
+It parses the input and exits with a non-zero status if the query is malformed, printing the parse error to stderr.
+
+Use it to lint `.tql` files in editors and CI pipelines, or to sanity-check queries before running them against a database.
+
+== Installation
+
+`typeql-check` is distributed through the same channels as TypeDB Console.
+For installation instructions, see the xref:{page-version}@home::install/typeql-check.adoc[] install page.
+
+== Usage
+
+`typeql-check` reads a query from its first argument, or from standard input if no argument is given.
+
+[source,bash]
+----
+typeql-check "<query>"
+----
+
+[source,bash]
+----
+typeql-check < query.tql
+----
+
+The exit code is:
+
+* `0` — the query parsed successfully (no output).
+* `1` — the query failed to parse (error printed to stderr).
+* `2` — an I/O error occurred while reading from stdin (for example, a broken pipe).
+
+== Examples
+
+Check a query passed as an argument:
+
+[source,bash]
+----
+$ typeql-check "match $p isa person; fetch { 'name': $p.name };"
+$ echo $?
+0
+----
+
+Check a query from a file:
+
+[source,bash]
+----
+$ typeql-check < schema.tql
+$ echo $?
+0
+----
+
+Catch a syntax error:
+
+[source,bash]
+----
+$ typeql-check "match $p isa person fetch { 'name': $p.name };"
+[TQL03] TypeQL Error: There is a syntax error
+  parsing error: expected relation, comparator, expression, expression_struct, or value_literal
+  Near 1:20:
+  --> match $p isa person fetch { 'name': $p.name };
+
+$ echo $?
+1
+----
+
+Use in a shell pipeline:
+
+[source,bash]
+----
+$ cat query.tql | typeql-check && typedb console --command "..."
+----
