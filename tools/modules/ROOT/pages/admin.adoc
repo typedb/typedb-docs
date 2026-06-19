@@ -1,27 +1,30 @@
 = TypeDB Admin Tool
-:keywords: typedb, admin, cli, server, status, version
+:keywords: typedb, admin, cli, server, status, version, users, reset-password
 :pageTitle: TypeDB Admin Tool
-:summary: Localhost CLI for inspecting and managing a running TypeDB server.
+:summary: Local CLI for inspecting and managing a running TypeDB server.
 
 `typedb admin` is a CLI tool bundled with every TypeDB distribution.
-It connects to the server's localhost-only admin endpoint to inspect server status and run administrative commands.
+It connects to the server's local-only admin endpoint to inspect server status and run administrative commands such as resetting a user's password.
 
-Because the admin endpoint binds to `127.0.0.1` only, the admin tool must run on the same host as the server.
+The admin endpoint is a Unix domain socket on Linux and macOS, and a Named Pipe on Windows.
+Access is enforced by the operating system: the socket file is created with mode `0600` (owner-only) on Unix, and the Named Pipe carries a DACL that grants access only to the server's owner, `LOCAL SYSTEM`, and `BUILTIN\Administrators` on Windows.
+The admin tool must run on the same host as the server.
 
 == Connect
 
-By default the admin tool connects to `127.0.0.1:1728` — the default address of the server's admin endpoint.
+The admin endpoint is *off by default*.
+Start the server with the admin endpoint enabled — see xref:{page-version}@maintenance-operation::typedb-configuration.adoc#_admin[Server configuration / Admin endpoint].
+By default, the endpoint is at `<data-directory>/admin.sock` on Linux/macOS and `\\.\pipe\typedb-admin` on Windows; both can be overridden with `server.admin.socket-path`.
+
+Point the admin tool at that path (providing the socket path is required to choose the server to connect to):
 
 [source,bash]
 ----
-typedb admin
-----
+# Linux/macOS
+typedb admin --socket-path /var/lib/typedb/data/admin.sock
 
-To target a non-default admin port (e.g., when `server.admin.port` is overridden in the server config):
-
-[source,bash]
-----
-typedb admin --address 127.0.0.1:1738
+# Windows
+typedb admin --socket-path \\.\pipe\typedb-admin
 ----
 
 == Modes
@@ -34,7 +37,7 @@ Run with no `--command` or `--script` to enter an interactive REPL.
 
 [source,bash]
 ----
-typedb admin
+typedb admin --socket-path /var/lib/typedb/data/admin.sock
 ----
 
 The REPL prints the connected server's distribution and version, then accepts commands one at a time. Use `help` to list available commands, and `exit` to quit.
@@ -45,8 +48,8 @@ Pass one or more `--command` (`-c`) flags to execute commands and exit. Useful i
 
 [source,bash]
 ----
-typedb admin --command "server status"
-typedb admin -c "server version" -c "server status"
+typedb admin --socket-path /var/lib/typedb/data/admin.sock --command "server status"
+typedb admin --socket-path /var/lib/typedb/data/admin.sock -c "server version" -c "server status"
 ----
 
 The exit code is non-zero if any command fails.
@@ -57,7 +60,7 @@ Execute a file containing one command per line and exit.
 
 [source,bash]
 ----
-typedb admin --script ./admin-checks.txt
+typedb admin --socket-path /var/lib/typedb/data/admin.sock --script ./admin-checks.txt
 ----
 
 `--command` and `--script` cannot be combined.
@@ -71,7 +74,10 @@ typedb admin --script ./admin-checks.txt
 | Print the running server's distribution name and version.
 
 | `server status`
-| Print every endpoint the server is serving on (gRPC, HTTP, admin) along with each one's listen and advertise addresses (when they differ).
+| Print every endpoint the server is serving and advertising (gRPC, HTTP, admin, monitoring).
+
+| `user reset-password <username> [<new-password>]`
+| Reset the password of an existing user. If the new password is omitted, the tool prompts for it interactively (no echo) or reads one line from `stdin` when not running in a TTY.
 
 | `help`
 | List all available commands.
@@ -80,18 +86,58 @@ typedb admin --script ./admin-checks.txt
 | Leave the REPL.
 |===
 
-== Example
+== Examples
+
+=== Inspect server status
 
 [source,bash]
 ----
-$ typedb admin --command "server status"
+$ typedb admin --socket-path /var/lib/typedb/data/admin.sock --command "server status"
 Status: running
 Serving:
-  gRPC:  0.0.0.0:1729 (connect via 127.0.0.1:1729)
-  HTTP:  0.0.0.0:8000 (connect via http://127.0.0.1:8000)
-  Admin: 127.0.0.1:1728
+  gRPC:       0.0.0.0:1729
+  HTTP:       0.0.0.0:8000
+  Admin:      /var/lib/typedb/data/admin.sock (Unix socket)
+  Monitoring: http://127.0.0.1:4104/diagnostics (Prometheus scrape)
+              http://127.0.0.1:4104/diagnostics?format=json (JSON)
 ----
 
-== Disabling the admin endpoint
+=== Reset a user's password (interactive)
 
-The admin endpoint is enabled by default. To disable it, set `server.admin.enabled: false` in the server config — see xref:{page-version}@maintenance-operation::typedb-configuration.adoc#_admin[Server configuration / Admin endpoint]. With the endpoint disabled, `typedb admin` will fail to connect.
+[source,bash]
+----
+$ typedb admin --socket-path /var/lib/typedb/data/admin.sock
+admin> user reset-password admin
+New password: ********
+Password updated for user 'admin'.
+admin> exit
+----
+
+=== Reset a user's password (non-interactive, from a secret file)
+
+[source,bash]
+----
+$ cat /etc/typedb/admin-new-password | typedb admin --socket-path /var/lib/typedb/data/admin.sock -c "user reset-password admin"
+----
+
+== Connection errors
+
+The admin tool verifies the socket file before connecting on Unix.
+Common errors:
+
+[cols=".^3,5"]
+|===
+| `[ADM1] Failed to connect to '<path>'.`
+| The server is not listening on the given path, or the path is for a different server instance.
+
+| `[ADM7] Admin socket '<path>' could not be inspected.`
+| The path does not exist or is unreadable to the user running `typedb admin`.
+
+| `[ADM8] Admin endpoint at '<path>' is not a Unix socket; refusing to connect.`
+| The path resolves to a regular file or directory rather than a socket. The server is either not running or wrote to the wrong path.
+
+| `[ADM9] Admin socket '<path>' has mode `<mode>`; expected `0600`.`
+| The socket file's permission bits were changed after the server created it. Restart the server to recreate the socket with the correct mode.
+|===
+
+On Windows, access checks are performed by the kernel when opening the pipe; permission errors surface as connection failures (`[ADM1]`).
