@@ -23,6 +23,7 @@ TEST_NAME_KEY = "name"
 TEST_TXN_SCHEMA_KEY = "schema"
 TEST_TXN_WRITE_KEY = "write"
 TEST_TXN_READ_KEY = "read"
+TEST_GIVEN_KEY = "given"
 TEST_ROLLBACK_KEY = "rollback"
 TEST_COUNT_KEY = "count"
 TEST_JUMP_KEY = "jump"
@@ -93,12 +94,13 @@ class TypeqlRunner(BaseRunner):
                 return FailureMode.Commit
         return FailureMode.NoFailure
 
-    def run_transaction(self, queries: List[str], type: TransactionType, rollback=False) -> Union[int, None]:
+    def run_transaction(self, queries: List[str], type: TransactionType, given_variables=None, rollback=False) -> Union[int, None]:
         queries = [q for qs in queries for q in re.split(r'\bend\s*;', qs) if q.strip()]
+        given_rows = None if given_variables is None else (given_variables, [])
         with self.driver.transaction(self.db, type) as tx:
             try:
                 for q in queries:
-                    results = tx.query(q).resolve()
+                    results = tx.query(q, given_rows=given_rows).resolve()
                     if results.is_ok():
                         results = []
                     elif results.is_concept_rows():
@@ -143,6 +145,11 @@ class TypeqlRunner(BaseRunner):
         if type is None:
             raise ValueError(f"[{adoc_path}]: Missing transaction type from test, see README.md")
 
+        if parsed_test.config.get(TEST_GIVEN_KEY):
+            given_variables = parsed_test.config[TEST_GIVEN_KEY].split(";")
+        else:
+            given_variables = None
+
         rollback = False
         if parsed_test.config.get(TEST_ROLLBACK_KEY) is not None:
             rollback = True
@@ -163,11 +170,11 @@ class TypeqlRunner(BaseRunner):
             if failure_mode != ref_failure_mode:
                 raise RuntimeError(f"[{adoc_path}]: Failure mode: expected {ref_failure_mode} but got {failure_mode}")
         elif counted == True:
-            count = self.run_transaction(parsed_test.segments, type, rollback)
+            count = self.run_transaction(parsed_test.segments, type, given_variables, rollback)
             if count != reference_count:
                 raise RuntimeError(f"[{adoc_path}]: Query count: expected {reference_count} but got {count}")
         else:
-            self.run_transaction(parsed_test.segments, type, rollback)
+            self.run_transaction(parsed_test.segments, type, given_variables, rollback)
 
         self.after_run_test(parsed_test)
 

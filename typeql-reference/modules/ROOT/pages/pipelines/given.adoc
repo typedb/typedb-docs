@@ -1,0 +1,55 @@
+= Given rows declaration
+:page-aliases: {page-version}@typeql::pipelines/given.adoc
+:test-typeql: linear
+
+A `given` stage preceding a query indicates the pipeline expects input "rows" to be provided along when the query is executed.
+It declares a number of input variables, and the expected type of each variable.
+If the value provided for a given variable does not match the declared type, an execution error is returned.
+
+For examples on how to pass the given rows for a query, check the the driver documentation.
+
+== Syntax
+
+[,typeql]
+----
+given <var>: <type> [, <var>: <type>, ... ];
+----
+
+== Example
+
+.Schema for the following examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema, commit]
+include::{page-version}@typeql-reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-friendship]
+----
+====
+
+Given rows can be values...
+[,typeql]
+----
+#!test[write, given=name]
+given $name: string;
+insert $u isa user, has username == $name;
+----
+
+or concepts (returned by previous queries).
+[,typeql]
+----
+#!test[write, given=u1;u2]
+given $u1: user, $u2: user;
+insert $_ isa friendship, links (friend: $u1, friend: $u2);
+----
+
+Given variables can be optional, allowing for conditional inserts:
+[,typeql]
+----
+#!test[write, given=uname;name;phone]
+given $uname: username, $name: string, $phone: string?;
+match $u isa user, has $uname;
+insert
+    $u has name == $name;
+    try { $u has phone == $phone; };
+----
