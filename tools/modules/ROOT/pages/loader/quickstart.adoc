@@ -28,7 +28,7 @@ We start with some initial data in a CSV format - the format the loader can hand
 
 [source,typeql]
 ----
-#!test
+#!test[schema]
 define
 attribute name, value string;
 attribute age, value integer;
