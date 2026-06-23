@@ -160,7 +160,23 @@ This helps to make the process of upgrading TypeDB easier.
 2+^| Storage
 | `storage.data-directory`
 | Path to the user data directory. Defaults to within the server distribution under `server/data`. +
+
+| `storage.rocksdb.cache-size`
+| Size of the shared RocksDB block cache, the in-memory LRU cache of uncompressed data blocks read from disk. This is a single pool shared by *all* databases on the server, not a per-database limit. Default value: `1gb` (1 GiB). +
+This is a soft limit: it may be exceeded slightly by index and filter blocks that RocksDB pins in memory. See <<_memory_usage>> for sizing guidance.
+
+| `storage.rocksdb.write-buffers-limit`
+| Total memory budget for the shared RocksDB write-buffer manager — the in-memory write buffers (memtables) that hold uncommitted and recently-committed writes before they are flushed to disk. This is a single pool shared by *all* databases on the server, not a per-database limit. Default value: `512mb` (512 MiB). +
+When the limit is reached, writes are stalled (slowed) until memory is freed by a flush, rather than allowed to grow without bound. See <<_memory_usage>> for sizing guidance.
 |===
+
+[#_byte_size_format]
+[NOTE]
+====
+Size values such as `storage.rocksdb.cache-size` and `storage.rocksdb.write-buffers-limit` are written as an integer with an optional, case-insensitive unit suffix: `B`, `KB`/`KiB`, `MB`/`MiB`, `GB`/`GiB`, or `TB`/`TiB`. A bare number is interpreted as bytes.
+
+The units are *binary* (powers of 1024), so `KB` is identical to `KiB`, `MB` to `MiB`, and so on. In particular, *`1gb` means 1 GiB = 1,073,741,824 bytes* (not 10^9^ bytes). Fractional values (e.g. `1.5gb`) are not accepted; use a smaller unit instead (e.g. `1536mb`). Examples: `1gb`, `512mb`, `1024MiB`, `2048`.
+====
 
 [#_diagnostics]
 === Diagnostics
@@ -216,3 +232,28 @@ ulimit -n
 ----
 
 We recommend this is increased to at least `50 000`.
+
+[#_memory_usage]
+=== Memory usage
+
+The resident memory of a TypeDB server is dominated by the two shared RocksDB pools configured under `storage.rocksdb`, plus the operating system's page cache:
+
+* *Block cache* (`storage.rocksdb.cache-size`, default `1gb`) — caches uncompressed data blocks read from disk so that hot reads are served from memory. A single cache is shared across all databases on the server.
+* *Write buffers* (`storage.rocksdb.write-buffers-limit`, default `512mb`) — hold writes in memory before they are flushed to disk. A single write-buffer budget is shared across all databases on the server.
+* *OS page cache* — RocksDB relies on the operating system's file cache to hold recently-accessed files (including the compressed forms of data blocks). This memory is managed by the OS, lives outside the TypeDB process, and is reclaimed automatically under memory pressure, but it is important to leave headroom for it.
+
+Both `storage.rocksdb` limits are server-wide totals, so they do *not* need to be scaled up for each additional database. They should instead be sized relative to the host's total RAM and the active working set across all databases.
+
+[NOTE]
+====
+The two `storage.rocksdb` pools are soft accounting limits on TypeDB's own caches and buffers; they are not a hard cap on the server's total memory. Transaction working memory (writes are buffered in memory until commit), query execution, and the OS page cache all consume additional memory on top of them. When sizing a host, leave ample headroom above `cache-size` + `write-buffers-limit` rather than provisioning RAM exactly equal to their sum.
+====
+
+As rough guidance for a dedicated host:
+
+* The defaults (`1gb` block cache + `512mb` write buffers, roughly 1.5 GiB of TypeDB-managed cache and buffers) suit small deployments and development machines.
+* To improve read performance, increase `storage.rocksdb.cache-size` so that the working set fits in cache. As a starting point, aim for at least 5% of the on-disk data size across all databases to fit in the block cache, and leave a comparable amount of free RAM for the OS page cache.
+* Reserve memory for the OS, the page cache, and transaction/query working memory in addition to the two pools above; avoid configuring `cache-size` + `write-buffers-limit` close to the host's total RAM.
+* Increase `storage.rocksdb.write-buffers-limit` for sustained, write-heavy workloads if you observe write stalls; the limit trades memory for write throughput.
+
+Server memory consumption can be observed live via the `server_resources_count{kind="memoryUsedInBytes"}` metric on the diagnostics monitoring endpoint — see xref:{page-version}@maintenance-operation::diagnostics-endpoint.adoc#_server_resource_usage[Server resource usage].
