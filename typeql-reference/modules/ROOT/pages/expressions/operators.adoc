@@ -27,7 +27,7 @@ Parentheses (`()`) may be used to override the precedence. The sub-expressions i
 (1 + 2) * 3 == 9
 ----
 
-== Built-in functions
+== Function-like operators
 
 TypeQL provides several built-in functions for common mathematical and list operations:
 
@@ -112,23 +112,3 @@ len("⭐") == 1
 len("❤️‍🔥") == 4
 ----
 
-=== Concept functions
-
-`iid(x)`::
-Returns the internal ID of the provided instance argument as a string.
-The result is intended to be used in an `iid` predicate in future queries to uniquely identify the instance.
-`iid()` is mainly intended for use in `fetch` queries to uniquely identify the instance.
-It is not typically needed in other query types, as the IID is available directly in the result rows.
-
-[,typeql]
-----
-iid($x) == "0x1e0000000000000000001f"
-----
-
-`label(t)`::
-Returns the label of the provided type argument as a string.
-
-[,typeql]
-----
-label($x) == "person"
-----

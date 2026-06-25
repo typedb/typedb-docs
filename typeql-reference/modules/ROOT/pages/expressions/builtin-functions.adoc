@@ -1,0 +1,88 @@
+= Built-in functions
+
+== Concept functions
+
+`iid(x)`::
+Returns the internal ID of the provided instance argument as a string.
+The result is intended to be used in an `iid` predicate in future queries to uniquely identify the instance.
+`iid()` is mainly intended for use in `fetch` queries to uniquely identify the instance.
+It is not typically needed in other query types, as the IID is available directly in the result rows.
+
+[,typeql]
+----
+iid($x) == "0x1e0000000000000000001f"
+----
+
+`label(t)`::
+Returns the label of the provided type argument as a string.
+
+[,typeql]
+----
+label($x) == "person"
+----
+
+== Documentation and metadata functions
+
+`get_doc(t)`::
+Returns the documentation string of the provided type argument.
+
+[,typeql]
+----
+get_doc(person) == "This represents a person"
+----
+
+`get_owns_doc(owner, attribute)`::
+Returns the documentation string of the provided `owns` if it exists.
+
+[,typeql]
+----
+get_owns_doc(person, name) == "The full legal name of the person"
+----
+
+`get_plays_doc(player, role)`::
+Returns the documentation string of the provided `plays` if it exists.
+
+[,typeql]
+----
+get_plays_doc(person, friendship:friend) == "A person can be a friend"
+----
+
+`get_relates_doc(relation, role)`::
+Returns the documentation string of the provided `relates` if it exists.
+
+[,typeql]
+----
+get_relates_doc(friendship, friendship:friend) == "A party in this friendship"
+----
+
+`get_sub_doc(sub, sup)`::
+Returns the documentation string of the provided `sub` if it exists.
+
+[,typeql]
+----
+get_sub_doc(student, person) == "A person who is a student"
+----
+
+`get_fun_doc(function_name)`::
+Returns the documentation string of the provided function if it exists.
+
+[,typeql]
+----
+get_fun_doc("my_function") == "This is my custom function"
+----
+
+`get_struct_doc(struct_name)`::
+Returns the documentation string of the provided struct if it exists.
+
+[,typeql]
+----
+get_struct_doc("my_struct") == "This is my custom struct"
+----
+
+`get_struct_field_doc(struct_name, field_name)`::
+Returns the documentation string of the provided struct field if it exists.
+
+[,typeql]
+----
+get_struct_field_doc("my_struct", "its_field") == "This is a field of my custom struct"
+----
