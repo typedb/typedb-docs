@@ -41,16 +41,51 @@ Select TypeDB edition below, and follow the instructions:
 
 include::{page-version}@home::partial$studio_connect.adoc[tag=connect_studio]
 
+TypeDB Studio remembers the server addresses and usernames you have previously used and offers them as suggestions the
+next time you connect.
+
+Saved connections are stored locally in your browser or desktop app. See <<_data_storage>> for details.
+
 === Select a database
 
-To select a database to work with, use the dropdown menu on the right of the database icon in the top toolbar. You can also create new databases here.
+To select a database to work with, use the dropdown menu on the right of the database icon in the top toolbar. You can also create new databases here, optionally with sample data preloaded.
 
-TypeDB Studio will automatically select a *default* database if there are no others present.
+See <<_databases>> for the full set of database management features, and <<_sample_datasets>> for more details about sample datasets.
+
+
+== Welcome page
+
+The Welcome page is the home screen of TypeDB Studio. The actions it offers depend on whether you are connected to a
+server:
+
+When *not connected*, it provides shortcuts to:
+
+- Connect to a TypeDB server.
+- Run TypeDB in the cloud.
+- Install TypeDB Community Edition locally.
+
+When *connected*, it provides quick links to the main tools:
+
+- Query your database (the query tool).
+- Visualise your schema (the schema tool).
+- Build with the AI agent (Agent mode).
+- View your data (the data explorer).
+- Explore data as a graph (the graph explorer).
 
 
 == Query tool
 
 You can run queries against the connected TypeDB server using TypeDB Studio's https://studio.typedb.com/query[query tool,window=_blank].
+
+=== Query tabs
+
+The query tool supports multiple query tabs, so you can keep several queries open at once. Tabs can be renamed,
+pinned, duplicated, and closed (including close others / close to the right). Open query tabs are remembered between
+sessions.
+
+In addition to writing and running queries, the query tool gives you access to a <<_schema_pane,schema pane>>, an inline
+<<_history_pane,history pane>>, <<_transaction_controls,transaction controls>>, result <<_export_query_results,export>>,
+and the ability to <<_saved_queries,save queries>> for later reuse.
 
 === Write a query
 
@@ -66,7 +101,7 @@ Results are printed to the Results pane.
 
 === Query results
 
-The Results pane offers three different views of results - you can choose between *Log*, *Table*, *Graph* and *Raw*.
+The Results pane offers four different views of results - you can choose between *Log*, *Table*, *Graph* and *Raw*.
 
 The Log contains textual output, similar to TypeDB Console, as well as input log, and error messages.
 
@@ -75,6 +110,18 @@ Table view is well suited for visualising the answers of *match* and *fetch* que
 Graph (network) output is appropriate for visualising and understanding the connections in your dataset.
 
 Raw output allows you to see the raw HTTP response from TypeDB and is useful for debugging.
+
+[#_export_query_results]
+=== Export query results
+
+Query results can be exported directly from the Results pane:
+
+- *Copy* the output to the clipboard, as JSON or CSV.
+- *Download* the output as a JSON or CSV file.
+- The Log view can also be copied, or sent to <<_agent_mode,Agent mode>> for further analysis.
+- The Graph view can be exported as a PNG image.
+
+Raw output can likewise be copied or downloaded as JSON.
 
 === Schema pane
 
@@ -96,6 +143,8 @@ All queries and transaction operations are timestamped and logged to the History
 You can copy and replay queries from this pane.
 Any errors that occur can be inspected from this pane.
 
+This inline pane mirrors the dedicated <<_query_history,Query history>> tool.
+
 === Transaction controls
 
 By default, transactions are fully managed by TypeDB Studio. A transaction opens when you start running a query, and commits when a schema/write query is done or closes when a read query is done.
@@ -103,6 +152,15 @@ By default, transactions are fully managed by TypeDB Studio. A transaction opens
 For more fine-grained control, you can use the top bar to change the transaction mode from *auto* to *manual*. This allows you to open transactions, and perform multiple queries within a transaction before closing or committing.
 
 Only one transaction can be open concurrently within a single instance of TypeDB Studio.
+
+In manual mode, you also choose the transaction type (read, write, or schema) before opening a transaction. Transaction
+options, such as the transaction timeout, can be adjusted from the same control.
+
+=== Transaction inspector
+
+The transaction inspector shows the details of the currently open (or most recently closed) transaction, including its
+status, type (read, write, or schema), and the times it was opened and closed, along with low-level metadata such as the
+transaction ID and timeout. When a transaction is open, you can close it directly from the inspector.
 
 === Connection management
 
@@ -116,6 +174,26 @@ Query-level errors are printed to Log Output. These are typically errors returne
 Transaction-level errors will trigger an error popup notification.
 
 Both types of errors can be viewed and copied to the clipboard by visiting the History pane on the Query page.
+
+
+[#_agent_mode]
+== Agent mode
+
+https://studio.typedb.com/agent-mode[Agent mode,window=_blank] is an AI-powered assistant that helps you build and run
+TypeQL queries using natural language.
+
+Describe what you want in plain language, and the assistant reads your database schema and generates TypeQL for you. You
+can run generated queries directly from the chat, view their results in the same Log, Table, Graph, and Raw views as the
+query tool, and save useful queries for later.
+
+Agent mode keeps a separate, automatically titled conversation history for each database, so you can return to previous
+chats. Conversations are stored locally (see <<_data_storage>>).
+
+=== AI consent
+
+Agent mode is powered by OpenAI. Because using it shares your database schema and chat messages with OpenAI, AI features
+are off by default and require explicit, one-time opt-in the first time you use them. You can withdraw consent at any
+time, and optionally delete your local chat history when doing so.
 
 
 == Schema tool
@@ -166,6 +244,99 @@ Data Explorer tabs support standard tab functionality (close, close others, clos
 In manual transaction mode the user can work with a fixed snapshot of their data for stable exploration.
 
 
+== Graph explorer
+
+The https://studio.typedb.com/graph[Graph explorer,window=_blank] is a dedicated tool for browsing your data as an
+interactive graph. Select a type from the schema, and the explorer opens a tab showing instances of that type and their
+connections. (This is distinct from the Graph view of query results and from the Schema tool, which visualises types
+rather than data.)
+
+=== Navigating the graph
+
+- Zoom, redraw (re-run the layout), focus on a selected node, and toggle fullscreen.
+- Search for nodes and focus on the matches.
+- Choose a layout density (spacious, default, or compact).
+- Drag nodes to rearrange them; other nodes move out of the way.
+- Export the current view, or the entire graph, as a PNG image.
+
+=== Exploring connections
+
+Click a node to inspect its attributes and connections in the side panel. Using the right-click context menu or the
+side panel's "Explore" controls, you can load additional relations and attributes for an instance - or for every
+instance of a type - on demand, without re-running a query. The explorer works in both auto and manual transaction
+modes.
+
+=== Customising the appearance
+
+The side panel offers extensive styling controls:
+
+- *Elements*: highlight or filter nodes by kind (entity, relation, attribute, type, role, value), by type, or by edge
+label (`has`, `links`, `isa`, `sub`, `owns`, `relates`, `plays`).
+- *Labels*: toggle node and edge labels individually, size nodes by their number of connections, and switch between
+straight and curved edges.
+- *Themes*: choose from built-in presets, or save your own.
+- *Customise*: set per-kind and per-type colours, shapes, and sizes, and configure the background.
+
+The side panel can be docked to the right or bottom of the view.
+
+
+[#_saved_queries]
+== Saved queries
+
+You can save TypeQL queries for reuse from the query tool, and manage them in the
+https://studio.typedb.com/saved-queries[Saved queries,window=_blank] tool.
+
+- *Save*: From a query tab, save the current query with a name (and optional description).
+- *View*: The Saved queries tool lists all saved queries with their timestamps, each shown in a syntax-highlighted
+editor.
+- *Run*: Run a saved query directly; results open in the query tool.
+- *Open*: Open a saved query into a new query tab to edit it before running.
+- *Manage*: Rename or delete saved queries.
+
+Saved queries are stored locally (see <<_data_storage>>).
+
+
+[#_query_history]
+== Query history
+
+The https://studio.typedb.com/history[Query history,window=_blank] tool shows a chronological log of all queries and
+transaction operations performed in the current session. For each entry it shows the status (success or error),
+duration, and, where applicable, error details.
+
+You can copy and re-run any query from the history. The same information is available inline in the query tool's
+<<_history_pane,History pane>>.
+
+
+== Sample datasets
+
+When creating a database, you can optionally load a preloaded sample dataset to get started quickly with a ready-made
+schema and data.
+
+The available sample datasets are maintained in the
+https://github.com/typedb/typedb-examples[typedb-examples repository,window=_blank]. Studio automatically selects the
+dataset version that matches your server.
+
+
+== Databases
+
+You can manage your databases from the database menu in the top toolbar.
+
+=== Create a database
+
+Provide a database name (letters, digits, hyphens, and underscores only). Studio checks that the name is not already in
+use. You can optionally choose a <<_sample_datasets,sample dataset>> to load into the new database on creation.
+
+=== Select a database
+
+Switch between databases using the database dropdown. You can also refresh the database list and create new databases
+from here.
+
+=== Delete a database
+
+Deleting a database is irreversible and permanently removes all of its data. To prevent accidents, you must type the
+database name to confirm deletion.
+
+
 == User manager
 
 You can manage database users in TypeDB Studio's https://studio.typedb.com/users[User Manager,window=_blank].
@@ -183,3 +354,37 @@ To change a user's password, click the "Change password" button in the row corre
 === Delete a user
 
 To delete a user, click the "Delete user" button in the row corresponding to that user.
+
+
+== Appearance
+
+You can switch between light mode, dark mode, and syncing with your operating system's preference using the Appearance
+control in the sidebar. Your choice is remembered between sessions.
+
+
+== App info
+
+The App info dialog, opened from the sidebar, shows the current version of TypeDB Studio along with helpful links to get
+started.
+
+
+[#_data_storage]
+== Data storage
+
+TypeDB Studio stores your settings and working state locally in your browser's local storage (or, on desktop, the
+equivalent local store). This includes saved connections and recent server addresses,
+preferences (such as theme and transaction settings), open query tabs, saved queries, data explorer tabs, graph
+appearance preferences, Agent mode conversations, and your AI consent choice.
+
+This data stays on your device and is not sent to TypeDB. Clearing your browser data (or the desktop app's local store)
+will remove these settings.
+
+
+== Updating TypeDB Studio
+
+The web version at https://studio.typedb.com[studio.typedb.com,window=_blank] always runs the latest release and updates
+automatically.
+
+For the desktop app, download the latest version from the
+https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name:%5Etypedb-studio[downloads page,window=_blank] and
+run it. You may optionally uninstall the previous version.
