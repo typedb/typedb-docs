@@ -14,9 +14,18 @@ Planned work will enable concurrent execution within 1 query and provide major p
 
 == Memory model
 
-The primary consumers of memory in TypeDB are RocksDB (defaults to 1 GB of cache per database in the server), plus working memory buffers per transaction. Any writes submitted to a transaction are buffered in memory until commit, so keeping transactions relatively small (100-1000 queries) is optimal.
+The primary consumers of memory in TypeDB are RocksDB's caches and buffers, plus working memory buffers per transaction. Any writes submitted to a transaction are buffered in memory until commit, so keeping transactions relatively small (100-1000 queries) is optimal.
 
-In addition, to maintain performance we recommend that at least 5% of your data size fits in memory, to ensure indexes are easily accessible and speed up querying.
+RocksDB memory is governed by two pools, each a single budget *shared across all databases* on the server (not allocated per database):
+
+* a *block cache* (the in-memory cache of data read from disk), which defaults to a soft limit of 1 GiB. It may grow beyond this when critical indices are pinned in memory.
+* a *write-buffer* budget (cached writes before they are flushed to disk), which defaults to 512 MiB.
+
+Note that increasing or decreasing these does not affect the durability of commits - the write ahead log (WAL) separately records writes to disk regardless of TypeDB's and RocksDB's in-memory state.
+
+Both pools are configurable via the server's configuration — see xref:{page-version}@maintenance-operation::typedb-configuration.adoc#_storage[Storage configuration] and the xref:{page-version}@maintenance-operation::typedb-configuration.adoc#_memory_usage[memory-usage] sizing guidance. On top of these, RocksDB also benefits from the operating system's page cache, which is managed by the OS outside the TypeDB process.
+
+To maintain performance we recommend that at least 5% of the total of all your databases' sizes fits in memory, to ensure indexes and bloom filters remain in memory.
 
 == Disk space
 

@@ -107,16 +107,17 @@ Alias (deprecated): `server.http.address`. Specifying both `server.http.listen-a
 [#_admin]
 ==== Admin endpoint
 
-TypeDB exposes a separate admin gRPC endpoint, bound to localhost only, used by the bundled `typedb admin` CLI tool to inspect and manage a running server (see xref:{page-version}@tools::admin.adoc[]).
+TypeDB exposes a separate admin gRPC endpoint over a local IPC channel — a Unix domain socket on Linux and macOS, a Named Pipe on Windows — used by the bundled `typedb admin` CLI tool to inspect and manage a running server (see xref:{page-version}@tools::admin.adoc[]).
 
 [cols=".^3,5"]
 |===
 2+^| Server admin
 | `server.admin.enabled`
-| Enable/disable the localhost-only admin endpoint. Default value: `true`. +
+| Enable/disable the local admin endpoint. Default value: `false`. +
 
-| `server.admin.port`
-| Port for the admin endpoint on `127.0.0.1`. Default value: `1728`. +
+| `server.admin.socket-path`
+| Filesystem path of the admin Unix domain socket (Linux/macOS) or the Named Pipe name (Windows). Default value: `<data-directory>/admin.sock` on Linux/macOS, `\\.\pipe\typedb-admin` on Windows. +
+On Linux/macOS the path must be short enough to fit `sun_path` (typically ≤ 108 bytes). +
 
 |===
 
@@ -151,6 +152,7 @@ The `storage` section of the configuration contains the storage layer options.
 ====
 For production use, it is recommended that the `storage.data-directory` is set to a path outside the `$TYPEDB_HOME`
 (directory with TypeDB server files).
+
 This helps to make the process of upgrading TypeDB easier.
 ====
 
@@ -159,7 +161,24 @@ This helps to make the process of upgrading TypeDB easier.
 2+^| Storage
 | `storage.data-directory`
 | Path to the user data directory. Defaults to within the server distribution under `server/data`. +
+
+| `storage.rocksdb.cache-size`
+| Size of the shared RocksDB block cache, the in-memory cache of data blocks read from disk. This is a single pool shared by all databases on the server. Default value: `1gb` (1 GiB). +
+This is a soft limit: it may be exceeded by index and filter blocks that RocksDB pins in memory.
+
+| `storage.rocksdb.write-buffers-limit`
+| Total memory budget for the RocksDB write-buffer manager — the in-memory write buffers (memtables) that hold writes before they are organized on disk. This is a single pool shared by *all* databases on the server. Default value: `512mb` (512 MiB). +
+When the limit is reached, writes are stalled (slowed) until memory is freed by a flush, rather than allowed to grow without bound. Note: does not affect durability guarantees, which are provided by the WAL.
+
 |===
+
+[#_byte_size_format]
+[NOTE]
+====
+Size values such as `storage.rocksdb.cache-size` and `storage.rocksdb.write-buffers-limit` are written as an integer with an optional, case-insensitive unit suffix: `B`, `KB`/`KiB`, `MB`/`MiB`, `GB`/`GiB`, or `TB`/`TiB`. A bare number is interpreted as bytes.
+
+The units are binary (powers of 1024), so `KB` is identical to `KiB`, `MB` to `MiB`, and so on. `1gb` means 1 GiB = 1,073,741,824 bytes. Fractional values (e.g. `1.5gb`) are not accepted; use a smaller unit instead (e.g. `1536mb`). Examples: `1gb`, `512mb`, `1024MiB`, `2048`.
+====
 
 [#_diagnostics]
 === Diagnostics
@@ -215,3 +234,23 @@ ulimit -n
 ----
 
 We recommend this is increased to at least `50 000`.
+
+[#_memory_usage]
+=== Memory usage
+
+The resident memory of a TypeDB server is dominated by the two shared RocksDB pools configured under `storage.rocksdb`, plus transactional and query execution memory.
+
+* *Block cache* (`storage.rocksdb.cache-size`, default `1gb`) — caches uncompressed data blocks read from disk so that hot reads are served from memory. Increasing this generally improves read performance.
+* *Write buffers* (`storage.rocksdb.write-buffers-limit`, default `512mb`) — hold writes in memory as they are flushed to disk. Hitting the limit causes write slowdowns as memory is cleared. Increasing this generally improves bulk loading performance but rarely affects low throughput occasional writes.
+
+Both `storage.rocksdb` limits are server-wide totals, so they do not need to be scaled up for each additional database. They should instead be sized relative to the host's total RAM and the active working set across all databases.
+
+Working, dynamically allocated memory is also required for TypeDB's transactional write buffers, query execution working space, and the OS page cache. The easiest way to keep these predictable is to try to use smaller rather than larger write transactions.
+
+As rough guidance for a dedicated host:
+
+* To improve read performance, increase `storage.rocksdb.cache-size` so that the working set fits in cache. As a minimum, aim for at least 5% of the on-disk data size across all databases to fit in the block cache.
+* Avoid configuring `cache-size` + `write-buffers-limit` close to the host's total RAM as this leaves little room for the rest of the server's working set.
+* Increase `storage.rocksdb.write-buffers-limit` for sustained, write-heavy workloads if you observe write stalls; the limit trades memory for write throughput.
+
+Server memory consumption can be observed live via the `server_resources_count{kind="memoryUsedInBytes"}` metric on the diagnostics monitoring endpoint — see xref:{page-version}@maintenance-operation::diagnostics-endpoint.adoc#_server_resource_usage[Server resource usage].

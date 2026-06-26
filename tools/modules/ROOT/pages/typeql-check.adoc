@@ -31,7 +31,7 @@ The exit code is:
 
 * `0` — the query parsed successfully (no output).
 * `1` — the query failed to parse (error printed to stderr).
-* `2` — failed to read from stdin.
+* `2` — an I/O error occurred while reading from stdin (for example, a broken pipe).
 
 == Examples
 
@@ -58,7 +58,11 @@ Catch a syntax error:
 [source,bash]
 ----
 $ typeql-check "match $p isa person fetch { 'name': $p.name };"
-[parse error output]
+[TQL03] TypeQL Error: There is a syntax error
+  parsing error: expected relation, comparator, expression, expression_struct, or value_literal
+  Near 1:20:
+  --> match $p isa person fetch { 'name': $p.name };
+
 $ echo $?
 1
 ----
