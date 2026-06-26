@@ -1,5 +1,5 @@
 = Configure coding agent
-:keywords: start, learn, typedb, typeql, tutorial, quickstart, vibe, coding, ai, agent, claude, cursor, copilot, typeql_check, skills
+:keywords: start, learn, typedb, typeql, tutorial, quickstart, vibe, coding, ai, agent, claude, cursor, copilot, typeql-check, skills
 :pageTitle: Configure coding agent
 :summary: Configure your AI coding agent to write valid TypeQL
 :tabs-sync-option:
@@ -8,15 +8,15 @@ Now that you've walked through TypeDB by hand, set up your AI coding agent so it
 
 Two pieces make vibe querying with TypeDB reliable:
 
-. `typeql_check` - a CLI that statically validates TypeQL syntax, so the agent can self-correct.
+. `typeql-check` - a CLI that statically validates TypeQL syntax, so the agent can self-correct.
 . `typedb-skills/typeql.md` - a skill file that teaches your coding agent the TypeQL language and TypeDB's data model.
 
 In our benchmarks, adding both raises Claude's TypeQL pass rate from 23-43% (no tools) to 86-96% - the difference between AI-generated TypeQL being unreliable and being something you can build on.
 
-[#install_typeql_check]
-== Install typeql_check
+[#install_typeql-check]
+== Install typeql-check
 
-See xref:{page-version}@home::install/typeql-check.adoc[] for install instructions across macOS, Linux, and Windows.
+See xref:{page-version}@home::install/typeql-check.adoc[] for install instructions on macOS and Linux.
 
 [#add_skill]
 == Add the TypeQL skill to your coding agent
@@ -59,8 +59,8 @@ Most coding agents accept a Markdown rules or instructions file. Point your agen
 --
 ====
 
-With the skill loaded, your coding agent will know TypeQL syntax, the TypeDB data model, and that it can call `typeql_check` to validate the queries it writes.
+With the skill loaded, your coding agent will know TypeQL syntax, the TypeDB data model, and that it can call `typeql-check` to validate the queries it writes.
 
 == What next?
 
-You're ready to start vibe querying with TypeQL. Ask your agent to draft schemas and queries against your TypeDB databases, and have it run `typeql_check` to validate the output before sending it to TypeDB.
+You're ready to start vibe querying with TypeQL. Ask your agent to draft schemas and queries against your TypeDB databases, and have it run `typeql-check` to validate the output before sending it to TypeDB.

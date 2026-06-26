@@ -8,14 +8,7 @@ macOS::
 
 [source,shell]
 ----
-brew install typedb/tap/typeql_check
-----
-
-**Or install using the install script**
-
-[source,shell]
-----
-curl -sSL https://typedb.com/install.sh | sh -s -- typeql_check && export PATH="$HOME/.typedb:$PATH"
+brew install typedb/tap/typeql-check
 ----
 --
 
@@ -31,25 +24,7 @@ gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 17507562824cfdcc
 gpg --export 17507562824cfdcc | sudo tee /etc/apt/trusted.gpg.d/typedb.gpg > /dev/null
 echo "deb https://repo.typedb.com/public/public-release/deb/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/typedb.list > /dev/null
 sudo apt update
-sudo apt install typeql_check
-----
-
-**Or install using the install script**
-
-[source,shell]
-----
-curl -sSL https://typedb.com/install.sh | sh -s -- typeql_check && export PATH="$HOME/.typedb:$PATH"
-----
---
-
-Windows::
-+
---
-**Install using the install script**
-
-[source,powershell]
-----
-iwr https://typedb.com/install.ps1 -useb | iex -Args typeql_check
+sudo apt install typeql-check
 ----
 --
 ====
