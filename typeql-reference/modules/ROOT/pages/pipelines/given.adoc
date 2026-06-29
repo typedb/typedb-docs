@@ -6,7 +6,11 @@ A `given` stage preceding a query indicates the pipeline expects input "rows" to
 It declares a number of input variables, and the expected type of each variable.
 If the value provided for a given variable does not match the declared type, an execution error is returned.
 
-For examples on how to pass the given rows for a query, check the the driver documentation.
+For examples on how to pass the given rows for a query, check the driver documentation (
+xref:{page-version}@reference::typedb-grpc-drivers/index.adoc[GRPC]
+/
+xref:{page-version}@reference::typedb-http-api.adoc[HTTP API]
+)
 
 == Syntax
 
