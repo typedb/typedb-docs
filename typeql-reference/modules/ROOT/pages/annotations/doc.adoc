@@ -9,6 +9,13 @@ to add a description to a schema concept.
 
 == Syntax
 
+The `@doc` annotation can be defined for:
+
+- any type;
+- an `owns`, `plays`, `relates`, or a `sub` declaration;
+- a function;
+- a struct and struct fields.
+
 .Type annotation syntax
 [,typeql]
 ----
@@ -41,13 +48,6 @@ Coming soon!
 struct <struct-name> @doc("<description>"):
     <field-name> value <field-type> @doc("<field-description>");
 ----
-
-The `@doc` annotation can be defined for:
-
-- any type;
-- an `owns`, `plays`, `relates`, or a `sub` declaration;
-- a function;
-- a struct and struct fields.
 
 == Usage
 
