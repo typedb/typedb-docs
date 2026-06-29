@@ -95,3 +95,166 @@ If the struct field exists but has no `@doc` annotation, an empty string is retu
 ----
 get_struct_field_doc("my_struct", "its_field") == "This is a field of my custom struct"
 ----
+
+[#_metadata_fns]
+== Metadata functions
+
+`get_meta(key, t)`::
+Returns the metadata of the provided type with the specified key. +
+If the type has no `@meta` annotation with the specified key, an empty string is returned.
+
+[,typeql]
+----
+get_meta("icon", person) == ":silhouette.png"
+----
+
+`get_all_meta(t)`::
+Returns all metadata of the provided type as a stream of key-value pairs.
+
+[,typeql]
+----
+let $key, $value in get_all_meta(person);
+
+$key == "icon"
+$value == ":silhouette.png"
+----
+
+`get_owns_meta(key, owner, attribute)`::
+Returns the metadata of the provided `owns` with the specified key, if it exists. +
+If the `owns` exists but has no `@meta` annotation with the specified key, an empty string is returned.
+
+[,typeql]
+----
+get_owns_meta("color", person, name) == "#0088FF"
+----
+
+`get_owns_all_meta(owner, attribute)`::
+Returns all metadata of the provided `owns` as a stream of key-value pairs, if it exists.
+
+[,typeql]
+----
+let $key, $value in get_all_owns_meta(person, name);
+
+$key == "color"
+$value == "#0088FF"
+----
+
+`get_plays_meta(key, player, role)`::
+Returns the metadata of the provided `plays` with the specified key, if it exists. +
+If the `plays` exists but has no `@meta` annotation with the specified key, an empty string is returned.
+
+[,typeql]
+----
+get_plays_meta("color", person, friendship:friend) == "#00CC00"
+----
+
+`get_plays_all_meta(player, role)`::
+Returns all metadata of the provided `plays` as a stream of key-value pairs, if it exists.
+
+[,typeql]
+----
+let $key, $value in get_plays_all_meta(person, friendship:friend);
+
+$key == "color"
+$value == "#00CC00"
+----
+
+`get_relates_meta(key, relation, role)`::
+Returns the metadata of the provided `relates` with the specified key, if it exists. +
+If the `relates` exists but has no `@meta` annotation with the specified key, an empty string is returned.
+
+[,typeql]
+----
+get_relates_meta("color", friendship, friendship:friend) == "#0088FF"
+----
+
+`get_relates_all_meta(relation, role)`::
+Returns all metadata of the provided `relates` as a stream of key-value pairs, if it exists.
+
+[,typeql]
+----
+let $key, $value in get_relates_all_meta(friendship, friendship:friend);
+
+$key == "color"
+$value == "#0088FF"
+----
+
+`get_sub_meta(key, sub, sup)`::
+Returns the metadata of the provided `sub` with the specified key, if it exists. +
+If the `sub` exists but has no `@meta` annotation with the specified key, an empty string is returned.
+
+[,typeql]
+----
+get_sub_meta("arrow-style", student, person) == "dashed"
+----
+
+`get_sub_all_meta(sub, sup)`::
+Returns all metadata of the provided `sub` as a stream of key-value pairs, if it exists.
+
+[,typeql]
+----
+let $key, $value in get_sub_all_meta(student, person);
+
+$key == "arrow-style"
+$value == "dashed"
+----
+
+`get_fun_meta(key, function_name)`::
+Returns the metadata of the provided function with the specified key, if it exists. +
+If the function exists but has no `@meta` annotation with the specified key, an empty string is returned.
+
+[,typeql]
+----
+get_fun_meta("category", "my_function") == "utility"
+----
+
+`get_fun_all_meta(function_name)`::
+Returns all metadata of the provided function as a stream of key-value pairs, if it exists.
+
+[,typeql]
+----
+let $key, $value in get_fun_all_meta("my_function");
+
+$key == "category"
+$value == "utility"
+----
+
+`get_struct_meta(key, struct_name)`::
+Returns the metadata of the provided struct with the specified key, if it exists. +
+If the struct exists but has no `@meta` annotation with the specified key, an empty string is returned.
+
+[,typeql]
+----
+get_struct_meta("version", "my_struct") == "1.0"
+----
+
+`get_struct_all_meta(struct_name)`::
+Returns all metadata of the provided struct as a stream of key-value pairs, if it exists.
+
+[,typeql]
+----
+let $key, $value in get_struct_all_meta("my_struct");
+
+$key == "version"
+$value == "1.0"
+----
+
+`get_struct_field_meta(key, struct_name, field_name)`::
+Returns the metadata of the provided struct field with the specified key, if it exists. +
+If the struct field exists but has no `@meta` annotation with the specified key, an empty string is returned.
+
+[,typeql]
+----
+get_struct_field_meta("description", "my_struct", "its_field") == "A field description"
+----
+
+`get_struct_field_all_meta(struct_name, field_name)`::
+Returns all metadata of the provided struct field as a stream of key-value pairs, if it exists.
+
+[,typeql]
+----
+let $key, $value in get_struct_field_all_meta("my_struct", "its_field");
+
+$key == "description"
+$value == "A field description"
+----
