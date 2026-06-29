@@ -21,10 +21,11 @@ Returns the label of the provided type argument as a string.
 label($x) == "person"
 ----
 
-== Documentation and metadata functions
+== Documentation functions
 
 `get_doc(t)`::
-Returns the documentation string of the provided type argument.
+Returns the documentation string of the provided type argument. +
+If the type has no `@doc` annotation, an empty string is returned.
 
 [,typeql]
 ----
@@ -32,7 +33,8 @@ get_doc(person) == "This represents a person"
 ----
 
 `get_owns_doc(owner, attribute)`::
-Returns the documentation string of the provided `owns` if it exists.
+Returns the documentation string of the provided `owns` if it exists. +
+If the `owns` exists but has no `@doc` annotation, an empty string is returned.
 
 [,typeql]
 ----
@@ -40,7 +42,8 @@ get_owns_doc(person, name) == "The full legal name of the person"
 ----
 
 `get_plays_doc(player, role)`::
-Returns the documentation string of the provided `plays` if it exists.
+Returns the documentation string of the provided `plays` if it exists. +
+If the `plays` exists but has no `@doc` annotation, an empty string is returned.
 
 [,typeql]
 ----
@@ -48,7 +51,8 @@ get_plays_doc(person, friendship:friend) == "A person can be a friend"
 ----
 
 `get_relates_doc(relation, role)`::
-Returns the documentation string of the provided `relates` if it exists.
+Returns the documentation string of the provided `relates` if it exists. +
+If the `relates` exists but has no `@doc` annotation, an empty string is returned.
 
 [,typeql]
 ----
@@ -56,7 +60,8 @@ get_relates_doc(friendship, friendship:friend) == "A party in this friendship"
 ----
 
 `get_sub_doc(sub, sup)`::
-Returns the documentation string of the provided `sub` if it exists.
+Returns the documentation string of the provided `sub` if it exists. +
+If the `sub` exists but has no `@doc` annotation, an empty string is returned.
 
 [,typeql]
 ----
@@ -64,7 +69,8 @@ get_sub_doc(student, person) == "A person who is a student"
 ----
 
 `get_fun_doc(function_name)`::
-Returns the documentation string of the provided function if it exists.
+Returns the documentation string of the provided function if it exists. +
+If the function exists but has no `@doc` annotation, an empty string is returned.
 
 [,typeql]
 ----
@@ -72,7 +78,8 @@ get_fun_doc("my_function") == "This is my custom function"
 ----
 
 `get_struct_doc(struct_name)`::
-Returns the documentation string of the provided struct if it exists.
+Returns the documentation string of the provided struct if it exists. +
+If the struct exists but has no `@doc` annotation, an empty string is returned.
 
 [,typeql]
 ----
@@ -80,7 +87,8 @@ get_struct_doc("my_struct") == "This is my custom struct"
 ----
 
 `get_struct_field_doc(struct_name, field_name)`::
-Returns the documentation string of the provided struct field if it exists.
+Returns the documentation string of the provided struct field if it exists. +
+If the struct field exists but has no `@doc` annotation, an empty string is returned.
 
 [,typeql]
 ----
