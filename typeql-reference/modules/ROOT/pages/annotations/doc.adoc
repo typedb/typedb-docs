@@ -71,7 +71,7 @@ define
   attribute id @doc("Internal IDs, created by the system."), value string;
 ----
 
-You can then retrieve these descriptions using
+These descriptions can then be retrieved using
 xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc#_documentation_fns[the documentation retrieval built-in functions].
 
 [,typeql]
@@ -103,7 +103,38 @@ fetch {
 };
 ----
 
+.Example output
+[,json]
+----
+{
+  "player": {
+    "doc": "Someone currently or previously enrolled in the institution.",
+    "id": "billybob",
+    "type": "student"
+  },
+  "relation": {
+    "doc": "Relates a course with enrolled students and teaching staff.",
+    "id": "CS101-2026",
+    "type": "enrolment"
+  },
+  "role": {
+    "plays_doc": "Students may assist faculty members in teaching a course.",
+    "relates_doc": "All teaching staff attached to this enrolment.",
+    "type": "enrolment:teacher"
+  }
+}
+----
+
 === Subtyping
 
 The `@doc` annotation is never inherited.
+Documentation is only available on the exact items it was originally defined for.
 
+=== Notes
+
+`my-relation relates my-role` declares both the role `my-relation:my-role` and the `relates` capability.
+Because of that, any `@doc` annotation declared on a `relates` is also automatically available on the role introduced in that `relates`.
+
+=== Defaults
+
+For items without defined `@doc` annotation, the documentation is an empty string.
