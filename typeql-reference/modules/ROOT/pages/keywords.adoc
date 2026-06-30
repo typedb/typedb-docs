@@ -246,6 +246,8 @@ Declares the values of an attribute type to be variable length UTF-8 encoded str
 
 == Built-in functions
 
+=== Value functions
+
 `round(...)`::
 Rounding function, returns the provided numeric argument rounded to the nearest integer. See xref:{page-version}@typeql-reference::expressions/value-operations.adoc[] for more information.
 
@@ -267,11 +269,15 @@ Minimum function, returns the minimum value of two provided numeric arguments. S
 `max(...)`::
 Maximum function, returns the maximum value of two provided numeric arguments. See xref:{page-version}@typeql-reference::expressions/value-operations.adoc[] for more information.
 
+=== Concept functions
+
 `iid(...)`::
 IID function, returns the internal ID of the provided instance argument as a string. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
 
 `label(...)`::
 Label function, returns the label of the provided type argument as a string. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+=== Documentation functions
 
 `get_doc(t)`::
 Returns the documentation string of the provided type argument. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
@@ -296,6 +302,8 @@ Returns the documentation string of the provided struct. See xref:{page-version}
 
 `get_struct_field_doc(struct_name, field_name)`::
 Returns the documentation string of the provided struct field. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+=== Metadata functions
 
 `get_meta(key, t)`::
 Returns the metadata of the provided type with the specified key. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
