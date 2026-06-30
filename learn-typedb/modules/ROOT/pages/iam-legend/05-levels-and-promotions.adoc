@@ -1,0 +1,243 @@
+= Chapter Five: Levels & Promotions
+:pageTitle: Chapter Five: Levels & Promotions
+:Summary: Level assignment and the two kinds of change.
+:keywords: typedb, typeql, iam, level, promotion, n-ary relation, update, links, range, history
+
+[.lead]
+_Level Assignment & The Two Kinds of Change_
+
+== Previously
+
+In Chapter Four you defined the access model and granted access to Amasoft's systems. Chapter Five introduces seniority levels — how to model them, how to assign them, and how to handle the two very different kinds of change that promotions can involve.
+
+== The Situation
+
+Amasoft uses a seniority scale from L0 to L7. Managers are L4 and L5. Executives are L6 and L7. Alex has already been promoted to fte in Chapter Three. Now we assign seniority levels — and Sam Rivera gets promoted from L4 to L5.
+
+== N-ary Relations — TypeDB's Native Superpower
+
+Before defining `level-assignment`, it's worth pausing to name what we're about to build. In Chapter Four, `access-grant` connected an identity to a system and carried permission data on the bond. `level-assignment` goes further: it connects an identity to a level entity, and carries temporal data about when that assignment was active.
+
+This is called an N-ary relation — a connection that involves more than two participants, or that carries meaningful data about the connection itself. The following three code blocks are for comparison only — do not run them. They show how the same concept looks across three different database types, so you can appreciate what TypeDB is doing for you:
+
+In SQL, this requires a junction table and multiple JOINs just to answer a simple question:
+
+[,sql]
+----
+-- SQL: requires a junction table with foreign keys
+CREATE TABLE level_assignments (
+  identity_id INT REFERENCES identities(id),
+  level_id INT REFERENCES levels(id),
+  effective_from DATETIME,
+  effective_until DATETIME,
+  PRIMARY KEY (identity_id, level_id, effective_from)
+);
+-- To query current level: three tables, two JOINs, a WHERE clause
+SELECT i.name, l.level_number
+FROM identities i
+JOIN level_assignments la ON i.id = la.identity_id
+JOIN levels l ON la.level_id = l.id
+WHERE la.effective_until IS NULL;
+----
+
+In a property graph database, edges are binary — you cannot natively connect three nodes, so you are forced to introduce an artificial intermediate node:
+
+[,text]
+----
+# Property graph (e.g. Neo4j): edges are binary and second-class
+# No native way to connect three nodes — requires an intermediate node
+# (identity)-[:HAS_ASSIGNMENT]->(assignment_node)-[:AT_LEVEL]->(level)
+# The assignment_node is an artificial workaround, not a real concept
+----
+
+In TypeDB, the relation is first-class. No junction table, no intermediate node, no workaround — just the model that reflects reality. And the query is a single clean pattern:
+
+[,typeql]
+----
+# TypeDB: N-ary relation is first-class, no workarounds needed
+# (This is a preview — you will define and run this below)
+relation level-assignment,
+  relates identity @card(0..1),
+  relates level @card(1),
+  owns effective-from,
+  owns effective-until;
+# Query current level: one clean pattern
+match
+$i has name $name;
+$la links (identity: $i, level: $l), isa level-assignment;
+not { $la has effective-until $_; };
+$l has level-number $n;
+fetch { "name": $name, "level": $n };
+----
+
+[NOTE]
+.⭐ TypeDB Advantage: N-ary relations are first-class
+====
+In SQL, any relationship that carries data requires a junction table — extra schema, extra JOINs, extra complexity. In property graph databases, edges are binary and second-class: you cannot natively connect three nodes, so you introduce artificial intermediate nodes that obscure the real meaning. In TypeDB, a relation can connect any number of role players and own any number of attributes. It is queried the same way as any other type. There are no workarounds, no junction tables, no intermediate nodes — just the model that reflects reality.
+====
+
+[NOTE]
+.💡 Two new keywords: links and update
+====
+When binding a relation to a variable and then referencing that variable elsewhere in the query, use the `links` keyword instead of the standard role pattern: `links (identity: $i, level: $l), isa level-assignment` This tells TypeDB explicitly that `$la` is a relation instance linking those role players. When updating an attribute on an existing instance (rather than inserting a new one), use `update` instead of `insert`:
+
+[,typeql]
+----
+match
+$la links (identity: $sam), isa level-assignment;
+update
+$la has effective-until 2024-06-30T00:00:00;
+----
+
+`update` replaces the existing attribute value. `insert` would add a second value alongside it.
+====
+
+== Level as an Entity
+
+Level is not a simple attribute on a person — it is something that changes over time, with history that must be preserved. A `level-assignment` relation captures the bond between a person and a level, owning the dates it was active:
+
+[,typeql]
+----
+define
+attribute level-number, value integer @range(0..7);
+entity level,
+  owns level-number @key;
+attribute effective-from, value datetime;
+attribute effective-until, value datetime;
+relation level-assignment,
+  relates identity @card(0..1),
+  relates level @card(1),
+  owns effective-from,
+  owns effective-until;
+entity identity, plays level-assignment:identity;
+entity level, plays level-assignment:level;
+----
+
+`@range(0..7)` on level-number means TypeDB rejects any value outside this range at insert time. Insert the level instances:
+
+[,typeql]
+----
+insert
+$_ isa level, has level-number 0;
+$_ isa level, has level-number 1;
+$_ isa level, has level-number 2;
+$_ isa level, has level-number 3;
+$_ isa level, has level-number 4;
+$_ isa level, has level-number 5;
+$_ isa level, has level-number 6;
+$_ isa level, has level-number 7;
+----
+
+Assign Alex to L2 (their new level as an fte), Sam to L4, and Michelle to L7:
+
+[NOTE]
+.💡 The links keyword — use it when binding a relation to a variable
+====
+When you need to bind a relation instance to a variable and then reference that variable elsewhere in the same query — for example to check its attributes or update them — use the `links` keyword: `$la links (identity: $i, level: $l), isa level-assignment;` This tells TypeDB that `$la` is the relation instance connecting those role players. Without `links`, TypeDB gets confused about whether `$la` is a relation instance or a type.
+====
+
+[,typeql]
+----
+match
+$alex isa fte, has email "alex.chen@amasoft.com";
+$l2 isa level, has level-number 2;
+insert
+(identity: $alex, level: $l2) isa level-assignment,
+  has effective-from 2024-07-01T00:00:00;
+match
+$sam isa fte, has email "sam.rivera@amasoft.com";
+$l4 isa level, has level-number 4;
+insert
+(identity: $sam, level: $l4) isa level-assignment,
+  has effective-from 2022-06-01T00:00:00;
+match
+$michelle isa fte, has email "michelle.rocksmasher@amasoft.com";
+$l7 isa level, has level-number 7;
+insert
+(identity: $michelle, level: $l7) isa level-assignment,
+  has effective-from 2020-01-01T00:00:00;
+----
+
+[WARNING]
+.⚠️ If the query returns 0 rows
+====
+A successful write query that reports 'Total rows: 0' always means the match clause found nothing — not that the insert failed silently. Check two things:
+
+. Does the identity exist? Run: `match $x isa person, has email "alex.chen@amasoft.com"; fetch { "x": $x };`
+. Do the level instances exist? Run: `match $l isa level, has level-number $n; fetch { "n": $n };`
+
+If either returns nothing, that is why the insert produced 0 rows.
+====
+
+[NOTE]
+.⭐ TypeDB Advantage: Level history preserved as data
+====
+In SQL, updating someone's level typically overwrites the old value — history is lost unless you build a separate audit table. In TypeDB, each `level-assignment` is a first-class relation with its own `effective-from` and `effective-until` dates. Closing an old assignment and opening a new one is non-destructive: the history lives in the data.
+====
+
+== Sam's Promotion — Level Change (L4 → L5)
+
+Sam is being promoted to L5. This does not change Sam's type — Sam is still an fte. It only changes the `level-assignment` relation. This is non-destructive:
+
+[,typeql]
+----
+# Close the old level assignment
+match
+$sam isa fte, has email "sam.rivera@amasoft.com";
+$la links (identity: $sam), isa level-assignment;
+update
+$la has effective-until 2024-06-30T00:00:00;
+# Open the new level assignment
+match
+$sam isa fte, has email "sam.rivera@amasoft.com";
+$l5 isa level, has level-number 5;
+insert
+(identity: $sam, level: $l5) isa level-assignment,
+  has effective-from 2024-07-01T00:00:00;
+----
+
+[NOTE]
+.🏢 The two kinds of change — a key distinction
+====
+Type change (contractor → fte): destructive. Done in Chapter Three. Required deleting all relations first, then deleting the identity, then reinserting. Level change (L4 → L5): non-destructive. Close the old assignment with `effective-until`, open a new one. History is preserved. Sam's access grants are completely unaffected. Choosing which kind of change a situation requires is one of the most important schema design skills.
+====
+
+== Querying Across the Hierarchy
+
+Query for all employees at L4 and L5 and their current level:
+
+[,typeql]
+----
+match
+$i isa employee, has name $name;
+$la links (identity: $i, level: $l), isa level-assignment;
+not { $la has effective-until $_; };
+$l has level-number $n;
+$n >= 4; $n <= 5;
+fetch { "name": $name, "level": $n };
+----
+
+The `not { $la has effective-until $_; }` pattern filters to only current assignments — those without a closing date. This is how you query the current state of time-tracked data.
+
+[NOTE]
+.⭐ TypeDB Advantage: Polymorphic queries across a hierarchy
+====
+Querying for all 'employee' instances automatically includes fte and pte. In SQL, this requires UNION ALL across multiple tables or a discriminator column. In TypeDB, the hierarchy is enforced by the schema and resolved at query time.
+====
+
+== Chapter Five Quest 🏆
+
+.⚔️ Quest: Levels and Promotions
+[example]
+====
+. Define level-assignment and insert all eight level instances.
+. Assign Alex to L2, Sam to L4, and Michelle to L7.
+. Promote Sam from L4 to L5 using the `update` pattern.
+. Query: who is currently at L4 or above?
+. Query: who is at L7?
+. Bonus: query Sam's full level history — both old and new assignments.
+====
+
+== What You Can Do Now
+
+You can now model level hierarchies with time-tracked assignments, execute both kinds of change correctly, and query current vs historical state. Chapter Six puts the compliance team in the room — audit queries that answer the hard questions.

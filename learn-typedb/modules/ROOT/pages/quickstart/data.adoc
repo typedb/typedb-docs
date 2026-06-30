@@ -1,4 +1,5 @@
 = Create data
+:page-aliases: {page-version}@home::get-started/data.adoc
 :pageTitle: Create data
 :keywords: start, learn, typedb, typeql, tutorial, quickstart, console, studio, database, create, insert, query, schema
 :summary: Use queries to load data into your database
@@ -9,8 +10,8 @@
 
 In the previous sections we've:
 
-. xref:get-started/setup.adoc[] TypeDB and Studio (or Console)
-. xref:get-started/schema.adoc[Created a schema]
+. xref:quickstart/setup.adoc[] TypeDB and Studio (or Console)
+. xref:quickstart/schema.adoc[Created a schema]
 .. Created a database called `get_started`.
 .. Defined the social network schema:
 +
@@ -19,7 +20,7 @@ In the previous sections we've:
 [,typeql]
 ----
 #!test[schema]
-include::{page-version}@home::page$get-started/schema.adoc[tag=full_define]
+include::{page-version}@learn-typedb::page$quickstart/schema.adoc[tag=full_define]
 ----
 ====
 
@@ -448,13 +449,13 @@ You can read more about other clause types in the applicable xref:{page-version}
 Here's the full set of queries you've used to successfully write data into TypeDB:
 [,typeql]
 ----
-include::{page-version}@home::page$get-started/data.adoc[tag=insert2]
+include::{page-version}@learn-typedb::page$quickstart/data.adoc[tag=insert2]
 
-include::{page-version}@home::page$get-started/data.adoc[tag=insert3]
+include::{page-version}@learn-typedb::page$quickstart/data.adoc[tag=insert3]
 
-include::{page-version}@home::page$get-started/data.adoc[tag=insert5]
+include::{page-version}@learn-typedb::page$quickstart/data.adoc[tag=insert5]
 
-include::{page-version}@home::page$get-started/data.adoc[tag=match-insert1]
+include::{page-version}@learn-typedb::page$quickstart/data.adoc[tag=match-insert1]
 ----
 
 

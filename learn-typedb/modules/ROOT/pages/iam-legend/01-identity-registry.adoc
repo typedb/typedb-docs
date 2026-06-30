@@ -1,0 +1,90 @@
+= Chapter One: The Identity Registry
+:pageTitle: Chapter One: The Identity Registry
+:Summary: Entities, attributes, and your first schema.
+:keywords: typedb, typeql, iam, entity, attribute, define, key, abstract, schema
+
+[.lead]
+_Entities, Attributes & Your First Schema_
+
+== The Situation
+
+Before you can manage access, you need to know who exists. The first entry in Amasoft's new system will be an employee. Not a complex hierarchy — just a single entity type with an identifying attribute. We'll build from there.
+
+== Your First Entity
+
+In TypeDB, every type falls into one of three categories: entity, relation, or attribute. An employee is an entity — a thing that exists independently. Here is the simplest possible schema:
+
+[,typeql]
+----
+define
+entity employee;
+----
+
+Run this in the query page. You have just told the system: employees exist. But an employee with no properties is an empty record. Let's give them something to identify them.
+
+== Adding an Attribute
+
+Attributes are values that describe an entity. Every employee at Amasoft has a unique employee ID — their identifier in the system. Let's define that:
+
+[,typeql]
+----
+define
+attribute employee-id, value string;
+entity employee,
+  owns employee-id @key;
+----
+
+The keyword `owns` declares that an employee can hold an employee-id. `@key` enforces uniqueness — no two employees can share the same ID. TypeDB rejects any insert that would violate this automatically.
+
+The keyword `value string` says this attribute holds text. TypeDB supports string, integer, double, boolean, datetime, and duration.
+
+[TIP]
+.🗺️ Refresh the schema visualiser
+====
+After running any define query, go to the Schema page in TypeDB Studio and click refresh (top left). You'll see your entity types as nodes and their attributes as connected leaves. Get into the habit of doing this after every define — it's the fastest way to catch mistakes.
+====
+
+== The @key Annotation — Enforcing Uniqueness
+
+You've already seen `@key` in action. It declares that an attribute must be unique within its type — no two instances can share the same value. TypeDB enforces this at the database level, not the application level.
+
+[NOTE]
+.💡 Redefining an existing type
+====
+Running define on a type that already exists adds to it — it doesn't replace it. This is safe when no instances exist yet, which is the case throughout this chapter. Once you start inserting data in Chapter Three, redefining constraints on attributes that existing instances already own can cause validation errors if any of those instances break the new logic — for example, adding `@key` to an attribute when two instances already share the same value.
+====
+
+== A Second Entity — Departments
+
+Departments also exist independently of who is in them. Let's define a department entity. We'll mark it `@abstract` — meaning it can never be inserted directly, only through concrete subtypes like Engineering or Finance that we'll define in Chapter Two:
+
+[,typeql]
+----
+define
+attribute dept-name, value string;
+entity department,
+  owns dept-name @key;
+----
+
+Notice `@abstract` on department. You can never insert a plain 'department' — only a concrete subtype. But querying for all 'department' instances returns every subtype automatically. The abstract type is a shared foundation, not a thing that exists on its own. We won't define the specific department subtypes yet — that comes in Chapter Two, where it fits naturally alongside the rest of the org structure.
+
+[NOTE]
+.⭐ TypeDB Advantage: Attributes are shared across types — not duplicated
+====
+When Chapter Two introduces contractors and interns, they will share attributes like email and name with employees — through a common parent type. There is one email attribute type in the schema, owned by as many entity types as need it. In SQL, sharing a column across multiple tables requires JOINs, nullable columns, or lookup tables. In TypeDB, any number of types can own the same attribute with no ceremony.
+====
+
+== Chapter One Quest 🏆
+
+.⚔️ Quest: Open the Registry
+[example]
+====
+. Define the employee entity with employee-id `@key`.
+. Define department with dept-name `@key`.
+. Refresh the schema visualiser — confirm both entity types appear.
+. Bonus: try running the employee define query a second time. What happens?
+====
+
+== What You Can Do Now
+
+You can now define entities and attributes, enforce uniqueness with `@key`, and use `@abstract` to create foundation types that can never be directly instantiated. Chapter Two builds the full identity hierarchy on top of this foundation — introducing type hierarchies, the full range of worker types, and the relations that connect them.

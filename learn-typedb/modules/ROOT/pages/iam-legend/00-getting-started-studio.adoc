@@ -1,0 +1,72 @@
+= Chapter Zero: Getting Started in TypeDB Studio
+:pageTitle: Chapter Zero: Getting Started in TypeDB Studio
+:Summary: Setting up your environment before your first query.
+:keywords: typedb, typeql, iam, studio, database, transaction, auto mode, getting started
+
+[.lead]
+_Setting Up Your Environment Before Your First Query_
+
+== What is TypeDB Studio?
+
+TypeDB Studio is the visual interface for working with TypeDB. It is where you will write and run every query in this guide — defining your schema, inserting data, and running audit queries. If you haven't installed it yet, download it from typedb.com before continuing.
+
+== Step 1 — Create the IAM_Legend Database
+
+When you first open Studio, you'll be prompted to connect to a TypeDB server. Once connected, create a new database for this project:
+
+. In the top bar, find the database selector — it shows the currently active database or 'No database selected'
+. Click the '+' or 'New Database' button next to it
+. Name it `IAM_Legend` — this is the database you'll build throughout this guide
+. Select it as the active database
+
+[NOTE]
+.💡 Database names are case-sensitive
+====
+`IAM_Legend` is the name used throughout this guide. You can name yours anything — but if you use a different name, just substitute it wherever this guide refers to `IAM_Legend`.
+====
+
+== Step 2 — Navigate to the Query Page
+
+TypeDB Studio has two main views: the Schema page and the Query page. The Schema page shows a visual graph of your type hierarchy. The Query page is where you write and run TypeQL.
+
+Navigate to the Query page now. This is where every query in this guide will be written and run — both schema definitions and data inserts.
+
+== Step 3 — Auto Mode vs Manual Mode
+
+TypeDB has three transaction types: schema (for define/undefine/redefine), write (for insert/delete), and read (for match/fetch). In manual mode, you would need to select the correct transaction type before every query and commit it afterwards.
+
+Auto mode handles all of this for you. Studio detects what kind of query you're running and opens and commits the right transaction automatically.
+
+[WARNING]
+.⚠️ Enable auto mode now — before you write a single query
+====
+Find the transaction mode toggle in the top toolbar of the Query page. Set it to 'auto'. With auto mode on, you simply write your query and run it. Studio handles the rest. If you leave it in manual mode, you will hit confusing transaction errors that have nothing to do with your TypeQL. All queries in this guide assume auto mode is enabled.
+====
+
+== Step 4 — Running a Query
+
+To run a query in TypeDB Studio:
+
+. Type or paste your query into the query editor
+. Click the Run button (▶) in the toolbar, or press kbd:[Cmd+Enter] on Mac / kbd:[Ctrl+Enter] on Windows
+. Watch the log panel at the bottom of the screen
+
+A successful query looks like this in the log:
+
+----
+Running...
+
+Success
+----
+
+If something goes wrong, the log shows an error with a code and description. The error messages in TypeDB are generally informative — read them carefully before assuming the query is wrong. The most common causes are covered in the debugging section of Chapter Six.
+
+[WARNING]
+.⚠️ TypeQL is case-sensitive — check this now
+====
+Every TypeQL keyword must be written in lowercase. 'Define' will fail. 'define' will succeed. 'Insert' will fail. 'insert' will succeed. If Studio shows a red error you cannot immediately explain, check capitalisation first — it is the most common mistake beginners make.
+====
+
+== You Are Ready
+
+Your database is created. Auto mode is on. You know how to run a query and read the log. Chapter One begins with your first define query — the simplest possible schema, and the foundation everything else is built on.

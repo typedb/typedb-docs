@@ -1,0 +1,295 @@
+= Chapter Two: The Full Identity Model
+:pageTitle: Chapter Two: The Full Identity Model
+:Summary: Type hierarchies, relations, and the org structure.
+:keywords: typedb, typeql, iam, type hierarchy, inheritance, relation, role, cardinality, abstract
+
+[.lead]
+_Type Hierarchies, Relations & The Org Structure_
+
+== Previously
+
+In Chapter One you defined employee with employee-id `@key` and department with dept-name `@key`. Chapter Two builds the full identity hierarchy on top of these foundations — purely additive, no migration needed.
+
+== Introducing the Person Parent Type
+
+Employees at Amasoft have more than just an employee ID — they have a name and an email address. Rather than adding these directly to employee, we introduce a shared parent type that all human identities will inherit from:
+
+[,typeql]
+----
+define
+attribute name, value string;
+attribute email, value string;
+entity person,
+  owns name,
+  owns email @key;
+entity employee sub person;
+----
+
+employee now inherits name and email from person, and keeps employee-id from Chapter One. No migration needed — this is purely additive.
+
+Now make person abstract — you can never insert a bare person, only a concrete subtype. Note: unlike department, person is abstract because we always want a specific type of person — an employee, contractor, or intern. Department on the other hand is a single concrete concept, with named instances.
+
+[,typeql]
+----
+define
+entity person @abstract;
+----
+
+[NOTE]
+.💡 Inheritance is automatic
+====
+When you query for all 'person' instances, TypeDB automatically includes employees, contractors, and interns — all subtypes. The hierarchy is active at query time with no extra work.
+====
+
+[NOTE]
+.⭐ TypeDB Advantage: Polymorphic queries across a hierarchy
+====
+In SQL, querying across a type hierarchy requires UNION ALL across multiple tables, or a discriminator column with complex JOIN logic. In TypeDB, the hierarchy is declared once and resolved automatically. Querying for 'person' includes all subtypes — guaranteed correct because the schema validates it.
+====
+
+== Temporary Workers — contractor and intern
+
+Contractors and interns share a contract end date. Introduce a shared abstract parent for both — these are new types, no migration needed:
+
+[,typeql]
+----
+define
+attribute contract-end-date, value datetime;
+entity temporary sub person,
+  owns contract-end-date;
+entity contractor sub temporary;
+entity intern sub temporary;
+----
+
+Now mark temporary as abstract:
+
+[,typeql]
+----
+define
+entity temporary @abstract;
+----
+
+[WARNING]
+.⚠️ @abstract must be defined separately from sub
+====
+TypeDB does not allow `@abstract` and `sub` in the same statement. Define the type with its parent and attributes first, then add `@abstract` in a separate define query. Also note: an abstract type must have an abstract supertype. This is why person must be made abstract before temporary can be made abstract — TypeDB will reject `@abstract` on a type whose parent is concrete.
+====
+
+contractor and intern both inherit name, email, and contract-end-date. Neither type existed before this chapter — clean and additive.
+
+== undefine vs redefine — When to Use Each
+
+You have already used `undefine` in this guide. As the schema grows, you will use both. Here is the distinction:
+
+[cols="22%,36%,42%",options="header"]
+|===
+|Keyword |Use when |Example
+|undefine |Removing something entirely — a type, an ownership, a role, or a function |`undefine owns email from employee;`
+|redefine |Changing something that already exists — an annotation, cardinality, or function body |`redefine relation r relates role @card(0..1);`
+|===
+
+[WARNING]
+.⚠️ undefine is one statement per query
+====
+Unlike define, which can chain multiple declarations in a single block, `undefine` must be run as one statement per query. Chaining them causes a parse error.
+====
+
+== Full-time and Part-time Employees
+
+[,typeql]
+----
+define
+entity fte sub employee;
+entity pte sub employee;
+----
+
+Both inherit everything from employee and person. The type distinction itself carries the information.
+
+== Service Accounts — Beyond Humans
+
+IAM is not just about people. Every API integration, every bot needs access managed too. Introduce a shared abstract root and a non-human identity type:
+
+[,typeql]
+----
+define
+entity identity @abstract,
+  owns account-status;
+entity person sub identity;
+entity service-account sub identity,
+  owns service-name @key,
+  owns owner-team;
+attribute service-name, value string;
+attribute owner-team, value string;
+attribute account-status, value string
+  @values("active", "suspended", "terminated");
+----
+
+Notice that identity `@abstract` now owns account-status — the global kill switch. Both humans and service accounts need this. `@values` restricts it to exactly three valid states at the schema level.
+
+[NOTE]
+.🏢 Why service accounts matter
+====
+SQL-based IAM systems typically bolt service accounts on as an afterthought — a separate table with a foreign key back to the user table. In TypeDB, service-account is a subtype of identity. It participates in the same access model as humans — same relations, same queries, same policies.
+====
+
+== Systems and Department Subtypes
+
+department was already defined in Chapter One. Now we add the system hierarchy, and department subtypes are no longer needed — departments will be inserted as data in Chapter Three:
+
+[,typeql]
+----
+define
+entity system @abstract,
+  owns system-name @key,
+  owns description;
+entity payments-system sub system;
+entity hr-system sub system;
+entity engineering-platform sub system;
+entity finance-platform sub system;
+attribute system-name, value string;
+attribute description, value string;
+----
+
+[NOTE]
+.💡 Departments are data, not types
+====
+In the previous approach, each department was its own entity type — engineering, finance, hr-dept, legal. That means adding a new department requires a schema change. Instead, department is a single concrete type. Individual departments — Engineering, Finance, HR, Legal — are inserted as instances in Chapter Three. Adding a new department is just an insert query, not a schema migration.
+====
+
+[WARNING]
+.⚠️ If you see 'type department was not found'
+====
+This means department wasn't defined in Chapter One. Go back and run: `define attribute dept-name, value string; entity department, owns dept-name @key;` Then run the system hierarchy query again.
+====
+
+== Pause — Look at Your Schema
+
+Refresh the schema visualiser now. You have just built three separate groups of types:
+
+* The identity hierarchy — identity, person, employee, fte, pte, temporary, contractor, intern, service-account
+* The system hierarchy — system, payments-system, hr-system, engineering-platform, finance-platform
+* The department type — a single concrete type, with instances to be inserted in Chapter Three
+
+In the visualiser you will see three completely separate graphs. Nothing connects them. There are no edges between the islands. This is correct — we have defined what exists, but not yet how things relate to each other.
+
+[TIP]
+.🗺️ Three islands — about to be connected
+====
+This is one of the most important moments in schema design: seeing the structure before the connections. Each island is a complete hierarchy on its own. Relations are the bridges between them. Every relation you define in the next section will add an edge that connects two previously isolated groups.
+====
+
+== What is a Relation?
+
+A relation is TypeDB's way of recording a connection between two or more things. Unlike a foreign key in SQL — which is just a number stored in a column — a TypeDB relation is a first-class entity in its own right. It can own attributes, participate in other relations, and be queried like any other type.
+
+Every relation has named roles. Roles are the slots that participants fill. When you define a relation, you choose the role names yourself — and this is where a common mistake happens.
+
+[WARNING]
+.⚠️ Role names are not entity type names — this is the most common mistake
+====
+You choose role names based on the function a participant plays in the relationship, not their entity type. The reporting line relation has roles called 'manager' and 'report' — not 'employee' and 'employee', even though both participants are employees. When you insert a relation, you always use the ROLE name: BROKEN: `(employee: $sam, employee: $alex) isa reports-to;` CORRECT: `(manager: $sam, report: $alex) isa reports-to;` The error 'Role label not found' means you used the wrong name. When you see it, go back to the `relates` declaration and check what the role is actually called.
+====
+
+== Relations — The Reporting Line
+
+The first bridge: who reports to whom. In Amasoft, only permanent employees can manage people — contractors and interns report upward but never manage others. We encode this policy directly in the schema:
+
+[,typeql]
+----
+define
+attribute effective-from, value datetime;
+relation reports-to,
+  relates manager @card(0..1),
+  relates report @card(0..),
+  owns effective-from;
+entity employee, plays reports-to:manager;
+entity person, plays reports-to:report;
+----
+
+Relations are not just connections — they are first-class types that can own attributes. The date this reporting line became effective lives on the bond itself, not in a separate table. This means you can query it directly, without a JOIN.
+
+`@card(0..1)` on manager means at most one manager per bond. `@card(0..)` on report means zero or more reports — we use `0..` rather than `1..` to allow clean deletion of a report without the relation complaining.
+
+[NOTE]
+.💡 Inheritance does the work here
+====
+Notice that manager is granted to employee, but report is granted to person — the parent type. Because contractor and intern are subtypes of person, they automatically inherit the ability to play the report role. No additional `plays` declarations needed. Because only employee can play manager, TypeDB will reject any insert that tries to make a contractor or intern a manager. The business rule is structural — enforced by the schema, not application code. This is one of the most powerful aspects of TypeDB's type hierarchy: you get precise, inheritance-aware role control in two lines.
+====
+
+[NOTE]
+.⭐ TypeDB Advantage: Relations own attributes natively
+====
+In SQL, storing when a reporting relationship became effective requires a separate junction table with its own columns. In TypeDB, effective-from lives on the bond itself — semantically correct and queryable without a JOIN.
+====
+
+[TIP]
+.🗺️ Refresh the schema visualiser
+====
+After running this define, refresh the schema visualiser. You will now see edges connecting identity nodes to each other through reports-to. One of the three islands has grown internal connections.
+====
+
+== Department Membership
+
+The second bridge: which department each person belongs to:
+
+[,typeql]
+----
+define
+relation dept-membership,
+  relates dept @card(1),
+  relates member @card(0..);
+entity department, plays dept-membership:dept;
+entity person, plays dept-membership:member;
+----
+
+[NOTE]
+.💡 @card(1) on dept
+====
+`@card(1)` on the dept role means each individual dept-membership bond must reference exactly one department. It does not mean there can only be one department in the database.
+====
+
+[TIP]
+.🗺️ Refresh the schema visualiser
+====
+After running this define, refresh again. You will now see edges connecting the identity island to the department island. Two of the three islands are now connected.
+====
+
+== The Schema So Far — A Summary
+
+Before populating the database, here is a complete picture of everything you have built. This is the full Amasoft schema at the end of Chapter Two.
+
+[cols="26%,34%,40%",options="header"]
+|===
+|Concept |Types |Key attributes
+|Identities |identity, person, employee, fte, pte, temporary, contractor, intern, service-account |email @key, name on person; employee-id @key on employee; contract-end-date on temporary; service-name @key, owner-team on service-account
+|Systems |system, payments-system, hr-system, engineering-platform, finance-platform |system-name @key, description
+|Departments |department |dept-name @key
+|Relations |reports-to, dept-membership |reports-to owns effective-from. dept-membership connects person to department.
+|===
+
+[TIP]
+.🗺️ Refresh the Schema Visualiser now
+====
+Go to the Schema page in TypeDB Studio and hit refresh. You should see all entity types as nodes connected by their inheritance hierarchy, with reports-to and dept-membership as relation edges. If anything looks wrong, fix it now — before you insert any data.
+====
+
+[NOTE]
+.💡 Natural extensions — what we deliberately left out
+====
+This schema is intentionally simple for demonstration. In a real IAM deployment you might also consider: • Sub-departments — Engineering might have sub-teams like Platform, Product, and Security, each with their own access profiles. • Regional or office-specific access — identities in the EU region may have different access to certain systems than those in APAC, due to data residency requirements. • System ownership — a department could formally own a set of systems. Finance owns payments and finance-core; Engineering owns eng-platform. This would let you query 'who has access to systems outside their department's ownership?' — a powerful audit query. All of these are straightforward to add in TypeDB. For now, we keep the structure simple so the core concepts stay clear.
+====
+
+== Chapter Two Quest 🏆
+
+.⚔️ Quest: Build the Full Schema
+[example]
+====
+. Define the full identity hierarchy — person, employee, fte, pte, temporary, contractor, intern, identity, service-account.
+. Define systems and departments with their subtypes.
+. Define reports-to and dept-membership with correct cardinality.
+. Refresh the schema visualiser and verify the full graph — confirm all three islands are now connected.
+====
+
+== What You Can Do Now
+
+You now have a complete, production-grade IAM schema defined. Chapter Three populates it: inserting Amasoft's people, departments, and systems, and learning why TypeQL's pattern language makes this cleaner than SQL.

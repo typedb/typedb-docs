@@ -1,0 +1,192 @@
+= Chapter Nine: Production IAM
+:pageTitle: Chapter Nine: Production IAM
+:Summary: Transactions, drivers, put, and idempotent pipelines.
+:keywords: typedb, typeql, iam, transaction, put, idempotent, provisioning, access check, deprovision, kill switch
+
+[.lead]
+_Transactions, Drivers, put & Idempotent Pipelines_
+
+== Previously
+
+Chapter Eight covered schema design at depth. You can now model access policy as first-class data, use sub-relations for specialised access types, and apply the PERA model as your default instinct. Chapter Nine connects the IAM system to a real application.
+
+== The Situation
+
+Amasoft's IAM system is live in TypeDB. The compliance team has self-service audit queries. Access policies are encoded as functions. Now the provisioning system needs to connect — granting and revoking access automatically as people join, leave, or change roles.
+
+== Transaction Types
+
+TypeDB has three transaction types. Choosing correctly matters for both correctness and performance:
+
+[cols="1,2,2",options="header"]
+|===
+|Type |Use for |Notes
+|schema |`define`, `undefine`, `redefine` |Deployment only. Never in hot paths.
+|write |`insert`, `delete`, `update`, `put` |Also allows reads. Commit promptly.
+|read |`fetch`, `match` |Cheapest. Always use for access checks.
+|===
+
+[WARNING]
+.⚠️ Critical production rules
+====
+. Always use `read` transactions for queries that don't write data.
+. Use `schema` transactions only during deployment — never in application hot paths.
+. Commit `write` transactions promptly — long-held write transactions block other writers.
+. All transactions use snapshots — they never see uncommitted changes from other transactions.
+. Closing without committing discards all changes silently.
+====
+
+== The put Keyword — Idempotent Provisioning
+
+The provisioning system runs on a schedule. If it runs twice, it should not create duplicate identities or duplicate access grants. TypeDB's `put` keyword handles this:
+
+[,typeql]
+----
+# Idempotent identity provisioning
+put
+$_ isa fte,
+  has email "new.hire@amasoft.com",
+  has name "New Hire",
+  has employee-id "EMP-0100";
+----
+
+`put` inserts if the exact instance does not exist, and does nothing if it already does. Run the same script ten times — the database has one instance, not ten.
+
+[NOTE]
+.💡 put always reports Success
+====
+When you run a `put` query, TypeDB always reports 'Success' — whether the record was just created or already existed. The row count reflects how many instances matched or were inserted, not a fixed number. This is what makes `put` safe for scheduled provisioning pipelines that run repeatedly. The guarantee is: 'this record exists'. Whether it needed to be created is an implementation detail you don't need to care about.
+====
+
+[,typeql]
+----
+# Idempotent access grant
+match
+$i isa fte, has email "new.hire@amasoft.com";
+$s isa engineering-platform;
+put
+(grantee: $i, system: $s) isa access-grant,
+  has permission-level "read",
+  has granted-at 2024-08-01T09:00:00;
+----
+
+== The Access Check — The Most Important Query
+
+This query runs thousands of times a day. An identity requests access to a system — does it have it? Note the `account-status` check — the global kill switch that must pass before any grant check:
+
+[,typeql]
+----
+match
+$i isa identity, has email "alex.chen@amasoft.com",
+  has account-status "active";
+$s isa payments-system;
+{ (grantee: $i, system: $s) isa access-grant; }
+or
+{ (member: $i, team: $t) isa project-membership;
+  (team: $t, system: $s) isa project-access; };
+$i has name $name;
+fetch { "has-access": $name };
+----
+
+[WARNING]
+.⚠️ You cannot fetch an entity directly
+====
+`fetch { "key": $i }` where `$i` is an entity will fail with 'Fetching entities is not supported'. Always fetch attribute values instead: `$i has name $name; fetch { "has-access": $name };` Or use `$i.*` to fetch all attributes at once.
+====
+
+[NOTE]
+.💡 The kill switch — why account-status comes first
+====
+If an employee is suspended or terminated, their `access-grant` records still exist in the database. That's correct — history must be preserved. But the access check must fail. By checking `has account-status "active"` before evaluating any grants, you ensure a suspended identity can never pass the access check regardless of what grants they hold. Remove this check and a terminated employee with an un-revoked grant still has access.
+====
+
+For policy-based access checks, call the function directly:
+
+[,typeql]
+----
+match
+$i isa identity, has email "alex.chen@amasoft.com",
+  has account-status "active";
+let $authorised in can-access-payments($i);
+$authorised has name $name;
+fetch { "policy-authorised": $name };
+----
+
+This is always a `read` transaction. Never a `write`. The result is empty (no access) or returns the identity (has access).
+
+== Production IAM Principle — Never Delete History
+
+In Chapter Three, you deleted Alex's contractor record and all its relations when promoting them to fte. That was a type change — destructive and necessary. But for access revocation, the rule is different:
+
+[NOTE]
+.🏢 Production IAM systems do not delete history — they close it
+====
+When access is revoked, the `access-grant` is not deleted. It is closed with a `valid-until` date. The record of who had access, when they got it, and when it was revoked is permanently preserved in the database. This is not optional — it is the foundation of an auditable IAM system. Auditors don't ask 'who has access right now?' They ask 'who had access to payments on March 15th, and who approved it?' Delete is for type changes. History is closed, never deleted.
+====
+
+Deprovision an identity by closing all their access grants:
+
+[,typeql]
+----
+# Close all active grants for a departing employee
+match
+$i isa identity, has email "departing@amasoft.com";
+$ag links (grantee: $i), isa access-grant;
+not { $ag has valid-until $_; };
+update
+$ag has valid-until 2024-12-31T17:00:00;
+
+# Suspend the identity (kill switch — immediate effect)
+match
+$i isa identity, has email "departing@amasoft.com";
+update
+$i has account-status "terminated";
+----
+
+[NOTE]
+.💡 Two steps for offboarding
+====
+. Close all grants with `valid-until` — preserves history, marks when access ended.
+. Set `account-status` to 'terminated' — the kill switch that immediately fails all access checks regardless of grant state.
+
+The kill switch is the safety net. The closed grants are the audit trail. Both are needed.
+====
+
+== The Architect's Checklist — Taking This to Production
+
+The schema you have built is production-grade. Before deploying for a real company, here are the natural extensions to consider:
+
+[NOTE]
+.💡 Natural extensions for production deployment
+====
+* *Account status* — already in the schema. Ensure every identity provisioning pipeline sets `account-status` to 'active' on creation.
+* *Granular resources* — currently grants target systems (`payments-system`, `engineering-platform`). Real IAM often needs resource-level grants — a specific GitHub repo, an S3 bucket, a financial ledger. Extend with:
++
+[,typeql]
+----
+entity resource, owns resource-name @key;
+relation system-resource, relates system @card(1), relates resource @card(0..);
+----
+* *Separation of Duties* — already implemented as `sod-violation()` in Chapter Seven. Extend with additional SoD rules as your compliance requirements grow.
+* *Sub-departments and regional access* — as discussed in Chapter Two, sub-teams and geographic access restrictions are straightforward to add. Engineering sub Platform, Product, and Security; EU-region access restrictions; APAC-specific systems.
+* *System ownership* — a formal department-owns-system relation enables 'who has access to systems outside their department's ownership?' as a standard audit query.
+* *Approval workflows* — the `policy-exception` relation in Chapter Eight already captures approver and reason. Wire this to an approval system by granting temporary-exception access in response to approved requests.
+
+All of these follow the same TypeDB patterns you have already learned. The foundation is solid. Build on it.
+====
+
+== Chapter Nine Quest 🏆
+
+.⚔️ Quest: The Provisioning Pipeline
+[example]
+====
+. Write an idempotent provisioning script using `put` that creates an identity with `account-status` 'active' and grants them access. Run it twice — confirm no duplicates.
+. Write the access check query including the `account-status` kill switch.
+. Deprovision an identity: close all their access grants with `valid-until`, then set `account-status` to 'terminated'.
+. Verify: run the access check for the deprovisioned identity — confirm it returns nothing even if grants exist.
+. Bonus: write a full onboarding pipeline — create the identity, set `account-status`, assign to a department, set level, grant standard access. Make all inserts idempotent with `put`.
+====
+
+== What You Can Do Now
+
+You can now manage transactions correctly, write idempotent provisioning pipelines, use the `account-status` kill switch, close access history without deleting it, and run the access check query at the heart of every IAM system. You have completed IAM Legend — and built a production-grade foundation you can adapt for your own company.

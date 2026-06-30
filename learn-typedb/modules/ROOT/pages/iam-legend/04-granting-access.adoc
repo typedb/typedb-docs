@@ -1,0 +1,138 @@
+= Chapter Four: Granting Access
+:pageTitle: Chapter Four: Granting Access
+:Summary: The access model, @values, and permission queries.
+:keywords: typedb, typeql, iam, access grant, permission, values, n-ary relation, card
+
+[.lead]
+_The Access Model, @values & Permission Queries_
+
+== Previously
+
+In Chapter Three you populated Amasoft and promoted Alex from contractor to fte. Chapter Four introduces the central concept of any IAM system: access grants.
+
+== The Situation
+
+Alex Chen has just joined Amasoft as a full-time employee in the engineering team. They need read access to the engineering platform. Sam Rivera, their manager, has admin access. Michelle Rocksmasher, as CISO, has read access across all systems for oversight.
+
+== The Access Grant Model
+
+[,typeql]
+----
+define
+attribute permission-level, value string
+@values("read", "write", "admin");
+attribute granted-at, value datetime;
+attribute valid-until, value datetime;
+relation access-grant,
+  relates grantee @card(0..),
+  relates system @card(1),
+  owns permission-level,
+  owns granted-at,
+  owns valid-until;
+entity identity, plays access-grant:grantee;
+entity system, plays access-grant:system;
+----
+
+`@values` on `permission-level` restricts it to exactly three valid strings — TypeDB rejects anything else at insert time. `@card(1)` on `system` means every access grant must reference exactly one system.
+
+[NOTE]
+.⭐ TypeDB Advantage: Schema-level data validation
+====
+In SQL, enforcing that permission_level can only be 'read', 'write', or 'admin' requires either a CHECK constraint (often ignored) or a lookup table with a foreign key. In TypeDB, `@values` enforces this at the schema level — it is impossible to insert an invalid permission level.
+====
+
+[NOTE]
+.💡 This is an N-ary relation — notice what it connects
+====
+`access-grant` doesn't just connect two things — it connects an identity to a system AND carries its own attributes: `permission-level`, `granted-at`, `valid-until`. This is called an N-ary relation — a connection involving more than two participants, or a binary connection that owns meaningful data about the connection itself. In SQL this requires a separate junction table. In a property graph, edges are binary and second-class — they can carry properties but can't participate in queries the same way nodes do. In TypeDB, N-ary relations are first-class. We'll explore this fully in Chapter Five where level-assignment makes the power even clearer.
+====
+
+== Granting Access
+
+[,typeql]
+----
+# Alex gets read access to engineering platform
+match
+$alex isa contractor, has email "alex.chen@amasoft.com";
+$eng isa engineering-platform;
+insert
+(grantee: $alex, system: $eng) isa access-grant,
+  has permission-level "read",
+  has granted-at 2024-01-15T09:00:00;
+# Sam gets admin access to engineering platform
+match
+$sam isa fte, has email "sam.rivera@amasoft.com";
+$eng isa engineering-platform;
+insert
+(grantee: $sam, system: $eng) isa access-grant,
+  has permission-level "admin",
+  has granted-at 2024-01-01T09:00:00;
+# Michelle gets read access across ALL systems — match returns one row per system
+match
+$michelle isa fte, has email "michelle.rocksmasher@amasoft.com";
+$s isa system;
+insert
+(grantee: $michelle, system: $s) isa access-grant,
+  has permission-level "read",
+  has granted-at 2024-01-01T08:00:00;
+----
+
+[NOTE]
+.💡 Matching multiple instances at once
+====
+The Michelle query matches every system in the database and inserts one `access-grant` per system. TypeDB runs the insert once per row returned by the match — a powerful pattern for bulk grants.
+====
+
+== Querying Access
+
+Who has access to the engineering platform, and at what level?
+
+[,typeql]
+----
+match
+$i has name $name;
+$s isa engineering-platform;
+(grantee: $i, system: $s) isa access-grant,
+  has permission-level $pl;
+fetch { "name": $name, "permission": $pl };
+----
+
+What does Sam have access to?
+
+[,typeql]
+----
+match
+$sam has name "Sam Rivera";
+$s has system-name $sys;
+(grantee: $sam, system: $s) isa access-grant,
+  has permission-level $pl;
+fetch { "system": $sys, "permission": $pl };
+----
+
+== Chapter Four Quest 🏆
+
+.⚔️ Quest: Grant Access to Amasoft
+[example]
+====
+. Define the `access-grant` relation as shown above.
+. Grant Alex read access to the engineering platform.
+. Grant Sam admin access to the engineering platform and read access to hr-core.
+. Grant Michelle read access to all systems using the bulk match pattern.
+. Query: who has access to the engineering platform?
+. Query: what does Michelle have access to?
+. Bonus: grant a time-limited access grant using `valid-until`. TypeDB does not have a dynamic 'now()' function — dates must be hardcoded or passed in from application code. Use a date 30 days from today. Then write a query to find all grants expiring within that date:
++
+[,typeql]
+----
+match
+$i has name $name;
+$s has system-name $sys;
+$ag (grantee: $i, system: $s) isa access-grant, has valid-until $vu;
+$vu < 2024-02-15T00:00:00;
+fetch { "name": $name, "system": $sys, "expires": $vu };
+----
+====
+
+== What You Can Do Now
+
+You can now define an access model with schema-level permission validation, grant access to systems, and query who has access to what. Chapter Five introduces level assignments and the two kinds of change every IAM system must handle.

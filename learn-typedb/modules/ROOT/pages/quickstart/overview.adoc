@@ -1,6 +1,7 @@
 = Overview
+:page-aliases: {page-version}@home::get-started/overview.adoc
 :pageTitle: Overview
-:Summary: Overview of get started guide
+:Summary: Overview of the Quickstart guide
 :keywords: start, learn, typedb, typeql, cloud, tutorial, quickstart, get-started, console, studio, database, create, insert, query, overview
 :test-typeql: linear
 
@@ -14,52 +15,52 @@ such as database management, schema definition, data loading, and composing mult
 == Mini-guide
 
 The following outline serves both as an example of the main things you'll do with TypeDB
-and a quick outline of the following Get Started guide - if you just want to speed through right here, you can, though we recommend following the full guide!
+and a quick outline of the following Quickstart guide - if you just want to speed through right here, you can, though we recommend following the full guide!
 
-. xref:{page-version}@home::get-started/setup.adoc[]
+. xref:{page-version}@learn-typedb::quickstart/setup.adoc[]
 .. Sign up & launch a free TypeDB instance on https://cloud.typedb.com[TypeDB Cloud account,window=_blank].
 .. Follow the instructions from the cluster to open https://studio.typedb.com[TypeDB Studio,window=_blank].
 
-. xref:{page-version}@home::get-started/schema.adoc[]
+. xref:{page-version}@learn-typedb::quickstart/schema.adoc[]
 .. Create a database called `get_started`.
 .. Execute a query to create the social network schema using a schema transaction:
 +
 [,typeql]
 ----
 #!test[schema]
-include::{page-version}@home::page$get-started/schema.adoc[tag=full_define]
+include::{page-version}@learn-typedb::page$quickstart/schema.adoc[tag=full_define]
 ----
 
-. xref:{page-version}@home::get-started/data.adoc[]
+. xref:{page-version}@learn-typedb::quickstart/data.adoc[]
 .. Run a series of pure inserts using a write transaction:
 +
 [,typeql]
 ----
 #!test[write]
-include::{page-version}@home::page$get-started/data.adoc[tag=insert2]
+include::{page-version}@learn-typedb::page$quickstart/data.adoc[tag=insert2]
 ----
 +
 [,typeql]
 ----
 #!test[write]
-include::{page-version}@home::page$get-started/data.adoc[tag=insert3]
+include::{page-version}@learn-typedb::page$quickstart/data.adoc[tag=insert3]
 ----
 +
 [,typeql]
 ----
 #!test[write]
-include::{page-version}@home::page$get-started/data.adoc[tag=insert5]
+include::{page-version}@learn-typedb::page$quickstart/data.adoc[tag=insert5]
 ----
 .. Run a read-write query:
 +
 [,typeql]
 ----
 #!test[write, count=1]
-include::{page-version}@home::page$get-started/data.adoc[tag=match-insert1]
+include::{page-version}@learn-typedb::page$quickstart/data.adoc[tag=match-insert1]
 ----
 
-. Use your loaded schema and data to write aggregation queries, compose query pipelines, and create functions in xref:{page-version}@home::get-started/query-composition.adoc[]
+. Use your loaded schema and data to write aggregation queries, compose query pipelines, and create functions in xref:{page-version}@learn-typedb::quickstart/query-composition.adoc[]
 
-. Optional: xref:{page-version}@home::get-started/configure-coding-agent.adoc[]
+. Optional: xref:{page-version}@learn-typedb::quickstart/configure-coding-agent.adoc[]
 .. Install `typeql-check` from your package manager (the same channels as TypeDB Console).
 .. Drop `typedb-skills/typeql.md` into your coding agent so it can write TypeQL for you.
