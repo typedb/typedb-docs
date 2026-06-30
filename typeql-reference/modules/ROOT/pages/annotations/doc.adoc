@@ -46,12 +46,62 @@ Coming soon!
 [,typeql]
 ----
 struct <struct-name> @doc("<description>"):
-    <field-name> value <field-type> @doc("<field-description>");
+  <field-name> value <field-type> @doc("<field-description>");
 ----
 
 == Usage
 
 The `@doc` annotation is used to add a description to a schema concept.
+
+The annotation enables users to attach human-readable descriptions to types, capabilities, functions, and structs in the schema.
+
+[,typeql]
+----
+#!test[schema]
+define
+  entity student @doc("Someone currently or previously enrolled in the institution."),
+    plays enrolment:student,
+    plays enrolment:teacher @doc("Students may assist faculty members in teaching a course."),
+    owns id @doc("This is an internal ID to be used on student documentation.");
+  relation enrolment @doc("Relates a course with enrolled students and teaching staff."),
+    relates course @doc("The specific course being taught: owns code and academic year."),
+    relates student @card(0..),
+    relates teacher @card(1..) @doc("All teaching staff attached to this enrolment."),
+    owns id @doc("This is not the course code!");
+  attribute id @doc("Internal IDs, created by the system."), value string;
+----
+
+You can then retrieve these descriptions using
+xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc#_documentation_fns[the documentation retrieval built-in functions].
+
+[,typeql]
+----
+#!test[write, count=1]
+#{{
+insert $s isa student, has id "Billy"; $_ isa enrolment, links(teacher: $s), has id "CS101-2026";
+#}}
+#!test[read, count=1]
+match
+  $rel isa! $relation-type, has id $rel-id, links ($role: $player);
+  $player isa! $player-type, has id $player-id;
+fetch {
+  "relation": {
+    "id": $rel-id,
+    "type": label($relation-type),
+    "doc": get_doc($relation-type),
+  },
+  "player": {
+    "id": $player-id,
+    "type": label($player-type),
+    "doc": get_doc($player-type),
+  },
+  "role": {
+    "type": label($role),
+    "relates_doc": get_relates_doc($relation-type, $role),
+    "plays_doc": get_plays_doc($player-type, $role),
+  }
+};
+----
 
 === Subtyping
 
