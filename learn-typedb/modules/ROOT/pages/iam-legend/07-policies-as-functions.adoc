@@ -44,7 +44,7 @@ WHERE l.level_number >= 7;
 
 This query is correct today. But when the policy changes — when someone decides L4 Finance managers should also get access — you have to find every copy of this logic and update them all. And hope you didn't miss one.
 
-[NOTE]
+[NOTE.yellow]
 .🏢 The single source of truth problem
 ====
 In most organisations, access policy lives in three places simultaneously: application code, a stored procedure, and a spreadsheet. They drift apart over time. Someone updates the app code and forgets the stored procedure. An auditor reads the spreadsheet and gets a different answer than the system enforces. In TypeDB, the function IS the policy. There is one place. There is no drift.
@@ -68,7 +68,7 @@ fun can-access-payments($i: identity) -> { identity }:
   return { $i };
 ----
 
-[WARNING]
+[NOTE.yellow]
 .⚠️ Two syntax rules for functions
 ====
 . Use `$_` (throwaway variable) in `not` clauses inside disjunction branches. A named variable like `$eu` used in two separate branches of an `or` will cause a 'locally-scoped variable' error — TypeDB requires variables to be either bound in a shared scope or anonymous.
@@ -85,7 +85,7 @@ match
 fetch { "authorised": $name };
 ----
 
-[NOTE]
+[NOTE.yellow]
 .💡 The let keyword — two uses
 ====
 In TypeDB 3.x, `let` has two distinct uses:
@@ -96,7 +96,7 @@ In TypeDB 3.x, `let` has two distinct uses:
 For function calls, `let` is required — writing `$i in func()` without `let` is a syntax error.
 ====
 
-[NOTE]
+[NOTE.yellow]
 .💡 Functions as living policy documents
 ====
 The TypeQL function IS the policy. It can be read by humans, called by applications, chained with other functions, and updated in one place when the policy changes. There is no stored procedure, no application code, no spreadsheet to keep in sync.
@@ -145,7 +145,7 @@ fun unauthorised-payments-access() -> { identity }:
   return { $i };
 ----
 
-[NOTE]
+[NOTE.yellow]
 .💡 Updating an existing function
 ====
 If you need to redefine a function that already exists, use `redefine`: `redefine fun unauthorised-payments-access() -> { identity }: ...` If the function doesn't exist yet, use `define`. If you get 'function already exists' on `define`, switch to `redefine`. If you get 'function not found' on `redefine`, switch to `define`.
@@ -188,19 +188,19 @@ match
 fetch { "revoke-access": $name };
 ----
 
-[NOTE]
+[NOTE.yellow]
 .🏢 This is exactly what compliance teams worry about
 ====
 Access drift — someone gets access they shouldn't have, often through a one-off exception or a copy-paste error — is one of the most common IAM failures. Most organisations discover it during an audit, months later. With TypeDB, one query finds it instantly. The policy is defined once. The gap is visible on demand.
 ====
 
-[NOTE]
+[NOTE.yellow]
 .🏢 Why this is impossible in SQL
 ====
 In SQL, 'who should have access but doesn't' requires the full policy logic as a subquery, negated against the grants table. That's the 30-line UNION query from earlier, wrapped in a NOT EXISTS. And 'who has access but shouldn't' is the inverse. In practice, most organisations don't run these checks at all because writing them is too painful. In TypeDB, it's one function call each.
 ====
 
-[NOTE]
+[NOTE.yellow]
 .⭐ TypeDB Advantage: Policy as reusable composable logic
 ====
 In SQL, access policy logic lives in application code, stored procedures, or spreadsheets — duplicated, diverging, invisible to queries. In TypeDB, the function is defined once, callable from any query, and always the single source of truth. The compliance gap queries above are only possible because the policy is a first-class named thing that can be referenced, negated, and composed.
@@ -238,13 +238,13 @@ match
 fetch { "urgent-review": $name };
 ----
 
-[NOTE]
+[NOTE.yellow]
 .💡 Function composition in TypeDB
 ====
 Functions compose by calling them in sequence in the same match clause. Each `let $i in func($i)` statement further constrains the stream — only identities that satisfy all function calls are returned. This is the idiomatic TypeDB pattern for complex policy questions: define each policy as a simple named function, then compose them at query time. When a policy changes, update one function. Every query that uses it updates automatically.
 ====
 
-[WARNING]
+[NOTE.yellow]
 .⚠️ Zero-argument wrapper functions hit a known planner limitation
 ====
 You might be tempted to wrap the chain in a named zero-argument function:
@@ -327,13 +327,13 @@ match
 fetch { "name": $name, "access-via": $source };
 ----
 
-[NOTE]
+[NOTE.yellow]
 .💡 let for value assignment
 ====
 `let $source = "direct grant"` assigns a string literal to a variable within a disjunction branch. This is the second use of `let` — value expression assignment. The result includes the source label in the output, making it clear which path each identity's access came through.
 ====
 
-[NOTE]
+[NOTE.yellow]
 .⭐ TypeDB Advantage: Disjunctive path traversal
 ====
 In SQL, finding identities with access via either a direct grant or project team membership requires UNION ALL across two completely different join chains — typically five or more tables, with duplicate elimination on top. In TypeQL, both access paths are expressed as a single disjunctive pattern. TypeDB resolves both paths, deduplicates automatically, and returns the source of access in the same query.
@@ -363,7 +363,7 @@ match
 fetch { "sod-violation": $name };
 ----
 
-[NOTE]
+[NOTE.yellow]
 .⭐ TypeDB Advantage: Separation of Duties as a first-class query
 ====
 In SQL, enforcing SoD requires joining across multiple permission tables, checking multiple conditions, and usually duplicating the logic across application code and stored procedures. In TypeDB, SoD is a function — defined once, called anywhere, always consistent. When the rule changes, you update one function. The audit query and the enforcement logic are the same code.

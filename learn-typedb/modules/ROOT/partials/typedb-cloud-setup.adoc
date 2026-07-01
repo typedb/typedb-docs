@@ -1,0 +1,23 @@
+// Shared TypeDB Cloud setup steps: create a free cluster and connect to it.
+// Included by quickstart/setup.adoc and iam-legend/00-get-started-studio.adoc.
+// Headings are authored at level 2 (==); include with leveloffset=+1 to nest them.
+[#create_cluster]
+== Create a free cluster
+
+. https://cloud.typedb.com[Create a TypeDB Cloud account,window=_blank]. Your first cluster is free.
+. On the dashboard, click *Deploy a cluster*.
+. Configure your cluster, then click *Deploy*.
+
+Your cluster will be created in a few seconds.
+
+If you want to run your own TypeDB Community Edition server, you can go to the xref:{page-version}@home::install/ce.adoc[install page].
+
+[#_connect_cluster]
+== Connect to your cluster
+
+In TypeDB Cloud, click *Connect instantly with TypeDB Studio*. This will open TypeDB Studio for you, at https://studio.typedb.com.
+
+Make sure you note the cluster information and save it in a secure location. You'll need it each time you want to connect to your cluster - specifically, you'll need the generated username and password.
+
+You can optionally use xref:{page-version}@home::install/console-cli.adoc[TypeDB Console] instead of TypeDB Studio.
+TypeDB Cloud will guide you through connecting to your cluster with Console in the connection page.

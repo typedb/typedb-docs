@@ -26,7 +26,7 @@ TypeDB has three transaction types. Choosing correctly matters for both correctn
 |read |`fetch`, `match` |Cheapest. Always use for access checks.
 |===
 
-[WARNING]
+[NOTE.yellow]
 .⚠️ Critical production rules
 ====
 . Always use `read` transactions for queries that don't write data.
@@ -52,7 +52,7 @@ $_ isa fte,
 
 `put` inserts if the exact instance does not exist, and does nothing if it already does. Run the same script ten times — the database has one instance, not ten.
 
-[NOTE]
+[NOTE.yellow]
 .💡 put always reports Success
 ====
 When you run a `put` query, TypeDB always reports 'Success' — whether the record was just created or already existed. The row count reflects how many instances matched or were inserted, not a fixed number. This is what makes `put` safe for scheduled provisioning pipelines that run repeatedly. The guarantee is: 'this record exists'. Whether it needed to be created is an implementation detail you don't need to care about.
@@ -88,13 +88,13 @@ $i has name $name;
 fetch { "has-access": $name };
 ----
 
-[WARNING]
+[NOTE.yellow]
 .⚠️ You cannot fetch an entity directly
 ====
 `fetch { "key": $i }` where `$i` is an entity will fail with 'Fetching entities is not supported'. Always fetch attribute values instead: `$i has name $name; fetch { "has-access": $name };` Or use `$i.*` to fetch all attributes at once.
 ====
 
-[NOTE]
+[NOTE.yellow]
 .💡 The kill switch — why account-status comes first
 ====
 If an employee is suspended or terminated, their `access-grant` records still exist in the database. That's correct — history must be preserved. But the access check must fail. By checking `has account-status "active"` before evaluating any grants, you ensure a suspended identity can never pass the access check regardless of what grants they hold. Remove this check and a terminated employee with an un-revoked grant still has access.
@@ -118,7 +118,7 @@ This is always a `read` transaction. Never a `write`. The result is empty (no ac
 
 In Chapter Three, you deleted Alex's contractor record and all its relations when promoting them to fte. That was a type change — destructive and necessary. But for access revocation, the rule is different:
 
-[NOTE]
+[NOTE.yellow]
 .🏢 Production IAM systems do not delete history — they close it
 ====
 When access is revoked, the `access-grant` is not deleted. It is closed with a `valid-until` date. The record of who had access, when they got it, and when it was revoked is permanently preserved in the database. This is not optional — it is the foundation of an auditable IAM system. Auditors don't ask 'who has access right now?' They ask 'who had access to payments on March 15th, and who approved it?' Delete is for type changes. History is closed, never deleted.
@@ -143,7 +143,7 @@ update
 $i has account-status "terminated";
 ----
 
-[NOTE]
+[NOTE.yellow]
 .💡 Two steps for offboarding
 ====
 . Close all grants with `valid-until` — preserves history, marks when access ended.
@@ -156,7 +156,7 @@ The kill switch is the safety net. The closed grants are the audit trail. Both a
 
 The schema you have built is production-grade. Before deploying for a real company, here are the natural extensions to consider:
 
-[NOTE]
+[NOTE.yellow]
 .💡 Natural extensions for production deployment
 ====
 * *Account status* — already in the schema. Ensure every identity provisioning pipeline sets `account-status` to 'active' on creation.

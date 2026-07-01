@@ -3,14 +3,12 @@
 :Summary: Build Amasoft's Identity & Access Management system in TypeDB - a professional learning journey from analyst to architect.
 :keywords: typedb, typeql, iam, identity, access management, crash course, tutorial, schema, functions, audit
 
+
 [.lead]
-🔐 *IAM LEGEND* 🔐
+🔐 *Building Amasoft's Identity & Access Management System in TypeDB* 🔐
 
-_Building Amasoft's Identity & Access Management System in TypeDB_
-
-*From Analyst to Architect - A Professional Learning Journey*
-
-TypeDB 3.x · Professional Edition
+[.lead]
+_From Analyst to Architect - A professional learning journey_
 
 == 📋 Prologue: The Mandate
 
@@ -18,16 +16,16 @@ The IT Director has handed you a single-page brief. Amasoft - a mid-sized techno
 
 The compliance team has flagged it. The security team has flagged it. The auditors have flagged it. Your mandate: build Amasoft's first centralised Identity and Access Management system. Every identity, every system, every access grant, every policy - all of it in TypeDB.
 
-This is not a toy project. The schema you build in this guide is production-grade - a foundation you can adapt for your own company's IAM system. The queries you write are the queries a real IAM system runs thousands of times a day. By the end, you will have:
+Despite being intended as a learning journey for TypeDB, this is not just a toy project! The schema you build in this guide is a foundation you can adapt for your own company's production-grade IAM system. The queries you write are the queries a production IAM system runs thousands of times a day. By the end, you will have:
 
 . Modelled a complete identity hierarchy - employees, contractors, interns, and service accounts
 . Built an org structure with reporting lines and department membership
-. Designed an access model that captures not just who has access, but why, how, and until when
+. Designed an access model that captures who has access, why, how, and until when
 . Written compliance-grade audit queries that answer the hard questions
 . Encoded access policies as reusable, composable TypeQL functions
 . Built a production-grade provisioning pipeline with idempotent inserts
 
-[NOTE]
+[NOTE.yellow]
 .👥 Cast of characters
 ====
 * *Alex Chen* - a contractor who becomes a full-time employee in Chapter Three
@@ -36,79 +34,10 @@ This is not a toy project. The schema you build in this guide is production-grad
 * *The compliance team* - who ask the hard questions that drive Chapters Six and Seven
 ====
 
-[NOTE]
+[NOTE.yellow]
 .🗺️ How to use this guide
 ====
 Each chapter introduces new concepts through Amasoft's story. Read the story, then study the code. Every code block is real TypeQL you can run in TypeDB Studio. At the end of each chapter you'll find a Quest - a challenge to test your new skills. If you haven't used the Chronicles of TypeDB, don't worry - this guide is fully self-contained. If you have, you'll recognise the patterns and find the concepts run deeper here in a real-world context.
 ====
 
-== The chapters
-
-[cols-2]
---
-.xref:{page-version}@learn-typedb::iam-legend/00-getting-started-studio.adoc[]
-[.clickable]
-****
-Chapter Zero - Setting up your environment in TypeDB Studio before your first query.
-****
-
-.xref:{page-version}@learn-typedb::iam-legend/01-identity-registry.adoc[]
-[.clickable]
-****
-Chapter One - Entities, attributes, and your first schema.
-****
-
-.xref:{page-version}@learn-typedb::iam-legend/02-identity-model.adoc[]
-[.clickable]
-****
-Chapter Two - Type hierarchies, relations, and the org structure.
-****
-
-.xref:{page-version}@learn-typedb::iam-legend/03-populating-amasoft.adoc[]
-[.clickable]
-****
-Chapter Three - Insert, match, and fetch: the pattern language.
-****
-
-.xref:{page-version}@learn-typedb::iam-legend/04-granting-access.adoc[]
-[.clickable]
-****
-Chapter Four - The access model, @values, and permission queries.
-****
-
-.xref:{page-version}@learn-typedb::iam-legend/05-levels-and-promotions.adoc[]
-[.clickable]
-****
-Chapter Five - Level assignment and the two kinds of change.
-****
-
-.xref:{page-version}@learn-typedb::iam-legend/06-access-audit.adoc[]
-[.clickable]
-****
-Chapter Six - Operators, pipelines, aggregation, and compliance queries.
-****
-
-.xref:{page-version}@learn-typedb::iam-legend/07-policies-as-functions.adoc[]
-[.clickable]
-****
-Chapter Seven - Access policies as living, composable code.
-****
-
-.xref:{page-version}@learn-typedb::iam-legend/08-designing-for-policy.adoc[]
-[.clickable]
-****
-Chapter Eight - PERA, composition, sub-relations, and the access policy debate.
-****
-
-.xref:{page-version}@learn-typedb::iam-legend/09-production-iam.adoc[]
-[.clickable]
-****
-Chapter Nine - Transactions, drivers, put, and idempotent pipelines.
-****
-
-.xref:{page-version}@learn-typedb::iam-legend/10-epilogue.adoc[]
-[.clickable]
-****
-Epilogue - You are the architect.
-****
 --

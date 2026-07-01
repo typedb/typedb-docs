@@ -7,26 +7,7 @@
 
 First, set up a TypeDB Cloud instance and open TypeDB Studio (or Console if you prefer) to interact with TypeDB.
 
-[#create_cluster]
-== Create a free cluster
-
-. https://cloud.typedb.com[Create a TypeDB Cloud account,window=_blank]. Your first cluster is free.
-. On the *Clusters* dashboard, click *Create cluster*.
-. Configure your cluster, then click *Deploy*.
-
-Your cluster will be created in a few seconds and the *Connect to your cluster* dialog will display.
-
-If you want to run your own TypeDB Community Edition server, you can go to the xref:{page-version}@home::install/ce.adoc[install page].
-
-[#_connect_cluster]
-== Connect to your cluster
-
-In TypeDB Cloud, use the *Connect to your cluster* dialog, click *TypeDB Studio*. This will open TypeDB Studio for you, at https://studio.typedb.com.
-
-Make sure you note the cluster information and save it in a secure location. You'll need it each time you want to connect to your cluster - specifically, you'll need the generated username and password.
-
-This guide is also possible with xref:{page-version}@home::install/console-cli.adoc[TypeDB Console].
-TypeDB Cloud will guide you through connecting to your cluster with Console in the connection page.
+include::partial$typedb-cloud-setup.adoc[]
 
 [#configure_coding_agent]
 == Optional: configure your coding agent

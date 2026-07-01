@@ -62,13 +62,13 @@ insert
 
 In the TypeQL version, `$sam` and `$eng` are the handles that connect the `match` clause to the `insert` clause. This is what pattern language means in practice.
 
-[NOTE]
+[NOTE.yellow]
 .💡 You can skip naming the variable if you don't need it
 ====
 If you never refer back to the variable in the same query, use `$_` as a throwaway: `# Named — use when you need to reference it later` `insert $sam isa fte, has name "Sam Rivera";` `# Throwaway — fine for a standalone insert` `insert $_ isa fte, has name "Sam Rivera";` Both do exactly the same thing here.
 ====
 
-[NOTE]
+[NOTE.yellow]
 .⭐ TypeDB Advantage: One consistent pattern language for reads and writes
 ====
 In SQL, reading uses `SELECT` with `JOIN` while writing uses `INSERT INTO` with `VALUES` — completely different syntax. In TypeQL, the pattern is the same everywhere: `match` describes what exists, `insert` describes what to add. Once you know how to write a match pattern, you already know the match part of every insert, delete, and update.
@@ -78,7 +78,7 @@ In SQL, reading uses `SELECT` with `JOIN` while writing uses `INSERT INTO` with 
 
 Sam is already in the system from Chapter One. Now let's introduce the rest of the cast:
 
-[NOTE]
+[NOTE.yellow]
 .💡 Comments in TypeQL — lines starting with #
 ====
 Lines starting with `#` are comments — TypeDB ignores them completely. Use them to label steps or explain why something is written a certain way.
@@ -143,7 +143,7 @@ insert
   has effective-from 2024-01-15T00:00:00;
 ----
 
-[NOTE]
+[NOTE.yellow]
 .💡 The match-insert pattern
 ====
 The `match` clause finds existing instances. The `insert` clause uses those found instances to create something new. You cannot insert a relation without first finding its participants.
@@ -153,7 +153,7 @@ The `match` clause finds existing instances. The `insert` clause uses those foun
 
 Who is in Engineering?
 
-[NOTE]
+[NOTE.yellow]
 .💡 Three rules for fetch
 ====
 . CURLY BRACKETS — `fetch` uses `{ }` not `( )`.
@@ -236,13 +236,13 @@ fetch { "name": $name, "type": label($type) };
 
 The `not` clause is the key: exclude any result where there exists a more specific subtype that `$p` also belongs to. What remains is only the most specific type — the bottom of the hierarchy for that instance.
 
-[NOTE]
+[NOTE.yellow]
 .💡 Reading the not clause
 ====
 `not { $other sub! $type; $p isa $other; }` says: 'there does not exist a type `$other` that is a direct subtype of `$type`, where `$p` is also an instance of `$other`.' `$other` is not a keyword — it is just a variable name chosen to read naturally as 'some other more specific type'. You could call it `$child` or `$subtype` and the query would work identically. The result: Alex appears exactly once as `contractor`. Sam appears exactly once as `fte`. Every person appears at their most specific classification.
 ====
 
-[NOTE]
+[NOTE.yellow]
 .⭐ TypeDB Advantage: Types are first-class queryable data
 ====
 In SQL, getting the most specific type of a row requires a discriminator column, application logic, or querying multiple tables. In a property graph database, node labels are stored but not traversable in a type hierarchy. In TypeDB, the entire type system is queryable. You can ask 'what is the most specific type of this identity?' in a single declarative query. The schema enforces the hierarchy; the query traverses it.
@@ -252,7 +252,7 @@ In SQL, getting the most specific type of a row requires a discriminator column,
 
 Alex's contract period is ending and they've been offered a full-time role. This is the right moment to record the transition — before access grants are added in Chapter Four. Right now Alex only has a `dept-membership` and a `reports-to` bond, making the process clean.
 
-[WARNING]
+[NOTE.yellow]
 .⚠️ Delete relations before deleting the identity
 ====
 TypeDB's cardinality constraints protect data integrity during deletes as well as inserts. If a relation has `@card(0..)` or `@card(1..)` on a role, deleting the role player would leave the relation in an invalid state — TypeDB will reject the commit. Always delete dependent relations first, then delete the identity. Run each as a separate query:
@@ -289,7 +289,7 @@ insert
   has effective-from 2024-07-01T00:00:00;
 ----
 
-[NOTE]
+[NOTE.yellow]
 .💡 Why this is a natural access review checkpoint
 ====
 When Alex is deleted as a contractor, all their access grants are deleted too — they are relations that depend on Alex existing. After reinserting as an `fte`, access must be explicitly re-granted. This is correct behaviour: a type change is a natural moment to review what access the person should have in their new role.

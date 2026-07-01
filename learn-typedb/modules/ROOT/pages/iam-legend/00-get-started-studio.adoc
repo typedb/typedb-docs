@@ -1,36 +1,46 @@
-= Chapter Zero: Getting Started in TypeDB Studio
-:pageTitle: Chapter Zero: Getting Started in TypeDB Studio
+= Chapter Zero: Get Started in TypeDB Studio
+:pageTitle: Chapter Zero: Get Started in TypeDB Studio
 :Summary: Setting up your environment before your first query.
 :keywords: typedb, typeql, iam, studio, database, transaction, auto mode, getting started
 
 [.lead]
 _Setting Up Your Environment Before Your First Query_
 
+== Before you begin: Set up TypeDB Cloud
+
+Before you can open Studio, you need a running TypeDB instance. Set up a free TypeDB Cloud cluster and connect to it first.
+
+TIP: Already have a running TypeDB server? You can skip this section and jump straight to <<what_is_studio>>
+
+include::partial$typedb-cloud-setup.adoc[leveloffset=+1]
+
+[#what_is_studio]
 == What is TypeDB Studio?
 
 TypeDB Studio is the visual interface for working with TypeDB. It is where you will write and run every query in this guide — defining your schema, inserting data, and running audit queries. If you haven't installed it yet, download it from typedb.com before continuing.
 
-== Step 1 — Create the IAM_Legend Database
+== Step 1: Create the IAM_Legend Database
 
 When you first open Studio, you'll be prompted to connect to a TypeDB server. Once connected, create a new database for this project:
 
-. In the top bar, click the database selector — it shows the currently active database or 'No database selected'
-. Click 'New Database'
-. Name it `IAM_Legend` — this is the database you'll build throughout this guide. Leave the **Sample dataset** field blank.
-. Click 'Create database'
+. In the top bar, find the database selector — it shows the currently active database or 'No database selected'
+. Click the '+' or 'New Database' button next to it
+. Name it `IAM_Legend` — this is the database you'll build throughout this guide
+. Select it as the active database
 
-[TIP]
+[NOTE.yellow]
+.💡 Database names are case-sensitive
 ====
-`IAM_Legend` is the database name used throughout this guide. You can name yours anything — if you use a different name, just substitute it wherever this guide refers to `IAM_Legend`.
+`IAM_Legend` is the name used throughout this guide. You can name yours anything — but if you use a different name, just substitute it wherever this guide refers to `IAM_Legend`.
 ====
 
-== Step 2 — Navigate to the Query Page
+== Step 2: Navigate to the Query Page
 
 TypeDB Studio has two main views: the Schema page and the Query page. The Schema page shows a visual graph of your type hierarchy. The Query page is where you write and run TypeQL.
 
 Navigate to the Query page now. This is where every query in this guide will be written and run — both schema definitions and data inserts.
 
-== Step 3 — Auto Mode vs Manual Mode
+== Step 3: Auto Mode vs Manual Mode
 
 TypeDB has three transaction types: schema (for define/undefine/redefine), write (for insert/delete), and read (for match/fetch). In manual mode, you would need to select the correct transaction type before every query and commit it afterwards.
 
@@ -42,7 +52,7 @@ Auto mode handles all of this for you. Studio detects what kind of query you're 
 Find the transaction mode toggle in the top toolbar of the Query page. Set it to 'auto'. With auto mode on, you simply write your query and run it. Studio handles the rest. If you leave it in manual mode, you will hit confusing transaction errors that have nothing to do with your TypeQL. All queries in this guide assume auto mode is enabled.
 ====
 
-== Step 4 — Running a Query
+== Step 4: Running a Query
 
 To run a query in TypeDB Studio:
 

@@ -48,7 +48,7 @@ After running any define query, go to the Schema page in TypeDB Studio and click
 
 You've already seen `@key` in action. It declares that an attribute must be unique within its type — no two instances can share the same value. TypeDB enforces this at the database level, not the application level.
 
-[NOTE]
+[NOTE.yellow]
 .💡 Redefining an existing type
 ====
 Running define on a type that already exists adds to it — it doesn't replace it. This is safe when no instances exist yet, which is the case throughout this chapter. Once you start inserting data in Chapter Three, redefining constraints on attributes that existing instances already own can cause validation errors if any of those instances break the new logic — for example, adding `@key` to an attribute when two instances already share the same value.
@@ -68,7 +68,7 @@ entity department,
 
 Notice `@abstract` on department. You can never insert a plain 'department' — only a concrete subtype. But querying for all 'department' instances returns every subtype automatically. The abstract type is a shared foundation, not a thing that exists on its own. We won't define the specific department subtypes yet — that comes in Chapter Two, where it fits naturally alongside the rest of the org structure.
 
-[NOTE]
+[NOTE.yellow]
 .⭐ TypeDB Advantage: Attributes are shared across types — not duplicated
 ====
 When Chapter Two introduces contractors and interns, they will share attributes like email and name with employees — through a common parent type. There is one email attribute type in the schema, owned by as many entity types as need it. In SQL, sharing a column across multiple tables requires JOINs, nullable columns, or lookup tables. In TypeDB, any number of types can own the same attribute with no ceremony.

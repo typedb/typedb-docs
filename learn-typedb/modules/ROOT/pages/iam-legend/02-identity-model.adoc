@@ -35,13 +35,13 @@ define
 entity person @abstract;
 ----
 
-[NOTE]
+[NOTE.yellow]
 .💡 Inheritance is automatic
 ====
 When you query for all 'person' instances, TypeDB automatically includes employees, contractors, and interns — all subtypes. The hierarchy is active at query time with no extra work.
 ====
 
-[NOTE]
+[NOTE.yellow]
 .⭐ TypeDB Advantage: Polymorphic queries across a hierarchy
 ====
 In SQL, querying across a type hierarchy requires UNION ALL across multiple tables, or a discriminator column with complex JOIN logic. In TypeDB, the hierarchy is declared once and resolved automatically. Querying for 'person' includes all subtypes — guaranteed correct because the schema validates it.
@@ -69,7 +69,7 @@ define
 entity temporary @abstract;
 ----
 
-[WARNING]
+[NOTE.yellow]
 .⚠️ @abstract must be defined separately from sub
 ====
 TypeDB does not allow `@abstract` and `sub` in the same statement. Define the type with its parent and attributes first, then add `@abstract` in a separate define query. Also note: an abstract type must have an abstract supertype. This is why person must be made abstract before temporary can be made abstract — TypeDB will reject `@abstract` on a type whose parent is concrete.
@@ -88,7 +88,7 @@ You have already used `undefine` in this guide. As the schema grows, you will us
 |redefine |Changing something that already exists — an annotation, cardinality, or function body |`redefine relation r relates role @card(0..1);`
 |===
 
-[WARNING]
+[NOTE.yellow]
 .⚠️ undefine is one statement per query
 ====
 Unlike define, which can chain multiple declarations in a single block, `undefine` must be run as one statement per query. Chaining them causes a parse error.
@@ -126,7 +126,7 @@ attribute account-status, value string
 
 Notice that identity `@abstract` now owns account-status — the global kill switch. Both humans and service accounts need this. `@values` restricts it to exactly three valid states at the schema level.
 
-[NOTE]
+[NOTE.yellow]
 .🏢 Why service accounts matter
 ====
 SQL-based IAM systems typically bolt service accounts on as an afterthought — a separate table with a foreign key back to the user table. In TypeDB, service-account is a subtype of identity. It participates in the same access model as humans — same relations, same queries, same policies.
@@ -150,13 +150,13 @@ attribute system-name, value string;
 attribute description, value string;
 ----
 
-[NOTE]
+[NOTE.yellow]
 .💡 Departments are data, not types
 ====
 In the previous approach, each department was its own entity type — engineering, finance, hr-dept, legal. That means adding a new department requires a schema change. Instead, department is a single concrete type. Individual departments — Engineering, Finance, HR, Legal — are inserted as instances in Chapter Three. Adding a new department is just an insert query, not a schema migration.
 ====
 
-[WARNING]
+[NOTE.yellow]
 .⚠️ If you see 'type department was not found'
 ====
 This means department wasn't defined in Chapter One. Go back and run: `define attribute dept-name, value string; entity department, owns dept-name @key;` Then run the system hierarchy query again.
@@ -184,7 +184,7 @@ A relation is TypeDB's way of recording a connection between two or more things.
 
 Every relation has named roles. Roles are the slots that participants fill. When you define a relation, you choose the role names yourself — and this is where a common mistake happens.
 
-[WARNING]
+[NOTE.yellow]
 .⚠️ Role names are not entity type names — this is the most common mistake
 ====
 You choose role names based on the function a participant plays in the relationship, not their entity type. The reporting line relation has roles called 'manager' and 'report' — not 'employee' and 'employee', even though both participants are employees. When you insert a relation, you always use the ROLE name: BROKEN: `(employee: $sam, employee: $alex) isa reports-to;` CORRECT: `(manager: $sam, report: $alex) isa reports-to;` The error 'Role label not found' means you used the wrong name. When you see it, go back to the `relates` declaration and check what the role is actually called.
@@ -210,13 +210,13 @@ Relations are not just connections — they are first-class types that can own a
 
 `@card(0..1)` on manager means at most one manager per bond. `@card(0..)` on report means zero or more reports — we use `0..` rather than `1..` to allow clean deletion of a report without the relation complaining.
 
-[NOTE]
+[NOTE.yellow]
 .💡 Inheritance does the work here
 ====
 Notice that manager is granted to employee, but report is granted to person — the parent type. Because contractor and intern are subtypes of person, they automatically inherit the ability to play the report role. No additional `plays` declarations needed. Because only employee can play manager, TypeDB will reject any insert that tries to make a contractor or intern a manager. The business rule is structural — enforced by the schema, not application code. This is one of the most powerful aspects of TypeDB's type hierarchy: you get precise, inheritance-aware role control in two lines.
 ====
 
-[NOTE]
+[NOTE.yellow]
 .⭐ TypeDB Advantage: Relations own attributes natively
 ====
 In SQL, storing when a reporting relationship became effective requires a separate junction table with its own columns. In TypeDB, effective-from lives on the bond itself — semantically correct and queryable without a JOIN.
@@ -242,7 +242,7 @@ entity department, plays dept-membership:dept;
 entity person, plays dept-membership:member;
 ----
 
-[NOTE]
+[NOTE.yellow]
 .💡 @card(1) on dept
 ====
 `@card(1)` on the dept role means each individual dept-membership bond must reference exactly one department. It does not mean there can only be one department in the database.
@@ -273,7 +273,7 @@ Before populating the database, here is a complete picture of everything you hav
 Go to the Schema page in TypeDB Studio and hit refresh. You should see all entity types as nodes connected by their inheritance hierarchy, with reports-to and dept-membership as relation edges. If anything looks wrong, fix it now — before you insert any data.
 ====
 
-[NOTE]
+[NOTE.yellow]
 .💡 Natural extensions — what we deliberately left out
 ====
 This schema is intentionally simple for demonstration. In a real IAM deployment you might also consider: • Sub-departments — Engineering might have sub-teams like Platform, Product, and Security, each with their own access profiles. • Regional or office-specific access — identities in the EU region may have different access to certain systems than those in APAC, due to data residency requirements. • System ownership — a department could formally own a set of systems. Finance owns payments and finance-core; Engineering owns eng-platform. This would let you query 'who has access to systems outside their department's ownership?' — a powerful audit query. All of these are straightforward to add in TypeDB. For now, we keep the structure simple so the core concepts stay clear.

@@ -35,13 +35,13 @@ entity system, plays access-grant:system;
 
 `@values` on `permission-level` restricts it to exactly three valid strings — TypeDB rejects anything else at insert time. `@card(1)` on `system` means every access grant must reference exactly one system.
 
-[NOTE]
+[NOTE.yellow]
 .⭐ TypeDB Advantage: Schema-level data validation
 ====
 In SQL, enforcing that permission_level can only be 'read', 'write', or 'admin' requires either a CHECK constraint (often ignored) or a lookup table with a foreign key. In TypeDB, `@values` enforces this at the schema level — it is impossible to insert an invalid permission level.
 ====
 
-[NOTE]
+[NOTE.yellow]
 .💡 This is an N-ary relation — notice what it connects
 ====
 `access-grant` doesn't just connect two things — it connects an identity to a system AND carries its own attributes: `permission-level`, `granted-at`, `valid-until`. This is called an N-ary relation — a connection involving more than two participants, or a binary connection that owns meaningful data about the connection itself. In SQL this requires a separate junction table. In a property graph, edges are binary and second-class — they can carry properties but can't participate in queries the same way nodes do. In TypeDB, N-ary relations are first-class. We'll explore this fully in Chapter Five where level-assignment makes the power even clearer.
@@ -77,7 +77,7 @@ insert
   has granted-at 2024-01-01T08:00:00;
 ----
 
-[NOTE]
+[NOTE.yellow]
 .💡 Matching multiple instances at once
 ====
 The Michelle query matches every system in the database and inserts one `access-grant` per system. TypeDB runs the insert once per row returned by the match — a powerful pattern for bulk grants.
