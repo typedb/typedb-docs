@@ -1,0 +1,143 @@
+= `@meta` annotation
+:page-aliases: {page-version}@typeql-reference::statements/meta.adoc
+:test-typeql: linear
+
+The `@meta` annotation is used
+// tag::overview[]
+to add metadata to a schema concept.
+// end::overview[]
+
+== Syntax
+
+The `@meta` annotation can be defined for:
+
+- any type;
+- an `owns`, `plays`, `relates`, or a `sub` declaration;
+- a function;
+- a struct and struct fields.
+
+.Type annotation syntax
+[,typeql]
+----
+<type label> @meta("<key>", "<value>");
+----
+
+.Ownership annotation syntax
+[,typeql]
+----
+<type label> owns <attribute type label> @meta("<key>", "<value>");
+----
+
+.Function annotation syntax
+[,typeql]
+----
+fun <function-name>( <optional-arguments> ) -> <return-types>
+    @meta("<key>", "<value>"):
+<function-body>
+----
+
+[NOTE]
+====
+Structs are a planned feature and not yet available in TypeDB.
+Coming soon!
+====
+
+.Struct annotation syntax
+[,typeql]
+----
+struct <struct-name> @meta("<key>", "<value>"):
+    <field-name> value <field-type> @meta("<key>", "<value>");
+----
+
+== Usage
+
+The `@meta` annotation is used to add meta information to a schema item.
+
+The annotation enables users to attach additional domain-specific properties to types, capabilities, functions, and structs in the schema.
+Any number of meta properties can be defined on an item, as long as all `@meta` annotations have different keys.
+These properties can then be used by client code for any reason.
+
+[,typeql]
+----
+#!test[schema]
+define
+  entity student @meta("icon", ":silhouette.png"),
+    plays enrolment:student,
+    plays enrolment:teacher @meta("style", "{ color: #FF8800, line: dashed }"),
+    owns id;
+  relation enrolment @meta("icon", ":graduation-cap.png"),
+    relates course @doc("The specific course being taught: owns code and academic year."),
+    relates student @card(0..),
+    relates teacher @card(1..) @meta("icon", ":teacher.png") @meta("style", "{ color: #FF8800, line: solid }"),
+    owns id;
+  attribute id, value string;
+----
+
+These properties can then be retrieved using
+xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc#_metadata_fns[the metadata retrieval built-in functions].
+
+[,typeql]
+----
+#!test[write, count=1]
+#{{
+insert $s isa student, has id "billybob"; $_ isa enrolment, links(teacher: $s), has id "CS101-2026";
+#}}
+#!test[read, count=1]
+match
+  $rel isa! $relation-type, has id $rel-id, links ($role: $player);
+  $player isa! $player-type, has id $player-id;
+fetch {
+  "relation": {
+    "id": $rel-id,
+    "type": label($relation-type),
+    "icon": get_meta("icon", $relation-type),
+  },
+  "player": {
+    "id": $player-id,
+    "type": label($player-type),
+    "icon": get_meta("icon", $player-type),
+  },
+  "role": {
+    "type": label($role),
+    "relates_style": get_relates_meta("style", $relation-type, $role),
+    "plays_style": get_plays_meta("style", $player-type, $role),
+    "icon": get_meta("icon", $role),
+  }
+};
+----
+
+.Example output
+[,json]
+----
+{
+  "relation": {
+    "id": "CS101-2026",
+    "type": "enrolment",
+    "icon": ":graduation-cap.png"
+  },
+  "player": {
+    "id": "billybob",
+    "type": "student",
+    "icon": ":silhouette.png"
+  },
+  "role": {
+    "type": "enrolment:teacher",
+    "relates_style": "{ color: #FF8800, line: solid }",
+    "plays_style": "{ color: #FF8800, line: dashed }",
+  }
+}
+----
+
+=== Subtyping
+
+The `@meta` annotation is never inherited.
+Metadata is only available on the exact items it was originally defined for.
+
+=== Notes
+
+`my-relation relates my-role` declares both the role `my-relation:my-role` and the `relates` capability.
+Because of that, any `@meta` annotation declared on a `relates` is also automatically available on the role introduced in that `relates`.
+
+=== Defaults
+
+When querying metadata of an item for a given key, if that item does not define `@meta` with the requested key, the value of the metadata returned is an empty string.
