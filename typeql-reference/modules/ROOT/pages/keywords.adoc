@@ -246,32 +246,112 @@ Declares the values of an attribute type to be variable length UTF-8 encoded str
 
 == Built-in functions
 
+=== Value functions
+
 `round(...)`::
-Rounding function, returns the provided numeric argument rounded to the nearest integer. See xref:{page-version}@typeql-reference::expressions/operators.adoc[] for more information.
+Rounding function, returns the provided numeric argument rounded to the nearest integer. See xref:{page-version}@typeql-reference::expressions/value-operations.adoc[] for more information.
 
 `ceil(...)`::
-Ceiling function, returns the provided numeric argument rounded to the nearest greater integer. See xref:{page-version}@typeql-reference::expressions/operators.adoc[] for more information.
+Ceiling function, returns the provided numeric argument rounded to the nearest greater integer. See xref:{page-version}@typeql-reference::expressions/value-operations.adoc[] for more information.
 
 `floor(...)`::
-Floor function, returns the provided numeric argument rounded to the nearest lesser integer. See xref:{page-version}@typeql-reference::expressions/operators.adoc[] for more information.
+Floor function, returns the provided numeric argument rounded to the nearest lesser integer. See xref:{page-version}@typeql-reference::expressions/value-operations.adoc[] for more information.
 
 `abs(...)`::
-Modulus function, returns the absolute value of the provided numeric argument. See xref:{page-version}@typeql-reference::expressions/operators.adoc[] for more information.
+Modulus function, returns the absolute value of the provided numeric argument. See xref:{page-version}@typeql-reference::expressions/value-operations.adoc[] for more information.
 
 `len(...)`::
-Length function, returns the length of the provided string or list (coming soon) argument. See xref:{page-version}@typeql-reference::expressions/operators.adoc[] for more information.
+Length function, returns the length of the provided string or list (coming soon) argument. See xref:{page-version}@typeql-reference::expressions/value-operations.adoc[] for more information.
 
 `min(...)`::
-Minimum function, returns the minimum value of two provided numeric arguments. See xref:{page-version}@typeql-reference::expressions/operators.adoc[] for more information.
+Minimum function, returns the minimum value of two provided numeric arguments. See xref:{page-version}@typeql-reference::expressions/value-operations.adoc[] for more information.
 
 `max(...)`::
-Maximum function, returns the maximum value of two provided numeric arguments. See xref:{page-version}@typeql-reference::expressions/operators.adoc[] for more information.
+Maximum function, returns the maximum value of two provided numeric arguments. See xref:{page-version}@typeql-reference::expressions/value-operations.adoc[] for more information.
+
+=== Concept functions
 
 `iid(...)`::
-IID function, returns the internal ID of the provided instance argument as a string. See xref:{page-version}@typeql-reference::expressions/operators.adoc[] for more information.
+IID function, returns the internal ID of the provided instance argument as a string. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
 
 `label(...)`::
-Label function, returns the label of the provided type argument as a string. See xref:{page-version}@typeql-reference::expressions/operators.adoc[] for more information.
+Label function, returns the label of the provided type argument as a string. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+=== Documentation functions
+
+`get_doc(t)`::
+Returns the documentation string of the provided type argument. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+`get_owns_doc(owner, attribute)`::
+Returns the documentation string of the provided `owns`. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+`get_plays_doc(player, role)`::
+Returns the documentation string of the provided `plays`. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+`get_relates_doc(relation, role)`::
+Returns the documentation string of the provided `relates`. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+`get_sub_doc(sub, sup)`::
+Returns the documentation string of the provided `sub`. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+`get_fun_doc(function_name)`::
+Returns the documentation string of the provided function. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+`get_struct_doc(struct_name)`::
+Returns the documentation string of the provided struct. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+`get_struct_field_doc(struct_name, field_name)`::
+Returns the documentation string of the provided struct field. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+=== Metadata functions
+
+`get_meta(key, t)`::
+Returns the metadata of the provided type with the specified key. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+`get_all_meta(t)`::
+Returns all metadata of the provided type as a stream of key-value pairs. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+`get_owns_meta(key, owner, attribute)`::
+Returns the metadata of the provided `owns` with the specified key. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+`get_owns_all_meta(owner, attribute)`::
+Returns all metadata of the provided `owns` as a stream of key-value pairs. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+`get_plays_meta(key, player, role)`::
+Returns the metadata of the provided `plays` with the specified key. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+`get_plays_all_meta(player, role)`::
+Returns all metadata of the provided `plays` as a stream of key-value pairs. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+`get_relates_meta(key, relation, role)`::
+Returns the metadata of the provided `relates` with the specified key. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+`get_relates_all_meta(relation, role)`::
+Returns all metadata of the provided `relates` as a stream of key-value pairs. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+`get_sub_meta(key, sub, sup)`::
+Returns the metadata of the provided `sub` with the specified key. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+`get_sub_all_meta(sub, sup)`::
+Returns all metadata of the provided `sub` as a stream of key-value pairs. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+`get_fun_meta(key, function_name)`::
+Returns the metadata of the provided function with the specified key. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+`get_fun_all_meta(function_name)`::
+Returns all metadata of the provided function as a stream of key-value pairs. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+`get_struct_meta(key, struct_name)`::
+Returns the metadata of the provided struct with the specified key. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+`get_struct_all_meta(struct_name)`::
+Returns all metadata of the provided struct as a stream of key-value pairs. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+`get_struct_field_meta(key, struct_name, field_name)`::
+Returns the metadata of the provided struct field with the specified key. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
+
+`get_struct_field_all_meta(struct_name, field_name)`::
+Returns all metadata of the provided struct field as a stream of key-value pairs. See xref:{page-version}@typeql-reference::expressions/builtin-functions.adoc[] for more information.
 
 == Literals
 

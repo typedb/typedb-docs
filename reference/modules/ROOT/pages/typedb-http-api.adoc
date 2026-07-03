@@ -1268,7 +1268,20 @@ include::{page-version}@reference::partial$options-descriptions/query.adoc[tag=a
 
 |===
 // end::query-options[]
+*Given rows:*
 
+Each given row maps a 'given' variable to an instance or value.
+.Examples:
+[%collapsible]
+====
+include::{page-version}@reference::partial$http-api/requests/query-given.json.adoc[]
+====
+
+
+// tag::query-given[]
+
+
+// end:query-given[]
 *Responses:*
 
 include::{page-version}@reference::partial$http-api/responses/details.adoc[tags="200-query,400,403,404,408"]
