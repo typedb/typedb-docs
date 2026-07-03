@@ -1,0 +1,20 @@
+[source,json]
+----
+{
+  "query": "given $p: person, $n: string; $dob: datetime-tz;\ninsert $p has name == $name, date-of-birth == $dob;",
+  "given": [
+    {
+        "p": {
+          "kind": "entity",
+          "iid": "0x1e00000000000000000001"
+        },
+        "n": {
+          "kind": "value",
+          "valueType": "string",
+          "value": "John"
+        },
+        "dob": "1987-12-22T17:29 Asia/Kolkata"
+    }
+  ]
+}
+----
