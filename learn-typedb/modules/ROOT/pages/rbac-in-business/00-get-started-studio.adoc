@@ -1,0 +1,57 @@
+= Chapter Zero: Get Started in TypeDB Studio
+:pageTitle: Chapter Zero: Get Started in TypeDB Studio
+:Summary: Setting up your environment before your first query.
+:keywords: typedb, typeql, iam, studio, database, transaction, auto mode, getting started
+
+[.lead]
+_Setting Up Your Environment Before Your First Query_
+
+== Before you begin: Set up TypeDB Cloud
+
+Before you can open Studio, you need a running TypeDB instance. Set up a free TypeDB Cloud cluster and connect to it first.
+
+TIP: Already have a running TypeDB server? You can skip this section and jump straight to <<what_is_studio>>
+
+include::partial$typedb-cloud-setup.adoc[leveloffset=+1]
+
+[#what_is_studio]
+== What is TypeDB Studio?
+
+TypeDB Studio is the visual interface for working with TypeDB. It is where you will write and run every query in this guide — defining your schema, inserting data, and running audit queries. If you haven't installed it yet, download it from typedb.com before continuing.
+
+== Step 1: Create the rbac-in-business Database
+
+When you first open Studio, you'll be prompted to connect to a TypeDB server. Once connected, create a new database for this project:
+
+. In the top bar, find the database selector — it shows the currently active database or 'No database selected'
+. Click the '+' or 'New Database' button next to it
+. Name it `rbac-in-business` — this is the database you'll build throughout this guide
+. Select it as the active database
+
+[NOTE.yellow]
+.💡 Database names are case-sensitive
+====
+`rbac-in-business` is the name used throughout this guide. You can name yours anything — but if you use a different name, just substitute it wherever this guide refers to `rbac-in-business`.
+====
+
+== Step 2: Navigate to the Query Page
+
+TypeDB Studio has two main views: the Schema page and the Query page. The Schema page shows a visual graph of your type hierarchy. The Query page is where you write and run TypeQL.
+
+Navigate to the Query page now. This is where every query in this guide will be written and run — both schema definitions and data inserts.
+
+== Step 3: Auto Mode vs Manual Mode
+
+TypeDB has three transaction types: schema (for define/undefine/redefine), write (for insert/delete), and read (for match/fetch). In manual mode, you select the correct transaction type before every query and commit it afterwards.
+
+Auto mode handles all of this for you. Studio detects what kind of query you're running and opens and commits the right transaction automatically.
+
+[NOTE.yellow]
+.✅ Enable auto transaction mode now
+====
+Find the transaction mode toggle in the top toolbar of the Query page. It should be set to 'auto'. In this mode, you simply write your query and run it. Studio will handle the rest. This guide assumes auto mode is enabled.
+====
+
+== You Are Ready
+
+Your database is created. Chapter One begins with your first define query — the simplest possible schema, and the foundation everything else is built on.
