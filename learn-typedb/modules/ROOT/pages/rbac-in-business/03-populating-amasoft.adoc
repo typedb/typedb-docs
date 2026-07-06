@@ -204,7 +204,7 @@ $p has name $name;
 fetch { "name": $name, "type": label($type) };
 ----
 
-Alex Chen would appear four times: as `contractor`, `temporary`, `person`, and `identity`. Useful when you want the full classification chain — but often more than you need.
+Alex Chen would appear four times: as `contractor`, `temporary-worker`, `person`, and `identity`. Useful when you want the full classification chain — but often more than you need.
 
 === Query 2 — Direct subtypes only (sub!)
 
@@ -295,10 +295,10 @@ insert
 When Alex is deleted as a contractor, all their access grants are deleted too — they are relations that depend on Alex existing. After reinserting as an `fte`, access must be explicitly re-granted. This is correct behaviour: a type change is a natural moment to review what access the person should have in their new role.
 ====
 
-== Chapter Three Quest 🏆
+== Chapter Three Challenge
 
-.⚔️ Quest: Populate Amasoft
-[example]
+[NOTE]
+.Challenge: Populate Amasoft
 ====
 . Insert Sam, Alex, and Michelle as shown above.
 . Insert all four departments and all four systems.

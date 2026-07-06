@@ -1,5 +1,5 @@
-= Chapter Two: The Full Identity Model
-:pageTitle: Chapter Two: The Full Identity Model
+= Chapter Two: The Identity Management System
+:pageTitle: Chapter Two: The Identity Management System
 :Summary: Type hierarchies, relations, and the org structure.
 :keywords: typedb, typeql, iam, type hierarchy, inheritance, relation, role, cardinality, abstract
 
@@ -25,15 +25,17 @@ entity person,
 entity employee sub person;
 ----
 
-employee now inherits name and email from person, and keeps employee-id from Chapter One. No migration needed — this is purely additive.
+`employee` now inherits `name` and `email` from `person`, and keeps `employee-id` from Chapter One. In general TypeDB allows you to modify type hierarchies in this way, provided the change would not introduce conflicts - no need for migration scripts.
 
-Now make person abstract — you can never insert a bare person, only a concrete subtype. Note: unlike department, person is abstract because we always want a specific type of person — an employee, contractor, or intern. Department on the other hand is a single concrete concept, with named instances.
+Now make person abstract:
 
 [,typeql]
 ----
 define
 entity person @abstract;
 ----
+
+This in-place schema modification succeeds because there are no `person` instances yet. You will now no longer be able to insert a bare person - only a concrete subtype. Note: unlike department, person is abstract because we always want a specific type of person — an employee, contractor, or intern. Department on the other hand is a single concrete concept, with named instances.
 
 [NOTE.yellow]
 .💡 Inheritance is automatic
@@ -49,30 +51,32 @@ In SQL, querying across a type hierarchy requires UNION ALL across multiple tabl
 
 == Temporary Workers — contractor and intern
 
-Contractors and interns share a contract end date. Introduce a shared abstract parent for both — these are new types, no migration needed:
+Now let's introduce new entity types for contractors and interns.
+
+Contractors and interns have a common property - they each have contract end dates. Conceptually, they both fit under the umbrella term of "temporary worker". Let's introduce a shared abstract parent for both — these are new types, no migration needed:
 
 [,typeql]
 ----
 define
 attribute contract-end-date, value datetime;
-entity temporary sub person,
+entity temporary-worker sub person,
   owns contract-end-date;
-entity contractor sub temporary;
-entity intern sub temporary;
+entity contractor sub temporary-worker;
+entity intern sub temporary-worker;
 ----
 
-Now mark temporary as abstract:
+Now mark temporary-worker as abstract:
 
 [,typeql]
 ----
 define
-entity temporary @abstract;
+entity temporary-worker @abstract;
 ----
 
 [NOTE.yellow]
 .⚠️ @abstract must be defined separately from sub
 ====
-TypeDB does not allow `@abstract` and `sub` in the same statement. Define the type with its parent and attributes first, then add `@abstract` in a separate define query. Also note: an abstract type must have an abstract supertype. This is why person must be made abstract before temporary can be made abstract — TypeDB will reject `@abstract` on a type whose parent is concrete.
+TypeDB does not allow `@abstract` and `sub` in the same statement. Define the type with its parent and attributes first, then add `@abstract` in a separate define query. Also note: an abstract type must have an abstract supertype. This is why person must be made abstract before temporary-worker can be made abstract — TypeDB will reject `@abstract` on a type whose parent is concrete.
 ====
 
 contractor and intern both inherit name, email, and contract-end-date. Neither type existed before this chapter — clean and additive.
@@ -166,7 +170,7 @@ This means department wasn't defined in Chapter One. Go back and run: `define at
 
 Refresh the schema visualiser now. You have just built three separate groups of types:
 
-* The identity hierarchy — identity, person, employee, fte, pte, temporary, contractor, intern, service-account
+* The identity hierarchy — identity, person, employee, fte, pte, temporary-worker, contractor, intern, service-account
 * The system hierarchy — system, payments-system, hr-system, engineering-platform, finance-platform
 * The department type — a single concrete type, with instances to be inserted in Chapter Three
 
@@ -261,7 +265,7 @@ Before populating the database, here is a complete picture of everything you hav
 [cols="26%,34%,40%",options="header"]
 |===
 |Concept |Types |Key attributes
-|Identities |identity, person, employee, fte, pte, temporary, contractor, intern, service-account |email @key, name on person; employee-id @key on employee; contract-end-date on temporary; service-name @key, owner-team on service-account
+|Identities |identity, person, employee, fte, pte, temporary-worker, contractor, intern, service-account |email @key, name on person; employee-id @key on employee; contract-end-date on temporary-worker; service-name @key, owner-team on service-account
 |Systems |system, payments-system, hr-system, engineering-platform, finance-platform |system-name @key, description
 |Departments |department |dept-name @key
 |Relations |reports-to, dept-membership |reports-to owns effective-from. dept-membership connects person to department.
@@ -279,12 +283,12 @@ Go to the Schema page in TypeDB Studio and hit refresh. You should see all entit
 This schema is intentionally simple for demonstration. In a real IAM deployment you might also consider: • Sub-departments — Engineering might have sub-teams like Platform, Product, and Security, each with their own access profiles. • Regional or office-specific access — identities in the EU region may have different access to certain systems than those in APAC, due to data residency requirements. • System ownership — a department could formally own a set of systems. Finance owns payments and finance-core; Engineering owns eng-platform. This would let you query 'who has access to systems outside their department's ownership?' — a powerful audit query. All of these are straightforward to add in TypeDB. For now, we keep the structure simple so the core concepts stay clear.
 ====
 
-== Chapter Two Quest 🏆
+== Chapter Two Challenge
 
-.⚔️ Quest: Build the Full Schema
-[example]
+[NOTE]
+.Challenge: Build the Full Schema
 ====
-. Define the full identity hierarchy — person, employee, fte, pte, temporary, contractor, intern, identity, service-account.
+. Define the full identity hierarchy — person, employee, fte, pte, temporary-worker, contractor, intern, identity, service-account.
 . Define systems and departments with their subtypes.
 . Define reports-to and dept-membership with correct cardinality.
 . Refresh the schema visualiser and verify the full graph — confirm all three islands are now connected.

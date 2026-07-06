@@ -175,10 +175,10 @@ relation system-resource, relates system @card(1), relates resource @card(0..);
 All of these follow the same TypeDB patterns you have already learned. The foundation is solid. Build on it.
 ====
 
-== Chapter Nine Quest 🏆
+== Chapter Nine Challenge
 
-.⚔️ Quest: The Provisioning Pipeline
-[example]
+[NOTE]
+.Challenge: The Provisioning Pipeline
 ====
 . Write an idempotent provisioning script using `put` that creates an identity with `account-status` 'active' and grants them access. Run it twice — confirm no duplicates.
 . Write the access check query including the `account-status` kill switch.

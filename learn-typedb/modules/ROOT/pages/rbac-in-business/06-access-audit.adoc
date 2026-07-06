@@ -33,7 +33,7 @@ fetch { "name": $name, "level": $n };
 [NOTE.yellow]
 .💡 This query may return no results — that's expected
 ====
-This query only returns results if you have access grants with a valid-until date set. If you completed the bonus in Chapter Four's quest, you will have one. If not, add a valid-until date to one of your existing grants first: `match $i has email "alex.chen@amasoft.com"; $s isa engineering-platform; $ag (grantee: $i, system: $s) isa access-grant; update $ag has valid-until 2024-02-10T00:00:00;`
+This query only returns results if you have access grants with a valid-until date set. If you completed the bonus in Chapter Four's challenge, you will have one. If not, add a valid-until date to one of your existing grants first: `match $i has email "alex.chen@amasoft.com"; $s isa engineering-platform; $ag (grantee: $i, system: $s) isa access-grant; update $ag has valid-until 2024-02-10T00:00:00;`
 ====
 
 [,typeql]
@@ -71,7 +71,7 @@ Alex was promoted from contractor to fte in Chapter Three. Unless you inserted a
 [,typeql]
 ----
 match
-$i isa temporary, has name $name;
+$i isa temporary-worker, has name $name;
 $s has system-name $sys;
 (grantee: $i, system: $s) isa access-grant,
   has permission-level $pl;
@@ -171,10 +171,10 @@ When a query returns nothing unexpectedly, work from broad to narrow:
 . Add conditions one at a time until results disappear — that last condition is the problem.
 . Check: wrong type (matched 'employee' but instance is 'intern'), wrong role name, case mismatch, pipeline order.
 
-== Chapter Six Quest 🏆
+== Chapter Six Challenge
 
-.⚔️ Quest: The Compliance Report
-[example]
+[NOTE]
+.Challenge: The Compliance Report
 ====
 Answer all six compliance questions with TypeQL queries:
 

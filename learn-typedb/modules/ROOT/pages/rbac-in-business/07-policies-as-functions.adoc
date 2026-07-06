@@ -215,7 +215,7 @@ Functions compose by calling them in the same match clause. Here is a two-functi
 define
 fun contract-expiring-soon($i: identity) -> { identity }:
   match
-    $i isa temporary, has contract-end-date $end;
+    $i isa temporary-worker, has contract-end-date $end;
     $end < 2024-08-01T00:00:00;
   return { $i };
 
@@ -369,10 +369,10 @@ fetch { "sod-violation": $name };
 In SQL, enforcing SoD requires joining across multiple permission tables, checking multiple conditions, and usually duplicating the logic across application code and stored procedures. In TypeDB, SoD is a function — defined once, called anywhere, always consistent. When the rule changes, you update one function. The audit query and the enforcement logic are the same code.
 ====
 
-== Chapter Seven Quest 🏆
+== Chapter Seven Challenge
 
-.⚔️ Quest: The Policy Engine
-[example]
+[NOTE]
+.Challenge: The Policy Engine
 ====
 . Define `can-access-payments()` as shown above.
 . Call it and verify Michelle appears (L7 — authorised).

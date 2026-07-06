@@ -225,10 +225,10 @@ The `not { $la has effective-until $_; }` pattern filters to only current assign
 Querying for all 'employee' instances automatically includes fte and pte. In SQL, this requires UNION ALL across multiple tables or a discriminator column. In TypeDB, the hierarchy is enforced by the schema and resolved at query time.
 ====
 
-== Chapter Five Quest 🏆
+== Chapter Five Challenge
 
-.⚔️ Quest: Levels and Promotions
-[example]
+[NOTE]
+.Challenge: Levels and Promotions
 ====
 . Define level-assignment and insert all eight level instances.
 . Assign Alex to L2, Sam to L4, and Michelle to L7.

@@ -10,7 +10,7 @@ _Entities, Attributes & Your First Schema_
 
 Before you can manage access, you need to know who exists. The first entry in Amasoft's new system will be an employee. Not a complex hierarchy — just a single entity type with an identifying attribute. We'll build from there.
 
-== Your First Entity
+== Creating an Entity
 
 In TypeDB, every type falls into one of three kinds: entity, relation, or attribute. An employee is an entity — a thing that exists independently. Here is the simplest possible schema:
 
@@ -59,22 +59,22 @@ entity employee,
 
 The keyword `owns` declares that an employee can hold an employee-id. `@key` enforces uniqueness — no two employees can share the same ID. TypeDB rejects any insert that would violate this automatically.
 
-The keyword `value string` says this attribute holds text. TypeDB supports string, integer, double, boolean, datetime, and duration.
+The keyword `value string` says this attribute holds text. TypeDB supports string, integer, double, boolean, datetime, duration, and more. You can find the full list of supported attribute value types at xref:{page-version}@typeql-reference::values/index.adoc[].
 
 [TIP]
-.🗺️ Refresh the schema visualiser
+.🗺️ Check the schema visualiser
 ====
-After running any define query, go to the Schema page in TypeDB Studio and click refresh (top left). You'll see your entity types as nodes and their attributes as connected leaves. Get into the habit of doing this after every define — it's the fastest way to catch mistakes.
+After running a define query, you can visualise your schema using the Schema page in TypeDB Studio. You'll see your entity types as nodes and their attributes as connected leaves.
 ====
 
 == The @key Annotation — Enforcing Uniqueness
 
-You've already seen `@key` in action. It declares that an attribute must be unique within its type — no two instances can share the same value. TypeDB enforces this at the database level, not the application level.
+You've already seen `@key` in action. It declares that an attribute must be unique within its type — no two instances can share the same value. TypeDB enforces this at the database level.
 
 [NOTE.yellow]
 .💡 Redefining an existing type
 ====
-Running define on a type that already exists adds to it — it doesn't replace it. This is safe when no instances exist yet, which is the case throughout this chapter. Once you start inserting data in Chapter Three, redefining constraints on attributes that existing instances already own can cause validation errors if any of those instances break the new logic — for example, adding `@key` to an attribute when two instances already share the same value.
+Running define on a type that already exists adds to it — it doesn't replace it. This is trivial when no instances exist yet, which is the case throughout this chapter. But once you start inserting data in Chapter Three, it will get more interesting - defining constraints on existing instances will trigger validation to ensure compliance with the new logic. For example, it will reject adding `@key` to an attribute if two instances already share the same value. Thus, data integrity is always preserved!
 ====
 
 == A Second Entity — Departments
@@ -85,7 +85,7 @@ Departments also exist independently of who is in them. Let's define a departmen
 ----
 define
 attribute dept-name, value string;
-entity department,
+entity department @abstract,
   owns dept-name @key;
 ----
 
@@ -97,10 +97,10 @@ Notice `@abstract` on department. You can never insert a plain 'department' — 
 When Chapter Two introduces contractors and interns, they will share attributes like email and name with employees — through a common parent type. There is one email attribute type in the schema, owned by as many entity types as need it. In SQL, sharing a column across multiple tables requires JOINs, nullable columns, or lookup tables. In TypeDB, any number of types can own the same attribute with no ceremony.
 ====
 
-== Chapter One Quest 🏆
+== Chapter One Challenge
 
-.⚔️ Quest: Open the Registry
-[example]
+[NOTE]
+.Challenge: Open the Employee Registry
 ====
 . Define the employee entity with employee-id `@key`.
 . Define department with dept-name `@key`.
