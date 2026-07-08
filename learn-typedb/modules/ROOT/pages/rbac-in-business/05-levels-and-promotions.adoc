@@ -12,7 +12,7 @@ In Chapter Four you defined the access model and granted access to Amasoft's sys
 
 == The Situation
 
-Amasoft uses a seniority scale from L0 to L7. Managers are L4 and L5. Executives are L6 and L7. Alex has already been promoted to fte in Chapter Three. Now we assign seniority levels — and Sam Rivera gets promoted from L4 to L5.
+Amasoft uses a seniority scale from L0 to L7. Managers are L4 and L5. Executives are L6 and L7. Alex has already been promoted to full-time employee in Chapter Three. Now we assign seniority levels — and Sam Rivera gets promoted from L4 to L5.
 
 == N-ary Relations — TypeDB's Native Superpower
 
@@ -70,7 +70,7 @@ $l has level-number $n;
 fetch { "name": $name, "level": $n };
 ----
 
-[NOTE.yellow]
+[NOTE.blue]
 .⭐ TypeDB Advantage: N-ary relations are first-class
 ====
 In SQL, any relationship that carries data requires a junction table — extra schema, extra JOINs, extra complexity. In property graph databases, edges are binary and second-class: you cannot natively connect three nodes, so you introduce artificial intermediate nodes that obscure the real meaning. In TypeDB, a relation can connect any number of role players and own any number of attributes. It is queried the same way as any other type. There are no workarounds, no junction tables, no intermediate nodes — just the model that reflects reality.
@@ -102,7 +102,6 @@ define
 attribute level-number, value integer @range(0..7);
 entity level,
   owns level-number @key;
-attribute effective-from, value datetime;
 attribute effective-until, value datetime;
 relation level-assignment,
   relates identity @card(0..1),
@@ -113,7 +112,9 @@ entity identity, plays level-assignment:identity;
 entity level, plays level-assignment:level;
 ----
 
-`@range(0..7)` on level-number means TypeDB rejects any value outside this range at insert time. Insert the level instances:
+`@range(0..7)` on level-number means TypeDB rejects any value outside this range at insert time. And notice what is _not_ declared: effective-from already exists in the schema — reports-to has owned it since Chapter Two — so level-assignment simply takes ownership of the same attribute type. Only effective-until is new. Attributes in TypeDB are globally scoped; Chapter Seven will show why that matters.
+
+Insert the level instances:
 
 [,typeql]
 ----
@@ -128,7 +129,7 @@ $_ isa level, has level-number 6;
 $_ isa level, has level-number 7;
 ----
 
-Assign Alex to L2 (their new level as an fte), Sam to L4, and Michelle to L7:
+Assign Alex to L2 (their new level as a full-time employee), Sam to L4, and Michelle to L7:
 
 [NOTE.yellow]
 .💡 The links keyword — use it when binding a relation to a variable
@@ -139,19 +140,19 @@ When you need to bind a relation instance to a variable and then reference that 
 [,typeql]
 ----
 match
-$alex isa fte, has email "alex.chen@amasoft.com";
+$alex isa full-time-employee, has email "alex.chen@amasoft.com";
 $l2 isa level, has level-number 2;
 insert
 (identity: $alex, level: $l2) isa level-assignment,
   has effective-from 2024-07-01T00:00:00;
 match
-$sam isa fte, has email "sam.rivera@amasoft.com";
+$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $l4 isa level, has level-number 4;
 insert
 (identity: $sam, level: $l4) isa level-assignment,
   has effective-from 2022-06-01T00:00:00;
 match
-$michelle isa fte, has email "michelle.rocksmasher@amasoft.com";
+$michelle isa full-time-employee, has email "michelle.rocksmasher@amasoft.com";
 $l7 isa level, has level-number 7;
 insert
 (identity: $michelle, level: $l7) isa level-assignment,
@@ -163,13 +164,13 @@ insert
 ====
 A successful write query that reports 'Total rows: 0' always means the match clause found nothing — not that the insert failed silently. Check two things:
 
-. Does the identity exist? Run: `match $x isa person, has email "alex.chen@amasoft.com"; fetch { "x": $x };`
+. Does the identity exist? Run: `match $x isa worker, has email "alex.chen@amasoft.com"; fetch { "x": $x };`
 . Do the level instances exist? Run: `match $l isa level, has level-number $n; fetch { "n": $n };`
 
 If either returns nothing, that is why the insert produced 0 rows.
 ====
 
-[NOTE.yellow]
+[NOTE.blue]
 .⭐ TypeDB Advantage: Level history preserved as data
 ====
 In SQL, updating someone's level typically overwrites the old value — history is lost unless you build a separate audit table. In TypeDB, each `level-assignment` is a first-class relation with its own `effective-from` and `effective-until` dates. Closing an old assignment and opening a new one is non-destructive: the history lives in the data.
@@ -177,19 +178,19 @@ In SQL, updating someone's level typically overwrites the old value — history 
 
 == Sam's Promotion — Level Change (L4 → L5)
 
-Sam is being promoted to L5. This does not change Sam's type — Sam is still an fte. It only changes the `level-assignment` relation. This is non-destructive:
+Sam is being promoted to L5. This does not change Sam's type — Sam is still a full-time employee. It only changes the `level-assignment` relation. This is non-destructive:
 
 [,typeql]
 ----
 # Close the old level assignment
 match
-$sam isa fte, has email "sam.rivera@amasoft.com";
+$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $la links (identity: $sam), isa level-assignment;
 update
 $la has effective-until 2024-06-30T00:00:00;
 # Open the new level assignment
 match
-$sam isa fte, has email "sam.rivera@amasoft.com";
+$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $l5 isa level, has level-number 5;
 insert
 (identity: $sam, level: $l5) isa level-assignment,
@@ -199,7 +200,7 @@ insert
 [NOTE.yellow]
 .🏢 The two kinds of change — a key distinction
 ====
-Type change (contractor → fte): destructive. Done in Chapter Three. Required deleting all relations first, then deleting the identity, then reinserting. Level change (L4 → L5): non-destructive. Close the old assignment with `effective-until`, open a new one. History is preserved. Sam's access grants are completely unaffected. Choosing which kind of change a situation requires is one of the most important schema design skills.
+Type change (contractor → full-time-employee): destructive. Done in Chapter Three. Required deleting all relations first, then deleting the identity, then reinserting. Level change (L4 → L5): non-destructive. Close the old assignment with `effective-until`, open a new one. History is preserved. Sam's access grants are completely unaffected. Choosing which kind of change a situation requires is one of the most important schema design skills.
 ====
 
 == Querying Across the Hierarchy
@@ -209,7 +210,7 @@ Query for all employees at L4 and L5 and their current level:
 [,typeql]
 ----
 match
-$i isa employee, has name $name;
+$i isa permanent-worker, has name $name;
 $la links (identity: $i, level: $l), isa level-assignment;
 not { $la has effective-until $_; };
 $l has level-number $n;
@@ -219,16 +220,16 @@ fetch { "name": $name, "level": $n };
 
 The `not { $la has effective-until $_; }` pattern filters to only current assignments — those without a closing date. This is how you query the current state of time-tracked data.
 
-[NOTE.yellow]
+[NOTE.blue]
 .⭐ TypeDB Advantage: Polymorphic queries across a hierarchy
 ====
-Querying for all 'employee' instances automatically includes fte and pte. In SQL, this requires UNION ALL across multiple tables or a discriminator column. In TypeDB, the hierarchy is enforced by the schema and resolved at query time.
+Querying for all 'permanent-worker' instances automatically includes full-time-employee and part-time-employee. In SQL, this requires UNION ALL across multiple tables or a discriminator column. In TypeDB, the hierarchy is enforced by the schema and resolved at query time.
 ====
 
 == Chapter Five Challenge
 
-[NOTE]
-.Challenge: Levels and Promotions
+[NOTE.green]
+.🎯 Challenge: Levels and Promotions
 ====
 . Define level-assignment and insert all eight level instances.
 . Assign Alex to L2, Sam to L4, and Michelle to L7.

@@ -60,12 +60,33 @@ $s has system-name $sys;
 fetch { "name": $name, "system": $sys };
 ----
 
+== An Audit Finding — the Over-Privileged Bot
+
+The admin query returns two rows: Sam Rivera — expected — and CI Deploy Bot. That second row is a problem. A deployment bot needs to push artifacts: write access. Nobody reviewed the grant, and it went in as admin.
+
+This is exactly what access audits exist to catch. And notice that the query needed nothing special to catch it: the bot has a name like every other identity, so the same sweep that audits the humans audits the machines. No second query, no bot-shaped exception — if your audit needs a special case for service accounts, that is a modelling smell, not a querying fact of life.
+
+Who answers for the finding? That is what owner-team is for:
+
+[,typeql]
+----
+match
+$sa isa service-account, has name "CI Deploy Bot",
+  has service-name $sn, has owner-team $team;
+$s has system-name $sys;
+(grantee: $sa, system: $s) isa access-grant,
+  has permission-level $pl;
+fetch { "service-account": $sn, "owner-team": $team, "system": $sys, "permission": $pl };
+----
+
+One row: ci-deploy-bot, owned by Engineering, admin on the engineering platform. The finding lands on Engineering's desk with a note from Michelle Rocksmasher — running this audit is precisely why Chapter Four gave the CISO read access across every system: your bot has excess credentials, and it just failed our audit. The fix — revoking the admin grant without destroying its history — is a job for Chapter Nine.
+
 == Which Temporary Workers Have Write or Admin Access?
 
 [NOTE.yellow]
 .💡 This query may return no results — that's expected
 ====
-Alex was promoted from contractor to fte in Chapter Three. Unless you inserted additional contractors or interns and granted them write or admin access, this query will return no results. That is correct — it means Amasoft currently has no temporary workers with elevated access, which is a good sign. To test the query, insert a new contractor and grant them write access, then run it again.
+Alex was promoted from contractor to full-time employee in Chapter Three. Unless you inserted additional contractors or interns and granted them write or admin access, this query will return no results. That is correct — it means Amasoft currently has no temporary workers with elevated access, which is a good sign. To test the query, insert a new contractor and grant them write access, then run it again.
 ====
 
 [,typeql]
@@ -93,16 +114,17 @@ The compliance team wants to know not just who has access to the payments system
 ----
 match
 $i isa $type;
-$type sub! identity;
+$type sub identity;
+not { $other sub! $type; $i isa $other; };
 $s isa payments-system;
 (grantee: $i, system: $s) isa access-grant;
 $i has name $name;
 fetch { "name": $name, "identity-type": label($type) };
 ----
 
-`sub! identity` constrains `$type` to direct subtypes of identity — returning fte, pte, contractor, intern, service-account. The `!` is critical: without it, `sub` climbs the whole hierarchy. `label($type)` extracts the string name of the type.
+The negation keeps only each grantee's most specific type — contractor, intern, full-time-employee, and so on. It is the same pattern you used in Chapter Three: without it, `$i isa $type` would match every level of the hierarchy at once, and a contractor would appear as contractor, temporary-worker, worker, and identity. `label($type)` extracts the string name of the type.
 
-[NOTE.yellow]
+[NOTE.blue]
 .⭐ TypeDB Advantage: Types are first-class queryable data
 ====
 In SQL, a row's type is implicit — it's whichever table the row lives in. Getting 'what kind of identity is this?' requires a JOIN back to a type lookup table, or a discriminator column. In TypeDB, types are fully first-class. You can bind them to variables, filter with `sub` and `sub!`, and return their labels as values in a `fetch`.
@@ -125,7 +147,7 @@ Average level across all employees, grouped by department:
 [,typeql]
 ----
 match
-$e isa employee, has name $name;
+$e isa permanent-worker, has name $name;
 $d isa department, has dept-name $dept;
 (dept: $d, member: $e) isa dept-membership;
 $la links (identity: $e, level: $l), isa level-assignment;
@@ -169,12 +191,12 @@ When a query returns nothing unexpectedly, work from broad to narrow:
 
 . Remove all filters — does any data come back?
 . Add conditions one at a time until results disappear — that last condition is the problem.
-. Check: wrong type (matched 'employee' but instance is 'intern'), wrong role name, case mismatch, pipeline order.
+. Check: wrong type (matched 'permanent-worker' but instance is 'intern'), wrong role name, case mismatch, pipeline order.
 
 == Chapter Six Challenge
 
-[NOTE]
-.Challenge: The Compliance Report
+[NOTE.green]
+.🎯 Challenge: The Compliance Report
 ====
 Answer all six compliance questions with TypeQL queries:
 

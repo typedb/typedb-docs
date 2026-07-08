@@ -65,7 +65,7 @@ Now you can see not just who has access, but under which policy, who granted the
 If something in the real world can exist independently — an access policy, a project team, a department — make it an entity. If something only exists because of a connection between two things — a grant, a membership, a reporting line — make it a relation. If something is just a value — a permission level, a date, a name — make it an attribute.
 ====
 
-[NOTE.yellow]
+[NOTE.blue]
 .⭐ TypeDB Advantage: Relations as first-class policy carriers
 ====
 In SQL, storing the reason a grant was made, who approved it, and when it expires requires either additional columns on an access_grants table (making it very wide) or a separate exceptions table with foreign keys pointing at multiple other tables. In TypeDB, the `policy-grant` and `policy-exception` relations each own their attributes naturally — the reason lives on the bond, exactly where it belongs.
@@ -96,7 +96,7 @@ All three are `access-grant`s. Querying for `access-grant` returns all three aut
 Use a sub-relation when two relation types are genuinely the same kind of thing — one is just a more specific version. A `temporary-exception` IS an `access-grant`, just with extra context and constraints. If the two connections feel fundamentally different rather than specialised, they should be separate relation types rather than a hierarchy.
 ====
 
-[NOTE.yellow]
+[NOTE.blue]
 .⭐ TypeDB Advantage: Polymorphism applies to relations too
 ====
 In SQL, there is no concept of a relation subtype. You would need separate tables for direct_access, policy_based_access, and temporary_exception — joined by a common foreign key — and your queries would need UNION ALL to treat them uniformly. In TypeDB, querying for `access-grant` automatically includes all subtypes. The hierarchy is enforced by the schema and resolved transparently at query time.
@@ -109,7 +109,7 @@ The level system taught this lesson already: Sam's promotion changed the level-a
 [,typeql]
 ----
 # FRAGILE: bakes the department into the type
-entity finance-employee sub fte; # bad
+entity finance-employee sub full-time-employee; # bad
 # BETTER: composition via dept-membership relation
 # An employee can be in any department, move departments,
 # and the history is preserved in the relation
@@ -117,8 +117,8 @@ entity finance-employee sub fte; # bad
 
 == Chapter Eight Challenge
 
-[NOTE]
-.Challenge: The Policy Architecture
+[NOTE.green]
+.🎯 Challenge: The Policy Architecture
 ====
 . Define `direct-access`, `policy-based-access`, and `temporary-exception` as sub-relations of `access-grant`.
 . Re-grant Alex's engineering platform access as a `direct-access`.

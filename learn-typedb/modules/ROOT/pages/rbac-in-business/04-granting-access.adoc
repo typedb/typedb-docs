@@ -8,7 +8,7 @@ _The Access Model, @values & Permission Queries_
 
 == Previously
 
-In Chapter Three you populated Amasoft and promoted Alex from contractor to fte. Chapter Four introduces the central concept of any IAM system: access grants.
+In Chapter Three you populated Amasoft and promoted Alex from contractor to full-time employee. Chapter Four introduces the central concept of any IAM system: access grants.
 
 == The Situation
 
@@ -35,7 +35,7 @@ entity system, plays access-grant:system;
 
 `@values` on `permission-level` restricts it to exactly three valid strings — TypeDB rejects anything else at insert time. `@card(1)` on `system` means every access grant must reference exactly one system.
 
-[NOTE.yellow]
+[NOTE.blue]
 .⭐ TypeDB Advantage: Schema-level data validation
 ====
 In SQL, enforcing that permission_level can only be 'read', 'write', or 'admin' requires either a CHECK constraint (often ignored) or a lookup table with a foreign key. In TypeDB, `@values` enforces this at the schema level — it is impossible to insert an invalid permission level.
@@ -61,7 +61,7 @@ insert
   has granted-at 2024-01-15T09:00:00;
 # Sam gets admin access to engineering platform
 match
-$sam isa fte, has email "sam.rivera@amasoft.com";
+$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $eng isa engineering-platform;
 insert
 (grantee: $sam, system: $eng) isa access-grant,
@@ -69,13 +69,24 @@ insert
   has granted-at 2024-01-01T09:00:00;
 # Michelle gets read access across ALL systems — match returns one row per system
 match
-$michelle isa fte, has email "michelle.rocksmasher@amasoft.com";
+$michelle isa full-time-employee, has email "michelle.rocksmasher@amasoft.com";
 $s isa system;
 insert
 (grantee: $michelle, system: $s) isa access-grant,
   has permission-level "read",
   has granted-at 2024-01-01T08:00:00;
+# The deploy bot gets admin access to the engineering platform
+# (Engineering set this up in a hurry)
+match
+$bot isa service-account, has service-name "ci-deploy-bot";
+$eng isa engineering-platform;
+insert
+(grantee: $bot, system: $eng) isa access-grant,
+  has permission-level "admin",
+  has granted-at 2024-01-10T09:00:00;
 ----
+
+Look closely at the bot's grant: it is identical in shape to Alex's and Sam's. No separate table, no special API, no bot-specific permission model — the promise Chapter Two made about service accounts, kept. The only difference is how the grantee is matched: by service-name instead of email.
 
 [NOTE.yellow]
 .💡 Matching multiple instances at once
@@ -111,13 +122,14 @@ fetch { "system": $sys, "permission": $pl };
 
 == Chapter Four Challenge
 
-[NOTE]
-.Challenge: Grant Access to Amasoft
+[NOTE.green]
+.🎯 Challenge: Grant Access to Amasoft
 ====
 . Define the `access-grant` relation as shown above.
 . Grant Alex read access to the engineering platform.
 . Grant Sam admin access to the engineering platform and read access to hr-core.
 . Grant Michelle read access to all systems using the bulk match pattern.
+. Grant the ci-deploy-bot admin access to the engineering platform, matching it by service-name.
 . Query: who has access to the engineering platform?
 . Query: what does Michelle have access to?
 . Bonus: grant a time-limited access grant using `valid-until`. TypeDB does not have a dynamic 'now()' function — dates must be hardcoded or passed in from application code. Use a date 30 days from today. Then write a query to find all grants expiring within that date:

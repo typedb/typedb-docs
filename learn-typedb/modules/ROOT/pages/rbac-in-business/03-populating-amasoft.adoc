@@ -21,13 +21,13 @@ Before inserting anything, let's understand the pattern. Here is inserting Sam R
 [,typeql]
 ----
 insert
-$sam isa fte,
+$sam isa full-time-employee,
   has name "Sam Rivera",
   has email "sam.rivera@amasoft.com",
   has employee-id "EMP-0042";
 ----
 
-You might wonder: why do I need `$sam` at all? Why not just write 'insert fte, has name "Sam Rivera"'?
+You might wonder: why do I need `$sam` at all? Why not just write 'insert full-time-employee, has name "Sam Rivera"'?
 
 Compare with SQL:
 
@@ -54,7 +54,7 @@ INSERT INTO dept_membership (member_id, dept_id) VALUES (@sam_id, @eng_id);
 ----
 # TypeQL: describe the pattern in one query
 match
-$sam isa fte, has email "sam.rivera@amasoft.com";
+$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $eng isa department, has dept-name "Engineering";
 insert
 (member: $sam, dept: $eng) isa dept-membership;
@@ -65,10 +65,10 @@ In the TypeQL version, `$sam` and `$eng` are the handles that connect the `match
 [NOTE.yellow]
 .💡 You can skip naming the variable if you don't need it
 ====
-If you never refer back to the variable in the same query, use `$_` as a throwaway: `# Named — use when you need to reference it later` `insert $sam isa fte, has name "Sam Rivera";` `# Throwaway — fine for a standalone insert` `insert $_ isa fte, has name "Sam Rivera";` Both do exactly the same thing here.
+If you never refer back to the variable in the same query, use `$_` as a throwaway: `# Named — use when you need to reference it later` `insert $sam isa full-time-employee, has name "Sam Rivera";` `# Throwaway — fine for a standalone insert` `insert $_ isa full-time-employee, has name "Sam Rivera";` Both do exactly the same thing here.
 ====
 
-[NOTE.yellow]
+[NOTE.blue]
 .⭐ TypeDB Advantage: One consistent pattern language for reads and writes
 ====
 In SQL, reading uses `SELECT` with `JOIN` while writing uses `INSERT INTO` with `VALUES` — completely different syntax. In TypeQL, the pattern is the same everywhere: `match` describes what exists, `insert` describes what to add. Once you know how to write a match pattern, you already know the match part of every insert, delete, and update.
@@ -76,7 +76,7 @@ In SQL, reading uses `SELECT` with `JOIN` while writing uses `INSERT INTO` with 
 
 == Inserting the People
 
-Sam is already in the system from Chapter One. Now let's introduce the rest of the cast:
+Sam is already in the system from Chapter One. Now let's introduce the rest of the cast — including one member that isn't human:
 
 [NOTE.yellow]
 .💡 Comments in TypeQL — lines starting with #
@@ -92,11 +92,18 @@ insert $_ isa contractor,
   has email "alex.chen@amasoft.com",
   has contract-end-date 2024-07-01T00:00:00;
 # Michelle Rocksmasher — CISO, L7
-insert $_ isa fte,
+insert $_ isa full-time-employee,
   has name "Michelle Rocksmasher",
   has email "michelle.rocksmasher@amasoft.com",
   has employee-id "EMP-0001";
+# ci-deploy-bot — Engineering's deployment service account
+insert $_ isa service-account,
+  has name "CI Deploy Bot",
+  has service-name "ci-deploy-bot",
+  has owner-team "Engineering";
 ----
+
+Note the last insert: the deploy bot is created with the same insert pattern as everyone else. It has a display name like any other identity, but no email or employee-id — its key is service-name. It is an identity all the same, and Chapter Four will grant it access exactly the way it grants Alex.
 
 == Inserting Departments and Systems
 
@@ -128,14 +135,14 @@ $_ isa finance-platform,
 ----
 # Place Sam in Engineering
 match
-$sam isa fte, has email "sam.rivera@amasoft.com";
+$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $eng isa department, has dept-name "Engineering";
 insert
 (member: $sam, dept: $eng) isa dept-membership;
 # Place Alex in Engineering, reporting to Sam
 match
 $alex isa contractor, has email "alex.chen@amasoft.com";
-$sam isa fte, has email "sam.rivera@amasoft.com";
+$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $eng isa department, has dept-name "Engineering";
 insert
 (member: $alex, dept: $eng) isa dept-membership;
@@ -187,7 +194,7 @@ $report has name $report_name;
 fetch { "report": $report_name };
 ----
 
-== What Type Is Each Person? — Three Queries
+== What Type Is Each Worker? — Three Queries
 
 This is one of TypeDB's most distinctive capabilities. In SQL, a row's type is implicit — it's whichever table the row lives in. In TypeDB, types are first-class data you can query, traverse, and reason about directly. Here are three versions of the same question, each revealing something different.
 
@@ -199,12 +206,12 @@ Using `sub` without `!` climbs the full hierarchy. A contractor appears multiple
 ----
 match
 $p isa $type;
-$type sub person;
+$type sub worker;
 $p has name $name;
 fetch { "name": $name, "type": label($type) };
 ----
 
-Alex Chen would appear four times: as `contractor`, `temporary-worker`, `person`, and `identity`. Useful when you want the full classification chain — but often more than you need.
+Alex Chen would appear four times: as `contractor`, `temporary-worker`, `worker`, and `identity`. Useful when you want the full classification chain — but often more than you need.
 
 === Query 2 — Direct subtypes only (sub!)
 
@@ -214,16 +221,16 @@ Adding `!` constrains the result to direct subtypes only — one level down from
 ----
 match
 $p isa $type;
-$type sub! person;
+$type sub! worker;
 $p has name $name;
 fetch { "name": $name, "type": label($type) };
 ----
 
-Now Alex appears once — as `contractor`, the direct subtype of `person` that applies. Sam appears as `fte`. Much cleaner, but still not necessarily the most specific type if the hierarchy goes deeper.
+Now Alex appears once — as `contractor`, the direct subtype of `worker` that applies. Sam appears as `full-time-employee`. Much cleaner, but still not necessarily the most specific type if the hierarchy goes deeper.
 
 === Query 3 — The most specific type (lowest in hierarchy)
 
-This query finds the single most precise type for each person — the lowest node in the hierarchy they belong to:
+This query finds the single most precise type for each worker — the lowest node in the hierarchy they belong to:
 
 [,typeql]
 ----
@@ -239,16 +246,16 @@ The `not` clause is the key: exclude any result where there exists a more specif
 [NOTE.yellow]
 .💡 Reading the not clause
 ====
-`not { $other sub! $type; $p isa $other; }` says: 'there does not exist a type `$other` that is a direct subtype of `$type`, where `$p` is also an instance of `$other`.' `$other` is not a keyword — it is just a variable name chosen to read naturally as 'some other more specific type'. You could call it `$child` or `$subtype` and the query would work identically. The result: Alex appears exactly once as `contractor`. Sam appears exactly once as `fte`. Every person appears at their most specific classification.
+`not { $other sub! $type; $p isa $other; }` says: 'there does not exist a type `$other` that is a direct subtype of `$type`, where `$p` is also an instance of `$other`.' `$other` is not a keyword — it is just a variable name chosen to read naturally as 'some other more specific type'. You could call it `$child` or `$subtype` and the query would work identically. The result: Alex appears exactly once as `contractor`. Sam appears exactly once as `full-time-employee`. Every worker appears at their most specific classification.
 ====
 
-[NOTE.yellow]
+[NOTE.blue]
 .⭐ TypeDB Advantage: Types are first-class queryable data
 ====
 In SQL, getting the most specific type of a row requires a discriminator column, application logic, or querying multiple tables. In a property graph database, node labels are stored but not traversable in a type hierarchy. In TypeDB, the entire type system is queryable. You can ask 'what is the most specific type of this identity?' in a single declarative query. The schema enforces the hierarchy; the query traverses it.
 ====
 
-== Alex's First Promotion — contractor to fte
+== Alex's First Promotion — contractor to full-time employee
 
 Alex's contract period is ending and they've been offered a full-time role. This is the right moment to record the transition — before access grants are added in Chapter Four. Right now Alex only has a `dept-membership` and a `reports-to` bond, making the process clean.
 
@@ -273,16 +280,16 @@ delete $rt;
 # Step 3: Delete the contractor record
 match $alex isa contractor, has email "alex.chen@amasoft.com";
 delete $alex;
-# Step 4: Reinsert as fte
-insert $_ isa fte,
+# Step 4: Reinsert as full-time-employee
+insert $_ isa full-time-employee,
   has name "Alex Chen",
   has email "alex.chen@amasoft.com",
   has employee-id "EMP-0099";
 # Step 5: Recreate dept-membership and reports-to
 match
-$alex isa fte, has email "alex.chen@amasoft.com";
+$alex isa full-time-employee, has email "alex.chen@amasoft.com";
 $eng isa department, has dept-name "Engineering";
-$sam isa fte, has email "sam.rivera@amasoft.com";
+$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 insert
 (member: $alex, dept: $eng) isa dept-membership;
 (manager: $sam, report: $alex) isa reports-to,
@@ -292,21 +299,21 @@ insert
 [NOTE.yellow]
 .💡 Why this is a natural access review checkpoint
 ====
-When Alex is deleted as a contractor, all their access grants are deleted too — they are relations that depend on Alex existing. After reinserting as an `fte`, access must be explicitly re-granted. This is correct behaviour: a type change is a natural moment to review what access the person should have in their new role.
+When Alex is deleted as a contractor, all their access grants are deleted too — they are relations that depend on Alex existing. After reinserting as a `full-time-employee`, access must be explicitly re-granted. This is correct behaviour: a type change is a natural moment to review what access the person should have in their new role.
 ====
 
 == Chapter Three Challenge
 
-[NOTE]
-.Challenge: Populate Amasoft
+[NOTE.green]
+.🎯 Challenge: Populate Amasoft
 ====
-. Insert Sam, Alex, and Michelle as shown above.
+. Insert Sam, Alex, Michelle, and the ci-deploy-bot as shown above.
 . Insert all four departments and all four systems.
 . Place Sam and Alex in Engineering. Place Michelle in any department.
 . Set Alex as Sam's report.
-. Promote Alex from contractor to fte following the five-step process above.
+. Promote Alex from contractor to full-time employee following the five-step process above.
 . Query: who is in each department?
-. Query: what type is each person — confirm Alex now appears as fte.
+. Query: what type is each worker — confirm Alex now appears as full-time-employee.
 ====
 
 == What You Can Do Now

@@ -31,7 +31,7 @@ JOIN levels l ON ul.level_id = l.id
 JOIN dept_memberships dm ON u.id = dm.user_id
 JOIN departments d ON dm.dept_id = d.id
 AND d.name = 'Finance'
-WHERE u.employment_type = 'fte'
+WHERE u.employment_type = 'full-time-employee'
 AND l.level_number >= 5
 UNION
 SELECT u.name
@@ -55,7 +55,7 @@ In most organisations, access policy lives in three places simultaneously: appli
 define
 fun can-access-payments($i: identity) -> { identity }:
   match
-    { $i isa fte;
+    { $i isa full-time-employee;
       $la links (identity: $i, level: $l), isa level-assignment;
       not { $la has effective-until $_; };
       $l has level-number $n; $n >= 5;
@@ -114,7 +114,7 @@ define
 fun missing-payments-access() -> { identity }:
   match
     $i isa identity;
-    { $i isa fte;
+    { $i isa full-time-employee;
       $la links (identity: $i, level: $l), isa level-assignment;
       not { $la has effective-until $_; };
       $l has level-number $n; $n >= 5;
@@ -174,7 +174,7 @@ The over-provisioned query returns nothing — which is correct. Nobody currentl
 ----
 # Grant Alex payments access — he's L2 in Engineering, not authorised
 match
-  $alex isa fte, has email "alex.chen@amasoft.com";
+  $alex isa full-time-employee, has email "alex.chen@amasoft.com";
   $pay isa payments-system;
 insert
   (grantee: $alex, system: $pay) isa access-grant,
@@ -200,7 +200,7 @@ Access drift — someone gets access they shouldn't have, often through a one-of
 In SQL, 'who should have access but doesn't' requires the full policy logic as a subquery, negated against the grants table. That's the 30-line UNION query from earlier, wrapped in a NOT EXISTS. And 'who has access but shouldn't' is the inverse. In practice, most organisations don't run these checks at all because writing them is too painful. In TypeDB, it's one function call each.
 ====
 
-[NOTE.yellow]
+[NOTE.blue]
 .⭐ TypeDB Advantage: Policy as reusable composable logic
 ====
 In SQL, access policy logic lives in application code, stored procedures, or spreadsheets — duplicated, diverging, invisible to queries. In TypeDB, the function is defined once, callable from any query, and always the single source of truth. The compliance gap queries above are only possible because the policy is a first-class named thing that can be referenced, negated, and composed.
@@ -303,11 +303,19 @@ insert
 
 match
   $t isa project-team, has team-name "Finance Integration";
-  $alex isa fte, has email "alex.chen@amasoft.com";
+  $alex isa full-time-employee, has email "alex.chen@amasoft.com";
 insert
   (team: $t, member: $alex) isa project-membership,
     has start-date 2024-07-15T00:00:00;
 ----
+
+Notice that project-access owns permission-level without declaring it. The attribute type has existed since Chapter Four, where access-grant first owned it — along with its `@values("read", "write", "admin")` constraint.
+
+[NOTE.blue]
+.⭐ TypeDB Advantage: Attributes are globally scoped
+====
+permission-level is one attribute type, defined once, now owned by two unrelated grant mechanisms — access-grant and project-access. Its `@values` constraint travels with it: no mechanism, present or future, can invent a fourth permission level. And because the type is global, one audit query — `match $g has permission-level "admin";` — finds every admin grant in the system, whatever mechanism created it. In SQL, each table declares its own permission column with its own CHECK constraint, and nothing stops the vocabularies drifting apart.
+====
 
 == Two Paths to the Same System
 
@@ -333,7 +341,7 @@ fetch { "name": $name, "access-via": $source };
 `let $source = "direct grant"` assigns a string literal to a variable within a disjunction branch. This is the second use of `let` — value expression assignment. The result includes the source label in the output, making it clear which path each identity's access came through.
 ====
 
-[NOTE.yellow]
+[NOTE.blue]
 .⭐ TypeDB Advantage: Disjunctive path traversal
 ====
 In SQL, finding identities with access via either a direct grant or project team membership requires UNION ALL across two completely different join chains — typically five or more tables, with duplicate elimination on top. In TypeQL, both access paths are expressed as a single disjunctive pattern. TypeDB resolves both paths, deduplicates automatically, and returns the source of access in the same query.
@@ -348,7 +356,7 @@ Separation of Duties (SoD) is one of the most important — and most notoriously
 define
 fun sod-violation() -> { identity }:
   match
-    $i isa identity, has account-status "active";
+    $i isa identity, has identity-status "active";
     $pay isa payments-system;
     $hr isa hr-system;
     (grantee: $i, system: $pay) isa access-grant,
@@ -363,7 +371,7 @@ match
 fetch { "sod-violation": $name };
 ----
 
-[NOTE.yellow]
+[NOTE.blue]
 .⭐ TypeDB Advantage: Separation of Duties as a first-class query
 ====
 In SQL, enforcing SoD requires joining across multiple permission tables, checking multiple conditions, and usually duplicating the logic across application code and stored procedures. In TypeDB, SoD is a function — defined once, called anywhere, always consistent. When the rule changes, you update one function. The audit query and the enforcement logic are the same code.
@@ -371,8 +379,8 @@ In SQL, enforcing SoD requires joining across multiple permission tables, checki
 
 == Chapter Seven Challenge
 
-[NOTE]
-.Challenge: The Policy Engine
+[NOTE.green]
+.🎯 Challenge: The Policy Engine
 ====
 . Define `can-access-payments()` as shown above.
 . Call it and verify Michelle appears (L7 — authorised).

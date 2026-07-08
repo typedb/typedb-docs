@@ -12,12 +12,12 @@ Before you can manage access, you need to know who exists. The first entry in Am
 
 == Creating an Entity
 
-In TypeDB, every type falls into one of three kinds: entity, relation, or attribute. An employee is an entity — a thing that exists independently. Here is the simplest possible schema:
+In TypeDB, every type falls into one of three kinds: entity, relation, or attribute. An employee is an entity — a thing that exists independently. We'll name the type permanent-worker: Amasoft's salaried employees are its permanent workers, and Chapter Two will grow a whole family of worker types around them. Here is the simplest possible schema:
 
 [,typeql]
 ----
 define
-entity employee;
+entity permanent-worker;
 ----
 
 To run this query in TypeDB Studio:
@@ -43,7 +43,7 @@ If something goes wrong, the log shows an error with a code and description. The
 TypeQL keywords are written in lowercase. 'Define' will fail. 'define' will succeed. 'Insert' will fail. 'insert' will succeed. If Studio shows a red error, check capitalisation — it is an easy mistake to make.
 ====
 
-Run this in the query page. You have just told the system: employees exist. But an employee with no properties is an empty record. Let's give them something to identify them.
+Run this in the query page. You have just told the system: permanent workers exist. But a permanent worker with no properties is an empty record. Let's give them something to identify them.
 
 == Adding an Attribute
 
@@ -53,11 +53,11 @@ Attributes are values that describe an entity. Every employee at Amasoft has a u
 ----
 define
 attribute employee-id, value string;
-entity employee,
+entity permanent-worker,
   owns employee-id @key;
 ----
 
-The keyword `owns` declares that an employee can hold an employee-id. `@key` enforces uniqueness — no two employees can share the same ID. TypeDB rejects any insert that would violate this automatically.
+The keyword `owns` declares that a permanent-worker can hold an employee-id. `@key` enforces uniqueness — no two employees can share the same ID. TypeDB rejects any insert that would violate this automatically.
 
 The keyword `value string` says this attribute holds text. TypeDB supports string, integer, double, boolean, datetime, duration, and more. You can find the full list of supported attribute value types at xref:{page-version}@typeql-reference::values/index.adoc[].
 
@@ -79,7 +79,7 @@ Running define on a type that already exists adds to it — it doesn't replace i
 
 == A Second Entity — Departments
 
-Departments also exist independently of who is in them. Let's define a department entity. We'll mark it `@abstract` — meaning it can never be inserted directly, only through concrete subtypes like Engineering or Finance that we'll define in Chapter Two:
+Departments also exist independently of who is in them. Let's define a department entity. We'll mark it `@abstract` — meaning it can never be inserted directly, only through concrete subtypes like Engineering or Finance. Defining those subtypes is a job we're setting aside for Chapter Two:
 
 [,typeql]
 ----
@@ -89,23 +89,23 @@ entity department @abstract,
   owns dept-name @key;
 ----
 
-Notice `@abstract` on department. You can never insert a plain 'department' — only a concrete subtype. But querying for all 'department' instances returns every subtype automatically. The abstract type is a shared foundation, not a thing that exists on its own. We won't define the specific department subtypes yet — that comes in Chapter Two, where it fits naturally alongside the rest of the org structure.
+Notice `@abstract` on department. You can never insert a plain 'department' — only a concrete subtype. But querying for all 'department' instances returns every subtype automatically. The abstract type is a shared foundation, not a thing that exists on its own. That, at least, is the plan we're carrying into Chapter Two — where the rest of the org structure will put it to the test.
 
 [NOTE.yellow]
-.⭐ TypeDB Advantage: Attributes are shared across types — not duplicated
+.💡 A glimpse ahead: attributes are globally scoped
 ====
-When Chapter Two introduces contractors and interns, they will share attributes like email and name with employees — through a common parent type. There is one email attribute type in the schema, owned by as many entity types as need it. In SQL, sharing a column across multiple tables requires JOINs, nullable columns, or lookup tables. In TypeDB, any number of types can own the same attribute with no ceremony.
+An attribute type belongs to the schema. This means that rather than having multiple attribute types called "email" throughout the database, there's only one, which can then be attached anywhere. Here, "email" is attached to 'worker' but it could also be attached to 'department'. Then, extracting all emails from the DB becomes easy and robust.
 ====
 
 == Chapter One Challenge
 
-[NOTE]
-.Challenge: Open the Employee Registry
+[NOTE.green]
+.🎯 Challenge: Open the Employee Registry
 ====
-. Define the employee entity with employee-id `@key`.
-. Define department with dept-name `@key`.
-. Refresh the schema visualiser — confirm both entity types appear.
-. Bonus: try running the employee define query a second time. What happens?
+. Define the permanent-worker entity with employee-id `@key`.
+. Define the abstract department with dept-name `@key`.
+. Check the schema visualiser — confirm both entity types appear.
+. Bonus: try running the permanent-worker define query a second time. What happens?
 ====
 
 == What You Can Do Now
