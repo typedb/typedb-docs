@@ -181,7 +181,7 @@ Check the schema visualiser now. You have just built three separate groups of ty
 
 In the visualiser you will see three completely separate graphs. Nothing connects them. There are no edges between the islands. This is correct — we have defined what exists, but not yet how things relate to each other.
 
-[TIP]
+[NOTE.yellow]
 .🗺️ Three islands — about to be connected
 ====
 This is one of the most important moments in schema design: seeing the structure before the connections. Each island is a complete hierarchy on its own. Relations are the bridges between them. Every relation you define in the next section will add an edge that connects two previously isolated groups.
