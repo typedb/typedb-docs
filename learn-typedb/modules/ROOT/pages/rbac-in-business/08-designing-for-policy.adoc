@@ -38,26 +38,24 @@ relation policy-grant,
   relates identity @card(0..1),
   relates policy @card(1),
   owns granted-by,
-  owns granted-at,
-  owns expires-at,
+  owns start-datetime,
+  owns end-datetime,
   owns reason;
 relation policy-exception,
   relates identity @card(0..1),
   relates policy @card(1),
   owns approved-by,
-  owns approved-at,
-  owns expires-at,
+  owns start-datetime,
+  owns end-datetime,
   owns reason;
 attribute policy-name, value string;
 attribute policy-description, value string;
 attribute granted-by, value string;
 attribute approved-by, value string;
-attribute approved-at, value datetime;
-attribute expires-at, value datetime;
 attribute reason, value string;
 ----
 
-Now you can see not just who has access, but under which policy, who granted the exception, and when it expires. The difference between 'Alex has payments access' and 'Alex has payments access because the CISO granted a time-limited exception that expires Friday'.
+Now you can see not just who has access, but under which policy, who granted the exception, and when it expires. And by now the pattern is familiar: start-datetime and end-datetime are not declared here — both relations reuse the attribute types access-grant has owned since Chapter Four. The difference between 'Alex has payments access' and 'Alex has payments access because the CISO granted a time-limited exception that expires Friday'.
 
 [NOTE.yellow]
 .🏢 The Golden Rule
@@ -84,7 +82,7 @@ relation policy-based-access sub access-grant,
   owns approved-by;
 relation temporary-exception sub access-grant,
   owns approved-by,
-  owns expires-at,
+  owns end-datetime,
   owns reason;
 ----
 

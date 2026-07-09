@@ -1,16 +1,17 @@
 // Shared TypeDB Cloud setup steps: create a free cluster and connect to it.
-// Included by quickstart/setup.adoc and rbac-in-business/00-get-started-studio.adoc.
+// Included in full by quickstart/setup.adoc; rbac-in-business/00-get-started-studio.adoc
+// includes only tag=create_cluster.
 // Headings are authored at level 2 (==); include with leveloffset=+1 to nest them.
+// tag::create_cluster[]
 [#create_cluster]
 == Create a free cluster
 
 . https://cloud.typedb.com[Create a TypeDB Cloud account,window=_blank]. Your first cluster is free.
 . On the dashboard, click *Deploy a cluster*.
-. Configure your cluster, then click *Deploy*.
+. Configure your cluster, then click *Deploy*. Your cluster will be created in a few seconds.
 
-Your cluster will be created in a few seconds.
-
-If you want to run your own TypeDB Community Edition server, you can go to the xref:{page-version}@home::install/ce.adoc[install page].
+Alternatively, you can run TypeDB Community Edition in your own environment. If you would like to do this, visit the xref:{page-version}@home::install/ce.adoc[Install CE page].
+// end::create_cluster[]
 
 [#_connect_cluster]
 == Connect to your cluster

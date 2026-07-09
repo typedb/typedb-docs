@@ -46,8 +46,7 @@ The provisioning system runs on a schedule. If it runs twice, it should not crea
 put
 $_ isa full-time-employee,
   has email "new.hire@amasoft.com",
-  has name "New Hire",
-  has employee-id "EMP-0100";
+  has name "New Hire";
 ----
 
 `put` inserts if the exact instance does not exist, and does nothing if it already does. Run the same script ten times — the database has one instance, not ten.
@@ -67,7 +66,7 @@ $s isa engineering-platform;
 put
 (grantee: $i, system: $s) isa access-grant,
   has permission-level "read",
-  has granted-at 2024-08-01T09:00:00;
+  has start-datetime 2024-08-01T09:00:00;
 ----
 
 == The Access Check — The Most Important Query
@@ -121,7 +120,7 @@ In Chapter Three, you deleted Alex's contractor record and all its relations whe
 [NOTE.yellow]
 .🏢 Production IAM systems do not delete history — they close it
 ====
-When access is revoked, the `access-grant` is not deleted. It is closed with a `valid-until` date. The record of who had access, when they got it, and when it was revoked is permanently preserved in the database. This is not optional — it is the foundation of an auditable IAM system. Auditors don't ask 'who has access right now?' They ask 'who had access to payments on March 15th, and who approved it?' Delete is for type changes. History is closed, never deleted.
+When access is revoked, the `access-grant` is not deleted. It is closed with a `end-datetime` date. The record of who had access, when they got it, and when it was revoked is permanently preserved in the database. This is not optional — it is the foundation of an auditable IAM system. Auditors don't ask 'who has access right now?' They ask 'who had access to payments on March 15th, and who approved it?' Delete is for type changes. History is closed, never deleted.
 ====
 
 Deprovision an identity by closing all their access grants:
@@ -132,9 +131,9 @@ Deprovision an identity by closing all their access grants:
 match
 $i isa identity, has email "departing@amasoft.com";
 $ag links (grantee: $i), isa access-grant;
-not { $ag has valid-until $_; };
+not { $ag has end-datetime $_; };
 update
-$ag has valid-until 2024-12-31T17:00:00;
+$ag has end-datetime 2024-12-31T17:00:00;
 
 # Suspend the identity (kill switch — immediate effect)
 match
@@ -146,7 +145,7 @@ $i has identity-status "terminated";
 [NOTE.yellow]
 .💡 Two steps for offboarding
 ====
-. Close all grants with `valid-until` — preserves history, marks when access ended.
+. Close all grants with `end-datetime` — preserves history, marks when access ended.
 . Set `identity-status` to 'terminated' — the kill switch that immediately fails all access checks regardless of grant state.
 
 The kill switch is the safety net. The closed grants are the audit trail. Both are needed.
@@ -182,9 +181,9 @@ All of these follow the same TypeDB patterns you have already learned. The found
 ====
 . Write an idempotent provisioning script using `put` that creates an identity with `identity-status` 'active' and grants them access. Run it twice — confirm no duplicates.
 . Write the access check query including the `identity-status` kill switch.
-. Deprovision an identity: close all their access grants with `valid-until`, then set `identity-status` to 'terminated'.
+. Deprovision an identity: close all their access grants with `end-datetime`, then set `identity-status` to 'terminated'.
 . Verify: run the access check for the deprovisioned identity — confirm it returns nothing even if grants exist.
-. Resolve Chapter Six's audit finding: close the deploy bot's admin grant with `valid-until`, insert a write grant in its place, and re-run Chapter Six's admin audit to confirm the bot no longer appears.
+. Resolve Chapter Six's audit finding: close the deploy bot's admin grant with `end-datetime`, insert a write grant in its place, and re-run Chapter Six's admin audit to confirm the bot no longer appears.
 . Bonus: write a full onboarding pipeline — create the identity, set `identity-status`, assign to a department, set level, grant standard access. Make all inserts idempotent with `put`.
 ====
 

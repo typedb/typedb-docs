@@ -20,7 +20,7 @@ are available on both web and desktop. Be aware that the web app may not be able
 Launch TypeDB Studio in your web browser.
 ****
 
-.https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name:%5Etypedb-studio[Install TypeDB Studio Desktop,window=_blank]
+.xref:{page-version}@home::install/studio.adoc#_desktop[Install TypeDB Studio Desktop]
 [.clickable]
 ****
 Download TypeDB Studio for desktop.
@@ -45,6 +45,14 @@ TypeDB Studio remembers the server addresses and usernames you have previously u
 next time you connect.
 
 Saved connections are stored locally in your browser or desktop app. See <<_data_storage>> for details.
+
+=== Connection string
+
+You can also connect to a TypeDB server using a connection string. The connection string should be in the format `typedb://<username>:<password>@<host>:<port>/<database_name>?name=<my_connection_name>`. '/<database_name>' and 'name' are optional.
+
+For example, if you have a TypeDB server running on `localhost:8000` and you want to connect to the `mydb` database, you can use the connection string `typedb://admin:password@localhost:8000/mydb`.
+
+TypeDB Cloud credentials files include a prebuilt connection string.
 
 === Select a database
 

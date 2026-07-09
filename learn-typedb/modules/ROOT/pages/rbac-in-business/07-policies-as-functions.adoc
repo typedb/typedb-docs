@@ -26,7 +26,7 @@ Before writing any code, consider what we're replacing. Here is Amasoft's paymen
 SELECT u.name
 FROM users u
 JOIN user_levels ul ON u.id = ul.user_id
-AND ul.effective_until IS NULL
+AND ul.end_date IS NULL
 JOIN levels l ON ul.level_id = l.id
 JOIN dept_memberships dm ON u.id = dm.user_id
 JOIN departments d ON dm.dept_id = d.id
@@ -37,7 +37,7 @@ UNION
 SELECT u.name
 FROM users u
 JOIN user_levels ul ON u.id = ul.user_id
-AND ul.effective_until IS NULL
+AND ul.end_date IS NULL
 JOIN levels l ON ul.level_id = l.id
 WHERE l.level_number >= 7;
 ----
@@ -57,13 +57,13 @@ fun can-access-payments($i: identity) -> { identity }:
   match
     { $i isa full-time-employee;
       $la links (identity: $i, level: $l), isa level-assignment;
-      not { $la has effective-until $_; };
+      not { $la has end-date $_; };
       $l has level-number $n; $n >= 5;
       (dept: $d, member: $i) isa dept-membership;
-      $d isa department, has dept-name "Finance"; }
+      $d isa department, has name "Finance"; }
     or
     { $la links (identity: $i, level: $l), isa level-assignment;
-      not { $la has effective-until $_; };
+      not { $la has end-date $_; };
       $l has level-number $n; $n >= 7; };
   return { $i };
 ----
@@ -116,13 +116,13 @@ fun missing-payments-access() -> { identity }:
     $i isa identity;
     { $i isa full-time-employee;
       $la links (identity: $i, level: $l), isa level-assignment;
-      not { $la has effective-until $_; };
+      not { $la has end-date $_; };
       $l has level-number $n; $n >= 5;
       (dept: $d, member: $i) isa dept-membership;
-      $d isa department, has dept-name "Finance"; }
+      $d isa department, has name "Finance"; }
     or
     { $la links (identity: $i, level: $l), isa level-assignment;
-      not { $la has effective-until $_; };
+      not { $la has end-date $_; };
       $l has level-number $n; $n >= 7; };
     not {
       $s isa payments-system;
@@ -179,7 +179,7 @@ match
 insert
   (grantee: $alex, system: $pay) isa access-grant,
     has permission-level "read",
-    has granted-at 2024-08-01T09:00:00;
+    has start-datetime 2024-08-01T09:00:00;
 
 # Now run the over-provisioned query — Alex should appear
 match
@@ -215,8 +215,8 @@ Functions compose by calling them in the same match clause. Here is a two-functi
 define
 fun contract-expiring-soon($i: identity) -> { identity }:
   match
-    $i isa temporary-worker, has contract-end-date $end;
-    $end < 2024-08-01T00:00:00;
+    $i isa temporary-staff, has contract-end-date $end;
+    $end < 2024-08-01;
   return { $i };
 
 fun has-sensitive-access($i: identity) -> { identity }:
@@ -287,8 +287,6 @@ entity project-team,
 entity system, plays project-access:system;
 attribute team-name, value string;
 attribute project-code, value string;
-attribute start-date, value datetime;
-attribute end-date, value datetime;
 
 insert $_ isa project-team,
   has team-name "Finance Integration",
@@ -306,10 +304,10 @@ match
   $alex isa full-time-employee, has email "alex.chen@amasoft.com";
 insert
   (team: $t, member: $alex) isa project-membership,
-    has start-date 2024-07-15T00:00:00;
+    has start-date 2024-07-15;
 ----
 
-Notice that project-access owns permission-level without declaring it. The attribute type has existed since Chapter Four, where access-grant first owned it — along with its `@values("read", "write", "admin")` constraint.
+Notice that project-access owns permission-level without declaring it. The attribute type has existed since Chapter Four, where access-grant first owned it — along with its `@values("read", "write", "admin")` constraint. The same goes for project-membership's start-date and end-date: the calendar-precision pair that reports-to and level-assignment already own, chosen because project staffing moves at calendar speed, not by the minute.
 
 [NOTE.blue]
 .⭐ TypeDB Advantage: Attributes are globally scoped

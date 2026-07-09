@@ -14,7 +14,7 @@ Enterprise::
 +
 --
 // tag::connect_enterprise_studio[]
-. Launch TypeDB Studio.
+. Launch TypeDB Studio (https://studio.typedb.com, or the xref:{page-version}@home::install/studio.adoc#_desktop[desktop app])
 . Enter the address of the HTTP endpoint of your cluster. By default, this is at port 8000.
 . Enter your username and password.
 . Click `Connect`.
@@ -25,20 +25,11 @@ Community Edition::
 +
 --
 // tag::connect_ce_studio[]
-. Launch TypeDB Studio.
+. Launch TypeDB Studio (https://studio.typedb.com, or the xref:{page-version}@home::install/studio.adoc#_desktop[desktop app])
 . Enter the address of the HTTP endpoint of your cluster. By default, this is at port 8000 and for local instances you can use `http://localhost:8000`.
 . Enter your username and password - defaults are `admin` and `password`.
 . Click `Connect`.
 // end::connect_ce_studio[]
 --
-====
-
-[NOTE]
-====
-You can also connect to a TypeDB server using a connection string. The connection string should be in the format `typedb://<username>:<password>@<host>:<port>/<database_name>?name=<my_connection_name>`. '/<database_name>' and 'name' are optional.
-
-For example, if you have a TypeDB server running on `localhost:8000` and you want to connect to the `mydb` database, you can use the connection string `typedb://admin:password@localhost:8000/mydb`.
-
-TypeDB Cloud credentials files include a prebuilt connection string.
 ====
 // end::connect_studio[]
