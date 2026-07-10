@@ -1,0 +1,189 @@
+= Quickstart
+:keywords: typedb, typeql, tutorial, guide, loader
+:pageTitle:
+:summary:
+:page-toclevels: 2
+:tabs-sync-option:
+:test-typeql: linear
+
+A CSV-driven bulk loader for TypeDB. Each CSV row is bound to the variables of a TypeQL query
+template and submitted in batches over write transactions, with checkpointing, rejects capture,
+and resumable runs.
+
+== Example: loading people from a CSV
+
+=== 1. Data (`data.csv`)
+
+[source,csv]
+----
+name,age,active
+alice,34,true
+bob,23,false
+carol,29,false
+----
+
+We start with some initial data in a CSV format - the format the loader can handle.
+
+=== 2. Schema (`schema.tql`)
+
+[source,typeql]
+----
+#!test[schema]
+define
+attribute name, value string;
+attribute age, value integer;
+attribute active, value boolean;
+entity person owns name @key, owns age, owns active;
+----
+
+=== 3. Query template (`query.tql`)
+
+[source,typeql]
+----
+given $name: string, $age: integer?, $active: boolean?;
+insert
+  $p isa person, has name == $name;
+  try { $p has age == $age; };
+  try { $p has active == $active; };
+----
+
+The `given` variables become the loader's inputs. The `?` marks them optional, and
+`try { ... };` lets a row succeed even when that column is empty.
+
+By using the column names of the CSV for our `given` variables,
+we can match the data into the query correctly.
+
+=== 4. Run
+
+[source,bash]
+----
+typedb loader \
+  --address localhost:1729 --username admin \
+  --database people \
+  --schema-file schema.tql --create-db \
+  --query query.tql \
+  --data data.csv --header
+----
+
+We provide `--schema-file schema.tql --create-db`,
+to allow us to set up the database and load data into it in one go.
+
+=== 5. Resuming
+
+The loader writes its output (checkpoint, rejects CSV, rejects log) into a single directory —
+by default `loader_<data-stem>_progress` next to the data file, or whatever you pass to
+`--output-dir`. If the run is interrupted (Ctrl+C, network blip, server restart), restart it
+with:
+
+[source,bash]
+----
+typedb loader --resume loader_data_progress --password ...
+----
+
+The checkpoint stores the original parameters and a hash of the data + live schema; you'll get
+a warning prompt if any of those has drifted, and a separate prompt for any batches that were
+in flight when the previous run stopped (the loader can't tell whether they actually
+committed, so you choose between reprocess all, skip all, or decide each).
+
+=== 6. Errors
+
+When a row fails to load, the loader writes it to `rejects.csv` in the output directory and
+records the reason in `rejects.log`. The run keeps going by default,
+since rejects don't abort the load unless you pass `--stop-on-error`.
+
+Suppose the data file repeats `alice`:
+
+[source,csv]
+----
+name,age,active
+alice,34,true
+bob,23,false
+alice,25,false
+carol,29,false
+----
+
+The third row violates `name @key`. Running with `--batch-rows 2`, the loader submits rows 3–4
+as a single batch — and because the batch is one transaction, both rows fail together. The
+resulting `rejects.csv` contains:
+
+[source,csv]
+----
+name,age,active
+alice,25,false
+carol,29,false
+----
+
+It's a valid CSV with the original header, so once you've fixed the upstream cause you can pass
+it straight back to the loader as `--data rejects.csv`.
+
+`rejects.log` records the row range, the batch number, and the full server error:
+
+[source,log]
+----
+rows 3-4, batch 2: query failed:
+[CNT9] Constraint '@unique' has been violated: there is a conflict for value '"alice"'.
+Caused: [DVL9] Instance [1E00 0000 0000 0000 0000 02] of type 'person' has a key constraint violation for attribute ownership of 'name', since it is not the unique owner of attribute '"alice"'.
+Caused: [COW5] Concept write failed due to a data validation error.
+Caused: [WEX1] Write execution failed due to a concept write error.
+Caused: [PEX6] Error executing write operation.
+Caused: [QEX14] Error while execution write pipeline.
+----
+
+You can tweak `--batch-rows` to limit how many row rejections a single error causes.
+
+
+== CSV hygiene
+
+Many loader failures come from the CSV, not from TypeDB. A few things to check before a full
+load:
+
+* *Headers must match `given` variables exactly* — case-sensitive, no leading or trailing
+  whitespace, no quoting around the header cell itself. A typo here turns into "missing column"
+  or "unknown variable" on the very first row.
+** Headers can be omitted - in which case variables will be inserted positionally.
+   We recommend including headers to ensure data always ends up used as expected.
+* *Embedded quotes are doubled, not backslash-escaped.* `He said "hi"` becomes
+  `"He said ""hi"""`. A stray `\"` in a quoted field is treated as the closing quote, and
+  every subsequent row will parse against the wrong columns — usually with a confusing
+  "unexpected EOF" or column-count error far below the actual culprit.
+* *Normalise to UTF-8 with no BOM.* A leading BOM (`U+FEFF`) silently glues itself onto the
+  first header name, so the column match fails on row one with no obvious cause.
+* *Trim insignificant whitespace.* `  alice@example.com` won't equal `alice@example.com`
+  inside a `match` clause — that's a silent zero-result query, not a reject. Strip it upstream.
+* *Watch for type-coercion surprises in your export.* Leading zeros on phone numbers and
+  postcodes, ISBNs with hyphens, dates that look like integers — a real CSV writer keeps these
+  as strings; bespoke exports often drop the leading zero or split on the hyphen before you
+  see the file.
+
+== Dry-run first
+
+Before committing to a full load, validate the pipeline against a small slice:
+
+[source,bash]
+----
+typedb loader \
+  --address localhost:1729 --username admin \
+  --database scratch --create-db --schema-file schema.tql \
+  --query load_x.tql --data full_data.csv --header \
+  --max-rows 100 --stop-on-error
+----
+
+This catches schema mismatches, header typos, quoting issues, and datetime format errors within
+seconds, rather than after a multi-minute load. Run against a throwaway database so you can
+`database delete` it before the real load.
+
+Once the dry run is clean, drop `--max-rows`, drop `--stop-on-error`, and tune `--batch-rows`
+/ `--parallel-batches` for the full run.
+
+== General advice
+
+* *Make optional columns optional in the query*: declare `$x: T?` in `given` and
+  wrap inserts in `try { ... };`. Without `--null-values`, only empty cells become absent inputs.
+* *`--null-values` replaces the empty-cell default — it doesn't extend it.* As soon as you pass
+  `--null-values NA`, empty cells stop being treated as null. The example above includes
+  `--null-values ''` explicitly so that both empty cells and the string `NULL` count as null.
+* *`--schema-file` and `--create-db` are ignored on resume*, with a warning. Keep schema setup
+  as a separate one-shot step if you expect to iterate.
+* *Two rejects files are written into the output directory*: `rejects.csv` (the raw failing
+  rows, reloadable) and `rejects.log` (the per-row error message). Re-running the loader on
+  the rejects CSV after a fix is a common workflow.

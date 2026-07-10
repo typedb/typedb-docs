@@ -1,0 +1,263 @@
+= Migrating a SQL Database
+:keywords: typedb, typeql, tutorial, guide, loader
+:pageTitle:
+:summary:
+:page-toclevels: 2
+:tabs-sync-option:
+:test-typeql: linear
+
+This walkthrough takes a small relational schema, remodels it for TypeDB, and loads it end-to-end
+with the TypeDB Loader. The modelling shift is brief; the bulk of the work is one loader
+invocation per CSV.
+
+We'll use a small e-commerce schema with two common SQL patterns:
+
+* a *1:N foreign key* (an order belongs to a customer), and
+* a *M:N join table with payload* (order line items, with a quantity).
+
+== Step 1: The source schema
+
+[source,sql]
+----
+CREATE TABLE customers (
+  id    INTEGER PRIMARY KEY,
+  name  TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE products (
+  id    INTEGER PRIMARY KEY,
+  name  TEXT NOT NULL,
+  price NUMERIC(10,2) NOT NULL
+);
+
+CREATE TABLE orders (
+  id          INTEGER PRIMARY KEY,
+  customer_id INTEGER NOT NULL REFERENCES customers(id),
+  created_at  TIMESTAMP NOT NULL
+);
+
+CREATE TABLE order_items (
+  order_id   INTEGER NOT NULL REFERENCES orders(id),
+  product_id INTEGER NOT NULL REFERENCES products(id),
+  quantity   INTEGER NOT NULL,
+  PRIMARY KEY (order_id, product_id)
+);
+----
+
+== Step 2: Export to CSV
+
+The loader consumes one CSV per pass, so the bridge from SQL is a per-table dump. From
+PostgreSQL:
+
+[source,bash]
+----
+psql ecommerce <<'SQL'
+\copy customers   TO 'customers.csv'   CSV HEADER
+\copy products    TO 'products.csv'    CSV HEADER
+\copy orders      TO 'orders.csv'      CSV HEADER
+\copy order_items TO 'order_items.csv' CSV HEADER
+SQL
+----
+
+(MySQL: `SELECT ... INTO OUTFILE`. SQLite: `.mode csv` + `.headers on` + `.output`.)
+
+The CSV columns line up with the SQL columns 1:1 — we'll keep these names through to the loader
+queries.
+
+== Step 3: Design the TypeDB schema
+
+The key shift from SQL is that *foreign keys become relations, not attributes*. `orders.customer_id`
+doesn't exist as an attribute of `order` in TypeDB — instead, a `placement` relation ties a
+`customer` to an `order`. Likewise, the `order_items` join table becomes a `line_item` relation
+that owns its `quantity` payload directly.
+
+`schema.tql`:
+
+[source,typeql]
+----
+#!test[schema, commit]
+define
+
+attribute customer_id, value integer;
+attribute product_id, value integer;
+attribute order_id, value integer;
+
+attribute name, value string;
+attribute email, value string;
+attribute price, value decimal;
+attribute created_at, value datetime;
+attribute quantity, value integer;
+
+entity customer,
+  owns customer_id @key,
+  owns name,
+  owns email @unique;
+
+entity product,
+  owns product_id @key,
+  owns name,
+  owns price;
+
+entity order,
+  owns order_id @key,
+  owns created_at;
+
+relation placement,
+  relates customer,
+  relates order;
+
+relation line_item,
+  relates order,
+  relates product,
+  owns quantity;
+
+customer plays placement:customer;
+order plays placement:order;
+order plays line_item:order;
+product plays line_item:product;
+----
+
+== Step 4: Plan the load passes
+
+Entities must exist before any relation referencing them is loaded, so the passes follow that
+order:
+
+. *customers* — entity only
+. *products* — entity only
+. *orders* — entity *and* `placement` relation, in one query (the order CSV already
+  carries the `customer_id`, so we look the customer up while inserting the order)
+. *order_items* — `line_item` relation only
+
+One pass per CSV file from step 2. Pass 3 is the common shortcut: when the entity's CSV already
+carries an FK, you can insert the entity and its relation together in a single `match … insert`.
+
+== Step 5: Write the loader queries
+
+*`load_customers.tql`*
+
+[source,typeql]
+----
+given
+    $id: integer,
+    $name: string,
+    $email: string;
+insert
+  $c isa customer,
+    has customer_id == $id,
+    has name == $name,
+    has email == $email;
+----
+
+*`load_products.tql`*
+
+[source,typeql]
+----
+given
+    $id: integer,
+    $name: string,
+    $price: decimal;
+insert
+  $p isa product,
+    has product_id == $id,
+    has name == $name,
+    has price == $price;
+----
+
+*`load_orders.tql`*
+
+[source,typeql]
+----
+given
+    $id: integer,
+    $customer_id: integer,
+    $created_at: datetime;
+match
+  $c isa customer,
+    has customer_id == $customer_id;
+insert
+  $o isa order,
+    has order_id == $id,
+    has created_at == $created_at;
+  $pl isa placement, links (customer: $c, order: $o);
+----
+
+*`load_order_items.tql`*
+
+[source,typeql]
+----
+given
+    $order_id: integer,
+    $product_id: integer,
+    $quantity: integer;
+match
+  $o isa order,
+    has order_id == $order_id;
+  $p isa product,
+    has product_id == $product_id;
+insert
+  $li isa line_item, links (order: $o, product: $p),
+    has quantity == $quantity;
+----
+
+Each `given` variable matches a CSV column header from the SQL dump verbatim. The `match` stage
+is the FK resolution — replacing what would have been a join on `customer_id` in SQL.
+
+== Step 6: Run the loads
+
+[source,bash]
+----
+# Pass 1 — customers (also creates db + schema)
+typedb loader \
+  --address localhost:1729 --username admin \
+  --database shop --create-db --schema-file schema.tql \
+  --query load_customers.tql --data customers.csv --header
+
+# Pass 2 — products
+typedb loader \
+  --address localhost:1729 --username admin --database shop \
+  --query load_products.tql --data products.csv --header
+
+# Pass 3 — orders + placement
+typedb loader \
+  --address localhost:1729 --username admin --database shop \
+  --query load_orders.tql --data orders.csv --header \
+  --batch-rows 1000 --parallel-batches 4
+
+# Pass 4 — line items
+typedb loader \
+  --address localhost:1729 --username admin --database shop \
+  --query load_order_items.tql --data order_items.csv --header \
+  --batch-rows 1000 --parallel-batches 4
+----
+
+== Step 7: Verify
+
+[source,typeql]
+----
+#!test[read]
+# Total spend per customer
+match
+  $c isa customer, has name $n;
+  $o isa order;
+  $pl isa placement, links (customer: $c, order: $o);
+  $li isa line_item, links (order: $o, product: $p), has quantity $q;
+  $p isa product, has price $pr;
+  let $line_total = $q * $pr;
+reduce $spend = sum($line_total) groupby $n;
+----
+
+== Patterns worth knowing
+
+* *Combine entity + relation in one pass when the FK is on the entity's row.* `load_orders`
+  inserts the order and its `placement` link in a single query — faster than splitting into two
+  passes, and avoids an intermediate "orders without customers" state.
+* *`match` failures are silent.* If `load_orders` references a `customer_id` that wasn't
+  loaded, the row produces no order and is _not_ flagged in rejects — TypeDB treats the empty
+  match as a successful empty-result query. Use `--stop-on-error` during initial loads, and
+  compare row counts between the SQL source and the resulting TypeDB instance to catch FK
+  drift.
+* *Order matters; checkpoints don't span passes.* Each pass is a separate loader invocation
+  with its own output directory (and its own `checkpoint.json` inside). If a relation pass
+  fails, fix it and `--resume <that pass's output dir>` — but don't try to roll back the
+  entity passes that already committed.
