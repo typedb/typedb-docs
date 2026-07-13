@@ -111,6 +111,12 @@ the name `"Bob"`, and a new friendship between them.
 You may already have a large amount of data that you wish to insert into the newly created database.
 This section contains some suggestions on how to do that efficiently.
 
+==== Batched inserts with given rows
+The xref:{page-version}@core-concepts::drivers/queries.adoc[given] stage
+allows you to insert the same pattern multiple times with different values.
+This is usually the case when bulk-loading and is more robust and efficient than
+generating separate query strings for each set of values.
+
 ==== Query batching
 
 There is a cost associated with opening and committing transactions. If you have a large number of queries to execute, you should consider batching more than one query into a single transaction.
