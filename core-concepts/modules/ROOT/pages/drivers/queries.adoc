@@ -93,7 +93,7 @@ include::{page-version}@core-concepts::example$driver/python_driver_usage.py[tag
 
 query = """
   given $name_value: string;
-  insert $p isa person, has name == $name_value;
+  insert $p isa user, has name == $name_value;
 """
 given_rows = [
   {"name_value": TypeDB.Concept.new_string("Bob") },
