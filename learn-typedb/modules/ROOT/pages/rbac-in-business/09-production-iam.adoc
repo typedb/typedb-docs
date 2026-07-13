@@ -62,7 +62,7 @@ When you run a `put` query, TypeDB always reports 'Success' — whether the reco
 # Idempotent access grant
 match
 $i isa full-time-employee, has email "new.hire@amasoft.com";
-$s isa engineering-platform;
+$s isa engineering-platform, has name "GitShed";
 put
 (grantee: $i, system: $s) isa access-grant,
   has permission-level "read",
@@ -71,13 +71,13 @@ put
 
 == The Access Check — The Most Important Query
 
-This query runs thousands of times a day. An identity requests access to a system — does it have it? Note the `identity-status` check — the global kill switch that must pass before any grant check:
+This query runs thousands of times a day. An identity requests access to a system — does it have it? Note the `status` check — the global kill switch that must pass before any grant check:
 
 [,typeql]
 ----
 match
 $i isa identity, has email "alex.chen@amasoft.com",
-  has identity-status "active";
+  has status "active";
 $s isa payments-system;
 { (grantee: $i, system: $s) isa access-grant; }
 or
@@ -94,18 +94,50 @@ fetch { "has-access": $name };
 ====
 
 [NOTE.yellow]
-.💡 The kill switch — why identity-status comes first
+.💡 The kill switch — why status comes first
 ====
-If an employee is suspended or terminated, their `access-grant` records still exist in the database. That's correct — history must be preserved. But the access check must fail. By checking `has identity-status "active"` before evaluating any grants, you ensure a suspended identity can never pass the access check regardless of what grants they hold. Remove this check and a terminated employee with an un-revoked grant still has access.
+If an employee is suspended or terminated, their `access-grant` records still exist in the database. That's correct — history must be preserved. But the access check must fail. By checking `has status "active"` before evaluating any grants, you ensure a suspended identity can never pass the access check regardless of what grants they hold. Remove this check and a terminated employee with an un-revoked grant still has access.
 ====
+
+== One Identifier for Every Identity
+
+The check above finds Alex by email. Now run it for the ci-deploy-bot — the heaviest user of this query. It has no email; its key is service-name. As things stand, the application must know what kind of identity it holds before it can ask whether that identity has access.
+
+One purely additive define fixes this:
+
+[,typeql]
+----
+define
+attribute identity-name @abstract, value string;
+attribute email sub identity-name;
+attribute service-name sub identity-name;
+----
+
+This is Chapter Two's in-place re-parenting — `entity staff sub identity;` — applied to attributes, on a live database. No data changes: every email and every service-name already in the database is now an identity-name. One lookup attribute serves every identity:
+
+[,typeql]
+----
+match
+$i isa identity, has identity-name "ci-deploy-bot",
+  has status "active";
+$s isa engineering-platform;
+{ (grantee: $i, system: $s) isa access-grant; }
+or
+{ (member: $i, team: $t) isa project-membership;
+  (team: $t, system: $s) isa project-access; };
+$i has name $name;
+fetch { "has-access": $name };
+----
+
+Uniqueness stays with the subtypes — emails are unique among staff, service-names among service accounts — and identity-name itself is abstract, so it can never be inserted directly, only as one of its concrete kinds.
 
 For policy-based access checks, call the function directly:
 
 [,typeql]
 ----
 match
-$i isa identity, has email "alex.chen@amasoft.com",
-  has identity-status "active";
+$i isa identity, has identity-name "alex.chen@amasoft.com",
+  has status "active";
 let $authorised in can-access-payments($i);
 $authorised has name $name;
 fetch { "policy-authorised": $name };
@@ -129,7 +161,7 @@ Deprovision an identity by closing all their access grants:
 ----
 # Close all active grants for a departing employee
 match
-$i isa identity, has email "departing@amasoft.com";
+$i isa identity, has identity-name "departing@amasoft.com";
 $ag links (grantee: $i), isa access-grant;
 not { $ag has end-datetime $_; };
 update
@@ -137,16 +169,16 @@ $ag has end-datetime 2024-12-31T17:00:00;
 
 # Suspend the identity (kill switch — immediate effect)
 match
-$i isa identity, has email "departing@amasoft.com";
+$i isa identity, has identity-name "departing@amasoft.com";
 update
-$i has identity-status "terminated";
+$i has status "terminated";
 ----
 
 [NOTE.yellow]
 .💡 Two steps for offboarding
 ====
 . Close all grants with `end-datetime` — preserves history, marks when access ended.
-. Set `identity-status` to 'terminated' — the kill switch that immediately fails all access checks regardless of grant state.
+. Set `status` to 'terminated' — the kill switch that immediately fails all access checks regardless of grant state.
 
 The kill switch is the safety net. The closed grants are the audit trail. Both are needed.
 ====
@@ -158,7 +190,7 @@ The schema you have built is production-grade. Before deploying for a real compa
 [NOTE.yellow]
 .💡 Natural extensions for production deployment
 ====
-* *Identity status* — already in the schema. Ensure every identity provisioning pipeline sets `identity-status` to 'active' on creation.
+* *Identity status* — already in the schema. Ensure every identity provisioning pipeline sets `status` to 'active' on creation.
 * *Granular resources* — currently grants target systems (`payments-system`, `engineering-platform`). Real IAM often needs resource-level grants — a specific GitHub repo, an S3 bucket, a financial ledger. Extend with:
 +
 [,typeql]
@@ -179,14 +211,14 @@ All of these follow the same TypeDB patterns you have already learned. The found
 [NOTE.green]
 .🎯 Challenge: The Provisioning Pipeline
 ====
-. Write an idempotent provisioning script using `put` that creates an identity with `identity-status` 'active' and grants them access. Run it twice — confirm no duplicates.
-. Write the access check query including the `identity-status` kill switch.
-. Deprovision an identity: close all their access grants with `end-datetime`, then set `identity-status` to 'terminated'.
+. Write an idempotent provisioning script using `put` that creates an identity with `status` 'active' and grants them access. Run it twice — confirm no duplicates.
+. Write the access check query including the `status` kill switch. Look the identity up by identity-name and confirm it works for the ci-deploy-bot as well as for staff.
+. Deprovision an identity: close all their access grants with `end-datetime`, then set `status` to 'terminated'.
 . Verify: run the access check for the deprovisioned identity — confirm it returns nothing even if grants exist.
 . Resolve Chapter Six's audit finding: close the deploy bot's admin grant with `end-datetime`, insert a write grant in its place, and re-run Chapter Six's admin audit to confirm the bot no longer appears.
-. Bonus: write a full onboarding pipeline — create the identity, set `identity-status`, assign to a department, set level, grant standard access. Make all inserts idempotent with `put`.
+. Bonus: write a full onboarding pipeline — create the identity, set `status`, assign to a department, set level, grant standard access. Make all inserts idempotent with `put`.
 ====
 
 == What You Can Do Now
 
-You can now manage transactions correctly, write idempotent provisioning pipelines, use the `identity-status` kill switch, close access history without deleting it, and run the access check query at the heart of every IAM system. You have completed RBAC In Business — and built a production-grade foundation you can adapt for your own company.
+You can now manage transactions correctly, write idempotent provisioning pipelines, use the `status` kill switch, close access history without deleting it, and run the access check query at the heart of every IAM system. You have completed RBAC In Business — and built a production-grade foundation you can adapt for your own company.

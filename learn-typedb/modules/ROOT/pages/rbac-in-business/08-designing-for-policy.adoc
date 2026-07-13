@@ -108,7 +108,7 @@ The level system taught this lesson already: Sam's promotion changed the level-a
 ----
 # FRAGILE: bakes the department into the type
 entity finance-employee sub full-time-employee; # bad
-# BETTER: composition via dept-membership relation
+# BETTER: composition via department-membership relation
 # An employee can be in any department, move departments,
 # and the history is preserved in the relation
 ----

@@ -81,7 +81,7 @@ Running define on a type that already exists adds to it — it doesn't replace i
 
 == A Second Entity — Departments
 
-Departments also exist independently of who is in them. Let's define a department entity. We'll mark it `@abstract` — meaning it can never be inserted directly, only through concrete subtypes like Engineering or Finance. Defining those subtypes is a job we're setting aside for Chapter Two:
+Departments also exist independently of who is in them. Let's define a department entity. We'll mark it `@abstract` — meaning it can never be inserted directly, only through concrete subtypes like Engineering or Finance. Defining those subtypes is a job we're setting aside for Chapter Three:
 
 [,typeql]
 ----
@@ -91,7 +91,7 @@ entity department @abstract,
   owns name @key;
 ----
 
-Notice `@abstract` on department. You can never insert a plain 'department' — only a concrete subtype. But querying for all 'department' instances returns every subtype automatically. The abstract type is a shared foundation, not a thing that exists on its own. That, at least, is the plan we're carrying into Chapter Two — where the rest of the org structure will put it to the test.
+Notice `@abstract` on department. You can never insert a plain 'department' — only a concrete subtype. But querying for all 'department' instances returns every subtype automatically. The abstract type is a shared foundation, not a thing that exists on its own.
 
 [NOTE.yellow]
 .💡 Attributes are globally scoped

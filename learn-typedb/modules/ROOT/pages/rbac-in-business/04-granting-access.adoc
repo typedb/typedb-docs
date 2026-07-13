@@ -35,6 +35,12 @@ entity system, plays access-grant:system;
 
 `@values` on `permission-level` restricts it to exactly three valid strings — TypeDB rejects anything else at insert time. `@card(1)` on `system` means every access grant must reference exactly one system.
 
+[NOTE.yellow]
+.💡 Two scopes for @values
+====
+`@values` can be scoped to the attribute type itself — as with `permission-level` here, constraining every instance — or to one type's ownership of it, as with `identity owns status`. Status shows why both modelling options exist - it means different things in different contexts; a system's status might be "healthy", "degraded", or "down". Read more in the xref:{page-version}@typeql-reference::annotations/values.adoc[@values annotation reference].
+====
+
 A word on the temporal pair. reports-to owns start-date, a plain calendar date — org structure moves at calendar speed, and a reporting line that starts 'at 09:00' would be false precision. Access is different: grants are switched on and off at instants, so access-grant owns start-datetime and end-datetime, value datetime. This is the schema's convention for time: every bond owns either the date pair or the datetime pair — never both, and never a mix. The name tells you the value type, and the value type tells you what kind of change the bond records.
 
 [NOTE.blue]
@@ -56,7 +62,7 @@ In SQL, enforcing that permission_level can only be 'read', 'write', or 'admin' 
 # Alex gets read access to engineering platform
 match
 $alex isa contractor, has email "alex.chen@amasoft.com";
-$eng isa engineering-platform;
+$eng isa engineering-platform, has name "GitShed";
 insert
 (grantee: $alex, system: $eng) isa access-grant,
   has permission-level "read",
@@ -64,7 +70,7 @@ insert
 # Sam gets admin access to engineering platform
 match
 $sam isa full-time-employee, has email "sam.rivera@amasoft.com";
-$eng isa engineering-platform;
+$eng isa engineering-platform, has name "GitShed";
 insert
 (grantee: $sam, system: $eng) isa access-grant,
   has permission-level "admin",
@@ -81,7 +87,7 @@ insert
 # (Engineering set this up in a hurry)
 match
 $bot isa service-account, has service-name "ci-deploy-bot";
-$eng isa engineering-platform;
+$eng isa engineering-platform, has name "EllipseCI";
 insert
 (grantee: $bot, system: $eng) isa access-grant,
   has permission-level "admin",
@@ -116,7 +122,7 @@ What does Sam have access to?
 ----
 match
 $sam has name "Sam Rivera";
-$s has system-name $sys;
+$s has name $sys;
 (grantee: $sam, system: $s) isa access-grant,
   has permission-level $pl;
 fetch { "system": $sys, "permission": $pl };
@@ -128,10 +134,10 @@ fetch { "system": $sys, "permission": $pl };
 .🎯 Challenge: Grant Access to Amasoft
 ====
 . Define the `access-grant` relation as shown above.
-. Grant Alex read access to the engineering platform.
-. Grant Sam admin access to the engineering platform and read access to hr-core.
+. Grant Alex read access to GitShed.
+. Grant Sam admin access to GitShed and read access to Workweek.
 . Grant Michelle read access to all systems using the bulk match pattern.
-. Grant the ci-deploy-bot admin access to the engineering platform, matching it by service-name.
+. Grant the ci-deploy-bot admin access to EllipseCI, matching it by service-name.
 . Query: who has access to the engineering platform?
 . Query: what does Michelle have access to?
 . Bonus: grant a time-limited access grant using `end-datetime`. TypeDB does not have a dynamic 'now()' function — dates must be hardcoded or passed in from application code. Use a date 30 days from today. Then write a query to find all grants expiring within that date:
@@ -140,7 +146,7 @@ fetch { "system": $sys, "permission": $pl };
 ----
 match
 $i has name $name;
-$s has system-name $sys;
+$s has name $sys;
 $ag (grantee: $i, system: $s) isa access-grant, has end-datetime $vu;
 $vu < 2024-02-15T00:00:00;
 fetch { "name": $name, "system": $sys, "expires": $vu };

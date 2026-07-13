@@ -12,7 +12,7 @@ In Chapter Five you modelled level assignments and executed both kinds of promot
 
 == The Situation
 
-The compliance team has arrived with a list of questions. Who has admin access to anything? Which contractors have write access? How many identities have access to the payments system? Which grants expire in the next 30 days? Every question requires a different query technique.
+The compliance team has arrived with a list of questions. Who has admin access to anything? Which contractors have write access? How many identities have access to the payment systems? Which grants expire in the next 30 days? Every question requires a different query technique.
 
 == Comparison Operators
 
@@ -33,7 +33,7 @@ fetch { "name": $name, "level": $n };
 [NOTE.yellow]
 .💡 This query may return no results — that's expected
 ====
-This query only returns results if you have access grants with an end-datetime set. If you completed the bonus in Chapter Four's challenge, you will have one. If not, add an end-datetime to one of your existing grants first: `match $i has email "alex.chen@amasoft.com"; $s isa engineering-platform; $ag (grantee: $i, system: $s) isa access-grant; update $ag has end-datetime 2024-02-10T00:00:00;`
+This query only returns results if you have access grants with an end-datetime set. If you completed the bonus in Chapter Four's challenge, you will have one. If not, add an end-datetime to one of your existing grants first: `match $i has email "alex.chen@amasoft.com"; $s isa engineering-platform, has name "GitShed"; $ag (grantee: $i, system: $s) isa access-grant; update $ag has end-datetime 2024-02-10T00:00:00;`
 ====
 
 [,typeql]
@@ -41,7 +41,7 @@ This query only returns results if you have access grants with an end-datetime s
 # Access grants expiring before a specific date
 match
 $i has name $name;
-$s has system-name $sys;
+$s has name $sys;
 $ag (grantee: $i, system: $s) isa access-grant,
   has end-datetime $vu;
 $vu < 2024-02-15T00:00:00;
@@ -54,7 +54,7 @@ fetch { "identity": $name, "system": $sys, "expires": $vu };
 ----
 match
 $i has name $name;
-$s has system-name $sys;
+$s has name $sys;
 (grantee: $i, system: $s) isa access-grant,
   has permission-level "admin";
 fetch { "name": $name, "system": $sys };
@@ -73,13 +73,13 @@ Who answers for the finding? That is what owner-team is for:
 match
 $sa isa service-account, has name "CI Deploy Bot",
   has service-name $sn, has owner-team $team;
-$s has system-name $sys;
+$s has name $sys;
 (grantee: $sa, system: $s) isa access-grant,
   has permission-level $pl;
 fetch { "service-account": $sn, "owner-team": $team, "system": $sys, "permission": $pl };
 ----
 
-One row: ci-deploy-bot, owned by Engineering, admin on the engineering platform. The finding lands on Engineering's desk with a note from Michelle Rocksmasher — running this audit is precisely why Chapter Four gave the CISO read access across every system: your bot has excess credentials, and it just failed our audit. The fix — revoking the admin grant without destroying its history — is a job for Chapter Nine.
+One row: ci-deploy-bot, owned by Engineering, admin on EllipseCI. The finding lands on Engineering's desk with a note from Michelle Rocksmasher — running this audit is precisely why Chapter Four gave the CISO read access across every system: your bot has excess credentials, and it just failed our audit. The fix — revoking the admin grant without destroying its history — is a job for Chapter Nine.
 
 == Which Temporary Staff Have Write or Admin Access?
 
@@ -93,7 +93,7 @@ Alex was promoted from contractor to full-time employee in Chapter Three. Unless
 ----
 match
 $i isa temporary-staff, has name $name;
-$s has system-name $sys;
+$s has name $sys;
 (grantee: $i, system: $s) isa access-grant,
   has permission-level $pl;
 { $pl == "write"; } or { $pl == "admin"; };
@@ -108,7 +108,7 @@ The `{ ... } or { ... }` pattern means either condition can be true. TypeDB retu
 
 == What Type of Identity Has Access to Payments?
 
-The compliance team wants to know not just who has access to the payments system, but what kind of identity each person is:
+The compliance team wants to know not just who has access to the payment systems, but what kind of identity each person is:
 
 [,typeql]
 ----
@@ -116,13 +116,13 @@ match
 $i isa $type;
 $type sub identity;
 not { $other sub! $type; $i isa $other; };
-$s isa payments-system;
+$s isa payments-system, has name $sys;
 (grantee: $i, system: $s) isa access-grant;
 $i has name $name;
-fetch { "name": $name, "identity-type": label($type) };
+fetch { "name": $name, "identity-type": label($type), "system": $sys };
 ----
 
-The negation keeps only each grantee's most specific type — contractor, intern, full-time-employee, and so on. It is the same pattern you used in Chapter Three: without it, `$i isa $type` would match every level of the hierarchy at once, and a contractor would appear as contractor, temporary-staff, staff, and identity. `label($type)` extracts the string name of the type.
+The negation keeps only each grantee's most specific type — contractor, intern, full-time-employee, and so on. It is the same pattern you used in Chapter Three: without it, `$i isa $type` would match every level of the hierarchy at once, and a contractor would appear as contractor, temporary-staff, staff, and identity. `label($type)` extracts the string name of the type. And note why the fetch includes the system: TypeDB returns one answer per distinct variable binding, and Michelle holds grants on both payment systems — without `$sys` in the output, she would appear as two identical rows.
 
 [NOTE.blue]
 .⭐ TypeDB Advantage: Types are first-class queryable data
@@ -149,7 +149,7 @@ Average level across all employees, grouped by department:
 match
 $e isa permanent-staff, has name $name;
 $d isa department, has name $dept;
-(dept: $d, member: $e) isa dept-membership;
+(department: $d, member: $e) isa department-membership;
 $la links (identity: $e, level: $l), isa level-assignment;
 not { $la has end-date $_; };
 $l has level-number $n;
@@ -160,7 +160,7 @@ fetch { "department": $dept, "avg-level": $avg };
 [NOTE.yellow]
 .💡 A query this schema can't answer yet — and how to fix it
 ====
-A natural compliance question is: 'who has access to systems outside their department's ownership?' For example, does anyone in Engineering have admin access to the payments system, which Finance owns? This query isn't possible with the current schema because systems and departments aren't connected. A system-ownership relation would fix it: `relation system-ownership, relates dept, relates system;` With that defined, you could query for identities whose department has no ownership over the systems they can access — a powerful cross-department access audit. We left this out to keep the schema simple, but it's a natural next step in a real deployment.
+A natural compliance question is: 'who has access to systems outside their department's ownership?' For example, does anyone in Engineering have admin access to the payments system, which Finance owns? This query isn't possible with the current schema because systems and departments aren't connected. A system-ownership relation would fix it: `relation system-ownership, relates department, relates system;` With that defined, you could query for identities whose department has no ownership over the systems they can access — a powerful cross-department access audit. We left this out to keep the schema simple, but it's a natural next step in a real deployment.
 ====
 
 == Pipeline Ordering — sort, limit, fetch
