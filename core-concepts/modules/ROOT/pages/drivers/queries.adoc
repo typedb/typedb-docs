@@ -105,6 +105,7 @@ with driver.transaction(DB_NAME, TransactionType.WRITE) as tx:
     promise_1 = tx.query("match entity $entity-type; fetch { 'entity-type': $entity-type };")
     answers = tx.query(query = query, given_rows = given_rows).resolve()
 ----
+The separation of inputs and query string also prevents TypeQL injection attacks.
 
 == Query result types
 
