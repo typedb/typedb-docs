@@ -1,10 +1,10 @@
 = Chapter Seven: Access Policies as Functions
 :pageTitle: Chapter Seven: Access Policies as Functions
-:Summary: The most powerful feature in IAM - policy as living code.
-:keywords: typedb, typeql, iam, function, fun, let, policy, composition, separation of duties, disjunction
+:Summary: The most powerful feature in RBAC - policy as living code.
+:keywords: typedb, typeql, rbac, function, fun, let, policy, composition, separation of duties, disjunction
 
 [.lead]
-_The Most Powerful Feature in IAM — Policy as Living Code_
+_The Most Powerful Feature in RBAC — Policy as Living Code_
 
 == Previously
 
@@ -237,7 +237,7 @@ fetch { "revoke-access": $name };
 [NOTE.yellow]
 .🏢 This is exactly what compliance teams worry about
 ====
-Access drift — someone gets access they shouldn't have, often through a one-off exception or a copy-paste error — is one of the most common IAM failures. Most organisations discover it during an audit, months later. With TypeDB, one query finds it instantly. The policy is defined once. The gap is visible on demand.
+Access drift — someone gets access they shouldn't have, often through a one-off exception or a copy-paste error — is one of the most common RBAC failures. Most organisations discover it during an audit, months later. With TypeDB, one query finds it instantly. The policy is defined once. The gap is visible on demand.
 ====
 
 [NOTE.yellow]

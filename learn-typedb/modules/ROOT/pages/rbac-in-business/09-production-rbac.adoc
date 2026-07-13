@@ -1,18 +1,18 @@
-= Chapter Nine: Production IAM
-:pageTitle: Chapter Nine: Production IAM
+= Chapter Nine: Production RBAC
+:pageTitle: Chapter Nine: Production RBAC
 :Summary: Transactions, drivers, put, and idempotent pipelines.
-:keywords: typedb, typeql, iam, transaction, put, idempotent, provisioning, access check, deprovision, kill switch
+:keywords: typedb, typeql, rbac, transaction, put, idempotent, provisioning, access check, deprovision, kill switch
 
 [.lead]
 _Transactions, Drivers, put & Idempotent Pipelines_
 
 == Previously
 
-Chapter Eight covered schema design at depth. You can now model access policy as first-class data, use sub-relations for specialised access types, and apply the PERA model as your default instinct. Chapter Nine connects the IAM system to a real application.
+Chapter Eight covered schema design at depth. You can now model access policy as first-class data, use sub-relations for specialised access types, and apply the PERA model as your default instinct. Chapter Nine connects the RBAC system to a real application.
 
 == The Situation
 
-Amasoft's IAM system is live in TypeDB. The compliance team has self-service audit queries. Access policies are encoded as functions. Now the provisioning system needs to connect — granting and revoking access automatically as people join, leave, or change roles.
+Amasoft's RBAC system is live in TypeDB. The compliance team has self-service audit queries. Access policies are encoded as functions. Now the provisioning system needs to connect — granting and revoking access automatically as people join, leave, or change roles.
 
 == Transaction Types
 
@@ -145,14 +145,14 @@ fetch { "policy-authorised": $name };
 
 This is always a `read` transaction. Never a `write`. The result is empty (no access) or returns the identity (has access).
 
-== Production IAM Principle — Never Delete History
+== Production RBAC Principle — Never Delete History
 
 In Chapter Three, you deleted Alex's contractor record and all its relations when promoting them to full-time employee. That was a type change — destructive and necessary. But for access revocation, the rule is different:
 
 [NOTE.yellow]
-.🏢 Production IAM systems do not delete history — they close it
+.🏢 Production RBAC systems do not delete history — they close it
 ====
-When access is revoked, the `access-grant` is not deleted. It is closed with a `end-datetime` date. The record of who had access, when they got it, and when it was revoked is permanently preserved in the database. This is not optional — it is the foundation of an auditable IAM system. Auditors don't ask 'who has access right now?' They ask 'who had access to payments on March 15th, and who approved it?' Delete is for type changes. History is closed, never deleted.
+When access is revoked, the `access-grant` is not deleted. It is closed with a `end-datetime` date. The record of who had access, when they got it, and when it was revoked is permanently preserved in the database. This is not optional — it is the foundation of an auditable RBAC system. Auditors don't ask 'who has access right now?' They ask 'who had access to payments on March 15th, and who approved it?' Delete is for type changes. History is closed, never deleted.
 ====
 
 Deprovision an identity by closing all their access grants:
@@ -191,7 +191,7 @@ The schema you have built is production-grade. Before deploying for a real compa
 .💡 Natural extensions for production deployment
 ====
 * *Identity status* — already in the schema. Ensure every identity provisioning pipeline sets `status` to 'active' on creation.
-* *Granular resources* — currently grants target systems (`payments-system`, `engineering-platform`). Real IAM often needs resource-level grants — a specific GitHub repo, an S3 bucket, a financial ledger. Extend with:
+* *Granular resources* — currently grants target systems (`payments-system`, `engineering-platform`). Real-world RBAC often needs resource-level grants — a specific GitHub repo, an S3 bucket, a financial ledger. Extend with:
 +
 [,typeql]
 ----
@@ -221,4 +221,4 @@ All of these follow the same TypeDB patterns you have already learned. The found
 
 == What You Can Do Now
 
-You can now manage transactions correctly, write idempotent provisioning pipelines, use the `status` kill switch, close access history without deleting it, and run the access check query at the heart of every IAM system. You have completed RBAC In Business — and built a production-grade foundation you can adapt for your own company.
+You can now manage transactions correctly, write idempotent provisioning pipelines, use the `status` kill switch, close access history without deleting it, and run the access check query at the heart of every RBAC system. You have completed RBAC In Business — and built a production-grade foundation you can adapt for your own company.

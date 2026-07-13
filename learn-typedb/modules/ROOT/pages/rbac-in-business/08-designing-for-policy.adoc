@@ -1,7 +1,7 @@
 = Chapter Eight: Designing for Policy
 :pageTitle: Chapter Eight: Designing for Policy
 :Summary: PERA, composition, sub-relations, and the access policy debate.
-:keywords: typedb, typeql, iam, schema design, pera, sub-relation, composition, policy, entity, relation, attribute
+:keywords: typedb, typeql, rbac, schema design, pera, sub-relation, composition, policy, entity, relation, attribute
 
 [.lead]
 _PERA, Composition, Sub-relations & The Access Policy Debate_
@@ -12,7 +12,7 @@ In Chapter Seven you defined access policies as functions. Chapter Eight steps b
 
 == The Situation
 
-Amasoft's IAM system is working. But the CISO has a new requirement: some access grants need conditions attached — time-of-day restrictions, approval requirements, or temporary exceptions granted by named individuals with expiry dates. How should this be modelled? This is Chapter Eight's central design debate.
+Amasoft's RBAC system is working. But the CISO has a new requirement: some access grants need conditions attached — time-of-day restrictions, approval requirements, or temporary exceptions granted by named individuals with expiry dates. How should this be modelled? This is Chapter Eight's central design debate.
 
 == The Access Policy Design Debate
 
@@ -102,7 +102,7 @@ In SQL, there is no concept of a relation subtype. You would need separate table
 
 == Composition Over Inheritance
 
-The level system taught this lesson already: Sam's promotion changed the level-assignment relation, not Sam's type. The same principle applies everywhere in the IAM schema.
+The level system taught this lesson already: Sam's promotion changed the level-assignment relation, not Sam's type. The same principle applies everywhere in the RBAC schema.
 
 [,typeql]
 ----

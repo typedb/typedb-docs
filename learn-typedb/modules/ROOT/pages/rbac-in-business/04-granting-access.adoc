@@ -1,14 +1,14 @@
 = Chapter Four: Granting Access
 :pageTitle: Chapter Four: Granting Access
 :Summary: The access model, @values, and permission queries.
-:keywords: typedb, typeql, iam, access grant, permission, values, n-ary relation, card
+:keywords: typedb, typeql, rbac, access grant, permission, values, n-ary relation, card
 
 [.lead]
 _The Access Model, @values & Permission Queries_
 
 == Previously
 
-In Chapter Three you populated Amasoft and promoted Alex from contractor to full-time employee. Chapter Four introduces the central concept of any IAM system: access grants.
+In Chapter Three you populated Amasoft and promoted Alex from contractor to full-time employee. Chapter Four introduces the central concept of any RBAC system: access grants.
 
 == The Situation
 
@@ -155,4 +155,4 @@ fetch { "name": $name, "system": $sys, "expires": $vu };
 
 == What You Can Do Now
 
-You can now define an access model with schema-level permission validation, grant access to systems, and query who has access to what. Chapter Five introduces level assignments and the two kinds of change every IAM system must handle.
+You can now define an access model with schema-level permission validation, grant access to systems, and query who has access to what. Chapter Five introduces level assignments and the two kinds of change every RBAC system must handle.

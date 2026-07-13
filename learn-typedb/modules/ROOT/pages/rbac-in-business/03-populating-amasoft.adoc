@@ -1,14 +1,14 @@
 = Chapter Three: Populating Amasoft
 :pageTitle: Chapter Three: Populating Amasoft
 :Summary: Insert, match, and fetch - the pattern language.
-:keywords: typedb, typeql, iam, insert, match, fetch, delete, pattern, sub, polymorphism
+:keywords: typedb, typeql, rbac, insert, match, fetch, delete, pattern, sub, polymorphism
 
 [.lead]
 _Insert, Match & Fetch — The Pattern Language_
 
 == Previously
 
-In Chapter Two you built the complete schema. The blueprint is drawn. Chapter Three brings it to life.
+In Chapter Two you built the identity framework. The blueprint is drawn. Chapter Three brings it to life.
 
 == The Situation
 
@@ -17,12 +17,6 @@ Sam Rivera needs to be in the system as Amasoft's first registered employee. Ale
 == Inserting the People
 
 Time to bring in the cast — three staff members, and one identity that isn't human. (`$_` is a throwaway variable name; variables are explained later in this chapter.)
-
-[NOTE.yellow]
-.💡 Comments in TypeQL — lines starting with #
-====
-Lines starting with `#` are comments — TypeDB ignores them completely. Use them to label steps or explain why something is written a certain way.
-====
 
 [,typeql]
 ----
@@ -48,9 +42,15 @@ insert $_ isa service-account,
 
 Note the last insert: the deploy bot is created with the same insert pattern as everyone else. It has a display name like any other identity, but no email — its key is service-name. It is an identity all the same, and Chapter Four will grant it access exactly the way it grants Alex.
 
+[NOTE.yellow]
+.💡 Comments in TypeQL — lines starting with #
+====
+Lines starting with `#` are comments. TypeDB ignores them completely. Use them to label steps or explain why something is written a certain way.
+====
+
 == Departments as Schema
 
-Time to insert the departments. `department` is abstract, so we define a concrete subtype for each department:
+Let's insert the departments. `department` is abstract, so we define a concrete subtype for each department:
 
 [,typeql]
 ----
@@ -63,11 +63,9 @@ entity legal sub department;
 
 Let's take a step back here. We've just defined four concrete types. But each one will (most likely) only ever have one instance. Furthermore, they all have identical capabilities.
 
-
-
 == Departments as Data
 
-Departments as data means no subtypes and a concrete department type. Both changes are undefinitions — this is `undefine` from Chapter Two's table. First, remove the four subtypes. An undefine that mirrors a define is a clean rollback; a type is removed by its bare label, no `entity` keyword:
+Let's try an alternative model. Departments as data means no subtypes and a concrete department type. Both changes are undefinitions - this is `undefine` from Chapter Two's table. First, remove the four subtypes.
 
 [,typeql]
 ----
@@ -86,12 +84,19 @@ undefine
 @abstract from department;
 ----
 
-department keeps its definition and its name `@key` — only the annotation is removed. It is now a single concrete type, ready for its instances.
+It is now a single concrete type, and can have instances.
 
 [NOTE.yellow]
-.💡 Types when the schema needs them, data otherwise
+.💡 Schema or data?
 ====
-Make something a type when the schema itself must refer to it — in policies, functions, or role constraints. Make it data when the instances are interchangeable labels that no query will ever name individually. Adding a system is a schema change, and should be. Adding a department is just an insert query.
+Two signs a concept should be data, not types:
+
+* Each type would only ever have one instance.
+* All the types would have identical capabilities - the same attributes, the same roles.
+
+For departments, both of these are true.
+
+Subtypes make sense when they differ from each other - when one subtype owns an attribute or plays a role that the others don't.
 ====
 
 [NOTE.yellow]

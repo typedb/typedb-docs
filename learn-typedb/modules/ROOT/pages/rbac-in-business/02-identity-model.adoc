@@ -1,7 +1,7 @@
 = Chapter Two: The Identity Management System
 :pageTitle: Chapter Two: The Identity Management System
 :Summary: Type hierarchies, relations, and the org structure.
-:keywords: typedb, typeql, iam, type hierarchy, inheritance, relation, role, cardinality, abstract
+:keywords: typedb, typeql, rbac, type hierarchy, inheritance, relation, role, cardinality, abstract
 
 [.lead]
 _Type Hierarchies, Relations & The Org Structure_
@@ -104,12 +104,12 @@ Finally: `name` is not new — it is the same globally scoped attribute type dep
 [NOTE.blue]
 .⭐ TypeDB Advantage: Service accounts are first-class identities
 ====
-SQL-based IAM systems typically bolt service accounts on as an afterthought — a separate table with a foreign key back to the user table. In TypeDB, service-account is a subtype of identity. It participates in the same access model as humans — same relations, same queries, same policies.
+SQL-based RBAC systems typically bolt service accounts on as an afterthought — a separate table with a foreign key back to the user table. In TypeDB, service-account is a subtype of identity. It participates in the same access model as humans — same relations, same queries, same policies.
 ====
 
 == The System Hierarchy
 
-Now we add the systems that identities will be granted access to. Systems form a genuine hierarchy: an abstract system type with a concrete subtype per kind of system. The subtypes earn their place in the schema because access policies will refer to them by name — as when Chapter Seven's separation-of-duties function distinguishes payments-system from hr-system:
+Now we add the systems that identities will be granted access to.
 
 [,typeql]
 ----
@@ -201,7 +201,7 @@ The second bridge: which department each staff member belongs to:
 define
 relation department-membership,
   relates department @card(1),
-  relates member @card(0..);
+  relates member @card(1);
 entity department, plays department-membership:department;
 entity staff, plays department-membership:member;
 ----
@@ -224,7 +224,7 @@ Before populating the database, here is a complete picture of everything you hav
 
 [cols="26%,34%,40%",options="header"]
 |===
-|Concept |Types |Key attributes
+|Concept |Types |Attributes
 |Identities |identity, staff, permanent-staff, full-time-employee, part-time-employee, temporary-staff, contractor, intern, service-account |email @key, name on staff; contract-end-date on temporary-staff; name, service-name @key, owner-team on service-account
 |Systems |system, payments-system, hr-system, engineering-platform, finance-platform |name @key, description
 |Departments |department |name @key
@@ -240,13 +240,13 @@ Go to the Schema page in TypeDB Studio — it reflects your schema automatically
 [NOTE.yellow]
 .💡 Natural extensions — what we deliberately left out
 ====
-This schema is intentionally simple for demonstration. In a real IAM deployment you might also consider: • Sub-departments — Engineering might have sub-teams like Platform, Product, and Security, each with their own access profiles. • Regional or office-specific access — identities in the EU region may have different access to certain systems than those in APAC, due to data residency requirements. • System ownership — a department could formally own a set of systems. Finance owns PayBuddy, Rectangle, and Xilch; Engineering owns GitShed, EllipseCI, and Datacat. This would let you query 'who has access to systems outside their department's ownership?' — a powerful audit query. All of these are straightforward to add in TypeDB. For now, we keep the structure simple so the core concepts stay clear.
+In a real RBAC deployment you might also consider: • Teams — The Engineering department might be divided into teams like Platform, Product, and Security, each with their own access profiles. • Regional or office-specific access — identities in the EU region may have different access to certain systems than those in APAC, due to data residency requirements. • System ownership — a department could formally own a set of systems. Finance owns PayBuddy, Rectangle, and Xilch. This would let you query 'who has access to systems outside their department's ownership?' — a powerful audit query. All of these are easy to add in TypeDB. For now, we keep the structure simple so the core concepts stay clear.
 ====
 
 == Chapter Two Challenge
 
 [NOTE.green]
-.🎯 Challenge: Build the Full Schema
+.🎯 Challenge: Build the Identity Schema
 ====
 . Grow Chapter One's staff into the full identity hierarchy — temporary-staff, contractor, intern, permanent-staff, full-time-employee, part-time-employee, identity, service-account.
 . Define the system hierarchy.
@@ -256,4 +256,4 @@ This schema is intentionally simple for demonstration. In a real IAM deployment 
 
 == What You Can Do Now
 
-You now have a complete, production-grade IAM schema defined. Chapter Three populates it: inserting Amasoft's people, departments, and systems, and learning why TypeQL's pattern language makes this cleaner than SQL.
+You have made a basic framework. In Chapter Three we populate it with actual data: inserting Amasoft's people, departments, and systems, and learning why TypeQL's pattern language makes this cleaner than SQL.
