@@ -212,7 +212,7 @@ At runtime, the given rows are validated to ensure they conform to the declarati
 [,typeql]
 ----
 # Insert multiple rows with 'given'
-#!test[read, count=0]
+#!test[write, given=name, count=0]
 given $name: string;
 insert $p isa person, has name == $name;
 ----
