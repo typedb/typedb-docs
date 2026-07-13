@@ -102,7 +102,7 @@ Subtypes make sense when they differ from each other - when one subtype owns an 
 [NOTE.yellow]
 .⚠️ If you see 'type department was not found'
 ====
-This means department wasn't defined in Chapter One. Run: `define attribute name, value string; entity department, owns name @key;` — this defines it as concrete directly, so skip the define and undefine steps above and continue.
+This means department wasn't defined in Chapter One. Run: `define entity department, owns name @key;` — this defines it as concrete directly, so skip the define and undefine steps above and continue.
 ====
 
 == Inserting Departments and Systems
@@ -114,6 +114,7 @@ $_ isa department, has name "Engineering";
 $_ isa department, has name "Finance";
 $_ isa department, has name "HR";
 $_ isa department, has name "Legal";
+end;
 insert
 $_ isa payments-system,
   has name "PayBuddy",
@@ -136,6 +137,7 @@ $_ isa engineering-platform,
 $_ isa finance-platform,
   has name "Xilch",
   has description "Accounting and financial reporting";
+end;
 ----
 
 == Inserting Relations
@@ -148,6 +150,7 @@ $sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $eng isa department, has name "Engineering";
 insert
 (member: $sam, department: $eng) isa department-membership;
+end;
 # Place Alex in Engineering, reporting to Sam
 match
 $alex isa contractor, has email "alex.chen@amasoft.com";
@@ -157,12 +160,19 @@ insert
 (member: $alex, department: $eng) isa department-membership;
 (manager: $sam, report: $alex) isa reports-to,
   has start-date 2024-01-15;
+end;
 ----
 
 [NOTE.yellow]
 .💡 The match-insert pattern
 ====
 The `match` clause finds existing instances. The `insert` clause uses those found instances to create something new. You cannot insert a relation without first finding its participants.
+====
+
+[NOTE.yellow]
+.💡 The end; marker
+====
+If `end;` is present in a query, TypeDB Studio (and TypeDB Console) will treat it as a multi-query, where `end;` separates queries, and it will run each query in sequence.
 ====
 
 == Why Does Insert Look Like This?
@@ -172,10 +182,20 @@ Amasoft is now fully populated. Step back and look at the shape of the queries y
 [NOTE.yellow]
 .⚠️ Don't run the queries in this section
 ====
-The examples below repeat inserts you have already run. Running Sam's insert again is an error — email is a key — and re-running the relation insert would create a duplicate membership. This section is for reading, not running.
+You've already run these queries. Inserting Sam again would error and re-inserting relations would create duplicate data.
 ====
 
-Here is Sam Rivera's insert, written with a named variable this time:
+Here is Sam Rivera's insert query:
+
+[,typeql]
+----
+insert
+$_ isa full-time-employee,
+  has name "Sam Rivera",
+  has email "sam.rivera@amasoft.com";
+----
+
+You may be wondering: why `$_`? In TypeQL, this is called an **anonymous variable**. Compare the following query:
 
 [,typeql]
 ----
@@ -185,7 +205,9 @@ $sam isa full-time-employee,
   has email "sam.rivera@amasoft.com";
 ----
 
-You might wonder: why do I need `$sam` at all? Why not just write 'insert full-time-employee, has name "Sam Rivera"'?
+In this query, `$sam` is a **named variable**. You can now refer to `$sam` elsewhere in the query. For example, to insert a relation.
+
+You might wonder: why do I need a variable at all? Why not just write 'insert full-time-employee, has name "Sam Rivera"'?
 
 Compare with SQL:
 
@@ -196,9 +218,7 @@ INSERT INTO employees (name, email)
 VALUES ('Sam Rivera', 'sam.rivera@amasoft.com');
 ----
 
-SQL says: go to this table, add a row, put these values in these columns. TypeQL works differently — it is a pattern language. You describe a pattern of what should exist, and TypeDB makes it so. The variable `$sam` is a handle you give to a slot in the pattern, so you can refer to it from multiple places in the same query.
-
-For a simple insert this feels like ceremony. The power reveals itself the moment you insert something connected to something else — as you did when placing Sam in Engineering:
+SQL says: go to this table, add a row, put these values in these columns. TypeQL works differently — it is a pattern language. You describe a pattern of what should exist, and TypeDB makes it so.
 
 [,sql]
 ----
@@ -221,9 +241,9 @@ insert
 In the TypeQL version, `$sam` and `$eng` are the handles that connect the `match` clause to the `insert` clause. This is what pattern language means in practice.
 
 [NOTE.yellow]
-.💡 You can skip naming the variable if you don't need it
+.💡 Anonymous and named variables
 ====
-If you never refer back to the variable in the same query, use `$_` as a throwaway: `# Named — use when you need to reference it later` `insert $sam isa full-time-employee, has name "Sam Rivera";` `# Throwaway — fine for a standalone insert` `insert $_ isa full-time-employee, has name "Sam Rivera";` Both do exactly the same thing — and it is why the inserts earlier in this chapter used `$_`.
+Data you insert generally needs a variable name. But if you aren't referring back to that data in the same query, you may use `$_` as a throwaway.
 ====
 
 [NOTE.blue]
@@ -239,9 +259,9 @@ Who is in Engineering?
 [NOTE.yellow]
 .💡 Three rules for fetch
 ====
-. CURLY BRACKETS — `fetch` uses `{ }` not `( )`.
-. KEY-VALUE PAIRS — the key is a label you choose in double quotes.
-. MATCH IS A FILTER — only instances that have the matched attributes appear.
+. Curly braces - `fetch` uses `{ }` not `( )`.
+. Key-value pairs - the key is a label you choose in double quotes.
+. `match` is a filter - only instances that have the matched attributes appear.
 ====
 
 [,typeql]
@@ -253,10 +273,10 @@ $d isa department, has name "Engineering";
 fetch { "name": $name };
 ----
 
-[TIP]
+[NOTE.yellow]
 .🗺️ Switch to Table view for easier reading
 ====
-By default Studio shows fetch results as JSON in the log panel. Look for the output format toggle in the results toolbar and switch it to Table — it presents results as rows and columns, which is much easier to read when you have multiple results.
+By default Studio shows fetch results as JSON in the log panel. Look for the output format toggle in the results toolbar and switch it to Table - it presents results as rows and columns, which is often easier to read.
 ====
 
 Who reports to Sam?
@@ -270,11 +290,11 @@ $report has name $report_name;
 fetch { "report": $report_name };
 ----
 
-== What Type Is Each Staff Member? — Three Queries
+== What Type Is Each Staff Member?
 
-This is one of TypeDB's most distinctive capabilities. In SQL, a row's type is implicit — it's whichever table the row lives in. In TypeDB, types are first-class data you can query, traverse, and reason about directly. Here are three versions of the same question, each revealing something different.
+Querying the database schema cleanly is one of TypeDB's most distinctive capabilities. In SQL, a row's type is implicit - it's whichever table the row lives in; you have to consult `INFORMATION_SCHEMA` for "meta" querying. In TypeDB, types are first-class data you can query, traverse, and reason about directly. Here are three versions of the same question, each revealing something different.
 
-=== Query 1 — All types in the hierarchy (sub)
+=== Query 1: All types in the hierarchy (sub)
 
 Using `sub` without `!` climbs the full hierarchy. A contractor appears multiple times — once for each type it belongs to:
 
@@ -282,14 +302,14 @@ Using `sub` without `!` climbs the full hierarchy. A contractor appears multiple
 ----
 match
 $p isa $type;
-$type sub staff;
+$type sub identity;
 $p has name $name;
 fetch { "name": $name, "type": label($type) };
 ----
 
 Alex Chen would appear four times: as `contractor`, `temporary-staff`, `staff`, and `identity`. Useful when you want the full classification chain — but often more than you need.
 
-=== Query 2 — Direct subtypes only (sub!)
+=== Query 2: Direct subtypes only (sub!)
 
 Adding `!` constrains the result to direct subtypes only — one level down from the specified type:
 
@@ -302,28 +322,21 @@ $p has name $name;
 fetch { "name": $name, "type": label($type) };
 ----
 
-Now Alex appears once — as `contractor`, the direct subtype of `staff` that applies. Sam appears as `full-time-employee`. Much cleaner, but still not necessarily the most specific type if the hierarchy goes deeper.
+Now Alex appears once — as `temporary-staff`, the direct subtype of `staff` that applies. Sam appears as `permanent-staff`. Much cleaner, but still not necessarily the most specific type if the hierarchy goes deeper.
 
-=== Query 3 — The most specific type (lowest in hierarchy)
+=== Query 3: The most specific type (lowest in hierarchy)
 
 This query finds the single most precise type for each staff member — the lowest node in the hierarchy they belong to:
 
 [,typeql]
 ----
 match
-$p isa $type;
+$p isa! $type;
 $p has name $name;
-not { $other sub! $type; $p isa $other; };
 fetch { "name": $name, "type": label($type) };
 ----
 
-The `not` clause is the key: exclude any result where there exists a more specific subtype that `$p` also belongs to. What remains is only the most specific type — the bottom of the hierarchy for that instance.
-
-[NOTE.yellow]
-.💡 Reading the not clause
-====
-`not { $other sub! $type; $p isa $other; }` says: 'there does not exist a type `$other` that is a direct subtype of `$type`, where `$p` is also an instance of `$other`.' `$other` is not a keyword — it is just a variable name chosen to read naturally as 'some other more specific type'. You could call it `$child` or `$subtype` and the query would work identically. The result: Alex appears exactly once as `contractor`. Sam appears exactly once as `full-time-employee`. Every staff member appears at their most specific classification.
-====
+The `isa!` keyword is the key: it retrieves the most specific type of an instance.
 
 [NOTE.blue]
 .⭐ TypeDB Advantage: Types are first-class queryable data

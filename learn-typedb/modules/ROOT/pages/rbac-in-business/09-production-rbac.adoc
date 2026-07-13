@@ -199,6 +199,15 @@ entity resource, owns resource-name @key;
 relation system-resource, relates system @card(1), relates resource @card(0..);
 ----
 * *Separation of Duties* — already implemented as `sod-violation()` in Chapter Seven. Extend with additional SoD rules as your compliance requirements grow.
+* *Multi-category systems* — Workweek is classified as an `hr-system`, but payroll also executes payments: it decides who is owed money and moves it — a combination the two-system SoD check cannot see inside one system. A type has only one supertype, so we replace the subtypes with categorization as data:
++
+[,typeql]
+----
+entity system-category, owns name @key;
+relation system-categorization, relates category @card(1), relates system @card(0..);
+----
++
+Workweek is then categorized as both "hr" and "payments".
 * *Sub-departments and regional access* — as discussed in Chapter Two, sub-teams and geographic access restrictions are straightforward to add. Engineering sub Platform, Product, and Security; EU-region access restrictions; APAC-specific systems.
 * *System ownership* — a formal department-owns-system relation enables 'who has access to systems outside their department's ownership?' as a standard audit query.
 * *Approval workflows* — the `policy-exception` relation in Chapter Eight already captures approver and reason. Wire this to an approval system by granting temporary-exception access in response to approved requests.

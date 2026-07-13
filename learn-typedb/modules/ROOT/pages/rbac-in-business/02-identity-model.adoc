@@ -212,12 +212,6 @@ entity staff, plays department-membership:member;
 `@card(1)` on the department role means each individual department-membership bond must reference exactly one department. It does not mean there can only be one department in the database.
 ====
 
-[NOTE.yellow]
-.🗺️ Check the schema visualiser
-====
-After running this define, look again. You will now see edges connecting the identity island to the department island. Two of the three islands are now connected.
-====
-
 == The Schema So Far — A Summary
 
 Before populating the database, here is a complete picture of everything you have built. This is the full Amasoft schema at the end of Chapter Two.
