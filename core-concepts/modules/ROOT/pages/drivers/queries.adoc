@@ -76,6 +76,36 @@ In effect, transaction queries behave like a Multiple-writer, Single-reader (Rea
 
 In short: you can execute many read queries concurrently, and lazily consume their results. Write queries can also be submitted concurrently, but are eagerly executed on the server side. Executing write queries will interrupt any lazily executed read queries to prevent undefined interactions.
 
+== Query inputs
+Since 3.12, TypeDB queries can accept a list of input "rows".
+A `given` stage declares the input variables and their types.
+The input rows are passed alongside the query string.
+Each entry in a row must be a TypeDB instance or value, or `None` if the variable is optional.
+
+[source,python]
+----
+#!test[reset-after]
+#{{
+include::{page-version}@core-concepts::example$driver/python_driver_usage.py[tag=setup_and_schema]
+
+include::{page-version}@core-concepts::example$driver/python_driver_usage.py[tag=data_create]
+#}}
+
+query = """
+  given $name_value: string;
+  insert $p isa person, has name == $name_value;
+"""
+given_rows = [
+  {"name_value": TypeDB.Concept.new_string("Bob") },
+  {"name_value": TypeDB.Concept.new_string("Charlie") },
+]
+
+with driver.transaction(DB_NAME, TransactionType.WRITE) as tx:
+    # submit two read queries to begin processing concurrently
+    promise_1 = tx.query("match entity $entity-type; fetch { 'entity-type': $entity-type };")
+    answers = tx.query(query = query, given_rows = given_rows).resolve()
+----
+
 == Query result types
 
 TypeDB queries return different result types depending on the query structure. In languages with exceptions, an exception may be thrown on `resolve()` if the query causes an error.
