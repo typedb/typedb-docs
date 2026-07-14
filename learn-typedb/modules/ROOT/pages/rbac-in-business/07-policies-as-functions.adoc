@@ -56,13 +56,13 @@ define
 fun can-access-payments($i: identity) -> { identity }:
   match
     { $i isa full-time-employee;
-      $la links (identity: $i, level: $l), isa level-assignment;
+      $la isa level-assignment, links (identity: $i, level: $l);
       not { $la has end-date $_; };
       $l has level-number $n; $n >= 5;
-      (department: $d, member: $i) isa department-membership;
+      $_ isa department-membership, links (department: $d, member: $i);
       $d isa department, has name "Finance"; }
     or
-    { $la links (identity: $i, level: $l), isa level-assignment;
+    { $la isa level-assignment, links (identity: $i, level: $l);
       not { $la has end-date $_; };
       $l has level-number $n; $n >= 7; };
   return { $i };
@@ -115,17 +115,17 @@ fun missing-payments-access() -> { identity, system }:
   match
     $i isa identity;
     { $i isa full-time-employee;
-      $la links (identity: $i, level: $l), isa level-assignment;
+      $la isa level-assignment, links (identity: $i, level: $l);
       not { $la has end-date $_; };
       $l has level-number $n; $n >= 5;
-      (department: $d, member: $i) isa department-membership;
+      $_ isa department-membership, links (department: $d, member: $i);
       $d isa department, has name "Finance"; }
     or
-    { $la links (identity: $i, level: $l), isa level-assignment;
+    { $la isa level-assignment, links (identity: $i, level: $l);
       not { $la has end-date $_; };
       $l has level-number $n; $n >= 7; };
     $s isa payments-system;
-    not { (grantee: $i, system: $s) isa access-grant; };
+    not { $_ isa access-grant, links (grantee: $i, system: $s); };
   return { $i, $s };
 ----
 
@@ -140,7 +140,7 @@ fun unauthorised-payments-access() -> { identity }:
   match
     $i isa identity;
     $s isa payments-system;
-    (grantee: $i, system: $s) isa access-grant;
+    $_ isa access-grant, links (grantee: $i, system: $s);
     not { let $_ in can-access-payments($i); };
   return { $i };
 ----
@@ -184,8 +184,8 @@ match
   $fin isa department, has name "Finance";
   $l5 isa level, has level-number 5;
 insert
-  (member: $grace, department: $fin) isa department-membership;
-  (identity: $grace, level: $l5) isa level-assignment,
+  $_ isa department-membership, links (member: $grace, department: $fin);
+  $_ isa level-assignment, links (identity: $grace, level: $l5),
     has start-date 2024-08-01;
 
 # Grace appears twice — once per payment system she lacks
@@ -200,7 +200,7 @@ match
   $grace isa full-time-employee, has email "grace.skipper@amasoft.com";
   $pay isa payments-system, has name "PayBuddy";
 insert
-  (grantee: $grace, system: $pay) isa access-grant,
+  $_ isa access-grant, links (grantee: $grace, system: $pay),
     has permission-level "read",
     has start-datetime 2024-08-01T09:00:00;
 
@@ -209,7 +209,7 @@ match
   $grace isa full-time-employee, has email "grace.skipper@amasoft.com";
   $rect isa payments-system, has name "Rectangle";
 insert
-  (grantee: $grace, system: $rect) isa access-grant,
+  $_ isa access-grant, links (grantee: $grace, system: $rect),
     has permission-level "read",
     has start-datetime 2024-08-01T09:00:00;
 ----
@@ -223,7 +223,7 @@ match
   $alex isa full-time-employee, has email "alex.chen@amasoft.com";
   $pay isa payments-system, has name "PayBuddy";
 insert
-  (grantee: $alex, system: $pay) isa access-grant,
+  $_ isa access-grant, links (grantee: $alex, system: $pay),
     has permission-level "read",
     has start-datetime 2024-08-01T09:00:00;
 
@@ -269,7 +269,7 @@ fun has-sensitive-access($i: identity) -> { identity }:
   match
     { $s isa payments-system; }
     or { $s isa finance-platform; };
-    (grantee: $i, system: $s) isa access-grant;
+    $_ isa access-grant, links (grantee: $i, system: $s);
   return { $i };
 ----
 
@@ -342,14 +342,14 @@ match
   $t isa project-team, has team-name "Finance Integration";
   $s isa payments-system, has name "PayBuddy";
 insert
-  (team: $t, system: $s) isa project-access,
+  $_ isa project-access, links (team: $t, system: $s),
     has permission-level "read";
 
 match
   $t isa project-team, has team-name "Finance Integration";
   $alex isa full-time-employee, has email "alex.chen@amasoft.com";
 insert
-  (team: $t, member: $alex) isa project-membership,
+  $_ isa project-membership, links (team: $t, member: $alex),
     has start-date 2024-07-15;
 ----
 
@@ -370,11 +370,11 @@ Now Alex has access to payments via two possible paths: direct access-grant, or 
 match
   $i has name $name;
   $s isa payments-system, has name $sys;
-  { (grantee: $i, system: $s) isa access-grant;
+  { $_ isa access-grant, links (grantee: $i, system: $s);
     let $source = "direct grant"; }
   or
-  { (member: $i, team: $t) isa project-membership;
-    (team: $t, system: $s) isa project-access;
+  { $_ isa project-membership, links (member: $i, team: $t);
+    $_ isa project-access, links (team: $t, system: $s);
     let $source = "project team"; };
 fetch { "name": $name, "system": $sys, "access-via": $source };
 ----
@@ -403,9 +403,9 @@ fun sod-violation() -> { identity }:
     $i isa identity, has status "active";
     $pay isa payments-system;
     $hr isa hr-system;
-    (grantee: $i, system: $pay) isa access-grant,
+    $_ isa access-grant, links (grantee: $i, system: $pay),
       has permission-level "write";
-    (grantee: $i, system: $hr) isa access-grant,
+    $_ isa access-grant, links (grantee: $i, system: $hr),
       has permission-level "admin";
   return { $i };
 

@@ -64,7 +64,7 @@ match
 $i isa full-time-employee, has email "new.hire@amasoft.com";
 $s isa engineering-platform, has name "GitShed";
 put
-(grantee: $i, system: $s) isa access-grant,
+$_ isa access-grant, links (grantee: $i, system: $s),
   has permission-level "read",
   has start-datetime 2024-08-01T09:00:00;
 ----
@@ -79,10 +79,10 @@ match
 $i isa identity, has email "alex.chen@amasoft.com",
   has status "active";
 $s isa payments-system;
-{ (grantee: $i, system: $s) isa access-grant; }
+{ $_ isa access-grant, links (grantee: $i, system: $s); }
 or
-{ (member: $i, team: $t) isa project-membership;
-  (team: $t, system: $s) isa project-access; };
+{ $_ isa project-membership, links (member: $i, team: $t);
+  $_ isa project-access, links (team: $t, system: $s); };
 $i has name $name;
 fetch { "has-access": $name };
 ----
@@ -121,10 +121,10 @@ match
 $i isa identity, has identity-name "ci-deploy-bot",
   has status "active";
 $s isa engineering-platform;
-{ (grantee: $i, system: $s) isa access-grant; }
+{ $_ isa access-grant, links (grantee: $i, system: $s); }
 or
-{ (member: $i, team: $t) isa project-membership;
-  (team: $t, system: $s) isa project-access; };
+{ $_ isa project-membership, links (member: $i, team: $t);
+  $_ isa project-access, links (team: $t, system: $s); };
 $i has name $name;
 fetch { "has-access": $name };
 ----
@@ -162,7 +162,7 @@ Deprovision an identity by closing all their access grants:
 # Close all active grants for a departing employee
 match
 $i isa identity, has identity-name "departing@amasoft.com";
-$ag links (grantee: $i), isa access-grant;
+$ag isa access-grant, links (grantee: $i);
 not { $ag has end-datetime $_; };
 update
 $ag has end-datetime 2024-12-31T17:00:00;

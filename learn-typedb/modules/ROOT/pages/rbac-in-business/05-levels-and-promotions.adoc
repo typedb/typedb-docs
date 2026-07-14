@@ -64,7 +64,7 @@ relation level-assignment,
 # Query current level: one clean pattern
 match
 $i has name $name;
-$la links (identity: $i, level: $l), isa level-assignment;
+$la isa level-assignment, links (identity: $i, level: $l);
 not { $la has end-date $_; };
 $l has level-number $n;
 fetch { "name": $name, "level": $n };
@@ -79,12 +79,12 @@ In SQL, any relationship that carries data requires a junction table — extra s
 [NOTE.yellow]
 .💡 Two new keywords: links and update
 ====
-When binding a relation to a variable and then referencing that variable elsewhere in the query, use the `links` keyword instead of the standard role pattern: `links (identity: $i, level: $l), isa level-assignment` This tells TypeDB explicitly that `$la` is a relation instance linking those role players. When updating an attribute on an existing instance (rather than inserting a new one), use `update` instead of `insert`:
+When binding a relation to a variable and then referencing that variable elsewhere in the query, use the `links` keyword instead of the standard role pattern: `$la isa level-assignment, links (identity: $i, level: $l)` This tells TypeDB explicitly that `$la` is a relation instance linking those role players. When updating an attribute on an existing instance (rather than inserting a new one), use `update` instead of `insert`:
 
 [,typeql]
 ----
 match
-$la links (identity: $sam), isa level-assignment;
+$la isa level-assignment, links (identity: $sam);
 update
 $la has end-date 2024-06-30;
 ----
@@ -134,7 +134,7 @@ Assign Alex to L2 (their new level as a full-time employee), Sam to L4, and Mich
 [NOTE.yellow]
 .💡 The links keyword — use it when binding a relation to a variable
 ====
-When you need to bind a relation instance to a variable and then reference that variable elsewhere in the same query — for example to check its attributes or update them — use the `links` keyword: `$la links (identity: $i, level: $l), isa level-assignment;` This tells TypeDB that `$la` is the relation instance connecting those role players. Without `links`, TypeDB gets confused about whether `$la` is a relation instance or a type.
+When you need to bind a relation instance to a variable and then reference that variable elsewhere in the same query — for example to check its attributes or update them — use the `links` keyword: `$la isa level-assignment, links (identity: $i, level: $l);` This tells TypeDB that `$la` is the relation instance connecting those role players. Without `links`, TypeDB gets confused about whether `$la` is a relation instance or a type.
 ====
 
 [,typeql]
@@ -143,19 +143,19 @@ match
 $alex isa full-time-employee, has email "alex.chen@amasoft.com";
 $l2 isa level, has level-number 2;
 insert
-(identity: $alex, level: $l2) isa level-assignment,
+$_ isa level-assignment, links (identity: $alex, level: $l2),
   has start-date 2024-07-01;
 match
 $sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $l4 isa level, has level-number 4;
 insert
-(identity: $sam, level: $l4) isa level-assignment,
+$_ isa level-assignment, links (identity: $sam, level: $l4),
   has start-date 2022-06-01;
 match
 $michelle isa full-time-employee, has email "michelle.rocksmasher@amasoft.com";
 $l7 isa level, has level-number 7;
 insert
-(identity: $michelle, level: $l7) isa level-assignment,
+$_ isa level-assignment, links (identity: $michelle, level: $l7),
   has start-date 2020-01-01;
 ----
 
@@ -185,7 +185,7 @@ Sam is being promoted to L5. This does not change Sam's type — Sam is still a 
 # Close the old level assignment
 match
 $sam isa full-time-employee, has email "sam.rivera@amasoft.com";
-$la links (identity: $sam), isa level-assignment;
+$la isa level-assignment, links (identity: $sam);
 update
 $la has end-date 2024-06-30;
 # Open the new level assignment
@@ -193,14 +193,18 @@ match
 $sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $l5 isa level, has level-number 5;
 insert
-(identity: $sam, level: $l5) isa level-assignment,
+$_ isa level-assignment, links (identity: $sam, level: $l5),
   has start-date 2024-07-01;
 ----
 
 [NOTE.yellow]
-.🏢 The two kinds of change — a key distinction
+.🏢 Type change vs. data change
 ====
-Type change (contractor → full-time-employee): destructive. Done in Chapter Three. Required deleting all relations first, then deleting the identity, then reinserting. Level change (L4 → L5): non-destructive. Close the old assignment with `end-date`, open a new one. History is preserved. Sam's access grants are completely unaffected. Choosing which kind of change a situation requires is one of the most important schema design skills.
+Type change (contractor → full-time-employee): destructive. Occurred in Chapter Three when Alex was promoted. Required deleting all relations first, then deleting the identity, then reinserting.
+
+Level change (L4 → L5): straightforward. Close the old assignment with `end-date`, open a new one. History is preserved. Sam's access grants are completely unaffected.
+
+In general, you want to design schema such that entities don't regularly change into different types. However, we will keep this sample schema simple.
 ====
 
 == Querying Across the Hierarchy
@@ -211,7 +215,7 @@ Query for all employees at L4 and L5 and their current level:
 ----
 match
 $i isa permanent-staff, has name $name;
-$la links (identity: $i, level: $l), isa level-assignment;
+$la isa level-assignment, links (identity: $i, level: $l);
 not { $la has end-date $_; };
 $l has level-number $n;
 $n >= 4; $n <= 5;

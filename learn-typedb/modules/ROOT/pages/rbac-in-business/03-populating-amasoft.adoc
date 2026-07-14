@@ -149,7 +149,7 @@ match
 $sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $eng isa department, has name "Engineering";
 insert
-(member: $sam, department: $eng) isa department-membership;
+$_ isa department-membership, links (member: $sam, department: $eng);
 end;
 # Place Alex in Engineering, reporting to Sam
 match
@@ -157,9 +157,15 @@ $alex isa contractor, has email "alex.chen@amasoft.com";
 $sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $eng isa department, has name "Engineering";
 insert
-(member: $alex, department: $eng) isa department-membership;
-(manager: $sam, report: $alex) isa reports-to,
-  has start-date 2024-01-15;
+$_ isa department-membership, links (member: $alex, department: $eng);
+$_ isa reports-to, links (manager: $sam, report: $alex), has start-date 2024-01-15;
+end;
+# Place Michelle in Legal
+match
+$michelle isa full-time-employee, has email "michelle.rocksmasher@amasoft.com";
+$legal isa department, has name "Legal";
+insert
+$_ isa department-membership, links (member: $michelle, department: $legal);
 end;
 ----
 
@@ -235,7 +241,7 @@ match
 $sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $eng isa department, has name "Engineering";
 insert
-(member: $sam, department: $eng) isa department-membership;
+$_ isa department-membership, links (member: $sam, department: $eng);
 ----
 
 In the TypeQL version, `$sam` and `$eng` are the handles that connect the `match` clause to the `insert` clause. This is what pattern language means in practice.
@@ -262,6 +268,8 @@ Who is in Engineering?
 . Curly braces - `fetch` uses `{ }` not `( )`.
 . Key-value pairs - the key is a label you choose in double quotes.
 . `match` is a filter - only instances that have the matched attributes appear.
+
+In essence, fetch syntax is JSON syntax.
 ====
 
 [,typeql]
@@ -269,7 +277,7 @@ Who is in Engineering?
 match
 $p has name $name;
 $d isa department, has name "Engineering";
-(member: $p, department: $d) isa department-membership;
+$_ isa department-membership, links (member: $p, department: $d);
 fetch { "name": $name };
 ----
 
@@ -286,7 +294,7 @@ Who reports to Sam?
 match
 $sam has name "Sam Rivera";
 $report has name $report_name;
-(manager: $sam, report: $report) isa reports-to;
+$_ isa reports-to, links (manager: $sam, report: $report);
 fetch { "report": $report_name };
 ----
 
@@ -346,25 +354,19 @@ In SQL, getting the most specific type of a row requires a discriminator column,
 
 == Alex's First Promotion — contractor to full-time employee
 
-Alex's contract period is ending and they've been offered a full-time role. This is the right moment to record the transition — before access grants are added in Chapter Four. Right now Alex only has a `department-membership` and a `reports-to` bond, making the process clean.
-
-[NOTE.yellow]
-.⚠️ Delete relations before deleting the identity
-====
-TypeDB's cardinality constraints protect data integrity during deletes as well as inserts. If a relation has `@card(0..)` or `@card(1..)` on a role, deleting the role player would leave the relation in an invalid state — TypeDB will reject the commit. Always delete dependent relations first, then delete the identity. Run each as a separate query:
-====
+Alex's contract period is ending and they've been offered a full-time role. Let's promote Alex to a full-time employee!
 
 [,typeql]
 ----
 # Step 1: Delete department-membership
 match
 $alex isa contractor, has email "alex.chen@amasoft.com";
-$dm links (member: $alex), isa department-membership;
+$dm isa department-membership, links (member: $alex);
 delete $dm;
 # Step 2: Delete reports-to bond
 match
 $alex isa contractor, has email "alex.chen@amasoft.com";
-$rt links (report: $alex), isa reports-to;
+$rt isa reports-to, links (report: $alex);
 delete $rt;
 # Step 3: Delete the contractor record
 match $alex isa contractor, has email "alex.chen@amasoft.com";
@@ -379,15 +381,17 @@ $alex isa full-time-employee, has email "alex.chen@amasoft.com";
 $eng isa department, has name "Engineering";
 $sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 insert
-(member: $alex, department: $eng) isa department-membership;
-(manager: $sam, report: $alex) isa reports-to,
+$_ isa department-membership, links (member: $alex, department: $eng);
+$_ isa reports-to, links (manager: $sam, report: $alex),
   has start-date 2024-07-01;
 ----
 
+TypeDB lets you combine matches, inserts, and deletes into arbitrarily long "pipelines", and runs the entire pipeline as a single query.
+
 [NOTE.yellow]
-.💡 Why this is a natural access review checkpoint
+.⚠️ To delete an entity, delete its relations first
 ====
-When Alex is deleted as a contractor, all their access grants are deleted too — they are relations that depend on Alex existing. After reinserting as a `full-time-employee`, access must be explicitly re-granted. This is correct behaviour: a type change is a natural moment to review what access the person should have in their new role.
+TypeDB's cardinality constraints protect data integrity during deletes as well as inserts. If a relation has `@card(1)` on a role, deleting the role player would leave the relation in an invalid state — TypeDB will reject the commit. Delete dependent relations first, then delete the entity.
 ====
 
 == Chapter Three Challenge
@@ -397,7 +401,7 @@ When Alex is deleted as a contractor, all their access grants are deleted too �
 ====
 . Insert Sam, Alex, Michelle, and the ci-deploy-bot as shown above.
 . Define the department subtypes, roll them back with a matching `undefine`, and walk back department's `@abstract`. Then insert all four departments and all four systems.
-. Place Sam and Alex in Engineering. Place Michelle in any department.
+. Place Sam and Alex in Engineering. Place Michelle in Legal.
 . Set Alex as Sam's report.
 . Promote Alex from contractor to full-time employee following the five-step process above.
 . Query: who is in each department?
