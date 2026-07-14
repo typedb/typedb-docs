@@ -142,8 +142,8 @@ fetch { "system": $sys, "permission": $pl };
 . Grant Sam admin access to GitShed and read access to Workweek.
 . Grant Michelle read access to all systems using the bulk match pattern.
 . Grant the ci-deploy-bot admin access to EllipseCI, matching it by service-name.
-. Query: who has access to the engineering platform?
-. Query: what does Michelle have access to?
+. Query: who has access to which engineering platforms?
+. Query: what does Sam have access to?
 . Bonus: grant a time-limited access grant using `end-datetime`. Then write a query to find all grants expiring within that date:
 +
 [,typeql]
