@@ -56,7 +56,7 @@ In SQL, enforcing that permission_level can only be 'read', 'write', or 'admin' 
 match
 $alex isa contractor, has email "alex.chen@amasoft.com";
 $eng isa engineering-platform, has name "GitShed";
-insert
+put
 $_ isa access-grant, links (grantee: $alex, system: $eng),
   has permission-level "read",
   has start-datetime 2024-01-15T09:00:00;
@@ -66,7 +66,7 @@ end;
 match
 $sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $eng isa engineering-platform, has name "GitShed";
-insert
+put
 $_ isa access-grant, links (grantee: $sam, system: $eng),
   has permission-level "admin",
   has start-datetime 2024-01-01T09:00:00;
@@ -76,7 +76,7 @@ end;
 match
 $sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $hr isa hr-system, has name "Workweek";
-insert
+put
 $_ isa access-grant, links (grantee: $sam, system: $hr),
   has permission-level "read",
   has start-datetime 2024-01-01T09:00:00;
@@ -86,7 +86,7 @@ end;
 match
 $michelle isa full-time-employee, has email "michelle.rocksmasher@amasoft.com";
 $s isa system;
-insert
+put
 $_ isa access-grant, links (grantee: $michelle, system: $s),
   has permission-level "read",
   has start-datetime 2024-01-01T08:00:00;
@@ -96,7 +96,7 @@ end;
 match
 $bot isa service-account, has service-name "ci-deploy-bot";
 $eng isa engineering-platform, has name "EllipseCI";
-insert
+put
 $_ isa access-grant, links (grantee: $bot, system: $eng),
   has permission-level "admin",
   has start-datetime 2024-01-10T09:00:00;

@@ -148,7 +148,7 @@ end;
 match
 $sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $eng isa department, has name "Engineering";
-insert
+put
 $_ isa department-membership, links (member: $sam, department: $eng);
 end;
 # Place Alex in Engineering, reporting to Sam
@@ -156,7 +156,7 @@ match
 $alex isa contractor, has email "alex.chen@amasoft.com";
 $sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $eng isa department, has name "Engineering";
-insert
+put
 $_ isa department-membership, links (member: $alex, department: $eng);
 $_ isa reports-to, links (manager: $sam, report: $alex), has start-date 2024-01-15;
 end;
@@ -164,15 +164,19 @@ end;
 match
 $michelle isa full-time-employee, has email "michelle.rocksmasher@amasoft.com";
 $legal isa department, has name "Legal";
-insert
+put
 $_ isa department-membership, links (member: $michelle, department: $legal);
 end;
 ----
 
 [NOTE.yellow]
-.💡 The match-insert pattern
+.💡 The match-put pattern
 ====
-The `match` clause finds existing instances. The `insert` clause uses those found instances to create something new. You cannot insert a relation without first finding its participants.
+The `match` clause finds existing instances. The `put` clause uses those found instances to create something new. You cannot insert a relation without first finding its participants.
+
+Why `put` and not `insert`? Suppose you replace `put` with `insert` in the above queries and re-ran them. Without a `@key` to constrain these `department-membership` instances, you'd end up having duplicate relation instances - and it's not clear what that means. Practically, it's inconsistent data.
+
+`put` is essentially "insert if not exists". With `put`, if you rerun the query, your data is unchanged - thus it stays consistent.
 ====
 
 [NOTE.yellow]
@@ -181,14 +185,14 @@ The `match` clause finds existing instances. The `insert` clause uses those foun
 If `end;` is present in a query, TypeDB Studio (and TypeDB Console) will treat it as a multi-query, where `end;` separates queries, and it will run each query in sequence.
 ====
 
-== Why Does Insert Look Like This?
+== Why Do Insert & Put Look Like This?
 
 Amasoft is now fully populated. Step back and look at the shape of the queries you just ran.
 
 [NOTE.yellow]
 .⚠️ Don't run the queries in this section
 ====
-You've already run these queries. Inserting Sam again would error and re-inserting relations would create duplicate data.
+You've already run these queries. Reinserting Sam would just error.
 ====
 
 Here is Sam Rivera's insert query:
@@ -240,7 +244,7 @@ INSERT INTO dept_membership (member_id, dept_id) VALUES (@sam_id, @eng_id);
 match
 $sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $eng isa department, has name "Engineering";
-insert
+put
 $_ isa department-membership, links (member: $sam, department: $eng);
 ----
 
@@ -255,7 +259,7 @@ Data you insert generally needs a variable name. But if you aren't referring bac
 [NOTE.blue]
 .⭐ TypeDB Advantage: One consistent pattern language for reads and writes
 ====
-In SQL, reading uses `SELECT` with `JOIN` while writing uses `INSERT INTO` with `VALUES` — completely different syntax. In TypeQL, the pattern is the same everywhere: `match` describes what exists, `insert` describes what to add. Once you know how to write a match pattern, you already know the match part of every insert, delete, and update.
+In SQL, reading uses `SELECT` with `JOIN` while writing uses `INSERT INTO` with `VALUES` — completely different syntax. In TypeQL, the pattern is the same everywhere: `match` describes what exists, `insert` and `put` describe what to add. Once you know how to write a match pattern, you already know the match part of every insert, delete, and update.
 ====
 
 == Your First Fetch Queries

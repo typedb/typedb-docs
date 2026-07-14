@@ -183,7 +183,7 @@ match
   $grace isa full-time-employee, has email "grace.skipper@amasoft.com";
   $fin isa department, has name "Finance";
   $l5 isa level, has level-number 5;
-insert
+put
   $_ isa department-membership, links (member: $grace, department: $fin);
   $_ isa level-assignment, links (identity: $grace, level: $l5),
     has start-date 2024-08-01;
@@ -199,7 +199,7 @@ fetch { "needs-grant": $name, "missing-system": $sys };
 match
   $grace isa full-time-employee, has email "grace.skipper@amasoft.com";
   $pay isa payments-system, has name "PayBuddy";
-insert
+put
   $_ isa access-grant, links (grantee: $grace, system: $pay),
     has permission-level "read",
     has start-datetime 2024-08-01T09:00:00;
@@ -208,7 +208,7 @@ insert
 match
   $grace isa full-time-employee, has email "grace.skipper@amasoft.com";
   $rect isa payments-system, has name "Rectangle";
-insert
+put
   $_ isa access-grant, links (grantee: $grace, system: $rect),
     has permission-level "read",
     has start-datetime 2024-08-01T09:00:00;
@@ -222,7 +222,7 @@ Granting PayBuddy alone did not clear Grace from the report — access to one pa
 match
   $alex isa full-time-employee, has email "alex.chen@amasoft.com";
   $pay isa payments-system, has name "PayBuddy";
-insert
+put
   $_ isa access-grant, links (grantee: $alex, system: $pay),
     has permission-level "read",
     has start-datetime 2024-08-01T09:00:00;
@@ -341,14 +341,14 @@ insert $_ isa project-team,
 match
   $t isa project-team, has team-name "Finance Integration";
   $s isa payments-system, has name "PayBuddy";
-insert
+put
   $_ isa project-access, links (team: $t, system: $s),
     has permission-level "read";
 
 match
   $t isa project-team, has team-name "Finance Integration";
   $alex isa full-time-employee, has email "alex.chen@amasoft.com";
-insert
+put
   $_ isa project-membership, links (team: $t, member: $alex),
     has start-date 2024-07-15;
 ----

@@ -142,19 +142,19 @@ When you need to bind a relation instance to a variable and then reference that 
 match
 $alex isa full-time-employee, has email "alex.chen@amasoft.com";
 $l2 isa level, has level-number 2;
-insert
+put
 $_ isa level-assignment, links (identity: $alex, level: $l2),
   has start-date 2024-07-01;
 match
 $sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $l4 isa level, has level-number 4;
-insert
+put
 $_ isa level-assignment, links (identity: $sam, level: $l4),
   has start-date 2022-06-01;
 match
 $michelle isa full-time-employee, has email "michelle.rocksmasher@amasoft.com";
 $l7 isa level, has level-number 7;
-insert
+put
 $_ isa level-assignment, links (identity: $michelle, level: $l7),
   has start-date 2020-01-01;
 ----
@@ -192,7 +192,7 @@ $la has end-date 2024-06-30;
 match
 $sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $l5 isa level, has level-number 5;
-insert
+put
 $_ isa level-assignment, links (identity: $sam, level: $l5),
   has start-date 2024-07-01;
 ----
