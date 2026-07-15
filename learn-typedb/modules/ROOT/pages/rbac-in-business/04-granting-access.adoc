@@ -25,11 +25,13 @@ attribute end-datetime, value datetime;
 relation access-grant,
   relates grantee @card(1),
   relates system @card(1),
+  relates grantor @card(1),
   owns permission-level,
   owns start-datetime,
   owns end-datetime;
 entity identity, plays access-grant:grantee;
 entity system, plays access-grant:system;
+entity permanent-staff, plays access-grant:grantor;
 ----
 
 We use `datetime` instead of `date` - system access grants are typically time-sensitive; we should encode actual timestamps.
@@ -48,26 +50,81 @@ Notice also: `access-grant` doesn't just connect two entities, it also has its o
 In SQL, enforcing that permission_level can only be 'read', 'write', or 'admin' requires either a CHECK constraint (often ignored) or a lookup table with a foreign key. In TypeDB, `@values` enforces this at the schema level — it is impossible to insert an invalid permission level.
 ====
 
+== N-ary Relations — TypeDB's Native Superpower
+
+Look again at what `access-grant` connects: a grantee, a system, and a grantor - three participants. This is called an N-ary relation: a connection with more than two participants. The following two code blocks are for comparison only — do not run them. They show how the same concept looks across two other database types, so you can compare them against TypeDB.
+
+In SQL, this requires a junction table and multiple JOINs just to answer a simple question:
+
+[,sql]
+----
+-- SQL: requires a junction table with foreign keys
+CREATE TABLE access_grants (
+  grantee_id INT REFERENCES identities(id),
+  system_id INT REFERENCES systems(id),
+  grantor_id INT REFERENCES identities(id),
+  permission_level VARCHAR(5),
+  start_datetime DATETIME,
+  end_datetime DATETIME,
+  PRIMARY KEY (grantee_id, system_id, start_datetime)
+);
+-- To query who granted what: three tables, three JOINs
+SELECT i.name, s.name, g.name
+FROM access_grants ag
+JOIN identities i ON ag.grantee_id = i.id
+JOIN systems s ON ag.system_id = s.id
+JOIN identities g ON ag.grantor_id = g.id;
+----
+
+In a property graph database, edges are binary - you cannot natively connect three nodes, so you are forced to introduce an artificial intermediate node:
+
+[,text]
+----
+# Property graph (e.g. Neo4j): edges are binary and second-class
+# No native way to connect three nodes — requires an intermediate node
+# (grantee)-[:HAS_GRANT]->(grant_node)-[:ON_SYSTEM]->(system)
+# (grant_node)-[:GRANTED_BY]->(grantor)
+# The grant_node is an artificial workaround
+----
+
+In TypeDB, the relation is first-class. No junction table, no intermediate node, no workaround - just the model that reflects reality. And the query is a single clean pattern:
+
+[,typeql]
+----
+# TypeDB: who granted what — one clean pattern
+match
+$g isa access-grant, links (grantee: $i, system: $s, grantor: $by);
+fetch { "grantee": $i.name, "system": $s.name, "granted-by": $by.name };
+----
+
+[NOTE.blue]
+.⭐ TypeDB Advantage: N-ary relations are first-class
+====
+In SQL, any relationship that carries data requires a junction table — extra schema, extra JOINs, extra complexity. In property graph databases, edges are binary and second-class: you cannot natively connect three nodes, so you introduce artificial intermediate nodes that obscure the real meaning. In TypeDB, a relation can connect any number of role players and own any number of attributes. It is first-class, queried the same way as any other type.
+====
+
 == Granting Access
 
 [,typeql]
 ----
-# Alex gets read access to GitShed
+# Alex gets read access to GitShed, granted by Sam, their manager
 match
 $alex isa contractor, has email "alex.chen@amasoft.com";
+$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $eng isa engineering-platform, has name "GitShed";
 put
-$_ isa access-grant, links (grantee: $alex, system: $eng),
+$_ isa access-grant, links (grantee: $alex, system: $eng, grantor: $sam),
   has permission-level "read",
   has start-datetime 2024-01-15T09:00:00;
 end;
 
-# Sam gets admin access to GitShed
+# Sam gets admin access to GitShed, granted by Michelle, the CISO
 match
 $sam isa full-time-employee, has email "sam.rivera@amasoft.com";
+$michelle isa full-time-employee, has email "michelle.rocksmasher@amasoft.com";
 $eng isa engineering-platform, has name "GitShed";
 put
-$_ isa access-grant, links (grantee: $sam, system: $eng),
+$_ isa access-grant, links (grantee: $sam, system: $eng, grantor: $michelle),
   has permission-level "admin",
   has start-datetime 2024-01-01T09:00:00;
 end;
@@ -75,29 +132,31 @@ end;
 # Sam also gets read access to Workweek — managers see team HR records
 match
 $sam isa full-time-employee, has email "sam.rivera@amasoft.com";
+$michelle isa full-time-employee, has email "michelle.rocksmasher@amasoft.com";
 $hr isa hr-system, has name "Workweek";
 put
-$_ isa access-grant, links (grantee: $sam, system: $hr),
+$_ isa access-grant, links (grantee: $sam, system: $hr, grantor: $michelle),
   has permission-level "read",
   has start-datetime 2024-01-01T09:00:00;
 end;
 
-# Michelle gets read access across ALL systems — match returns one row per system
+# Michelle gets read access across ALL systems, self-granted
 match
 $michelle isa full-time-employee, has email "michelle.rocksmasher@amasoft.com";
 $s isa system;
 put
-$_ isa access-grant, links (grantee: $michelle, system: $s),
+$_ isa access-grant, links (grantee: $michelle, system: $s, grantor: $michelle),
   has permission-level "read",
   has start-datetime 2024-01-01T08:00:00;
 end;
 
-# The deploy bot gets admin access to EllipseCI
+# The deploy bot gets admin access to EllipseCI, granted by Sam
 match
 $bot isa service-account, has service-name "ci-deploy-bot";
+$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $eng isa engineering-platform, has name "EllipseCI";
 put
-$_ isa access-grant, links (grantee: $bot, system: $eng),
+$_ isa access-grant, links (grantee: $bot, system: $eng, grantor: $sam),
   has permission-level "admin",
   has start-datetime 2024-01-10T09:00:00;
 ----
@@ -138,10 +197,10 @@ fetch { "system": $sys, "permission": $pl };
 .🎯 Challenge: Grant Access to Amasoft
 ====
 . Define the `access-grant` relation as shown above.
-. Grant Alex read access to GitShed.
-. Grant Sam admin access to GitShed and read access to Workweek.
-. Grant Michelle read access to all systems using the bulk match pattern.
-. Grant the ci-deploy-bot admin access to EllipseCI, matching it by service-name.
+. Grant Alex read access to GitShed, with Sam as grantor.
+. Grant Sam admin access to GitShed and read access to Workweek, with Michelle as grantor.
+. Grant Michelle read access to all systems using the bulk match pattern, self-granted.
+. Grant the ci-deploy-bot admin access to EllipseCI, matching it by service-name, with Sam as grantor.
 . Query: who has access to which engineering platforms?
 . Query: what does Sam have access to?
 . Bonus: grant a time-limited access grant using `end-datetime`. Then write a query to find all grants expiring within that date:

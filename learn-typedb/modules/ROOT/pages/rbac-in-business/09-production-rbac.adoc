@@ -62,9 +62,10 @@ When you run a `put` query, TypeDB always reports 'Success' — whether the reco
 # Idempotent access grant
 match
 $i isa full-time-employee, has email "new.hire@amasoft.com";
+$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $s isa engineering-platform, has name "GitShed";
 put
-$_ isa access-grant, links (grantee: $i, system: $s),
+$_ isa access-grant, links (grantee: $i, system: $s, grantor: $sam),
   has permission-level "read",
   has start-datetime 2024-08-01T09:00:00;
 ----

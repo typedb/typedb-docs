@@ -198,18 +198,20 @@ fetch { "needs-grant": $name, "missing-system": $sys };
 # Provision PayBuddy — the report shrinks to Rectangle
 match
   $grace isa full-time-employee, has email "grace.skipper@amasoft.com";
+  $michelle isa full-time-employee, has email "michelle.rocksmasher@amasoft.com";
   $pay isa payments-system, has name "PayBuddy";
 put
-  $_ isa access-grant, links (grantee: $grace, system: $pay),
+  $_ isa access-grant, links (grantee: $grace, system: $pay, grantor: $michelle),
     has permission-level "read",
     has start-datetime 2024-08-01T09:00:00;
 
 # Provision Rectangle, and the report clears
 match
   $grace isa full-time-employee, has email "grace.skipper@amasoft.com";
+  $michelle isa full-time-employee, has email "michelle.rocksmasher@amasoft.com";
   $rect isa payments-system, has name "Rectangle";
 put
-  $_ isa access-grant, links (grantee: $grace, system: $rect),
+  $_ isa access-grant, links (grantee: $grace, system: $rect, grantor: $michelle),
     has permission-level "read",
     has start-datetime 2024-08-01T09:00:00;
 ----
@@ -219,11 +221,13 @@ Granting PayBuddy alone did not clear Grace from the report — access to one pa
 [,typeql]
 ----
 # Grant Alex payments access — he's L2 in Engineering, not authorised
+# (granted by Sam in another hurry)
 match
   $alex isa full-time-employee, has email "alex.chen@amasoft.com";
+  $sam isa full-time-employee, has email "sam.rivera@amasoft.com";
   $pay isa payments-system, has name "PayBuddy";
 put
-  $_ isa access-grant, links (grantee: $alex, system: $pay),
+  $_ isa access-grant, links (grantee: $alex, system: $pay, grantor: $sam),
     has permission-level "read",
     has start-datetime 2024-08-01T09:00:00;
 

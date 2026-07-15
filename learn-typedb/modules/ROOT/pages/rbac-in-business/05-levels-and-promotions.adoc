@@ -1,141 +1,64 @@
 = Chapter Five: Levels & Promotions
 :pageTitle: Chapter Five: Levels & Promotions
 :Summary: Level assignment and two organisational changes.
-:keywords: typedb, typeql, rbac, level, promotion, n-ary relation, update, links, range, history
+:keywords: typedb, typeql, rbac, level, promotion, update, links, range, history
 
 [.lead]
 _Level Assignment & Two Organisational Changes_
 
 == Previously
 
-In Chapter Four you defined the access model and granted access to Amasoft's systems. Chapter Five introduces seniority levels — how to model them, how to assign them, and how to handle two different kinds of change that promotions can involve.
+In Chapter Four you defined the access model and granted access to Amasoft's systems. Chapter Five introduces seniority levels - how to model them, how to assign them, and how to handle two different kinds of change that promotions can involve.
 
 == The Situation
 
-Amasoft uses a seniority scale from L0 to L7. Managers are L4 and L5. Executives are L6 and L7. Alex has already been promoted to full-time employee in Chapter Three. Now we assign seniority levels — and Sam Rivera gets promoted from L4 to L5.
-
-== N-ary Relations — TypeDB's Native Superpower
-
-Before defining `level-assignment`, it's worth pausing to name what we're about to build. In Chapter Four, `access-grant` connected an identity to a system and carried permission data on the bond. `level-assignment` goes further: it connects an identity to a level entity, and carries temporal data about when that assignment was active.
-
-This is called an N-ary relation — a connection that involves more than two participants, or that carries meaningful data about the connection itself. The following three code blocks are for comparison only — do not run them. They show how the same concept looks across three different database types, so you can appreciate what TypeDB is doing for you:
-
-In SQL, this requires a junction table and multiple JOINs just to answer a simple question:
-
-[,sql]
-----
--- SQL: requires a junction table with foreign keys
-CREATE TABLE level_assignments (
-  identity_id INT REFERENCES identities(id),
-  level_id INT REFERENCES levels(id),
-  start_date DATETIME,
-  end_date DATETIME,
-  PRIMARY KEY (identity_id, level_id, start_date)
-);
--- To query current level: three tables, two JOINs, a WHERE clause
-SELECT i.name, l.level_number
-FROM identities i
-JOIN level_assignments la ON i.id = la.identity_id
-JOIN levels l ON la.level_id = l.id
-WHERE la.end_date IS NULL;
-----
-
-In a property graph database, edges are binary — you cannot natively connect three nodes, so you are forced to introduce an artificial intermediate node:
-
-[,text]
-----
-# Property graph (e.g. Neo4j): edges are binary and second-class
-# No native way to connect three nodes — requires an intermediate node
-# (identity)-[:HAS_ASSIGNMENT]->(assignment_node)-[:AT_LEVEL]->(level)
-# The assignment_node is an artificial workaround, not a real concept
-----
-
-In TypeDB, the relation is first-class. No junction table, no intermediate node, no workaround — just the model that reflects reality. And the query is a single clean pattern:
-
-[,typeql]
-----
-# TypeDB: N-ary relation is first-class, no workarounds needed
-# (This is a preview — you will define and run this below)
-relation level-assignment,
-  relates identity @card(0..1),
-  relates level @card(1),
-  owns start-date,
-  owns end-date;
-# Query current level: one clean pattern
-match
-$i has name $name;
-$la isa level-assignment, links (identity: $i, level: $l);
-not { $la has end-date $_; };
-$l has level-number $n;
-fetch { "name": $name, "level": $n };
-----
-
-[NOTE.blue]
-.⭐ TypeDB Advantage: N-ary relations are first-class
-====
-In SQL, any relationship that carries data requires a junction table — extra schema, extra JOINs, extra complexity. In property graph databases, edges are binary and second-class: you cannot natively connect three nodes, so you introduce artificial intermediate nodes that obscure the real meaning. In TypeDB, a relation can connect any number of role players and own any number of attributes. It is queried the same way as any other type. There are no workarounds, no junction tables, no intermediate nodes — just the model that reflects reality.
-====
-
-[NOTE.yellow]
-.💡 Two new keywords: links and update
-====
-When binding a relation to a variable and then referencing that variable elsewhere in the query, use the `links` keyword instead of the standard role pattern: `$la isa level-assignment, links (identity: $i, level: $l)` This tells TypeDB explicitly that `$la` is a relation instance linking those role players. When updating an attribute on an existing instance (rather than inserting a new one), use `update` instead of `insert`:
-
-[,typeql]
-----
-match
-$la isa level-assignment, links (identity: $sam);
-update
-$la has end-date 2024-06-30;
-----
-
-`update` replaces the existing attribute value. `insert` would add a second value alongside it.
-====
+Amasoft uses a seniority scale from L0 to L7. Managers sit at L4 and L5; directors and executives at L6 and L7. Alex has already been promoted to full-time employee in Chapter Three. Now we assign seniority levels - and Sam Rivera gets promoted from L4 to L5.
 
 == Level as an Entity
 
-Level is not a simple attribute on a person — it is something that changes over time, with history that must be preserved. A `level-assignment` relation captures the bond between a person and a level, owning the dates it was active:
+A level at Amasoft is not just a number - it is a rung on the career ladder, with an identity of its own: L5, for example, is "Senior Manager".
+
+A person's level, however, changes over time, with history that must be preserved - so the assignment is a relation connecting a person to a rung, owning the dates it was active:
 
 [,typeql]
 ----
 define
 attribute level-number, value integer @range(0..7);
 entity level,
-  owns level-number @key;
+  owns level-number @key,
+  owns name;
 attribute end-date, value date;
 relation level-assignment,
-  relates identity @card(0..1),
+  relates identity @card(1),
   relates level @card(1),
-  owns start-date,
-  owns end-date;
+  owns start-date @card(1),
+  owns end-date @card(0..1);
 entity identity, plays level-assignment:identity;
 entity level, plays level-assignment:level;
 ----
 
-`@range(0..7)` on level-number means TypeDB rejects any value outside this range at insert time. And notice what is _not_ declared: start-date already exists in the schema — reports-to has owned it since Chapter Two — so level-assignment simply takes ownership of the same attribute type. Only end-date is new. Attributes in TypeDB are globally scoped; Chapter Seven will show why that matters.
-
-Insert the level instances:
+`@range(0..7)` on level-number means TypeDB rejects any value outside this range at insert time. `@card` on start-date and end-date means level assignments must all have exactly one start-date, and may optionally have one end-date. Insert the level instances:
 
 [,typeql]
 ----
 insert
-$_ isa level, has level-number 0;
-$_ isa level, has level-number 1;
-$_ isa level, has level-number 2;
-$_ isa level, has level-number 3;
-$_ isa level, has level-number 4;
-$_ isa level, has level-number 5;
-$_ isa level, has level-number 6;
-$_ isa level, has level-number 7;
+$_ isa level, has level-number 0, has name "Trainee";
+$_ isa level, has level-number 1, has name "Junior Associate";
+$_ isa level, has level-number 2, has name "Associate";
+$_ isa level, has level-number 3, has name "Senior Associate";
+$_ isa level, has level-number 4, has name "Manager";
+$_ isa level, has level-number 5, has name "Senior Manager";
+$_ isa level, has level-number 6, has name "Director";
+$_ isa level, has level-number 7, has name "Executive";
 ----
 
-Assign Alex to L2 (their new level as a full-time employee), Sam to L4, and Michelle to L7:
-
 [NOTE.yellow]
-.💡 The links keyword — use it when binding a relation to a variable
+.🗺️ Check the Data Explorer now
 ====
-When you need to bind a relation instance to a variable and then reference that variable elsewhere in the same query — for example to check its attributes or update them — use the `links` keyword: `$la isa level-assignment, links (identity: $i, level: $l);` This tells TypeDB that `$la` is the relation instance connecting those role players. Without `links`, TypeDB gets confused about whether `$la` is a relation instance or a type.
+Go to the Data page in TypeDB Studio, and select 'level' from the schema view. You should see all levels as table rows, listing the level numbers and names.
 ====
+
+Return to the Query page. Assign Alex to L2 (their new level as a full-time employee), Sam to L4, and Michelle to L7:
 
 [,typeql]
 ----
@@ -145,35 +68,38 @@ $l2 isa level, has level-number 2;
 put
 $_ isa level-assignment, links (identity: $alex, level: $l2),
   has start-date 2024-07-01;
+end;
 match
 $sam isa full-time-employee, has email "sam.rivera@amasoft.com";
 $l4 isa level, has level-number 4;
 put
 $_ isa level-assignment, links (identity: $sam, level: $l4),
   has start-date 2022-06-01;
+end;
 match
 $michelle isa full-time-employee, has email "michelle.rocksmasher@amasoft.com";
 $l7 isa level, has level-number 7;
 put
 $_ isa level-assignment, links (identity: $michelle, level: $l7),
   has start-date 2020-01-01;
+end;
 ----
 
 [NOTE.yellow]
-.⚠️ If the query returns 0 rows
+.⚠️ If a query returns 0 rows
 ====
 A successful write query that reports 'Total rows: 0' always means the match clause found nothing — not that the insert failed silently. Check two things:
 
 . Does the identity exist? Run: `match $x isa staff, has email "alex.chen@amasoft.com"; fetch { "x": $x };`
 . Do the level instances exist? Run: `match $l isa level, has level-number $n; fetch { "n": $n };`
 
-If either returns nothing, that is why the insert produced 0 rows.
+If either returns nothing, that is why the insert produced 0 rows.  
 ====
 
 [NOTE.blue]
 .⭐ TypeDB Advantage: Level history preserved as data
 ====
-In SQL, updating someone's level typically overwrites the old value — history is lost unless you build a separate audit table. In TypeDB, each `level-assignment` is a first-class relation with its own `start-date` and `end-date` dates. Closing an old assignment and opening a new one is non-destructive: the history lives in the data.
+In SQL, history is lost unless you build a separate audit table. In TypeDB, each `level-assignment` is a first-class relation with its own `start-date` and `end-date` dates. Closing an old assignment and opening a new one is non-destructive: the history lives in the data.
 ====
 
 == Sam's Promotion — Level Change (L4 → L5)
@@ -198,6 +124,14 @@ $_ isa level-assignment, links (identity: $sam, level: $l5),
 ----
 
 [NOTE.yellow]
+.💡 The 'links' and 'update' keywords
+====
+When binding both a relation's participant and the relation itself to variables, use the `links` keyword: `$la isa level-assignment, links (identity: $i, level: $l)` This tells TypeDB that `$la` is a relation instance linking those role players. 
+
+When updating an attribute on an existing instance (rather than inserting a new one), use `update` instead of `insert`, as in the promotion query above. `update` replaces the existing attribute value. `insert` would add a second value alongside it.
+====
+
+[NOTE.yellow]
 .🏢 Type change vs. data change
 ====
 Type change (contractor → full-time-employee): destructive. Occurred in Chapter Three when Alex was promoted. Required deleting all relations first, then deleting the identity, then reinserting.
@@ -218,11 +152,11 @@ $i isa permanent-staff, has name $name;
 $la isa level-assignment, links (identity: $i, level: $l);
 not { $la has end-date $_; };
 $l has level-number $n;
-$n >= 4; $n <= 5;
+{ $n == 4; } or { $n == 5; };
 fetch { "name": $name, "level": $n };
 ----
 
-The `not { $la has end-date $_; }` pattern filters to only current assignments — those without a closing date. This is how you query the current state of time-tracked data.
+Here we use `or` to match based on two possible criteria (level is 4 or 5). The `not { $la has end-date $_; }` pattern filters to only assignments without a closing date. Because we only ever set `end-date` when reassigning someone's level, that is sufficient here.
 
 [NOTE.blue]
 .⭐ TypeDB Advantage: Polymorphic queries across a hierarchy
