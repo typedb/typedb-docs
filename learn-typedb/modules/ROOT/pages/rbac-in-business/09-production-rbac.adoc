@@ -1,7 +1,7 @@
 = Chapter Nine: Production RBAC
 :pageTitle: Chapter Nine: Production RBAC
 :Summary: Transactions, drivers, put, and idempotent pipelines.
-:keywords: typedb, typeql, rbac, transaction, put, idempotent, provisioning, access check, deprovision, kill switch
+:keywords: typedb, typeql, rbac, transaction, put, update, idempotent, provisioning, access check, deprovision, kill switch
 
 [.lead]
 _Transactions, Drivers, put & Idempotent Pipelines_
@@ -165,7 +165,7 @@ match
 $i isa identity, has identity_name "departing@amasoft.com";
 $ag isa access_grant, links (grantee: $i);
 not { $ag has end_datetime $_; };
-update
+insert
 $ag has end_datetime 2024-12-31T17:00:00;
 
 # Suspend the identity (kill switch — immediate effect)
@@ -174,6 +174,14 @@ $i isa identity, has identity_name "departing@amasoft.com";
 update
 $i has status "terminated";
 ----
+
+[NOTE.yellow]
+.💡 The 'update' keyword
+====
+When replacing the value of an already-attached attribute, use `update` instead of `insert`, as in the status query above. `update` replaces the existing attribute value. `insert` would attempt to add a second value alongside it — an error for attributes limited to a single value, like status.
+
+Behind the scenes, `update` is equivalent to a `delete` followed by an `insert`.
+====
 
 [NOTE.yellow]
 .💡 Two steps for offboarding

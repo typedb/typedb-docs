@@ -21,26 +21,33 @@ Time to bring in the cast — three staff members, and one identity that isn't h
 [,typeql]
 ----
 # Sam Rivera — Engineering manager, Amasoft's first registered employee
-insert $_ isa full_time_employee,
-  has name "Sam Rivera",
-  has email "sam.rivera@amasoft.com";
+insert
+  $_ isa full_time_employee,
+    has name "Sam Rivera",
+    has email "sam.rivera@amasoft.com";
 # Alex Chen — contractor on a six-month engagement
-insert $_ isa contractor,
-  has name "Alex Chen",
-  has email "alex.chen@amasoft.com",
-  has contract_end_date 2024-07-01;
+  $_ isa contractor,
+    has name "Alex Chen",
+    has email "alex.chen@amasoft.com",
+    has contract_end_date 2024-07-01;
 # Michelle Rocksmasher — CISO, L7
-insert $_ isa full_time_employee,
-  has name "Michelle Rocksmasher",
-  has email "michelle.rocksmasher@amasoft.com";
+  $_ isa full_time_employee,
+    has name "Michelle Rocksmasher",
+    has email "michelle.rocksmasher@amasoft.com";
 # ci-deploy-bot — Engineering's deployment service account
-insert $_ isa service_account,
-  has name "CI Deploy Bot",
-  has service_name "ci-deploy-bot",
-  has owner_team "Engineering";
+  $_ isa service_account,
+    has name "CI Deploy Bot",
+    has service_name "ci-deploy-bot",
+    has owner_team "Engineering";
 ----
 
-Note the last insert: the deploy bot is created with the same insert pattern as everyone else. It has a display name like any other identity, but no email — its key is service_name. It is an identity all the same, and Chapter Four will grant it access exactly the way it grants Alex.
+Notice the deploy bot is created with the same insert pattern as everyone else. It has a display name like any other identity, but no email - its key is service_name. It is an identity all the same, and Chapter Four will grant it access exactly the way it grants Alex.
+
+[NOTE.yellow]
+.🗺️ Check the Data Explorer now
+====
+Go to the Data page in TypeDB Studio, and select 'entity' from the schema view. You should see all the data you just inserted as table rows, with columns denoting their various attributes.
+====
 
 [NOTE.yellow]
 .💡 Comments in TypeQL — lines starting with #

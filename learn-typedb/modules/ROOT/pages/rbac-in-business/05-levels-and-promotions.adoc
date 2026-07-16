@@ -1,7 +1,7 @@
 = Chapter Five: Levels & Promotions
 :pageTitle: Chapter Five: Levels & Promotions
 :Summary: Level assignment and two organisational changes.
-:keywords: typedb, typeql, rbac, level, promotion, update, links, range, history
+:keywords: typedb, typeql, rbac, level, promotion, links, range, history
 
 [.lead]
 _Level Assignment & Two Organisational Changes_
@@ -29,11 +29,11 @@ entity level,
   owns name;
 attribute end_date, value date;
 relation level_assignment,
-  relates identity @card(1),
+  relates assignee @card(1),
   relates level @card(1),
   owns start_date @card(1),
   owns end_date @card(0..1);
-entity identity, plays level_assignment:identity;
+entity staff, plays level_assignment:assignee;
 entity level, plays level_assignment:level;
 ----
 
@@ -66,21 +66,21 @@ match
 $alex isa full_time_employee, has email "alex.chen@amasoft.com";
 $l2 isa level, has level_number 2;
 put
-$_ isa level_assignment, links (identity: $alex, level: $l2),
-  has start_date 2024-07-01;
+$_ isa level_assignment, links (assignee: $alex, level: $l2),
+  has start_date 2024-07-08;
 end;
 match
 $sam isa full_time_employee, has email "sam.rivera@amasoft.com";
 $l4 isa level, has level_number 4;
 put
-$_ isa level_assignment, links (identity: $sam, level: $l4),
+$_ isa level_assignment, links (assignee: $sam, level: $l4),
   has start_date 2022-06-01;
 end;
 match
 $michelle isa full_time_employee, has email "michelle.rocksmasher@amasoft.com";
 $l7 isa level, has level_number 7;
 put
-$_ isa level_assignment, links (identity: $michelle, level: $l7),
+$_ isa level_assignment, links (assignee: $michelle, level: $l7),
   has start_date 2020-01-01;
 end;
 ----
@@ -111,24 +111,30 @@ Sam is being promoted to L5. This does not change Sam's type — Sam is still a 
 # Close the old level assignment
 match
 $sam isa full_time_employee, has email "sam.rivera@amasoft.com";
-$la isa level_assignment, links (identity: $sam);
-update
+$la isa level_assignment, links (assignee: $sam);
+insert
 $la has end_date 2024-06-30;
 # Open the new level assignment
 match
 $sam isa full_time_employee, has email "sam.rivera@amasoft.com";
 $l5 isa level, has level_number 5;
 put
-$_ isa level_assignment, links (identity: $sam, level: $l5),
+$_ isa level_assignment, links (assignee: $sam, level: $l5),
   has start_date 2024-07-01;
 ----
 
 [NOTE.yellow]
-.💡 The 'links' and 'update' keywords
+.🗺️ Check the Graph Explorer now
 ====
-When binding both a relation's participant and the relation itself to variables, use the `links` keyword: `$la isa level_assignment, links (identity: $i, level: $l)` This tells TypeDB that `$la` is a relation instance linking those role players. 
+Go to the Graph page in TypeDB Studio, and click 'level-assignment' from the schema view. You should see all level assignments as individual nodes. Click on a node. In the Explorer pane (right), go to "Display attribute" and choose `start_date`. Finally, right-click any `level-assignment` node in the graph, and choose "Load links: * - every 'level-assignment'".
 
-When updating an attribute on an existing instance (rather than inserting a new one), use `update` instead of `insert`, as in the promotion query above. `update` replaces the existing attribute value. `insert` would add a second value alongside it.
+You will now see a graph of every employee at Amasoft and their full level assignment history!
+====
+
+[NOTE.yellow]
+.💡 The 'links' keyword
+====
+When binding both a relation's participant and the relation itself to variables, use the `links` keyword: `$la isa level_assignment, links (assignee: $i, level: $l)` This tells TypeDB that `$la` is a relation instance linking those role players.
 ====
 
 [NOTE.yellow]
@@ -149,7 +155,7 @@ Query for all employees at L4 and L5 and their current level:
 ----
 match
 $i isa permanent_staff, has name $name;
-$la isa level_assignment, links (identity: $i, level: $l);
+$la isa level_assignment, links (assignee: $i, level: $l);
 not { $la has end_date $_; };
 $l has level_number $n;
 { $n == 4; } or { $n == 5; };
@@ -171,7 +177,7 @@ Querying for all 'permanent_staff' instances automatically includes full_time_em
 ====
 . Define level_assignment and insert all eight level instances.
 . Assign Alex to L2, Sam to L4, and Michelle to L7.
-. Promote Sam from L4 to L5 using the `update` pattern.
+. Promote Sam from L4 to L5 — close the old assignment, open the new one.
 . Query: who is currently at L4 or above?
 . Query: who is at L7?
 . Bonus: query Sam's full level history — both old and new assignments.
@@ -179,4 +185,4 @@ Querying for all 'permanent_staff' instances automatically includes full_time_em
 
 == What You Can Do Now
 
-You can now model level hierarchies with time-tracked assignments, execute both kinds of change correctly, and query current vs historical state. Chapter Six puts the compliance team in the room — audit queries that answer the hard questions.
+You can now model level hierarchies with time-tracked assignments, execute two kinds of organisational change correctly, and query current vs historical state. Chapter Six puts the compliance team in the room - audit queries that answer the hard questions.

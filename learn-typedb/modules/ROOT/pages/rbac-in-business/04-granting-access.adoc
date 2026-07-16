@@ -109,7 +109,7 @@ In SQL, any relationship that carries data requires a junction table — extra s
 ----
 # Alex gets read access to GitShed, granted by Sam, their manager
 match
-$alex isa contractor, has email "alex.chen@amasoft.com";
+$alex isa full_time_employee, has email "alex.chen@amasoft.com";
 $sam isa full_time_employee, has email "sam.rivera@amasoft.com";
 $eng isa engineering_platform, has name "GitShed";
 put

@@ -1,28 +1,26 @@
 = Chapter Seven: Access Policies as Functions
 :pageTitle: Chapter Seven: Access Policies as Functions
-:Summary: The most powerful feature in RBAC - policy as living code.
+:Summary: Enshrining Amasoft's policies in reusable code
 :keywords: typedb, typeql, rbac, function, fun, let, policy, composition, separation of duties, disjunction
 
 [.lead]
-_The Most Powerful Feature in RBAC — Policy as Living Code_
+_Enshrining Amasoft's policies in reusable code_
 
 == Previously
 
-In Chapter Six the compliance team asked hard questions and you answered them with ad-hoc queries. Chapter Seven takes those same queries and makes them permanent — named, reusable, composable policy logic that lives in the schema itself.
+In Chapter Six the compliance team asked hard questions and you answered them with ad-hoc queries. Chapter Seven takes those same queries and turns them into permanent, named, reusable and composable policy logic that lives in the schema itself.
 
 == The Situation
 
-The compliance team keeps asking the same questions. The security team wants to know who *should* have access to payments, not just who does. And engineering has started a finance integration project — their engineers need temporary access to the payments system even though they're not in the finance department. All three problems have the same solution: functions.
+The compliance team keeps asking the same questions. The security team wants to know who *should* have access to payments, not just who does. And engineering has started a finance integration project — their engineers need temporary access to the payments system even though they're not in the finance department. All three problems have the same solution: reusable functions.
 
 == What Functions Actually Are
 
-Before writing any code, consider what we're replacing. Here is Amasoft's payments access policy in SQL — the kind of query that lives in a stored procedure, or worse, duplicated across three different places in application code:
+Before writing any code, consider what we're replacing. Here is Amasoft's payments access policy in SQL — the kind of query that lives in a stored procedure, or even completely outside the database, in application code:
 
 [,sql]
 ----
 -- SQL: the payments access policy
--- This logic exists in the stored proc, the app code,
--- AND the compliance spreadsheet. They diverged 6 months ago.
 SELECT u.name
 FROM users u
 JOIN user_levels ul ON u.id = ul.user_id
@@ -47,42 +45,83 @@ This query is correct today. But when the policy changes — when someone decide
 [NOTE.yellow]
 .🏢 The single source of truth problem
 ====
-In most organisations, access policy lives in three places simultaneously: application code, a stored procedure, and a spreadsheet. They drift apart over time. Someone updates the app code and forgets the stored procedure. An auditor reads the spreadsheet and gets a different answer than the system enforces. In TypeDB, the function IS the policy. There is one place. There is no drift.
+In many organisations, access policy lives in three places simultaneously: application code, a stored procedure, and a spreadsheet. They drift apart over time. Someone updates the app code and forgets the stored procedure. An auditor reads the spreadsheet and gets a different answer than the system enforces. In TypeDB, the function IS the policy - a single source of truth, no drift.
 ====
 
 [,typeql]
 ----
 define
-fun can_access_payments($i: identity) -> { identity }:
-  match
-    { $i isa full_time_employee;
-      $la isa level_assignment, links (identity: $i, level: $l);
-      not { $la has end_date $_; };
-      $l has level_number $n; $n >= 5;
-      $_ isa department_membership, links (department: $d, member: $i);
-      $d isa department, has name "Finance"; }
-    or
-    { $la isa level_assignment, links (identity: $i, level: $l);
-      not { $la has end_date $_; };
-      $l has level_number $n; $n >= 7; };
+fun who_should_have_access_to_payments() -> { staff }:
+  match 
+  $i isa staff;
+  {
+    $la isa level_assignment, links (assignee: $i, level: $l);
+    not { $la has end_date $_; };
+    $l has level_number $n; $n >= 5;
+    $_ isa department_membership, links (department: $d, member: $i);
+    $d isa department, has name "Finance";
+  } or {
+    $la isa level_assignment, links (assignee: $i, level: $l);
+    not { $la has end_date $_; };
+    $l has level_number $n; $n >= 7;
+  };
   return { $i };
 ----
 
 [NOTE.yellow]
-.⚠️ Two syntax rules for functions
+.⚠️ Two syntax rules
 ====
-. Use `$_` (throwaway variable) in `not` clauses inside disjunction branches. A named variable like `$eu` used in two separate branches of an `or` will cause a 'locally-scoped variable' error — TypeDB requires variables to be either bound in a shared scope or anonymous.
-. Use `isa` directly in disjunction branches when checking types — not `$type == type-name`. Type comparison with `==` is for value equality, not type checking.
+. When you have a variable like `$eu` used in two separate `not` clauses, but not used outside them, this can cause a 'locally-scoped variable' error. You can use either `$_` (throwaway variables) or distinct names to fix this.
+. Use `isa` for checking types, not `$type == type-name`. Type comparison with `==` is for value equality, not type checking.
 ====
 
-Call it using the `let` keyword — required for all stream-returning function calls:
+This function works in its current form. We've successfully encapsulated Amasoft's payment systems access policy in a single function. However, the function itself is wordy. Can we do better?
+
+Let's break down the function into its constituent parts, and use them to reconstruct the original function:
+
+[,typeql]
+----
+define
+fun staff_at_or_above_level($level: integer) -> { staff }:
+  match
+    $s isa staff;
+    $la isa level_assignment, links (assignee: $s, level: $l);
+    not { $la has end_date $_; };
+    $l has level_number $n; $n >= $level;
+  return { $s };
+
+fun dept_members($dept: string) -> { staff }:
+  match
+    $_ isa department_membership, links (department: $d, member: $s);
+    $d isa department, has name == $dept;
+  return { $s };
+----
+
+Now redefine the original function using `redefine`:
+
+[,typeql]
+----
+redefine
+fun who_should_have_access_to_payments() -> { staff }:
+  match
+  {
+    let $s in staff_at_or_above_level(5);
+    let $s in dept_members("Finance");
+  } or {
+    let $s in staff_at_or_above_level(7);
+  };
+  return { $s };
+----
+
+Much simpler!
+
+Finally, let's call the function and retrieve the list of all staff who should have access to payment systems, as per Amasoft's corporate policy:
 
 [,typeql]
 ----
 match
-  let $i in can_access_payments($i);
-  $i has name $name;
-fetch { "authorised": $name };
+  let $i in who_should_have_access_to_payments();
+fetch { "authorised": $i.name };
 ----
 
 [NOTE.yellow]
@@ -90,87 +129,74 @@ fetch { "authorised": $name };
 ====
 In TypeDB 3.x, `let` has two distinct uses:
 
-. Calling a stream-returning function: `let $i in can_access_payments($i);`
+. Calling a stream-returning function: `let $i in who_should_have_access_to_payments();`
 . Assigning a value expression: `let $source = "direct grant";`
 
 For function calls, `let` is required — writing `$i in func()` without `let` is a syntax error.
+
+In general, `let` takes a computed value or concept and stores the result to a variable - either an inline expression or a function call. 
 ====
 
 [NOTE.yellow]
 .💡 Functions as living policy documents
 ====
-The TypeQL function IS the policy. It can be read by humans, called by applications, chained with other functions, and updated in one place when the policy changes. There is no stored procedure, no application code, no spreadsheet to keep in sync.
+This TypeQL function represents the Amasoft access policy. We've made it easy to read as a human, easy to call in an application, and it gets updated in one place when the policy changes.
 ====
 
-== Compliance Gap — Both Directions
+== Compliance gap - both directions
 
 The security team needs two reports: who should have access but doesn't (under-provisioned), and who has access but shouldn't (over-provisioned). Both start from the same policy function.
 
-Under-provisioned — authorised, but missing a grant on some payment system. The policy implies access to _every_ payment system, so the function pairs each authorised identity with each payment system they lack. The logic is inlined rather than chained to avoid a known query planner limitation with zero-argument functions:
+Under-provisioned — should have a grant to a payment system, but does not:
 
 [,typeql]
 ----
 define
-fun missing_payments_access() -> { identity, system }:
+fun missing_payments_access_grants() -> { identity, system }:
   match
-    $i isa identity;
-    { $i isa full_time_employee;
-      $la isa level_assignment, links (identity: $i, level: $l);
-      not { $la has end_date $_; };
-      $l has level_number $n; $n >= 5;
-      $_ isa department_membership, links (department: $d, member: $i);
-      $d isa department, has name "Finance"; }
-    or
-    { $la isa level_assignment, links (identity: $i, level: $l);
-      not { $la has end_date $_; };
-      $l has level_number $n; $n >= 7; };
+    let $i in who_should_have_access_to_payments();
     $s isa payments_system;
     not { $_ isa access_grant, links (grantee: $i, system: $s); };
   return { $i, $s };
 ----
 
-Note where the negation sits: `$s` ranges over payment systems _outside_ the `not`, so each system the identity lacks produces its own result. Had we placed `$s` inside the `not`, the function would only report identities with no payments grant at all — and an identity granted on one payment system but missing another would slip through.
-
-Over-provisioned — has a grant but not authorised:
+Over-provisioned — has a grant, but should not:
 
 [,typeql]
 ----
 define
-fun unauthorised_payments_access() -> { identity }:
+fun excess_payments_access_grants() -> { identity, system }:
   match
     $i isa identity;
     $s isa payments_system;
     $_ isa access_grant, links (grantee: $i, system: $s);
-    not { let $_ in can_access_payments($i); };
-  return { $i };
+    not { let $i in who_should_have_access_to_payments(); };
+  return { $i, $s };
 ----
 
-[NOTE.yellow]
-.💡 Updating an existing function
-====
-If you need to redefine a function that already exists, use `redefine`: `redefine fun unauthorised_payments_access() -> { identity }: ...` If the function doesn't exist yet, use `define`. If you get 'function already exists' on `define`, switch to `redefine`. If you get 'function not found' on `redefine`, switch to `define`.
-====
-
-Call both and act on the results:
+Call both and check the results:
 
 [,typeql]
 ----
-# Under-provisioned — no results: Michelle (L7) already has
-# access to every payment system
+# Under-provisioned
 match
-  let $i, $s in missing_payments_access();
+  let $i, $s in missing_payments_access_grants();
   $i has name $name;
   $s has name $sys;
 fetch { "needs_grant": $name, "missing_system": $sys };
+end;
 
-# Over-provisioned — no results: no one has unauthorised access
+# Over-provisioned
 match
   let $i in unauthorised_payments_access();
   $i has name $name;
 fetch { "revoke_access": $name };
+end;
 ----
 
-Both reports coming back empty is the healthy state. Let's deliberately break each one to confirm the queries work. First, under-provisioning — Amasoft hires a Finance analyst:
+Both reports should come back empty - Michelle is L7 and correctly has access to all payment systems; nobody has excess permissions. The data is in a healthy state.
+
+Let's deliberately break each one to confirm the queries work. First, under-provisioning — Amasoft hires a Finance Analyst:
 
 [,typeql]
 ----
@@ -178,6 +204,7 @@ Both reports coming back empty is the healthy state. Let's deliberately break ea
 insert $_ isa full_time_employee,
   has name "Grace Skipper",
   has email "grace.skipper@amasoft.com";
+end;
 
 match
   $grace isa full_time_employee, has email "grace.skipper@amasoft.com";
@@ -185,17 +212,26 @@ match
   $l5 isa level, has level_number 5;
 put
   $_ isa department_membership, links (member: $grace, department: $fin);
-  $_ isa level_assignment, links (identity: $grace, level: $l5),
+  $_ isa level_assignment, links (assignee: $grace, level: $l5),
     has start_date 2024-08-01;
+end;
+----
 
-# Grace appears twice — once per payment system she lacks
+[,typeql]
+----
+# Grace appears twice — once per payment system she lacks access to
 match
-  let $i, $s in missing_payments_access();
+  let $i, $s in missing_payments_access_grants();
   $i has name $name;
   $s has name $sys;
 fetch { "needs_grant": $name, "missing_system": $sys };
+----
 
-# Provision PayBuddy — the report shrinks to Rectangle
+Grace Skipper should have access to all payment systems, but in fact has access to none of them. Let's fix that:
+
+[,typeql]
+----
+# Provision Grace's access to PayBuddy and Rectangle
 match
   $grace isa full_time_employee, has email "grace.skipper@amasoft.com";
   $michelle isa full_time_employee, has email "michelle.rocksmasher@amasoft.com";
@@ -204,8 +240,7 @@ put
   $_ isa access_grant, links (grantee: $grace, system: $pay, grantor: $michelle),
     has permission_level "read",
     has start_datetime 2024-08-01T09:00:00;
-
-# Provision Rectangle, and the report clears
+end;
 match
   $grace isa full_time_employee, has email "grace.skipper@amasoft.com";
   $michelle isa full_time_employee, has email "michelle.rocksmasher@amasoft.com";
@@ -214,14 +249,15 @@ put
   $_ isa access_grant, links (grantee: $grace, system: $rect, grantor: $michelle),
     has permission_level "read",
     has start_datetime 2024-08-01T09:00:00;
+end;
 ----
 
-Granting PayBuddy alone did not clear Grace from the report — access to one payment system is not access to all of them. That per-system pairing is the report doing its job: it is a provisioning checklist, not a yes/no flag. Now the over-provisioned direction:
+Now the over-provisioned direction:
 
 [,typeql]
 ----
 # Grant Alex payments access — he's L2 in Engineering, not authorised
-# (granted by Sam in another hurry)
+# (granted by Sam, who likes to move fast and break things)
 match
   $alex isa full_time_employee, has email "alex.chen@amasoft.com";
   $sam isa full_time_employee, has email "sam.rivera@amasoft.com";
@@ -230,13 +266,16 @@ put
   $_ isa access_grant, links (grantee: $alex, system: $pay, grantor: $sam),
     has permission_level "read",
     has start_datetime 2024-08-01T09:00:00;
-
-# Now run the over-provisioned query — Alex should appear
-match
-  let $i in unauthorised_payments_access();
-  $i has name $name;
-fetch { "revoke_access": $name };
 ----
+
+[,typeql]
+----
+match
+  let $i in excess_payments_access_grants();
+fetch { "revoke_access": $i.name };
+----
+
+As we've now demonstrated, two very simple queries are sufficient to ensure actual access grants match the expectation based on company policy.
 
 [NOTE.yellow]
 .🏢 This is exactly what compliance teams worry about
@@ -245,9 +284,9 @@ Access drift — someone gets access they shouldn't have, often through a one-of
 ====
 
 [NOTE.yellow]
-.🏢 Why this is impossible in SQL
+.🏢 Why this is unwieldy in SQL
 ====
-In SQL, 'who should have access but doesn't' requires the full policy logic as a subquery, negated against the grants table. That's the 30-line UNION query from earlier, wrapped in a NOT EXISTS. And 'who has access but shouldn't' is the inverse. In practice, most organisations don't run these checks at all because writing them is too painful. In TypeDB, it's one function call each.
+In SQL, 'who should have access but doesn't' is typically written with the full policy logic as a subquery, negated against the grants table. That's the 20-line UNION query from earlier, wrapped in a NOT EXISTS. And 'who has access but shouldn't' is the inverse. In TypeDB, it's one function call each.
 ====
 
 [NOTE.blue]
@@ -430,16 +469,16 @@ In SQL, enforcing SoD requires joining across multiple permission tables, checki
 [NOTE.green]
 .🎯 Challenge: The Policy Engine
 ====
-. Define `can_access_payments()` as shown above.
+. Define `who_should_have_access_to_payments()` as shown above.
 . Call it and verify Michelle appears (L7 — authorised).
-. Define `missing_payments_access()` and call it — nothing should appear. Hire Grace Skipper (Finance, L5) and call it again — she should appear once per payment system. Grant her both to clear the report.
+. Define `missing_payments_access_grants()` and call it — nothing should appear. Hire Grace Skipper (Finance, L5) and call it again — she should appear once per payment system. Grant her both to clear the report.
 . Define `unauthorised_payments_access()` and call it — should return nothing initially.
 . Grant Alex payments access, then call `unauthorised_payments_access()` again — Alex should now appear.
 . Define `contract_expiring_soon()` and `has_sensitive_access()`. Call them together in a single match clause.
 . Create the Finance Integration project team, grant it payments read access, add Alex as a member.
 . Write the disjunctive query with source labels to find all identities with payments access via either path.
 . Define `sod_violation()` and call it.
-. Bonus: redefine `can_access_payments()` to also allow L4 Finance members. Confirm the results are correct.
+. Bonus: redefine `who_should_have_access_to_payments()` to also allow L4 Finance members. Confirm the results are correct.
 ====
 
 == What You Can Do Now

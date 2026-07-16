@@ -17,7 +17,7 @@ include::partial$typedb-cloud-setup.adoc[tag=create_cluster,leveloffset=+1]
 
 TypeDB Studio is the visual interface for working with TypeDB. It is where you will write and run every query in this guide — defining your schema, inserting data, and running audit queries.
 
-== Step 1: Create the rbac-in-business Database
+== Step 1: Create the rbac_in_business Database
 
 If you aren't connected to a TypeDB server in Studio yet, follow the instructions for your TypeDB edition:
 
@@ -27,7 +27,7 @@ Once connected, create a new database for this project:
 
 . In the top bar, find the database selector — it shows the currently active database or 'No database selected'
 . Open it and select '+ New Database'
-. Name it `rbac-in-business` — this is the database you'll build throughout this guide. (You can name it anything you like, but this guide will assume it is named 'rbac-in-business'. Leave the sample dataset field blank.)
+. Name it `rbac_in_business` — this is the database you'll build throughout this guide. (You can name it anything you like, but this guide will assume it is named 'rbac_in_business'. Leave the sample dataset field blank.)
 
 [NOTE.green]
 .💡 Optional: Create your own database user
