@@ -20,7 +20,7 @@ Three ways to model conditional access. Working through them will teach you more
 
 === Option A — Permission Level as an Attribute
 
-What we already have: permission-level is an attribute on `access-grant`. Simple, but you lose the reason — was this a policy-based grant or a manual exception? And you cannot query 'who should have access' versus 'who does'.
+What we already have: permission_level is an attribute on `access_grant`. Simple, but you lose the reason — was this a policy-based grant or a manual exception? And you cannot query 'who should have access' versus 'who does'.
 
 === Option B — Policy as a Function
 
@@ -31,31 +31,31 @@ Encode the access rule as a TypeQL function as we did in Chapter Seven. The func
 [,typeql]
 ----
 define
-entity access-policy,
-  owns policy-name @key,
-  owns policy-description;
-relation policy-grant,
+entity access_policy,
+  owns policy_name @key,
+  owns policy_description;
+relation policy_grant,
   relates identity @card(0..1),
   relates policy @card(1),
-  owns granted-by,
-  owns start-datetime,
-  owns end-datetime,
+  owns granted_by,
+  owns start_datetime,
+  owns end_datetime,
   owns reason;
-relation policy-exception,
+relation policy_exception,
   relates identity @card(0..1),
   relates policy @card(1),
-  owns approved-by,
-  owns start-datetime,
-  owns end-datetime,
+  owns approved_by,
+  owns start_datetime,
+  owns end_datetime,
   owns reason;
-attribute policy-name, value string;
-attribute policy-description, value string;
-attribute granted-by, value string;
-attribute approved-by, value string;
+attribute policy_name, value string;
+attribute policy_description, value string;
+attribute granted_by, value string;
+attribute approved_by, value string;
 attribute reason, value string;
 ----
 
-Now you can see not just who has access, but under which policy, who granted the exception, and when it expires. And by now the pattern is familiar: start-datetime and end-datetime are not declared here — both relations reuse the attribute types access-grant has owned since Chapter Four. The difference between 'Alex has payments access' and 'Alex has payments access because the CISO granted a time-limited exception that expires Friday'.
+Now you can see not just who has access, but under which policy, who granted the exception, and when it expires. And by now the pattern is familiar: start_datetime and end_datetime are not declared here — both relations reuse the attribute types access_grant has owned since Chapter Four. The difference between 'Alex has payments access' and 'Alex has payments access because the CISO granted a time-limited exception that expires Friday'.
 
 [NOTE.yellow]
 .🏢 The Golden Rule
@@ -66,7 +66,7 @@ If something in the real world can exist independently — an access policy, a p
 [NOTE.blue]
 .⭐ TypeDB Advantage: Relations as first-class policy carriers
 ====
-In SQL, storing the reason a grant was made, who approved it, and when it expires requires either additional columns on an access_grants table (making it very wide) or a separate exceptions table with foreign keys pointing at multiple other tables. In TypeDB, the `policy-grant` and `policy-exception` relations each own their attributes naturally — the reason lives on the bond, exactly where it belongs.
+In SQL, storing the reason a grant was made, who approved it, and when it expires requires either additional columns on an access_grants table (making it very wide) or a separate exceptions table with foreign keys pointing at multiple other tables. In TypeDB, the `policy_grant` and `policy_exception` relations each own their attributes naturally — the reason lives on the bond, exactly where it belongs.
 ====
 
 == Sub-relations: Specialising the Access Grant
@@ -76,39 +76,39 @@ Not all access grants are the same. A direct grant to an individual is different
 [,typeql]
 ----
 define
-relation direct-access sub access-grant;
-relation policy-based-access sub access-grant,
-  owns policy-name,
-  owns approved-by;
-relation temporary-exception sub access-grant,
-  owns approved-by,
-  owns end-datetime,
+relation direct_access sub access_grant;
+relation policy_based_access sub access_grant,
+  owns policy_name,
+  owns approved_by;
+relation temporary_exception sub access_grant,
+  owns approved_by,
+  owns end_datetime,
   owns reason;
 ----
 
-All three are `access-grant`s. Querying for `access-grant` returns all three automatically. But you can also query specifically for `temporary-exception`s that expire soon — or for `policy-based-access` where a specific person approved it.
+All three are `access_grant`s. Querying for `access_grant` returns all three automatically. But you can also query specifically for `temporary_exception`s that expire soon — or for `policy_based_access` where a specific person approved it.
 
 [NOTE.yellow]
 .💡 When to use a sub-relation
 ====
-Use a sub-relation when two relation types are genuinely the same kind of thing — one is just a more specific version. A `temporary-exception` IS an `access-grant`, just with extra context and constraints. If the two connections feel fundamentally different rather than specialised, they should be separate relation types rather than a hierarchy.
+Use a sub-relation when two relation types are genuinely the same kind of thing — one is just a more specific version. A `temporary_exception` IS an `access_grant`, just with extra context and constraints. If the two connections feel fundamentally different rather than specialised, they should be separate relation types rather than a hierarchy.
 ====
 
 [NOTE.blue]
 .⭐ TypeDB Advantage: Polymorphism applies to relations too
 ====
-In SQL, there is no concept of a relation subtype. You would need separate tables for direct_access, policy_based_access, and temporary_exception — joined by a common foreign key — and your queries would need UNION ALL to treat them uniformly. In TypeDB, querying for `access-grant` automatically includes all subtypes. The hierarchy is enforced by the schema and resolved transparently at query time.
+In SQL, there is no concept of a relation subtype. You would need separate tables for direct_access, policy_based_access, and temporary_exception — joined by a common foreign key — and your queries would need UNION ALL to treat them uniformly. In TypeDB, querying for `access_grant` automatically includes all subtypes. The hierarchy is enforced by the schema and resolved transparently at query time.
 ====
 
 == Composition Over Inheritance
 
-The level system taught this lesson already: Sam's promotion changed the level-assignment relation, not Sam's type. The same principle applies everywhere in the RBAC schema.
+The level system taught this lesson already: Sam's promotion changed the level_assignment relation, not Sam's type. The same principle applies everywhere in the RBAC schema.
 
 [,typeql]
 ----
 # FRAGILE: bakes the department into the type
-entity finance-employee sub full-time-employee; # bad
-# BETTER: composition via department-membership relation
+entity finance_employee sub full_time_employee; # bad
+# BETTER: composition via department_membership relation
 # An employee can be in any department, move departments,
 # and the history is preserved in the relation
 ----
@@ -118,12 +118,12 @@ entity finance-employee sub full-time-employee; # bad
 [NOTE.green]
 .🎯 Challenge: The Policy Architecture
 ====
-. Define `direct-access`, `policy-based-access`, and `temporary-exception` as sub-relations of `access-grant`.
-. Re-grant Alex's engineering platform access as a `direct-access`.
-. Grant a `temporary-exception` to payments for an engineer on the Finance Integration project — with a reason and expiry date.
-. Query: all `temporary-exception`s expiring within 30 days.
+. Define `direct_access`, `policy_based_access`, and `temporary_exception` as sub-relations of `access_grant`.
+. Re-grant Alex's engineering platform access as a `direct_access`.
+. Grant a `temporary_exception` to payments for an engineer on the Finance Integration project — with a reason and expiry date.
+. Query: all `temporary_exception`s expiring within 30 days.
 . Query: all access grants (confirm sub-relations appear in results).
-. Bonus: define an `access-policy` entity and link it to a `policy-based-access` grant. Write a query that returns all grants made under a specific named policy.
+. Bonus: define an `access_policy` entity and link it to a `policy_based_access` grant. Write a query that returns all grants made under a specific named policy.
 ====
 
 == What You Can Do Now

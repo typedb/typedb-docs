@@ -44,7 +44,7 @@ The provisioning system runs on a schedule. If it runs twice, it should not crea
 ----
 # Idempotent identity provisioning
 put
-$_ isa full-time-employee,
+$_ isa full_time_employee,
   has email "new.hire@amasoft.com",
   has name "New Hire";
 ----
@@ -61,13 +61,13 @@ When you run a `put` query, TypeDB always reports 'Success' — whether the reco
 ----
 # Idempotent access grant
 match
-$i isa full-time-employee, has email "new.hire@amasoft.com";
-$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
-$s isa engineering-platform, has name "GitShed";
+$i isa full_time_employee, has email "new.hire@amasoft.com";
+$sam isa full_time_employee, has email "sam.rivera@amasoft.com";
+$s isa engineering_platform, has name "GitShed";
 put
-$_ isa access-grant, links (grantee: $i, system: $s, grantor: $sam),
-  has permission-level "read",
-  has start-datetime 2024-08-01T09:00:00;
+$_ isa access_grant, links (grantee: $i, system: $s, grantor: $sam),
+  has permission_level "read",
+  has start_datetime 2024-08-01T09:00:00;
 ----
 
 == The Access Check — The Most Important Query
@@ -79,69 +79,69 @@ This query runs thousands of times a day. An identity requests access to a syste
 match
 $i isa identity, has email "alex.chen@amasoft.com",
   has status "active";
-$s isa payments-system;
-{ $_ isa access-grant, links (grantee: $i, system: $s); }
+$s isa payments_system;
+{ $_ isa access_grant, links (grantee: $i, system: $s); }
 or
-{ $_ isa project-membership, links (member: $i, team: $t);
-  $_ isa project-access, links (team: $t, system: $s); };
+{ $_ isa project_membership, links (member: $i, team: $t);
+  $_ isa project_access, links (team: $t, system: $s); };
 $i has name $name;
-fetch { "has-access": $name };
+fetch { "has_access": $name };
 ----
 
 [NOTE.yellow]
 .⚠️ You cannot fetch an entity directly
 ====
-`fetch { "key": $i }` where `$i` is an entity will fail with 'Fetching entities is not supported'. Always fetch attribute values instead: `$i has name $name; fetch { "has-access": $name };` Or use `$i.*` to fetch all attributes at once.
+`fetch { "key": $i }` where `$i` is an entity will fail with 'Fetching entities is not supported'. Always fetch attribute values instead: `$i has name $name; fetch { "has_access": $name };` Or use `$i.*` to fetch all attributes at once.
 ====
 
 [NOTE.yellow]
 .💡 The kill switch — why status comes first
 ====
-If an employee is suspended or terminated, their `access-grant` records still exist in the database. That's correct — history must be preserved. But the access check must fail. By checking `has status "active"` before evaluating any grants, you ensure a suspended identity can never pass the access check regardless of what grants they hold. Remove this check and a terminated employee with an un-revoked grant still has access.
+If an employee is suspended or terminated, their `access_grant` records still exist in the database. That's correct — history must be preserved. But the access check must fail. By checking `has status "active"` before evaluating any grants, you ensure a suspended identity can never pass the access check regardless of what grants they hold. Remove this check and a terminated employee with an un-revoked grant still has access.
 ====
 
 == One Identifier for Every Identity
 
-The check above finds Alex by email. Now run it for the ci-deploy-bot — the heaviest user of this query. It has no email; its key is service-name. As things stand, the application must know what kind of identity it holds before it can ask whether that identity has access.
+The check above finds Alex by email. Now run it for the ci-deploy-bot — the heaviest user of this query. It has no email; its key is service_name. As things stand, the application must know what kind of identity it holds before it can ask whether that identity has access.
 
 One purely additive define fixes this:
 
 [,typeql]
 ----
 define
-attribute identity-name @abstract, value string;
-attribute email sub identity-name;
-attribute service-name sub identity-name;
+attribute identity_name @abstract, value string;
+attribute email sub identity_name;
+attribute service_name sub identity_name;
 ----
 
-This is Chapter Two's in-place re-parenting — `entity staff sub identity;` — applied to attributes, on a live database. No data changes: every email and every service-name already in the database is now an identity-name. One lookup attribute serves every identity:
+This is Chapter Two's in-place re-parenting — `entity staff sub identity;` — applied to attributes, on a live database. No data changes: every email and every service_name already in the database is now an identity_name. One lookup attribute serves every identity:
 
 [,typeql]
 ----
 match
-$i isa identity, has identity-name "ci-deploy-bot",
+$i isa identity, has identity_name "ci-deploy-bot",
   has status "active";
-$s isa engineering-platform;
-{ $_ isa access-grant, links (grantee: $i, system: $s); }
+$s isa engineering_platform;
+{ $_ isa access_grant, links (grantee: $i, system: $s); }
 or
-{ $_ isa project-membership, links (member: $i, team: $t);
-  $_ isa project-access, links (team: $t, system: $s); };
+{ $_ isa project_membership, links (member: $i, team: $t);
+  $_ isa project_access, links (team: $t, system: $s); };
 $i has name $name;
-fetch { "has-access": $name };
+fetch { "has_access": $name };
 ----
 
-Uniqueness stays with the subtypes — emails are unique among staff, service-names among service accounts — and identity-name itself is abstract, so it can never be inserted directly, only as one of its concrete kinds.
+Uniqueness stays with the subtypes — emails are unique among staff, service_names among service accounts — and identity_name itself is abstract, so it can never be inserted directly, only as one of its concrete kinds.
 
 For policy-based access checks, call the function directly:
 
 [,typeql]
 ----
 match
-$i isa identity, has identity-name "alex.chen@amasoft.com",
+$i isa identity, has identity_name "alex.chen@amasoft.com",
   has status "active";
-let $authorised in can-access-payments($i);
+let $authorised in can_access_payments($i);
 $authorised has name $name;
-fetch { "policy-authorised": $name };
+fetch { "policy_authorised": $name };
 ----
 
 This is always a `read` transaction. Never a `write`. The result is empty (no access) or returns the identity (has access).
@@ -153,7 +153,7 @@ In Chapter Three, you deleted Alex's contractor record and all its relations whe
 [NOTE.yellow]
 .🏢 Production RBAC systems do not delete history — they close it
 ====
-When access is revoked, the `access-grant` is not deleted. It is closed with a `end-datetime` date. The record of who had access, when they got it, and when it was revoked is permanently preserved in the database. This is not optional — it is the foundation of an auditable RBAC system. Auditors don't ask 'who has access right now?' They ask 'who had access to payments on March 15th, and who approved it?' Delete is for type changes. History is closed, never deleted.
+When access is revoked, the `access_grant` is not deleted. It is closed with a `end_datetime` date. The record of who had access, when they got it, and when it was revoked is permanently preserved in the database. This is not optional — it is the foundation of an auditable RBAC system. Auditors don't ask 'who has access right now?' They ask 'who had access to payments on March 15th, and who approved it?' Delete is for type changes. History is closed, never deleted.
 ====
 
 Deprovision an identity by closing all their access grants:
@@ -162,15 +162,15 @@ Deprovision an identity by closing all their access grants:
 ----
 # Close all active grants for a departing employee
 match
-$i isa identity, has identity-name "departing@amasoft.com";
-$ag isa access-grant, links (grantee: $i);
-not { $ag has end-datetime $_; };
+$i isa identity, has identity_name "departing@amasoft.com";
+$ag isa access_grant, links (grantee: $i);
+not { $ag has end_datetime $_; };
 update
-$ag has end-datetime 2024-12-31T17:00:00;
+$ag has end_datetime 2024-12-31T17:00:00;
 
 # Suspend the identity (kill switch — immediate effect)
 match
-$i isa identity, has identity-name "departing@amasoft.com";
+$i isa identity, has identity_name "departing@amasoft.com";
 update
 $i has status "terminated";
 ----
@@ -178,7 +178,7 @@ $i has status "terminated";
 [NOTE.yellow]
 .💡 Two steps for offboarding
 ====
-. Close all grants with `end-datetime` — preserves history, marks when access ended.
+. Close all grants with `end_datetime` — preserves history, marks when access ended.
 . Set `status` to 'terminated' — the kill switch that immediately fails all access checks regardless of grant state.
 
 The kill switch is the safety net. The closed grants are the audit trail. Both are needed.
@@ -192,26 +192,26 @@ The schema you have built is production-grade. Before deploying for a real compa
 .💡 Natural extensions for production deployment
 ====
 * *Identity status* — already in the schema. Ensure every identity provisioning pipeline sets `status` to 'active' on creation.
-* *Granular resources* — currently grants target systems (`payments-system`, `engineering-platform`). Real-world RBAC often needs resource-level grants — a specific GitHub repo, an S3 bucket, a financial ledger. Extend with:
+* *Granular resources* — currently grants target systems (`payments_system`, `engineering_platform`). Real-world RBAC often needs resource-level grants — a specific GitHub repo, an S3 bucket, a financial ledger. Extend with:
 +
 [,typeql]
 ----
-entity resource, owns resource-name @key;
-relation system-resource, relates system @card(1), relates resource @card(0..);
+entity resource, owns resource_name @key;
+relation system_resource, relates system @card(1), relates resource @card(0..);
 ----
-* *Separation of Duties* — already implemented as `sod-violation()` in Chapter Seven. Extend with additional SoD rules as your compliance requirements grow.
-* *Multi-category systems* — Workweek is classified as an `hr-system`, but payroll also executes payments: it decides who is owed money and moves it — a combination the two-system SoD check cannot see inside one system. A type has only one supertype, so we replace the subtypes with categorization as data:
+* *Separation of Duties* — already implemented as `sod_violation()` in Chapter Seven. Extend with additional SoD rules as your compliance requirements grow.
+* *Multi-category systems* — Workweek is classified as an `hr_system`, but payroll also executes payments: it decides who is owed money and moves it — a combination the two-system SoD check cannot see inside one system. A type has only one supertype, so we replace the subtypes with categorization as data:
 +
 [,typeql]
 ----
-entity system-category, owns name @key;
-relation system-categorization, relates category @card(1), relates system @card(0..);
+entity system_category, owns name @key;
+relation system_categorization, relates category @card(1), relates system @card(0..);
 ----
 +
 Workweek is then categorized as both "hr" and "payments".
 * *Sub-departments and regional access* — as discussed in Chapter Two, sub-teams and geographic access restrictions are straightforward to add. Engineering sub Platform, Product, and Security; EU-region access restrictions; APAC-specific systems.
 * *System ownership* — a formal department-owns-system relation enables 'who has access to systems outside their department's ownership?' as a standard audit query.
-* *Approval workflows* — the `policy-exception` relation in Chapter Eight already captures approver and reason. Wire this to an approval system by granting temporary-exception access in response to approved requests.
+* *Approval workflows* — the `policy_exception` relation in Chapter Eight already captures approver and reason. Wire this to an approval system by granting temporary_exception access in response to approved requests.
 
 All of these follow the same TypeDB patterns you have already learned. The foundation is solid. Build on it.
 ====
@@ -222,10 +222,10 @@ All of these follow the same TypeDB patterns you have already learned. The found
 .🎯 Challenge: The Provisioning Pipeline
 ====
 . Write an idempotent provisioning script using `put` that creates an identity with `status` 'active' and grants them access. Run it twice — confirm no duplicates.
-. Write the access check query including the `status` kill switch. Look the identity up by identity-name and confirm it works for the ci-deploy-bot as well as for staff.
-. Deprovision an identity: close all their access grants with `end-datetime`, then set `status` to 'terminated'.
+. Write the access check query including the `status` kill switch. Look the identity up by identity_name and confirm it works for the ci-deploy-bot as well as for staff.
+. Deprovision an identity: close all their access grants with `end_datetime`, then set `status` to 'terminated'.
 . Verify: run the access check for the deprovisioned identity — confirm it returns nothing even if grants exist.
-. Resolve Chapter Six's audit finding: close the deploy bot's admin grant with `end-datetime`, insert a write grant in its place, and re-run Chapter Six's admin audit to confirm the bot no longer appears.
+. Resolve Chapter Six's audit finding: close the deploy bot's admin grant with `end_datetime`, insert a write grant in its place, and re-run Chapter Six's admin audit to confirm the bot no longer appears.
 . Bonus: write a full onboarding pipeline — create the identity, set `status`, assign to a department, set level, grant standard access. Make all inserts idempotent with `put`.
 ====
 

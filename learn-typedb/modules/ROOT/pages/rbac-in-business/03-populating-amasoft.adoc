@@ -21,26 +21,26 @@ Time to bring in the cast — three staff members, and one identity that isn't h
 [,typeql]
 ----
 # Sam Rivera — Engineering manager, Amasoft's first registered employee
-insert $_ isa full-time-employee,
+insert $_ isa full_time_employee,
   has name "Sam Rivera",
   has email "sam.rivera@amasoft.com";
 # Alex Chen — contractor on a six-month engagement
 insert $_ isa contractor,
   has name "Alex Chen",
   has email "alex.chen@amasoft.com",
-  has contract-end-date 2024-07-01;
+  has contract_end_date 2024-07-01;
 # Michelle Rocksmasher — CISO, L7
-insert $_ isa full-time-employee,
+insert $_ isa full_time_employee,
   has name "Michelle Rocksmasher",
   has email "michelle.rocksmasher@amasoft.com";
 # ci-deploy-bot — Engineering's deployment service account
-insert $_ isa service-account,
+insert $_ isa service_account,
   has name "CI Deploy Bot",
-  has service-name "ci-deploy-bot",
-  has owner-team "Engineering";
+  has service_name "ci-deploy-bot",
+  has owner_team "Engineering";
 ----
 
-Note the last insert: the deploy bot is created with the same insert pattern as everyone else. It has a display name like any other identity, but no email — its key is service-name. It is an identity all the same, and Chapter Four will grant it access exactly the way it grants Alex.
+Note the last insert: the deploy bot is created with the same insert pattern as everyone else. It has a display name like any other identity, but no email — its key is service_name. It is an identity all the same, and Chapter Four will grant it access exactly the way it grants Alex.
 
 [NOTE.yellow]
 .💡 Comments in TypeQL — lines starting with #
@@ -57,7 +57,7 @@ Let's insert the departments. `department` is abstract, so we define a concrete 
 define
 entity engineering sub department;
 entity finance sub department;
-entity hr-dept sub department;
+entity hr_dept sub department;
 entity legal sub department;
 ----
 
@@ -72,7 +72,7 @@ Let's try an alternative model. Departments as data means no subtypes and a conc
 undefine
 engineering;
 finance;
-hr-dept;
+hr_dept;
 legal;
 ----
 
@@ -116,25 +116,25 @@ $_ isa department, has name "HR";
 $_ isa department, has name "Legal";
 end;
 insert
-$_ isa payments-system,
+$_ isa payments_system,
   has name "PayBuddy",
   has description "Payment processing and reconciliation";
-$_ isa payments-system,
+$_ isa payments_system,
   has name "Rectangle",
   has description "Point-of-sale and merchant payments";
-$_ isa hr-system,
+$_ isa hr_system,
   has name "Workweek",
   has description "HR records and payroll";
-$_ isa engineering-platform,
+$_ isa engineering_platform,
   has name "GitShed",
   has description "Source control and code review";
-$_ isa engineering-platform,
+$_ isa engineering_platform,
   has name "EllipseCI",
   has description "CI/CD and deployment automation";
-$_ isa engineering-platform,
+$_ isa engineering_platform,
   has name "Datacat",
   has description "Monitoring and observability";
-$_ isa finance-platform,
+$_ isa finance_platform,
   has name "Xilch",
   has description "Accounting and financial reporting";
 end;
@@ -146,26 +146,26 @@ end;
 ----
 # Place Sam in Engineering
 match
-$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
+$sam isa full_time_employee, has email "sam.rivera@amasoft.com";
 $eng isa department, has name "Engineering";
 put
-$_ isa department-membership, links (member: $sam, department: $eng);
+$_ isa department_membership, links (member: $sam, department: $eng);
 end;
 # Place Alex in Engineering, reporting to Sam
 match
 $alex isa contractor, has email "alex.chen@amasoft.com";
-$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
+$sam isa full_time_employee, has email "sam.rivera@amasoft.com";
 $eng isa department, has name "Engineering";
 put
-$_ isa department-membership, links (member: $alex, department: $eng);
-$_ isa reports-to, links (manager: $sam, report: $alex), has start-date 2024-01-15;
+$_ isa department_membership, links (member: $alex, department: $eng);
+$_ isa reports_to, links (manager: $sam, report: $alex), has start_date 2024-01-15;
 end;
 # Place Michelle in Legal
 match
-$michelle isa full-time-employee, has email "michelle.rocksmasher@amasoft.com";
+$michelle isa full_time_employee, has email "michelle.rocksmasher@amasoft.com";
 $legal isa department, has name "Legal";
 put
-$_ isa department-membership, links (member: $michelle, department: $legal);
+$_ isa department_membership, links (member: $michelle, department: $legal);
 end;
 ----
 
@@ -174,7 +174,7 @@ end;
 ====
 The `match` clause finds existing instances. The `put` clause uses those found instances to create something new. You cannot insert a relation without first finding its participants.
 
-Why `put` and not `insert`? Suppose you replace `put` with `insert` in the above queries and re-ran them. Without a `@key` to constrain these `department-membership` instances, you'd end up having duplicate relation instances - and it's not clear what that means. Practically, it's inconsistent data.
+Why `put` and not `insert`? Suppose you replace `put` with `insert` in the above queries and re-ran them. Without a `@key` to constrain these `department_membership` instances, you'd end up having duplicate relation instances - and it's not clear what that means. Practically, it's inconsistent data.
 
 `put` is essentially "insert if not exists". With `put`, if you rerun the query, your data is unchanged - thus it stays consistent.
 ====
@@ -200,7 +200,7 @@ Here is Sam Rivera's insert query:
 [,typeql]
 ----
 insert
-$_ isa full-time-employee,
+$_ isa full_time_employee,
   has name "Sam Rivera",
   has email "sam.rivera@amasoft.com";
 ----
@@ -210,14 +210,14 @@ You may be wondering: why `$_`? In TypeQL, this is called an **anonymous variabl
 [,typeql]
 ----
 insert
-$sam isa full-time-employee,
+$sam isa full_time_employee,
   has name "Sam Rivera",
   has email "sam.rivera@amasoft.com";
 ----
 
 In this query, `$sam` is a **named variable**. You can now refer to `$sam` elsewhere in the query. For example, to insert a relation.
 
-You might wonder: why do I need a variable at all? Why not just write 'insert full-time-employee, has name "Sam Rivera"'?
+You might wonder: why do I need a variable at all? Why not just write 'insert full_time_employee, has name "Sam Rivera"'?
 
 Compare with SQL:
 
@@ -242,10 +242,10 @@ INSERT INTO dept_membership (member_id, dept_id) VALUES (@sam_id, @eng_id);
 ----
 # TypeQL: describe the pattern in one query
 match
-$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
+$sam isa full_time_employee, has email "sam.rivera@amasoft.com";
 $eng isa department, has name "Engineering";
 put
-$_ isa department-membership, links (member: $sam, department: $eng);
+$_ isa department_membership, links (member: $sam, department: $eng);
 ----
 
 In the TypeQL version, `$sam` and `$eng` are the handles that connect the `match` clause to the `insert` clause. This is what pattern language means in practice.
@@ -281,7 +281,7 @@ In essence, fetch syntax is JSON syntax.
 match
 $p has name $name;
 $d isa department, has name "Engineering";
-$_ isa department-membership, links (member: $p, department: $d);
+$_ isa department_membership, links (member: $p, department: $d);
 fetch { "name": $name };
 ----
 
@@ -298,7 +298,7 @@ Who reports to Sam?
 match
 $sam has name "Sam Rivera";
 $report has name $report_name;
-$_ isa reports-to, links (manager: $sam, report: $report);
+$_ isa reports_to, links (manager: $sam, report: $report);
 fetch { "report": $report_name };
 ----
 
@@ -319,7 +319,7 @@ $p has name $name;
 fetch { "name": $name, "type": label($type) };
 ----
 
-Alex Chen would appear four times: as `contractor`, `temporary-staff`, `staff`, and `identity`. Useful when you want the full classification chain — but often more than you need.
+Alex Chen would appear four times: as `contractor`, `temporary_staff`, `staff`, and `identity`. Useful when you want the full classification chain — but often more than you need.
 
 === Query 2: Direct subtypes only (sub!)
 
@@ -334,7 +334,7 @@ $p has name $name;
 fetch { "name": $name, "type": label($type) };
 ----
 
-Now Alex appears once — as `temporary-staff`, the direct subtype of `staff` that applies. Sam appears as `permanent-staff`. Much cleaner, but still not necessarily the most specific type if the hierarchy goes deeper.
+Now Alex appears once — as `temporary_staff`, the direct subtype of `staff` that applies. Sam appears as `permanent_staff`. Much cleaner, but still not necessarily the most specific type if the hierarchy goes deeper.
 
 === Query 3: The most specific type (lowest in hierarchy)
 
@@ -362,32 +362,32 @@ Alex's contract period is ending and they've been offered a full-time role. Let'
 
 [,typeql]
 ----
-# Step 1: Delete department-membership
+# Step 1: Delete department_membership
 match
 $alex isa contractor, has email "alex.chen@amasoft.com";
-$dm isa department-membership, links (member: $alex);
+$dm isa department_membership, links (member: $alex);
 delete $dm;
-# Step 2: Delete reports-to bond
+# Step 2: Delete reports_to bond
 match
 $alex isa contractor, has email "alex.chen@amasoft.com";
-$rt isa reports-to, links (report: $alex);
+$rt isa reports_to, links (report: $alex);
 delete $rt;
 # Step 3: Delete the contractor record
 match $alex isa contractor, has email "alex.chen@amasoft.com";
 delete $alex;
-# Step 4: Reinsert as full-time-employee
-insert $_ isa full-time-employee,
+# Step 4: Reinsert as full_time_employee
+insert $_ isa full_time_employee,
   has name "Alex Chen",
   has email "alex.chen@amasoft.com";
-# Step 5: Recreate department-membership and reports-to
+# Step 5: Recreate department_membership and reports_to
 match
-$alex isa full-time-employee, has email "alex.chen@amasoft.com";
+$alex isa full_time_employee, has email "alex.chen@amasoft.com";
 $eng isa department, has name "Engineering";
-$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
+$sam isa full_time_employee, has email "sam.rivera@amasoft.com";
 insert
-$_ isa department-membership, links (member: $alex, department: $eng);
-$_ isa reports-to, links (manager: $sam, report: $alex),
-  has start-date 2024-07-01;
+$_ isa department_membership, links (member: $alex, department: $eng);
+$_ isa reports_to, links (manager: $sam, report: $alex),
+  has start_date 2024-07-01;
 ----
 
 TypeDB lets you combine matches, inserts, and deletes into arbitrarily long "pipelines", and runs the entire pipeline as a single query.
@@ -409,7 +409,7 @@ TypeDB's cardinality constraints protect data integrity during deletes as well a
 . Set Alex as Sam's report.
 . Promote Alex from contractor to full-time employee following the five-step process above.
 . Query: who is in each department?
-. Query: what type is each staff member — confirm Alex now appears as full-time-employee.
+. Query: what type is each staff member — confirm Alex now appears as full_time_employee.
 ====
 
 == What You Can Do Now

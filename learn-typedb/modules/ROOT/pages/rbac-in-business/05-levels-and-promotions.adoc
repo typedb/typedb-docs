@@ -23,33 +23,33 @@ A person's level, however, changes over time, with history that must be preserve
 [,typeql]
 ----
 define
-attribute level-number, value integer @range(0..7);
+attribute level_number, value integer @range(0..7);
 entity level,
-  owns level-number @key,
+  owns level_number @key,
   owns name;
-attribute end-date, value date;
-relation level-assignment,
+attribute end_date, value date;
+relation level_assignment,
   relates identity @card(1),
   relates level @card(1),
-  owns start-date @card(1),
-  owns end-date @card(0..1);
-entity identity, plays level-assignment:identity;
-entity level, plays level-assignment:level;
+  owns start_date @card(1),
+  owns end_date @card(0..1);
+entity identity, plays level_assignment:identity;
+entity level, plays level_assignment:level;
 ----
 
-`@range(0..7)` on level-number means TypeDB rejects any value outside this range at insert time. `@card` on start-date and end-date means level assignments must all have exactly one start-date, and may optionally have one end-date. Insert the level instances:
+`@range(0..7)` on level_number means TypeDB rejects any value outside this range at insert time. `@card` on start_date and end_date means level assignments must all have exactly one start_date, and may optionally have one end_date. Insert the level instances:
 
 [,typeql]
 ----
 insert
-$_ isa level, has level-number 0, has name "Trainee";
-$_ isa level, has level-number 1, has name "Junior Associate";
-$_ isa level, has level-number 2, has name "Associate";
-$_ isa level, has level-number 3, has name "Senior Associate";
-$_ isa level, has level-number 4, has name "Manager";
-$_ isa level, has level-number 5, has name "Senior Manager";
-$_ isa level, has level-number 6, has name "Director";
-$_ isa level, has level-number 7, has name "Executive";
+$_ isa level, has level_number 0, has name "Trainee";
+$_ isa level, has level_number 1, has name "Junior Associate";
+$_ isa level, has level_number 2, has name "Associate";
+$_ isa level, has level_number 3, has name "Senior Associate";
+$_ isa level, has level_number 4, has name "Manager";
+$_ isa level, has level_number 5, has name "Senior Manager";
+$_ isa level, has level_number 6, has name "Director";
+$_ isa level, has level_number 7, has name "Executive";
 ----
 
 [NOTE.yellow]
@@ -63,25 +63,25 @@ Return to the Query page. Assign Alex to L2 (their new level as a full-time empl
 [,typeql]
 ----
 match
-$alex isa full-time-employee, has email "alex.chen@amasoft.com";
-$l2 isa level, has level-number 2;
+$alex isa full_time_employee, has email "alex.chen@amasoft.com";
+$l2 isa level, has level_number 2;
 put
-$_ isa level-assignment, links (identity: $alex, level: $l2),
-  has start-date 2024-07-01;
+$_ isa level_assignment, links (identity: $alex, level: $l2),
+  has start_date 2024-07-01;
 end;
 match
-$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
-$l4 isa level, has level-number 4;
+$sam isa full_time_employee, has email "sam.rivera@amasoft.com";
+$l4 isa level, has level_number 4;
 put
-$_ isa level-assignment, links (identity: $sam, level: $l4),
-  has start-date 2022-06-01;
+$_ isa level_assignment, links (identity: $sam, level: $l4),
+  has start_date 2022-06-01;
 end;
 match
-$michelle isa full-time-employee, has email "michelle.rocksmasher@amasoft.com";
-$l7 isa level, has level-number 7;
+$michelle isa full_time_employee, has email "michelle.rocksmasher@amasoft.com";
+$l7 isa level, has level_number 7;
 put
-$_ isa level-assignment, links (identity: $michelle, level: $l7),
-  has start-date 2020-01-01;
+$_ isa level_assignment, links (identity: $michelle, level: $l7),
+  has start_date 2020-01-01;
 end;
 ----
 
@@ -91,7 +91,7 @@ end;
 A successful write query that reports 'Total rows: 0' always means the match clause found nothing — not that the insert failed silently. Check two things:
 
 . Does the identity exist? Run: `match $x isa staff, has email "alex.chen@amasoft.com"; fetch { "x": $x };`
-. Do the level instances exist? Run: `match $l isa level, has level-number $n; fetch { "n": $n };`
+. Do the level instances exist? Run: `match $l isa level, has level_number $n; fetch { "n": $n };`
 
 If either returns nothing, that is why the insert produced 0 rows.  
 ====
@@ -99,34 +99,34 @@ If either returns nothing, that is why the insert produced 0 rows.
 [NOTE.blue]
 .⭐ TypeDB Advantage: Level history preserved as data
 ====
-In SQL, history is lost unless you build a separate audit table. In TypeDB, each `level-assignment` is a first-class relation with its own `start-date` and `end-date` dates. Closing an old assignment and opening a new one is non-destructive: the history lives in the data.
+In SQL, history is lost unless you build a separate audit table. In TypeDB, each `level_assignment` is a first-class relation with its own `start_date` and `end_date` dates. Closing an old assignment and opening a new one is non-destructive: the history lives in the data.
 ====
 
 == Sam's Promotion — Level Change (L4 → L5)
 
-Sam is being promoted to L5. This does not change Sam's type — Sam is still a full-time employee. It only changes the `level-assignment` relation. This is non-destructive:
+Sam is being promoted to L5. This does not change Sam's type — Sam is still a full-time employee. It only changes the `level_assignment` relation. This is non-destructive:
 
 [,typeql]
 ----
 # Close the old level assignment
 match
-$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
-$la isa level-assignment, links (identity: $sam);
+$sam isa full_time_employee, has email "sam.rivera@amasoft.com";
+$la isa level_assignment, links (identity: $sam);
 update
-$la has end-date 2024-06-30;
+$la has end_date 2024-06-30;
 # Open the new level assignment
 match
-$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
-$l5 isa level, has level-number 5;
+$sam isa full_time_employee, has email "sam.rivera@amasoft.com";
+$l5 isa level, has level_number 5;
 put
-$_ isa level-assignment, links (identity: $sam, level: $l5),
-  has start-date 2024-07-01;
+$_ isa level_assignment, links (identity: $sam, level: $l5),
+  has start_date 2024-07-01;
 ----
 
 [NOTE.yellow]
 .💡 The 'links' and 'update' keywords
 ====
-When binding both a relation's participant and the relation itself to variables, use the `links` keyword: `$la isa level-assignment, links (identity: $i, level: $l)` This tells TypeDB that `$la` is a relation instance linking those role players. 
+When binding both a relation's participant and the relation itself to variables, use the `links` keyword: `$la isa level_assignment, links (identity: $i, level: $l)` This tells TypeDB that `$la` is a relation instance linking those role players. 
 
 When updating an attribute on an existing instance (rather than inserting a new one), use `update` instead of `insert`, as in the promotion query above. `update` replaces the existing attribute value. `insert` would add a second value alongside it.
 ====
@@ -134,9 +134,9 @@ When updating an attribute on an existing instance (rather than inserting a new 
 [NOTE.yellow]
 .🏢 Type change vs. data change
 ====
-Type change (contractor → full-time-employee): destructive. Occurred in Chapter Three when Alex was promoted. Required deleting all relations first, then deleting the identity, then reinserting.
+Type change (contractor → full_time_employee): destructive. Occurred in Chapter Three when Alex was promoted. Required deleting all relations first, then deleting the identity, then reinserting.
 
-Level change (L4 → L5): straightforward. Close the old assignment with `end-date`, open a new one. History is preserved. Sam's access grants are completely unaffected.
+Level change (L4 → L5): straightforward. Close the old assignment with `end_date`, open a new one. History is preserved. Sam's access grants are completely unaffected.
 
 In general, you want to design schema such that entities don't regularly change into different types. However, we will keep this sample schema simple.
 ====
@@ -148,20 +148,20 @@ Query for all employees at L4 and L5 and their current level:
 [,typeql]
 ----
 match
-$i isa permanent-staff, has name $name;
-$la isa level-assignment, links (identity: $i, level: $l);
-not { $la has end-date $_; };
-$l has level-number $n;
+$i isa permanent_staff, has name $name;
+$la isa level_assignment, links (identity: $i, level: $l);
+not { $la has end_date $_; };
+$l has level_number $n;
 { $n == 4; } or { $n == 5; };
 fetch { "name": $name, "level": $n };
 ----
 
-Here we use `or` to match based on two possible criteria (level is 4 or 5). The `not { $la has end-date $_; }` pattern filters to only assignments without a closing date. Because we only ever set `end-date` when reassigning someone's level, that is sufficient here.
+Here we use `or` to match based on two possible criteria (level is 4 or 5). The `not { $la has end_date $_; }` pattern filters to only assignments without a closing date. Because we only ever set `end_date` when reassigning someone's level, that is sufficient here.
 
 [NOTE.blue]
 .⭐ TypeDB Advantage: Polymorphic queries across a hierarchy
 ====
-Querying for all 'permanent-staff' instances automatically includes full-time-employee and part-time-employee. In SQL, this requires UNION ALL across multiple tables or a discriminator column. In TypeDB, the hierarchy is enforced by the schema and resolved at query time.
+Querying for all 'permanent_staff' instances automatically includes full_time_employee and part_time_employee. In SQL, this requires UNION ALL across multiple tables or a discriminator column. In TypeDB, the hierarchy is enforced by the schema and resolved at query time.
 ====
 
 == Chapter Five Challenge
@@ -169,7 +169,7 @@ Querying for all 'permanent-staff' instances automatically includes full-time-em
 [NOTE.green]
 .🎯 Challenge: Levels and Promotions
 ====
-. Define level-assignment and insert all eight level instances.
+. Define level_assignment and insert all eight level instances.
 . Assign Alex to L2, Sam to L4, and Michelle to L7.
 . Promote Sam from L4 to L5 using the `update` pattern.
 . Query: who is currently at L4 or above?

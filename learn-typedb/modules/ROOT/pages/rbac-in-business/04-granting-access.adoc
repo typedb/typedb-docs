@@ -19,29 +19,29 @@ Alex Chen has just joined Amasoft as a full-time employee in the engineering tea
 [,typeql]
 ----
 define
-attribute permission-level, value string @values("read", "write", "admin");
-attribute start-datetime, value datetime;
-attribute end-datetime, value datetime;
-relation access-grant,
+attribute permission_level, value string @values("read", "write", "admin");
+attribute start_datetime, value datetime;
+attribute end_datetime, value datetime;
+relation access_grant,
   relates grantee @card(1),
   relates system @card(1),
   relates grantor @card(1),
-  owns permission-level,
-  owns start-datetime,
-  owns end-datetime;
-entity identity, plays access-grant:grantee;
-entity system, plays access-grant:system;
-entity permanent-staff, plays access-grant:grantor;
+  owns permission_level,
+  owns start_datetime,
+  owns end_datetime;
+entity identity, plays access_grant:grantee;
+entity system, plays access_grant:system;
+entity permanent_staff, plays access_grant:grantor;
 ----
 
 We use `datetime` instead of `date` - system access grants are typically time-sensitive; we should encode actual timestamps.
 
-Notice also: `access-grant` doesn't just connect two entities, it also has its own attributes (e.g. `permission-level`). TypeDB relations can natively own their own attributes!
+Notice also: `access_grant` doesn't just connect two entities, it also has its own attributes (e.g. `permission_level`). TypeDB relations can natively own their own attributes!
 
 [NOTE.yellow]
 .💡 Two scopes for @values
 ====
-`@values` can be scoped to the attribute type itself — as with `permission-level` here, constraining every instance — or to one type's ownership of it, as with `identity owns status`. Status shows why both modelling options exist - it means different things in different contexts; a system's status might be "healthy", "degraded", or "down". Read more in the xref:{page-version}@typeql-reference::annotations/values.adoc[@values annotation reference].
+`@values` can be scoped to the attribute type itself — as with `permission_level` here, constraining every instance — or to one type's ownership of it, as with `identity owns status`. Status shows why both modelling options exist - it means different things in different contexts; a system's status might be "healthy", "degraded", or "down". Read more in the xref:{page-version}@typeql-reference::annotations/values.adoc[@values annotation reference].
 ====
 
 [NOTE.blue]
@@ -52,7 +52,7 @@ In SQL, enforcing that permission_level can only be 'read', 'write', or 'admin' 
 
 == N-ary Relations — TypeDB's Native Superpower
 
-Look again at what `access-grant` connects: a grantee, a system, and a grantor - three participants. This is called an N-ary relation: a connection with more than two participants. The following two code blocks are for comparison only — do not run them. They show how the same concept looks across two other database types, so you can compare them against TypeDB.
+Look again at what `access_grant` connects: a grantee, a system, and a grantor - three participants. This is called an N-ary relation: a connection with more than two participants. The following two code blocks are for comparison only — do not run them. They show how the same concept looks across two other database types, so you can compare them against TypeDB.
 
 In SQL, this requires a junction table and multiple JOINs just to answer a simple question:
 
@@ -93,8 +93,8 @@ In TypeDB, the relation is first-class. No junction table, no intermediate node,
 ----
 # TypeDB: who granted what — one clean pattern
 match
-$g isa access-grant, links (grantee: $i, system: $s, grantor: $by);
-fetch { "grantee": $i.name, "system": $s.name, "granted-by": $by.name };
+$g isa access_grant, links (grantee: $i, system: $s, grantor: $by);
+fetch { "grantee": $i.name, "system": $s.name, "granted_by": $by.name };
 ----
 
 [NOTE.blue]
@@ -110,61 +110,61 @@ In SQL, any relationship that carries data requires a junction table — extra s
 # Alex gets read access to GitShed, granted by Sam, their manager
 match
 $alex isa contractor, has email "alex.chen@amasoft.com";
-$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
-$eng isa engineering-platform, has name "GitShed";
+$sam isa full_time_employee, has email "sam.rivera@amasoft.com";
+$eng isa engineering_platform, has name "GitShed";
 put
-$_ isa access-grant, links (grantee: $alex, system: $eng, grantor: $sam),
-  has permission-level "read",
-  has start-datetime 2024-01-15T09:00:00;
+$_ isa access_grant, links (grantee: $alex, system: $eng, grantor: $sam),
+  has permission_level "read",
+  has start_datetime 2024-01-15T09:00:00;
 end;
 
 # Sam gets admin access to GitShed, granted by Michelle, the CISO
 match
-$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
-$michelle isa full-time-employee, has email "michelle.rocksmasher@amasoft.com";
-$eng isa engineering-platform, has name "GitShed";
+$sam isa full_time_employee, has email "sam.rivera@amasoft.com";
+$michelle isa full_time_employee, has email "michelle.rocksmasher@amasoft.com";
+$eng isa engineering_platform, has name "GitShed";
 put
-$_ isa access-grant, links (grantee: $sam, system: $eng, grantor: $michelle),
-  has permission-level "admin",
-  has start-datetime 2024-01-01T09:00:00;
+$_ isa access_grant, links (grantee: $sam, system: $eng, grantor: $michelle),
+  has permission_level "admin",
+  has start_datetime 2024-01-01T09:00:00;
 end;
 
 # Sam also gets read access to Workweek — managers see team HR records
 match
-$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
-$michelle isa full-time-employee, has email "michelle.rocksmasher@amasoft.com";
-$hr isa hr-system, has name "Workweek";
+$sam isa full_time_employee, has email "sam.rivera@amasoft.com";
+$michelle isa full_time_employee, has email "michelle.rocksmasher@amasoft.com";
+$hr isa hr_system, has name "Workweek";
 put
-$_ isa access-grant, links (grantee: $sam, system: $hr, grantor: $michelle),
-  has permission-level "read",
-  has start-datetime 2024-01-01T09:00:00;
+$_ isa access_grant, links (grantee: $sam, system: $hr, grantor: $michelle),
+  has permission_level "read",
+  has start_datetime 2024-01-01T09:00:00;
 end;
 
 # Michelle gets read access across ALL systems, self-granted
 match
-$michelle isa full-time-employee, has email "michelle.rocksmasher@amasoft.com";
+$michelle isa full_time_employee, has email "michelle.rocksmasher@amasoft.com";
 $s isa system;
 put
-$_ isa access-grant, links (grantee: $michelle, system: $s, grantor: $michelle),
-  has permission-level "read",
-  has start-datetime 2024-01-01T08:00:00;
+$_ isa access_grant, links (grantee: $michelle, system: $s, grantor: $michelle),
+  has permission_level "read",
+  has start_datetime 2024-01-01T08:00:00;
 end;
 
 # The deploy bot gets admin access to EllipseCI, granted by Sam
 match
-$bot isa service-account, has service-name "ci-deploy-bot";
-$sam isa full-time-employee, has email "sam.rivera@amasoft.com";
-$eng isa engineering-platform, has name "EllipseCI";
+$bot isa service_account, has service_name "ci-deploy-bot";
+$sam isa full_time_employee, has email "sam.rivera@amasoft.com";
+$eng isa engineering_platform, has name "EllipseCI";
 put
-$_ isa access-grant, links (grantee: $bot, system: $eng, grantor: $sam),
-  has permission-level "admin",
-  has start-datetime 2024-01-10T09:00:00;
+$_ isa access_grant, links (grantee: $bot, system: $eng, grantor: $sam),
+  has permission_level "admin",
+  has start_datetime 2024-01-10T09:00:00;
 ----
 
 [NOTE.yellow]
 .💡 Matching multiple instances at once
 ====
-The Michelle query matches every system in the database and inserts one `access-grant` per system. TypeDB runs the insert once per row returned by the match — a powerful pattern for bulk grants.
+The Michelle query matches every system in the database and inserts one `access_grant` per system. TypeDB runs the insert once per row returned by the match — a powerful pattern for bulk grants.
 ====
 
 == Querying Access
@@ -174,9 +174,9 @@ Who has access to which engineering platforms, and at what level?
 [,typeql]
 ----
 match
-$s isa engineering-platform;
-$g isa access-grant, links (grantee: $i, system: $s);
-fetch { "identity-name": $i.name, "platform": $s.name, "permission": $g.permission-level };
+$s isa engineering_platform;
+$g isa access_grant, links (grantee: $i, system: $s);
+fetch { "identity_name": $i.name, "platform": $s.name, "permission": $g.permission_level };
 ----
 
 What does Sam have access to?
@@ -186,8 +186,8 @@ What does Sam have access to?
 match
 $sam has name "Sam Rivera";
 $s has name $sys;
-$_ isa access-grant, links (grantee: $sam, system: $s),
-  has permission-level $pl;
+$_ isa access_grant, links (grantee: $sam, system: $s),
+  has permission_level $pl;
 fetch { "system": $sys, "permission": $pl };
 ----
 
@@ -196,21 +196,21 @@ fetch { "system": $sys, "permission": $pl };
 [NOTE.green]
 .🎯 Challenge: Grant Access to Amasoft
 ====
-. Define the `access-grant` relation as shown above.
+. Define the `access_grant` relation as shown above.
 . Grant Alex read access to GitShed, with Sam as grantor.
 . Grant Sam admin access to GitShed and read access to Workweek, with Michelle as grantor.
 . Grant Michelle read access to all systems using the bulk match pattern, self-granted.
-. Grant the ci-deploy-bot admin access to EllipseCI, matching it by service-name, with Sam as grantor.
+. Grant the ci-deploy-bot admin access to EllipseCI, matching it by service_name, with Sam as grantor.
 . Query: who has access to which engineering platforms?
 . Query: what does Sam have access to?
-. Bonus: grant a time-limited access grant using `end-datetime`. Then write a query to find all grants expiring within that date:
+. Bonus: grant a time-limited access grant using `end_datetime`. Then write a query to find all grants expiring within that date:
 +
 [,typeql]
 ----
 match
 $i has name $name;
 $s has name $sys;
-$ag isa access-grant, links (grantee: $i, system: $s), has end-datetime $vu;
+$ag isa access_grant, links (grantee: $i, system: $s), has end_datetime $vu;
 $vu < 2024-02-15T00:00:00;
 fetch { "name": $name, "system": $sys, "expires": $vu };
 ----

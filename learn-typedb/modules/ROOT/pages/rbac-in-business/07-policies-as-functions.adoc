@@ -31,7 +31,7 @@ JOIN levels l ON ul.level_id = l.id
 JOIN dept_memberships dm ON u.id = dm.user_id
 JOIN departments d ON dm.dept_id = d.id
 AND d.name = 'Finance'
-WHERE u.employment_type = 'full-time-employee'
+WHERE u.employment_type = 'full_time_employee'
 AND l.level_number >= 5
 UNION
 SELECT u.name
@@ -53,18 +53,18 @@ In most organisations, access policy lives in three places simultaneously: appli
 [,typeql]
 ----
 define
-fun can-access-payments($i: identity) -> { identity }:
+fun can_access_payments($i: identity) -> { identity }:
   match
-    { $i isa full-time-employee;
-      $la isa level-assignment, links (identity: $i, level: $l);
-      not { $la has end-date $_; };
-      $l has level-number $n; $n >= 5;
-      $_ isa department-membership, links (department: $d, member: $i);
+    { $i isa full_time_employee;
+      $la isa level_assignment, links (identity: $i, level: $l);
+      not { $la has end_date $_; };
+      $l has level_number $n; $n >= 5;
+      $_ isa department_membership, links (department: $d, member: $i);
       $d isa department, has name "Finance"; }
     or
-    { $la isa level-assignment, links (identity: $i, level: $l);
-      not { $la has end-date $_; };
-      $l has level-number $n; $n >= 7; };
+    { $la isa level_assignment, links (identity: $i, level: $l);
+      not { $la has end_date $_; };
+      $l has level_number $n; $n >= 7; };
   return { $i };
 ----
 
@@ -80,7 +80,7 @@ Call it using the `let` keyword — required for all stream-returning function c
 [,typeql]
 ----
 match
-  let $i in can-access-payments($i);
+  let $i in can_access_payments($i);
   $i has name $name;
 fetch { "authorised": $name };
 ----
@@ -90,7 +90,7 @@ fetch { "authorised": $name };
 ====
 In TypeDB 3.x, `let` has two distinct uses:
 
-. Calling a stream-returning function: `let $i in can-access-payments($i);`
+. Calling a stream-returning function: `let $i in can_access_payments($i);`
 . Assigning a value expression: `let $source = "direct grant";`
 
 For function calls, `let` is required — writing `$i in func()` without `let` is a syntax error.
@@ -111,21 +111,21 @@ Under-provisioned — authorised, but missing a grant on some payment system. Th
 [,typeql]
 ----
 define
-fun missing-payments-access() -> { identity, system }:
+fun missing_payments_access() -> { identity, system }:
   match
     $i isa identity;
-    { $i isa full-time-employee;
-      $la isa level-assignment, links (identity: $i, level: $l);
-      not { $la has end-date $_; };
-      $l has level-number $n; $n >= 5;
-      $_ isa department-membership, links (department: $d, member: $i);
+    { $i isa full_time_employee;
+      $la isa level_assignment, links (identity: $i, level: $l);
+      not { $la has end_date $_; };
+      $l has level_number $n; $n >= 5;
+      $_ isa department_membership, links (department: $d, member: $i);
       $d isa department, has name "Finance"; }
     or
-    { $la isa level-assignment, links (identity: $i, level: $l);
-      not { $la has end-date $_; };
-      $l has level-number $n; $n >= 7; };
-    $s isa payments-system;
-    not { $_ isa access-grant, links (grantee: $i, system: $s); };
+    { $la isa level_assignment, links (identity: $i, level: $l);
+      not { $la has end_date $_; };
+      $l has level_number $n; $n >= 7; };
+    $s isa payments_system;
+    not { $_ isa access_grant, links (grantee: $i, system: $s); };
   return { $i, $s };
 ----
 
@@ -136,19 +136,19 @@ Over-provisioned — has a grant but not authorised:
 [,typeql]
 ----
 define
-fun unauthorised-payments-access() -> { identity }:
+fun unauthorised_payments_access() -> { identity }:
   match
     $i isa identity;
-    $s isa payments-system;
-    $_ isa access-grant, links (grantee: $i, system: $s);
-    not { let $_ in can-access-payments($i); };
+    $s isa payments_system;
+    $_ isa access_grant, links (grantee: $i, system: $s);
+    not { let $_ in can_access_payments($i); };
   return { $i };
 ----
 
 [NOTE.yellow]
 .💡 Updating an existing function
 ====
-If you need to redefine a function that already exists, use `redefine`: `redefine fun unauthorised-payments-access() -> { identity }: ...` If the function doesn't exist yet, use `define`. If you get 'function already exists' on `define`, switch to `redefine`. If you get 'function not found' on `redefine`, switch to `define`.
+If you need to redefine a function that already exists, use `redefine`: `redefine fun unauthorised_payments_access() -> { identity }: ...` If the function doesn't exist yet, use `define`. If you get 'function already exists' on `define`, switch to `redefine`. If you get 'function not found' on `redefine`, switch to `define`.
 ====
 
 Call both and act on the results:
@@ -158,16 +158,16 @@ Call both and act on the results:
 # Under-provisioned — no results: Michelle (L7) already has
 # access to every payment system
 match
-  let $i, $s in missing-payments-access();
+  let $i, $s in missing_payments_access();
   $i has name $name;
   $s has name $sys;
-fetch { "needs-grant": $name, "missing-system": $sys };
+fetch { "needs_grant": $name, "missing_system": $sys };
 
 # Over-provisioned — no results: no one has unauthorised access
 match
-  let $i in unauthorised-payments-access();
+  let $i in unauthorised_payments_access();
   $i has name $name;
-fetch { "revoke-access": $name };
+fetch { "revoke_access": $name };
 ----
 
 Both reports coming back empty is the healthy state. Let's deliberately break each one to confirm the queries work. First, under-provisioning — Amasoft hires a Finance analyst:
@@ -175,45 +175,45 @@ Both reports coming back empty is the healthy state. Let's deliberately break ea
 [,typeql]
 ----
 # Grace Skipper joins Finance at L5 — entitled to payments access
-insert $_ isa full-time-employee,
+insert $_ isa full_time_employee,
   has name "Grace Skipper",
   has email "grace.skipper@amasoft.com";
 
 match
-  $grace isa full-time-employee, has email "grace.skipper@amasoft.com";
+  $grace isa full_time_employee, has email "grace.skipper@amasoft.com";
   $fin isa department, has name "Finance";
-  $l5 isa level, has level-number 5;
+  $l5 isa level, has level_number 5;
 put
-  $_ isa department-membership, links (member: $grace, department: $fin);
-  $_ isa level-assignment, links (identity: $grace, level: $l5),
-    has start-date 2024-08-01;
+  $_ isa department_membership, links (member: $grace, department: $fin);
+  $_ isa level_assignment, links (identity: $grace, level: $l5),
+    has start_date 2024-08-01;
 
 # Grace appears twice — once per payment system she lacks
 match
-  let $i, $s in missing-payments-access();
+  let $i, $s in missing_payments_access();
   $i has name $name;
   $s has name $sys;
-fetch { "needs-grant": $name, "missing-system": $sys };
+fetch { "needs_grant": $name, "missing_system": $sys };
 
 # Provision PayBuddy — the report shrinks to Rectangle
 match
-  $grace isa full-time-employee, has email "grace.skipper@amasoft.com";
-  $michelle isa full-time-employee, has email "michelle.rocksmasher@amasoft.com";
-  $pay isa payments-system, has name "PayBuddy";
+  $grace isa full_time_employee, has email "grace.skipper@amasoft.com";
+  $michelle isa full_time_employee, has email "michelle.rocksmasher@amasoft.com";
+  $pay isa payments_system, has name "PayBuddy";
 put
-  $_ isa access-grant, links (grantee: $grace, system: $pay, grantor: $michelle),
-    has permission-level "read",
-    has start-datetime 2024-08-01T09:00:00;
+  $_ isa access_grant, links (grantee: $grace, system: $pay, grantor: $michelle),
+    has permission_level "read",
+    has start_datetime 2024-08-01T09:00:00;
 
 # Provision Rectangle, and the report clears
 match
-  $grace isa full-time-employee, has email "grace.skipper@amasoft.com";
-  $michelle isa full-time-employee, has email "michelle.rocksmasher@amasoft.com";
-  $rect isa payments-system, has name "Rectangle";
+  $grace isa full_time_employee, has email "grace.skipper@amasoft.com";
+  $michelle isa full_time_employee, has email "michelle.rocksmasher@amasoft.com";
+  $rect isa payments_system, has name "Rectangle";
 put
-  $_ isa access-grant, links (grantee: $grace, system: $rect, grantor: $michelle),
-    has permission-level "read",
-    has start-datetime 2024-08-01T09:00:00;
+  $_ isa access_grant, links (grantee: $grace, system: $rect, grantor: $michelle),
+    has permission_level "read",
+    has start_datetime 2024-08-01T09:00:00;
 ----
 
 Granting PayBuddy alone did not clear Grace from the report — access to one payment system is not access to all of them. That per-system pairing is the report doing its job: it is a provisioning checklist, not a yes/no flag. Now the over-provisioned direction:
@@ -223,19 +223,19 @@ Granting PayBuddy alone did not clear Grace from the report — access to one pa
 # Grant Alex payments access — he's L2 in Engineering, not authorised
 # (granted by Sam in another hurry)
 match
-  $alex isa full-time-employee, has email "alex.chen@amasoft.com";
-  $sam isa full-time-employee, has email "sam.rivera@amasoft.com";
-  $pay isa payments-system, has name "PayBuddy";
+  $alex isa full_time_employee, has email "alex.chen@amasoft.com";
+  $sam isa full_time_employee, has email "sam.rivera@amasoft.com";
+  $pay isa payments_system, has name "PayBuddy";
 put
-  $_ isa access-grant, links (grantee: $alex, system: $pay, grantor: $sam),
-    has permission-level "read",
-    has start-datetime 2024-08-01T09:00:00;
+  $_ isa access_grant, links (grantee: $alex, system: $pay, grantor: $sam),
+    has permission_level "read",
+    has start_datetime 2024-08-01T09:00:00;
 
 # Now run the over-provisioned query — Alex should appear
 match
-  let $i in unauthorised-payments-access();
+  let $i in unauthorised_payments_access();
   $i has name $name;
-fetch { "revoke-access": $name };
+fetch { "revoke_access": $name };
 ----
 
 [NOTE.yellow]
@@ -263,17 +263,17 @@ Functions compose by calling them in the same match clause. Here is a two-functi
 [,typeql]
 ----
 define
-fun contract-expiring-soon($i: identity) -> { identity }:
+fun contract_expiring_soon($i: identity) -> { identity }:
   match
-    $i isa temporary-staff, has contract-end-date $end;
+    $i isa temporary_staff, has contract_end_date $end;
     $end < 2024-08-01;
   return { $i };
 
-fun has-sensitive-access($i: identity) -> { identity }:
+fun has_sensitive_access($i: identity) -> { identity }:
   match
-    { $s isa payments-system; }
-    or { $s isa finance-platform; };
-    $_ isa access-grant, links (grantee: $i, system: $s);
+    { $s isa payments_system; }
+    or { $s isa finance_platform; };
+    $_ isa access_grant, links (grantee: $i, system: $s);
   return { $i };
 ----
 
@@ -282,10 +282,10 @@ Call both together in a single match clause:
 [,typeql]
 ----
 match
-  let $i in contract-expiring-soon($i);
-  let $i in has-sensitive-access($i);
+  let $i in contract_expiring_soon($i);
+  let $i in has_sensitive_access($i);
   $i has name $name;
-fetch { "urgent-review": $name };
+fetch { "urgent_review": $name };
 ----
 
 [NOTE.yellow]
@@ -301,10 +301,10 @@ You might be tempted to wrap the chain in a named zero-argument function:
 
 [,typeql]
 ----
-fun urgent-access-review() -> { identity }:
+fun urgent_access_review() -> { identity }:
   match
-    let $i in contract-expiring-soon($i);
-    let $i in has-sensitive-access($i);
+    let $i in contract_expiring_soon($i);
+    let $i in has_sensitive_access($i);
   return { $i };
 ----
 
@@ -318,69 +318,69 @@ Engineering has started a finance integration project. The project engineers nee
 [,typeql]
 ----
 define
-entity project-team,
-  owns team-name @key,
-  owns project-code;
-relation project-membership,
+entity project_team,
+  owns team_name @key,
+  owns project_code;
+relation project_membership,
   relates team @card(1),
   relates member @card(0..),
-  owns start-date,
-  owns end-date;
-relation project-access,
+  owns start_date,
+  owns end_date;
+relation project_access,
   relates team @card(1),
   relates system @card(1),
-  owns permission-level;
-entity identity, plays project-membership:member;
-entity project-team,
-  plays project-membership:team,
-  plays project-access:team;
-entity system, plays project-access:system;
-attribute team-name, value string;
-attribute project-code, value string;
+  owns permission_level;
+entity identity, plays project_membership:member;
+entity project_team,
+  plays project_membership:team,
+  plays project_access:team;
+entity system, plays project_access:system;
+attribute team_name, value string;
+attribute project_code, value string;
 
-insert $_ isa project-team,
-  has team-name "Finance Integration",
-  has project-code "FIN-2024";
-
-match
-  $t isa project-team, has team-name "Finance Integration";
-  $s isa payments-system, has name "PayBuddy";
-put
-  $_ isa project-access, links (team: $t, system: $s),
-    has permission-level "read";
+insert $_ isa project_team,
+  has team_name "Finance Integration",
+  has project_code "FIN-2024";
 
 match
-  $t isa project-team, has team-name "Finance Integration";
-  $alex isa full-time-employee, has email "alex.chen@amasoft.com";
+  $t isa project_team, has team_name "Finance Integration";
+  $s isa payments_system, has name "PayBuddy";
 put
-  $_ isa project-membership, links (team: $t, member: $alex),
-    has start-date 2024-07-15;
+  $_ isa project_access, links (team: $t, system: $s),
+    has permission_level "read";
+
+match
+  $t isa project_team, has team_name "Finance Integration";
+  $alex isa full_time_employee, has email "alex.chen@amasoft.com";
+put
+  $_ isa project_membership, links (team: $t, member: $alex),
+    has start_date 2024-07-15;
 ----
 
-Notice that project-access owns permission-level without declaring it. The attribute type has existed since Chapter Four, where access-grant first owned it — along with its `@values("read", "write", "admin")` constraint. The same goes for project-membership's start-date and end-date: the calendar-precision pair that reports-to and level-assignment already own, chosen because project staffing moves at calendar speed, not by the minute.
+Notice that project_access owns permission_level without declaring it. The attribute type has existed since Chapter Four, where access_grant first owned it — along with its `@values("read", "write", "admin")` constraint. The same goes for project_membership's start_date and end_date: the calendar-precision pair that reports_to and level_assignment already own, chosen because project staffing moves at calendar speed, not by the minute.
 
 [NOTE.blue]
 .⭐ TypeDB Advantage: Attributes are globally scoped
 ====
-permission-level is one attribute type, defined once, now owned by two unrelated grant mechanisms — access-grant and project-access. Its `@values` constraint travels with it: no mechanism, present or future, can invent a fourth permission level. And because the type is global, one audit query — `match $g has permission-level "admin";` — finds every admin grant in the system, whatever mechanism created it. In SQL, each table declares its own permission column with its own CHECK constraint, and nothing stops the vocabularies drifting apart.
+permission_level is one attribute type, defined once, now owned by two unrelated grant mechanisms — access_grant and project_access. Its `@values` constraint travels with it: no mechanism, present or future, can invent a fourth permission level. And because the type is global, one audit query — `match $g has permission_level "admin";` — finds every admin grant in the system, whatever mechanism created it. In SQL, each table declares its own permission column with its own CHECK constraint, and nothing stops the vocabularies drifting apart.
 ====
 
 == Two Paths to the Same System
 
-Now Alex has access to payments via two possible paths: direct access-grant, or project team membership. Query both at once with disjunction — and surface the source of access:
+Now Alex has access to payments via two possible paths: direct access_grant, or project team membership. Query both at once with disjunction — and surface the source of access:
 
 [,typeql]
 ----
 match
   $i has name $name;
-  $s isa payments-system, has name $sys;
-  { $_ isa access-grant, links (grantee: $i, system: $s);
+  $s isa payments_system, has name $sys;
+  { $_ isa access_grant, links (grantee: $i, system: $s);
     let $source = "direct grant"; }
   or
-  { $_ isa project-membership, links (member: $i, team: $t);
-    $_ isa project-access, links (team: $t, system: $s);
+  { $_ isa project_membership, links (member: $i, team: $t);
+    $_ isa project_access, links (team: $t, system: $s);
     let $source = "project team"; };
-fetch { "name": $name, "system": $sys, "access-via": $source };
+fetch { "name": $name, "system": $sys, "access_via": $source };
 ----
 
 [NOTE.yellow]
@@ -402,21 +402,21 @@ Separation of Duties (SoD) is one of the most important — and most notoriously
 [,typeql]
 ----
 define
-fun sod-violation() -> { identity }:
+fun sod_violation() -> { identity }:
   match
     $i isa identity, has status "active";
-    $pay isa payments-system;
-    $hr isa hr-system;
-    $_ isa access-grant, links (grantee: $i, system: $pay),
-      has permission-level "write";
-    $_ isa access-grant, links (grantee: $i, system: $hr),
-      has permission-level "admin";
+    $pay isa payments_system;
+    $hr isa hr_system;
+    $_ isa access_grant, links (grantee: $i, system: $pay),
+      has permission_level "write";
+    $_ isa access_grant, links (grantee: $i, system: $hr),
+      has permission_level "admin";
   return { $i };
 
 match
-  let $i in sod-violation();
+  let $i in sod_violation();
   $i has name $name;
-fetch { "sod-violation": $name };
+fetch { "sod_violation": $name };
 ----
 
 [NOTE.blue]
@@ -430,16 +430,16 @@ In SQL, enforcing SoD requires joining across multiple permission tables, checki
 [NOTE.green]
 .🎯 Challenge: The Policy Engine
 ====
-. Define `can-access-payments()` as shown above.
+. Define `can_access_payments()` as shown above.
 . Call it and verify Michelle appears (L7 — authorised).
-. Define `missing-payments-access()` and call it — nothing should appear. Hire Grace Skipper (Finance, L5) and call it again — she should appear once per payment system. Grant her both to clear the report.
-. Define `unauthorised-payments-access()` and call it — should return nothing initially.
-. Grant Alex payments access, then call `unauthorised-payments-access()` again — Alex should now appear.
-. Define `contract-expiring-soon()` and `has-sensitive-access()`. Call them together in a single match clause.
+. Define `missing_payments_access()` and call it — nothing should appear. Hire Grace Skipper (Finance, L5) and call it again — she should appear once per payment system. Grant her both to clear the report.
+. Define `unauthorised_payments_access()` and call it — should return nothing initially.
+. Grant Alex payments access, then call `unauthorised_payments_access()` again — Alex should now appear.
+. Define `contract_expiring_soon()` and `has_sensitive_access()`. Call them together in a single match clause.
 . Create the Finance Integration project team, grant it payments read access, add Alex as a member.
 . Write the disjunctive query with source labels to find all identities with payments access via either path.
-. Define `sod-violation()` and call it.
-. Bonus: redefine `can-access-payments()` to also allow L4 Finance members. Confirm the results are correct.
+. Define `sod_violation()` and call it.
+. Bonus: redefine `can_access_payments()` to also allow L4 Finance members. Confirm the results are correct.
 ====
 
 == What You Can Do Now

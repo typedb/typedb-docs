@@ -23,9 +23,9 @@ Comparison operators filter results by value. They go in the match clause, on a 
 # All identities at L5 or above
 match
 $i has name $name;
-$la isa level-assignment, links (identity: $i, level: $l);
-not { $la has end-date $_; };
-$l has level-number $n;
+$la isa level_assignment, links (identity: $i, level: $l);
+not { $la has end_date $_; };
+$l has level_number $n;
 $n >= 5;
 fetch { "name": $name, "level": $n };
 ----
@@ -33,7 +33,7 @@ fetch { "name": $name, "level": $n };
 [NOTE.yellow]
 .💡 This query may return no results — that's expected
 ====
-This query only returns results if you have access grants with an end-datetime set. If you completed the bonus in Chapter Four's challenge, you will have one. If not, add an end-datetime to one of your existing grants first: `match $i has email "alex.chen@amasoft.com"; $s isa engineering-platform, has name "GitShed"; $ag isa access-grant, links (grantee: $i, system: $s); update $ag has end-datetime 2024-02-10T00:00:00;`
+This query only returns results if you have access grants with an end_datetime set. If you completed the bonus in Chapter Four's challenge, you will have one. If not, add an end_datetime to one of your existing grants first: `match $i has email "alex.chen@amasoft.com"; $s isa engineering_platform, has name "GitShed"; $ag isa access_grant, links (grantee: $i, system: $s); update $ag has end_datetime 2024-02-10T00:00:00;`
 ====
 
 [,typeql]
@@ -42,8 +42,8 @@ This query only returns results if you have access grants with an end-datetime s
 match
 $i has name $name;
 $s has name $sys;
-$ag isa access-grant, links (grantee: $i, system: $s),
-  has end-datetime $vu;
+$ag isa access_grant, links (grantee: $i, system: $s),
+  has end_datetime $vu;
 $vu < 2024-02-15T00:00:00;
 fetch { "identity": $name, "system": $sys, "expires": $vu };
 ----
@@ -55,8 +55,8 @@ fetch { "identity": $name, "system": $sys, "expires": $vu };
 match
 $i has name $name;
 $s has name $sys;
-$_ isa access-grant, links (grantee: $i, system: $s),
-  has permission-level "admin";
+$_ isa access_grant, links (grantee: $i, system: $s),
+  has permission_level "admin";
 fetch { "name": $name, "system": $sys };
 ----
 
@@ -66,17 +66,17 @@ The admin query returns two rows: Sam Rivera — expected — and CI Deploy Bot.
 
 This is exactly what access audits exist to catch. And notice that the query needed nothing special to catch it: the bot has a name like every other identity, so the same sweep that audits the humans audits the machines. No second query, no bot-shaped exception — if your audit needs a special case for service accounts, that is a modelling smell, not a querying fact of life.
 
-Who answers for the finding? That is what owner-team is for:
+Who answers for the finding? That is what owner_team is for:
 
 [,typeql]
 ----
 match
-$sa isa service-account, has name "CI Deploy Bot",
-  has service-name $sn, has owner-team $team;
+$sa isa service_account, has name "CI Deploy Bot",
+  has service_name $sn, has owner_team $team;
 $s has name $sys;
-$_ isa access-grant, links (grantee: $sa, system: $s),
-  has permission-level $pl;
-fetch { "service-account": $sn, "owner-team": $team, "system": $sys, "permission": $pl };
+$_ isa access_grant, links (grantee: $sa, system: $s),
+  has permission_level $pl;
+fetch { "service_account": $sn, "owner_team": $team, "system": $sys, "permission": $pl };
 ----
 
 One row: ci-deploy-bot, owned by Engineering, admin on EllipseCI. The finding lands on Engineering's desk with a note from Michelle Rocksmasher — running this audit is precisely why Chapter Four gave the CISO read access across every system: your bot has excess credentials, and it just failed our audit. The fix — revoking the admin grant without destroying its history — is a job for Chapter Nine.
@@ -92,10 +92,10 @@ Alex was promoted from contractor to full-time employee in Chapter Three. Unless
 [,typeql]
 ----
 match
-$i isa temporary-staff, has name $name;
+$i isa temporary_staff, has name $name;
 $s has name $sys;
-$_ isa access-grant, links (grantee: $i, system: $s),
-  has permission-level $pl;
+$_ isa access_grant, links (grantee: $i, system: $s),
+  has permission_level $pl;
 { $pl == "write"; } or { $pl == "admin"; };
 fetch { "name": $name, "system": $sys, "permission": $pl };
 ----
@@ -116,13 +116,13 @@ match
 $i isa $type;
 $type sub identity;
 not { $other sub! $type; $i isa $other; };
-$s isa payments-system, has name $sys;
-$_ isa access-grant, links (grantee: $i, system: $s);
+$s isa payments_system, has name $sys;
+$_ isa access_grant, links (grantee: $i, system: $s);
 $i has name $name;
-fetch { "name": $name, "identity-type": label($type), "system": $sys };
+fetch { "name": $name, "identity_type": label($type), "system": $sys };
 ----
 
-The negation keeps only each grantee's most specific type — contractor, intern, full-time-employee, and so on. It is the same pattern you used in Chapter Three: without it, `$i isa $type` would match every level of the hierarchy at once, and a contractor would appear as contractor, temporary-staff, staff, and identity. `label($type)` extracts the string name of the type. And note why the fetch includes the system: TypeDB returns one answer per distinct variable binding, and Michelle holds grants on both payment systems — without `$sys` in the output, she would appear as two identical rows.
+The negation keeps only each grantee's most specific type — contractor, intern, full_time_employee, and so on. It is the same pattern you used in Chapter Three: without it, `$i isa $type` would match every level of the hierarchy at once, and a contractor would appear as contractor, temporary_staff, staff, and identity. `label($type)` extracts the string name of the type. And note why the fetch includes the system: TypeDB returns one answer per distinct variable binding, and Michelle holds grants on both payment systems — without `$sys` in the output, she would appear as two identical rows.
 
 [NOTE.blue]
 .⭐ TypeDB Advantage: Types are first-class queryable data
@@ -137,7 +137,7 @@ Count access grants by permission level:
 [,typeql]
 ----
 match
-$ag isa access-grant, has permission-level $pl;
+$ag isa access_grant, has permission_level $pl;
 reduce $count = count($ag) groupby $pl;
 fetch { "permission": $pl, "count": $count };
 ----
@@ -147,20 +147,20 @@ Average level across all employees, grouped by department:
 [,typeql]
 ----
 match
-$e isa permanent-staff, has name $name;
+$e isa permanent_staff, has name $name;
 $d isa department, has name $dept;
-$_ isa department-membership, links (department: $d, member: $e);
-$la isa level-assignment, links (identity: $e, level: $l);
-not { $la has end-date $_; };
-$l has level-number $n;
+$_ isa department_membership, links (department: $d, member: $e);
+$la isa level_assignment, links (identity: $e, level: $l);
+not { $la has end_date $_; };
+$l has level_number $n;
 reduce $avg = mean($n) groupby $dept;
-fetch { "department": $dept, "avg-level": $avg };
+fetch { "department": $dept, "avg_level": $avg };
 ----
 
 [NOTE.yellow]
 .💡 A query this schema can't answer yet — and how to fix it
 ====
-A natural compliance question is: 'who has access to systems outside their department's ownership?' For example, does anyone in Engineering have admin access to the payments system, which Finance owns? This query isn't possible with the current schema because systems and departments aren't connected. A system-ownership relation would fix it: `relation system-ownership, relates department, relates system;` With that defined, you could query for identities whose department has no ownership over the systems they can access — a powerful cross-department access audit. We left this out to keep the schema simple, but it's a natural next step in a real deployment.
+A natural compliance question is: 'who has access to systems outside their department's ownership?' For example, does anyone in Engineering have admin access to the payments system, which Finance owns? This query isn't possible with the current schema because systems and departments aren't connected. A system_ownership relation would fix it: `relation system_ownership, relates department, relates system;` With that defined, you could query for identities whose department has no ownership over the systems they can access — a powerful cross-department access audit. We left this out to keep the schema simple, but it's a natural next step in a real deployment.
 ====
 
 == Pipeline Ordering — sort, limit, fetch
@@ -171,12 +171,12 @@ Find the top 5 most privileged identities by number of admin access grants:
 ----
 match
 $i has name $name;
-$ag isa access-grant, links (grantee: $i),
-  has permission-level "admin";
+$ag isa access_grant, links (grantee: $i),
+  has permission_level "admin";
 reduce $count = count($ag) groupby $name;
 sort $count desc;
 limit 5;
-fetch { "name": $name, "admin-grants": $count };
+fetch { "name": $name, "admin_grants": $count };
 ----
 
 [NOTE.yellow]
@@ -191,7 +191,7 @@ When a query returns nothing unexpectedly, work from broad to narrow:
 
 . Remove all filters — does any data come back?
 . Add conditions one at a time until results disappear — that last condition is the problem.
-. Check: wrong type (matched 'permanent-staff' but instance is 'intern'), wrong role name, case mismatch, pipeline order.
+. Check: wrong type (matched 'permanent_staff' but instance is 'intern'), wrong role name, case mismatch, pipeline order.
 
 == Chapter Six Challenge
 
