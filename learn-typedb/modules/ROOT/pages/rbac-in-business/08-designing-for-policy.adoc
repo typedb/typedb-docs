@@ -18,22 +18,22 @@ Amasoft's RBAC system is working. But the CISO has a new requirement: some acces
 
 Three ways to model conditional access. Working through them will teach you more about TypeDB schema design than any single worked example.
 
-=== Option A — Permission Level as an Attribute
+=== Option A: Permission Level as an Attribute
 
-What we already have: permission_level is an attribute on `access_grant`. Simple, but you lose the reason — was this a policy-based grant or a manual exception? And you cannot query 'who should have access' versus 'who does'.
+permission_level is an attribute on `access_grant`. Simple, but you lose the reason — was this a policy-based grant or a manual exception? And you cannot query 'who should have access' versus 'who does'.
 
-=== Option B — Policy as a Function
+=== Option B: Policy as a Function
 
-Encode the access rule as a TypeQL function as we did in Chapter Seven. The function IS the policy — auditable, composable, callable from any query. But it lives in the schema, not the data. A function tells you who should have access right now based on current state. It cannot record why a specific grant was made, who approved it, or which policy was in effect at the time the grant was created. Functions answer 'should this person have access?' — they cannot answer 'under what policy was this access granted six months ago?'
+Currently access policy is encoded as a TypeQL function that we defined in Chapter Seven. The function IS the policy. It is composable and callable from any query. But the only two things you can do with it are: read its definition, or call it. It tells you who should have access right now based on current state. It cannot record why a specific grant was made, who approved it, or which policy was in effect at the time the grant was created. It answers 'should this person have access?'. It cannot answer 'under what policy was this access granted six months ago?'
 
-=== Option C — Policy as a Relation (The Full Model)
+=== Option C: Policy as a Relation
 
 [,typeql]
 ----
 define
 entity access_policy,
-  owns policy_name @key,
-  owns policy_description;
+  owns name @key,
+  owns description;
 relation policy_grant,
   relates identity @card(0..1),
   relates policy @card(1),
@@ -48,8 +48,6 @@ relation policy_exception,
   owns start_datetime,
   owns end_datetime,
   owns reason;
-attribute policy_name, value string;
-attribute policy_description, value string;
 attribute granted_by, value string;
 attribute approved_by, value string;
 attribute reason, value string;
@@ -58,9 +56,9 @@ attribute reason, value string;
 Now you can see not just who has access, but under which policy, who granted the exception, and when it expires. And by now the pattern is familiar: start_datetime and end_datetime are not declared here — both relations reuse the attribute types access_grant has owned since Chapter Four. The difference between 'Alex has payments access' and 'Alex has payments access because the CISO granted a time-limited exception that expires Friday'.
 
 [NOTE.yellow]
-.🏢 The Golden Rule
+.🏢 Entities, Relations, and Attributes
 ====
-If something in the real world can exist independently — an access policy, a project team, a department — make it an entity. If something only exists because of a connection between two things — a grant, a membership, a reporting line — make it a relation. If something is just a value — a permission level, a date, a name — make it an attribute.
+If something in the real world can exist independently (access policy, project team, department), make it an entity. If something only exists because of a connection between two things (access grant, group membership, reporting line), make it a relation. If something is just a value (permission level, date, name), make it an attribute.
 ====
 
 [NOTE.blue]
@@ -78,7 +76,7 @@ Not all access grants are the same. A direct grant to an individual is different
 define
 relation direct_access sub access_grant;
 relation policy_based_access sub access_grant,
-  owns policy_name,
+  owns name,
   owns approved_by;
 relation temporary_exception sub access_grant,
   owns approved_by,

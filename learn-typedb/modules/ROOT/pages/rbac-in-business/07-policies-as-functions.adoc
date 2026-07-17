@@ -115,6 +115,12 @@ fun who_should_have_access_to_payments() -> { staff }:
 
 Much simpler!
 
+[NOTE.yellow]
+.💡 Chaining and nesting TypeDB functions
+====
+Functions compose in two ways: calling them in sequence, or calling one function inside another. When running any `match` query or function body, we are really exercising constraints over a stream that restrict what data will be returned. Each `let $i in func($i)` statement further constrains the stream — only identities that satisfy all function calls are returned. This allows complex queries to be made very readable and look very simple.
+====
+
 Finally, let's call the function and retrieve the list of all staff who should have access to payment systems, as per Amasoft's corporate policy:
 
 [,typeql]
@@ -188,7 +194,7 @@ end;
 
 # Over-provisioned
 match
-  let $i in unauthorised_payments_access();
+  let $i in excess_payments_access_grants();
   $i has name $name;
 fetch { "revoke_access": $name };
 end;
@@ -295,64 +301,9 @@ In SQL, 'who should have access but doesn't' is typically written with the full 
 In SQL, access policy logic lives in application code, stored procedures, or spreadsheets — duplicated, diverging, invisible to queries. In TypeDB, the function is defined once, callable from any query, and always the single source of truth. The compliance gap queries above are only possible because the policy is a first-class named thing that can be referenced, negated, and composed.
 ====
 
-== Chaining Functions
+== Project Teams: A Second Path to Access
 
-Functions compose by calling them in the same match clause. Here is a two-function chain that finds contractors with sensitive system access whose contracts expire soon — the highest-priority access review list:
-
-[,typeql]
-----
-define
-fun contract_expiring_soon($i: identity) -> { identity }:
-  match
-    $i isa temporary_staff, has contract_end_date $end;
-    $end < 2024-08-01;
-  return { $i };
-
-fun has_sensitive_access($i: identity) -> { identity }:
-  match
-    { $s isa payments_system; }
-    or { $s isa finance_platform; };
-    $_ isa access_grant, links (grantee: $i, system: $s);
-  return { $i };
-----
-
-Call both together in a single match clause:
-
-[,typeql]
-----
-match
-  let $i in contract_expiring_soon($i);
-  let $i in has_sensitive_access($i);
-  $i has name $name;
-fetch { "urgent_review": $name };
-----
-
-[NOTE.yellow]
-.💡 Function composition in TypeDB
-====
-Functions compose by calling them in sequence in the same match clause. Each `let $i in func($i)` statement further constrains the stream — only identities that satisfy all function calls are returned. This is the idiomatic TypeDB pattern for complex policy questions: define each policy as a simple named function, then compose them at query time. When a policy changes, update one function. Every query that uses it updates automatically.
-====
-
-[NOTE.yellow]
-.⚠️ Zero-argument wrapper functions hit a known planner limitation
-====
-You might be tempted to wrap the chain in a named zero-argument function:
-
-[,typeql]
-----
-fun urgent_access_review() -> { identity }:
-  match
-    let $i in contract_expiring_soon($i);
-    let $i in has_sensitive_access($i);
-  return { $i };
-----
-
-This defines correctly but the call query hits a TypeDB query planner bug — the planner cannot find a valid execution order when a zero-argument function chains other stream functions. The workaround is to call the component functions directly in the match clause, as shown above. This is a known TypeDB issue and likely to be fixed in a future release.
-====
-
-== Project Teams — A Second Path to Access
-
-Engineering has started a finance integration project. The project engineers need access to PayBuddy — but they're not in Finance and they're not L5. Their access comes from project team membership, not their permanent role.
+Engineering has started a finance integration project. The project engineers need access to PayBuddy, but they're not in Finance and they're not L5. Let's grant their access based on project team membership rather than on their permanent role:
 
 [,typeql]
 ----
@@ -362,7 +313,7 @@ entity project_team,
   owns project_code;
 relation project_membership,
   relates team @card(1),
-  relates member @card(0..),
+  relates member @card(1),
   owns start_date,
   owns end_date;
 relation project_access,
@@ -376,10 +327,14 @@ entity project_team,
 entity system, plays project_access:system;
 attribute team_name, value string;
 attribute project_code, value string;
+----
 
+[,typeql]
+----
 insert $_ isa project_team,
   has team_name "Finance Integration",
   has project_code "FIN-2024";
+end;
 
 match
   $t isa project_team, has team_name "Finance Integration";
@@ -387,6 +342,7 @@ match
 put
   $_ isa project_access, links (team: $t, system: $s),
     has permission_level "read";
+end;
 
 match
   $t isa project_team, has team_name "Finance Integration";
@@ -394,9 +350,8 @@ match
 put
   $_ isa project_membership, links (team: $t, member: $alex),
     has start_date 2024-07-15;
+end;
 ----
-
-Notice that project_access owns permission_level without declaring it. The attribute type has existed since Chapter Four, where access_grant first owned it — along with its `@values("read", "write", "admin")` constraint. The same goes for project_membership's start_date and end_date: the calendar-precision pair that reports_to and level_assignment already own, chosen because project staffing moves at calendar speed, not by the minute.
 
 [NOTE.blue]
 .⭐ TypeDB Advantage: Attributes are globally scoped
@@ -422,11 +377,7 @@ match
 fetch { "name": $name, "system": $sys, "access_via": $source };
 ----
 
-[NOTE.yellow]
-.💡 let for value assignment
-====
-`let $source = "direct grant"` assigns a string literal to a variable within a disjunction branch. This is the second use of `let` — value expression assignment. The result includes the source label in the output, making it clear which path each identity's access came through.
-====
+Here we use `let` for value assignment to make it clear which path each identity's access comes through.
 
 [NOTE.blue]
 .⭐ TypeDB Advantage: Disjunctive path traversal
@@ -434,9 +385,9 @@ fetch { "name": $name, "system": $sys, "access_via": $source };
 In SQL, finding identities with access via either a direct grant or project team membership requires UNION ALL across two completely different join chains — typically five or more tables, with duplicate elimination on top. In TypeQL, both access paths are expressed as a single disjunctive pattern. TypeDB resolves both paths, deduplicates automatically, and returns the source of access in the same query.
 ====
 
-== Separation of Duties — The Compliance Flex
+== Separation of Duties
 
-Separation of Duties (SoD) is one of the most important — and most notoriously difficult — compliance requirements to enforce. The rule: the person who can create a payment cannot be the same person who can approve it. In SQL, enforcing SoD requires complex joins across multiple permission tables. In TypeDB, it's one function:
+Separation of Duties (SoD) is one of the most important - and most notoriously difficult - compliance requirements to enforce. The rule: the person who can create a payment cannot be the same person who can approve it. In SQL, enforcing SoD requires complex joins across multiple permission tables. In TypeDB, it's a few short statements involving relations:
 
 [,typeql]
 ----
@@ -451,7 +402,10 @@ fun sod_violation() -> { identity }:
     $_ isa access_grant, links (grantee: $i, system: $hr),
       has permission_level "admin";
   return { $i };
+----
 
+[,typeql]
+----
 match
   let $i in sod_violation();
   $i has name $name;
@@ -461,7 +415,7 @@ fetch { "sod_violation": $name };
 [NOTE.blue]
 .⭐ TypeDB Advantage: Separation of Duties as a first-class query
 ====
-In SQL, enforcing SoD requires joining across multiple permission tables, checking multiple conditions, and usually duplicating the logic across application code and stored procedures. In TypeDB, SoD is a function — defined once, called anywhere, always consistent. When the rule changes, you update one function. The audit query and the enforcement logic are the same code.
+In SQL, enforcing SoD requires joining across multiple permission tables, checking multiple conditions, and usually duplicating the logic across application code and stored procedures. In TypeDB, SoD is a short, simple query, defined once as a reusable function, always consistent. When the rule changes, you have one easily readable function to update.
 ====
 
 == Chapter Seven Challenge
@@ -472,8 +426,8 @@ In SQL, enforcing SoD requires joining across multiple permission tables, checki
 . Define `who_should_have_access_to_payments()` as shown above.
 . Call it and verify Michelle appears (L7 — authorised).
 . Define `missing_payments_access_grants()` and call it — nothing should appear. Hire Grace Skipper (Finance, L5) and call it again — she should appear once per payment system. Grant her both to clear the report.
-. Define `unauthorised_payments_access()` and call it — should return nothing initially.
-. Grant Alex payments access, then call `unauthorised_payments_access()` again — Alex should now appear.
+. Define `excess_payments_access_grants()` and call it — should return nothing initially.
+. Grant Alex payments access, then call `excess_payments_access_grants()` again — Alex should now appear.
 . Define `contract_expiring_soon()` and `has_sensitive_access()`. Call them together in a single match clause.
 . Create the Finance Integration project team, grant it payments read access, add Alex as a member.
 . Write the disjunctive query with source labels to find all identities with payments access via either path.
@@ -483,4 +437,4 @@ In SQL, enforcing SoD requires joining across multiple permission tables, checki
 
 == What You Can Do Now
 
-You can now define access policies as named reusable functions, find compliance gaps in both directions, enforce Separation of Duties in a single function, chain functions to answer complex questions, and traverse multiple access paths with source labels. Chapter Eight steps back to design — the principles behind a schema that holds up as complexity grows.
+You can now define access policies, store them as named reusable functions, find compliance gaps in both directions, enforce Separation of Duties in just 7 lines of TypeQL, chain functions to answer complex questions, and traverse multiple access paths with source labels. Chapter Eight steps back to design: what design principles allow a schema to hold up as complexity grows?
