@@ -19,14 +19,14 @@ Chapter One's staff type covers anyone who works at Amasoft. But contractors and
 define
 attribute contract_end_date, value date;
 entity staff,
-  owns name;
+  owns name @card(1);
 entity temporary_staff sub staff,
-  owns contract_end_date;
+  owns contract_end_date @card(1);
 entity contractor sub temporary_staff;
 entity intern sub temporary_staff;
 ----
 
-contractor and intern inherit `name` and `email` from `staff`, plus `contract_end_date` from `temporary_staff` — an attribute that earns its keep in Chapter Seven, when a policy function warns about expiring contracts. Notice that this define also touched the existing staff type: running define on a type that already exists adds to it, so `owns name` slots in alongside Chapter One's email `@key` — no migration needed. And notice what is _not_ declared: the name attribute already exists — department has owned it since Chapter One — so staff simply takes ownership of the same attribute type.
+contractor and intern inherit `name` and `email` from `staff`, plus `contract_end_date` from `temporary_staff`. Notice that this define also touched the existing staff type: running define on a type that already exists adds to it, so `owns name` slots in alongside Chapter One's email `@key` — no migration needed.
 
 Now make both parent types abstract — a bare staff member or a bare 'temporary staff member' is never what we want, only a specific kind:
 
@@ -84,12 +84,12 @@ RBAC is not just about people. Every API integration, every bot needs access man
 ----
 define
 entity identity @abstract,
-  owns status @values("active", "suspended", "terminated");
+  owns status @card(1) @values("active", "suspended", "terminated");
 entity staff sub identity;
 entity service_account sub identity,
-  owns name,
+  owns name @card(1),
   owns service_name @key,
-  owns owner_team;
+  owns owner_team @card(1);
 attribute service_name, value string;
 attribute owner_team, value string;
 attribute status, value string;
@@ -116,7 +116,7 @@ Now we add the systems that identities will be granted access to.
 define
 entity system @abstract,
   owns name @key,
-  owns description;
+  owns description @card(1);
 entity payments_system sub system;
 entity hr_system sub system;
 entity engineering_platform sub system;
@@ -157,7 +157,7 @@ attribute start_date, value date;
 relation reports_to,
   relates manager @card(1),
   relates report @card(1),
-  owns start_date;
+  owns start_date @card(1);
 entity permanent_staff, plays reports_to:manager;
 entity staff, plays reports_to:report;
 ----

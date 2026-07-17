@@ -26,7 +26,7 @@ define
 attribute level_number, value integer @range(0..7);
 entity level,
   owns level_number @key,
-  owns name;
+  owns name @card(1);
 attribute end_date, value date;
 relation level_assignment,
   relates assignee @card(1),

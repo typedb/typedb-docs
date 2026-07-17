@@ -8,7 +8,7 @@ _Transactions, Drivers, put & Idempotent Pipelines_
 
 == Previously
 
-Chapter Eight covered schema design at depth. You can now model access policy as first-class data, use sub-relations for specialised access types, and apply the PERA model as your default instinct. Chapter Nine connects the RBAC system to a real application.
+Chapter Eight made access accountable. You can now model access policy as first-class data, trace every grant to a policy or an audited exception, and record reviews of the grants themselves. Chapter Nine connects the RBAC system to a real application.
 
 == The Situation
 
@@ -59,13 +59,14 @@ When you run a `put` query, TypeDB always reports 'Success' — whether the reco
 
 [,typeql]
 ----
-# Idempotent access grant
+# Idempotent access grant — provisioning always grants under policy
 match
 $i isa full_time_employee, has email "new.hire@amasoft.com";
 $sam isa full_time_employee, has email "sam.rivera@amasoft.com";
 $s isa engineering_platform, has name "GitShed";
+$p isa access_policy, has name "Engineering Access";
 put
-$_ isa access_grant, links (grantee: $i, system: $s, grantor: $sam),
+$_ isa policy_access_grant, links (grantee: $i, system: $s, grantor: $sam, policy: $p),
   has permission_level "read",
   has start_datetime 2024-08-01T09:00:00;
 ----
@@ -83,7 +84,7 @@ $s isa payments_system;
 { $_ isa access_grant, links (grantee: $i, system: $s); }
 or
 { $_ isa project_membership, links (member: $i, team: $t);
-  $_ isa project_access, links (team: $t, system: $s); };
+  $_ isa access_grant, links (grantee: $t, system: $s); };
 $i has name $name;
 fetch { "has_access": $name };
 ----
@@ -125,7 +126,7 @@ $s isa engineering_platform;
 { $_ isa access_grant, links (grantee: $i, system: $s); }
 or
 { $_ isa project_membership, links (member: $i, team: $t);
-  $_ isa project_access, links (team: $t, system: $s); };
+  $_ isa access_grant, links (grantee: $t, system: $s); };
 $i has name $name;
 fetch { "has_access": $name };
 ----
@@ -208,6 +209,7 @@ entity resource, owns resource_name @key;
 relation system_resource, relates system @card(1), relates resource @card(0..);
 ----
 * *Separation of Duties* — already implemented as `sod_violation()` in Chapter Seven. Extend with additional SoD rules as your compliance requirements grow.
+* *Recertification* — `access_review` from Chapter Eight already records who certified or revoked each grant. Schedule quarterly campaigns; 'grants never reviewed' is a one-line audit.
 * *Multi-category systems* — Workweek is classified as an `hr_system`, but payroll also executes payments: it decides who is owed money and moves it — a combination the two-system SoD check cannot see inside one system. A type has only one supertype, so we replace the subtypes with categorization as data:
 +
 [,typeql]

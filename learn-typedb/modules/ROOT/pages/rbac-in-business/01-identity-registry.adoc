@@ -67,11 +67,11 @@ The keyword `value string` says this attribute holds text. TypeDB supports strin
 After running a define query, you can visualise your schema using the Schema page in TypeDB Studio. You'll see your entity types as nodes and their attributes as connected leaves.
 ====
 
-== The @key Annotation — Existence and Uniqueness
+== The @key and @card annotations
 
 You've already seen `@key` in action. It declares that an attribute must be present and unique within its type — every instance must have a value, no two instances can share the same value. TypeDB enforces this at the database level.
 
-In fact, `@key` is shorthand for a combination of two finer-grained annotations: `@card(1)`, which requires exactly one value to exist, and `@unique`, which forbids two instances from sharing one. You'll meet `@card` again in Chapter Two, where it constrains relation roles.
+In fact, `@key` is shorthand for a combination of two finer-grained annotations: `@card(1)`, which requires exactly one value to exist, and `@unique`, which forbids two instances from sharing one. We'll use `@card` heavily throughout this guide - without `@card` or `@key`, you could have 0 values, or 1 value, or 10 values - any number of values. This is a powerful tool, but with great power comes great responsibility - it's good to keep schema strict for the maximum possible guarantees of data integrity.
 
 [NOTE.yellow]
 .💡 Redefining an existing type

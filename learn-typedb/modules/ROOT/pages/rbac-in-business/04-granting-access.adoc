@@ -26,9 +26,9 @@ relation access_grant,
   relates grantee @card(1),
   relates system @card(1),
   relates grantor @card(1),
-  owns permission_level,
-  owns start_datetime,
-  owns end_datetime;
+  owns permission_level @card(1),
+  owns start_datetime @card(1),
+  owns end_datetime @card(0..1);
 entity identity, plays access_grant:grantee;
 entity system, plays access_grant:system;
 entity permanent_staff, plays access_grant:grantor;

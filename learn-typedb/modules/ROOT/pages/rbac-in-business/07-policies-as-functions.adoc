@@ -12,7 +12,7 @@ In Chapter Six the compliance team asked hard questions and you answered them wi
 
 == The Situation
 
-The compliance team keeps asking the same questions. The security team wants to know who *should* have access to payments, not just who does. And engineering has started a finance integration project — their engineers need temporary access to the payments system even though they're not in the finance department. All three problems have the same solution: reusable functions.
+The compliance team keeps asking the same questions. The security team wants to know who *should* have access to payments, not just who does. Both problems have the same solution: reusable functions.
 
 == What Functions Actually Are
 
@@ -301,90 +301,6 @@ In SQL, 'who should have access but doesn't' is typically written with the full 
 In SQL, access policy logic lives in application code, stored procedures, or spreadsheets — duplicated, diverging, invisible to queries. In TypeDB, the function is defined once, callable from any query, and always the single source of truth. The compliance gap queries above are only possible because the policy is a first-class named thing that can be referenced, negated, and composed.
 ====
 
-== Project Teams: A Second Path to Access
-
-Engineering has started a finance integration project. The project engineers need access to PayBuddy, but they're not in Finance and they're not L5. Let's grant their access based on project team membership rather than on their permanent role:
-
-[,typeql]
-----
-define
-entity project_team,
-  owns team_name @key,
-  owns project_code;
-relation project_membership,
-  relates team @card(1),
-  relates member @card(1),
-  owns start_date,
-  owns end_date;
-relation project_access,
-  relates team @card(1),
-  relates system @card(1),
-  owns permission_level;
-entity identity, plays project_membership:member;
-entity project_team,
-  plays project_membership:team,
-  plays project_access:team;
-entity system, plays project_access:system;
-attribute team_name, value string;
-attribute project_code, value string;
-----
-
-[,typeql]
-----
-insert $_ isa project_team,
-  has team_name "Finance Integration",
-  has project_code "FIN-2024";
-end;
-
-match
-  $t isa project_team, has team_name "Finance Integration";
-  $s isa payments_system, has name "PayBuddy";
-put
-  $_ isa project_access, links (team: $t, system: $s),
-    has permission_level "read";
-end;
-
-match
-  $t isa project_team, has team_name "Finance Integration";
-  $alex isa full_time_employee, has email "alex.chen@amasoft.com";
-put
-  $_ isa project_membership, links (team: $t, member: $alex),
-    has start_date 2024-07-15;
-end;
-----
-
-[NOTE.blue]
-.⭐ TypeDB Advantage: Attributes are globally scoped
-====
-permission_level is one attribute type, defined once, now owned by two unrelated grant mechanisms — access_grant and project_access. Its `@values` constraint travels with it: no mechanism, present or future, can invent a fourth permission level. And because the type is global, one audit query — `match $g has permission_level "admin";` — finds every admin grant in the system, whatever mechanism created it. In SQL, each table declares its own permission column with its own CHECK constraint, and nothing stops the vocabularies drifting apart.
-====
-
-== Two Paths to the Same System
-
-Now Alex has access to payments via two possible paths: direct access_grant, or project team membership. Query both at once with disjunction — and surface the source of access:
-
-[,typeql]
-----
-match
-  $i has name $name;
-  $s isa payments_system, has name $sys;
-  { $_ isa access_grant, links (grantee: $i, system: $s);
-    let $source = "direct grant"; }
-  or
-  { $_ isa project_membership, links (member: $i, team: $t);
-    $_ isa project_access, links (team: $t, system: $s);
-    let $source = "project team"; };
-fetch { "name": $name, "system": $sys, "access_via": $source };
-----
-
-Here we use `let` for value assignment to make it clear which path each identity's access comes through.
-
-[NOTE.blue]
-.⭐ TypeDB Advantage: Disjunctive path traversal
-====
-In SQL, finding identities with access via either a direct grant or project team membership requires UNION ALL across two completely different join chains — typically five or more tables, with duplicate elimination on top. In TypeQL, both access paths are expressed as a single disjunctive pattern. TypeDB resolves both paths, deduplicates automatically, and returns the source of access in the same query.
-====
-
 == Separation of Duties
 
 Separation of Duties (SoD) is one of the most important - and most notoriously difficult - compliance requirements to enforce. The rule: the person who can create a payment cannot be the same person who can approve it. In SQL, enforcing SoD requires complex joins across multiple permission tables. In TypeDB, it's a few short statements involving relations:
@@ -429,12 +345,10 @@ In SQL, enforcing SoD requires joining across multiple permission tables, checki
 . Define `excess_payments_access_grants()` and call it — should return nothing initially.
 . Grant Alex payments access, then call `excess_payments_access_grants()` again — Alex should now appear.
 . Define `contract_expiring_soon()` and `has_sensitive_access()`. Call them together in a single match clause.
-. Create the Finance Integration project team, grant it payments read access, add Alex as a member.
-. Write the disjunctive query with source labels to find all identities with payments access via either path.
 . Define `sod_violation()` and call it.
 . Bonus: redefine `who_should_have_access_to_payments()` to also allow L4 Finance members. Confirm the results are correct.
 ====
 
 == What You Can Do Now
 
-You can now define access policies, store them as named reusable functions, find compliance gaps in both directions, enforce Separation of Duties in just 7 lines of TypeQL, chain functions to answer complex questions, and traverse multiple access paths with source labels. Chapter Eight steps back to design: what design principles allow a schema to hold up as complexity grows?
+You can now define access policies, store them as named reusable functions, find compliance gaps in both directions, enforce Separation of Duties in just 7 lines of TypeQL, and chain functions to answer complex questions. Chapter Eight makes access accountable: every grant will carry the reason it exists.
