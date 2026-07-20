@@ -341,10 +341,10 @@ In SQL, enforcing SoD requires joining across multiple permission tables, checki
 ====
 . Define `who_should_have_access_to_payments()` as shown above.
 . Call it and verify Michelle appears (L7 — authorised).
+. Define `staff_at_or_above_level()` and `dept_members()`, then `redefine` the payments function to compose them.
 . Define `missing_payments_access_grants()` and call it — nothing should appear. Hire Grace Skipper (Finance, L5) and call it again — she should appear once per payment system. Grant her both to clear the report.
 . Define `excess_payments_access_grants()` and call it — should return nothing initially.
 . Grant Alex payments access, then call `excess_payments_access_grants()` again — Alex should now appear.
-. Define `contract_expiring_soon()` and `has_sensitive_access()`. Call them together in a single match clause.
 . Define `sod_violation()` and call it.
 . Bonus: redefine `who_should_have_access_to_payments()` to also allow L4 Finance members. Confirm the results are correct.
 ====

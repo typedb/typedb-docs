@@ -232,7 +232,7 @@ match
   $michelle isa full_time_employee, has email "michelle.rocksmasher@amasoft.com";
 put
   $_ isa exception_access_grant, links (grantee: $t, system: $s, grantor: $michelle),
-    has reason "Finance integration project — temporary payments access",
+    has reason "Finance integration project — temporary PayBuddy access",
     has permission_level "read",
     has start_datetime 2024-07-15T09:00:00,
     has end_datetime 2024-12-31T17:00:00;
@@ -247,7 +247,7 @@ put
     has start_date 2024-07-15;
 ----
 
-Now Alex has payments access via two possible paths: his own grant, or his team's. Query both at once with disjunction — and surface the source of access:
+Now Alex has access to Amasoft's PayBuddy account via two possible paths: his own grant, or his team's. Query both at once with disjunction — and surface the source of access:
 
 [,typeql]
 ----
@@ -263,7 +263,7 @@ match
 fetch { "name": $name, "system": $sys, "access_via": $source };
 ----
 
-Here we use `let` for value assignment to make it clear which path each identity's access comes through.
+Besides the Finance team's usual policy-based access, Alex should now appear with access to PayBuddy via project team membership. We used `let` here to make it clear which path each identity's access comes through.
 
 [NOTE.blue]
 .⭐ TypeDB Advantage: Disjunctive path traversal
@@ -279,12 +279,12 @@ A grant is a fact. A review is a fact about that fact - and in TypeDB, relations
 ----
 define
 attribute review_date, value date;
-attribute outcome, value string @values("certified", "revoked");
+attribute outcome, value string;
 relation access_review,
   relates grant @card(1),
   relates reviewer @card(1),
   owns review_date @card(1),
-  owns outcome @card(1);
+  owns outcome @card(1) @values("certified", "revoked");
 relation access_grant plays access_review:grant;
 entity permanent_staff plays access_review:reviewer;
 ----
@@ -302,13 +302,12 @@ Notice `relation access_grant plays access_review:grant;` — the reviewed grant
 ====
 . Delete every existing grant with one bulk delete, then define the new model: `access_policy`, `policy_access_grant`, `exception_access_grant`, and `@abstract` on `access_grant`.
 . Insert the four policies and re-grant Amasoft — every grant under a policy or carrying a reason.
-. Query: all grants under "Engineering Access".
-. Query: all `exception_access_grant`s and their reasons.
 . Define `project_team` and `project_team_membership`, letting teams play grantee. Create the Finance Integration team, grant it temporary payments access as an exception with a recorded reason, and add Alex as a member.
 . Query who has access to payment systems, making the results indicate whether access is via direct grant or team membership.
 . Define `access_review`.
+. Bonus: query all grants under "Engineering Access", and all exception grants with their reasons.
 ====
 
 == What You Can Do Now
 
-You can now design access models where every grant carries its basis in its type, evolve a live schema through a data migration, and record facts about facts with nested relations. Chapter Nine connects everything to a real application.
+You can now design access models where every grant is fully traceable, evolve a live schema through a data migration, and record facts about facts with nested relations. In Chapter Nine, we review our system and consider how it would slot into a real application.

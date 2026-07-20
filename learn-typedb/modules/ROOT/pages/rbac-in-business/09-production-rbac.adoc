@@ -12,31 +12,33 @@ Chapter Eight made access accountable. You can now model access policy as first-
 
 == The Situation
 
-Amasoft's RBAC system is live in TypeDB. The compliance team has self-service audit queries. Access policies are encoded as functions. Now the provisioning system needs to connect — granting and revoking access automatically as people join, leave, or change roles.
+Amasoft's RBAC system is live in TypeDB. The compliance team has self-service audit queries. Access policies are encoded as entities. Now the provisioning system needs to connect - granting and revoking access automatically as people join, leave, or change roles.
 
-== Transaction Types
+== Transactions
 
-TypeDB has three transaction types. Choosing correctly matters for both correctness and performance:
+Every TypeDB query runs inside a transaction. You've been using them all along: Studio's auto mode handles that for you. But in a production application, you need to be aware of them.
+
+TypeDB has three transaction types, which serve distinct purposes:
 
 [cols="1,2,2",options="header"]
 |===
-|Type |Use for |Notes
-|schema |`define`, `undefine`, `redefine` |Deployment only. Never in hot paths.
-|write |`insert`, `delete`, `update`, `put` |Also allows reads. Commit promptly.
-|read |`fetch`, `match` |Cheapest. Always use for access checks.
+|Type |Queries |Notes
+|read |`match`, `fetch` |Cheapest, general usage
+|write |Reads, plus `insert`, `delete`, `update`, `put` |Also allows reads. Commit promptly
+|schema |Everything, including `define`, `undefine`, `redefine` |Deployment and migrations only. Can touch both data and schema. Blocks other writes while open
 |===
 
 [NOTE.yellow]
-.⚠️ Critical production rules
+.⚠️ Transactions: best practices
 ====
 . Always use `read` transactions for queries that don't write data.
-. Use `schema` transactions only during deployment — never in application hot paths.
-. Commit `write` transactions promptly — long-held write transactions block other writers.
-. All transactions use snapshots — they never see uncommitted changes from other transactions.
-. Closing without committing discards all changes silently.
+. Use `schema` transactions only during deployments and migrations - never in application hot paths.
+. Commit `write` transactions promptly - they operate on snapshots, so their data gets gradually more stale over time.
+. Keep commits fairly small. Larger commits increase the server's workload and may take longer.
+. Closing a transaction without committing discards its changes silently.
 ====
 
-== The put Keyword — Idempotent Provisioning
+== Idempotent Provisioning using 'put'
 
 The provisioning system runs on a schedule. If it runs twice, it should not create duplicate identities or duplicate access grants. TypeDB's `put` keyword handles this:
 
@@ -46,15 +48,20 @@ The provisioning system runs on a schedule. If it runs twice, it should not crea
 put
 $_ isa full_time_employee,
   has email "new.hire@amasoft.com",
-  has name "New Hire";
+  has name "New Hire",
+  has status "active";
 ----
 
 `put` inserts if the exact instance does not exist, and does nothing if it already does. Run the same script ten times — the database has one instance, not ten.
 
 [NOTE.yellow]
-.💡 put always reports Success
+.💡 `put` vs `insert`
 ====
-When you run a `put` query, TypeDB always reports 'Success' — whether the record was just created or already existed. The row count reflects how many instances matched or were inserted, not a fixed number. This is what makes `put` safe for scheduled provisioning pipelines that run repeatedly. The guarantee is: 'this record exists'. Whether it needed to be created is an implementation detail you don't need to care about.
+When you run a `put` query, TypeDB always reports 'Success' — whether the record was just created or already existed. The row count reflects how many instances matched or were inserted, not a fixed number. In contrast, `insert` will report key violations if applicable, or simply insert duplicate data.
+
+This is what makes `put` safe for scheduled provisioning pipelines that run repeatedly. The guarantee is: 'this record exists'. Whether it needed to be created is an implementation detail you don't need to care about.
+
+The only cost is that `put` takes slightly longer to run - it needs to check the existing data before determining what changes to apply.
 ====
 
 [,typeql]
@@ -71,9 +78,9 @@ $_ isa policy_access_grant, links (grantee: $i, system: $s, grantor: $sam, polic
   has start_datetime 2024-08-01T09:00:00;
 ----
 
-== The Access Check — The Most Important Query
+== The Access Check - The Most Important Query
 
-This query runs thousands of times a day. An identity requests access to a system — does it have it? Note the `status` check — the global kill switch that must pass before any grant check:
+This query runs thousands of times a day. An identity requests access to a system — does it have it?
 
 [,typeql]
 ----
@@ -96,16 +103,16 @@ fetch { "has_access": $name };
 ====
 
 [NOTE.yellow]
-.💡 The kill switch — why status comes first
+.💡 The kill switch — identity status
 ====
 If an employee is suspended or terminated, their `access_grant` records still exist in the database. That's correct — history must be preserved. But the access check must fail. By checking `has status "active"` before evaluating any grants, you ensure a suspended identity can never pass the access check regardless of what grants they hold. Remove this check and a terminated employee with an un-revoked grant still has access.
 ====
 
 == One Identifier for Every Identity
 
-The check above finds Alex by email. Now run it for the ci-deploy-bot — the heaviest user of this query. It has no email; its key is service_name. As things stand, the application must know what kind of identity it holds before it can ask whether that identity has access.
+In a production application, the query above would be templated: the application would inject the email address as a parameter. However, while it finds Alex by email, it can't find the CI deploy bot - the heaviest user of this query. It has no email; its key is service_name.
 
-One purely additive define fixes this:
+Let's fix this:
 
 [,typeql]
 ----
@@ -113,9 +120,16 @@ define
 attribute identity_name @abstract, value string;
 attribute email sub identity_name;
 attribute service_name sub identity_name;
+identity owns identity_name @key;
 ----
 
-This is Chapter Two's in-place re-parenting — `entity staff sub identity;` — applied to attributes, on a live database. No data changes: every email and every service_name already in the database is now an identity_name. One lookup attribute serves every identity:
+[NOTE.blue]
+.⭐ TypeDB Advantage: Attributes can have subtypes too
+====
+`staff` and `service_account` are distinct kinds of identities, with their own identifier types `email` and `service_name`. Yet the access check query, a very common query, doesn't care what specific identifier is in use, it just needs to identify who is requesting access.
+
+Attribute subtyping allows us to express all of this in a single, simple query.
+====
 
 [,typeql]
 ----
@@ -131,25 +145,25 @@ $i has name $name;
 fetch { "has_access": $name };
 ----
 
-Uniqueness stays with the subtypes — emails are unique among staff, service_names among service accounts — and identity_name itself is abstract, so it can never be inserted directly, only as one of its concrete kinds.
-
-For policy-based access checks, call the function directly:
+For checking if access grants match policy, call the relevant function(s) directly:
 
 [,typeql]
 ----
 match
 $i isa identity, has identity_name "alex.chen@amasoft.com",
   has status "active";
-let $authorised in can_access_payments($i);
+let $authorised in who_should_have_access_to_payments($i);
 $authorised has name $name;
 fetch { "policy_authorised": $name };
 ----
 
-This is always a `read` transaction. Never a `write`. The result is empty (no access) or returns the identity (has access).
+The result is empty (no access) or returns the identity (has access).
 
 == Production RBAC Principle — Never Delete History
 
-In Chapter Three, you deleted Alex's contractor record and all its relations when promoting them to full-time employee. That was a type change — destructive and necessary. But for access revocation, the rule is different:
+In Chapter Three, you deleted Alex's contractor record and all its relations when promoting them to full-time employee. In production, you'd want to retain historical records instead.
+
+That's out of scope of this exercise, but let's look at our model for revoking an access grant:
 
 [NOTE.yellow]
 .🏢 Production RBAC systems do not delete history — they close it
@@ -165,11 +179,12 @@ Deprovision an identity by closing all their access grants:
 match
 $i isa identity, has identity_name "departing@amasoft.com";
 $ag isa access_grant, links (grantee: $i);
-not { $ag has end_datetime $_; };
+{ not { $ag has end_datetime $_; }; }
+or { $ag has end_datetime > 2024-12-31T17:00:00; };
 insert
 $ag has end_datetime 2024-12-31T17:00:00;
 
-# Suspend the identity (kill switch — immediate effect)
+# Suspend the identity
 match
 $i isa identity, has identity_name "departing@amasoft.com";
 update
@@ -187,43 +202,42 @@ Behind the scenes, `update` is equivalent to a `delete` followed by an `insert`.
 [NOTE.yellow]
 .💡 Two steps for offboarding
 ====
-. Close all grants with `end_datetime` — preserves history, marks when access ended.
-. Set `status` to 'terminated' — the kill switch that immediately fails all access checks regardless of grant state.
+. Close all grants with `end_datetime` - preserves history, marks when access ended.
+. Set `status` to 'terminated'.
 
-The kill switch is the safety net. The closed grants are the audit trail. Both are needed.
+We do both because the two steps represent distinct concepts. An identity's grants represent their permissions. Status represents whether they are still active at all in Amasoft. From the perspective of an access check, status is a convenient safety net to check.
 ====
 
 == The Architect's Checklist — Taking This to Production
 
-The schema you have built is production-grade. Before deploying for a real company, here are the natural extensions to consider:
+The schema you have built may form the foundation for a production-grade system, but if we were going to deploy for a real company, here are some natural extensions to consider:
 
 [NOTE.yellow]
 .💡 Natural extensions for production deployment
 ====
-* *Identity status* — already in the schema. Ensure every identity provisioning pipeline sets `status` to 'active' on creation.
-* *Granular resources* — currently grants target systems (`payments_system`, `engineering_platform`). Real-world RBAC often needs resource-level grants — a specific GitHub repo, an S3 bucket, a financial ledger. Extend with:
+* *Identity status*: already in the schema. Ensure every identity provisioning pipeline sets `status` to 'active' on creation.
+* *Granular resources*: currently grants target systems (`payments_system`, `engineering_platform`). Real-world RBAC often needs resource-level grants — a specific GitHub repo, an S3 bucket, a financial ledger. Extend with:
 +
 [,typeql]
 ----
-entity resource, owns resource_name @key;
-relation system_resource, relates system @card(1), relates resource @card(0..);
+relation system_resource, relates system @card(1), relates resource @card(1);
+entity resource, owns resource_name @key, plays system_resource:resource;
 ----
-* *Separation of Duties* — already implemented as `sod_violation()` in Chapter Seven. Extend with additional SoD rules as your compliance requirements grow.
-* *Recertification* — `access_review` from Chapter Eight already records who certified or revoked each grant. Schedule quarterly campaigns; 'grants never reviewed' is a one-line audit.
-* *Multi-category systems* — Workweek is classified as an `hr_system`, but payroll also executes payments: it decides who is owed money and moves it — a combination the two-system SoD check cannot see inside one system. A type has only one supertype, so we replace the subtypes with categorization as data:
+* *Separation of Duties*: we implemented one SoD rule as `sod_violation()` in Chapter Seven. Extend with additional rules.
+* *Recertification*: `access_review` records access grant reviews. Schedule quarterly campaigns; "grants never reviewed" is an easy audit.
+* *Multi-category systems*: Workweek is classified as an `hr_system`, but payroll also executes payments, so we can't currently SoD check it accurately. A TypeDB type has only one supertype, so we'd need a new model - categorization as data:
 +
 [,typeql]
 ----
 entity system_category, owns name @key;
-relation system_categorization, relates category @card(1), relates system @card(0..);
+relation system_categorization, relates category @card(1), relates system @card(1);
 ----
 +
-Workweek is then categorized as both "hr" and "payments".
-* *Sub-departments and regional access* — as discussed in Chapter Two, sub-teams and geographic access restrictions are straightforward to add. Engineering sub Platform, Product, and Security; EU-region access restrictions; APAC-specific systems.
-* *System ownership* — a formal department-owns-system relation enables 'who has access to systems outside their department's ownership?' as a standard audit query.
-* *Approval workflows* — the `policy_exception` relation in Chapter Eight already captures approver and reason. Wire this to an approval system by granting temporary_exception access in response to approved requests.
+* *Sub-departments and regional access*
+* *System ownership*: a formal department-owns-system relation.
+* *Approval workflows* - Wire `exception_access_grant` to an approval system by granting them only in response to approved requests.
 
-All of these follow the same TypeDB patterns you have already learned. The foundation is solid. Build on it.
+All of these follow the same TypeDB patterns you have already learned.
 ====
 
 == Chapter Nine Challenge
@@ -232,13 +246,14 @@ All of these follow the same TypeDB patterns you have already learned. The found
 .🎯 Challenge: The Provisioning Pipeline
 ====
 . Write an idempotent provisioning script using `put` that creates an identity with `status` 'active' and grants them access. Run it twice — confirm no duplicates.
+. Define `identity_name` with `email` and `service_name` as its subtypes.
 . Write the access check query including the `status` kill switch. Look the identity up by identity_name and confirm it works for the ci-deploy-bot as well as for staff.
+. Run the policy-based check: call `who_should_have_access_to_payments()` in a read transaction.
 . Deprovision an identity: close all their access grants with `end_datetime`, then set `status` to 'terminated'.
 . Verify: run the access check for the deprovisioned identity — confirm it returns nothing even if grants exist.
-. Resolve Chapter Six's audit finding: close the deploy bot's admin grant with `end_datetime`, insert a write grant in its place, and re-run Chapter Six's admin audit to confirm the bot no longer appears.
 . Bonus: write a full onboarding pipeline — create the identity, set `status`, assign to a department, set level, grant standard access. Make all inserts idempotent with `put`.
 ====
 
 == What You Can Do Now
 
-You can now manage transactions correctly, write idempotent provisioning pipelines, use the `status` kill switch, close access history without deleting it, and run the access check query at the heart of every RBAC system. You have completed RBAC In Business — and built a production-grade foundation you can adapt for your own company.
+You can now manage transactions correctly, write idempotent provisioning pipelines, offboard employees, close access history without deleting it, and run the access check query at the heart of every RBAC system. You have completed RBAC In Business — and built a foundation for a production-grade system you could adopt for your own company.
