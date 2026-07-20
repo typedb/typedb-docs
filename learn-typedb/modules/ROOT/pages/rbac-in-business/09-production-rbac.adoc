@@ -103,9 +103,9 @@ fetch { "has_access": $name };
 ====
 
 [NOTE.yellow]
-.💡 The kill switch — identity status
+.💡 Identity status as an access check's safety net
 ====
-If an employee is suspended or terminated, their `access_grant` records still exist in the database. That's correct — history must be preserved. But the access check must fail. By checking `has status "active"` before evaluating any grants, you ensure a suspended identity can never pass the access check regardless of what grants they hold. Remove this check and a terminated employee with an un-revoked grant still has access.
+Revoking access properly means closing each grant with an `end_datetime`. From the access check's point of view, `has status "active"` is the safety net on top: if a closure was ever missed, a suspended or terminated identity will still fail the check. One attribute flip cuts off everything, while the closed grants remain as history.
 ====
 
 == One Identifier for Every Identity
