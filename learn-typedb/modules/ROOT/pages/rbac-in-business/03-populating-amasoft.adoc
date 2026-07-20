@@ -24,21 +24,25 @@ Time to bring in the cast — three staff members, and one identity that isn't h
 insert
   $_ isa full_time_employee,
     has name "Sam Rivera",
-    has email "sam.rivera@amasoft.com";
+    has email "sam.rivera@amasoft.com",
+    has status "active";
 # Alex Chen — contractor on a six-month engagement
   $_ isa contractor,
     has name "Alex Chen",
     has email "alex.chen@amasoft.com",
-    has contract_end_date 2024-07-01;
+    has contract_end_date 2024-07-01,
+    has status "active";
 # Michelle Rocksmasher — CISO, L7
   $_ isa full_time_employee,
     has name "Michelle Rocksmasher",
-    has email "michelle.rocksmasher@amasoft.com";
+    has email "michelle.rocksmasher@amasoft.com",
+    has status "active";
 # ci-deploy-bot — Engineering's deployment service account
   $_ isa service_account,
     has name "CI Deploy Bot",
     has service_name "ci-deploy-bot",
-    has owner_team "Engineering";
+    has owner_team "Engineering",
+    has status "active";
 ----
 
 Notice the deploy bot is created with the same insert pattern as everyone else. It has a display name like any other identity, but no email - its key is service_name. It is an identity all the same, and Chapter Four will grant it access exactly the way it grants Alex.
@@ -385,7 +389,8 @@ delete $alex;
 # Step 4: Reinsert as full_time_employee
 insert $_ isa full_time_employee,
   has name "Alex Chen",
-  has email "alex.chen@amasoft.com";
+  has email "alex.chen@amasoft.com",
+  has status "active";
 # Step 5: Recreate department_membership and reports_to
 match
 $alex isa full_time_employee, has email "alex.chen@amasoft.com";

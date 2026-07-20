@@ -209,7 +209,8 @@ Let's deliberately break each one to confirm the queries work. First, under-prov
 # Grace Skipper joins Finance at L5 — entitled to payments access
 insert $_ isa full_time_employee,
   has name "Grace Skipper",
-  has email "grace.skipper@amasoft.com";
+  has email "grace.skipper@amasoft.com",
+  has status "active";
 end;
 
 match
