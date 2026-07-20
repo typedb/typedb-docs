@@ -194,9 +194,10 @@ end;
 
 # Over-provisioned
 match
-  let $i in excess_payments_access_grants();
+  let $i, $s in excess_payments_access_grants();
   $i has name $name;
-fetch { "revoke_access": $name };
+  $s has name $sys;
+fetch { "should_revoke_access": $name, "from_system": $sys };
 end;
 ----
 
@@ -278,8 +279,8 @@ put
 [,typeql]
 ----
 match
-  let $i in excess_payments_access_grants();
-fetch { "revoke_access": $i.name };
+  let $i, $s in excess_payments_access_grants();
+fetch { "should_revoke_access": $i.name, "from_system": $s.name };
 ----
 
 As we've now demonstrated, two very simple queries are sufficient to ensure actual access grants match the expectation based on company policy.

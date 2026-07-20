@@ -117,7 +117,7 @@ Let's fix this:
 [,typeql]
 ----
 define
-attribute identity_name @abstract, value string;
+attribute identity_name @abstract;
 attribute email sub identity_name;
 attribute service_name sub identity_name;
 identity owns identity_name @key;
