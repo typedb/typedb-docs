@@ -83,7 +83,7 @@ $i isa identity, has email "alex.chen@amasoft.com",
 $s isa payments_system;
 { $_ isa access_grant, links (grantee: $i, system: $s); }
 or
-{ $_ isa project_membership, links (member: $i, team: $t);
+{ $_ isa project_team_membership, links (member: $i, team: $t);
   $_ isa access_grant, links (grantee: $t, system: $s); };
 $i has name $name;
 fetch { "has_access": $name };
@@ -125,7 +125,7 @@ $i isa identity, has identity_name "ci-deploy-bot",
 $s isa engineering_platform;
 { $_ isa access_grant, links (grantee: $i, system: $s); }
 or
-{ $_ isa project_membership, links (member: $i, team: $t);
+{ $_ isa project_team_membership, links (member: $i, team: $t);
   $_ isa access_grant, links (grantee: $t, system: $s); };
 $i has name $name;
 fetch { "has_access": $name };

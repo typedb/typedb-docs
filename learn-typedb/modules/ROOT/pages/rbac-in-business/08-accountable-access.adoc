@@ -4,7 +4,7 @@
 :keywords: typedb, typeql, rbac, policy, exception, access review, sub-relation, migration, abstract, accountability
 
 [.lead]
-_Policies, Exceptions & Reviews: Every Grant requires a Reason_
+_Policies, Exceptions & Reviews: Traceable Grants_
 
 == Previously
 
@@ -32,9 +32,24 @@ Adopting a stricter schema means the data must comply first. Every existing gran
 
 [,typeql]
 ----
+# Check current state
+match
+$g isa access_grant;
+----
+
+[,typeql]
+----
+# Delete all access_grant instances
 match
 $g isa access_grant;
 delete $g;
+----
+
+[,typeql]
+----
+# Check new state
+match
+$g isa access_grant;
 ----
 
 [NOTE.yellow]
@@ -42,10 +57,10 @@ delete $g;
 ====
 Clearing out all instances of a specific type is straightforward - get them all with `match`, then delete them with `delete`.
 
-When performing destructive actions such as deletion, it's a good idea to preview your changes before committing them. In TypeDB Studio, you can do this using the 'manual' transaction mode, which you can select from the top bar.
+When performing destructive actions such as deletion, it's a good idea to preview your changes before committing them. Running the `match` without the `delete` is a good start. In TypeDB Studio, you can go further: use the 'manual' transaction mode, which you can select from the top bar. You can run `delete` and check your changes before committing the deletion.
 ====
 
-Now the new model:
+Now that the old `access_grant` instances are gone, let's remodel access grants:
 
 [,typeql]
 ----
@@ -64,7 +79,7 @@ entity access_policy,
 attribute reason, value string;
 ----
 
-`policy_access_grant` is now a quaternary N-ary relation - it has four role players: grantee, system, and grantor (inherited from `access_grant`); and policy, declared on `policy_access_grant`.
+`policy_access_grant` is now a quaternary N-ary relation - it has four role players: grantee, system, and grantor (inherited from `access_grant`); and policy, declared directly.
 
 [NOTE.yellow]
 .🏢 Entities, Relations, and Attributes
@@ -92,7 +107,7 @@ $_ isa access_policy, has name "Payments Access",
 match
 $alex isa full_time_employee, has email "alex.chen@amasoft.com";
 $sam isa full_time_employee, has email "sam.rivera@amasoft.com";
-$eng isa engineering_platform, has name "GitShed";
+$eng isa engineering_platform;
 $p isa access_policy, has name "Engineering Access";
 put
 $_ isa policy_access_grant, links (grantee: $alex, system: $eng, grantor: $sam, policy: $p),
@@ -103,7 +118,7 @@ end;
 match
 $sam isa full_time_employee, has email "sam.rivera@amasoft.com";
 $michelle isa full_time_employee, has email "michelle.rocksmasher@amasoft.com";
-$eng isa engineering_platform, has name "GitShed";
+$eng isa engineering_platform;
 $p isa access_policy, has name "Engineering Access";
 put
 $_ isa policy_access_grant, links (grantee: $sam, system: $eng, grantor: $michelle, policy: $p),
@@ -114,7 +129,7 @@ end;
 match
 $sam isa full_time_employee, has email "sam.rivera@amasoft.com";
 $michelle isa full_time_employee, has email "michelle.rocksmasher@amasoft.com";
-$hr isa hr_system, has name "Workweek";
+$hr isa hr_system;
 $p isa access_policy, has name "Manager Access";
 put
 $_ isa policy_access_grant, links (grantee: $sam, system: $hr, grantor: $michelle, policy: $p),
@@ -173,9 +188,9 @@ Use a sub-relation when two relation types are genuinely the same kind of thing 
 In SQL, there is no concept of a relation subtype. You would need separate tables for policy_access_grants and exception_access_grants — joined by a common foreign key — and your queries would need UNION ALL to treat them uniformly. In TypeDB, querying for `access_grant` automatically includes all subtypes. The hierarchy is enforced by the schema and resolved transparently at query time.
 ====
 
-== Granting to Teams
+== Project Teams: A Second Path to Access
 
-Engineering's finance integration project needs temporary payments access for its engineers — who are not Finance staff and not L5. Access via team is the model stretching, not changing: a team is just another kind of grantee.
+Engineering's finance integration project needs temporary payments access for its engineers — who are not Finance staff and not L5. This requires a model extension: access will be granted via project team membership rather than a permanent role.
 
 [,typeql]
 ----
@@ -183,17 +198,25 @@ define
 entity project_team,
   owns team_name @key,
   owns project_code @card(1),
-  plays project_membership:team,
+  plays project_team_membership:team,
   plays access_grant:grantee;
-relation project_membership,
+relation project_team_membership,
   relates team @card(1),
   relates member @card(1),
+  relates added_by @card(1),
   owns start_date @card(1),
   owns end_date @card(0..1);
-entity identity plays project_membership:member;
+entity identity plays project_team_membership:member;
+entity staff plays project_team_membership:added_by;
 attribute team_name, value string;
 attribute project_code, value string;
 ----
+
+[NOTE.blue]
+.⭐ TypeDB Advantage: One role, many player types
+====
+In SQL, a foreign key points at exactly one table. A grantee_id referencing the identities table cannot also reference project_teams — supporting both means an extra column or a junction table per kind of holder, and every query has to know which one to check. In TypeDB, any type the schema permits can play a role: access_grant:grantee is played by identity and project_team alike, and every existing grant query works unchanged.
+====
 
 [,typeql]
 ----
@@ -202,23 +225,25 @@ insert $_ isa project_team,
   has project_code "FIN-2024";
 end;
 
-# The team's grant is a policy_access_grant like any other
+# The team's grant is an exception — temporary access, with a recorded reason
 match
   $t isa project_team, has team_name "Finance Integration";
   $s isa payments_system, has name "PayBuddy";
   $michelle isa full_time_employee, has email "michelle.rocksmasher@amasoft.com";
-  $p isa access_policy, has name "Payments Access";
 put
-  $_ isa policy_access_grant, links (grantee: $t, system: $s, grantor: $michelle, policy: $p),
+  $_ isa exception_access_grant, links (grantee: $t, system: $s, grantor: $michelle),
+    has reason "Finance integration project — temporary payments access",
     has permission_level "read",
-    has start_datetime 2024-07-15T09:00:00;
+    has start_datetime 2024-07-15T09:00:00,
+    has end_datetime 2024-12-31T17:00:00;
 end;
 
+# Alex — the team's creator — adds himself
 match
   $t isa project_team, has team_name "Finance Integration";
   $alex isa full_time_employee, has email "alex.chen@amasoft.com";
 put
-  $_ isa project_membership, links (team: $t, member: $alex),
+  $_ isa project_team_membership, links (team: $t, member: $alex, added_by: $alex),
     has start_date 2024-07-15;
 ----
 
@@ -232,7 +257,7 @@ match
   { $_ isa access_grant, links (grantee: $i, system: $s);
     let $source = "direct grant"; }
   or
-  { $_ isa project_membership, links (member: $i, team: $t);
+  { $_ isa project_team_membership, links (member: $i, team: $t);
     $_ isa access_grant, links (grantee: $t, system: $s);
     let $source = "project team"; };
 fetch { "name": $name, "system": $sys, "access_via": $source };
@@ -246,22 +271,9 @@ Here we use `let` for value assignment to make it clear which path each identity
 In SQL, finding identities with access via either a direct grant or project team membership requires UNION ALL across two completely different join chains — typically five or more tables, with duplicate elimination on top. In TypeQL, both access paths are expressed as a single disjunctive pattern. TypeDB resolves both paths, deduplicates automatically, and returns the source of access in the same query.
 ====
 
-== Composition Over Inheritance
-
-The level system taught this lesson already: Sam's promotion changed the level_assignment relation, not Sam's type. The same principle applies everywhere in the RBAC schema.
-
-[,typeql]
-----
-# FRAGILE: bakes the department into the type
-entity finance_employee sub full_time_employee; # bad
-# BETTER: composition via department_membership relation
-# An employee can be in any department, move departments,
-# and the history is preserved in the relation
-----
-
 == Reviewing the Grants
 
-A grant is a fact. A review is a fact about that fact — and in TypeDB, relations can play roles in other relations. No property graph can express this: an edge cannot end on another edge.
+A grant is a fact. A review is a fact about that fact - and in TypeDB, relations can play roles in other relations. No property graph can express this: an edge cannot end on another edge.
 
 [,typeql]
 ----
@@ -277,31 +289,11 @@ relation access_grant plays access_review:grant;
 entity permanent_staff plays access_review:reviewer;
 ----
 
-Michelle finally reviews the bot's grant from Chapter Six's audit — and revokes it:
-
-[,typeql]
-----
-match
-$b isa service_account, has service_name "ci-deploy-bot";
-$g isa exception_access_grant, links (grantee: $b);
-$michelle isa full_time_employee, has email "michelle.rocksmasher@amasoft.com";
-insert
-$_ isa access_review, links (grant: $g, reviewer: $michelle),
-  has review_date 2024-09-01,
-  has outcome "revoked";
-----
-
-The review records the decision; closing the grant itself — `end_datetime`, never delete — is Chapter Nine's job. And here is the audit the compliance team will run every quarter:
-
-[,typeql]
-----
-# Grants never reviewed
-match
-$g isa access_grant, links (grantee: $i);
-$i has name $name;
-not { $_ isa access_review, links (grant: $g); };
-fetch { "grantee": $name };
-----
+[NOTE.yellow]
+.💡 Relations playing roles in other relations
+====
+Notice `relation access_grant plays access_review:grant;` — the reviewed grant is itself a relation. TypeDB lets relations play roles in other relations, so a fact about a fact is modelled directly.
+====
 
 == Chapter Eight Challenge
 
@@ -312,10 +304,9 @@ fetch { "grantee": $name };
 . Insert the four policies and re-grant Amasoft — every grant under a policy or carrying a reason.
 . Query: all grants under "Engineering Access".
 . Query: all `exception_access_grant`s and their reasons.
-. Define `project_team` and `project_membership`, letting teams play grantee. Create the Finance Integration team, grant it payments access under "Payments Access", and add Alex as a member.
-. Write the disjunctive query with source labels — access via a direct grant or via team membership.
-. Define `access_review` and record Michelle's review of the bot's grant.
-. Query: all grants never reviewed — confirm the bot's grant no longer appears.
+. Define `project_team` and `project_team_membership`, letting teams play grantee. Create the Finance Integration team, grant it temporary payments access as an exception with a recorded reason, and add Alex as a member.
+. Query who has access to payment systems, making the results indicate whether access is via direct grant or team membership.
+. Define `access_review`.
 ====
 
 == What You Can Do Now
