@@ -1,0 +1,286 @@
+= Chapter Nine: Production RBAC
+:pageTitle: Chapter Nine: Production RBAC
+:Summary: Transactions, drivers, schema migrations, and idempotent pipelines.
+:keywords: typedb, typeql, rbac, transaction, put, update, schema migration, idempotent, provisioning, access check, deprovision, kill switch
+
+[.lead]
+_Transactions, Drivers, Schema Migrations & Idempotent Pipelines_
+
+== Previously
+
+Chapter Eight made access accountable. You can now model access policy as first-class data, trace every grant to a policy or an audited exception, and record reviews of the grants themselves. Chapter Nine connects the RBAC system to a real application.
+
+== The Situation
+
+Amasoft's RBAC system is live in TypeDB. The compliance team has self-service audit queries. Access policies are encoded as entities. Now the provisioning system needs to connect - granting and revoking access automatically as people join, leave, or change roles.
+
+== Transactions
+
+Every TypeDB query runs inside a transaction. You've been using them all along: Studio's auto mode handles that for you. But in a production application, you need to be aware of them.
+
+TypeDB has three transaction types, which serve distinct purposes:
+
+[cols="1,2,2",options="header"]
+|===
+|Type |Queries |Notes
+|read |`match`, `fetch` |Cheapest, general usage
+|write |Reads, plus `insert`, `delete`, `update`, `put` |Also allows reads. Commit promptly
+|schema |Everything, including `define`, `undefine`, `redefine` |Deployment and migrations only. Can touch both data and schema. Blocks other writes while open
+|===
+
+[NOTE.yellow]
+.⚠️ Transactions: best practices
+====
+. Always use `read` transactions for queries that don't write data.
+. Use `schema` transactions only during deployments and migrations - never in application hot paths.
+. Commit `write` transactions promptly - they operate on snapshots, so their data gets gradually more stale over time.
+. Keep commits fairly small. Larger commits increase the server's workload and may take longer.
+. Closing a transaction without committing discards its changes silently.
+====
+
+== Idempotent Provisioning using 'put'
+
+The provisioning system runs on a schedule. If it runs twice, it should not create duplicate identities or duplicate access grants. TypeDB's `put` keyword handles this:
+
+[,typeql]
+----
+# Idempotent identity provisioning
+put
+$_ isa full_time_employee,
+  has email "new.hire@amasoft.com",
+  has name "New Hire",
+  has status "active";
+----
+
+`put` inserts if the exact instance does not exist, and does nothing if it already does. Run the same script ten times — the database has one instance, not ten.
+
+[NOTE.yellow]
+.💡 `put` vs `insert`
+====
+When you run a `put` query, TypeDB always reports 'Success' — whether the record was just created or already existed. The row count reflects how many instances matched or were inserted, not a fixed number. In contrast, `insert` will report key violations if applicable, or simply insert duplicate data.
+
+This is what makes `put` safe for scheduled provisioning pipelines that run repeatedly. The guarantee is: 'this record exists'. Whether it needed to be created is an implementation detail you don't need to care about.
+
+The only cost is that `put` takes slightly longer to run - it needs to check the existing data before determining what changes to apply.
+====
+
+[,typeql]
+----
+# Idempotent access grant — provisioning always grants under policy
+match
+$i isa full_time_employee, has email "new.hire@amasoft.com";
+$sam isa full_time_employee, has email "sam.rivera@amasoft.com";
+$s isa engineering_platform, has name "GitShed";
+$p isa access_policy, has name "Engineering Access";
+put
+$_ isa policy_access_grant, links (grantee: $i, system: $s, grantor: $sam, policy: $p),
+  has permission_level "read",
+  has start_datetime 2024-08-01T09:00:00;
+----
+
+== The Access Check - The Most Important Query
+
+This query runs thousands of times a day. An identity requests access to a system — does it have it?
+
+[,typeql]
+----
+match
+$i isa identity, has email "alex.chen@amasoft.com",
+  has status "active";
+$s isa payments_system;
+{ $_ isa access_grant, links (grantee: $i, system: $s); }
+or
+{ $_ isa project_team_membership, links (member: $i, team: $t);
+  $_ isa access_grant, links (grantee: $t, system: $s); };
+$i has name $name;
+fetch { "has_access": $name };
+----
+
+[NOTE.yellow]
+.⚠️ You cannot fetch an entity directly
+====
+`fetch { "key": $i }` where `$i` is an entity will fail with 'Fetching entities is not supported'. Always fetch attribute values instead: `$i has name $name; fetch { "has_access": $name };` Or use `$i.*` to fetch all attributes at once.
+====
+
+[NOTE.yellow]
+.💡 Identity status as an access check's safety net
+====
+Revoking access properly means closing each grant with an `end_datetime`. From the access check's point of view, `has status "active"` is the safety net on top: if a closure was ever missed, a suspended or terminated identity will still fail the check. One attribute flip cuts off everything, while the closed grants remain as history.
+====
+
+== One Identifier for Every Identity
+
+In a production application, the query above would be templated: the application would inject the email address as a parameter. However, while it finds Alex by email, it can't find the CI deploy bot - the heaviest user of this query. It has no email; its key is service_name.
+
+But in TypeDB we can fix this using attribute subtyping! Let's try introducing a super-attribute 'identity_name' that all identities own a subtype of. (Note: this query has a bug, and will fail.)
+
+[,typeql]
+----
+define
+attribute identity_name @abstract, value string;
+attribute email sub identity_name;
+attribute service_name sub identity_name;
+identity owns identity_name @key;
+----
+
+You should see an error like: "Cannot redeclare inherited value type `string` on `email`." TypeDB sees that `identity_name`, `email` and `service_name` are all explicitly `value string` - a redundant and error-prone state. You might be tempted to just remove `value string` from the supertype, but this would cause a different error - not all attribute types are keyable, so that would create a conflict with `owns identity_name @key`.
+
+To fix this properly, we're going to do a schema migration - defining the new concepts and undefining the ones that must go, all in one transaction:
+
+[,typeql]
+----
+define
+attribute identity_name @abstract, value string;
+attribute email sub identity_name;
+attribute service_name sub identity_name;
+identity owns identity_name @key;
+end;
+
+undefine
+value string from email;
+value string from service_name;
+end;
+----
+
+Success! Now every `identity` has an `identity_name` of some variety.
+
+[NOTE.yellow]
+.💡 Atomic schema migrations
+====
+TypeDB is very strict over what is allowed in its schema at the end of a commit. This ensures consistent state whenever anyone opens any kind of transaction. It's therefore common for schema migration scripts to consist of multiple queries that must be run atomically in a single transaction - `define`, `undefine`, `insert`, `delete` ... etc.
+====
+
+[NOTE.blue]
+.⭐ TypeDB Advantage: Attributes can have subtypes too
+====
+`staff` and `service_account` are distinct kinds of identities, with their own identifier types `email` and `service_name`. Yet the access check query, a very common query, doesn't care what specific identifier is in use, it just needs to identify who is requesting access.
+
+Attribute subtyping allows us to express all of this in a single, simple query.
+====
+
+[,typeql]
+----
+match
+$i isa identity, has identity_name "ci-deploy-bot",
+  has status "active";
+$s isa engineering_platform;
+{ $_ isa access_grant, links (grantee: $i, system: $s); }
+or
+{ $_ isa project_team_membership, links (member: $i, team: $t);
+  $_ isa access_grant, links (grantee: $t, system: $s); };
+$i has name $name;
+fetch { "has_access": $name };
+----
+
+For checking if access grants match policy, call the relevant function(s) directly:
+
+[,typeql]
+----
+match
+$i isa identity, has identity_name "alex.chen@amasoft.com",
+  has status "active";
+let $authorised in who_should_have_access_to_payments($i);
+$authorised has name $name;
+fetch { "policy_authorised": $name };
+----
+
+The result is empty (no access) or returns the identity (has access).
+
+== Production RBAC Principle — Never Delete History
+
+In Chapter Three, you deleted Alex's contractor record and all its relations when promoting them to full-time employee. In production, you'd want to retain historical records instead.
+
+That's out of scope of this exercise, but let's look at our model for revoking an access grant:
+
+[NOTE.yellow]
+.🏢 Production RBAC systems do not delete history — they close it
+====
+When access is revoked, the `access_grant` is not deleted. It is closed with a `end_datetime` date. The record of who had access, when they got it, and when it was revoked is permanently preserved in the database. This is not optional — it is the foundation of an auditable RBAC system. Auditors don't ask 'who has access right now?' They ask 'who had access to payments on March 15th, and who approved it?' Delete is for type changes. History is closed, never deleted.
+====
+
+Deprovision an identity by closing all their access grants:
+
+[,typeql]
+----
+# Close all active grants for a departing employee
+match
+$i isa identity, has identity_name "departing@amasoft.com";
+$ag isa access_grant, links (grantee: $i);
+{ not { $ag has end_datetime $_; }; }
+or { $ag has end_datetime > 2024-12-31T17:00:00; };
+insert
+$ag has end_datetime 2024-12-31T17:00:00;
+
+# Suspend the identity
+match
+$i isa identity, has identity_name "departing@amasoft.com";
+update
+$i has status "terminated";
+----
+
+[NOTE.yellow]
+.💡 The 'update' keyword
+====
+When replacing the value of an already-attached attribute, use `update` instead of `insert`, as in the status query above. `update` replaces the existing attribute value. `insert` would attempt to add a second value alongside it — an error for attributes limited to a single value, like status.
+
+Behind the scenes, `update` is equivalent to a `delete` followed by an `insert`.
+====
+
+[NOTE.yellow]
+.💡 Two steps for offboarding
+====
+. Close all grants with `end_datetime` - preserves history, marks when access ended.
+. Set `status` to 'terminated'.
+
+We do both because the two steps represent distinct concepts. An identity's grants represent their permissions. Status represents whether they are still active at all in Amasoft. From the perspective of an access check, status is a convenient safety net to check.
+====
+
+== The Architect's Checklist — Taking This to Production
+
+The schema you have built may form the foundation for a production-grade system, but if we were going to deploy for a real company, here are some natural extensions to consider:
+
+[NOTE.yellow]
+.💡 Natural extensions for production deployment
+====
+* *Identity status*: already in the schema. Ensure every identity provisioning pipeline sets `status` to 'active' on creation.
+* *Granular resources*: currently grants target systems (`payments_system`, `engineering_platform`). Real-world RBAC often needs resource-level grants — a specific GitHub repo, an S3 bucket, a financial ledger. Extend with:
++
+[,typeql]
+----
+relation system_resource, relates system @card(1), relates resource @card(1);
+entity resource, owns resource_name @key, plays system_resource:resource;
+----
+* *Separation of Duties*: we implemented one SoD rule as `sod_violation()` in Chapter Seven. Extend with additional rules.
+* *Recertification*: `access_review` records access grant reviews. Schedule quarterly campaigns; "grants never reviewed" is an easy audit.
+* *Multi-category systems*: Workweek is classified as an `hr_system`, but payroll also executes payments, so we can't currently SoD check it accurately. A TypeDB type has only one supertype, so we'd need a new model - categorization as data:
++
+[,typeql]
+----
+entity system_category, owns name @key;
+relation system_categorization, relates category @card(1), relates system @card(1);
+----
++
+* *Sub-departments and regional access*
+* *System ownership*: a formal department-owns-system relation.
+* *Approval workflows* - Wire `exception_access_grant` to an approval system by granting them only in response to approved requests.
+
+All of these follow the same TypeDB patterns you have already learned.
+====
+
+== Chapter Nine Challenge
+
+[NOTE.green]
+.🎯 Challenge: The Provisioning Pipeline
+====
+. Write an idempotent provisioning script using `put` that creates an identity with `status` 'active' and grants them access. Run it twice — confirm no duplicates.
+. Define `identity_name` with `email` and `service_name` as its subtypes.
+. Write the access check query including the `status` kill switch. Look the identity up by identity_name and confirm it works for the ci-deploy-bot as well as for staff.
+. Run the policy-based check: call `who_should_have_access_to_payments()` in a read transaction.
+. Deprovision an identity: close all their access grants with `end_datetime`, then set `status` to 'terminated'.
+. Verify: run the access check for the deprovisioned identity — confirm it returns nothing even if grants exist.
+. Bonus: write a full onboarding pipeline — create the identity, set `status`, assign to a department, set level, grant standard access. Make all inserts idempotent with `put`.
+====
+
+== What You Can Do Now
+
+You can now manage transactions correctly, write idempotent provisioning pipelines, run schema migrations, offboard employees, close access history without deleting it, and run the access check query at the heart of every RBAC system. You have completed RBAC In Business — and built a foundation for a production-grade system you could adopt for your own company.

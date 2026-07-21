@@ -1,0 +1,253 @@
+= Chapter Two: The Identity Management System
+:pageTitle: Chapter Two: The Identity Management System
+:Summary: Type hierarchies, relations, and the org structure.
+:keywords: typedb, typeql, rbac, type hierarchy, inheritance, relation, role, cardinality, abstract
+
+[.lead]
+_Type Hierarchies, Relations & The Org Structure_
+
+== Previously
+
+In Chapter One you defined staff with email `@key` and an abstract department with name `@key`. Chapter Two builds the full identity hierarchy on top of these foundations — purely additive, no migration needed.
+
+== The First Subtypes — Temporary Staff
+
+Chapter One's staff type covers anyone who works at Amasoft. But contractors and interns carry information the rest of the staff won't: a contract end date. That calls for subtypes. Conceptually, both fit under the umbrella term of "temporary staff", so we introduce a shared parent for the pair — and while we're at it, every staff member deserves a name:
+
+[,typeql]
+----
+define
+attribute contract_end_date, value date;
+entity staff,
+  owns name @card(1);
+entity temporary_staff sub staff,
+  owns contract_end_date @card(1);
+entity contractor sub temporary_staff;
+entity intern sub temporary_staff;
+----
+
+contractor and intern inherit `name` and `email` from `staff`, plus `contract_end_date` from `temporary_staff`. Notice that this define also touched the existing staff type: running define on a type that already exists adds to it, so `owns name` slots in alongside Chapter One's email `@key` — no migration needed.
+
+Now make both parent types abstract — a bare staff member or a bare 'temporary staff member' is never what we want, only a specific kind:
+
+[,typeql]
+----
+define
+entity staff @abstract;
+entity temporary_staff @abstract;
+----
+
+This in-place schema modification succeeds because neither type has instances yet. You will now no longer be able to insert a bare staff or temporary_staff — only a concrete subtype. staff is abstract for the same reason department is — we never want a bare instance.
+
+Note: an abstract type must have an abstract supertype — TypeDB will reject `@abstract` on a type whose parent is concrete. Making temporary_staff abstract on its own would fail this rule; it works here because staff becomes abstract in the same query, and TypeDB validates the schema that results from the define as a whole.
+
+[NOTE.yellow]
+.💡 Inheritance is automatic
+====
+When you query for all 'staff' instances, TypeDB automatically includes contractors, interns, and every other staff subtype you define. The hierarchy is active at query time with no extra work.
+====
+
+[NOTE.blue]
+.⭐ TypeDB Advantage: Polymorphic queries across a hierarchy
+====
+In SQL, querying across a type hierarchy requires UNION ALL across multiple tables, or a discriminator column with complex JOIN logic. In TypeDB, the hierarchy is declared once and resolved automatically. Querying for 'staff' includes all subtypes — guaranteed correct because the schema validates it.
+====
+
+== Permanent Staff — Full-time and Part-time
+
+The rest of Amasoft's staff are salaried. Let's add a subtype branch for them:
+
+[,typeql]
+----
+define
+entity permanent_staff @abstract, sub staff;
+entity full_time_employee sub permanent_staff;
+entity part_time_employee sub permanent_staff;
+----
+
+The two leaves inherit everything from `permanent_staff`, and hence also from `staff`. Notice that permanent_staff declares no attributes of its own — its value is structural. It names the salaried half of the hierarchy and carries the full-time/part-time split.
+
+== Undefine and Redefine
+
+[cols="22%,36%,42%",options="header"]
+|===
+|Keyword |Purpose |Example
+|`undefine` |Remove something entirely — a type, capability, annotation, or function |`undefine owns contract_end_date from temporary_staff;`
+|`redefine` |change something that already exists — a supertype, capability, annotation or function body |`redefine relation r relates role @card(0..1);`
+|===
+
+== Service Accounts — Beyond Humans
+
+RBAC is not just about people. Every API integration, every bot needs access managed too. Introduce a shared abstract root and a non-human identity type:
+
+[,typeql]
+----
+define
+entity identity @abstract,
+  owns status @card(1) @values("active", "suspended", "terminated");
+entity staff sub identity;
+entity service_account sub identity,
+  owns name @card(1),
+  owns service_name @key,
+  owns owner_team @card(1);
+attribute service_name, value string;
+attribute owner_team, value string;
+attribute status, value string;
+----
+
+Notice that `identity @abstract` now owns `status` - a global kill switch. Suspended and terminated identities stay in the database with their history intact, but they must fail every access check - you will build that check in Chapter Nine. Both humans and service accounts need this. The `@values` annotation on the ownership restricts it to exactly three valid states at the schema level.
+
+Also notice: `entity staff sub identity;` gives staff — a type that has existed since Chapter One — a new parent, in place. TypeDB allows you to modify type hierarchies like this at any time, provided the change would not introduce conflicts. No migration scripts.
+
+Finally: `name` is not new — it is the same globally scoped attribute type department and staff already own.
+
+[NOTE.blue]
+.⭐ TypeDB Advantage: Service accounts are first-class identities
+====
+SQL-based RBAC systems typically bolt service accounts on as an afterthought — a separate table with a foreign key back to the user table. In TypeDB, service_account is a subtype of identity. It participates in the same access model as humans — same relations, same queries, same policies.
+====
+
+== The System Hierarchy
+
+Now we add the systems that identities will be granted access to.
+
+[,typeql]
+----
+define
+entity system @abstract,
+  owns name @key,
+  owns description @card(1);
+entity payments_system sub system;
+entity hr_system sub system;
+entity engineering_platform sub system;
+entity finance_platform sub system;
+attribute description, value string;
+----
+
+== Pause — Look at Your Schema
+
+Check the schema visualiser now. You have just built three separate groups of types:
+
+* The identity hierarchy — identity, staff, permanent_staff, full_time_employee, part_time_employee, temporary_staff, contractor, intern, service_account
+* The system hierarchy — system, payments_system, hr_system, engineering_platform, finance_platform
+* The department type.
+
+In the visualiser you will see three (almost) completely separate graphs. Nothing connects them. There are no edges between the islands (except for the shared `name` attribute type). This is correct — we have defined what exists, but not yet how things relate to each other.
+
+[NOTE.yellow]
+.🗺️ Three islands — about to be connected
+====
+This is a key moment in our schema design: seeing the structure before the connections. Each island is a complete hierarchy on its own. Relations are the bridges between them. Every relation you define in the next section will add an edge that connects two previously isolated groups.
+====
+
+== What is a Relation?
+
+A relation is TypeDB's way of recording a connection between two or more things. Unlike a foreign key in SQL — which is just a number stored in a column — a TypeDB relation is a first-class entity in its own right. It can own attributes, participate in other relations, and be queried like any other type.
+
+Every relation has named roles. Roles are the slots that participants fill.
+
+== Relations — The Reporting Line
+
+The first bridge: who reports to whom. In Amasoft, only permanent employees can manage people — contractors and interns report upward but never manage others. We encode this policy directly in the schema:
+
+[,typeql]
+----
+define
+attribute start_date, value date;
+relation reports_to,
+  relates manager @card(1),
+  relates report @card(1),
+  owns start_date @card(1);
+entity permanent_staff, plays reports_to:manager;
+entity staff, plays reports_to:report;
+----
+
+When you define a relation, you choose the role names yourself. You choose role names based on the function a participant plays in the relationship, not their entity type. The reporting line relation has roles called 'manager' and 'report' (not 'staff' and 'staff').
+
+Relations are not just connections — they are first-class types that can own attributes. The date this reporting line became effective lives on the bond itself, not in a separate table. This means you can query it directly, without a JOIN.
+
+`@card(1)` on both roles means each reporting bond links exactly one manager to exactly one report. One consequence, which Chapter Three relies on: you cannot delete a role player and leave the bond dangling — the bond itself must be deleted first.
+
+[NOTE.yellow]
+.⚠️ Role names are not entity type names
+====
+When you insert a relation, you always use the role name: `$reports_to isa reports_to, links (manager: $sam, report: $alex);` The error 'Role label not found' means you used the wrong name. When you see it, go back to the `relates` declaration and check what the role is actually called.
+====
+
+[NOTE.yellow]
+.💡 Inheritance does the work here
+====
+Notice that manager is granted to permanent_staff, but report is granted to staff — the parent type. Because contractor and intern are subtypes of staff, they automatically inherit the ability to play the report role. No additional `plays` declarations needed. Because only permanent_staff can play manager, TypeDB will reject any insert that tries to make a contractor or intern a manager. The business rule is structural — enforced by the schema, not application code. This is one of the most powerful aspects of TypeDB's type hierarchy: you get precise, inheritance-aware role control in two lines.
+====
+
+[NOTE.blue]
+.⭐ TypeDB Advantage: Relations own attributes natively
+====
+In SQL, storing when a reporting relationship became effective requires a separate junction table with its own columns. In TypeDB, start_date lives on the bond itself — semantically correct and queryable without a JOIN.
+====
+
+[NOTE.yellow]
+.🗺️ Check the schema visualiser
+====
+After running this define, check the schema visualiser. You will now see edges connecting identity nodes to each other through reports_to. One of the three islands has grown internal connections.
+====
+
+== Department Membership
+
+The second bridge: which department each staff member belongs to:
+
+[,typeql]
+----
+define
+relation department_membership,
+  relates department @card(1),
+  relates member @card(1);
+entity department, plays department_membership:department;
+entity staff, plays department_membership:member;
+----
+
+[NOTE.yellow]
+.💡 @card(1) on the department role
+====
+`@card(1)` on the department role means each individual department_membership bond must reference exactly one department. It does not mean there can only be one department in the database.
+====
+
+== The Schema So Far — A Summary
+
+Before populating the database, here is a complete picture of everything you have built. This is the full Amasoft schema at the end of Chapter Two.
+
+[cols="26%,34%,40%",options="header"]
+|===
+|Concept |Types |Attributes
+|Identities |identity, staff, permanent_staff, full_time_employee, part_time_employee, temporary_staff, contractor, intern, service_account |email @key, name on staff; contract_end_date on temporary_staff; name, service_name @key, owner_team on service_account
+|Systems |system, payments_system, hr_system, engineering_platform, finance_platform |name @key, description
+|Departments |department |name @key
+|Relations |reports_to, department_membership |reports_to owns start_date. department_membership connects staff to department.
+|===
+
+[NOTE.yellow]
+.🗺️ Check the Schema Visualiser now
+====
+Go to the Schema page in TypeDB Studio — it reflects your schema automatically. You should see all entity types as nodes connected by their inheritance hierarchy, with reports_to and department_membership as relation edges. If anything looks wrong, fix it now — before you insert any data.
+====
+
+[NOTE.yellow]
+.💡 Natural extensions — what we deliberately left out
+====
+In a real RBAC deployment you might also consider: • Teams — The Engineering department might be divided into teams like Platform, Product, and Security, each with their own access profiles. • Regional or office-specific access — identities in the EU region may have different access to certain systems than those in APAC, due to data residency requirements. • System ownership — a department could formally own a set of systems. Finance owns PayBuddy, Rectangle, and Xilch. This would let you query 'who has access to systems outside their department's ownership?' — a powerful audit query. All of these are easy to add in TypeDB. For now, we keep the structure simple so the core concepts stay clear.
+====
+
+== Chapter Two Challenge
+
+[NOTE.green]
+.🎯 Challenge: Build the Identity Schema
+====
+. Grow Chapter One's staff into the full identity hierarchy — temporary_staff, contractor, intern, permanent_staff, full_time_employee, part_time_employee, identity, service_account.
+. Define the system hierarchy.
+. Define reports_to and department_membership with correct cardinality.
+. Check the schema visualiser and verify the full graph — confirm all three islands are now connected.
+====
+
+== What You Can Do Now
+
+You have made a basic framework. In Chapter Three we populate it with actual data: inserting Amasoft's people, departments, and systems, and learning why TypeQL's pattern language makes this cleaner than SQL.

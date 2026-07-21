@@ -1,0 +1,16 @@
+= Setup
+:page-aliases: {page-version}@home::get-started/setup.adoc
+:keywords: start, learn, typedb, typeql, cloud, tutorial, quickstart, get-started, console, studio, database, create, insert, query, setup
+:pageTitle: Setup
+:summary: Start running TypeDB and open TypeDB Studio
+:tabs-sync-option:
+
+First, set up a TypeDB Cloud instance and open TypeDB Studio (or Console if you prefer) to interact with TypeDB.
+
+include::partial$typedb-cloud-setup.adoc[]
+
+[#configure_coding_agent]
+== Optional: configure your coding agent
+
+Prefer to let an AI coding agent write TypeQL for you? Before diving in, you can set up your agent to write and validate TypeQL reliably.
+See xref:{page-version}@home::configure-coding-agent.adoc[Configure coding agent] for how to install `typeql-check` and add the TypeQL skill to Claude Code, Cursor, GitHub Copilot, and other agents.
