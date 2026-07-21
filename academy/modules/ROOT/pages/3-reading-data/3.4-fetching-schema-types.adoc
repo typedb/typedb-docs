@@ -1,4 +1,5 @@
 = Lesson 3.4: Fetching schema types
+:test-typeql: linear
 
 == Variablizing types
 
@@ -415,6 +416,11 @@ Write a query to retrieve the list of types that own `name`.
 =====
 [,typeql]
 ----
+#!test[schema]
+#{{
+include::{page-version}@academy::attachment$bookstore-schema.tql[]
+#}}
+#!test[read]
 match
 $type owns name;
 fetch {

@@ -96,6 +96,14 @@ match
   true == reachable($x, $y);
 ----
 
+[NOTE]
+====
+This predicate formulation is not yet accepted by the current version of TypeDB:
+recursion is only supported through stream-returning functions, so defining this function fails with
+`[FUN9] Detected a recursive cycle through a negation, reduction or single return`.
+Use a stream formulation, like the ones shown on this page, for recursive functions.
+====
+
 == Arguments & return values
 From the example, there are multiple ways of expressing the same rule as a function.
 This is understandable given (mathematically) a relation is a collection of tuples,

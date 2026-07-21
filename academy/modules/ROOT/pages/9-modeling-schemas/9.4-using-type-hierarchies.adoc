@@ -1,4 +1,5 @@
 = Lesson 9.4: Using type hierarchies
+:test-typeql: linear
 :page-preamble-card: 1
 
 In the previous two lessons, we created and developed a data model for book data. In this lesson, we'll see how we can introduce type hierarchies into the model so that we can leverage inheritance polymorphism in our queries.
@@ -133,6 +134,20 @@ There is an additional hint that this field in the data table represents a type:
 
 [,typeql]
 ----
+#!test[schema, reset]
+#{{
+define
+attribute isbn-13, value string;
+attribute isbn-10, value string;
+attribute title, value string;
+attribute page-count, value integer;
+attribute genre, value string;
+attribute price, value double;
+attribute stock, value integer;
+relation contribution, relates work;
+relation publishing, relates published;
+#}}
+#---
 define
 entity book @abstract,
   owns isbn-13,

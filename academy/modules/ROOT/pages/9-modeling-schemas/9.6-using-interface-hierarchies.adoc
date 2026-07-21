@@ -1,4 +1,5 @@
 = Lesson 9.6: Using interface hierarchies
+:test-typeql: linear
 :page-preamble-card: 1
 
 In the previous lesson, we improved the type hierarchies in our book data model by using the principle of composition over inheritance. In this lesson, we'll explore the behaviour of interface hierarchies and see how they can be used to adapt our model in different ways.
@@ -231,6 +232,7 @@ In other cases, it may be more appropriate to override roles. The following sche
 
 [,typeql]
 ----
+#!test[schema, reset]
 define
 entity user,
   plays action-execution:executor;
@@ -278,6 +280,7 @@ If this deduction were correct, it would allow humans to join flocks, despite th
 
 [,typeql]
 ----
+#!test[schema]
 define
 entity animal @abstract;
 entity human sub animal;                      # all humans are animals

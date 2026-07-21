@@ -12,6 +12,11 @@ The built-in optimizer of TypeDB will decide the optimal order of evaluation of 
 
 [,typeql]
 ----
+#!test[schema]
+#{{
+include::{page-version}@typeql-reference::example$tql/conjunction.tql[tags=patterns-schema]
+#}}
+#!test[read]
 match
   $x isa user;
   $x has username "john_1";
@@ -20,6 +25,7 @@ and the query pipeline
 
 [,typeql]
 ----
+#!test[read]
 match
   $x isa user;
 match
@@ -91,6 +97,7 @@ We expect the second query to run faster, as it evaluates the `<expensive-patter
 Negations, especially nested negations, can be extremely expensive query operations: indeed, to ensure that something does not exist, we usually must search the entire domain of possibilities. It is therefore paramount to reduce the "`size of the domain`" prior to using negation. For example, the query
 [,typeql]
 ----
+#!test[read]
 match
   $x isa user;
   not {
@@ -106,6 +113,12 @@ does the following:
 This can equivalently be achieved by the following query:
 [,typeql]
 ----
+#!test[read]
+#{{
+with fun user_count() -> integer:
+match $u isa user;
+return count($u);
+#}}
 match
   $x isa user;
   friendship ($x, $y);

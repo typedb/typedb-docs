@@ -1,4 +1,5 @@
 = Lesson 3.1: Fetching simple data
+:test-typeql: linear
 
 == The Fetch query
 
@@ -325,6 +326,11 @@ Modify the above query to also retrieve the `status` attribute of the order and 
 =====
 [,typeql]
 ----
+#!test[schema]
+#{{
+include::{page-version}@academy::attachment$bookstore-schema.tql[]
+#}}
+#!test[read]
 match
 $book isa paperback, has isbn-13 "9780446310789";
 $line isa order-line (order: $order, item: $book);

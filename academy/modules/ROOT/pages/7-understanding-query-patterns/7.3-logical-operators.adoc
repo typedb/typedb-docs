@@ -1,4 +1,5 @@
 = Lesson 7.3: Logical operators
+:test-typeql: linear
 
 == Disjunctions
 
@@ -84,6 +85,11 @@ Just as we can represent a disjunction of patterns, we can also represent the ht
 
 [,typeql]
 ----
+#!test[schema]
+#{{
+include::{page-version}@academy::attachment$bookstore-schema.tql[]
+#}}
+#!test[read]
 match
 $book isa book;
 not {

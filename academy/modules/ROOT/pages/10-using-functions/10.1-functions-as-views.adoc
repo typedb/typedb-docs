@@ -1,4 +1,5 @@
 = Lesson 10.1: Functions as views
+:test-typeql: linear
 
 == Abstracting complex patterns
 
@@ -28,6 +29,11 @@ Now let's consider how we might apply this domain logic. Suppose we want to quer
 
 [,typeql]
 ----
+#!test[schema]
+#{{
+include::{page-version}@academy::attachment$bookstore-schema.tql[]
+#}}
+#!test[read]
 match
 $book isa book;
 fetch {
@@ -49,6 +55,10 @@ The addition of the verification check makes the query significantly more compli
 
 [,typeql]
 ----
+#!test[schema]
+#{{
+define
+#}}
 fun verified-reviews($book: book) -> { review }:
   match
   $review isa review;
@@ -64,6 +74,7 @@ Now, we can use this encapsulated logic to simplify the query we really wanted t
 
 [,typeql]
 ----
+#!test[read]
 match
 $book isa book;
 fetch {
