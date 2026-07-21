@@ -235,7 +235,7 @@ define
 entity user,
   plays action-execution:executor;
 entity admin sub user,
-  plays privileged-execution:priveleged-executor;
+  plays privileged-execution:privileged-executor;
 relation action-execution,
   relates action,
   relates executor;
@@ -279,22 +279,21 @@ If this deduction were correct, it would allow humans to join flocks, despite th
 [,typeql]
 ----
 define
-animal sub entity, abstract;
-human sub animal;                             # all humans are animals
-goose sub animal;                             # all geese are animals
-animal-group sub entity, abstract;
-group-membership sub relation,
-  abstract,
+entity animal @abstract;
+entity human sub animal;                      # all humans are animals
+entity goose sub animal;                      # all geese are animals
+entity animal-group @abstract;
+relation group-membership @abstract,
   relates group,
   relates group-member;
-animal-group plays group-membership:group;
-animal plays group-membership:group-member;   # all animals can join animal groups
-flock sub animal-group;                       # all flocks are animal groups
-flock-membership sub group-membership,
+entity animal-group plays group-membership:group;
+entity animal plays group-membership:group-member;  # all animals can join animal groups
+entity flock sub animal-group;                # all flocks are animal groups
+relation flock-membership sub group-membership,
   relates flock as group,
   relates flock-member as group-member;
-flock plays flock-membership:flock;
-goose plays flock-membership:flock-member;  # all geese can join flocks
+entity flock plays flock-membership:flock;
+entity goose plays flock-membership:flock-member;  # all geese can join flocks
 ----
 
 If definitions of interface implementations were covariant in the interface type instead of invariant, then `animal`, and all of its subtypes including `human`, would inherit the ability to play `flock-membership:flock-member`!

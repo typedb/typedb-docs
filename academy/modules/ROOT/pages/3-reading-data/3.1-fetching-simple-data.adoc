@@ -330,7 +330,7 @@ $book isa paperback, has isbn-13 "9780446310789";
 $line isa order-line (order: $order, item: $book);
 fetch {
   "id": $order.id,
-  "status": $order.status",
+  "status": $order.status,
   "quantity": $line.quantity,
   "price": $book.price
 };

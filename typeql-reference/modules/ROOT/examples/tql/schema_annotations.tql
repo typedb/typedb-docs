@@ -5,7 +5,7 @@ define
   entity element @abstract;
 // end::abstract-entity[]
 
-  entity content @abstract, sub root,
+  entity content @abstract, sub element,
     owns is-visible,
     plays subscription:content;
 

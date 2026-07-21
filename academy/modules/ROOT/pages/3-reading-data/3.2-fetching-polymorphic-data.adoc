@@ -256,8 +256,8 @@ This query will retrieve all attributes of all entities. Meanwhile, the followin
 [,typeql]
 ----
 match
-$entity-1 isa! $e1; entity $entity-type-1;
-$entity-2 isa! $e2; entity $entity-type-2;
+$entity-1 isa! $entity-type-1; entity $entity-type-1;
+$entity-2 isa! $entity-type-2; entity $entity-type-2;
 $relation links ($entity-1, $entity-2);
 fetch {
   "entity-1-attributes": { $entity-1.* },

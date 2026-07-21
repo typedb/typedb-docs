@@ -80,7 +80,7 @@ An equally valid way is to see a function as a predicate computing whether one n
 [,typeql]
 ----
 define
-fun reachable($from: node, $to: node) -> bool:
+fun reachable($from: node, $to: node) -> boolean:
 match
   {
     (from_: $from, to: $to) isa edge;

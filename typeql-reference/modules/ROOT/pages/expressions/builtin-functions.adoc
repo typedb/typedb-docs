@@ -133,7 +133,7 @@ Returns all metadata of the provided `owns` as a stream of key-value pairs, if i
 
 [,typeql]
 ----
-let $key, $value in get_all_owns_meta(person, name);
+let $key, $value in get_owns_all_meta(person, name);
 
 $key == "color"
 $value == "#0088FF"

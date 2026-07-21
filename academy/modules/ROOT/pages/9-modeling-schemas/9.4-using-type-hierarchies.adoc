@@ -134,21 +134,20 @@ There is an additional hint that this field in the data table represents a type:
 [,typeql]
 ----
 define
-book sub entity,
-  abstract,
+entity book @abstract,
   owns isbn-13,
   owns isbn-10,
   owns title,
   owns page-count,
-  owns genre
+  owns genre,
   owns price,
   plays contribution:work,
   plays publishing:published;
-paperback sub book,
+entity paperback sub book,
   owns stock;
-hardback sub book,
+entity hardback sub book,
   owns stock;
-ebook sub book;
+entity ebook sub book;
 ----
 
 In general, the following characteristics are good indicators of types stored as data in a particular field:

@@ -38,7 +38,7 @@ This can be naturally extended to represent relations with any number of role pl
 
 [,typeql]
 ----
-n-ary-relation (role-1: $a, role-2: $b, role-3: $c, role-4: $d, ...) isa;
+n-ary-relation (role-1: $a, role-2: $b, role-3: $c, role-4: $d, ...);
 ----
 
 We can also represent relations with only a single roleplayer, known as *unary* relations, though doing so is only useful in very niche cases.

@@ -67,8 +67,8 @@ Now, we can use this encapsulated logic to simplify the query we really wanted t
 match
 $book isa book;
 fetch {
-  $book: title;
-  average-verified-score: (
+  "title": $book.title,
+  "average-verified-score": (
     match
     let $review in verified-reviews($book);
     $review has score $score;

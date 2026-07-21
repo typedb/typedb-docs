@@ -95,7 +95,7 @@ match
   $x isa user;
   not {
     $y isa user;
-    not { friendship ($x, $y) };
+    not { friendship ($x, $y); };
   };
 limit 1;
 ----

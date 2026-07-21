@@ -235,7 +235,7 @@ Further optionality features coming soon!
 ----
 match
   $x isa user;
-  not { friendship ($x, $y); }
+  not { friendship ($x, $y); };
 ----
 where the variable `$y` is internal. The class of internal variable also includes *anonymous* variables (indicated by `$_`).
 

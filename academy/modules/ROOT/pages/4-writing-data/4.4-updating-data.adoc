@@ -43,7 +43,7 @@ In addition to being more efficient and easier for readers to interpret, these q
 ----
 match
 $book isa book, has $art;
-$art "art" isa genre;
+$art isa genre "art";
 delete
 has $art of $book;
 insert
