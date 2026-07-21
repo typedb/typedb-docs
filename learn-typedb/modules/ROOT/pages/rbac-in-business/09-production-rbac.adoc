@@ -1,10 +1,10 @@
 = Chapter Nine: Production RBAC
 :pageTitle: Chapter Nine: Production RBAC
-:Summary: Transactions, drivers, put, and idempotent pipelines.
-:keywords: typedb, typeql, rbac, transaction, put, update, idempotent, provisioning, access check, deprovision, kill switch
+:Summary: Transactions, drivers, schema migrations, and idempotent pipelines.
+:keywords: typedb, typeql, rbac, transaction, put, update, schema migration, idempotent, provisioning, access check, deprovision, kill switch
 
 [.lead]
-_Transactions, Drivers, put & Idempotent Pipelines_
+_Transactions, Drivers, Schema Migrations & Idempotent Pipelines_
 
 == Previously
 
@@ -112,16 +112,43 @@ Revoking access properly means closing each grant with an `end_datetime`. From t
 
 In a production application, the query above would be templated: the application would inject the email address as a parameter. However, while it finds Alex by email, it can't find the CI deploy bot - the heaviest user of this query. It has no email; its key is service_name.
 
-Let's fix this:
+But in TypeDB we can fix this using attribute subtyping! Let's try introducing a super-attribute 'identity_name' that all identities own a subtype of. (Note: this query has a bug, and will fail.)
 
 [,typeql]
 ----
 define
-attribute identity_name @abstract;
+attribute identity_name @abstract, value string;
 attribute email sub identity_name;
 attribute service_name sub identity_name;
 identity owns identity_name @key;
 ----
+
+You should see an error like: "Cannot redeclare inherited value type `string` on `email`." TypeDB sees that `identity_name`, `email` and `service_name` are all explicitly `value string` - a redundant and error-prone state. You might be tempted to just remove `value string` from the supertype, but this would cause a different error - not all attribute types are keyable, so that would create a conflict with `owns identity_name @key`.
+
+To fix this properly, we're going to do a schema migration - defining the new concepts and undefining the ones that must go, all in one transaction:
+
+[,typeql]
+----
+define
+attribute identity_name @abstract, value string;
+attribute email sub identity_name;
+attribute service_name sub identity_name;
+identity owns identity_name @key;
+end;
+
+undefine
+value string from email;
+value string from service_name;
+end;
+----
+
+Success! Now every `identity` has an `identity_name` of some variety.
+
+[NOTE.yellow]
+.💡 Atomic schema migrations
+====
+TypeDB is very strict over what is allowed in its schema at the end of a commit. This ensures consistent state whenever anyone opens any kind of transaction. It's therefore common for schema migration scripts to consist of multiple queries that must be run atomically in a single transaction - `define`, `undefine`, `insert`, `delete` ... etc.
+====
 
 [NOTE.blue]
 .⭐ TypeDB Advantage: Attributes can have subtypes too
@@ -256,4 +283,4 @@ All of these follow the same TypeDB patterns you have already learned.
 
 == What You Can Do Now
 
-You can now manage transactions correctly, write idempotent provisioning pipelines, offboard employees, close access history without deleting it, and run the access check query at the heart of every RBAC system. You have completed RBAC In Business — and built a foundation for a production-grade system you could adopt for your own company.
+You can now manage transactions correctly, write idempotent provisioning pipelines, run schema migrations, offboard employees, close access history without deleting it, and run the access check query at the heart of every RBAC system. You have completed RBAC In Business — and built a foundation for a production-grade system you could adopt for your own company.
