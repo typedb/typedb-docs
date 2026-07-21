@@ -179,7 +179,7 @@ Modify the above query to also retrieve the type of the relation between `$book`
 match
 $user isa user, has id "u0008";
 $book isa book;
-(executor: $user, action: $action) isa action-execution;
+action-execution (executor: $user, action: $action);
 $rel isa! $relation-type, links ($book, $action);
 $action isa! $action-type;
 fetch {

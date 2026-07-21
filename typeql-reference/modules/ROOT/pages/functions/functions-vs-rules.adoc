@@ -62,10 +62,10 @@ define
 fun reachable() -> { node, node }:
 match
   {
-    (from_: $from, to: $to) isa edge;
+    edge (from_: $from, to: $to);
   } or {
     let $from, $via in reachable();
-    (from_: $via, to: $to) isa edge;
+    edge (from_: $via, to: $to);
   };
 return { $from, $to };
 
@@ -77,7 +77,7 @@ match
 ----
 
 An equally valid way is to see a function as a predicate computing whether one node is a reachable from the other.
-Since recursion must go through a stream-returning function (see the note below), the boolean predicate delegates the recursion to a stream helper:
+Since recursion must go through a stream-returning function, the boolean predicate delegates the recursion to a stream helper:
 [,typeql]
 ----
 #!test[schema]
@@ -91,10 +91,10 @@ return check;
 fun reachable_nodes($from: node) -> { node }:
 match
   {
-    (from_: $from, to: $to) isa edge;
+    edge (from_: $from, to: $to);
   } or {
     let $via in reachable_nodes($from);
-    (from_: $via, to: $to) isa edge;
+    edge (from_: $via, to: $to);
   };
 return { $to };
 
@@ -104,14 +104,6 @@ match
   $x isa node; $y isa node;
   true == is_reachable($x, $y);
 ----
-
-[NOTE]
-====
-A directly recursive formulation of the predicate — calling `is_reachable` inside its own body — is rejected by TypeDB:
-recursion may only pass through stream-returning functions, not through single-return or `check` functions
-(`[FUN9] Detected a recursive cycle through a negation, reduction or single return`).
-Delegating the recursion to a stream-returning helper, as above, satisfies this restriction.
-====
 
 == Arguments & return values
 From the example, there are multiple ways of expressing the same rule as a function.
@@ -131,10 +123,10 @@ define
 fun reachable_from($from: node) -> { node }:
 match
   {
-    (from_: $from, to: $to) isa edge;
+    edge (from_: $from, to: $to);
   } or {
     let $via in reachable_from($from);
-    (from_: $via, to: $to) isa edge;
+    edge (from_: $via, to: $to);
   };
 return { $to };
 

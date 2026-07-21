@@ -93,7 +93,7 @@ include::{page-version}@academy::attachment$bookstore-schema.tql[]
 match
 $book isa book;
 not {
-    ($book, $contributor) isa illustrating;
+    illustrating ($book, $contributor);
 };
 fetch {
   "isbn-13": $book.isbn-13,
