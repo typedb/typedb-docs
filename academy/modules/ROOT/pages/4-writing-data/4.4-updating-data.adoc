@@ -1,4 +1,5 @@
 = Lesson 4.4: Updating data
+:test-typeql: linear
 
 == Building update queries
 
@@ -41,9 +42,14 @@ In addition to being more efficient and easier for readers to interpret, these q
 
 [,typeql]
 ----
+#!test[schema]
+#{{
+include::{page-version}@academy::attachment$bookstore-schema.tql[]
+#}}
+#!test[write]
 match
 $book isa book, has $art;
-$art "art" isa genre;
+$art isa genre "art";
 delete
 has $art of $book;
 insert

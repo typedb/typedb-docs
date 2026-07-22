@@ -81,6 +81,71 @@ match
 //  that could return None values for branch-local variables.
 // Revert to 19fb67756bfb76018315c6c7b380913683ca052c if needed (2025/08/08).
 
+[#_branches_are_non_exclusive_and_unordered]
+=== Branches are non-exclusive and unordered
+
+A disjunction is a true logical "`or`", not a conditional:
+every branch whose pattern is satisfied contributes answers, and the branches are evaluated in no particular order.
+A branch is never "`skipped`" because an earlier branch already matched.
+
+This matters whenever only some answers of the resulting stream are kept — for example with
+`return first` in a xref:{page-version}@typeql-reference::functions/scalar.adoc[scalar function] or a `limit` stage in a pipeline.
+Consider this attempt at a tiered classification, reading `or` as if it were an `if`/`else if`/`else`:
+
+[,typeql]
+----
+#!test[schema]
+define
+fun classify($score: integer) -> string:
+match
+  { $score > 8; let $label = "high"; }
+  or { $score > 4; let $label = "medium"; }
+  or { let $label = "low"; };
+return first $label;
+----
+
+The function defines and type-checks, but does not do what the `if`/`else` reading suggests.
+The last branch is unguarded, so it is satisfied for every `$score`, and for a score of `10` all three branches are satisfied.
+The function's `match` therefore produces an answer per satisfied branch,
+and since branches are unordered, `return first` may return *any* of `"high"`, `"medium"`, or `"low"` — for any input.
+
+Re-declaring the function with a stream return makes the behavior visible: every satisfied branch yields an answer.
+
+[,typeql]
+----
+#!test[schema]
+define
+fun classify_all($score: integer) -> { string }:
+match
+  { $score > 8; let $label = "high"; }
+  or { $score > 4; let $label = "medium"; }
+  or { let $label = "low"; };
+return { $label };
+
+#!test[read, count=3]
+match
+  let $label in classify_all(10);
+----
+
+[WARNING]
+====
+When a single answer is to be selected from a stream produced by a disjunction —
+with `return first`, `return last`, or a `limit` stage —
+write the branches to be mutually exclusive, so that at most one branch can be satisfied by any answer:
+
+[,typeql]
+----
+#!test[schema]
+define
+fun classify_tiered($score: integer) -> string:
+match
+  { $score > 8; let $label = "high"; }
+  or { $score > 4; $score <= 8; let $label = "medium"; }
+  or { $score <= 4; let $label = "low"; };
+return first $label;
+----
+====
+
 == Examples
 1. Retrieve friends and friends of friends of a user;
 +

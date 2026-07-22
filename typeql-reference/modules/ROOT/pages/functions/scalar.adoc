@@ -90,6 +90,14 @@ It can be used in cases when only the first answer is needed or when there canno
 
 With the `last` keyword, the whole stream is consumed, and only its last answer is returned.
 
+[WARNING]
+====
+`first` and `last` select from the stream in the order the engine produces answers.
+Unless the function's pipeline orders the stream explicitly (e.g. with a `sort` stage), this order is not defined.
+In particular, the branches of a xref:{page-version}@typeql-reference::patterns/disjunctions.adoc#_branches_are_non_exclusive_and_unordered[disjunction are non-exclusive and unordered]:
+if more than one branch is satisfied, `return first` may return the answer of any satisfied branch — a disjunction followed by `return first` is not an `if`/`else` conditional.
+====
+
 .Example of a stream modification
 [,typeql]
 ----

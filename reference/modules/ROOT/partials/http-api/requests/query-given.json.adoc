@@ -1,7 +1,7 @@
 [source,json]
 ----
 {
-  "query": "given $p: person, $n: string; $dob: datetime-tz;\ninsert $p has name == $name, date-of-birth == $dob;",
+  "query": "given $p: person, $n: string, $dob: datetime-tz;\ninsert $p has name == $n, has date-of-birth == $dob;",
   "given": [
     {
         "p": {
