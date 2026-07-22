@@ -291,7 +291,7 @@ match
 fetch { "should_revoke_access": $i.name, "from_system": $s.name };
 ----
 
-image::rbac-query-excess-grants.webp[Query results flagging Alex Chen's PayBuddy access for revocation]
+image::rbac-query-excess-grants.webp[Query results flagging Alex Chen's PayBuddy access for revocation, role=framed]
 
 As we've now demonstrated, two very simple queries are sufficient to ensure actual access grants match the expectation based on company policy.
 

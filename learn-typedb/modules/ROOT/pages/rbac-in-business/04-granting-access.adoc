@@ -126,7 +126,7 @@ $g isa access_grant, links (grantee: $i, system: $s);
 fetch { "identity_name": $i.name, "platform": $s.name, "permission": $g.permission_level };
 ----
 
-image::rbac-query-access-grants.webp[Query results listing who has access to each engineering platform and at what permission level]
+image::rbac-query-access-grants.webp[Query results listing who has access to each engineering platform and at what permission level, role=framed]
 
 What does Sam have access to?
 

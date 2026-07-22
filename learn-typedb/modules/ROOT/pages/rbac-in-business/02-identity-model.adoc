@@ -26,7 +26,7 @@ entity contractor sub temporary_staff;
 entity intern sub temporary_staff;
 ----
 
-image::rbac-query-staff-hierarchy.webp[Defining the staff hierarchy]
+image::rbac-query-staff-hierarchy.webp[Defining the staff hierarchy, role=framed]
 
 contractor and intern inherit `name` and `email` from `staff`, plus `contract_end_date` from `temporary_staff`. Notice that this define also touched the existing staff type: running define on a type that already exists adds to it, so `owns name` slots in alongside Chapter One's email `@key` — no migration needed.
 
@@ -137,7 +137,7 @@ Check the schema visualiser now. You have just built three separate groups of ty
 
 In the visualiser you will see three (almost) completely separate graphs. Nothing connects them. There are no edges between the islands (except for the shared `name` attribute type). This is correct — we have defined what exists, but not yet how things relate to each other.
 
-image::rbac-schema-three-islands.webp[Schema visualiser showing the identity hierarchy, system hierarchy, and department type as three disconnected islands]
+image::rbac-schema-three-islands.webp["Schema visualiser showing the identity hierarchy, system hierarchy, and department type as three disconnected islands", role=framed]
 
 [NOTE.yellow]
 .🗺️ Three islands — about to be connected
@@ -234,9 +234,9 @@ Before populating the database, here is a complete picture of everything you hav
 .🗺️ Check the Schema Visualiser now
 ====
 Go to the Schema page in TypeDB Studio - it reflects your schema automatically. You should see all entity types as nodes connected by their inheritance hierarchy, with reports_to and department_membership as relation edges. If anything looks wrong, fix it now before getting on to inserting data.
-
-image::rbac-schema-connected-islands.webp[Schema visualiser showing the full Chapter Two schema, with reports_to and department_membership bridging the islands]
 ====
+
+image::rbac-schema-connected-islands.webp["Schema visualiser showing the full Chapter Two schema, with reports_to and department_membership bridging the islands", role=framed]
 
 [NOTE.yellow]
 .💡 Natural extensions: what we deliberately left out
