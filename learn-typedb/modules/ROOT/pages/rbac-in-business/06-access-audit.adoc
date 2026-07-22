@@ -89,6 +89,8 @@ $_ isa access_grant, links (grantee: $sa, system: $s, grantor: $g),
 fetch { "service_account": $sa.name, "system": $sys, "permission": $pl, "grantor": $g.name };
 ----
 
+image::rbac-query-access-audit.webp[Query results showing the admin grant: CI Deploy Bot]
+
 One row: CI Deploy Bot, admin on EllipseCI, access granted by Sam. The finding lands on Sam's desk with a note from Michelle Rocksmasher: your bot has excess credentials, and it just failed our audit. We'll fix it by revoking the admin grant without destroying its history in Chapter Nine.
 
 == Which Temporary Staff Have Write or Admin Access?

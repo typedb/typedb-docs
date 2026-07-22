@@ -263,6 +263,8 @@ match
 fetch { "name": $name, "system": $sys, "access_via": $source };
 ----
 
+image::rbac-query-access-sources.webp[Query results showing each identity's payments access alongside its source: direct grant or project team]
+
 Besides the Finance team's usual policy-based access, Alex should now appear with access to PayBuddy via project team membership. We used `let` here to make it clear which path each identity's access comes through.
 
 [NOTE.blue]

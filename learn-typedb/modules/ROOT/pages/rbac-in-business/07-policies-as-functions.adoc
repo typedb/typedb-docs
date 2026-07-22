@@ -14,9 +14,45 @@ In Chapter Six the compliance team asked hard questions and you answered them wi
 
 The compliance team keeps asking the same questions. The security team wants to know who *should* have access to payments, not just who does. Both problems have the same solution: reusable functions.
 
-== What Functions Actually Are
+== What is a Function?
 
-Before writing any code, consider what we're replacing. Here is Amasoft's payments access policy in SQL — the kind of query that lives in a stored procedure, or even completely outside the database, in application code:
+A function is a named subquery. You take a match pattern you would otherwise copy-paste, give it a name (and optionally some parameters) and define it in your schema. From then on, any query can call it, and calling it behaves exactly as if the pattern were written right there. Functions can call other functions; they can even recursively call themselves.
+
+Let's now define a function that determines who should have access to payments:
+
+[,typeql]
+----
+# name and signature: fun <function_name>(<optional parameters>) -> <return type(s)>:
+define
+fun who_should_have_access_to_payments() -> { staff }:
+# body: a match query
+  match 
+  $i isa staff;
+  {
+    $la isa level_assignment, links (assignee: $i, level: $l);
+    not { $la has end_date $_; };
+    $l has level_number $n; $n >= 5;
+    $_ isa department_membership, links (department: $d, member: $i);
+    $d isa department, has name "Finance";
+  } or {
+    $la isa level_assignment, links (assignee: $i, level: $l);
+    not { $la has end_date $_; };
+    $l has level_number $n; $n >= 7;
+  };
+# return statement: what this function outputs
+  return { $i };
+----
+
+[NOTE.yellow]
+.⚠️ Two syntax rules
+====
+. When you have a variable like `$eu` used in two separate `not` clauses, but not used outside them, this can cause a 'locally-scoped variable' error. You can use either `$_` (throwaway variables) or distinct names to fix this.
+. Use `isa` for checking types, not `$type == type-name`. Type comparison with `==` is for value equality, not type checking.
+====
+
+We've successfully encapsulated Amasoft's payment systems access policy in a single function.
+
+Here's the equivalent Amasoft payments access policy in SQL - the kind of query that lives in a stored procedure, or even completely outside the database, in application code:
 
 [,sql]
 ----
@@ -40,47 +76,23 @@ JOIN levels l ON ul.level_id = l.id
 WHERE l.level_number >= 7;
 ----
 
-This query is correct today. But when the policy changes — when someone decides L4 Finance managers should also get access — you have to find every copy of this logic and update them all. And hope you didn't miss one.
+This query is correct today. But when the policy changes - when someone decides L4 Finance managers should also get access - you have to find every copy of this logic and update them all. And hope you didn't miss one.
 
 [NOTE.yellow]
 .🏢 The single source of truth problem
 ====
-In many organisations, access policy lives in three places simultaneously: application code, a stored procedure, and a spreadsheet. They drift apart over time. Someone updates the app code and forgets the stored procedure. An auditor reads the spreadsheet and gets a different answer than the system enforces. In TypeDB, the function IS the policy - a single source of truth, no drift.
+In many organisations, access policy lives in three places simultaneously: application code, a stored procedure, and a spreadsheet. They drift apart over time. Someone updates the app code and forgets the stored procedure. An auditor reads the spreadsheet and gets a different answer than the system enforces. In our TypeDB schema, the function IS the policy - a single source of truth, no drift.
 ====
 
-[,typeql]
-----
-define
-fun who_should_have_access_to_payments() -> { staff }:
-  match 
-  $i isa staff;
-  {
-    $la isa level_assignment, links (assignee: $i, level: $l);
-    not { $la has end_date $_; };
-    $l has level_number $n; $n >= 5;
-    $_ isa department_membership, links (department: $d, member: $i);
-    $d isa department, has name "Finance";
-  } or {
-    $la isa level_assignment, links (assignee: $i, level: $l);
-    not { $la has end_date $_; };
-    $l has level_number $n; $n >= 7;
-  };
-  return { $i };
-----
+== Composing functions for readability
 
-[NOTE.yellow]
-.⚠️ Two syntax rules
-====
-. When you have a variable like `$eu` used in two separate `not` clauses, but not used outside them, this can cause a 'locally-scoped variable' error. You can use either `$_` (throwaway variables) or distinct names to fix this.
-. Use `isa` for checking types, not `$type == type-name`. Type comparison with `==` is for value equality, not type checking.
-====
-
-This function works in its current form. We've successfully encapsulated Amasoft's payment systems access policy in a single function. However, the function itself is wordy. Can we do better?
+The TypeDB function works in its current form. However, the function itself is wordy. Can we do better?
 
 Let's break down the function into its constituent parts, and use them to reconstruct the original function:
 
 [,typeql]
 ----
+# Given a level ($level: integer), return a set of 'staff' at or above that level
 define
 fun staff_at_or_above_level($level: integer) -> { staff }:
   match
@@ -90,6 +102,7 @@ fun staff_at_or_above_level($level: integer) -> { staff }:
     $l has level_number $n; $n >= $level;
   return { $s };
 
+# Given a department name ($dept: string), return a set of 'staff' who are in that department
 fun dept_members($dept: string) -> { staff }:
   match
     $_ isa department_membership, links (department: $d, member: $s);
@@ -101,6 +114,7 @@ Now redefine the original function using `redefine`:
 
 [,typeql]
 ----
+# Redefine the original function, making it call our two other functions
 redefine
 fun who_should_have_access_to_payments() -> { staff }:
   match
@@ -118,7 +132,7 @@ Much simpler!
 [NOTE.yellow]
 .💡 Chaining and nesting TypeDB functions
 ====
-Functions compose in two ways: calling them in sequence, or calling one function inside another. When running any `match` query or function body, we are really exercising constraints over a stream that restrict what data will be returned. Each `let $i in func($i)` statement further constrains the stream — only identities that satisfy all function calls are returned. This allows complex queries to be made very readable and look very simple.
+Functions compose in two ways: calling them in sequence, or calling one function inside another. When running any `match` query or function body, we are really exercising constraints over a stream that restrict what data will be returned. Each `let $i in func($i)` statement further constrains the stream; only identities that satisfy all function calls are returned. This allows complex queries to be made very readable and look very simple.
 ====
 
 Finally, let's call the function and retrieve the list of all staff who should have access to payment systems, as per Amasoft's corporate policy:
@@ -153,24 +167,18 @@ This TypeQL function represents the Amasoft access policy. We've made it easy to
 
 The security team needs two reports: who should have access but doesn't (under-provisioned), and who has access but shouldn't (over-provisioned). Both start from the same policy function.
 
-Under-provisioned — should have a grant to a payment system, but does not:
-
 [,typeql]
 ----
 define
+# Under-provisioned - should have a grant to a payment system, but does not:
 fun missing_payments_access_grants() -> { identity, system }:
   match
     let $i in who_should_have_access_to_payments();
     $s isa payments_system;
     not { $_ isa access_grant, links (grantee: $i, system: $s); };
   return { $i, $s };
-----
 
-Over-provisioned — has a grant, but should not:
-
-[,typeql]
-----
-define
+# Over-provisioned - has a grant, but should not:
 fun excess_payments_access_grants() -> { identity, system }:
   match
     $i isa identity;
@@ -282,6 +290,8 @@ match
   let $i, $s in excess_payments_access_grants();
 fetch { "should_revoke_access": $i.name, "from_system": $s.name };
 ----
+
+image::rbac-query-excess-grants.webp[Query results flagging Alex Chen's PayBuddy access for revocation]
 
 As we've now demonstrated, two very simple queries are sufficient to ensure actual access grants match the expectation based on company policy.
 

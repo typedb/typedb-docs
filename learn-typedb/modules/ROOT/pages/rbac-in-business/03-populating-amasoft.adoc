@@ -51,6 +51,8 @@ Notice the deploy bot is created with the same insert pattern as everyone else. 
 .🗺️ Check the Data Explorer now
 ====
 Go to the Data page in TypeDB Studio, and select 'entity' from the schema view. You should see all the data you just inserted as table rows, with columns denoting their various attributes.
+
+image::rbac-data-first-entities.webp[Data Explorer listing the four inserted identities with their attributes]
 ====
 
 [NOTE.yellow]
@@ -358,6 +360,8 @@ $p isa! $type;
 $p has name $name;
 fetch { "name": $name, "type": label($type) };
 ----
+
+image::rbac-query-fetch-type-info.webp[Query results listing each staff member with their single most specific type]
 
 The `isa!` keyword is the key: it retrieves the most specific type of an instance.
 

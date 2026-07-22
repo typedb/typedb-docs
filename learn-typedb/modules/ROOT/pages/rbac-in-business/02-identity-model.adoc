@@ -26,6 +26,8 @@ entity contractor sub temporary_staff;
 entity intern sub temporary_staff;
 ----
 
+image::rbac-query-staff-hierarchy.webp[Defining the staff hierarchy]
+
 contractor and intern inherit `name` and `email` from `staff`, plus `contract_end_date` from `temporary_staff`. Notice that this define also touched the existing staff type: running define on a type that already exists adds to it, so `owns name` slots in alongside Chapter One's email `@key` — no migration needed.
 
 Now make both parent types abstract — a bare staff member or a bare 'temporary staff member' is never what we want, only a specific kind:
@@ -67,16 +69,17 @@ entity part_time_employee sub permanent_staff;
 
 The two leaves inherit everything from `permanent_staff`, and hence also from `staff`. Notice that permanent_staff declares no attributes of its own — its value is structural. It names the salaried half of the hierarchy and carries the full-time/part-time split.
 
-== Undefine and Redefine
+== Define, Undefine and Redefine
 
 [cols="22%,36%,42%",options="header"]
 |===
 |Keyword |Purpose |Example
-|`undefine` |Remove something entirely — a type, capability, annotation, or function |`undefine owns contract_end_date from temporary_staff;`
-|`redefine` |change something that already exists — a supertype, capability, annotation or function body |`redefine relation r relates role @card(0..1);`
+|`define` |Define something new |`define temporary_staff owns contract_end_date;`
+|`undefine` |Remove something entirely - a type, capability, annotation, or function |`undefine owns contract_end_date from temporary_staff;`
+|`redefine` |Change something that already exists - a supertype, capability, annotation or function body |`redefine relation r relates role @card(0..1);`
 |===
 
-== Service Accounts — Beyond Humans
+== Service Accounts: Beyond Humans
 
 RBAC is not just about people. Every API integration, every bot needs access managed too. Introduce a shared abstract root and a non-human identity type:
 
@@ -133,6 +136,8 @@ Check the schema visualiser now. You have just built three separate groups of ty
 * The department type.
 
 In the visualiser you will see three (almost) completely separate graphs. Nothing connects them. There are no edges between the islands (except for the shared `name` attribute type). This is correct — we have defined what exists, but not yet how things relate to each other.
+
+image::rbac-schema-three-islands.webp[Schema visualiser showing the identity hierarchy, system hierarchy, and department type as three disconnected islands]
 
 [NOTE.yellow]
 .🗺️ Three islands — about to be connected
@@ -228,13 +233,21 @@ Before populating the database, here is a complete picture of everything you hav
 [NOTE.yellow]
 .🗺️ Check the Schema Visualiser now
 ====
-Go to the Schema page in TypeDB Studio — it reflects your schema automatically. You should see all entity types as nodes connected by their inheritance hierarchy, with reports_to and department_membership as relation edges. If anything looks wrong, fix it now — before you insert any data.
+Go to the Schema page in TypeDB Studio - it reflects your schema automatically. You should see all entity types as nodes connected by their inheritance hierarchy, with reports_to and department_membership as relation edges. If anything looks wrong, fix it now before getting on to inserting data.
+
+image::rbac-schema-connected-islands.webp[Schema visualiser showing the full Chapter Two schema, with reports_to and department_membership bridging the islands]
 ====
 
 [NOTE.yellow]
-.💡 Natural extensions — what we deliberately left out
+.💡 Natural extensions: what we deliberately left out
 ====
-In a real RBAC deployment you might also consider: • Teams — The Engineering department might be divided into teams like Platform, Product, and Security, each with their own access profiles. • Regional or office-specific access — identities in the EU region may have different access to certain systems than those in APAC, due to data residency requirements. • System ownership — a department could formally own a set of systems. Finance owns PayBuddy, Rectangle, and Xilch. This would let you query 'who has access to systems outside their department's ownership?' — a powerful audit query. All of these are easy to add in TypeDB. For now, we keep the structure simple so the core concepts stay clear.
+In a real RBAC deployment you might also consider:
+
+- Teams: The Engineering department might be divided into teams like Platform, Product, and Security, each with their own access profiles.
+- Regional or office-specific access: identities in the EU region may have different access to certain systems than those in APAC, due to data residency requirements.
+- System ownership: a department could formally own a set of systems. Finance owns PayBuddy, Rectangle, and Xilch. This would let you query 'who has access to systems outside their department's ownership?' - a powerful audit query.
+
+All of these are easy to add in TypeDB. For now, we keep the structure simple so the core concepts stay clear.
 ====
 
 == Chapter Two Challenge

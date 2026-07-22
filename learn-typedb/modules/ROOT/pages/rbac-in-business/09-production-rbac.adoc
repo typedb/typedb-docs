@@ -92,14 +92,13 @@ $s isa payments_system;
 or
 { $_ isa project_team_membership, links (member: $i, team: $t);
   $_ isa access_grant, links (grantee: $t, system: $s); };
-$i has name $name;
-fetch { "has_access": $name };
+fetch { "has_access": $i.name };
 ----
 
 [NOTE.yellow]
 .⚠️ You cannot fetch an entity directly
 ====
-`fetch { "key": $i }` where `$i` is an entity will fail with 'Fetching entities is not supported'. Always fetch attribute values instead: `$i has name $name; fetch { "has_access": $name };` Or use `$i.*` to fetch all attributes at once.
+`fetch { "key": $i }` where `$i` is an entity will fail with 'Fetching entities is not supported'. Always fetch attribute values instead: `fetch { "has_access": $i.name };` Or use `$i.*` to fetch all attributes at once.
 ====
 
 [NOTE.yellow]
@@ -168,8 +167,7 @@ $s isa engineering_platform;
 or
 { $_ isa project_team_membership, links (member: $i, team: $t);
   $_ isa access_grant, links (grantee: $t, system: $s); };
-$i has name $name;
-fetch { "has_access": $name };
+fetch { "has_access": $i.name };
 ----
 
 For checking if access grants match policy, call the relevant function(s) directly:
@@ -179,23 +177,22 @@ For checking if access grants match policy, call the relevant function(s) direct
 match
 $i isa identity, has identity_name "alex.chen@amasoft.com",
   has status "active";
-let $authorised in who_should_have_access_to_payments($i);
-$authorised has name $name;
-fetch { "policy_authorised": $name };
+let $i in who_should_have_access_to_payments();
+fetch { "policy_authorised": $i.name };
 ----
 
-The result is empty (no access) or returns the identity (has access).
+The result is empty (no access) or returns the identity (has access). In this case, Alex Chen should not have payments access, so we get 0 results.
 
-== Production RBAC Principle — Never Delete History
+== Production RBAC Principle: Never Delete History
 
-In Chapter Three, you deleted Alex's contractor record and all its relations when promoting them to full-time employee. In production, you'd want to retain historical records instead.
+In Chapter Three, you deleted Alex's contractor record and all its relations when promoting them to full-time employee.
 
-That's out of scope of this exercise, but let's look at our model for revoking an access grant:
+In production, you'd want to retain historical records instead. That's out of scope of this exercise, but let's look at our model for revoking an access grant:
 
 [NOTE.yellow]
-.🏢 Production RBAC systems do not delete history — they close it
+.🏢 Production RBAC systems do not delete history - they close it
 ====
-When access is revoked, the `access_grant` is not deleted. It is closed with a `end_datetime` date. The record of who had access, when they got it, and when it was revoked is permanently preserved in the database. This is not optional — it is the foundation of an auditable RBAC system. Auditors don't ask 'who has access right now?' They ask 'who had access to payments on March 15th, and who approved it?' Delete is for type changes. History is closed, never deleted.
+When access is revoked, the `access_grant` is not deleted. It is closed with a `end_datetime` date. The record of who had access, when they got it, and when it was revoked is permanently preserved in the database. This is not optional; it is the foundation of an auditable RBAC system. Auditors don't ask 'who has access right now?' They ask 'who had access to payments on March 15th, and who approved it?' Delete is for type changes. History is closed, never deleted.
 ====
 
 Deprovision an identity by closing all their access grants:

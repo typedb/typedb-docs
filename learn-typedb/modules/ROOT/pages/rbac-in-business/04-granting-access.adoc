@@ -50,59 +50,6 @@ Notice also: `access_grant` doesn't just connect two entities, it also has its o
 In SQL, enforcing that permission_level can only be 'read', 'write', or 'admin' requires either a CHECK constraint (often ignored) or a lookup table with a foreign key. In TypeDB, `@values` enforces this at the schema level — it is impossible to insert an invalid permission level.
 ====
 
-== N-ary Relations — TypeDB's Native Superpower
-
-Look again at what `access_grant` connects: a grantee, a system, and a grantor - three participants. This is called an N-ary relation: a connection with more than two participants. The following two code blocks are for comparison only — do not run them. They show how the same concept looks across two other database types, so you can compare them against TypeDB.
-
-In SQL, this requires a junction table and multiple JOINs just to answer a simple question:
-
-[,sql]
-----
--- SQL: requires a junction table with foreign keys
-CREATE TABLE access_grants (
-  grantee_id INT REFERENCES identities(id),
-  system_id INT REFERENCES systems(id),
-  grantor_id INT REFERENCES identities(id),
-  permission_level VARCHAR(5),
-  start_datetime DATETIME,
-  end_datetime DATETIME,
-  PRIMARY KEY (grantee_id, system_id, start_datetime)
-);
--- To query who granted what: three tables, three JOINs
-SELECT i.name, s.name, g.name
-FROM access_grants ag
-JOIN identities i ON ag.grantee_id = i.id
-JOIN systems s ON ag.system_id = s.id
-JOIN identities g ON ag.grantor_id = g.id;
-----
-
-In a property graph database, edges are binary - you cannot natively connect three nodes, so you are forced to introduce an artificial intermediate node:
-
-[,text]
-----
-# Property graph (e.g. Neo4j): edges are binary and second-class
-# No native way to connect three nodes — requires an intermediate node
-# (grantee)-[:HAS_GRANT]->(grant_node)-[:ON_SYSTEM]->(system)
-# (grant_node)-[:GRANTED_BY]->(grantor)
-# The grant_node is an artificial workaround
-----
-
-In TypeDB, the relation is first-class. No junction table, no intermediate node, no workaround - just the model that reflects reality. And the query is a single clean pattern:
-
-[,typeql]
-----
-# TypeDB: who granted what — one clean pattern
-match
-$g isa access_grant, links (grantee: $i, system: $s, grantor: $by);
-fetch { "grantee": $i.name, "system": $s.name, "granted_by": $by.name };
-----
-
-[NOTE.blue]
-.⭐ TypeDB Advantage: N-ary relations are first-class
-====
-In SQL, any relationship that carries data requires a junction table — extra schema, extra JOINs, extra complexity. In property graph databases, edges are binary and second-class: you cannot natively connect three nodes, so you introduce artificial intermediate nodes that obscure the real meaning. In TypeDB, a relation can connect any number of role players and own any number of attributes. It is first-class, queried the same way as any other type.
-====
-
 == Granting Access
 
 [,typeql]
@@ -179,6 +126,8 @@ $g isa access_grant, links (grantee: $i, system: $s);
 fetch { "identity_name": $i.name, "platform": $s.name, "permission": $g.permission_level };
 ----
 
+image::rbac-query-access-grants.webp[Query results listing who has access to each engineering platform and at what permission level]
+
 What does Sam have access to?
 
 [,typeql]
@@ -190,6 +139,59 @@ $_ isa access_grant, links (grantee: $sam, system: $s),
   has permission_level $pl;
 fetch { "system": $sys, "permission": $pl };
 ----
+
+== N-ary Relations: TypeDB's Native Superpower
+
+Look again at what `access_grant` connects: a grantee, a system, and a grantor - three participants. This is called an N-ary relation: a connection with more than two participants. The following two code blocks are for comparison only — do not run them. They show how the same concept looks across two other database types, so you can compare them against TypeDB.
+
+In SQL, this requires a junction table and multiple JOINs just to answer a simple question:
+
+[,sql]
+----
+-- SQL: requires a junction table with foreign keys
+CREATE TABLE access_grants (
+  grantee_id INT REFERENCES identities(id),
+  system_id INT REFERENCES systems(id),
+  grantor_id INT REFERENCES identities(id),
+  permission_level VARCHAR(5),
+  start_datetime DATETIME,
+  end_datetime DATETIME,
+  PRIMARY KEY (grantee_id, system_id, start_datetime)
+);
+-- To query who granted what: three tables, three JOINs
+SELECT i.name, s.name, g.name
+FROM access_grants ag
+JOIN identities i ON ag.grantee_id = i.id
+JOIN systems s ON ag.system_id = s.id
+JOIN identities g ON ag.grantor_id = g.id;
+----
+
+In a property graph database, edges are binary - you cannot natively connect three nodes, so you are forced to introduce an artificial intermediate node:
+
+[,text]
+----
+# Property graph (e.g. Neo4j): edges are binary and second-class
+# No native way to connect three nodes — requires an intermediate node
+# (grantee)-[:HAS_GRANT]->(grant_node)-[:ON_SYSTEM]->(system)
+# (grant_node)-[:GRANTED_BY]->(grantor)
+# The grant_node is an artificial workaround
+----
+
+In TypeDB, the relation is first-class. No junction table, no intermediate node, no workaround - just the model that reflects reality. And the query is a single clean pattern:
+
+[,typeql]
+----
+# TypeDB: who granted what — one clean pattern
+match
+$g isa access_grant, links (grantee: $i, system: $s, grantor: $by);
+fetch { "grantee": $i.name, "system": $s.name, "granted_by": $by.name };
+----
+
+[NOTE.blue]
+.⭐ TypeDB Advantage: N-ary relations are first-class
+====
+In SQL, any relationship that carries data requires a junction table. That means extra schema, extra JOINs, extra complexity. In property graph databases, edges are binary and second-class: you cannot natively connect three nodes, so you introduce artificial intermediate nodes that obscure the real meaning. In TypeDB, a relation can connect any number of role players and own any number of attributes. It is first-class, queried the same way as any other type.
+====
 
 == Chapter Four Challenge
 

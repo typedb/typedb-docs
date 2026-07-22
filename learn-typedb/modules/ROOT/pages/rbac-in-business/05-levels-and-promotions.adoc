@@ -56,6 +56,8 @@ $_ isa level, has level_number 7, has name "Executive";
 .🗺️ Check the Data Explorer now
 ====
 Go to the Data page in TypeDB Studio, and select 'level' from the schema view. You should see all levels as table rows, listing the level numbers and names.
+
+image::rbac-data-levels.webp[Data Explorer listing the eight levels with their numbers and names]
 ====
 
 Return to the Query page. Assign Alex to L2 (their new level as a full-time employee), Sam to L4, and Michelle to L7:
@@ -129,6 +131,8 @@ $_ isa level_assignment, links (assignee: $sam, level: $l5),
 Go to the Graph page in TypeDB Studio, and click 'level-assignment' from the schema view. You should see all level assignments as individual nodes. Click on a node. In the Explorer pane (right), go to "Display attribute" and choose `start_date`. Finally, right-click any `level-assignment` node in the graph, and choose "Load links: * - every 'level-assignment'".
 
 You will now see a graph of every employee at Amasoft and their full level assignment history!
+
+image::rbac-graph-level-assignment-history.webp[Graph Explorer showing every level assignment, linking each employee to their level history]
 ====
 
 [NOTE.yellow]
