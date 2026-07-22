@@ -76,7 +76,7 @@ Parametric polymorphism:: Allows us to write declarative queries that are comple
 
 [NOTE]
 ====
-Throughout the Academy we use the term *interface*, borrowed from object-oriented programming, to describe how one type connects to another. If you spend time in the xref:{page-version}@typeql-reference::index.adoc[TypeQL reference], you'll see these same constructs called *capabilities*. The two terms refer to the same thing — we favour "interface" here because it makes the modeling concepts easier to reason about.
+Throughout the Academy we use the formal term *interface* to refer to things that can be 'owned' or 'played' - e.g. role and attribute types *provide* interfaces. In the xref:{page-version}@typeql-reference::index.adoc[TypeQL reference] section, you'll see these same constructs called *capabilities*. Capabilities include all interfaces, as well as 'relates' and generally any capability that can be defined on a type.
 ====
 
 In this lesson, we'll be focusing on how we can use each type of polymorphism in our queries. We'll see in xref:{page-version}@academy::5-defining-schemas/index.adoc[Lesson 5] how we can define type hierarchies and interfaces in the schema.
