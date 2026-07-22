@@ -11,17 +11,17 @@ to specify cardinality ranges for roles and ownerships.
 .Range Argument Syntax
 [,typeql]
 ----
-<type label> <interface> <type label 2> @card(N..M);
-<type label> <interface> <type label 2> @card(N..);
+<type label> <capability> <type label 2> @card(N..M);
+<type label> <capability> <type label 2> @card(N..);
 ----
 
 .Single Scalar Argument Syntax
 [,typeql]
 ----
-<type label> <interface> <type label 2> @card(N);
+<type label> <capability> <type label 2> @card(N);
 ----
 
-The `@card` annotation can be defined for any `<interface>` of: `owns`, `relates`, or `plays`.
+The `@card` annotation can be defined for any `<capability>` of: `owns`, `relates`, or `plays`.
 
 It accepts either a range argument or a single scalar argument.
 Arguments must be integers.
@@ -34,7 +34,7 @@ Arguments must be integers.
 == Usage
 
 // TODO: Update for ordered/unordered when lists are implemented
-Every interface has a default `cardinality` constraint, accessible in <<_default_cardinality>>.
+Every capability has a default `cardinality` constraint, accessible in <<_default_cardinality>>.
 
 // tag::description[]
 When defined, the `@card` annotation overrides the default `cardinality` with the specified arguments.
@@ -79,7 +79,7 @@ include::{page-version}@typeql-reference::example$tql/schema_annotations.tql[tag
 === Subtyping
 
 // TODO: Put somewhere in a common place and reference it
-Similarly to inherited type constraints, interface constraints also affect subtypes from both sides.
+Similarly to inherited type constraints, capability constraints also affect subtypes from both sides.
 For example, the following query defines that:
 
 - A `page` instance must have between 1 and 3 names.
@@ -107,14 +107,14 @@ Cannot be used with the xref:{page-version}@typeql-reference::annotations/key.ad
 == References
 
 [#_default_cardinality]
-=== Default interface cardinalities
+=== Default capability cardinalities
 
-The following `cardinality` constraints are set for interfaces by default if no `@card` annotations are declared:
+The following `cardinality` constraints are set for capabilities by default if no `@card` annotations are declared:
 
-.Default interface Cardinalities
+.Default capability cardinalities
 [cols=".^1,^.^1"]
 |===
-^| interface ^| Cardinality
+^| capability ^| Cardinality
 | `owns`
 | `card(0..1)`
 
