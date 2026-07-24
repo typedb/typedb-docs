@@ -1,4 +1,5 @@
 = Lesson 3.2: Fetching polymorphic data
+:test-typeql: linear
 
 == Type inference
 
@@ -73,6 +74,11 @@ To begin leveraging declarative polymorphism in our queries, we'll first need to
 Inheritance polymorphism:: Allows us to define type hierarchies in the schema and then query those hierarchies declaratively.
 Interface polymorphism:: Allows us to define interfaces that can be implemented independently in the schema and then query those interfaces declaratively.
 Parametric polymorphism:: Allows us to write declarative queries that are completely independent of the schema.
+
+[NOTE]
+====
+Throughout the Academy we use the formal term *interface* to refer to things that can be 'owned' or 'played' - e.g. role and attribute types *provide* interfaces. In the xref:{page-version}@typeql-reference::index.adoc[TypeQL reference] section, you'll see these same constructs called *capabilities*. Capabilities include all interfaces, as well as 'relates' and generally any capability that can be defined on a type. They do not, however, include annotations.
+====
 
 In this lesson, we'll be focusing on how we can use each type of polymorphism in our queries. We'll see in xref:{page-version}@academy::5-defining-schemas/index.adoc[Lesson 5] how we can define type hierarchies and interfaces in the schema.
 
@@ -242,6 +248,11 @@ Parametric queries are unique in that they are valid over any schema. They match
 
 [,typeql]
 ----
+#!test[schema]
+#{{
+include::{page-version}@academy::attachment$bookstore-schema.tql[]
+#}}
+#!test[read]
 match
 entity $entity-type;
 $entity isa! $entity-type;
@@ -255,9 +266,10 @@ This query will retrieve all attributes of all entities. Meanwhile, the followin
 
 [,typeql]
 ----
+#!test[read]
 match
-$entity-1 isa! $e1; entity $entity-type-1;
-$entity-2 isa! $e2; entity $entity-type-2;
+$entity-1 isa! $entity-type-1; entity $entity-type-1;
+$entity-2 isa! $entity-type-2; entity $entity-type-2;
 $relation links ($entity-1, $entity-2);
 fetch {
   "entity-1-attributes": { $entity-1.* },

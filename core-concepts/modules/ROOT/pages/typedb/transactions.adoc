@@ -3,8 +3,10 @@
 
 == Transactionality
 
+Every TypeDB query runs inside a *transaction*.
+
 TypeDB transactions come in 3 flavors: *read*, *write*, and *schema*. All transactions operate over *snapshots* of the database taken when
-the transaction is opened, providing a consistent view regardless of the operations performed in concurrent transactions.
+the transaction is opened, providing a consistent view regardless of the operations performed in concurrent transactions. Thus, a transaction never sees either committed or uncommitted changes made in other transactions that were opened after it.
 
 TypeDB transactions provide *ACID guarantees* up to snapshot isolation.
 

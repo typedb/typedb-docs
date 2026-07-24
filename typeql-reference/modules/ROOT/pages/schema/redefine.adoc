@@ -3,7 +3,7 @@
 
 Redefine queries are used
 // tag::overview[]
-to modify existing types, type interfaces, or functions in the schema.
+to modify existing types, capabilities, annotations, or functions in the schema.
 // end::overview[]
 
 == Syntax
@@ -18,7 +18,7 @@ redefine
 
 == Behavior
 
-Redefine queries can be used to modify types and type interfaces or to override functions.
+Redefine queries can be used to modify types and type capabilities or to override functions.
 
 For clarity and precision, only one redefinition is allowed per query.
 
@@ -36,7 +36,7 @@ An error is returned (on execution or on commit), and no changes are preserved, 
 * xref:{page-version}@typeql-reference::statements/value.adoc[`value` statements] redefine value types of attribute types.
 * xref:{page-version}@typeql-reference::statements/sub.adoc[`sub` statements] redefine supertypes of types.
 * xref:{page-version}@typeql-reference::annotations/index.adoc[@annotations] redefine annotations with arguments, replacing their values.
-* xref:{page-version}@typeql-reference::statements/fun.adoc[`fun` statements] redefine functions, replacing their interfaces and bodies.
+* xref:{page-version}@typeql-reference::statements/fun.adoc[`fun` statements] redefine functions, replacing their capabilities and bodies.
 
 == Examples
 
@@ -54,7 +54,7 @@ relation fathership sub parentship, relates father as child;
 ----
 ====
 
-=== Redefining types' interfaces and annotations
+=== Redefining types' capabilities and annotations
 
 .Redefining type's sub
 [,typeql]
@@ -77,7 +77,7 @@ redefine karma value integer;
 redefine email value string @regex("^.*@typedb\.com$");
 ----
 
-.Redefining type interface's annotation with arguments
+.Redefining type capability's annotation with arguments
 [,typeql]
 ----
 #!test[schema]

@@ -204,6 +204,22 @@ offset 20;  # Skip the first 20 results
 limit 10;   # And return the next 10
 ----
 
+=== given
+Introduced in version 3.12, A `given` stage allows TypeQL queries to accept multiple rows as "input".
+It declares the variables expected in the rows and their types - inputs may be data instances or values.
+At runtime, the given rows are validated to ensure they conform to the declaration.
+
+[,typeql]
+----
+# Insert multiple rows with 'given'
+#!test[write, given=name, count=0]
+given $name: string;
+insert $p isa person, has name == $name;
+----
+
+The actual input rows must be provided by the driver alongside the query string.
+A query without a `given` stage receives a single, empty row as input.
+
 == Write stages in pipelines
 Writes from a pipeline are not visible to preceding stages, but are visible to following stages.
 Write stages achieve this through the following steps:

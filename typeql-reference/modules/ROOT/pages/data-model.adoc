@@ -1,4 +1,5 @@
 = Data and query model
+:test-typeql: linear
 
 This page gives a brief technical overview of TypeDB's type system and query model.
 
@@ -32,7 +33,7 @@ Instances of entity types, simply called entities, can be created _indepdently_,
 2. *Relation types*, specified using the keyword `relation`, and are required to have at least one *associated role type* specified with the keyword `relates`.
 +
 --
-Instances of relation types may reference (or "link") zero or more data instances for each associated role type, called their *players* of that role (these data instance must have types with corresponding *player interface*).
+Instances of relation types may reference (or "link") zero or more data instances for each associated role type, called their *players* of that role (these data instance must have types with corresponding *player capability*).
 
 For example, a friendship relations may link two friends (implemented by, say, two user entities).
 
@@ -41,7 +42,7 @@ Relations without role players will be removed (no "`dangling relations`").
 3. *Attribute types*, specified using the keyword `attribute`, and required to have an *associated value type* (either structured or primitive) specified with the keyword `value`.
 +
 --
-Instances of attribute types carry an *associated value* of the associated value type. They may also reference other data instances, called their *owners* (these data instances must have direct types with the corresponding *owner interface*). Two attributes are considered equal if they have the same associate value and have the same (origin) type.
+Instances of attribute types carry an *associated value* of the associated value type. They may also reference other data instances, called their *owners* (these data instances must have direct types with the corresponding *owner capability*). Two attributes are considered equal if they have the same associate value and have the same (origin) type.
 
 Attributes without owners will be removed (no "`dangling attributes`", unless the attribute type is marked as independent).
 --
@@ -65,15 +66,15 @@ Two instances of a value type are equal exactly when their literal values are eq
 Coming soon.
 ====
 
-=== Type interfaces and "`objects vs attributes`"
+=== Type capabilities and "`objects vs attributes`"
 
-Entity types can have interfaces, i.e. play roles or own attribute types. This allows us to create connections of entities with other data.
+Entity types can have capabilities, i.e. play roles or own attribute types. This allows us to create connections of entities with other data.
 
-Relation types can also have interfaces, i.e. play roles or own attribute types. This, for example, allows the creation of nested relations (i.e., relations playing roles in other relations).
+Relation types can also have capabilities, i.e. play roles or own attribute types. This, for example, allows the creation of nested relations (i.e., relations playing roles in other relations).
 
-Since entity and relation types together make up "`first-class`" types in TypeDB's type system (when it comes to type interfaces) they are, together, also referred to as *object types*, whose instances are data *objects*.
+Since entity and relation types together make up "`first-class`" types in TypeDB's type system (when it comes to type capabilities) they are, together, also referred to as *object types*, whose instances are data *objects*.
 
-Attributes cannot have interfaces; they are merely typed associations of values to objects.
+Attributes cannot have capabilities; they are merely typed associations of values to objects.
 
 === Subtyping
 
@@ -88,7 +89,7 @@ Data instances (i.e., entities, relation, are attributes) are stored using datab
 
 == Definitions
 
-User-defined types, their interfaces, and their subtyping structure, are created and modified through xref:{page-version}@typeql-reference::index.adoc#statements[definition statements] in xref:{page-version}@typeql-reference::index.adoc#queries[schema queries].
+User-defined types, their capabilities, and their subtyping structure, are created and modified through xref:{page-version}@typeql-reference::index.adoc#statements[definition statements] in xref:{page-version}@typeql-reference::index.adoc#queries[schema queries].
 
 == Data pipelines
 
@@ -126,6 +127,19 @@ The `match` stage is the only data pipeline stage which filters and retrieves da
 For the curious reader: TypeDB adheres to the principle of "`queries as types`" (an analog of https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence[propositions as types]). This means, patterns in `match` stage are really types (of the data that the stage retrieves). For example, a TypeQL conjunction
 [,typeql]
 ----
+#!test[schema]
+#{{
+define
+  attribute age, value integer;
+  attribute access-level, value integer;
+  relation friendship, relates friend @card(0..2);
+  entity user, owns age, plays friendship:friend;
+  entity VIP sub user;
+  entity admin sub user, owns access-level;
+  entity type1;
+  entity type2;
+#}}
+#!test[read]
 match
   $field1 isa type1;
   $field2 isa type2;
@@ -141,6 +155,7 @@ struct query_answers {
 Similarly, a TypeQL disjunction
 [,typeql]
 ----
+#!test[read]
 match
   { $option1 isa type1; }
   or { $option2 isa type2; };
@@ -166,6 +181,7 @@ Stages in TypeQL xref:{page-version}@typeql-reference::index.adoc#queries[data p
 --
 [,typeql]
 ----
+#!test[read]
 match $someone isa $user;
 ----
 implies that `$someone` isa an instance variable.
@@ -175,6 +191,10 @@ implies that `$someone` isa an instance variable.
 --
 [,typeql]
 ----
+#!test[read]
+#{{
+match let $other_val = 1;
+#}}
 match let $computed_val = $other_val + 1;
 ----
 implies that `$computed_val` is a value variable.
@@ -184,6 +204,7 @@ implies that `$computed_val` is a value variable.
 --
 [,typeql]
 ----
+#!test[read]
 match $something isa $type;
 ----
 implies that `$type` is a type variable.
@@ -205,6 +226,7 @@ Each variable in a stage can appear in one of the following three modes.
 --
 [,typeql]
 ----
+#!test[read]
 match $x isa user, has age 33;
 limit 1;
 match friendship ($y, $x);  # $x is an input for this stage
@@ -215,12 +237,13 @@ match friendship ($y, $x);  # $x is an input for this stage
 --
 [,typeql]
 ----
+#!test[read]
 match
  $x isa user;
  { $x isa VIP; }
  or { $x isa admin, has access-level $lvl; $lvl > 9000; };
 ----
-here `$u` is output, whereas `$lvl` is internal to the second branch of the disjunction.
+here `$x` is output, whereas `$lvl` is internal to the second branch of the disjunction.
 
 *Optional* variables are a subclass of returnable variables: these or variables that may be left empty in the stages output (you may think of this as assigning them to the unit `()` of the unit type, which is implicit in our type system).
 [NOTE]
@@ -233,15 +256,17 @@ Further optionality features coming soon!
 --
 [,typeql]
 ----
+#!test[read]
 match
   $x isa user;
-  not { friendship ($x, $y); }
+  not { friendship ($x, $y); };
 ----
 where the variable `$y` is internal. The class of internal variable also includes *anonymous* variables (indicated by `$_`).
 
 An important aspect of internal variables is they do not lead to result duplication. For example,
 [,typeql]
 ----
+#!test[read]
 match
   $x isa user;
   friendship ($x, $_);

@@ -109,14 +109,14 @@ The former query introduces types, while the latter will query for types. The ge
 Definitions in schema queries concern:
 
 * *type* definitions, introducing new types via the appropriate keyword (`entity`, `relation` + `relates`, `attribute` + `value`). Types are referred to by a unique type *labels*; multiple aliases of the latter can be introduced (coming soon).
-* *interface* definitions, introducing player or owner interfaces (via `plays` and `owns` keywords). Player interfaces allow type instances to be referred to as players in roles of relations. Owner interfaces allow type instances to be referred to as
-* *subtyping* definitions, declare types to be subtypes of other types (via the keyword `sub`). interfaces of supertypes are inherited by subtypes.
+* *capability* definitions, introducing player or owner capabilities (via `plays` and `owns` keywords). Player capabilities allow type instances to be referred to as players in roles of relations. Owner capabilities allow type instances to be referred to as
+* *subtyping* definitions, declare types to be subtypes of other types (via the keyword `sub`). Capabilities of supertypes are inherited by subtypes.
 
 === Pattern statements
 
 In contrast, in patterns we support a wide variety of syntax, including for:
 
-* *Retrieving types* based on label, interfaces, and inheritance.
+* *Retrieving types* based on label, capabilities, and inheritance.
 * *Retrieving data* in types, e.g. based on references between data instance such as attribute ownerships and relation linkages (via keywords such as `has`, `links`, and anonymous versions thereof)
 * Function calls (`let $a, $b in <FUN-CALL>`)
 * Computation with values (`let $x = <EXPR>`)

@@ -62,10 +62,10 @@ define
 fun reachable() -> { node, node }:
 match
   {
-    (from_: $from, to: $to) isa edge;
+    edge (from_: $from, to: $to);
   } or {
     let $from, $via in reachable();
-    (from_: $via, to: $to) isa edge;
+    edge (from_: $via, to: $to);
   };
 return { $from, $to };
 
@@ -77,23 +77,32 @@ match
 ----
 
 An equally valid way is to see a function as a predicate computing whether one node is a reachable from the other.
+Since recursion must go through a stream-returning function, the boolean predicate delegates the recursion to a stream helper:
 [,typeql]
 ----
+#!test[schema]
 define
-fun reachable($from: node, $to: node) -> bool:
+fun is_reachable($from: node, $to: node) -> boolean:
 match
-  {
-    (from_: $from, to: $to) isa edge;
-  } or {
-    (from_: $from, to: $via) isa edge;
-    true == reachable($via, $to);
-  };
+  let $r in reachable_nodes($from);
+  $r is $to;
 return check;
 
+fun reachable_nodes($from: node) -> { node }:
+match
+  {
+    edge (from_: $from, to: $to);
+  } or {
+    let $via in reachable_nodes($from);
+    edge (from_: $via, to: $to);
+  };
+return { $to };
+
+#!test[read]
 # query
 match
   $x isa node; $y isa node;
-  true == reachable($x, $y);
+  true == is_reachable($x, $y);
 ----
 
 == Arguments & return values
@@ -114,10 +123,10 @@ define
 fun reachable_from($from: node) -> { node }:
 match
   {
-    (from_: $from, to: $to) isa edge;
+    edge (from_: $from, to: $to);
   } or {
     let $via in reachable_from($from);
-    (from_: $via, to: $to) isa edge;
+    edge (from_: $via, to: $to);
   };
 return { $to };
 
