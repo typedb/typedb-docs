@@ -1,0 +1,439 @@
+= Modeling
+:keywords: typedb, typeql, modeling, schema, naming, type safety, cardinality, constraints, guide
+:pageTitle: Modeling
+:summary: Design TypeDB schemas - naming, type safety, shared vs specific attributes, cardinality, and constraints.
+:page-toclevels: 2
+:test-typeql: linear
+
+== Overview
+
+This guide collects practical advice for designing TypeDB schemas:
+
+1. Naming types and functions so that queries read naturally.
+2. Choosing the level of type safety that fits your application.
+3. Deciding between shared, generic attributes and owner-specific ones.
+4. Picking the most specific cardinality for `owns`, `relates`, and `plays`.
+5. Placing value restrictions at the right level, and specializing inherited constraints.
+
+== Prerequisites
+
+This guide assumes you have access to a running TypeDB instance.
+We recommend using xref:{page-version}@tools::studio.adoc[TypeDB Studio] to follow along.
+
+The examples build up a single schema from top to bottom: types defined in earlier sections are reused and extended in later ones.
+
+== Naming types and functions
+
+TypeQL reads most elegantly when every type — entity, relation, role, and attribute — is named with a noun.
+The main TypeQL keywords (`isa`, `has`, `links`, `relates`, `owns`, `plays`) are verbs, so the types slot in as nouns around them, and queries read like English sentences.
+
+[,typeql]
+----
+#!test[schema, commit]
+define
+
+attribute name, value string;
+attribute salary, value double;
+
+entity person,
+    owns name,
+    plays employment:employee;
+
+entity company,
+    owns name,
+    plays employment:employer;
+
+relation employment,
+    relates employer,
+    relates employee,
+    owns salary;
+----
+
+*Attributes*: querying with `match ... has ...`, the object of the sentence comes after the `has`, so it reads best as a noun.
+Read aloud, `$person has name "Alice"` is a well-formed English sentence; a verb name like `named` would produce the awkward `$person has named "Alice"`.
+
+[,typeql]
+----
+#!test[write, commit, count = 1]
+insert
+$person isa person, has name "Alice";
+$company isa company, has name "TypeDB";
+$employment isa employment,
+    links (employer: $company, employee: $person),
+    has salary 100000.0;
+----
+
+*Relations*: querying with `match ... links ...`, the object of the sentence again comes after the verb, so a relation also reads best as a noun.
+
+[,typeql]
+----
+#!test[read, count = 1]
+match
+$employment isa employment,
+    links (employer: $company, employee: $person);
+----
+
+Relations read best as *active or verbal nouns* — the noun form of the action the relation captures.
+For example, `employment` is the noun form of _to employ_, `marriage` of _to marry_, and `assignment` of _to assign_.
+Sometimes the two coincide: `grant` is the noun form of _to grant_, and `review` of _to review_.
+Compare the verb-named alternative: `employs links (...)` reads as two verbs in a row, while `employment links ...` reads naturally.
+
+*Functions* should be named by what they return and the constraints they contain, e.g. `persons_by_name`, or `principals_with_access`:
+
+[,typeql]
+----
+#!test[schema, commit]
+define
+
+fun persons_by_name($name: string) -> { person }:
+    match
+        $person isa person, has name == $name;
+    return { $person };
+----
+
+The call site then reads as a description of the result:
+
+[,typeql]
+----
+#!test[read, count = 1]
+match
+let $person in persons_by_name("Alice");
+----
+
+== Type safety strictness
+
+TypeDB gives you the power to choose the level of type safety you want.
+The same domain can be modeled anywhere on a spectrum, from a single generic type with string labels to a fully enumerated schema where even enum values are types.
+
+At the loose end, you can choose to avoid defining specialized types altogether, and create an entity type `thing` with an attribute `label`:
+
+[,typeql]
+----
+#!test[schema, commit]
+define
+
+attribute label, value string;
+entity thing, owns label @card(0..);
+----
+
+Any kind of data fits without schema changes — but the schema can no longer catch your mistakes.
+A mistyped label is not an error; the query silently returns no results instead of failing:
+
+[,typeql]
+----
+#!test[write, commit, count = 1]
+insert
+$t isa thing, has label "person", has label "alice";
+----
+
+[,typeql]
+----
+#!test[read, count = 0]
+match
+$t isa thing, has label "perzon";  # typo: no error, just no results
+----
+
+Alternatively, you can choose to enumerate your types into the schema — like the `person` and `company` types above — and the database will type check those for you.
+The same typo is then an error, caught as soon as the query runs:
+
+[,typeql]
+----
+#!test[read, fail_at = runtime]
+match
+$p isa perzon;  # error: 'perzon' is not a defined type
+----
+
+At the strict end, even an attribute with an enumerated set of values — usually modeled with a xref:{page-version}@typeql-reference::annotations/values.adoc[`@values`] restriction —
+
+[,typeql]
+----
+#!test[schema, commit]
+define
+
+attribute status, value string @values("active", "suspended");
+entity account, owns status;
+----
+
+can be turned into unary relation types (relations with a single role), and the system will validate the enums as types instead:
+
+[,typeql]
+----
+#!test[schema, commit]
+define
+
+relation account-status @abstract, relates subject;
+relation active-status sub account-status;
+relation suspended-status sub account-status;
+
+entity account, plays account-status:subject @card(0..1);
+----
+
+Note the `@card(0..1)` on the `plays`: the default of `@card(0..)` would allow an account to be active and suspended at the same time, so we tighten it to match the single-valued `status` attribute it replaces.
+
+[,typeql]
+----
+#!test[write, commit, count = 1]
+insert
+$account isa account;
+$active isa active-status, links (subject: $account);
+----
+
+With the enum lifted into the type system, each state can later gain its own attributes and roles (e.g. a `suspended-status` owning a `reason`), and queries over states are type checked like any other pattern:
+
+[,typeql]
+----
+#!test[read, count = 1]
+match
+$status isa account-status, links (subject: $account);  # polymorphic over all states
+----
+
+How much type safety you need comes down to a trade-off: the size of the schema you are willing to manage, against the rigor with which your reads and writes are validated.
+More types buy you earlier errors and richer queries; less gets you flexibility.
+
+== Shared vs specific attributes
+
+When do you use a general `start-date` and share it across different owners, versus a `policy-start-date`, which is specific to one owner type?
+
+In practice, it is hard to find use cases where attributes are truly 'global'; attributes tend to fall into one of two categories:
+
+* If an attribute is a *first-class citizen*, such as `company-id`, sharing it exposes an interface — "company-id ownership" — that multiple things might implement.
+* If an attribute is purely an *embedded property* of one type, then it is effectively scoped to its owner, and specific naming makes that explicit.
+
+*Modeling guide*: if you want to polymorphically query ownerships, then the 'global' attribute is a good model for things to share.
+Otherwise, you can use a specific attribute with one owner.
+
+Here `start-date` is shared by two owner types, and `company-id` is an identifier interface implemented by both a company and the invoices that reference it:
+
+[,typeql]
+----
+#!test[schema, commit]
+define
+
+attribute start-date, value datetime;
+attribute company-id, value string;
+
+company owns company-id;
+employment owns start-date;
+
+entity invoice, owns company-id;
+entity policy, owns start-date;
+----
+
+[,typeql]
+----
+#!test[write, commit, count = 1]
+insert
+$person isa person;
+$company isa company, has company-id "C-001";
+$invoice isa invoice, has company-id "C-001";
+$employment isa employment,
+    links (employer: $company, employee: $person),
+    has start-date 2024-01-15T00:00:00;
+$policy isa policy, has start-date 2024-06-01T00:00:00;
+----
+
+The shared attribute is what enables polymorphic querying over every ownership — anything that started, regardless of its type, or everything connected to a given company id:
+
+[,typeql]
+----
+#!test[read, count = 2]
+match
+$x has start-date $date;
+----
+
+[,typeql]
+----
+#!test[read, count = 2]
+match
+$x has company-id "C-001";
+----
+
+If you never intend to query the ownership polymorphically, a specific attribute with one owner (e.g. `policy-start-date` owned only by `policy`) documents that intent in the schema, and cannot accidentally be attached to — or matched against — any other type.
+
+[NOTE]
+====
+A possible future direction for the embedded-property case is *scoped attributes*: an entity `policy` declaring a `start-date` scoped to its owner (`policy.start-date`), without inventing a globally unique name.
+====
+
+== Cardinality
+
+Use the most specific possible xref:{page-version}@typeql-reference::annotations/card.adoc[cardinality] for every capability in your schema.
+The defaults are permissive:
+
+.Default capability cardinalities
+[cols="1,1",options="header"]
+|===
+| Capability | Default cardinality
+
+| `owns` | `@card(0..1)`
+| `relates` | `@card(0..1)`
+| `plays` | `@card(0..)`
+|===
+
+The only way to encode a *required* connection is a cardinality with a lower bound of at least one, e.g. `@card(1)` or `@card(1..)`.
+Note that xref:{page-version}@typeql-reference::annotations/key.adoc[`@key`] implies cardinality 1 as well (and therefore cannot be combined with `@card`).
+
+For most relations, tighten the default `@card(0..1)` on each `relates` role to `@card(1)`, unless the role is genuinely optional — an account holding without an account is rarely meaningful:
+
+[,typeql]
+----
+#!test[schema, commit]
+define
+
+relation account-holding,
+    relates holder @card(1),
+    relates account @card(1);
+
+person plays account-holding:holder;
+account plays account-holding:account;
+----
+
+A complete account holding commits fine:
+
+[,typeql]
+----
+#!test[write, commit, count = 1]
+match
+$person isa person, has name "Alice";
+insert
+$account isa account;
+$holding isa account-holding,
+    links (holder: $person, account: $account);
+----
+
+A holding missing its account now fails commit-time validation instead of silently persisting incomplete data:
+
+[,typeql]
+----
+#!test[write, fail_at = commit]
+match
+$person isa person, has name "Alice";
+insert
+$holding isa account-holding, links (holder: $person);  # no account: rejected at commit
+----
+
+The same applies to `owns`: `@card(1)` makes an attribute mandatory, `@card(1..)` requires at least one, and `@key` both requires exactly one and enforces uniqueness:
+
+[,typeql]
+----
+#!test[schema, commit]
+define
+
+attribute subscription-id, value string;
+attribute expiry, value datetime;
+
+entity subscription,
+    owns subscription-id @key,
+    owns expiry @card(1);
+----
+
+[,typeql]
+----
+#!test[write, fail_at = commit]
+insert
+$sub isa subscription, has subscription-id "S-001";  # missing required expiry: rejected
+----
+
+== Constraints
+
+Value restrictions like `@values` and xref:{page-version}@typeql-reference::annotations/range.adoc[`@range`] can be declared on the `attribute` definition itself, where they constrain every use of the attribute — or locally on an individual `owns`, where they constrain only that owner.
+Declaring them at the `owns` level lets a single generic attribute carry different restrictions for different owners:
+
+[,typeql]
+----
+#!test[schema, commit]
+define
+
+attribute rating, value integer;
+
+entity restaurant, owns rating @range(1..5);
+entity movie, owns rating @range(1..10);
+----
+
+Both owners share the same `rating` attribute — enabling polymorphic queries over ratings — but each is validated against its own range, and a violation is rejected as soon as the insert runs:
+
+[,typeql]
+----
+#!test[write, commit, count = 1]
+insert
+$movie isa movie, has rating 9;  # valid for movie
+----
+
+[,typeql]
+----
+#!test[write, fail_at = runtime]
+insert
+$restaurant isa restaurant, has rating 9;  # out of range for restaurant: rejected
+----
+
+Subtypes can add their own specializations of inherited capabilities, and both the local and the inherited constraints are validated at commit time.
+For example, if an `identity` is required to have at least one `email`, a subtype `service-account` can restrict that to exactly one:
+
+[,typeql]
+----
+#!test[schema, commit]
+define
+
+attribute email, value string;
+
+entity identity @abstract,
+    owns email @card(1..);
+
+entity user sub identity;
+
+entity service-account sub identity,
+    owns email @card(1);
+----
+
+All identities are validated against locally defined and inherited constraints on the capability.
+A `user` only carries the inherited `@card(1..)`, so multiple emails are fine:
+
+[,typeql]
+----
+#!test[write, commit, count = 1]
+insert
+$user isa user,
+    has email "alice@typedb.com",
+    has email "alice@example.com";
+----
+
+A `service-account` is checked against both the inherited `@card(1..)` and its local `@card(1)` — so two emails and zero emails are both rejected:
+
+[,typeql]
+----
+#!test[write, fail_at = commit]
+insert
+$bot isa service-account,
+    has email "bot@typedb.com",
+    has email "bot-backup@typedb.com";  # two emails: violates local @card(1)
+----
+
+[,typeql]
+----
+#!test[write, fail_at = commit]
+insert
+$bot isa service-account;  # no email: violates inherited @card(1..)
+----
+
+== Further reading
+
+[cols-2]
+--
+.xref:{page-version}@core-concepts::typeql/constraining-data.adoc[]
+[.clickable]
+****
+The full semantics of cardinality and value constraints
+****
+
+.xref:{page-version}@typeql-reference::annotations/index.adoc[]
+[.clickable]
+****
+Reference for all schema annotations
+****
+
+.xref:{page-version}@academy::9-modeling-schemas/index.adoc[]
+[.clickable]
+****
+A structured course on schema modeling
+****
+--
