@@ -139,15 +139,7 @@ If you want to polymorphically query ownerships like this, a shared 'global' att
 Otherwise, use a specific attribute with a single owner — it documents the narrower intent in the schema.
 
 Attributes default to *dependent*: an instance is automatically deleted when its last owner is deleted.
-Marking the attribute type xref:{page-version}@typeql-reference::annotations/independent.adoc[`@independent`] allows instances to exist freely — useful, for example, when pre-loading a dictionary of words or numbers:
-
-[,typeql]
-----
-#!test[schema, commit]
-define
-
-attribute word @independent, value string;
-----
+Marking the attribute type xref:{page-version}@typeql-reference::annotations/independent.adoc[`@independent`] allows instances to exist freely — useful, for example, when pre-loading a dictionary of words or numbers.
 
 Finally, an attribute carries a value of the value type assigned in the schema — but an xref:{page-version}@typeql-reference::annotations/abstract.adoc[`@abstract`] attribute may leave the value type unassigned.
 A classic example is an abstract `id`, subtyped into concrete identifiers with different value types:
