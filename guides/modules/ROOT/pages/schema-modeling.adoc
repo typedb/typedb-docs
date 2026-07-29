@@ -108,7 +108,7 @@ Two further consequences of relations being first-class:
 
 === Attributes are immutable, global, and shared
 
-An attribute instance is entirely defined by its type and value, and is _immutable, global, shared, and linked against_: owners do not contain attributes, they link to them.
+An attribute instance is entirely defined by its type and value, and it is _immutable, global, and shared_: owners do not contain attributes, they link to them.
 A single `name "Alice"` exists in the entire database — unrelated owners all link to the same instance:
 
 [,typeql]
@@ -214,7 +214,7 @@ TypeDB supports only single inheritance.
 Treat `sub` as a true, independent "is-a" axis — and compose everything else.
 When a supertype exists only to be specialized, mark it xref:{page-version}@typeql-reference::annotations/abstract.adoc[`@abstract`] so that only its subtypes can have instances — as with the abstract `id` attribute above.
 
-To compose, we add linked relations and play roles: a role that a type plays acts as a _trait_ or _interface_, much like implementing a component architecture in OOP.
+To compose, use relations and roles: a role that a type plays acts as a _trait_ or _interface_, much like a component architecture in OOP.
 We might have a plain `entity person`, but a person can behave as an employee — `entity person, plays employment:employee`.
 Attribute ownerships are interfaces the same way: `entity person, owns name` indicates a person can act as a "name-owner".
 
@@ -223,7 +223,7 @@ Both axes are resolved polymorphically at read time:
 * `$x isa person;` resolves *subtype polymorphism* — it matches `person` and everything below it.
 * `$x has name $n;` or `$r links (employee: $x);` resolve *interface polymorphism* — they match every type implementing the capability, as the `has name "Alice"` query above matched both a person and a company.
 
-Since a type cannot `sub` two parents, a nice way to implement 'multi-typing' is to create *unary relations* — relations with a single role — that act as components for a type.
+Since a type cannot `sub` two parents, a nice way to give one type several independent capabilities is to create *unary relations* — relations with a single role — that act as components for the type.
 Here, a strongly typed HR subsystem can be built against a person's `hr_component` — of which at most one can exist:
 
 [,typeql]
@@ -232,9 +232,9 @@ Here, a strongly typed HR subsystem can be built against a person's `hr_componen
 define
 
 relation hr_component,
-    relates employee;
+    relates subject;
 
-person plays hr_component:employee @card(0..1);
+person plays hr_component:subject @card(0..1);
 ----
 
 [,typeql]
@@ -243,7 +243,7 @@ person plays hr_component:employee @card(0..1);
 match
 $person isa person, has name "Alice";
 insert
-$hr isa hr_component, links (employee: $person);
+$hr isa hr_component, links (subject: $person);
 ----
 
 The HR subsystem can then look up a person's component and work against it:
@@ -253,7 +253,7 @@ The HR subsystem can then look up a person's component and work against it:
 #!test[read, count = 1]
 match
 $person isa person, has name "Alice";
-$as_hr isa hr_component, links (employee: $person);
+$as_hr isa hr_component, links (subject: $person);
 ----
 
 == Type safety strictness
@@ -299,7 +299,7 @@ match
 $p isa perzon;  # error: 'perzon' is not a defined type
 ----
 
-At the strict end, even an attribute with an enumerated set of values — usually modeled with a xref:{page-version}@typeql-reference::annotations/values.adoc[`@values`] restriction —
+At the strict end, consider an attribute with an enumerated set of values, usually modeled with a xref:{page-version}@typeql-reference::annotations/values.adoc[`@values`] restriction:
 
 [,typeql]
 ----
@@ -310,7 +310,7 @@ attribute status, value string @values("active", "suspended");
 entity account, owns status;
 ----
 
-can have its values turned into unary relation types, and the system will validate the enums as types instead:
+Those values can instead be turned into unary relation types, and the system will validate the enums as types:
 
 [,typeql]
 ----
@@ -514,7 +514,6 @@ entity service_account sub identity,
     owns email @card(1);
 ----
 
-All identities are validated against locally defined and inherited constraints on the capability.
 A `user` only carries the inherited `@card(1..)`, so multiple emails are fine:
 
 [,typeql]
@@ -556,7 +555,7 @@ Functions serve several distinct modeling purposes:
 3. *Recursive* querying, with built-in loop detection and termination (known as _tabling_ — see xref:{page-version}@guides::typeql/optimizing-typeql.adoc[Optimizing TypeQL]).
 4. Categorizing — creating *"conceptual relations"* that are computed rather than stored.
 
-The `persons_by_name` function in the naming section is an example of the first two.
+The `persons_by_name` function in the naming section is an example of the first — and calling it inside a larger `match` makes it a sub-query.
 For the fourth, a function that returns a `boolean` can be queried like a relation — here, "is this person employed by this company?" is a derived fact, computed from `employment` on the fly rather than stored:
 
 [,typeql]
