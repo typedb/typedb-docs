@@ -1,7 +1,7 @@
 = Modeling
-:keywords: typedb, typeql, modeling, schema, naming, type safety, cardinality, constraints, guide
+:keywords: typedb, typeql, modeling, schema, naming, entities, relations, attributes, composition, type safety, cardinality, constraints, functions, guide
 :pageTitle: Modeling
-:summary: Design TypeDB schemas - naming, type safety, shared vs specific attributes, cardinality, and constraints.
+:summary: Design TypeDB schemas - naming, entities vs relations vs attributes, composition, type safety, role subtyping, cardinality, constraints, and functions.
 :page-toclevels: 2
 :test-typeql: linear
 
@@ -10,10 +10,13 @@
 This guide collects practical advice for designing TypeDB schemas:
 
 1. Naming types and functions so that queries read naturally.
-2. Choosing the level of type safety that fits your application.
-3. Deciding between shared, generic attributes and owner-specific ones.
-4. Picking the most specific cardinality for `owns`, `relates`, and `plays`.
-5. Placing value restrictions at the right level, and specializing inherited constraints.
+2. Choosing between entities, relations, and attributes.
+3. Composing types out of capabilities instead of deep hierarchies.
+4. Choosing the level of type safety that fits your application.
+5. Specializing roles in relation hierarchies.
+6. Picking the most specific cardinality for `owns`, `relates`, and `plays`.
+7. Placing value restrictions at the right level, and specializing inherited constraints.
+8. Using functions for modularity, aggregation, recursion, and derived facts.
 
 == Prerequisites
 
@@ -100,6 +103,155 @@ match
 let $person in persons_by_name("Alice");
 ----
 
+== Entities, relations, and attributes
+
+TypeDB treats relations and attributes as first-class, alongside entities.
+Choosing between the three is the first modeling decision for every piece of data:
+
+* Use an *entity* when the data has an independent existence, unrelated to any relationships or specific attributes.
+* Use a *relation* when the existence of the data depends on the linked role players.
+* Use an *attribute* for a piece of data entirely defined by its type and its value.
+
+=== Relations depend on their players
+
+TypeDB auto-deletes any relation left with zero role players, even if it still has attributes.
+Here an employment is created with only an employer (the employee role is optional by default), and disappears when that employer is deleted:
+
+[,typeql]
+----
+#!test[write, commit, count = 1]
+insert
+$acme isa company, has name "Acme";
+$employment isa employment,
+    links (employer: $acme),
+    has salary 1.0;
+----
+
+[,typeql]
+----
+#!test[write, commit]
+match
+$company isa company, has name "Acme";
+delete
+$company;
+----
+
+[,typeql]
+----
+#!test[read, count = 0]
+match
+$employment isa employment, has salary 1.0;  # auto-deleted with its last player
+----
+
+Two further consequences of relations being first-class:
+
+* Relations are *n-ary*, meaning you never need to reify relationships — extend a relation with another role instead of inventing a linking entity.
+* Relations can be *nested*: a relation can itself be a role player in another relation.
+
+=== Attributes are immutable, global, and shared
+
+An attribute instance is entirely defined by its type and value, and is _immutable, global, shared, and linked against_.
+A single `name "Alice"` exists in the entire database — unrelated owners all link to the same instance:
+
+[,typeql]
+----
+#!test[write, commit, count = 1]
+insert
+$company isa company, has name "Alice";  # a company also named Alice
+----
+
+[,typeql]
+----
+#!test[read, count = 1]
+match
+$name isa name;
+$name == "Alice";  # one shared attribute instance, despite two owners
+----
+
+Sharing an attribute type across owners is what enables polymorphic querying over ownerships:
+
+[,typeql]
+----
+#!test[read, count = 2]
+match
+$x has name "Alice";  # the person and the company
+----
+
+If you want to polymorphically query ownerships like this, a shared 'global' attribute is a good model.
+Otherwise, use a specific attribute with a single owner — it documents the narrower intent in the schema.
+
+Attributes default to *dependent*: an instance is automatically deleted when its last owner goes.
+Marking the attribute type xref:{page-version}@typeql-reference::annotations/independent.adoc[`@independent`] allows instances to exist freely — useful, for example, when pre-loading a dictionary of words or numbers:
+
+[,typeql]
+----
+#!test[schema, commit]
+define
+
+attribute word @independent, value string;
+----
+
+Finally, an attribute carries a value of the value type assigned in the schema — but an abstract attribute may leave the value type unassigned.
+A classic example is an abstract `id`, subtyped into concrete identifiers with different value types:
+
+[,typeql]
+----
+#!test[schema, commit]
+define
+
+attribute id @abstract;
+attribute email-id sub id, value string;
+attribute employee-id sub id, value integer;
+----
+
+== Subtyping vs composition
+
+TypeDB supports only single inheritance.
+Treat `sub` as a true, independent "is-a" axis — and compose everything else.
+
+To compose, we add linked relations and play roles: a role that a type plays acts as a _trait_ or _interface_, much like implementing a component architecture in OOP.
+We might have a plain `entity person`, but a person can behave as an employee — `entity person, plays employment:employee`.
+Attribute ownerships are interfaces the same way: `entity person, owns name` indicates a person can act as a "name-owner".
+
+Both axes are resolved polymorphically at read time:
+
+* `$x isa person;` resolves *subtype polymorphism* — it matches `person` and everything below it.
+* `$x has name $n;` or `$r links (employee: $x);` resolve *interface polymorphism* — they match every type implementing the capability, as the `has name "Alice"` query above matched both a person and a company.
+
+A nice way to implement 'multi-typing' is to create unary relation types that act as components for a type.
+Here, a strongly-typed HR subsystem can be built against a person's `hr-component` — of which at most one can exist:
+
+[,typeql]
+----
+#!test[schema, commit]
+define
+
+relation hr-component,
+    relates employee;
+
+person plays hr-component:employee @card(0..1);
+----
+
+[,typeql]
+----
+#!test[write, commit, count = 1]
+match
+$person isa person, has name "Alice";
+insert
+$hr isa hr-component, links (employee: $person);
+----
+
+The `@card(0..1)` on the `plays` makes the component single-valued — attaching a second one is rejected:
+
+[,typeql]
+----
+#!test[write, fail_at = commit]
+match
+$person isa person, has name "Alice";
+insert
+$hr isa hr-component, links (employee: $person);  # second component: rejected at commit
+----
+
 == Type safety strictness
 
 TypeDB gives you the power to choose the level of type safety you want.
@@ -116,7 +268,7 @@ attribute label, value string;
 entity thing, owns label @card(0..);
 ----
 
-Any kind of data fits without schema changes — but the schema can no longer catch your mistakes.
+Any kind of data fits without schema changes — but you trade off compiler errors for silent misses and data bugs.
 A mistyped label is not an error; the query silently returns no results instead of failing:
 
 [,typeql]
@@ -154,7 +306,7 @@ attribute status, value string @values("active", "suspended");
 entity account, owns status;
 ----
 
-can be turned into unary relation types (relations with a single role), and the system will validate the enums as types instead:
+can be turned into unary relation types, and the system will validate the enums as types instead:
 
 [,typeql]
 ----
@@ -190,70 +342,63 @@ $status isa account-status, links (subject: $account);  # polymorphic over all s
 How much type safety you need comes down to a trade-off: the size of the schema you are willing to manage, against the rigor with which your reads and writes are validated.
 More types buy you earlier errors and richer queries; less gets you flexibility.
 
-== Shared vs specific attributes
+== Role subtyping
 
-When do you use a general `start-date` and share it across different owners, versus a `policy-start-date`, which is specific to one owner type?
+Role types are defined within the "scope" of a relation type, but are thereafter true types: `relation employment, relates employee` creates a role type `employment:employee` that can be queried like any other.
 
-In practice, it is hard to find use cases where attributes are truly 'global'; attributes tend to fall into one of two categories:
+Role types are inherited _as-is_: a `part-time-employment sub employment` inherits the role `employment:employee`.
+There is no distinct role `part-time-employment:employee` — it is the same `employment:employee`, held by `employment` and all of its subtypes.
 
-* If an attribute is a *first-class citizen*, such as `company-id`, sharing it exposes an interface — "company-id ownership" — that multiple things might implement.
-* If an attribute is purely an *embedded property* of one type, then it is effectively scoped to its owner, and specific naming makes that explicit.
-
-*Modeling guide*: if you want to polymorphically query ownerships, then the 'global' attribute is a good model for things to share.
-Otherwise, you can use a specific attribute with one owner.
-
-Here `start-date` is shared by two owner types, and `company-id` is an identifier interface implemented by both a company and the invoices that reference it:
+To create a specialized role just for the sub-relation type, create a role subtype with `as`:
 
 [,typeql]
 ----
 #!test[schema, commit]
 define
 
-attribute start-date, value datetime;
-attribute company-id, value string;
+relation part-time-employment sub employment,
+    relates part-time-employee as employee;
 
-company owns company-id;
-employment owns start-date;
-
-entity invoice, owns company-id;
-entity policy, owns start-date;
+person plays part-time-employment:part-time-employee;
 ----
+
+This essentially creates a new role type `part-time-employment:part-time-employee sub employment:employee`, and also blocks the inherited `employee` role in `part-time-employment` instances.
+Note that `plays` declarations are not inherited across the specialization — players of the new role need their own `plays`.
 
 [,typeql]
 ----
 #!test[write, commit, count = 1]
+match
+$company isa company, has name "TypeDB";
 insert
-$person isa person;
-$company isa company, has company-id "C-001";
-$invoice isa invoice, has company-id "C-001";
-$employment isa employment,
-    links (employer: $company, employee: $person),
-    has start-date 2024-01-15T00:00:00;
-$policy isa policy, has start-date 2024-06-01T00:00:00;
+$person isa person, has name "Bob";
+$employment isa part-time-employment,
+    links (employer: $company, part-time-employee: $person);
 ----
 
-The shared attribute is what enables polymorphic querying over every ownership — anything that started, regardless of its type, or everything connected to a given company id:
+Because of the role subtyping, querying the parent role at read time also resolves players of the specialized role:
 
 [,typeql]
 ----
 #!test[read, count = 2]
 match
-$x has start-date $date;
+$employment isa employment, links (employee: $x);  # Alice (employee) and Bob (part-time-employee)
 ----
+
+The inherited `employee` role, however, can no longer be used in `part-time-employment` instances — the specialization blocks it:
 
 [,typeql]
 ----
-#!test[read, count = 2]
+#!test[write, fail_at = runtime]
 match
-$x has company-id "C-001";
+$person isa person, has name "Bob";
+$company isa company, has name "TypeDB";
+insert
+$employment isa part-time-employment,
+    links (employer: $company, employee: $person);  # blocked: use part-time-employee
 ----
 
-If you never intend to query the ownership polymorphically, a specific attribute with one owner (e.g. `policy-start-date` owned only by `policy`) documents that intent in the schema, and cannot accidentally be attached to — or matched against — any other type.
-
-[NOTE]
-====
-A possible future direction for the embedded-property case is *scoped attributes*: an entity `policy` declaring a `start-date` scoped to its owner (`policy.start-date`), without inventing a globally unique name.
-====
+The cost of a specialized role is that a new name must be created for it.
 
 == Cardinality
 
@@ -413,6 +558,42 @@ $bot isa service-account,
 #!test[write, fail_at = commit]
 insert
 $bot isa service-account;  # no email: violates inherited @card(1..)
+----
+
+Under the hood, `@key` is a composition of xref:{page-version}@typeql-reference::annotations/unique.adoc[`@unique`] and `@card(1)`: `@unique` requires that no other instance of the owner type owns the specific attribute instance.
+Both `@key` and `@unique` go on the ownership, not on the attribute definition.
+
+== Functions
+
+Functions serve several distinct modeling purposes:
+
+1. *Modularizing* huge queries into named, reusable pieces.
+2. Performing *sub-queries and aggregates*.
+3. *Recursive* querying, with built-in loop detection and termination.
+4. Categorizing — creating *"conceptual relations"* that are computed rather than stored.
+
+The `persons_by_name` function in the naming section is an example of the first two.
+For the fourth, a function that returns a `boolean` can be queried like an anonymous relation — here, "is this person employed by this company?" is a derived fact, computed from `employment` rather than stored:
+
+[,typeql]
+----
+#!test[schema, commit]
+define
+
+fun person_employed($person: person, $company: company) -> boolean:
+    match
+        $employment isa employment,
+            links (employer: $company, employee: $person);
+    return check;
+----
+
+[,typeql]
+----
+#!test[read, count = 1]
+match
+$person isa person, has name "Alice";
+$company isa company, has name "TypeDB";
+true == person_employed($person, $company);
 ----
 
 == Further reading
