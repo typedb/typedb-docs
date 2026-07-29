@@ -1,6 +1,6 @@
-= Modeling
+= Schema modeling
 :keywords: typedb, typeql, modeling, schema, entities, relations, attributes, naming, composition, type safety, cardinality, constraints, functions, guide
-:pageTitle: Modeling
+:pageTitle: Schema modeling
 :summary: Design TypeDB schemas - entities vs relations vs attributes, naming, composition, type safety, role subtyping, cardinality, constraints, and functions.
 :page-toclevels: 2
 :test-typeql: linear
@@ -150,8 +150,8 @@ A classic example is an abstract `id`, subtyped into concrete identifiers with d
 define
 
 attribute id @abstract;
-attribute email-id sub id, value string;
-attribute employee-id sub id, value integer;
+attribute email_id sub id, value string;
+attribute employee_id sub id, value integer;
 ----
 
 == Naming types and functions
@@ -224,17 +224,17 @@ Both axes are resolved polymorphically at read time:
 * `$x has name $n;` or `$r links (employee: $x);` resolve *interface polymorphism* — they match every type implementing the capability, as the `has name "Alice"` query above matched both a person and a company.
 
 Since a type cannot `sub` two parents, a nice way to implement 'multi-typing' is to create *unary relations* — relations with a single role — that act as components for a type.
-Here, a strongly typed HR subsystem can be built against a person's `hr-component` — of which at most one can exist:
+Here, a strongly typed HR subsystem can be built against a person's `hr_component` — of which at most one can exist:
 
 [,typeql]
 ----
 #!test[schema, commit]
 define
 
-relation hr-component,
+relation hr_component,
     relates employee;
 
-person plays hr-component:employee @card(0..1);
+person plays hr_component:employee @card(0..1);
 ----
 
 [,typeql]
@@ -243,18 +243,17 @@ person plays hr-component:employee @card(0..1);
 match
 $person isa person, has name "Alice";
 insert
-$hr isa hr-component, links (employee: $person);
+$hr isa hr_component, links (employee: $person);
 ----
 
-The `@card(0..1)` on the `plays` makes the component single-valued — attaching a second one is rejected:
+The HR subsystem can then look up a person's component and work against it:
 
 [,typeql]
 ----
-#!test[write, fail_at = commit]
+#!test[read, count = 1]
 match
 $person isa person, has name "Alice";
-insert
-$hr isa hr-component, links (employee: $person);  # second component: rejected at commit
+$as_hr isa hr_component, links (employee: $person);
 ----
 
 == Type safety strictness
@@ -318,11 +317,11 @@ can have its values turned into unary relation types, and the system will valida
 #!test[schema, commit]
 define
 
-relation account-status @abstract, relates subject;
-relation active-status sub account-status;
-relation suspended-status sub account-status;
+relation account_status @abstract, relates subject;
+relation active_status sub account_status;
+relation suspended_status sub account_status;
 
-entity account, plays account-status:subject @card(0..1);
+entity account, plays account_status:subject @card(0..1);
 ----
 
 Note the `@card(0..1)` on the `plays`: the default of `@card(0..)` would allow an account to be active and suspended at the same time, so we tighten it to match the single-valued `status` attribute it replaces.
@@ -332,16 +331,16 @@ Note the `@card(0..1)` on the `plays`: the default of `@card(0..)` would allow a
 #!test[write, commit, count = 1]
 insert
 $account isa account;
-$active isa active-status, links (subject: $account);
+$active isa active_status, links (subject: $account);
 ----
 
-With the enum lifted into the type system, each state can later gain its own attributes and roles (e.g. a `suspended-status` owning a `reason`), and queries over states are type checked like any other pattern:
+With the enum lifted into the type system, each state can later gain its own attributes and roles (e.g. a `suspended_status` owning a `reason`), and queries over states are type checked like any other pattern:
 
 [,typeql]
 ----
 #!test[read, count = 1]
 match
-$status isa account-status, links (subject: $account);  # polymorphic over all states
+$status isa account_status, links (subject: $account);  # polymorphic over all states
 ----
 
 How much type safety you need comes down to a trade-off: the size of the schema you are willing to manage, against the rigor with which your reads and writes are validated.
@@ -351,8 +350,8 @@ More types buy you earlier errors and richer queries; less gets you flexibility.
 
 Role types are defined within the "scope" of a relation type, but are thereafter full-fledged types in their own right: `relation employment, relates employee` creates a role type `employment:employee` that can be queried like any other.
 
-Role types are inherited _as-is_: a `part-time-employment sub employment` inherits the role `employment:employee`.
-There is no distinct role `part-time-employment:employee` — it is the same `employment:employee`, held by `employment` and all of its subtypes.
+Role types are inherited _as-is_: a `part_time_employment sub employment` inherits the role `employment:employee`.
+There is no distinct role `part_time_employment:employee` — it is the same `employment:employee`, held by `employment` and all of its subtypes.
 
 To create a specialized role just for the sub-relation type, create a role subtype with `as`:
 
@@ -361,13 +360,13 @@ To create a specialized role just for the sub-relation type, create a role subty
 #!test[schema, commit]
 define
 
-relation part-time-employment sub employment,
-    relates part-time-employee as employee;
+relation part_time_employment sub employment,
+    relates part_time_employee as employee;
 
-person plays part-time-employment:part-time-employee;
+person plays part_time_employment:part_time_employee;
 ----
 
-This essentially creates a new role type `part-time-employment:part-time-employee sub employment:employee`, and also blocks the inherited `employee` role in `part-time-employment` instances.
+This essentially creates a new role type `part_time_employment:part_time_employee sub employment:employee`, and also blocks the inherited `employee` role in `part_time_employment` instances.
 Note that `plays` declarations are not inherited across the specialization — players of the new role need their own `plays`.
 
 [,typeql]
@@ -377,8 +376,8 @@ match
 $company isa company, has name "TypeDB";
 insert
 $person isa person, has name "Bob";
-$employment isa part-time-employment,
-    links (employer: $company, part-time-employee: $person);
+$employment isa part_time_employment,
+    links (employer: $company, part_time_employee: $person);
 ----
 
 Because of the role subtyping, querying the parent role at read time also resolves players of the specialized role:
@@ -387,10 +386,10 @@ Because of the role subtyping, querying the parent role at read time also resolv
 ----
 #!test[read, count = 2]
 match
-$employment isa employment, links (employee: $x);  # Alice (employee) and Bob (part-time-employee)
+$employment isa employment, links (employee: $x);  # Alice (employee) and Bob (part_time_employee)
 ----
 
-The inherited `employee` role, however, can no longer be used in `part-time-employment` instances — the specialization blocks it:
+The inherited `employee` role, however, can no longer be used in `part_time_employment` instances — the specialization blocks it:
 
 [,typeql]
 ----
@@ -399,8 +398,8 @@ match
 $person isa person, has name "Bob";
 $company isa company, has name "TypeDB";
 insert
-$employment isa part-time-employment,
-    links (employer: $company, employee: $person);  # blocked: use part-time-employee
+$employment isa part_time_employment,
+    links (employer: $company, employee: $person);  # blocked: use part_time_employee
 ----
 
 The cost of a specialized role is that a new name must be created for it.
@@ -430,12 +429,12 @@ For most relations, tighten the default `@card(0..1)` on each `relates` role to 
 #!test[schema, commit]
 define
 
-relation account-holding,
+relation account_holding,
     relates holder @card(1),
     relates account @card(1);
 
-person plays account-holding:holder;
-account plays account-holding:account;
+person plays account_holding:holder;
+account plays account_holding:account;
 ----
 
 A complete account holding commits fine:
@@ -447,7 +446,7 @@ match
 $person isa person, has name "Alice";
 insert
 $account isa account;
-$holding isa account-holding,
+$holding isa account_holding,
     links (holder: $person, account: $account);
 ----
 
@@ -459,30 +458,10 @@ A holding missing its account now fails commit-time validation instead of silent
 match
 $person isa person, has name "Alice";
 insert
-$holding isa account-holding, links (holder: $person);  # no account: rejected at commit
+$holding isa account_holding, links (holder: $person);  # no account: rejected at commit
 ----
 
-The same applies to `owns`: `@card(1)` makes an attribute mandatory, `@card(1..)` requires at least one, and `@key` both requires exactly one and enforces uniqueness:
-
-[,typeql]
-----
-#!test[schema, commit]
-define
-
-attribute subscription-id, value string;
-attribute expiry, value datetime;
-
-entity subscription,
-    owns subscription-id @key,
-    owns expiry @card(1);
-----
-
-[,typeql]
-----
-#!test[write, fail_at = commit]
-insert
-$sub isa subscription, has subscription-id "S-001";  # missing required expiry: rejected
-----
+The same applies to `owns`: `@card(1)` makes an attribute mandatory, `@card(1..)` requires at least one, and `@key` both requires exactly one and enforces uniqueness.
 
 == Constraints
 
@@ -517,7 +496,7 @@ $restaurant isa restaurant, has rating 9;  # out of range for restaurant: reject
 ----
 
 Subtypes can add their own specializations of inherited capabilities, and both the local and the inherited constraints are validated at commit time.
-For example, if an `identity` is required to have at least one `email`, a subtype `service-account` can restrict that to exactly one:
+For example, if an `identity` is required to have at least one `email`, a subtype `service_account` can restrict that to exactly one:
 
 [,typeql]
 ----
@@ -531,7 +510,7 @@ entity identity @abstract,
 
 entity user sub identity;
 
-entity service-account sub identity,
+entity service_account sub identity,
     owns email @card(1);
 ----
 
@@ -547,13 +526,13 @@ $user isa user,
     has email "alice@example.com";
 ----
 
-A `service-account` is checked against both the inherited `@card(1..)` and its local `@card(1)` — so two emails and zero emails are both rejected:
+A `service_account` is checked against both the inherited `@card(1..)` and its local `@card(1)` — so two emails and zero emails are both rejected:
 
 [,typeql]
 ----
 #!test[write, fail_at = commit]
 insert
-$bot isa service-account,
+$bot isa service_account,
     has email "bot@typedb.com",
     has email "bot-backup@typedb.com";  # two emails: violates local @card(1)
 ----
@@ -562,7 +541,7 @@ $bot isa service-account,
 ----
 #!test[write, fail_at = commit]
 insert
-$bot isa service-account;  # no email: violates both the inherited @card(1..) and the local @card(1)
+$bot isa service_account;  # no email: violates both the inherited @card(1..) and the local @card(1)
 ----
 
 Under the hood, `@key` is a composition of xref:{page-version}@typeql-reference::annotations/unique.adoc[`@unique`] and `@card(1)`: `@unique` requires that no two instances of the owner type (including its subtypes) own an attribute of that type with the same value.
