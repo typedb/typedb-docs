@@ -105,17 +105,17 @@ let $person in persons_by_name("Alice");
 
 == Entities, relations, and attributes
 
-TypeDB treats relations and attributes as first-class, alongside entities.
+TypeDB treats relations and attributes as first-class, alongside entities (see xref:{page-version}@core-concepts::typeql/entities-relations-attributes.adoc[] for the underlying data model).
 Choosing between the three is the first modeling decision for every piece of data:
 
-* Use an *entity* when the data has an independent existence, unrelated to any relationships or specific attributes.
+* Use an *entity* when the data has an independent existence — one that does not depend on any relationship or specific attribute.
 * Use a *relation* when the existence of the data depends on the linked role players.
 * Use an *attribute* for a piece of data entirely defined by its type and its value.
 
 === Relations depend on their players
 
 TypeDB auto-deletes any relation left with zero role players, even if it still has attributes.
-Here an employment is created with only an employer (the employee role is optional by default), and disappears when that employer is deleted:
+Here an employment is created with only an employer (each `relates` role defaults to `@card(0..1)`, making the employee role optional — see the Cardinality section below), and disappears when that employer is deleted:
 
 [,typeql]
 ----
@@ -150,7 +150,7 @@ Two further consequences of relations being first-class:
 
 === Attributes are immutable, global, and shared
 
-An attribute instance is entirely defined by its type and value, and is _immutable, global, shared, and linked against_.
+An attribute instance is entirely defined by its type and value, and is _immutable, global, shared, and linked against_: owners do not contain attributes, they link to them.
 A single `name "Alice"` exists in the entire database — unrelated owners all link to the same instance:
 
 [,typeql]
@@ -180,7 +180,7 @@ $x has name "Alice";  # the person and the company
 If you want to polymorphically query ownerships like this, a shared 'global' attribute is a good model.
 Otherwise, use a specific attribute with a single owner — it documents the narrower intent in the schema.
 
-Attributes default to *dependent*: an instance is automatically deleted when its last owner goes.
+Attributes default to *dependent*: an instance is automatically deleted when its last owner is deleted.
 Marking the attribute type xref:{page-version}@typeql-reference::annotations/independent.adoc[`@independent`] allows instances to exist freely — useful, for example, when pre-loading a dictionary of words or numbers:
 
 [,typeql]
@@ -191,7 +191,7 @@ define
 attribute word @independent, value string;
 ----
 
-Finally, an attribute carries a value of the value type assigned in the schema — but an abstract attribute may leave the value type unassigned.
+Finally, an attribute carries a value of the value type assigned in the schema — but an xref:{page-version}@typeql-reference::annotations/abstract.adoc[`@abstract`] attribute may leave the value type unassigned.
 A classic example is an abstract `id`, subtyped into concrete identifiers with different value types:
 
 [,typeql]
@@ -218,8 +218,8 @@ Both axes are resolved polymorphically at read time:
 * `$x isa person;` resolves *subtype polymorphism* — it matches `person` and everything below it.
 * `$x has name $n;` or `$r links (employee: $x);` resolve *interface polymorphism* — they match every type implementing the capability, as the `has name "Alice"` query above matched both a person and a company.
 
-A nice way to implement 'multi-typing' is to create unary relation types that act as components for a type.
-Here, a strongly-typed HR subsystem can be built against a person's `hr-component` — of which at most one can exist:
+Since a type cannot `sub` two parents, a nice way to implement 'multi-typing' is to create *unary relations* — relations with a single role — that act as components for a type.
+Here, a strongly typed HR subsystem can be built against a person's `hr-component` — of which at most one can exist:
 
 [,typeql]
 ----
@@ -268,7 +268,7 @@ attribute label, value string;
 entity thing, owns label @card(0..);
 ----
 
-Any kind of data fits without schema changes — but you trade off compiler errors for silent misses and data bugs.
+Any kind of data fits without schema changes — but you trade off type errors for silent misses and data bugs.
 A mistyped label is not an error; the query silently returns no results instead of failing:
 
 [,typeql]
@@ -306,7 +306,7 @@ attribute status, value string @values("active", "suspended");
 entity account, owns status;
 ----
 
-can be turned into unary relation types, and the system will validate the enums as types instead:
+can have its values turned into unary relation types, and the system will validate the enums as types instead:
 
 [,typeql]
 ----
@@ -344,7 +344,7 @@ More types buy you earlier errors and richer queries; less gets you flexibility.
 
 == Role subtyping
 
-Role types are defined within the "scope" of a relation type, but are thereafter true types: `relation employment, relates employee` creates a role type `employment:employee` that can be queried like any other.
+Role types are defined within the "scope" of a relation type, but are thereafter full-fledged types in their own right: `relation employment, relates employee` creates a role type `employment:employee` that can be queried like any other.
 
 Role types are inherited _as-is_: a `part-time-employment sub employment` inherits the role `employment:employee`.
 There is no distinct role `part-time-employment:employee` — it is the same `employment:employee`, held by `employment` and all of its subtypes.
@@ -557,10 +557,10 @@ $bot isa service-account,
 ----
 #!test[write, fail_at = commit]
 insert
-$bot isa service-account;  # no email: violates inherited @card(1..)
+$bot isa service-account;  # no email: violates both the inherited @card(1..) and the local @card(1)
 ----
 
-Under the hood, `@key` is a composition of xref:{page-version}@typeql-reference::annotations/unique.adoc[`@unique`] and `@card(1)`: `@unique` requires that no other instance of the owner type owns the specific attribute instance.
+Under the hood, `@key` is a composition of xref:{page-version}@typeql-reference::annotations/unique.adoc[`@unique`] and `@card(1)`: `@unique` requires that no two instances of the owner type (including its subtypes) own an attribute of that type with the same value.
 Both `@key` and `@unique` go on the ownership, not on the attribute definition.
 
 == Functions
@@ -569,11 +569,11 @@ Functions serve several distinct modeling purposes:
 
 1. *Modularizing* huge queries into named, reusable pieces.
 2. Performing *sub-queries and aggregates*.
-3. *Recursive* querying, with built-in loop detection and termination.
+3. *Recursive* querying, with built-in loop detection and termination (known as _tabling_ — see xref:{page-version}@guides::typeql/optimizing-typeql.adoc[Optimizing TypeQL]).
 4. Categorizing — creating *"conceptual relations"* that are computed rather than stored.
 
 The `persons_by_name` function in the naming section is an example of the first two.
-For the fourth, a function that returns a `boolean` can be queried like an anonymous relation — here, "is this person employed by this company?" is a derived fact, computed from `employment` rather than stored:
+For the fourth, a function that returns a `boolean` can be queried like a relation — here, "is this person employed by this company?" is a derived fact, computed from `employment` on the fly rather than stored:
 
 [,typeql]
 ----
@@ -610,5 +610,11 @@ The full semantics of cardinality and value constraints
 [.clickable]
 ****
 Reference for all schema annotations
+****
+
+.xref:{page-version}@core-concepts::typeql/queries-as-functions.adoc[]
+[.clickable]
+****
+Function signatures, streams, aggregates, and recursion in depth
 ****
 --
