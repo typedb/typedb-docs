@@ -1,7 +1,7 @@
 = Modeling
-:keywords: typedb, typeql, modeling, schema, naming, entities, relations, attributes, composition, type safety, cardinality, constraints, functions, guide
+:keywords: typedb, typeql, modeling, schema, entities, relations, attributes, naming, composition, type safety, cardinality, constraints, functions, guide
 :pageTitle: Modeling
-:summary: Design TypeDB schemas - naming, entities vs relations vs attributes, composition, type safety, role subtyping, cardinality, constraints, and functions.
+:summary: Design TypeDB schemas - entities vs relations vs attributes, naming, composition, type safety, role subtyping, cardinality, constraints, and functions.
 :page-toclevels: 2
 :test-typeql: linear
 
@@ -9,8 +9,8 @@
 
 This guide collects practical advice for designing TypeDB schemas:
 
-1. Naming types and functions so that queries read naturally.
-2. Choosing between entities, relations, and attributes.
+1. Choosing between entities, relations, and attributes.
+2. Naming types and functions so that queries read naturally.
 3. Composing types out of capabilities instead of deep hierarchies.
 4. Choosing the level of type safety that fits your application.
 5. Specializing roles in relation hierarchies.
@@ -25,10 +25,17 @@ We recommend using xref:{page-version}@tools::studio.adoc[TypeDB Studio] to foll
 
 The examples build up a single schema from top to bottom: types defined in earlier sections are reused and extended in later ones.
 
-== Naming types and functions
+== Entities, relations, and attributes
 
-TypeQL reads most elegantly when every type — entity, relation, role, and attribute — is named with a noun.
-The main TypeQL keywords (`isa`, `has`, `links`, `relates`, `owns`, `plays`) are verbs, so the types slot in as nouns around them, and queries read like English sentences.
+TypeDB treats relations and attributes as first-class, alongside entities (see xref:{page-version}@core-concepts::typeql/entities-relations-attributes.adoc[] for the underlying data model).
+Choosing between the three is the first modeling decision for every piece of data:
+
+* Use an *entity* when the data has an independent existence in the real world — a person, a project, a movie — one that does not depend on any relationship or specific attribute, and is not trivially representable by a single value.
+Entities are the basic building blocks of any TypeDB schema.
+* Use a *relation* when the data only exists because of a connection between other things — a product order, a group membership, an access grant — so its existence depends on the linked role players.
+* Use an *attribute* when the data is just a value — a size, a date, a name — entirely defined by its type and its value.
+
+Applying the rule to a small employment domain gives the schema this guide builds on:
 
 [,typeql]
 ----
@@ -52,9 +59,6 @@ relation employment,
     owns salary;
 ----
 
-*Attributes*: querying with `match ... has ...`, the object of the sentence comes after the `has`, so it reads best as a noun.
-Read aloud, `$person has name "Alice"` is a well-formed English sentence; a verb name like `named` would produce the awkward `$person has named "Alice"`.
-
 [,typeql]
 ----
 #!test[write, commit, count = 1]
@@ -65,52 +69,6 @@ $employment isa employment,
     links (employer: $company, employee: $person),
     has salary 100000.0;
 ----
-
-*Relations*: querying with `match ... links ...`, the object of the sentence again comes after the verb, so a relation also reads best as a noun.
-
-[,typeql]
-----
-#!test[read, count = 1]
-match
-$employment isa employment,
-    links (employer: $company, employee: $person);
-----
-
-Relations read best as *active or verbal nouns* — the noun form of the action the relation captures.
-For example, `employment` is the noun form of _to employ_, `marriage` of _to marry_, and `assignment` of _to assign_.
-Sometimes the two coincide: `grant` is the noun form of _to grant_, and `review` of _to review_.
-Compare the verb-named alternative: `employs links (...)` reads as two verbs in a row, while `employment links ...` reads naturally.
-
-*Functions* should be named by what they return and the constraints they contain, e.g. `persons_by_name`, or `principals_with_access`:
-
-[,typeql]
-----
-#!test[schema, commit]
-define
-
-fun persons_by_name($name: string) -> { person }:
-    match
-        $person isa person, has name == $name;
-    return { $person };
-----
-
-The call site then reads as a description of the result:
-
-[,typeql]
-----
-#!test[read, count = 1]
-match
-let $person in persons_by_name("Alice");
-----
-
-== Entities, relations, and attributes
-
-TypeDB treats relations and attributes as first-class, alongside entities (see xref:{page-version}@core-concepts::typeql/entities-relations-attributes.adoc[] for the underlying data model).
-Choosing between the three is the first modeling decision for every piece of data:
-
-* Use an *entity* when the data has an independent existence — one that does not depend on any relationship or specific attribute.
-* Use a *relation* when the existence of the data depends on the linked role players.
-* Use an *attribute* for a piece of data entirely defined by its type and its value.
 
 === Relations depend on their players
 
@@ -204,10 +162,65 @@ attribute email-id sub id, value string;
 attribute employee-id sub id, value integer;
 ----
 
+== Naming types and functions
+
+TypeQL reads most elegantly when every type — entity, relation, role, and attribute — is named with a noun.
+The main TypeQL keywords (`isa`, `has`, `links`, `relates`, `owns`, `plays`) are verbs, so the types slot in as nouns around them, and queries read like English sentences.
+
+*All types*: querying with `match ... isa ...` reads as "X is a Y", and the type's label fills the Y slot — `$person isa person` works as a sentence because the label is a noun.
+
+*Attributes*: querying with `match ... has ...`, the object of the sentence comes after the `has`, so it reads best as a noun.
+Read aloud, `$person has name "Alice"` is a well-formed English sentence; a verb name like `named` would produce the awkward `$person has named "Alice"`.
+
+[,typeql]
+----
+#!test[read, count = 1]
+match
+$person isa person, has name "Alice";
+----
+
+*Relations*: querying with `match ... links ...`, the object of the sentence again comes after the verb, so a relation also reads best as a noun.
+
+[,typeql]
+----
+#!test[read, count = 1]
+match
+$employment isa employment,
+    links (employer: $company, employee: $person);
+----
+
+Relations read best as *active or verbal nouns* — the noun form of the action the relation captures.
+For example, `employment` is the noun form of _to employ_, `marriage` of _to marry_, and `assignment` of _to assign_.
+Sometimes the two coincide: `grant` is the noun form of _to grant_, and `review` of _to review_.
+Compare the verb-named alternative: `employs links (...)` reads as two verbs in a row, while `employment links ...` reads naturally.
+
+*Functions* should be named by what they return and the constraints they contain, e.g. `persons_by_name`, or `principals_with_access`:
+
+[,typeql]
+----
+#!test[schema, commit]
+define
+
+fun persons_by_name($name: string) -> { person }:
+    match
+        $person isa person, has name == $name;
+    return { $person };
+----
+
+The call site then reads as a description of the result:
+
+[,typeql]
+----
+#!test[read, count = 1]
+match
+let $person in persons_by_name("Alice");
+----
+
 == Subtyping vs composition
 
 TypeDB supports only single inheritance.
 Treat `sub` as a true, independent "is-a" axis — and compose everything else.
+When a supertype exists only to be specialized, mark it xref:{page-version}@typeql-reference::annotations/abstract.adoc[`@abstract`] so that only its subtypes can have instances — as with the abstract `id` attribute above.
 
 To compose, we add linked relations and play roles: a role that a type plays acts as a _trait_ or _interface_, much like implementing a component architecture in OOP.
 We might have a plain `entity person`, but a person can behave as an employee — `entity person, plays employment:employee`.
@@ -595,6 +608,8 @@ $person isa person, has name "Alice";
 $company isa company, has name "TypeDB";
 true == person_employed($person, $company);
 ----
+
+Judicious use of functions helps minimize code duplication and optimizes for readability and maintainability — especially in larger schemas.
 
 == Further reading
 
