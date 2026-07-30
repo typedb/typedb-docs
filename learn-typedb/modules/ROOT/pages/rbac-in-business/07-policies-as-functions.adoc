@@ -127,7 +127,7 @@ fun who_should_have_access_to_payments() -> { staff }:
   return { $s };
 ----
 
-Much simpler!
+Much simpler.
 
 [NOTE.yellow]
 .💡 Chaining and nesting TypeDB functions
@@ -315,7 +315,7 @@ In SQL, access policy logic lives in application code, stored procedures, or spr
 
 == Separation of Duties
 
-Separation of Duties (SoD) is one of the most important - and most notoriously difficult - compliance requirements to enforce. The rule: the person who can create a payment cannot be the same person who can approve it. In SQL, enforcing SoD requires complex joins across multiple permission tables. In TypeDB, it's a few short statements involving relations:
+Separation of Duties (SoD) is often one of the more complex compliance requirements to enforce. The rule: the person who can create a payment cannot be the same person who can approve it. In SQL, enforcing SoD requires complex joins across multiple permission tables. In TypeDB, it's a few short statements involving relations:
 
 [,typeql]
 ----

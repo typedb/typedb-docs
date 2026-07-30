@@ -78,9 +78,9 @@ $_ isa policy_access_grant, links (grantee: $i, system: $s, grantor: $sam, polic
   has start_datetime 2024-08-01T09:00:00;
 ----
 
-== The Access Check - The Most Important Query
+== The Access Check
 
-This query runs thousands of times a day. An identity requests access to a system — does it have it?
+This query runs thousands of times a day. An identity requests access to a system - does it have permission?
 
 [,typeql]
 ----
