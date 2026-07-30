@@ -140,7 +140,7 @@ $_ isa access_grant, links (grantee: $sam, system: $s),
 fetch { "system": $sys, "permission": $pl };
 ----
 
-== N-ary Relations: TypeDB's Native Superpower
+== N-ary Relations
 
 Look again at what `access_grant` connects: a grantee, a system, and a grantor - three participants. This is called an N-ary relation: a connection with more than two participants. The following two code blocks are for comparison only — do not run them. They show how the same concept looks across two other database types, so you can compare them against TypeDB.
 

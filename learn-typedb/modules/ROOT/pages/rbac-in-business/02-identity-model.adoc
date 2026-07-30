@@ -10,7 +10,7 @@ _Type Hierarchies, Relations & The Org Structure_
 
 In Chapter One you defined staff with email `@key` and an abstract department with name `@key`. Chapter Two builds the full identity hierarchy on top of these foundations — purely additive, no migration needed.
 
-== The First Subtypes — Temporary Staff
+== The First Subtypes: Temporary Staff
 
 Chapter One's staff type covers anyone who works at Amasoft. But contractors and interns carry information the rest of the staff won't: a contract end date. That calls for subtypes. Conceptually, both fit under the umbrella term of "temporary staff", so we introduce a shared parent for the pair — and while we're at it, every staff member deserves a name:
 
@@ -28,9 +28,9 @@ entity intern sub temporary_staff;
 
 image::rbac-query-staff-hierarchy.webp[Defining the staff hierarchy, role=framed]
 
-contractor and intern inherit `name` and `email` from `staff`, plus `contract_end_date` from `temporary_staff`. Notice that this define also touched the existing staff type: running define on a type that already exists adds to it, so `owns name` slots in alongside Chapter One's email `@key` — no migration needed.
+contractor and intern inherit `name` and `email` from `staff`, plus `contract_end_date` from `temporary_staff`. Notice that this define also touched the existing staff type: running define on a type that already exists adds to it, so `owns name` slots in alongside Chapter One's email `@key`, no migration needed.
 
-Now make both parent types abstract — a bare staff member or a bare 'temporary staff member' is never what we want, only a specific kind:
+Now make both parent types abstract - a bare staff member or a bare 'temporary staff member' is never what we want, only a specific kind:
 
 [,typeql]
 ----
@@ -39,9 +39,9 @@ entity staff @abstract;
 entity temporary_staff @abstract;
 ----
 
-This in-place schema modification succeeds because neither type has instances yet. You will now no longer be able to insert a bare staff or temporary_staff — only a concrete subtype. staff is abstract for the same reason department is — we never want a bare instance.
+This in-place schema modification succeeds because neither type has instances yet. You will now no longer be able to insert a bare staff or temporary_staff, only a concrete subtype. staff is abstract for the same reason department is: we never want a bare instance.
 
-Note: an abstract type must have an abstract supertype — TypeDB will reject `@abstract` on a type whose parent is concrete. Making temporary_staff abstract on its own would fail this rule; it works here because staff becomes abstract in the same query, and TypeDB validates the schema that results from the define as a whole.
+Note: an abstract type must have an abstract supertype. TypeDB will reject `@abstract` on a type whose parent is concrete. Making temporary_staff abstract on its own would fail this rule; it works here because staff becomes abstract in the same query, and TypeDB validates the schema that results from the define as a whole.
 
 [NOTE.yellow]
 .💡 Inheritance is automatic
@@ -182,7 +182,7 @@ When you insert a relation, you always use the role name: `$reports_to isa repor
 [NOTE.yellow]
 .💡 Inheritance does the work here
 ====
-Notice that manager is granted to permanent_staff, but report is granted to staff — the parent type. Because contractor and intern are subtypes of staff, they automatically inherit the ability to play the report role. No additional `plays` declarations needed. Because only permanent_staff can play manager, TypeDB will reject any insert that tries to make a contractor or intern a manager. The business rule is structural — enforced by the schema, not application code. This is one of the most powerful aspects of TypeDB's type hierarchy: you get precise, inheritance-aware role control in two lines.
+Notice that manager is granted to permanent_staff, but report is granted to staff, the parent type. Because contractor and intern are subtypes of staff, they automatically inherit the ability to play the report role. No additional `plays` declarations needed. Because only permanent_staff can play manager, TypeDB will reject any insert that tries to make a contractor or intern a manager. The business rule is structural, enforced by the schema, not application code. The type hierarchy gives us precise, inheritance-aware role control in two lines of TypeQL.
 ====
 
 [NOTE.blue]

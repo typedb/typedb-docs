@@ -84,7 +84,7 @@ attribute reason, value string;
 [NOTE.yellow]
 .🏢 Entities, Relations, and Attributes
 ====
-If something in the real world can exist independently (access policy, project team, department), make it an entity. If something only exists because of a connection between two things (access grant, group membership, reporting line), make it a relation. If something is just a value (permission level, date, name), make it an attribute.
+If something in the real world can exist independently (access policy, project team, department), make it an entity. If something only exists because of a connection between other things (access grant, group membership, reporting line), make it a relation. If something is just a value (permission level, date, name), make it an attribute.
 ====
 
 Insert the policies, then re-grant Amasoft under the new schema structure:
@@ -275,7 +275,9 @@ In SQL, finding identities with access via either a direct grant or project team
 
 == Reviewing the Grants
 
-A grant is a fact. A review is a fact about that fact - and in TypeDB, relations can play roles in other relations. No property graph can express this: an edge cannot end on another edge.
+A grant is a fact; a review is a fact about that fact.
+
+In property graphs, edges typically connect two nodes, and can't end on other edges. Conversely, in TypeDB, relations can play roles in other relations:
 
 [,typeql]
 ----
