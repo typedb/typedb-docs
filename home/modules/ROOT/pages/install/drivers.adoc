@@ -81,11 +81,11 @@ driver = TypeDB.driver(TypeDB.DEFAULT_ADDRESS, Credentials("admin", "password"),
 npm install @typedb/driver-http
 ----
 
-. In your Node.js or Web application, import from `typedb-driver-http`:
+. In your Node.js or Web application, import from `@typedb/driver-http`:
 +
 [source,typescript]
 ----
-import { TypeDBHttpDriver, isApiErrorResponse } from "typedb-driver-http";
+import { TypeDBHttpDriver, isApiErrorResponse } from "@typedb/driver-http";
 
 const driver = new TypeDBHttpDriver({
     username: "...",
