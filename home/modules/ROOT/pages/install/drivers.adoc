@@ -74,11 +74,11 @@ driver = TypeDB.driver(TypeDB.DEFAULT_ADDRESS, Credentials("admin", "password"),
 
 === Install TypeDB HTTP TypeScript Driver from NPM
 
-. Install `typedb-driver-http` using `npm`:
+. Install `@typedb/driver-http` using `npm`:
 +
 [source,bash]
 ----
-npm install typedb-driver-http
+npm install @typedb/driver-http
 ----
 
 . In your Node.js or Web application, import from `typedb-driver-http`:
@@ -97,7 +97,7 @@ const driver = new TypeDBHttpDriver({
 === TypeScript HTTP driver resources
 
 * https://github.com/typedb/typedb-examples/tree/master/webapp[TypeSpace: Social Network Webapp Example] - Explore the TypeScript HTTP driver example on GitHub
-* https://www.npmjs.com/package/typedb-driver-http[NPM registry]
+* https://www.npmjs.com/package/@typedb/driver-http[NPM registry]
 * xref:{page-version}@reference::typedb-http-drivers/typescript.adoc[TypeScript Driver API Reference]
 
 
