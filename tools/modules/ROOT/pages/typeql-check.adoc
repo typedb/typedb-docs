@@ -1,7 +1,7 @@
 = TypeQL Syntax Checker
 :keywords: typedb, typeql, syntax, check, lint, cli
 :pageTitle: TypeQL Syntax Checker
-:summary: CLI tool for validating TypeQL query syntax.
+:description: CLI tool for validating TypeQL query syntax.
 
 `typeql-check` is a small CLI tool that validates the syntax of a TypeQL query without sending it to a TypeDB server.
 It parses the input and exits with a non-zero status if the query is malformed, printing the parse error to stderr.
