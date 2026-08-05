@@ -18,8 +18,10 @@ Chapter One's staff type covers anyone who works at Amasoft. But contractors and
 ----
 define
 attribute contract_end_date, value date;
+attribute phone_number, value string;
 entity staff,
-  owns name @card(1);
+  owns name @card(1),
+  owns phone_number @card(0..3);
 entity temporary_staff sub staff,
   owns contract_end_date @card(1);
 entity contractor sub temporary_staff;
@@ -28,7 +30,13 @@ entity intern sub temporary_staff;
 
 image::rbac-query-staff-hierarchy.webp[Defining the staff hierarchy, role=framed]
 
-contractor and intern inherit `name` and `email` from `staff`, plus `contract_end_date` from `temporary_staff`. Notice that this define also touched the existing staff type: running define on a type that already exists adds to it, so `owns name` slots in alongside Chapter One's email `@key`, no migration needed.
+contractor and intern inherit `name`, `phone_number` and `email` from `staff`, plus `contract_end_date` from `temporary_staff`. Notice that this define also touched the existing staff type: running define on a type that already exists adds to it, so `owns name` slots in alongside Chapter One's email `@key`, no migration needed.
+
+[NOTE.yellow]
+.💡 Multi-valued attributes
+====
+`@card(0..3)` makes phone_number multi-valued, allowing up to three contact numbers. In SQL, multiple values for one column requires either a junction table, array type or comma-separated string; in TypeDB, an instance simply owns multiple attributes of the same type.
+====
 
 Now make both parent types abstract - a bare staff member or a bare 'temporary staff member' is never what we want, only a specific kind:
 
@@ -224,7 +232,7 @@ Before populating the database, here is a complete picture of everything you hav
 [cols="26%,34%,40%",options="header"]
 |===
 |Concept |Types |Attributes
-|Identities |identity, staff, permanent_staff, full_time_employee, part_time_employee, temporary_staff, contractor, intern, service_account |email @key, name on staff; contract_end_date on temporary_staff; name, service_name @key, owner_team on service_account
+|Identities |identity, staff, permanent_staff, full_time_employee, part_time_employee, temporary_staff, contractor, intern, service_account |email @key, name, phone_number on staff; contract_end_date on temporary_staff; name, service_name @key, owner_team on service_account
 |Systems |system, payments_system, hr_system, engineering_platform, finance_platform |name @key, description
 |Departments |department |name @key
 |Relations |reports_to, department_membership |reports_to owns start_date. department_membership connects staff to department.
