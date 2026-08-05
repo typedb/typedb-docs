@@ -2,7 +2,7 @@
 :page-aliases: {page-version}@home::get-started/configure-coding-agent.adoc
 :keywords: start, learn, typedb, typeql, tutorial, quickstart, vibe, coding, ai, agent, claude, cursor, copilot, typeql-check, skills
 :pageTitle: Configure coding agent
-:summary: Configure your AI coding agent to write valid TypeQL
+:description: Configure your AI coding agent to write valid TypeQL
 :tabs-sync-option:
 
 Set up your AI coding agent so it can write and verify TypeQL on your behalf, instead of writing every query by hand.
@@ -10,7 +10,7 @@ Set up your AI coding agent so it can write and verify TypeQL on your behalf, in
 Two pieces make vibe querying with TypeDB reliable:
 
 . `typeql-check` - a CLI that statically validates TypeQL syntax, so the agent can self-correct.
-. `typedb-skills/typeql.md` - a skill file that teaches your coding agent the TypeQL language and TypeDB's data model.
+. `typedb-skills` - skill files that teach your coding agent the TypeQL language and TypeDB's data model (`typeql.md`), and how to design good schemas (`modeling.md`).
 
 In our benchmarks, adding both raises Claude's TypeQL pass rate from 23-43% (no tools) to 86-96% - the difference between AI-generated TypeQL being unreliable and being something you can build on.
 
@@ -20,9 +20,12 @@ In our benchmarks, adding both raises Claude's TypeQL pass rate from 23-43% (no 
 See xref:{page-version}@home::install/typeql-check.adoc[] for install instructions across macOS, Linux, and Windows.
 
 [#add_skill]
-== Add the TypeQL skill to your coding agent
+== Add the TypeDB skills to your coding agent
 
-The https://github.com/typedb/typedb-skills[`typedb-skills`,window=_blank] repository contains skill files that teach AI coding agents how to write TypeQL. The relevant file is https://github.com/typedb/typedb-skills/blob/master/typeql.md[`typeql.md`,window=_blank].
+The https://github.com/typedb/typedb-skills[`typedb-skills`,window=_blank] repository contains skill files that teach AI coding agents how to work with TypeDB:
+
+* https://github.com/typedb/typedb-skills/blob/master/typeql.md[`typeql.md`,window=_blank] - the TypeQL language and TypeDB's data model.
+* https://github.com/typedb/typedb-skills/blob/master/modeling.md[`modeling.md`,window=_blank] - schema-modeling guidance: naming, entities vs relations vs attributes, composition, type safety, cardinality, and constraints.
 
 . Clone the repository:
 +
@@ -31,36 +34,36 @@ The https://github.com/typedb/typedb-skills[`typedb-skills`,window=_blank] repos
 git clone https://github.com/typedb/typedb-skills.git
 ----
 
-. Register `typedb-skills/typeql.md` with your coding agent:
+. Register the skill files with your coding agent:
 +
 [tabs]
 ====
 Claude Code::
 +
 --
-Copy `typeql.md` into `~/.claude/skills/typeql.md` (user-level) or `.claude/skills/typeql.md` inside your project (project-level). Claude Code will load it automatically the next time you start a session.
+Copy `typeql.md` and `modeling.md` into `~/.claude/skills/` (user-level) or `.claude/skills/` inside your project (project-level). Claude Code will load them automatically the next time you start a session.
 --
 
 Cursor::
 +
 --
-Copy the contents of `typeql.md` into `.cursor/rules/typeql.mdc` at the root of your project.
+Copy the contents of `typeql.md` into `.cursor/rules/typeql.mdc` and `modeling.md` into `.cursor/rules/modeling.mdc` at the root of your project.
 --
 
 GitHub Copilot::
 +
 --
-Copy the contents of `typeql.md` into `.github/copilot-instructions.md` at the root of your project.
+Append the contents of `typeql.md` and `modeling.md` to `.github/copilot-instructions.md` at the root of your project.
 --
 
 Other agents::
 +
 --
-Most coding agents accept a Markdown rules or instructions file. Point your agent at `typedb-skills/typeql.md` using whatever mechanism it provides for custom instructions.
+Most coding agents accept Markdown rules or instructions files. Point your agent at `typedb-skills/typeql.md` and `typedb-skills/modeling.md` using whatever mechanism it provides for custom instructions.
 --
 ====
 
-With the skill loaded, your coding agent will know TypeQL syntax, the TypeDB data model, and that it can call `typeql-check` to validate the queries it writes.
+With the skills loaded, your coding agent will know TypeQL syntax, the TypeDB data model, schema-modeling best practices, and that it can call `typeql-check` to validate the queries it writes.
 
 == What next?
 

@@ -1,6 +1,6 @@
 = Chapter Three: Populating Amasoft
 :pageTitle: Chapter Three: Populating Amasoft
-:Summary: Insert, match, and fetch - the pattern language.
+:description: Insert, match, and fetch - the pattern language.
 :keywords: typedb, typeql, rbac, insert, match, fetch, delete, pattern, sub, polymorphism
 
 [.lead]
@@ -25,11 +25,14 @@ insert
   $_ isa full_time_employee,
     has name "Sam Rivera",
     has email "sam.rivera@amasoft.com",
+    has phone_number "+1-415-555-0173",
+    has phone_number "+1-415-555-0110",
     has status "active";
 # Alex Chen — contractor on a six-month engagement
   $_ isa contractor,
     has name "Alex Chen",
     has email "alex.chen@amasoft.com",
+    has phone_number "+1-415-555-0111",
     has contract_end_date 2024-07-01,
     has status "active";
 # Michelle Rocksmasher — CISO, L7
@@ -45,7 +48,7 @@ insert
     has status "active";
 ----
 
-Notice the deploy bot is created with the same insert pattern as everyone else. It has a display name like any other identity, but no email - its key is service_name. It is an identity all the same, and Chapter Four will grant it access exactly the way it grants Alex.
+Notice the staff have different amounts of phone numbers, and that the deploy bot is created with the same insert pattern as everyone else.
 
 [NOTE.yellow]
 .🗺️ Check the Data Explorer now
