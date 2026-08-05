@@ -1,7 +1,7 @@
 = Diagnostics monitoring endpoint
 :keywords: typedb, diagnostics, monitoring, prometheus, metrics, observability
 :pageTitle: Diagnostics monitoring endpoint
-:summary: HTTP endpoint for scraping TypeDB server metrics in Prometheus or JSON format.
+:description: HTTP endpoint for scraping TypeDB server metrics in Prometheus or JSON format.
 
 TypeDB exposes a diagnostics HTTP endpoint that serves server and per-database metrics in Prometheus text format or JSON.
 The endpoint is intended for local monitoring and integration with scraping tools such as Prometheus, Grafana Agent, or Datadog.

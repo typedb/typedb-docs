@@ -125,6 +125,6 @@ Driver API reference is generated from `typedb-driver` repository partials. To u
 ```asciidoc
 = Page Title
 :pageTitle: Page Title
-:Summary: Brief description for search/SEO.
+:description: Brief description for search/SEO (emitted as the page's meta description).
 :keywords: typedb, keyword1, keyword2
 ```
