@@ -1,41 +1,36 @@
 = Schema modeling
 :keywords: typedb, typeql, modeling, schema, entities, relations, attributes, naming, composition, type safety, cardinality, constraints, functions, guide
 :pageTitle: Schema modeling
-:description: Design TypeDB schemas - entities vs relations vs attributes, naming, composition, type safety, role subtyping, cardinality, constraints, and functions.
+:description: Design TypeDB schemas - entities vs relations vs attributes, naming, composition, type safety, cardinality, value, and role constraints, and functions.
 :page-toclevels: 2
+:sectnums:
 :test-typeql: linear
-
-== Overview
 
 This guide collects practical advice for designing TypeDB schemas:
 
-1. Choosing between entities, relations, and attributes.
-2. Naming types and functions so that queries read naturally.
-3. Composing types out of capabilities instead of deep hierarchies.
-4. Choosing the level of type safety that fits your application.
-5. Specializing roles in relation hierarchies.
-6. Picking the most specific cardinality for `owns`, `relates`, and `plays`.
-7. Placing value restrictions at the right level, and specializing inherited constraints.
-8. Using functions for modularity, aggregation, recursion, and derived facts.
-
-== Prerequisites
-
-This guide assumes you have access to a running TypeDB instance.
-We recommend using xref:{page-version}@tools::studio.adoc[TypeDB Studio] to follow along.
+1. Choosing between <<_entities_relations_and_attributes,entities, relations, and attributes>>.
+2. <<_naming_types_and_functions,Naming types and functions>> so that queries read naturally.
+3. <<_subtyping_vs_composition,Composing types out of capabilities>> instead of deep hierarchies.
+4. Choosing the <<_type_safety_strictness,level of type safety>> that fits your application.
+5. Picking the most specific <<_cardinality,cardinality>> for `owns`, `relates`, and `plays`.
+6. Placing <<_constraints,value restrictions>> at the right level, and specializing inherited constraints.
+7. Constraining <<_role_subtyping,sub-relation participants>> by specializing roles.
+8. Using <<_functions,functions>> for modularity, derived facts, aggregation, and recursion.
 
 The examples build up a single schema from top to bottom: types defined in earlier sections are reused and extended in later ones.
 
+[#_entities_relations_and_attributes]
 == Entities, relations, and attributes
 
 TypeDB treats relations and attributes as first-class, alongside entities (see xref:{page-version}@core-concepts::typeql/entities-relations-attributes.adoc[] for the underlying data model).
 Choosing between the three is the first modeling decision for every piece of data:
 
-* Use an *entity* when the data has an independent existence in the real world — a person, a project, a movie — one that does not depend on any relationship or specific attribute, and is not trivially representable by a single value.
+* Use an *entity* when the data has an independent existence in the real world (a person, a project, a movie), one that does not depend on any relationship or specific attribute, and is not trivially representable by a single value.
 Entities are the basic building blocks of any TypeDB schema.
-* Use a *relation* when the data only exists because of a connection between other things — a product order, a group membership, an access grant — so its existence depends on the linked role players.
-* Use an *attribute* when the data is just a value — a size, a date, a name — entirely defined by its type and its value.
+* Use a *relation* when the data only exists because of a connection between other things (a product order, a group membership, an access grant), so its existence depends on the linked role players.
+* Use an *attribute* when the data is just a value (a size, a date, a name), entirely defined by its type and its value.
 
-Applying the rule to a small employment domain gives the schema this guide builds on:
+In this example, we apply these principles to build a small employment schema:
 
 [,typeql]
 ----
@@ -70,10 +65,26 @@ $employment isa employment,
     has salary 100000.0;
 ----
 
+The remainder of this guide uses the above schema as a baseline.
+
+=== Entities exist independently
+
+Entities are the standalone building blocks of a schema. An entity exists independently of every other concept. A person remains the same person whether or not they have a name, an employer, or any other data attached.
+Unless the schema constrains otherwise, an entity with no attributes and no relations at all is perfectly valid:
+
+[,typeql]
+----
+#!test[write, rollback, count = 1]
+insert
+$person isa person;  # a valid person, with no attributes or relations
+----
+
+An entity's identity is also not a value: unlike attributes, there is no direct way to reference an entity, so queries find entities through the attributes they own and the roles they play.
+
 === Relations depend on their players
 
 TypeDB auto-deletes any relation left with zero role players, even if it still has attributes.
-Here an employment is created with only an employer (each `relates` role defaults to `@card(0..1)`, making the employee role optional — see the Cardinality section below), and disappears when that employer is deleted:
+Here an employment is created with only an employer (each `relates` role defaults to `@card(0..1)`, making the employee role optional; see the Cardinality section below), and disappears when that employer is deleted:
 
 [,typeql]
 ----
@@ -101,15 +112,16 @@ match
 $employment isa employment, has salary 1.0;  # auto-deleted with its last player
 ----
 
-Two further consequences of relations being first-class:
+Further consequences of relations being first-class:
 
-* Relations are *n-ary*, meaning you never need to reify relationships — extend a relation with another role instead of inventing a linking entity.
+* Relations are *n-ary*, meaning you never need to reify relationships: extend a relation with another role instead of inventing a linking entity.
 * Relations can be *nested*: a relation can itself be a role player in another relation.
+* Roles are *types* too: `relation employment, relates employee` creates a role type `employment:employee`, scoped to its relation but otherwise a full-fledged type that can be queried like any other.
 
-=== Attributes are immutable, global, and shared
+=== Attributes are just values
 
 An attribute instance is entirely defined by its type and value, and it is _immutable, global, and shared_: owners do not contain attributes, they link to them.
-A single `name "Alice"` exists in the entire database — unrelated owners all link to the same instance:
+A single `name "Alice"` exists in the entire database; unrelated owners all link to the same instance:
 
 [,typeql]
 ----
@@ -136,12 +148,12 @@ $x has name "Alice";  # the person and the company
 ----
 
 If you want to polymorphically query ownerships like this, a shared 'global' attribute is a good model.
-Otherwise, use a specific attribute with a single owner — it documents the narrower intent in the schema.
+Otherwise, use a specific attribute with a single owner; it documents the narrower intent in the schema.
 
 Attributes default to *dependent*: an instance is automatically deleted when its last owner is deleted.
-Marking the attribute type xref:{page-version}@typeql-reference::annotations/independent.adoc[`@independent`] allows instances to exist freely — useful, for example, when pre-loading a dictionary of words or numbers.
+Marking the attribute type xref:{page-version}@typeql-reference::annotations/independent.adoc[`@independent`] allows instances to exist freely, which is useful, for example, when pre-loading a dictionary of words or numbers.
 
-Finally, an attribute carries a value of the value type assigned in the schema — but an xref:{page-version}@typeql-reference::annotations/abstract.adoc[`@abstract`] attribute may leave the value type unassigned.
+Finally, an attribute carries a value of the value type assigned in the schema, but an xref:{page-version}@typeql-reference::annotations/abstract.adoc[`@abstract`] attribute may leave the value type unassigned.
 A classic example is an abstract `id`, subtyped into concrete identifiers with different value types:
 
 [,typeql]
@@ -154,12 +166,13 @@ attribute email_id sub id, value string;
 attribute employee_id sub id, value integer;
 ----
 
+[#_naming_types_and_functions]
 == Naming types and functions
 
-TypeQL reads most elegantly when every type — entity, relation, role, and attribute — is named with a noun.
+TypeQL reads most elegantly when every type (entity, relation, role, and attribute) is named with a noun.
 The main TypeQL keywords (`isa`, `has`, `links`, `relates`, `owns`, `plays`) are verbs, so the types slot in as nouns around them, and queries read like English sentences.
 
-*All types*: querying with `match ... isa ...` reads as "X is a Y", and the type's label fills the Y slot — `$person isa person` works as a sentence because the label is a noun.
+*All types*: querying with `match ... isa ...` reads as "X is a Y", and the type's label fills the Y slot: `$person isa person` works as a sentence because the label is a noun.
 
 *Attributes*: querying with `match ... has ...`, the object of the sentence comes after the `has`, so it reads best as a noun.
 Read aloud, `$person has name "Alice"` is a well-formed English sentence; a verb name like `named` would produce the awkward `$person has named "Alice"`.
@@ -181,50 +194,45 @@ $employment isa employment,
     links (employer: $company, employee: $person);
 ----
 
-Relations read best as *active or verbal nouns* — the noun form of the action the relation captures.
+Relations read best as *active or verbal nouns*: the noun form of the action the relation captures.
 For example, `employment` is the noun form of _to employ_, `marriage` of _to marry_, and `assignment` of _to assign_.
 Sometimes the two coincide: `grant` is the noun form of _to grant_, and `review` of _to review_.
 Compare the verb-named alternative: `employs links (...)` reads as two verbs in a row, while `employment links ...` reads naturally.
 
-*Functions* should be named by what they return and the constraints they contain, e.g. `persons_by_name`, or `principals_with_access`:
-
-[,typeql]
-----
-#!test[schema, commit]
-define
-
-fun persons_by_name($name: string) -> { person }:
-    match
-        $person isa person, has name == $name;
-    return { $person };
-----
-
+*Functions* should be named by what they return and the constraints they contain, e.g. `persons_by_name`, or `principals_with_access`.
 The call site then reads as a description of the result:
 
 [,typeql]
 ----
 #!test[read, count = 1]
+with fun persons_by_name($name: string) -> { person }:
+    match
+        $person isa person, has name == $name;
+    return { $person };
 match
 let $person in persons_by_name("Alice");
 ----
 
+Here `with` declares a xref:{page-version}@typeql-reference::functions/writing.adoc#query_level_functions[query-level function], valid for that query only; the <<_functions,functions section>> covers persisting functions in the schema with `define`.
+
+[#_subtyping_vs_composition]
 == Subtyping vs composition
 
 TypeDB supports only single inheritance.
-Treat `sub` as a true, independent "is-a" axis — and compose everything else.
-When a supertype exists only to be specialized, mark it xref:{page-version}@typeql-reference::annotations/abstract.adoc[`@abstract`] so that only its subtypes can have instances — as with the abstract `id` attribute above.
+Treat `sub` as a true, independent "is-a" axis, and compose everything else.
+When a supertype exists only to be specialized, mark it xref:{page-version}@typeql-reference::annotations/abstract.adoc[`@abstract`] so that only its subtypes can have instances, as with the abstract `id` attribute above.
 
 To compose, use relations and roles: a role that a type plays acts as a _trait_ or _interface_, much like a component architecture in OOP.
-We might have a plain `entity person`, but a person can behave as an employee — `entity person, plays employment:employee`.
+We might have a plain `entity person`, but a person can behave as an employee: `entity person, plays employment:employee`.
 Attribute ownerships are interfaces the same way: `entity person, owns name` indicates a person can act as a "name-owner".
 
 Both axes are resolved polymorphically at read time:
 
-* `$x isa person;` resolves *subtype polymorphism* — it matches `person` and everything below it.
-* `$x has name $n;` or `$r links (employee: $x);` resolve *interface polymorphism* — they match every type implementing the capability, as the `has name "Alice"` query above matched both a person and a company.
+* `$x isa person;` resolves *subtype polymorphism*: it matches `person` and everything below it.
+* `$x has name $n;` or `$r links (employee: $x);` resolve *interface polymorphism*: they match every type implementing the capability, as the `has name "Alice"` query above matched both a person and a company.
 
-Since a type cannot `sub` two parents, a nice way to give one type several independent capabilities is to create *unary relations* — relations with a single role — that act as components for the type.
-Here, a strongly typed HR subsystem can be built against a person's `hr_component` — of which at most one can exist:
+Since a type cannot `sub` two parents, a nice way to give one type several independent capabilities is to create *unary relations* (relations with a single role) that act as components for the type.
+Here, a strongly typed HR subsystem can be built against a person's `hr_component`, of which at most one can exist:
 
 [,typeql]
 ----
@@ -256,6 +264,7 @@ $person isa person, has name "Alice";
 $as_hr isa hr_component, links (subject: $person);
 ----
 
+[#_type_safety_strictness]
 == Type safety strictness
 
 TypeDB gives you the power to choose the level of type safety you want.
@@ -272,7 +281,7 @@ attribute label, value string;
 entity thing, owns label @card(0..);
 ----
 
-Any kind of data fits without schema changes — but you trade off type errors for silent misses and data bugs.
+Any kind of data fits without schema changes, but you trade off type errors for silent misses and data bugs.
 A mistyped label is not an error; the query silently returns no results instead of failing:
 
 [,typeql]
@@ -289,7 +298,7 @@ match
 $t isa thing, has label "perzon";  # typo: no error, just no results
 ----
 
-Alternatively, you can choose to enumerate your types into the schema — like the `person` and `company` types above — and the database will type check those for you.
+Alternatively, you can choose to enumerate your types into the schema (like the `person` and `company` types above), and the database will type check those for you.
 The same typo is then an error, caught as soon as the query runs:
 
 [,typeql]
@@ -346,65 +355,8 @@ $status isa account_status, links (subject: $account);  # polymorphic over all s
 How much type safety you need comes down to a trade-off: the size of the schema you are willing to manage, against the rigor with which your reads and writes are validated.
 More types buy you earlier errors and richer queries; less gets you flexibility.
 
-== Role subtyping
-
-Role types are defined within the "scope" of a relation type, but are thereafter full-fledged types in their own right: `relation employment, relates employee` creates a role type `employment:employee` that can be queried like any other.
-
-Role types are inherited _as-is_: a `part_time_employment sub employment` inherits the role `employment:employee`.
-There is no distinct role `part_time_employment:employee` — it is the same `employment:employee`, held by `employment` and all of its subtypes.
-
-To create a specialized role just for the sub-relation type, create a role subtype with `as`:
-
-[,typeql]
-----
-#!test[schema, commit]
-define
-
-relation part_time_employment sub employment,
-    relates part_time_employee as employee;
-
-person plays part_time_employment:part_time_employee;
-----
-
-This essentially creates a new role type `part_time_employment:part_time_employee sub employment:employee`, and also blocks the inherited `employee` role in `part_time_employment` instances.
-Note that `plays` declarations are not inherited across the specialization — players of the new role need their own `plays`.
-
-[,typeql]
-----
-#!test[write, commit, count = 1]
-match
-$company isa company, has name "TypeDB";
-insert
-$person isa person, has name "Bob";
-$employment isa part_time_employment,
-    links (employer: $company, part_time_employee: $person);
-----
-
-Because of the role subtyping, querying the parent role at read time also resolves players of the specialized role:
-
-[,typeql]
-----
-#!test[read, count = 2]
-match
-$employment isa employment, links (employee: $x);  # Alice (employee) and Bob (part_time_employee)
-----
-
-The inherited `employee` role, however, can no longer be used in `part_time_employment` instances — the specialization blocks it:
-
-[,typeql]
-----
-#!test[write, fail_at = runtime]
-match
-$person isa person, has name "Bob";
-$company isa company, has name "TypeDB";
-insert
-$employment isa part_time_employment,
-    links (employer: $company, employee: $person);  # blocked: use part_time_employee
-----
-
-The cost of a specialized role is that a new name must be created for it.
-
-== Cardinality
+[#_cardinality]
+== Constraining cardinality
 
 Use the most specific possible xref:{page-version}@typeql-reference::annotations/card.adoc[cardinality] for every capability in your schema.
 The defaults are permissive:
@@ -422,7 +374,7 @@ The defaults are permissive:
 The only way to encode a *required* connection is a cardinality with a lower bound of at least one, e.g. `@card(1)` or `@card(1..)`.
 Note that xref:{page-version}@typeql-reference::annotations/key.adoc[`@key`] implies cardinality 1 as well (and therefore cannot be combined with `@card`).
 
-For most relations, tighten the default `@card(0..1)` on each `relates` role to `@card(1)`, unless the role is genuinely optional — an account holding without an account is rarely meaningful:
+For most relations, tighten the default `@card(0..1)` on each `relates` role to `@card(1)`, unless the role is genuinely optional (an account holding without an account is rarely meaningful):
 
 [,typeql]
 ----
@@ -463,9 +415,10 @@ $holding isa account_holding, links (holder: $person);  # no account: rejected a
 
 The same applies to `owns`: `@card(1)` makes an attribute mandatory, `@card(1..)` requires at least one, and `@key` both requires exactly one and enforces uniqueness.
 
-== Constraints
+[#_constraints]
+== Constraining values
 
-Value restrictions like `@values` and xref:{page-version}@typeql-reference::annotations/range.adoc[`@range`] can be declared on the `attribute` definition itself, where they constrain every use of the attribute — or locally on an individual `owns`, where they constrain only that owner.
+Value restrictions like `@values` and xref:{page-version}@typeql-reference::annotations/range.adoc[`@range`] can be declared on the `attribute` definition itself, where they constrain every use of the attribute; or locally on an individual `owns`, where they constrain only that owner.
 Declaring them at the `owns` level lets a single generic attribute carry different restrictions for different owners:
 
 [,typeql]
@@ -479,7 +432,7 @@ entity restaurant, owns rating @range(1..5);
 entity movie, owns rating @range(1..10);
 ----
 
-Both owners share the same `rating` attribute — enabling polymorphic queries over ratings — but each is validated against its own range, and a violation is rejected as soon as the insert runs:
+Both owners share the same `rating` attribute (enabling polymorphic queries over ratings), but each is validated against its own range, and a violation is rejected as soon as the insert runs:
 
 [,typeql]
 ----
@@ -525,7 +478,7 @@ $user isa user,
     has email "alice@example.com";
 ----
 
-A `service_account` is checked against both the inherited `@card(1..)` and its local `@card(1)` — so two emails and zero emails are both rejected:
+A `service_account` is checked against both the inherited `@card(1..)` and its local `@card(1)`, so two emails and zero emails are both rejected:
 
 [,typeql]
 ----
@@ -546,40 +499,132 @@ $bot isa service_account;  # no email: violates both the inherited @card(1..) an
 Under the hood, `@key` is a composition of xref:{page-version}@typeql-reference::annotations/unique.adoc[`@unique`] and `@card(1)`: `@unique` requires that no two instances of the owner type (including its subtypes) own an attribute of that type with the same value.
 Both `@key` and `@unique` go on the ownership, not on the attribute definition.
 
-== Functions
+[#_role_subtyping]
+== Constraining sub-relation participants
 
-Functions serve several distinct modeling purposes:
+Role types are inherited _as-is_: a `part_time_employment sub employment` inherits the role `employment:employee`.
+There is no distinct role `part_time_employment:employee`; it is the same `employment:employee`, held by `employment` and all of its subtypes, so every type that plays it can participate in the sub-relations too.
 
-1. *Modularizing* huge queries into named, reusable pieces.
-2. Performing *sub-queries and aggregates*.
-3. *Recursive* querying, with built-in loop detection and termination (known as _tabling_ — see xref:{page-version}@guides::typeql/optimizing-typeql.adoc[Optimizing TypeQL]).
-4. Categorizing — creating *"conceptual relations"* that are computed rather than stored.
-
-The `persons_by_name` function in the naming section is an example of the first — and calling it inside a larger `match` makes it a sub-query.
-For the fourth, a function that returns a `boolean` can be queried like a relation — here, "is this person employed by this company?" is a derived fact, computed from `employment` on the fly rather than stored:
+To restrict who can participate in a sub-relation, rather than letting it accept every player of the inherited role, create a role subtype with `as`:
 
 [,typeql]
 ----
 #!test[schema, commit]
 define
 
-fun person_employed($person: person, $company: company) -> boolean:
+relation part_time_employment sub employment,
+    relates part_time_employee as employee;
+
+person plays part_time_employment:part_time_employee;
+----
+
+This essentially creates a new role type `part_time_employment:part_time_employee sub employment:employee`, and also blocks the inherited `employee` role in `part_time_employment` instances.
+Note that `plays` declarations are not inherited across the specialization; players of the new role need their own `plays`, and it is exactly this that constrains participation.
+Here both roles happen to be granted to `person`; in a real model, the specialized role is typically granted to a narrower type: only admins may execute privileged actions, while every user may execute ordinary ones.
+
+[,typeql]
+----
+#!test[write, commit, count = 1]
+match
+$company isa company, has name "TypeDB";
+insert
+$person isa person, has name "Bob";
+$employment isa part_time_employment,
+    links (employer: $company, part_time_employee: $person);
+----
+
+Because of the role subtyping, querying the parent role at read time also resolves players of the specialized role:
+
+[,typeql]
+----
+#!test[read, count = 2]
+match
+$employment isa employment, links (employee: $x);  # Alice (employee) and Bob (part_time_employee)
+----
+
+The inherited `employee` role, however, can no longer be used in `part_time_employment` instances; the specialization blocks it:
+
+[,typeql]
+----
+#!test[write, fail_at = runtime]
+match
+$person isa person, has name "Bob";
+$company isa company, has name "TypeDB";
+insert
+$employment isa part_time_employment,
+    links (employer: $company, employee: $person);  # blocked: use part_time_employee
+----
+
+The cost of a specialized role is that a new name must be created for it.
+
+[#_functions]
+== Using functions
+
+Functions abstract read queries into named, reusable units.
+Functions have several uses: modularizing queries, deriving conceptual relations, and performing aggregation and recursion.
+
+=== Modularizing queries
+
+Any pattern repeated across queries can be defined once as a function and called anywhere.
+Here, we define how to look up people by name, then call the function inside a larger `match` as a sub-query:
+
+[,typeql]
+----
+#!test[schema, commit]
+define
+
+fun persons_by_name($name: string) -> { person }:
     match
-        $employment isa employment,
-            links (employer: $company, employee: $person);
-    return check;
+        $person isa person, has name == $name;
+    return { $person };
 ----
 
 [,typeql]
 ----
 #!test[read, count = 1]
 match
-$person isa person, has name "Alice";
-$company isa company, has name "TypeDB";
-true == person_employed($person, $company);
+let $person in persons_by_name("Alice");
+$employment isa employment, links (employee: $person);  # Alice's employment at TypeDB
 ----
 
-Judicious use of functions helps minimize code duplication and optimizes for readability and maintainability — especially in larger schemas.
+Judicious use of functions helps minimize code duplication and optimizes for readability and maintainability, especially in larger schemas.
+
+=== Deriving conceptual relations
+
+Use a function to compute facts that are fully derivable from stored data. It can be queried as if it were a relation.
+In this example, we define a function that represents colleagues in companies:
+
+[,typeql]
+----
+#!test[schema, commit]
+define
+
+fun colleagues($person: person) -> { person }:
+    match
+        $_ isa employment, links (employer: $company, employee: $person);
+        $_ isa employment, links (employer: $company, employee: $colleague);
+        not { $colleague is $person; };
+    return { $colleague };
+----
+
+[,typeql]
+----
+#!test[read, count = 1]
+match
+$alice isa person, has name "Alice";
+let $colleague in colleagues($alice);  # Bob, via the shared employer TypeDB
+----
+
+We never store the fact that two employees are colleagues; it is derived on the fly from pairs of `employment` relations that have the same employer.
+
+=== Aggregation and recursion
+
+Functions also perform aggregation (e.g. counting a company's employees with `return count($employee);`) and recursive traversal of structures of unknown depth (e.g. collecting a manager's transitive reports), with cycle-safe termination via _tabling_.
+
+These applications of functions are equally valid in a schema function or in a xref:{page-version}@typeql-reference::functions/writing.adoc#query_level_functions[query-level function] (essentially a subquery).
+Full examples can be found at xref:{page-version}@core-concepts::typeql/queries-as-functions.adoc[].
+
+:sectnums!:
 
 == Further reading
 
