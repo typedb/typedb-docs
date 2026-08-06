@@ -4,9 +4,7 @@
 :keywords: typedb, driver, analyze, type-inference, dry-run, validate
 :test-python: true
 
-TypeDB allows the user to "analyze" a query without having it execute against the data.
-During analysis, a query is parsed to the internal representation and type-checked -
-allowing the user to check their query for syntax and typing errors against a schema.
+TypeDB allows the user to "analyze" a query without actually executing it. Analysis simply parses a query, then type-checks it, allowing a user to check for syntax and typing errors against a schema.
 
 The envisioned use is to facilitate developer tooling around TypeDB, such as
 plugins to validate TypeQL queries when application code is being compiled,
