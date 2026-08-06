@@ -4,7 +4,7 @@
 :keywords: typedb, driver, transactions, isolation, concurrency
 :test-python: true
 
-After opening a driver with the correct configuration and credentials, you can open transactions for encapsulated querying in your application.
+After opening a driver with the correct configuration and credentials, you can begin querying in your application. Every TypeDB query runs inside a *transaction*.
 
 == Transaction fundamentals
 
