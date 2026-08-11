@@ -74,6 +74,11 @@ _-> Commit_
 =====
 ====
 
+[NOTE]
+====
+Every type has exactly one supertype: TypeDB supports single inheritance only, so a type cannot be given two parents. This is not restrictive in practice. When a type seems to need a second parent, it is usually because one of the two hierarchies describes a *behaviour* or *capability* of the type rather than what it inherently _is_, and behaviours are better modeled as interfaces: roles and attribute ownerships can be implemented by any number of otherwise unrelated types, giving each type as many capabilities as needed. This use of composition instead of multiple inheritance is explored in the xref:{page-version}@guides::schema-modeling.adoc#_subtyping_vs_composition[schema modeling guide].
+====
+
 == Defining abstract types
 
 Abstract types cannot be directly instantiated, much like abstract classes in OOP. An abstract type can only be instantiated via its subtypes. To make a type abstract, we use an `@abstract` annotation. The following Define query makes the existing types `book` and `company` abstract.
@@ -247,7 +252,7 @@ _-> Commit_
 
 Value types of attribute types are inherited by their subtypes. In this case, `isbn-13` and `isbn-10` inherit the `string` value type.
 
-If you don't want omit a value type in the super type, to allow different value types in sub types, you must make the attribute type abstract:
+If you want to omit the value type in the supertype, to allow different value types in its subtypes, you must make the supertype abstract:
 [,typeql]
 ----
 define
