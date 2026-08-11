@@ -14,7 +14,7 @@ entity ebook, sub book;
 ----
 _-> Commit_
 
-To make one type a subtype of another, we simply replace the root type with the intended *supertype* in the `sub` statement that defines that type. When defined in a type hierarchy, subtypes will *inherit* all the owned attributes and played roles of their supertypes. Consider the following Define query where we assign a number of ownerships and roles to `book`.
+To make one type a subtype of another, we simply add a `sub` statement with the intended *supertype* to the kind statement that defines that type. When defined in a type hierarchy, subtypes will *inherit* all the owned attributes and played roles of their supertypes. Consider the following Define query where we assign a number of ownerships and roles to `book`.
 
 [,typeql]
 ----

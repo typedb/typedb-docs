@@ -32,7 +32,7 @@ driver.databases.create(DB)
 
 == xref:{page-version}@academy::6-building-applications/6.3-transactions.adoc[Transactions]
 
-* The `TypeDBSession.transaction` method is used to instantiate a new *transaction*. The *transaction type* is specified using the `READ`, `WRITE`, or `SCHEMA` value of the `TransactionType` enum.
+* The `TypeDBDriver.transaction` method is used to instantiate a new *transaction*. The *transaction type* is specified using the `READ`, `WRITE`, or `SCHEMA` value of the `TransactionType` enum.
 +
 [,python]
 ----
@@ -43,7 +43,7 @@ transaction: TypeDBTransaction = driver.transaction(DB, TransactionType.READ)
 [,python]
 ----
 with TypeDB.driver(ADDRESS, credentials, options) as driver:
-    with session.transaction(DB, TransactionType.READ) as transaction:
+    with driver.transaction(DB, TransactionType.READ) as transaction:
         # code goes here
 ----
 * The `TypeDBTransaction.commit` method is used to commit a transaction.

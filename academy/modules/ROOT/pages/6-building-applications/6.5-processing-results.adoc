@@ -173,7 +173,7 @@ def get_orders_of_book(tx, isbn: str) -> Iterator[tuple[str, int]]:
     docs = tx.query(
         f"""
         match $book isa book, has isbn \"{isbn}\";
-              $line (order: $order, item: $book) isa order-line;
+              $line isa order-line, links (order: $order, item: $book);
         fetch {{ "order": $order.id, "quantity": $line.quantity }};
         """
     ).resolve().as_concept_documents()

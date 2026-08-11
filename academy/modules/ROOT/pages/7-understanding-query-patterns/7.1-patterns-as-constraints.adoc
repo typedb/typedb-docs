@@ -111,7 +111,7 @@ $a has title "The Complete Calvin and Hobbes";
 $b has name "Giovanni Beard";
 $c has score $d;
 ($a, $c);
-$e ($b, action: $c);
+$e links ($b, action: $c);
 ----
 
 Thus, in order to determine the return types of variables in a query, TypeDB solves each pattern as a constraint satisfaction problem, in which each statement captures one or more constraints. This is the process of *type inference*. In this example, `$user` only had a single possible return type, but we have previously seen queries in which variables have multiple possible return types, notable in xref:{page-version}@academy::3-reading-data/3.2-fetching-polymorphic-data.adoc[Lesson 3.2].
