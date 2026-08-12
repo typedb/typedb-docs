@@ -61,9 +61,9 @@ $ typedb console --address=<address> --username=<username>
 You will be prompted for a password, after which the *server-level interface* of Console will be opened. To create a new database called `get_started` type the command:
 [,console]
 ----
-database create get-started
+database create get_started
 ----
-You can similarly delete a database with the command `database delete get-started`. To see a list of all available databases use `database list`.
+You can similarly delete a database with the command `database delete get_started`. To see a list of all available databases use `database list`.
 --
 ====
 
@@ -116,7 +116,7 @@ Console::
 From Console's server-level interface, open a `schema` transaction (tip: use the kbd:[Tab] key to autocomplete each word!):
 [,console]
 ----
-transaction schema get-started
+transaction schema get_started
 ----
 This will open a new *transaction-level interface*. In it, you will be able to run queries. You can similarly open `write` or `read` transactions.
 
@@ -168,7 +168,7 @@ Make sure to `commit` if you're manually controlling your transactions.
 Console::
 +
 --
-Open a schema transaction with the command `transaction schema get-started` as explained above. Then paste the following query in:
+Open a schema transaction with the command `transaction schema get_started` as explained above. Then paste the following query in:
 ////
 tag::define1[]
 define
