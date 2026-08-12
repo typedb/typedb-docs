@@ -1,6 +1,5 @@
 = JSON to TypeDB
 :keywords: typedb, typeql, tutorial, guide, loader
-:pageTitle:
 :description:
 :page-toclevels: 2
 :tabs-sync-option:
@@ -262,7 +261,7 @@ Verify:
 #!test[read]
 match
   $b isa book, has title $t;
-  $rv (book: $b) isa review;
+  $rv isa review, links (book: $b);
 reduce $reviews = count groupby $t;
 ----
 

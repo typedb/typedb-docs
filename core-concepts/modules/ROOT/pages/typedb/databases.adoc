@@ -36,7 +36,7 @@ The schema is composed of three main kinds of types:
 
 You build your schema by defining these types and their interactions using several key statements within a define query:
 
-- `entity`/`relation`/`attribute` creates a root type of specified kind (e.g., `entity person;`).
+- `entity`/`relation`/`attribute` creates a new type of the specified kind (e.g., `entity person;`).
 
 - `sub` creates a type that inherits from a supertype (e.g., `entity employee sub person;`).
 

@@ -7,23 +7,23 @@ But do not feel the need to stick to our flow!
 Jump between sections based on your immediate needs and come back to fill in gaps as you grow more experienced with TypeDB.
 Most pages in this documentation can be used with few prerequisites and should be easy to understand independently.
 
-== Step 1: TypeDB basics
+== Step 1: Read TypeDB basics
 
 * xref:{page-version}@home::what-is-typedb.adoc[]
 * xref:{page-version}@home::why-typedb.adoc[]
 
-== Step 2: Installing TypeDB
+== Step 2: Install / set up TypeDB
 
-Choose your installation method based on your needs at the xref:{page-version}@home::install/index.adoc[Install page].
+Choose your installation / setup method based on your needs at the xref:{page-version}@home::install/index.adoc[Install page]. For individual exploration, you'll typically want to either xref:{page-version}@home::install/ce.adoc[download, install and run TypeDB Community Edition] or xref:{page-version}@home::install/cloud.adoc[start building on TypeDB Cloud]. If you're part of a team already building on TypeDB, simply request an invitation to your team's Cloud environment or their existing self-hosted instance.
 
 You might also want to pop into the xref:{page-version}@tools::index.adoc[Tools] section to read a bit more about TypeDB Studio and Console.
 
-== Step 3: Get started guide
+== Step 3: Learn TypeDB through tutorials
 
 Once you have TypeDB installed, get up and running with a simple example at the xref:{page-version}@learn-typedb::quickstart/index.adoc[] guide.
 This will teach you all the basics of TypeDB and TypeQL.
 
-== Step 4: Examples
+== Step 4: Browse solutions and use cases
 
 Explore some pre-built xref:{page-version}@use-cases::index.adoc[use cases].
 
@@ -35,14 +35,14 @@ As you go through those examples, we recommend having the Core Concepts open (se
 Some developers like to start with Concepts first, then look at examples, in which case
 skip to the next section and come back to the examples afterward!
 
-== Step 5: Tutorials
+== Step 5: Integrations, TypeQL and schema modeling guides
 
-Look at our xref:{page-version}@guides::index.adoc[guides] for accomplishing specific TypeDB tasks,
-such as using TypeDB in CI, or deploying TypeDB through our Cloud API.
+Look at our xref:{page-version}@guides::integrations/index.adoc[integration guides] for integrating TypeDB with your workflows and stack,
+such as using TypeDB in CI, or deploying TypeDB through our Cloud API. The xref:{page-version}@guides::schema-modeling.adoc[schema modeling guide] provides practical recommendations for all TypeDB schema builders.
 
-== Step 6: Core concepts
+== Step 6: Browse core technical concepts
 
-There are approximately 3 major parts to understanding TypeDB:
+There are approximately 3 major parts to gaining a full technical understanding of TypeDB:
 
 1. Learning about the TypeDB database server
 2. Learning about the details of the TypeQL query language
@@ -78,31 +78,27 @@ In this building phase you will probably need to refer to any of the xref:{page-
 which are descriptions of all the different features of TypeDB, TypeQL, the protocol and drivers,
 and libraries.
 
+We strongly recommend joining the https://typedb.com/discord[TypeDB Discord server] for support, insights and collaboration with other TypeDB builders.
+
 == Step 8: Operations
 
-The xref:{page-version}@maintenance-operation::index.adoc[Operations] pages are for learning about backups, upgrades, configurations, and much more.
+The xref:{page-version}@maintenance-operation::index.adoc[Maintenance and Operations] pages are for learning about backups, upgrades, configurations, and much more.
 
 In addition, it could be useful to learn about automating TypeDB Cloud operations with the xref:{page-version}@tools::typedb-cloud-api.adoc[TypeDB Cloud API].
 For example, you might want to integrate TypeDB Cloud into your deployment pipelines to spin up and down instances of TypeDB automatically.
 
+== For LLMs and AI agents: llms.txt
 
-== llms.txt
-
-We maintain an llms.txt file at https://typedb.com/docs/llms.txt.
+We maintain an llms.txt index file at https://typedb.com/docs/llms.txt, which is a registry of links to all our documentation in Markdown format.
 
 Instruct your AI agent / LLM to read this file to help it understand TypeDB and be able to give accurate responses to prompts.
 
-It is a registry of links to all of our documentation in Markdown format, so it will require the LLM to have internet access.
-
-Alternatively, we also maintain an llms-full.txt file at https://typedb.com/docs/llms-full.txt.
-This is a concise summary of TypeQL syntax and semantics, and may be adequate for query generation while not requiring Internet access.
+Alternatively, we also maintain an llms-full.txt file at https://typedb.com/docs/llms-full.txt, which is a single-document summary of TypeQL syntax and semantics, therefore it is cheaper to ingest and may be adequate for query generation.
 
 AI-generated code may be inaccurate. Use with care.
-
 
 == Tips
 
 * **Start Small**: Begin with the Quickstart guide to see immediate results
-* **Join the Community**: Engage with other TypeDB users for support and insights on https://discord.com/invite/typedb[our Discord server]. We're very active and welcoming to new members and love to hear about your projects!
+* **Join the Community**: Engage with other TypeDB users for support and insights on https://typedb.com/discord[our Discord server]. We're very active and welcoming to new members and love to hear about your projects!
 * **Contribute**: If you see any issues, or have ideas for how TypeDB can be even better, feel free to reach out or file an issue on https://github.com/typedb/typedb[GitHub]
-
