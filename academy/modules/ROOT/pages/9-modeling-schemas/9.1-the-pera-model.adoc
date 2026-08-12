@@ -41,7 +41,7 @@ The biggest difference between the ER and PERA models is that the PERA model per
 
 === Types and casting
 
-The following table summarises the key properties of data-storing types in the PERA model. As we saw in xref:{page-version}@academy::5-defining-schemas/5.2-defining-type-hierarchies.adoc[Lesson 5.2], only an abstract attribute type can have subtypes, in order to prevent ambiguities in the interpretation of queries.
+The following table summarises the key properties of data-storing types in the PERA model. As we saw in xref:{page-version}@academy::5-defining-schemas/5.2-defining-type-hierarchies.adoc[Lesson 5.2], attribute types can be subtyped like any other types: subtypes inherit the value type of their supertype, and only an attribute type that omits its value type, so that its subtypes can declare their own, must be abstract.
 
 [cols="^.^h,^.^,^.^,^.^",caption="",options="header"]
 |===
@@ -50,7 +50,7 @@ The following table summarises the key properties of data-storing types in the P
 | Dependencies | none | role players | owners
 | Interfaces | none | roles | ownership
 | Can implement interfaces | ✓ | ✓ | ✗
-| Can be subtyped | ✓ | ✓ | if abstract
+| Can be subtyped | ✓ | ✓ | ✓
 | Can be abstract | ✓ | ✓ | ✓
 |===
 
@@ -97,7 +97,7 @@ attribute quantity, value integer;
 
 === Type definitions
 
-A new type is defined using a `sub` statement. For example, in the above schema excerpt:
+A new type is defined using a kind statement: `entity`, `relation`, or `attribute`. For example, in the above schema excerpt:
 
 * `entity book;` defines a new entity type with label `book`.
 * `relation order-line;` defines a new relation type with label `order-line`.
@@ -111,7 +111,7 @@ A role interface is defined using a `relates` statement. The label of the create
 
 Unlike roles, ownership interfaces are not explicitly defined in TypeQL. Because every attribute has only one ownership interface, an attribute's ownership interface is created implicitly when the attribute is defined. As a result, an ownership does not have an explicitly referenceable label like a role does, but we can describe it with an implicit label comprising the label of the dependent attribute followed by an `:OWNER` suffix. For example, in the above schema excerpt:
 
-* `title sub attribute;` implicitly defines a new ownership interface with implicit label `title:OWNER`, depended on by the attribute type `title`.
+* `attribute title;` implicitly defines a new ownership interface with implicit label `title:OWNER`, depended on by the attribute type `title`.
 
 === Interface implementations
 
@@ -138,7 +138,7 @@ When an object type implements interfaces, those implementations are inherited b
 
 * The object types `paperback`, `hardback`, and `ebook` all inherit the implementations of the `title:OWNER`, `price:OWNER`, and `order-line:item` interfaces from their supertype `book`.
 
-Finally, a type if defined to be abstract using an `@abstract` annotation. For example, in the above schema excerpt:
+Finally, a type is defined to be abstract using an `@abstract` annotation. For example, in the above schema excerpt:
 
 * The type `book` is declared to be abstract, and can only be instantiated through one of its concrete subtypes: `paperback`, `hardback`, and `ebook`.
 

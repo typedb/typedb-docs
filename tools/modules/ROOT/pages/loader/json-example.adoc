@@ -262,7 +262,7 @@ Verify:
 #!test[read]
 match
   $b isa book, has title $t;
-  $rv (book: $b) isa review;
+  $rv isa review, links (book: $b);
 reduce $reviews = count groupby $t;
 ----
 

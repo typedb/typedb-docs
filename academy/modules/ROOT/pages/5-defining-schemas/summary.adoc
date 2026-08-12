@@ -13,7 +13,8 @@ define
 +
 [,typeql]
 ----
-entity-type sub entity;
+entity entity-type;
+entity entity-subtype sub entity-type;
 ----
 * Define queries cannot contain variables, only keywords and type labels.
 * A `relates` statement is used to define a new role for a relation type. All relation types must have at least one role defined.
