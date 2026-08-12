@@ -34,7 +34,7 @@ configured with the network addresses of all nodes in the cluster.
 The driver uses this list to intelligently manage connections. It automatically discovers which node is the current leader for a given
 database and routes all write transactions to it. For read transactions, the driver can distribute the load across all available nodes (both
 leader and followers) by setting the `read_any_replica` option during opening the transaction, effectively using the entire cluster's
-capacity. This routing is handled transparently, so your application code for opening sessions and running transactions remains the same
+capacity. This routing is handled transparently, so your application code for opening and running transactions remains the same
 whether you are connecting to a single node or a full cluster.
 
 == Consistency and durability

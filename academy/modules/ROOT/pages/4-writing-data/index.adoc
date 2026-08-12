@@ -45,7 +45,7 @@ Learn about how new data is validated against the schema.
 
 == Running examples
 
-To run an Insert, Delete, or Update query, make sure to use a *data* session and *write* transaction. The examples and exercises featured in this lesson are annotated with one of the following instructions to indicate how they should be run. Each write query should only be run once. Running write queries more than once may have unintended effects, such as inserting duplicate data.
+To run an Insert, Delete, or Update query, make sure to use a *write* transaction. The examples and exercises featured in this lesson are annotated with one of the following instructions to indicate how they should be run. Each write query should only be run once. Running write queries more than once may have unintended effects, such as inserting duplicate data.
 
 :: *Run* this query without committing the transaction afterward. Write transactions will remain open for further queries, and changes will not be persisted until a commit.
 *_Run and commit_*:: *Run* this query and then *commit* the transaction, persisting the changes to the database.

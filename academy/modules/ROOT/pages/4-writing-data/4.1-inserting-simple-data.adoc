@@ -189,7 +189,7 @@ match
 $publication isa publication, has year 1994;
 $city isa city, has name "New York City";
 insert
-locating (location: $city, located: $publication) isa locating;
+locating (location: $city, located: $publication);
 ----
 -> **Close your transaction without committing**
 

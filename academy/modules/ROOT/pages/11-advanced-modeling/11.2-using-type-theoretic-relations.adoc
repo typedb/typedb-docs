@@ -211,7 +211,7 @@ If we were to implement this as it is, then there would be a disparity between t
 
 [,typeql]
 ----
-$located (location: $city);
+$located links (location: $city);
 ----
 
 This pattern will match instances of both `user` and `address` for `$located`, as long as we use the following definition for `address`.
