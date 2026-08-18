@@ -4,9 +4,11 @@
 
 The constraint `$t label <LABEL>` matches all types `$t` that have the label (name) `<LABEL>`.
 
+In a xref:{page-version}@typeql-reference::schema/redefine.adoc[redefine query], the statement `<LABEL> label <NEW LABEL>` renames the type `<LABEL>` to `<NEW LABEL>`.
+
 == Defining type labels
 
-The `label` keyword is only used when matching on a type label. The type label is created automatically when the type is defined.
+The `label` keyword is not used when defining types. The type label is created automatically when the type is defined.
 
 [,typeql]
 ----
@@ -20,4 +22,27 @@ define entity user;
 ----
 #!test[schema]
 match $t label user;
+----
+
+== Redefining type labels
+
+The `label` keyword can be used in a redefine query to rename an existing type.
+The kind of the type can optionally be specified.
+
+[,typeql]
+----
+#!test[schema]
+redefine entity user label member;
+----
+
+Role types are renamed using their scoped label.
+
+[,typeql]
+----
+#!test[schema]
+#{{
+define relation friendship relates friend;
+#}}
+#!test[schema]
+redefine friendship:friend label participant;
 ----
