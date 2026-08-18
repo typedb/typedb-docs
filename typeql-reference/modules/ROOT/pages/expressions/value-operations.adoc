@@ -27,6 +27,30 @@ Parentheses (`()`) may be used to override the precedence. The sub-expressions i
 (1 + 2) * 3 == 9
 ----
 
+On strings, `+` performs concatenation (see <<_string_operations,String operations>>); the other operators are numeric only.
+
+[[_string_operations]]
+== String operations
+
+=== Concatenation
+
+The `+` operator concatenates two strings, which may be literals, values, or string-valued attributes.
+
+[,typeql]
+----
+"Hello," + " world!" == "Hello, world!"
+----
+
+For example:
+
+[,typeql]
+----
+match
+  $person isa person, has first-name $first, has last-name $last;
+  let $full-name = $first + " " + $last;
+select $full-name;
+----
+
 == Function-like operators
 
 TypeQL provides several built-in functions for common mathematical and list operations:

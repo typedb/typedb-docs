@@ -23,6 +23,7 @@ limit N;
 
 * Use `reduce` operators to aggregate streams
 * The reduce operators are `count`, `sum`, `max`, `min`, `mean`, `median`, and `std`. Except for `count`, each modifier takes a variable to aggregate over as an argument, which can represent either a numeric attribute or a numeric value.
+* A `match` after a `reduce` filters groups by their aggregated value; only grouping variables and aggregated values are available after a `reduce`.
 * You can group reductions by using `groupby`
 +
 [,typeql]

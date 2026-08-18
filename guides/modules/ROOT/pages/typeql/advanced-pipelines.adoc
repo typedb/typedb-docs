@@ -113,6 +113,50 @@ Note that when a book has multiple genres, the number of times it has been sold 
 Finished. Total answers: 8
 ----
 
+== Filter aggregated results with a `match` after a `reduce`
+
+A `reduce` can be followed by another `match`, which lets us filter groups by their aggregated value (SQL's `HAVING`) and look up further data for those that remain.
+Let's list the books that have sold at least five copies in total.
+
+[,typeql]
+----
+#!test[read, count = 3]
+match
+  $book isa book;
+  order-line ($order, $book), has quantity $quantity;
+reduce $total-sold = sum($quantity) groupby $book;
+match
+  $total-sold >= 5;
+  $book has title $title;
+sort $total-sold desc;
+fetch {
+  "title": $title,
+  "total sold": $total-sold
+};
+----
+
+The `reduce` outputs one row per `$book`, containing only `$book` and `$total-sold`.
+The second `match` filters on `$total-sold`, and uses `$book` to retrieve the title.
+
+[,json]
+----
+{
+  "title": "Under the Black Flag: The Romance and the Reality of Life Among the Pirates",
+  "total sold": 10
+}
+{
+  "title": "The Odyssey",
+  "total sold": 6
+}
+{
+  "title": "Great Discoveries in Medicine",
+  "total sold": 6
+}
+Finished. Total answers: 3
+----
+
+Note that `$order` and `$quantity` are not available after the `reduce`: only grouping variables and reduced values are.
+
 == Update user loyalty tier based on spending using `try`
 
 Imagine we want to update a user's loyalty tier based on their total spending.

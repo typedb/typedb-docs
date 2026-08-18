@@ -129,7 +129,7 @@ put # insert a friendship between them if one does not exist.
   $f isa friendship, links (friend: $p, friend: $q);
 ----
 
-==== reduce
+=== reduce
 As the name suggests, computes some value from a stream of answers,
 optionally grouped by a set of variables.
 This will return a stream with one answer per group.
@@ -144,6 +144,23 @@ match
   $p isa posting, links (page: $page, post: $post);
 reduce $views = count($post) groupby $page;
 ----
+
+Further clauses can follow a `reduce`, for instance a `match` to filter groups by their aggregated value:
+
+[,typeql]
+----
+#!test[read, count=0]
+match
+  $p isa person;
+  $f isa friendship, links (friend: $p, friend: $q);
+reduce $friends = count groupby $p;
+match
+  $friends >= 2;      # keep only people with at least two friends
+  $p has name $name;  # $p is still bound, as it was the grouping variable
+select $name, $friends;
+----
+
+Only the grouping variables (`$p`) and reducer outputs (`$friends`) are passed on; `$f` and `$q` are not available after the `reduce`.
 
 === distinct
 Removes duplicate answers in the stream.

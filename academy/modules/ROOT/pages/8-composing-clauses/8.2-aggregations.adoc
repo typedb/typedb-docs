@@ -95,3 +95,22 @@ let $line_total = $quantity * $retail_price;
 reduce $order_total = sum($line_total) groupby $id;
 fetch { "id": $id, "order-total": $order_total };
 ----
+
+== Filtering aggregated results
+
+A `reduce` can be followed by another `match`, for instance to filter groups by their aggregated value:
+
+[,typeql]
+----
+match
+$book isa book;
+$review isa review, has score $score;
+rating ($review, $book);
+reduce $avg_score = mean($score) groupby $book;
+match
+$avg_score >= 8.0;
+$book has title $title;
+fetch { "title": $title, "average-score": $avg_score };
+----
+
+Only the grouping variables and aggregated values are available after a `reduce`, so `$review` and `$score` cannot be used in the second `match`.
