@@ -47,7 +47,7 @@ Visit the xref:{page-version}@reference::index.adoc[Reference] to access their f
 
 - Now, all schema and data fetching and modifications are performed through a single `transaction.query("your query")` interface.
 - No more `query().insert()` and `query().define()`.
-- No more `concept.delete()`, `concept.getHas()`, or `type.setLabel()`: types are renamed with a xref:{page-version}@typeql-reference::schema/redefine.adoc[`redefine` query] (`redefine person label user;`).
+- No more `concept.delete()`, `concept.getHas()`, or `type.setLabel()`: these are expected to be executed via TypeQL queries.
 - Concept structure is preserved (the only difference: `Thing` is renamed to `Instance`), casts are available, and it is possible to retrieve something simple as a type's label or an attribute's value, that are sent with the type itself.
 - In OOP languages (like Java and Python), concepts have `try` versions of their methods, available for any concept and returning optional results.
 Using casting, the concrete methods returning results directly become available, as in 2.x.
