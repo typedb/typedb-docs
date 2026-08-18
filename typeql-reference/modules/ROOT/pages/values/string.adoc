@@ -18,7 +18,9 @@ Literals, string values, and string attributes can be combined:
 ----
 #!test[schema]
 #{{
-define entity person owns name;
+define
+attribute name, value string;
+entity person, owns name;
 #}}
 #!test[write]
 #{{
