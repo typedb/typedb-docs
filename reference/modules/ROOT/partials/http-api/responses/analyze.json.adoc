@@ -1,0 +1,10 @@
+[source,json]
+----
+{
+  "source": string,       // the analyzed query text
+  "query": Pipeline,      // the analyzed query pipeline: conjunctions, stages, variables, outputs
+  "preamble": Function[], // analyzed preamble functions ('with fun ...')
+  "given": Given,         // optional: input variables and their annotations, if the query has a 'given' stage
+  "fetch": Fetch          // optional: possible fields of the fetch result, if the query has a 'fetch' stage
+}
+----

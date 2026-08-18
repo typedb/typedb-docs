@@ -1,0 +1,112 @@
+[source,json]
+----
+{
+    "source": "match $person isa person, has name $name;",
+    "given": null,
+    "query": {
+        "conjunctions": [
+            {
+                "constraints": [
+                    {
+                        "textSpan": {
+                            "begin": 14,
+                            "end": 24
+                        },
+                        "tag": "isa",
+                        "instance": {
+                            "tag": "variable",
+                            "id": "0"
+                        },
+                        "type": {
+                            "tag": "label",
+                            "type": {
+                                "kind": "entityType",
+                                "label": "person"
+                            }
+                        }
+                    },
+                    {
+                        "textSpan": {
+                            "begin": 26,
+                            "end": 40
+                        },
+                        "tag": "has",
+                        "owner": {
+                            "tag": "variable",
+                            "id": "0"
+                        },
+                        "attribute": {
+                            "tag": "variable",
+                            "id": "1"
+                        }
+                    },
+                    {
+                        "textSpan": {
+                            "begin": 30,
+                            "end": 34
+                        },
+                        "tag": "isa",
+                        "instance": {
+                            "tag": "variable",
+                            "id": "1"
+                        },
+                        "type": {
+                            "tag": "label",
+                            "type": {
+                                "kind": "attributeType",
+                                "label": "name",
+                                "valueType": "string"
+                            }
+                        }
+                    }
+                ],
+                "annotations": {
+                    "variableAnnotations": {
+                        "1": {
+                            "isOptional": false,
+                            "tag": "instance",
+                            "annotations": [
+                                {
+                                    "kind": "attributeType",
+                                    "label": "name",
+                                    "valueType": "string"
+                                }
+                            ]
+                        },
+                        "0": {
+                            "isOptional": false,
+                            "tag": "instance",
+                            "annotations": [
+                                {
+                                    "kind": "entityType",
+                                    "label": "person"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        ],
+        "stages": [
+            {
+                "tag": "match",
+                "block": 0
+            }
+        ],
+        "variables": {
+            "1": {
+                "name": "name"
+            },
+            "0": {
+                "name": "person"
+            }
+        },
+        "outputs": [
+            "0",
+            "1"
+        ]
+    },
+    "preamble": [],
+    "fetch": null
+}
+----

@@ -2,9 +2,10 @@
 ----
 {
     "query": string,
-    "queryOptions": {                    // optional
-        "includeInstanceTypes": boolean, // optional
-        "answerCountLimit": integer      // optional
+    "queryOptions": {                       // optional
+        "includeInstanceTypes": boolean,    // optional
+        "answerCountLimit": integer,        // optional
+        "includeQueryStructure": boolean    // optional
     },
     "given": GivenRow[],
 }
