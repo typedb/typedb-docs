@@ -1,5 +1,6 @@
 = Queries as Functions
 :test-typeql: linear
+:keywords: function, functions
 
 TypeQL function provides a way to create abstractions over existing data,
 allowing queries to be expressed at a higher level.
@@ -74,6 +75,35 @@ return count($posting);
 `reduce` returns a single answer, since it aggregates all answers into one.
 ====
 
+== Preamble functions
+A query can also declare its own functions in a *preamble*, with one `with` clause per function.
+Preamble functions may call each other as well as schema functions.
+
+[,typeql]
+.Find people with a friend-of-a-friend who is better connected than they are
+----
+#!test[read]
+with fun friend_count($p: person) -> integer:
+match
+    $f isa friendship, links (friend: $p, friend: $other);
+return count;
+
+with fun friends_of_friends($p: person) -> { person }:
+match
+    $f1 isa friendship, links (friend: $p, friend: $mid);
+    $f2 isa friendship, links (friend: $mid, friend: $fof);
+    not { $fof is $p; };
+return { $fof };
+
+match
+    $p isa person;
+    let $fof in friends_of_friends($p);
+    friend_count($fof) > friend_count($p);
+select $p, $fof;
+----
+
+See xref:{page-version}@typeql-reference::pipelines/with.adoc[Preamble] in the TypeQL reference for details.
+
 == Cyclic functions & tabling
 TypeDB tables recursive functions to break cycles. This has implications on the best way to implement the recursion.
 The classic example is computing the transitive closure of a function.
@@ -99,7 +129,7 @@ match
 return { $to };
 ----
 
-This will return `node`s in a breadth-first fashion.
+This will return `node` s in a breadth-first fashion.
 
 == References
 * xref:{page-version}@typeql-reference::functions/index.adoc[Functions]

@@ -164,10 +164,10 @@ with <f2-declaration>
 ...
 with <fN-declaration>
 match
-  $f1 = f1();
-  $f2 = f2();
+  let $f1 = f1();
+  let $f2 = f2();
   ...
-  $fN = fN();
+  let $fN = fN();
 ----
 
 For example, the following read pipeline defines and uses a temporary function using the `with` clause:
@@ -176,6 +176,30 @@ For example, the following read pipeline defines and uses a temporary function u
 ----
 #!test[read]
 include::{page-version}@typeql-reference::example$tql/read_statements_functions.tql[tag=with-fun]
+----
+
+Multiple query-level functions can be defined,
+with a separate `with` block per function - they can also call each other:
+
+[,typeql]
+----
+#!test[read]
+with fun karma_squared($user: user) -> double:
+  match
+    $user has karma $karma;
+    let $squared = $karma * $karma;
+  return first $squared;
+
+with fun high_karma_users($threshold: double) -> { user }:
+  match
+    $user isa user;
+    karma_squared($user) > $threshold;
+  return { $user };
+
+match
+  let $user in high_karma_users(100.0);
+  $user has username $name;
+select $name;
 ----
 
 === Using Functions in definition queries

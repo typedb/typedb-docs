@@ -102,6 +102,7 @@ $string like "^regex pattern$";
 * The *assignment operator* `let $var = <expression>` is used to specify the value of a computed variable.
 * The *assignment iterator* `let $var in <expression>` is used to specify the value of a of iterating over a computed iterable, one at a time
 * Numeric values can be computed using *arithmetic operators* `^`, `+*+`, `/`, `%`, `+`, and `-`, as well as *arithmetic functions* `min`, `max`, `round`, `floor`, `ceil`, and `abs` inside expressions
+* String values can be *concatenated* using the `+` operator, for example `let $label = $title + " (" + $isbn + ")"`
 
 == xref:{page-version}@academy::7-understanding-query-patterns/7.6-solution-set-semantics.adoc[Solution set semantics]
 
