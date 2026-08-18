@@ -3,12 +3,12 @@
 
 Redefine queries are used
 // tag::overview[]
-to modify existing types, capabilities, annotations, or functions in the schema.
+to modify existing types, capabilities, annotations, or functions in the schema, or to rename types.
 // end::overview[]
 
 == Syntax
 
-Redefine queries start with the `redefine` keyword following by a single xref:{page-version}@typeql-reference::schema/define.adoc[definition statement] of the define queries format.
+Redefine queries start with the `redefine` keyword following by a single xref:{page-version}@typeql-reference::schema/define.adoc[definition statement] of the define queries format, or a single type renaming statement.
 
 [,typeql]
 ----
@@ -16,11 +16,26 @@ redefine
   <definition_statement>
 ----
 
+.Type renaming statement
+[,typeql]
+----
+[<kind>] <label> label <new label>;
+----
+
+.Role type renaming statement
+[,typeql]
+----
+<relation label>:<role label> label <new role label>;
+----
+
 == Behavior
 
-Redefine queries can be used to modify types and type capabilities or to override functions.
+Redefine queries can be used to modify types and type capabilities, to rename types, or to override functions.
 
 For clarity and precision, only one redefinition is allowed per query.
+
+Renaming a type changes only its label: its data, capabilities, annotations, and position in the type hierarchy are preserved.
+Functions are not updated to the new label, so if a stored function refers to a renamed type by its old label, the commit fails.
 
 An error is returned (on execution or on commit), and no changes are preserved, if:
 
@@ -28,10 +43,12 @@ An error is returned (on execution or on commit), and no changes are preserved, 
 - The redefinition matches the definition and does nothing.
 - There are multiple changes in the schema in the result of the redefinition.
 - The query results in an invalid schema.
+- The new label of a renamed type is already in use (for role types, within the same relation type hierarchy).
 
 [#_statements_behavior]
 === Statements
 
+* xref:{page-version}@typeql-reference::statements/label.adoc[`label` statements] rename entity, relation, attribute, and role types.
 * xref:{page-version}@typeql-reference::statements/relates.adoc[`relates` statements] redefine role types specialization using `relates ... as`.
 * xref:{page-version}@typeql-reference::statements/value.adoc[`value` statements] redefine value types of attribute types.
 * xref:{page-version}@typeql-reference::statements/sub.adoc[`sub` statements] redefine supertypes of types.
@@ -89,6 +106,29 @@ redefine post owns tag @card(0..5);
 ----
 #!test[schema]
 redefine fathership relates father as parent;
+----
+
+=== Renaming types
+
+.Renaming an entity type
+[,typeql]
+----
+#!test[schema]
+redefine entity post label article;
+----
+
+.Renaming an attribute type without specifying its kind
+[,typeql]
+----
+#!test[schema]
+redefine tag label hashtag;
+----
+
+.Renaming a role type
+[,typeql]
+----
+#!test[schema]
+redefine parentship:child label offspring;
 ----
 
 === Redefining functions
