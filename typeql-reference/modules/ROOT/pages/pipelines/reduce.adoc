@@ -38,7 +38,7 @@ include::{page-version}@typeql-reference::example$tql/schema_statements_function
   entity file, owns size-kb;
 
   relation located, relates country, relates user;
-  entity country, plays located:country;
+  entity country, owns name, plays located:country;
   user plays located:user;
 ----
 ====
@@ -93,4 +93,40 @@ match
     located($place, $country);
   };
 reduce $user-count = count groupby $country;
+----
+
+== Using reduced values in later stages
+
+A `reduce` need not be the last stage.
+Its output rows contain only the reduced variables and the grouping variables, and later stages -- including another `match` -- can use them.
+All other variables are dropped.
+
+Filter groups by a reduced value (SQL's `HAVING`), then retrieve more data using the grouping variable:
+
+[,typeql]
+----
+#!test[read]
+match
+  $user isa user;
+  friendship($user, $friend);
+reduce $friend-count = count groupby $user;
+match
+  $friend-count >= 2;
+  $user has username $username;
+select $username, $friend-count;
+----
+
+Retrieve more data for each group without filtering:
+
+[,typeql]
+----
+#!test[read]
+match
+  $user isa user;
+  located($user, $country);
+reduce $user-count = count groupby $country;
+match
+  $country has name $country-name;
+sort $user-count desc;
+select $country-name, $user-count;
 ----

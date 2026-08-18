@@ -1,9 +1,6 @@
 = Data pipelines
 :page-aliases: {page-version}@typeql::pipelines.adoc
 
-// TODO: this page should say something about how stages combine
-// and give examples of how inputs and outputs are passed
-
 This reference covers the usage of data pipelines in TypeQL. Data pipeline read and modify data in stages.
 
 [[pipeline_kinds]]
@@ -11,6 +8,27 @@ This reference covers the usage of data pipelines in TypeQL. Data pipeline read 
 
 * A *write pipeline* may comprise stages that modify data in the database (such as `insert` or `delete`).
 * A *read pipeline* only comprises stages that read data from the database but do not modify it.
+
+[[combining_stages]]
+== Combining stages
+
+Each stage receives the stream of rows output by the previous stage, and only the variables in those rows are available to it.
+Stages may be chained in any order permitted by their kind, and a stage kind may appear more than once -- for instance, a `match` may follow a `reduce`:
+
+[,typeql]
+----
+match
+  $user isa user;
+  friendship($user, $friend);
+reduce $friend-count = count groupby $user;
+match
+  $friend-count >= 2;
+  $user has username $username;
+select $username, $friend-count;
+----
+
+Here the second `match` sees only `$user` and `$friend-count`, the output of the `reduce`.
+See xref:{page-version}@typeql-reference::pipelines/reduce.adoc#_using_reduced_values_in_later_stages[Using reduced values in later stages].
 
 == Data manipulation stages
 

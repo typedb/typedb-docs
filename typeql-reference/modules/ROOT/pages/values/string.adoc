@@ -12,6 +12,25 @@ Strings can be concatenated using the `+` operator.
 "Hello," + " world!" == "Hello, world!" 
 ----
 
+Literals, string values, and string attributes can be combined:
+
+[,typeql]
+----
+#!test[schema]
+#{{
+define entity person owns name;
+#}}
+#!test[write]
+#{{
+insert $p isa person, has name "John";
+#}}
+#!test[read, count=1]
+match
+  $name isa name;
+  let $greeting = "Hello, " + $name + "!";
+select $greeting;
+----
+
 == Defining a string valued attribute
 
 [,typeql]
@@ -41,6 +60,3 @@ match
   let $y = "ABC 𓃭𓅓";
   $x == $y;
 ----
-
-
-

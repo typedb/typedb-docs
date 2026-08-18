@@ -2,7 +2,7 @@
 :test-typeql: linear
 
 The preamble of a pipeline allows the local declaration of functions using `with` statements.
-These functions can be called from the pipeline, and from other premable functions.
+These functions can be called from the pipeline, and from other preamble functions.
 
 == Syntax
 
@@ -75,5 +75,8 @@ match
   $y has username $pop_name;
 select $pop_name;
 ----
++
+Note that when declaring multiple preamble functions,
+each requires its own `with` statement.
 
 
