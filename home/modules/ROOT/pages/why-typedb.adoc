@@ -47,7 +47,7 @@ TypeDB supports many modifiers and uses of these basic types:
 - **Multivalued attributes**: entities and relations can have multiple instances of the same attribute with different values
 - **Cardinality constraints**: configurable limits on the number of attributes, relations, or entities to connect to
 
-You can even create reusable xref:{page-version}@core-concepts::typeql/queries-as-functions.adoc[functions] to capture modular pieces of database logic and invoke them at query time.
+You can even create reusable xref:{page-version}@core-concepts::typeql/functions.adoc[functions] to capture modular pieces of database logic and invoke them at query time.
 
 Put together, TypeDB can capture the most complex data models, while being easy to extend with new types and relationships as your application grows.
 
