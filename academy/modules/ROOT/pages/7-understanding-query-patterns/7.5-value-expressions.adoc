@@ -85,17 +85,3 @@ We will explore the different value operations, along with the value types they 
 == Arithmetic operations
 
 TypeQL ships with a number of built-in operators and functions. See the xref:{page-version}@typeql-reference::expressions/index.adoc[expressions reference] for the current list.
-
-== String concatenation
-
-Applied to two strings, `+` *concatenates* them:
-
-[,typeql]
-----
-match
-$book isa book, has title $title, has isbn-13 $isbn;
-let $label = $title + " (ISBN " + $isbn + ")";
-fetch { "label": $label };
-----
-
-Both operands must be strings.
