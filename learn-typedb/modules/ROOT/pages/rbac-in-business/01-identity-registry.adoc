@@ -58,7 +58,7 @@ entity staff,
 
 The keyword `owns` declares that a staff member may have an email. `@key` enforces existence and uniqueness: each staff member **must** have an email address, and no two staff members may share the same email address. TypeDB rejects any insert that would violate these constraints.
 
-The keyword `value string` says this attribute holds text. TypeDB supports string, integer, double, boolean, date, datetime, duration, and more. You can find the full list of supported attribute value types at xref:{page-version}@typeql-reference::values/index.adoc[].
+The keyword `value string` says this attribute holds text. TypeDB supports string, integer, double, boolean, date, datetime, duration, and more. You can find the full list of supported attribute value types at xref:{page-version}@typeql-reference::value-types/index.adoc[].
 
 [NOTE.yellow]
 .🗺️ Check the schema visualiser

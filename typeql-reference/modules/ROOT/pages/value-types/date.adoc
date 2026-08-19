@@ -1,0 +1,131 @@
+= Date
+:page-aliases: {page-version}@typeql-reference::values/date.adoc
+:test-typeql: linear
+
+An https://www.iso.org/iso-8601-date-and-time-format.html[ISO 8601,window=_blank] compliant date type. 
+
+== Syntax
+
+The date literal consists of the following values, separated by a `-`:
+
+* either a four-digit year or a sign with any number of digits for the year (e.g. `+252525` meaning year 252525),
+* a two-digit month of the year,
+* and a two-digit day of that month.
+
+[,typeql]
+.Example date literals
+----
+2024-03-30
+1920-09-21
+#!test[read]
+#{{
+match
+  let $x = 2024-03-30;
+  let $y = 1920-09-21;
+#}}
+----
+
+[,typeql]
+.Example date literals (non-4-digit year)
+----
++20000-01-01
++900-09-21
+#!test[read]
+#{{
+match
+  let $x = +20000-01-01;
+  let $y = +900-09-21;
+#}}
+----
+
+[NOTE]
+====
+The minimum supported date is January 1, 262144 BCE,
+and the maximum supported date is December 31, 262142 CE.
+====
+
+== In expressions
+
+A difference between two dates values is a calendar duration between the two, in years, months, and days.
+
+[,typeql]
+----
+2024-03-30 - 2020-09-21 == P3Y6M9D
+----
+
+== Define a date attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute publish-date value date;
+----
+
+== Insert data that has a date attribute
+
+[,typeql]
+----
+#!test[schema]
+#{{
+define
+  entity article, owns publish-date;
+#}}
+#!test[write]
+insert
+  $a isa article, has publish-date 2025-01-10;
+----
+
+== Insert a standalone date attribute
+
+[,typeql]
+----
+#!test[write]
+insert
+  $_ isa publish-date 2025-01-10;
+----
+
+== Specify valid values for a date attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute quarter-start value date @values(2025-01-01, 2025-04-01, 2025-07-01, 2025-10-01);
+----
+
+== Specify valid values for owning a date attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  entity half-year-report owns quarter-start @values(2025-01-01, 2025-07-01);
+----
+
+== Specify range of valid values for a date attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute contract-date value date @range(2020-01-01..2030-12-31);
+----
+
+== Specify range of valid values for owning a date attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  entity active-contract owns contract-date @range(2025-01-01..2030-12-31);
+----
+
+== Retrieve data by date attribute
+
+[,typeql]
+----
+#!test[read]
+match
+  $a isa article, has publish-date 2025-01-10;
+----

@@ -1,4 +1,59 @@
 = Literals
+:test-typeql: linear
 
-A literal expression is an expression consisting of a single literal. The syntax of literals is described in the
-xref:{page-version}@typeql-reference::values/index.adoc[value types] section of this reference.
+A literal is a value written directly into a query, rather than retrieved from the database or computed from other values.
+Every literal is a constant of a single xref:{page-version}@typeql-reference::value-types/index.adoc[value type].
+The literal syntax accepted by each value type is documented on that value type's page.
+
+== Usage
+
+Literals may be used wherever a value of their type is expected.
+
+Supplying an attribute value on insertion:
+
+[,typeql]
+----
+#!test[schema]
+#{{
+define
+  attribute start-date value date;
+  entity project, owns start-date;
+#}}
+#!test[write]
+insert
+  $p isa project, has start-date 2024-03-30;
+----
+
+As an operand in an expression or comparison:
+
+[,typeql]
+----
+#!test[read]
+match
+  $p isa project, has start-date $d;
+  $d >= 2024-01-01;
+  let $elapsed = 2025-01-01 - $d;
+----
+
+As an argument to a xref:{page-version}@typeql-reference::annotations/index.adoc[value constraint]:
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute rating value integer @range(1..5);
+----
+
+Literals may also be passed to xref:{page-version}@typeql-reference::expressions/function-calls.adoc[function calls] by first binding them to a variable, since function arguments are always variables rather than expressions.
+
+== Type inference
+
+Because a literal's value type is fixed by its syntax, it determines the type of any expression it takes part in.
+An expression combining literals of incompatible value types fails at query compilation.
+See xref:{page-version}@typeql-reference::statements/comparisons.adoc[comparisons] for which value types may be compared with one another.
+
+[NOTE]
+====
+Numeric literals distinguish `integer`, `double`, and `decimal` by syntax: `1` is an `integer`, `1.0` a `double`, and `1.0dec` a `decimal`.
+See the xref:{page-version}@typeql-reference::value-types/decimal.adoc[Decimal] and xref:{page-version}@typeql-reference::value-types/double.adoc[Double] pages for the distinction between them.
+====
