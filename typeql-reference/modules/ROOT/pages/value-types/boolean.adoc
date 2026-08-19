@@ -50,8 +50,12 @@ define
 [,typeql]
 ----
 #!test[schema]
+#{{
 define
-  entity subscriber owns opted-in @values(true);
+  attribute email-verified value boolean;
+#}}
+define
+  entity subscriber owns email-verified @values(true);
 ----
 
 == Retrieve data by boolean attribute
