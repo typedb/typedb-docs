@@ -54,6 +54,7 @@ define
 define
   attribute email-verified value boolean;
 #}}
+#!test[schema]
 define
   entity subscriber owns email-verified @values(true);
 ----
