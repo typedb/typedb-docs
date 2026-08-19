@@ -1,11 +1,12 @@
 = DatetimeTZ
+:page-aliases: {page-version}@typeql-reference::values/datetimetz.adoc
 :test-typeql: linear
 
 An https://www.iso.org/iso-8601-date-and-time-format.html[ISO 8601,window=_blank] compliant date and time type with time zone information.
 
 == Syntax
 
-A datetime-tz literal consists of a xref:{page-version}@typeql-reference::values/datetime.adoc[datetime] followed by
+A datetime-tz literal consists of a xref:{page-version}@typeql-reference::value-types/datetime.adoc[datetime] followed by
 a time zone specification.
 
 A time zone may be specified in two formats:
@@ -65,7 +66,7 @@ A later time point in time is always greater than an earlier time point, and two
 
 A difference between two datetime-tz values is a duration such that when it is added to the earlier
 datetime-tz, it produces a datetime equal to the later datetime-tz.
-See the xref:{page-version}@typeql-reference::values/duration.adoc[Duration] type reference for more
+See the xref:{page-version}@typeql-reference::value-types/duration.adoc[Duration] type reference for more
 information about datetime-duration arithmetic.
 
 The calendar portion of the result (that is, years, months, and days) is the greatest calendar

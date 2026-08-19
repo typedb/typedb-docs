@@ -1,4 +1,5 @@
 = Datetime
+:page-aliases: {page-version}@typeql-reference::values/datetime.adoc
 :test-typeql: linear
 
 An https://www.iso.org/iso-8601-date-and-time-format.html[ISO 8601,window=_blank] compliant date and time type. 
@@ -51,7 +52,7 @@ match
 
 A difference between two datetime values is a duration such that when it is added to the earlier
 datetime, it produces the later datetime. 
-See the xref:{page-version}@typeql-reference::values/duration.adoc[Duration] type reference for more
+See the xref:{page-version}@typeql-reference::value-types/duration.adoc[Duration] type reference for more
 information about datetime-duration arithmetic.
 The time portion of the result is always under 24 hours.
 
