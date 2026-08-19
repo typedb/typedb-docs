@@ -175,20 +175,49 @@ The following escape sequences are supported:
 |`\f`
 |Form feed
 
+|`\uXXXX`
+|The unicode character with the four-digit hex-encoded code point `XXXX` (see <<_unicode_support>>)
+
 |`\u{<code>}`
-|The unicode character with hex-encoded code point `<code>` (see <<_unicode_support>>)
+|The unicode character with hex-encoded code point `<code>`, one to six digits (see <<_unicode_support>>)
 |===
 
 A backslash followed by any other character is not a valid escape sequence, and the query fails to parse.
 
 == Unicode support
 TypeDB supports unicode characters in strings, as well as providing a syntax for escaping unicode characters.
-The escape is `\u{<code>}` where `<code>` is the hex-encoded character-code.
+A unicode escape may be written in either of two forms:
+
+* `\uXXXX`, where `XXXX` is a hex-encoded code point of *exactly* four digits;
+* `\u{<code>}`, where `<code>` is a hex-encoded code point of one to six digits. This form is the only way to write code points above `FFFF`.
+
 [,typeql]
 ----
 #!test[read, count=1]
 match
   let $x = "A\u{42}C \u{130ED}\u{13153}";
   let $y = "ABC 𓃭𓅓";
+  $x == $y;
+----
+
+The two forms are interchangeable for code points up to `FFFF`:
+
+[,typeql]
+----
+#!test[read, count=1]
+match
+  let $x = "\u0CA0\u005F\u0CA0";
+  let $y = "\u{0CA0}\u{5F}\u{0CA0}";
+  $x == $y;
+----
+
+When using `\uXXXX`, any hex digits beyond the fourth are treated as literal text. In the following snippet, `$x` and `$y` are equal.
+
+[,typeql]
+----
+#!test[read, count=1]
+match
+  let $x = "\u0CA01234";
+  let $y = "\u{0CA0}1234";
   $x == $y;
 ----
