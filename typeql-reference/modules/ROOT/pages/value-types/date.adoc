@@ -53,7 +53,7 @@ A difference between two dates values is a calendar duration between the two, in
 2024-03-30 - 2020-09-21 == P3Y6M9D
 ----
 
-== Defining a date valued attribute
+== Define a date attribute type
 
 [,typeql]
 ----
@@ -62,11 +62,70 @@ define
   attribute publish-date value date;
 ----
 
-== Inserting a date valued attribute
+== Insert data that has a date attribute
+
+[,typeql]
+----
+#!test[schema]
+#{{
+define
+  entity article, owns publish-date;
+#}}
+#!test[write]
+insert
+  $a isa article, has publish-date 2025-01-10;
+----
+
+== Insert a standalone date attribute
 
 [,typeql]
 ----
 #!test[write]
 insert
   $_ isa publish-date 2025-01-10;
+----
+
+== Specify valid values for a date attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute quarter-start value date @values(2025-01-01, 2025-04-01, 2025-07-01, 2025-10-01);
+----
+
+== Specify valid values for owning a date attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  entity half-year-report owns quarter-start @values(2025-01-01, 2025-07-01);
+----
+
+== Specify range of valid values for a date attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute contract-date value date @range(2020-01-01..2030-12-31);
+----
+
+== Specify range of valid values for owning a date attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  entity active-contract owns contract-date @range(2025-01-01..2030-12-31);
+----
+
+== Retrieve data by date attribute
+
+[,typeql]
+----
+#!test[read]
+match
+  $a isa article, has publish-date 2025-01-10;
 ----

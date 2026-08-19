@@ -173,7 +173,7 @@ is increased by the length of the gap.
 
 The nanosecond part of the duration is added directly to the underlying UTC timestamp, and as such requires no special handling.
 
-=== Defining a duration valued attribute
+== Define a duration attribute type
 
 [,typeql]
 ----
@@ -182,12 +182,53 @@ define
   attribute event-cadence value duration;
 ----
 
-== Inserting a duration valued attribute
+== Insert data that has a duration attribute
+
+[,typeql]
+----
+#!test[schema]
+#{{
+define
+  entity recurring-event, owns event-cadence;
+#}}
+#!test[write]
+insert
+  $e isa recurring-event, has event-cadence P1M; # same local time on the same day of every month
+----
+
+== Insert a standalone duration attribute
 
 [,typeql]
 ----
 #!test[write]
 insert
   $_ isa event-cadence P1M; # same local time on the same day of every month
+----
+
+== Specify valid values for a duration attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute billing-period value duration @values(P1M, P3M, P1Y);
+----
+
+== Specify valid values for owning a duration attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  entity annual-plan owns billing-period @values(P1Y);
+----
+
+== Retrieve data by duration attribute
+
+[,typeql]
+----
+#!test[read]
+match
+  $e isa recurring-event, has event-cadence P1M;
 ----
 

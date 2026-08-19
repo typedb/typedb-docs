@@ -4,7 +4,7 @@
 
 A logical boolean (`true` / `false`).
 
-== Defining a boolean valued attribute
+== Define a boolean attribute type
 
 [,typeql]
 ----
@@ -13,12 +13,53 @@ define
   attribute shipped value boolean;
 ----
 
-== Inserting a boolean valued attribute
+== Insert data that has a boolean attribute
+
+[,typeql]
+----
+#!test[schema]
+#{{
+define
+  entity order, owns shipped;
+#}}
+#!test[write]
+insert
+  $o isa order, has shipped false;
+----
+
+== Insert a standalone boolean attribute
 
 [,typeql]
 ----
 #!test[write]
 insert
   $_ isa shipped false;
+----
+
+== Specify valid values for a boolean attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute opted-in value boolean @values(true);
+----
+
+== Specify valid values for owning a boolean attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  entity subscriber owns opted-in @values(true);
+----
+
+== Retrieve data by boolean attribute
+
+[,typeql]
+----
+#!test[read]
+match
+  $o isa order, has shipped false;
 ----
 

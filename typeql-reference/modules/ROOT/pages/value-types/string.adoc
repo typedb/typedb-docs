@@ -4,37 +4,7 @@
 
 A UTF-8 character string type.
 
-== In expressions
-
-Strings can be concatenated using the `+` operator.
-
-[,typeql]
-----
-"Hello," + " world!" == "Hello, world!" 
-----
-
-Literals, string values, and string attributes can be combined:
-
-[,typeql]
-----
-#!test[schema]
-#{{
-define
-attribute name, value string;
-entity person, owns name;
-#}}
-#!test[write]
-#{{
-insert $p isa person, has name "John";
-#}}
-#!test[read, count=1]
-match
-  $name isa name;
-  let $greeting = "Hello, " + $name + "!";
-select $greeting;
-----
-
-== Defining a string valued attribute
+== Define a string attribute type
 
 [,typeql]
 ----
@@ -43,7 +13,21 @@ define
   attribute name value string;
 ----
 
-== Inserting a string valued attribute
+== Insert data that has a string attribute
+
+[,typeql]
+----
+#!test[schema]
+#{{
+define
+  entity person, owns name;
+#}}
+#!test[write]
+insert
+  $p isa person, has name "John";
+----
+
+== Insert a standalone string attribute
 
 [,typeql]
 ----
@@ -51,6 +35,151 @@ define
 insert
   $_ isa name "John";
 ----
+
+== Specify valid values for a string attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute status value string @values("draft", "review", "published", "archived");
+----
+
+== Specify valid values for owning a string attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  entity live-article owns status @values("published", "archived");
+----
+
+== Specify range of valid values for a string attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute grade value string @range("A".."F");
+----
+
+== Specify range of valid values for owning a string attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  entity passing-result owns grade @range("A".."C");
+----
+
+== Constrain a string attribute type by regex
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute email value string @regex("^.*@\w+\.\w+$");
+----
+
+== Constrain ownership of a string attribute type by regex
+
+[,typeql]
+----
+#!test[schema]
+define
+  entity company-contact owns email @regex("^.*@typedb\.com$");
+----
+
+== Retrieve data by string attribute
+
+[,typeql]
+----
+#!test[read]
+match
+  $p isa person, has name "John";
+----
+
+== String operations
+
+Strings can be concatenated using the `+` operator.
+
+[,typeql]
+----
+"Hello," + " world!" == "Hello, world!"
+----
+
+Literals, string values, and string attributes can be combined:
+
+[,typeql]
+----
+#!test[read, count=1]
+match
+  $name isa name;
+  let $greeting = "Hello, " + $name + "!";
+select $greeting;
+----
+
+== Literal syntax
+
+A string literal is delimited by either double quotes or single quotes.
+The two forms are equivalent.
+
+[,typeql]
+----
+#!test[read, count=1]
+match
+  let $x = "TypeDB";
+  let $y = 'TypeDB';
+  $x == $y;
+----
+
+Within a literal, a backslash begins an escape sequence:
+
+[,typeql]
+----
+#!test[read, count=1]
+match
+  let $x = "She said \"hello\"";
+  let $y = 'She said "hello"';
+  $x == $y;
+----
+
+The following escape sequences are supported:
+
+[%header,cols="1,3"]
+|===
+|Sequence
+|Character
+
+|`\"`
+|Double quote
+
+|`\'`
+|Single quote
+
+|`\\`
+|Backslash
+
+|`\n`
+|Line feed
+
+|`\r`
+|Carriage return
+
+|`\t`
+|Tab
+
+|`\b`
+|Backspace
+
+|`\f`
+|Form feed
+
+|`\u{<code>}`
+|The unicode character with hex-encoded code point `<code>` (see <<_unicode_support>>)
+|===
+
+A backslash followed by any other character is not a valid escape sequence, and the query fails to parse.
 
 == Unicode support
 TypeDB supports unicode characters in strings, as well as providing a syntax for escaping unicode characters.

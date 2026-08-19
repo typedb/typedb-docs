@@ -4,7 +4,7 @@
 
 A 64-bit signed integer.
 
-== Defining an integer valued attribute
+== Define an integer attribute type
 
 [,typeql]
 ----
@@ -13,12 +13,71 @@ define
   attribute total-likes value integer;
 ----
 
-== Inserting an integer valued attribute
+== Insert data that has an integer attribute
+
+[,typeql]
+----
+#!test[schema]
+#{{
+define
+  entity post, owns total-likes;
+#}}
+#!test[write]
+insert
+  $p isa post, has total-likes 42;
+----
+
+== Insert a standalone integer attribute
 
 [,typeql]
 ----
 #!test[write]
 insert
   $_ isa total-likes 42;
+----
+
+== Specify valid values for an integer attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute star-rating value integer @values(1, 2, 3, 4, 5);
+----
+
+== Specify valid values for owning an integer attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  entity review owns star-rating @values(1, 3, 5);
+----
+
+== Specify range of valid values for an integer attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute publication-year value integer @range(1900..2100);
+----
+
+== Specify range of valid values for owning an integer attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  entity book owns publication-year @range(2000..2100);
+----
+
+== Retrieve data by integer attribute
+
+[,typeql]
+----
+#!test[read]
+match
+  $p isa post, has total-likes 42;
 ----
 

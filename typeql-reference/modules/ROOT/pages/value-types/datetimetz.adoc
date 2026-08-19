@@ -86,7 +86,7 @@ The time portion (hours, minutes, seconds, and nanoseconds) is the
 2024-10-27T18:00 Europe/London - 2024-10-26T18:00 Europe/London == P1D
 ----
 
-== Defining a datetime-tz valued attribute
+== Define a datetime-tz attribute type
 
 [,typeql]
 ----
@@ -95,11 +95,70 @@ define
   attribute scheduled-meeting-time value datetime-tz;
 ----
 
-== Inserting a datetime-tz valued attribute
+== Insert data that has a datetime-tz attribute
+
+[,typeql]
+----
+#!test[schema]
+#{{
+define
+  entity meeting, owns scheduled-meeting-time;
+#}}
+#!test[write]
+insert
+  $m isa meeting, has scheduled-meeting-time 2025-01-10T12:30:00 Europe/London;
+----
+
+== Insert a standalone datetime-tz attribute
 
 [,typeql]
 ----
 #!test[write]
 insert
   $_ isa scheduled-meeting-time 2025-01-10T12:30:00 Europe/London;
+----
+
+== Specify valid values for a datetime-tz attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute standup-time value datetime-tz @values(2025-01-10T09:00:00 Europe/London, 2025-01-10T09:00:00 America/New_York, 2025-01-10T09:00:00 Asia/Tokyo);
+----
+
+== Specify valid values for owning a datetime-tz attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  entity london-standup owns standup-time @values(2025-01-10T09:00:00 Europe/London);
+----
+
+== Specify range of valid values for a datetime-tz attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute call-time value datetime-tz @range(2025-01-01T00:00:00Z..2025-12-31T23:59:59Z);
+----
+
+== Specify range of valid values for owning a datetime-tz attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  entity q1-call owns call-time @range(2025-01-01T00:00:00Z..2025-03-31T23:59:59Z);
+----
+
+== Retrieve data by datetime-tz attribute
+
+[,typeql]
+----
+#!test[read]
+match
+  $m isa meeting, has scheduled-meeting-time 2025-01-10T12:30:00 Europe/London;
 ----
