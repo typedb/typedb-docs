@@ -1393,8 +1393,6 @@ See xref:{page-version}@core-concepts::drivers/analyze.adoc[Analyzing queries] f
 
 Only query pipelines can be analyzed: passing a schema query (`define`, `undefine`, or `redefine`) returns a `400` error.
 
-NOTE: The shape of the response body of this endpoint is still evolving and is exempt from the versioning guarantees of the rest of this API: it may change between server minor versions.
-
 [cols="h,3a"]
 |===
 | Token required           | Yes
