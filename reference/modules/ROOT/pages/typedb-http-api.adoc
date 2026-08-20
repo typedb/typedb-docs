@@ -930,6 +930,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 Open a new transaction and receive a unique transaction id.
 
+TIP: Use the weakest transaction type that fits your operation (`read` < `write` < `schema`): schema transactions are exclusive and block all other write and schema transactions from opening while they are open.
+
 [cols="h,3a"]
 |===
 | Token required           | Yes
