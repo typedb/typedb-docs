@@ -34,6 +34,9 @@ The output stream in that case contains a single row containing the newly insert
 If the insert stage is preceded by other stages, its body is executed once for each input row.
 The output is then a stream of input rows extended with the newly inserted values.
 
+TIP: To insert the same pattern many times with different values — for example, when bulk-loading — start the pipeline with a xref:{page-version}@typeql-reference::pipelines/given.adoc[given] stage and pass one input row per value set.
+This executes a single query for all rows, which is far faster than submitting a separate insert query per row.
+
 [#_validation]
 == Validation
 Attempting to insert the following fail immediately and terminate the transaction:

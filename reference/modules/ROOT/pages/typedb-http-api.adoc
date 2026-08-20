@@ -930,6 +930,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 Open a new transaction and receive a unique transaction id.
 
+TIP: Use the weakest transaction type that fits your operation (`read` < `write` < `schema`): schema transactions are exclusive and block all other write and schema transactions from opening while they are open.
+
 [cols="h,3a"]
 |===
 | Token required           | Yes
@@ -1042,6 +1044,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 === Close transaction
 
 Close a transaction without preserving its changes by transaction id.
+This operation is idempotent: closing a transaction that is already closed (or was never opened) succeeds with an empty `200` response.
 
 [cols="h,3a"]
 |===
@@ -1170,6 +1173,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 === Rollback transaction
 
 Rolls back the uncommitted changes made via a transaction.
+The transaction remains open afterwards and can accept further queries.
+To dispose of a transaction without committing, use <<_close_transaction,close>> instead.
 
 [cols="h,3a"]
 |===
@@ -1266,11 +1271,19 @@ If there are more answers cut, a relevant `warning` will be provided in the resp
 **Default:**
 include::{page-version}@reference::partial$options-descriptions/query.adoc[tag=answer-count-limit-default]
 
+
+| `includeQueryStructure` |
+include::{page-version}@reference::partial$options-descriptions/query.adoc[tag=include-query-structure]
+
+**Default:**
+include::{page-version}@reference::partial$options-descriptions/query.adoc[tag=include-query-structure-default]
+
 |===
 // end::query-options[]
 *Given rows:*
 
 Each given row maps a 'given' variable to an instance or value.
+For write queries, passing many given rows to a single query is the most efficient way to bulk-load data: the query is parsed and planned once and executed for all rows.
 .Examples:
 [%collapsible]
 ====
@@ -1372,6 +1385,97 @@ include::{page-version}@reference::partial$http-api/requests/transactions-query-
 =====
 
 include::{page-version}@reference::partial$http-api/responses/query-concept-documents-example.json.adoc[]
+====
+
+=== Analyze query in transaction
+
+Analyzes a query within an open transaction, without executing it.
+The query is parsed and type-checked against the schema, and the response is a type-annotated structural representation of the query.
+See xref:{page-version}@core-concepts::drivers/analyze.adoc[Analyzing queries] for an overview of the concepts involved and the envisioned uses.
+
+Only query pipelines can be analyzed: passing a schema query (`define`, `undefine`, or `redefine`) returns a `400` error.
+
+[cols="h,3a"]
+|===
+| Token required           | Yes
+| Method                   | `POST`
+| URL                      | `/v1/transactions/TRANSACTION_ID/analyze`
+| Request body             | include::{page-version}@reference::partial$http-api/requests/transactions-analyze.json.adoc[]
+| Request headers          | `Authorization: Bearer ACCESS_TOKEN`
+|===
+
+*Responses:*
+
+include::{page-version}@reference::partial$http-api/responses/details.adoc[tags="200-analyze,400,403,404,408"]
+
+*Example request:*
+
+[tabs]
+====
+curl::
++
+[source,console]
+----
+
+curl --request POST \
+  --url http://localhost:8000/v1/transactions/TRANSACTION_ID/analyze \
+  --header 'Authorization: Bearer {ACCESS-TOKEN}' \
+  --json '{"query": "match $person isa person, has name $name;"}'
+----
+
+Python::
++
+[source,python]
+----
+import requests
+
+url = "http://localhost:8000/v1/transactions/TRANSACTION_ID/analyze"
+
+headers = {
+    "Authorization": "Bearer {ACCESS-TOKEN}"
+}
+body = {
+    "query": "match $person isa person, has name $name;"
+}
+
+response = requests.post(url, headers=headers, json=body)
+----
+
+Rust::
++
+[source,rust]
+----
+use reqwest;
+use serde::Serialize;
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+struct Analyze {
+    query: String,
+}
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let analyze = Analyze {
+        query: "match $person isa person, has name $name;".to_string(),
+    };
+    let client = reqwest::Client::new();
+    let resp = client
+        .post("http://localhost:8000/v1/transactions/TRANSACTION_ID/analyze")
+        .header(reqwest::header::AUTHORIZATION, "Bearer {ACCESS-TOKEN}")
+        .json(&analyze)
+        .send().await;
+    Ok(())
+}
+----
+====
+
+*Example response:*
+
+.Analyzed query
+[%collapsible]
+====
+include::{page-version}@reference::partial$http-api/responses/transactions-analyze-example.json.adoc[]
 ====
 
 == One-shot query
