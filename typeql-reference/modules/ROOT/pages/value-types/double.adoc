@@ -1,0 +1,85 @@
+= Double
+:page-aliases: {page-version}@typeql-reference::values/double.adoc
+:test-typeql: linear
+
+A finite double precision IEEE 754 floating point number.
+
+== Define a double attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+attribute latitude @independent, value double;
+attribute longitude @independent, value double;
+----
+
+== Insert data that has a double attribute
+
+[,typeql]
+----
+#!test[schema]
+#{{
+define
+  entity landmark, owns latitude, owns longitude;
+#}}
+#!test[write]
+insert
+  $l isa landmark, has latitude 11.373333, has longitude 142.591667;
+----
+
+== Insert a standalone double attribute
+
+[,typeql]
+----
+#!test[write]
+insert
+  $_ isa latitude 11.373333;
+  $_ isa longitude 142.591667;
+----
+
+== Specify valid values for a double attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute zoom-factor value double @values(0.5, 1.0, 2.0, 4.0);
+----
+
+== Specify valid values for owning a double attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  entity map-view owns zoom-factor @values(1.0, 2.0);
+----
+
+== Specify range of valid values for a double attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute elevation value double @range(-500.0..9000.0);
+----
+
+== Specify range of valid values for owning a double attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  entity mountain owns elevation @range(0.0..9000.0);
+----
+
+== Retrieve data by double attribute
+
+[,typeql]
+----
+#!test[read]
+match
+  $l isa landmark, has latitude 11.373333;
+----
+

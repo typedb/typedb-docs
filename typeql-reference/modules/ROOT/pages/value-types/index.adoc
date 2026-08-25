@@ -1,0 +1,103 @@
+= Value types
+:page-aliases: {page-version}@typeql::values.adoc, {page-version}@typeql-reference::values/index.adoc
+:page-toclevels: 2
+
+A value type classifies the concrete data a TypeQL query evaluates and stores.
+Unlike entity, relation, and attribute types, value types are built into the language rather than declared in a schema, and they cannot be subtyped or given capabilities.
+
+== Where value types are used
+
+Value types appear in the following contexts.
+
+=== Attribute value types
+
+Every attribute type is defined with an associated value type using the xref:{page-version}@typeql-reference::statements/value.adoc[`value`] keyword, which fixes the value that its attributes carry:
+
+[,typeql]
+----
+define attribute start-date value date;
+----
+
+The same keyword retrieves attribute types by value type in a pattern, as in `match $a value date;`.
+
+=== Literals
+
+A xref:{page-version}@typeql-reference::expressions/literals.adoc[literal] written directly in a query is a constant of the value type determined by its syntax: `1` is an `integer`, `1.0` a `double`, `true` a `boolean`.
+Literals supply attribute values on insertion, operands in expressions and comparisons, arguments to function calls, and arguments to value constraints.
+
+=== Value variables
+
+A variable assigned with xref:{page-version}@typeql-reference::statements/let-eq.adoc[`let`] holds a computed value rather than a stored data instance.
+Its value type is inferred from the expression that produces it, and is checked when the query is compiled:
+
+[,typeql]
+----
+match let $x = 1 + 1;
+----
+
+=== Function signatures
+
+A xref:{page-version}@typeql-reference::functions/writing.adoc[function] declares the type of each argument and each returned element.
+These may be value types as well as user-defined types:
+
+[,typeql]
+----
+fun mean-karma($u: user) -> double:
+----
+
+=== Comparisons
+
+Value types determine which xref:{page-version}@typeql-reference::statements/comparisons.adoc[comparisons] are legal.
+Values may only be compared within a comparable group, and `boolean` and `duration` values compare for equality only.
+
+=== Value constraints
+
+The xref:{page-version}@typeql-reference::annotations/values.adoc[`@values`], xref:{page-version}@typeql-reference::annotations/range.adoc[`@range`], and xref:{page-version}@typeql-reference::annotations/regex.adoc[`@regex`] annotations take literal arguments that must match the value type of the attribute type they constrain.
+Each annotation supports a specific set of value types.
+
+== Supported value types
+
+TypeQL provides the following value types.
+
+[%header,cols="1,1,2"]
+|===
+|Name
+|TypeQL
+|Description
+
+|xref:{page-version}@typeql-reference::value-types/boolean.adoc[Boolean]
+|`boolean`
+|A logical boolean (`true` / `false`).
+
+|xref:{page-version}@typeql-reference::value-types/integer.adoc[Integer]
+|`integer`
+|A 64-bit signed integer.
+
+|xref:{page-version}@typeql-reference::value-types/double.adoc[Double]
+|`double`
+|A double precision IEEE 754 floating point number.
+
+|xref:{page-version}@typeql-reference::value-types/decimal.adoc[Decimal]
+|`decimal`
+|A fixed point signed decimal number.
+
+|xref:{page-version}@typeql-reference::value-types/string.adoc[String]
+|`string`
+|A UTF-8 character string type.
+
+|xref:{page-version}@typeql-reference::value-types/date.adoc[Date]
+|`date`
+|An ISO 8601 compliant date type. 
+
+|xref:{page-version}@typeql-reference::value-types/datetime.adoc[Datetime]
+|`datetime`
+|An ISO 8601 compliant date and time type. 
+
+|xref:{page-version}@typeql-reference::value-types/datetimetz.adoc[DatetimeTZ]
+|`datetime-tz`
+|An ISO 8601 compliant date and time type with time zone information.
+
+|xref:{page-version}@typeql-reference::value-types/duration.adoc[Duration]
+|`duration`
+|An ISO 8601 compliant duration type.
+|===

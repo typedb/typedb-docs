@@ -51,3 +51,7 @@ Schema transactions can execute read queries, data update queries, and schema mu
 
 * Schema transactions can *mutate both data and schema* at the same time, allowing atomic migrations from one database state to another.
 
+Because of their exclusivity, always use the weakest transaction type that fits your operation, and keep schema transactions short-lived: while one is open, no write transactions can be opened.
+Note that rolling back a schema transaction does not release its exclusive lock — only closing or committing it does.
+A transaction open that is blocked by an exclusive transaction waits up to the `schema_lock_acquire_timeout_millis` transaction option (10 seconds by default) before failing with a timeout error.
+

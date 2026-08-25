@@ -1,0 +1,88 @@
+= Decimal
+:page-aliases: {page-version}@typeql-reference::values/decimal.adoc
+:test-typeql: linear
+
+A fixed point signed decimal number with 64 bits to the left of the decimal point and 19 decimal digits of precision after the point.
+
+== Storage representation
+
+A decimal number is stored as a 64-bit signed integer part, and an unsigned 19-digit fractional part. As a consequence, the range of values
+for decimal is from &minus;2^63^ to 2^63^ &minus; 10^&minus;19^ (inclusive).
+
+== Define a decimal attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute account-balance value decimal;
+----
+
+== Insert data that has a decimal attribute
+
+[,typeql]
+----
+#!test[schema]
+#{{
+define
+  entity account, owns account-balance;
+#}}
+#!test[write]
+insert
+  $a isa account, has account-balance 0.02dec;
+----
+
+== Insert a standalone decimal attribute
+
+[,typeql]
+----
+#!test[write]
+insert
+  $_ isa account-balance 0.02dec;
+----
+
+== Specify valid values for a decimal attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute subscription-fee value decimal @values(4.99dec, 9.99dec, 19.99dec);
+----
+
+== Specify valid values for owning a decimal attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  entity basic-plan owns subscription-fee @values(4.99dec, 9.99dec);
+----
+
+== Specify range of valid values for a decimal attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute interest-rate value decimal @range(0.0dec..25.0dec);
+----
+
+== Specify range of valid values for owning a decimal attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  entity savings-account owns interest-rate @range(0.0dec..10.0dec);
+----
+
+== Retrieve data by decimal attribute
+
+[,typeql]
+----
+#!test[read]
+match
+  $a isa account, has account-balance 0.02dec;
+----
+

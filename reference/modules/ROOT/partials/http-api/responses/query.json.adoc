@@ -4,6 +4,7 @@
   "queryType": "read" | "write" | "schema",
   "answerType": "ok" | "conceptRows" | "conceptDocuments",
   "answers": [ ... ], // optional
+  "query": { ... },   // optional: structural analysis of the query, controlled by the includeQueryStructure query option
   "warning": string   // optional
 }
 ----

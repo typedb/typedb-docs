@@ -1,4 +1,5 @@
 = Datetime
+:page-aliases: {page-version}@typeql-reference::values/datetime.adoc
 :test-typeql: linear
 
 An https://www.iso.org/iso-8601-date-and-time-format.html[ISO 8601,window=_blank] compliant date and time type. 
@@ -51,7 +52,7 @@ match
 
 A difference between two datetime values is a duration such that when it is added to the earlier
 datetime, it produces the later datetime. 
-See the xref:{page-version}@typeql-reference::values/duration.adoc[Duration] type reference for more
+See the xref:{page-version}@typeql-reference::value-types/duration.adoc[Duration] type reference for more
 information about datetime-duration arithmetic.
 The time portion of the result is always under 24 hours.
 
@@ -61,7 +62,7 @@ The time portion of the result is always under 24 hours.
 2020-09-21T09:00:00 + P3Y6M9DT3H == 2024-03-30T12:00:00
 ----
 
-== Defining a datetime valued attribute
+== Define a datetime attribute type
 
 [,typeql]
 ----
@@ -70,11 +71,70 @@ define
   attribute local-sunset value datetime;
 ----
 
-== Inserting a datetime valued attribute
+== Insert data that has a datetime attribute
+
+[,typeql]
+----
+#!test[schema]
+#{{
+define
+  entity observation, owns local-sunset;
+#}}
+#!test[write]
+insert
+  $o isa observation, has local-sunset 2025-01-10T16:13;
+----
+
+== Insert a standalone datetime attribute
 
 [,typeql]
 ----
 #!test[write]
 insert
   $_ isa local-sunset 2025-01-10T16:13;
+----
+
+== Specify valid values for a datetime attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute shift-start value datetime @values(2025-01-10T06:00:00, 2025-01-10T14:00:00, 2025-01-10T22:00:00);
+----
+
+== Specify valid values for owning a datetime attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  entity day-shift owns shift-start @values(2025-01-10T06:00:00, 2025-01-10T14:00:00);
+----
+
+== Specify range of valid values for a datetime attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute booking-time value datetime @range(2025-01-01T00:00:00..2025-12-31T23:59:59);
+----
+
+== Specify range of valid values for owning a datetime attribute type
+
+[,typeql]
+----
+#!test[schema]
+define
+  entity business-hours-booking owns booking-time @range(2025-01-01T09:00:00..2025-12-31T17:00:00);
+----
+
+== Retrieve data by datetime attribute
+
+[,typeql]
+----
+#!test[read]
+match
+  $o isa observation, has local-sunset 2025-01-10T16:13;
 ----

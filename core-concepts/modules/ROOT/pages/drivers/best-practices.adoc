@@ -258,6 +258,11 @@ For data loading workloads, we recommend batching approximately 100-1000 queries
 
 If you know that all your queries are valid, the `resolve()` call can be omitted for even higher performance.
 
+When the queries in a batch are the same pattern instantiated with different values, prefer a single query with a
+xref:{page-version}@typeql-reference::pipelines/given.adoc[given] stage, passing one input row per value set.
+The query is parsed and planned once and executed for all rows, which is typically an order of magnitude faster than
+submitting one insert query per row — as well as more robust than generating query strings.
+
 === Security considerations
 
 * **Never hardcode credentials**: Use environment variables or secure configuration management
