@@ -21,6 +21,19 @@ If it is a write query, all changes, including both returned and not returned, w
 10 000
 // end::answer-count-limit-default[]
 
+== Include query structure
+// tag::include-query-structure[]
+Whether to include a structural analysis of the query in the `query` field of concept row responses.
+This is used, for example, by TypeDB Studio to visualize answers.
+
+The analysis adds a constant overhead (typically under 1 KB) to every response, independent of the number of answers returned.
+Set this option to `false` to minimize response sizes.
+// end::include-query-structure[]
+
+// tag::include-query-structure-default[]
+true
+// end::include-query-structure-default[]
+
 == Prefetch size
 // tag::prefetch-size[]
 The number of extra query responses sent before the client side has to re-request more responses.
