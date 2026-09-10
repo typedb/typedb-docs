@@ -3,7 +3,7 @@
 set -euo pipefail
 
 DIST="${1:-dist}"
-PATTERN='#!test|#{{|#}}|//!test|//{{|//}}'
+PATTERN='#!test|#{{|#}}|#---|//!test|//{{|//}}|//---'
 
 if [[ ! -d "$DIST" ]]; then
   echo "verify-no-test-harness: dist directory not found: $DIST" >&2

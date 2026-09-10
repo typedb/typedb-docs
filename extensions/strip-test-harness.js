@@ -6,19 +6,19 @@ const MARKERS = {
     testStart: /^\s*#!test(?:\[.*?\])?\s*$/,
     hiddenStart: /^\s*#{{/,
     hiddenEnd: /^\s*#}}/,
-    segmentSep: /^\s*#!---\s*$/,
+    segmentSep: /^\s*#---\s*$/,
   },
   python: {
     testStart: /^\s*#!test(?:\[.*?\])?\s*$/,
     hiddenStart: /^\s*#{{/,
     hiddenEnd: /^\s*#}}/,
-    segmentSep: /^\s*#!---\s*$/,
+    segmentSep: /^\s*#---\s*$/,
   },
   console: {
     testStart: /^\s*#!test(?:\[.*?\])?\s*$/,
     hiddenStart: /^\s*#{{/,
     hiddenEnd: /^\s*#}}/,
-    segmentSep: /^\s*#!---\s*$/,
+    segmentSep: /^\s*#---\s*$/,
   },
   rust: {
     testStart: /^\s*\/\/!test(?:\[.*?\])?\s*$/,

@@ -34,4 +34,16 @@ assert.deepEqual(
 
 assert.deepEqual(stripHarnessLines(['plain query;'], typeql), ['plain query;'])
 
+assert.deepEqual(
+  stripHarnessLines([
+    '#!test[schema]',
+    '#{{',
+    'define entity person;',
+    '#}}',
+    '#---',
+    'match $p isa person;',
+  ], typeql),
+  ['match $p isa person;']
+)
+
 console.log('strip-test-harness: all assertions passed')
