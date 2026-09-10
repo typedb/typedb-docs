@@ -3,7 +3,9 @@
   "scripts": {
     "build": "antora antora-playbook.yml",
     "rebuild": "antora antora-playbook.yml --fetch",
-    "start": "npm run build"
+    "start": "npm run build",
+    "test:strip-harness": "node scripts/test-strip-test-harness.js",
+    "verify:no-harness": "bash scripts/verify-no-test-harness.sh"
   },
   "dependencies": {
     "prismjs": "1.29.0"
