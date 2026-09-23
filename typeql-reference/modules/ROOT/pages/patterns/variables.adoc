@@ -1,0 +1,225 @@
+= Variables
+:test-typeql: linear
+
+== Variable names, visibility & scopes
+Variable names are unique within a pattern - i.e. all usages of the same name in a stage refer to the same variable.
+
+== Scopes
+Pattern comprise statements containing variables. Given a pattern, the *scope* of a variable is:
+
+* the block `{ ... }` in which variable appears at top-level (i.e., not nested in further `{...}`) but it does not appear outside of the block.
+If the variable appears in all branches of a disjunction, it counts as appearing in the parent pattern.
+If a variable is scoped the root of a stage, it appears in the root of the next stage.
+
+A variable that is scoped to a block (i.e. not the root) is said to be "internal" to that block
+
+A key principle of valid TypeQL pattern is:
+
+> *_Every variable must have a unique scope._*
+
+Hence, having disjoint blocks in which a variable appears is an error.
+
+
+== Input and Binding variables
+The semantics of optionals and negations depend on whether a variable is input to it or not.
+
+* A variable is input to a negation if it is also which is not internal to the negation is an input to the negation.
+* A variable is input to an optional if it is not internal to the block.
+
+Disjunctions may also have inputs, though this has less to do with semantics and more to do with evaluation.
+
+* A variable is input to a disjunction if it is not internal to it, and in some but not all branches.
+* A disjunction binds variables that occur in all its branches.
+* A negation does not bind any internal variables.
+* An optional binds all internal variables.
+
+Certain kinds of constraints also require the variables to be bound before they can be evaluated.
+* A comparison needs both variables to be bound
+* An `is` statement needs both variables to be bound
+* An expression assignment requires all variables used in the expression to be bound.
+* A function call requires all arguments to be bound.
+
+== Optionality
+An optional block does not fail the largert pattern if it fails.
+The variables internal to the block will be bound to a `none` value.
+Since (most) constraints are not defined on `none` values, using an optional variable in a constraint invalid
+and results in a compile-time error. The `isset $var;` constraint fails if the `$var` is `none`.
+Hence, only rows where `$var` is not `none` remain and `$var` can safely be used in constraints.
+[NOTE]
+====
+Prior to version 3.15, using an optional variable in a constraint would simply fail the row if it was `none`.
+This risked queries silently dropping rows if the user referenced an optional variable without realising,
+such as if a function returns an optional variable.
+Starting 3.15, any such reference is considered unsafe and is a compile-error.
+====
+
+[NOTE]
+====
+Functions do not currently support optional arguments.
+If/When they do, this will be a constraint which is defined on a `none` value and will not require an `isset` check.
+====
+
+=== Short-circuiting expressions
+It is common to want to optionally compute a value involving optional inputs.
+One way to do this is using a `try` block. e.g.
+[,typeql]
+----
+#!test[read]
+match
+    $p isa person;
+    try { $p has age $age; };
+match
+    try { isset $age; let $double-age = 2 * $age; };
+----
+`$double-age` will hold double the age of `$p` if s/he has one.
+Else both `$age` and `$double-age` will be `none`
+
+The `?` operator which "short-circuits" the expression and returns `none`.
+
+[,typeql]
+----
+#!test[read]
+match
+    $p isa person;
+    try { $p has age $age; };
+match
+    let $double-age = 2 * $age?;
+----
+
+The `?` operator can also be used to short-circuit `fetch` attribute expressions.
+
+[,typeql]
+----
+#!test[read]
+match
+    $p isa person;
+    try { $_ isa friendship, links (person: $p, person: $q);
+fetch {
+    "p": { $p.* },
+    "q": { $q?.* },
+};
+----
+
+== Examples
+
+.Schema for the examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema]
+define
+attribute name, value string;
+attribute age, value integer;
+
+entity person, owns name, owns age;
+entity company, owns name;
+
+relation friendship, relates friend @card(2);
+relation employment, relates employee, relates employer;
+person plays employment:employee, plays friendship:friend;
+company plays employment:employer;
+#}}
+----
+====
+
+=== Example 1: Scopes
+In the following, the scope of the variable `$p` is the root.
+The scope of `$n` is also the root as it occurs in both branches.
+`$a` is scoped to the second branch of the disjunction.
+The scope
+[,typeql]
+----
+#!test[read]
+match
+    $p isa person;
+    {
+        $p has name $n;
+        { $n == "John"; } or { $n == "James"; };
+    } or {
+        $p has name $n, has age $a;
+        { $a < 26; } or { $a > 60; };
+    };
+----
+
+For the following example, the variable `$p` and `$a` are both scoped to the root.
+[,typeql]
+----
+#!test[read]
+match
+    { $x isa person; $p has age $a; } or
+    { $x isa company; try { $x has age $a; } };
+----
+
+==== Example 2: Disjoint scope errors
+The following is an error because `$p` has two different scopes - The first and second branches of the disjunction.
+[,typeql]
+----
+#!test[read]
+match
+{ $p isa person; } or { $p is company; } or { $q isa person; };
+----
+
+This is fine because `$p` has is visible at the root, since it is in both branches of the second disjunction.
+[,typeql]
+----
+#!test[read]
+match
+{ $p isa person; } or { $p is company; } or { $q isa person; };
+{ $p has name "Steve"; } or { $p has age 20; };
+----
+The following is also fine, as the `$p` is visible in the root of the first match, and hence visible in the root of the second match.
+Thus, its scope in the second match is also the root.
+[,typeql]
+----
+#!test[read]
+match
+    { $p has name "Steve"; } or { $p has age 20; };
+match
+    { $p isa person; } or { $p is company; } or { $q isa person; };
+----
+
+==== Example 3: Variable scopes & naming across stages
+The following is an error as the variables `$n` and `$a` have multiple scopes.
+[,typeql]
+----
+#!test[read]
+match
+$p isa person;
+{ $p has $name; } or { $p has $age; };
+{ $name isa name == "Steve"; } or { $age isa age == 10; };
+----
+
+The following example is no longer an error, but means something very different.
+[,typeql]
+----
+#!test[read]
+match
+$p isa person;
+    { $p has $name; } or { $p has $age; };
+match
+    { $name isa name == "Steve"; } or { $age isa age == 10; };
+----
+
+==== Example 4: Variable scopes & block inputs.
+The following query tries to find two friends who are not employed.
+Here, The scope of `$c` is the root - making it an input to either negation.
+However, there is no constraint which can bind `$c` in the root and the negations have an unsatisfied input.
+[,typeql]
+----
+#!test[read]
+match
+$f isa friendship, links (friend: $p, friend: $q);
+not { employment (employer: $c, employer: $p); };
+not { employment (employer: $c, employer: $q); };
+----
+
+Similarly, the following pattern also fails because `$c` is an unsatisfied input to the optional blocks.
+[,typeql]
+----
+#!test[read]
+match
+$f isa friendship, links (friend: $p, friend: $q);
+try { employment (employer: $c, employer: $p); };
+try { employment (employer: $c, employer: $q); };
+----
