@@ -21,7 +21,7 @@ See xref:{page-version}@home::install/typeql-check.adoc[] for install instructio
 [#add_skill]
 == Add the TypeDB skills to your coding agent
 
-The https://github.com/typedb/typedb-skills[`typedb-skills`,window=_blank] repository contains skill files that teach AI coding agents how to work with TypeDB:
+The https://github.com/typedb/typedb-skills[typedb-skills,window=_blank] repository contains skill files that teach AI coding agents how to work with TypeDB:
 
 * https://github.com/typedb/typedb-skills/blob/master/typeql.md[`typeql.md`,window=_blank] - the TypeQL language and TypeDB's data model.
 * https://github.com/typedb/typedb-skills/blob/master/modeling.md[`modeling.md`,window=_blank] - schema-modeling guidance: naming, entities vs relations vs attributes, composition, type safety, cardinality, and constraints.
@@ -40,7 +40,7 @@ git clone https://github.com/typedb/typedb-skills.git
 Claude Code::
 +
 --
-Copy `typeql.md` and `modeling.md` into `~/.claude/skills/` (user-level) or `.claude/skills/` inside your project (project-level). Claude Code will load them automatically the next time you start a session.
+Copy `typeql.md` and `modeling.md` into `~/.claude/skills/<NAME>/SKILL.md` (user-level) or `.claude/skills/<NAME>/SKILL.md` inside your project (project-level). Claude Code will load them automatically the next time you start a session.
 --
 
 Cursor::
