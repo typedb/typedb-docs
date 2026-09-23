@@ -10,7 +10,8 @@ build:
       image: typedb-ubuntu-22.04
       type: foreground
       command: |
-        npx antora generate test/content/antora-playbook-mock-for-ci.yml
+        # Pinned: antora 3.2+ requires Node >= 20 and crashes on the Node version in the CI image
+        npx antora@3.1.15 generate test/content/antora-playbook-mock-for-ci.yml
 
     test-code-testing-framework:
       image: typedb-ubuntu-22.04
