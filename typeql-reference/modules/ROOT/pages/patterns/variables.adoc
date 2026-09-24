@@ -39,6 +39,32 @@ Certain kinds of constraints also require the variables to be bound before they 
 * An expression assignment requires all variables used in the expression to be bound.
 * A function call requires all arguments to be bound.
 
+== Variable categories
+Concepts in TypeDB can be divided into a few broad "categories":
+
+* Instance
+ - Entity (E)
+ - Relation (R)
+ - Attribute (A)
+* Types
+ - EntityType
+ - RelationType
+ - AttributeType
+ - RoleType
+* Value (V)
+
+A constraint will expect each variable to be of certain categories.
+For example `$x has $a` expects `$x` to be an `Entity` or a `Relation` instance, and `$a` to be an `Attribute` instance.
+Since categories can be determined without looking at the schema,
+a pre-check detects any variables which have conflicting categories.
+
+.Categories for various constraints
+[,typeql]
+----
+TODO?
+----
+
+
 == Optionality
 An optional block does not fail the largert pattern if it fails.
 The variables internal to the block will be bound to a `none` value.
