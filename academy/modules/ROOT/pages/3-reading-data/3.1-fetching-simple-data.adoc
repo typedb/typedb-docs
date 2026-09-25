@@ -233,8 +233,8 @@ With a composite statement:
 match
 $book isa paperback, has title "Great Discoveries in Medicine";
 fetch {
-  "title": $book.title,
-  "page-count": $book.page-count
+  "page-count": $book.page-count,
+  "price": $book.price
 };
 ----
 
@@ -247,8 +247,8 @@ match
 $book isa paperback;
 $book has title "Great Discoveries in Medicine";
 fetch {
-  "title": $book.title,
-  "page-count": $book.page-count
+  "page-count": $book.page-count,
+  "price": $book.price
 };
 ----
 
