@@ -1,5 +1,7 @@
 = TypeDB Studio
 :page-aliases: {page-version}@manual::tools/studio.adoc
+:description: Complete guide to TypeDB Studio: connecting, managing databases, and every tool for querying, exploring, and visualising TypeDB data.
+:keywords: typedb, studio, gui, query, graph, visualisation, data explorer, schema
 
 [.float-group]
 --
@@ -8,8 +10,8 @@ TypeDB Studio is an interactive visual environment for managing and querying Typ
 With Studio, developers can efficiently manage databases, execute queries, and explore query results,
 all within a unified environment.
 
-This page provides a quick introduction to TypeDB Studio and an overview of its features. All features of TypeDB Studio
-are available on both web and desktop. Be aware that the web app may not be able to connect to non-HTTPS endpoints (e.g. localhost, 127.0.0.1) on certain browsers; at the time of writing, Chrome works, but Safari does not.
+This page covers the basics (prerequisites, setup, connecting, databases and transactions), then walks through each of
+Studio's tools and what it can do. All features of TypeDB Studio are available on both web and desktop.
 --
 
 [cols-2]
@@ -33,32 +35,283 @@ Browse the source code of TypeDB Studio.
 ****
 --
 
-== Quickstart
 
-=== Connect to TypeDB
+== Prerequisites
+
+- A running TypeDB server, version *3.3.0 or later*: Community Edition, Cloud, or Enterprise. Studio will not connect to older servers.
+- The server's *HTTP endpoint* address. By default this is port `8000`. Studio does not use the gRPC port (`1729`).
+- A username and password. TypeDB CE defaults to `admin` / `password`.
+- For graph views (query graph output, the Schema tool, and the Graph explorer): a browser or machine with *WebGL* enabled.
+
+=== Web or desktop
+
+The web app at https://studio.typedb.com[studio.typedb.com,window=_blank] is served over HTTPS, so browsers may block
+connections to plain `http://` servers. At the time of writing, Chrome, Chromium and Firefox allow `http://localhost` and `http://127.0.0.1`;
+other browsers, including Safari, may not. If your server has no TLS, use the xref:{page-version}@home::install/studio.adoc#_desktop[desktop app].
+
+The desktop app runs on:
+
+- Windows 10 or later (x86_64)
+- macOS (x86_64, arm64)
+- Debian / Ubuntu 22.04 or later (x86_64, arm64)
+
+
+== Set up TypeDB Studio
+
+- *Web*: open https://studio.typedb.com[studio.typedb.com,window=_blank]. It always runs the latest release.
+- *Desktop*: download and install it from the xref:{page-version}@home::install/studio.adoc#_desktop[installation page].
+
+=== Updating TypeDB Studio
+
+The web version updates automatically.
+
+The desktop app does not yet auto-update. Download the latest version from the
+https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name:%5Etypedb-studio[downloads page,window=_blank] and
+run it. You may optionally uninstall the previous version.
+
+
+== Connect to TypeDB
+
+=== Quickstart
 
 Select TypeDB edition below, and follow the instructions:
 
 include::{page-version}@home::partial$studio_connect.adoc[tag=connect_studio]
 
-TypeDB Studio remembers the server addresses and usernames you have previously used and offers them as suggestions the
-next time you connect.
+=== The connection form
 
-Saved connections are stored locally in your browser or desktop app. See <<_data_storage>> for details.
+The *Connect TypeDB server* page (`/connect`) has two modes, selected at the top.
+
+*Use address and credentials*:
+
+- *Address*: the HTTP endpoint, including `http://` or `https://`, e.g. `http://localhost:8000`.
+For a multi-node cluster, list every node's address, separated by commas.
++
+For clusters behind a NAT or load balancer, the address field and the connection string also accept translated
+addresses, written as `external;internal` pairs (comma-separated per node), e.g.
+`https://public-host:8000;https://internal-host:8000`.
+- *Username* and *Password*.
+- *Server name* (optional): a display name for this connection. Defaults to the address.
+
+Studio suggests up to 10 recently used addresses as you type. Remove a suggestion with its trash icon, or by
+highlighting it and pressing Delete.
+
+Studio warns you under the Address field if you use port `1729` (the gRPC port), omit the port, or use `http://` from a browser that may block it.
+
+*Use connection string*: paste a connection string (see below). Both modes stay in sync, so you can paste a
+string and then edit individual fields.
+
+Click *Connect*. Studio then opens the tool you last used.
 
 === Connection string
 
-You can also connect to a TypeDB server using a connection string. The connection string should be in the format `typedb://<username>:<password>@<host>:<port>/<database_name>?name=<my_connection_name>`. '/<database_name>' and 'name' are optional.
+The connection string format is:
 
-For example, if you have a TypeDB server running on `localhost:8000` and you want to connect to the `mydb` database, you can use the connection string `typedb://admin:password@localhost:8000/mydb`.
+----
+typedb://<username>:<password>@<address>[,<address>...][/<database_name>][?name=<connection_name>]
+----
+
+Each address must include `http://` or `https://`. The username and password must be URL-encoded. The database and
+name are optional.
+
+For example, to connect to the `mydb` database on a local server:
+
+----
+typedb://admin:password@http://localhost:8000/mydb
+----
+
+The gear icon next to the field opens the *Connection string builder*, which assembles a string from separate
+fields and previews it.
 
 TypeDB Cloud credentials files include a prebuilt connection string.
 
+=== Connect from a link
+
+You can pre-fill the connection form with URL parameters:
+
+----
+https://studio.typedb.com/connect?address=https://my-server:8000&username=admin&name=Production
+----
+
+Available parameters:
+
+- `address`: pre-fills *Address*: the HTTP endpoint, including `http://` or `https://`. Repeat it, or comma-separate
+values, for a multi-node cluster.
+- `username`: pre-fills *Username*: the TypeDB user to log in as.
+- `name`: pre-fills *Server name*: a display name for this connection. Defaults to the address.
+
+The password is never taken from the URL. If `address` and `username` match the server you are already connected to,
+Studio skips the form.
+
+=== Automatic reconnection
+
+Studio remembers your last successful connection and reconnects to it on launch, reselecting the database you last
+used. If the server has exactly one database, Studio selects it automatically.
+
+Studio does not reconnect if it is launched from a <<_connect_from_a_link,link>> whose `address` names a different
+server; it shows the pre-filled connection form instead.
+
+To stop Studio reconnecting, use *Sign out* (see below).
+
+=== Connection menu
+
+The connection button on the left of the top bar shows `<username>@<server name>` and a status dot: green (connected),
+amber (connecting) or red (disconnected). Its menu shows:
+
+- The server's name, edition and version.
+- *Change server* (or *Connect TypeDB server*): opens the connection form.
+- The current user.
+- For clusters: the *Cluster nodes*, each with its replication role, and a check on the node Studio is talking to.
+- *Sign out*: disconnects, forgets the saved connection, and returns to the connection form.
+
+
+== Databases
+
+Manage databases from the database button next to the connection button in the top bar. Most tools need a database to
+be selected, and prompt you with *Select database* if none is.
+
 === Select a database
 
-To select a database to work with, use the dropdown menu on the right of the database icon in the top toolbar. You can also create new databases here, optionally with sample data preloaded.
+Click a database in the menu to switch to it. Studio remembers your choice. Use *Refresh* to reload the list.
 
-See <<_databases>> for the full set of database management features, and <<_sample_datasets>> for more details about sample datasets.
+=== Create a database
+
+Click *New database*. The name may contain letters, digits, hyphens, and underscores only. You can optionally choose a
+<<_sample_datasets,sample dataset>> to load into it. The new database is selected immediately.
+
+[#_sample_datasets]
+=== Load a sample dataset
+
+Click *Load sample dataset*, choose a dataset, and confirm the database name (defaults to the dataset's name).
+Studio then:
+
+. Creates and selects the database.
+. Switches to the <<_query_tool,Query tool>> and sets the transaction mode to *auto*.
+. Opens a `<dataset> schema` query tab and runs it, then a `<dataset> data` tab and runs it.
+
+If the schema fails to load, the data load is skipped. Check the query tabs' Log output for details.
+
+Sample datasets currently include *Bookstore*, *Cyber Threat Intelligence* and *Robotics*. They are maintained in the
+https://github.com/typedb/typedb-examples[typedb-examples repository,window=_blank], and Studio automatically picks the
+dataset version that matches your server.
+
+=== Delete a database
+
+Click the trash icon next to a database in the menu. Deleting a database is irreversible and permanently removes all of
+its data. You must type the database name to confirm.
+
+
+[#_transactions]
+== Transactions
+
+The transaction control sits to the right of the database button, once a database is selected. It shows the current
+mode: *auto* or *manual*.
+
+=== Auto mode
+
+The default. Each query runs in its own transaction. Studio detects the transaction type from the query (`define` etc.
+runs as schema; `insert`, `put`, `update` and `delete` run as write; anything else as read), and retries with another
+type if the server rejects it. Write and schema queries are committed automatically.
+
+=== Manual mode
+
+Switch to *Manual mode* from the transaction menu to run several queries in one transaction. Then:
+
+. Choose the transaction type: *read*, *write*, or *schema*.
+. Click *Open*.
+. Run your queries. A `*` after the type shows there are uncommitted changes.
+. Click *Commit* to save changes, *Rollback* to discard them and keep the transaction open, or *Close* to end the
+transaction.
+
+*Commit* and *Rollback* appear only for write and schema transactions.
+
+Changing the type or mode closes any open transaction immediately. Only one transaction can be open at a time within a
+single instance of TypeDB Studio.
+
+Manual mode also gives the <<_data_explorer,Data explorer>> and <<_graph_explorer,Graph explorer>> a fixed snapshot of
+your data. Your chosen mode is remembered between sessions.
+
+=== Transaction options
+
+*Options* in the transaction menu sets the transaction timeout (*Timeout (seconds)*, default 300). It applies to all
+transactions, including auto mode.
+
+=== Transaction inspector
+
+*Inspector* in the transaction menu shows the current (or most recently closed) transaction: its status, type, and the
+times it was opened and closed, along with low-level metadata such as the transaction ID and timeout.
+
+
+== Common tasks
+
+Step-by-step routes through Studio for frequent goals. Each step links to the relevant section.
+
+=== Visualise a dataset as a graph
+
+*Without writing queries*, using the <<_graph_explorer,Graph explorer>>:
+
+. <<_connect_to_typedb,Connect>> and <<_databases,select a database>>.
+. Open *Graph* from the sidebar.
+. Click a type in the schema tree on the left. A tab opens with instances of that type as nodes.
+. Right-click a node and use *Load relations*, *Load links* or *Load attributes* to add its connections. Choose *here*
+for that node only, or *every '<type>'* for every instance of its type in the graph.
+. Repeat to grow the graph. Style and export it from the <<_graph_visualisation,graph controls>>.
+
+*From a query*, using the <<_query_tool,Query tool>>:
+
+. Open *Query* from the sidebar.
+. Write a `match` query that returns the instances and connections you want to see. Don't use `fetch`, since fetch
+results cannot be drawn. For example:
++
+[,typeql]
+----
+match
+  $person isa person, has name $name;
+  $employment isa employment, links (employee: $person, employer: $company);
+----
+. Raise the *Limit* next to the Run button if you want more than 100 answers.
+. Run the query (Ctrl+Enter / ⌘+Enter) and select the *Graph* output view.
+. Right-click nodes to expand them, as above.
+
+See <<_what_gets_drawn>> for how variables become nodes and edges.
+
+=== Understand a database's schema
+
+. Open *Schema* from the sidebar to see the schema drawn as a graph, with a type tree on the left.
+. Or, in the Query tool, browse the <<_schema_pane,schema pane>>. Use *More actions* > *View schema text* to read and
+copy the full TypeQL schema.
+
+=== Browse records without writing TypeQL
+
+. Open *Data* from the sidebar.
+. Click a type in the tree to see a table of its instances.
+. Click a row for full details, then use *Explore* to follow connections. See <<_data_explorer>>.
+
+=== Load data and try Studio quickly
+
+. <<_sample_datasets,Load a sample dataset>> from the database menu.
+. Explore it with any of the steps above.
+
+=== Write data in a single transaction
+
+. Switch to <<_manual_mode,manual mode>>, choose *write*, and click *Open*.
+. Run one or more `insert` / `delete` / `update` queries.
+. Click *Commit*, or *Rollback* to discard.
+
+Alternatively, put several queries in one query tab separated by `end;`. In auto mode they run in a single
+transaction that is committed only if all succeed. See <<_run_multiple_queries>>.
+
+=== Generate queries with AI
+
+. Open *Agent mode* from the sidebar and accept the AI consent prompt.
+. Describe what you want. Run the generated query from its code block, and view the results as a log, table or graph.
+See <<_agent_mode>>.
+
+=== Export results
+
+. Run a query in the Query tool.
+. From the Log or Table view, use the export menu to copy or download the answers as JSON or CSV. From the Graph view,
+export a PNG. See <<_export_query_results>>.
 
 
 == Welcome page
@@ -80,138 +333,205 @@ When *connected*, it provides quick links to the main tools:
 - View your data (the data explorer).
 - Explore data as a graph (the graph explorer).
 
+It also links to community and learning resources.
 
+
+[#_query_tool]
 == Query tool
 
 You can run queries against the connected TypeDB server using TypeDB Studio's https://studio.typedb.com/query[query tool,window=_blank].
 
+The page has four resizable panes: the <<_schema_pane,schema pane>> (left), the query editor (top), the results pane
+(bottom), and the <<_history_pane,history pane>> (right). Pane sizes are remembered.
+
 === Query tabs
 
-The query tool supports multiple query tabs, so you can keep several queries open at once. Tabs can be renamed,
-pinned, duplicated, and closed (including close others / close to the right). Open query tabs are remembered between
-sessions.
+The query tool supports multiple query tabs, so you can keep several queries open at once.
 
-In addition to writing and running queries, the query tool gives you access to a <<_schema_pane,schema pane>>, an inline
-<<_history_pane,history pane>>, <<_transaction_controls,transaction controls>>, result <<_export_query_results,export>>,
-and the ability to <<_saved_queries,save queries>> for later reuse.
+- Click *+* to open a new tab. Right-click *+* to jump to <<_saved_queries,Saved queries>>.
+- Right-click a tab for: *Close*, *Close Others*, *Close to the Right*, *Close All*, *Pin* / *Unpin*, *Duplicate*,
+*Rename*, and *Save query*.
+- Middle-click a tab to close it.
+- Pinned tabs stay on the left and are not closed by *Close Others*, *Close to the Right* or *Close All*.
+
+Open tabs, their text, and each tab's chosen output view are remembered between sessions. Results are not.
 
 === Write a query
 
-You can write TypeQL queries in the Query pane.
+The query editor offers TypeQL highlighting, autocompletion, bracket matching, code folding, and multiple cursors.
 
-The Query pane contains a code editor that offers TypeQL highlighting and autocompletion.
+Autocompletion appears as you type, or on Alt+Space / Ctrl+Space. It is schema-aware: it suggests type labels, the
+attributes a variable's type owns after `has`, a relation's roles inside `links (...)`, variables already used in the
+query, TypeQL keywords, and functions (with their signatures) defined in the schema or the editor.
+
+Useful shortcuts (use ⌘ in place of Ctrl on macOS):
+
+[cols="1,2"]
+|===
+|Shortcut |Action
+
+|Ctrl+Enter |Run query
+|Alt+Space / Ctrl+Space |Show completions
+|Ctrl+/ |Toggle `#` comment
+|Tab / Shift+Tab |Indent / outdent
+|Ctrl+F |Search in editor
+|Ctrl+D |Select next occurrence
+|Alt+↑ / Alt+↓ |Move line up / down
+|Ctrl+Z / Ctrl+Y |Undo / redo
+|===
 
 === Run a query
 
-When your query is ready to run, hit "Run query" in the Query pane.
+Click the run (▶) button at the top right of the editor, or press Ctrl+Enter. If the button is disabled, its tooltip
+explains why (e.g. no database selected, or no open transaction in manual mode).
 
-Results are printed to the Results pane.
+The *Limit* dropdown next to the button caps the number of answers returned: from 10 to 100,000, default 100. Your
+choice is remembered. When a result reaches the limit, the Log says so.
+
+A running query cannot be cancelled; the run button is disabled until it finishes.
+
+[#_run_multiple_queries]
+=== Run multiple queries
+
+Separate queries in one tab with `end;` to run them in sequence, in a single transaction:
+
+- In auto mode, the transaction type is detected from the first query. The transaction is committed at the end only if
+every query succeeds, so the batch is all-or-nothing.
+- In manual mode, each query runs in the open transaction.
+
+Batches are logged as one history entry. The Log shows each query's output under a `## Query N` header. The Table
+view shows one table per query, for batches of up to 10 queries. Graph output and export are not available for batches.
+
+=== Run tabs
+
+Each run appears as a *Run N* tab above the results. A new run replaces the selected run tab, unless that tab is
+pinned, in which case it opens a new one. Right-click a run tab to close, pin, or rename it. Run tabs are not saved
+between sessions.
 
 === Query results
 
 The Results pane offers four different views of results - you can choose between *Log*, *Table*, *Graph* and *Raw*.
 
-The Log contains textual output, similar to TypeDB Console, as well as input log, and error messages.
+*Log* contains textual output, similar to TypeDB Console, as well as the input log and error messages. It follows new
+output until you scroll up. Very large results are truncated in the log; view them in the Table instead.
 
-Table view is well suited for visualising the answers of *match* and *fetch* queries in a tabular format, where each row represents an answer, and each column represents a variable.
+*Table* shows each answer as a row:
 
-Graph (network) output is appropriate for visualising and understanding the connections in your dataset.
+- For `match` queries, each column is a variable. Entities and relations show their IID; attributes and values show the
+value; types show their label.
+- For `fetch` queries, each column is a top-level key of the returned documents, shown as JSON.
+- Click a column header to sort. Results over 100 rows are paginated (100, 500 or 1000 per page).
 
-Raw output allows you to see the raw HTTP response from TypeDB and is useful for debugging.
+*Graph* draws `match` (without `fetch`) and `insert` results as an interactive network. You can expand nodes, restyle,
+and export the graph. See <<_graph_visualisation>> for all its capabilities.
+
+*Raw* shows the raw HTTP response from TypeDB as JSON, and is useful for debugging.
 
 [#_export_query_results]
 === Export query results
 
 Query results can be exported directly from the Results pane:
 
-- *Copy* the output to the clipboard, as JSON or CSV.
-- *Download* the output as a JSON or CSV file.
-- The Log view can also be copied, or sent to <<_agent_mode,Agent mode>> for further analysis.
-- The Graph view can be exported as a PNG image.
+- From the *Log* or *Table* view, *Copy as JSON*, *Copy as CSV*, *Download JSON*, or *Download CSV*.
+- In the *Log* view, *Copy log* copies the text output, and *Send to AI* sends it to <<_agent_mode,Agent mode>> for
+analysis.
+- In the *Raw* view, *Copy as JSON* or *Download JSON*.
+- In the *Graph* view, export a PNG image. See <<_export_a_graph>>.
 
-Raw output can likewise be copied or downloaded as JSON.
+In CSV, entities and relations are written as `type:iid`, and attributes as `type:value`. Downloaded files are named
+after the run, database, and time.
 
-=== Schema pane
+=== Schema reference
 
-The Schema pane lists your schema objects and their capabilities - e.g. owned attributes and played roles.
+The query tool's left pane is the <<_schema_pane,schema pane>>, a reference of what you can query. Right-click a type and
+choose *Load instances* to open a new query tab that fetches its instances and runs it.
 
-It acts as a reference panel indicating what you can query.
-
-You can configure its view mode (flat or hierarchical) by clicking the options button in its top bar. Flat layout is
-typically better for simple schemas, while the hierarchical view is better for more complex schemas with subtyping.
-
-The options pane also allows you to filter what capabilities are displayed. For example, you can set it to only display
-owned attributes, or to only display roleplayers of relations.
-
-You can also view the full schema text from this pane.
-
+[#_history_pane]
 === History pane
 
-All queries and transaction operations are timestamped and logged to the History pane.
-You can copy and replay queries from this pane.
-Any errors that occur can be inspected from this pane.
+The right pane lists every query and transaction operation, newest first, with its time, duration, and outcome
+(✓ or ×).
 
-This inline pane mirrors the dedicated <<_query_history,Query history>> tool.
+- *Copy* copies a query; *View full query* shows long queries in full.
+- Click the × on a failed entry to see the error details, and copy them.
 
-=== Transaction controls
-
-By default, transactions are fully managed by TypeDB Studio. A transaction opens when you start running a query, and commits when a schema/write query is done or closes when a read query is done.
-
-For more fine-grained control, you can use the top bar to change the transaction mode from *auto* to *manual*. This allows you to open transactions, and perform multiple queries within a transaction before closing or committing.
-
-Only one transaction can be open concurrently within a single instance of TypeDB Studio.
-
-In manual mode, you also choose the transaction type (read, write, or schema) before opening a transaction. Transaction
-options, such as the transaction timeout, can be adjusted from the same control.
-
-=== Transaction inspector
-
-The transaction inspector shows the details of the currently open (or most recently closed) transaction, including its
-status, type (read, write, or schema), and the times it was opened and closed, along with low-level metadata such as the
-transaction ID and timeout. When a transaction is open, you can close it directly from the inspector.
-
-=== Connection management
-
-To connect, disconnect, or change connection settings, use the connection button in the top bar.
-While connected to TypeDB, the button changes its label to the server's address or the custom name provided when setting up the connection.
+This pane mirrors the dedicated <<_query_history,Query history>> tool.
 
 === Error handling
 
-Query-level errors are printed to Log Output. These are typically errors returned directly from TypeDB, and will contain detailed error codes and explanations of the problem (e.g: illegal TypeQL semantics)
+Query-level errors are printed to the Log. These are typically errors returned directly from TypeDB, and will contain
+detailed error codes and explanations of the problem (e.g: illegal TypeQL semantics).
 
-Transaction-level errors will trigger an error popup notification.
+Transaction-level errors trigger an error notification. Click *View error details* on the notification to see and copy
+the full error.
 
-Both types of errors can be viewed and copied to the clipboard by visiting the History pane on the Query page.
+Both types of errors can also be viewed and copied from the History pane.
 
 
 [#_agent_mode]
 == Agent mode
 
 https://studio.typedb.com/agent-mode[Agent mode,window=_blank] is an AI-powered assistant that helps you build and run
-TypeQL queries using natural language.
+TypeQL queries using natural language. It requires a connection, a selected database, and <<_ai_consent,AI consent>>.
 
-Describe what you want in plain language, and the assistant reads your database schema and generates TypeQL for you. You
-can run generated queries directly from the chat, view their results in the same Log, Table, Graph, and Raw views as the
-query tool, and save useful queries for later.
+The page has the schema tree (left), the chat (centre), and a history pane (right).
 
-Agent mode keeps a separate, automatically titled conversation history for each database, so you can return to previous
-chats. Conversations are stored locally (see <<_data_storage>>).
+=== Chat
 
+- Type in the message box and press Enter to send. Shift+Enter adds a new line.
+- Up / Down recall your previous messages.
+- While a reply is streaming, click *Stop* to interrupt it.
+- The assistant reads your database schema and replies with explanations and TypeQL code blocks.
+
+=== Run generated queries
+
+Each code block is an editable TypeQL editor with *Run* and *Copy* buttons. After running a block, *Save* adds it to
+<<_saved_queries,Saved queries>>.
+
+Each run opens a *Run N* output tab under the block, with the same *Log*, *Table*, *Graph* and *Raw* views as the
+query tool, including <<_graph_visualisation,graph exploration>>. *Send to AI* in the Log sends the output back to the
+chat. The *Limit query results* setting at the top of the page caps answers per run.
+
+=== Conversations
+
+Agent mode keeps a separate, automatically titled conversation history for each database.
+
+- *Past Conversations* (dropdown at the top) lists previous chats grouped by date. Click one to reopen it, or the trash
+icon to delete it.
+- *New chat* starts a fresh conversation.
+- The *Commands* menu, or typing the command, offers `/compact` (summarise the conversation to free up space) and
+`/clear` (clear the conversation).
+
+Conversations are stored locally (see <<_data_storage>>). Only messages are saved, not query results.
+
+To analyse output from the query tool, use *Send to AI* in its Log view. This starts a new conversation with the log.
+
+[#_ai_consent]
 === AI consent
 
-Agent mode is powered by OpenAI's GPT 5.6 Terra. Because using it shares your database schema and chat messages with
-OpenAI, AI features are off by default and require explicit, one-time opt-in the first time you use them. You can
-withdraw consent at any time, and optionally delete your local chat history when doing so.
+Agent mode is powered by OpenAI's models. Using it sends your database schema and chat messages (not your data
+or query results, unless you send them) to OpenAI, where they may be used for model training. Rate limits apply.
+
+AI features are off by default and require explicit, one-time opt-in the first time you use them. To withdraw consent,
+click *Disable AI features* at the bottom of the Agent mode page. You can optionally delete your local chat history
+when doing so.
 
 
 == Schema tool
 
 TypeDB Studio's https://studio.typedb.com/schema[Schema tool,window=_blank] allows you to visualise your TypeDB schema.
 
-It renders the entire schema as a graph visualisation, with nodes representing entities, relations, attributes, etc.,
-and edges representing capabilities such as owned attributes and played roles.
+- The left pane is the <<_schema_pane,schema tree>>.
+- The *Visualiser* draws the whole schema as a graph. Nodes are entity, relation, attribute and role types. Edges
+are the directly declared `sub`, `owns`, `relates` and `plays` statements (inherited capabilities are not drawn).
+
+The visualiser uses the standard <<_graph_visualisation,graph controls>> for navigation, search, styling and PNG export.
+Clicking a node shows its type and supertype. Schema nodes have no right-click menu.
+
+The schema refreshes automatically when you switch database or change the schema. Click *Refresh* to reload it manually.
 
 
+[#_data_explorer]
 == Data explorer
 
 You can explore your TypeDB data without writing queries in the https://studio.typedb.com/data[Data explorer,window=_blank], an interactive visual environment for exploring data.
@@ -222,70 +542,99 @@ Select any instance from that table, and you can see all its connections in grea
 
 You can then jump to connected instances using the "Explore" buttons on instance details, and as such you can traverse your dataset entirely using this visual UI without needing to write queries.
 
+=== Open a table
+
+- Click a type in the schema tree to open a table of its instances (including subtypes).
+- Click a root (*entity*, *relation* or *attribute*) to open a table of every instance of that kind.
+- Right-click a type for *Load instances* or *Copy type label*.
+
 === Table of instances
 
-Once you're in the data explorer, start exploring by selecting any type from the schema. This will bring up a table of instances of that type, as well as:
+Tables show:
 
-- For entities and relations: the instance's attributes;
-- For entities and relations: a summary of the instance's relations;
-- For relations: a summary of the instance's roleplayers;
-- For attributes: the attribute's value and value type;
-- The instance's type - as tables include subtypes of the selected type.
+- For entities: type, IID, one column per owned attribute, and a summary of the instance's relations.
+- For relations: the same, plus a summary of its roleplayers (*Links*).
+- For attributes: type, value, value type, and a summary of its owners.
 
-Selecting any instance from this table will take you to Instance Details.
+Multi-valued attributes are comma-separated. Long values are truncated, with the full value in a tooltip. Each
+attribute value has a copy button. The tab title shows the instance count.
 
-Instance tables support standard table functionality (filtering, sorting, pagination, column picker ...) Filtering, sorting and pagination are all handled server-side using TypeQL queries.
+Table controls:
+
+- *Search*: finds instances with any attribute value containing the text.
+- *Sort*: click an attribute column header.
+- *Pagination*: 10 to 500 rows per page (default 100).
+- *Show/hide columns*: the column picker.
+- *Refresh*: re-runs the query.
+
+Searching, sorting and pagination run server-side as TypeQL queries.
+
+Selecting any row opens its Instance details.
 
 === Instance details
 
-Instance details show the same info as tables in much more detail.
-In particular, roleplayers, attribute owners and linked relations include their attributes so that data is clearly labelled.
+Instance details show the same info as tables in much more detail, in collapsible sections:
 
-You can jump to connected instances using the "Explore" buttons on instance details, allowing you to traverse your dataset.
-Explorations leave behind a breadcrumb that indicates the exploration chain you've taken to get to a specific instance.
-Thus, breadcrumbs form a chain of connected concepts.
+- *Type*: the type and supertype. *Explore* opens the type's table.
+- *Links* (relations): each roleplayer with its role and attributes.
+- *Attributes*: every owned attribute, with a copy button.
+- *Relations*: every relation the instance plays a role in, with its roleplayers and attributes. Filter by relation type
+using the chips at the top.
+- *Owners* (attributes): every instance that owns this attribute.
 
-Data Explorer tabs support standard tab functionality (close, close others, close all, pin ...) and are restored (but perform fresh queries) when you reopen TypeDB Studio.
+Use the *Explore* buttons to jump to connected instances. Explorations leave behind a breadcrumb showing the chain
+you've taken. Click a breadcrumb to go back to that point.
+
+=== Data explorer tabs
+
+Right-click a tab for *Close*, *Close Others*, *Close to the Right*, *Close All*, and *Pin* / *Unpin*. Middle-click
+closes a tab. Pinned tabs are kept by the bulk close actions.
+
+Tabs are remembered per database, and restored (with fresh queries) when you reopen TypeDB Studio. Search, sort and
+page settings are not.
 
 === Working with a data snapshot
 
-In manual transaction mode the user can work with a fixed snapshot of their data for stable exploration.
+In <<_manual_mode,manual transaction mode>>, the explorer reads from the open transaction, giving you a fixed snapshot of
+your data. If no transaction is open, it offers *Open read transaction* or *Switch to auto mode*. If the data
+was loaded in a different transaction, a banner offers to *Refresh* it.
 
 
+[#_graph_explorer]
 == Graph explorer
 
 The https://studio.typedb.com/graph[Graph explorer,window=_blank] is a dedicated tool for browsing your data as an
-interactive graph. Select a type from the schema, and the explorer opens a tab showing instances of that type and their
-connections. (This is distinct from the Graph view of query results and from the Schema tool, which visualises types
-rather than data.)
+interactive graph, without writing queries. (The Schema tool, by contrast, visualises types rather than data.)
 
-=== Navigating the graph
+=== Open a graph
 
-- Zoom, redraw (re-run the layout), focus on a selected node, and toggle fullscreen.
-- Search for nodes and focus on the matches.
-- Choose a layout density (spacious, default, or compact).
-- Drag nodes to rearrange them; other nodes move out of the way.
-- Export the current view, or the entire graph, as a PNG image.
+- Click a type in the schema tree to open a tab with instances of that type.
+- Click a root (*entities*, *relations* or *attributes*) to open a tab with every instance of that kind.
+- Right-click a type for *Load instances*, *Load instances and links*, or *Load instances and attributes*.
 
-=== Exploring connections
+The initial load is capped by the query tool's *Limit* setting (default 100). There is no paging; grow the graph by
+exploring connections instead.
 
-Click a node to inspect its attributes and connections in the side panel. Using the right-click context menu or the
-side panel's "Explore" controls, you can load additional relations and attributes for an instance - or for every
-instance of a type - on demand, without re-running a query. The explorer works in both auto and manual transaction
-modes.
+=== Explore the graph
 
-=== Customising the appearance
+Right-click nodes, or use the side panel, to load relations, roleplayers and attributes on demand. See
+<<_explore_connections>> for all the ways to expand the graph.
 
-The side panel offers extensive styling controls:
+The Graph explorer also offers:
 
-- *Elements*: highlight or filter nodes by kind (entity, relation, attribute, type, role, value), by type, or by edge
-label (`has`, `links`, `isa`, `sub`, `owns`, `relates`, `plays`).
-- *Labels*: toggle node and edge labels individually, size nodes by their number of connections, and switch between
-straight and curved edges.
-- *Themes*: choose from built-in presets, or save your own.
-- *Customise*: set per-kind and per-type colours, shapes, and sizes, and configure the background.
+- An instance view in the side panel: select a node, then switch the panel from *every '<type>'* to *here* to see that
+instance's full details, with *Add to graph* and *Reveal in graph* for each connection.
+- *Reset changes* (graph controls): removes everything you've added and reloads the tab's initial instances.
 
-The side panel can be docked to the right or bottom of the view.
+=== Graph explorer tabs
+
+Each type gets one tab. Opening the same type again focuses its tab. Tabs close when you switch database, and are not
+restored between sessions.
+
+=== Transactions in the graph explorer
+
+The explorer works in both auto and manual transaction modes. In manual mode with no open transaction, it offers
+*Open read transaction* or *Switch to auto mode*.
 
 
 [#_saved_queries]
@@ -294,12 +643,16 @@ The side panel can be docked to the right or bottom of the view.
 You can save TypeQL queries for reuse from the query tool, and manage them in the
 https://studio.typedb.com/saved-queries[Saved queries,window=_blank] tool.
 
-- *Save*: From a query tab, save the current query with a name (and optional description).
-- *View*: The Saved queries tool lists all saved queries with their timestamps, each shown in a syntax-highlighted
-editor.
-- *Run*: Run a saved query directly; results open in the query tool.
-- *Open*: Open a saved query into a new query tab to edit it before running.
-- *Manage*: Rename or delete saved queries.
+- *Save*: right-click a query tab and choose *Save query*. If the tab still has its default name, you are asked for a
+name, and the tab is renamed to match. Otherwise the query is saved under the tab's name. Saving again creates a new
+entry rather than overwriting.
+- *View*: The Saved queries tool lists all saved queries, newest first, each with a syntax-highlighted, read-only preview. *View full query* shows long queries in full.
+- *Run*: runs the saved query in the current query tab and switches to the query tool.
+- *Open in Query page*: opens the query in a new query tab to edit it before running.
+- *Copy*: copies the query text.
+- *Rename* or *Delete*. Deletion takes effect immediately, without confirmation.
+
+To change a saved query, open it in a query tab, edit it, and save it again.
 
 Saved queries are stored locally (see <<_data_storage>>).
 
@@ -311,88 +664,230 @@ The https://studio.typedb.com/history[Query history,window=_blank] tool shows a 
 transaction operations performed in the current session. For each entry it shows the status (success or error),
 duration, and, where applicable, error details.
 
-You can copy and re-run any query from the history. The same information is available inline in the query tool's
+You can copy any query, view long queries in full, and view and copy error details. History is kept in memory and
+is cleared when Studio reloads. The same information is available inline in the query tool's
 <<_history_pane,History pane>>.
-
-
-== Sample datasets
-
-When creating a database, you can optionally load a preloaded sample dataset to get started quickly with a ready-made
-schema and data.
-
-The available sample datasets are maintained in the
-https://github.com/typedb/typedb-examples[typedb-examples repository,window=_blank]. Studio automatically selects the
-dataset version that matches your server.
-
-
-== Databases
-
-You can manage your databases from the database menu in the top toolbar.
-
-=== Create a database
-
-Provide a database name (letters, digits, hyphens, and underscores only). Studio checks that the name is not already in
-use. You can optionally choose a <<_sample_datasets,sample dataset>> to load into the new database on creation.
-
-=== Select a database
-
-Switch between databases using the database dropdown. You can also refresh the database list and create new databases
-from here.
-
-=== Delete a database
-
-Deleting a database is irreversible and permanently removes all of its data. To prevent accidents, you must type the
-database name to confirm deletion.
 
 
 == User manager
 
-You can manage database users in TypeDB Studio's https://studio.typedb.com/users[User Manager,window=_blank].
+You can manage database users in TypeDB Studio's https://studio.typedb.com/users[User Manager,window=_blank]. It lists
+users in a table sorted by username.
 
-The User Manager allows you to view, create, update, and delete users. It lists all users in a table view.
+Admin users see and manage every user. Other users see only their own account.
 
 === Create a new user
 
-To create a new user, click the "Create user" button in the User Manager.
+Click *Create user* and enter a username and password. Only admins see this button.
 
 === Change a user's password
 
-To change a user's password, click the "Change password" button in the row corresponding to that user.
+Click *Change password* in that user's row. Changing your own password reloads Studio and clears all session
+data: you are signed out, and in-memory state such as query history and run results is discarded. Reconnect with the
+new password.
 
 === Delete a user
 
-To delete a user, click the "Delete user" button in the row corresponding to that user.
+Click *Delete user* in that user's row. Deleting your own user also reloads Studio and clears all session data,
+and you will not be able to log in again.
 
 
-== Appearance
+[#_schema_pane]
+== Schema pane
+
+The schema pane appears on the left of the Query, Agent mode, Schema, Data explorer and Graph explorer pages. It lists
+your types and their capabilities, e.g. owned attributes and played roles.
+
+What clicking a type does depends on the page:
+
+- *Data explorer*: opens a table of its instances.
+- *Graph explorer*: opens a graph of its instances.
+- *Other pages*: expands or collapses the type.
+
+Right-click a type for *Copy type label* and *Load instances* (plus *Load instances and links* / *and attributes* in the
+Graph explorer). On the Query, Agent mode and Schema pages, *Load instances* opens a query tab that loads the type's
+instances and runs it.
+
+=== Schema pane options
+
+The *More actions* (…) menu in the pane's header offers:
+
+- *Find* (or Ctrl+F / ⌘+F): search type labels. Matching types' parents expand automatically.
+- *Expand all* / *Collapse all*.
+- *Flat view* / *Hierarchical view*. Flat is typically better for simple schemas; hierarchical is better for complex
+schemas with subtyping.
+- *Show sub* (flat view only), *Show owns*, *Show relates*, *Show plays*, *Show all capabilities*, *Hide all
+capabilities*: choose which capabilities are listed under each type.
+- *View schema text*: shows the full schema as TypeQL, with a *Copy schema text* button.
+
+*Refresh* reloads the schema. Your view settings are remembered.
+
+For an empty database, the pane offers shortcuts to load a sample dataset, learn about schemas, or build with AI.
+
+
+[#_graph_visualisation]
+== Graph visualisation
+
+TypeDB Studio draws data and schemas as interactive graphs in four places:
+
+- The *Graph* view of <<_query_results,query results>>.
+- The *Graph* view of <<_agent_mode,Agent mode>> results.
+- The <<_graph_explorer,Graph explorer>>.
+- The <<_schema_tool,Schema tool>>.
+
+All four share the controls, styles and themes described in this section. Styles and themes apply everywhere at once.
+
+[#_what_gets_drawn]
+=== What gets drawn
+
+Graph output is available for `match` queries without `fetch`, and for `insert` queries. Schema queries, `fetch`
+queries, and multi-query batches cannot be drawn.
+
+Each variable in the answers becomes a node:
+
+[cols="1,1,1"]
+|===
+|Kind |Default shape |Default colour
+
+|Entity (and entity type) |Rounded rectangle |Pink
+|Relation (and relation type) |Diamond |Yellow
+|Attribute (and attribute type) |Ellipse |Blue
+|Role type, value |Ellipse |Grey
+|===
+
+The same instance appearing in several answers is drawn once. Only variables in the answers are drawn; variables
+removed with `select` are not. Type labels written in the query (e.g. `$x isa person`) are not drawn as nodes; use a type
+variable (`$x isa $t`) to include them.
+
+Constraints between drawn variables become edges: `has` (owner to attribute), `links` (relation to roleplayer,
+labelled with the role name), `isa`, `sub`, `owns`, `relates` and `plays`.
+
+Entity and relation nodes are labelled with their type and a display attribute (e.g. `person: Alice`), chosen
+automatically. You can change the display attribute per type in the side panel.
+
+=== Navigate the graph
+
+- Scroll to zoom, or use the *Zoom in* / *Zoom out* buttons. Two-finger swipe pans on a trackpad.
+- Drag the background to pan. Drag a node to move it; it stays where you drop it, and other nodes move out of the way.
+- *Focus selection* zooms to the selected node; *Reset view* fits the whole graph.
+- *Redraw graph* re-randomises positions and re-runs the layout. *Stop simulation* halts a running layout.
+- *Graph density*: *Spacious*, *Default*, or *Compact*.
+- *Fullscreen* / *Exit fullscreen*.
+
+Labels hide automatically when zoomed out on large graphs.
+
+=== Select and search
+
+- Click a node to select it. Its neighbourhood stays highlighted and everything else fades. Click the background to
+clear the selection.
+- *Search* (top left) highlights nodes whose IID, value, type, or label contains the text. The crosshair button frames
+the matches.
+
+[#_explore_connections]
+=== Explore connections
+
+Add more data to the graph without re-running a query, in either of these ways:
+
+*Right-click an entity or relation node* for:
+
+- *Load relations*: relations the instance plays a role in, all (`*`) or by relation type.
+- *Load links* (relations only): the relation's roleplayers, all or by role.
+- *Load attributes*: the instance's attributes, all or by attribute type.
+
+Each item has two scopes: *here* (this instance) and *every '<type>'* (every instance of its type in the graph).
+Loaded items are highlighted; clicking one again removes what it added.
+
+The menu also sets the node type's colour. For attribute nodes, colour is the only option.
+
+*Use the Explorer at the top of the side panel*. Select a node to see its type, how many of that type are in the graph,
+and chips to load its links, attributes, and relations. In the Graph explorer, switch to *here* for the selected
+instance's full details (see <<_graph_explorer>>).
+
+In the *Elements* tab, you can also right-click an entity or relation type chip to load links or attributes for every
+instance of that type.
+
+=== Side panel
+
+The side panel has the Explorer at the top and three tabs below: *Elements*, *Themes*, and *Customise*. Use its menu
+to *Dock to bottom* or *Dock to right*.
+
+*Elements* highlights parts of the graph by fading everything else. Nothing is removed. Toggle chips by kind (entity,
+relation, attribute, types, role type, value), by type, or by edge label (`has`, `links`, `isa`, `sub`, `owns`,
+`relates`, `plays`). Double-click a chip to show only that one.
+
+*Themes* applies a built-in preset (*The Classic*, *Cal Aesthetics*, *Fair and Square*, *To Boldly Go*, *Fifty Shades
+of Data*, *Size over Substance*). *Save current configuration* stores your own preset, which you can later overwrite,
+edit, or delete.
+
+*Customise* has two sub-tabs:
+
+- *Graph*:
+** *Settings*: node fill opacity, node labels, node label colour, edge labels, show label on hover, scale nodes by link
+count, colour edges by constraint, and curve edges.
+** *Kinds* and *Types*: colour, shape (rectangle, diamond, hexagon, ellipse), and size, per kind or per type.
+** *Edges*: colour for all edges or per edge label.
+- *Background*: default, solid, gradient, grid, dots, or party mode, with colours.
+
+*Reset all styles* restores the defaults. *Redraw graph* re-runs the layout.
+
+[#_export_a_graph]
+=== Export a graph
+
+*Export as PNG* offers *Download PNG (current view)* or *Download PNG (entire graph)*. Exports keep the current
+highlighting, use a solid background, and are capped at 8192 pixels per side.
+
+=== Graph requirements and limits
+
+- Graphs require WebGL. If it is unavailable, the graph pane shows a warning instead. Enable hardware acceleration or
+update your graphics drivers, then restart Studio.
+- Graph size is capped by the query *Limit* (up to 100,000 answers). Large graphs may render slowly.
+
+
+== Interface and settings
+
+=== Sidebar
+
+The left sidebar links to every tool: *Home*, *Query*, *Agent mode*, *Schema*, *Data*, *Graph*, *Users*, *Query
+history*, and *Saved queries*. It also opens *App info* and *Appearance*, and links to TypeDB Cloud. Use the chevron to
+expand or collapse it.
+
+=== Top bar
+
+The top bar holds the <<_connection_menu,connection button>>, the <<_databases,database button>>, the
+<<_transactions,transaction control>>, and:
+
+- *Feedback*: links to the TypeDB Discord and to open a GitHub issue.
+- *AI Support*: chat with TypeDB's support assistant. This is separate from Agent mode.
+- *Learn*: opens a panel of tutorials and documentation links.
+
+=== Appearance
 
 You can switch between light mode, dark mode, and syncing with your operating system's preference using the Appearance
 control in the sidebar. Your choice is remembered between sessions.
 
-
-== App info
+=== App info
 
 The App info dialog, opened from the sidebar, shows the current version of TypeDB Studio along with helpful links to get
 started.
+
+=== Notifications
+
+Success messages appear briefly at the bottom right. Error notifications stay until dismissed; click
+*View error details* to see and copy the full error.
 
 
 [#_data_storage]
 == Data storage
 
 TypeDB Studio stores your settings and working state locally in your browser's local storage (or, on desktop, the
-equivalent local store). This includes saved connections and recent server addresses,
-preferences (such as theme and transaction settings), open query tabs, saved queries, data explorer tabs, graph
-appearance preferences, Agent mode conversations, and your AI consent choice.
+equivalent local store). This includes:
+
+- Your last connection (including its password) and recent server addresses.
+- Preferences: theme, transaction mode and timeout, and query result limit.
+- Layout: pane sizes, sidebar state, and schema pane settings.
+- Open query tabs, saved queries, and data explorer tabs.
+- Graph styles, saved themes, docking, and display attribute choices.
+- Agent mode conversations, and your AI consent choice.
 
 This data stays on your device and is not sent to TypeDB. Clearing your browser data (or the desktop app's local store)
-will remove these settings.
-
-
-== Updating TypeDB Studio
-
-The web version at https://studio.typedb.com[studio.typedb.com,window=_blank] always runs the latest release and updates
-automatically.
-
-For the desktop app, download the latest version from the
-https://cloudsmith.io/~typedb/repos/public-release/packages/?q=name:%5Etypedb-studio[downloads page,window=_blank] and
-run it. You may optionally uninstall the previous version.
+will remove these settings. Query history and results are kept in memory only.
