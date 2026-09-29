@@ -86,6 +86,10 @@ The *Connect TypeDB server* page (`/connect`) has two modes, selected at the top
 
 - *Address*: the HTTP endpoint, including `http://` or `https://`, e.g. `http://localhost:8000`.
 For a multi-node cluster, list every node's address, separated by commas.
++
+For clusters behind a NAT or load balancer, the address field and the connection string also accept translated
+addresses, written as `external;internal` pairs (comma-separated per node), e.g.
+`https://public-host:8000;https://internal-host:8000`.
 - *Username* and *Password*.
 - *Server name* (optional): a display name for this connection. Defaults to the address.
 
@@ -505,7 +509,7 @@ To analyse output from the query tool, use *Send to AI* in its Log view. This st
 [#_ai_consent]
 === AI consent
 
-Agent mode is powered by OpenAI's GPT 5.6 Terra. Using it sends your database schema and chat messages (not your data
+Agent mode is powered by OpenAI's models. Using it sends your database schema and chat messages (not your data
 or query results, unless you send them) to OpenAI, where they may be used for model training. Rate limits apply.
 
 AI features are off by default and require explicit, one-time opt-in the first time you use them. To withdraw consent,
@@ -678,13 +682,14 @@ Click *Create user* and enter a username and password. Only admins see this butt
 
 === Change a user's password
 
-Click *Change password* in that user's row. Changing your own password signs you out; reconnect with the new
-password.
+Click *Change password* in that user's row. Changing your own password reloads Studio and clears all session
+data: you are signed out, and in-memory state such as query history and run results is discarded. Reconnect with the
+new password.
 
 === Delete a user
 
-Click *Delete user* in that user's row. Deleting your own user signs you out, and you will not be able to log in
-again.
+Click *Delete user* in that user's row. Deleting your own user also reloads Studio and clears all session data,
+and you will not be able to log in again.
 
 
 [#_schema_pane]
