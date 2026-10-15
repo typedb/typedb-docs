@@ -59,7 +59,7 @@ psql ecommerce <<'SQL'
 SQL
 ----
 
-(MySQL: `SELECT ... INTO OUTFILE`. SQLite: `.mode csv` + `.headers on` + `.output`.)
+(MySQL and MariaDB: `SELECT ... INTO OUTFILE`. SQLite: `.mode csv` + `.headers on` + `.output`.)
 
 The CSV columns line up with the SQL columns 1:1 — we'll keep these names through to the loader
 queries.
