@@ -1,0 +1,44 @@
+= Conditional writes (`if`)
+:test-typeql: linear
+
+[NOTE]
+====
+Version `3.15` introduces `if` blocks. These are preferred over `try` blocks for conditional writes.
+====
+
+`if` blocks serves as the write-stage equivalent to `try` blocks.
+
+.Syntax
+[,typeql]
+----
+if { <condition>; <condition>; [...] } then {
+    <write-pattern>;
+    <write-pattern>;
+    [...]
+};
+----
+
+By separating the condition & write pattern, `if` blocks can support a wider variety of conditions -
+comparison & `isa` statements in addition to `isset` checks.
+Unlike `try` blocks - which could not be nested, the explicit conditions in `if` blocks allow them to be nested
+
+[NOTE]
+====
+comparison and `isset` checks are not yet implemented.
+====
+
+== Examples
+
+=== Insert
+todo
+
+=== Delete
+todo
+
+=== Put
+Since the pattern in a `put` must also be a valid `insert` pattern,
+they must use `if` blocks and not `try` blocks.
+
+
+=== Update
+todo

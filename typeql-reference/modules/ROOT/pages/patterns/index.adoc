@@ -3,23 +3,10 @@
 
 This reference covers the usage of patterns in TypeQL.
 
-== Scopes
-Pattern comprise statements containing variables. Given a pattern, the *scope* of a variable is:
-
-* the block `{ ... }` in which variable appears at top-level (i.e., not nested in further `{...}`) but it does not appear outside of the block.
-* or, the entire pattern itself if the variable appears at the top-level of the pattern itself.
-
-Exceptionally, if the variable appears in all branches of a disjunction, it counts as appearing in the parent pattern.
-
-A key principle of valid TypeQL pattern is:
-
-> *_Every variable must have a unique scope._*
-
 == Combining patterns
 
 TypeQL allows us to construct larger and more interesting patterns from smaller ones,
 allowing us to express more than simple conjunctions.
-They can also create new scopes of variables.
 
 [cols-3]
 --
@@ -47,3 +34,20 @@ Use of negations to exclude patterns from your query results.
 Use of optionals for optionally matching subpatterns.
 ****
 --
+
+.xref:{page-version}@typeql-reference::patterns/conditional_writes.adoc[]
+[.clickable]
+****
+Conditionally inserting or deleting data.
+****
+--
+
+== Variables
+Pattern comprise statements containing variables.
+The principles behind variable scoping, typing and optionality merits a page of its own.
+
+.xref:{page-version}@typeql-reference::patterns/variables.adoc[]
+[.clickable]
+****
+The rules behind scoping of variable names, its category, optionality and whether it's an input to a pattern or bound by it.
+****
