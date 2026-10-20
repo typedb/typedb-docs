@@ -1,4 +1,5 @@
 = Lesson 8.5: Structured fetching
+:page-aliases: {page-version}@academy::8-structuring-query-results/8.1-fetching-attributes.adoc
 
 TypeQL's `fetch` clause is quite powerful! Let's look a little deeper at what it can do. One underlying idea is that every part of the fetch clause must use serializable types - values, user defined types, and attributes are serializable; entities and relations are not.
 
