@@ -96,10 +96,10 @@ The admin tool of a TypeDB Enterprise distribution has three more commands.
 |===
 2+^| Cluster commands
 | `servers status`
-| List every replica of the cluster with its id, advertised client address, role (`primary`, `secondary`, `learner` for a replica that is not serving yet, or `candidate`), Raft term, and availability.
+| List every replica of the cluster with its id, advertised client address, role (`primary`, `secondary`, or `candidate`), Raft term, and availability.
 
 | `servers register <replica-id> <address>`
-| Add a running TypeDB Enterprise server to the cluster. `<replica-id>` is the id the server was started with and `<address>` its clustering address (`server.clustering.address`). The server joins as a learner and becomes a voting secondary once it has caught up.
+| Add a running TypeDB Enterprise server to the cluster. `<replica-id>` is the id the server was started with and `<address>` its clustering address (`server.clustering.address`). The server receives the cluster's data and becomes a voting secondary once it has caught up.
 
 | `servers deregister <replica-id>`
 | Remove a replica from the cluster. The removed server stops serving requests but keeps running until you stop it.

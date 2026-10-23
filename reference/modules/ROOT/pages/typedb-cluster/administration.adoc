@@ -7,15 +7,7 @@ It applies to xref:{page-version}@home::install/enterprise.adoc[TypeDB Enterpris
 
 == Replicas and roles
 
-A cluster is a set of *replicas*.
-Every replica is a TypeDB server configured with:
-
-- a *replica id* (`server.clustering.id`): a positive integer, unique within the cluster;
-- a *clustering address* (`server.clustering.address`): the host and port the other replicas use to reach it, and the address it listens on for replication (conventionally port `1730`, as in the shipped `config.yml`);
-- a *deployment id* (`diagnostics.deployment-id`): a name for the cluster, used in diagnostics; give all replicas the same one;
-- *advertise addresses* (`server.advertise-address`, `server.http.advertise-address`): the addresses clients are redirected to when this replica is the primary.
-
-See xref:{page-version}@maintenance-operation::typedb-configuration.adoc#_clustering[Cluster configuration] for all the options.
+A cluster is a set of *replicas*: TypeDB Enterprise servers, each configured as described in xref:{page-version}@maintenance-operation::typedb-configuration.adoc#_clustering[Cluster configuration].
 
 Each replica has a role:
 
@@ -38,29 +30,14 @@ A replica is reported `available` when it answers, and `unavailable` otherwise.
 == Deploying a cluster
 
 The first replica (replica id `1`) is started with `--initialize.create-cluster=true` and forms a cluster of one.
-Every further replica is started without that flag, and then registered from a running member of the cluster with the admin tool.
+Every further replica is started without that flag, and then registered on the primary with the admin tool.
 The step-by-step procedure is in the xref:{page-version}@home::install/enterprise.adoc#_deploying_manually[TypeDB Enterprise installation guide].
 
 == The admin tool
 
-The xref:{page-version}@tools::admin.adoc[TypeDB admin tool] of a TypeDB Enterprise distribution has three commands for cluster membership on top of the standard ones.
-It connects to a replica's local admin endpoint, so it runs on the replica's host, and the endpoint must be enabled (`server.admin.enabled=true`).
-
-[cols=".^3,5"]
-|===
-2+^| Cluster commands
-| `servers status`
-| List every replica with its id, advertised client address, role, Raft term, and availability.
-
-| `servers register <replica-id> <address>`
-| Add a running server to the cluster. `<address>` is the new server's clustering address. Primary only.
-
-| `servers deregister <replica-id>`
-| Remove a replica from the cluster. The removed server stops serving but keeps running. Primary only.
-|===
-
-`servers status` can be run on any replica.
-`servers register` and `servers deregister` change the cluster, so they must be run on the primary: a secondary refuses them and names the primary's address in the error.
+Cluster membership is managed with the xref:{page-version}@tools::admin.adoc#_cluster_commands[cluster commands] of the TypeDB admin tool: `servers status`, `servers register`, and `servers deregister`.
+The tool connects to a replica's local admin endpoint, so it runs on the replica's host, and the endpoint must be enabled (`server.admin.enabled=true`).
+Commands that change the membership run on the primary.
 
 === Checking the status
 
@@ -92,10 +69,9 @@ It waits until it is registered.
 typedb admin --socket-path /var/lib/typedb/data/admin.sock --command "servers register 4 10.0.0.4:1730"
 ----
 
-The new server joins as a `learner` and receives the whole history of the cluster.
-This takes about as long as importing the data would.
-Once it has caught up and stays caught up, the primary promotes it to a voting `secondary`, and it starts accepting connections.
-Until then, it reports no role to clients and rejects their requests.
+The new server first receives the whole history of the cluster, which takes about as long as importing the data would.
+Until it has caught up, it does not vote and rejects client requests.
+Once it has caught up and stays caught up, the primary makes it a voting `secondary`, and it starts accepting connections.
 
 Registration is refused if the target server does not answer at the given address, was started with a different id, already belongs to a cluster as its primary, or if the id is already registered under another address.
 
@@ -166,14 +142,13 @@ Leave the two initialization flags set only for the first start: on later starts
 == Encryption
 
 Client connections are encrypted with TLS as on a single server (`server.encryption.*`).
-Communication between replicas is encrypted separately with mutual TLS: `server.clustering.encryption.enabled`, `server.clustering.encryption.certificate`, `server.clustering.encryption.certificate-key`, and `server.clustering.encryption.ca-certificate`.
-Every replica presents its certificate to its peers; set the CA certificate so that peers verify each other's certificates against it, otherwise they are accepted unverified.
+Communication between replicas is encrypted separately with mutual TLS (`server.clustering.encryption.*`, see xref:{page-version}@maintenance-operation::typedb-configuration.adoc#_clustering[Cluster configuration]): every replica presents its certificate to its peers, and verifies theirs against the CA certificate if one is set.
 See xref:{page-version}@maintenance-operation::typedb-in-flight-encryption.adoc[] for generating certificates.
 
 == Monitoring
 
 The xref:{page-version}@maintenance-operation::diagnostics-endpoint.adoc[diagnostics monitoring endpoint] of every replica exposes `raft_*` metrics (in JSON under `extensions.raft`): the replica's role, term, and last applied log index (`raft_role`, `raft_current_term`, `raft_last_applied_index`), latencies (`raft_apply_duration_seconds`, `raft_log_write_duration_seconds`, `raft_send_message_duration_seconds`), and backpressure (`raft_appends_refused_total`, `raft_apply_pending_bytes`).
-The role and term of every replica are also available to xref:{page-version}@reference::typedb-cluster/drivers.adoc#_inspect_your_cluster[drivers] and xref:{page-version}@reference::typedb-cluster/console.adoc#_server_inspection_commands[Console].
+The role and term of every replica are also available to xref:{page-version}@reference::typedb-cluster/drivers.adoc#_inspect_your_cluster[drivers] and xref:{page-version}@tools::console.adoc#_server_level_commands[Console].
 
 == Getting help
 

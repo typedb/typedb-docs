@@ -77,7 +77,7 @@ On the machine of server #1 (the primary), register the two new servers with the
     --command "servers register 3 10.0.0.3:1730"
 ----
 
-Each new server joins as a learner, receives the data from the primary, and is promoted to a voting secondary once it has caught up.
+Each new server receives the data from the primary and becomes a voting secondary once it has caught up.
 Check the result:
 
 [source,bash]
@@ -100,6 +100,7 @@ See xref:{page-version}@reference::typedb-cluster/administration.adoc[Administer
 
 .Clients on a different network
 ====
+Clients connect to every server at its advertise address, not only at the address they were given.
 When clients reach the servers through addresses other than the ones the servers use among themselves (for example, public hostnames in front of a private network), set the advertise addresses to the client-facing ones and keep the clustering addresses private:
 
 [source,bash]
@@ -115,6 +116,7 @@ When clients reach the servers through addresses other than the ones the servers
 ----
 
 In this case, ports `1729` and `8000` need to be reachable by clients at the advertised hostnames, while port `1730` only needs to be open between the servers.
+If no single address per server works for all clients, keep the advertise addresses private and let clients use address translation instead; see xref:{page-version}@reference::typedb-cluster/index.adoc#_client_addresses[How clients reach the replicas].
 With xref:{page-version}@maintenance-operation::typedb-in-flight-encryption.adoc[TLS] enabled, the HTTP advertise address uses `https://`.
 ====
 

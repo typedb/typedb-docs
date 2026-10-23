@@ -2,6 +2,13 @@
 :page-toclevels: 2
 :page-aliases: {page-version}@drivers::http/api-reference.adoc, {page-version}@reference::http-api.adoc
 
+[#_clusters]
+== Clustered servers
+
+In a xref:{page-version}@reference::typedb-cluster/index.adoc[cluster], an HTTP client talks to one server at a time.
+A request that reaches a secondary is answered with `421 Misdirected Request` and a JSON body whose `primaryAddress` is the primary's HTTP advertise address (`server.http.advertise-address`), or with `503 Service Unavailable` while no primary is known.
+Sign in again at that address and retry.
+
 == Authorization
 
 [#_sign_in]

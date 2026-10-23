@@ -25,27 +25,61 @@ At any time, one server is the *primary* and the others are *secondaries*:
 - the secondaries keep durable copies of the data, acknowledge changes (a majority of all servers must, before a change is committed), and take over through an automatic election when the primary fails.
 
 A change is committed once a majority of the servers have written it, so a cluster of `2N + 1` servers tolerates the loss of `N` servers without losing data or availability.
-Clients may connect to any server: a request that reaches a secondary is answered with the primary's address, and TypeDB drivers and Console follow it automatically.
+Clients may connect to any server: a request that reaches a secondary is answered with the primary's address, and TypeDB drivers and Console follow it automatically (see <<_client_addresses>>).
 // end::cluster-overview[]
+
+[#_client_addresses]
+== How clients reach the replicas
+
+A TypeDB driver or Console uses the addresses you give it only for first contact.
+The server it reaches answers with the *advertise address* of every replica (`server.advertise-address`), and from then on the client connects to the replicas, and finds a new primary after a failover, at those advertised addresses.
+Every client must therefore be able to reach every replica, either at its advertise address or at an address the client maps to it.
+There are two ways to achieve this:
+
+[cols="1,3,3"]
+|===
+| | Advertise addresses (server side) | Address translation (client side)
+
+| Configured by
+| The operator, once per replica: `server.advertise-address` and `server.http.advertise-address`.
+| Each client: a map from the address the client reaches each replica at to that replica's advertise address.
+
+| Use when
+| One address per replica works for every client, for example a hostname that resolves on every network the clients are on.
+| Clients on different networks reach a replica through different addresses, for example from inside and from outside a private network, or through port forwarding.
+
+| Client connects with
+| Any one or more reachable replica addresses; the advertise addresses must be reachable too.
+| The translation map, with an entry for *every* replica.
+
+| Supported by
+| TypeDB gRPC drivers, Console, and the xref:{page-version}@reference::typedb-http-api.adoc#_clusters[HTTP API].
+| TypeDB gRPC drivers and Console only.
+|===
+
+Prefer advertise addresses, and use address translation only when no single address per replica works for every client.
+A load balancer in front of the cluster can serve first contact only: the advertise addresses, or the translation map, must still lead to each replica.
+
+See xref:{page-version}@maintenance-operation::typedb-configuration.adoc#_listen_vs_advertise[Listen vs. advertise addresses] to configure the servers, and xref:{page-version}@reference::typedb-cluster/drivers.adoc#_connecting_to_a_cluster[drivers] or xref:{page-version}@tools::console.adoc#_connect_to_a_cluster[Console] to connect.
 
 [cols-2]
 --
 .xref:{page-version}@reference::typedb-cluster/administration.adoc[]
 [.clickable]
 ****
-Deploy, grow, monitor, and migrate a cluster: replicas and roles, the admin tool, failover, export and import, and migrating a TypeDB CE server into a cluster.
+Deploy, grow, monitor, and migrate a cluster: replicas and roles, the admin tool, failover, and migrating a TypeDB CE server into a cluster.
 ****
 
 .xref:{page-version}@reference::typedb-cluster/drivers.adoc[]
 [.clickable]
 ****
-Cluster-related features of TypeDB drivers: multi-address connections, failover, and server inspection.
+Cluster-related features of TypeDB drivers: multi-address and translated connections, failover, and server inspection.
 ****
 
-.xref:{page-version}@reference::typedb-cluster/console.adoc[]
+.xref:{page-version}@tools::console.adoc#_connect_to_a_cluster[TypeDB Console]
 [.clickable]
 ****
-Cluster-related features of TypeDB Console: multi-address connections and server inspection commands.
+Connect TypeDB Console to a cluster and inspect its servers.
 ****
 
 .xref:{page-version}@maintenance-operation::typedb-configuration.adoc#_clustering[Cluster configuration]

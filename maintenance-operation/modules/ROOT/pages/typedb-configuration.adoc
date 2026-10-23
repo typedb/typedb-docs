@@ -73,13 +73,14 @@ typedb server --server.listen-address=0.0.0.0:1730
 Each public network endpoint has two addresses:
 
 * The *listen* address is what the server binds to locally — the interface and port where it accepts connections.
-* The *advertise* address is what the server reports back to clients (and, in clustered deployments, to peer servers). Clients use the advertise address to connect if it is presented.
+* The *advertise* address is what the server reports back to clients. Clients use the advertise address to connect if it is presented.
 
 When the server is reached directly, both can be the same. When the server sits behind a NAT, reverse proxy, or load balancer, the listen address is the local bind (often `0.0.0.0:<port>`) and the advertise address is the externally-reachable host:port that clients should dial.
 
 If `advertise-address` is omitted, the server does not report back any address to gRPC/HTTP connections. Then, the clients must not depend on the server's information, using the initial connection address for further communication.
 
-Multi-node environments **must** use advertise addresses for efficient failover logic execution on the client side.
+In a cluster, advertise addresses must be set: clients connect to every replica, and to a new primary after a failover, at its advertise address, so a load balancer or proxy only serves their first contact.
+Clients that cannot reach the advertise addresses use address translation instead; see xref:{page-version}@reference::typedb-cluster/index.adoc#_client_addresses[How clients reach the replicas].
 
 [cols=".^3,5"]
 |===
@@ -241,7 +242,7 @@ typedb server \
 | Host and port this server listens on for replication, and that the other replicas use to reach it. Must be set. The shipped `config.yml` uses port `1730`. +
 
 | `server.advertise-address`, `server.http.advertise-address`
-| The addresses clients are redirected to when this server is the primary (see <<_listen_vs_advertise>>). Must be set in a cluster. +
+| The addresses clients connect to this server at, and are redirected to when it is the primary (see <<_listen_vs_advertise>>). Must be set in a cluster. +
 
 | `diagnostics.deployment-id`
 | Name of the cluster, used in diagnostics. Must be set; give all replicas the same one. +
