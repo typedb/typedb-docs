@@ -252,7 +252,7 @@ typedb server \
 | Directory for the replication log and cluster state. The shipped `config.yml` sets `clustering`, which resolves to `server/clustering` in the distribution; without the option, it is `<data-directory>/../clustering`. When you move the data directory, set this option too, and keep both on durable storage. +
 
 | `initialize.create-cluster`
-| Allow this server to create a new cluster on its first start. Only replica `1` can do so. Ignored while the server has cluster state; remove it after the first start, so that a server whose clustering directory is lost does not create a separate cluster. Default value: `false`. +
+| Allow this server to create a new cluster on its first start. Only replica `1` can do so. Ignored while the server has cluster state; remove it after the first start, so that a server restarted on empty storage does not create a new, separate cluster. Default value: `false`. +
 
 | `initialize.migrate-ce.enabled`
 | Allow this server to migrate an existing TypeDB CE data directory in place into a new cluster (see xref:{page-version}@reference::typedb-cluster/administration.adoc#_migrate_ce[Migrating a TypeDB CE server into a cluster]). Requires `initialize.create-cluster` and replica id `1`. Default value: `false`. +

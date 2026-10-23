@@ -1,6 +1,6 @@
 = Horizontal Scaling
 
-When a single server is not enough, whether because it must stay available through hardware failures and maintenance or because one machine cannot hold the load, TypeDB scales out to a cluster of servers that replicate the same data.
+When a single server is not enough because it must stay available through hardware failures and maintenance, TypeDB scales out to a cluster of servers that replicate the same data.
 This chapter explains how TypeDB's replication-based architecture provides high availability and fault tolerance.
 
 Clustering is available for Enterprise and Cloud users starting from version 3.14.1. TypeDB Community Edition only supports single-server deployments.

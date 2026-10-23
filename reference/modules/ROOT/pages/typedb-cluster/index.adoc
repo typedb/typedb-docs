@@ -7,7 +7,8 @@ This section covers everything that is specific to clustered TypeDB.
 
 [NOTE]
 ====
-Clustering is available for Enterprise and Cloud users starting from version 3.14.1.
+Clustering is available for Enterprise and Cloud users starting from server version 3.14.1.
+TypeDB drivers and Console support clusters starting from version 3.14.0, so 3.14.0 clients work with 3.14.1 servers.
 TypeDB Community Edition runs single-server deployments only.
 ====
 
@@ -15,18 +16,16 @@ On https://cloud.typedb.com[TypeDB Cloud], clusters are deployed and operated fo
 With xref:{page-version}@home::install/enterprise.adoc[TypeDB Enterprise], you deploy and administer the cluster yourself.
 
 == What's different in a clustered deployment?
-// tag::cluster-overview[]
 In a single-server deployment, the data lives on one machine, and clients access it through that one address.
 
 In a clustered deployment, the data is replicated across a group of servers with the https://raft.github.io/raft.pdf[Raft consensus algorithm].
 At any time, one server is the *primary* and the others are *secondaries*:
 
 - the primary serves all client operations: transactions, database and user management, export and import;
-- the secondaries keep durable copies of the data, acknowledge changes (a majority of all servers must, before a change is committed), and take over through an automatic election when the primary fails.
+- the secondaries keep durable copies of the data, acknowledge changes, and take over through an automatic election when the primary fails.
 
 A change is committed once a majority of the servers have written it, so a cluster of `2N + 1` servers tolerates the loss of `N` servers without losing data or availability.
 Clients may connect to any server: a request that reaches a secondary is answered with the primary's address, and TypeDB drivers and Console follow it automatically (see <<_client_addresses>>).
-// end::cluster-overview[]
 
 [#_client_addresses]
 == How clients reach the replicas

@@ -29,7 +29,7 @@ A replica is reported `available` when it answers, and `unavailable` otherwise.
 
 == Deploying a cluster
 
-The first replica (replica id `1`) is started with `--initialize.create-cluster=true` and forms a cluster of one.
+The first replica (replica id `1`) is started for the first time with `--initialize.create-cluster=true` and forms a cluster of one; later starts leave the flag out.
 Every further replica is started without that flag, and then registered on the primary with the admin tool.
 The step-by-step procedure is in the xref:{page-version}@home::install/enterprise.adoc#_deploying_manually[TypeDB Enterprise installation guide].
 

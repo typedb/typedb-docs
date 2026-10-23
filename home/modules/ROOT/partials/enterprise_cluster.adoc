@@ -32,7 +32,8 @@ The shipped `server/config.yml` holds localhost placeholders for these; set them
 .Server #1
 ====
 On the machine with the IP address `10.0.0.1`, start the first server with `--initialize.create-cluster=true`.
-This flag lets replica `1` create a new cluster on its first start; later starts ignore it.
+This flag lets replica `1` create a new cluster on its first start.
+Leave it out of every later start, including startup scripts and service definitions: a server started with it on empty storage (for example, after its disk was replaced) creates a new, separate cluster instead of waiting to be registered into the existing one.
 
 [source,bash]
 ----
@@ -103,7 +104,8 @@ See xref:{page-version}@reference::typedb-cluster/administration.adoc[Administer
 .Clients on a different network
 ====
 Clients connect to every server at its advertise address, not only at the address they were given.
-When clients reach the servers through addresses other than the ones the servers use among themselves (for example, public hostnames in front of a private network), set the advertise addresses to the client-facing ones and keep the clustering addresses private:
+When clients reach the servers through addresses other than the ones the servers use among themselves (for example, public hostnames in front of a private network), set the advertise addresses to the client-facing ones and keep the clustering addresses private.
+For example, the first start of server #1 becomes:
 
 [source,bash]
 ----

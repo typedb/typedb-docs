@@ -26,12 +26,38 @@ docker create --name typedb --network host \
     --server.clustering.address=<host-ip>:1730 \
     --server.advertise-address=<host-ip>:1729 \
     --server.http.advertise-address=http://<host-ip>:8000 \
+    --server.admin.enabled=true
+----
+
+Replace `<host-ip>` with the host's address at which clients and other servers reach this server, and give every server its own `--server.clustering.id`.
+The image is published for x86_64 and arm64; on arm64 hosts, the paths inside the container start with `/opt/typedb-cluster-all-linux-arm64`.
+
+The first server of a new cluster (replica id `1`) must start once with `--initialize.create-cluster=true`.
+The arguments given to `docker create` are passed again on every `docker start`, so do not add the flag to the container.
+Instead, run the first start in a temporary container that uses the same volumes:
+
+[source,bash]
+----
+docker run --rm --network host --volumes-from typedb \
+    typedb/typedb-cluster:latest \
+    --diagnostics.deployment-id=my-cluster \
+    --server.clustering.id=1 \
+    --server.clustering.address=<host-ip>:1730 \
+    --server.advertise-address=<host-ip>:1729 \
+    --server.http.advertise-address=http://<host-ip>:8000 \
     --initialize.create-cluster=true
 ----
 
-Replace `<host-ip>` with the host's address at which clients and other servers reach this server.
-The image is published for x86_64 and arm64; on arm64 hosts, the paths inside the container start with `/opt/typedb-cluster-all-linux-arm64`.
-Use `--initialize.create-cluster=true` only for the first server of a cluster; see xref:{page-version}@home::install/enterprise.adoc#_deploying_manually[Deploying manually] for adding further servers.
+Once it prints `Ready to process requests`, stop it with kbd:[Ctrl+C] and start the `typedb` container as shown below.
+The other servers need no such step: they wait to be registered, which you do with the admin tool inside the primary's container, for example:
+
+[source,bash]
+----
+docker exec typedb ./typedb admin --socket-path ./server/data/admin.sock \
+    --command "servers register 2 <server-2-ip>:1730"
+----
+
+See xref:{page-version}@home::install/enterprise.adoc#_deploying_manually[Deploying manually] for the full procedure.
 
 [NOTE]
 ====
