@@ -6,8 +6,9 @@ At any point in time, one server is the primary and the others are secondaries; 
 To tolerate `N` servers failing, a cluster needs `2N + 1` servers.
 This section sets up a 3-server cluster, which tolerates the failure of one server.
 
-Each server in a cluster binds to three ports:
+Each server in a cluster binds to three network ports:
 a gRPC port for TypeDB drivers and Console (`1729` by default), an HTTP port for the HTTP API and Studio (`8000`), and a clustering port for server-to-server replication (`1730`).
+It also serves its xref:{page-version}@maintenance-operation::diagnostics-endpoint.adoc[monitoring endpoint] on port `4104`.
 
 For this tutorial, all three servers are on the same private network with these ports open, and have the IP addresses `10.0.0.1`, `10.0.0.2`, and `10.0.0.3`.
 
@@ -15,11 +16,12 @@ For this tutorial, all three servers are on the same private network with these 
 ====
 To try a cluster on a single machine, use `127.0.0.1` for every address and prefix each port with the server number:
 
-* `11729`, `18000`, `11730` for server 1;
-* `21729`, `28000`, `21730` for server 2;
-* `31729`, `38000`, `31730` for server 3.
+* `11729`, `18000`, `11730`, `14104` for server 1;
+* `21729`, `28000`, `21730`, `24104` for server 2;
+* `31729`, `38000`, `31730`, `34104` for server 3.
 
-Run each server from its own copy of the distribution, or give each one its own `--storage.data-directory`, `--storage.clustering-directory`, `--logging.directory`, `--server.admin.socket-path`, and `--diagnostics.monitoring.port`.
+Set these ports in each server's listen addresses (`--server.listen-address`, `--server.http.listen-address`), advertise addresses, clustering address, and `--diagnostics.monitoring.port`.
+Run each server from its own copy of the distribution, or also give each one its own `--storage.data-directory`, `--storage.clustering-directory`, `--logging.directory`, and `--server.admin.socket-path`.
 ====
 
 === Starting the servers
@@ -78,7 +80,7 @@ On the machine of server #1 (the primary), register the two new servers with the
 ----
 
 Each new server receives the data from the primary and becomes a voting secondary once it has caught up.
-Check the result:
+Once they have caught up, check the result:
 
 [source,bash]
 ----

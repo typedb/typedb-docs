@@ -71,7 +71,7 @@ typedb admin --socket-path /var/lib/typedb/data/admin.sock --command "servers re
 
 The new server first receives the whole history of the cluster, which takes about as long as importing the data would.
 Until it has caught up, it does not vote and rejects client requests.
-Once it has caught up and stays caught up, the primary makes it a voting `secondary`, and it starts accepting connections.
+Once it has caught up and stays caught up, the primary makes it a voting `secondary`, and it starts serving requests.
 
 Registration is refused if the target server does not answer at the given address, was started with a different id, already belongs to a cluster as its primary, or if the id is already registered under another address.
 
@@ -96,7 +96,7 @@ TypeDB drivers and Console discover the new primary and retry on their own; see 
 
 A replica that restarts rejoins automatically and catches up from the primary's log.
 If a replica's storage was lost, deregister it from the primary, remove its data and clustering directories, start it, and register it again with its id and clustering address; it receives the full history from the primary.
-A replica whose storage was restored from an older copy refuses to run with a log that is behind the cluster: it stops with an error asking you to do the same.
+Do not restore a replica's data or clustering directory from an older copy: its log would be behind the cluster's. Treat it as a replica whose storage was lost instead.
 
 [#_migrate_ce]
 == Migrating a TypeDB CE server into a cluster
@@ -108,7 +108,7 @@ The migrated server becomes the first replica of the new cluster.
 ====
 * The migration re-imports every database, which takes about as long as an import of the same data.
 The server accepts no connections until it finishes.
-* The data directory needs free space of about twice the size of the data, because the original is kept as a backup.
+* The migration needs free disk space of about twice the size of the data, for the re-imported databases and the replicated log; the original data stays where it is, in `.backup`.
 * Once the migration has started, the data directory no longer has a TypeDB CE layout: the original data is in `.backup`.
 Take a backup before you begin.
 ====
@@ -120,6 +120,7 @@ Take a backup before you begin.
 ----
 ./typedb server \
     --storage.data-directory=/var/lib/typedb/data \
+    --storage.clustering-directory=/var/lib/typedb/clustering \
     --diagnostics.deployment-id=my-cluster \
     --server.clustering.id=1 \
     --server.clustering.address=10.0.0.1:1730 \
@@ -133,7 +134,7 @@ The server moves the existing contents of the data directory into a `.backup` fo
 The migration is resumable: if the server is stopped or crashes in the middle, start it again with the same options and it continues where it left off.
 . Verify your databases and users, then add the other replicas as described above.
 
-The backup folder is kept by default so that you can roll back: stop the server, delete the re-imported databases from the data directory, move the contents of `.backup` back, and clear the clustering directory.
+The backup folder is kept by default so that you can roll back: stop the server, delete everything in the data directory except `.backup`, move the contents of `.backup` back, and clear the clustering directory.
 Pass `--initialize.migrate-ce.retain-ce-backup=false` to delete it automatically once the migration has been verified, or remove it by hand when you no longer need it.
 
 Starting a TypeDB Enterprise server on a TypeDB CE data directory *without* `--initialize.migrate-ce.enabled=true` is refused with error `MCE1`, so an accidental migration cannot happen.
@@ -142,7 +143,7 @@ Leave the two initialization flags set only for the first start: on later starts
 == Encryption
 
 Client connections are encrypted with TLS as on a single server (`server.encryption.*`).
-Communication between replicas is encrypted separately with mutual TLS (`server.clustering.encryption.*`, see xref:{page-version}@maintenance-operation::typedb-configuration.adoc#_clustering[Cluster configuration]): every replica presents its certificate to its peers, and verifies theirs against the CA certificate if one is set.
+Communication between replicas is encrypted separately with mutual TLS (`server.clustering.encryption.*`, see xref:{page-version}@maintenance-operation::typedb-configuration.adoc#_clustering[Cluster configuration]): every replica presents its certificate to its peers and verifies theirs against the CA certificate, which must therefore be set on every replica.
 See xref:{page-version}@maintenance-operation::typedb-in-flight-encryption.adoc[] for generating certificates.
 
 == Monitoring

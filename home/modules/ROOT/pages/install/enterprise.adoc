@@ -49,17 +49,18 @@ Note that xref:{page-version}@tools::console.adoc[TypeDB Console] is also availa
 
 [source,bash]
 ----
-./typedb console --address 127.0.0.1:1729 --username admin --password
+./typedb console --address 127.0.0.1:1729 --username admin --tls-disabled
 ----
 
 To run TypeDB Console from a Docker container, run:
 
 [source,bash]
 ----
-docker exec -ti typedb bash -c '/opt/typedb-cluster-all-linux-x86_64/typedb console --address 127.0.0.1:1729 --username admin --password'
+docker exec -ti typedb bash -c '/opt/typedb-cluster-all-linux-x86_64/typedb console --address 127.0.0.1:1729 --username admin --tls-disabled'
 ----
 
-The default password of the `admin` user is `password`; change it on first use.
+Console prompts for the password; the default password of the `admin` user is `password`, change it on first use.
+Drop `--tls-disabled` once you have enabled xref:{page-version}@maintenance-operation::typedb-in-flight-encryption.adoc[TLS] on the server.
 
 [#_deploying_manually]
 == Deploying manually

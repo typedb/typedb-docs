@@ -31,8 +31,9 @@ Clients may connect to any server: a request that reaches a secondary is answere
 [#_client_addresses]
 == How clients reach the replicas
 
-A TypeDB driver or Console uses the addresses you give it only for first contact.
+A TypeDB gRPC driver or Console uses the addresses you give it only for first contact.
 The server it reaches answers with the *advertise address* of every replica (`server.advertise-address`), and from then on the client connects to the replicas, and finds a new primary after a failover, at those advertised addresses.
+HTTP clients are redirected in the same way, to the primary's HTTP advertise address (`server.http.advertise-address`).
 Every client must therefore be able to reach every replica, either at its advertise address or at an address the client maps to it.
 There are two ways to achieve this:
 
@@ -42,7 +43,7 @@ There are two ways to achieve this:
 
 | Configured by
 | The operator, once per replica: `server.advertise-address` and `server.http.advertise-address`.
-| Each client: a map from the address the client reaches each replica at to that replica's advertise address.
+| Each client: a map from the address the client reaches each replica at to that replica's advertise address (the HTTP advertise address for the HTTP driver).
 
 | Use when
 | One address per replica works for every client, for example a hostname that resolves on every network the clients are on.
@@ -53,8 +54,8 @@ There are two ways to achieve this:
 | The translation map, with an entry for *every* replica.
 
 | Supported by
-| TypeDB gRPC drivers, Console, and the xref:{page-version}@reference::typedb-http-api.adoc#_clusters[HTTP API].
-| TypeDB gRPC drivers and Console only.
+| All clients: TypeDB gRPC drivers, Console, the TypeScript HTTP driver, and any other client of the xref:{page-version}@reference::typedb-http-api.adoc#_clusters[HTTP API].
+| TypeDB gRPC drivers, Console, and the xref:{page-version}@reference::typedb-http-api.adoc#_clusters[TypeScript HTTP driver]. Other HTTP clients map the primary's address themselves.
 |===
 
 Prefer advertise addresses, and use address translation only when no single address per replica works for every client.

@@ -217,7 +217,8 @@ These options exist only in TypeDB Enterprise distributions, where they configur
 TypeDB Cloud manages them for you.
 
 A clustered server must be given a replica id, a clustering address, a deployment id, and advertise addresses; the other options are optional.
-The shipped `server/config.yml` holds localhost placeholders for all of them (replica `1`, deployment id `test`), so a bare `typedb server` starts a single-server cluster advertising `127.0.0.1`: override them for any real deployment.
+The shipped `server/config.yml` holds localhost placeholders for all of them (replica `1`, deployment id `test`, addresses on `127.0.0.1`): override them for any real deployment.
+A server only creates a new cluster when started with `--initialize.create-cluster=true`; otherwise it waits to be registered into an existing one.
 For example, the first server of a new cluster can be started with:
 
 [source,bash]
@@ -242,16 +243,16 @@ typedb server \
 | Host and port this server listens on for replication, and that the other replicas use to reach it. Must be set. The shipped `config.yml` uses port `1730`. +
 
 | `server.advertise-address`, `server.http.advertise-address`
-| The addresses clients connect to this server at, and are redirected to when it is the primary (see <<_listen_vs_advertise>>). Must be set in a cluster. +
+| The addresses clients connect to this server at, and are redirected to when it is the primary (see <<_listen_vs_advertise>>). Must be set in a cluster (the HTTP one only while HTTP is enabled). +
 
 | `diagnostics.deployment-id`
 | Name of the cluster, used in diagnostics. Must be set; give all replicas the same one. +
 
 | `storage.clustering-directory`
-| Directory for the replication log and cluster state. Default value: `clustering` next to the data directory (`<data-directory>/../clustering`). Keep it on the same durable storage as the data directory. +
+| Directory for the replication log and cluster state. The shipped `config.yml` sets `clustering`, which resolves to `server/clustering` in the distribution; without the option, it is `<data-directory>/../clustering`. When you move the data directory, set this option too, and keep both on durable storage. +
 
 | `initialize.create-cluster`
-| Allow this server to create a new cluster on its first start. Only replica `1` can do so. Ignored once the cluster exists, so it is safe to leave set. Default value: `false`. +
+| Allow this server to create a new cluster on its first start. Only replica `1` can do so. Ignored while the server has cluster state; remove it after the first start, so that a server whose clustering directory is lost does not create a separate cluster. Default value: `false`. +
 
 | `initialize.migrate-ce.enabled`
 | Allow this server to migrate an existing TypeDB CE data directory in place into a new cluster (see xref:{page-version}@reference::typedb-cluster/administration.adoc#_migrate_ce[Migrating a TypeDB CE server into a cluster]). Requires `initialize.create-cluster` and replica id `1`. Default value: `false`. +
@@ -274,7 +275,7 @@ typedb server \
 | This replica's private key. Must be supplied if clustering encryption is enabled. +
 
 | `server.clustering.encryption.ca-certificate`
-| CA certificate in PEM format that the other replicas' certificates are verified against. Optional, but without it peer certificates are accepted without verification. +
+| CA certificate in PEM format that signs the replicas' certificates; every replica verifies its peers against it. Must be supplied if clustering encryption is enabled: without it, the replicas cannot connect to each other. +
 
 |===
 

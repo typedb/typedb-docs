@@ -30,6 +30,7 @@ docker create --name typedb --network host \
 ----
 
 Replace `<host-ip>` with the host's address at which clients and other servers reach this server.
+The image is published for x86_64 and arm64; on arm64 hosts, the paths inside the container start with `/opt/typedb-cluster-all-linux-arm64`.
 Use `--initialize.create-cluster=true` only for the first server of a cluster; see xref:{page-version}@home::install/enterprise.adoc#_deploying_manually[Deploying manually] for adding further servers.
 
 [NOTE]

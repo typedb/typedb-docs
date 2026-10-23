@@ -74,7 +74,7 @@ The server address specifies where your TypeDB server is running. It combines th
 
 **Note that connecting to a TLS secured endpoint may require you to use the `https://` prefix!** 
 
-To connect to a TypeDB cluster, pass several replica addresses or an address translation map instead; see xref:{page-version}@reference::typedb-cluster/drivers.adoc#_connecting_to_a_cluster[Drivers in clustered TypeDB].
+To connect to a TypeDB cluster, you can also pass several replica addresses or an address translation map; see xref:{page-version}@reference::typedb-cluster/drivers.adoc#_connecting_to_a_cluster[Drivers in clustered TypeDB].
 
 TypeDB default ports are as follows:
 |===

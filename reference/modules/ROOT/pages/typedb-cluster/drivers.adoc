@@ -11,7 +11,7 @@ Clustering is available for Enterprise and Cloud users starting from version 3.1
 Use TypeDB drivers 3.14.0 or later.
 ====
 
-This page covers the gRPC drivers; HTTP clients follow the primary as described in the xref:{page-version}@reference::typedb-http-api.adoc#_clusters[HTTP API reference].
+This page covers the gRPC drivers; for HTTP clients, including the TypeScript HTTP driver, see the xref:{page-version}@reference::typedb-http-api.adoc#_clusters[HTTP API reference].
 
 [#_connecting_to_a_cluster]
 == Connecting to a cluster
@@ -248,7 +248,7 @@ primary = driver.primary_server()
 if primary is not None:
     print(f"Primary: {primary.address}")
 
-version = driver.server_version(ServerRouting.Direct("10.0.0.2:1729"))
+version = driver.server_version(ServerRouting.Direct("10.0.0.2:1729"))  # an address reported by driver.servers()
 print(f"{version.distribution} {version.version}")
 ----
 --
@@ -260,12 +260,12 @@ Java::
 ----
 for (Server server : driver.servers()) {
     System.out.printf("Server %d: %s, role=%s, term=%s%n",
-            server.getID(), server.getAddress(), server.getRole(), server.getTerm());
+            server.getID(), server.getAddress(), server.getRole().orElse(null), server.getTerm().orElse(null));
 }
 
 driver.primaryServer().ifPresent(primary -> System.out.println("Primary: " + primary.getAddress()));
 
-ServerVersion version = driver.serverVersion(new ServerRouting.Direct("10.0.0.2:1729"));
+ServerVersion version = driver.serverVersion(new ServerRouting.Direct("10.0.0.2:1729")); // an address reported by driver.servers()
 System.out.println(version.getDistribution() + " " + version.getVersion());
 ----
 --
@@ -286,6 +286,7 @@ if let Some(primary) = driver.primary_server().await? {
 }
 
 let version = driver
+    // an address reported by driver.servers()
     .server_version_with_routing(ServerRouting::Direct { address: "10.0.0.2:1729".parse().unwrap() })
     .await?;
 println!("{} {}", version.distribution(), version.version());

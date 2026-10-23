@@ -6,8 +6,25 @@
 == Clustered servers
 
 In a xref:{page-version}@reference::typedb-cluster/index.adoc[cluster], an HTTP client talks to one server at a time.
-A request that reaches a secondary is answered with `421 Misdirected Request` and a JSON body whose `primaryAddress` is the primary's HTTP advertise address (`server.http.advertise-address`), or with `503 Service Unavailable` while no primary is known.
-Sign in again at that address and retry.
+Any server answers sign-in, version, and health requests.
+A database, user, transaction, or query request that reaches a secondary is answered with `421 Misdirected Request` and a JSON body whose `primaryAddress` is the primary's HTTP advertise address (`server.http.advertise-address`), or with `503 Service Unavailable` while no primary is known.
+Sign in again at that address and retry: a token is only valid on the server that issued it.
+
+The TypeScript HTTP driver does this automatically.
+When the HTTP advertise addresses are not reachable from the client, give it `translatedAddresses` instead of `addresses`: for every replica, the address the client reaches it at (`external`) and its HTTP advertise address (`internal`), as described in xref:{page-version}@reference::typedb-cluster/index.adoc#_client_addresses[How clients reach the replicas].
+
+[source,typescript]
+----
+const driver = new TypeDBHttpDriver({
+    username: "admin",
+    password: "password",
+    translatedAddresses: [
+        { external: "https://typedb-1.example.com:8000", internal: "https://10.0.0.1:8000" },
+        { external: "https://typedb-2.example.com:8000", internal: "https://10.0.0.2:8000" },
+        { external: "https://typedb-3.example.com:8000", internal: "https://10.0.0.3:8000" },
+    ],
+});
+----
 
 == Authorization
 

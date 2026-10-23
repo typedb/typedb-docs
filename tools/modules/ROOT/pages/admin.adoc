@@ -145,14 +145,11 @@ $ cat /etc/typedb/admin-new-password | typedb admin --socket-path /var/lib/typed
 
 [source,bash]
 ----
-$ typedb admin --socket-path /var/lib/typedb/data/admin.sock -c "servers register 3 10.0.0.3:1730" -c "servers status"
+$ typedb admin --socket-path /var/lib/typedb/data/admin.sock -c "servers register 3 10.0.0.3:1730"
 Successfully registered replica 3
-id | address       | role      | term | status
--------------------------------------------------
-1  | 10.0.0.1:1729 | primary   | 1    | available
-2  | 10.0.0.2:1729 | secondary | 1    | available
-3  | 10.0.0.3:1729 | secondary | 1    | available
 ----
+
+Once the new replica has caught up, `servers status` lists it as a `secondary`.
 
 == Connection errors
 
