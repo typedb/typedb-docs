@@ -3,21 +3,13 @@
 :keywords: typedb, cluster, console, replication, failover, server routing, replicas, primary, secondary
 :test-python: false
 
-TypeDB Console has been updated to connect to TypeDB clusters and automatically operate across multiple server replicas.
-The interface is experimental and may change between releases.
-You'll need an alpha version of TypeDB Console.
-These are published alongside the mainstream versions, starting with `3.7.0`.
-To access the releases, visit the https://github.com/typedb/typedb-tools/releases[TypeDB Console GitHub page] and look for the most recent Pre-release item containing the alpha suffix (e.g., `TypeDB Console 3.7.0-alpha-2`).
+TypeDB Console connects to TypeDB clusters and operates across multiple server replicas automatically.
 
-== What's different in a clustered deployment?
-
-include::{page-version}@reference::typedb-cluster/index.adoc[tags=cluster-overview]
-
-Cluster-enabled Console adds:
-
-- Flexible connection addresses (single, multiple, or translated).
-- Replica discovery (learning replica addresses from the server).
-- Server inspection commands (list servers, show primary, check version).
+[NOTE]
+====
+Clustering is available for Enterprise and Cloud users starting from version 3.14.1.
+Use TypeDB Console 3.14.0 or later, which is bundled with your TypeDB Enterprise distribution or xref:{page-version}@home::install/console-cli.adoc[available separately].
+====
 
 == Connecting to a cluster
 
@@ -36,7 +28,7 @@ Even if the cluster has multiple replicas, Console can discover peers from the s
 
 === Multiple addresses
 
-If you do not know which replica is available, or you want to increase the chance of connecting when some replicas are down, provide multiple addresses:
+If you do not know which replica is available, or you want to increase the chance of connecting when some replicas are down, provide multiple addresses (preferred):
 
 [source,console]
 ```
@@ -58,7 +50,7 @@ This allows Console to translate replica addresses returned by the server into a
 
 == Server inspection commands
 
-Cluster-enabled Console adds commands to inspect server state.
+Console has commands to inspect the state of the cluster.
 All server commands accept an optional address argument to route the request to a specific server (equivalent to `ServerRouting.Direct` in the driver API).
 When no address is given, the request is routed automatically.
 
@@ -118,5 +110,4 @@ Use `server list` to see up-to-date roles and statuses across all replicas.
 
 - Continue with xref:{page-version}@reference::typedb-cluster/drivers.adoc[Drivers in clustered TypeDB] for programmatic access to TypeDB.
 - Read the full xref:{page-version}@tools::console.adoc[TypeDB Console documentation].
-- Get the latest alpha clustered TypeDB Console from the https://github.com/typedb/typedb-tools/releases[Releases page].
-- Join our discussion in https://discord.com/invite/typedb[Discord]!
+- Operate the cluster itself with the xref:{page-version}@reference::typedb-cluster/administration.adoc[admin tool].

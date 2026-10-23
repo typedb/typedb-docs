@@ -3,29 +3,20 @@
 :keywords: typedb, cluster, driver, replication, failover, server routing, replicas, primary, secondary
 :test-python: false
 
-TypeDB gRPC drivers have been updated to connect to TypeDB clusters and automatically operate across multiple server replicas.
-The API is experimental and may change between releases.
-You'll need an alpha version of TypeDB Driver.
-These are published alongside the mainstream versions, starting with `3.7.0`.
-To access the releases, visit the https://github.com/typedb/typedb-driver/releases[TypeDB Driver GitHub page] and look for the most recent Pre-release item containing the alpha suffix (e.g., `TypeDB Driver 3.7.0-alpha-3`).
+TypeDB gRPC drivers connect to TypeDB clusters and operate across multiple server replicas automatically.
 
-Alternatively, the TypeDB HTTP endpoint and drivers are unchanged and can be used the usual way by explicitly choosing a specific replica to send requests to.
+[NOTE]
+====
+Clustering is available for Enterprise and Cloud users starting from version 3.14.1.
+Use TypeDB drivers 3.14.0 or later.
+====
 
-== What's different in a clustered deployment?
-
-include::{page-version}@reference::typedb-cluster/index.adoc[tags=cluster-overview]
-
-Cluster-enabled drivers add:
-
-- Flexible connection addresses (single, multiple, or translated).
-- Replica discovery (learning other replicas from the server).
-- Automatic failover (retrying operations against other replicas).
-- Server routing for inspection operations (automatic or targeted).
-- Cluster inspection (servers, primary server, server version).
+The xref:{page-version}@reference::typedb-http-api.adoc[HTTP API] and the HTTP drivers are unchanged: they talk to one server.
+A request that reaches a secondary is answered with `421 Misdirected Request` and a JSON body containing the primary's `primaryAddress` (or `503 Service Unavailable` while no primary is known); sign in again at that address and retry.
 
 == Connecting to a cluster
 
-Cluster-enabled drivers accept three address formats displayed below.
+The drivers accept the three address formats displayed below.
 
 === Single address
 
@@ -176,7 +167,7 @@ let driver = TypeDBDriver::new(
 
 == DriverOptions for cluster connections
 
-Cluster-enabled drivers extend DriverOptions with failover and timeout controls.
+DriverOptions include failover and timeout controls for cluster connections.
 
 === DriverTlsConfig
 
@@ -257,7 +248,7 @@ let driver = TypeDBDriver::new(
 
 == Server routing
 
-Cluster-enabled drivers introduce `ServerRouting` to control which server handles an inspection operation.
+`ServerRouting` controls which server handles an inspection operation.
 
 Most driver operations (database management, user management, transactions) are routed to the most suitable server automatically, and failover is handled transparently. `ServerRouting` is available on inspection methods to optionally target a specific server.
 This mechanism will be extended with the evolution of clustered TypeDB.
@@ -716,6 +707,5 @@ fn test_clustered_typedb() {
 == Next steps
 
 - Continue with xref:{page-version}@reference::typedb-cluster/console.adoc[Console in clustered TypeDB] for CLI-specific workflows.
-- Get the latest alpha clustered TypeDB Driver from the https://github.com/typedb/typedb-driver/releases[Releases page].
-- Visit https://github.com/typedb/typedb-driver/tree/cluster-support-feature-branch/docs/modules/ROOT/partials[TypeDB Driver GitHub page] to access the updated API references.
-- Join our discussion in https://discord.com/invite/typedb[Discord]!
+- See the full driver API references in the xref:{page-version}@reference::typedb-grpc-drivers/index.adoc[gRPC drivers reference].
+- Operate the cluster itself with the xref:{page-version}@reference::typedb-cluster/administration.adoc[admin tool].

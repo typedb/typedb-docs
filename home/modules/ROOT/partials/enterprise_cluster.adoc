@@ -1,151 +1,126 @@
 // tag::cluster[]
 === Multi-server setup
 
-While it's possible to run TypeDB Enterprise in a single-server mode, a highly available and fault-tolerant
-production-grade setup includes setting up multiple servers to connect and form a cluster.
-At any given point in time, one of those servers acts as a leader, and the others are followers.
-Increasing the number of servers increases the
-cluster's tolerance to failure: to tolerate N servers failing, a cluster needs to consist of `2N + 1` servers.
-This section describes how you can set up a 3-server cluster (in this case,
-one server can fail with no data loss).
+TypeDB Enterprise can run as a single server, but a highly available, fault-tolerant production setup is a *cluster* of several servers that replicate the data between them.
+At any point in time, one server is the primary and the others are secondaries; see xref:{page-version}@reference::typedb-cluster/index.adoc[Clustered TypeDB] for how a cluster works.
+To tolerate `N` servers failing, a cluster needs `2N + 1` servers.
+This section sets up a 3-server cluster, which tolerates the failure of one server.
 
-Each TypeDB Enterprise server in a cluster binds to three ports:
-a client port that TypeDB drivers connect to (`1729` by default) and two server ports
-(`1730` and `1731`) for server-to-server communication.
+Each server in a cluster binds to three ports:
+a gRPC port for TypeDB drivers and Console (`1729` by default), an HTTP port for the HTTP API and Studio (`8000`), and a clustering port for server-to-server replication (`1730`).
 
-For this tutorial, it's assumed that all three servers are on the same virtual network, have the relevant ports open,
-with no firewall interference, and the servers have IP addresses `10.0.0.1`, `10.0.0.2` and `10.0.0.3` respectively.
+For this tutorial, all three servers are on the same private network with these ports open, and have the IP addresses `10.0.0.1`, `10.0.0.2`, and `10.0.0.3`.
 
 [NOTE]
 ====
-If you're using a single machine to host all nodes,
-it may be easier to use `localhost` or `127.0.0.1` address, but prefix the port with the node number; this way the
-ports `1729`, `1730`, `1731` would turn into:
+To try a cluster on a single machine, use `127.0.0.1` for every address and prefix each port with the server number:
 
-* `11729`, `11730`, `11731`;
-* `21729`, `21730`, `21731`;
-* `31729`, `31730`, `31731`.
+* `11729`, `18000`, `11730` for server 1;
+* `21729`, `28000`, `21730` for server 2;
+* `31729`, `38000`, `31730` for server 3.
+
+Run each server from its own copy of the distribution, or give each one its own `--storage.data-directory`, `--storage.clustering-directory`, `--logging.directory`, `--server.admin.socket-path`, and `--diagnostics.monitoring.port`.
 ====
 
-=== Starting servers
+=== Starting the servers
 
-TypeDB Enterprise servers working in a cluster shall be configured specifically to know all servers in the cluster (peers).
-This could be done through `peers` key in the server config, or with command-line arguments when starting the server.
-Command-line arguments have priority over config file.
-
-See below an example of how 3-server TypeDB Enterprise would be started on three separate machines to be in a cluster.
+Every server needs a unique replica id (`server.clustering.id`), its clustering address (`server.clustering.address`, which it also listens on for replication), the cluster's deployment id (`diagnostics.deployment-id`), and the addresses that clients should use to reach it (`server.advertise-address` and `server.http.advertise-address`).
+The shipped `server/config.yml` holds localhost placeholders for these; set them in the file or pass them as command-line arguments, which take priority over the config file. See xref:{page-version}@maintenance-operation::typedb-configuration.adoc#_clustering[Cluster configuration].
 
 .Server #1
 ====
-The first machine with the IP address of `10.0.0.1`.
-
-To run TypeDB Enterprise server #1:
-
-[source,bash]
-----
-./typedb server \
-    --server.address=10.0.0.1:1729 \
-    --server.internal-address.zeromq=10.0.0.1:1730 \
-    --server.internal-address.grpc=10.0.0.1:1731 \
-    --server.peers.peer-1.address=10.0.0.1:1729 \
-    --server.peers.peer-1.internal-address.zeromq=10.0.0.1:1730 \
-    --server.peers.peer-1.internal-address.grpc=10.0.0.1:1731 \
-    --server.peers.peer-2.address=10.0.0.2:1729 \
-    --server.peers.peer-2.internal-address.zeromq=10.0.0.2:1730 \
-    --server.peers.peer-2.internal-address.grpc=10.0.0.2:1731 \
-    --server.peers.peer-3.address=10.0.0.3:1729 \
-    --server.peers.peer-3.internal-address.zeromq=10.0.0.3:1730 \
-    --server.peers.peer-3.internal-address.grpc=10.0.0.3:1731
-----
-====
-
-.Server #2
-====
-The first machine with the IP address of `10.0.0.2`.
-
-To run TypeDB Enterprise server #2:
+On the machine with the IP address `10.0.0.1`, start the first server with `--initialize.create-cluster=true`.
+This flag lets replica `1` create a new cluster on its first start; later starts ignore it.
 
 [source,bash]
 ----
 ./typedb server \
-    --server.address=10.0.0.2:1729 \
-    --server.internal-address.zeromq=10.0.0.2:1730 \
-    --server.internal-address.grpc=10.0.0.2:1731 \
-    --server.peers.peer-1.address=10.0.0.1:1729 \
-    --server.peers.peer-1.internal-address.zeromq=10.0.0.1:1730 \
-    --server.peers.peer-1.internal-address.grpc=10.0.0.1:1731 \
-    --server.peers.peer-2.address=10.0.0.2:1729 \
-    --server.peers.peer-2.internal-address.zeromq=10.0.0.2:1730 \
-    --server.peers.peer-2.internal-address.grpc=10.0.0.2:1731 \
-    --server.peers.peer-3.address=10.0.0.3:1729 \
-    --server.peers.peer-3.internal-address.zeromq=10.0.0.3:1730 \
-    --server.peers.peer-3.internal-address.grpc=10.0.0.3:1731
+    --diagnostics.deployment-id=my-cluster \
+    --server.clustering.id=1 \
+    --server.clustering.address=10.0.0.1:1730 \
+    --server.advertise-address=10.0.0.1:1729 \
+    --server.http.advertise-address=http://10.0.0.1:8000 \
+    --server.admin.enabled=true \
+    --initialize.create-cluster=true
 ----
+
+The server prints `Ready to process requests` and already serves clients as a cluster of one.
 ====
 
-.Server #3
+.Servers #2 and #3
 ====
-The first machine with the IP address of `10.0.0.3`.
-
-To run TypeDB Enterprise server #3:
+On `10.0.0.2`, start the second server without the `--initialize.create-cluster` flag:
 
 [source,bash]
 ----
 ./typedb server \
-    --server.address=10.0.0.3:1729 \
-    --server.internal-address.zeromq=10.0.0.3:1730 \
-    --server.internal-address.grpc=10.0.0.3:1731 \
-    --server.peers.peer-1.address=10.0.0.1:1729 \
-    --server.peers.peer-1.internal-address.zeromq=10.0.0.1:1730 \
-    --server.peers.peer-1.internal-address.grpc=10.0.0.1:1731 \
-    --server.peers.peer-2.address=10.0.0.2:1729 \
-    --server.peers.peer-2.internal-address.zeromq=10.0.0.2:1730 \
-    --server.peers.peer-2.internal-address.grpc=10.0.0.2:1731 \
-    --server.peers.peer-3.address=10.0.0.3:1729 \
-    --server.peers.peer-3.internal-address.zeromq=10.0.0.3:1730 \
-    --server.peers.peer-3.internal-address.grpc=10.0.0.3:1731
+    --diagnostics.deployment-id=my-cluster \
+    --server.clustering.id=2 \
+    --server.clustering.address=10.0.0.2:1730 \
+    --server.advertise-address=10.0.0.2:1729 \
+    --server.http.advertise-address=http://10.0.0.2:8000 \
+    --server.admin.enabled=true
 ----
+
+Start the third server on `10.0.0.3` the same way with `--server.clustering.id=3` and its own addresses.
+Both servers wait to be registered.
 ====
 
-The above example assumes
-the application (TypeDB Client) accessing TypeDB Enterprise resides on the same private network as the cluster.
+=== Registering the servers
 
-If this is *not* the case,
-TypeDB Enterprise also supports using different IP addresses for client and server communication.
+On the machine of server #1 (the primary), register the two new servers with the xref:{page-version}@tools::admin.adoc[admin tool], giving each one's replica id and clustering address:
 
-.Example of using separate network for client connection
+[source,bash]
+----
+./typedb admin --socket-path ./server/data/admin.sock \
+    --command "servers register 2 10.0.0.2:1730" \
+    --command "servers register 3 10.0.0.3:1730"
+----
+
+Each new server joins as a learner, receives the data from the primary, and is promoted to a voting secondary once it has caught up.
+Check the result:
+
+[source,bash]
+----
+./typedb admin --socket-path ./server/data/admin.sock --command "servers status"
+----
+
+[source]
+----
+id | address       | role      | term | status
+-------------------------------------------------
+1  | 10.0.0.1:1729 | primary   | 1    | available
+2  | 10.0.0.2:1729 | secondary | 1    | available
+3  | 10.0.0.3:1729 | secondary | 1    | available
+----
+
+The cluster is ready.
+Connect with xref:{page-version}@tools::console.adoc[TypeDB Console] or a xref:{page-version}@reference::typedb-cluster/drivers.adoc[TypeDB driver] to any of the three addresses; requests are routed to the primary automatically.
+See xref:{page-version}@reference::typedb-cluster/administration.adoc[Administering a cluster] for adding and removing servers later, failover, and migrating an existing TypeDB CE server into a cluster.
+
+.Clients on a different network
 ====
-
-The relevant external hostname should be passed as arguments using the `--server.address` and
-`--server.peers` flags as below.
+When clients reach the servers through addresses other than the ones the servers use among themselves (for example, public hostnames in front of a private network), set the advertise addresses to the client-facing ones and keep the clustering addresses private:
 
 [source,bash]
 ----
 ./typedb server \
-    --server.address=external-host-1:1729 \
-    --server.internal-address.zeromq=10.0.0.1:1730 \
-    --server.internal-address.grpc=10.0.0.1:1731 \
-    --server.peers.peer-1.address=external-host-1:1729 \
-    --server.peers.peer-1.internal-address.zeromq=10.0.0.1:1730 \
-    --server.peers.peer-1.internal-address.grpc=10.0.0.1:1731 \
-    --server.peers.peer-2.address=external-host-2:1729 \
-    --server.peers.peer-2.internal-address.zeromq=10.0.0.2:1730 \
-    --server.peers.peer-2.internal-address.grpc=10.0.0.2:1731 \
-    --server.peers.peer-3.address=external-host-3:1729 \
-    --server.peers.peer-3.internal-address.zeromq=10.0.0.3:1730 \
-    --server.peers.peer-3.internal-address.grpc=10.0.0.3:1731
+    --diagnostics.deployment-id=my-cluster \
+    --server.clustering.id=1 \
+    --server.clustering.address=10.0.0.1:1730 \
+    --server.advertise-address=typedb-1.example.com:1729 \
+    --server.http.advertise-address=http://typedb-1.example.com:8000 \
+    --server.admin.enabled=true \
+    --initialize.create-cluster=true
 ----
 
-And so on for servers #2 and #3.
-
-In this case, port `1729` would need to be open to public and clients would use the `external-host-1`, `external-host-2`
-and `external-host-3` hostnames to communicate with TypeDB Enterprise; inter-server communication would be done over a
-private network using ports `1730` and `1731`.
+In this case, ports `1729` and `8000` need to be reachable by clients at the advertised hostnames, while port `1730` only needs to be open between the servers.
+With xref:{page-version}@maintenance-operation::typedb-in-flight-encryption.adoc[TLS] enabled, the HTTP advertise address uses `https://`.
 ====
 
 === Stopping servers
 
-Stopping TypeDB Enterprise is done the same way as on a single server:
-to stop TypeDB Enterprise, close the terminal or press kbd:[Ctrl+C].
-All nodes must be shut down independently in the same way.
-// end::cluster[] 
+Stopping a clustered server is done the same way as a single server: close the terminal or press kbd:[Ctrl+C].
+Each server is shut down independently.
+As long as a majority of the servers is running, the cluster keeps serving.
+// end::cluster[]

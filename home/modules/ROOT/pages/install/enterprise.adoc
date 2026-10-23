@@ -2,6 +2,7 @@
 :page-aliases: {page-version}@manual::install/enterprise.adoc
 
 Run TypeDB Enterprise on your own infrastructure, a self-hosted deployment of TypeDB, fully under your control.
+TypeDB Enterprise servers can be xref:{page-version}@reference::typedb-cluster/index.adoc[clustered] for high availability.
 
 TypeDB Enterprise is distributed and installed separately from other editions of TypeDB and requires a <<_license, license>>.
 
@@ -48,24 +49,37 @@ Note that xref:{page-version}@tools::console.adoc[TypeDB Console] is also availa
 
 [source,bash]
 ----
-./typedb console --cloud 127.0.0.1:1729 --username admin --password
+./typedb console --address 127.0.0.1:1729 --username admin --password
 ----
 
 To run TypeDB Console from a Docker container, run:
 
 [source,bash]
 ----
-docker exec -ti typedb-cloud bash -c '/opt/typedb-cloud-all-linux-x86_64/typedb console --cloud 127.0.0.1:1729 --username admin --password'
+docker exec -ti typedb bash -c '/opt/typedb-cluster-all-linux-x86_64/typedb console --address 127.0.0.1:1729 --username admin --password'
 ----
+
+The default password of the `admin` user is `password`; change it on first use.
 
 [#_deploying_manually]
 == Deploying manually
 
 include::{page-version}@home::partial$enterprise_cluster.adoc[tag=cluster]
 
+== Migrating from TypeDB Community Edition
+
+An existing TypeDB CE data directory can be migrated in place to become the first server of a TypeDB Enterprise cluster.
+See xref:{page-version}@reference::typedb-cluster/administration.adoc#_migrate_ce[Migrating a TypeDB CE server into a cluster].
+
 [#_deploying_with_kubernetes]
 == Deploying with Kubernetes
 
 To deploy a TypeDB Enterprise cluster with Kubernetes, we can use the https://helm.sh/[Helm] package manager.
+
+[NOTE]
+====
+The Helm chart described below is the TypeDB Enterprise 2.x chart.
+Kubernetes instructions for TypeDB Enterprise 3.x clusters are being prepared; until then, deploy the 3.x servers with the manual procedure above.
+====
 
 include::{page-version}@home::partial$enterprise_kubernetes.adoc[leveloffset=+1]

@@ -6,25 +6,35 @@ To pull the TypeDB Enterprise Docker image, run:
 
 [source,bash]
 ----
-docker pull vaticle/typedb-cloud:latest
+docker pull typedb/typedb-cluster:latest
 ----
 
 Use `docker create` to create a new container with the downloaded image.
-By default, a TypeDB Enterprise server is expected to be running on port `1729`.
-To ensure that data is preserved even when the container is killed or restarted, use Docker volumes:
+The container's entrypoint is `typedb server`, so server options are passed as arguments.
+A TypeDB Enterprise server listens on port `1729` for gRPC, `8000` for HTTP, and on its clustering address (port `1730`) for replication between servers.
+Because the server binds the clustering address itself, run the container on the host network so that the address other servers use is one it can bind.
+To ensure that data is preserved even when the container is killed or recreated, mount Docker volumes for both the data directory and the clustering directory:
 
 [source,bash]
 ----
-docker create --name typedb -p 1729:1729 \
-    -v $(pwd)/db/data:/opt/typedb-cloud-all-linux-x86_64/server/data \
-    -v $(pwd)/db/replication:/opt/typedb-cloud-all-linux-x86_64/server/replication \
-    -v $(pwd)/db/user:/opt/typedb-cloud-all-linux-x86_64/server/user \
-    vaticle/typedb-cloud:latest
+docker create --name typedb --network host \
+    -v $(pwd)/db/data:/opt/typedb-cluster-all-linux-x86_64/server/data \
+    -v $(pwd)/db/clustering:/opt/typedb-cluster-all-linux-x86_64/server/clustering \
+    typedb/typedb-cluster:latest \
+    --diagnostics.deployment-id=my-cluster \
+    --server.clustering.id=1 \
+    --server.clustering.address=<host-ip>:1730 \
+    --server.advertise-address=<host-ip>:1729 \
+    --server.http.advertise-address=http://<host-ip>:8000 \
+    --initialize.create-cluster=true
 ----
+
+Replace `<host-ip>` with the host's address at which clients and other servers reach this server.
+Use `--initialize.create-cluster=true` only for the first server of a cluster; see xref:{page-version}@home::install/enterprise.adoc#_deploying_manually[Deploying manually] for adding further servers.
 
 [NOTE]
 ====
-The port number is configurable. For example, you could configure TypeDB Enterprise to listen on port 80 instead of the default port 1729.
+The port numbers are configurable. For example, you could configure TypeDB Enterprise to listen on port 80 instead of the default port 1729.
 ====
 
 ==== Start and Stop TypeDB Enterprise in Docker
@@ -49,4 +59,4 @@ To stop the Docker container:
 ----
 docker stop typedb
 ----
-// end::docker[] 
+// end::docker[]

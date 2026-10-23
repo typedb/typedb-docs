@@ -1,55 +1,56 @@
-= Clustered TypeDB (Experimental)
+= Clustered TypeDB
+:description: Clustered TypeDB replicates your data across multiple servers for high availability, with automatic failover and transparent client routing.
+:keywords: typedb, cluster, replication, raft, high availability, failover, primary, secondary, enterprise, cloud
 
-TypeDB server can be run as a single independent instance and as a part of a **cluster**.
-
-This is a section dedicated to special features of clustered TypeDB.
+TypeDB server runs either as a single independent server or as a member of a *cluster* of replicated servers.
+This section covers everything that is specific to clustered TypeDB.
 
 [NOTE]
 ====
-Clustering in TypeDB 3.x is being actively developed and is currently on the **alpha stage**.
-
-Its features and public interfaces will be improved and can be changed between releases.
-
-Please do not use the experimental version of clustered TypeDB in production.
-
-Please **do**:
-
-- use it for testing;
-- report bugs;
-- share ideas and requests;
-- ask questions on https://typedb.com/discord[Discord].
-
-Thank you for your interest and help!
+Clustering is available for Enterprise and Cloud users starting from version 3.14.1.
+TypeDB Community Edition runs single-server deployments only.
 ====
 
-To access clustered TypeDB versions to help us in its stabilization or to expore its features,
-visit https://cloud.typedb.com[cloud.typedb.com] and create a deployment with the latest version
-from the **Experimental** section.
-
-After creating a new cluster, the TypeDB Cloud dashboard will display all the required connection information.
+On https://cloud.typedb.com[TypeDB Cloud], clusters are deployed and operated for you: the dashboard shows all the connection information you need.
+With xref:{page-version}@home::install/enterprise.adoc[TypeDB Enterprise], you deploy and administer the cluster yourself.
 
 == What's different in a clustered deployment?
 // tag::cluster-overview[]
-In a single-server deployment, the data is stored on one single machine, and a client can access it only through this one server address.
+In a single-server deployment, the data lives on one machine, and clients access it through that one address.
 
-In a clustered deployment, this information is replicated between a cluster of servers using the https://raft.github.io/raft.pdf[Raft consensus algorithm].
-The users can perform operations across multiple replicas:
+In a clustered deployment, the data is replicated across a group of servers with the https://raft.github.io/raft.pdf[Raft consensus algorithm].
+At any time, one server is the *primary* and the others are *secondaries*:
 
-- a primary replica (serves strongly consistent operations),
-- one or more secondary replicas (can serve eventually consistent idempotent operations and be used for failover).
+- the primary serves all client operations: transactions, database and user management, export and import;
+- the secondaries keep durable copies of the data, acknowledge changes (a majority of all servers must, before a change is committed), and take over through an automatic election when the primary fails.
+
+A change is committed once a majority of the servers have written it, so a cluster of `2N + 1` servers tolerates the loss of `N` servers without losing data or availability.
+Clients may connect to any server: a request that reaches a secondary is answered with the primary's address, and TypeDB drivers and Console follow it automatically.
 // end::cluster-overview[]
 
 [cols-2]
 --
+.xref:{page-version}@reference::typedb-cluster/administration.adoc[]
+[.clickable]
+****
+Deploy, grow, monitor, and migrate a cluster: replicas and roles, the admin tool, failover, export and import, and migrating a TypeDB CE server into a cluster.
+****
+
 .xref:{page-version}@reference::typedb-cluster/drivers.adoc[]
 [.clickable]
 ****
-Explore cluster-related features of TypeDB Drivers.
+Cluster-related features of TypeDB drivers: multi-address connections, failover, and server inspection.
 ****
 
 .xref:{page-version}@reference::typedb-cluster/console.adoc[]
 [.clickable]
 ****
-Read cluster-related features of TypeDB Console.
+Cluster-related features of TypeDB Console: multi-address connections and server inspection commands.
+****
+
+.xref:{page-version}@maintenance-operation::typedb-configuration.adoc#_clustering[Cluster configuration]
+[.clickable]
+****
+Server configuration options specific to TypeDB Enterprise clusters.
 ****
 --
