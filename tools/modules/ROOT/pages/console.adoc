@@ -1,5 +1,5 @@
 = TypeDB Console
-:page-aliases: {page-version}@manual::tools/console.adoc
+:page-aliases: {page-version}@manual::tools/console.adoc, {page-version}@reference::typedb-cluster/console.adoc
 
 TypeDB Console is a standalone TypeDB client with a command line interface (CLI).
 It serves as a lightweight and powerful CLI tool to manage and query TypeDB databases.
@@ -13,6 +13,36 @@ For installation instructions, see the xref:{page-version}@home::install/studio.
 == Connect to TypeDB
 
 include::{page-version}@tools::partial$console_connect.adoc[tag=connect]
+
+[#_connect_to_a_cluster]
+=== Connect to a cluster
+
+To connect to a xref:{page-version}@reference::typedb-cluster/index.adoc[TypeDB cluster] (TypeDB Console 3.14.0 or later), pass one or more replica addresses, separated by commas.
+Console routes every command to the primary and follows it through failovers:
+
+[source,console]
+----
+typedb console --address=10.0.0.1:1729,10.0.0.2:1729,10.0.0.3:1729 --username=<username>
+----
+
+If the replicas' advertise addresses are not reachable from where Console runs, use `--address-translation` instead, with a `<client address>=<advertise address>` pair for every replica (see xref:{page-version}@reference::typedb-cluster/index.adoc#_client_addresses[How clients reach the replicas]):
+
+[source,console]
+----
+typedb console --address-translation=typedb-1.example.com:1729=10.0.0.1:1729,typedb-2.example.com:1729=10.0.0.2:1729,typedb-3.example.com:1729=10.0.0.3:1729 --username=<username>
+----
+
+Inspect the cluster with the <<_server_level_commands,`server` commands>>:
+
+[source,console]
+----
+>> server list
+ id | address       | role      | term | status
+---------------------------------------------------
+ 1  | 10.0.0.1:1729 | primary   | 1    | available
+ 2  | 10.0.0.2:1729 | secondary | 1    | available
+ 3  | 10.0.0.3:1729 | secondary | 1    | available
+----
 
 == Interactive mode
 
@@ -252,10 +282,16 @@ The following arguments can be used when invoking TypeDB Console:
 [cols=".^3,^.^1,5"]
 |===
 ^| Argument ^| Alias ^| Description
-| `--address=<address>`
-|
+| `--address=<address>[,<address>...]`
+| `--addresses`
 | Address to which Console will connect to: IP address and IP port separated by colon.
 Note that by default, TLS is enabled, which will require an `https://` endpoint.
+For a cluster, several replica addresses can be given, separated by commas.
+
+| `--address-translation=<client address>=<advertise address>[,...]`
+|
+| Connect to a cluster through addresses other than the replicas' advertise addresses: one `<client address>=<advertise address>` pair per replica, separated by commas.
+See <<_connect_to_a_cluster>>. Cannot be combined with `--address`.
 | `--help`
 | `-h`
 | Show help message.
@@ -339,6 +375,18 @@ Set password for the user with the name `username`. When the new password is omi
 
 | `user delete <username>`
 | Delete a user with the name `<username>` on the server. +
+
+2+^| Server inspection
+| `server list [address]`
+| List the servers of the cluster with their id, address, role, term, and availability.
+
+| `server primary [address]`
+| Print the address of the primary server.
+
+| `server version [address]`
+| Print the server's distribution and version.
+
+2+| Server inspection commands are routed automatically; give an `address` to send the command to that server instead.
 
 2+^| Open a transaction
 // TODO: You can't set options in 3.x. Uncomment when it changes

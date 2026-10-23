@@ -1,0 +1,156 @@
+= Administering a cluster
+:description: How to deploy, grow, monitor, and migrate a TypeDB Enterprise cluster with the typedb admin tool.
+:keywords: typedb, cluster, administration, admin tool, replica, register, deregister, failover, migration, enterprise
+
+This page describes how a TypeDB cluster is operated.
+It applies to xref:{page-version}@home::install/enterprise.adoc[TypeDB Enterprise]; on TypeDB Cloud, all of this is managed for you.
+
+== Replicas and roles
+
+A cluster is a set of *replicas*: TypeDB Enterprise servers, each configured as described in xref:{page-version}@maintenance-operation::typedb-configuration.adoc#_clustering[Cluster configuration].
+
+Each replica has a role:
+
+[cols="1,4"]
+|===
+| Role | Meaning
+
+| `primary`
+| Serves all client operations and replicates every change to the others. There is exactly one primary at a time.
+
+| `secondary`
+| Holds a complete copy of the data and votes in elections. Redirects clients to the primary.
+
+| `candidate`
+| A replica in the middle of an election. Transient.
+|===
+
+A replica is reported `available` when it answers, and `unavailable` otherwise.
+
+== Deploying a cluster
+
+The first replica (replica id `1`) is started for the first time with `--initialize.create-cluster=true` and forms a cluster of one; later starts leave the flag out.
+Every further replica is started without that flag, and then registered on the primary with the admin tool.
+The step-by-step procedure is in the xref:{page-version}@home::install/enterprise.adoc#_deploying_manually[TypeDB Enterprise installation guide].
+
+== The admin tool
+
+Cluster membership is managed with the xref:{page-version}@tools::admin.adoc#_cluster_commands[cluster commands] of the TypeDB admin tool: `servers status`, `servers register`, and `servers deregister`.
+The tool connects to a replica's local admin endpoint, so it runs on the replica's host, and the endpoint must be enabled (`server.admin.enabled=true`).
+Commands that change the membership run on the primary.
+
+=== Checking the status
+
+[source,bash]
+----
+typedb admin --socket-path /var/lib/typedb/data/admin.sock --command "servers status"
+----
+
+[source]
+----
+id | address       | role      | term | status
+-------------------------------------------------
+1  | 10.0.0.1:1729 | primary   | 4    | available
+2  | 10.0.0.2:1729 | secondary | 4    | available
+3  | 10.0.0.3:1729 | secondary | 4    | available
+----
+
+A replica that cannot be reached is shown as `unavailable` with its other columns empty.
+The `term` is the Raft election term; it increases with every election, so a growing term indicates failovers.
+
+=== Adding a replica
+
+. Start the new server with a unique replica id, its clustering address, the cluster's deployment id, and an empty data directory.
+It waits until it is registered.
+. On the primary's host, register it:
++
+[source,bash]
+----
+typedb admin --socket-path /var/lib/typedb/data/admin.sock --command "servers register 4 10.0.0.4:1730"
+----
+
+The new server first receives the whole history of the cluster, which takes about as long as importing the data would.
+Until it has caught up, it does not vote and rejects client requests.
+Once it has caught up and stays caught up, the primary makes it a voting `secondary`, and it starts serving requests.
+
+Registration is refused if the target server does not answer at the given address, was started with a different id, already belongs to a cluster as its primary, or if the id is already registered under another address.
+
+=== Removing a replica
+
+[source,bash]
+----
+typedb admin --socket-path /var/lib/typedb/data/admin.sock --command "servers deregister 4"
+----
+
+The deregistered server prints `Left the cluster. Cannot process requests.` and rejects all requests; stop the process yourself.
+To add the same machine again, remove its data and clustering directories first, then start it and register it anew.
+When the primary deregisters itself, it hands leadership over before leaving.
+
+Keep an odd number of voting replicas: a cluster needs a majority of its voters to accept changes, so losing one replica of three is tolerated, while losing one of two is not.
+
+== Failover
+
+When the primary becomes unreachable, the remaining replicas elect a new primary within seconds.
+Every open transaction on the affected replicas is closed, including read transactions, and the client has to open new ones against the new primary.
+TypeDB drivers and Console discover the new primary and retry on their own; see xref:{page-version}@reference::typedb-cluster/drivers.adoc[Drivers in clustered TypeDB].
+
+A replica that restarts rejoins automatically and catches up from the primary's log.
+If a replica's storage was lost, deregister it from the primary, remove its data and clustering directories, start it, and register it again with its id and clustering address; it receives the full history from the primary.
+Do not restore a replica's data or clustering directory from an older copy: its log would be behind the cluster's. Treat it as a replica whose storage was lost instead.
+
+[#_migrate_ce]
+== Migrating a TypeDB CE server into a cluster
+
+A TypeDB Community Edition data directory can be migrated in place into a cluster of TypeDB Enterprise servers.
+The migrated server becomes the first replica of the new cluster.
+
+[IMPORTANT]
+====
+* The migration re-imports every database, which takes about as long as an import of the same data.
+The server accepts no connections until it finishes.
+* The migration needs free disk space of about twice the size of the data, for the re-imported databases and the replicated log; the original data stays where it is, in `.backup`.
+* Once the migration has started, the data directory no longer has a TypeDB CE layout: the original data is in `.backup`.
+Take a backup before you begin.
+====
+
+. Stop the TypeDB CE server.
+. Start the TypeDB Enterprise server on the same data directory with cluster configuration and both initialization flags:
++
+[source,bash]
+----
+./typedb server \
+    --storage.data-directory=/var/lib/typedb/data \
+    --storage.clustering-directory=/var/lib/typedb/clustering \
+    --diagnostics.deployment-id=my-cluster \
+    --server.clustering.id=1 \
+    --server.clustering.address=10.0.0.1:1730 \
+    --server.advertise-address=10.0.0.1:1729 \
+    --server.http.advertise-address=http://10.0.0.1:8000 \
+    --initialize.create-cluster=true \
+    --initialize.migrate-ce.enabled=true
+----
++
+The server moves the existing contents of the data directory into a `.backup` folder inside it, creates the cluster, re-imports every database and user (passwords included) through the replicated log, verifies the result, and then prints `Ready to process requests`.
+The migration is resumable: if the server is stopped or crashes in the middle, start it again with the same options and it continues where it left off.
+. Verify your databases and users, then add the other replicas as described above.
+
+The backup folder is kept by default so that you can roll back: stop the server, delete everything in the data directory except `.backup`, move the contents of `.backup` back, and clear the clustering directory.
+Pass `--initialize.migrate-ce.retain-ce-backup=false` to delete it automatically once the migration has been verified, or remove it by hand when you no longer need it.
+
+Starting a TypeDB Enterprise server on a TypeDB CE data directory *without* `--initialize.migrate-ce.enabled=true` is refused with error `MCE1`, so an accidental migration cannot happen.
+Leave the two initialization flags set only for the first start: on later starts they are ignored, but if the clustering state of a server that belongs to a cluster were ever lost, the flags would make it migrate its data into a separate single-server cluster instead of rejoining.
+
+== Encryption
+
+Client connections are encrypted with TLS as on a single server (`server.encryption.*`).
+Communication between replicas is encrypted separately with mutual TLS (`server.clustering.encryption.*`, see xref:{page-version}@maintenance-operation::typedb-configuration.adoc#_clustering[Cluster configuration]): every replica presents its certificate to its peers and verifies theirs against the CA certificate, which must therefore be set on every replica.
+See xref:{page-version}@maintenance-operation::typedb-in-flight-encryption.adoc[] for generating certificates.
+
+== Monitoring
+
+The xref:{page-version}@maintenance-operation::diagnostics-endpoint.adoc[diagnostics monitoring endpoint] of every replica exposes `raft_*` metrics (in JSON under `extensions.raft`): the replica's role, term, and last applied log index (`raft_role`, `raft_current_term`, `raft_last_applied_index`), latencies (`raft_apply_duration_seconds`, `raft_log_write_duration_seconds`, `raft_send_message_duration_seconds`), and backpressure (`raft_appends_refused_total`, `raft_apply_pending_bytes`).
+The role and term of every replica are also available to xref:{page-version}@reference::typedb-cluster/drivers.adoc#_inspect_your_cluster[drivers] and xref:{page-version}@tools::console.adoc#_server_level_commands[Console].
+
+== Getting help
+
+Questions and feedback are welcome on https://typedb.com/discord[Discord].

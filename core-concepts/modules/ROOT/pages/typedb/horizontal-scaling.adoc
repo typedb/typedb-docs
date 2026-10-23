@@ -1,45 +1,43 @@
 = Horizontal Scaling
 
-When a single server can no longer handle the volume of read queries for your application, it becomes necessary to scale out horizontally.
-In TypeDB, this is achieved by creating a database cluster that distributes the read load across multiple nodes. This chapter explains how
-TypeDB's replication-based architecture enables horizontal scaling for read transactions while also providing high availability and fault
-tolerance.
+When a single server is not enough because it must stay available through hardware failures and maintenance, TypeDB scales out to a cluster of servers that replicate the same data.
+This chapter explains how TypeDB's replication-based architecture provides high availability and fault tolerance.
 
-Clustering is available via TypeDB Cloud and TypeDB Enterprise. TypeDB CE only support single-node deployments.
+Clustering is available for Enterprise and Cloud users starting from version 3.14.1. TypeDB Community Edition only supports single-server deployments.
 
-== Scaling read throughput with replication
+== Replication with Raft
 
-TypeDB's strategy for horizontal scaling is based on data replication using the Raft consensus algorithm. Because every node has access to
-all the data, read-only transactions can be executed on any node in the cluster. This allows you to scale your application's read throughput
-linearly by simply adding more nodes. As you add nodes, the cluster's capacity to handle concurrent read queries increases proportionally.
+A TypeDB cluster replicates every change with the Raft consensus algorithm. Every server holds a complete copy of all the data, so any server
+can take over the work of any other. A change is committed only once a majority of the servers have durably written it to their replication
+logs. This guarantees that a committed transaction is never lost, even if the server that accepted it fails right afterwards, and that every
+server applies the changes in the same order.
 
-== The leader-follower model
+== The primary-secondary model
 
-A TypeDB cluster operates on a leader-follower model. At any given time, the cluster elects a single leader node for each database, while
-all other nodes act as followers. Followers receive a stream of committed transactions from the leader and apply them to their local copy of
-the database, keeping them in sync. These nodes are only available to process read transactions.
+A TypeDB cluster operates with a single primary and several secondaries. The primary processes all client operations: schema and data writes,
+reads, database and user management, export and import. Centralizing them on one server keeps consistency simple and applies every change
+in a strict order. The secondaries receive the committed changes from the primary and apply them to their own copies, staying in sync and
+ready to take over.
 
-The leader is exclusively responsible for processing all schema and data writes. Centralizing writes on a single node simplifies consistency
-and ensures that all changes are applied in a strict order. Write throughput is therefore determined by the capacity of the single leader
-node and is scaled by increasing its resources (see xref:{page-version}@core-concepts::typedb/vertical-scaling.adoc[vertical scaling]).
+Write throughput is determined by the capacity of the primary and is scaled by increasing its resources (see
+xref:{page-version}@core-concepts::typedb/vertical-scaling.adoc[vertical scaling]). In the current version, read transactions are served by the
+primary as well; the secondaries do not serve client transactions.
 
-If a leader node fails, the cluster automatically elects a new leader from among the followers, ensuring that the database remains available
-for writes with minimal interruption.
+== Failover
+
+If the primary fails, the remaining servers elect a new primary from among the secondaries within seconds, and the cluster continues to accept
+transactions. Transactions that were open on the failed primary are closed and have to be retried. A cluster of `2N + 1` servers tolerates the
+failure of `N` servers at once; a three-server cluster keeps running with one server down.
 
 == Interacting with a cluster
 
-Interacting with a cluster is very similar to interacting with a single server. The key difference is that the client driver must be
-configured with the network addresses of all nodes in the cluster.
-
-The driver uses this list to intelligently manage connections. It automatically discovers which node is the current leader for a given
-database and routes all write transactions to it. For read transactions, the driver can distribute the load across all available nodes (both
-leader and followers) by setting the `read_any_replica` option during opening the transaction, effectively using the entire cluster's
-capacity. This routing is handled transparently, so your application code for opening and running transactions remains the same
-whether you are connecting to a single node or a full cluster.
+Interacting with a cluster is very similar to interacting with a single server. The driver can be given the address of one server or of several;
+it discovers the other servers from the cluster, finds the current primary, and routes transactions to it. When the primary changes, the
+driver finds the new one and retries, so your application code for opening and running transactions is the same whether you are connecting
+to a single server or a cluster. See xref:{page-version}@reference::typedb-cluster/drivers.adoc[Drivers in clustered TypeDB] for the details.
 
 == Consistency and durability
 
-TypeDB's replication model provides strong consistency guarantees, even in a distributed read environment. When a write transaction is sent
-to the leader, it is not confirmed until a majority of nodes in the cluster have durably stored the transaction in their logs. This process
-guarantees that once a transaction is committed, it is safely replicated and will not be lost. It also ensures that when followers serve
-read queries, they are providing access to a consistent and up-to-date state of the database.
+TypeDB's replication model provides strong consistency. A transaction is acknowledged to the client only after a majority of the servers have
+durably stored it, so a committed transaction survives the loss of any minority of servers. Every transaction, including a read-only one,
+observes all the transactions committed before it, on whichever server was the primary at the time.
