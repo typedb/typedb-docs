@@ -1,9 +1,10 @@
 = TypeDB Admin Tool
-:keywords: typedb, admin, cli, server, status, version, users, reset-password
+:keywords: typedb, admin, cli, server, status, version, users, reset-password, cluster, replicas, register, deregister
 :description: Local CLI for inspecting and managing a running TypeDB server.
 
 `typedb admin` is a CLI tool bundled with every TypeDB distribution.
 It connects to the server's local-only admin endpoint to inspect server status and run administrative commands such as resetting a user's password.
+In TypeDB Enterprise, it also manages the membership of a xref:{page-version}@reference::typedb-cluster/index.adoc[cluster] (see <<_cluster_commands>>).
 
 The admin endpoint is a Unix domain socket on Linux and macOS, and a Named Pipe on Windows.
 Access is enforced by the operating system: the socket file is created with mode `0600` (owner-only) on Unix, and the Named Pipe carries a DACL that grants access only to the server's owner, `LOCAL SYSTEM`, and `BUILTIN\Administrators` on Windows.
@@ -85,6 +86,27 @@ typedb admin --socket-path /var/lib/typedb/data/admin.sock --script ./admin-chec
 | Leave the REPL.
 |===
 
+[#_cluster_commands]
+=== Cluster commands (TypeDB Enterprise)
+
+The admin tool of a TypeDB Enterprise distribution has three more commands.
+`servers status` can be run on any replica; `servers register` and `servers deregister` must be run on the primary, and a secondary refuses them with the primary's address.
+
+[cols=".^3,5"]
+|===
+2+^| Cluster commands
+| `servers status`
+| List every replica of the cluster with its id, advertised client address, role (`primary`, `secondary`, or `candidate`), Raft term, and availability.
+
+| `servers register <replica-id> <address>`
+| Add a running TypeDB Enterprise server to the cluster. `<replica-id>` is the id the server was started with and `<address>` its clustering address (`server.clustering.address`). The server receives the cluster's data and becomes a voting secondary once it has caught up.
+
+| `servers deregister <replica-id>`
+| Remove a replica from the cluster. The removed server stops serving requests but keeps running until you stop it.
+|===
+
+See xref:{page-version}@reference::typedb-cluster/administration.adoc[Administering a cluster] for the procedures these commands are part of.
+
 == Examples
 
 === Inspect server status
@@ -118,6 +140,16 @@ admin> exit
 ----
 $ cat /etc/typedb/admin-new-password | typedb admin --socket-path /var/lib/typedb/data/admin.sock -c "user reset-password admin"
 ----
+
+=== Add a replica to a cluster (TypeDB Enterprise)
+
+[source,bash]
+----
+$ typedb admin --socket-path /var/lib/typedb/data/admin.sock -c "servers register 3 10.0.0.3:1730"
+Successfully registered replica 3
+----
+
+Once the new replica has caught up, `servers status` lists it as a `secondary`.
 
 == Connection errors
 
