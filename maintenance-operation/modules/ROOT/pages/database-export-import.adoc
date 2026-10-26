@@ -13,6 +13,9 @@ This feature is introduced in TypeDB 3.4.0. If you want to export or import a da
 You can import your databases exported from TypeDB 2.x following xref:{page-version}@reference::typedb-2-vs-3/process.adoc[this guide].
 ====
 
+In a xref:{page-version}@reference::typedb-cluster/index.adoc[cluster], export and import are served by the primary, and an import is replicated to every replica as it progresses.
+Connect Console to any replica; it is routed to the primary automatically.
+
 == Understanding export and import
 
 TypeDB database can be represented as two files:

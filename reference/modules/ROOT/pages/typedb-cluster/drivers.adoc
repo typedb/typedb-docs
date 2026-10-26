@@ -1,35 +1,27 @@
 = Drivers in clustered TypeDB
-:description: Cluster-specific features in TypeDB drivers: multi-replica connections, failover, and server routing.
+:description: Cluster-specific features in TypeDB drivers: multi-replica connections, address translation, failover, and server inspection.
 :keywords: typedb, cluster, driver, replication, failover, server routing, replicas, primary, secondary
 :test-python: false
 
-TypeDB gRPC drivers have been updated to connect to TypeDB clusters and automatically operate across multiple server replicas.
-The API is experimental and may change between releases.
-You'll need an alpha version of TypeDB Driver.
-These are published alongside the mainstream versions, starting with `3.7.0`.
-To access the releases, visit the https://github.com/typedb/typedb-driver/releases[TypeDB Driver GitHub page] and look for the most recent Pre-release item containing the alpha suffix (e.g., `TypeDB Driver 3.7.0-alpha-3`).
+TypeDB gRPC drivers connect to TypeDB clusters and operate across multiple server replicas automatically.
 
-Alternatively, the TypeDB HTTP endpoint and drivers are unchanged and can be used the usual way by explicitly choosing a specific replica to send requests to.
+[NOTE]
+====
+Clustering is available for Enterprise and Cloud users starting from server version 3.14.1.
+Use TypeDB drivers 3.14.0 or later.
+====
 
-== What's different in a clustered deployment?
+This page covers the gRPC drivers; for HTTP clients, including the TypeScript HTTP driver, see the xref:{page-version}@reference::typedb-http-api.adoc#_clusters[HTTP API reference].
 
-include::{page-version}@reference::typedb-cluster/index.adoc[tags=cluster-overview]
-
-Cluster-enabled drivers add:
-
-- Flexible connection addresses (single, multiple, or translated).
-- Replica discovery (learning other replicas from the server).
-- Automatic failover (retrying operations against other replicas).
-- Server routing for inspection operations (automatic or targeted).
-- Cluster inspection (servers, primary server, server version).
-
+[#_connecting_to_a_cluster]
 == Connecting to a cluster
 
-Cluster-enabled drivers accept three address formats displayed below.
+A driver accepts a single address, several addresses, or an address translation map.
+See xref:{page-version}@reference::typedb-cluster/index.adoc#_client_addresses[How clients reach the replicas] to choose between addresses and translation.
 
 === Single address
 
-Use this when you have one stable endpoint (for example, a load balancer, or a known replica address):
+Connect through any one replica; the driver learns the others from it:
 
 [tabs]
 ====
@@ -47,7 +39,7 @@ Java::
 --
 [source,java]
 ----
-Driver driver = TypeDB.driver("host1:port1", credentials, driverOptions)
+Driver driver = TypeDB.driver("host1:port1", credentials, driverOptions);
 ----
 --
 
@@ -67,12 +59,9 @@ let driver = TypeDBDriver::new(
 --
 ====
 
-Even if your cluster has multiple nodes, if the driver successfully connects to this address, it will automatically find its peers and establish all the needed connections.
-
 === Multiple addresses
 
-To increase the chances of connecting to a functioning node, provide multiple addresses.
-This is helpful in situations when one of the replicas is down, and there is no way to retrieve the information about its peers.
+Provide several replica addresses so that the driver can still make first contact while some replicas are down:
 
 [tabs]
 ====
@@ -118,11 +107,12 @@ let driver = TypeDBDriver::new(
 --
 ====
 
+[#_address_translation]
 === Address translation
 
-When replicas advertise private addresses internally (e.g. Docker/Kubernetes/VPC), while the users are outside of the cluster network and are provided with a dynamic public addresses unsuitable for server configuration, use address translation.
-
-In this mode, you provide a mapping of public -> private addresses, and the driver can translate replica addresses returned by the server into addresses reachable from your environment:
+When the replicas' advertise addresses are not reachable from the client, map the address the client reaches each replica at to that replica's gRPC advertise address (`server.advertise-address`, exactly as configured).
+Include every replica: a replica missing from the map is contacted at its advertise address.
+The driver connects to the map's keys, and reports them as the replicas' addresses.
 
 [tabs]
 ====
@@ -132,8 +122,9 @@ Python::
 [source,python]
 ----
 translation = {
-    "public-1.domain:1729": "10.0.0.11:1729",
-    "public-2.domain:1729": "10.0.0.12:1729",
+    "typedb-1.example.com:1729": "10.0.0.1:1729",
+    "typedb-2.example.com:1729": "10.0.0.2:1729",
+    "typedb-3.example.com:1729": "10.0.0.3:1729",
 }
 
 driver = TypeDB.driver(translation, credentials, driver_options)
@@ -146,8 +137,9 @@ Java::
 [source,java]
 ----
 Map<String, String> translation = Map.of(
-        "public-1.domain:1729", "10.0.0.11:1729",
-        "public-2.domain:1729", "10.0.0.12:1729"
+        "typedb-1.example.com:1729", "10.0.0.1:1729",
+        "typedb-2.example.com:1729", "10.0.0.2:1729",
+        "typedb-3.example.com:1729", "10.0.0.3:1729"
 );
 
 Driver driver = TypeDB.driver(translation, credentials, driverOptions);
@@ -159,9 +151,12 @@ Rust::
 --
 [source,rust]
 ----
+use std::collections::HashMap;
+
 let translation = HashMap::from([
-    ("public-1.domain:1729", "10.0.0.11:1729"),
-    ("public-2.domain:1729", "10.0.0.12:1729"),
+    ("typedb-1.example.com:1729", "10.0.0.1:1729"),
+    ("typedb-2.example.com:1729", "10.0.0.2:1729"),
+    ("typedb-3.example.com:1729", "10.0.0.3:1729"),
 ]);
 let addresses = Addresses::try_from_translation_str(translation)?;
 
@@ -174,33 +169,22 @@ let driver = TypeDBDriver::new(
 --
 ====
 
-== DriverOptions for cluster connections
+== Failover and timeout options
 
-Cluster-enabled drivers extend DriverOptions with failover and timeout controls.
+Two `DriverOptions` settings matter most in a cluster; see the xref:{page-version}@reference::typedb-grpc-drivers/index.adoc[driver API reference] for all options.
 
-=== DriverTlsConfig
+[cols="2,5"]
+|===
+| Option | Description
 
-TLS configuration has been refactored to avoid ambiguity and protect your data.
-Now, to construct an options object, it is required to provide a `DriverTlsConfig` with one of the three modes:
+| Primary failover retries +
+(`primary_failover_retries`, `primaryFailoverRetries`)
+| How many times the driver looks for a new primary and retries a request after a connection failure, waiting 2 seconds between attempts while an election is in progress. Default value: `1`.
 
-- disabled TLS (data, including passwords, is sent as plaintext): `DriverTlsConfig.disabled()`
-- enabled TLS, system's native root CA is used: `DriverTlsConfig.enabled_with_native_root_ca()`
-- enabled TLS, custom native root CA is used (provide your own file): `DriverTlsConfig.enabled_with_root_ca("path/to/ca-certificate.pem")`
-
-=== primary_failover_retries
-
-Sets the number of times the driver retries finding and re-routing to the primary server on connection failures.
-This value is used both for polling during leader election (up to N+1 attempts with a 2-second sleep between each) and for re-executing a failed request on a newly discovered primary.
-Defaults to 1.
-
-=== request_timeout_millis
-
-Sets the maximum time (in milliseconds) to wait for a response to a unary RPC request.
-This applies to operations like database creation, user management, and initial transaction opening.
-It does NOT apply to operations within transactions (queries, commits).
-Defaults to 2 hours (7200000 milliseconds).
-
-=== Example
+| Request timeout +
+(`request_timeout_millis`, `requestTimeoutMillis`, `request_timeout`)
+| The longest time the driver waits for a response to a request outside a transaction, such as creating a database or opening a transaction. Queries and commits are not affected. Default value: 2 hours.
+|===
 
 [tabs]
 ====
@@ -211,11 +195,9 @@ Python::
 ----
 driver_options = DriverOptions(
     DriverTlsConfig.enabled_with_native_root_ca(),
-    primary_failover_retries=1,
+    primary_failover_retries=3,
     request_timeout_millis=60_000,
 )
-
-driver = TypeDB.driver(["host1:port1", "host2:port2"], credentials, driver_options)
 ----
 --
 
@@ -225,14 +207,8 @@ Java::
 [source,java]
 ----
 DriverOptions driverOptions = new DriverOptions(DriverTlsConfig.enabledWithNativeRootCA())
-        .primaryFailoverRetries(1)
+        .primaryFailoverRetries(3)
         .requestTimeoutMillis(60_000);
-
-Driver driver = TypeDB.driver(
-        Set.of("host1:port1", "host2:port2"),
-        credentials,
-        driverOptions
-);
 ----
 --
 
@@ -242,145 +218,21 @@ Rust::
 [source,rust]
 ----
 let driver_options = DriverOptions::new(DriverTlsConfig::enabled_with_native_root_ca())
-    .primary_failover_retries(1)
+    .primary_failover_retries(3)
     .request_timeout(Duration::from_secs(60));
-
-let driver = TypeDBDriver::new(
-    Addresses::try_from_addresses_str(["host1:port1", "host2:port2"]).unwrap(),
-    credentials,
-    driver_options,
-)
-.await?;
 ----
 --
 ====
 
-== Server routing
-
-Cluster-enabled drivers introduce `ServerRouting` to control which server handles an inspection operation.
-
-Most driver operations (database management, user management, transactions) are routed to the most suitable server automatically, and failover is handled transparently. `ServerRouting` is available on inspection methods to optionally target a specific server.
-This mechanism will be extended with the evolution of clustered TypeDB.
-
-=== Variants
-
-==== Auto
-
-The driver selects the server automatically (typically the primary in a cluster).
-This is the default.
-
-==== Direct
-
-Routes the operation to a specific server by address.
-Useful for debugging, testing, and investigating replica-local state.
-
-=== Where you can use server routing
-
-Server routing is available on the following driver methods:
-
-- `servers()` / `primaryServer()` — retrieve cluster server information
-- `serverVersion()` — retrieve the TypeDB version from a specific server
-
-=== Example
-
-[tabs]
-====
-Python::
-+
---
-[source,python]
-----
-# Default routing (automatic)
-driver.servers()
-driver.primary_server()
-driver.server_version()
-
-# Explicit automatic routing
-driver.servers(ServerRouting.Auto())
-
-# Target a specific server
-driver.servers(ServerRouting.Direct("host2:port2"))
-driver.server_version(ServerRouting.Direct("host2:port2"))
-----
---
-
-Java::
-+
---
-[source,java]
-----
-// Default routing (automatic)
-driver.servers();
-driver.primaryServer();
-driver.serverVersion();
-
-// Explicit automatic routing
-driver.servers(new ServerRouting.Auto());
-
-// Target a specific server
-driver.servers(new ServerRouting.Direct("host2:port2"));
-driver.serverVersion(new ServerRouting.Direct("host2:port2"));
-----
---
-
-Rust::
-+
---
-[source,rust]
-----
-// Default routing (automatic)
-driver.servers().await?;
-driver.primary_server().await?;
-driver.server_version().await?;
-
-// Explicit automatic routing
-driver.servers_with_routing(ServerRouting::Auto).await?;
-
-// Target a specific server
-driver.servers_with_routing(
-    ServerRouting::Direct { address: "host2:port2".parse().unwrap() }
-).await?;
-driver.server_version_with_routing(
-    ServerRouting::Direct { address: "host2:port2".parse().unwrap() }
-).await?;
-----
---
-====
-
-[NOTE]
-====
-If you connect to a non-clustered (single-node) TypeDB server, server routing has no effect: all operations go to the single server.
-====
-
+[#_inspect_your_cluster]
 == Inspect your cluster
 
-Drivers have access to information about the cluster and its servers.
+The driver lists the servers of the cluster with their `id`, `address`, `role` (`Primary`, `Secondary`, or `Candidate`), and Raft `term`, and finds the primary and the server version.
+The `address` is the server's advertise address, or the client address mapped to it under <<_address_translation,address translation>>.
 
-=== Server properties
-
-Each server exposes the following properties:
-
-[cols="1,3"]
-|===
-| Property | Description
-
-| `id`
-| The unique identifier of this server in the cluster.
-
-| `address`
-| The network address this server is available at.
-
-| `role`
-| The replication role of this server: `Primary`, `Candidate`, or `Secondary`. May be absent for non-clustered servers.
-
-| `isPrimary`
-| Whether this server is the current primary (leader) of the cluster.
-
-| `term`
-| The Raft protocol term of this server. Useful for debugging elections and failover. May be absent for non-clustered servers.
-|===
-
-=== Get all servers
+These inspection methods are routed automatically by default.
+Pass `ServerRouting.Direct` with a server's address, as reported by the driver, to ask that server instead, for example to see its own view of the cluster.
+All other operations are always routed to the primary.
 
 [tabs]
 ====
@@ -389,9 +241,15 @@ Python::
 --
 [source,python]
 ----
-servers = driver.servers()
-for server in servers:
+for server in driver.servers():
     print(f"Server {server.id}: {server.address}, role={server.role}, term={server.term}")
+
+primary = driver.primary_server()
+if primary is not None:
+    print(f"Primary: {primary.address}")
+
+version = driver.server_version(ServerRouting.Direct("10.0.0.2:1729"))  # an address reported by driver.servers()
+print(f"{version.distribution} {version.version}")
 ----
 --
 
@@ -400,11 +258,15 @@ Java::
 --
 [source,java]
 ----
-Set<? extends Server> servers = driver.servers();
-for (Server server : servers) {
+for (Server server : driver.servers()) {
     System.out.printf("Server %d: %s, role=%s, term=%s%n",
-        server.getID(), server.getAddress(), server.getRole(), server.getTerm());
+            server.getID(), server.getAddress(), server.getRole().orElse(null), server.getTerm().orElse(null));
 }
+
+driver.primaryServer().ifPresent(primary -> System.out.println("Primary: " + primary.getAddress()));
+
+ServerVersion version = driver.serverVersion(new ServerRouting.Direct("10.0.0.2:1729")); // an address reported by driver.servers()
+System.out.println(version.getDistribution() + " " + version.getVersion());
 ----
 --
 
@@ -413,309 +275,27 @@ Rust::
 --
 [source,rust]
 ----
-let servers = driver.servers().await?;
-for server in &servers {
+for server in driver.servers().await? {
     if let Some(address) = server.address() {
         println!("Server at {address}");
     }
 }
-----
---
-====
 
-=== Get primary server
-
-[tabs]
-====
-Python::
-+
---
-[source,python]
-----
-primary = driver.primary_server()
-if primary is not None:
-    print(f"Primary: {primary.address}")
-----
---
-
-Java::
-+
---
-[source,java]
-----
-Optional<? extends Server> primary = driver.primaryServer();
-primary.ifPresent(p -> System.out.println("Primary: " + p.getAddress()));
-----
---
-
-Rust::
-+
---
-[source,rust]
-----
 if let Some(primary) = driver.primary_server().await? {
     println!("Primary: {}", primary.address());
 }
-----
---
-====
 
-=== Get server version
-
-[tabs]
-====
-Python::
-+
---
-[source,python]
-----
-version = driver.server_version()
-print(f"Distribution: {version.distribution}, Version: {version.version}")
-----
---
-
-Java::
-+
---
-[source,java]
-----
-ServerVersion version = driver.serverVersion();
-System.out.println("Distribution: " + version.getDistribution() + ", Version: " + version.getVersion());
-----
---
-
-Rust::
-+
---
-[source,rust]
-----
-let version = driver.server_version().await?;
-println!("Distribution: {}, Version: {}", version.distribution(), version.version());
-----
---
-====
-
-== Quickstart
-
-[tabs]
-====
-Python::
-+
---
-[source,python]
-----
-from typedb.driver import (
-    TypeDB, Credentials, DriverOptions, DriverTlsConfig,
-    TransactionType, ServerRouting
-)
-
-DATABASE_NAME = "clustered-test"
-
-def test_clustered_typedb():
-    driver = TypeDB.driver(
-        # Try automatic replica discovery by connecting to only a single server!
-        # Use a list of addresses to provide multiple addresses instead.
-        ADDRESS,
-        Credentials(USERNAME, PASSWORD),
-        DriverOptions(DriverTlsConfig.enabled_with_native_root_ca()),
-    )
-
-    servers = driver.servers()
-    addresses = [server.address for server in servers]
-    print(f"Servers known to the driver: {addresses}")
-
-    primary = driver.primary_server()
-    if primary is not None:
-        print(f"Primary server: {primary.address}")
-
-    version = driver.server_version()
-    print(f"Server version: {version.distribution} {version.version}")
-
-    if not driver.databases.contains(DATABASE_NAME):
-        driver.databases.create(DATABASE_NAME)
-
-    database = driver.databases.get(DATABASE_NAME)
-    print(f"Database exists: {database.name}")
-
-    # Schema transactions are always routed to the primary
-    with driver.transaction(DATABASE_NAME, TransactionType.SCHEMA) as tx:
-        tx.query("define entity person;").resolve()
-        tx.commit()
-
-    with driver.transaction(DATABASE_NAME, TransactionType.WRITE) as tx:
-        tx.query("insert $p1 isa person; $p2 isa person;").resolve()
-        tx.commit()
-
-    # Read transactions are routed automatically
-    with driver.transaction(DATABASE_NAME, TransactionType.READ) as tx:
-        answer = tx.query("match $p isa person;").resolve()
-        rows = list(answer.as_concept_rows())
-        print(f"Persons found: {len(rows)}")
-
-    driver.close()
-    print("Done!")
-
-
-if __name__ == "__main__":
-    test_clustered_typedb()
-----
---
-
-Java::
-+
---
-[source,java]
-----
-import com.typedb.driver.TypeDB;
-import com.typedb.driver.api.Credentials;
-import com.typedb.driver.api.Driver;
-import com.typedb.driver.api.DriverOptions;
-import com.typedb.driver.api.DriverTlsConfig;
-import com.typedb.driver.api.Transaction;
-import com.typedb.driver.api.QueryAnswer;
-import com.typedb.driver.api.ServerRouting;
-import com.typedb.driver.api.answer.ConceptRow;
-import com.typedb.driver.api.server.Server;
-import com.typedb.driver.api.server.ServerVersion;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-public class ClusteredTypeDBExample {
-    private static final String DATABASE_NAME = "clustered-test";
-
-    public static void main(String[] args) {
-        try (Driver driver = TypeDB.driver(
-                // Try automatic replica discovery by connecting to only a single server!
-                // Use Set.of() with multiple addresses to provide multiple addresses instead.
-                ADDRESS,
-                new Credentials(USERNAME, PASSWORD),
-                new DriverOptions(DriverTlsConfig.enabledWithNativeRootCA())
-        )) {
-            Set<? extends Server> servers = driver.servers();
-            List<String> addresses = servers.stream()
-                    .map(Server::getAddress)
-                    .collect(Collectors.toList());
-            System.out.println("Servers known to the driver: " + addresses);
-
-            Optional<? extends Server> primary = driver.primaryServer();
-            primary.ifPresent(p -> System.out.println("Primary server: " + p.getAddress()));
-
-            ServerVersion version = driver.serverVersion();
-            System.out.println("Server version: " + version.getDistribution() + " " + version.getVersion());
-
-            if (!driver.databases().contains(DATABASE_NAME)) {
-                driver.databases().create(DATABASE_NAME);
-            }
-
-            String databaseName = driver.databases().get(DATABASE_NAME).name();
-            System.out.println("Database exists: " + databaseName);
-
-            // Schema transactions are always routed to the primary
-            try (Transaction tx = driver.transaction(DATABASE_NAME, Transaction.Type.SCHEMA)) {
-                tx.query("define entity person;").resolve();
-                tx.commit();
-            }
-
-            try (Transaction tx = driver.transaction(DATABASE_NAME, Transaction.Type.WRITE)) {
-                tx.query("insert $p1 isa person; $p2 isa person;").resolve();
-                tx.commit();
-            }
-
-            // Read transactions are routed automatically
-            try (Transaction tx = driver.transaction(DATABASE_NAME, Transaction.Type.READ)) {
-                QueryAnswer answer = tx.query("match $p isa person;").resolve();
-                List<ConceptRow> rows = answer.asConceptRows().stream().collect(Collectors.toList());
-                System.out.println("Persons found: " + rows.size());
-            }
-
-            System.out.println("Done!");
-        }
-    }
-}
-----
---
-
-Rust::
-+
---
-[source,rust]
-----
-use typedb_driver::{
-    Addresses, Credentials, DriverOptions, DriverTlsConfig,
-    TransactionType, TypeDBDriver, Server, ServerRouting,
-};
-
-fn test_clustered_typedb() {
-    async_std::task::block_on(async {
-        let driver = TypeDBDriver::new(
-            // Try automatic replica discovery by connecting to only a single server!
-            // Use Addresses::try_from_addresses_str() to provide multiple addresses instead.
-            Addresses::try_from_address_str(ADDRESS).unwrap(),
-            Credentials::new(USERNAME, PASSWORD),
-            DriverOptions::new(DriverTlsConfig::enabled_with_native_root_ca()),
-        )
-        .await
-        .expect("Error while setting up the driver");
-
-        let servers = driver.servers().await.expect("Expected servers retrieval");
-        let addresses: Vec<_> = servers.iter()
-            .filter_map(|server| server.address().map(|a| a.to_string()))
-            .collect();
-        println!("Servers known to the driver: {addresses:?}");
-
-        if let Some(primary) = driver.primary_server().await.expect("Expected primary check") {
-            println!("Primary server: {}", primary.address());
-        }
-
-        let version = driver.server_version().await.expect("Expected version retrieval");
-        println!("Server version: {} {}", version.distribution(), version.version());
-
-        const DATABASE_NAME: &str = "clustered-test";
-
-        if !driver.databases().contains(DATABASE_NAME).await.expect("Expected database check") {
-            driver.databases().create(DATABASE_NAME).await.expect("Expected database creation");
-        }
-
-        let database = driver.databases().get(DATABASE_NAME).await.expect("Expected database retrieval");
-        println!("Database exists: {}", database.name());
-
-        // Schema transactions are always routed to the primary
-        let transaction = driver
-            .transaction(DATABASE_NAME, TransactionType::Schema)
-            .await
-            .expect("Expected schema transaction");
-        transaction.query("define entity person;").await.expect("Expected schema query");
-        transaction.commit().await.expect("Expected schema tx commit");
-
-        let transaction = driver
-            .transaction(DATABASE_NAME, TransactionType::Write)
-            .await
-            .expect("Expected write transaction");
-        transaction.query("insert $p1 isa person; $p2 isa person;").await.expect("Expected insert query");
-        transaction.commit().await.expect("Expected write tx commit");
-
-        // Read transactions are routed automatically
-        let transaction = driver
-            .transaction(DATABASE_NAME, TransactionType::Read)
-            .await
-            .expect("Expected read transaction");
-        let answer = transaction.query("match $p isa person;").await.expect("Expected read query");
-        let rows: Vec<_> = answer.into_rows().try_collect().await.unwrap();
-        println!("Persons found: {}", rows.len());
-
-        println!("Done!");
-    });
-}
+let version = driver
+    // an address reported by driver.servers()
+    .server_version_with_routing(ServerRouting::Direct { address: "10.0.0.2:1729".parse().unwrap() })
+    .await?;
+println!("{} {}", version.distribution(), version.version());
 ----
 --
 ====
 
 == Next steps
 
-- Continue with xref:{page-version}@reference::typedb-cluster/console.adoc[Console in clustered TypeDB] for CLI-specific workflows.
-- Get the latest alpha clustered TypeDB Driver from the https://github.com/typedb/typedb-driver/releases[Releases page].
-- Visit https://github.com/typedb/typedb-driver/tree/cluster-support-feature-branch/docs/modules/ROOT/partials[TypeDB Driver GitHub page] to access the updated API references.
-- Join our discussion in https://discord.com/invite/typedb[Discord]!
+- Connect xref:{page-version}@tools::console.adoc#_connect_to_a_cluster[TypeDB Console] to a cluster.
+- See the full driver API references in the xref:{page-version}@reference::typedb-grpc-drivers/index.adoc[gRPC drivers reference].
+- Operate the cluster itself: xref:{page-version}@reference::typedb-cluster/administration.adoc[Administering a cluster].
