@@ -1,0 +1,141 @@
+= TypeDB crash course: Conceptual modeling
+:description: A crash course for conceptual modelers: implement an entity-relationship model of a real palm oil supply chain directly in TypeDB, with n-ary relations, roles, generalization and enforced constraints.
+:keywords: typedb, typeql, conceptual modeling, entity-relationship, er model, eer, orm, uml, ontology-driven conceptual modeling, n-ary relation, roles, cardinality, generalization, crash course, tutorial
+
+[.lead]
+_Implement a conceptual model of a real supply chain, without translating it into a poorer one_
+
+== Who this course is for
+
+This course is for people who already think in conceptual models: entity-relationship (ER and EER) diagrams, Object-Role Modeling (ORM), UML class diagrams, or ontology-driven approaches such as OntoUML.
+It assumes no knowledge of TypeDB.
+
+If you have designed a conceptual schema, you know what usually happens next.
+The model is mapped to tables or to a property graph, and part of its meaning is lost on the way:
+
+* n-ary relationships are decomposed or turned into join tables,
+* roles survive only as column or edge names,
+* generalizations are flattened into nullable columns or extra tables,
+* participation and cardinality constraints end up in application code, triggers, or nowhere.
+
+TypeDB takes a different route.
+Its schema language, TypeQL, has entity, relation and attribute types as first-class constructs, with n-ary relations, named roles, generalization, and cardinality, key and value constraints.
+The conceptual schema you write is the schema the database runs: there is no logical design step in between, and the database enforces what the model says.
+
+[NOTE.blue]
+.⭐ TypeDB in one paragraph
+======
+TypeDB is a database whose schema is a conceptual model.
+Entity, relation and attribute types are declared directly, relations keep their roles and can be n-ary, and types are organized into generalization hierarchies.
+Every query is type-checked against the model before it runs, so a query that no data could ever satisfy is an error rather than an empty result.
+Every write is checked against the model's constraints by the time a transaction commits.
+======
+
+== What you will build
+
+You will model a real dataset: palm oil trade flows from East Kalimantan, Indonesia, to the European Union in 2022, taken from Trase's open supply-chain data.
+Each flow links a district of production, a mill, sometimes a refinery, an exporter, an importer, a destination country and a commodity, and carries a volume, a value and a deforestation exposure.
+
+Along the way you will:
+
+. Map the constructs of the ER family onto TypeQL, and see where the mapping is exact, approximate, or missing.
+. Read elementary facts off the raw data, and build the model a few columns at a time.
+. Make and justify modeling decisions: entity or attribute, subtype or role, one relation or several.
+. Implement a seven-role relation with an optional role and attributes of its own.
+. Populate the model, and watch the database reject data and queries that contradict it.
+. Query at the conceptual level: by type, by role, polymorphically, and with derivation rules.
+. Query the model itself, and attach definitions to it.
+. Work around the things TypeDB cannot express, using patterns you can reuse.
+
+== Assumptions, stated up front
+
+Three properties of TypeDB shape everything that follows, and are worth knowing before you start:
+
+* *Closed world.* The database contains the facts it has been told. A query for something that was not inserted returns no answers; nothing is inferred to exist.
+* *Schema first.* Every instance belongs to a type declared in the schema, and every attribute, role and relation it participates in must be allowed by that schema.
+* *One most-specific type per instance.* Each instance is created as one type and stays that type. It is also an instance of all that type's supertypes, but it cannot belong to two unrelated types or change type later. xref:{page-version}@learn-typedb::conceptual-modeling/09-limits-and-patterns.adoc[Chapter Nine] covers the consequences for multiple and dynamic classification.
+
+== How to use this course
+
+[NOTE.yellow]
+.How the chapters work
+====
+Each modeling chapter follows the same loop: a requirement read off the data, the constraints stated in plain sentences, an ER diagram in Chen notation, and the TypeQL that implements it.
+Try writing the TypeQL yourself before reading it.
+Every code block is real TypeQL that you can run in TypeDB Studio, in the order shown.
+If you skip ahead, each chapter starts with a collapsible block containing the schema so far.
+====
+
+The course takes about an hour.
+It is a companion to xref:{page-version}@academy::index.adoc[TypeDB Academy], which teaches TypeQL more systematically, and to the xref:{page-version}@guides::schema-modeling.adoc[schema modeling guide].
+
+== Chapters
+
+[cols-2]
+--
+.xref:{page-version}@learn-typedb::conceptual-modeling/00-setup.adoc[]
+[.clickable]
+****
+Run TypeDB and connect TypeDB Studio.
+****
+
+.xref:{page-version}@learn-typedb::conceptual-modeling/01-from-er-to-typeql.adoc[]
+[.clickable]
+****
+The mapping from ER, ORM, UML and UFO constructs to TypeQL.
+****
+
+.xref:{page-version}@learn-typedb::conceptual-modeling/02-universe-of-discourse.adoc[]
+[.clickable]
+****
+The dataset, and the elementary facts in one row.
+****
+
+.xref:{page-version}@learn-typedb::conceptual-modeling/03-entity-types-and-generalization.adoc[]
+[.clickable]
+****
+Places: identification, abstract supertypes, and a first relation.
+****
+
+.xref:{page-version}@learn-typedb::conceptual-modeling/04-modeling-decisions.adoc[]
+[.clickable]
+****
+Companies, facilities and commodities: choosing between alternatives.
+****
+
+.xref:{page-version}@learn-typedb::conceptual-modeling/05-n-ary-relations.adoc[]
+[.clickable]
+****
+The trade flow: one relation, seven roles.
+****
+
+.xref:{page-version}@learn-typedb::conceptual-modeling/06-population-and-conformance.adoc[]
+[.clickable]
+****
+Load the data, and break the constraints on purpose.
+****
+
+.xref:{page-version}@learn-typedb::conceptual-modeling/07-querying.adoc[]
+[.clickable]
+****
+Queries by type and role, aggregates, and derivation rules.
+****
+
+.xref:{page-version}@learn-typedb::conceptual-modeling/08-the-model-as-data.adoc[]
+[.clickable]
+****
+Query the schema, document it, and evolve it.
+****
+
+.xref:{page-version}@learn-typedb::conceptual-modeling/09-limits-and-patterns.adoc[]
+[.clickable]
+****
+What TypeDB cannot express, and how to model around it.
+****
+
+.xref:{page-version}@learn-typedb::conceptual-modeling/10-epilogue.adoc[]
+[.clickable]
+****
+Where to go next, and references.
+****
+--

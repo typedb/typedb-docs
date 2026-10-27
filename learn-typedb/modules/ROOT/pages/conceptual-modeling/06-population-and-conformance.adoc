@@ -1,0 +1,202 @@
+= Chapter Six: Population and conformance
+:description: Load the palm oil trade flows into TypeDB, then break the model's constraints on purpose to see when and how each is enforced.
+:keywords: typedb, typeql, conceptual modeling, insert, constraints, validation, type checking, cardinality, key, values, schema evolution, redefine
+:test-typeql: linear
+
+[.lead]
+_Load the data, then break the constraints on purpose_
+
+.Full schema
+[%collapsible]
+====
+If you are starting here, run this query in an empty database.
+It contains everything defined in Chapters Three to Five.
+
+[,typeql]
+----
+#!test[schema]
+include::{page-version}@learn-typedb::example$conceptual-modeling/full-schema.tql[tag=full]
+----
+====
+
+== Load the data
+
+One insert query loads all 81 trade flows.
+It creates the places, companies, facilities and commodities first, binding each to a variable such as `$co_louis_dreyfus`, then uses those variables to create the containment, ownership and trade flow relations.
+
+.The insert query (337 lines)
+[%collapsible]
+====
+[,typeql]
+----
+#!test[write]
+include::{page-version}@learn-typedb::example$conceptual-modeling/data.tql[tag=data]
+----
+====
+
+Copy the query into Studio and run it.
+It runs as a single transaction: if any part of it contradicted the schema, none of it would be saved.
+
+[NOTE.yellow]
+.Population checks
+====
+A sample population that satisfies every constraint is one half of validating a model.
+The other half is a population that violates each constraint, and a check that it is rejected.
+The rest of this chapter is that second half.
+====
+
+== Three moments of enforcement
+
+TypeDB checks the model at three points:
+
+[cols="1,3",options="header"]
+|===
+| When | What is checked
+
+| Before a query runs
+| The query is type-checked against the schema. A query that no data could ever satisfy is rejected.
+
+| When data is written
+| Value constraints (`@values`, `@range`, `@regex`) and uniqueness (`@key`, `@unique`).
+
+| When a transaction commits
+| Cardinalities (`@card`, and the "exactly one" part of `@key`), which can only be judged once all of a transaction's writes are in.
+|===
+
+Each query below is meant to fail.
+Run them one at a time.
+
+=== Rejected before running
+
+Insert an instance of an abstract type:
+
+[,typeql]
+----
+#!test[write, fail_at=runtime]
+insert $f isa facility;
+----
+
+`facility` is abstract, so no type can be inferred for `$f`:
+
+[source,text]
+----
+[INF11] Type-inference was unable to find compatible types for the pair of variables 'f' & 'facility' across a 'isa' constraint.
+----
+
+Ask for countries in the role of a mill:
+
+[,typeql]
+----
+#!test[read, fail_at=runtime]
+match
+  $c isa country;
+  trade_flow (mill: $c);
+----
+
+This is not an empty result: no country can ever play `trade_flow:mill`, so the query is an error.
+Mistakes like swapped roles are caught the same way.
+
+=== Rejected when written
+
+Insert a commodity outside the value set:
+
+[,typeql]
+----
+#!test[write, fail_at=runtime]
+insert $c isa commodity, has commodity_name "SOY";
+----
+
+[source,text]
+----
+[CNT8] Constraint '@values("PALM OIL", "REFINED PALM OIL")' has been violated: value '"SOY"' does not match the set of values.
+----
+
+Insert a second company with an existing name:
+
+[,typeql]
+----
+#!test[write, fail_at=runtime]
+insert $c isa company, has company_name "LOUIS DREYFUS";
+----
+
+[source,text]
+----
+[CNT9] Constraint '@unique' has been violated: there is a conflict for value '"LOUIS DREYFUS"'.
+----
+
+=== Rejected at commit
+
+Insert a country without a name:
+
+[,typeql]
+----
+#!test[write, fail_at=commit]
+insert $c isa country;
+----
+
+[source,text]
+----
+[CNT5] Constraint '@card(1..1)' has been violated: found 0 instances.
+Caused: [DVL8] Instance [...] of type 'country' has a key constraint violation for attribute ownership of 'country_name', since it owns 0 instead of exactly 1.
+----
+
+Give the province of Kalimantan Timur a second parent:
+
+[,typeql]
+----
+#!test[write, fail_at=commit]
+match
+  $c isa country, has country_name "SPAIN";
+  $p isa province, has province_name "KALIMANTAN TIMUR";
+insert
+  containment (parent: $c, child: $p);
+----
+
+[source,text]
+----
+[CNT5] Constraint '@card(0..1)' has been violated: found 2 instances.
+Caused: [DVL12] Instance [...] of type 'province' violated constraint for playing role type 'containment:child'.
+----
+
+Insert a trade flow without a mill:
+
+[,typeql]
+----
+#!test[write, fail_at=commit]
+match
+  $k isa kabupaten, has kabupaten_name "BERAU";
+  $e isa company, has company_name "LDC EAST INDONESIA";
+  $i isa company, has company_name "LOUIS DREYFUS";
+  $d isa country, has country_name "SPAIN";
+  $co isa commodity, has commodity_name "PALM OIL";
+insert
+  trade_flow (origin: $k, exporter: $e, importer: $i, destination: $d, commodity: $co),
+    has volume_tonnes 1.0, has deforestation_ha 0.0, has usd 100.0dec;
+----
+
+[source,text]
+----
+[CNT5] Constraint '@card(1..1)' has been violated: found 0 instances.
+Caused: [DVL11] Instance [...] of relation type 'trade_flow' has a relates constraint violation for role type 'trade_flow:mill'.
+----
+
+The same check protects existing data: deleting a mill would leave its ownership and its trade flows without a required role player, so that commit is rejected too.
+Relations are existentially dependent on the players their cardinalities require.
+
+== Changing the model under existing data
+
+Schema changes are checked against the data already in the database.
+Try making the refiner role mandatory:
+
+[,typeql]
+----
+#!test[schema, fail_at=commit]
+redefine
+  relation trade_flow, relates refiner @card(1);
+----
+
+`redefine` replaces an existing definition, here the cardinality `@card(0..1)`.
+The query itself is accepted, but the commit is not: ten flows, the crude ones, have no refiner, and the new model would make them invalid.
+A change that the data already conforms to, such as declaring that every mill supplies at least one flow, commits normally.
+
+Next: xref:{page-version}@learn-typedb::conceptual-modeling/07-querying.adoc[].

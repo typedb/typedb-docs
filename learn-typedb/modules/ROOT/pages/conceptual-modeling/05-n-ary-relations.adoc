@@ -1,0 +1,169 @@
+= Chapter Five: The n-ary relation
+:description: Model a trade flow as one seven-role relation with an optional role and attributes of its own, and compare with relational and graph alternatives.
+:keywords: typedb, typeql, conceptual modeling, n-ary relation, ternary relationship, roles, optional role, relationship attributes, cardinality, participation, reification, property graph
+:test-typeql: linear
+
+[.lead]
+_The trade flow: one relation, seven roles_
+
+.Schema so far
+[%collapsible]
+====
+If you are starting here, run these queries in order in an empty database.
+
+[,typeql]
+----
+#!test[schema]
+include::{page-version}@learn-typedb::example$conceptual-modeling/schema.tql[tag=places]
+----
+
+[,typeql]
+----
+#!test[schema]
+include::{page-version}@learn-typedb::example$conceptual-modeling/schema.tql[tag=containment]
+----
+
+[,typeql]
+----
+#!test[schema]
+include::{page-version}@learn-typedb::example$conceptual-modeling/schema.tql[tag=companies]
+----
+
+[,typeql]
+----
+#!test[schema]
+include::{page-version}@learn-typedb::example$conceptual-modeling/schema.tql[tag=company_ownership]
+----
+
+[,typeql]
+----
+#!test[schema]
+include::{page-version}@learn-typedb::example$conceptual-modeling/schema.tql[tag=commodities]
+----
+====
+
+== The flow
+
+Each row of the data is one trade flow.
+Read as constraints:
+
+* Each trade flow has exactly one district of origin, one mill, one exporter, one importer, one destination country and one commodity.
+* Each trade flow has at most one refinery. Crude palm oil is not refined.
+* Each trade flow has exactly one volume, one deforestation exposure and one value.
+* A company can be the exporter or the importer of a trade flow.
+
+image::conceptual-modeling-trade-flow.svg[ER diagram: trade_flow relation with roles origin (kabupaten), mill (mill), optional refiner (refinery), exporter and importer (company), destination (country) and commodity (commodity), and attributes volume_tonnes, deforestation_ha and usd, role=framed]
+
+One relationship of degree seven.
+The dashed line marks the optional role, and `company` participates twice, in two different roles.
+
+[,typeql]
+----
+#!test[schema]
+include::{page-version}@learn-typedb::example$conceptual-modeling/schema.tql[tag=trade_flow]
+----
+
+* `relation trade_flow` declares seven roles. Six are required (`@card(1)`) and the refiner is optional (`@card(0..1)`).
+* The relation owns three attributes of its own, each required. `double` and `decimal` are numeric value types; `decimal` is exact, which suits money.
+* Each `plays` line says which type can fill which role. `company` plays two.
+
+The model is now complete.
+Open the *Schema* page in Studio to compare it with the diagrams so far.
+
+[#_reading_cardinalities]
+== Reading cardinalities
+
+ER and UML notations disagree about where a cardinality is written and what it counts, and n-ary relationships are where the disagreement bites.
+TypeQL avoids the ambiguity by attaching each cardinality to one of two declarations, each of which counts one thing:
+
+[cols="1,2,2",options="header"]
+|===
+| Declaration | Counts | Example
+
+| `relates` ... `@card`
+| How many role players fill this role _in one relation_
+| `trade_flow relates mill @card(1)`: each trade flow has exactly one mill.
+
+| `plays` ... `@card`
+| How many relations of this type _one instance_ plays this role in
+| `province plays containment:child @card(0..1)`: each province is the child in at most one containment.
+|===
+
+`plays` cardinality is Chen-style participation, counted from the participating instance.
+`relates` cardinality has no direct equivalent in a notation where a relationship is identified by its participants, because it counts the participants of one relationship.
+It is available because a TypeDB relation is an object.
+
+If you leave a cardinality out, the defaults are:
+
+* `relates`: `@card(0..1)`. Each role is optional and single-valued.
+* `plays`: `@card(0..)`. An instance can play a role in any number of relations, including none.
+* `owns`: `@card(0..1)`. Each attribute is optional and single-valued.
+
+So mandatory participation, such as "every mill supplies at least one trade flow", is written on the `plays` side: `entity mill, plays trade_flow:mill @card(1..);`.
+
+== What other models do with this
+
+A seven-role relationship with an optional role and attributes of its own is exactly the construct that implementation models handle worst.
+
+=== As a table
+
+A relational design makes the flow a table, with one foreign key per role:
+
+[,sql]
+----
+CREATE TABLE trade_flow (
+  id               INTEGER PRIMARY KEY,
+  origin_id        INTEGER NOT NULL REFERENCES kabupaten,
+  mill_id          INTEGER NOT NULL REFERENCES mill,
+  refinery_id      INTEGER REFERENCES refinery,      -- nullable: optional role
+  exporter_id      INTEGER NOT NULL REFERENCES company,
+  importer_id      INTEGER NOT NULL REFERENCES company,
+  destination_id   INTEGER NOT NULL REFERENCES country,
+  commodity_id     INTEGER NOT NULL REFERENCES commodity,
+  volume_tonnes    DOUBLE PRECISION NOT NULL,
+  deforestation_ha DOUBLE PRECISION NOT NULL,
+  usd              DECIMAL NOT NULL
+);
+----
+
+This works, and it is the usual mapping of an n-ary relationship.
+But the roles survive only as column names, the optional role becomes a `NULL`, and the model's generalizations have to be mapped separately.
+If mills and refineries share a `facility` table, `mill_id` can no longer be constrained to reference only mills without extra machinery.
+Participation constraints on the other side, such as every mill supplying at least one flow, need triggers or application code: the SQL standard's `CREATE ASSERTION` would express them, but mainstream database systems don't implement it.
+
+=== As a graph
+
+In a property graph, edges connect exactly two nodes.
+There are two ways to store a seven-way fact.
+
+*Chain binary edges*, such as mill → refinery → exporter → importer.
+This invents facts.
+Each edge is true, but a path through them need not be: in this dataset, following the edges for the 71 refined flows connects 102 mill–importer pairs, but only 63 of them appear together in an actual flow.
+The other 39 are artifacts of the decomposition.
+
+*Reify the flow as a node*, with one edge per role.
+This keeps the facts, but the schema-less graph does not know that a flow node needs exactly one mill edge, or that a mill edge may only point at a mill, or that the flow node represents a relationship rather than an entity.
+
+In TypeDB, the seven-way relation is stored, typed and constrained as written.
+
+== Challenge
+
+Trase also records the port each flow was exported from.
+Add a `port` entity identified by name, and make it an optional role of `trade_flow`.
+
+.Answer
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema, rollback]
+define
+  attribute port_name, sub name;
+  entity port, owns port_name @key, plays trade_flow:port_of_export;
+  relation trade_flow, relates port_of_export @card(0..1);
+----
+
+`@card(0..1)` is also the default for `relates`, so it could be left out; writing it down documents the decision.
+====
+
+Next: xref:{page-version}@learn-typedb::conceptual-modeling/06-population-and-conformance.adoc[].

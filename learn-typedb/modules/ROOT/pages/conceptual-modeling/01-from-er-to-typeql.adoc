@@ -1,0 +1,182 @@
+= Chapter One: From ER to TypeQL
+:description: How the constructs of ER, EER, UML, ORM and UFO map onto TypeDB's polymorphic entity-relation-attribute model.
+:keywords: typedb, typeql, conceptual modeling, er model, eer, uml, orm, ufo, ontouml, pera, mapping, relation, relationship, role
+
+[.lead]
+_What you already know, in TypeQL_
+
+== The model behind TypeQL
+
+Chen's 1976 entity-relationship model describes the world with three concepts: entities, relationships between them in named roles, and attributes that map entities or relationships to values.
+Chen placed it at the level of information structure, above the data structures and access paths of any particular database system.
+In practice, ER models are then translated into those lower levels: into tables, or more recently into nodes and edges.
+
+TypeDB's data model, the _polymorphic entity-relation-attribute_ (PERA) model, takes Chen's three concepts as its implementation model:
+
+* *Entity types, relation types and attribute types* are all first-class types.
+* *Relations* are n-ary. Each relation type declares the roles it relates, and each type declares the roles it can play.
+* *Relations are objects*: they own attributes, and can themselves play roles in other relations.
+* *Attributes* are typed values, owned by entities and relations.
+* *Types form generalization hierarchies* with single inheritance and abstract types. A query for a type also returns instances of its subtypes.
+* *Constraints* on participation, cardinality, keys and values are part of the schema and are enforced.
+
+The formal semantics of TypeQL, which treats queries as types, is given in Dorn & Pribadi (2024).
+
+== Construct by construct
+
+The table maps the constructs of the ER family onto TypeQL.
+The last column says whether the mapping is *exact*, *approximate* (the intent can be expressed, with a difference worth knowing), or *missing*.
+
+[cols="2,2,3,1",options="header"]
+|===
+| ER / EER | UML / ORM | TypeQL | Fit
+
+| Entity type
+| Class / entity type
+| `entity country;`
+| Exact
+
+| Relationship type, any degree
+| n-ary association / fact type of arity _n_
+| `relation trade_flow, relates origin, relates mill, ...;`
+| Exact
+
+| Role (Chen's _r/e_)
+| Association end / role
+| `relates` on the relation, `plays` on each type that can fill the role
+| Exact
+
+| Relationship attribute
+| Association class / objectified fact type
+| `relation trade_flow, owns volume_tonnes;`
+| Exact
+
+| Relationship participating in a relationship
+| Association class as an association end / nested fact type
+| `relation trade_flow, plays certification:certified;`
+| Exact
+
+| Attribute (a function from entities to values)
+| Attribute / value type and its fact type
+| An attribute type with a value type, and `owns` on each owner
+| Approximate: see <<attributes>>
+
+| Multi-valued attribute
+| Multiplicity `0..*` on an attribute / non-functional fact type
+| `owns phone @card(0..)`
+| Exact
+
+| Composite attribute
+| Structured data type
+| Not available; model the parts as an entity or relation
+| Missing
+
+| Key
+| `+{id}+` / preferred identification scheme
+| `owns country_name @key`; alternate keys with `@unique`
+| Approximate: single-attribute keys only
+
+| Weak entity, partial key
+| Composite identification via a role
+| Not available as identification; mandatory participation is expressible
+| Approximate
+
+| Participation (min, max)
+| Multiplicity / mandatory and uniqueness constraints on one role
+| `@card` on `plays` and on `relates`: see xref:{page-version}@learn-typedb::conceptual-modeling/05-n-ary-relations.adoc#_reading_cardinalities[Chapter Five]
+| Exact
+
+| Uniqueness across several roles
+| Spanning uniqueness constraint
+| Not in the schema; check with a query
+| Missing
+
+| Value set / domain
+| Data type, enumeration / value constraint
+| Value types, `@values`, `@range`, `@regex`
+| Exact
+
+| Specialization (ISA), single parent
+| Generalization / subtyping
+| `entity mill, sub facility;`
+| Exact
+
+| Disjoint specialization
+| `+{disjoint}+` / exclusive subtypes
+| Always: an instance has one most-specific type
+| Exact
+
+| Total specialization
+| `+{complete}+` / exhaustive subtypes
+| Make the supertype `@abstract`
+| Exact
+
+| Overlapping specialization, multiple inheritance
+| `+{overlapping}+`, multiple generalization
+| Not available: see xref:{page-version}@learn-typedb::conceptual-modeling/09-limits-and-patterns.adoc[Chapter Nine]
+| Missing
+
+| Category (union type)
+| A role played by unrelated types
+| One role played by several types; or an abstract common supertype
+| Approximate
+
+| Derived attribute or relationship
+| Derived fact type / derivation rule
+| A function, evaluated at query time
+| Approximate
+
+| General integrity constraint (e.g. `TAX < SALARY`)
+| OCL invariant / ring, subset, exclusion constraints
+| Not in the schema; check with a query
+| Missing
+|===
+
+Most of this course is about the rows marked exact, because those are the ones where an ER model needs no translation at all.
+The rows marked missing are covered, with workarounds, in xref:{page-version}@learn-typedb::conceptual-modeling/09-limits-and-patterns.adoc[Chapter Nine].
+
+[NOTE.yellow]
+.Ontology-driven modeling (UFO and OntoUML)
+====
+If you model with UFO's distinctions, these are the closest TypeQL counterparts:
+
+* *Kinds and subkinds* (rigid sortals) map to entity types and their subtypes. All TypeDB types are rigid: an instance never changes type.
+* *Relators* map to relation types. A relation instance has its own identity, can own attributes, and is existentially dependent on its role players: it cannot be committed without the role players its cardinalities require.
+* *Roles and phases* (anti-rigid types) have no direct counterpart, because an instance cannot acquire or lose a type. Model a role as playing a role in a relation, and a phase as an attribute or relation. Chapter Nine shows both.
+* *Categories and role mixins* map to an abstract supertype when the types share a hierarchy, and to a single role played by several types when they do not.
+====
+
+== Words that differ
+
+A few terms mean slightly different things in TypeDB than in the ER literature.
+
+*Relation, not relationship.*
+TypeDB says _relation type_ for Chen's relationship set and _relation_ for a relationship.
+A relation is a reified relationship: an object with its own identity, closer to an objectified fact type or a relator than to a tuple.
+One consequence: two relations can link exactly the same role players, and they are still two relations.
+In Chen's model, the tuple of role players identifies the relationship.
+
+*Role.*
+Chen's role is the function an entity performs in a relationship.
+TypeDB uses the word the same way, and makes it part of the schema: `trade_flow relates mill` declares the role `trade_flow:mill`, and `mill plays trade_flow:mill` declares which types may fill it.
+
+[#attributes]
+*Attribute.*
+In Chen's model an attribute is a function from entities to values.
+In TypeDB an attribute type is a type of value, such as `country_name`, and an attribute is one such value.
+An owner _has_ an attribute; several owners with the same value share the same attribute.
+This is closer to an ORM value type with a fact type connecting it to its owner.
+It also means that a missing value is simply an absent ownership, not a `NULL`.
+
+*Type.*
+TypeDB uses _type_ throughout, never _class_, and keeps types and instances strictly apart: `country` is a type, a particular country is an instance.
+Both can be queried with the same language, as xref:{page-version}@learn-typedb::conceptual-modeling/08-the-model-as-data.adoc[Chapter Eight] shows.
+
+== Checked before it runs
+
+Chen pointed out that a relational system lets you compare an employee's age with a ship's age, a query that is well-formed but meaningless, and that a database system should be able to warn the user about it.
+TypeDB does this for every query.
+Each query is type-checked against the schema before it runs, and a query that no data could ever satisfy, such as one asking for a country in the role of a mill, is rejected with an error rather than returning nothing.
+You will see this happen in xref:{page-version}@learn-typedb::conceptual-modeling/06-population-and-conformance.adoc[Chapter Six].
+
+Next: xref:{page-version}@learn-typedb::conceptual-modeling/02-universe-of-discourse.adoc[].

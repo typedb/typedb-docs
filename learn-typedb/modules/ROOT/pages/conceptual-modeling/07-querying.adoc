@@ -1,0 +1,221 @@
+= Chapter Seven: Querying at the conceptual level
+:description: Query a conceptual model by type and by role, polymorphically, with aggregates and with recursive derivation rules, and compare with SQL.
+:keywords: typedb, typeql, conceptual modeling, query, polymorphism, roles, negation, aggregation, reduce, functions, recursion, derivation rules, sql
+:test-typeql: linear
+
+[.lead]
+_Queries by type and role, aggregates, and derivation rules_
+
+TIP: If you are starting here, run the full schema and the data from xref:{page-version}@learn-typedb::conceptual-modeling/06-population-and-conformance.adoc[Chapter Six] in an empty database.
+
+A TypeQL query is written in the vocabulary of the model: types, roles and attributes.
+It describes a pattern, and TypeDB returns every way the data fits it.
+The queries in this chapter are worth trying to write yourself before reading them.
+Each one states its expected number of answers.
+
+== By type, polymorphically
+
+All countries and their names (7 answers):
+
+[,typeql]
+----
+#!test[schema]
+#{{
+include::{page-version}@learn-typedb::example$conceptual-modeling/full-schema.tql[tag=full]
+#}}
+#!test[write]
+#{{
+include::{page-version}@learn-typedb::example$conceptual-modeling/data.tql[tag=data]
+#}}
+#!test[read, count=7]
+match $c isa country, has country_name $n;
+----
+
+All facilities, with each one's own type (47 answers):
+
+[,typeql]
+----
+#!test[read, count=47]
+match
+  $f isa facility;
+  $f isa! $t;
+----
+
+`isa facility` matches instances of `facility` and all its subtypes.
+`isa!` matches the exact type only, so `$f isa! $t` binds `$t` to each facility's most-specific type.
+The same query against `legal_entity` would return companies too, with no change to the query beyond the type name.
+
+Counting facilities by type (2 answers: 41 mills and 6 refineries):
+
+[,typeql]
+----
+#!test[read, count=2]
+match
+  $f isa facility;
+  $f isa! $t;
+reduce $count = count groupby $t;
+----
+
+[NOTE.yellow]
+.The same question in SQL
+====
+How you ask this in SQL depends on how the generalization was mapped.
+With one table per subtype:
+
+[,sql]
+----
+SELECT 'mill' AS type, name FROM mill
+UNION ALL
+SELECT 'refinery' AS type, name FROM refinery;
+----
+
+Add a third kind of facility and this query, and every other query over all facilities, must change.
+With a single table and a type column, the query is simpler, but the subtypes' own attributes become nullable columns.
+The TypeQL query depends only on the conceptual model.
+====
+
+== By role
+
+Trade flows by country of first import (6 answers):
+
+[,typeql]
+----
+#!test[read, count=6]
+match
+  $tf isa trade_flow, links (destination: $country);
+  $country has country_name $name;
+reduce $count = count groupby $name;
+----
+
+`links (destination: $country)` matches a relation through one role.
+A pattern names only the roles it cares about; the trade flow's other six roles are still there, unmentioned.
+
+The crude flows, those without a refiner (10 answers):
+
+[,typeql]
+----
+#!test[read, count=10]
+match
+  $tf isa trade_flow;
+  not { $tf links (refiner: $r); };
+----
+
+`not { ... }` excludes the matches of its pattern, which is the natural way to ask about an optional role.
+The SQL equivalent is `WHERE refinery_id IS NULL`, which works only because the optional role was mapped to a nullable column.
+
+== A sustainability question
+
+Which importers are most exposed to deforestation?
+Total the deforestation exposure of each importer's flows (9 answers):
+
+[,typeql]
+----
+#!test[read, count=9]
+match
+  $tf isa trade_flow, links (importer: $i), has deforestation_ha $d;
+  $i has company_name $importer;
+reduce $total_ha = sum($d) groupby $importer;
+sort $total_ha desc;
+----
+
+The top three are Louis Dreyfus (2,764 ha), First Resources (2,016 ha) and Golden Agri International (580 ha).
+
+Clauses form a pipeline: `match` finds the flows, `reduce` aggregates them, and `sort` orders the result.
+
+== Derivation rules
+
+Ownership can be nested: a company can own a company that owns a refinery.
+Who owns the refinery LDC East Indonesia, directly or through one intermediary (2 answers)?
+
+[,typeql]
+----
+#!test[read, count=2]
+match
+  $f isa facility, has name $facility_name;
+  $facility_name == "LDC EAST INDONESIA";
+  { ownership (owned: $f, owner: $c); }
+  or {
+    ownership (owned: $f, owner: $middle);
+    ownership (owned: $middle, owner: $c);
+  };
+  $c has name $company_name;
+----
+
+The answer is LDC East Indonesia and its parent, Louis Dreyfus.
+Note `has name`: the query asks for the supertype `name`, so it matches a refinery's `refinery_name` and a company's `company_name` alike.
+
+A disjunction handles a fixed number of levels.
+For any number, define the transitive closure as a recursive function:
+
+[,typeql]
+----
+#!test[read, count=2]
+with fun owners($x: legal_entity) -> { company }:
+  match
+    { ownership (owned: $x, owner: $c); }
+    or {
+      ownership (owned: $x, owner: $middle);
+      let $c in owners($middle);
+    };
+  return { $c };
+match
+  $f isa facility, has name $facility_name;
+  $facility_name == "LDC EAST INDONESIA";
+  let $c in owners($f);
+  $c has name $company_name;
+----
+
+`with fun` defines a function for this query only, and `let $c in owners($f)` binds `$c` to each company the function returns.
+Because the parameter is typed `legal_entity`, the same function works for facilities and companies.
+
+A function is a derivation rule in the sense of conceptual schema-centric development: a derived relationship, here _ultimately owned by_, defined by a rule over base facts and evaluated when queried.
+To make it part of the model rather than of one query, store it in the schema with `define fun`:
+
+[,typeql]
+----
+#!test[schema]
+define
+  fun owners($x: legal_entity) -> { company }:
+    match
+      { ownership (owned: $x, owner: $c); }
+      or {
+        ownership (owned: $x, owner: $middle);
+        let $c in owners($middle);
+      };
+    return { $c };
+----
+
+Any query can now use it.
+Which facilities are ultimately owned by Louis Dreyfus (1 answer)?
+
+[,typeql]
+----
+#!test[read, count=1]
+match
+  $f isa facility, has name $facility_name;
+  let $c in owners($f);
+  $c has company_name "LOUIS DREYFUS";
+----
+
+[NOTE.yellow]
+.Derived types
+====
+A function can also derive a type.
+"An exporter is a company that exports at least one trade flow" is a derived subtype in ER terms, and in TypeQL a function returning the companies that play the role:
+
+[,typeql]
+----
+#!test[read, count=1]
+with fun exporters() -> { company }:
+  match trade_flow (exporter: $c);
+  return { $c };
+match
+  let $c in exporters();
+reduce $count = count;
+----
+
+The function returns each exporter once: there are 6.
+Unlike a subtype, membership follows the data, which is what an anti-rigid role like _exporter_ needs.
+====
+
+Next: xref:{page-version}@learn-typedb::conceptual-modeling/08-the-model-as-data.adoc[].

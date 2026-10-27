@@ -20,6 +20,7 @@ MODULE_DIRECTORIES = {
     "typeql": os.path.join(os.path.dirname(__file__), "../../typeql/modules/ROOT"),
     "drivers": os.path.join(os.path.dirname(__file__), "../../drivers/modules/ROOT"),
     "academy": os.path.join(os.path.dirname(__file__), "../../academy/modules/ROOT"),
+    "learn-typedb": os.path.join(os.path.dirname(__file__), "../../learn-typedb/modules/ROOT"),
 
     "home": os.path.join(os.path.dirname(__file__), "../../home/modules/ROOT"),
     "examples": os.path.join(os.path.dirname(__file__), "../../examples/modules/ROOT"),

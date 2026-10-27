@@ -1,0 +1,167 @@
+= Chapter Nine: Limits and patterns
+:description: What a TypeDB schema cannot express, such as overlapping or dynamic classification and general integrity constraints, and the patterns to use instead.
+:keywords: typedb, typeql, conceptual modeling, limitations, multiple classification, dynamic classification, phases, roles, integrity constraints, invariants, relation subtyping, temporal
+:test-typeql: linear
+
+[.lead]
+_What TypeDB cannot express, and how to model around it_
+
+TIP: If you are starting here, run the full schema and the data from xref:{page-version}@learn-typedb::conceptual-modeling/06-population-and-conformance.adoc[Chapter Six] in an empty database.
+
+The mapping in xref:{page-version}@learn-typedb::conceptual-modeling/01-from-er-to-typeql.adoc[Chapter One] marked some constructs as missing.
+This chapter takes them in turn, with the pattern to use instead of each.
+
+== One type per instance
+
+Every instance has exactly one most-specific type, fixed when it is created.
+Two consequences:
+
+* *No overlapping or multiple classification.* Nothing can be both a mill and a refinery, or a member of two unrelated types.
+* *No dynamic classification.* An instance cannot become another type later. There are no phases in UFO's sense, such as an _active_ and a _closed_ mill, implemented as types.
+
+=== Pattern: separate instances, related
+
+The data contained one case that looks like multiple classification: `LDC EAST INDONESIA` is a refinery and an exporting company.
+Chapter Four modeled it as two instances, a refinery and a company, linked by ownership.
+That is the general pattern: when one real-world name covers two kinds of thing, ask whether it denotes two things with a relationship between them.
+It usually does, and the relation is a fact worth recording.
+
+=== Pattern: roles as relations
+
+Anti-rigid types whose membership depends on what an instance does, such as _exporter_, are roles in relations.
+xref:{page-version}@learn-typedb::conceptual-modeling/07-querying.adoc#_derivation_rules[Chapter Seven] showed how to derive the set of exporters with a function when a query needs it as a type.
+
+=== Pattern: phases as relations with validity
+
+A phase that changes over time, such as a mill being certified under a sustainability scheme, is best modeled as a relation with its period of validity.
+This records the history as well as the current state, and relations can own the dates:
+
+[,typeql]
+----
+#!test[schema]
+#{{
+include::{page-version}@learn-typedb::example$conceptual-modeling/full-schema.tql[tag=full]
+#}}
+#!test[schema]
+define
+  attribute standard_name, sub name;
+  attribute valid_from, value date;
+  attribute valid_until, value date;
+
+  entity certification_scheme,
+    owns standard_name @key,
+    plays certification:scheme;
+
+  relation certification,
+    relates certified @card(1),
+    relates scheme @card(1),
+    owns valid_from @card(1),
+    owns valid_until @card(0..1);
+
+  entity mill, plays certification:certified;
+----
+
+A mill is _currently certified_ if it plays `certified` in a certification with no end date, or one that ends in the future.
+That condition is a query, or a function, rather than a type.
+
+TypeDB has no built-in temporal model, so validity periods like these are the way to record time-dependent facts.
+
+== General integrity constraints
+
+TypeDB's schema constraints each involve a single type, role or ownership: a cardinality, a key, a value set.
+Constraints that relate several facts to each other cannot be declared:
+
+* comparisons between values, such as Chen's `TAX < SALARY`,
+* conditional constraints, such as "a flow of refined palm oil has a refiner",
+* uniqueness over a combination of roles, such as "no two ownerships with the same owner and owned",
+* constraints along a path, such as "a flow's destination is not the country it was produced in".
+
+=== Pattern: invariants as queries
+
+Each of these constraints can be written as a query for its violations, which should return zero.
+Run the queries after loading data, or before committing a transaction that could break them.
+
+Refined palm oil without a refiner:
+
+[,typeql]
+----
+#!test[read, count=1]
+match
+  $tf isa trade_flow, links (commodity: $c);
+  $c has commodity_name "REFINED PALM OIL";
+  not { $tf links (refiner: $r); };
+reduce $violations = count;
+----
+
+Two ownerships with the same owner and owned:
+
+[,typeql]
+----
+#!test[read, count=1]
+match
+  $o1 isa ownership, links (owner: $a, owned: $b);
+  $o2 isa ownership, links (owner: $a, owned: $b);
+  not { $o1 is $o2; };
+reduce $violations = count;
+----
+
+A flow whose destination is its country of production:
+
+[,typeql]
+----
+#!test[read, count=1]
+match
+  $tf isa trade_flow, links (origin: $k, destination: $d);
+  containment (child: $k, parent: $p);
+  containment (child: $p, parent: $d);
+reduce $violations = count;
+----
+
+Each returns `$violations` of 0 on this data.
+Stored as functions with `define fun`, invariants like these become part of the model, and any application can call them.
+
+=== Pattern: turn a conditional constraint into a structural one
+
+Some conditional constraints disappear when the condition becomes a type.
+"A refined flow has exactly one refiner, and a crude flow has none" is a constraint on two kinds of flow, so model the two kinds.
+In a fresh database with the full schema, make `trade_flow` abstract with two subtypes, and then try to insert a refined flow without a refiner:
+
+[,typeql]
+----
+#!test[schema]
+define
+  relation trade_flow @abstract;
+  relation crude_flow sub trade_flow;
+  relation refined_flow sub trade_flow,
+    relates refined_by as refiner @card(1);
+  entity refinery, plays refined_flow:refined_by;
+----
+
+[,typeql]
+----
+#!test[write, fail_at=commit]
+insert
+  $k isa kabupaten, has kabupaten_name "BERAU";
+  $m isa mill, has mill_name "EXAMPLE MILL";
+  $e isa company, has company_name "EXAMPLE EXPORTER";
+  $i isa company, has company_name "EXAMPLE IMPORTER";
+  $d isa country, has country_name "SPAIN";
+  $co isa commodity, has commodity_name "REFINED PALM OIL";
+  refined_flow (origin: $k, mill: $m, exporter: $e, importer: $i, destination: $d, commodity: $co),
+    has volume_tonnes 1.0, has deforestation_ha 0.0, has usd 100.0dec;
+----
+
+`relates refined_by as refiner` specializes the inherited `refiner` role for refined flows, with a cardinality of exactly one, so the insert is rejected at commit.
+
+The define only works in a database without existing `trade_flow` instances, since an abstract type cannot have instances of its own.
+The commodity is now partly redundant with the relation's type, and a flow of refined palm oil could still be recorded as a `crude_flow`, so the trade-off is not free.
+The model you choose depends on which constraint matters more.
+
+== Closed world
+
+A TypeDB database contains the facts it has been told, and a query's answers are drawn from those facts alone.
+`not { ... }` means "not recorded", which is the same as "false" only if the data is complete.
+In this dataset, a flow with no refiner was recorded as crude, so the two coincide.
+For data you know to be incomplete, model unknown values explicitly, for example with an attribute that records the absence, rather than relying on negation.
+
+Next: xref:{page-version}@learn-typedb::conceptual-modeling/10-epilogue.adoc[].

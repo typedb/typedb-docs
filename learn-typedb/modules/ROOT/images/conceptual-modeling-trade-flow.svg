@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 610" class="er" role="img" aria-label="ER diagram: trade_flow relation with roles origin (kabupaten), mill (mill), optional refiner (refinery), exporter and importer (company), destination (country), commodity (commodity), and attributes volume_tonnes, deforestation_ha, usd">
+  <style>
+    text { fill: #1a1a1a; font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+    text.name, text.relname { font-weight: 600; }
+    text.role { fill: #555; font-size: 12px; font-style: italic; }
+    path.new { stroke: #6b3fd4; }
+    text.new-label { fill: #6b3fd4; }
+  </style>
+  <rect width="100%" height="100%" fill="white"/>
+  <g class="links" stroke="black" fill="none">
+    <line x1="135" y1="50" x2="135" y2="100"/>
+    <line x1="410" y1="50" x2="410" y2="100"/>
+    <line x1="685" y1="50" x2="685" y2="100"/>
+    <line x1="715" y1="343" x2="715" y2="375"/>
+    <line x1="685" y1="526" x2="685" y2="555"/>
+    <line x1="135" y1="526" x2="135" y2="555"/>
+  </g>
+  <g class="attr" fill="white" stroke="gray">
+    <ellipse cx="135" cy="30" rx="74" ry="20"/>
+    <ellipse cx="410" cy="30" rx="62" ry="20"/>
+    <ellipse cx="685" cy="30" rx="62" ry="20"/>
+    <ellipse cx="715" cy="395" rx="66" ry="20"/>
+    <ellipse cx="685" cy="575" rx="62" ry="20"/>
+    <ellipse cx="135" cy="575" rx="72" ry="20"/>
+  </g>
+  <g transform="translate(0,60)">
+  <g class="links" stroke="black" fill="none">
+    <line x1="135" y1="86" x2="365" y2="235"/>
+    <line x1="410" y1="86" x2="410" y2="210"/>
+    <line x1="455" y1="285" x2="685" y2="420"/>
+    <line x1="365" y1="285" x2="135" y2="420"/>
+    <line x1="500" y1="260" x2="640" y2="244"/>
+    <line x1="500" y1="260" x2="640" y2="276"/>
+    <line x1="222" y1="190" x2="320" y2="260"/>
+    <line x1="222" y1="260" x2="320" y2="260"/>
+    <line x1="222" y1="330" x2="320" y2="260"/>
+  </g>
+  <line class="opt" x1="455" y1="235" x2="685" y2="86" stroke="black" stroke-dasharray="6 4"/>
+  <g class="attr" fill="white" stroke="gray">
+    <ellipse cx="150" cy="190" rx="78" ry="20"/>
+    <ellipse cx="150" cy="260" rx="78" ry="20"/>
+    <ellipse cx="150" cy="330" rx="78" ry="20"/>
+  </g>
+  <g class="ent" fill="white" stroke="black">
+    <rect x="60" y="40" width="150" height="46"/>
+    <rect x="335" y="40" width="150" height="46"/>
+    <rect x="610" y="40" width="150" height="46"/>
+    <rect x="640" y="237" width="150" height="46"/>
+    <rect x="610" y="420" width="150" height="46"/>
+    <rect x="60" y="420" width="150" height="46"/>
+  </g>
+  <polygon class="rel" points="410,210 500,260 410,310 320,260" fill="white" stroke="black"/>
+  <g text-anchor="middle" dominant-baseline="middle">
+    <text x="135" y="63" class="name">kabupaten</text>
+    <text x="410" y="63" class="name">mill</text>
+    <text x="685" y="63" class="name">refinery</text>
+    <text x="715" y="260" class="name">company</text>
+    <text x="685" y="443" class="name">country</text>
+    <text x="135" y="443" class="name">commodity</text>
+    <text x="410" y="260" class="relname">trade_flow</text>
+    <text x="150" y="190">volume_tonnes</text>
+    <text x="150" y="260">deforestation_ha</text>
+    <text x="150" y="330">usd</text>
+    <text x="262" y="138" class="role">origin</text>
+    <text x="440" y="150" class="role">mill</text>
+    <text x="632" y="172" class="role">refiner (0..1)</text>
+    <text x="570" y="234" class="role">exporter</text>
+    <text x="570" y="292" class="role">importer</text>
+    <text x="598" y="345" class="role">destination</text>
+    <text x="240" y="370" class="role">commodity</text>
+  </g>
+  </g>
+  <g text-anchor="middle" dominant-baseline="middle">
+    <text x="135" y="30" class="key" text-decoration="underline">kabupaten_name</text>
+    <text x="410" y="30">mill_name</text>
+    <text x="685" y="30">refinery_name</text>
+    <text x="715" y="395" class="key" text-decoration="underline">company_name</text>
+    <text x="685" y="575" class="key" text-decoration="underline">country_name</text>
+    <text x="135" y="575" class="key" text-decoration="underline">commodity_name</text>
+  </g>
+</svg>

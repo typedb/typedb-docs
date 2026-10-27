@@ -1,0 +1,40 @@
+= Epilogue
+:description: A summary of the conceptual modeling crash course, where to go next, and references.
+:keywords: typedb, typeql, conceptual modeling, summary, references, further reading
+
+[.lead]
+_From conceptual model to running database_
+
+== What you built
+
+Starting from a real dataset, you:
+
+* stated its facts and constraints in plain sentences,
+* modeled places, companies, facilities, commodities and trade flows, choosing between alternatives at each step,
+* implemented the result directly in TypeQL, including a seven-role relation with an optional role and attributes of its own,
+* watched the database enforce the model on queries, on writes, at commit, and on changes to the model itself,
+* queried by type, by role, polymorphically and recursively,
+* queried and documented the model with the same language,
+* and worked around what the schema cannot express.
+
+At no point did the model pass through a logical design step.
+The ER diagrams and the TypeQL describe the same thing.
+
+== Where next
+
+* Extend the model with more of the Trase dataset: ports of export, sustainability commitments, or ownership shares as an attribute of `ownership`.
+* Model a domain of your own. The xref:{page-version}@guides::schema-modeling.adoc[schema modeling guide] covers naming, subtyping versus composition, and constraint design.
+* Take xref:{page-version}@academy::index.adoc[TypeDB Academy] for a systematic course in TypeQL, including xref:{page-version}@academy::9-modeling-schemas/index.adoc[modeling schemas].
+* Look up any statement or annotation in the xref:{page-version}@typeql-reference::index.adoc[TypeQL reference].
+* Ask questions in the https://typedb.com/discord[TypeDB Discord].
+
+== References
+
+* Benedict, J. J., Biddle, H., Gollnow, F., Heilmayr, R., Mueller, C., Ribeiro, V., & Suavet, C. (2024). _Indonesia palm oil supply chain (2018–2022)_ (Version 1.2) [Data set]. Trase. https://doi.org/10.48650/X83N-7M36
+* Chen, P. P. (1976). The entity-relationship model: Toward a unified view of data. _ACM Transactions on Database Systems_, 1(1), 9–36.
+* Dorn, C., & Pribadi, H. (2024). TypeQL: A type-theoretic & polymorphic query language. _Proceedings of the ACM on Management of Data_, 2(2), 1–27. https://doi.org/10.1145/3651611
+* Embley, D. W., Liddle, S. W., & Pastor, O. (2011). Conceptual-model programming: A manifesto. In _Handbook of Conceptual Modeling_. Springer.
+* Guizzardi, G. (2005). _Ontological foundations for structural conceptual models_. PhD thesis, University of Twente.
+* Halpin, T., & Morgan, T. (2008). _Information modeling and relational databases_ (2nd ed.). Morgan Kaufmann.
+* Olivé, A. (2005). Conceptual schema-centric development: A grand challenge for information systems research. In _Advanced Information Systems Engineering (CAiSE 2005)_. Springer.
+* Send, J. (2026). Building executable entity-relationship models. _CEUR Workshop Proceedings_, Vol. 4279, 90–93. https://ceur-ws.org/Vol-4279/Paper-158.pdf

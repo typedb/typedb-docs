@@ -1,0 +1,118 @@
+= Chapter Three: Entity types and generalization
+:description: Model places with entity types, keys, an abstract supertype and a containment relation, in TypeQL.
+:keywords: typedb, typeql, conceptual modeling, entity type, key, identification, generalization, abstract, total specialization, cardinality, containment
+:test-typeql: linear
+
+[.lead]
+_Places: identification, abstract supertypes and a first relation_
+
+== Places
+
+The easiest columns to model are the places: the country, the province and the kabupaten (district) the palm oil comes from, and the country it is imported into.
+Read as facts:
+
+* Each country is identified by its name. The same holds for provinces and kabupaten.
+* Countries, provinces and kabupaten are all places, and every place is one of the three.
+
+image::conceptual-modeling-places.svg[ER diagram: abstract entity place with subtypes country, province and kabupaten, each with a key name attribute, role=framed]
+
+Three kinds of place, each identified by its name (underlined), under an abstract supertype `place` (dashed).
+
+[,typeql]
+----
+#!test[schema]
+include::{page-version}@learn-typedb::example$conceptual-modeling/schema.tql[tag=places]
+----
+
+Reading it line by line:
+
+* `attribute name, value string;` declares an attribute type and its value type.
+* `attribute country_name, sub name;` declares a subtype of `name`. The three name types are distinct types, so a country's name cannot be mistaken for a province's, but a query for `name` finds all of them. ER notation has no way to draw this, so the diagram leaves it out.
+* `entity place @abstract;` declares a type that cannot have instances of its own.
+* `entity country, sub place, owns country_name @key;` declares a subtype of `place` that owns exactly one `country_name`, which no other country shares.
+
+=== Keys are identification schemes
+
+`@key` combines two constraints: every country owns exactly one `country_name`, and no two countries own the same one.
+It is the TypeQL form of a preferred identification scheme.
+
+TypeDB does not use keys to identify instances internally: every instance has an internal identity regardless.
+A key is a constraint on the data, not the instance's identity.
+So types without a natural identifier, such as mills in the next chapter, need no key at all.
+
+=== The generalization is disjoint and total
+
+Two properties of this hierarchy come for free:
+
+* *Disjoint.* Every instance has exactly one most-specific type, so nothing can be both a country and a province.
+* *Total.* `place` is abstract, so every place must be a country, a province or a kabupaten.
+
+Try inserting a bare place:
+
+[,typeql]
+----
+#!test[write, fail_at=runtime]
+insert $p isa place;
+----
+
+The query is rejected before it runs: no type can be inferred for `$p`, because `place` has no instances of its own.
+
+== Places contain places
+
+The places nest: a kabupaten lies in a province, which lies in a country.
+Read as facts:
+
+* A containment relates exactly one parent place to exactly one child place.
+* A country can be a parent.
+* A province can be a parent, and is the child of at most one place.
+* A kabupaten is the child of at most one place.
+
+image::conceptual-modeling-places-containment.svg[ER diagram: containment relation drawn between country and province, and between province and kabupaten, role=framed]
+
+One relation type, `containment`, drawn once for each pair of types it connects.
+A province plays both of its roles.
+
+[,typeql]
+----
+#!test[schema]
+include::{page-version}@learn-typedb::example$conceptual-modeling/schema.tql[tag=containment]
+----
+
+* `relation containment, relates parent, relates child` declares a relation type and its two roles.
+* `plays containment:child` declares which types can fill a role.
+* `@card(1)` on a `relates` constrains how many role players fill that role in each containment: exactly one.
+* `@card(0..1)` on a `plays` constrains how many containments each player plays that role in: at most one.
+
+Running `define` on a type that already exists, such as `country` here, adds to its definition.
+
+[NOTE.yellow]
+.Why not a parent attribute?
+====
+In a relational design, containment would typically be a `parent_id` foreign key on each place.
+Here it is a relation because the fact relates two places, and because a relation can later own attributes of its own, such as the date a boundary was redrawn, without changing the model's shape.
+====
+
+Open the *Schema* page in Studio to see the schema so far.
+
+== Challenge
+
+In practice, some administrative areas are redrawn, and a district can for a time be recorded under two provinces.
+How would you change the model to allow this, and what would you lose?
+
+.Answer
+[%collapsible]
+====
+Relax the cardinality of the child role.
+Because the role already has a cardinality, use `redefine` rather than `define` (don't run this if you are following along, as the rest of the course assumes the original model):
+
+[,typeql]
+----
+redefine
+  entity kabupaten, plays containment:child @card(0..2);
+----
+
+Use `@card(0..)` for no upper bound.
+You lose the guarantee that the containment hierarchy is a tree, which every query that walks up from a kabupaten to its country currently relies on.
+====
+
+Next: xref:{page-version}@learn-typedb::conceptual-modeling/04-modeling-decisions.adoc[].
