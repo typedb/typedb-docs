@@ -73,8 +73,8 @@ The last column says whether the mapping is *exact*, *approximate* (the intent c
 
 | Key
 | `+{id}+` / preferred identification scheme
-| `owns country_name @key`; alternate keys with `@unique`
-| Approximate: single-attribute keys only
+| `owns country_name @key`; several `@key` ownerships for alternate keys; `@unique` for an optional unique attribute
+| Approximate: each key is a single attribute. Composite keys are on the roadmap
 
 | Weak entity, partial key
 | Composite identification via a role

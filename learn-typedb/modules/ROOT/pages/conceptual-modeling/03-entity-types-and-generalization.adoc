@@ -35,6 +35,8 @@ Reading it line by line:
 
 `@key` combines two constraints: every country owns exactly one `country_name`, and no two countries own the same one.
 It is the TypeQL form of a preferred identification scheme.
+A type can own several keys, each of which identifies its instances by itself.
+A key made of several attributes together, a composite key, is not yet available, and is on the TypeDB roadmap.
 
 TypeDB does not use keys to identify instances internally: every instance has an internal identity regardless.
 A key is a constraint on the data, not the instance's identity.
