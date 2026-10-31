@@ -3,7 +3,7 @@
 :keywords: typedb, typeql, conceptual modeling, er model, eer, uml, orm, ufo, ontouml, pera, mapping, relation, relationship, role
 
 [.lead]
-_What you already know, in TypeQL_
+_ER constructs and their TypeQL equivalents_
 
 == The model behind TypeQL
 
@@ -68,7 +68,7 @@ The last column says whether the mapping is *exact*, *approximate* (the intent c
 
 | Composite attribute
 | Structured data type
-| Not available; model the parts as an entity or relation
+| Structs (roadmap) - emulate with related entities
 | Missing
 
 | Key
@@ -132,7 +132,7 @@ The last column says whether the mapping is *exact*, *approximate* (the intent c
 | Missing
 |===
 
-Most of this course is about the rows marked exact, because those are the ones where an ER model needs no translation at all.
+Most of this course uses the exact mappings, where an ER model needs no translation.
 The rows marked missing are covered, with workarounds, in xref:{page-version}@learn-typedb::conceptual-modeling/09-limits-and-patterns.adoc[Chapter Nine].
 
 [NOTE.yellow]
@@ -143,10 +143,11 @@ If you model with UFO's distinctions, these are the closest TypeQL counterparts:
 * *Kinds and subkinds* (rigid sortals) map to entity types and their subtypes. All TypeDB types are rigid: an instance never changes type.
 * *Relators* map to relation types. A relation instance has its own identity, can own attributes, and is existentially dependent on its role players: it cannot be committed without the role players its cardinalities require.
 * *Roles and phases* (anti-rigid types) have no direct counterpart, because an instance cannot acquire or lose a type. Model a role as playing a role in a relation, and a phase as an attribute or relation. Chapter Nine shows both.
-* *Categories and role mixins* map to an abstract supertype when the types share a hierarchy, and to a single role played by several types when they do not.
+* *Categories and role mixins* (types that span several kinds) map to an abstract supertype when the kinds share a hierarchy, and to a single role played by several types when they do not.
+The long-term roadmap includes traits, or mixins: types that unrelated types can share, which would express categories and role mixins directly.
 ====
 
-== Words that differ
+== Terminology differences
 
 A few terms mean slightly different things in TypeDB than in the ER literature.
 
@@ -172,11 +173,11 @@ It also means that a missing value is simply an absent ownership, not a `NULL`.
 TypeDB uses _type_ throughout, never _class_, and keeps types and instances strictly apart: `country` is a type, a particular country is an instance.
 Both can be queried with the same language, as xref:{page-version}@learn-typedb::conceptual-modeling/08-the-model-as-data.adoc[Chapter Eight] shows.
 
-== Checked before it runs
+== Type-checked queries
 
 Chen pointed out that a relational system lets you compare an employee's age with a ship's age, a query that is well-formed but meaningless, and that a database system should be able to warn the user about it.
 TypeDB does this for every query.
 Each query is type-checked against the schema before it runs, and a query that no data could ever satisfy, such as one asking for a country in the role of a mill, is rejected with an error rather than returning nothing.
-You will see this happen in xref:{page-version}@learn-typedb::conceptual-modeling/06-population-and-conformance.adoc[Chapter Six].
+xref:{page-version}@learn-typedb::conceptual-modeling/06-population-and-conformance.adoc[Chapter Six] has examples.
 
-Next: xref:{page-version}@learn-typedb::conceptual-modeling/02-universe-of-discourse.adoc[].
+Next: xref:{page-version}@learn-typedb::conceptual-modeling/02-about-the-dataset.adoc[].

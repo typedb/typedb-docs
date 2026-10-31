@@ -59,11 +59,11 @@ match
 ----
 
 The answers include the two commodities, in the commodity role, and companies whose names contain "OIL", in the exporter and importer roles.
-A conceptual model stored this way is never out of reach of the queries that use it: tools, validation scripts and documentation can all read it in the same language.
+Tools, validation scripts and documentation can all read the model with TypeQL.
 
 == Definitions in the model
 
-A glossary of the domain usually lives in a separate document, and drifts.
+A domain glossary is usually kept in a separate document, which gets out of date.
 TypeQL's `@doc` annotation attaches a definition to a type, a role, or an ownership, inside the schema:
 
 [,typeql]
@@ -116,7 +116,7 @@ gen-typedb my_schema.yaml > schema.tql
 The generator maps classes to entity types, `is_a` to `sub`, slots with scalar ranges to owned attributes, slots whose range is a class to relations, identifiers to `@key`, and required and multivalued attribute slots to `@card`.
 A class marked `represents_relationship: true` becomes a relation type with one role per class-ranged slot, so an n-ary relationship with attributes, such as the trade flow, can be generated too.
 
-Treat the output as a first draft rather than a finished model, and review the constraints in particular:
+Treat the output as a first draft, and check the constraints:
 
 * Enumerations are recorded as comments, not as `@values` constraints.
 * Required role slots of a relationship class do not become `relates ... @card(1)`, so mandatory roles come out optional.

@@ -8,9 +8,9 @@ _Queries by type and role, aggregates, and derivation rules_
 
 TIP: If you are starting here, run the full schema and the data from xref:{page-version}@learn-typedb::conceptual-modeling/06-population-and-conformance.adoc[Chapter Six] in an empty database.
 
-A TypeQL query is written in the vocabulary of the model: types, roles and attributes.
-It describes a pattern, and TypeDB returns every way the data fits it.
-The queries in this chapter are worth trying to write yourself before reading them.
+TypeQL queries use the model's types, roles and attributes.
+A query describes a pattern, and TypeDB returns every match in the data.
+Try writing each query yourself before reading it.
 Each one states its expected number of answers.
 
 == By type, polymorphically
@@ -43,7 +43,7 @@ match
 
 `isa facility` matches instances of `facility` and all its subtypes.
 `isa!` matches the exact type only, so `$f isa! $t` binds `$t` to each facility's most-specific type.
-The same query against `legal_entity` would return companies too, with no change to the query beyond the type name.
+The same query against `legal_entity` would return companies too, with only the type name changed.
 
 Counting facilities by type (2 answers: 41 mills and 6 refineries):
 
@@ -88,7 +88,7 @@ reduce $count = count groupby $name;
 ----
 
 `links (destination: $country)` matches a relation through one role.
-A pattern names only the roles it cares about; the trade flow's other six roles are still there, unmentioned.
+A pattern only needs to name the roles it uses.
 
 The crude flows, those without a refiner (10 answers):
 
@@ -100,7 +100,7 @@ match
   not { $tf links (refiner: $r); };
 ----
 
-`not { ... }` excludes the matches of its pattern, which is the natural way to ask about an optional role.
+`not { ... }` excludes the matches of its pattern, which is how to ask about an optional role.
 The SQL equivalent is `WHERE refinery_id IS NULL`, which works only because the optional role was mapped to a nullable column.
 
 == A sustainability question
@@ -215,7 +215,7 @@ reduce $count = count;
 ----
 
 The function returns each exporter once: there are 6.
-Unlike a subtype, membership follows the data, which is what an anti-rigid role like _exporter_ needs.
+Unlike subtype membership, it changes with the data, as an anti-rigid role like _exporter_ requires.
 ====
 
 Next: xref:{page-version}@learn-typedb::conceptual-modeling/08-the-model-as-data.adoc[].

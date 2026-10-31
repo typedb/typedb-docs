@@ -1,9 +1,9 @@
-= Chapter Two: The universe of discourse
+= Chapter Two: About the dataset
 :description: The palm oil supply chain dataset used in the conceptual modeling crash course, and the elementary facts in one row.
 :keywords: typedb, conceptual modeling, dataset, trase, palm oil, supply chain, elementary facts, universe of discourse
 
 [.lead]
-_A real supply chain, read one fact at a time_
+_A real supply chain dataset, and the facts in one row_
 
 == The data
 
@@ -79,8 +79,7 @@ Here is one row, transposed:
 | palm_oil_deforestation_10_year_total_exposure | 916.7547
 |===
 
-Before modeling anything, it helps to say what the row asserts, one fact at a time.
-A first reading gives facts like these:
+Before modeling, let's list the facts this row states:
 
 . The kabupaten Berau lies in the province Kalimantan Timur.
 . The province Kalimantan Timur lies in the country Indonesia.
@@ -93,11 +92,11 @@ A first reading gives facts like these:
 Most of these facts are binary.
 The sixth is not: it relates seven things at once, and it cannot be split into binary facts without losing information.
 Knowing which mill supplied which refinery, and which refinery supplied which exporter, does not tell you which mill's oil reached which importer.
-xref:{page-version}@learn-typedb::conceptual-modeling/05-n-ary-relations.adoc[Chapter Five] measures how much is lost if you try.
+xref:{page-version}@learn-typedb::conceptual-modeling/05-n-ary-relations.adoc[Chapter Five] shows what is lost if you try.
 
-Some facts also needed interpretation.
+Some facts need interpretation.
 `LDC EAST INDONESIA` appears as both the refinery and the exporter, so is it one thing or two?
 And `NOT REFINED`, used in other rows, is not a refinery at all, but the absence of one.
-xref:{page-version}@learn-typedb::conceptual-modeling/04-modeling-decisions.adoc[Chapter Four] makes these decisions explicit.
+xref:{page-version}@learn-typedb::conceptual-modeling/04-modeling-decisions.adoc[Chapter Four] covers these decisions.
 
 Next: xref:{page-version}@learn-typedb::conceptual-modeling/03-entity-types-and-generalization.adoc[].

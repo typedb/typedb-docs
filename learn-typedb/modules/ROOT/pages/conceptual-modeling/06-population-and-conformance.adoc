@@ -40,12 +40,11 @@ It runs as a single transaction: if any part of it contradicted the schema, none
 [NOTE.yellow]
 .Population checks
 ====
-A sample population that satisfies every constraint is one half of validating a model.
-The other half is a population that violates each constraint, and a check that it is rejected.
-The rest of this chapter is that second half.
+To validate a model, check that valid data is accepted, and that data violating each constraint is rejected.
+The rest of this chapter does the second part.
 ====
 
-== Three moments of enforcement
+== When constraints are checked
 
 TypeDB checks the model at three points:
 
@@ -60,7 +59,7 @@ TypeDB checks the model at three points:
 | Value constraints (`@values`, `@range`, `@regex`) and uniqueness (`@key`, `@unique`).
 
 | When a transaction commits
-| Cardinalities (`@card`, and the "exactly one" part of `@key`), which can only be judged once all of a transaction's writes are in.
+| Cardinalities (`@card`, and the "exactly one" part of `@key`), which are checked once all of the transaction's writes are done.
 |===
 
 Each query below is meant to fail.

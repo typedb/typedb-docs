@@ -45,7 +45,7 @@ include::{page-version}@learn-typedb::example$conceptual-modeling/schema.tql[tag
 == The flow
 
 Each row of the data is one trade flow.
-Read as constraints:
+Stated as constraints:
 
 * Each trade flow has exactly one district of origin, one mill, one exporter, one importer, one destination country and one commodity.
 * Each trade flow has at most one refinery. Crude palm oil is not refined.
@@ -73,8 +73,8 @@ Open the *Schema* page in Studio to compare it with the diagrams so far.
 [#_reading_cardinalities]
 == Reading cardinalities
 
-ER and UML notations disagree about where a cardinality is written and what it counts, and n-ary relationships are where the disagreement bites.
-TypeQL avoids the ambiguity by attaching each cardinality to one of two declarations, each of which counts one thing:
+ER and UML notations differ on where a cardinality is written and what it counts, especially for n-ary relationships.
+In TypeQL, each cardinality is attached to one of two declarations, and each counts one thing:
 
 [cols="1,2,2",options="header"]
 |===
@@ -101,9 +101,9 @@ If you leave a cardinality out, the defaults are:
 
 So mandatory participation, such as "every mill supplies at least one trade flow", is written on the `plays` side: `entity mill, plays trade_flow:mill @card(1..);`.
 
-== What other models do with this
+== Comparison with tables and graphs
 
-A seven-role relationship with an optional role and attributes of its own is exactly the construct that implementation models handle worst.
+Tables and property graphs have trouble with a seven-role relationship that has an optional role and its own attributes.
 
 === As a table
 
@@ -126,8 +126,7 @@ CREATE TABLE trade_flow (
 );
 ----
 
-This works, and it is the usual mapping of an n-ary relationship.
-But the roles survive only as column names, the optional role becomes a `NULL`, and the model's generalizations have to be mapped separately.
+This is the usual mapping of an n-ary relationship, but the roles survive only as column names, the optional role becomes a `NULL`, and the model's generalizations have to be mapped separately.
 If mills and refineries share a `facility` table, `mill_id` can no longer be constrained to reference only mills without extra machinery.
 Participation constraints on the other side, such as every mill supplying at least one flow, need triggers or application code: the SQL standard's `CREATE ASSERTION` would express them, but mainstream database systems don't implement it.
 
@@ -137,14 +136,14 @@ In a property graph, edges connect exactly two nodes.
 There are two ways to store a seven-way fact.
 
 *Chain binary edges*, such as mill → refinery → exporter → importer.
-This invents facts.
+This adds facts that are not true.
 Each edge is true, but a path through them need not be: in this dataset, following the edges for the 71 refined flows connects 102 mill–importer pairs, but only 63 of them appear together in an actual flow.
-The other 39 are artifacts of the decomposition.
+The other 39 are not in the data.
 
 *Reify the flow as a node*, with one edge per role.
 This keeps the facts, but the schema-less graph does not know that a flow node needs exactly one mill edge, or that a mill edge may only point at a mill, or that the flow node represents a relationship rather than an entity.
 
-In TypeDB, the seven-way relation is stored, typed and constrained as written.
+In TypeDB, the seven-role relation is stored as modeled, with its types and constraints.
 
 == Challenge
 

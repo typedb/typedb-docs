@@ -24,10 +24,10 @@ include::{page-version}@learn-typedb::example$conceptual-modeling/schema.tql[tag
 ----
 ====
 
-== Getting stuck
+== Harder columns
 
 The next six columns are harder.
-Here are a few rows of them:
+Here are a few rows:
 
 [cols="1,1,1,1,1,1",options="header"]
 |===
@@ -53,7 +53,7 @@ include::{page-version}@learn-typedb::example$conceptual-modeling/schema.tql[tag
 ----
 
 This model is easy to load, but it records the same company several times, once per column it appears in, with nothing connecting the copies.
-It also commits to a claim the data does not make: that being an exporter is a kind of thing, rather than something a company does.
+It also treats being an exporter as a kind of thing, when it is something a company does.
 Don't run it; the rest of the course uses option 2.
 
 == Option 2: companies and facilities
@@ -88,17 +88,17 @@ include::{page-version}@learn-typedb::example$conceptual-modeling/schema.tql[tag
 [NOTE.yellow]
 .Subtype, role or attribute?
 ====
-The choice in this chapter comes up in every model. Three questions help:
+This choice comes up in most models. Three questions help:
 
 . *Does it have its own identity and properties?* If not, it is an attribute. `product_type` has two values and nothing else, which makes it a candidate for an attribute (see <<commodities>>).
 . *Is membership permanent?* If an instance belongs for its whole existence, as a mill is always a mill, a subtype fits. If membership depends on what the instance does, as with exporters, model it as a role in a relation.
-. *Does the distinction add properties or constraints?* A subtype earns its place when it owns, plays or relates something its siblings don't. Otherwise an attribute may do.
+. *Does the distinction add properties or constraints?* A subtype is useful when it owns, plays or relates something its siblings don't. Otherwise an attribute may do.
 ====
 
 == Companies owning companies
 
 In some rows, `LDC EAST INDONESIA` is both the refinery and the exporter, and `LOUIS DREYFUS` is the group of both.
-The interpretation used here: the company LDC East Indonesia owns the refinery of the same name and handles its exports, and Louis Dreyfus is its parent company.
+We interpret this as: the company LDC East Indonesia owns the refinery of the same name and handles its exports, and Louis Dreyfus is its parent company.
 
 So companies, too, can be owned:
 
@@ -131,7 +131,7 @@ There are three reasonable ways to model them:
 
 | c
 | An abstract `commodity` with two subtypes
-| Queries over all commodities stay simple. Worth it once the subtypes own or play different things.
+| Queries over all commodities stay simple. Useful when the subtypes own or play different things.
 |===
 
 Option a is enough for now:

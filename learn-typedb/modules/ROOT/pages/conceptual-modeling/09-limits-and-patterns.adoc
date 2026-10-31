@@ -23,8 +23,56 @@ Two consequences:
 
 The data contained one case that looks like multiple classification: `LDC EAST INDONESIA` is a refinery and an exporting company.
 Chapter Four modeled it as two instances, a refinery and a company, linked by ownership.
-That is the general pattern: when one real-world name covers two kinds of thing, ask whether it denotes two things with a relationship between them.
-It usually does, and the relation is a fact worth recording.
+In general, when one name covers two kinds of thing, check whether it refers to two things with a relationship between them.
+If so, model both, and the relationship.
+
+=== Pattern: unary relations as classifications
+
+When an instance needs a second classification, a relation with a single role can stand in for it.
+The relation acts as a stored cast: it gives the instance an extra type, with its own attributes and roles, without changing the instance's own type.
+The xref:{page-version}@guides::schema-modeling.adoc#_subtyping_vs_composition[schema modeling guide] calls these relations components.
+
+Here, a kabupaten and a mill, which share no supertype, can both be classified as high-risk:
+
+[,typeql]
+----
+#!test[schema]
+#{{
+include::{page-version}@learn-typedb::example$conceptual-modeling/full-schema.tql[tag=full]
+#}}
+#!test[schema]
+define
+  attribute risk_reason, value string;
+
+  relation high_risk,
+    relates subject @card(1),
+    owns risk_reason @card(1);
+
+  entity kabupaten, plays high_risk:subject @card(0..1);
+  entity mill, plays high_risk:subject @card(0..1);
+----
+
+[,typeql]
+----
+#!test[write]
+insert
+  $k isa kabupaten, has kabupaten_name "KUTAI TIMUR";
+  $m isa mill, has mill_name "EXAMPLE RISK MILL";
+  high_risk (subject: $k), has risk_reason "Deforestation hotspot";
+  high_risk (subject: $m), has risk_reason "Sources from a deforestation hotspot";
+----
+
+A query for the classification finds instances of both types (2 answers):
+
+[,typeql]
+----
+#!test[read, count=2]
+match
+  $h isa high_risk, links (subject: $x), has risk_reason $reason;
+  $x isa! $t;
+----
+
+Unlike a subtype, the classification can overlap with any other, and it can change: deleting the `high_risk` relation declassifies its subject and leaves the subject itself untouched.
 
 === Pattern: roles as relations
 
@@ -38,10 +86,6 @@ This records the history as well as the current state, and relations can own the
 
 [,typeql]
 ----
-#!test[schema]
-#{{
-include::{page-version}@learn-typedb::example$conceptual-modeling/full-schema.tql[tag=full]
-#}}
 #!test[schema]
 define
   attribute standard_name, sub name;
@@ -64,7 +108,7 @@ define
 A mill is _currently certified_ if it plays `certified` in a certification with no end date, or one that ends in the future.
 That condition is a query, or a function, rather than a type.
 
-TypeDB has no built-in temporal model, so validity periods like these are the way to record time-dependent facts.
+TypeDB has no built-in temporal model, so use validity periods like these to record time-dependent facts.
 
 == General integrity constraints
 
@@ -154,8 +198,8 @@ insert
 `relates refined_by as refiner` specializes the inherited `refiner` role for refined flows, with a cardinality of exactly one, so the insert is rejected at commit.
 
 The define only works in a database without existing `trade_flow` instances, since an abstract type cannot have instances of its own.
-The commodity is now partly redundant with the relation's type, and a flow of refined palm oil could still be recorded as a `crude_flow`, so the trade-off is not free.
-The model you choose depends on which constraint matters more.
+The commodity is now partly redundant with the relation's type, and a flow of refined palm oil could still be recorded as a `crude_flow`, so there is a trade-off.
+Choose the model based on which constraint matters more.
 
 == Closed world
 

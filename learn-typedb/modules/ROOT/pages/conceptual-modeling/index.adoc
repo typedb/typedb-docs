@@ -3,24 +3,22 @@
 :keywords: typedb, typeql, conceptual modeling, entity-relationship, er model, eer, orm, uml, ontology-driven conceptual modeling, n-ary relation, roles, cardinality, generalization, crash course, tutorial
 
 [.lead]
-_Implement a conceptual model of a real supply chain, without translating it into a poorer one_
+_Implement a conceptual model of a real supply chain directly in TypeDB_
 
 == Who this course is for
 
 This course is for people who already think in conceptual models: entity-relationship (ER and EER) diagrams, Object-Role Modeling (ORM), UML class diagrams, or ontology-driven approaches such as OntoUML.
 It assumes no knowledge of TypeDB.
 
-If you have designed a conceptual schema, you know what usually happens next.
-The model is mapped to tables or to a property graph, and part of its meaning is lost on the way:
+Usually, a conceptual model has to be mapped to tables or a property graph before it can be used, and some of its meaning is lost:
 
 * n-ary relationships are decomposed or turned into join tables,
 * roles survive only as column or edge names,
 * generalizations are flattened into nullable columns or extra tables,
 * participation and cardinality constraints end up in application code, triggers, or nowhere.
 
-TypeDB takes a different route.
-Its schema language, TypeQL, has entity, relation and attribute types as first-class constructs, with n-ary relations, named roles, generalization, and cardinality, key and value constraints.
-The conceptual schema you write is the schema the database runs: there is no logical design step in between, and the database enforces what the model says.
+TypeDB's schema language, TypeQL, has entity, relation and attribute types as first-class constructs, with n-ary relations, named roles, generalization, and cardinality, key and value constraints.
+The conceptual schema you write is the database schema: there is no separate logical design step, and the database enforces the model's constraints.
 
 [NOTE.blue]
 .⭐ TypeDB in one paragraph
@@ -36,7 +34,7 @@ Every write is checked against the model's constraints by the time a transaction
 You will model a real dataset: palm oil trade flows from East Kalimantan, Indonesia, to the European Union in 2022, taken from Trase's open supply-chain data.
 Each flow links a district of production, a mill, sometimes a refinery, an exporter, an importer, a destination country and a commodity, and carries a volume, a value and a deforestation exposure.
 
-Along the way you will:
+You will:
 
 . Map the constructs of the ER family onto TypeQL, and see where the mapping is exact, approximate, or missing.
 . Read elementary facts off the raw data, and build the model a few columns at a time.
@@ -45,11 +43,11 @@ Along the way you will:
 . Populate the model, and watch the database reject data and queries that contradict it.
 . Query at the conceptual level: by type, by role, polymorphically, and with derivation rules.
 . Query the model itself, and attach definitions to it.
-. Work around the things TypeDB cannot express, using patterns you can reuse.
+. Work around what TypeDB cannot express, with reusable patterns.
 
-== Assumptions, stated up front
+== Assumptions
 
-Three properties of TypeDB shape everything that follows, and are worth knowing before you start:
+Three TypeDB properties to understand before we start:
 
 * *Closed world.* The database contains the facts it has been told. A query for something that was not inserted returns no answers; nothing is inferred to exist.
 * *Schema first.* Every instance belongs to a type declared in the schema, and every attribute, role and relation it participates in must be allowed by that schema.
@@ -62,7 +60,7 @@ Three properties of TypeDB shape everything that follows, and are worth knowing 
 ====
 Each modeling chapter follows the same loop: a requirement read off the data, the constraints stated in plain sentences, an ER diagram in Chen notation, and the TypeQL that implements it.
 Try writing the TypeQL yourself before reading it.
-Every code block is real TypeQL that you can run in TypeDB Studio, in the order shown.
+Every code block can be run in TypeDB Studio, in the order shown.
 If you skip ahead, each chapter starts with a collapsible block containing the schema so far.
 ====
 
@@ -85,7 +83,7 @@ Run TypeDB and connect TypeDB Studio.
 The mapping from ER, ORM, UML and UFO constructs to TypeQL.
 ****
 
-.xref:{page-version}@learn-typedb::conceptual-modeling/02-universe-of-discourse.adoc[]
+.xref:{page-version}@learn-typedb::conceptual-modeling/02-about-the-dataset.adoc[]
 [.clickable]
 ****
 The dataset, and the elementary facts in one row.
