@@ -1,0 +1,255 @@
+= Chapter Nine: Limits and patterns
+:description: What a TypeDB schema cannot express, such as overlapping or dynamic classification and general integrity constraints, and the patterns to use instead.
+:keywords: typedb, typeql, conceptual modeling, limitations, multiple classification, dynamic classification, phases, roles, integrity constraints, invariants, relation subtyping, temporal
+:test-typeql: linear
+
+[.lead]
+_What TypeDB cannot express, and how to model around it_
+
+TIP: If you are starting here, run the full schema and the data from xref:{page-version}@learn-typedb::conceptual-modeling/06-population-and-conformance.adoc[Chapter Six] in an empty database.
+
+The mapping in xref:{page-version}@learn-typedb::conceptual-modeling/01-from-er-to-typeql.adoc[Chapter One] marked some constructs as missing.
+This chapter takes them in turn, with the pattern to use instead of each.
+
+== One type per instance
+
+Every instance has exactly one most-specific type, fixed when it is created.
+Two consequences:
+
+* *No overlapping or multiple classification.* Nothing can be both a mill and a refinery, or a member of two unrelated types.
+* *No dynamic classification.* An instance cannot become another type later. There are no phases in UFO's sense, such as an _active_ and a _closed_ mill, implemented as types.
+
+=== Pattern: separate instances, related
+
+The data contained one case that looks like multiple classification: `LDC EAST INDONESIA` is a refinery and an exporting company.
+Chapter Four modeled it as two instances, a refinery and a company, linked by ownership.
+In general, when one name covers two kinds of thing, check whether it refers to two things with a relationship between them.
+If so, model both, and the relationship.
+
+=== Pattern: unary relations as classifications
+
+When an instance needs a second classification, a relation with a single role can stand in for it.
+This is sometimes called a stored cast: the relation gives the instance an extra classification, with its own attributes and roles, without changing its type.
+The xref:{page-version}@guides::schema-modeling.adoc#_subtyping_vs_composition[schema modeling guide] calls these relations components.
+
+Here, a kabupaten and a mill, which share no supertype, can both be classified as high-risk:
+
+[,typeql]
+----
+#!test[schema]
+#{{
+include::{page-version}@learn-typedb::example$conceptual-modeling/full-schema.tql[tag=full]
+#}}
+#!test[schema]
+define
+  attribute risk_reason, value string;
+
+  relation high_risk,
+    relates subject @card(1),
+    owns risk_reason @card(1);
+
+  entity kabupaten, plays high_risk:subject @card(0..1);
+  entity mill, plays high_risk:subject @card(0..1);
+----
+
+[,typeql]
+----
+#!test[write]
+insert
+  $k isa kabupaten, has kabupaten_name "KUTAI BARAT";
+  $m isa mill, has mill_name "EXAMPLE RISK MILL";
+  high_risk (subject: $k), has risk_reason "Deforestation hotspot";
+  high_risk (subject: $m), has risk_reason "Sources from a deforestation hotspot";
+----
+
+A query for the classification finds instances of both types (2 answers):
+
+[,typeql]
+----
+#!test[read, count=2]
+match
+  $h isa high_risk, links (subject: $x), has risk_reason $reason;
+  $x isa! $t;
+----
+
+Unlike a subtype, the classification can overlap with any other, and it can change: deleting the `high_risk` relation declassifies its subject and leaves the subject itself untouched.
+
+=== Pattern: roles as relations
+
+Anti-rigid types whose membership depends on what an instance does, such as _exporter_, are roles in relations.
+xref:{page-version}@learn-typedb::conceptual-modeling/07-querying.adoc#_derivation_rules[Chapter Seven] showed how to derive the set of exporters with a function when a query needs it as a type.
+
+=== Pattern: phases as attributes
+
+A phase depends on an instance's own state, such as a mill being active or closed.
+Model it as an attribute:
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute operating_status, value string @values("ACTIVE", "CLOSED");
+  entity mill, owns operating_status;
+----
+
+Active mills are then a pattern on the attribute, `has operating_status "ACTIVE"`, not a type.
+
+=== Pattern: relations with validity periods
+
+When the history matters, record a time-dependent fact as a relation that owns its dates.
+For example, a mill being certified under a sustainability scheme is a role the mill plays in a certification, valid for a period:
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute standard_name, sub name;
+  attribute valid_from, value date;
+  attribute valid_until, value date;
+
+  entity certification_scheme,
+    owns standard_name @key,
+    plays certification:scheme;
+
+  relation certification,
+    relates certified @card(1),
+    relates scheme @card(1),
+    owns valid_from @card(1),
+    owns valid_until @card(0..1);
+
+  entity mill, plays certification:certified;
+----
+
+A mill is _currently certified_ if it plays `certified` in a certification with no end date, or one that ends in the future.
+That condition is a query or a function.
+
+TypeDB has no built-in temporal model, so use validity periods like these to record time-dependent facts, including the history of a phase.
+
+== General integrity constraints
+
+TypeDB's schema constraints each involve a single type, role or ownership: a cardinality, a key, a value set.
+Constraints that relate several facts to each other cannot be declared:
+
+* comparisons between values, such as `TAX < SALARY`,
+* conditional constraints, such as "a flow of refined palm oil has a refiner",
+* uniqueness over a combination of roles, such as "no two ownerships with the same owner and owned",
+* constraints along a path, such as "a flow's destination is not the country it was produced in".
+
+=== Pattern: invariants as queries
+
+Each of these constraints can be written as a query for its violations, which should return zero.
+Run the queries after loading data, or before committing a transaction that could break them.
+
+Refined palm oil without a refiner:
+
+[,typeql]
+----
+#!test[read, count=1]
+match
+  $tf isa trade_flow, links (commodity: $c);
+  $c has commodity_name "REFINED PALM OIL";
+  not { $tf links (refiner: $r); };
+reduce $violations = count;
+----
+
+Two ownerships with the same owner and owned:
+
+[,typeql]
+----
+#!test[read, count=1]
+match
+  $o1 isa ownership, links (owner: $a, owned: $b);
+  $o2 isa ownership, links (owner: $a, owned: $b);
+  not { $o1 is $o2; };
+reduce $violations = count;
+----
+
+A flow whose destination is its country of production:
+
+[,typeql]
+----
+#!test[read, count=1]
+match
+  $tf isa trade_flow, links (origin: $k, destination: $d);
+  containment (child: $k, parent: $p);
+  containment (child: $p, parent: $d);
+reduce $violations = count;
+----
+
+Each returns `$violations` of 0 on this data.
+Stored as functions with `define fun`, invariants like these become part of the model, and any application can call them.
+
+=== Pattern: turn a conditional constraint into a structural one
+
+Some conditional constraints disappear when the condition becomes a type.
+"A refined flow has exactly one refiner, and a crude flow has none" is a constraint on two kinds of flow, so model the two kinds, and give the refiner role only to refined flows.
+
+Create a second database and run the full schema from xref:{page-version}@learn-typedb::conceptual-modeling/06-population-and-conformance.adoc[Chapter Six] in it, without the data.
+Then remove the refiner role from `trade_flow`:
+
+[,typeql]
+----
+#!test[schema]
+undefine
+  plays trade_flow:refiner from refinery;
+  relates refiner from trade_flow;
+----
+
+Then make `trade_flow` abstract, with two subtypes:
+
+[,typeql]
+----
+#!test[schema]
+define
+  relation trade_flow @abstract;
+  relation crude_flow sub trade_flow;
+  relation refined_flow sub trade_flow,
+    relates refiner @card(1);
+  entity refinery, plays refined_flow:refiner;
+----
+
+A crude flow with a refiner is now rejected before it runs, because `crude_flow` has no refiner role:
+
+[,typeql]
+----
+#!test[write, fail_at=runtime]
+insert
+  $k isa kabupaten, has kabupaten_name "BERAU";
+  $m isa mill, has mill_name "EXAMPLE MILL";
+  $r isa refinery, has refinery_name "EXAMPLE REFINERY";
+  $e isa company, has company_name "EXAMPLE EXPORTER";
+  $i isa company, has company_name "EXAMPLE IMPORTER";
+  $d isa country, has country_name "SPAIN";
+  $co isa commodity, has commodity_name "PALM OIL";
+  crude_flow (origin: $k, mill: $m, refiner: $r, exporter: $e, importer: $i, destination: $d, commodity: $co),
+    has volume_tonnes 1.0, has deforestation_ha 0.0, has usd 100.0dec;
+----
+
+A refined flow without a refiner is rejected at commit, because the role is required:
+
+[,typeql]
+----
+#!test[write, fail_at=commit]
+insert
+  $k isa kabupaten, has kabupaten_name "BERAU";
+  $m isa mill, has mill_name "EXAMPLE MILL";
+  $e isa company, has company_name "EXAMPLE EXPORTER";
+  $i isa company, has company_name "EXAMPLE IMPORTER";
+  $d isa country, has country_name "SPAIN";
+  $co isa commodity, has commodity_name "REFINED PALM OIL";
+  refined_flow (origin: $k, mill: $m, exporter: $e, importer: $i, destination: $d, commodity: $co),
+    has volume_tonnes 1.0, has deforestation_ha 0.0, has usd 100.0dec;
+----
+
+These changes only work in a database without existing `trade_flow` instances, since an abstract type cannot have instances of its own.
+The commodity is now partly redundant with the relation's type, and a flow of refined palm oil could still be recorded as a `crude_flow`, so there is a trade-off.
+Choose the model based on which constraint matters more.
+
+== Closed world
+
+A TypeDB database contains the facts it has been told, and a query's answers are drawn from those facts alone.
+`not { ... }` means "not recorded", which is the same as "false" only if the data is complete.
+In this dataset, a flow with no refiner was recorded as crude, so the two coincide.
+For data you know to be incomplete, model unknown values explicitly, for example with an attribute that records the absence, rather than relying on negation.
+
+Next: xref:{page-version}@learn-typedb::conceptual-modeling/10-epilogue.adoc[].

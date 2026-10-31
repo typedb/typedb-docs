@@ -1,0 +1,125 @@
+= Chapter Eight: The model as data
+:description: Query a TypeDB schema with the same language as its data, attach definitions to types and roles, and generate a starting schema from LinkML.
+:keywords: typedb, typeql, conceptual modeling, schema queries, metamodel, documentation, doc annotation, schema evolution, linkml
+:test-typeql: linear
+
+[.lead]
+_Query the model, document it, and evolve it_
+
+TIP: If you are starting here, run the full schema and the data from xref:{page-version}@learn-typedb::conceptual-modeling/06-population-and-conformance.adoc[Chapter Six] in an empty database.
+
+== Querying the schema
+
+In TypeQL, variables can stand for types as well as for data, and the schema statements `sub`, `owns`, `relates` and `plays` can appear in `match` like any other pattern.
+The schema is queryable with the same language as the data.
+
+Which types can play which roles in a trade flow (7 answers)?
+
+[,typeql]
+----
+#!test[schema]
+#{{
+include::{page-version}@learn-typedb::example$conceptual-modeling/full-schema.tql[tag=full]
+#}}
+#!test[write]
+#{{
+include::{page-version}@learn-typedb::example$conceptual-modeling/data.tql[tag=data]
+#}}
+#!test[read, count=7]
+match
+  trade_flow relates $role;
+  $t plays $role;
+----
+
+Which legal entity types cannot be owners (4 answers)?
+
+[,typeql]
+----
+#!test[read, count=4]
+match
+  $l sub legal_entity;
+  not { $l plays ownership:owner; };
+----
+
+The answers are `legal_entity`, `facility`, `mill` and `refinery`.
+`sub` is reflexive, so `legal_entity` is included as a subtype of itself.
+
+A single pattern can mix data and types.
+Which instances have an attribute containing the text "OIL", and which trade flow roles can their type play (6 answers)?
+
+[,typeql]
+----
+#!test[read, count=6]
+match
+  $x isa! $t;
+  $x has $a;
+  $a contains "OIL";
+  $t plays $role;
+  trade_flow relates $role;
+----
+
+The answers include the two commodities, with the commodity role, and companies whose names contain "OIL", with the exporter and importer roles their type allows.
+Tools, validation scripts and documentation can all read the model with TypeQL.
+
+== Definitions in the model
+
+TypeQL's `@doc` annotation keeps definitions in the schema.
+It attaches a definition to a type, a function, or an `owns`, `plays`, `relates` or `sub` declaration:
+
+[,typeql]
+----
+#!test[schema]
+define
+  relation trade_flow @doc("A modeled flow of palm oil from a district of production, through a mill and optionally a refinery, from an exporter to an importer in a country of first import."),
+    relates refiner @doc("Absent for crude palm oil, which is exported unrefined.");
+  attribute deforestation_ha @doc("10-year deforestation exposure attributed to the flow, in hectares.");
+----
+
+The definitions are retrieved with built-in functions, here in a `fetch` that returns JSON (7 answers):
+
+[,typeql]
+----
+#!test[read, count=7]
+match
+  trade_flow relates $role;
+  $t plays $role;
+fetch {
+  "role": label($role),
+  "player": label($t),
+  "definition": get_relates_doc(trade_flow, $role),
+};
+----
+
+Roles without a definition return an empty string.
+See xref:{page-version}@typeql-reference::annotations/doc.adoc[`@doc`] for the full set of documentation functions, and xref:{page-version}@typeql-reference::annotations/meta.adoc[`@meta`] for key-value metadata.
+
+== Evolving the model
+
+Schema queries change the model in place:
+
+* `define` adds types, capabilities and annotations, or extends existing types.
+* `redefine` replaces an existing definition, such as a cardinality.
+* `undefine` removes them.
+
+Each change is validated against the data already in the database, as xref:{page-version}@learn-typedb::conceptual-modeling/06-population-and-conformance.adoc#_changing_the_model_under_existing_data[Chapter Six] showed, so the data always conforms to the current model.
+To see the whole model as a single `define` query, use the *Schema* page in Studio, or `database schema <name>` in TypeDB Console.
+
+== From LinkML
+
+If your model already lives in https://linkml.io[LinkML], its TypeDB generator, https://linkml.io/linkml/generators/typedb.html[`gen-typedb`], produces a TypeQL schema to start from:
+
+[,bash]
+----
+gen-typedb my_schema.yaml > schema.tql
+----
+
+The generator maps classes to entity types, `is_a` to `sub`, slots with scalar ranges to owned attributes, slots whose range is a class to relations, identifiers to `@key`, and required and multivalued attribute slots to `@card`.
+A class marked `represents_relationship: true` becomes a relation type with one role per class-ranged slot, so an n-ary relationship with attributes, such as the trade flow, can be generated too.
+
+Treat the output as a first draft, and check the constraints:
+
+* Enumerations are recorded as comments, not as `@values` constraints.
+* Required role slots of a relationship class do not become `relates ... @card(1)`, so mandatory roles come out optional.
+* Names are lowercased, and underscores become hyphens: `TradeFlow` becomes `tradeflow`, and `company_name` becomes `company-name`.
+
+Next: xref:{page-version}@learn-typedb::conceptual-modeling/09-limits-and-patterns.adoc[].

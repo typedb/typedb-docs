@@ -1,0 +1,166 @@
+= Chapter Four: Modeling decisions
+:description: Choose between alternative conceptual models for companies, facilities, ownership and commodities, and implement them in TypeQL.
+:keywords: typedb, typeql, conceptual modeling, modeling decisions, subtype, role, kind, ownership, enumeration, values, abstract
+:test-typeql: linear
+
+[.lead]
+_Companies, facilities and commodities: choosing between alternatives_
+
+.Schema so far
+[%collapsible]
+====
+If you are starting here, run these two queries in an empty database.
+
+[,typeql]
+----
+#!test[schema]
+include::{page-version}@learn-typedb::example$conceptual-modeling/schema.tql[tag=places]
+----
+
+[,typeql]
+----
+#!test[schema]
+include::{page-version}@learn-typedb::example$conceptual-modeling/schema.tql[tag=containment]
+----
+====
+
+== Harder columns
+
+The next six columns are harder.
+Here are a few rows:
+
+[cols="1,1,1,1,1,1",options="header"]
+|===
+| mill | mill_group | refinery | refinery_group | exporter | exporter_group
+| PUCUK JAYA | CHELLAM PLANTATIONS | NOT REFINED | NOT REFINED | SUMBER HIJAU UTAMA | ROYAL GOLDEN EAGLE
+| TAPIAN NADENGGAN (JAK LUAY) | SINAR MAS | SMART TBK (TARJUN REFINERY & KERNEL CRUSHING PLANT) | SINAR MAS | SINAR MAS AGRO RESOURCES AND TECHNOLOGY | SINAR MAS
+| DWIWIRA LESTARI JAYA | TRIPUTRA AGRO PERSADA | LDC EAST INDONESIA | LOUIS DREYFUS | LDC EAST INDONESIA | LOUIS DREYFUS
+|===
+
+The same names turn up in different columns: `SINAR MAS` is a mill group, a refinery group and an exporter group, and `LDC EAST INDONESIA` is both a refinery and an exporter.
+Are a mill and a mill group different kinds of thing?
+Is an exporter a kind of thing at all?
+
+== Option 1: one type per column
+
+Taking the header literally gives six entity types.
+
+image::conceptual-modeling-option-1.svg["ER diagram: six unrelated entity types mill, mill_group, refinery, refinery_group, exporter and exporter_group", role=framed]
+
+[,typeql]
+----
+include::{page-version}@learn-typedb::example$conceptual-modeling/schema.tql[tag=option_1]
+----
+
+This model is easy to load, but it records the same company several times, once per column it appears in, with nothing connecting the copies.
+It also treats being an exporter as a kind of thing, when it is something a company does.
+Don't run it; the rest of the course uses option 2.
+
+== Option 2: companies and facilities
+
+The dataset's documentation says that each `*_group` column "groups the [corresponding] column into parent companies where applicable".
+So the data describes only two kinds of thing, linked by ownership:
+
+* *Facilities*, which are mills or refineries, each owned by at most one company.
+* *Companies*, which own facilities and other companies.
+
+_Exporter_ and _importer_ are not kinds of company.
+They are roles a company plays in a trade flow, and the same company can play either, or both, in different flows.
+In UFO's terms, a company is a kind, and exporter is a role: anti-rigid, because a company can stop exporting without ceasing to be a company.
+TypeDB types are rigid, so roles of this kind are modeled as roles in relations, not as subtypes.
+
+image::conceptual-modeling-option-2.svg["ER diagram: abstract legal_entity generalizes abstract facility and company; facility generalizes mill and refinery; ownership relates a company as owner to a facility as owned", role=framed]
+
+Dashed boxes are abstract types.
+`legal_entity` generalizes companies and facilities, and `facility` generalizes mills and refineries.
+The dashed line is added in the next section.
+
+[,typeql]
+----
+#!test[schema]
+include::{page-version}@learn-typedb::example$conceptual-modeling/schema.tql[tag=companies]
+----
+
+* A two-level hierarchy: `mill` and `refinery` are kinds of `facility`, and facilities and companies are kinds of `legal_entity`.
+* `facility plays ownership:owned`: a role played by a supertype is inherited, so mills and refineries can both be owned.
+* Companies are identified by name. Mills and refineries own a name but have no key: Trase identifies facilities by its own IDs, which this excerpt drops, and facility names are not guaranteed to be unique.
+
+[NOTE.yellow]
+.Subtype, role or attribute?
+====
+This choice comes up in most models. Three questions help:
+
+. *Does it have its own identity and properties?* If not, it is an attribute. `product_type` has two values and nothing else, which makes it a candidate for an attribute (see <<commodities>>).
+. *Is membership permanent?* If an instance belongs for its whole existence, as a mill is always a mill, a subtype fits. If membership depends on what the instance does, as with exporters, model it as a role in a relation.
+. *Does the distinction add properties or constraints?* A subtype is useful when it owns, plays or relates something its siblings don't. Otherwise an attribute may do.
+====
+
+== Companies owning companies
+
+In some rows, `LDC EAST INDONESIA` is both the refinery and the exporter, and `LOUIS DREYFUS` is the group of both.
+We interpret this as: the company LDC East Indonesia owns the refinery of the same name and handles its exports, and Louis Dreyfus is its parent company.
+
+So companies, too, can be owned:
+
+[,typeql]
+----
+#!test[schema]
+include::{page-version}@learn-typedb::example$conceptual-modeling/schema.tql[tag=company_ownership]
+----
+
+Ownership now forms a hierarchy of any depth: a parent company owns a company, which owns a refinery.
+xref:{page-version}@learn-typedb::conceptual-modeling/07-querying.adoc[Chapter Seven] queries it to any depth with a recursive function.
+
+[#commodities]
+== Commodities
+
+The data has two commodities: `PALM OIL` and `REFINED PALM OIL`.
+There are three reasonable ways to model them:
+
+[cols="1,2,2",options="header"]
+|===
+| Option | Model | Trade-off
+
+| a
+| One entity type `commodity`, with a name restricted to the two values
+| Simplest. Adding a commodity means changing the value set.
+
+| b
+| Two independent entity types, `palm_oil` and `refined_palm_oil`
+| Every role a commodity plays must be declared twice, and queries over all commodities must name both types.
+
+| c
+| An abstract `commodity` with two subtypes
+| Queries over all commodities stay simple. Useful when the subtypes own or play different things.
+|===
+
+Option a is enough for now:
+
+[,typeql]
+----
+#!test[schema]
+include::{page-version}@learn-typedb::example$conceptual-modeling/schema.tql[tag=commodities]
+----
+
+`@values` restricts an attribute type to a fixed set of values, like an enumeration.
+Combined with `@key`, it also means there can be at most two commodities: each needs a distinct name, and only two names exist.
+
+== Challenge
+
+Implement option c with the same guarantee: at most one instance of each commodity subtype.
+
+.Answer
+[%collapsible]
+====
+Put the value restriction on each subtype's ownership, rather than on the attribute type.
+Run this only in a separate, empty database with the places schema, since it conflicts with option a:
+
+[,typeql]
+----
+include::{page-version}@learn-typedb::example$conceptual-modeling/schema.tql[tag=commodities_subtypes]
+----
+
+Each subtype can now only own its own name, and the key makes that name unique, so each subtype has at most one instance.
+====
+
+Next: xref:{page-version}@learn-typedb::conceptual-modeling/05-n-ary-relations.adoc[].

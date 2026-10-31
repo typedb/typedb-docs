@@ -1,0 +1,102 @@
+= Chapter Two: About the dataset
+:description: The palm oil supply chain dataset used in the conceptual modeling crash course, and the elementary facts in one row.
+:keywords: typedb, conceptual modeling, dataset, trase, palm oil, supply chain, elementary facts, universe of discourse
+
+[.lead]
+_A real supply chain dataset, and the facts in one row_
+
+== The data
+
+Trase is a nonprofit initiative that maps the supply chains of commodities linked to deforestation, and publishes the results as open data.
+This course uses an excerpt of its Indonesian palm oil supply chain dataset:
+
+[quote]
+Benedict, J. J., Biddle, H., Gollnow, F., Heilmayr, R., Mueller, C., Ribeiro, V., & Suavet, C. (2024). _Indonesia palm oil supply chain (2018–2022)_ (Version 1.2) [Data set]. Trase. https://doi.org/10.48650/X83N-7M36. Licensed under CC BY 4.0.
+
+One row of the dataset is one _trade flow_: palm oil grown in a district (a _kabupaten_), processed at a mill, sometimes refined at a refinery, exported by one company and imported by another into a country of first import.
+
+The excerpt contains:
+
+[cols="1,3"]
+|===
+| 81 | trade flows: 71 of refined palm oil and 10 of crude palm oil
+| 41 | mills
+| 6 | refineries
+| 37 | companies, as exporters, importers and parent companies
+| 6 | districts of production, all in the province of East Kalimantan
+| 6 | EU countries of first import
+| 5,505 ha | total 10-year deforestation exposure
+|===
+
+[NOTE.yellow]
+.How the excerpt was made
+====
+* *Rows*: from about 1.7 million rows, only flows from 2022, from East Kalimantan to the EU, with every actor known; then 81 of those, chosen so that every modeling case in this course appears. No values were invented or edited.
+* *Columns*: 16 of about 35. Dropped: the year, Trase identifiers and country codes, the port of export, economic blocs, sustainability scores and commitments, and emissions metrics.
+* *Caveat*: Trase flows are modeled from customs, production and facility data. They are estimates, not observed shipments.
+====
+
+You can download the excerpt as a CSV file: xref:attachment$palm_kaltim_eu_2022_demo.csv[palm_kaltim_eu_2022_demo.csv].
+
+== The columns
+
+[cols="1,3",options="header"]
+|===
+| Group | Columns
+
+| Places
+| `country_of_production`, `province_of_production`, `kabupaten_of_production`, `country_of_first_import`
+
+| Companies and facilities
+| `mill`, `refinery`, `exporter`, `importer`, each with a `*_group` column naming its parent company where there is one
+
+| The flow itself
+| `product_type`, `volume` (tonnes), `fob` (value in US dollars), `palm_oil_deforestation_10_year_total_exposure` (hectares)
+|===
+
+== One row, as elementary facts
+
+Here is one row, transposed, with the numbers rounded:
+
+[cols="2,3",options="header"]
+|===
+| Column | Value
+| country_of_production | INDONESIA
+| province_of_production | KALIMANTAN TIMUR
+| kabupaten_of_production | BERAU
+| mill | JABONTARA EKA KARSA (JABON)
+| mill_group | KUALA LUMPUR KEPONG (KLK)
+| refinery | LDC EAST INDONESIA
+| refinery_group | LOUIS DREYFUS
+| exporter | LDC EAST INDONESIA
+| exporter_group | LOUIS DREYFUS
+| importer | LOUIS DREYFUS
+| importer_group | LOUIS DREYFUS
+| country_of_first_import | SPAIN
+| product_type | REFINED PALM OIL
+| volume | 3750.036
+| fob | 1311345.23
+| palm_oil_deforestation_10_year_total_exposure | 916.7547
+|===
+
+Before modeling, let's list the facts this row states:
+
+. The kabupaten Berau lies in the province Kalimantan Timur.
+. The province Kalimantan Timur lies in the country Indonesia.
+. The mill Jabontara Eka Karsa belongs to the group Kuala Lumpur Kepong.
+. The refinery LDC East Indonesia belongs to the group Louis Dreyfus.
+. The exporter LDC East Indonesia belongs to the group Louis Dreyfus.
+. Palm oil from Berau, processed at the mill Jabontara Eka Karsa and refined at the refinery LDC East Indonesia, was exported by LDC East Indonesia and imported by Louis Dreyfus into Spain as refined palm oil.
+. That flow had a volume of 3,750.036 tonnes, a value of 1,311,345.23 US dollars, and a deforestation exposure of 916.7547 hectares.
+
+Most of these facts are binary.
+The sixth is not: it relates seven things at once, and it cannot be split into binary facts without losing information.
+Knowing which mill supplied which refinery, and which refinery supplied which exporter, does not tell you which mill's oil reached which importer.
+xref:{page-version}@learn-typedb::conceptual-modeling/05-n-ary-relations.adoc[Chapter Five] shows what is lost if you try.
+
+Some facts need interpretation.
+`LDC EAST INDONESIA` appears as both the refinery and the exporter, so is it one thing or two?
+And `NOT REFINED`, used in other rows, is not a refinery at all, but the absence of one.
+xref:{page-version}@learn-typedb::conceptual-modeling/04-modeling-decisions.adoc[Chapter Four] covers these decisions.
+
+Next: xref:{page-version}@learn-typedb::conceptual-modeling/03-entity-types-and-generalization.adoc[].

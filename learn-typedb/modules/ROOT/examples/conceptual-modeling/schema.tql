@@ -1,0 +1,146 @@
+# Schema snippets for the "Conceptual modeling" crash course, in the order the course defines them.
+# Each tagged region is one define query. full-schema.tql is the same model as a single query.
+
+# tag::places[]
+define
+
+attribute name, value string;
+
+attribute country_name, sub name;
+attribute province_name, sub name;
+attribute kabupaten_name, sub name;
+
+entity place @abstract;
+
+entity country,
+  sub place,
+  owns country_name @key;
+
+entity province,
+  sub place,
+  owns province_name @key;
+
+entity kabupaten,
+  sub place,
+  owns kabupaten_name @key;
+# end::places[]
+
+# tag::containment[]
+define
+
+relation containment,
+  relates parent @card(1),
+  relates child @card(1);
+
+entity country,
+  plays containment:parent;
+entity province,
+  plays containment:child @card(0..1),   # at most one parent
+  plays containment:parent;
+entity kabupaten,
+  plays containment:child @card(0..1);   # at most one parent
+# end::containment[]
+
+# tag::option_1[]
+define
+
+entity mill;
+entity mill_group;
+entity refinery;
+entity refinery_group;
+entity exporter;
+entity exporter_group;
+# end::option_1[]
+
+# tag::companies[]
+define
+
+attribute facility_name, sub name;
+attribute mill_name, sub facility_name;
+attribute refinery_name, sub facility_name;
+attribute company_name, sub name;
+
+entity legal_entity @abstract;
+
+entity facility @abstract,
+  sub legal_entity,
+  plays ownership:owned @card(0..1);   # at most one owner
+entity mill,
+  sub facility,
+  owns mill_name;
+entity refinery,
+  sub facility,
+  owns refinery_name;
+
+entity company,
+  sub legal_entity,
+  owns company_name @key,
+  plays ownership:owner;
+
+relation ownership,
+  relates owner @card(1),
+  relates owned @card(1);
+# end::companies[]
+
+# tag::company_ownership[]
+define
+
+entity company,
+  plays ownership:owned @card(0..1);   # a company has at most one parent company
+# end::company_ownership[]
+
+# tag::commodities[]
+define
+
+attribute commodity_name,
+  sub name,
+  value string @values("PALM OIL", "REFINED PALM OIL");
+
+entity commodity,
+  owns commodity_name @key;
+# end::commodities[]
+
+# tag::commodities_subtypes[]
+define
+
+attribute commodity_name, sub name;
+
+entity commodity @abstract;
+
+entity palm_oil,
+  sub commodity,
+  owns commodity_name @key @values("PALM OIL");
+
+entity refined_palm_oil,
+  sub commodity,
+  owns commodity_name @key @values("REFINED PALM OIL");
+# end::commodities_subtypes[]
+
+# tag::trade_flow[]
+define
+
+attribute volume_tonnes, value double;
+attribute deforestation_ha, value double;
+attribute usd, value decimal;
+
+relation trade_flow,
+  relates origin @card(1),
+  relates mill @card(1),
+  relates refiner @card(0..1),   # optional
+  relates exporter @card(1),
+  relates importer @card(1),
+  relates destination @card(1),
+  relates commodity @card(1),
+  owns volume_tonnes @card(1),
+  owns deforestation_ha @card(1),
+  owns usd @card(1);
+
+entity kabupaten, plays trade_flow:origin;
+entity mill, plays trade_flow:mill;
+entity refinery, plays trade_flow:refiner;
+entity company,
+  plays trade_flow:exporter,
+  plays trade_flow:importer;
+entity country, plays trade_flow:destination;
+entity commodity, plays trade_flow:commodity;
+# end::trade_flow[]
