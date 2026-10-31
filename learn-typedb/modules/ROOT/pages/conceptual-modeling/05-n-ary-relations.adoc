@@ -52,7 +52,7 @@ Stated as constraints:
 * Each trade flow has exactly one volume, one deforestation exposure and one value.
 * A company can be the exporter or the importer of a trade flow.
 
-image::conceptual-modeling-trade-flow.svg[ER diagram: trade_flow relation with roles origin (kabupaten), mill (mill), optional refiner (refinery), exporter and importer (company), destination (country) and commodity (commodity), and attributes volume_tonnes, deforestation_ha and usd, role=framed]
+image::conceptual-modeling-trade-flow.svg["ER diagram: trade_flow relation with roles origin (kabupaten), mill (mill), optional refiner (refinery), exporter and importer (company), destination (country) and commodity (commodity), and attributes volume_tonnes, deforestation_ha and usd", role=framed]
 
 One relationship of degree seven.
 The dashed line marks the optional role, and `company` participates twice, in two different roles.

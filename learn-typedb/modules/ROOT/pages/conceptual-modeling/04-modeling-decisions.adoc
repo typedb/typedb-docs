@@ -45,7 +45,7 @@ Is an exporter a kind of thing at all?
 
 Taking the header literally gives six entity types.
 
-image::conceptual-modeling-option-1.svg[ER diagram: six unrelated entity types mill, mill_group, refinery, refinery_group, exporter and exporter_group, role=framed]
+image::conceptual-modeling-option-1.svg["ER diagram: six unrelated entity types mill, mill_group, refinery, refinery_group, exporter and exporter_group", role=framed]
 
 [,typeql]
 ----
@@ -69,7 +69,7 @@ They are roles a company plays in a trade flow, and the same company can play ei
 In UFO's terms, a company is a kind, and exporter is a role: anti-rigid, because a company can stop exporting without ceasing to be a company.
 TypeDB types are rigid, so roles of this kind are modeled as roles in relations, not as subtypes.
 
-image::conceptual-modeling-option-2.svg[ER diagram: abstract legal_entity generalizes abstract facility and company; facility generalizes mill and refinery; ownership relates a company as owner to a facility as owned, role=framed]
+image::conceptual-modeling-option-2.svg["ER diagram: abstract legal_entity generalizes abstract facility and company; facility generalizes mill and refinery; ownership relates a company as owner to a facility as owned", role=framed]
 
 Dashed boxes are abstract types.
 `legal_entity` generalizes companies and facilities, and `facility` generalizes mills and refineries.

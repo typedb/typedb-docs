@@ -14,7 +14,7 @@ Stated as facts:
 * Each country is identified by its name. The same holds for provinces and kabupaten.
 * Countries, provinces and kabupaten are all places, and every place is one of the three.
 
-image::conceptual-modeling-places.svg[ER diagram: abstract entity place with subtypes country, province and kabupaten, each with a key name attribute, role=framed]
+image::conceptual-modeling-places.svg["ER diagram: abstract entity place with subtypes country, province and kabupaten, each with a key name attribute", role=framed]
 
 Three kinds of place, each identified by its name (underlined), under an abstract supertype `place` (dashed).
 
@@ -69,7 +69,7 @@ Stated as facts:
 * A province can be a parent, and is the child of at most one place.
 * A kabupaten is the child of at most one place.
 
-image::conceptual-modeling-places-containment.svg[ER diagram: containment relation drawn between country and province, and between province and kabupaten, role=framed]
+image::conceptual-modeling-places-containment.svg["ER diagram: containment relation drawn between country and province, and between province and kabupaten", role=framed]
 
 One relation type, `containment`, drawn once for each pair of types it connects.
 A province plays both of its roles.
