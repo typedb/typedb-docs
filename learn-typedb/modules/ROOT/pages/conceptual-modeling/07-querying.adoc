@@ -169,7 +169,7 @@ match
 Because the parameter is typed `legal_entity`, the same function works for facilities and companies.
 
 A function is a derivation rule in the sense of conceptual schema-centric development: a derived relationship, here _ultimately owned by_, defined by a rule over base facts and evaluated when queried.
-To make it part of the model rather than of one query, store it in the schema with `define fun`:
+To store it in the schema, use `define fun`:
 
 [,typeql]
 ----
@@ -201,7 +201,8 @@ match
 .Derived types
 ====
 A function can also derive a type.
-"An exporter is a company that exports at least one trade flow" is a derived subtype in ER terms, and in TypeQL a function returning the companies that play the role:
+In EER terms, "an exporter is a company that exports at least one trade flow" defines a predicate-defined subclass.
+In TypeQL, it is a function that returns the companies playing the role:
 
 [,typeql]
 ----

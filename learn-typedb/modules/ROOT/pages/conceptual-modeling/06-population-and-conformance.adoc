@@ -53,7 +53,7 @@ TypeDB checks the model at three points:
 | When | What is checked
 
 | Before a query runs
-| The query is type-checked against the schema. A query that no data could ever satisfy is rejected.
+| The query is type-checked against the schema. A query whose types can't fit the schema is rejected.
 
 | When data is written
 | Value constraints (`@values`, `@range`, `@regex`) and uniqueness (`@key`, `@unique`).
@@ -197,5 +197,6 @@ redefine
 `redefine` replaces an existing definition, here the cardinality `@card(0..1)`.
 The query itself is accepted, but the commit is not: ten flows, the crude ones, have no refiner, and the new model would make them invalid.
 A change that the data already conforms to, such as declaring that every mill supplies at least one flow, commits normally.
+Don't run that one, though: Chapter Nine adds a mill without flows.
 
 Next: xref:{page-version}@learn-typedb::conceptual-modeling/07-querying.adoc[].

@@ -18,14 +18,15 @@ Usually, a conceptual model has to be mapped to tables or a property graph befor
 * participation and cardinality constraints end up in application code, triggers, or nowhere.
 
 TypeDB's schema language, TypeQL, has entity, relation and attribute types as first-class constructs, with n-ary relations, named roles, generalization, and cardinality, key and value constraints.
-The conceptual schema you write is the database schema: there is no separate logical design step, and the database enforces the model's constraints.
+The conceptual schema you write is the database schema, and the database enforces its constraints.
+A few constructs need workarounds, which xref:{page-version}@learn-typedb::conceptual-modeling/09-limits-and-patterns.adoc[Chapter Nine] covers.
 
 [NOTE.blue]
 .⭐ TypeDB in one paragraph
 ======
 TypeDB is a database whose schema is a conceptual model.
 Entity, relation and attribute types are declared directly, relations keep their roles and can be n-ary, and types are organized into generalization hierarchies.
-Every query is type-checked against the model before it runs, so a query that no data could ever satisfy is an error rather than an empty result.
+Every query is type-checked against the model before it runs, so a query whose types can't fit the schema is an error, not an empty result.
 Every write is checked against the model's constraints by the time a transaction commits.
 ======
 
@@ -60,8 +61,8 @@ Three TypeDB properties to understand before we start:
 ====
 Each modeling chapter follows the same loop: a requirement read off the data, the constraints stated in plain sentences, an ER diagram in Chen notation, and the TypeQL that implements it.
 Try writing the TypeQL yourself before reading it.
-Every code block can be run in TypeDB Studio, in the order shown.
-If you skip ahead, each chapter starts with a collapsible block containing the schema so far.
+Run each code block in TypeDB Studio in the order shown, unless it says otherwise.
+If you skip ahead, each chapter starts by saying what to run first.
 ====
 
 The course takes about an hour.

@@ -84,7 +84,7 @@ The last column says whether the mapping is *exact*, *approximate* (the intent c
 | Participation (min, max)
 | Multiplicity / mandatory and uniqueness constraints on one role
 | `@card` on `plays` and on `relates`: see xref:{page-version}@learn-typedb::conceptual-modeling/05-n-ary-relations.adoc#_reading_cardinalities[Chapter Five]
-| Exact
+| Exact for binary; approximate for UML n-ary
 
 | Uniqueness across several roles
 | Spanning uniqueness constraint
@@ -132,6 +132,7 @@ The last column says whether the mapping is *exact*, *approximate* (the intent c
 | Missing
 |===
 
+UML multiplicities on n-ary associations count per combination of the other ends, which `@card` can't express.
 Most of this course uses the exact mappings, where an ER model needs no translation.
 The rows marked missing are covered, with workarounds, in xref:{page-version}@learn-typedb::conceptual-modeling/09-limits-and-patterns.adoc[Chapter Nine].
 
@@ -177,7 +178,7 @@ Both can be queried with the same language, as xref:{page-version}@learn-typedb:
 
 Chen pointed out that a relational system lets you compare an employee's age with a ship's age, a query that is well-formed but meaningless, and that a database system should be able to warn the user about it.
 TypeDB does this for every query.
-Each query is type-checked against the schema before it runs, and a query that no data could ever satisfy, such as one asking for a country in the role of a mill, is rejected with an error rather than returning nothing.
+Each query is type-checked against the schema before it runs, and a query whose types can't fit the schema, such as one asking for a country in the role of a mill, is rejected with an error, not an empty result.
 xref:{page-version}@learn-typedb::conceptual-modeling/06-population-and-conformance.adoc[Chapter Six] has examples.
 
 Next: xref:{page-version}@learn-typedb::conceptual-modeling/02-about-the-dataset.adoc[].

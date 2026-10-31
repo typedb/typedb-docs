@@ -45,7 +45,7 @@ The answers are `legal_entity`, `facility`, `mill` and `refinery`.
 `sub` is reflexive, so `legal_entity` is included as a subtype of itself.
 
 A single pattern can mix data and types.
-Which instances whose attributes contain the text "OIL" play a role in trade flows, and which roles (6 answers)?
+Which instances have an attribute containing the text "OIL", and which trade flow roles can their type play (6 answers)?
 
 [,typeql]
 ----
@@ -58,13 +58,13 @@ match
   trade_flow relates $role;
 ----
 
-The answers include the two commodities, in the commodity role, and companies whose names contain "OIL", in the exporter and importer roles.
+The answers include the two commodities, with the commodity role, and companies whose names contain "OIL", with the exporter and importer roles their type allows.
 Tools, validation scripts and documentation can all read the model with TypeQL.
 
 == Definitions in the model
 
-A domain glossary is usually kept in a separate document, which gets out of date.
-TypeQL's `@doc` annotation attaches a definition to a type, a role, or an ownership, inside the schema:
+TypeQL's `@doc` annotation keeps definitions in the schema.
+It attaches a definition to a type, a function, or an `owns`, `plays`, `relates` or `sub` declaration:
 
 [,typeql]
 ----
@@ -120,6 +120,6 @@ Treat the output as a first draft, and check the constraints:
 
 * Enumerations are recorded as comments, not as `@values` constraints.
 * Required role slots of a relationship class do not become `relates ... @card(1)`, so mandatory roles come out optional.
-* Type names are converted to lowercase with hyphens, such as `tradeflow` and `company-name`.
+* Names are lowercased, and underscores become hyphens: `TradeFlow` becomes `tradeflow`, and `company_name` becomes `company-name`.
 
 Next: xref:{page-version}@learn-typedb::conceptual-modeling/09-limits-and-patterns.adoc[].

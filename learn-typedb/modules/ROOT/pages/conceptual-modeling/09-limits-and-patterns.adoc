@@ -29,7 +29,7 @@ If so, model both, and the relationship.
 === Pattern: unary relations as classifications
 
 When an instance needs a second classification, a relation with a single role can stand in for it.
-The relation acts as a stored cast: it gives the instance an extra type, with its own attributes and roles, without changing the instance's own type.
+This is sometimes called a stored cast: the relation gives the instance an extra classification, with its own attributes and roles, without changing its type.
 The xref:{page-version}@guides::schema-modeling.adoc#_subtyping_vs_composition[schema modeling guide] calls these relations components.
 
 Here, a kabupaten and a mill, which share no supertype, can both be classified as high-risk:
@@ -79,10 +79,25 @@ Unlike a subtype, the classification can overlap with any other, and it can chan
 Anti-rigid types whose membership depends on what an instance does, such as _exporter_, are roles in relations.
 xref:{page-version}@learn-typedb::conceptual-modeling/07-querying.adoc#_derivation_rules[Chapter Seven] showed how to derive the set of exporters with a function when a query needs it as a type.
 
-=== Pattern: phases as relations with validity
+=== Pattern: phases as attributes
 
-A phase that changes over time, such as a mill being certified under a sustainability scheme, is best modeled as a relation with its period of validity.
-This records the history as well as the current state, and relations can own the dates:
+A phase depends on an instance's own state, such as a mill being active or closed.
+Model it as an attribute:
+
+[,typeql]
+----
+#!test[schema]
+define
+  attribute operating_status, value string @values("ACTIVE", "CLOSED");
+  entity mill, owns operating_status;
+----
+
+Active mills are then a pattern on the attribute, `has operating_status "ACTIVE"`, not a type.
+
+=== Pattern: relations with validity periods
+
+When the history matters, record a time-dependent fact as a relation that owns its dates.
+For example, a mill being certified under a sustainability scheme is a role the mill plays in a certification, valid for a period:
 
 [,typeql]
 ----
@@ -106,16 +121,16 @@ define
 ----
 
 A mill is _currently certified_ if it plays `certified` in a certification with no end date, or one that ends in the future.
-That condition is a query, or a function, rather than a type.
+That condition is a query or a function.
 
-TypeDB has no built-in temporal model, so use validity periods like these to record time-dependent facts.
+TypeDB has no built-in temporal model, so use validity periods like these to record time-dependent facts, including the history of a phase.
 
 == General integrity constraints
 
 TypeDB's schema constraints each involve a single type, role or ownership: a cardinality, a key, a value set.
 Constraints that relate several facts to each other cannot be declared:
 
-* comparisons between values, such as Chen's `TAX < SALARY`,
+* comparisons between values, such as `TAX < SALARY`,
 * conditional constraints, such as "a flow of refined palm oil has a refiner",
 * uniqueness over a combination of roles, such as "no two ownerships with the same owner and owned",
 * constraints along a path, such as "a flow's destination is not the country it was produced in".
@@ -167,8 +182,20 @@ Stored as functions with `define fun`, invariants like these become part of the 
 === Pattern: turn a conditional constraint into a structural one
 
 Some conditional constraints disappear when the condition becomes a type.
-"A refined flow has exactly one refiner, and a crude flow has none" is a constraint on two kinds of flow, so model the two kinds.
-In a fresh database with the full schema, make `trade_flow` abstract with two subtypes, and then try to insert a refined flow without a refiner:
+"A refined flow has exactly one refiner, and a crude flow has none" is a constraint on two kinds of flow, so model the two kinds, and give the refiner role only to refined flows.
+
+Create a second database and run the full schema from xref:{page-version}@learn-typedb::conceptual-modeling/06-population-and-conformance.adoc[Chapter Six] in it, without the data.
+Then remove the refiner role from `trade_flow`:
+
+[,typeql]
+----
+#!test[schema]
+undefine
+  plays trade_flow:refiner from refinery;
+  relates refiner from trade_flow;
+----
+
+Then make `trade_flow` abstract, with two subtypes:
 
 [,typeql]
 ----
@@ -177,9 +204,28 @@ define
   relation trade_flow @abstract;
   relation crude_flow sub trade_flow;
   relation refined_flow sub trade_flow,
-    relates refined_by as refiner @card(1);
-  entity refinery, plays refined_flow:refined_by;
+    relates refiner @card(1);
+  entity refinery, plays refined_flow:refiner;
 ----
+
+A crude flow with a refiner is now rejected before it runs, because `crude_flow` has no refiner role:
+
+[,typeql]
+----
+#!test[write, fail_at=runtime]
+insert
+  $k isa kabupaten, has kabupaten_name "BERAU";
+  $m isa mill, has mill_name "EXAMPLE MILL";
+  $r isa refinery, has refinery_name "EXAMPLE REFINERY";
+  $e isa company, has company_name "EXAMPLE EXPORTER";
+  $i isa company, has company_name "EXAMPLE IMPORTER";
+  $d isa country, has country_name "SPAIN";
+  $co isa commodity, has commodity_name "PALM OIL";
+  crude_flow (origin: $k, mill: $m, refiner: $r, exporter: $e, importer: $i, destination: $d, commodity: $co),
+    has volume_tonnes 1.0, has deforestation_ha 0.0, has usd 100.0dec;
+----
+
+A refined flow without a refiner is rejected at commit, because the role is required:
 
 [,typeql]
 ----
@@ -195,9 +241,7 @@ insert
     has volume_tonnes 1.0, has deforestation_ha 0.0, has usd 100.0dec;
 ----
 
-`relates refined_by as refiner` specializes the inherited `refiner` role for refined flows, with a cardinality of exactly one, so the insert is rejected at commit.
-
-The define only works in a database without existing `trade_flow` instances, since an abstract type cannot have instances of its own.
+These changes only work in a database without existing `trade_flow` instances, since an abstract type cannot have instances of its own.
 The commodity is now partly redundant with the relation's type, and a flow of refined palm oil could still be recorded as a `crude_flow`, so there is a trade-off.
 Choose the model based on which constraint matters more.
 

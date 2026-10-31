@@ -89,7 +89,7 @@ In TypeQL, each cardinality is attached to one of two declarations, and each cou
 | `province plays containment:child @card(0..1)`: each province is the child in at most one containment.
 |===
 
-`plays` cardinality is Chen-style participation, counted from the participating instance.
+`plays` cardinality is (min,max) participation, counted from the participating instance.
 `relates` cardinality has no direct equivalent in a notation where a relationship is identified by its participants, because it counts the participants of one relationship.
 It is available because a TypeDB relation is an object.
 
@@ -103,7 +103,7 @@ So mandatory participation, such as "every mill supplies at least one trade flow
 
 == Comparison with tables and graphs
 
-Tables and property graphs have trouble with a seven-role relationship that has an optional role and its own attributes.
+Here is the same relationship in tables and in a property graph.
 
 === As a table
 
@@ -143,7 +143,7 @@ The other 39 are not in the data.
 *Reify the flow as a node*, with one edge per role.
 This keeps the facts, but the schema-less graph does not know that a flow node needs exactly one mill edge, or that a mill edge may only point at a mill, or that the flow node represents a relationship rather than an entity.
 
-In TypeDB, the seven-role relation is stored as modeled, with its types and constraints.
+TypeDB stores the flow as one relation with seven typed roles.
 
 == Challenge
 
@@ -153,6 +153,8 @@ Add a `port` entity identified by name, and make it an optional role of `trade_f
 .Answer
 [%collapsible]
 ====
+Don't run this if you are following along, as later chapters assume the original model:
+
 [,typeql]
 ----
 #!test[schema, rollback]
