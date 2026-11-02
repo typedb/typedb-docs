@@ -66,7 +66,7 @@ This is clearly two queries: one `define` and one `match-insert` pipeline.
 
 == Client support
 
-Currently, only xref:{page-version}@home::install/console-cli.adoc[TypeDB Console] (version 3.2.0+) supports submitting multiple queries in a single input. TypeDB Studio and the drivers accept only one query at a time, so `end` is not needed with those clients.
+xref:{page-version}@home::install/console-cli.adoc[TypeDB Console] and xref:{page-version}@tools::studio.adoc[TypeDB Studio] support submitting multiple queries in a single input. The drivers accept only one query at a time, so `end` is not needed with them.
 
 == When to use
 

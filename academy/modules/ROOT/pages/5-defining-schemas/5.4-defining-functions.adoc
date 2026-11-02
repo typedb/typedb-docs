@@ -89,7 +89,7 @@ Note that here you see that single-return functions are assigned with a single `
 
 === Optional returns
 
-__Note: optionals are partially implemented as of TypeDB 3.5.0, and not returnable from a function in that version. Double check what version you are running and its level of support for optionals.__
+Functions can return optional values. A function that returns an optional must declare it with `?` in its signature, and a variable that receives an optional return must be marked with `?` in the assignment.
 
 TypeQL supports partial matches through optionality:
 [,typeql]
