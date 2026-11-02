@@ -27,7 +27,7 @@ insert $person isa person;
 
 == Deleting instance of type
 
-Unlike in TypeDB 2, the `isa` keyword is no longer used to delete an instance of type.
+The `isa` keyword is not used to delete an instance of a type.
 Simply delete the variable that is bound to the instance.
 
 [,typeql]

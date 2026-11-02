@@ -146,7 +146,7 @@ fetch { "authorised": $i.name };
 [NOTE.yellow]
 .💡 The let keyword — two uses
 ====
-In TypeDB 3.x, `let` has two distinct uses:
+The `let` keyword has two distinct uses:
 
 . Calling a stream-returning function: `let $i in who_should_have_access_to_payments();`
 . Assigning a value expression: `let $source = "direct grant";`

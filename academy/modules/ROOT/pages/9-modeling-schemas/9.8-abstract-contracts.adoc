@@ -15,7 +15,7 @@ entity book,
   owns isbn;
 ----
 
-In TypeDB 3, `@abstract` simply means that __one type is not instantiable__. However, there are no further restrictions on how this restriction translates to other types. This means that because `book` is not abstract, it can still be instantiated, but it would be impossible for an instance to own an `isbn` instance - simply because `isbn` cannot be instantiated.
+In TypeDB, `@abstract` simply means that __one type is not instantiable__. However, there are no further restrictions on how this restriction translates to other types. This means that because `book` is not abstract, it can still be instantiated, but it would be impossible for an instance to own an `isbn` instance - simply because `isbn` cannot be instantiated.
 
 === Granular abstractness
 
@@ -53,50 +53,4 @@ entity paperback, sub book; # no need to repeat ownerships of concrete isbn-10 a
 entity hardback, sub book;  # no need to repeat ownerships of concrete isbn-10 and isbn-13: inherited instead!
 ----
 
-Note that, you can't (yet) guarantee that all types of books have some type of isbn attached. This behaviour is expected in future versions of TypeQL, and brings back parity with TypeQL 2 in this regard. Please contact us if this is interesting to you!
-
-=== Historical note: strict interface contracts
-
-In TypeDB 2, this "strict" form of contract was the default.
-
-TypeDB 2 made it illegal for a non-abstract `book` type to implement the abstract `owns isbn` interface: an abstract attribute can only be owned by an abstract type. In other words, abstractness is "infectious".
-
-TypeDB 2's infectious abstractness meant that abstract contracts could be created and enforced:
-
-[,typeql]
-----
-# TypeDB 2 syntax
-define
-isbn sub attribute, abstract, value string;
-
-book sub entity, abstract,
-  owns isbn;
-----
-
-This base schema requires any user of the schema must provide non-abstract subtypes in order to utilize them - any instance that is coming from a subtype of `book` is guaranteed to have some subtype of `isbn`.
-
-This was practically achieved by providing a concrete subtype of `book` and `isbn`, and _override_ the ownership to make it non-abstract:
-
-[,typeql]
-----
-# TypeDB 2 syntax
-define
-isbn sub attribute, abstract, value string;
-isbn-10 sub isbn;
-isbn-13 sub isbn;
-
-book sub entity, abstract,
-  owns isbn;
-paperback sub book,
-  owns isbn-10 as isbn,
-  owns isbn-13 as isbn;
-hardback sub book,
-  owns isbn-10 as isbn,
-  owns isbn-13 as isbn;
-----
-
-Essentially, any instantiable subtype of `book` will provide its own implementation of `owns isbn` in whatever form it wishes - and it would be still be readable via `book` that has an `isbn`. This is what we refer to as an implementation _contract_.
-
-However, this model forces you to introduce lots of extra layers of types to avoid repeating adding `owns isbn-10` to each of the concrete subtypes of `book` - often you'd end up with a supertype called `abstract-book`, since there's no better name! And additionally, you had much less granular control over which parts of a type are forming a "contract".
-
-TypeDB 3's non-infectious semantics remove the need for implementation overrides `as isbn` and eliminate the complexity arising from extra layers of abstract to non-abstract types.
+Note that, you can't (yet) guarantee that all types of books have some type of isbn attached. This behaviour is expected in future versions of TypeQL. Please contact us if this is interesting to you!
