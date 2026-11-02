@@ -28,8 +28,7 @@ TypeDB Enterprise runs on macOS, Linux, and Windows.
 Install your TypeDB Enterprise distribution with <<_using_docker,Docker>> or via manual
 <<_manual_download_and_installation,download and installation>>.
 
-You can deploy a cluster of TypeDB Enterprise servers
-<<_deploying_manually,manually>> or via <<_deploying_with_kubernetes,Kubernetes>>.
+You can deploy a cluster of TypeDB Enterprise servers <<_deploying_manually,manually>>.
 
 [#_using_docker]
 === Docker
@@ -71,16 +70,3 @@ include::{page-version}@home::partial$enterprise_cluster.adoc[tag=cluster]
 
 An existing TypeDB CE data directory can be migrated in place to become the first server of a TypeDB Enterprise cluster.
 See xref:{page-version}@reference::typedb-cluster/administration.adoc#_migrate_ce[Migrating a TypeDB CE server into a cluster].
-
-[#_deploying_with_kubernetes]
-== Deploying with Kubernetes
-
-To deploy a TypeDB Enterprise cluster with Kubernetes, we can use the https://helm.sh/[Helm] package manager.
-
-[NOTE]
-====
-The Helm chart described below is the TypeDB Enterprise 2.x chart.
-Kubernetes instructions for TypeDB Enterprise 3.x clusters are being prepared; until then, deploy the 3.x servers with the manual procedure above.
-====
-
-include::{page-version}@home::partial$enterprise_kubernetes.adoc[leveloffset=+1]
