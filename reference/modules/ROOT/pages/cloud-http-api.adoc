@@ -268,7 +268,8 @@ Request Body::
 | `id` | The cluster's ID must be unique within its space,
 and consist only of lowercase alphanumeric characters, optionally separated by underscores and hyphens.
 | `serverCount` | An odd integer value between 1 and 9.
-Clusters can currently have only one server.
+A cluster of `2N + 1` servers tolerates the loss of `N` servers without losing data or availability.
+See xref:{page-version}@reference::typedb-cluster/index.adoc[Clustered TypeDB].
 | `storageSizeGB` | An integer value between 10 and 1000.
 | `provider` | Must be either `gcp` or `aws`
 | `isFree` | If set to `true`, must use a valid free machine type, and have at most 1 server and 10GB of storage.
