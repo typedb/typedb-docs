@@ -20,7 +20,7 @@ _-> Commit!_
 
 Using a *schema* transaction, run this query on a newly created database. After running it, make sure to *commit* the transaction. You should see the four new entity types appear when you refresh the *schema browser* in TypeDB Studio.
 
-When used in a Define query, types are declared with explicit kinds in 3.0: `entity`, `relation`, or `attribute` (there are no predefined root types). For example, `entity user;` declares a new entity type `user`. Subtyping is expressed by adding `, sub <supertype>`: `entity person, sub animal;`.
+When used in a Define query, types are declared with explicit kinds: `entity`, `relation`, or `attribute`. There are no predefined root types. For example, `entity user;` declares a new entity type `user`. Subtyping is expressed by adding `, sub <supertype>`: `entity person, sub animal;`.
 
 Define queries comprise only data definition statements and **cannot contain variables**. The only permitted terms are keywords and type labels.
 
@@ -73,7 +73,7 @@ In this case, `rating` and `order-line` are binary relation types, while `publis
 
 [NOTE]
 ====
-In 3.0, default cardinalities are applied to `owns`, `relates`, and `plays`. Defaults: `plays @card(0..)`, `owns @card(0..1)`, `relates @card(0..1)`. Specify cardinalities explicitly when you expect multiple instances to be connected via the same role or attribute type.
+Default cardinalities are applied to `owns`, `relates`, and `plays`. Defaults: `plays @card(0..)`, `owns @card(0..1)`, `relates @card(0..1)`. Specify cardinalities explicitly when you expect multiple instances to be connected via the same role or attribute type.
 ====
 
 .Exercise
