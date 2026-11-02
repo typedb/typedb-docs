@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 290" class="er" role="img" aria-label="ER diagram: abstract entity place with subtypes country, province and kabupaten, each with a key name attribute">
+  <style>
+    text { fill: #1a1a1a; font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+    text.name, text.relname { font-weight: 600; }
+    text.role { fill: #555; font-size: 12px; font-style: italic; }
+    path.new { stroke: #6b3fd4; }
+    text.new-label { fill: #6b3fd4; }
+  </style>
+  <rect width="100%" height="100%" fill="white"/>
+  <g class="links" stroke="black" fill="none">
+    <line x1="350" y1="64" x2="350" y2="80"/>
+    <line x1="337" y1="112" x2="110" y2="170"/>
+    <line x1="350" y1="112" x2="350" y2="170"/>
+    <line x1="363" y1="112" x2="590" y2="170"/>
+    <line x1="110" y1="216" x2="110" y2="242"/>
+    <line x1="350" y1="216" x2="350" y2="242"/>
+    <line x1="590" y1="216" x2="590" y2="242"/>
+  </g>
+  <g class="attr" fill="white" stroke="gray">
+    <ellipse cx="110" cy="262" rx="80" ry="20"/>
+    <ellipse cx="350" cy="262" rx="84" ry="20"/>
+    <ellipse cx="590" cy="262" rx="90" ry="20"/>
+  </g>
+  <g class="ent" fill="white" stroke="black">
+    <rect class="abstract" x="270" y="20" width="160" height="44" stroke-dasharray="7 4"/>
+    <rect x="40" y="170" width="140" height="46"/>
+    <rect x="280" y="170" width="140" height="46"/>
+    <rect x="520" y="170" width="140" height="46"/>
+  </g>
+  <polygon class="isa" points="350,80 325,112 375,112" fill="white" stroke="black"/>
+  <g text-anchor="middle" dominant-baseline="middle">
+    <text x="350" y="42" class="name" font-style="italic">place (abstract)</text>
+    <text x="350" y="102" font-size="11">ISA</text>
+    <text x="110" y="193" class="name">country</text>
+    <text x="350" y="193" class="name">province</text>
+    <text x="590" y="193" class="name">kabupaten</text>
+    <text x="110" y="262" class="key" text-decoration="underline">country_name</text>
+    <text x="350" y="262" class="key" text-decoration="underline">province_name</text>
+    <text x="590" y="262" class="key" text-decoration="underline">kabupaten_name</text>
+  </g>
+</svg>

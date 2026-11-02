@@ -1,0 +1,341 @@
+# All 81 trade flows of the conceptual-modeling crash course, as one insert query.
+# Source: Trase, Indonesia palm oil supply chain (2018-2022) v1.2, CC BY 4.0, https://doi.org/10.48650/X83N-7M36
+# tag::data[]
+insert
+
+## Places ##
+$country_indonesia isa country, has country_name "INDONESIA";
+$country_spain isa country, has country_name "SPAIN";
+$country_netherlands isa country, has country_name "NETHERLANDS";
+$country_greece isa country, has country_name "GREECE";
+$country_italy isa country, has country_name "ITALY";
+$country_bulgaria isa country, has country_name "BULGARIA";
+$country_belgium isa country, has country_name "BELGIUM";
+$prov_kalimantan_timur isa province, has province_name "KALIMANTAN TIMUR";
+$kab_mahakam_ulu isa kabupaten, has kabupaten_name "MAHAKAM ULU";
+$kab_kutai_kartanegara isa kabupaten, has kabupaten_name "KUTAI KARTANEGARA";
+$kab_berau isa kabupaten, has kabupaten_name "BERAU";
+$kab_penajam_paser_utara isa kabupaten, has kabupaten_name "PENAJAM PASER UTARA";
+$kab_paser isa kabupaten, has kabupaten_name "PASER";
+$kab_kutai_timur isa kabupaten, has kabupaten_name "KUTAI TIMUR";
+
+## Containment ##
+containment (parent: $country_indonesia, child: $prov_kalimantan_timur);
+containment (parent: $prov_kalimantan_timur, child: $kab_mahakam_ulu);
+containment (parent: $prov_kalimantan_timur, child: $kab_kutai_kartanegara);
+containment (parent: $prov_kalimantan_timur, child: $kab_berau);
+containment (parent: $prov_kalimantan_timur, child: $kab_penajam_paser_utara);
+containment (parent: $prov_kalimantan_timur, child: $kab_paser);
+containment (parent: $prov_kalimantan_timur, child: $kab_kutai_timur);
+
+## Commodities ##
+$com_refined_palm_oil isa commodity, has commodity_name "REFINED PALM OIL";
+$com_palm_oil isa commodity, has commodity_name "PALM OIL";
+
+## Companies ##
+$co_fangiono_agro_plantation_fap_agri isa company, has company_name "FANGIONO AGRO PLANTATION (FAP AGRI)";
+$co_first_resources isa company, has company_name "FIRST RESOURCES";
+$co_adhitya_serayakorita isa company, has company_name "ADHITYA SERAYAKORITA";
+$co_kuala_lumpur_kepong_klk isa company, has company_name "KUALA LUMPUR KEPONG (KLK)";
+$co_louis_dreyfus isa company, has company_name "LOUIS DREYFUS";
+$co_ldc_east_indonesia isa company, has company_name "LDC EAST INDONESIA";
+$co_triputra_agro_persada isa company, has company_name "TRIPUTRA AGRO PERSADA";
+$co_astra_agro_lestari isa company, has company_name "ASTRA AGRO LESTARI";
+$co_low_yat isa company, has company_name "LOW YAT";
+$co_rea_holdings isa company, has company_name "REA HOLDINGS";
+$co_wilmar isa company, has company_name "WILMAR";
+$co_wilmar_nabati_indonesia isa company, has company_name "WILMAR NABATI INDONESIA";
+$co_padasa_enam_utama isa company, has company_name "PADASA ENAM UTAMA";
+$co_eagle_high_plantations isa company, has company_name "EAGLE HIGH PLANTATIONS";
+$co_dharma_satya_nusantara_dsn isa company, has company_name "DHARMA SATYA NUSANTARA (DSN)";
+$co_teladan_prima isa company, has company_name "TELADAN PRIMA";
+$co_tsani_hutani_abadi_tha isa company, has company_name "TSANI HUTANI ABADI (THA)";
+$co_sinar_mas isa company, has company_name "SINAR MAS";
+$co_sinar_mas_agro_resources_and_technology isa company, has company_name "SINAR MAS AGRO RESOURCES AND TECHNOLOGY";
+$co_golden_agri_international isa company, has company_name "GOLDEN AGRI INTERNATIONAL";
+$co_widya isa company, has company_name "WIDYA";
+$co_dharma_agung_wijaya_daw isa company, has company_name "DHARMA AGUNG WIJAYA (DAW)";
+$co_casa_olearia_italiana_s_p_a isa company, has company_name "CASA OLEARIA ITALIANA S P A";
+$co_ital_bi_oil_srl isa company, has company_name "ITAL BI OIL SRL";
+$co_mp_evans isa company, has company_name "MP EVANS";
+$co_winker_van_sinker_gmbh isa company, has company_name "WINKER VAN SINKER GMBH";
+$co_sumber_hijau_utama isa company, has company_name "SUMBER HIJAU UTAMA";
+$co_royal_golden_eagle isa company, has company_name "ROYAL GOLDEN EAGLE";
+$co_aaa_oils_fats isa company, has company_name "AAA OILS & FATS";
+$co_chellam_plantations isa company, has company_name "CHELLAM PLANTATIONS";
+$co_mkh_berhad isa company, has company_name "MKH BERHAD";
+$co_minanga isa company, has company_name "MINANGA";
+$co_kutai_refinery_nusantara isa company, has company_name "KUTAI REFINERY NUSANTARA";
+$co_kencana_agri isa company, has company_name "KENCANA AGRI";
+$co_toba_bara isa company, has company_name "TOBA BARA";
+$co_ptpn_iii isa company, has company_name "PTPN III";
+$co_apical_middle_east_fzco isa company, has company_name "APICAL MIDDLE EAST FZCO";
+
+## Facilities ##
+$mill_borneo_bhakti_sejahtera isa mill, has mill_name "BORNEO BHAKTI SEJAHTERA";
+$mill_citra_agro_kencana isa mill, has mill_name "CITRA AGRO KENCANA";
+$mill_ketapang_agro_lestari isa mill, has mill_name "KETAPANG AGRO LESTARI";
+$mill_jabontara_eka_karsa_jabon isa mill, has mill_name "JABONTARA EKA KARSA (JABON)";
+$mill_dwiwira_lestari_jaya isa mill, has mill_name "DWIWIRA LESTARI JAYA";
+$mill_muaratoyu_subur_lestari isa mill, has mill_name "MUARATOYU SUBUR LESTARI";
+$mill_hutan_hijau_mas_berau isa mill, has mill_name "HUTAN HIJAU MAS (BERAU)";
+$mill_satu_sembilan_delapan isa mill, has mill_name "SATU SEMBILAN DELAPAN";
+$mill_yudha_wahana_abadi isa mill, has mill_name "YUDHA WAHANA ABADI";
+$mill_borneo_indah_marjaya isa mill, has mill_name "BORNEO INDAH MARJAYA";
+$mill_tunas_prima_sejahtera isa mill, has mill_name "TUNAS PRIMA SEJAHTERA";
+$mill_rea_kaltim_plantations_cakra isa mill, has mill_name "REA KALTIM PLANTATIONS (CAKRA)";
+$mill_hamparan_perkasa_mandiri isa mill, has mill_name "HAMPARAN PERKASA MANDIRI";
+$mill_karyanusa_ekadaya_karyanusa_eka_daya_1 isa mill, has mill_name "KARYANUSA EKADAYA (KARYANUSA EKA DAYA 1)";
+$mill_multi_makmur_mitra_alam_paser isa mill, has mill_name "MULTI MAKMUR MITRA ALAM (PASER)";
+$mill_sawit_sukses_sejahtera isa mill, has mill_name "SAWIT SUKSES SEJAHTERA";
+$mill_dharma_intisawit_nugraha_pom_3 isa mill, has mill_name "DHARMA INTISAWIT NUGRAHA (POM 3)";
+$mill_cahaya_anugerah_plantation_feliza isa mill, has mill_name "CAHAYA ANUGERAH PLANTATION (FELIZA)";
+$mill_dewata_sawit_nusantara_pom_6 isa mill, has mill_name "DEWATA SAWIT NUSANTARA (POM 6)";
+$mill_kruing_lestari_jaya_sungai_perak isa mill, has mill_name "KRUING LESTARI JAYA (SUNGAI PERAK)";
+$mill_harapan_rimba_raya_sei_kedang isa mill, has mill_name "HARAPAN RIMBA RAYA (SEI KEDANG)";
+$mill_mulia_inti_perkasa isa mill, has mill_name "MULIA INTI PERKASA";
+$mill_hanusentra_agro_lestari isa mill, has mill_name "HANUSENTRA AGRO LESTARI";
+$mill_bima_palma_nugraha_pom_9 isa mill, has mill_name "BIMA PALMA NUGRAHA (POM 9)";
+$mill_bima_agri_sawit_pom_10 isa mill, has mill_name "BIMA AGRI SAWIT (POM 10)";
+$mill_kresna_duta_agroindo_muara_wahau isa mill, has mill_name "KRESNA DUTA AGROINDO (MUARA WAHAU)";
+$mill_tapian_nadenggan_jak_luay isa mill, has mill_name "TAPIAN NADENGGAN (JAK LUAY)";
+$mill_bumi_mas_agro_benuang isa mill, has mill_name "BUMI MAS AGRO (BENUANG)";
+$mill_karya_prima_agro_sejahtera_pom_7 isa mill, has mill_name "KARYA PRIMA AGRO SEJAHTERA (POM 7)";
+$mill_dharma_agrotama_nusantara_pom_2 isa mill, has mill_name "DHARMA AGROTAMA NUSANTARA (POM 2)";
+$mill_swakarsa_sinarsentosa_pom_1 isa mill, has mill_name "SWAKARSA SINARSENTOSA (POM 1)";
+$mill_pucuk_jaya isa mill, has mill_name "PUCUK JAYA";
+$mill_anugerah_agung_prima_abadi isa mill, has mill_name "ANUGERAH AGUNG PRIMA ABADI";
+$mill_maju_kalimantan_hadapan_seguntung isa mill, has mill_name "MAJU KALIMANTAN HADAPAN (SEGUNTUNG)";
+$mill_jaya_mandiri_sukses_bangkirai isa mill, has mill_name "JAYA MANDIRI SUKSES (BANGKIRAI)";
+$mill_dinamika_prima_artha isa mill, has mill_name "DINAMIKA PRIMA ARTHA";
+$mill_kutai_balian_nauli isa mill, has mill_name "KUTAI BALIAN NAULI";
+$mill_sawit_kaltim_lestari isa mill, has mill_name "SAWIT KALTIM LESTARI";
+$mill_agri_eastborneo_kencana isa mill, has mill_name "AGRI EASTBORNEO KENCANA";
+$mill_perkebunan_kaltim_utama_i isa mill, has mill_name "PERKEBUNAN KALTIM UTAMA I";
+$mill_perkebunan_nusantara_xiii_long_pinang isa mill, has mill_name "PERKEBUNAN NUSANTARA XIII (LONG PINANG)";
+$ref_adhitya_serayakorita isa refinery, has refinery_name "ADHITYA SERAYAKORITA";
+$ref_ldc_east_indonesia isa refinery, has refinery_name "LDC EAST INDONESIA";
+$ref_wilmar_nabati_indonesia_wina_gresik isa refinery, has refinery_name "WILMAR NABATI INDONESIA (WINA GRESIK)";
+$ref_smart_tbk_tarjun_refinery_kernel_crushing_plant isa refinery, has refinery_name "SMART TBK (TARJUN REFINERY & KERNEL CRUSHING PLANT)";
+$ref_smart_tbk_surabaya_refinery isa refinery, has refinery_name "SMART TBK (SURABAYA REFINERY)";
+$ref_kutai_refinery_nusantara isa refinery, has refinery_name "KUTAI REFINERY NUSANTARA";
+
+## Ownership ##
+ownership (owner: $co_fangiono_agro_plantation_fap_agri, owned: $mill_borneo_bhakti_sejahtera);
+ownership (owner: $co_first_resources, owned: $mill_citra_agro_kencana);
+ownership (owner: $co_first_resources, owned: $mill_ketapang_agro_lestari);
+ownership (owner: $co_kuala_lumpur_kepong_klk, owned: $mill_jabontara_eka_karsa_jabon);
+ownership (owner: $co_triputra_agro_persada, owned: $mill_dwiwira_lestari_jaya);
+ownership (owner: $co_triputra_agro_persada, owned: $mill_muaratoyu_subur_lestari);
+ownership (owner: $co_kuala_lumpur_kepong_klk, owned: $mill_hutan_hijau_mas_berau);
+ownership (owner: $co_kuala_lumpur_kepong_klk, owned: $mill_satu_sembilan_delapan);
+ownership (owner: $co_triputra_agro_persada, owned: $mill_yudha_wahana_abadi);
+ownership (owner: $co_astra_agro_lestari, owned: $mill_borneo_indah_marjaya);
+ownership (owner: $co_low_yat, owned: $mill_tunas_prima_sejahtera);
+ownership (owner: $co_rea_holdings, owned: $mill_rea_kaltim_plantations_cakra);
+ownership (owner: $co_triputra_agro_persada, owned: $mill_hamparan_perkasa_mandiri);
+ownership (owner: $co_astra_agro_lestari, owned: $mill_karyanusa_ekadaya_karyanusa_eka_daya_1);
+ownership (owner: $co_padasa_enam_utama, owned: $mill_multi_makmur_mitra_alam_paser);
+ownership (owner: $co_eagle_high_plantations, owned: $mill_sawit_sukses_sejahtera);
+ownership (owner: $co_dharma_satya_nusantara_dsn, owned: $mill_dharma_intisawit_nugraha_pom_3);
+ownership (owner: $co_teladan_prima, owned: $mill_cahaya_anugerah_plantation_feliza);
+ownership (owner: $co_dharma_satya_nusantara_dsn, owned: $mill_dewata_sawit_nusantara_pom_6);
+ownership (owner: $co_tsani_hutani_abadi_tha, owned: $mill_kruing_lestari_jaya_sungai_perak);
+ownership (owner: $co_sinar_mas, owned: $mill_harapan_rimba_raya_sei_kedang);
+ownership (owner: $co_widya, owned: $mill_mulia_inti_perkasa);
+ownership (owner: $co_dharma_agung_wijaya_daw, owned: $mill_hanusentra_agro_lestari);
+ownership (owner: $co_dharma_satya_nusantara_dsn, owned: $mill_bima_palma_nugraha_pom_9);
+ownership (owner: $co_dharma_satya_nusantara_dsn, owned: $mill_bima_agri_sawit_pom_10);
+ownership (owner: $co_sinar_mas, owned: $mill_kresna_duta_agroindo_muara_wahau);
+ownership (owner: $co_sinar_mas, owned: $mill_tapian_nadenggan_jak_luay);
+ownership (owner: $co_mp_evans, owned: $mill_bumi_mas_agro_benuang);
+ownership (owner: $co_dharma_satya_nusantara_dsn, owned: $mill_karya_prima_agro_sejahtera_pom_7);
+ownership (owner: $co_dharma_satya_nusantara_dsn, owned: $mill_dharma_agrotama_nusantara_pom_2);
+ownership (owner: $co_dharma_satya_nusantara_dsn, owned: $mill_swakarsa_sinarsentosa_pom_1);
+ownership (owner: $co_chellam_plantations, owned: $mill_pucuk_jaya);
+ownership (owner: $co_triputra_agro_persada, owned: $mill_anugerah_agung_prima_abadi);
+ownership (owner: $co_mkh_berhad, owned: $mill_maju_kalimantan_hadapan_seguntung);
+ownership (owner: $co_eagle_high_plantations, owned: $mill_jaya_mandiri_sukses_bangkirai);
+ownership (owner: $co_minanga, owned: $mill_dinamika_prima_artha);
+ownership (owner: $co_chellam_plantations, owned: $mill_kutai_balian_nauli);
+ownership (owner: $co_kencana_agri, owned: $mill_sawit_kaltim_lestari);
+ownership (owner: $co_kencana_agri, owned: $mill_agri_eastborneo_kencana);
+ownership (owner: $co_toba_bara, owned: $mill_perkebunan_kaltim_utama_i);
+ownership (owner: $co_ptpn_iii, owned: $mill_perkebunan_nusantara_xiii_long_pinang);
+ownership (owner: $co_adhitya_serayakorita, owned: $ref_adhitya_serayakorita);
+ownership (owner: $co_ldc_east_indonesia, owned: $ref_ldc_east_indonesia);
+ownership (owner: $co_wilmar, owned: $ref_wilmar_nabati_indonesia_wina_gresik);
+ownership (owner: $co_sinar_mas, owned: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant);
+ownership (owner: $co_sinar_mas, owned: $ref_smart_tbk_surabaya_refinery);
+ownership (owner: $co_kutai_refinery_nusantara, owned: $ref_kutai_refinery_nusantara);
+ownership (owner: $co_first_resources, owned: $co_adhitya_serayakorita);
+ownership (owner: $co_louis_dreyfus, owned: $co_ldc_east_indonesia);
+ownership (owner: $co_wilmar, owned: $co_wilmar_nabati_indonesia);
+ownership (owner: $co_sinar_mas, owned: $co_sinar_mas_agro_resources_and_technology);
+ownership (owner: $co_royal_golden_eagle, owned: $co_sumber_hijau_utama);
+ownership (owner: $co_royal_golden_eagle, owned: $co_kutai_refinery_nusantara);
+
+## Trade flows ##
+trade_flow (origin: $kab_mahakam_ulu, mill: $mill_borneo_bhakti_sejahtera, refiner: $ref_adhitya_serayakorita, exporter: $co_adhitya_serayakorita, importer: $co_first_resources, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 2995.277, has deforestation_ha 893.5228, has usd 2965513.50dec;
+trade_flow (origin: $kab_kutai_kartanegara, mill: $mill_citra_agro_kencana, refiner: $ref_adhitya_serayakorita, exporter: $co_adhitya_serayakorita, importer: $co_first_resources, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 4443.522, has deforestation_ha 648.6825, has usd 4399367.94dec;
+trade_flow (origin: $kab_kutai_kartanegara, mill: $mill_ketapang_agro_lestari, refiner: $ref_adhitya_serayakorita, exporter: $co_adhitya_serayakorita, importer: $co_first_resources, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 2097.531, has deforestation_ha 122.5222, has usd 2076688.70dec;
+trade_flow (origin: $kab_mahakam_ulu, mill: $mill_borneo_bhakti_sejahtera, refiner: $ref_adhitya_serayakorita, exporter: $co_adhitya_serayakorita, importer: $co_first_resources, destination: $country_netherlands, commodity: $com_refined_palm_oil),
+  has volume_tonnes 631.914, has deforestation_ha 188.5065, has usd 815931.63dec;
+trade_flow (origin: $kab_kutai_kartanegara, mill: $mill_ketapang_agro_lestari, refiner: $ref_adhitya_serayakorita, exporter: $co_adhitya_serayakorita, importer: $co_first_resources, destination: $country_netherlands, commodity: $com_refined_palm_oil),
+  has volume_tonnes 442.516, has deforestation_ha 25.8485, has usd 571380.30dec;
+trade_flow (origin: $kab_kutai_kartanegara, mill: $mill_citra_agro_kencana, refiner: $ref_adhitya_serayakorita, exporter: $co_adhitya_serayakorita, importer: $co_first_resources, destination: $country_netherlands, commodity: $com_refined_palm_oil),
+  has volume_tonnes 937.45, has deforestation_ha 136.8526, has usd 1210442.46dec;
+trade_flow (origin: $kab_berau, mill: $mill_jabontara_eka_karsa_jabon, refiner: $ref_ldc_east_indonesia, exporter: $co_ldc_east_indonesia, importer: $co_louis_dreyfus, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 3750.036, has deforestation_ha 916.7547, has usd 1311345.23dec;
+trade_flow (origin: $kab_berau, mill: $mill_dwiwira_lestari_jaya, refiner: $ref_ldc_east_indonesia, exporter: $co_ldc_east_indonesia, importer: $co_louis_dreyfus, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 4383.054, has deforestation_ha 599.1417, has usd 1532704.27dec;
+trade_flow (origin: $kab_penajam_paser_utara, mill: $mill_muaratoyu_subur_lestari, refiner: $ref_ldc_east_indonesia, exporter: $co_ldc_east_indonesia, importer: $co_louis_dreyfus, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 1487.523, has deforestation_ha 355.9507, has usd 520169.87dec;
+trade_flow (origin: $kab_berau, mill: $mill_hutan_hijau_mas_berau, refiner: $ref_ldc_east_indonesia, exporter: $co_ldc_east_indonesia, importer: $co_louis_dreyfus, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 6350.131, has deforestation_ha 329.2421, has usd 2220569.06dec;
+trade_flow (origin: $kab_berau, mill: $mill_satu_sembilan_delapan, refiner: $ref_ldc_east_indonesia, exporter: $co_ldc_east_indonesia, importer: $co_louis_dreyfus, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 3989.668, has deforestation_ha 292.0601, has usd 1395141.68dec;
+trade_flow (origin: $kab_berau, mill: $mill_yudha_wahana_abadi, refiner: $ref_ldc_east_indonesia, exporter: $co_ldc_east_indonesia, importer: $co_louis_dreyfus, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 2186.825, has deforestation_ha 167.4221, has usd 764708.00dec;
+trade_flow (origin: $kab_paser, mill: $mill_borneo_indah_marjaya, refiner: $ref_ldc_east_indonesia, exporter: $co_ldc_east_indonesia, importer: $co_louis_dreyfus, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 4551.417, has deforestation_ha 103.8013, has usd 1591579.17dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_tunas_prima_sejahtera, refiner: $ref_ldc_east_indonesia, exporter: $co_ldc_east_indonesia, importer: $co_louis_dreyfus, destination: $country_greece, commodity: $com_refined_palm_oil),
+  has volume_tonnes 47.392, has deforestation_ha 0.0, has usd 9189.84dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_rea_kaltim_plantations_cakra, refiner: $ref_ldc_east_indonesia, exporter: $co_ldc_east_indonesia, importer: $co_louis_dreyfus, destination: $country_greece, commodity: $com_refined_palm_oil),
+  has volume_tonnes 104.376, has deforestation_ha 0.0, has usd 20239.82dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_hamparan_perkasa_mandiri, refiner: $ref_ldc_east_indonesia, exporter: $co_ldc_east_indonesia, importer: $co_louis_dreyfus, destination: $country_italy, commodity: $com_refined_palm_oil),
+  has volume_tonnes 3878.707, has deforestation_ha 0.0, has usd 2063160.98dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_tunas_prima_sejahtera, refiner: $ref_ldc_east_indonesia, exporter: $co_ldc_east_indonesia, importer: $co_louis_dreyfus, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 1066.284, has deforestation_ha 0.0, has usd 372867.38dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_karyanusa_ekadaya_karyanusa_eka_daya_1, refiner: $ref_ldc_east_indonesia, exporter: $co_ldc_east_indonesia, importer: $co_louis_dreyfus, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 4096.419, has deforestation_ha 0.0, has usd 1432471.25dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_hamparan_perkasa_mandiri, refiner: $ref_ldc_east_indonesia, exporter: $co_ldc_east_indonesia, importer: $co_louis_dreyfus, destination: $country_greece, commodity: $com_refined_palm_oil),
+  has volume_tonnes 283.277, has deforestation_ha 0.0, has usd 54931.07dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_hamparan_perkasa_mandiri, refiner: $ref_ldc_east_indonesia, exporter: $co_ldc_east_indonesia, importer: $co_louis_dreyfus, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 6373.574, has deforestation_ha 0.0, has usd 2228766.59dec;
+trade_flow (origin: $kab_mahakam_ulu, mill: $mill_borneo_bhakti_sejahtera, refiner: $ref_wilmar_nabati_indonesia_wina_gresik, exporter: $co_wilmar_nabati_indonesia, importer: $co_wilmar, destination: $country_greece, commodity: $com_refined_palm_oil),
+  has volume_tonnes 0.683, has deforestation_ha 0.2039, has usd 703.14dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_jabontara_eka_karsa_jabon, refiner: $ref_wilmar_nabati_indonesia_wina_gresik, exporter: $co_wilmar_nabati_indonesia, importer: $co_wilmar, destination: $country_greece, commodity: $com_refined_palm_oil),
+  has volume_tonnes 0.507, has deforestation_ha 0.1474, has usd 521.66dec;
+trade_flow (origin: $kab_paser, mill: $mill_multi_makmur_mitra_alam_paser, refiner: $ref_wilmar_nabati_indonesia_wina_gresik, exporter: $co_wilmar_nabati_indonesia, importer: $co_wilmar, destination: $country_greece, commodity: $com_refined_palm_oil),
+  has volume_tonnes 0.567, has deforestation_ha 0.1277, has usd 583.24dec;
+trade_flow (origin: $kab_berau, mill: $mill_dwiwira_lestari_jaya, refiner: $ref_wilmar_nabati_indonesia_wina_gresik, exporter: $co_wilmar_nabati_indonesia, importer: $co_wilmar, destination: $country_greece, commodity: $com_refined_palm_oil),
+  has volume_tonnes 0.818, has deforestation_ha 0.0983, has usd 841.94dec;
+trade_flow (origin: $kab_berau, mill: $mill_sawit_sukses_sejahtera, refiner: $ref_wilmar_nabati_indonesia_wina_gresik, exporter: $co_wilmar_nabati_indonesia, importer: $co_wilmar, destination: $country_greece, commodity: $com_refined_palm_oil),
+  has volume_tonnes 0.105, has deforestation_ha 0.0, has usd 107.85dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_dharma_intisawit_nugraha_pom_3, refiner: $ref_wilmar_nabati_indonesia_wina_gresik, exporter: $co_wilmar_nabati_indonesia, importer: $co_wilmar, destination: $country_greece, commodity: $com_refined_palm_oil),
+  has volume_tonnes 0.663, has deforestation_ha 0.0, has usd 682.60dec;
+trade_flow (origin: $kab_berau, mill: $mill_cahaya_anugerah_plantation_feliza, refiner: $ref_wilmar_nabati_indonesia_wina_gresik, exporter: $co_wilmar_nabati_indonesia, importer: $co_wilmar, destination: $country_greece, commodity: $com_refined_palm_oil),
+  has volume_tonnes 0.481, has deforestation_ha 0.0, has usd 494.68dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_dewata_sawit_nusantara_pom_6, refiner: $ref_wilmar_nabati_indonesia_wina_gresik, exporter: $co_wilmar_nabati_indonesia, importer: $co_wilmar, destination: $country_greece, commodity: $com_refined_palm_oil),
+  has volume_tonnes 0.783, has deforestation_ha 0.0, has usd 805.11dec;
+trade_flow (origin: $kab_kutai_kartanegara, mill: $mill_kruing_lestari_jaya_sungai_perak, refiner: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_golden_agri_international, destination: $country_italy, commodity: $com_refined_palm_oil),
+  has volume_tonnes 1006.29, has deforestation_ha 184.2338, has usd 1035461.22dec;
+trade_flow (origin: $kab_paser, mill: $mill_multi_makmur_mitra_alam_paser, refiner: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_golden_agri_international, destination: $country_italy, commodity: $com_refined_palm_oil),
+  has volume_tonnes 690.016, has deforestation_ha 143.8168, has usd 710018.44dec;
+trade_flow (origin: $kab_kutai_kartanegara, mill: $mill_harapan_rimba_raya_sei_kedang, refiner: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_golden_agri_international, destination: $country_italy, commodity: $com_refined_palm_oil),
+  has volume_tonnes 732.265, has deforestation_ha 137.8934, has usd 753493.13dec;
+trade_flow (origin: $kab_berau, mill: $mill_mulia_inti_perkasa, refiner: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_golden_agri_international, destination: $country_italy, commodity: $com_refined_palm_oil),
+  has volume_tonnes 228.291, has deforestation_ha 79.2208, has usd 234909.36dec;
+trade_flow (origin: $kab_berau, mill: $mill_hanusentra_agro_lestari, refiner: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_golden_agri_international, destination: $country_italy, commodity: $com_refined_palm_oil),
+  has volume_tonnes 112.779, has deforestation_ha 35.1438, has usd 116048.53dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_bima_palma_nugraha_pom_9, refiner: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_golden_agri_international, destination: $country_italy, commodity: $com_refined_palm_oil),
+  has volume_tonnes 882.972, has deforestation_ha 0.0, has usd 908568.98dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_bima_agri_sawit_pom_10, refiner: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_golden_agri_international, destination: $country_netherlands, commodity: $com_refined_palm_oil),
+  has volume_tonnes 52.092, has deforestation_ha 0.0, has usd 65818.71dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_hamparan_perkasa_mandiri, refiner: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_golden_agri_international, destination: $country_netherlands, commodity: $com_refined_palm_oil),
+  has volume_tonnes 109.297, has deforestation_ha 0.0, has usd 138097.38dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_bima_agri_sawit_pom_10, refiner: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_golden_agri_international, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 10.418, has deforestation_ha 0.0, has usd 10046.01dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_hamparan_perkasa_mandiri, refiner: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_golden_agri_international, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 21.859, has deforestation_ha 0.0, has usd 21078.02dec;
+trade_flow (origin: $kab_kutai_kartanegara, mill: $mill_kruing_lestari_jaya_sungai_perak, refiner: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_casa_olearia_italiana_s_p_a, destination: $country_italy, commodity: $com_refined_palm_oil),
+  has volume_tonnes 19.369, has deforestation_ha 3.546, has usd 18400.18dec;
+trade_flow (origin: $kab_paser, mill: $mill_multi_makmur_mitra_alam_paser, refiner: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_casa_olearia_italiana_s_p_a, destination: $country_italy, commodity: $com_refined_palm_oil),
+  has volume_tonnes 13.281, has deforestation_ha 2.7681, has usd 12617.05dec;
+trade_flow (origin: $kab_kutai_kartanegara, mill: $mill_harapan_rimba_raya_sei_kedang, refiner: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_casa_olearia_italiana_s_p_a, destination: $country_italy, commodity: $com_refined_palm_oil),
+  has volume_tonnes 14.094, has deforestation_ha 2.6541, has usd 13389.59dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_hamparan_perkasa_mandiri, refiner: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_casa_olearia_italiana_s_p_a, destination: $country_italy, commodity: $com_refined_palm_oil),
+  has volume_tonnes 21.85, has deforestation_ha 0.0, has usd 20757.30dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_kresna_duta_agroindo_muara_wahau, refiner: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_casa_olearia_italiana_s_p_a, destination: $country_italy, commodity: $com_refined_palm_oil),
+  has volume_tonnes 18.758, has deforestation_ha 0.0, has usd 17820.14dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_tapian_nadenggan_jak_luay, refiner: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_casa_olearia_italiana_s_p_a, destination: $country_italy, commodity: $com_refined_palm_oil),
+  has volume_tonnes 28.634, has deforestation_ha 0.0, has usd 27202.02dec;
+trade_flow (origin: $kab_kutai_kartanegara, mill: $mill_kruing_lestari_jaya_sungai_perak, refiner: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_ital_bi_oil_srl, destination: $country_italy, commodity: $com_refined_palm_oil),
+  has volume_tonnes 125.959, has deforestation_ha 23.0609, has usd 119661.40dec;
+trade_flow (origin: $kab_paser, mill: $mill_multi_makmur_mitra_alam_paser, refiner: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_ital_bi_oil_srl, destination: $country_italy, commodity: $com_refined_palm_oil),
+  has volume_tonnes 86.371, has deforestation_ha 18.0018, has usd 82052.13dec;
+trade_flow (origin: $kab_kutai_kartanegara, mill: $mill_harapan_rimba_raya_sei_kedang, refiner: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_ital_bi_oil_srl, destination: $country_italy, commodity: $com_refined_palm_oil),
+  has volume_tonnes 91.659, has deforestation_ha 17.2604, has usd 87076.21dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_tapian_nadenggan_jak_luay, refiner: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_ital_bi_oil_srl, destination: $country_italy, commodity: $com_refined_palm_oil),
+  has volume_tonnes 186.213, has deforestation_ha 0.0, has usd 176902.21dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_bima_agri_sawit_pom_10, refiner: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_ital_bi_oil_srl, destination: $country_italy, commodity: $com_refined_palm_oil),
+  has volume_tonnes 67.724, has deforestation_ha 0.0, has usd 64337.89dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_bumi_mas_agro_benuang, refiner: $ref_smart_tbk_tarjun_refinery_kernel_crushing_plant, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_ital_bi_oil_srl, destination: $country_italy, commodity: $com_refined_palm_oil),
+  has volume_tonnes 112.013, has deforestation_ha 0.0, has usd 106412.59dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_karya_prima_agro_sejahtera_pom_7, refiner: $ref_smart_tbk_surabaya_refinery, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_winker_van_sinker_gmbh, destination: $country_bulgaria, commodity: $com_refined_palm_oil),
+  has volume_tonnes 1.319, has deforestation_ha 0.0017, has usd 2011.50dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_dharma_agrotama_nusantara_pom_2, refiner: $ref_smart_tbk_surabaya_refinery, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_winker_van_sinker_gmbh, destination: $country_bulgaria, commodity: $com_refined_palm_oil),
+  has volume_tonnes 1.03, has deforestation_ha 0.0, has usd 1570.17dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_swakarsa_sinarsentosa_pom_1, refiner: $ref_smart_tbk_surabaya_refinery, exporter: $co_sinar_mas_agro_resources_and_technology, importer: $co_winker_van_sinker_gmbh, destination: $country_bulgaria, commodity: $com_refined_palm_oil),
+  has volume_tonnes 0.271, has deforestation_ha 0.0, has usd 413.32dec;
+trade_flow (origin: $kab_berau, mill: $mill_jabontara_eka_karsa_jabon, exporter: $co_sumber_hijau_utama, importer: $co_aaa_oils_fats, destination: $country_spain, commodity: $com_palm_oil),
+  has volume_tonnes 7.796, has deforestation_ha 2.4198, has usd 9323.70dec;
+trade_flow (origin: $kab_paser, mill: $mill_pucuk_jaya, exporter: $co_sumber_hijau_utama, importer: $co_aaa_oils_fats, destination: $country_spain, commodity: $com_palm_oil),
+  has volume_tonnes 5.674, has deforestation_ha 1.2781, has usd 6786.68dec;
+trade_flow (origin: $kab_berau, mill: $mill_dwiwira_lestari_jaya, exporter: $co_sumber_hijau_utama, importer: $co_aaa_oils_fats, destination: $country_spain, commodity: $com_palm_oil),
+  has volume_tonnes 6.202, has deforestation_ha 1.1292, has usd 7417.41dec;
+trade_flow (origin: $kab_berau, mill: $mill_anugerah_agung_prima_abadi, exporter: $co_sumber_hijau_utama, importer: $co_aaa_oils_fats, destination: $country_spain, commodity: $com_palm_oil),
+  has volume_tonnes 7.003, has deforestation_ha 1.1236, has usd 8375.93dec;
+trade_flow (origin: $kab_penajam_paser_utara, mill: $mill_muaratoyu_subur_lestari, exporter: $co_sumber_hijau_utama, importer: $co_aaa_oils_fats, destination: $country_spain, commodity: $com_palm_oil),
+  has volume_tonnes 2.864, has deforestation_ha 0.6853, has usd 3425.27dec;
+trade_flow (origin: $kab_berau, mill: $mill_maju_kalimantan_hadapan_seguntung, exporter: $co_sumber_hijau_utama, importer: $co_aaa_oils_fats, destination: $country_spain, commodity: $com_palm_oil),
+  has volume_tonnes 12.906, has deforestation_ha 0.0, has usd 15436.48dec;
+trade_flow (origin: $kab_kutai_kartanegara, mill: $mill_jaya_mandiri_sukses_bangkirai, exporter: $co_sumber_hijau_utama, importer: $co_aaa_oils_fats, destination: $country_spain, commodity: $com_palm_oil),
+  has volume_tonnes 0.027, has deforestation_ha 0.0, has usd 31.90dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_dinamika_prima_artha, exporter: $co_sumber_hijau_utama, importer: $co_aaa_oils_fats, destination: $country_spain, commodity: $com_palm_oil),
+  has volume_tonnes 7.533, has deforestation_ha 0.0, has usd 9009.11dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_kutai_balian_nauli, exporter: $co_sumber_hijau_utama, importer: $co_aaa_oils_fats, destination: $country_spain, commodity: $com_palm_oil),
+  has volume_tonnes 6.572, has deforestation_ha 0.0, has usd 7860.73dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_rea_kaltim_plantations_cakra, exporter: $co_sumber_hijau_utama, importer: $co_aaa_oils_fats, destination: $country_spain, commodity: $com_palm_oil),
+  has volume_tonnes 4.521, has deforestation_ha 0.0, has usd 5407.57dec;
+trade_flow (origin: $kab_berau, mill: $mill_hanusentra_agro_lestari, refiner: $ref_kutai_refinery_nusantara, exporter: $co_kutai_refinery_nusantara, importer: $co_aaa_oils_fats, destination: $country_netherlands, commodity: $com_refined_palm_oil),
+  has volume_tonnes 20.651, has deforestation_ha 6.4351, has usd 31876.11dec;
+trade_flow (origin: $kab_paser, mill: $mill_pucuk_jaya, refiner: $ref_kutai_refinery_nusantara, exporter: $co_kutai_refinery_nusantara, importer: $co_aaa_oils_fats, destination: $country_netherlands, commodity: $com_refined_palm_oil),
+  has volume_tonnes 21.199, has deforestation_ha 4.7749, has usd 32723.02dec;
+trade_flow (origin: $kab_berau, mill: $mill_jabontara_eka_karsa_jabon, refiner: $ref_kutai_refinery_nusantara, exporter: $co_kutai_refinery_nusantara, importer: $co_aaa_oils_fats, destination: $country_netherlands, commodity: $com_refined_palm_oil),
+  has volume_tonnes 15.46, has deforestation_ha 4.414, has usd 23864.17dec;
+trade_flow (origin: $kab_berau, mill: $mill_dwiwira_lestari_jaya, refiner: $ref_kutai_refinery_nusantara, exporter: $co_kutai_refinery_nusantara, importer: $co_aaa_oils_fats, destination: $country_netherlands, commodity: $com_refined_palm_oil),
+  has volume_tonnes 23.149, has deforestation_ha 4.2149, has usd 35732.90dec;
+trade_flow (origin: $kab_berau, mill: $mill_anugerah_agung_prima_abadi, refiner: $ref_kutai_refinery_nusantara, exporter: $co_kutai_refinery_nusantara, importer: $co_aaa_oils_fats, destination: $country_netherlands, commodity: $com_refined_palm_oil),
+  has volume_tonnes 26.165, has deforestation_ha 4.1978, has usd 40387.45dec;
+trade_flow (origin: $kab_berau, mill: $mill_sawit_kaltim_lestari, refiner: $ref_kutai_refinery_nusantara, exporter: $co_kutai_refinery_nusantara, importer: $co_aaa_oils_fats, destination: $country_netherlands, commodity: $com_refined_palm_oil),
+  has volume_tonnes 19.701, has deforestation_ha 0.0, has usd 30410.82dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_agri_eastborneo_kencana, refiner: $ref_kutai_refinery_nusantara, exporter: $co_kutai_refinery_nusantara, importer: $co_aaa_oils_fats, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 0.975, has deforestation_ha 0.0, has usd 1187.11dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_bima_palma_nugraha_pom_9, refiner: $ref_kutai_refinery_nusantara, exporter: $co_kutai_refinery_nusantara, importer: $co_aaa_oils_fats, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 28.521, has deforestation_ha 0.0, has usd 34717.39dec;
+trade_flow (origin: $kab_berau, mill: $mill_perkebunan_kaltim_utama_i, refiner: $ref_kutai_refinery_nusantara, exporter: $co_kutai_refinery_nusantara, importer: $co_aaa_oils_fats, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 2.93, has deforestation_ha 0.0, has usd 3566.36dec;
+trade_flow (origin: $kab_penajam_paser_utara, mill: $mill_perkebunan_nusantara_xiii_long_pinang, refiner: $ref_kutai_refinery_nusantara, exporter: $co_kutai_refinery_nusantara, importer: $co_aaa_oils_fats, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 1.366, has deforestation_ha 0.0, has usd 1662.28dec;
+trade_flow (origin: $kab_berau, mill: $mill_hanusentra_agro_lestari, refiner: $ref_kutai_refinery_nusantara, exporter: $co_kutai_refinery_nusantara, importer: $co_apical_middle_east_fzco, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 47.703, has deforestation_ha 14.865, has usd 36342.51dec;
+trade_flow (origin: $kab_paser, mill: $mill_pucuk_jaya, refiner: $ref_kutai_refinery_nusantara, exporter: $co_kutai_refinery_nusantara, importer: $co_apical_middle_east_fzco, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 48.97, has deforestation_ha 11.0298, has usd 37308.09dec;
+trade_flow (origin: $kab_berau, mill: $mill_jabontara_eka_karsa_jabon, refiner: $ref_kutai_refinery_nusantara, exporter: $co_kutai_refinery_nusantara, importer: $co_apical_middle_east_fzco, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 35.713, has deforestation_ha 10.1963, has usd 27207.95dec;
+trade_flow (origin: $kab_berau, mill: $mill_dwiwira_lestari_jaya, refiner: $ref_kutai_refinery_nusantara, exporter: $co_kutai_refinery_nusantara, importer: $co_apical_middle_east_fzco, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 53.475, has deforestation_ha 9.7363, has usd 40739.71dec;
+trade_flow (origin: $kab_penajam_paser_utara, mill: $mill_perkebunan_nusantara_xiii_long_pinang, refiner: $ref_kutai_refinery_nusantara, exporter: $co_kutai_refinery_nusantara, importer: $co_apical_middle_east_fzco, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 3.943, has deforestation_ha 0.0, has usd 3004.06dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_bima_agri_sawit_pom_10, refiner: $ref_kutai_refinery_nusantara, exporter: $co_kutai_refinery_nusantara, importer: $co_apical_middle_east_fzco, destination: $country_spain, commodity: $com_refined_palm_oil),
+  has volume_tonnes 50.463, has deforestation_ha 0.0, has usd 38444.95dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_hamparan_perkasa_mandiri, refiner: $ref_kutai_refinery_nusantara, exporter: $co_kutai_refinery_nusantara, importer: $co_apical_middle_east_fzco, destination: $country_belgium, commodity: $com_refined_palm_oil),
+  has volume_tonnes 68.691, has deforestation_ha 0.0, has usd 54162.89dec;
+trade_flow (origin: $kab_kutai_timur, mill: $mill_agri_eastborneo_kencana, refiner: $ref_kutai_refinery_nusantara, exporter: $co_kutai_refinery_nusantara, importer: $co_apical_middle_east_fzco, destination: $country_belgium, commodity: $com_refined_palm_oil),
+  has volume_tonnes 1.829, has deforestation_ha 0.0, has usd 1441.84dec;
+# end::data[]

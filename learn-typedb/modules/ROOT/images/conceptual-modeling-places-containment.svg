@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 240" class="er" role="img" aria-label="ER diagram: containment relation; country contains province (parent, child) and province contains kabupaten (parent, child)">
+  <style>
+    text { fill: #1a1a1a; font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+    text.name, text.relname { font-weight: 600; }
+    text.role { fill: #555; font-size: 12px; font-style: italic; }
+    path.new { stroke: #6b3fd4; }
+    text.new-label { fill: #6b3fd4; }
+  </style>
+  <rect width="100%" height="100%" fill="white"/>
+  <g class="links" stroke="black" fill="none">
+    <line x1="80" y1="60" x2="80" y2="130"/>
+    <line x1="350" y1="60" x2="350" y2="130"/>
+    <line x1="620" y1="60" x2="620" y2="130"/>
+  </g>
+  <g class="attr" fill="white" stroke="gray">
+    <ellipse cx="80" cy="40" rx="62" ry="20"/>
+    <ellipse cx="350" cy="40" rx="66" ry="20"/>
+    <ellipse cx="620" cy="40" rx="70" ry="20"/>
+  </g>
+  <g transform="translate(0,70)">
+  <g class="links" stroke="black" fill="none">
+    <line x1="140" y1="83" x2="155" y2="83"/>
+    <line x1="275" y1="83" x2="290" y2="83"/>
+    <line x1="410" y1="83" x2="425" y2="83"/>
+    <line x1="545" y1="83" x2="560" y2="83"/>
+  </g>
+  <g class="ent" fill="white" stroke="black">
+    <rect x="20" y="60" width="120" height="46"/>
+    <rect x="290" y="60" width="120" height="46"/>
+    <rect x="560" y="60" width="120" height="46"/>
+  </g>
+  <g class="rel" fill="white" stroke="black">
+    <polygon points="215,53 275,83 215,113 155,83"/>
+    <polygon points="485,53 545,83 485,113 425,83"/>
+  </g>
+  <g text-anchor="middle" dominant-baseline="middle">
+    <text x="80" y="83" class="name">country</text>
+    <text x="350" y="83" class="name">province</text>
+    <text x="620" y="83" class="name">kabupaten</text>
+    <text x="215" y="83" class="relname" font-size="12">containment</text>
+    <text x="485" y="83" class="relname" font-size="12">containment</text>
+    <text x="150" y="132" class="role">parent</text>
+    <text x="282" y="132" class="role">child</text>
+    <text x="420" y="132" class="role">parent</text>
+    <text x="552" y="132" class="role">child</text>
+  </g>
+  </g>
+  <g text-anchor="middle" dominant-baseline="middle">
+    <text x="80" y="40" class="key" text-decoration="underline">country_name</text>
+    <text x="350" y="40" class="key" text-decoration="underline">province_name</text>
+    <text x="620" y="40" class="key" text-decoration="underline">kabupaten_name</text>
+  </g>
+</svg>

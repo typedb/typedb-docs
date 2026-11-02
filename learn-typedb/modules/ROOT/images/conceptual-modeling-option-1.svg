@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 410" class="er" role="img" aria-label="ER diagram, option 1: separate entity types mill, refinery and exporter, each belonging to its own group type">
+  <style>
+    text { fill: #1a1a1a; font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+    text.name, text.relname { font-weight: 600; }
+    text.role { fill: #555; font-size: 12px; font-style: italic; }
+    path.new { stroke: #6b3fd4; }
+    text.new-label { fill: #6b3fd4; }
+  </style>
+  <rect width="100%" height="100%" fill="white"/>
+  <g class="links" stroke="black" fill="none">
+    <line x1="120" y1="50" x2="120" y2="90"/>
+    <line x1="350" y1="50" x2="350" y2="90"/>
+    <line x1="580" y1="50" x2="580" y2="90"/>
+    <line x1="120" y1="320" x2="120" y2="360"/>
+    <line x1="350" y1="320" x2="350" y2="360"/>
+    <line x1="580" y1="320" x2="580" y2="360"/>
+  </g>
+  <g class="attr" fill="white" stroke="gray">
+    <ellipse cx="120" cy="30" rx="72" ry="20"/>
+    <ellipse cx="350" cy="30" rx="84" ry="20"/>
+    <ellipse cx="580" cy="30" rx="84" ry="20"/>
+    <ellipse cx="120" cy="380" rx="56" ry="20"/>
+    <ellipse cx="350" cy="380" rx="66" ry="20"/>
+    <ellipse cx="580" cy="380" rx="66" ry="20"/>
+  </g>
+  <g transform="translate(0,60)">
+  <g class="links" stroke="black" fill="none">
+    <line x1="120" y1="78" x2="120" y2="118"/><line x1="120" y1="172" x2="120" y2="212"/>
+    <line x1="350" y1="78" x2="350" y2="118"/><line x1="350" y1="172" x2="350" y2="212"/>
+    <line x1="580" y1="78" x2="580" y2="118"/><line x1="580" y1="172" x2="580" y2="212"/>
+  </g>
+  <g class="ent" fill="white" stroke="black">
+    <rect x="40" y="30" width="160" height="48"/><rect x="270" y="30" width="160" height="48"/><rect x="500" y="30" width="160" height="48"/>
+    <rect x="40" y="212" width="160" height="48"/><rect x="270" y="212" width="160" height="48"/><rect x="500" y="212" width="160" height="48"/>
+  </g>
+  <g class="rel" fill="white" stroke="black">
+    <polygon points="120,118 175,145 120,172 65,145"/>
+    <polygon points="350,118 405,145 350,172 295,145"/>
+    <polygon points="580,118 635,145 580,172 525,145"/>
+  </g>
+  <g text-anchor="middle" dominant-baseline="middle">
+    <text x="120" y="54" class="name">mill_group</text><text x="350" y="54" class="name">refinery_group</text><text x="580" y="54" class="name">exporter_group</text>
+    <text x="120" y="145" class="relname">groups</text><text x="350" y="145" class="relname">groups</text><text x="580" y="145" class="relname">groups</text>
+    <text x="120" y="236" class="name">mill</text><text x="350" y="236" class="name">refinery</text><text x="580" y="236" class="name">exporter</text>
+  </g>
+  </g>
+  <g text-anchor="middle" dominant-baseline="middle">
+    <text x="120" y="30">mill_group_name</text>
+    <text x="350" y="30">refinery_group_name</text>
+    <text x="580" y="30">exporter_group_name</text>
+    <text x="120" y="380">mill_name</text>
+    <text x="350" y="380">refinery_name</text>
+    <text x="580" y="380">exporter_name</text>
+  </g>
+</svg>

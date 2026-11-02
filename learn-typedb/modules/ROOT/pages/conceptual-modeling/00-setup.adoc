@@ -1,0 +1,39 @@
+= Chapter Zero: Setup
+:description: Run TypeDB and connect TypeDB Studio for the conceptual modeling crash course.
+:keywords: typedb, typeql, studio, setup, database, conceptual modeling
+
+[.lead]
+_Run TypeDB, connect TypeDB Studio, and create an empty database_
+
+== Run TypeDB
+
+TIP: Already have a running TypeDB server? Skip to <<create_database>>.
+
+include::partial$typedb-cloud-setup.adoc[tag=create_cluster,leveloffset=+1]
+
+== Connect TypeDB Studio
+
+TypeDB Studio is a browser-based interface for TypeDB.
+We'll use it to run the queries in this course, and to view the schema as it grows.
+
+include::{page-version}@home::partial$studio_connect.adoc[tag=connect_studio]
+
+[#create_database]
+== Create a database
+
+. In the top bar, open the database selector, which shows 'No database selected'.
+. Select '+ New Database'.
+. Name it `palm_oil` and leave the sample dataset field blank.
+
+The course assumes this database starts empty.
+
+== Run a query
+
+Open the *Query* page, and check that the transaction mode toggle in its toolbar is set to *auto*.
+In auto mode, Studio detects whether a query changes the schema, writes data or only reads, opens the matching transaction, and commits it if the query succeeds.
+Paste each query from the course into the editor and run it.
+
+The *Schema* page draws the current schema as a graph.
+Open it after each chapter to compare it with the ER diagrams in the course.
+
+Next: xref:{page-version}@learn-typedb::conceptual-modeling/01-from-er-to-typeql.adoc[].

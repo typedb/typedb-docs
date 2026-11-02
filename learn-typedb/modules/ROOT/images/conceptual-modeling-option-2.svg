@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" class="er" role="img" aria-label="ER diagram, option 2: abstract legal_entity with subtypes facility (abstract; mill, refinery) and company; ownership relation with roles owner and owned; companies can also be owned">
+  <style>
+    text { fill: #1a1a1a; font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+    text.name, text.relname { font-weight: 600; }
+    text.role { fill: #555; font-size: 12px; font-style: italic; }
+    path.new { stroke: #6b3fd4; }
+    text.new-label { fill: #6b3fd4; }
+  </style>
+  <rect width="100%" height="100%" fill="white"/>
+  <g class="links" stroke="black" fill="none">
+    <line x1="395" y1="86" x2="395" y2="104"/>
+    <line x1="385" y1="136" x2="230" y2="170"/>
+    <line x1="405" y1="136" x2="560" y2="170"/>
+    <line x1="640" y1="195" x2="648" y2="195"/>
+    <line x1="560" y1="220" x2="500" y2="310"/>
+    <line x1="290" y1="220" x2="340" y2="310"/>
+    <line x1="230" y1="220" x2="230" y2="240"/>
+    <line x1="220" y1="272" x2="150" y2="380"/>
+    <line x1="240" y1="272" x2="290" y2="380"/>
+    <line x1="150" y1="424" x2="150" y2="452"/>
+    <line x1="290" y1="424" x2="290" y2="452"/>
+  </g>
+  <path class="new" d="M640,215 C720,300 560,385 420,348" stroke="black" fill="none" stroke-dasharray="6 4"/>
+  <g class="attr" fill="white" stroke="gray">
+    <ellipse cx="720" cy="195" rx="72" ry="20"/>
+    <ellipse cx="150" cy="472" rx="58" ry="20"/>
+    <ellipse cx="290" cy="472" rx="68" ry="20"/>
+  </g>
+  <g class="ent" fill="white" stroke="black">
+    <rect class="abstract" x="305" y="40" width="180" height="46" stroke-dasharray="7 4"/>
+    <rect class="abstract" x="150" y="170" width="160" height="50" stroke-dasharray="7 4"/>
+    <rect x="480" y="170" width="160" height="50"/>
+    <rect x="90" y="380" width="120" height="44"/>
+    <rect x="230" y="380" width="120" height="44"/>
+  </g>
+  <polygon class="rel" points="420,272 500,310 420,348 340,310" fill="white" stroke="black"/>
+  <polygon class="isa" points="395,104 370,136 420,136" fill="white" stroke="black"/>
+  <polygon class="isa" points="230,240 205,272 255,272" fill="white" stroke="black"/>
+  <g text-anchor="middle" dominant-baseline="middle">
+    <text x="395" y="63" class="name" font-style="italic">legal_entity (abstract)</text>
+    <text x="395" y="126" font-size="11">ISA</text>
+    <text x="230" y="195" class="name" font-style="italic">facility (abstract)</text>
+    <text x="560" y="195" class="name">company</text>
+    <text x="720" y="195" class="key" text-decoration="underline">company_name</text>
+    <text x="230" y="262" font-size="11">ISA</text>
+    <text x="420" y="310" class="relname">ownership</text>
+    <text x="150" y="402" class="name">mill</text>
+    <text x="290" y="402" class="name">refinery</text>
+    <text x="150" y="472">mill_name</text>
+    <text x="290" y="472">refinery_name</text>
+    <text x="546" y="268" class="role" text-anchor="start">owner</text>
+    <text x="305" y="270" class="role" text-anchor="end">owned</text>
+    <text x="660" y="318" class="role new-label" text-anchor="start">owned</text>
+    <text x="660" y="336" class="role new-label" text-anchor="start">(snippet 4)</text>
+  </g>
+</svg>
