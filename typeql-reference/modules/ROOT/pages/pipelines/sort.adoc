@@ -25,18 +25,29 @@ sort <var> [asc|desc] [ , <var> [asc|desc] ... ];
 [,typeql]
 ----
 #!test[schema, commit]
-include::{page-version}@reference::partial$2_to_3/schema-3x.tql[tags=full-query]
+include::{page-version}@typeql-reference::example$tql/schema_statements_functions.tql[tags=define-keyword;entities;attributes;relation-friendship]
 ----
 ====
 
-Retrieve all posts on a given page, sorted from newest to oldest.
+Retrieve all friends of a user, sorted by the time they became friends from latest to earliest.
 
 [,typeql]
 ----
 #!test[read]
 match
-  $page isa page, has id "<page id>";
-  $post isa post, has creation-timestamp $created;
-  posting (page: $page, post: $post);
-sort $created desc;
+  $user isa user, has name "<name>";
+  friendship (friend: $user, friend: $friend),
+    has start-date $start;
+sort $start desc;
+----
+
+Multiple variables may be given. Rows are sorted by the first variable, and ties are broken by each
+subsequent one in turn.
+
+[,typeql]
+----
+#!test[read]
+match
+  $user isa user, has karma $karma, has username $username;
+sort $karma desc, $username asc;
 ----
