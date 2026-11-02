@@ -100,6 +100,16 @@ abs(-5) == 5
 abs(0) == 0
 ----
 
+`std::math::log10(x)`::
+Returns the base-10 logarithm of the provided numeric argument.
+Unlike the functions above, `log10` has no short alias and is called by its fully qualified name.
+
+[,typeql]
+----
+std::math::log10(1000) == 3
+std::math::log10(1) == 0
+----
+
 === Comparison functions
 
 `min(x, y)`::
