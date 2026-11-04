@@ -5,7 +5,7 @@
 :tabs-sync-option:
 :page-preamble-card: 1
 
-include::{page-version}@home::partial$outdated-docs-disclaimer.adoc[]
+include::{page-version}@drivers::partial$outdated-docs-disclaimer.adoc[]
 
 In this tutorial, we'll build a sample application with the Rust driver capable of basic interaction with TypeDB:
 
@@ -21,7 +21,6 @@ https://github.com/typedb/typedb-docs/tree/master/drivers-src/modules/ROOT/parti
 To run this sample application, you'll need:
 
 . TypeDB: either a https://cloud.typedb.com/[TypeDB Cloud,window=_blank] cluster or a self-hosted deployment.
-For TypeDB Community Edition and TypeDB Enterprise installation instructions, see the xref:{page-version}@manual::self-managed/index.adoc[] page.
 . Rust, cargo, and https://crates.io/crates/typedb-driver[TypeDB Rust driver].
 For the driver installation instructions, see the xref:{page-version}@drivers::rust/index.adoc[] page.
 
@@ -141,7 +140,7 @@ include::{page-version}@drivers::partial$tutorials/rust/src/main.rs[tag=replace_
 [#_defining_a_schema]
 === Defining a schema
 
-We use a xref:{page-version}@typeql::queries/define.adoc[Define query] to define a schema for the newly created database:
+We use a Define query to define a schema for the newly created database:
 
 [,rust]
 ----
@@ -168,7 +167,7 @@ Then we send the contents of the file as a TypeQL Define query and commit the ch
 === Loading initial data
 
 With the schema defined, we can load initial data into our database with the
-xref:{page-version}@typeql::queries/insert.adoc[Insert query]:
+Insert query:
 
 [,rust]
 ----
@@ -228,7 +227,7 @@ and returns some meaningful data.
 The main way to retrieve data from a TypeDB database is to use fetching to get values of attributes,
 matched by a pattern.
 
-Let's use a xref:{page-version}@typeql::queries/fetch.adoc[Fetch query] to fetch names and emails for all users in the database:
+Let's use a Fetch query to fetch names and emails for all users in the database:
 
 [,rust]
 ----
@@ -294,7 +293,7 @@ The `add-view-permission` rule provides us with some inferred results this time.
 
 Let's replace a path for one of the files with a new path.
 We can do that by deleting ownership of the old path attribute from the file entity
-and assigning it with ownership of the new path attribute with the xref:{page-version}@typeql::queries/update.adoc[Update query]:
+and assigning it with ownership of the new path attribute with the Update query:
 
 [,rust]
 ----
@@ -311,7 +310,7 @@ We then commit the changes only if the number meets our expectation.
 Finally, let's delete the same file we updated the path for.
 First, we match the file in a Get (or Fetch) query to check how many files get matched to prevent unplanned deletes.
 If the number (or any other relevant parameters) of matched results is as expected,
-we proceed with a xref:{page-version}@typeql::queries/delete.adoc[Delete query] with the same match clause.
+we proceed with a Delete query with the same match clause.
 
 By using the same `write` transaction we employ snapshot isolation
 to prevent any other transactions from changing the expected results.
