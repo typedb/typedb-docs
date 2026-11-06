@@ -323,7 +323,7 @@ match
 fetch {
   "title": $book.title,
   "price": $book-price,
-  "discounted-price": $discounted-price,
+  "discounted-price": $discounted-price?,
 };
 ----
 
