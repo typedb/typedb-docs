@@ -36,33 +36,81 @@ comparison and `isa` checks are not yet implemented.
 ----
 #!test[schema]
 define
-attribute name, value string;
+attribute id, value string;
 attribute age, value integer;
+attribute height, value integer;
+attribute address, value string;
 
-entity person, owns name, owns age;
-entity company, owns name;
+entity person,
+    owns id @key, owns age, owns height, owns address,
+    plays pet-ownership:owner,
+    plays insurance-policy:primary,
+    plays insurance-policy:additional;
 
-relation friendship, relates friend @card(2);
-relation employment, relates employee, relates employer;
-person plays employment:employee, plays friendship:friend;
-company plays employment:employer;
-#}}
+entity pet,
+    owns address,
+    plays pet-ownership:pet,
+    plays insurance-policy:additional;
+
+relation pet-ownership, relates owner, relates pet;
+relation insurance-policy,
+    relates primary @card(1),
+    relates additional @card(0..);
 ----
 ====
 
 === Insert
-Creates an `also-person` for each `person` in the database,
-copying over the `age` if the `person` has one.
+Creates a new `insurance-policy` covering a `person`, and adds any pets as `additional` coverage.
+Rows are still returned even if the person has no pets.
 [,typeql]
 ----
 #!test[write]
 match
-  $p isa person, has ref $ref;
-  try { $p has age $age; };
+  $p isa person, has id $id;
 insert
-  $q isa also-person, has $ref;
-  if { isset $age; } then {
-    $q has $age;
+    $i isa insurance-policy, links (primary: $p);
+match
+    try { $_ isa pet-ownership, links (owner: $p, pet: $q); };
+insert
+    if { isset $q; } then {
+        $i links (additional: $q);
+    };
+----
+
+=== Put
+The same applies for `put`. The matching behaviour of
+`if { <condition>; } then { <body>; };` in a `put` stage
+is the same as `try { <condition>; <body>; };`
+[,typeql]
+----
+#!test[write]
+match
+  $p isa person, has id $id;
+put
+    $i isa insurance-policy, links (primary: $p);
+match
+    try { $_ isa pet-ownership, links (owner: $p, pet: $q); };
+put
+    if { isset $q; } then {
+        $i links (additional: $q);
+    };
+----
+
+=== Update
+Update the address of a person, and any pets they may have.
+[,typeql]
+----
+#!test[write, given=id;new-address]
+given $id: id, $new-address: string;
+match
+  $p isa person, has id $id, has address $old-address;
+update
+  $p has address == $new-address;
+match
+    try { $_ isa pet-ownership, links (owner: $p, pet: $q); };
+update
+  if { isset $q; } then {
+    $q has address == $new-address;
   };
 ----
 
@@ -73,46 +121,10 @@ Without the `try`, only `person`s with both `age` and `height` would be matched.
 ----
 #!test[write]
 match
-  $p isa person, has ref $ref;
+  $p isa person, has id $id;
   try { $p has age $age; };
   try { $p has height $height; };
 delete
   if { isset $age; } then { has $age of $p; };
   if { isset $height; } then { has $height of $p; };
-----
-
-=== Put
-Since the pattern in a `put` must also be a valid `insert` pattern,
-they must use `if` blocks and not `try` blocks.
-
-[,typeql]
-----
-#!test[write]
-match
-  $p isa person, has ref $ref;
-  try { $p has age $age; };
-put
-  $q isa also-person, has $ref;
-  if { isset $age; } then {
-    $q has $age;
-  };
-----
-
-=== Update
-Update the address of a person, and any pets they may have.
-Rows are still returned even if the person has no pets.
-[,typeql]
-----
-#!test[write]
-given $ref: ref, $new-address: string;
-match
-  $p isa person, has ref $ref, has address $old-address;
-update
-  $p has address == $new-address;
-match
-    try { $_ isa pet-ownership, links (owner: $p, pet: $q); };
-update
-  if { isset $q; } then {
-    $q has address == $new-address;
-  };
 ----

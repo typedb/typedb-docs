@@ -4,6 +4,26 @@
 == Variable names, visibility & scopes
 Variable names are unique within a pattern - i.e. all usages of the same name in a stage refer to the same variable.
 
+.Schema for the examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema]
+define
+attribute name, value string;
+attribute age, value integer;
+
+entity person, owns name, owns age;
+entity company, owns name;
+
+relation friendship, relates friend @card(2);
+relation employment, relates employee, relates employer;
+person plays employment:employee, plays friendship:friend;
+company owns age, plays employment:employer;
+----
+====
+
 == Scopes
 Pattern comprise statements containing variables. Given a pattern, the *scope* of a variable is:
 
@@ -95,7 +115,7 @@ The `?` operator can also be used to short-circuit `fetch` attribute expressions
 #!test[read]
 match
     $p isa person;
-    try { $_ isa friendship, links (person: $p, person: $q);
+    try { $_ isa friendship, links (friend: $p, friend: $q); };
 fetch {
     "p": { $p.* },
     "q": { $q?.* },
@@ -103,27 +123,6 @@ fetch {
 ----
 
 == Examples
-
-.Schema for the examples
-[%collapsible]
-====
-[,typeql]
-----
-#!test[schema]
-define
-attribute name, value string;
-attribute age, value integer;
-
-entity person, owns name, owns age;
-entity company, owns name;
-
-relation friendship, relates friend @card(2);
-relation employment, relates employee, relates employer;
-person plays employment:employee, plays friendship:friend;
-company plays employment:employer;
-#}}
-----
-====
 
 === Example 1: Scopes
 In the following, the scope of the variable `$p` is the root.
@@ -150,16 +149,16 @@ For the following example, the variable `$p` and `$a` are both scoped to the roo
 #!test[read]
 match
     { $x isa person; $p has age $a; } or
-    { $x isa company; try { $x has age $a; } };
+    { $x isa company; try { $x has age $a; }; };
 ----
 
 ==== Example 2: Disjoint scope errors
 The following is an error because `$p` has two different scopes - The first and second branches of the disjunction.
 [,typeql]
 ----
-#!test[read]
+#!test[read, fail_at=runtime]
 match
-{ $p isa person; } or { $p is company; } or { $q isa person; };
+{ $p isa person; } or { $p isa company; } or { $q isa person; };
 ----
 
 This is fine because `$p` has is visible at the root, since it is in both branches of the second disjunction.
@@ -167,7 +166,7 @@ This is fine because `$p` has is visible at the root, since it is in both branch
 ----
 #!test[read]
 match
-{ $p isa person; } or { $p is company; } or { $q isa person; };
+{ $p isa person; } or { $p isa company; } or { $q isa person; };
 { $p has name "Steve"; } or { $p has age 20; };
 ----
 The following is also fine, as the `$p` is visible in the root of the first match, and hence visible in the root of the second match.
@@ -178,14 +177,14 @@ Thus, its scope in the second match is also the root.
 match
     { $p has name "Steve"; } or { $p has age 20; };
 match
-    { $p isa person; } or { $p is company; } or { $q isa person; };
+    { $p isa person; } or { $p isa company; } or { $q isa person; };
 ----
 
 ==== Example 3: Variable scopes & naming across stages
 The following is an error as the variables `$n` and `$a` have multiple scopes.
-[,typeql]
+[typeql]
 ----
-#!test[read]
+#!test[read, fail_at=runtime]
 match
 $p isa person;
 { $p has $name; } or { $p has $age; };
@@ -209,7 +208,7 @@ Here, The scope of `$c` is the root - making it an input to either negation.
 However, there is no constraint which can bind `$c` in the root and the negations have an unsatisfied input.
 [,typeql]
 ----
-#!test[read]
+#!test[read, fail_at=runtime]
 match
 $f isa friendship, links (friend: $p, friend: $q);
 not { employment (employer: $c, employer: $p); };
@@ -219,7 +218,7 @@ not { employment (employer: $c, employer: $q); };
 Similarly, the following pattern also fails because `$c` is an unsatisfied input to the optional blocks.
 [,typeql]
 ----
-#!test[read]
+#!test[read, fail_at=runtime]
 match
 $f isa friendship, links (friend: $p, friend: $q);
 try { employment (employer: $c, employer: $p); };
