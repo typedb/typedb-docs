@@ -24,21 +24,95 @@ Unlike `try` blocks - which could not be nested, the explicit conditions in `if`
 
 [NOTE]
 ====
-comparison and `isset` checks are not yet implemented.
+comparison and `isa` checks are not yet implemented.
 ====
 
 == Examples
 
+.Schema for the examples
+[%collapsible]
+====
+[,typeql]
+----
+#!test[schema]
+define
+attribute name, value string;
+attribute age, value integer;
+
+entity person, owns name, owns age;
+entity company, owns name;
+
+relation friendship, relates friend @card(2);
+relation employment, relates employee, relates employer;
+person plays employment:employee, plays friendship:friend;
+company plays employment:employer;
+#}}
+----
+====
+
 === Insert
-todo
+Creates an `also-person` for each `person` in the database,
+copying over the `age` if the `person` has one.
+[,typeql]
+----
+#!test[write]
+match
+  $p isa person, has ref $ref;
+  try { $p has age $age; };
+insert
+  $q isa also-person, has $ref;
+  if { isset $age; } then {
+    $q has $age;
+  };
+----
 
 === Delete
-todo
+Matches `person`s, and removes their `age` and `height` if they had any.
+Without the `try`, only `person`s with both `age` and `height` would be matched.
+[,typeql]
+----
+#!test[write]
+match
+  $p isa person, has ref $ref;
+  try { $p has age $age; };
+  try { $p has height $height; };
+delete
+  if { isset $age; } then { has $age of $p; };
+  if { isset $height; } then { has $height of $p; };
+----
 
 === Put
 Since the pattern in a `put` must also be a valid `insert` pattern,
 they must use `if` blocks and not `try` blocks.
 
+[,typeql]
+----
+#!test[write]
+match
+  $p isa person, has ref $ref;
+  try { $p has age $age; };
+put
+  $q isa also-person, has $ref;
+  if { isset $age; } then {
+    $q has $age;
+  };
+----
 
 === Update
-todo
+Update the address of a person, and any pets they may have.
+Rows are still returned even if the person has no pets.
+[,typeql]
+----
+#!test[write]
+given $ref: ref, $new-address: string;
+match
+  $p isa person, has ref $ref, has address $old-address;
+update
+  $p has address == $new-address;
+match
+    try { $_ isa pet-ownership, links (owner: $p, pet: $q); };
+update
+  if { isset $q; } then {
+    $q has address == $new-address;
+  };
+----
