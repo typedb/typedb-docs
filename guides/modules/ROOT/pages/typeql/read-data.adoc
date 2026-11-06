@@ -342,7 +342,10 @@ fetch {
 ...
 Finished. Total answers: 21
 ----
-
+[NOTE]
+====
+Since version 3.15, Optional variables in `fetch` expressions must be marked with a `?` to acknowledge optionality.
+====
 [TIP]
 ====
 Note that a `fetch` subquery is not required to produce an answer for the query to succeed.
