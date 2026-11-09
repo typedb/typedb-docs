@@ -92,8 +92,7 @@ Else both `$age` and `$double-age` will be `none`
 
 === Short-circuiting expressions
 It is common to want to optionally compute a value involving optional inputs. One way to do this is using a `try` as above.
-
-The `?` operator which "short-circuits" the expression and returns `none`.
+Alternately, the `?` operator can be used to "short-circuit" the expression when an optional-variable is `none`.
 
 [,typeql]
 ----
@@ -124,7 +123,7 @@ fetch {
 
 == Examples: Scopes & Binding modes
 
-=== Example 1: Scopes
+==== Example 1: Scopes
 In the following, the scope of the variable `$p` is the root.
 The scope of `$n` is also the root as it occurs in both branches.
 `$a` is scoped to the second branch of the disjunction.
@@ -148,8 +147,8 @@ For the following example, the variable `$p` and `$a` are both scoped to the roo
 ----
 #!test[read]
 match
-    { $x isa person; $p has age $a; } or
-    { $x isa company; try { $x has age $a; }; };
+    { $p isa person; $p has age $a; } or
+    { $p isa company; try { $p has age $a; }; };
 ----
 
 ==== Example 2: Disjoint scope errors
@@ -211,8 +210,8 @@ However, there is no constraint which can bind `$c` in the root and the negation
 #!test[read, fail_at=runtime]
 match
 $f isa friendship, links (friend: $p, friend: $q);
-not { employment (employer: $c, employer: $p); };
-not { employment (employer: $c, employer: $q); };
+not { employment (employer: $c, employee: $p); };
+not { employment (employer: $c, employee: $q); };
 ----
 
 Similarly, the following pattern also fails because `$c` is an unsatisfied input to the optional blocks.
@@ -221,6 +220,28 @@ Similarly, the following pattern also fails because `$c` is an unsatisfied input
 #!test[read, fail_at=runtime]
 match
 $f isa friendship, links (friend: $p, friend: $q);
-try { employment (employer: $c, employer: $p); };
-try { employment (employer: $c, employer: $q); };
+try { employment (employer: $c, employee: $p); };
+try { employment (employer: $c, employee: $q); };
 ----
+
+The correct query to find two unemployed friends uses different names for the company in the two `not` blocks.
+[,typeql]
+----
+#!test[read]
+match
+$f isa friendship, links (friend: $p, friend: $q);
+not { employment (employer: $c1, employee: $p); };
+not { employment (employer: $c2, employee: $q); };
+----
+
+Introducing `$c` outside the negations would make it a bound input to either, and return friends who don't work at the same company.
+[,typeql]
+----
+#!test[read]
+match
+$f isa friendship, links (friend: $p, friend: $q);
+$c isa company;
+not { employment (employer: $c, employee: $p); };
+not { employment (employer: $c, employee: $q); };
+----
+

@@ -17,15 +17,12 @@ if { <condition>; <condition>; [...] } then {
     [...]
 };
 ----
-
+////
+// TODO: Uncomment when we add these.
 By separating the condition & write pattern, `if` blocks can support a wider variety of conditions -
 comparison & `isa` statements in addition to `isset` checks.
+////
 Unlike `try` blocks - which could not be nested, the explicit conditions in `if` blocks allow them to be nested
-
-[NOTE]
-====
-comparison and `isa` checks are not yet implemented.
-====
 
 == Examples
 
