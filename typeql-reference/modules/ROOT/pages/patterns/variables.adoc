@@ -36,10 +36,11 @@ Hence, having disjoint blocks in which a variable appears is an error.
 
 == Input, Bound & Internal variables
 A variable can be either *_bound_* by or *_input_* to a constraint or subpattern. This is called the "binding mode" of a variable.
+Additionally, we call variables *_internal_* to a subpattern if it is not visible outside the subpattern.
 
 === Constraints
 
-A variable is *_input_* to a constraint if it must be bound to some value before the constraint is evaluated. A variable is *_bound_* by a constraint if evaluating the constraint binds the variable to some value.  Once a constraint is evaluated, all variables appearing in it will be bound.
+A variable is *_input_* to a constraint if it must be bound to some value before the constraint is evaluated. Any variables which isn't an input is *_bound_* by a constraint when it is evaluated.
 
 Most constraints bind all the variables involved. The input variables are:
 * Both variables in a comparison
@@ -47,25 +48,24 @@ Most constraints bind all the variables involved. The input variables are:
 * All variables in the rhs of an expression assignment.
 * All arguments to a function call.
 
+=== Conjunctions
+A variable is `input` to a conjunction if it is `input` to some constraint or subpattern in it, and not bound by some other constraint or subpattern in it.
+
 === Subpatterns
 The definition for variables which are input or bound by subpatterns is similar, but the rules to determine the variable's binding mode is more involved.
 
-Additionally, we call variables *_internal_* to a subpattern if it is not visible outside the subpattern.
-
-* A variable that is scoped to a parent of the negation (i.e. not internal) is input to the negation.
-* A variable that is scoped to a negation is internal to the negation.
-
-* A variable that is scoped to a parent of the optional is input to the optional.
-* A variable that is scoped to an optional must be bound by the optional.
-
-* A variable is bound by a disjunction if it is bound by all its branches.
-* A variable is input to a disjunction if it appears in some but not all branches OR is input to one of the branches.
-* A variable that is scoped to a branch of a disjunction is internal to that branch.
-
-These also have the following effects:
-
-* No variables are bound by the negation.
-* No variables are internal to an optional (except those internal to subpatterns of the optional)
+* *Negations*
+  - A variable that is scoped to a parent of the negation (i.e. not internal) is input to the negation.
+  - A variable that is scoped to a negation is internal to the negation.
+  - Hence, No variables are bound by the negation.
+* *Optionals*
+  - A variable that is scoped to a parent of the optional is input to the optional.
+  - A variable that is scoped to an optional must be bound by the optional.
+  - Hence, no variables are internal to an optional (except those internal to subpatterns of the optional)
+* *Disjunctions*
+  - A variable is bound by a disjunction if it is bound by all its branches.
+  - A variable is input to a disjunction if it appears in some but not all branches OR is input to one of the branches.
+  - A variable that is scoped to a branch of a disjunction is internal to that branch.
 
 The semantics of optionals and negations depend on whether a variable is *_input_* to them or not. Disjunctions inputs have less to do with semantics and more to do with evaluation.
 
