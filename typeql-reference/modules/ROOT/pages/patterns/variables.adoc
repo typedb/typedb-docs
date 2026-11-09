@@ -26,7 +26,7 @@ Patterns comprise statements containing variables. Given a TypeQL pattern, the *
 
 * the outermost conjunction in which the variable appears.
 * If the variable appears in all branches of a disjunction, it counts as appearing in the parent conjunction.
-* If a variable is scoped the root conjunction of a stage, it appears in the root conjunction of the next stage.
+* If a variable is scoped to the root conjunction of a stage, it appears in the root conjunction of the next stage.
 
 A key principle of valid TypeQL pattern is:
 
@@ -40,9 +40,10 @@ Additionally, we call variables *_internal_* to a subpattern if it is not visibl
 
 === Constraints
 
-A variable is *_input_* to a constraint if it must be bound to some value before the constraint is evaluated. Any variables which isn't an input is *_bound_* by a constraint when it is evaluated.
+A variable is *_input_* to a constraint if it must be bound to some value before the constraint is evaluated. Any variable which isn't an input is *_bound_* by a constraint when it is evaluated.
 
 Most constraints bind all the variables involved. The input variables are:
+
 * Both variables in a comparison
 * Both variables in an `is` statement
 * All variables in the rhs of an expression assignment.
@@ -57,7 +58,7 @@ The definition for variables which are input or bound by subpatterns is similar,
 * *Negations*
   - A variable that is scoped to a parent of the negation (i.e. not internal) is input to the negation.
   - A variable that is scoped to a negation is internal to the negation.
-  - Hence, No variables are bound by the negation.
+  - Hence, no variables are bound by the negation.
 * *Optionals*
   - A variable that is scoped to a parent of the optional is input to the optional.
   - A variable that is scoped to an optional must be bound by the optional.
@@ -67,7 +68,7 @@ The definition for variables which are input or bound by subpatterns is similar,
   - A variable is input to a disjunction if it appears in some but not all branches OR is input to one of the branches.
   - A variable that is scoped to a branch of a disjunction is internal to that branch.
 
-The semantics of optionals and negations depend on whether a variable is *_input_* to them or not. Disjunctions inputs have less to do with semantics and more to do with evaluation.
+The semantics of optionals and negations depend on whether a variable is *_input_* to them or not. Disjunction inputs have less to do with semantics and more to do with evaluation. In all cases, an input variable which cannot be satisfied is a compile-time error.
 
 == Optionality
 When an optional block fails, it returns a single row with
@@ -76,10 +77,10 @@ Using an optional variable in a constraint which is not defined for the `none` v
 
 === isset
 An `isset` constraint can be used to assert that a variable is not `none`. `isset $var;` fails if `$var` is `none`, leaving only rows where `$var` is not `none` - safe for use in constraints.
-For read stages
+
 [,typeql]
 ----
-#!test[write]
+#!test[read]
 match
     $p isa person;
     try { $p has age $age; };
@@ -159,7 +160,7 @@ match
 { $p isa person; } or { $p isa company; } or { $q isa person; };
 ----
 
-This is fine because `$p` has is visible at the root, since it is in both branches of the second disjunction.
+This is fine because `$p` is visible at the root, since it is in both branches of the second disjunction.
 [,typeql]
 ----
 #!test[read]
@@ -189,7 +190,7 @@ $p isa person;
 { $name isa name == "Steve"; } or { $age isa age == 10; };
 ----
 
-The following example is no longer an error, but means something very different.
+The following example is no longer an error, but means something very different. Despite having the same name, The two usages of `$name` actually refer to two different variables (as do the two usages of `$age`).
 [,typeql]
 ----
 #!test[read]
@@ -233,7 +234,7 @@ not { employment (employer: $c1, employee: $p); };
 not { employment (employer: $c2, employee: $q); };
 ----
 
-Introducing `$c` outside the negations would make it a bound input to either, and return friends who don't work at the same company.
+Introducing `$c` outside the negations would make it an input to either, and returns (friendship, company) pairs where neither friend works at $c
 [,typeql]
 ----
 #!test[read]
