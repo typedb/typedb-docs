@@ -22,11 +22,11 @@ company owns age, plays employment:employer;
 ====
 
 == Scopes
-Patterns comprise statements containing variables. Given a block of TypeQL, the *scope* of a variable is:
+Patterns comprise statements containing variables. Given a TypeQL pattern, the *scope* of a variable is:
 
-* the outermost pattern `{ ... }` in which the variable appears.
-* If the variable appears in all branches of a disjunction, it counts as appearing in the parent pattern.
-* If a variable is scoped the root of a stage, it appears in the root of the next stage.
+* the outermost conjunction in which the variable appears.
+* If the variable appears in all branches of a disjunction, it counts as appearing in the parent conjunction.
+* If a variable is scoped the root conjunction of a stage, it appears in the root conjunction of the next stage.
 
 A key principle of valid TypeQL pattern is:
 
