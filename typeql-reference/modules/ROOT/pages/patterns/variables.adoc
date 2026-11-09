@@ -1,8 +1,5 @@
-= Variables
+= Variables - scopes, binding & optionality
 :test-typeql: linear
-
-== Variable names, visibility & scopes
-Variable names are unique within a pattern - i.e. all usages of the same name in a stage refer to the same variable.
 
 .Schema for the examples
 [%collapsible]
@@ -25,13 +22,11 @@ company owns age, plays employment:employer;
 ====
 
 == Scopes
-Pattern comprise statements containing variables. Given a pattern, the *scope* of a variable is:
+Patterns comprise statements containing variables. Given a block of TypeQL, the *scope* of a variable is:
 
-* the block `{ ... }` in which variable appears at top-level (i.e., not nested in further `{...}`) but it does not appear outside of the block.
-If the variable appears in all branches of a disjunction, it counts as appearing in the parent pattern.
-If a variable is scoped the root of a stage, it appears in the root of the next stage.
-
-A variable that is scoped to a block (i.e. not the root) is said to be "internal" to that block
+* the outermost pattern `{ ... }` in which the variable appears.
+* If the variable appears in all branches of a disjunction, it counts as appearing in the parent pattern.
+* If a variable is scoped the root of a stage, it appears in the root of the next stage.
 
 A key principle of valid TypeQL pattern is:
 
@@ -39,62 +34,64 @@ A key principle of valid TypeQL pattern is:
 
 Hence, having disjoint blocks in which a variable appears is an error.
 
+== Input, Bound & Internal variables
+A variable can be either *_bound_* by or *_input_* to a constraint or subpattern. This is called the "binding mode" of a variable.
 
-== Input and Binding variables
-The semantics of optionals and negations depend on whether a variable is input to it or not.
+=== Constraints
 
-* A variable is input to a negation if it is also which is not internal to the negation is an input to the negation.
-* A variable is input to an optional if it is not internal to the block.
+A variable is *_input_* to a constraint if it must be bound to some value before the constraint is evaluated. A variable is *_bound_* by a constraint if evaluating the constraint binds the variable to some value.  Once a constraint is evaluated, all variables appearing in it will be bound.
 
-Disjunctions may also have inputs, though this has less to do with semantics and more to do with evaluation.
+Most constraints bind all the variables involved. The input variables are:
+* Both variables in a comparison
+* Both variables in an `is` statement
+* All variables in the rhs of an expression assignment.
+* All arguments to a function call.
 
-* A variable is input to a disjunction if it is not internal to it, and in some but not all branches.
-* A disjunction binds variables that occur in all its branches.
-* A negation does not bind any internal variables.
-* An optional binds all internal variables.
+=== Subpatterns
+The definition for variables which are input or bound by subpatterns is similar, but the rules to determine the variable's binding mode is more involved.
 
-Certain kinds of constraints also require the variables to be bound before they can be evaluated.
+Additionally, we call variables *_internal_* to a subpattern if it is not visible outside the subpattern.
 
-* A comparison needs both variables to be bound
-* An `is` statement needs both variables to be bound
-* An expression assignment requires all variables used in the expression to be bound.
-* A function call requires all arguments to be bound.
+* A variable that is scoped to a parent of the negation (i.e. not internal) is input to the negation.
+* A variable that is scoped to a negation is internal to the negation.
+
+* A variable that is scoped to a parent of the optional is input to the optional.
+* A variable that is scoped to an optional must be bound by the optional.
+
+* A variable is bound by a disjunction if it is bound by all its branches.
+* A variable is input to a disjunction if it appears in some but not all branches OR is input to one of the branches.
+* A variable that is scoped to a branch of a disjunction is internal to that branch.
+
+These also have the following effects:
+
+* No variables are bound by the negation.
+* No variables are internal to an optional (except those internal to subpatterns of the optional)
+
+The semantics of optionals and negations depend on whether a variable is *_input_* to them or not. Disjunctions inputs have less to do with semantics and more to do with evaluation.
 
 == Optionality
 When an optional block fails, it returns a single row with
-all the variables internal to the block bound to `none` value.
-Since (most) constraints are not defined on `none` values, using an optional variable in a constraint is invalid
-and results in a compile-time error.
-The `isset $var;` constraint fails if the `$var` is `none`.
-Hence, only rows where `$var` is not `none` remain and `$var` can safely be used in constraints.
-[NOTE]
-====
-Prior to version 3.15, using an optional variable in a constraint would simply fail the row if it was `none`.
-This risked queries silently dropping rows if the user referenced an optional variable without realising,
-such as if a function returns an optional variable.
-Starting 3.15, any such reference is considered unsafe and is a compile-error.
-====
+all the non-input variables bound to `none` value.
+Using an optional variable in a constraint which is not defined for the `none` value is invalid and results in a compile-time error.
 
-[NOTE]
-====
-Functions do not currently support optional arguments.
-If/When they do, this will be a constraint which is defined on a `none` value and will not require an `isset` check.
-====
-
-=== Short-circuiting expressions
-It is common to want to optionally compute a value involving optional inputs.
-One way to do this is using a `try` block. e.g.
+=== isset
+An `isset` constraint can be used to assert that a variable is not `none`. `isset $var;` fails if `$var` is `none`, leaving only rows where `$var` is not `none` - safe for use in constraints.
+For read stages
 [,typeql]
 ----
-#!test[read]
+#!test[write]
 match
     $p isa person;
     try { $p has age $age; };
 match
     try { isset $age; let $double-age = 2 * $age; };
 ----
-`$double-age` will hold double the age of `$p` if s/he has one.
+Here, `$double-age` will hold double of `$age` if `$p` has one.
 Else both `$age` and `$double-age` will be `none`
+
+
+=== Short-circuiting expressions
+It is common to want to optionally compute a value involving optional inputs. One way to do this is using a `try` as above.
 
 The `?` operator which "short-circuits" the expression and returns `none`.
 
@@ -107,7 +104,10 @@ match
 match
     let $double-age = 2 * $age?;
 ----
+As before, `$double-age` will hold double of `$age` if `$p` has one.
+Else they will both be `none`.
 
+=== Short-circuiting fetch expressions
 The `?` operator can also be used to short-circuit `fetch` attribute expressions.
 
 [,typeql]
@@ -122,7 +122,7 @@ fetch {
 };
 ----
 
-== Examples
+== Examples: Scopes & Binding modes
 
 === Example 1: Scopes
 In the following, the scope of the variable `$p` is the root.
@@ -182,7 +182,7 @@ match
 
 ==== Example 3: Variable scopes & naming across stages
 The following is an error as the variables `$n` and `$a` have multiple scopes.
-[typeql]
+[,typeql]
 ----
 #!test[read, fail_at=runtime]
 match
