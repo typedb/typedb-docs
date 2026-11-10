@@ -38,6 +38,10 @@ Here, `$spouse` is bound to the spouse if `$person` is in a `marriage`.
 Else, `$spouse` is bound to `None`
 
 === insert, update, & delete
+[NOTE]
+====
+`try` blocks in write stages were deprecated in version 3.15 and will be removed in a future release. Use xref:{page-version}@typeql-reference::patterns/if.adoc[if] instead.
+====
 Optional patterns in insert, update, or delete stages execute only if ALL the variables present in them are bound.
 // Re-enable the tests when we do implement it
 [,typeql]
@@ -55,6 +59,10 @@ insert
 If `$person` is in a marriage, the match stage binds `$spouse` and the insert stage adds them to the policy.
 
 === put
+[NOTE]
+====
+`try` blocks in put stages were deprecated in version 3.15 and will be removed in a future release. Use xref:{page-version}@typeql-reference::patterns/if.adoc[if] instead.
+====
 Because a put stage only inserts data if no existing data matches the body of the put, the patterns in a `try` block of a put stage only attempt to insert data if the mandatory patterns (i.e. those
 outside `try` blocks) fail to produce a match. When inserting data, put behaves identically to an insert stage in that a `try` block only executes if all referenced variables are bound.
 
