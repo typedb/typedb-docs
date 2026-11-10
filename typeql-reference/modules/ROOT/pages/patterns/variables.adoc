@@ -10,11 +10,12 @@
 define
 attribute name, value string;
 attribute age, value integer;
+attribute start-date, value date;
 
 entity person, owns name, owns age;
 entity company, owns name;
 
-relation friendship, relates friend @card(2);
+relation friendship, relates friend @card(2), owns start-date;
 relation employment, relates employee, relates employer;
 person plays employment:employee, plays friendship:friend;
 company owns age, plays employment:employer;
@@ -42,7 +43,7 @@ Additionally, we call variables *_internal_* to a subpattern if it is not visibl
 
 A variable is *_input_* to a constraint if it must be bound to some value before the constraint is evaluated. Any variable which isn't an input is *_bound_* by a constraint when it is evaluated.
 
-Most constraints bind all the variables involved. The input variables are:
+Most constraints bind all the variables involved. The exceptions which are input variables are:
 
 * Both variables in a comparison
 * Both variables in an `is` statement
@@ -108,17 +109,21 @@ As before, `$double-age` will hold double of `$age` if `$p` has one.
 Else they will both be `none`.
 
 === Short-circuiting fetch expressions
-The `?` operator can also be used to short-circuit `fetch` attribute expressions.
+The `?` operator can also be used to short-circuit `fetch` expressions.
 
 [,typeql]
 ----
 #!test[read]
 match
     $p isa person;
-    try { $_ isa friendship, links (friend: $p, friend: $q); };
+    try {
+        $_ isa friendship, links (friend: $p, friend: $q),
+            has start-date $since;
+    };
 fetch {
     "p": { $p.* },
     "q": { $q?.* },
+    "since": $since?,
 };
 ----
 
