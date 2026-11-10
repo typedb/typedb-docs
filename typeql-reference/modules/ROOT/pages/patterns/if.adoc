@@ -3,7 +3,7 @@
 
 [NOTE]
 ====
-Version `3.15` introduces `if` blocks. These are preferred over `try` blocks for conditional writes.
+Version `3.15` introduces `if` blocks. These are preferred over `try` blocks for conditional writes. Using `try` blocks in write stages is deprecated and will be removed in a future version.
 ====
 
 `if` blocks serve as the write-stage equivalent to `try` blocks.
