@@ -46,7 +46,7 @@ Please ensure the client's disk has enough free capacity to store a file of this
 To save disk space, the data file can be compressed with https://facebook.github.io/zstd/[zstd] during export.
 It is compressed at zstd level 3 and includes a content checksum.
 Imports detect compressed data files automatically, so they are imported the same way as uncompressed ones.
-Exporting and importing compressed data files require TypeDB Console 3.15.0 or newer.
+Exporting and importing compressed data files require TypeDB Console 3.16.0 or newer.
 The schema file is never compressed.
 
 While the database data is being exported, parallel transactions are allowed, but none of them will affect the exported data thanks to TypeDB's xref:{page-version}@core-concepts::typedb/transactions.adoc[transactional nature].
