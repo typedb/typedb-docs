@@ -356,8 +356,8 @@ Use these commands at the <<_server_level,Server level>> of TypeDB's <<_REPL,REP
 | `database schema <db>`
 | Print the schema of the database with the name `<db>` on the server
 
-| `database export <db> <schema file path> <data file path>`
-| Export a database into a schema definition and a data files.
+| `database export <db> <schema file path> <data file path> [data file compression (uncompressed or zstd)]`
+| Export a database into a schema definition and a data file. The data file is uncompressed by default, or compressed with zstd if `zstd` is given.
 
 | `database import <db> <schema file path> <data file path>`
 | Create a database with the given name based on another previously exported database.
